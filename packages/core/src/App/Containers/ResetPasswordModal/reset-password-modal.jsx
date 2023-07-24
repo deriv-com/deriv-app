@@ -11,18 +11,25 @@ const ResetPasswordModal = ({
     disableApp,
     enableApp,
     is_loading,
+    is_mobile,
     is_visible,
     logoutClient,
     verification_code,
     toggleResetPasswordModal,
+    toggleLinkExpiredModal,
 }) => {
     const onResetComplete = (error, actions) => {
-        const error_message = error?.message;
         actions.setSubmitting(false);
+        const error_code = error?.code;
         // Error would be returned on invalid token (and the like) cases.
-        if (error_message) {
-            actions.resetForm({ password: '' });
-            actions.setStatus({ error_msg: error_message });
+        if (error_code) {
+            if (error_code === 'InvalidToken') {
+                toggleResetPasswordModal(false);
+                toggleLinkExpiredModal(true);
+            } else {
+                actions.resetForm({ password: '' });
+                actions.setStatus({ error_msg: error?.message });
+            }
             return;
         }
 
@@ -134,7 +141,7 @@ const ResetPasswordModal = ({
                                             <Localize i18n_default_text='Strong passwords contain at least 8 characters. combine uppercase and lowercase letters, numbers, and symbols.' />
                                         )}
                                     </Text>
-                                    <div className='reset-password__divider' />
+                                    {!is_mobile && <div className='reset-password__divider' />}
                                     <Button
                                         className={classNames('reset-password__btn', {
                                             'reset-password__btn--disabled':
@@ -160,18 +167,22 @@ ResetPasswordModal.propTypes = {
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     is_loading: PropTypes.bool,
+    is_mobile: PropTypes.bool,
     is_visible: PropTypes.bool,
     logoutClient: PropTypes.func,
     verification_code: PropTypes.string,
     toggleResetPasswordModal: PropTypes.func,
+    toggleLinkExpiredModal: PropTypes.func,
 };
 
 export default connect(({ ui, client }) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     is_loading: ui.is_loading,
+    is_mobile: ui.is_mobile,
     is_visible: ui.is_reset_password_modal_visible,
     logoutClient: client.logout,
     toggleResetPasswordModal: ui.toggleResetPasswordModal,
+    toggleLinkExpiredModal: ui.toggleLinkExpiredModal,
     verification_code: client.verification_code.reset_password,
 }))(ResetPasswordModal);

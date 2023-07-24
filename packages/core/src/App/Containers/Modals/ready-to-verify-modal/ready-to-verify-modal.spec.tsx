@@ -20,7 +20,7 @@ describe('<ReadyToVerifyModal />', () => {
     it('should render the component with deposit success message if client deposited first_time', () => {
         const mock = mockStore({
             ui: {
-                should_show_deposit_or_account_success_modal: true,
+                should_show_account_success_modal: true,
             },
             client: {
                 has_deposited_for_first_time: true,
@@ -56,7 +56,7 @@ describe('<ReadyToVerifyModal />', () => {
     it('should render the component with account created messages if client skip first_time deposit', () => {
         const mock = mockStore({
             ui: {
-                should_show_deposit_or_account_success_modal: true,
+                should_show_account_success_modal: true,
             },
             client: {
                 has_deposited_for_first_time: false,

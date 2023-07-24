@@ -108,6 +108,7 @@ const RealAccountSignup = ({
     setParams,
     setShouldShowAppropriatenessWarningModal,
     setShouldShowRiskWarningModal,
+    setShouldShowOneTimeDepositModal,
     should_show_all_available_currencies,
     should_show_appropriateness_warning_modal,
     should_show_risk_warning_modal,
@@ -130,6 +131,7 @@ const RealAccountSignup = ({
                 <AccountWizard
                     setIsRiskWarningVisible={setIsRiskWarningVisible}
                     onFinishSuccess={showStatusDialog}
+                    onOpenDepositModal={closeModalthenOpenDepositModal}
                     onOpenWelcomeModal={closeModalthenOpenWelcomeModal}
                     is_loading={local_props.is_loading}
                     setLoading={setLoading}
@@ -298,6 +300,11 @@ const RealAccountSignup = ({
         if (is_from_restricted_country || getActiveModalIndex() === modal_pages_indices.invalid_input_error)
             return '440px';
         return !has_close_icon ? 'auto' : '955px';
+    };
+
+    const closeModalthenOpenDepositModal = () => {
+        closeRealAccountSignup();
+        setShouldShowOneTimeDepositModal(true);
     };
 
     const showStatusDialog = curr => {
@@ -701,6 +708,7 @@ export default connect(({ ui, client, traders_hub, modules }) => ({
     setShouldShowAppropriatenessWarningModal: ui.setShouldShowAppropriatenessWarningModal,
     setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
+    setShouldShowOneTimeDepositModal: ui.setShouldShowOneTimeDepositModal,
     should_show_all_available_currencies: modules.cashier.general_store.should_show_all_available_currencies,
     should_show_appropriateness_warning_modal: ui.should_show_appropriateness_warning_modal,
     should_show_risk_warning_modal: ui.should_show_risk_warning_modal,

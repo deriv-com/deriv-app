@@ -8,9 +8,9 @@ import './ready-to-verify-modal.scss';
 const ReadyToVerifyModal = observer(() => {
     const { ui, client } = useStore();
     const {
-        should_show_deposit_or_account_success_modal,
+        should_show_account_success_modal,
         setShouldTriggerTourGuide,
-        toggleDepositOrAccountSuccessModal,
+        toggleAccountSuccessModal,
         disableApp,
         enableApp,
         // openPOIPOAModal,
@@ -18,12 +18,12 @@ const ReadyToVerifyModal = observer(() => {
     const { has_deposited_for_first_time } = client;
 
     const onConfirmeModal = () => {
-        toggleDepositOrAccountSuccessModal();
+        toggleAccountSuccessModal();
         // openPOIPOAModal(); // route to poi-poa modal
     };
 
     const onClose = () => {
-        toggleDepositOrAccountSuccessModal();
+        toggleAccountSuccessModal();
         setShouldTriggerTourGuide(true); // route to onboarding -switch accounts
     };
 
@@ -37,7 +37,7 @@ const ReadyToVerifyModal = observer(() => {
             onCancel={onClose}
             disableApp={disableApp}
             enableApp={enableApp}
-            is_visible={should_show_deposit_or_account_success_modal}
+            is_visible={should_show_account_success_modal}
             dismissable={true}
             has_close_icon={false}
             onEscapeButtonCancel={onClose}

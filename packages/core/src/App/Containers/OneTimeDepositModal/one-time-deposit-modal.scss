@@ -1,0 +1,65 @@
+.one-time-deposit-modal {
+    display: flex;
+    align-self: stretch;
+
+    &__body {
+        display: flex;
+        justify-content: center;
+        height: 80vh;
+
+        @include mobile {
+            height: 100%;
+        }
+    }
+
+    &__content {
+        width: 60%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        @include mobile {
+            width: 100%;
+            padding: 2rem;
+        }
+    }
+
+    &__description {
+        display: grid;
+        grid-template-columns: 78fr 22fr;
+        gap: 0.5rem;
+        place-items: center;
+        margin-block: 2rem;
+
+        &--livechat {
+            cursor: pointer;
+            width: max-content;
+            display: flex;
+            align-items: center;
+
+            &-icon {
+                margin-right: 0.8rem;
+                margin-top: 0.2rem;
+            }
+        }
+    }
+
+    &__deposit-fiat-iframe {
+        width: 100%;
+        flex: 1;
+    }
+
+    &__title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+    }
+}
+
+.dc-modal__container_one-time-deposit-modal {
+    .dc-modal-header {
+        border-bottom: 2px solid var(--general-section-1);
+    }
+}

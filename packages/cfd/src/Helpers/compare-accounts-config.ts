@@ -101,7 +101,7 @@ const getPlatformLabel = (shortcode?: string) => {
     switch (shortcode) {
         case 'dxtrade':
         case 'CFDs':
-            return localize('Other CFDs');
+            return localize('Other CFDs Platform');
         case 'mt5':
         default:
             return localize('MT5 Platform');
@@ -111,7 +111,7 @@ const getPlatformLabel = (shortcode?: string) => {
 // Object to map the platform label
 const platfromsHeaderLabel = {
     mt5: localize('MT5 Platform'),
-    other_cfds: localize('Other CFDs'),
+    other_cfds: localize('Other CFDs Platform'),
 };
 
 // Get the Account Icons based on the market type

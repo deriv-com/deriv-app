@@ -16,7 +16,7 @@ const WalletFiatMT5Content = observer(() => {
         <React.Fragment>
             {isLoading && is_authorize && <PlatformLoader />}
             {!isLoading && <WalletMT5CardList />}
-            {can_get_more_cfd_mt5_accounts && (
+            {!isLoading && can_get_more_cfd_mt5_accounts && (
                 <GetMoreAccounts
                     onClick={toggleAccountTypeModalVisibility}
                     icon='IcAppstoreGetMoreAccounts'

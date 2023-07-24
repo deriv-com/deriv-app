@@ -6,7 +6,7 @@ import TradingAppCard from 'Components/containers/trading-app-card';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
 import { useStore, observer } from '@deriv/stores';
-import { useActiveWallet } from '@deriv/hooks';
+import { useActiveWallet, useContentFlag } from '@deriv/hooks';
 import './wallet-content.scss';
 
 const WalletOptionsAndMultipliersListing = observer(() => {
@@ -23,6 +23,8 @@ const WalletOptionsAndMultipliersListing = observer(() => {
 
     const wallet_account = useActiveWallet();
 
+    const { is_cr_demo } = useContentFlag();
+
     if (!wallet_account || is_switching || is_logging_in || !is_landing_company_loaded)
         return (
             <div className='wallet-content__loader'>
@@ -31,13 +33,13 @@ const WalletOptionsAndMultipliersListing = observer(() => {
         );
 
     const OptionsTitle = () => {
-        if (wallet_account.landing_company_name === 'svg' && !is_mobile) {
+        if ((wallet_account.landing_company_name === 'svg' || is_cr_demo) && !is_mobile) {
             return (
                 <Text size='sm' line_height='m' weight='bold' color='prominent'>
                     {localize('Options & multipliers')}
                 </Text>
             );
-        } else if (wallet_account.landing_company_name !== 'svg' && !is_mobile) {
+        } else if (wallet_account.landing_company_name === 'malta' && !is_mobile) {
             return (
                 <Text size='sm' line_height='m' weight='bold' color='prominent'>
                     {localize('Multipliers')}

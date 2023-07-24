@@ -12,7 +12,7 @@ const useAvailableWallets = () => {
 
     // @ts-expect-error Need to update @deriv/api-types to fix the TS error
     const { data: account_type_data, ...rest } = useFetch('get_account_types', {
-        payload: { company: data?.landing_company_name },
+        payload: { company: 'svg' || 'malta' },
         options: { enabled: Boolean(data?.landing_company_name) },
     });
 

@@ -61,7 +61,8 @@ const TourTriggrerDialog = ({
     const getTourHeaders = (tour_check: boolean, tab_id: number) => {
         let text;
         if (!tour_check) {
-            if (tab_id === 1) text = is_mobile ? localize('Bot Builder guide') : localize("Let's build a Bot!");
+            if (tab_id === 1 && is_mobile) text = localize('Bot Builder guide');
+            else if (tab_id === 1) text = localize("Let's build a Bot!");
             else text = localize('Get started on Deriv Bot');
         } else if (tab_id === 1) text = localize('Congratulations');
         else text = localize('Want to retake the tour?');
@@ -69,12 +70,14 @@ const TourTriggrerDialog = ({
     };
 
     const tourDialogInfo = is_mobile
-        ? 'Here’s a quick guide on how to use Deriv Bot on the go.'
-        : 'Learn how to build your bot from scratch using a simple strategy.';
+        ? localize('Here’s a quick guide on how to use Deriv Bot on the go.')
+        : localize('Learn how to build your bot from scratch using a simple strategy.');
 
     const tourDialogAction = is_mobile
-        ? 'You can import a bot from your mobile device or from Google drive, see a preview in the bot builder, and start trading by running the bot.'
-        : 'Hit the <0>Start</0> button to begin and follow the tutorial.';
+        ? localize(
+              'You can import a bot from your mobile device or from Google drive, see a preview in the bot builder, and start trading by running the bot.'
+          )
+        : localize('Hit the <0>Start</0> button to begin and follow the tutorial.');
 
     const getTourContent = (type: string) => {
         return (

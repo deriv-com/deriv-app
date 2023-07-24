@@ -35,7 +35,7 @@ const getHighlightedIconLabel = (
         case 'financial':
             if (trading_platforms.shortcode === 'maltainvest') {
                 return [
-                    { icon: 'Synthetics', text: localize('Synthetics'), highlighted: true, is_asterik: true },
+                    { icon: 'Synthetics', text: localize('Synthetics'), highlighted: true, is_asterisk: true },
                     { icon: 'Forex', text: forex_label, highlighted: true },
                     { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
                     { icon: 'StockIndices', text: localize('Stock Indices'), highlighted: true },

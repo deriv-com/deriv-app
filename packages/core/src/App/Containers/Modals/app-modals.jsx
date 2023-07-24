@@ -10,6 +10,7 @@ import CompletedAssessmentModal from './completed-assessment-modal.jsx';
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
+import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -78,6 +79,7 @@ const AppModals = ({
     is_ready_to_deposit_modal_visible,
     is_trading_experience_incomplete,
     should_show_risk_accept_modal,
+    is_need_real_account_for_cashier_modal_visible,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
@@ -157,6 +159,10 @@ const AppModals = ({
         ComponentToLoad = <ReadyToDepositModal />;
     }
 
+    if (is_need_real_account_for_cashier_modal_visible) {
+        ComponentToLoad = <NeedRealAccountForCashierModal />;
+    }
+
     return (
         <>
             <RedirectNoticeModal is_logged_in={is_logged_in} is_eu={is_eu_user} portal_id='popup_root' />
@@ -187,6 +193,7 @@ export default connect(({ client, ui, traders_hub }) => ({
     is_deriv_account_needed_modal_visible: ui.is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible: ui.is_warning_scam_message_modal_visible,
     is_ready_to_deposit_modal_visible: ui.is_ready_to_deposit_modal_visible,
+    is_need_real_account_for_cashier_modal_visible: ui.is_need_real_account_for_cashier_modal_visible,
     content_flag: traders_hub.content_flag,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     should_show_risk_accept_modal: ui.should_show_risk_accept_modal,

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Text } from '@deriv/components';
 import { formatMoney, CFD_PLATFORMS } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { TPlatform } from 'Types';
@@ -66,6 +67,9 @@ const StaticCFDAccountManager = ({
     is_eu_user,
 }: TStaticCFDAccountManager) => {
     const icon_size = 48;
+    const platform_color = platform === 'options' ? 'prominent' : 'general';
+    const { traders_hub } = useStore();
+    const { is_demo } = traders_hub;
     return (
         <div
             className={classNames('static-cfd-account-manager', {
@@ -87,7 +91,7 @@ const StaticCFDAccountManager = ({
                         />
                     ) : (
                         <TradigPlatformIconProps
-                            icon='Derived'
+                            icon={type === 'swap_free' ? 'SwapFree' : 'Derived'}
                             size={icon_size}
                             className={classNames('static-cfd-account-manager--cfds', {
                                 'static-cfd-account-manager__icon--blurry': is_blurry.icon,
@@ -116,6 +120,17 @@ const StaticCFDAccountManager = ({
                         />
                     ))}
 
+                {platform === CFD_PLATFORMS.DERIVEZ && (
+                    <TradigPlatformIconProps
+                        icon='DerivEz'
+                        size={icon_size}
+                        className={classNames('static-cfd-account-manager--cfds', {
+                            'static-cfd-account-manager__icon--blurry':
+                                is_blurry.icon || is_last_step || is_derivx_last_step,
+                        })}
+                    />
+                )}
+
                 {platform === CFD_PLATFORMS.DXTRADE && (
                     <TradigPlatformIconProps
                         icon='DerivX'
@@ -138,7 +153,7 @@ const StaticCFDAccountManager = ({
                 <Text
                     size='xs'
                     weight={has_account ? 'normal' : 'bold'}
-                    color={is_blurry.item || is_last_step ? 'less-prominent' : 'prominent'}
+                    color={is_blurry.item || is_last_step ? 'less-prominent' : platform_color}
                 >
                     {appname}
                 </Text>
@@ -167,14 +182,14 @@ const StaticCFDAccountManager = ({
                 ) : (
                     <Text
                         size='xxs'
-                        color={is_blurry.item || is_last_step || is_derivx_last_step ? 'less-prominent' : 'prominent'}
+                        color={is_blurry.item || is_last_step || is_derivx_last_step ? 'less-prominent' : 'general'}
                     >
                         {description}
                     </Text>
                 )}
             </div>
             <div className='static-cfd-account-manager__buttons'>
-                {has_account && platform !== CFD_PLATFORMS.DXTRADE ? (
+                {has_account ? (
                     <React.Fragment>
                         <Button
                             secondary
@@ -192,7 +207,7 @@ const StaticCFDAccountManager = ({
                                 'static-cfd-account-manager__buttons-topup--animated': is_onboarding_animated.trade,
                             })}
                         >
-                            <Localize i18n_default_text='Trade' />
+                            <Localize i18n_default_text='Open' />
                         </Button>
                     </React.Fragment>
                 ) : (

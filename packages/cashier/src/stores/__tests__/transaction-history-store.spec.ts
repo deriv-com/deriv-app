@@ -1,12 +1,13 @@
 import TransactionHistoryStore from '../transaction-history-store';
 import { configure } from 'mobx';
-import { TRootStore, TWebSocket } from 'Types';
+import { mockStore } from '@deriv/stores';
+import type { TRootStore, TWebSocket } from '../../types';
 
 configure({ safeDescriptors: false });
 
 describe('TransactionHistoryStore', () => {
     let transaction_history_store: TransactionHistoryStore;
-    const crypto_transactions = [
+    const crypto_transactions: Parameters<typeof transaction_history_store.updateCryptoTransactions>[0] = [
         {
             address_hash: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
             address_url: 'https://www.blockchain.com/btc-testnet/address/tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
@@ -17,15 +18,16 @@ describe('TransactionHistoryStore', () => {
             status_message:
                 'We`re reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won`t be able to cancel.',
             submit_date: 1648811322,
+            transaction_hash: '0x2dbf00eb6dbbcb1a962d7f1c82b8cff889a579f23af417a8b62442dd49bd8a51',
             transaction_type: 'withdrawal',
         },
     ];
-    const root_store: DeepPartial<TRootStore> = {
+    const root_store = mockStore({
         client: {
             currency: 'BTC',
             switched: false,
         },
-    };
+    });
     const WS: DeepPartial<TWebSocket> = {
         authorized: {
             cashierPayments: () =>
@@ -54,13 +56,13 @@ describe('TransactionHistoryStore', () => {
     it('should subscribe to crypto transactions', async () => {
         const spyUpdateCryptoTransactions = jest.spyOn(transaction_history_store, 'updateCryptoTransactions');
 
-        transaction_history_store.getCryptoTransactions();
+        await transaction_history_store.getCryptoTransactions();
         expect(spyUpdateCryptoTransactions).toHaveBeenCalledWith(crypto_transactions);
         expect(transaction_history_store.crypto_transactions).toEqual(crypto_transactions);
     });
 
     it('should update the list of crypto transactions if there is a new crypto transaction or an update with an existing transaction', () => {
-        const updated_crypto_transactions = [
+        const updated_crypto_transactions: Parameters<typeof transaction_history_store.updateCryptoTransactions>[0] = [
             {
                 address_hash: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
                 address_url:
@@ -71,6 +73,7 @@ describe('TransactionHistoryStore', () => {
                 status_code: 'CANCELLED',
                 status_message: 'You’ve cancelled your withdrawal request.',
                 submit_date: 1649048412,
+                transaction_hash: '0x2dbf00eb6dbbcb1a962d7f1c82b8cff889a579f23af417a8b62442dd49bd8a51',
                 transaction_type: 'withdrawal',
             },
             {
@@ -84,6 +87,7 @@ describe('TransactionHistoryStore', () => {
                 status_message:
                     'We`re reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won`t be able to cancel.',
                 submit_date: 1649048412,
+                transaction_hash: '0x2dbf00eb6dbbcb1a962d7f1c82b8cff889a579f23af417a8b62442dd49bd8a51',
                 transaction_type: 'withdrawal',
             },
         ];

@@ -46,12 +46,6 @@
 
 /** @define modal-dialog; weak */
 .dc-mobile-dialog {
-    &__contracts-modal-list {
-        /* postcss-bem-linter: ignore */
-        .category-wrapper {
-            background-color: var(--general-main-1) !important;
-        }
-    }
     .dc-select-native__placeholder:not(.dc-select-native__placeholder--has-value) {
         background: initial;
     }
@@ -84,6 +78,9 @@
             &--inline {
                 display: flex;
                 justify-content: flex-end;
+            }
+            &--tooltip-disabled {
+                pointer-events: none !important;
             }
         }
         &-info {
@@ -129,15 +126,22 @@
             padding: 0;
         }
         &.accu-info-display {
-            height: 7rem;
+            height: 7.6rem;
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            padding: 1.5rem 1.6rem;
+            padding: 1.5rem 0.8rem 1.5rem 1.6rem;
 
-            .accu-info-display__column {
+            .accu-info-display__row,
+            .accu-info-display__row > div {
                 display: flex;
-                flex-direction: column;
+                height: 2rem;
                 justify-content: space-between;
+                align-items: center;
+                gap: 0.8rem;
+                .dc-popover__target {
+                    height: 1.6rem;
+                }
             }
         }
         .dc-datepicker {
@@ -338,7 +342,7 @@
         &-modal {
             @include mobile {
                 &--vanilla {
-                    max-width: 33rem;
+                    max-width: calc(min(33rem, 85vw));
                 }
             }
         }
@@ -705,7 +709,7 @@
         cursor: not-allowed;
 
         &__caption {
-            width: 17.2rem;
+            width: 18rem;
             height: 4rem;
             color: var(--text-less-prominent);
             text-align: center;
@@ -774,6 +778,16 @@
     /* postcss-bem-linter: ignore */
     .dropdown-container {
         margin-top: 0.8em;
+    }
+}
+
+.expiry-text-container {
+    margin-top: 0.4rem;
+
+    &--mobile {
+        margin: 0 0 0.8rem;
+        position: relative;
+        top: -0.8rem;
     }
 }
 

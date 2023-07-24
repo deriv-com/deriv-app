@@ -3,9 +3,11 @@ import { Button, ButtonLink, Clipboard, Dropdown, Icon, Loading, Text } from '@d
 import { localize, Localize } from '@deriv/translations';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
+import { useFetch } from '@deriv/api';
 import CashierBreadcrumb from '../../../components/cashier-breadcrumb';
 import QRCode from 'qrcode.react';
 import RecentTransaction from '../../../components/recent-transaction';
+import AlertBanner from '../../../components/alert-banner/alert-banner';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './crypto-deposit.scss';
 
@@ -16,6 +18,9 @@ const CryptoDeposit = observer(() => {
     const { api_error, deposit_address, is_deposit_address_loading, pollApiForDepositAddress } = onramp;
     const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
     const { setIsDeposit } = general_store;
+
+    const { data } = useFetch('crypto_config', { payload: { currency_code: currency } });
+    const minimum_deposit = data?.crypto_config?.currencies_config[currency]?.minimum_deposit;
 
     React.useEffect(() => {
         recentTransactionOnMount();
@@ -31,11 +36,11 @@ const CryptoDeposit = observer(() => {
     }, [pollApiForDepositAddress]);
 
     const option_list = [
-        { text: <Localize i18n_default_text='Binance Smart Chain' />, value: 1 },
-        { text: <Localize i18n_default_text='Polygon (Matic)' />, value: 2 },
-        { text: <Localize i18n_default_text='Tron' />, value: 3 },
-        { text: <Localize i18n_default_text='Ethereum (ERC20)' />, value: 4 },
-        { text: <Localize i18n_default_text='Ethereum (ETH)' />, value: 5 },
+        { text: localize('Binance Smart Chain'), value: '1' },
+        { text: localize('Polygon (Matic)'), value: '2' },
+        { text: localize('Tron'), value: '3' },
+        { text: localize('Ethereum (ERC20)'), value: '4' },
+        { text: localize('Ethereum (ETH)'), value: '5' },
     ];
 
     const [option_message, setOptionMessage] = useState<JSX.Element | string>('');
@@ -129,7 +134,7 @@ const CryptoDeposit = observer(() => {
 
     return (
         <div className='cashier__wrapper crypto-deposit__wrapper'>
-            <CashierBreadcrumb is_crypto_deposit />
+            <CashierBreadcrumb />
             <div className='crypto-deposit__transaction-wrapper'>
                 <Icon icon={`IcCurrency-${currency?.toLowerCase()}`} size={64} />
                 <Text
@@ -150,10 +155,12 @@ const CryptoDeposit = observer(() => {
                 </Text>
                 {api_error ? (
                     <div className='crypto-api-error'>
-                        <Text as='p' align='center' size='xs' className='crypto-api-error__text'>
-                            <Icon width={30} height={20} icon='IcAlertWarning' />
-                            <Localize i18n_default_text="Unfortunately, we couldn't get the address since our server was down. Please click Refresh to reload the address or try again later." />
-                        </Text>
+                        <AlertBanner
+                            icon='IcAlertWarning'
+                            message={localize(
+                                "Unfortunately, we couldn't get the address since our server was down. Please click Refresh to reload the address or try again later."
+                            )}
+                        />
                         <Button
                             text={localize('Refresh')}
                             onClick={() => pollApiForDepositAddress(false)}
@@ -163,9 +170,23 @@ const CryptoDeposit = observer(() => {
                     </div>
                 ) : (
                     <>
-                        <Text as='p' align='center' line_height='m' size={isMobile() ? 'xs' : 's'}>
-                            {qrcode_header || header_note}
-                        </Text>
+                        {minimum_deposit ? (
+                            <AlertBanner
+                                className='crypto-third-party-alert'
+                                icon='IcAlertWarningDark'
+                                message={localize(
+                                    'A minimum deposit value of {{minimum_deposit}} {{currency}} is required. Otherwise, the funds will be lost and cannot be recovered.',
+                                    {
+                                        minimum_deposit,
+                                        currency,
+                                    }
+                                )}
+                            />
+                        ) : (
+                            <Text as='p' align='center' line_height='m' size={isMobile() ? 'xs' : 's'}>
+                                {qrcode_header || header_note}
+                            </Text>
+                        )}
                         {
                             <>
                                 {((currency === 'ETH' && option_list_value !== option_list[4].value) ||
@@ -199,7 +220,7 @@ const CryptoDeposit = observer(() => {
                             (currency === 'ETH' && option_list_value === option_list[4].value) ||
                             (['USDC', 'eUSDT'].includes(currency) && option_list_value === option_list[3].value)) && (
                             <>
-                                <QRCode className='qrcode' value={deposit_address} size={160} includeMargin />
+                                <QRCode className='qrcode' value={deposit_address || ''} size={160} includeMargin />
                                 <div className='crypto-deposit__clipboard-wrapper'>
                                     <Text
                                         className='crypto-deposit__address-hash'
@@ -212,7 +233,7 @@ const CryptoDeposit = observer(() => {
                                     </Text>
                                     <Clipboard
                                         className='crypto-deposit__clipboard'
-                                        text_copy={deposit_address}
+                                        text_copy={deposit_address || ''}
                                         info_message={isMobile() ? '' : localize('copy')}
                                         icon='IcCashierClipboard'
                                         success_message={localize('copied!')}
@@ -234,13 +255,13 @@ const CryptoDeposit = observer(() => {
                         <Localize i18n_default_text='Use our fiat onramp services to buy and deposit cryptocurrency into your Deriv account.' />
                     </Text>
                 </div>
-                <ButtonLink className='crypto-deposit__fiat-onramp-button' has_effect to='/cashier/on-ramp'>
+                <ButtonLink className='crypto-deposit__fiat-onramp-button' to='/cashier/on-ramp'>
                     <Text as='p' weight='bold' color='colored-background' size='xs'>
                         <Localize i18n_default_text='Try our Fiat onramp' />
                     </Text>
                 </ButtonLink>
             </div>
-            {isMobile() && isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
+            {isMobile() && isCryptocurrency(currency) ? <RecentTransaction /> : null}
         </div>
     );
 });

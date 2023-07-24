@@ -9,7 +9,7 @@ type TPlatform = {
     is_hard_redirect: boolean;
     platform_name: string;
     route_to_path: string;
-    url: string;
+    url?: string;
 };
 
 type TPlatforms = Record<'p2p' | 'derivgo', TPlatform>;
@@ -26,7 +26,7 @@ export const platforms: TPlatforms = {
     derivgo: {
         icon_text: undefined,
         is_hard_redirect: true,
-        platform_name: 'Deriv Go',
+        platform_name: 'Deriv GO',
         route_to_path: '',
         url: 'https://app.deriv.com/redirect/derivgo',
     },

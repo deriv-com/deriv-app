@@ -36,7 +36,12 @@ export type TButtonProps = React.PropsWithChildren<React.ButtonHTMLAttributes<HT
         wrapperClassName: string;
     };
 
-const ButtonGroup = ({ children, className }: React.PropsWithChildren<HTMLDivElement>) => (
+export type TButtonGroupProps = {
+    children: React.ReactNode | React.ReactNode[];
+    className?: string;
+};
+
+const ButtonGroup = ({ children, className }: TButtonGroupProps) => (
     <div className={classNames('dc-btn__group', className)}>{children}</div>
 );
 const Button = ({

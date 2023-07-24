@@ -17,6 +17,7 @@ import SideNote from '../../components/side-note';
 import USDTSideNote from '../../components/usdt-side-note';
 import { Virtual } from '../../components/cashier-container';
 import { useCashierStore } from '../../stores/useCashierStores';
+import { useCashierLocked, useIsSystemMaintenance } from '@deriv/hooks';
 
 type TWithdrawalSideNoteProps = {
     currency: string;
@@ -59,13 +60,9 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         verification_code: { payment_withdraw: verification_code },
     } = client;
     const { iframe, general_store, transaction_history, withdraw } = useCashierStore();
-    const {
-        is_cashier_locked,
-        is_crypto,
-        is_system_maintenance,
-        setActiveTab,
-        cashier_route_tab_index: tab_index,
-    } = general_store;
+    const { is_crypto, setActiveTab, cashier_route_tab_index: tab_index } = general_store;
+    const is_cashier_locked = useCashierLocked();
+    const is_system_maintenance = useIsSystemMaintenance();
     const { iframe_url } = iframe;
     const {
         crypto_transactions,
@@ -108,19 +105,26 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
     React.useEffect(() => {
         if (isDesktop()) {
             if (isCryptocurrency(currency) && typeof setSideNotes === 'function' && !is_switching) {
-                const side_notes = [];
-                if (crypto_transactions?.length) {
-                    side_notes.push(<RecentTransaction key={2} />);
-                }
-                const side_note = [
+                const side_notes = [
+                    <RecentTransaction key={2} />,
                     <WithdrawalSideNote currency={currency} key={0} />,
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
                     ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
                 ];
-                side_notes.push(side_note);
-                setSideNotes(side_notes);
+
+                setSideNotes([
+                    ...side_notes.map((side_note, index) => (
+                        <SideNote has_title={false} key={index}>
+                            {side_note}
+                        </SideNote>
+                    )),
+                ]);
             } else setSideNotes(null);
         }
+
+        return () => {
+            setSideNotes?.([]);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, tab_index, crypto_transactions]);
 

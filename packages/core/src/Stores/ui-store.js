@@ -1,4 +1,4 @@
-import { isMobile, isTouchDevice, LocalStore, routes, isBot } from '@deriv/shared';
+import { isMobile, isTouchDevice, LocalStore, routes } from '@deriv/shared';
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import { action, autorun, computed, observable, makeObservable } from 'mobx';
 import BaseStore from './base-store';
@@ -6,6 +6,7 @@ import BaseStore from './base-store';
 const store_name = 'ui_store';
 
 export default class UIStore extends BaseStore {
+    url_hashed_values = '';
     is_account_settings_visible = false;
     is_positions_drawer_on = false;
     is_reports_visible = false;
@@ -169,6 +170,7 @@ export default class UIStore extends BaseStore {
     app_contents_scroll_ref = null;
     is_deriv_account_needed_modal_visible = false;
     is_ready_to_deposit_modal_visible = false;
+    is_need_real_account_for_cashier_modal_visible = false;
     is_switch_to_deriv_account_modal_visible = false;
     is_cfd_reset_password_modal_enabled = false;
     sub_section_index = 0;
@@ -207,6 +209,7 @@ export default class UIStore extends BaseStore {
             has_only_forward_starting_contracts: observable,
             has_read_scam_message: observable,
             is_ready_to_deposit_modal_visible: observable,
+            is_need_real_account_for_cashier_modal_visible: observable,
             is_services_error_visible: observable,
             is_unsupported_contract_modal_visible: observable,
             is_new_account: observable,
@@ -315,6 +318,7 @@ export default class UIStore extends BaseStore {
             is_mobile: computed,
             is_tablet: computed,
             is_warning_scam_message_modal_visible: computed,
+            url_hashed_values: observable,
             notifyAppInstall: action.bound,
             onChangeUiStore: action.bound,
             openAccountNeededModal: action.bound,
@@ -339,12 +343,16 @@ export default class UIStore extends BaseStore {
             setCurrentFocus: action.bound,
             setDarkMode: action.bound,
             setHasOnlyForwardingContracts: action.bound,
+            setHashedValue: action.bound,
             setIsAcuityModalOpen: action.bound,
             setIsClosingCreateRealAccountModal: action.bound,
             setIsNativepickerVisible: action.bound,
             setReportsTabIndex: action.bound,
             toggleWelcomeModal: action.bound,
             toggleReadyToDepositModal: action.bound,
+            toggleNeedRealAccountForCashierModal: action.bound,
+            toggleShouldShowRealAccountsList: action.bound,
+            toggleShouldShowMultipliersOnboarding: action.bound,
             shouldNavigateAfterChooseCrypto: action.bound,
             setShouldShowRiskWarningModal: action.bound,
             setIsNewAccount: action.bound,
@@ -388,8 +396,6 @@ export default class UIStore extends BaseStore {
             toggleSetResidenceModal: action.bound,
             toggleSettingsModal: action.bound,
             toggleLanguageSettingsModal: action.bound,
-            toggleShouldShowMultipliersOnboarding: action.bound,
-            toggleShouldShowRealAccountsList: action.bound,
             toggleUnsupportedContractModal: action.bound,
             toggleUpdateEmailModal: action.bound,
         });
@@ -436,7 +442,12 @@ export default class UIStore extends BaseStore {
         this.is_new_account = localStorage.getItem('isNewAccount') || false;
     }
 
+    setHashedValue(url_hashed_values) {
+        this.url_hashed_values = url_hashed_values;
+    }
+
     init(notification_messages) {
+        this.setHashedValue(window.location.hash);
         this.notification_messages_ui = notification_messages;
     }
 
@@ -578,10 +589,6 @@ export default class UIStore extends BaseStore {
             this.is_dark_mode_on = is_dark_mode_on;
             // This GTM call is here instead of the GTM store due to frequency of use
             this.root_store.gtm.pushDataLayer({ event: 'switch theme' });
-            const { is_pathname_bot } = isBot();
-            if (is_pathname_bot) {
-                location.reload();
-            }
         }
 
         return this.is_dark_mode_on;
@@ -612,11 +619,13 @@ export default class UIStore extends BaseStore {
         this.is_positions_drawer_on = true;
     }
 
-    openRealAccountSignup(target = this.root_store.client.upgradeable_landing_companies?.[0]) {
-        this.is_real_acc_signup_on = true;
-        this.real_account_signup_target = target;
-        this.is_accounts_switcher_on = false;
-        localStorage.removeItem('current_question_index');
+    openRealAccountSignup(target) {
+        if (target) {
+            this.is_real_acc_signup_on = true;
+            this.real_account_signup_target = target;
+            this.is_accounts_switcher_on = false;
+            localStorage.removeItem('current_question_index');
+        }
     }
 
     setShouldShowCancel(value) {
@@ -899,6 +908,10 @@ export default class UIStore extends BaseStore {
 
     toggleReadyToDepositModal() {
         this.is_ready_to_deposit_modal_visible = !this.is_ready_to_deposit_modal_visible;
+    }
+
+    toggleNeedRealAccountForCashierModal() {
+        this.is_need_real_account_for_cashier_modal_visible = !this.is_need_real_account_for_cashier_modal_visible;
     }
 
     setCFDPasswordResetModal(val) {

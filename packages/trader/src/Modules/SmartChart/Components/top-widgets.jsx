@@ -4,10 +4,14 @@ import ReactDOM from 'react-dom';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isEnded, isAccumulatorContract, isDigitContract } from '@deriv/shared';
-import { connect } from 'Stores/connect';
 import { ChartTitle } from 'Modules/SmartChart';
+import BuyToastNotification from './buy-toast-notification';
+import { observer, useStore } from '@deriv/stores';
 
-const TradeInfo = ({ markers_array, granularity }) => {
+const RecentTradeInfo = observer(() => {
+    const { contract_trade } = useStore();
+    const { granularity, markers_array } = contract_trade;
+
     const latest_tick_contract = markers_array[markers_array.length - 1];
     if (
         !latest_tick_contract ||
@@ -26,12 +30,7 @@ const TradeInfo = ({ markers_array, granularity }) => {
             {localize('Tick')} {current_tick}/{tick_count}
         </Text>
     );
-};
-
-const RecentTradeInfo = connect(({ contract_trade }) => ({
-    granularity: contract_trade.granularity,
-    markers_array: contract_trade.markers_array,
-}))(TradeInfo);
+});
 
 const TopWidgets = ({
     InfoBox,
@@ -64,6 +63,7 @@ const TopWidgets = ({
                     width: `calc(100% - ${y_axis_width ? y_axis_width + 5 : 0}px)`,
                 }}
             >
+                {is_mobile && <BuyToastNotification />}
                 {ChartTitleLocal}
                 {!is_digits_widget_active && <RecentTradeInfo />}
             </div>

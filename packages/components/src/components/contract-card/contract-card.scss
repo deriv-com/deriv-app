@@ -4,7 +4,6 @@
     flex-direction: column;
     text-decoration: none;
     position: relative;
-    border-radius: $BORDER_RADIUS;
     padding: 0.8rem;
     background-color: var(--general-main-1);
     color: var(--text-prominent);
@@ -17,7 +16,6 @@
         width: 100%;
         left: 0;
         top: 0;
-        border-radius: $BORDER_RADIUS;
     }
     &--green:before {
         background-image: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(0, 148, 117, 0.16));
@@ -43,8 +41,11 @@
 
             &--trader {
                 grid-template-columns: 1.2fr 1fr;
-                &--accumulator-sold {
-                    padding-top: 1rem;
+                &--accumulator {
+                    display: flex;
+                    &-sold {
+                        padding-top: 1rem;
+                    }
                 }
             }
             &--mobile {
@@ -204,6 +205,10 @@
         font-size: 1.2em;
         max-width: 18rem;
         min-width: 10rem;
+
+        &--accumulator {
+            max-width: 10rem;
+        }
     }
     &__type {
         font-size: 1.2em;
@@ -223,6 +228,12 @@
     }
     &__symbol {
         margin-left: 0.4rem;
+        &--ups-downs {
+            width: 7rem;
+            @include mobile {
+                width: initial;
+            }
+        }
     }
     &__header {
         display: flex;
@@ -564,6 +575,10 @@
         width: 3.8em;
         line-height: 1.5;
         text-align: left;
+
+        &--ups-downs {
+            width: 7rem;
+        }
 
         &-trade-param {
             font-size: 1rem;

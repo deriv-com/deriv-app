@@ -8,15 +8,15 @@ import Icon from '../icon/icon';
 
 type TMobileFullPageModal = {
     className?: string;
-    container_children: React.ReactNode;
+    container_children?: React.ReactNode;
     header?: string;
     header_background_color?: string;
     height_offset?: string;
     is_flex?: boolean;
     is_modal_open: boolean;
     onClickClose: (event: MouseEvent) => void;
-    pageHeaderReturnFn: () => void;
-    renderPageFooterChildren: () => React.ReactNode;
+    pageHeaderReturnFn?: () => void;
+    renderPageFooterChildren?: () => React.ReactNode;
     page_footer_className?: string;
     page_header_className?: string;
     page_header_text?: string;
@@ -25,8 +25,8 @@ type TMobileFullPageModal = {
     should_header_stick_body?: boolean;
     body_className?: string;
     is_popup?: boolean;
-    page_footer_parent: React.ReactNode;
-    renderPageHeader: () => React.ReactNode;
+    page_footer_parent?: React.ReactNode;
+    renderPageHeader?: () => React.ReactNode;
     page_footer_parent_className?: string;
 };
 

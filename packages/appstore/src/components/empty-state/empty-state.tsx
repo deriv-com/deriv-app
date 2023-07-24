@@ -7,7 +7,7 @@ type TProps = {
     renderTitle: () => React.ReactNode;
 };
 
-const EmptyState: React.FC<TProps> = ({ icon_name, renderMessage, renderTitle }) => {
+const EmptyState = ({ icon_name, renderMessage, renderTitle }: TProps) => {
     return (
         <div className='dw-empty-state'>
             <Icon className='dw-empty-state__icon' icon={icon_name} size={128} />

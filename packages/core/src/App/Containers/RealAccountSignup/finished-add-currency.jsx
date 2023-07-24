@@ -7,8 +7,8 @@ import { localize, Localize } from '@deriv/translations';
 const FinishedAddCurrency = ({
     current,
     closeRealAccountSignup,
-    continueRoute,
     deposit_target,
+    redirectToLegacyPlatform,
     deposit_real_account_signup_target,
     history,
     onSubmit,
@@ -19,16 +19,17 @@ const FinishedAddCurrency = ({
 
     const closeModalThenOpenCashier = () => {
         closeRealAccountSignup();
-        continueRoute();
         history.push(deposit_target);
         if (deposit_target === routes.cashier_deposit) {
             setIsDeposit(true);
         }
+        redirectToLegacyPlatform();
     };
 
     const onCancel = () => {
         closeRealAccountSignup();
         setIsDeposit(false);
+        redirectToLegacyPlatform();
     };
 
     return (

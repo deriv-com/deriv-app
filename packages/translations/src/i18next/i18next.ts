@@ -14,20 +14,22 @@ const ALL_LANGUAGES = Object.freeze({
     ID: 'Indonesian',
     IT: 'Italiano',
     PL: 'Polish',
-    PT: 'Português',
     RU: 'Русский',
     VI: 'Tiếng Việt',
     ZH_CN: '简体中文',
     ZH_TW: '繁體中文',
+    TH: 'ไทย',
 });
 
 export const getAllowedLanguages = () => {
     const allowed_languages = {
         EN: 'English',
-        PT: 'Português',
         ES: 'Español',
         RU: 'Русский',
         FR: 'Français',
+        IT: 'Italiano',
+        TH: 'ไทย',
+        VI: 'Tiếng Việt',
     };
     const exclude_languages = ['ACH'];
     // TODO Change language_list to const when languages are available in prod.
@@ -100,6 +102,7 @@ const i18n_config = {
         hashTransKey(defaultValue: string) {
             return crc32(defaultValue);
         },
+        useSuspense: false,
     },
     lng: initial_language,
     fallbackLng: 'EN',

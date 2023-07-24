@@ -1,0 +1,10 @@
+{
+    "name": "@deriv/utils",
+    "private": true,
+    "version": "1.0.0",
+    "main": "src/index.ts",
+    "dependencies": {},
+    "devDependencies": {
+        "typescript": "^4.6.3"
+    }
+}

@@ -1,31 +1,40 @@
-import { action, computed, observable, reaction, makeObservable } from 'mobx';
-import { formatDate, isEnded } from '@deriv/shared';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { log_types } from '@deriv/bot-skeleton';
+import { formatDate, isBot, isEnded } from '@deriv/shared';
 import { transaction_elements } from '../constants/transactions';
 import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';
 
 export default class TransactionsStore {
-    constructor(root_store) {
+    constructor(root_store, core) {
         makeObservable(this, {
             elements: observable,
             active_transaction_id: observable,
+            recovered_completed_transactions: observable,
+            recovered_transactions: observable,
+            is_called_proposal_open_contract: observable,
             transactions: computed,
             onBotContractEvent: action.bound,
             pushTransaction: action.bound,
-            setActiveTransactionId: action.bound,
             onClickOutsideTransaction: action.bound,
             onMount: action.bound,
             onUnmount: action.bound,
             clear: action.bound,
+            setActiveTransactionId: action.bound,
+            registerReactions: action.bound,
+            recoverPendingContracts: action.bound,
+            updateResultsCompletedContract: action.bound,
+            sortOutPositionsBeforeAction: action.bound,
+            recoverPendingContractsById: action.bound,
         });
 
         this.root_store = root_store;
+        this.core = core;
         this.disposeReactionsFn = this.registerReactions();
     }
 
     TRANSACTION_CACHE = 'transaction_cache';
 
-    elements = getStoredItemsByUser(this.TRANSACTION_CACHE, this.root_store?.core.client.loginid, []);
+    elements = getStoredItemsByUser(this.TRANSACTION_CACHE, this.core?.client.loginid, []);
     active_transaction_id = null;
     recovered_completed_transactions = [];
     recovered_transactions = [];
@@ -138,7 +147,7 @@ export default class TransactionsStore {
     }
 
     registerReactions() {
-        const { client } = this.root_store?.core;
+        const { client } = this.core;
 
         // Write transactions to session storage on each change in transaction elements.
         const disposeTransactionElementsListener = reaction(
@@ -148,12 +157,6 @@ export default class TransactionsStore {
                 stored_transactions[client.loginid] = elements.slice(0, 5000);
                 setStoredItemsByKey(this.TRANSACTION_CACHE, stored_transactions);
             }
-        );
-
-        // Attempt to load cached transactions on client loginid change.
-        const disposeClientLoginIdListener = reaction(
-            () => client.loginid,
-            () => (this.elements = getStoredItemsByUser(this.TRANSACTION_CACHE, client.loginid, []))
         );
 
         // User could've left the page mid-contract. On initial load, try
@@ -166,7 +169,6 @@ export default class TransactionsStore {
 
         return () => {
             disposeTransactionElementsListener();
-            disposeClientLoginIdListener();
             disposeRecoverContracts();
         };
     }
@@ -210,16 +212,20 @@ export default class TransactionsStore {
     }
 
     recoverPendingContractsById(contract_id) {
-        const { ws, core } = this.root_store;
-        const positions = core.portfolio.positions;
+        const { ws } = this.root_store;
+        const positions = this.core.portfolio.positions;
 
-        ws.authorized.subscribeProposalOpenContract(contract_id, response => {
-            this.is_called_proposal_open_contract = true;
-            if (!response.error) {
-                const { proposal_open_contract } = response;
-                this.updateResultsCompletedContract(proposal_open_contract);
-            }
-        });
+        // TODO: the idea is to remove the POC calls completely
+        // but adding this check to prevent making POC calls only for bot as of now
+        if (!isBot()) {
+            ws.authorized.subscribeProposalOpenContract(contract_id, response => {
+                this.is_called_proposal_open_contract = true;
+                if (!response.error) {
+                    const { proposal_open_contract } = response;
+                    this.updateResultsCompletedContract(proposal_open_contract);
+                }
+            });
+        }
 
         if (!this.is_called_proposal_open_contract) {
             if (!this.elements.length) {

@@ -1,23 +1,19 @@
 import React from 'react';
-import { DataList, Icon, Loading, MobileWrapper, Table, Text } from '@deriv/components';
+import { DataList, Icon, Loading, MobileWrapper, Modal, Table, Text } from '@deriv/components';
 import { isDesktop, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
-import { TCryptoTransactionDetails } from '../../types';
 import CryptoTransactionsCancelModal from './crypto-transactions-cancel-modal';
 import CryptoTransactionsStatusModal from './crypto-transactions-status-modal';
 import CryptoTransactionsRenderer from './crypto-transactions-renderer';
 import { useCashierStore } from '../../stores/useCashierStores';
-
-type TCryptoTransactionDetailsRow = {
-    row: TCryptoTransactionDetails;
-};
 
 const getHeaders = () => [
     { text: localize('Transaction') },
     { text: localize('Amount') },
     { text: localize('Address') },
     { text: localize('Transaction hash') },
+    { text: localize('Confirmations') },
     { text: localize('Time') },
     { text: localize('Status') },
     { text: localize('Action') },
@@ -29,6 +25,7 @@ const CryptoTransactionsHistory = observer(() => {
     const { crypto_transactions, is_loading, setIsCryptoTransactionsVisible } = transaction_history;
     const { setIsDeposit } = general_store;
     const { currency } = client;
+    const [is_modal_visible, setIsModalVisible] = React.useState(false);
 
     React.useEffect(() => {
         return () => setIsCryptoTransactionsVisible(false);
@@ -76,12 +73,15 @@ const CryptoTransactionsHistory = observer(() => {
                                 <Loading is_fullscreen={false} />
                             ) : (
                                 <DataList
-                                    data_list_className='crypto-transactions-history__data-list'
+                                    // TODO: CHECK THIS TYPE ERROR
                                     data_source={crypto_transactions}
-                                    rowRenderer={(row_props: TCryptoTransactionDetailsRow) => (
-                                        <CryptoTransactionsRenderer {...row_props} />
+                                    rowRenderer={row_props => (
+                                        <CryptoTransactionsRenderer
+                                            {...row_props}
+                                            onTooltipClick={() => setIsModalVisible(true)}
+                                        />
                                     )}
-                                    keyMapper={(row: TCryptoTransactionDetails) => row.id}
+                                    keyMapper={row => row.id}
                                     row_gap={isMobile() ? 8 : 0}
                                 />
                             )}
@@ -95,6 +95,19 @@ const CryptoTransactionsHistory = observer(() => {
                     </div>
                 )}
             </div>
+            <Modal
+                has_close_icon
+                is_open={is_modal_visible}
+                title='Note'
+                toggleModal={() => setIsModalVisible(old => !old)}
+                width='44rem'
+                height='14rem'
+                className='crypto-transactions-history__modal'
+            >
+                <Modal.Body className='crypto-transactions-history__modal-body'>
+                    {localize('The details of this transaction is available on CoinsPaid.')}
+                </Modal.Body>
+            </Modal>
         </React.Fragment>
     );
 });

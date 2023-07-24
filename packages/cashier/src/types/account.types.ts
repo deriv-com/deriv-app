@@ -2,7 +2,8 @@
 /* ACCOUNT TYPES                                                              */
 /* -------------------------------------------------------------------------- */
 import { DetailsOfEachMT5Loginid, TransferBetweenAccountsResponse } from '@deriv/api-types';
-import { PlatformIcons } from '../assets/svgs/trading-platform/index';
+
+export type TPlatformIcon = 'Derived' | 'Financial' | 'Options' | 'CFDs';
 
 export type TAccount = {
     balance?: string | number;
@@ -10,17 +11,18 @@ export type TAccount = {
     disabled?: boolean;
     error?: JSX.Element | string;
     is_crypto?: boolean;
-    is_dxtrade?: boolean;
     is_derivez?: boolean;
+    is_dxtrade?: boolean;
     is_mt?: boolean;
     market_type?: string;
     nativepicker_text?: string;
-    platform_icon?: string & keyof typeof PlatformIcons;
+    platform_icon?: TPlatformIcon;
+    status?: string;
     text?: JSX.Element | string;
     value?: string;
 };
 
-export type TTransferAccount = TransferBetweenAccountsResponse['accounts'][number] & {
+export type TTransferAccount = NonNullable<TransferBetweenAccountsResponse['accounts']>[number] & {
     sub_account_type?: string;
 };
 

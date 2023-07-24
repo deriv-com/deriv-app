@@ -130,7 +130,19 @@ const Redirect = ({
             WS.wait('get_account_status').then(() => {
                 if (!currency) return openRealAccountSignup('set_currency');
                 if (hasAnyRealAccount()) return openRealAccountSignup('manage');
-                return openRealAccountSignup();
+                return openRealAccountSignup('svg');
+            });
+            const ext_platform_url = url_params.get('ext_platform_url');
+            if (ext_platform_url) {
+                history.push(`${routes.root}?ext_platform_url=${ext_platform_url}`);
+                redirected_to_route = true;
+            }
+            break;
+        }
+        case 'add_account_multiplier': {
+            WS.wait('get_account_status').then(() => {
+                if (!currency) return openRealAccountSignup('set_currency');
+                return openRealAccountSignup('maltainvest');
             });
             const ext_platform_url = url_params.get('ext_platform_url');
             if (ext_platform_url) {
@@ -141,10 +153,11 @@ const Redirect = ({
         }
         case 'verification': {
             // Removing this will break mobile DP2P app. Do not remove.
-            sessionStorage.setItem('redirect_url', routes.cashier_p2p_verification);
-            window.location.href = loginUrl({
+            sessionStorage.setItem('redirect_url', routes.p2p_verification);
+            const new_href = loginUrl({
                 language: getLanguage(),
             });
+            window.location.href = new_href;
             break;
         }
         case 'trading_platform_investor_password_reset': {
@@ -167,7 +180,7 @@ const Redirect = ({
             break;
     }
 
-    if (!redirected_to_route) {
+    if (!redirected_to_route && history.location.pathname !== routes.root) {
         history.push({
             pathname: routes.root,
             search: url_query_string,
@@ -197,7 +210,6 @@ Redirect.propTypes = {
 export default withRouter(
     connect(({ client, ui }) => ({
         currency: client.currency,
-        loginid: client.loginid,
         is_eu: client.is_eu,
         setVerificationCode: client.setVerificationCode,
         verification_code: client.verification_code,

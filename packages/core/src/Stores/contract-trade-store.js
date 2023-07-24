@@ -103,7 +103,7 @@ export default class ContractTradeStore extends BaseStore {
 
     clearAccumulatorBarriersData(should_clear_contract_data_only, should_clear_timeout = true) {
         if (this.accu_barriers_timeout_id && should_clear_timeout) clearTimeout(this.accu_barriers_timeout_id);
-        this.accumulator_contract_barriers_data = {};
+        if (!isAccumulatorContractOpen(this.last_contract.contract_info)) this.accumulator_contract_barriers_data = {};
         if (!should_clear_contract_data_only) {
             this.accumulator_barriers_data = {};
         }

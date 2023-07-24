@@ -9,7 +9,6 @@ const WalletTourGuide = observer(() => {
     const { is_wallet_tour_open, toggleIsWalletTourOpen } = traders_hub;
 
     const [joyride_index, setJoyrideIndex] = React.useState(0);
-    const scroll_delay = React.useRef(800); // delay for scrolling to the next step
 
     const wallet_tour_step_locale = getWalletStepLocale();
 
@@ -38,12 +37,6 @@ const WalletTourGuide = observer(() => {
     const handleJoyrideCallback: React.ComponentProps<typeof Joyride>['callback'] = data => {
         const { action, index, status, type } = data;
 
-        // This is a temporary fix for scrolling to the bottom step of the page for AddMore Wallets step.
-        // TODO: improve this logic in the future
-        if ((index === 5 && action === ACTIONS.NEXT) || (index === 7 && action === ACTIONS.PREV) || index === 6) {
-            scroll_delay.current = 0;
-        }
-
         if (
             ([STATUS.FINISHED, STATUS.SKIPPED] as string[]).includes(status) ||
             ([ACTIONS.CLOSE] as string[]).includes(action)
@@ -68,7 +61,7 @@ const WalletTourGuide = observer(() => {
             floaterProps={{ disableAnimation: true }}
             locale={wallet_tour_step_locale}
             run={is_wallet_tour_open}
-            scrollDuration={scroll_delay.current}
+            scrollDuration={800}
             scrollOffset={200}
             stepIndex={joyride_index}
             steps={getWalletStepConfig(has_mt5_account, is_all_wallets_added)}

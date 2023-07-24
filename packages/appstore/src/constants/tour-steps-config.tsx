@@ -372,6 +372,8 @@ export const wallet_tour_styles: Styles = {
     },
     overlay: {
         height: '100%',
+        transition: 'opacity 0.5s ease-in-out',
+        position: 'fixed',
     },
 };
 

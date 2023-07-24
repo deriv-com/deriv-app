@@ -15,7 +15,7 @@ import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import CurrencySelectionModal from '../../CurrencySelectionModal';
 import AccountInfo from 'App/Components/Layout/Header/account-info';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
-import { useIsRealAccountNeededForCashier, useActiveWallet, useWalletsList } from '@deriv/hooks';
+import { useActiveWallet, useFeatureFlags, useIsRealAccountNeededForCashier, useWalletsList } from '@deriv/hooks';
 
 const Divider = () => {
     return <div className='trading-hub-header__divider' />;
@@ -57,8 +57,10 @@ const TradingHubOnboarding = ({
     const history = useHistory();
 
     const { data } = useWalletsList();
-    const first_loginid = data?.[0]?.loginid;
+    const { is_wallet_enabled } = useFeatureFlags();
     const wallet = useActiveWallet();
+
+    const first_loginid = data?.[0]?.loginid;
 
     const handleSwitchAndToggle = async () => {
         // if the modal is open, then close it and open the tour
@@ -89,8 +91,7 @@ const TradingHubOnboarding = ({
                         icon={is_dark_mode ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
                         size={20}
                         onClick={() => {
-                            // TODO: implement if else function to show traders hub onboarding
-                            if (data?.length > 0) {
+                            if (data?.length > 0 && is_wallet_enabled) {
                                 handleSwitchAndToggle();
                             } else {
                                 history.push(routes.onboarding);

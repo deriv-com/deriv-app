@@ -91,19 +91,22 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
     React.useEffect(() => {
         if (isDesktop()) {
             if (isCryptocurrency(currency) && typeof setSideNotes === 'function' && !is_switching) {
-                const side_notes = [
-                    <RecentTransaction key={2} />,
-                    ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
-                    ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
-                ];
+                const side_notes = [];
+                if (verification_code || is_withdraw_confirmed) {
+                    side_notes.push(<RecentTransaction key={2} />);
+                }
+                side_notes.push(...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []));
+                side_notes.push(...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []));
 
-                setSideNotes([
-                    ...side_notes.map((side_note, index) => (
-                        <SideNote has_title={false} key={index}>
-                            {side_note}
-                        </SideNote>
-                    )),
-                ]);
+                if (side_notes.length) {
+                    setSideNotes([
+                        ...side_notes.map((side_note, index) => (
+                            <SideNote has_title={false} key={index}>
+                                {side_note}
+                            </SideNote>
+                        )),
+                    ]);
+                }
             } else setSideNotes(null);
         }
 

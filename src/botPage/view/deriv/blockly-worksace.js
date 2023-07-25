@@ -1,12 +1,5 @@
 import { AppConstants } from '@constants';
-import {
-    getTokenList,
-    set as setStorage,
-    syncWithDerivApp,
-    getToken,
-    removeAllTokens,
-    updateTokenList,
-} from '@storage';
+import { getTokenList, setStorage, syncWithDerivApp, getToken, removeAllTokens, updateTokenList } from '@storage';
 import { translate } from '@i18n';
 import config, { updateConfigCurrencies } from '../../common/const';
 import logHandler from '../logger';

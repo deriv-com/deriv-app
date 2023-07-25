@@ -65,14 +65,14 @@ export const removeAllTokens = () => {
     const is_logging_in = localStorage.getItem('is_logging_in');
 
     if (!is_logging_in) {
-        set('active_loginid', null);
+        setStorage('active_loginid', null);
     }
 
     delete store.tokenList;
     delete localStorage.is_logging_in;
 
-    set('tokenList', '[]');
-    set('client.accounts', '[]');
+    setStorage('tokenList', '[]');
+    setStorage('client.accounts', '[]');
     syncWithDerivApp();
 };
 
@@ -82,11 +82,11 @@ export const setDone = varName => {
     store[varName] = true;
 };
 
-export const set = (varName, value) => {
+export const setStorage = (varName, value) => {
     store[varName] = value;
 };
 
-export const get = varName => store[varName];
+export const getStorage = varName => store[varName];
 
 export const remove = varName => delete store[varName];
 
@@ -98,14 +98,14 @@ export const syncWithDerivApp = () => {
         iframe.contentWindow.postMessage(
             {
                 key: 'client.accounts',
-                value: get('client.accounts'),
+                value: getStorage('client.accounts'),
             },
             origin
         );
         iframe.contentWindow.postMessage(
             {
                 key: 'active_loginid',
-                value: get('active_loginid'),
+                value: getStorage('active_loginid'),
             },
             origin
         );
@@ -126,9 +126,9 @@ export const syncWithDerivApp = () => {
 };
 
 export const getActiveAccount = () => {
-    const client_accounts_storage = get('tokenList');
+    const client_accounts_storage = getStorage('tokenList');
     if (client_accounts_storage?.length) {
-        const active_account = get('active_loginid');
+        const active_account = getStorage('active_loginid');
         const client_accounts_info = JSON.parse(client_accounts_storage);
         if (Array.isArray(client_accounts_info)) {
             const active_account_info = client_accounts_info?.find(account => account.accountName === active_account);
@@ -227,7 +227,7 @@ export const getLanguage = () => {
     const parsed_url = parseQueryString().lang || parseQueryString().l;
     const parsed_valid_url =
         parsed_url?.length > 1 ? document.location.search.match(/(lang|l)=([a-z]{2})/)[2] : parsed_url;
-    const supported_storage_lang = get('lang') in supported_languages ? get('lang') : null;
+    const supported_storage_lang = getStorage('lang') in supported_languages ? getStorage('lang') : null;
     const get_cookie_lang = Cookies.get('user_language');
     const getUserLang = () => {
         if (parsed_valid_url) return parsed_valid_url;
@@ -247,7 +247,7 @@ export const getLanguage = () => {
 };
 
 export const setLanguage = lang => {
-    set('lang', lang);
+    setStorage('lang', lang);
     setCookieLanguage(lang);
     return lang;
 };
@@ -255,7 +255,7 @@ export const setLanguage = lang => {
 export const isLoggedIn = () => !!getTokenList()?.length;
 
 export const getActiveToken = tokenList => {
-    const active_token = get(AppConstants.STORAGE_ACTIVE_TOKEN);
+    const active_token = getStorage(AppConstants.STORAGE_ACTIVE_TOKEN);
     const activeTokenObject = tokenList.filter(tokenObject => tokenObject.token === active_token);
     return activeTokenObject.length ? activeTokenObject[0] : tokenList[0];
 };
@@ -265,21 +265,21 @@ export const updateTokenList = () => {
     if (token_list.length) {
         const active_token = getActiveToken(token_list);
         if ('loginInfo' in active_token) {
-            const current_login_id = get('active_loginid') || '';
+            const current_login_id = getStorage('active_loginid') || '';
             token_list.forEach(token => {
                 if (current_login_id === token.loginInfo.loginid) {
-                    set('active_loginid', token.loginInfo.loginid);
+                    setStorage('active_loginid', token.loginInfo.loginid);
                 }
             });
-            set('client.accounts', JSON.stringify(convertForDerivStore(token_list)));
+            setStorage('client.accounts', JSON.stringify(convertForDerivStore(token_list)));
             syncWithDerivApp();
         }
     }
 };
 
 const isRealAccount = () => {
-    const accountList = JSON.parse(get('tokenList') || '{}');
-    const activeToken = get(AppConstants.STORAGE_ACTIVE_TOKEN) || [];
+    const accountList = JSON.parse(getStorage('tokenList') || '{}');
+    const activeToken = getStorage(AppConstants.STORAGE_ACTIVE_TOKEN) || [];
     let activeAccount = null;
     let isReal = false;
     try {
@@ -291,12 +291,12 @@ const isRealAccount = () => {
 
 export const getDefaultEndpoint = () => ({
     url: isRealAccount() ? 'green.binaryws.com' : 'blue.binaryws.com',
-    appId: get('config.default_app_id') || getDomainAppId(),
+    appId: getStorage('config.default_app_id') || getDomainAppId(),
 });
 
 export const getAppIdFallback = () => getCustomEndpoint().appId || getDefaultEndpoint().appId;
 
 export const getCustomEndpoint = () => ({
-    url: get('config.server_url'),
-    appId: get('config.app_id'),
+    url: getStorage('config.server_url'),
+    appId: getStorage('config.app_id'),
 });

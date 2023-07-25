@@ -8,11 +8,11 @@ import { parseQueryString, getRelatedDeriveOrigin, queryToObjectArray } from '@u
 import { translate } from '@i18n';
 import {
     convertForDerivStore,
-    get as getStorage,
+    getStorage,
     getTokenList,
     isDone,
     removeAllTokens,
-    set as setStorage,
+    setStorage,
     getLanguage,
     isLoggedIn,
 } from '@storage';

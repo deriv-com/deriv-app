@@ -1,6 +1,6 @@
 import React from 'react';
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
-import { get as getStorage, set as setStorage, getLanguage, isLoggedIn, getAppIdFallback } from '@storage';
+import { getStorage, setStorage, getLanguage, isLoggedIn, getAppIdFallback } from '@storage';
 import { translate } from '@i18n';
 import { getDefaultEndpoint, getServerAddressFallback } from '../../api';
 import useLogout from '../../../../../common/hooks/useLogout';

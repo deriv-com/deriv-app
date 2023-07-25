@@ -1,5 +1,5 @@
 import { TrackJS } from 'trackjs';
-import { get as getStorage, set as setStorage, getTokenList, removeAllTokens } from '@storage';
+import { getStorage, setStorage, getTokenList, removeAllTokens } from '@storage';
 import { isProduction } from '@utils';
 
 import { translate } from '@i18n';

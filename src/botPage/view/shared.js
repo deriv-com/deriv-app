@@ -1,6 +1,6 @@
 import filesaver from 'file-saver';
 import { AppConstants } from '@constants';
-import { get as getStorage } from '@storage';
+import { getStorage } from '@storage';
 import _Symbol from '../common/symbolApi';
 import TicksService from '../common/TicksService';
 import api from './deriv/api';

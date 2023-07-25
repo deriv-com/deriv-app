@@ -1,6 +1,6 @@
 import { parseQueryString, queryToObjectArray } from '@utils';
 import { AppConstants } from '@constants';
-import { getTokenList, set as setStorage, get as getStorage } from '@storage';
+import { getTokenList, setStorage, getStorage } from '@storage';
 import { addTokenIfValid } from '../../../common/appId';
 
 export default function loginCheck() {

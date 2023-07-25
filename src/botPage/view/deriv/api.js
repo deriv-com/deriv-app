@@ -1,4 +1,4 @@
-import { getLanguage, get as getStorage, getAppIdFallback } from '@storage';
+import { getLanguage, getStorage, getAppIdFallback } from '@storage';
 import { getDomainAppId } from '@utils';
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 

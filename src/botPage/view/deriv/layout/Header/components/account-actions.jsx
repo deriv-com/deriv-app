@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import config from '@config';
 import { AppConstants } from '@constants';
 import { generateDerivLink } from '@utils';
-import { getTokenList, set as setStorage, isLoggedIn } from '@storage';
+import { getTokenList, setStorage, isLoggedIn } from '@storage';
 import { translate } from '@i18n';
 import Notifications from './notifications.jsx';
 import AccountDropdown from './account-dropdown.jsx';

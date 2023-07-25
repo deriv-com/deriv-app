@@ -4,7 +4,7 @@ import {
     removeToken,
     getTokenList,
     removeAllTokens,
-    set as setStorage,
+    setStorage,
     syncWithDerivApp,
     getLanguage,
     updateTokenList,

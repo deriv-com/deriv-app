@@ -1,6 +1,6 @@
 import crc32 from 'crc-32/crc32';
 import pako from 'pako';
-import { getTokenList, get as getStorage } from '@storage';
+import { getTokenList, getStorage } from '@storage';
 import { isProduction } from '@utils';
 import { observer } from '../../common/utils/observer';
 

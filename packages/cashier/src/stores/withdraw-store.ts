@@ -2,8 +2,8 @@ import { action, computed, observable, makeObservable } from 'mobx';
 import { formatMoney, getDecimalPlaces, getMinWithdrawal, isMobile, validNumber } from '@deriv/shared';
 import { CryptoConfig } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
-import ReadMoreWrapper from 'Components/read-more-wrapper';
-import Constants from 'Constants/constants';
+import ReadMoreWrapper from '../components/read-more-wrapper';
+import Constants from '../constants/constants';
 import ErrorStore from './error-store';
 import { TWebSocket, TRootStore } from '../types';
 

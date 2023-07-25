@@ -38,7 +38,7 @@ export const personal_details_config = ({
     const min_phone_number = 9;
     const max_phone_number = 35;
 
-    const default_residence = real_account_signup_target === 'maltainvest' ? account_settings.residence : '';
+    const default_residence = real_account_signup_target === 'maltainvest' ? account_settings?.residence : '';
 
     const config = {
         account_opening_reason: {
@@ -116,8 +116,9 @@ export const personal_details_config = ({
             ],
         },
         tax_residence: {
-            default_value: account_settings.tax_residence
-                ? residence_list.find(item => item.value === account_settings.tax_residence)?.text
+            //if tax_residence is already set, we will use it as default value else for mf clients we will use residence as default value
+            default_value: account_settings?.tax_residence
+                ? residence_list.find(item => item.value === account_settings?.tax_residence)?.text
                 : default_residence,
             supported_in: ['maltainvest'],
             rules: [['req', localize('Tax residence is required.')]],

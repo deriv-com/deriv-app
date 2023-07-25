@@ -94,7 +94,7 @@ const useWalletsList = () => {
                 is_dark_mode_on ? '--dark' : ''
             }`;
             const wallet_icon = currency_to_icon_mapper[wallet_currency_type];
-            const fiat_currencies = ['USD', 'EUR', 'AUD', 'GBP'];
+            const fiat_currencies = ['USD', 'EUR', 'AUD'];
             return {
                 ...wallet,
                 /** Indicating whether the wallet is the currently selected wallet. */

@@ -611,7 +611,7 @@ export const ContractType = (() => {
         const arr_cancellation_range: string[] =
             getPropertyValue(available_contract_types, [contract_type, 'config', 'cancellation_range']) || [];
 
-        const regex = /^(\d{1,})|([a-zA-Z]{1,})$/g;
+        const regex = /(^\d{1,})|([a-zA-Z]{1,}$)/g;
         const getText = (str: string) => {
             const [duration, unit] = str.match(regex) ?? [];
             const unit_map = getUnitMap();

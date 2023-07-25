@@ -384,7 +384,7 @@ type TCommonStoreError = {
     type?: string;
 };
 
-type TCommonStore = {
+export type TCommonStore = {
     isCurrentLanguage(language_code: string): boolean;
     error: TCommonStoreError;
     has_error: boolean;

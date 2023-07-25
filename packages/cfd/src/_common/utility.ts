@@ -1,4 +1,4 @@
-const template = (string, content) => {
+const template = (string: string, content: string[]) => {
     let to_replace = content;
     if (content && !Array.isArray(content)) {
         to_replace = [content];
@@ -13,14 +13,17 @@ const template = (string, content) => {
  * @param {Object} attributes: all the attributes to assign, e.g. { id: '...', class: '...', html: '...', ... }
  * @return the created DOM element
  */
-const createElement = (tag_name, attributes = {}) => {
+const createElement = <K extends keyof HTMLElementTagNameMap>(
+    tag_name: K,
+    attributes: ElementCreationOptions
+): HTMLElement => {
     const el = document.createElement(tag_name);
-    Object.keys(attributes).forEach(attr => {
-        const value = attributes[attr];
+    Object.keys(attributes).forEach((attr: string) => {
+        const value = attr;
         if (attr === 'text') {
             el.textContent = value;
         } else if (attr === 'html') {
-            el.html(value);
+            el.innerHTML = value;
         } else {
             el.setAttribute(attr, value);
         }
@@ -28,14 +31,17 @@ const createElement = (tag_name, attributes = {}) => {
     return el;
 };
 
-let static_hash;
+let static_hash: string;
 const getStaticHash = () => {
     static_hash =
-        static_hash || (document.querySelector('script[src*="main"]').getAttribute('src') || '').split('.')[1];
+        static_hash || (document.querySelector('script[src*="main"]')?.getAttribute('src') || '').split('.')[1];
     return static_hash;
 };
 
 class PromiseClass {
+    promise: Promise<unknown>;
+    reject?: (reason?: any) => void;
+    resolve!: (value: unknown) => void;
     constructor() {
         this.promise = new Promise((resolve, reject) => {
             this.reject = reject;
@@ -44,9 +50,4 @@ class PromiseClass {
     }
 }
 
-module.exports = {
-    template,
-    createElement,
-    getStaticHash,
-    PromiseClass,
-};
+export { template, createElement, getStaticHash, PromiseClass };

@@ -11,7 +11,7 @@ const createElement = (tag_name, attributes = {}) => {
         const value = attributes[attr];
         if (attr === 'text') {
             el.textContent = value;
-        } else if (attr === 'html') {
+        } else if (attr === 'html' && 'html' in el) {
             el.html(value);
         } else {
             el.setAttribute(attr, value);

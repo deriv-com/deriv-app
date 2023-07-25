@@ -149,7 +149,7 @@ const setElementActions = blockly => {
 };
 
 const exportContent = {
-    exportContent: () => {
+    'summary-panel': () => {
         globalObserver.emit('summary.export');
     },
     logPanel: () => {

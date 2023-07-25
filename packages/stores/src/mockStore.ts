@@ -20,24 +20,10 @@ const mock = (): TStores & { is_mock: boolean } => {
         client: {
             account_settings: {},
             accounts: {},
+            is_social_signup: false,
             active_account_landing_company: '',
             trading_platform_available_accounts: [],
-            account_limits: {
-                daily_transfers: {
-                    dxtrade: {
-                        allowed: 0,
-                        available: 0,
-                    },
-                    internal: {
-                        allowed: 0,
-                        available: 0,
-                    },
-                    mt5: {
-                        allowed: 0,
-                        available: 0,
-                    },
-                },
-            },
+            account_limits: {},
             account_status: {
                 authentication: {
                     attempts: {
@@ -62,6 +48,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                     document: {
                         status: 'verified',
                     },
+
                     identity: {
                         services: {
                             idv: {
@@ -137,6 +124,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_dxtrade_allowed: false,
             is_eu: false,
             is_eu_country: false,
+            has_residence: false,
             is_financial_account: false,
             is_financial_information_incomplete: false,
             is_low_risk: false,
@@ -159,8 +147,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             loginid: '',
             pre_switch_broadcast: false,
             residence: '',
+            is_svg: false,
             responseMt5LoginList: jest.fn(),
             responseTradingPlatformAccountsList: jest.fn(),
+            setFinancialAndTradingAssessment: jest.fn(),
             standpoint: {
                 financial_company: '',
                 gaming_company: '',
@@ -264,6 +254,8 @@ const mock = (): TStores & { is_mock: boolean } => {
         },
         common: {
             error: common_store_error,
+            current_language: 'EN',
+            isCurrentLanguage: jest.fn(),
             is_from_derivgo: false,
             has_error: false,
             platform: '',
@@ -271,7 +263,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             routeTo: jest.fn(),
             changeCurrentLanguage: jest.fn(),
             changeSelectedLanguage: jest.fn(),
-            current_language: 'EN',
             is_network_online: false,
             server_time: undefined,
             is_language_changing: false,
@@ -322,6 +313,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setSubSectionIndex: jest.fn(),
             sub_section_index: 0,
             toggleReadyToDepositModal: jest.fn(),
+            is_tablet: false,
             is_ready_to_deposit_modal_visible: false,
             is_real_acc_signup_on: false,
             is_need_real_account_for_cashier_modal_visible: false,

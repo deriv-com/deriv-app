@@ -1,6 +1,7 @@
 import { action, observable, makeObservable } from 'mobx';
 import { isCryptocurrency } from '@deriv/shared';
-import { TWebSocket, TRootStore, TTransactionItem } from '../types';
+import type { TSocketResponse } from '@deriv/api/types';
+import type { TWebSocket, TRootStore } from '../types';
 
 export default class TransactionHistoryStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
@@ -33,7 +34,7 @@ export default class TransactionHistoryStore {
             setIsCryptoTransactionsVisible: action.bound,
         });
     }
-    crypto_transactions: TTransactionItem[] = [];
+    crypto_transactions: NonNullable<TSocketResponse<'cashier_payments'>['cashier_payments']>['crypto'] = [];
     is_crypto_transactions_cancel_modal_visible = false;
     is_crypto_transactions_status_modal_visible = false;
     is_crypto_transactions_visible = false;
@@ -56,28 +57,26 @@ export default class TransactionHistoryStore {
 
     async unsubscribeCryptoTransactions() {
         await this.WS.authorized.cashierPayments?.({ provider: 'crypto', transaction_type: 'all' }).then(response => {
-            if (!response.error) {
-                const { crypto } = response.cashier_payments;
-                this.setCryptoTransactionsHistory(crypto);
+            if (response.cashier_payments?.crypto) {
+                this.setCryptoTransactionsHistory(response.cashier_payments.crypto);
             }
         });
     }
 
     async getCryptoTransactions() {
         await this.WS.subscribeCashierPayments?.(response => {
-            if (!response.error) {
-                const { crypto } = response.cashier_payments;
-                this.updateCryptoTransactions(crypto);
+            if (response.cashier_payments?.crypto) {
+                this.updateCryptoTransactions(response.cashier_payments.crypto);
             }
         });
     }
 
-    setCryptoTransactionsHistory(transactions: TTransactionItem[]): void {
+    setCryptoTransactionsHistory(transactions: typeof this.crypto_transactions): void {
         this.crypto_transactions = transactions;
         this.sortCryptoTransactions();
     }
 
-    updateCryptoTransactions(transactions: TTransactionItem[]): void {
+    updateCryptoTransactions(transactions: typeof this.crypto_transactions): void {
         transactions.forEach(transaction => {
             const index = this.crypto_transactions.findIndex(crypto => crypto.id === transaction.id);
             if (index === -1) {

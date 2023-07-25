@@ -1,6 +1,7 @@
 declare global {
     interface Window {
         LiveChatWidget: {
+            init: () => void;
             on: (key: string, callback: VoidFunction) => void;
             get: (key: string) => any;
             call: (key: string, value?: any) => void;

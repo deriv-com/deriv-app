@@ -309,6 +309,12 @@ export default class MyAdsStore extends BaseStore {
     }
 
     onClickCreate() {
+        if (window.sendRequestsStatistic) {
+            window.sendRequestsStatistic(true);
+            performance.clearMeasures();
+            performance.mark('create_ad_start');
+        }
+
         this.setShowAdForm(true);
     }
 

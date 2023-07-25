@@ -1583,9 +1583,9 @@ export default class NotificationStore extends BaseStore {
 
     async getP2pCompletedOrders() {
         await WS.wait('authorize');
-        const response = this.root_store.general_store.p2p_order_list_response;
+        const response = this.root_store.modules.cashier.general_store.p2p_order_list_response;
 
-        if (!this.root_store.general_store.p2p_order_list_response_error) {
+        if (!this.root_store.modules.cashier.general_store.p2p_order_list_response_error) {
             this.p2p_completed_orders = response?.p2p_order_list?.list || [];
         }
     }

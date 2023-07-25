@@ -63,8 +63,6 @@ export default class ContractStore extends BaseStore {
             clearContractUpdateConfigValues: action.bound,
             onChange: action.bound,
             updateLimitOrder: action.bound,
-            // previous_spot: observable,
-            // reset_spot: observable,
         });
 
         this.root_store = root_store;
@@ -110,10 +108,6 @@ export default class ContractStore extends BaseStore {
 
     // ---- Normal properties ---
     is_ongoing_contract = false;
-
-    // Reset contract
-    // reset_spot = null;
-    // previous_spot = null;
 
     populateConfig(contract_info) {
         const prev_contract_info = this.contract_info;
@@ -190,7 +184,6 @@ export default class ContractStore extends BaseStore {
             low_barrier,
             status,
             underlying,
-            // reset_barrier,
         } = contract_info || {};
         const main_barrier = this.barriers_array?.[0];
         if (isAccumulatorContract(contract_info.contract_type)) {
@@ -260,7 +253,6 @@ export default class ContractStore extends BaseStore {
             this.barriers_array = this.createBarriersArray(contract_info, is_dark_mode);
             return;
         }
-        this.previous_spot = contract_info.current_spot_display_value;
 
         if (contract_info) {
             if (
@@ -295,11 +287,9 @@ export default class ContractStore extends BaseStore {
                 high_barrier: high,
                 low_barrier,
                 reset_time,
-                // current_spot,
-                // tick_count,
                 // reset_barrier,
             } = contract_info;
-            const reset_barrier = '3181.00';
+            const reset_barrier = '2350.00';
             const high_barrier = this.accu_high_barrier || barrier || high;
             if (
                 isBarrierSupported(contract_type) &&
@@ -323,7 +313,7 @@ export default class ContractStore extends BaseStore {
                 main_barrier.updateBarrierShade(true, contract_type);
 
                 barriers = [main_barrier];
-            } else if (isBarrierSupported(contract_type) && isResetContract(contract_type) && entry_spot) {
+            } else if (isResetContract(contract_type) && entry_spot) {
                 const main_barrier = new ChartBarrierStore(entry_spot, low_barrier, null, {
                     color: is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
                     line_style: BARRIER_LINE_STYLES.SOLID,
@@ -337,14 +327,6 @@ export default class ContractStore extends BaseStore {
                 barriers = [main_barrier];
 
                 if (reset_time) {
-                    // for tick contract we should use current spot value of 1st POC with reset_time,
-                    // but for other contracts- current spot value of one POC before receiving reset_time
-                    // if (tick_count) {
-                    //     this.reset_spot = current_spot;
-                    // } else {
-                    //     this.reset_spot = this.previous_spot;
-                    // }
-
                     const reset_barrier_object = new ChartBarrierStore(reset_barrier, low_barrier, null, {
                         color: is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
                         line_style: BARRIER_LINE_STYLES.DASHED,
@@ -427,7 +409,7 @@ function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier }
         high_barrier,
         low_barrier,
         reset_time,
-        reset_barrier = '3181.00',
+        reset_barrier = '2350.00',
     } = contract_info;
     const is_accumulator_contract = isAccumulatorContract(contract_type);
     const is_digit_contract = isDigitContract(contract_type);
@@ -512,6 +494,15 @@ function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier }
         }
         if (exit_tick_time) {
             epoch_array.push(exit_tick_time);
+        }
+        if (isResetContract(contract_type)) {
+            return {
+                contract_info: toJS(contract_info),
+                type: 'NonTickContract',
+                key: `${contract_id}-date_start`,
+                epoch_array: [reset_time, ...epoch_array],
+                price_array: [reset_barrier],
+            };
         }
         return {
             contract_info: toJS(contract_info),

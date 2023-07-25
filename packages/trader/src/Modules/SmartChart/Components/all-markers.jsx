@@ -356,7 +356,7 @@ const TickContract = RawMarkerMaker(
             is_sold,
             is_expired,
             tick_count,
-            reset_barrier = '3181.00',
+            reset_barrier = '2350.00',
         },
     }) => {
         /** @type {CanvasRenderingContext2D} */
@@ -618,11 +618,13 @@ const NonTickContract = RawMarkerMaker(
         currency,
         contract_info: {
             contract_type,
+            entry_spot,
             // exit_tick_time,
             // is_expired,
             is_sold,
             status,
             profit,
+            reset_barrier = '2350.00',
         },
     }) => {
         /** @type {CanvasRenderingContext2D} */
@@ -652,6 +654,25 @@ const NonTickContract = RawMarkerMaker(
         const canvas_height = canvas_fixed_height / window.devicePixelRatio;
         if (barrier) {
             barrier = Math.min(Math.max(barrier, 2), canvas_height - 32); // eslint-disable-line
+        }
+
+        if (isResetContract(contract_type)) {
+            const is_reset_call_contract = /RESETCALL/i.test(contract_type);
+            // for reset call we are showing gradient to the lowest barrier, for put - the highest
+            const has_gradient =
+                (is_reset_call_contract && +reset_barrier < +entry_spot) ||
+                (!is_reset_call_contract && +reset_barrier > +entry_spot);
+            draw_reset_barrier({
+                has_gradient,
+                ctx,
+                stroke_color: '#999999',
+                start_left: start.left,
+                top: is_reset_call_contract ? barrier - 120 : barrier,
+                bottom: is_reset_call_contract ? barrier : barrier + 120,
+                reset_barrier: barrier,
+                scale,
+            });
+            return;
         }
 
         if (draw_start_line) {

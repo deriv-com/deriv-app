@@ -36,9 +36,6 @@ const ContractDrawer = observer(
         toggleHistoryTab,
     }) => {
         const { common, ui } = useStore();
-        // const { common, ui, contract_replay } = useStore();
-        // const { contract_store } = contract_replay;
-        // const { reset_spot } = contract_store;
         const { server_time } = common;
         const { is_mobile } = ui;
         const { currency, exit_tick_display_value, is_sold, reset_barrier } = contract_info;

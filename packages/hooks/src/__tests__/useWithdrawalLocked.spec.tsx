@@ -35,11 +35,7 @@ const wrapper = ({ children }: { children: JSX.Element }) => {
 
 describe('useWithdrawalLocked', () => {
     beforeEach(() => {
-        mockUseIsWithdrawalLimitReached.mockReturnValue({
-            is_10k_withdrawal_limit_reached: true,
-            max_withdraw_amount: 10,
-            isSuccess: true,
-        });
+        mockUseIsWithdrawalLimitReached.mockReturnValue(true);
     });
 
     it('should check if withdrawal is locked', () => {

@@ -199,9 +199,6 @@ const getAccounts: TGetAccounts = ({ landing_companies, platform, is_logged_in, 
             },
             dxtrade: {
                 ...maximum_leverages_config,
-                footnote: localize(
-                    'Leverage gives you the ability to trade a larger position using your existing capital. Leverage varies across different symbols.'
-                ),
             },
         },
         {

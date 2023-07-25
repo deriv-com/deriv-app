@@ -1,7 +1,4 @@
-import { TSchema, regex_checks } from '@deriv/shared';
-import { transformConfig } from 'Configs/address-details-config';
-import { personal_details_config, TPersonalDetailsConfig } from 'Configs/personal-details-config';
-import { TResidenseList } from 'Types';
+import { personal_details_config } from 'Configs/personal-details-config';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),

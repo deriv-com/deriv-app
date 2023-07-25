@@ -79,7 +79,7 @@ const TradersHub = observer(() => {
                     'traders-hub--mobile--eu-user': is_eu_user,
                 })}
                 height_offset='50px'
-                is_disabled={isDesktop}
+                is_disabled={isDesktop()}
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>

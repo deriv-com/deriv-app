@@ -1,8 +1,9 @@
 .jurisdiction-modal {
     &__title {
         display: flex;
-        gap: 2rem;
+        gap: 1.6rem;
         align-items: center;
+        margin: 0 1rem;
 
         &-back {
             display: flex;
@@ -45,10 +46,24 @@
     &__wrapper {
         height: 77rem;
         perspective: 100rem;
+        overflow: scroll;
+
+        @include mobile {
+            height: calc(100vh - 4rem);
+        }
     }
 
     &__flipped {
+        @include desktop {
+            height: 70rem;
+        }
+
+        .jurisdiction-modal__scrollable-content {
+            height: 80rem;
+        }
+
         .jurisdiction-modal__content-wrapper {
+            height: 70rem;
             transform: rotateY(-180deg);
             visibility: hidden;
         }
@@ -709,11 +724,11 @@
 .dynamic-leverage-modal {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    margin: 1.5rem 8rem 8rem;
+    gap: 2.4rem;
+    margin: 1.5rem 12.8rem 10rem;
 
     @include mobile {
-        margin: 1.5rem 4rem 8rem;
+        margin: 1.5rem 2.4rem 2.4rem;
     }
 
     position: absolute;
@@ -722,14 +737,14 @@
     transform: rotateY(180deg);
 
     &__content {
-        gap: 2rem;
         display: grid;
+        gap: 2.4rem;
         grid-template-columns: 1fr 1fr;
-        margin: 2rem 10rem 0rem;
+        margin: 0 10rem;
 
         @include mobile {
             grid-template-columns: 1fr;
-            margin: 2rem 5rem 0rem;
+            margin: 0 6.5rem;
         }
     }
 
@@ -738,13 +753,14 @@
         border-radius: $BORDER_RADIUS * 2;
         overflow: hidden;
         background-color: var(--general-hover);
+        height: 24.8rem;
 
         &-example {
             font-style: italic;
         }
 
         &-table {
-            padding-bottom: 2rem;
+            padding-bottom: 1rem;
 
             &-header {
                 display: flex;
@@ -752,14 +768,14 @@
             }
 
             &-row {
-                grid-template-columns: 1fr 1fr 1.5fr;
+                grid-template-columns: 1fr 0.5fr 1.25fr;
                 justify-items: center;
                 border-bottom: 0;
                 padding: 4px 0;
             }
 
             &-header-row {
-                grid-template-columns: 1fr 1fr 1.5fr;
+                grid-template-columns: 1fr 0.5fr 1.25fr;
                 justify-items: center;
                 border-bottom: 0;
                 padding: 4px 0;

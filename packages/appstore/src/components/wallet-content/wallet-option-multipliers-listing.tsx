@@ -25,6 +25,8 @@ const WalletOptionsAndMultipliersListing = observer(() => {
 
     const { is_cr_demo } = useContentFlag();
 
+    const svg_content = wallet_account?.landing_company_name === 'svg' || is_cr_demo;
+
     if (!wallet_account || is_switching || is_logging_in || !is_landing_company_loaded)
         return (
             <div className='wallet-content__loader'>
@@ -33,7 +35,7 @@ const WalletOptionsAndMultipliersListing = observer(() => {
         );
 
     const OptionsTitle = () => {
-        if ((wallet_account.landing_company_name === 'svg' || is_cr_demo) && !is_mobile) {
+        if (svg_content && !is_mobile) {
             return (
                 <Text size='sm' line_height='m' weight='bold' color='prominent'>
                     {localize('Options & multipliers')}
@@ -49,25 +51,24 @@ const WalletOptionsAndMultipliersListing = observer(() => {
         return null;
     };
 
-    const listing_container_description =
-        wallet_account.landing_company_name === 'svg' ? (
-            <Text size='xs' line_height='s'>
-                <Localize
-                    i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
-                    components={[
-                        <StaticUrl key={0} className='options' href='trade-types/options/' />,
-                        <StaticUrl key={1} className='options' href='trade-types/multiplier/' />,
-                    ]}
-                />
-            </Text>
-        ) : (
-            <Text size='xs' line_height='s'>
-                <Localize
-                    i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>multipliers</0>.'
-                    components={[<StaticUrl key={0} className='options' href='trade-types/multiplier/' />]}
-                />
-            </Text>
-        );
+    const listing_container_description = svg_content ? (
+        <Text size='xs' line_height='s'>
+            <Localize
+                i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
+                components={[
+                    <StaticUrl key={0} className='options' href='trade-types/options/' />,
+                    <StaticUrl key={1} className='options' href='trade-types/multiplier/' />,
+                ]}
+            />
+        </Text>
+    ) : (
+        <Text size='xs' line_height='s'>
+            <Localize
+                i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>multipliers</0>.'
+                components={[<StaticUrl key={0} className='options' href='trade-types/multiplier/' />]}
+            />
+        </Text>
+    );
 
     return (
         <ListingContainer

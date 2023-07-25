@@ -9,11 +9,7 @@ import { useActiveWallet } from '@deriv/hooks';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import WalletCryptoCFD from './wallet-crypto-cfd';
 
-type TProps = {
-    fiat_wallet_currency?: string;
-};
-
-const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) => {
+const WalletCFDsListing = observer(() => {
     const {
         modules: { cfd },
         ui,
@@ -70,11 +66,7 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
             }
             is_outside_grid_container={!is_fiat}
         >
-            {is_fiat ? (
-                <WalletFiatCFD wallet_account={wallet_account} />
-            ) : (
-                <WalletCryptoCFD fiat_wallet_currency={fiat_wallet_currency} />
-            )}
+            {is_fiat ? <WalletFiatCFD wallet_account={wallet_account} /> : <WalletCryptoCFD />}
         </ListingContainer>
     );
 });

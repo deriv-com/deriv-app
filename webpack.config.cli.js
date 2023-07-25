@@ -105,6 +105,7 @@ module.exports = {
             '@storage': path.resolve(__dirname, 'src/storage'),
             '@constants': path.resolve(__dirname, 'src/constants'),
             '@i18n': path.resolve(__dirname, 'src/i18n'),
+            '@api-base': path.resolve(__dirname, 'src/api-base'),
         },
     },
     optimization: {

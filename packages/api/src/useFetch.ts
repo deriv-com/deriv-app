@@ -20,7 +20,7 @@ const useFetch = <T extends TSocketEndpointNames>(name: T, ...props: TSocketAcce
 
     const accounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
     const active_loginid = localStorage.getItem('active_loginid');
-    const current_token = accounts?.[active_loginid || ''].token;
+    const current_token = accounts?.[active_loginid || '']?.token;
 
     if (AUTH_REQUIRED_ENDPOINTS.includes(name)) {
         const state = queryClient.getQueryState<TSocketResponseData<'authorize'>>([

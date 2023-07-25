@@ -3,11 +3,22 @@ import CFD from '../Containers';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
+export type TRoute = {
+    path?: string;
+    component?: (props: any) => React.ReactNode;
+    getTitle: () => string;
+};
+
+export type TRouteConfig = TRoute & {
+    is_authenticated?: boolean;
+    routes?: TRoute[];
+};
+
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ '../Modules/Page404'));
 
 // Order matters
-const initRoutesConfig = () => {
+const initRoutesConfig = (): TRouteConfig[] => {
     return [
         {
             path: routes.dxtrade,
@@ -26,7 +37,7 @@ const initRoutesConfig = () => {
     ];
 };
 
-let routesConfig;
+let routesConfig: TRouteConfig[];
 
 // For default page route if page/path is not found, must be kept at the end of routes_config array
 const route_default = { path: routes.error404, component: Page404, getTitle: () => localize('Error 404') };

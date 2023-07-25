@@ -11,16 +11,8 @@ const useLandingCompany = () => {
         payload: { landing_company: residence },
     });
 
-    const landing_company = React.useMemo(
-        () => ({
-            ...data?.landing_company,
-        }),
-        [data?.landing_company, residence]
-    );
-
     return {
-        /** List of active symbols. */
-        data: landing_company,
+        data: data?.landing_company || {},
         ...rest,
     };
 };

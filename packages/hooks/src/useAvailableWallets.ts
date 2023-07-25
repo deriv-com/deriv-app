@@ -68,7 +68,7 @@ const useAvailableWallets = () => {
         }
 
         return [...available_wallets];
-    }, [added_wallets, account_type_data, data?.landing_company_name, is_dark_mode_on, is_crypto]);
+    }, [added_wallets, account_type_data, is_dark_mode_on, is_crypto]);
 
     return {
         ...rest,

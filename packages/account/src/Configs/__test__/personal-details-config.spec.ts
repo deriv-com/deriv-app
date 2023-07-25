@@ -100,7 +100,7 @@ describe('personal-details-config', () => {
     it('should not set default value for CR clients, If the account tax residence is not set', () => {
         const new_props = {
             ...mock_props,
-            real_account_signup_target: '',
+            real_account_signup_target: 'svg',
             account_settings: {
                 ...mock_props.account_settings,
                 tax_residence: '',

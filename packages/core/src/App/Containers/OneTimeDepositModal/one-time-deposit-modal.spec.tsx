@@ -84,9 +84,13 @@ describe('<OneTimeDepositModal />', () => {
         expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
     });
 
-    it('should close modal after deposit success', () => {
+    it('should close modal when iframe is not loaded due to user have deposited', () => {
         const history = createBrowserHistory();
-        mock_store.client.has_deposited_for_first_time = true;
+        (useDepositFiatAddress as jest.Mock).mockReturnValueOnce({
+            data: '',
+            isSuccess: false,
+            isError: true,
+        });
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>{children}</StoreProvider>
         );

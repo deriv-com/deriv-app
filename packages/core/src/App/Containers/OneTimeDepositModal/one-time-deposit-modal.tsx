@@ -11,29 +11,32 @@ import {
     Text,
 } from '@deriv/components';
 import { useDepositFiatAddress } from '@deriv/hooks';
-import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
 
-const OneTimeDepositModal = () => {
-    const { data: iframe_url, isSuccess } = useDepositFiatAddress();
+const OneTimeDepositModal = observer(() => {
+    const { data: iframe_url, isSuccess, isError } = useDepositFiatAddress();
     const [is_iframe_loading, setIsIframeLoading] = useState(true);
     const { client, ui } = useStore();
-    const { has_deposited_for_first_time, loginid } = client;
-    const { should_show_one_time_deposit_modal, setShouldShowOneTimeDepositModal, toggleAccountSuccessModal } = ui;
+    const { loginid } = client;
+    const {
+        is_mobile,
+        should_show_one_time_deposit_modal,
+        setShouldShowOneTimeDepositModal,
+        toggleAccountSuccessModal,
+    } = ui;
     const liveChat = useLiveChat(false, loginid);
-    const is_mobile = isMobile();
 
     React.useEffect(() => {
         setIsIframeLoading(true);
     }, [iframe_url]);
 
     React.useEffect(() => {
-        if (should_show_one_time_deposit_modal && has_deposited_for_first_time) {
+        if (isError) {
             onCloseModal();
         }
-    }, [has_deposited_for_first_time, should_show_one_time_deposit_modal]);
+    }, [isError]);
 
     const onLiveChatClick = () => {
         liveChat.widget?.call('maximize');
@@ -94,7 +97,7 @@ const OneTimeDepositModal = () => {
     );
 
     return (
-        <>
+        <React.Fragment>
             <DesktopWrapper>
                 <Modal
                     className='one-time-deposit-modal'
@@ -119,8 +122,8 @@ const OneTimeDepositModal = () => {
                     {getModalContent()}
                 </MobileFullPageModal>
             </MobileWrapper>
-        </>
+        </React.Fragment>
     );
-};
+});
 
-export default observer(OneTimeDepositModal);
+export default OneTimeDepositModal;

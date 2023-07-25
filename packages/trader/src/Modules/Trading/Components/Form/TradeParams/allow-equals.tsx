@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Popover, Checkbox } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import {
@@ -7,6 +6,22 @@ import {
     hasDurationForCallPutEqual,
     isRiseFallEqual,
 } from 'Stores/Modules/Trading/Helpers/allow-equals';
+import { useTraderStore } from 'Stores/useTraderStores';
+
+type TTradeStore = Pick<
+    ReturnType<typeof useTraderStore>,
+    | 'contract_start_type'
+    | 'contract_type'
+    | 'contract_types_list'
+    | 'duration_unit'
+    | 'expiry_type'
+    | 'has_equals_only'
+>;
+
+type TAllowEquals = TTradeStore & {
+    onChange: (e: { target: { name: string; value: number } }) => Promise<void>;
+    value: number;
+};
 
 const AllowEquals = ({
     contract_start_type,
@@ -17,7 +32,7 @@ const AllowEquals = ({
     onChange,
     value,
     has_equals_only,
-}) => {
+}: TAllowEquals) => {
     const has_callputequal_duration = hasDurationForCallPutEqual(
         contract_types_list,
         duration_unit,
@@ -28,10 +43,12 @@ const AllowEquals = ({
     const has_allow_equals =
         isRiseFallEqual(contract_type) && (has_callputequal_duration || expiry_type === 'endtime') && has_callputequal;
 
-    const changeValue = e => {
+    const changeValue: React.ComponentProps<typeof Checkbox>['onChange'] = e => {
         e.persist();
-        const { name, checked } = e.target;
-        onChange({ target: { name, value: Number(checked) } });
+        if ('checked' in e.target) {
+            const { name, checked } = e.target;
+            onChange({ target: { name, value: Number(checked) } });
+        }
     };
 
     return (
@@ -59,17 +76,6 @@ const AllowEquals = ({
             </div>
         )
     );
-};
-
-AllowEquals.propTypes = {
-    contract_start_type: PropTypes.string,
-    contract_type: PropTypes.string,
-    contract_types_list: PropTypes.object,
-    duration_unit: PropTypes.string,
-    expiry_type: PropTypes.string,
-    has_equals_only: PropTypes.bool,
-    onChange: PropTypes.func,
-    value: PropTypes.number,
 };
 
 export default AllowEquals;

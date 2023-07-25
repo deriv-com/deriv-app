@@ -2,26 +2,34 @@ import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces } from '@deriv/shared';
 import { ButtonToggle, Dropdown, InputField, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 
-import AllowEquals from './allow-equals.jsx';
+import AllowEquals from './allow-equals';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import Multiplier from './Multiplier/multiplier.jsx';
 import MultipliersInfo from './Multiplier/info.jsx';
-import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
+
+type TInput = {
+    amount: string | number;
+    currency: string;
+    current_focus: string | null;
+    error_messages?: string[];
+    is_single_currency: boolean;
+    onChange: (e: { target: { name: string; value: number | string } }) => void;
+    setCurrentFocus: (name: string | null) => void;
+};
 
 export const Input = ({
     amount,
     currency,
     current_focus,
     error_messages,
-    is_nativepicker,
     is_single_currency,
     onChange,
     setCurrentFocus,
-}) => (
+}: TInput) => (
     <InputField
         className='trade-container__amount'
         classNameInlinePrefix='trade-container__currency'
@@ -31,12 +39,11 @@ export const Input = ({
         error_messages={error_messages}
         fractional_digits={getDecimalPlaces(currency)}
         id='dt_amount_input'
-        inline_prefix={is_single_currency ? currency : null}
+        inline_prefix={is_single_currency ? currency : null || undefined}
         is_autocomplete_disabled
         is_float
         is_hj_whitelisted
         is_incrementable
-        is_nativepicker={is_nativepicker}
         is_negative_disabled
         max_length={AMOUNT_MAX_LENGTH}
         name='amount'
@@ -48,7 +55,7 @@ export const Input = ({
     />
 );
 
-const Amount = observer(({ is_minimized, is_nativepicker }) => {
+const Amount = observer(({ is_minimized }: { is_minimized: boolean }) => {
     const { ui, client } = useStore();
     const { currencies_list, is_single_currency } = client;
     const { setCurrentFocus, vanilla_trade_type, current_focus } = ui;
@@ -90,7 +97,7 @@ const Amount = observer(({ is_minimized, is_nativepicker }) => {
         );
     }
 
-    const error_messages = validation_errors.amount;
+    const error_messages = validation_errors?.amount;
 
     const getBasisList = () => basis_list.map(item => ({ text: item.text, value: item.value }));
 
@@ -132,12 +139,10 @@ const Amount = observer(({ is_minimized, is_nativepicker }) => {
                         current_focus={current_focus}
                         error_messages={error_messages}
                         is_single_currency={is_single_currency}
-                        is_nativepicker={is_nativepicker}
                         onChange={onChange}
                         setCurrentFocus={setCurrentFocus}
                     />
                     <Dropdown
-                        id='amount'
                         className={classNames({ 'dc-dropdown-container__currency': !is_single_currency })}
                         is_alignment_left
                         is_nativepicker={false}
@@ -156,7 +161,6 @@ const Amount = observer(({ is_minimized, is_nativepicker }) => {
                     current_focus={current_focus}
                     error_messages={error_messages}
                     is_single_currency={is_single_currency}
-                    is_nativepicker={is_nativepicker}
                     onChange={onChange}
                     setCurrentFocus={setCurrentFocus}
                 />
@@ -168,13 +172,15 @@ const Amount = observer(({ is_minimized, is_nativepicker }) => {
                 duration_unit={duration_unit}
                 expiry_type={expiry_type}
                 onChange={onChange}
-                value={parseInt(is_equal)}
+                value={Number(is_equal)}
                 has_equals_only={has_equals_only}
             />
             {is_multiplier && (
                 <React.Fragment>
                     <Multiplier />
                     <MultipliersInfo
+                        /* 
+                        // @ts-expect-error observer wrapped component props cant be detected until its ts-migrated */
                         className='trade-container__multipliers-trade-info'
                         should_show_tooltip
                         is_tooltip_relative
@@ -200,10 +206,5 @@ const Amount = observer(({ is_minimized, is_nativepicker }) => {
         </Fieldset>
     );
 });
-
-Amount.propTypes = {
-    is_minimized: PropTypes.bool,
-    is_nativepicker: PropTypes.bool,
-};
 
 export default Amount;

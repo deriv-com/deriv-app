@@ -7,6 +7,24 @@ import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
+type TBasis = {
+    basis: string;
+    duration_unit: string;
+    duration_value: number;
+    toggleModal: () => void;
+    has_duration_error: boolean;
+    selected_basis: string;
+    setSelectedAmount: (basis: string, num: string | number) => void;
+    setAmountError: (has_error: boolean) => void;
+};
+
+type TObject = {
+    duration_unit: string;
+    duration: number;
+    basis: string;
+    amount: string | number;
+};
+
 const Basis = observer(
     ({
         basis,
@@ -17,28 +35,31 @@ const Basis = observer(
         selected_basis,
         setSelectedAmount,
         setAmountError,
-    }) => {
+    }: TBasis) => {
         const { ui, client } = useStore();
         const { addToast, vanilla_trade_type } = ui;
         const { currency } = client;
         const {
             onChangeMultiple,
-            trade_amount,
-            trade_basis,
-            trade_duration_unit,
-            trade_duration,
+            amount: trade_amount,
+            basis: trade_basis,
+            duration_unit: trade_duration_unit,
+            duration: trade_duration,
             contract_type,
             stake_boundary,
         } = useTraderStore();
+
         const user_currency_decimal_places = getDecimalPlaces(currency);
-        const onNumberChange = num => {
+        const onNumberChange = (num: number | string) => {
             setSelectedAmount(basis, num);
             validateAmount(num);
         };
-        const formatAmount = value =>
-            !isNaN(value) && value !== '' ? Number(value).toFixed(user_currency_decimal_places) : value;
-        const setBasisAndAmount = amount => {
-            const on_change_obj = {};
+        const formatAmount = (value: number | string): number => {
+            const numericValue = typeof value === 'string' ? Number(value) : value;
+            return !isNaN(numericValue) ? parseFloat(numericValue.toFixed(user_currency_decimal_places)) : numericValue;
+        };
+        const setBasisAndAmount = (amount: number | string) => {
+            const on_change_obj = {} as TObject;
 
             // Check for any duration changes in Duration trade params Tab before sending onChange object
             if (duration_unit !== trade_duration_unit && !has_duration_error)
@@ -56,7 +77,7 @@ const Basis = observer(
         const zero_decimals = Number('0').toFixed(getDecimalPlaces(currency));
         const min_amount = parseFloat(zero_decimals.toString().replace(/.$/, '1'));
 
-        const validateAmount = value => {
+        const validateAmount = (value: number | string) => {
             const localized_message = <Localize i18n_default_text='Should not be 0 or empty' />;
             const selected_value = parseFloat(value.toString());
 
@@ -125,6 +146,13 @@ const Basis = observer(
     }
 );
 
+type TAmountMobile = React.ComponentProps<typeof Basis> & {
+    amount_tab_idx: number;
+    setAmountTabIdx: React.ComponentProps<typeof Tabs>['onTabItemClick'];
+    stake_value: string;
+    payout_value: string;
+};
+
 const Amount = observer(
     ({
         toggleModal,
@@ -137,7 +165,7 @@ const Amount = observer(
         setSelectedAmount,
         stake_value,
         payout_value,
-    }) => {
+    }: TAmountMobile) => {
         const { basis, basis_list } = useTraderStore();
         const has_selected_tab_idx = typeof amount_tab_idx !== 'undefined';
         const active_index = has_selected_tab_idx ? amount_tab_idx : basis_list.findIndex(b => b.value === basis);
@@ -159,6 +187,8 @@ const Amount = observer(
 
         return (
             <div>
+                {/* 
+                // @ts-expect-error We explicitly defined children as React.ReactElement[] here we only return a single JSX.Element or null. Dont know how to fix without breaking Tabs it's used in 27 files*/}
                 <Tabs active_index={active_index} onTabItemClick={setAmountTabIdx} top>
                     {basis_list.map(basis_option => {
                         switch (basis_option.value) {

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -7,7 +6,11 @@ import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
-const LastDigit = observer(({ is_minimized }) => {
+type TLastDigit = {
+    is_minimized?: boolean;
+};
+
+const LastDigit = observer(({ is_minimized }: TLastDigit) => {
     const { onChange, last_digit } = useTraderStore();
     if (is_minimized) {
         return <div className='fieldset-minimized'>{`${localize('Last Digit')}: ${last_digit}`}</div>;
@@ -28,11 +31,5 @@ const LastDigit = observer(({ is_minimized }) => {
         </Fieldset>
     );
 });
-
-LastDigit.propTypes = {
-    is_minimized: PropTypes.bool,
-    last_digit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    onChange: PropTypes.func,
-};
 
 export default LastDigit;

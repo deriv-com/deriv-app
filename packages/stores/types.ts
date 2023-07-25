@@ -158,7 +158,8 @@ type TMenuItem = {
 
 type TAddToastProps = {
     key: string;
-    content: string;
+    content: string | React.ReactNode;
+    timeout?: number;
     type: string;
 };
 
@@ -237,6 +238,7 @@ type TClientStore = {
     cfd_score: number;
     setCFDScore: (score: number) => void;
     currency: string;
+    currencies_list: { text: string; value: string; has_tool_tip?: boolean }[];
     current_currency_type?: string;
     current_fiat_currency?: string;
     has_any_real_account: boolean;
@@ -251,6 +253,7 @@ type TClientStore = {
     is_eu_country: boolean;
     is_eu: boolean;
     is_uk: boolean;
+    is_single_currency: boolean;
     is_social_signup: boolean;
     has_residence: boolean;
     is_authorize: boolean;
@@ -422,7 +425,7 @@ type TUiStore = {
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;
     notification_messages_ui: React.ElementType;
-    setCurrentFocus: (value: string) => void;
+    setCurrentFocus: (value: string | null) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
@@ -464,6 +467,7 @@ type TUiStore = {
     populateHeaderExtensions: (header_items: JSX.Element | null) => void;
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     setShouldShowCooldownModal: (value: boolean) => void;
+    vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
 };
 
 type TPortfolioStore = {

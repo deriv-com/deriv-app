@@ -96,6 +96,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             balance: '',
             can_change_fiat_currency: false,
             currency: '',
+            currencies_list: [{ text: '', value: '', has_tool_tip: false }],
             current_currency_type: '',
             current_fiat_currency: '',
             cfd_score: 0,
@@ -120,6 +121,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_logged_in: false,
             is_logging_in: false,
             is_pending_proof_of_ownership: false,
+            is_single_currency: false,
             is_switching: false,
             is_tnc_needed: false,
             is_trading_experience_incomplete: false,
@@ -329,6 +331,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleShouldShowRealAccountsList: jest.fn(),
             is_reset_trading_password_modal_visible: false,
             setResetTradingPasswordModalOpen: jest.fn(),
+            vanilla_trade_type: 'VANILLALONGCALL',
         },
         traders_hub: {
             closeModal: jest.fn(),

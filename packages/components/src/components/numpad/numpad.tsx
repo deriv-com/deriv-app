@@ -12,20 +12,20 @@ type TNumpad = {
     is_regular?: boolean;
     is_currency?: boolean;
     is_submit_disabled?: boolean;
-    label: string;
+    label?: string;
     reset_press_interval: number;
     reset_value: string;
-    max: number;
-    min: number;
+    max?: number;
+    min?: number;
     pip_size: number;
     onSubmit: (param: number | string) => void;
-    v: string;
+    v?: string;
     render?: (props: { value: string; className: string }) => React.ReactNode;
     submit_label: string;
     value: string;
     format: (v: string) => number;
     onValueChange: (val: number | string) => void;
-    onValidate: (default_value: number | string) => string | undefined;
+    onValidate: (default_value: number | string) => boolean | 'error';
 };
 
 const concatenate = (number: string | number, default_value: string | number) =>

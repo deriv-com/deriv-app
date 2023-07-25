@@ -8,19 +8,7 @@ import BuySell from '../buy-sell';
 const mock_store = {
 
     general_store: {
-        advertiser_id: 'id2',
-        advertiser_info: {
-            name: 'my name',
-        },
-        block_unblock_user_error: '',
-        error_code: '',
-        active_index: 0,
-        setBlockUnblockUserError: jest.fn(),
-        setActiveIndex: jest.fn(),
-        path: {
-            my_profile: 3,
-        },
-        is_block_unblock_user_loading: false,
+        should_show_popup: false
     },
     buy_sell_store: {
         registerIsListedReaction: jest.fn(),

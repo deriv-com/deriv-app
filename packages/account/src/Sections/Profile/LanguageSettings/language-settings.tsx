@@ -1,26 +1,13 @@
 import React from 'react';
 import { Formik, FormikHandlers, FormikHelpers, FormikValues } from 'formik';
 import { Button, DesktopWrapper } from '@deriv/components';
-import { WS } from '@deriv/shared';
-import { localize, useLanguageChecks, useLanguageSettings } from '@deriv/translations';
+import { localize, useLanguageChecks, useLanguageSettings, LanguageKey } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import FormFooter from 'Components/form-footer';
 import LanguageRadioButton from 'Components/language-settings';
-import { LanguageKey } from '@deriv/translations/src/utils/config';
 
 const LanguageSettings = () => {
-    const { current_language, handleChangeLanguage } = useLanguageSettings({
-        onChange: async selected_lang => {
-            await WS.wait('authorize');
-            await WS.setSettings({
-                set_settings: 1,
-                preferred_language: selected_lang,
-            });
-        },
-        onComplete: async selected_lang => {
-            WS.closeAndOpenNewConnection(selected_lang);
-        },
-    });
+    const { current_language, handleChangeLanguage } = useLanguageSettings();
     const { allowed_languages } = useLanguageChecks();
 
     return (

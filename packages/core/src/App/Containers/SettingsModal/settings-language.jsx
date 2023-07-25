@@ -1,6 +1,5 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
-import { WS } from '@deriv/shared';
 import { useLanguageChecks, useLanguageSettings } from '@deriv/translations';
 import { LanguageLink } from 'App/Components/Routes';
 
@@ -8,18 +7,7 @@ const LanguageSettings = observer(() => {
     const { ui } = useStore();
     const { toggleLanguageSettingsModal } = ui;
     const { allowed_languages } = useLanguageChecks();
-    const { current_language, handleChangeLanguage } = useLanguageSettings({
-        onChange: async selected_lang => {
-            await WS.wait('authorize');
-            await WS.setSettings({
-                set_settings: 1,
-                preferred_language: selected_lang,
-            });
-        },
-        onComplete: async selected_lang => {
-            WS.closeAndOpenNewConnection(selected_lang);
-        },
-    });
+    const { current_language, handleChangeLanguage } = useLanguageSettings();
 
     return (
         <div className='settings-language'>

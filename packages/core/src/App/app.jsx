@@ -48,7 +48,7 @@ const App = ({ root_store }) => {
 
     return (
         <Router basename={has_base ? `/${base}` : null}>
-            <TranslationProvider environment={getRuntimeEnvironment()} onInit={lang => initMoment(lang)}>
+            <TranslationProvider environment={getRuntimeEnvironment()} websocket={WS} onInit={lang => initMoment(lang)}>
                 <MobxContentProvider store={root_store}>
                     <StoreProvider store={root_store}>
                         <APIProvider>

@@ -8,11 +8,18 @@ type UseLanguageSettings = {
 };
 
 const useLanguageSettings = ({ onChange, onComplete }: UseLanguageSettings = {}) => {
-    const { environment, current_language, setCurrentLanguage } = useTranslationContext();
+    const { environment, current_language, setCurrentLanguage, websocket } = useTranslationContext();
 
     const handleChangeLanguage = async (selected_lang: Language) => {
         if (selected_lang === 'EN') {
             window.localStorage.setItem(STORE_LANGUAGE_KEY, selected_lang);
+        }
+
+        if (websocket?.authorize) {
+            await websocket.authorize.setSettings({
+                set_settings: 1,
+                preferred_language: selected_lang,
+            });
         }
 
         if (typeof onChange === 'function') await onChange(selected_lang);
@@ -29,6 +36,7 @@ const useLanguageSettings = ({ onChange, onComplete }: UseLanguageSettings = {})
             setCurrentLanguage(selected_lang);
 
             if (typeof onComplete === 'function') await onComplete(selected_lang);
+            if (websocket) websocket.closeAndOpenNewConnection(selected_lang);
         });
     };
 

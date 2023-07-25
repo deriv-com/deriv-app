@@ -15,6 +15,7 @@ type TranslationData = {
     setCurrentLanguage: React.Dispatch<React.SetStateAction<Language>>;
     allowed_languages: Partial<LanguageData>;
     setAllowedLanguages: React.Dispatch<React.SetStateAction<Partial<LanguageData>>>;
+    websocket?: Record<string, any>;
 };
 
 export const TranslationDataContext = React.createContext<TranslationData | null>(null);
@@ -23,9 +24,15 @@ type TranslationProviderProps = {
     children?: ReactNode;
     environment?: Environment;
     onInit?: (lang: Language) => void;
+    websocket?: Record<string, any>;
 };
 
-export const TranslationProvider = ({ children, onInit, environment = 'production' }: TranslationProviderProps) => {
+export const TranslationProvider = ({
+    children,
+    onInit,
+    websocket,
+    environment = 'production',
+}: TranslationProviderProps) => {
     const [allowed_languages, setAllowedLanguages] = React.useState<Partial<LanguageData>>(
         getAllowedLanguages(environment)
     );
@@ -34,6 +41,17 @@ export const TranslationProvider = ({ children, onInit, environment = 'productio
     );
 
     setEnvironment(environment);
+
+    React.useEffect(() => {
+        const getLanguageSettings = async () => {
+            if (websocket?.authorized) {
+                const response = await websocket.authorized.send({ get_settings: 1 });
+                const { preferred_language } = response.get_settings;
+                setCurrentLanguage(preferred_language);
+            }
+        };
+        getLanguageSettings();
+    }, [websocket]);
 
     React.useEffect(() => {
         const initializeTranslations = async () => {
@@ -59,6 +77,7 @@ export const TranslationProvider = ({ children, onInit, environment = 'productio
                     setCurrentLanguage,
                     allowed_languages,
                     setAllowedLanguages,
+                    websocket,
                 }}
             >
                 <React.Suspense fallback={<React.Fragment />}>{children}</React.Suspense>

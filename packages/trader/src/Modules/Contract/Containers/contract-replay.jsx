@@ -197,7 +197,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const {
         accumulator_previous_spot_time,
         contract_config,
-        marker: accumulators_barriers_marker,
+        marker: barriers_marker,
         is_digit_contract,
         barriers_array,
         markers_array,
@@ -228,7 +228,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const all_ticks = audit_details ? audit_details.all_ticks : [];
     const { wsForget, wsSubscribe, wsSendRequest, wsForgetStream } = trade;
 
-    const accu_barriers_marker_component = allMarkers[accumulators_barriers_marker?.type];
+    const MarkerComponent = allMarkers[barriers_marker?.type];
 
     const isBottomWidgetVisible = () => {
         return isDesktop() && is_digit_contract;
@@ -297,23 +297,22 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
             ))}
             {is_accumulator_contract && !!markers_array && (
                 <DelayedAccuBarriersMarker
-                    marker_component={accu_barriers_marker_component}
-                    key={accumulators_barriers_marker.key}
+                    marker_component={MarkerComponent}
+                    key={barriers_marker.key}
                     is_dark_theme={is_dark_theme}
                     granularity={granularity}
                     is_in_contract_details
                     previous_spot_time={accumulator_previous_spot_time}
-                    {...accumulators_barriers_marker}
+                    {...barriers_marker}
                 />
             )}
             {isResetContract(contract_info.contract_type) && !!markers_array && reset_time && (
-                <DelayedAccuBarriersMarker
-                    marker_component={accu_barriers_marker_component}
-                    key={accumulators_barriers_marker.key}
+                <MarkerComponent
+                    key={barriers_marker.key}
                     is_dark_theme={is_dark_theme}
                     granularity={granularity}
                     is_in_contract_details
-                    {...accumulators_barriers_marker}
+                    {...barriers_marker}
                 />
             )}
         </SmartChart>

@@ -184,7 +184,6 @@ export const DBOT_ONBOARDING = [
                 step_index={6}
             />
         ),
-        locale: { last: localize('Next') },
         ...joyride_props,
         disableOverlay: false,
     },
@@ -199,7 +198,7 @@ const Step1 = ({ show_label = false }) => (
         )}
         <div className='joyride-content__left'>
             <Localize
-                i18n_default_text={`First, set the <0>Trade parameters</0> block.`}
+                i18n_default_text={'First, set the <0>Trade parameters</0> block.'}
                 components={[<strong key={0} />]}
             />
         </div>
@@ -457,7 +456,6 @@ export const BOT_BUILDER_TOUR = [
     {
         target: '.animation__wrapper',
         content: <Step6 show_label />,
-        locale: { last: localize('Next') },
         ...joyride_props,
     },
 ];

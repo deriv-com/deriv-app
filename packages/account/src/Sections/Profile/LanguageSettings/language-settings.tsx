@@ -7,7 +7,7 @@ import FormFooter from 'Components/form-footer';
 import LanguageRadioButton from 'Components/language-settings';
 
 const LanguageSettings = () => {
-    const { current_language, handleChangeLanguage } = useLanguageSettings();
+    const { is_loading, current_language, handleChangeLanguage } = useLanguageSettings();
     const { allowed_languages } = useLanguageChecks();
 
     return (
@@ -48,7 +48,7 @@ const LanguageSettings = () => {
                                 text={localize('Submit')}
                                 large
                                 primary
-                                is_disabled={current_language === values.language_code}
+                                is_disabled={current_language === values.language_code || is_loading}
                             />
                         </FormFooter>
                     </form>

@@ -15,6 +15,8 @@ type TranslationData = {
     setCurrentLanguage: React.Dispatch<React.SetStateAction<Language>>;
     allowed_languages: Partial<LanguageData>;
     setAllowedLanguages: React.Dispatch<React.SetStateAction<Partial<LanguageData>>>;
+    is_loading: boolean;
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
     websocket?: Record<string, any>;
 };
 
@@ -33,6 +35,7 @@ export const TranslationProvider = ({
     websocket,
     environment = 'production',
 }: TranslationProviderProps) => {
+    const [is_loading, setIsLoading] = React.useState(false);
     const [allowed_languages, setAllowedLanguages] = React.useState<Partial<LanguageData>>(
         getAllowedLanguages(environment)
     );
@@ -77,6 +80,8 @@ export const TranslationProvider = ({
                     setCurrentLanguage,
                     allowed_languages,
                     setAllowedLanguages,
+                    is_loading,
+                    setIsLoading,
                     websocket,
                 }}
             >

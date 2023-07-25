@@ -96,6 +96,7 @@ export default class BuySellStore extends BaseStore {
             rendered_items: computed,
             should_filter_by_payment_method: computed,
             getWebsiteStatus: action.bound,
+            handleAdvertInfoResponse: action.bound,
             handleChange: action.bound,
             handleSubmit: action.bound,
             hideAdvertiserPage: action.bound,
@@ -147,6 +148,7 @@ export default class BuySellStore extends BaseStore {
         });
     }
 
+    advert_info_subscription = {};
     create_order_subscription = {};
 
     get account_currency() {
@@ -270,6 +272,7 @@ export default class BuySellStore extends BaseStore {
                 handleConfirm(response?.p2p_order_info);
             }
             handleClose();
+            this.unsubscribeAdvertInfo();
             this.payment_method_ids = [];
         }
         if (order?.p2p_order_info?.id && order?.p2p_order_info?.chat_channel_url) {
@@ -694,38 +697,43 @@ export default class BuySellStore extends BaseStore {
         return errors;
     }
 
+    handleAdvertInfoResponse = response => {
+        if(response.error) return;
+        const { p2p_advert_info } = response;
+        if (this.selected_ad_state?.id === p2p_advert_info.id) {
+            this.setSelectedAdState(p2p_advert_info);
+        }
+    }
     registerAdvertIntervalReaction() {
         const disposeAdvertIntervalReaction = reaction(
             () => this.selected_ad_state,
             () => {
-                clearInterval(this.limits_interval);
-
                 if (this.selected_ad_state) {
-                    const updateAdvert = () => {
-                        requestWS({ p2p_advert_info: 1, id: this.selected_ad_state.id, use_client_limits: 1 }).then(
-                            response => {
-                                // Added a check to prevent console errors
-                                if (response?.error) return;
-                                const { p2p_advert_info } = response;
-
-                                if (this.selected_ad_state?.id === p2p_advert_info.id) {
-                                    this.setSelectedAdState(p2p_advert_info);
-                                }
-                            }
-                        );
+                    this.advert_info_subscription = subscribeWS(
+                        {
+                            p2p_advert_info: 1,
+                            id: this.selected_ad_state.id,
+                            use_client_limits: 1,
+                        },
+                        [this.handleAdvertInfoResponse]
+                    );
                     };
-
-                    this.limits_interval = setInterval(updateAdvert, 10000);
                 }
-            }
         );
 
         return () => disposeAdvertIntervalReaction();
     }
+
+    unsubscribeAdvertInfo = () => {
+        if (this.advert_info_subscription.unsubscribe) {
+            this.advert_info_subscription.unsubscribe();
+        }
+    };
 
     unsubscribeCreateOrder = () => {
         if (this.create_order_subscription.unsubscribe) {
             this.create_order_subscription.unsubscribe();
         }
     };
+
 }

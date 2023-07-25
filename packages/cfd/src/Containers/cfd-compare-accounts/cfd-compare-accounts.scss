@@ -1,3 +1,7 @@
+.dc-page-overlay__header {
+    border-bottom: none !important;
+}
+
 .compare-cfd-header {
     display: flex;
     align-items: center;
@@ -18,11 +22,7 @@
 }
 
 .compare-cfd-account {
-    max-width: 123.2rem;
-    margin: auto;
-    padding: 5rem 0;
     &-container {
-        margin: 1.5rem;
         @include mobile {
             margin: 0;
             overflow-x: auto;
@@ -78,14 +78,14 @@
     &-outline {
         display: flex;
         flex-direction: column;
-        padding: 2rem 2.4rem 0;
+        padding: 0.5rem 2.4rem;
         border-radius: 2.4rem;
         @include mobile {
             padding-top: 4.5rem;
         }
     }
     &-text-container {
-        height: 25.5rem;
+        height: 28rem;
         &--demo {
             height: 13.5rem;
         }
@@ -97,7 +97,7 @@
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-        padding-top: 2rem;
+        padding-top: 1rem;
         align-items: center;
         &__separator {
             display: flex;

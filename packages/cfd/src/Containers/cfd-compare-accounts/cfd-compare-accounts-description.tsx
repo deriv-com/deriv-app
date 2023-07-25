@@ -34,7 +34,7 @@ const CFDCompareAccountsDescription = ({ trading_platforms, is_demo }: TCompareA
             {!is_demo && (
                 <React.Fragment>
                     <div className='compare-cfd-account-text-container__separator'>
-                        <Text as='h1' weight='bold' size='xxs' align='center'>
+                        <Text as='h1' weight='bold' size='xs' align='center'>
                             {juridisction_data.counterparty_company}
                         </Text>
                         <Text as='p' size='xxxs' align='center'>
@@ -42,7 +42,7 @@ const CFDCompareAccountsDescription = ({ trading_platforms, is_demo }: TCompareA
                         </Text>
                     </div>
                     <div className='compare-cfd-account-text-container__separator'>
-                        <Text as='h1' weight='bold' size='xxs' align='center'>
+                        <Text as='h1' weight='bold' size='xs' align='center'>
                             {juridisction_data.jurisdiction}
                         </Text>
                         <Text as='p' size='xxxs' align='center'>
@@ -50,7 +50,7 @@ const CFDCompareAccountsDescription = ({ trading_platforms, is_demo }: TCompareA
                         </Text>
                     </div>
                     <div className='compare-cfd-account-text-container__separator'>
-                        <Text as='h1' weight='bold' size='xxs' align='center'>
+                        <Text as='h1' weight='bold' size='xs' align='center'>
                             {juridisction_data.regulator}
                         </Text>
                         <Text as='p' size='xxxs' align='center'>

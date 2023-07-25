@@ -4,12 +4,12 @@ import { useStore } from '@deriv/stores';
 
 const useIsWithdrawalLimitReached = () => {
     const { client } = useStore();
-    const { data: account_limit, isSuccess } = useFetch('get_limits');
+    const { data: account_limit } = useFetch('get_limits');
     const remainder = account_limit?.get_limits?.remainder;
     const min_withdrawal = getMinWithdrawal(client.currency);
     const is_10k_withdrawal_limit_reached = !!(typeof remainder !== 'undefined' && +remainder < min_withdrawal);
 
-    return { is_10k_withdrawal_limit_reached, max_withdraw_amount: remainder, isSuccess };
+    return is_10k_withdrawal_limit_reached;
 };
 
 export default useIsWithdrawalLimitReached;

@@ -29,7 +29,7 @@ describe('useIsWithdrawalLimitReached', () => {
 
         const { result } = renderHook(() => useIsWithdrawalLimitReached(), { wrapper });
 
-        expect(result.current.is_10k_withdrawal_limit_reached).toBe(true);
+        expect(result.current).toBe(true);
     });
 
     it('should return false if max withdrawal value is not reached', () => {
@@ -37,6 +37,6 @@ describe('useIsWithdrawalLimitReached', () => {
 
         const { result } = renderHook(() => useIsWithdrawalLimitReached(), { wrapper });
 
-        expect(result.current.is_10k_withdrawal_limit_reached).toBe(false);
+        expect(result.current).toBe(false);
     });
 });

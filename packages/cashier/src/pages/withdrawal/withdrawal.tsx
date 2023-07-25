@@ -81,7 +81,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         willMountWithdraw,
     } = withdraw;
 
-    const { is_10k_withdrawal_limit_reached } = useIsWithdrawalLimitReached();
+    const is_10k_withdrawal_limit_reached = useIsWithdrawalLimitReached();
     const { is_withdrawal_locked, isLoading } = useWithdrawalLocked();
 
     React.useEffect(() => {

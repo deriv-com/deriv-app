@@ -19,11 +19,7 @@ const mockUseIsWithdrawalLimitReached = useIsWithdrawalLimitReached as jest.Mock
 
 describe('useAccountStatus', () => {
     beforeEach(() => {
-        mockUseIsWithdrawalLimitReached.mockReturnValue({
-            is_10k_withdrawal_limit_reached: false,
-            max_withdraw_amount: 10,
-            isSuccess: true,
-        });
+        mockUseIsWithdrawalLimitReached.mockReturnValue(false);
     });
 
     it('should check whether POI is needed', () => {
@@ -40,11 +36,7 @@ describe('useAccountStatus', () => {
             },
         });
 
-        mockUseIsWithdrawalLimitReached.mockReturnValue({
-            is_10k_withdrawal_limit_reached: true,
-            max_withdraw_amount: 10,
-            isSuccess: true,
-        });
+        mockUseIsWithdrawalLimitReached.mockReturnValue(true);
         const { result } = renderHook(useAccountStatus);
         const { statuses } = result.current;
 
@@ -52,11 +44,7 @@ describe('useAccountStatus', () => {
     });
 
     it('should check whether POI is not needed', () => {
-        mockUseIsWithdrawalLimitReached.mockReturnValue({
-            is_10k_withdrawal_limit_reached: true,
-            max_withdraw_amount: 10,
-            isSuccess: true,
-        });
+        mockUseIsWithdrawalLimitReached.mockReturnValue(true);
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
             data: {
@@ -74,11 +62,7 @@ describe('useAccountStatus', () => {
 
         expect(statuses.needs_verification.is_poi_needed).toBe(false);
 
-        mockUseIsWithdrawalLimitReached.mockReturnValue({
-            is_10k_withdrawal_limit_reached: false,
-            max_withdraw_amount: 10,
-            isSuccess: true,
-        });
+        mockUseIsWithdrawalLimitReached.mockReturnValue(false);
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
@@ -151,11 +135,7 @@ describe('useAccountStatus', () => {
             },
         });
 
-        mockUseIsWithdrawalLimitReached.mockReturnValue({
-            is_10k_withdrawal_limit_reached: true,
-            max_withdraw_amount: 10,
-            isSuccess: true,
-        });
+        mockUseIsWithdrawalLimitReached.mockReturnValue(true);
 
         const { result, rerender } = renderHook(useAccountStatus);
 
@@ -175,11 +155,7 @@ describe('useAccountStatus', () => {
             },
         });
 
-        mockUseIsWithdrawalLimitReached.mockReturnValue({
-            is_10k_withdrawal_limit_reached: false,
-            max_withdraw_amount: 10,
-            isSuccess: true,
-        });
+        mockUseIsWithdrawalLimitReached.mockReturnValue(false);
 
         rerender();
 
@@ -200,11 +176,7 @@ describe('useAccountStatus', () => {
             },
         });
 
-        mockUseIsWithdrawalLimitReached.mockReturnValue({
-            is_10k_withdrawal_limit_reached: true,
-            max_withdraw_amount: 10,
-            isSuccess: true,
-        });
+        mockUseIsWithdrawalLimitReached.mockReturnValue(true);
 
         const { result, rerender } = renderHook(useAccountStatus);
 

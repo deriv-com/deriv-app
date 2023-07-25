@@ -28,37 +28,25 @@ const mockUseIsWithdrawalLimitReached = useIsWithdrawalLimitReached as jest.Mock
 
 describe('useIsAskFinancialRiskApprovalNeeded', () => {
     it('should check that client needs to be asked for financial risk approval', () => {
-        mockUseIsWithdrawalLimitReached.mockReturnValue({
-            is_10k_withdrawal_limit_reached: true,
-            max_withdraw_amount: 10,
-            isSuccess: true,
-        });
+        mockUseIsWithdrawalLimitReached.mockReturnValue(true);
 
         const { result } = renderHook(useIsAskFinancialRiskApprovalNeeded, { wrapper });
 
-        expect(result.current.is_ask_financial_risk_approval_needed).toBe(true);
+        expect(result.current).toBe(true);
     });
 
     it('should check that client not to be asked for financial risk approval', () => {
-        mockUseIsWithdrawalLimitReached.mockReturnValue({
-            is_10k_withdrawal_limit_reached: false,
-            max_withdraw_amount: 10,
-            isSuccess: true,
-        });
+        mockUseIsWithdrawalLimitReached.mockReturnValue(false);
 
         const { result, rerender } = renderHook(useIsAskFinancialRiskApprovalNeeded, { wrapper });
 
-        expect(result.current.is_ask_financial_risk_approval_needed).toBe(false);
+        expect(result.current).toBe(false);
 
         mock_store.modules.cashier.error.is_ask_financial_risk_approval = false;
 
-        mockUseIsWithdrawalLimitReached.mockReturnValue({
-            is_10k_withdrawal_limit_reached: true,
-            max_withdraw_amount: 10,
-            isSuccess: true,
-        });
+        mockUseIsWithdrawalLimitReached.mockReturnValue(true);
 
         rerender();
-        expect(result.current.is_ask_financial_risk_approval_needed).toBe(false);
+        expect(result.current).toBe(false);
     });
 });

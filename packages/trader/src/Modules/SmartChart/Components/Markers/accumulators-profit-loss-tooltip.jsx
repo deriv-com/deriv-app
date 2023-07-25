@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
-import { Text } from '@deriv/components';
+import { Money, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { FastMarker } from 'Modules/SmartChart';
 import AccumulatorsProfitLossText from './accumulators-profit-loss-text';
@@ -18,10 +18,10 @@ const AccumulatorsProfitLossTooltip = ({
     high_barrier,
     is_sold,
     profit,
+    should_show_profit_text,
 }) => {
     const [is_tooltip_open, setIsTooltipOpen] = React.useState(false);
     const won = profit >= 0;
-    const sign = profit > 0 ? '+' : '';
     const tooltip_timeout = React.useRef(null);
 
     React.useEffect(() => {
@@ -68,7 +68,7 @@ const AccumulatorsProfitLossTooltip = ({
     };
 
     if (typeof profit !== 'number') return null;
-    if (!is_sold && current_spot_time && high_barrier)
+    if (!is_sold && current_spot_time && high_barrier && should_show_profit_text)
         return (
             <AccumulatorsProfitLossText
                 currency={currency}
@@ -99,11 +99,9 @@ const AccumulatorsProfitLossTooltip = ({
                     <Text size='xxs' className={`${className}__text`}>
                         {localize('Total profit/loss:')}
                     </Text>
-                    <Text
-                        size='xs'
-                        className={`${className}__text`}
-                        weight='bold'
-                    >{`${sign}${profit} ${currency}`}</Text>
+                    <Text size='xs' className={`${className}__text`} weight='bold'>
+                        <Money amount={profit} currency={currency} has_sign show_currency />
+                    </Text>
                 </div>
             </CSSTransition>
         </FastMarker>
@@ -121,6 +119,7 @@ AccumulatorsProfitLossTooltip.propTypes = {
     high_barrier: PropTypes.string,
     is_sold: PropTypes.number,
     profit: PropTypes.number,
+    should_show_profit_text: PropTypes.bool,
 };
 
 export default React.memo(AccumulatorsProfitLossTooltip);

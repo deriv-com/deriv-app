@@ -51,7 +51,7 @@ export default class DepositStore {
             return;
         }
 
-        if (!is_crypto) {
+        if (!is_crypto && active_container === 'deposit') {
             const response_cashier = await this.WS.authorized.cashier(active_container, {
                 verification_code: 'undefined',
             });

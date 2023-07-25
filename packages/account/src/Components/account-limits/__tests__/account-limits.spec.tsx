@@ -41,7 +41,7 @@ describe('<AccountLimits/>', () => {
             is_fully_authenticated: true,
             is_switching: false,
             is_virtual: false,
-            getLimits: jest.fn(() => Promise.resolve({ data: {} })),
+            getLimits: jest.fn(() => Promise.resolve({ get_limits: {} })),
             account_limits: {
                 account_balance: 300000,
                 daily_transfers: {
@@ -127,6 +127,7 @@ describe('<AccountLimits/>', () => {
     it('should render the Loading component if is_switching is true', () => {
         store = mockStore({
             client: {
+                ...mock.client,
                 is_switching: true,
             },
         });
@@ -141,6 +142,7 @@ describe('<AccountLimits/>', () => {
     it('should render DemoMessage component if is_virtual is true', () => {
         store = mockStore({
             client: {
+                ...mock.client,
                 is_switching: false,
                 is_virtual: true,
             },
@@ -157,6 +159,7 @@ describe('<AccountLimits/>', () => {
     it('should render LoadErrorMessage component if there is api_initial_load_error', () => {
         store = mockStore({
             client: {
+                ...mock.client,
                 account_limits: {
                     api_initial_load_error: 'error in fetching data from API',
                     account_balance: '',
@@ -229,6 +232,7 @@ describe('<AccountLimits/>', () => {
 
     it('should render AccountLimitsArticle component if should_show_article is true and is_from_derivgo is true in mobile mode', () => {
         store = mockStore({
+            ...mock,
             common: {
                 is_from_derivgo: true,
             },
@@ -385,6 +389,7 @@ describe('<AccountLimits/>', () => {
     it('withdrawal_limits_table should show `Total withdrawal limit` if is_fully_authenticated is false and is_appstore is true', () => {
         store = mockStore({
             client: {
+                ...mock.client,
                 is_fully_authenticated: false,
             },
         });
@@ -403,6 +408,7 @@ describe('<AccountLimits/>', () => {
     it('withdrawal_limits_table should show `Total withdrawal allowed` when is_fully_authenticated is false and is_appstore is true', () => {
         store = mockStore({
             client: {
+                ...mock.client,
                 is_fully_authenticated: false,
             },
         });
@@ -419,6 +425,7 @@ describe('<AccountLimits/>', () => {
     it('withdrawal_limits_table should show the verfiy button when is_fully_authenticated is false and is_appstore is true', () => {
         store = mockStore({
             client: {
+                ...mock.client,
                 is_fully_authenticated: false,
             },
         });
@@ -444,6 +451,7 @@ describe('<AccountLimits/>', () => {
     it('withdrawal_limits_table should show total withdrawn and withdrawn remaining details', () => {
         store = mockStore({
             client: {
+                ...mock.client,
                 is_fully_authenticated: false,
             },
         });
@@ -468,6 +476,7 @@ describe('<AccountLimits/>', () => {
     it('should show limit_notice message when is_appstore is true and is_fully_authenticated is false in mobile mode', () => {
         store = mockStore({
             client: {
+                ...mock.client,
                 is_fully_authenticated: false,
             },
         });
@@ -488,6 +497,7 @@ describe('<AccountLimits/>', () => {
     it('should not  show limit_notice message when is_appstore is false and is_fully_authenticated is false', () => {
         store = mockStore({
             client: {
+                ...mock.client,
                 is_fully_authenticated: false,
             },
         });

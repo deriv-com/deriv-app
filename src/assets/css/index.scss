@@ -114,7 +114,6 @@ ul.bullet {
         width: 100%;
         margin: 20px;
         display: block;
-        vertical-align: top;
     }
     .clear {
         position: sticky;
@@ -123,9 +122,6 @@ ul.bullet {
         background-color: #fff;
         width: 100%;
         box-shadow: 0 -2px 6px 0 rgba(0, 0, 0, 0.2);
-    }
-    p {
-        margin: 9px auto !important;
     }
 }
 

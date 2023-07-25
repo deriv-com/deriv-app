@@ -28,7 +28,7 @@ const Status = () => {
     );
 };
 
-const AccountInformation = ({ account }: { account: TAccount }) => {
+const AccountInformation = observer(({ account }: { account: TAccount }) => {
     const {
         ui: { is_mobile },
     } = useStore();
@@ -57,9 +57,9 @@ const AccountInformation = ({ account }: { account: TAccount }) => {
             </Text>
         </div>
     );
-};
+});
 
-const WalletInformation = ({ account, blockchain_address }: TWalletInformationProps) => {
+const WalletInformation = observer(({ account, blockchain_address }: TWalletInformationProps) => {
     const {
         ui: { is_mobile },
     } = useStore();
@@ -102,7 +102,7 @@ const WalletInformation = ({ account, blockchain_address }: TWalletInformationPr
             </div>
         </div>
     );
-};
+});
 
 const CryptoWithdrawReceipt = observer(() => {
     const { client, ui } = useStore();

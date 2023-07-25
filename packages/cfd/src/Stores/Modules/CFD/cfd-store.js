@@ -598,6 +598,7 @@ export default class CFDStore extends BaseStore {
             actions.resetForm({});
             actions.setSubmitting(false);
             actions.setStatus({ success: false });
+            return;
         }
 
         actions.setStatus({ success: true });

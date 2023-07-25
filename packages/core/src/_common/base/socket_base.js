@@ -139,7 +139,7 @@ const BinarySocketBase = (() => {
 
     const excludeAuthorize = type => !(type === 'authorize' && !client_store.is_logged_in);
 
-    const wait = (...responses) => deriv_api.expectResponse(...responses.filter(excludeAuthorize));
+    const wait = (...responses) => deriv_api?.expectResponse(...responses.filter(excludeAuthorize));
 
     const subscribe = (request, cb) => deriv_api.subscribe(request).subscribe(cb, cb); // Delegate error handling to the callback
 
@@ -513,10 +513,10 @@ const proxied_socket_base = delegateToObject(BinarySocketBase, () => BinarySocke
 const proxyForAuthorize = obj =>
     new Proxy(obj, {
         get(target, field) {
-            if (typeof target[field] !== 'function') {
+            if (target[field] && typeof target[field] !== 'function') {
                 return proxyForAuthorize(target[field]);
             }
-            return (...args) => BinarySocketBase.wait('authorize').then(() => target[field](...args));
+            return (...args) => BinarySocketBase?.wait('authorize').then(() => target[field](...args));
         },
     });
 

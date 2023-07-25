@@ -8,6 +8,7 @@ import { routes, WS } from '@deriv/shared';
 import ServerTime from 'Utils/server-time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
+import { useP2POrderList } from '@deriv/hooks';
 import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
 import { ModalManager, ModalManagerContextProvider } from './modal-manager';
@@ -15,6 +16,7 @@ import Routes from './routes/routes.jsx';
 import './app.scss';
 
 const App = () => {
+    const { data, error } = useP2POrderList();
     const { notifications, client, ui, common, modules } = useStore();
     const { balance, is_logging_in } = client;
     const { setOnRemount } = modules?.cashier?.general_store;
@@ -80,6 +82,7 @@ const App = () => {
         };
         waitWS('authorize').then(() => {
             general_store.onMount();
+            general_store.setP2POrderlistFromServer(data, error);
             setOnRemount(general_store.onMount);
             if (localStorage.getItem('is_verifying_p2p')) {
                 localStorage.removeItem('is_verifying_p2p');

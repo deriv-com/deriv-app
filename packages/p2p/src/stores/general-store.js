@@ -48,6 +48,8 @@ export default class GeneralStore extends BaseStore {
     parameters = null;
     payment_info = '';
     poi_status = null;
+    p2p_order_list_response_error = null;
+    p2p_order_list_response = [];
     review_period;
     saved_form_state = null;
     should_show_real_name = false;
@@ -164,6 +166,7 @@ export default class GeneralStore extends BaseStore {
             setOrderTableType: action.bound,
             setP2PConfig: action.bound,
             setP2pOrderList: action.bound,
+            setP2POrderlistFromServer: action.bound,
             setParameters: action.bound,
             setPoiStatus: action.bound,
             setReviewPeriod: action.bound,
@@ -217,6 +220,10 @@ export default class GeneralStore extends BaseStore {
 
     get should_show_dp2p_blocked() {
         return this.is_blocked || this.is_high_risk || this.is_p2p_blocked_for_pa;
+    }
+    setP2POrderlistFromServer(p2p_order_list, error) {
+        this.p2p_order_list_response = p2p_order_list;
+        this.p2p_order_list_response_error = error;
     }
 
     blockUnblockUser(should_block, advertiser_id, should_set_is_counterparty_blocked = true) {
@@ -503,15 +510,15 @@ export default class GeneralStore extends BaseStore {
                     },
                     [this.updateAdvertiserInfo, response => sendbird_store.handleP2pAdvertiserInfo(response)]
                 ),
-                order_list_subscription: subscribeWS(
-                    {
-                        p2p_order_list: 1,
-                        subscribe: 1,
-                        offset: 0,
-                        limit: this.list_item_limit,
-                    },
-                    [this.setP2pOrderList]
-                ),
+                // order_list_subscription: subscribeWS(
+                //     {
+                //         p2p_order_list: 1,
+                //         subscribe: 1,
+                //         offset: 0,
+                //         limit: this.list_item_limit,
+                //     },
+                //     [this.setP2pOrderList]
+                // ),
                 exchange_rate_subscription: subscribeWS(
                     {
                         exchange_rates: 1,
@@ -761,12 +768,11 @@ export default class GeneralStore extends BaseStore {
             this.ws_subscriptions.order_list_subscription.unsubscribe();
             return;
         }
-
-        const { p2p_order_list, p2p_order_info } = order_response ?? {};
+        const { p2p_order_info } = order_response ?? {};
         const { order_store } = this.root_store;
 
-        if (p2p_order_list) {
-            const { list } = p2p_order_list;
+        if (this.p2p_order_list_response.length > 0) {
+            const { list } = this.p2p_order_list_response;
             // it's an array of orders from p2p_order_list
             this.handleNotifications(order_store.orders, list);
             list?.forEach(order => order_store.syncOrder(order));

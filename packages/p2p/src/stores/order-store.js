@@ -194,22 +194,22 @@ export default class OrderStore {
     }
 
     getP2POrderList() {
-        requestWS({ p2p_order_list: 1 }).then(response => {
-            if (response) {
-                if (response.error) {
-                    this.setErrorMessage(response.error.message);
-                } else {
-                    const { p2p_order_list } = response;
-                    const { list } = p2p_order_list || {};
+        const response = this.root_store.general_store.p2p_order_list_response;
+        const error = this.root_store.general_store.p2p_order_list_response_error;
+        if (response) {
+            if (error) {
+                this.setErrorMessage(error.message);
+            } else {
+                const { p2p_order_list } = response;
+                const { list } = p2p_order_list || {};
 
-                    if (list?.length) {
-                        this.root_store.general_store.handleNotifications(this.orders, list);
-                        list.forEach(order => this.syncOrder(order));
-                        this.setOrders(list);
-                    }
+                if (list?.length) {
+                    this.root_store.general_store.handleNotifications(this.orders, list);
+                    list.forEach(order => this.syncOrder(order));
+                    this.setOrders(list);
                 }
             }
-        });
+        }
     }
 
     getSettings() {

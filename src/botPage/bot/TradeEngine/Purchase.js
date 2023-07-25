@@ -1,3 +1,4 @@
+import { api_base } from '@api-base';
 import { translate } from '@i18n';
 import { getUUID, recoverFromError, doUntilDone } from '../tools';
 import { contractStatus, info, notify } from '../broadcast';
@@ -55,7 +56,7 @@ export default Engine =>
                 currency,
             });
 
-            const action = () => this.api.send({ buy: proposal.id, price: proposal.ask_price });
+            const action = () => api_base.api.send({ buy: proposal.id, price: proposal.ask_price });
 
             if (!this.options.timeMachineEnabled) {
                 return doUntilDone(action).then(onSuccess);

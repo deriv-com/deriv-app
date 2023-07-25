@@ -13,7 +13,6 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
     constructor($scope) {
         super();
         this.tradeEngine = new TradeEngine($scope);
-        this.api = $scope.api;
         this.observer = $scope.observer;
         this.$scope = $scope;
     }

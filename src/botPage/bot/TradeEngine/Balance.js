@@ -1,3 +1,4 @@
+import { api_base } from '@api-base';
 import { roundBalance } from '../../common/tools';
 import { info } from '../broadcast';
 import { observer as globalObserver } from '../../../common/utils/observer';
@@ -5,7 +6,7 @@ import { observer as globalObserver } from '../../../common/utils/observer';
 export default Engine =>
     class Balance extends Engine {
         observeBalance() {
-            this.api.onMessage().subscribe(({ data }) => {
+            api_base.api.onMessage().subscribe(({ data }) => {
                 if (data?.error?.code) {
                     return;
                 }

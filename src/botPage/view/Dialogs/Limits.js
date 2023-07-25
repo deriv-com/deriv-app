@@ -1,5 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
-import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
+import { api_base } from '@api-base';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { getToken } from '@storage';
@@ -54,13 +54,13 @@ class LimitsContent extends PureComponent {
 
     updateMaxLosses() {
         return new Promise((resolve, reject) => {
-            const { api } = this.props;
             const $startButton = $('#submit-trade-limits');
             const initialText = $startButton.text();
 
             showSpinnerInButton($startButton);
 
-            api.getSelfExclusion()
+            api_base.api
+                .getSelfExclusion()
                 .then(response => {
                     const { max_losses: maxLosses } = response.get_self_exclusion;
                     let callback;
@@ -182,27 +182,20 @@ class LimitsContent extends PureComponent {
     }
     static props = {
         onSave: PropTypes.func,
-        api: PropTypes.instanceOf(DerivAPIBasic),
     };
 }
 
 LimitsContent.propTypes = {
     onSave: PropTypes.func,
-    api: PropTypes.instanceOf(DerivAPIBasic),
 };
 
 export default class Limits extends Dialog {
-    constructor(api) {
+    constructor() {
         const onSave = limits => {
             this.limitsPromise(limits);
             this.close();
         };
-        super(
-            'limits-dialog',
-            translate('Trade Limitations'),
-            <LimitsContent onSave={onSave} api={api} />,
-            style.dialogLayout
-        );
+        super('limits-dialog', translate('Trade Limitations'), <LimitsContent onSave={onSave} />, style.dialogLayout);
         this.registerCloseOnOtherDialog();
     }
     getLimits() {

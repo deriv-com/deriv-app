@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+import { api_base } from '@api-base';
 import { translate } from '@i18n';
 import { durationToSecond } from '../../../common/utils/tools';
 import { createError } from '../../common/error';
@@ -66,7 +67,6 @@ const watchScope = ({ store, stopScope, passScope, passFlag }) => {
 export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Proposal(Ticks(Total(class {}))))))) {
     constructor($scope) {
         super();
-        this.api = $scope.api;
         this.observer = $scope.observer;
         this.$scope = $scope;
         this.observe();
@@ -105,10 +105,10 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
     loginAndGetBalance(token) {
         if (this.token === token) return Promise.resolve();
-        doUntilDone(() => this.api.authorize(token)).catch(e => this.$scope.observer.emit('Error', e));
+        doUntilDone(() => api_base.api.authorize(token)).catch(e => this.$scope.observer.emit('Error', e));
         return new Promise(resolve =>
             // eslint-disable-next-line no-promise-executor-return
-            this.api.expectResponse('authorize').then(({ authorize }) => {
+            api_base.api.expectResponse('authorize').then(({ authorize }) => {
                 this.accountInfo = authorize;
                 this.token = token;
                 resolve();

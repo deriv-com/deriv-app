@@ -1,4 +1,5 @@
 import React from 'react';
+import { api_base } from '@api-base';
 import {
     ChartMode,
     DrawTools,
@@ -9,7 +10,6 @@ import {
     ToolbarWidget,
     Views,
 } from '@deriv/deriv-charts';
-import { api_base } from '@api-base';
 import { getLanguage } from '@storage';
 import { translate } from '@i18n';
 import Dialog from './Dialog';
@@ -89,7 +89,7 @@ const ChartContent = () => {
 
     const getKey = request => `${request.ticks_history}-${request.granularity}`;
     const requestAPI = data =>
-        ticksService.api.send(data).catch(e => {
+        api_base.api.send(data).catch(e => {
             globalObserver.emit('Error', e);
         });
 

@@ -1,3 +1,4 @@
+import { api_base } from '@api-base';
 import { roundBalance } from '../../common/tools';
 import { doUntilDone } from '../tools';
 import { contractStatus, contractSettled, contract as broadcastContract } from '../broadcast';
@@ -9,7 +10,7 @@ const AFTER_FINISH_TIMEOUT = 5;
 export default Engine =>
     class OpenContract extends Engine {
         observeOpenContract() {
-            this.api.onMessage().subscribe(({ data }) => {
+            api_base.api.onMessage().subscribe(({ data }) => {
                 if (data?.error?.code) {
                     return;
                 }
@@ -64,7 +65,7 @@ export default Engine =>
             this.contractId = contract_id;
 
             doUntilDone(() =>
-                this.api.send({
+                api_base.api.send({
                     proposal_open_contract: 1,
                     contract_id,
                 })

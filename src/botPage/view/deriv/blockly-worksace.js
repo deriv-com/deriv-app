@@ -265,7 +265,7 @@ const addBindings = blockly => {
         const tokenObj = token ? getToken(token) : false;
 
         if (tokenObj && tokenObj.hasTradeLimitation) {
-            const limits = new Limits(api_base.api);
+            const limits = new Limits();
             limits
                 .getLimits()
                 .then(startBot)

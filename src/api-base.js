@@ -20,6 +20,7 @@ class APIBase {
         this.api.onOpen().subscribe(() => {
             // eslint-disable-next-line no-console
             console.log('Connection has been established!');
+            console.log(this.api);
         });
     }
 

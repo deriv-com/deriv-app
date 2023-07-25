@@ -129,7 +129,7 @@ const TradeTable = ({ account_id }) => {
         while (!settled) {
             await sleep();
             try {
-                await refreshContract(api_base.api, contract_id);
+                await refreshContract(contract_id);
                 const rows = account_state[account_id].rows; //eslint-disable-line
                 const contract_row = rows.find(row => row.contract_id === contract_id); //eslint-disable-line
                 if (contract_row && contract_row.contract_settled) {
@@ -143,8 +143,8 @@ const TradeTable = ({ account_id }) => {
         }
     };
 
-    const refreshContract = async (_api, contract_id) => {
-        const contract_info = await _api.send({ proposal_open_contract: 1, contract_id }).catch(e => {
+    const refreshContract = async contract_id => {
+        const contract_info = await api_base.api.send({ proposal_open_contract: 1, contract_id }).catch(e => {
             globalObserver.emit('Error', e);
         });
 

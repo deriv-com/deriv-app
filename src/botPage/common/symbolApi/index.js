@@ -1,3 +1,4 @@
+import { api_base } from '@api-base';
 import { getTokenList, removeAllTokens } from '@storage';
 import ActiveSymbols from './activeSymbols';
 import config from '../const';
@@ -41,15 +42,14 @@ const getCategoryForCondition = condition =>
     );
 
 export default class _Symbol {
-    constructor(api) {
-        this.api = api;
+    constructor() {
         this.initPromise = new Promise(resolve => {
             const getActiveSymbolsLogic = () => {
-                this.api
+                api_base.api
                     .send({ active_symbols: 'brief' })
                     .then(r => {
                         this.activeSymbols = new ActiveSymbols(r.active_symbols);
-                        this.api
+                        api_base.api
                             .send({ asset_index: 1 })
                             .then(({ asset_index }) => {
                                 parsed_asset_index = parseAssetIndex(asset_index);
@@ -66,7 +66,7 @@ export default class _Symbol {
             // Authorize the WS connection when possible for accurate offered Symbols & AssetIndex
             const token_list = getTokenList();
             if (token_list.length) {
-                this.api
+                api_base.api
                     .authorize(token_list[0].token)
                     .then(() => getActiveSymbolsLogic())
                     .catch(e => {

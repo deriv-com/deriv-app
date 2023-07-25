@@ -118,7 +118,7 @@ const Redirect = ({
             break;
         }
         case 'payment_withdraw': {
-            const is_wallet_account = loginid.toLowerCase().includes('w');
+            const is_wallet_account = /CRW|VRW/.test(loginid);
 
             if (is_wallet_account) {
                 history.push({

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useFetch from './useFetch';
 import {
     TSocketAcceptableProps,
@@ -28,6 +28,10 @@ const usePaginatedFetch = <T extends TSocketPaginateableEndpointNames>(
         payload: { ...payload, offset, limit },
         options: { ...options, keepPreviousData: !!offset },
     });
+
+    useEffect(() => {
+        return () => remove();
+    }, []);
 
     const loadMore = useCallback(() => setOffset(prev => prev + limit), [limit]);
 

@@ -1072,6 +1072,7 @@ export default class TradeStore extends BaseStore {
             this.proposal_info = {};
             this.purchase_info = {};
             this.forgetAllProposal();
+            if (this.is_accumulator) this.resetAccumulatorData();
             return;
         }
 
@@ -1194,6 +1195,7 @@ export default class TradeStore extends BaseStore {
                     this.commission = commission_match[1];
                 }
             }
+            if (this.is_accumulator) this.resetAccumulatorData();
 
             // Sometimes the initial barrier doesn't match with current barrier choices received from API.
             // When this happens we want to populate the list of barrier choices to choose from since the value cannot be specified manually

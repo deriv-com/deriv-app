@@ -9,7 +9,7 @@ import type {
     TSocketResponseData,
 } from '../types';
 
-const AUTH_REQUIRED_ENDPOINTS = ['balance'];
+const AUTH_REQUIRED_ENDPOINTS = ['balance', 'get_settings'];
 
 const useFetch = <T extends TSocketEndpointNames>(name: T, ...props: TSocketAcceptableProps<T, true>) => {
     const prop = props?.[0];
@@ -18,9 +18,15 @@ const useFetch = <T extends TSocketEndpointNames>(name: T, ...props: TSocketAcce
 
     let enabled = true;
 
-    if (AUTH_REQUIRED_ENDPOINTS.includes(name)) {
-        const state = queryClient.getQueryState<TSocketResponseData<'authorize'>>(['authorize']);
+    const accounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
+    const active_loginid = localStorage.getItem('active_loginid');
+    const current_token = accounts?.[active_loginid || '']?.token;
 
+    if (AUTH_REQUIRED_ENDPOINTS.includes(name)) {
+        const state = queryClient.getQueryState<TSocketResponseData<'authorize'>>([
+            'authorize',
+            JSON.stringify({ authorize: current_token }),
+        ]);
         enabled = Boolean(state?.data?.authorize);
     }
 

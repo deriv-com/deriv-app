@@ -24,7 +24,7 @@ type TPersonalDetailsConfig = {
     account_status: GetAccountStatus;
 };
 
-const personal_details_config = ({
+export const personal_details_config = ({
     residence_list,
     account_settings,
     is_appstore,

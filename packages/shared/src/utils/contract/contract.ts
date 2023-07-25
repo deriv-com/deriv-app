@@ -61,6 +61,8 @@ export const isMultiplierContract = (contract_type = '') => /MULT/i.test(contrac
 
 export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contract_type);
 
+export const isOnlyUpsDownsContract = (contract_type = '') => /RUN/i.test(contract_type);
+
 export const isCryptoContract = (underlying = '') => underlying.startsWith('cry');
 
 export const getAccuBarriersDefaultTimeout = (symbol: string) => {
@@ -192,6 +194,6 @@ export const getContractUpdateConfig = ({ contract_update, limit_order }: TContr
     };
 };
 
-export const shouldShowExpiration = (symbol: string) => /^cry/.test(symbol);
+export const shouldShowExpiration = (symbol = '') => symbol.startsWith('cry');
 
 export const shouldShowCancellation = (symbol = '') => !/^(cry|CRASH|BOOM|stpRNG|WLD|JD)/.test(symbol);

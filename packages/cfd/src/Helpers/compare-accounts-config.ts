@@ -26,7 +26,7 @@ const getHighlightedIconLabel = (
                 { icon: 'Baskets', text: localize('Baskets'), highlighted: true },
                 { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: true },
                 { icon: 'Stocks', text: localize('Stocks'), highlighted: false },
-                { icon: 'StockIndices', text: localize('Stock Indices'), highlighted: false },
+                { icon: 'StockIndices', text: localize('Stock indices'), highlighted: false },
                 { icon: 'Commodities', text: localize('Commodities'), highlighted: false },
                 { icon: 'Forex', text: forex_label, highlighted: false },
                 { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: false },
@@ -75,7 +75,7 @@ const getHighlightedIconLabel = (
                 { icon: 'Baskets', text: localize('Baskets'), highlighted: true },
                 { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: true },
                 { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
-                { icon: 'StockIndices', text: localize('Stock Indices'), highlighted: true },
+                { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
                 { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
                 { icon: 'Forex', text: forex_label, highlighted: true },
                 { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
@@ -165,7 +165,7 @@ const cfd_config = () => ({
     leverage: '1:1000',
     leverage_description: localize('Maximum Leverage'),
     spread: '0.5 pips',
-    spread_description: localize('Spread from'),
+    spread_description: localize('Spreads from'),
     counterparty_company: 'Deriv (SVG) LLC',
     counterparty_company_description: localize('Counterparty company'),
     jurisdiction: 'St. Vincent & Grenadines',
@@ -197,7 +197,7 @@ const getJuridisctionDescription = (shortcode: string) => {
                 'Deriv (BVI) Ltd',
                 'British Virgin Islands',
                 localize('British Virgin Islands Financial Services Commission'),
-                localize('(License no. SIBA/L/18/1114) Regulator/External dispute Resolution')
+                localize('(License no. SIBA/L/18/1114)<br />Regulator/External dispute Resolution')
             );
         case 'synthetic_vanuatu':
             return createDescription(
@@ -211,7 +211,7 @@ const getJuridisctionDescription = (shortcode: string) => {
                 'Deriv (BVI) Ltd',
                 'British Virgin Islands',
                 localize('British Virgin Islands Financial Services Commission'),
-                localize('(License no. SIBA/L/18/1114) Regulator/External Dispute Resolution')
+                localize('(License no. SIBA/L/18/1114)<br />Regulator/External Dispute Resolution')
             );
         case 'financial_vanuatu':
             return createDescription(
@@ -225,7 +225,7 @@ const getJuridisctionDescription = (shortcode: string) => {
                 'Deriv (FX) Ltd',
                 'Labuan',
                 localize('Labuan Financial Services Authority'),
-                localize('(licence no. MB/18/0024) Regulator/External Dispute Resolution'),
+                localize('(licence no. MB/18/0024)<br />Regulator/External Dispute Resolution'),
                 '1:100'
             );
         case 'financial_maltainvest':

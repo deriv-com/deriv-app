@@ -2,7 +2,7 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
-import LinkExpiredModal from '../LinkExpiredModal/link-expired-modal';
+import LinkExpiredModal from '../LinkExpiredModal';
 import ResetPasswordModal from '../ResetPasswordModal';
 import UnlinkPasswordModal from '../UnlinkPasswordModal';
 

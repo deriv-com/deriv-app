@@ -5,7 +5,9 @@ import type StatementStores from './Modules/Statement/statement-store';
 
 type TReportsStore = {
     profit_table: Omit<ProfitStores, 'data'> & { data: string[] };
-    statement: Omit<StatementStores, 'data'> & { data: string[] };
+    statement: Omit<StatementStores, 'account_statistics'> & {
+        account_statistics: { total_deposits: number; total_withdrawals: number };
+    };
 };
 
 const ReportsStoreContext = React.createContext<TReportsStore | null>(null);

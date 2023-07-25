@@ -54,6 +54,7 @@ const useWalletTransactions = (
             currency_config: undefined,
             icon: 'IcWalletCurrencyBtc',
             wallet_currency_type: 'BTC',
+            is_fiat_currency: false,
         });
     const accounts = [demo_platform_account, ...real_platform_accounts];
     const { getConfig } = useCurrencyConfig();

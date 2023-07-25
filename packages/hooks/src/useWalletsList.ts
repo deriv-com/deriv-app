@@ -116,7 +116,7 @@ const useWalletsList = () => {
                 /** Local asset name for the wallet icon. ex: `IcWalletCurrencyUsd` for `USD`  */
                 icon: is_dark_mode_on ? wallet_icon.dark : wallet_icon.light,
                 /** Indicating whether the wallet is a fiat currency. */
-                is_fiat: wallet.is_virtual !== 1 && fiat_currencies.includes(wallet.currency || 'USD'),
+                is_fiat_currency: wallet.is_virtual !== 1 && fiat_currencies.includes(wallet.currency || 'USD'),
             } as const;
         });
     }, [getConfig, is_dark_mode_on, loginid, wallets_with_balance]);

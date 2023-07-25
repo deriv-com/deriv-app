@@ -11,7 +11,7 @@ const WalletCryptoCFD = observer(() => {
     const wallet_account = useActiveWallet();
     const currency = wallet_account?.currency;
     const { data } = useWalletsList();
-    const fiat_wallet_currency = data?.find(wallet => wallet.is_fiat)?.currency;
+    const fiat_wallet_currency = data?.find(wallet => wallet.is_fiat_currency)?.currency;
 
     return (
         <div className='wallet-content__cfd-crypto'>

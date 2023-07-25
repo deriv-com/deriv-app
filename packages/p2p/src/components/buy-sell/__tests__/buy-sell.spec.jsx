@@ -1,14 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { useStores } from 'Stores/index';
 import BuySell from '../buy-sell';
-
 
 const mock_store = {
 
     general_store: {
-        should_show_popup: false
+        should_show_popup: false,
     },
     buy_sell_store: {
         registerIsListedReaction: jest.fn(),
@@ -26,7 +24,6 @@ jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
     useStores: jest.fn(() => mock_store),
 }));
-
 
 describe('<BuySellPage/>', () => {
     it('should render Verification Section when user is not verified', () => {

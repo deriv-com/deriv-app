@@ -103,9 +103,7 @@ export default class BaseStore {
             writable: true,
         });
 
-        const has_local_or_session_storage =
-            (local_storage_properties && local_storage_properties.length) ||
-            (session_storage_properties && session_storage_properties.length);
+        const has_local_or_session_storage = local_storage_properties?.length || session_storage_properties?.length;
 
         if (has_local_or_session_storage) {
             if (!store_name) {
@@ -146,7 +144,7 @@ export default class BaseStore {
             snapshot.root_store = this.root_store;
         }
 
-        if (properties && properties.length) {
+        if (properties?.length) {
             snapshot = properties.reduce(
                 (result, p) => Object.assign(result, { [p]: snapshot[p as keyof this] }),
                 {} as this
@@ -191,7 +189,7 @@ export default class BaseStore {
      * @param {Symbol}   storage    - A symbol object that defines the storage which the snapshot should be stored in it.
      *
      */
-    saveToStorage(properties: string[] = [], storage: symbol) {
+    saveToStorage(properties: string[] = [], storage = Symbol('')) {
         const snapshot = JSON.stringify(this.getSnapshot(properties), (key, value) => {
             if (value !== null) return value;
             return undefined;
@@ -272,7 +270,7 @@ export default class BaseStore {
     validateProperty<T extends BaseStore>(property: string, value: T[keyof T]) {
         const validation_rules_for_property = this.validation_rules[property as keyof TValidationRules];
         const trigger = 'trigger' in validation_rules_for_property ? validation_rules_for_property.trigger : undefined;
-        const inputs = { [property]: value !== undefined ? value : this[property as keyof this] };
+        const inputs = { [property]: value ?? this[property as keyof this] };
         const validation_rules = {
             [property]: 'rules' in validation_rules_for_property ? validation_rules_for_property.rules : [],
         };
@@ -321,7 +319,7 @@ export default class BaseStore {
                 () => {
                     try {
                         const result = this.switch_account_listener?.();
-                        if (result && result.then && typeof result.then === 'function') {
+                        if (result?.then && typeof result.then === 'function') {
                             result.then(() => {
                                 this.root_store?.client.switchEndSignal();
                                 this.onSwitchAccount(this.switch_account_listener);
@@ -349,7 +347,7 @@ export default class BaseStore {
                 () => {
                     try {
                         const result = this.pre_switch_account_listener?.();
-                        if (result && result.then && typeof result.then === 'function') {
+                        if (result?.then && typeof result.then === 'function') {
                             result.then(() => {
                                 this.root_store?.client.setPreSwitchAccount(false);
                                 this.onPreSwitchAccount(this.pre_switch_account_listener);
@@ -375,7 +373,7 @@ export default class BaseStore {
             async () => {
                 try {
                     const result = this.logout_listener?.();
-                    if (result && result.then && typeof result.then === 'function') {
+                    if (result?.then && typeof result.then === 'function') {
                         result.then(() => {
                             this.root_store?.client.setLogout(false);
                             this.onLogout(this.logout_listener);
@@ -401,7 +399,7 @@ export default class BaseStore {
             async () => {
                 try {
                     const result = this.client_init_listener?.();
-                    if (result && result.then && typeof result.then === 'function') {
+                    if (result?.then && typeof result.then === 'function') {
                         result.then(() => {
                             this.root_store?.client.setInitialized(false);
                             this.onClientInit(this.client_init_listener);
@@ -465,7 +463,7 @@ export default class BaseStore {
             () => {
                 try {
                     const result = this.real_account_signup_ended_listener?.();
-                    if (result && result.then && typeof result.then === 'function') {
+                    if (result?.then && typeof result.then === 'function') {
                         result.then(() => {
                             this.root_store?.ui.setRealAccountSignupEnd(false);
                             this.onRealAccountSignupEnd(this.real_account_signup_ended_listener);

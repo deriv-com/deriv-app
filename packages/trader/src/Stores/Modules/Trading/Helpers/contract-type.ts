@@ -284,7 +284,7 @@ export const ContractType = (() => {
             ]) || {};
 
         if (contract_expiry_type) {
-            duration_min_max = (duration_min_max as TTradeStore['duration_min_max'])[contract_expiry_type] || {};
+            duration_min_max = 'contract_expiry_type' in duration_min_max ? duration_min_max[contract_expiry_type] : {};
         }
 
         return { duration_min_max };
@@ -318,8 +318,7 @@ export const ContractType = (() => {
 
     const getSessions = (contract_type: string, start_date: number) => {
         const config: TConfig = getPropertyValue(available_contract_types, [contract_type, 'config']) || {};
-        const sessions = ((config.forward_starting_dates || []).find(option => option.value === start_date) || {})
-            .sessions;
+        const sessions = config.forward_starting_dates?.find(option => option.value === start_date)?.sessions;
         return { sessions };
     };
 
@@ -514,7 +513,7 @@ export const ContractType = (() => {
         if (expiry_type === 'endtime') {
             let market_close_time = '23:59:59';
 
-            if (market_close_times && market_close_times.length && market_close_times[0] !== '--') {
+            if (market_close_times?.length && market_close_times[0] !== '--') {
                 // Some of underlyings (e.g. Australian Index) have two close time during a day so we always select the further one as the end time of the contract.
                 market_close_time = market_close_times.slice(-1)[0];
             }
@@ -612,7 +611,7 @@ export const ContractType = (() => {
         const arr_cancellation_range: string[] =
             getPropertyValue(available_contract_types, [contract_type, 'config', 'cancellation_range']) || [];
 
-        const regex = new RegExp('^([0-9]+)|([a-zA-Z]+)$', 'g');
+        const regex = /^\d{1,}|[a-zA-Z]{1,}$/g;
         const getText = (str: string) => {
             const [duration, unit] = str.match(regex) ?? [];
             const unit_map = getUnitMap();

@@ -39,7 +39,7 @@ export const Input = ({
         error_messages={error_messages}
         fractional_digits={getDecimalPlaces(currency)}
         id='dt_amount_input'
-        inline_prefix={is_single_currency ? currency : null || undefined}
+        inline_prefix={is_single_currency ? currency : undefined}
         is_autocomplete_disabled
         is_float
         is_hj_whitelisted

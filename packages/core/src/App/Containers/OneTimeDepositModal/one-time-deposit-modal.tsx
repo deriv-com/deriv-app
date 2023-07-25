@@ -53,7 +53,7 @@ const OneTimeDepositModal = observer(() => {
                 <Text as='h1' size={is_mobile ? 'm' : 'l'} weight='bold'>
                     <Localize i18n_default_text='Deposit' />
                 </Text>
-                <Text as='p' size={is_mobile ? 'xs' : 's'}>
+                <Text as='p' size={is_mobile ? 'xs' : 's'} align='center'>
                     <Localize i18n_default_text='Account created. Select payment method for deposit.' />
                 </Text>
             </div>

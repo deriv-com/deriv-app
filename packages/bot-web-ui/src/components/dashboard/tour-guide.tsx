@@ -11,9 +11,18 @@ type TTourGuide = {
     onCloseTour: () => void;
     step_index: number;
     show_actions?: boolean;
+    has_localize_component?: boolean;
 };
 
-const TourGuide = ({ content, img, label, onCloseTour, step_index, show_actions = true }: TTourGuide) => {
+const TourGuide = ({
+    content,
+    img,
+    label,
+    onCloseTour,
+    step_index,
+    show_actions = true,
+    has_localize_component = false,
+}: TTourGuide) => {
     const [has_image_loaded, setImageLoaded] = React.useState(false);
 
     React.useEffect(() => {
@@ -52,15 +61,19 @@ const TourGuide = ({ content, img, label, onCloseTour, step_index, show_actions 
                 )}
 
                 <div className='onboard__content'>
-                    {content.map(content_text => {
-                        return (
-                            <div className='onboard__content__block' key={content_text}>
-                                <Text align='left' as='h' size='xs' line_height='l'>
-                                    {content_text}
-                                </Text>
-                            </div>
-                        );
-                    })}
+                    <>
+                        {content.map(content_text => {
+                            return has_localize_component ? (
+                                content_text
+                            ) : (
+                                <div className='onboard__content__block' key={content_text}>
+                                    <Text align='left' as='h' size='xs' line_height='l'>
+                                        {content_text}
+                                    </Text>
+                                </div>
+                            );
+                        })}
+                    </>
                 </div>
             </div>
         </React.Fragment>

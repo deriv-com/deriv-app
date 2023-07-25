@@ -185,7 +185,6 @@ export const DBOT_ONBOARDING = [
                 step_index={6}
             />
         ),
-        locale: { last: localize('Next') },
         ...joyride_props,
         disableOverlay: false,
     },
@@ -194,10 +193,17 @@ export const DBOT_ONBOARDING = [
         content: (
             <TourGuide
                 label={localize('Looking to retake the tour?')}
-                content={[localize("If you're interested, head to Tutorials.")]}
+                content={[
+                    <Localize
+                        key={0}
+                        i18n_default_text={`If you're interested, head to <0>Tutorials.</0>`}
+                        components={[<strong key={0} />]}
+                    />,
+                ]}
                 dashboard_tab_index={0}
                 step_index={7}
                 show_actions={false}
+                has_localize_component
             />
         ),
         locale: { last: localize('Got it, thanks!') },

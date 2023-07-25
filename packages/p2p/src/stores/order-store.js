@@ -200,7 +200,7 @@ export default class OrderStore {
             if (error) {
                 this.setErrorMessage(error.message);
             } else {
-                const { p2p_order_list } = response;
+                const { p2p_order_list } = response || {};
                 const { list } = p2p_order_list || {};
 
                 if (list?.length) {

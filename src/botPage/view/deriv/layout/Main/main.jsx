@@ -3,6 +3,7 @@ import Helmet from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { TrackJS } from 'trackjs';
+import { api_base } from '@api-base';
 import { AppConstants } from '@constants';
 import { parseQueryString, getRelatedDeriveOrigin, queryToObjectArray } from '@utils';
 import { translate } from '@i18n';
@@ -21,7 +22,6 @@ import { observer as globalObserver } from '../../../../../common/utils/observer
 import _Blockly from '../../../blockly';
 import LogTable from '../../../LogTable';
 import TradeInfoPanel from '../../../TradeInfoPanel';
-import api from '../../api';
 import initialize, { applyToolboxPermissions } from '../../blockly-worksace';
 import SidebarToggle from '../../components/SidebarToggle';
 import { updateActiveAccount, updateActiveToken, updateIsLogged } from '../../store/client-slice';
@@ -91,7 +91,7 @@ const Main = () => {
                         }
                         dispatch(updateIsLogged(isLoggedIn()));
                         history.replace('/');
-                        api.send({ balance: 1, account: 'all' }).catch(e => {
+                        api_base.api.send({ balance: 1, account: 'all' }).catch(e => {
                             globalObserver.emit('Error', e);
                         });
                         applyToolboxPermissions();

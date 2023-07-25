@@ -1,10 +1,14 @@
+import { api_base } from '@api-base';
 import Observer from '../../common/utils/observer';
 import TicksService from '../common/TicksService';
-import api from '../view/deriv/api';
 
 export const createScope = () => {
     const observer = new Observer();
-    const ticksService = new TicksService(api);
+    const ticksService = new TicksService(api_base.api);
 
-    return { observer, api, ticksService };
+    return {
+        observer,
+        api: api_base.api,
+        ticksService,
+    };
 };

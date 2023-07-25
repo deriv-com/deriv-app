@@ -9,12 +9,12 @@ import {
     ToolbarWidget,
     Views,
 } from '@deriv/deriv-charts';
+import { api_base } from '@api-base';
 import { getLanguage } from '@storage';
 import { translate } from '@i18n';
 import Dialog from './Dialog';
 import ChartTicksService from '../../common/ChartTicksService';
 import { observer as globalObserver } from '../../../common/utils/observer';
-import api from '../deriv/api';
 
 setSmartChartsPublicPath('./js/');
 
@@ -39,7 +39,7 @@ const ChartContent = () => {
         symbol: globalObserver.getState('symbol'),
         should_barrier_display: false,
     });
-    const ticksService = new ChartTicksService(api);
+    const ticksService = new ChartTicksService(api_base.api);
     const listeners = [];
 
     React.useEffect(() => {

@@ -4,6 +4,7 @@ import React from 'react';
 import Draggable from 'react-draggable';
 import { Table, Column } from 'react-virtualized';
 import PropTypes from 'prop-types';
+import { api_base } from '@api-base';
 import { translate } from '@i18n';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { appendRow, updateRow, saveAs, isNumber } from '../shared';
@@ -37,7 +38,7 @@ StatusFormat.propTypes = {
     value: PropTypes.number,
 };
 
-const TradeTable = ({ account_id, api }) => {
+const TradeTable = ({ account_id }) => {
     const initial_state = { id: 0, rows: [] };
     const [account_state, setAccountState] = React.useState({ [account_id]: initial_state });
 
@@ -128,7 +129,7 @@ const TradeTable = ({ account_id, api }) => {
         while (!settled) {
             await sleep();
             try {
-                await refreshContract(api, contract_id);
+                await refreshContract(api_base.api, contract_id);
                 const rows = account_state[account_id].rows; //eslint-disable-line
                 const contract_row = rows.find(row => row.contract_id === contract_id); //eslint-disable-line
                 if (contract_row && contract_row.contract_settled) {
@@ -287,7 +288,6 @@ const TradeTable = ({ account_id, api }) => {
 
 TradeTable.propTypes = {
     account_id: PropTypes.string,
-    api: PropTypes.object,
 };
 
 export default TradeTable;

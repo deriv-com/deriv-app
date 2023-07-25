@@ -1,6 +1,6 @@
 import { load as loadLang } from '@lang';
 import { translate } from '@i18n';
-import api from '../view/deriv/api';
+import { api_base } from '@api-base';
 
 loadLang();
 
@@ -289,7 +289,9 @@ const config = {
 
 export async function updateConfigCurrencies() {
     try {
-        const response = await api.send({ payout_currencies: 1 });
+        // TODO: this need to be moved inside the api-base class since called only one time
+        // save the currencies in the api-base instance
+        const response = await api_base.api.send({ payout_currencies: 1 });
         config.lists.CURRENCY = response.payout_currencies.map(c => {
             if (c === 'UST') return ['USDT', 'UST'];
             return [c, c];

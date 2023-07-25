@@ -54,6 +54,7 @@ const AccountActions = () => {
             const next_active_account = tokenList?.find(account => account.token === account_switcher_token);
 
             if (next_active_account?.accountName) {
+                console.log('---- ---- ---- ---- account-actions onAccept');
                 setStorage('active_loginid', next_active_account.accountName);
                 dispatch(updateActiveToken(next_active_account.token));
                 dispatch(setShouldReloadWorkspace(true));

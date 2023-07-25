@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
+import { api_base } from '@api-base';
 import config from '@config';
 import { parseQueryString, queryToObjectArray, isMobile, isDesktop } from '@utils';
 import {
@@ -24,7 +25,6 @@ import {
 } from '../../store/client-slice';
 import { setAccountSwitcherLoader, updateShowMessagePage } from '../../store/ui-slice';
 import { DrawerMenu, AuthButtons, AccountActions, MenuLinks, AccountSwitcherLoader } from './components';
-import api from '../../api';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
 import { checkSwitcherType, isEuByAccount } from '../../../../../common/footer-checks';
 import './header.scss';
@@ -89,7 +89,7 @@ const Header = () => {
     }, [is_logged_in]);
 
     React.useEffect(() => {
-        api.onMessage().subscribe(({ data }) => {
+        api_base.api.onMessage().subscribe(({ data }) => {
             if (data?.error?.code) return;
             if (data?.msg_type === 'balance') {
                 dispatch(updateBalance(data.balance));
@@ -117,7 +117,8 @@ const Header = () => {
         const logged_in_token = client_accounts[current_login_id]?.token || active_storage_token?.token || '';
 
         if (logged_in_token) {
-            api.authorize(logged_in_token)
+            api_base.api
+                .authorize(logged_in_token)
                 .then(account => {
                     const active_loginid = account.authorize.account_list;
                     const client_country = account.authorize.country;
@@ -136,11 +137,12 @@ const Header = () => {
                     dispatch(setAccountSwitcherLoader(false));
                     if (!is_subscribed) {
                         is_subscribed = true;
-                        api.send({
-                            balance: 1,
-                            account: 'all',
-                            subscribe: 1,
-                        })
+                        api_base.api
+                            .send({
+                                balance: 1,
+                                account: 'all',
+                                subscribe: 1,
+                            })
                             .then(({ balance }) => {
                                 globalObserver.setState({
                                     balance: Number(balance.balance),

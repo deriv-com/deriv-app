@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
-import api from '../../../view/deriv/api';
+import { api_base } from '@api-base';
 import _Symbol from '../index';
 
 describe('symbol', () => {
@@ -8,7 +8,7 @@ describe('symbol', () => {
         let symbol;
         // eslint-disable-next-line prefer-arrow-callback
         beforeAll(function beforeAll(done) {
-            symbol = new _Symbol(api);
+            symbol = new _Symbol(api_base.api);
             symbol.initPromise.then(() => {
                 done();
             });

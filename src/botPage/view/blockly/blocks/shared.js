@@ -1,13 +1,11 @@
 import { TrackJS } from 'trackjs';
 import { getStorage, setStorage, getTokenList, removeAllTokens } from '@storage';
 import { isProduction } from '@utils';
-
+import { api_base } from '@api-base';
 import { translate } from '@i18n';
 import { symbolApi } from '../../shared';
 import config from '../../../common/const';
 import { observer as globalObserver } from '../../../../common/utils/observer';
-
-import api from '../../deriv/api';
 
 let purchaseChoices = [[translate('Click to select'), '']];
 
@@ -310,7 +308,7 @@ export const getContractsAvailableForSymbolFromApi = async underlyingSymbol => {
     let tokenList = getTokenList();
     if (tokenList.length) {
         try {
-            await api.authorize(tokenList[0].token);
+            await api_base.api.authorize(tokenList[0].token);
         } catch (e) {
             removeAllTokens();
             tokenList = [];
@@ -318,7 +316,7 @@ export const getContractsAvailableForSymbolFromApi = async underlyingSymbol => {
     }
     const contractsForSymbol = {};
     try {
-        const response = await api.send({ contracts_for: underlyingSymbol });
+        const response = await api_base.api.send({ contracts_for: underlyingSymbol });
         if (response.contracts_for) {
             Object.assign(contractsForSymbol, {
                 symbol: underlyingSymbol,

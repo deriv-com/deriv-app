@@ -268,6 +268,7 @@ export const updateTokenList = () => {
             const current_login_id = getStorage('active_loginid') || '';
             token_list.forEach(token => {
                 if (current_login_id === token.loginInfo.loginid) {
+                    console.log('---- ---- ---- ---- storage updateTokenList');
                     setStorage('active_loginid', token.loginInfo.loginid);
                 }
             });
@@ -300,3 +301,5 @@ export const getCustomEndpoint = () => ({
     url: getStorage('config.server_url'),
     appId: getStorage('config.app_id'),
 });
+
+export const getServerAddressFallback = () => getCustomEndpoint().url || getDefaultEndpoint().url;

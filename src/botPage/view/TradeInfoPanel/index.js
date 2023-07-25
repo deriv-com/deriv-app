@@ -7,7 +7,6 @@ import TradeTable from './TradeTable';
 import RunButton from './RunButton';
 import ClearButton from './ClearButton';
 import useIsMounted from '../../../common/hooks/isMounted';
-import api from '../deriv/api';
 import './summary-panel.scss';
 
 const TradeInfoPanel = () => {
@@ -46,7 +45,7 @@ const TradeInfoPanel = () => {
                     <div className='content-row'>
                         <div>
                             <div className='content-row-table'>
-                                <TradeTable account_id={account_id} api={api} />
+                                <TradeTable account_id={account_id} />
                             </div>
                         </div>
                     </div>

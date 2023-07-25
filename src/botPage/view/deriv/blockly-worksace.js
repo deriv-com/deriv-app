@@ -1,10 +1,10 @@
+import { api_base } from '@api-base';
 import { AppConstants } from '@constants';
 import { getTokenList, setStorage, syncWithDerivApp, getToken, removeAllTokens, updateTokenList } from '@storage';
 import { translate } from '@i18n';
 import config, { updateConfigCurrencies } from '../../common/const';
 import logHandler from '../logger';
 import { observer as globalObserver } from '../../../common/utils/observer';
-
 import { logoutAllTokens } from '../../../common/appId';
 import IntegrationsDialog from '../Dialogs/IntegrationsDialog';
 import Chart from '../Dialogs/Chart';
@@ -19,7 +19,6 @@ import {
 import GTM from '../../../common/gtm';
 import google_drive_util from '../../../common/integrations/GoogleDrive';
 import { load } from '../blockly';
-import api from './api';
 
 const integrationsDialog = new IntegrationsDialog();
 const tradingView = new TradingView();
@@ -218,7 +217,7 @@ const addBindings = blockly => {
 
     $('#chartButton').click(() => {
         if (!chart) {
-            chart = new Chart(api);
+            chart = new Chart(api_base.api);
         }
 
         chart.open();
@@ -266,7 +265,7 @@ const addBindings = blockly => {
         const tokenObj = token ? getToken(token) : false;
 
         if (tokenObj && tokenObj.hasTradeLimitation) {
-            const limits = new Limits(api);
+            const limits = new Limits(api_base.api);
             limits
                 .getLimits()
                 .then(startBot)

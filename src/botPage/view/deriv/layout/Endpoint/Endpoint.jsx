@@ -1,8 +1,15 @@
 import React from 'react';
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
-import { getStorage, setStorage, getLanguage, isLoggedIn, getAppIdFallback } from '@storage';
+import {
+    getStorage,
+    setStorage,
+    getLanguage,
+    isLoggedIn,
+    getAppIdFallback,
+    getDefaultEndpoint,
+    getServerAddressFallback,
+} from '@storage';
 import { translate } from '@i18n';
-import { getDefaultEndpoint, getServerAddressFallback } from '../../api';
 import useLogout from '../../../../../common/hooks/useLogout';
 import './endpoint.scss';
 

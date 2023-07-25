@@ -1,3 +1,4 @@
+import { api_base } from '@api-base';
 import { AppConstants } from '@constants';
 import {
     addToken,
@@ -13,7 +14,6 @@ import {
 } from '@storage';
 import { parseQueryString, getRelatedDeriveOrigin, queryToObjectArray } from '@utils';
 import GTM from './gtm';
-import api from '../botPage/view/deriv/api';
 
 export const oauthLogin = (done = () => 0) => {
     const queryStr = parseQueryString();
@@ -55,11 +55,11 @@ export const getOAuthURL = () =>
 
 export async function addTokenIfValid(token, tokenObjectList) {
     try {
-        const { authorize } = await api.authorize(token);
+        const { authorize } = await api_base.api.authorize(token);
         const { landing_company_name: lcName } = authorize;
         const {
             landing_company_details: { has_reality_check: hasRealityCheck },
-        } = await api.send({ landing_company_details: lcName });
+        } = await api_base.api.send({ landing_company_details: lcName });
         addToken(token, authorize, !!hasRealityCheck, ['iom', 'malta'].includes(lcName) && authorize.country === 'gb');
 
         const { account_list: accountList } = authorize;
@@ -90,9 +90,10 @@ export const logoutAllTokens = () =>
         if (tokenList.length === 0) {
             logout();
         } else {
-            api.authorize(tokenList?.[0].token)
+            api_base.api
+                .authorize(tokenList?.[0].token)
                 .then(() => {
-                    api.send({ logout: 1 }).finally(logout);
+                    api_base.api.send({ logout: 1 }).finally(logout);
                 })
                 .catch(logout);
         }

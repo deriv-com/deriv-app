@@ -30,12 +30,12 @@ const getTimestamp = date => {
 
 const ProfitColor = ({ value }) => <div style={value > 0 ? style.greenLeft : style.redLeft}>{value}</div>;
 ProfitColor.propTypes = {
-    value: PropTypes.number,
+    value: PropTypes.string,
 };
 
 const StatusFormat = ({ value }) => <div style={style.left}>{value}</div>;
 StatusFormat.propTypes = {
-    value: PropTypes.number,
+    value: PropTypes.string,
 };
 
 const TradeTable = ({ account_id }) => {

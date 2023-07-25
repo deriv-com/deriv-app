@@ -95,7 +95,8 @@ describe('<CFDCompareAccountsDescription />', () => {
         expect(screen.getByText('Deriv (FX) Ltd')).toBeInTheDocument();
         expect(screen.getByText('Labuan')).toBeInTheDocument();
         expect(screen.getByText('Labuan Financial Services Authority')).toBeInTheDocument();
-        expect(screen.getByText('(licence no. MB/18/0024) Regulator/External Dispute Resolution')).toBeInTheDocument();
+        expect(screen.getByText('(licence no. MB/18/0024)')).toBeInTheDocument();
+        expect(screen.getByText('Regulator/External Dispute Resolution')).toBeInTheDocument();
     });
 
     it('should render content for financial market type with maltainvest shortcode ', () => {

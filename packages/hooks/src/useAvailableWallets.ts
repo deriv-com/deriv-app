@@ -40,7 +40,8 @@ const useAvailableWallets = () => {
             .filter(currency => !modified_wallets?.some(wallet => wallet.currency === currency))
             .map(currency => ({
                 currency,
-                landing_company_name: data?.landing_company_name,
+                // TODO: add a conditional checker to return the correct landing company name excluding the virtual account.
+                landing_company_name: 'svg' || 'maltainvest',
                 is_added: false,
                 gradient_card_class: `wallet-card__${currency.toLowerCase()}-bg${is_dark_mode_on ? '--dark' : ''}`,
             }));

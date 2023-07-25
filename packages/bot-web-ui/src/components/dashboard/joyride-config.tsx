@@ -195,7 +195,7 @@ export const DBOT_ONBOARDING = [
                 label={localize('Looking to retake the tour?')}
                 content={[
                     <Localize
-                        key={0}
+                        key={`${0}-id-tutorials`}
                         i18n_default_text={`If you're interested, head to <0>Tutorials.</0>`}
                         components={[<strong key={0} />]}
                     />,

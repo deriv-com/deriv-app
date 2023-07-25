@@ -62,13 +62,13 @@ const TourGuide = ({
 
                 <div className='onboard__content'>
                     <>
-                        {content.map(content_text => {
+                        {content.map((content_data, index) => {
                             return has_localize_component ? (
-                                content_text
+                                content_data
                             ) : (
-                                <div className='onboard__content__block' key={content_text}>
+                                <div className='onboard__content__block' key={`${content_data + index}`}>
                                     <Text align='left' as='h' size='xs' line_height='l'>
-                                        {content_text}
+                                        {content_data}
                                     </Text>
                                 </div>
                             );

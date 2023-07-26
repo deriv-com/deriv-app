@@ -26,12 +26,8 @@ const usePaginatedFetch = <T extends TSocketPaginateableEndpointNames>(
     // exact type of the payload is not determined at this point.
     const { remove, ...rest } = useFetch(name, {
         payload: { ...payload, offset, limit },
-        options: { ...options, keepPreviousData: !!offset },
+        options: { ...options, keepPreviousData: true },
     });
-
-    useEffect(() => {
-        return () => remove();
-    }, []);
 
     const loadMore = useCallback(() => setOffset(prev => prev + limit), [limit]);
 

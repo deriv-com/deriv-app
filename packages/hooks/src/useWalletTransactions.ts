@@ -33,6 +33,9 @@ const useWalletTransactions = (
             // @ts-expect-error reset_balance is not supported in the API yet
             action_type: action_type || undefined,
         },
+        options: {
+            cacheTime: 0,
+        },
     });
 
     // Maintain a list of transactions.

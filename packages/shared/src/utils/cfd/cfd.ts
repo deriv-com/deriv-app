@@ -1,6 +1,6 @@
-import { CFD_PLATFORMS } from '../platform';
-import { LandingCompany, GetAccountStatus, DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
+import { CFD_PLATFORMS } from '../platform';
 
 let CFD_text_translated: { [key: string]: () => void };
 
@@ -285,9 +285,13 @@ type TAuthenticationStatusInfo = {
     poi_resubmit_for_maltainvest: boolean;
     poi_resubmit_for_bvi_labuan_vanuatu: boolean;
     poa_pending: boolean;
+    poa_resubmit_for_labuan: boolean;
+    is_idv_revoked: boolean;
 };
 
 export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): TAuthenticationStatusInfo => {
+    const risk_classification = account_status.risk_classification;
+
     const poa_status: string = account_status?.authentication?.document?.status || '';
     const poi_status: string = account_status?.authentication?.identity?.status || '';
 
@@ -297,6 +301,9 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
         onfido: { status: onfido_status } = {},
         manual: { status: manual_status } = {},
     } = services;
+
+    const is_authenticated_with_idv_photoid = account_status?.status?.includes('authenticated_with_idv_photoid');
+    const is_idv_revoked = account_status?.status?.includes('idv_revoked');
 
     const acknowledged_status: string[] = ['pending', 'verified'];
     const failed_cases: string[] = ['rejected', 'expired', 'suspected'];
@@ -339,9 +346,16 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
     const poi_poa_verified_for_maltainvest = poi_verified_for_maltainvest && poa_verified;
 
     //bvi-labuan-vanuatu
-    const poi_acknowledged_for_bvi_labuan_vanuatu: boolean = bvi_labuan_vanuatu_jurisdiction_statuses.some(status =>
+    let poi_acknowledged_for_bvi_labuan_vanuatu: boolean = bvi_labuan_vanuatu_jurisdiction_statuses.some(status =>
         acknowledged_status.includes(status)
     );
+    if (risk_classification === 'high') {
+        poi_acknowledged_for_bvi_labuan_vanuatu = Boolean(onfido_status && acknowledged_status.includes(onfido_status));
+    } else {
+        poi_acknowledged_for_bvi_labuan_vanuatu = bvi_labuan_vanuatu_jurisdiction_statuses.some(status =>
+            acknowledged_status.includes(status)
+        );
+    }
     const need_poi_for_bvi_labuan_vanuatu = !poi_acknowledged_for_bvi_labuan_vanuatu;
     const poi_not_submitted_for_bvi_labuan_vanuatu: boolean = bvi_labuan_vanuatu_jurisdiction_statuses.every(
         status => status === 'none'
@@ -358,6 +372,7 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
         !poi_verified_for_bvi_labuan_vanuatu;
 
     const poi_poa_verified_for_bvi_labuan_vanuatu: boolean = poi_verified_for_bvi_labuan_vanuatu && poa_verified;
+    const poa_resubmit_for_labuan = is_authenticated_with_idv_photoid;
 
     return {
         poa_status,
@@ -388,5 +403,7 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
         poi_resubmit_for_maltainvest,
         poi_resubmit_for_bvi_labuan_vanuatu,
         poa_pending,
+        poa_resubmit_for_labuan,
+        is_idv_revoked,
     };
 };

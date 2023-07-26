@@ -5,11 +5,11 @@ import { epochToMoment, formatMoney, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import { getStatus } from '../../constants/transaction-status';
-import { TCryptoTransactionDetails } from '../../types';
 import { useCashierStore } from '../../stores/useCashierStores';
+import type { TSocketResponse } from '@deriv/api/types';
 
 type TCryptoTransactionsRendererProps = {
-    row: TCryptoTransactionDetails;
+    row: NonNullable<TSocketResponse<'cashier_payments'>['cashier_payments']>['crypto'][number];
     onTooltipClick: VoidFunction;
 };
 
@@ -31,6 +31,7 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
         transaction_hash,
         transaction_url,
         transaction_type,
+        confirmations,
     } = crypto;
     const formatted_address_hash = address_hash
         ? `${address_hash.substring(0, 4)}....${address_hash.substring(address_hash.length - 4)}`
@@ -40,7 +41,7 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
         ? epochToMoment(submit_date).format('DD MMM YYYY')
         : epochToMoment(submit_date).format('DD MMM YYYY HH:mm:ss [GMT]');
     const formatted_submit_time = epochToMoment(submit_date).format('HH:mm:ss [GMT]');
-    const status = getStatus(transaction_hash, transaction_type, status_code);
+    const status = getStatus(transaction_hash, transaction_type, status_code, confirmations);
 
     const [is_transaction_clicked, setTransactionClicked] = React.useState(false);
     const onClickCancel = () => {
@@ -152,6 +153,16 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                                 {status.transaction_hash}
                             </Text>
                         </a>
+                    </Table.Cell>
+                    <Table.Cell>
+                        <Text as='p' color='prominent' size='xxs' weight='bold'>
+                            {localize('Confirmations')}
+                        </Text>
+                    </Table.Cell>
+                    <Table.Cell>
+                        <Text as='p' size='xxs' color='red'>
+                            {status.confirmation_label}
+                        </Text>
                     </Table.Cell>
                     <Table.Cell>
                         <Text as='p' color='prominent' size='xxs' weight='bold'>
@@ -270,6 +281,13 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                             </Text>
                         ))}
                 </Table.Cell>
+                {!is_transaction_clicked && (
+                    <Table.Cell className='crypto-transactions-history__table-confirmations'>
+                        <Text as='p' size='xs' color='red'>
+                            {status?.confirmation_label}
+                        </Text>
+                    </Table.Cell>
+                )}
                 {!is_transaction_clicked && (
                     <Table.Cell>
                         <Text as='p' size='xs'>

@@ -101,16 +101,14 @@ const LinkExpiredModal = observer(() => {
                                     value={values.email}
                                 />
                             </fieldset>
-                            <div className='link-expired__spaced-container__button_container'>
-                                <FormSubmitButton
-                                    has_cancel
-                                    cancel_label={localize('Close')}
-                                    onCancel={() => toggleLinkExpiredModal(false)}
-                                    is_disabled={!values.email || !!errors.email || isSubmitting}
-                                    is_loading={isSubmitting}
-                                    label={localize('Resend email')}
-                                />
-                            </div>
+                            <FormSubmitButton
+                                has_cancel
+                                cancel_label={localize('Close')}
+                                onCancel={() => toggleLinkExpiredModal(false)}
+                                is_disabled={!values.email || !!errors.email || isSubmitting}
+                                is_loading={isSubmitting}
+                                label={localize('Resend email')}
+                            />
                         </div>
                     )}
                 </div>

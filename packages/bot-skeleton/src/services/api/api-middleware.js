@@ -40,6 +40,7 @@ export const REQUESTS = [
     'run-proposal',
     'transaction',
     'ticks_history',
+    'history',
 ];
 
 class APIMiddleware {

@@ -5,8 +5,30 @@ import type StatementStores from './Modules/Statement/statement-store';
 
 type TReportsStore = {
     profit_table: Omit<ProfitStores, 'data'> & { data: string[] };
-    statement: Omit<StatementStores, 'account_statistics'> & {
+    statement: Omit<
+        StatementStores,
+        | 'account_statistics'
+        | 'action_type'
+        | 'date_from'
+        | 'date_to'
+        | 'filtered_date_range'
+        | 'handleDateChange'
+        | 'handleFilterChange'
+        | 'suffix_icon'
+    > & {
         account_statistics: { total_deposits: number; total_withdrawals: number };
+        action_type: string;
+        date_from: number;
+        date_to: number;
+        filtered_date_range: {
+            duration: number;
+            label: string;
+            onClick?: () => void;
+            value?: string;
+        };
+        handleDateChange: () => void;
+        handleFilterChange: () => void;
+        suffix_icon: string;
     };
 };
 

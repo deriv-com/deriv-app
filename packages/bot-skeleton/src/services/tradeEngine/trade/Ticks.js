@@ -9,8 +9,8 @@ let tickListenerKey;
 
 export default Engine =>
     class Ticks extends Engine {
-        async watchTicks(symbol) {
-            if (symbol && this.symbol !== symbol) {
+        async watchTicks(symbol, symbolChange) {
+            if ((symbol && this.symbol !== symbol) || symbolChange) {
                 this.symbol = symbol;
                 const { ticksService } = this.$scope;
 
@@ -25,7 +25,7 @@ export default Engine =>
                     this.store.dispatch({ type: constants.NEW_TICK, payload: epoch });
                 };
 
-                const key = ticksService.monitor({ symbol, callback });
+                const key = await ticksService.monitor({ symbol, callback });
                 tickListenerKey = key;
             }
         }

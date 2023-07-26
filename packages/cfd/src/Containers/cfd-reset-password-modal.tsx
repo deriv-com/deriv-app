@@ -20,11 +20,10 @@ const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TReset
     let group, type, login, title, server;
     if (has_intent && current_list) {
         [server, group, type] = reset_password_intent.split('.');
-        const title_type = type;
         login = current_list[`mt5.${group}.${type}@${server}`].login;
         title =
-            getMtCompanies(is_eu)[group as keyof TMtCompanies][title_type as keyof TMtCompanies['demo' | 'real']]
-                ?.title ?? '';
+            getMtCompanies(is_eu)[group as keyof TMtCompanies][type as keyof TMtCompanies['demo' | 'real']]?.title ??
+            '';
     } else if (current_list) {
         [server, group, type] = (Object.keys(current_list).pop() as string).split('.');
         login = current_list[`mt5.${group}.${type}@${server}`]?.login ?? '';

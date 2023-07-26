@@ -2,7 +2,7 @@ import React from 'react';
 import { APIProvider, useRequest } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { TStores } from '@deriv/stores/types';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import LinkExpiredModal from '../link-expired-modal';
 

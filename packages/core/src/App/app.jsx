@@ -48,10 +48,14 @@ const App = ({ root_store }) => {
 
     return (
         <Router basename={has_base ? `/${base}` : null}>
-            <TranslationProvider environment={getRuntimeEnvironment()} websocket={WS} onInit={lang => initMoment(lang)}>
-                <MobxContentProvider store={root_store}>
-                    <StoreProvider store={root_store}>
-                        <APIProvider>
+            <MobxContentProvider store={root_store}>
+                <StoreProvider store={root_store}>
+                    <APIProvider>
+                        <TranslationProvider
+                            environment={getRuntimeEnvironment()}
+                            websocket={WS}
+                            onInit={lang => initMoment(lang)}
+                        >
                             <PlatformContainer>
                                 <Header />
                                 <ErrorBoundary>
@@ -70,10 +74,10 @@ const App = ({ root_store }) => {
                                 <BinaryBotIFrame />
                                 <AppToastMessages />
                             </PlatformContainer>
-                        </APIProvider>
-                    </StoreProvider>
-                </MobxContentProvider>
-            </TranslationProvider>
+                        </TranslationProvider>
+                    </APIProvider>
+                </StoreProvider>
+            </MobxContentProvider>
         </Router>
     );
 };

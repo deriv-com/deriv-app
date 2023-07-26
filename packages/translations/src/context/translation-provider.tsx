@@ -53,6 +53,7 @@ export const TranslationProvider = ({
                 setCurrentLanguage(preferred_language);
             }
         };
+
         getLanguageSettings();
     }, [websocket]);
 

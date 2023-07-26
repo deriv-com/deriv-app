@@ -21,23 +21,23 @@ const contract_info = {
 };
 
 describe('<ProgressSliderStream />', () => {
-    it('should not render <ProgressSliderStream /> if contract_info is falsy', () => {
-        const mock_root_store = mockStore({});
-        render(
-            <TraderProviders store={mock_root_store}>
-                <ProgressSliderStream />
+    const mockProgressSliderStream = (mocked_store, contract_info = null) => {
+        return (
+            <TraderProviders store={mocked_store}>
+                <ProgressSliderStream contract_info={contract_info} />
             </TraderProviders>
         );
+    };
+
+    it('should not render <ProgressSliderStream /> if contract_info is falsy', () => {
+        const mock_root_store = mockStore({});
+        render(mockProgressSliderStream(mock_root_store));
 
         expect(screen.queryByText('Mocked Progress Slider')).not.toBeInTheDocument();
     });
     it('should render <ProgressSliderStream /> if contract_info was passed in props', () => {
         const mock_root_store = mockStore({});
-        render(
-            <TraderProviders store={mock_root_store}>
-                <ProgressSliderStream contract_info={contract_info} />
-            </TraderProviders>
-        );
+        render(mockProgressSliderStream(mock_root_store, contract_info));
 
         expect(screen.getByText('Mocked Progress Slider')).toBeInTheDocument();
     });

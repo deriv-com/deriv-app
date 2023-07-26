@@ -1,15 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Formik, Form, Field, FormikValues, FormikErrors, FieldProps } from 'formik';
+import { Formik, Form, Field, FormikErrors, FieldProps, FormikHelpers } from 'formik';
 import { Timeline, Input, Button, ThemedScrollbars, Loading } from '@deriv/components';
 import InlineNoteWithIcon from '../inline-note-with-icon';
-import { isDesktop, isMobile, getPropertyValue, useIsMounted, WS } from '@deriv/shared';
+import { getPropertyValue, useIsMounted, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import ApiTokenArticle from './api-token-article';
 import ApiTokenCard from './api-token-card';
-import ApiTokenFooter from './api-token-footer';
-import ApiTokenOverlay from './api-token-overlay';
 import ApiTokenTable from './api-token-table';
 import ApiTokenContext from './api-token-context';
 import { TToken } from 'Types';
@@ -30,22 +28,20 @@ type AptTokenState = {
     is_delete_success: boolean;
 };
 
-export type TApiToken = {
-    footer_ref: Element | DocumentFragment | undefined;
-    is_app_settings: boolean;
-    overlay_ref:
-        | undefined
-        | ((...args: unknown[]) => unknown)
-        | import('prop-types').InferProps<{
-              current: import('prop-types').Requireable<unknown>;
-          }>;
-    setIsOverlayShown: (is_overlay_shown: boolean | undefined) => void;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+type TApiTokenForm = {
+    token_name: string;
+    read: boolean;
+    trade: boolean;
+    payments: boolean;
+    trading_information: boolean;
+    admin: boolean;
 };
 
-const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown }: TApiToken) => {
+const ApiToken = () => {
     const { client } = useStore();
     const { is_switching } = client;
+    const { ui } = useStore();
+    const { is_desktop, is_mobile } = ui;
     const isMounted = useIsMounted();
     const prev_is_switching = React.useRef(is_switching);
     const [state, setState] = React.useReducer(
@@ -81,12 +77,6 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching]);
 
-    React.useEffect(() => {
-        if (typeof setIsOverlayShown === 'function') {
-            setIsOverlayShown(state.is_overlay_shown);
-        }
-    }, [state.is_overlay_shown, setIsOverlayShown]);
-
     const initial_form = {
         token_name: '',
         read: false,
@@ -98,8 +88,8 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
 
     const toggleOverlay = () => setState({ is_overlay_shown: !state.is_overlay_shown });
 
-    const validateFields = (values: FormikValues) => {
-        const errors: FormikErrors<FormikValues> = {};
+    const validateFields = (values: TApiTokenForm) => {
+        const errors: FormikErrors<TApiTokenForm> = {};
         const token_name = values.token_name && values.token_name.trim();
 
         if (!token_name) {
@@ -121,9 +111,13 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
         return errors;
     };
 
-    const selectedTokenScope = (values: FormikValues) =>
-        Object.keys(values).filter(item => item !== 'token_name' && values[item]);
-    const handleSubmit = async (values: FormikValues, { setSubmitting, setFieldError, resetForm }: any) => {
+    const selectedTokenScope = (values: TApiTokenForm) =>
+        Object.keys(values).filter(item => item !== 'token_name' && Boolean(values[item as keyof TApiTokenForm]));
+
+    const handleSubmit = async (
+        values: TApiTokenForm,
+        { setSubmitting, setFieldError, resetForm }: FormikHelpers<TApiTokenForm>
+    ) => {
         const token_response = await WS.apiToken({
             api_token: 1,
             new_token: values.token_name,
@@ -181,7 +175,7 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
         }, 500);
     };
 
-    const { api_tokens, is_loading, is_success, error_message, is_overlay_shown } = state;
+    const { api_tokens, is_loading, is_success, error_message } = state;
 
     if (is_loading || is_switching) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
@@ -195,32 +189,24 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
         api_tokens,
         toggleOverlay,
         deleteToken,
-        footer_ref,
-        overlay_ref,
     };
 
     return (
         <React.Fragment>
             <ApiTokenContext.Provider value={context_value}>
-                <section
-                    className={classNames('da-api-token', {
-                        'da-api-token--app-settings': is_app_settings,
-                    })}
-                >
+                <section className={classNames('da-api-token')}>
                     <div className='da-api-token__wrapper'>
-                        <ThemedScrollbars className='da-api-token__scrollbars' is_bypassed={isMobile()}>
-                            {!is_app_settings && isMobile() && <ApiTokenArticle />}
+                        <ThemedScrollbars className='da-api-token__scrollbars' is_bypassed={is_mobile}>
+                            {is_mobile && <ApiTokenArticle />}
                             <Formik initialValues={initial_form} onSubmit={handleSubmit} validate={validateFields}>
                                 {({
                                     values,
                                     errors,
                                     isValid,
                                     dirty,
-                                    touched,
                                     handleChange,
                                     handleBlur,
                                     isSubmitting,
-                                    setFieldValue,
                                     setFieldTouched,
                                 }) => (
                                     <Form noValidate>
@@ -232,7 +218,6 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
                                                     <ApiTokenCard
                                                         name='read'
                                                         value={values.read}
-                                                        setFieldValue={setFieldValue}
                                                         display_name={localize('Read')}
                                                         description={localize(
                                                             'This scope will allow third-party apps to view your account activity, settings, limits, balance sheets, trade purchase history, and more.'
@@ -242,7 +227,6 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
                                                         name='trade'
                                                         value={values.trade}
                                                         display_name={localize('Trade')}
-                                                        setFieldValue={setFieldValue}
                                                         description={localize(
                                                             'This scope will allow third-party apps to buy and sell contracts for you, renew your expired purchases, and top up your demo accounts.'
                                                         )}
@@ -251,7 +235,6 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
                                                         name='payments'
                                                         value={values.payments}
                                                         display_name={localize('Payments')}
-                                                        setFieldValue={setFieldValue}
                                                         description={localize(
                                                             'This scope will allow third-party apps to withdraw to payment agents and make inter-account transfers for you.'
                                                         )}
@@ -260,7 +243,6 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
                                                         name='trading_information'
                                                         value={values.trading_information}
                                                         display_name={localize('Trading information')}
-                                                        setFieldValue={setFieldValue}
                                                         description={localize(
                                                             'This scope will allow third-party apps to view your trading history.'
                                                         )}
@@ -269,7 +251,6 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
                                                         name='admin'
                                                         value={values.admin}
                                                         display_name={localize('Admin')}
-                                                        setFieldValue={setFieldValue}
                                                         description={localize(
                                                             'This scope will allow third-party apps to open accounts for you, manage your settings and token usage, and more. '
                                                         )}
@@ -308,7 +289,7 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
                                                                     'Length of token name must be between 2 and 32 characters.'
                                                                 )}
                                                                 required
-                                                                error={touched.token_name && errors.token_name}
+                                                                error={errors.token_name}
                                                             />
                                                         )}
                                                     </Field>
@@ -346,11 +327,9 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
                                 )}
                             </Formik>
                         </ThemedScrollbars>
-                        {!is_app_settings && isDesktop() && <ApiTokenArticle />}
+                        {is_desktop && <ApiTokenArticle />}
                     </div>
                 </section>
-                {footer_ref && <ApiTokenFooter />}
-                {overlay_ref && is_overlay_shown && <ApiTokenOverlay />}
             </ApiTokenContext.Provider>
         </React.Fragment>
     );

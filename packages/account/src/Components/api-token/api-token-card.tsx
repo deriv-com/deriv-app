@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field, FieldProps } from 'formik';
+import { Field, FieldProps, useFormikContext } from 'formik';
 import { CompositeCheckbox } from '@deriv/components';
 
 type TApiTokenCard = {
@@ -7,17 +7,10 @@ type TApiTokenCard = {
     display_name: string;
     name: string;
     value: boolean;
-    setFieldValue: (name: string, value: boolean) => void;
 };
 
-const ApiTokenCard = ({
-    name,
-    value,
-    display_name,
-    description,
-    setFieldValue,
-    children,
-}: React.PropsWithChildren<TApiTokenCard>) => {
+const ApiTokenCard = ({ name, value, display_name, description, children }: React.PropsWithChildren<TApiTokenCard>) => {
+    const { setFieldValue } = useFormikContext();
     return (
         <Field name={name}>
             {({ field }: FieldProps<string | boolean>) => {
@@ -27,7 +20,6 @@ const ApiTokenCard = ({
                         onChange={() => setFieldValue(name, !value)}
                         value={value}
                         className='api-token__checkbox'
-                        defaultChecked={value}
                         label={display_name}
                         description={description}
                     >

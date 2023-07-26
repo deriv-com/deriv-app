@@ -2,7 +2,7 @@ import React from 'react';
 import { MobileWrapper, usePrevious } from '@deriv/components';
 import { unsupported_contract_types_list } from '@deriv/shared';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
-import { localize } from '@deriv/translations';
+import { localize, useLanguageSettings } from '@deriv/translations';
 import { ToastPopup } from 'Modules/Trading/Containers/toast-popup.jsx';
 import { getMarketNamesMap } from '../../../Constants';
 import ContractTypeWidget from '../Components/Form/ContractType';
@@ -11,6 +11,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
 
 const Contract = observer(() => {
+    const { current_language } = useLanguageSettings();
     const {
         contract_type,
         contract_types_list,
@@ -20,7 +21,6 @@ const Contract = observer(() => {
         symbol,
     } = useTraderStore();
     const {
-        common: { current_language },
         client: { is_virtual },
     } = useStore();
 

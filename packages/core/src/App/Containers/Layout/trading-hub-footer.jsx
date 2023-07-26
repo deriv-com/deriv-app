@@ -37,7 +37,6 @@ const FooterExtensionRenderer = (footer_extension, idx) => {
 };
 
 const TradingHubFooter = ({
-    current_language,
     enableApp,
     footer_extensions,
     is_app_disabled,
@@ -122,7 +121,6 @@ const TradingHubFooter = ({
                 <ToggleLanguageSettings
                     is_settings_visible={is_language_settings_modal_on}
                     toggleSettings={toggleLanguageSettingsModal}
-                    lang={current_language}
                 />
                 <ToggleFullScreen />
             </div>
@@ -152,8 +150,7 @@ TradingHubFooter.propTypes = {
 };
 
 export default withRouter(
-    connect(({ client, common, ui, traders_hub }) => ({
-        current_language: common.current_language,
+    connect(({ client, ui, traders_hub }) => ({
         enableApp: ui.enableApp,
         footer_extensions: ui.footer_extensions,
         settings_extension: ui.settings_extension,

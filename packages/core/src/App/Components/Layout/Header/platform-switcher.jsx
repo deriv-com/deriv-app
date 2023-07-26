@@ -1,21 +1,18 @@
-import 'Sass/app/_common/components/platform-switcher.scss';
-
-import { Icon } from '@deriv/components';
-import { getPlatformInformation, getUrlBinaryBot, isMobile } from '@deriv/shared';
-
-import { CSSTransition } from 'react-transition-group';
-import { PlatformDropdown } from './platform-dropdown.jsx';
-import { PlatformSwitcherLoader } from './Components/Preloader/platform-switcher.jsx';
-import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { Icon } from '@deriv/components';
+import { getPlatformInformation, getUrlBinaryBot, isMobile } from '@deriv/shared';
+import { CSSTransition } from 'react-transition-group';
+import { PlatformDropdown } from './platform-dropdown.jsx';
+import { PlatformSwitcherLoader } from './Components/Preloader/platform-switcher.jsx';
+import 'Sass/app/_common/components/platform-switcher.scss';
 
 const PlatformSwitcher = ({
     toggleDrawer,
     app_routing_history,
     platform_config = [],
-    current_language,
     is_landing_company_loaded,
     is_logged_in,
     is_logging_in,
@@ -32,7 +29,7 @@ const PlatformSwitcher = ({
                 data.href = getUrlBinaryBot();
             }
         });
-    }, [current_language, platform_config]);
+    }, [platform_config]);
 
     React.useEffect(() => {
         if (is_close_drawer_fired_ref.current) {
@@ -91,7 +88,6 @@ const PlatformSwitcher = ({
                 <PlatformDropdown
                     platform_config={platform_config}
                     closeDrawer={closeDrawer}
-                    current_language={current_language}
                     app_routing_history={app_routing_history}
                     setTogglePlatformType={setTogglePlatformType}
                 />
@@ -103,7 +99,6 @@ const PlatformSwitcher = ({
 PlatformSwitcher.propTypes = {
     platform_config: PropTypes.array,
     toggleDrawer: PropTypes.func,
-    current_language: PropTypes.string,
     app_routing_history: PropTypes.array,
     is_landing_company_loaded: PropTypes.bool,
     is_logged_in: PropTypes.bool,

@@ -6,6 +6,7 @@ import { ActiveSymbols, ForgetRequest } from '@deriv/api-types';
 // @ts-ignore
 import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
 import { isDesktop, isMobile } from '@deriv/shared';
+import { getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import ToolbarWidgets from './toolbar-widgets';
@@ -97,7 +98,7 @@ export default connect(({ chart_store, common, ui, run_panel }: RootStore) => ({
         assetInformation: false, // ui.is_chart_asset_info_visible,
         countdown: true,
         isHighestLowestMarkerEnabled: false, // TODO: Pending UI,
-        language: common.current_language.toLowerCase(),
+        language: getLanguage(),
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
         theme: ui.is_dark_mode_on ? 'dark' : 'light',
     },

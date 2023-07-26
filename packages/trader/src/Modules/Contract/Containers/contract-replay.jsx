@@ -24,7 +24,7 @@ import {
     isOnlyUpsDownsContract,
     urlFor,
 } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { getLanguage, localize } from '@deriv/translations';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
@@ -204,7 +204,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     } = contract_store;
     const { underlying: symbol, audit_details } = contract_info;
     const allow_scroll_to_epoch = chart_state === 'READY' || chart_state === 'SCROLL_TO_LEFT';
-    const { app_routing_history, current_language, is_socket_opened } = common;
+    const { app_routing_history, is_socket_opened } = common;
     const { is_dark_mode_on: is_dark_theme, is_chart_layout_default, is_chart_countdown_visible } = ui;
     const { end_epoch, chart_type, start_epoch, granularity } = contract_config;
     /**
@@ -216,7 +216,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const from_platform = getPlatformRedirect(app_routing_history);
     const should_force_light_theme = from_platform.name === 'DBot';
     const settings = {
-        language: current_language.toLowerCase(),
+        language: getLanguage().toLowerCase(),
         theme: is_dark_theme && !should_force_light_theme ? 'dark' : 'light',
         position: is_chart_layout_default ? 'bottom' : 'left',
         countdown: is_chart_countdown_visible,

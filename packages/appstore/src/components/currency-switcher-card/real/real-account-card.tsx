@@ -12,11 +12,8 @@ const default_balance = { balance: 0, currency: 'USD' };
 
 const RealAccountCard = observer(() => {
     const history = useHistory();
-
-    const { client, common, modules, traders_hub } = useStore();
-
+    const { client, modules, traders_hub } = useStore();
     const { accounts, loginid } = client;
-    const { current_language } = common;
     const { current_list } = modules.cfd;
     const { openModal, is_eu_user } = traders_hub;
 
@@ -52,7 +49,7 @@ const RealAccountCard = observer(() => {
                     secondary
                     className='currency-switcher__button'
                 >
-                    <Localize key={`currency-switcher__button-text-${current_language}`} i18n_default_text='Deposit' />
+                    <Localize i18n_default_text='Deposit' />
                 </Button>
             }
             has_interaction

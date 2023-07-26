@@ -6,10 +6,9 @@ import { useStore, observer } from '@deriv/stores';
 import './account-type-dropdown.scss';
 
 const AccountTypeDropdown = observer(() => {
-    const { traders_hub, client, common } = useStore();
+    const { traders_hub, client } = useStore();
     const { selected_account_type, selectAccountType } = traders_hub;
     const { setPrevAccountType } = client;
-    const { current_language } = common;
 
     return (
         <div className={classNames('account-type-dropdown--parent')}>
@@ -21,7 +20,6 @@ const AccountTypeDropdown = observer(() => {
                     `account-type-dropdown--${selected_account_type}`
                 )}
                 list={getAccountTypes()}
-                key={`account-type-dropdown__icon--key-${current_language}`}
                 onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
                     await selectAccountType(e.target.value);
                     await setPrevAccountType(e.target.value);

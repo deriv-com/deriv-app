@@ -19,7 +19,7 @@ import {
     routes,
     unique,
 } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, getLanguage, localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { WS } from 'Services';
 import {
@@ -301,7 +301,7 @@ export default class NotificationStore extends BaseStore {
         const { upgradable_daily_limits } = p2p_advertiser_info || {};
         const { max_daily_buy, max_daily_sell } = upgradable_daily_limits || {};
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
-        const { current_language, selected_contract_type } = this.root_store.common;
+        const { selected_contract_type } = this.root_store.common;
         const malta_account = landing_company_shortcode === 'maltainvest';
         const virtual_account = landing_company_shortcode === 'virtual';
         const cr_account = landing_company_shortcode === 'svg';
@@ -574,7 +574,7 @@ export default class NotificationStore extends BaseStore {
             }
         }
 
-        if (!is_eu && isMultiplierContract(selected_contract_type) && current_language === 'EN' && is_logged_in) {
+        if (!is_eu && isMultiplierContract(selected_contract_type) && getLanguage() === 'EN' && is_logged_in) {
             this.addNotificationMessage(this.client_notifications.deriv_go);
         } else {
             this.removeNotificationMessageByKey({ key: this.client_notifications.deriv_go.key });

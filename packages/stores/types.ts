@@ -386,7 +386,6 @@ type TCommonStoreError = {
 };
 
 type TCommonStore = {
-    isCurrentLanguage(language_code: string): boolean;
     error: TCommonStoreError;
     has_error: boolean;
     is_from_derivgo: boolean;
@@ -395,9 +394,6 @@ type TCommonStore = {
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
     server_time?: Moment;
-    changeCurrentLanguage: (new_language: string) => void;
-    current_language: string;
-    is_language_changing: boolean;
     setAppstorePlatform: (value: string) => void;
     app_routing_history: TAppRoutingHistory[];
     getExchangeRate: (from_currency: string, to_currency: string) => Promise<number>;

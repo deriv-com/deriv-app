@@ -3,6 +3,7 @@ import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import LanguageRadioButton, { TLanguageRadioButton } from '../language-radio-button';
 import { TranslationProvider } from '@deriv/translations';
+import { WS } from '@deriv/shared';
 
 jest.mock('@deriv/translations', () => {
     const original_module = jest.requireActual('@deriv/translations');
@@ -20,9 +21,27 @@ jest.mock('@deriv/components', () => {
     };
 });
 
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    __esModule: true, // this property makes it work,
+    default: 'mockedDefaultExport',
+    WS: {
+        wait: jest.fn(() => Promise.resolve()),
+        authorized: {
+            send: jest.fn(() =>
+                Promise.resolve({
+                    get_settings: {
+                        preferred_language: 'EN',
+                    },
+                })
+            ),
+        },
+    },
+}));
+
 const renderWithProvider = (props: TLanguageRadioButton) => {
     return render(
-        <TranslationProvider>
+        <TranslationProvider websocket={WS}>
             <LanguageRadioButton {...props} />
         </TranslationProvider>
     );

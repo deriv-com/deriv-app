@@ -12,17 +12,17 @@ import {
     Text,
 } from '@deriv/components';
 import { getPropertyValue, isMobile, PlatformContext, WS } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize, useLanguageSettings } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import DigitForm from './digit-form.jsx';
 import TwoFactorAuthenticationArticle from './two-factor-authentication-article.jsx';
 import { observer, useStore } from '@deriv/stores';
 
 const TwoFactorAuthentication = observer(() => {
-    const { client, ui, common } = useStore();
+    const { is_loading: is_language_changing } = useLanguageSettings();
+    const { client, ui } = useStore();
     const { email_address, getTwoFAStatus, has_enabled_two_fa, is_switching, setTwoFAStatus, setTwoFAChangedStatus } =
         client;
-    const { is_language_changing } = common;
     const { notification_messages_ui: Notifications } = ui;
     const [is_loading, setLoading] = React.useState(true);
     const [is_qr_loading, setQrLoading] = React.useState(false);

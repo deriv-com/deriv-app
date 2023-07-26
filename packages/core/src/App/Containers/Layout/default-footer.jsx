@@ -17,6 +17,7 @@ import LiveChat from 'App/Components/Elements/LiveChat';
 import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
+import { useLanguageSettings } from '@deriv/translations';
 
 const FooterIconSeparator = () => <div className='footer-icon-separator' />;
 
@@ -32,7 +33,6 @@ const FooterExtensionRenderer = (footer_extension, idx) => {
 };
 
 const Footer = ({
-    current_language,
     enableApp,
     footer_extensions,
     is_app_disabled,
@@ -49,6 +49,7 @@ const Footer = ({
     landing_company_shortcode,
     show_eu_related_content,
 }) => {
+    const { current_language } = useLanguageSettings();
     let footer_extensions_left = [];
     let footer_extensions_right = [];
     if (footer_extensions.filter) {
@@ -106,7 +107,6 @@ const Footer = ({
 };
 
 Footer.propTypes = {
-    current_language: PropTypes.string,
     is_app_disabled: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
@@ -126,8 +126,7 @@ Footer.propTypes = {
 };
 
 export default withRouter(
-    connect(({ client, common, ui, traders_hub }) => ({
-        current_language: common.current_language,
+    connect(({ client, ui, traders_hub }) => ({
         enableApp: ui.enableApp,
         footer_extensions: ui.footer_extensions,
         settings_extension: ui.settings_extension,

@@ -26,14 +26,14 @@ const LinkExpiredModal = observer(() => {
             formik.setSubmitting(false);
             setIsEmailSent(true);
         }
-    }, [data]);
+    }, [data, formik.setSubmitting]);
 
     useEffect(() => {
         if (error && typeof error === 'object' && 'message' in error) {
             formik.resetForm();
             formik.setStatus({ error_msg: error?.message });
         }
-    }, [error]);
+    }, [error, formik.resetForm, formik.setStatus]);
 
     return (
         <form onSubmit={formik.handleSubmit}>

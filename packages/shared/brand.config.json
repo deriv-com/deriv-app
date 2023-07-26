@@ -75,9 +75,9 @@
             "availability": "Non-EU"
         },
         "ctrader": {
-            "name": "Deriv cTrader",
-            "icon": "Ctrader",
-            "availability": "Non-EU"
+            "name": "",
+            "icon": "",
+            "availability": ""
         }
     }
 }

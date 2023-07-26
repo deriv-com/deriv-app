@@ -21,6 +21,8 @@ const platformsIcons = (platform: TCFDsPlatformType) => {
             return 'DerivEz';
         case 'dxtrade':
             return 'Dxtrade';
+        case 'ctrader':
+            return 'Ctrader';
         default:
             return '';
     }

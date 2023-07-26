@@ -11,6 +11,7 @@ import {
     platformsText,
     platformsIcons,
 } from './constants';
+import { isMobile } from '@deriv/shared';
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { TCFDDashboardContainer } from 'Containers/props.types';
@@ -29,16 +30,36 @@ export const mobileDownloadLink = (platform: TCFDsPlatformType, type: 'ios' | 'a
 };
 
 export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
-    switch (acc_type) {
-        case 'derivez':
-            return 'https://onelink.to/bkdwkd';
-        case 'dxtrade':
-            return 'https://onelink.to/grmtyx';
-        case 'ctrader':
-            return 'https://onelink.to/yvk2a5';
-        default:
-            return 'https://onelink.to/grmtyx';
-    }
+    const qr_code_mobile = isMobile() ? '100%' : '80%';
+
+    const QRCodeLinks = () => {
+        switch (acc_type) {
+            case 'derivez':
+                return 'https://onelink.to/bkdwkd';
+            case 'dxtrade':
+                return 'https://onelink.to/grmtyx';
+            case 'ctrader':
+                return 'https://onelink.to/yvk2a5';
+            default:
+                return 'https://onelink.to/grmtyx';
+        }
+    };
+
+    return (
+        <React.Fragment>
+            <QRCode
+                value={QRCodeLinks()}
+                size={5}
+                style={{ height: 'auto', maxWidth: '100%', width: qr_code_mobile }}
+            />
+            <Text align='center' size='xxs'>
+                <Localize
+                    i18n_default_text='Scan the QR code to download Deriv {{ platform }}.'
+                    values={{ platform: platformsText(acc_type) }}
+                />
+            </Text>
+        </React.Fragment>
+    );
 };
 
 type TPlatformsDesktopDownload = {

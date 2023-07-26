@@ -29,7 +29,7 @@ class DBot {
         api_base.init();
         this.interpreter = Interpreter();
         const that = this;
-        Blockly.Blocks.trade_definition_tradetype.onchange = async function (event) {
+        Blockly.Blocks.trade_definition_tradetype.onchange = function (event) {
             if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
                 return;
             }
@@ -50,7 +50,6 @@ class DBot {
                     if (event.name === 'SYMBOL_LIST') {
                         contracts_for.getTradeTypeCategories(market, submarket, symbol).then(categories => {
                             const trade_type_cat_field = this.getField('TRADETYPECAT_LIST');
-                            // this.interpreter.bot.tradeEngine.watchTicks(symbol);
                             if (trade_type_cat_field) {
                                 trade_type_cat_field.updateOptions(categories, {
                                     default_value: trade_type_cat,
@@ -60,9 +59,9 @@ class DBot {
                             }
                         });
                         that.symbol = symbol;
-                        if (!this.is_bot_running && that.interpreter) {
-                            that.interpreter.unsubscribeFromTicksService().then(() => {
-                                that.interpreter.bot.tradeEngine.watchTicks(symbol);
+                        if (!that.is_bot_running && that.interpreter && !this.workspace.options.readOnly) {
+                            that.interpreter.unsubscribeFromTicksService().then(async () => {
+                                that.interpreter.bot.tradeEngine.watchTicks(symbol, true);
                             });
                         }
                     } else if (event.name === 'TRADETYPECAT_LIST' && event.blockId === this.id) {

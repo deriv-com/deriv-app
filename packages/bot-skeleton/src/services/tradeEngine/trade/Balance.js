@@ -8,6 +8,7 @@ let balance_string = '';
 export default Engine =>
     class Balance extends Engine {
         observeBalance() {
+            if (!api_base.api) return;
             const subscription = api_base.api.onMessage().subscribe(({ data }) => {
                 if (data.msg_type === 'balance') {
                     const {

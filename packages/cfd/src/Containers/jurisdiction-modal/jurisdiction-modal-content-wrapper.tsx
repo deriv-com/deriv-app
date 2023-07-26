@@ -45,10 +45,11 @@ const JurisdictionModalContentWrapper = observer((props: TJurisdictionModalConte
 
     const {
         poi_or_poa_not_submitted,
-        poi_acknowledged_for_bvi_labuan,
-        poi_acknowledged_for_vanuatu_maltainvest,
+        poi_acknowledged_for_bvi_labuan_vanuatu,
+        poi_acknowledged_for_maltainvest,
         poa_acknowledged,
         need_poa_resubmission,
+        poa_resubmit_for_labuan,
     } = getAuthenticationStatusInfo(account_status);
 
     React.useEffect(() => {
@@ -144,7 +145,7 @@ const JurisdictionModalContentWrapper = observer((props: TJurisdictionModalConte
             openPasswordModal(type_of_account);
         } else if (is_vanuatu_selected) {
             if (
-                poi_acknowledged_for_vanuatu_maltainvest &&
+                poi_acknowledged_for_bvi_labuan_vanuatu &&
                 !poi_or_poa_not_submitted &&
                 !should_restrict_vanuatu_account_creation &&
                 poa_acknowledged &&
@@ -156,7 +157,7 @@ const JurisdictionModalContentWrapper = observer((props: TJurisdictionModalConte
             }
         } else if (is_bvi_selected) {
             if (
-                poi_acknowledged_for_bvi_labuan &&
+                poi_acknowledged_for_bvi_labuan_vanuatu &&
                 !poi_or_poa_not_submitted &&
                 !should_restrict_bvi_account_creation &&
                 poa_acknowledged &&
@@ -167,13 +168,18 @@ const JurisdictionModalContentWrapper = observer((props: TJurisdictionModalConte
                 toggleCFDVerificationModal();
             }
         } else if (is_labuan_selected) {
-            if (poi_acknowledged_for_bvi_labuan && poa_acknowledged && has_submitted_cfd_personal_details) {
+            if (
+                poi_acknowledged_for_bvi_labuan_vanuatu &&
+                poa_acknowledged &&
+                has_submitted_cfd_personal_details &&
+                !poa_resubmit_for_labuan
+            ) {
                 openPasswordModal(type_of_account);
             } else {
                 toggleCFDVerificationModal();
             }
         } else if (is_maltainvest_selected) {
-            if (poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged) {
+            if (poi_acknowledged_for_maltainvest && poa_acknowledged) {
                 openPasswordModal(type_of_account);
             } else {
                 toggleCFDVerificationModal();

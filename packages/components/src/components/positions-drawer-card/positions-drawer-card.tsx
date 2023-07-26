@@ -93,8 +93,8 @@ const PositionsDrawerCard = ({
     const has_ended = !!getEndTime(contract_info);
     const is_mobile = isMobile();
     const contract_card_classname = classNames('dc-contract-card', {
-        'dc-contract-card--green': !is_accumulator && !is_multiplier && profit_loss > 0 && !result,
-        'dc-contract-card--red': !is_accumulator && !is_multiplier && profit_loss < 0 && !result,
+        'dc-contract-card--green': profit_loss > 0 && !result,
+        'dc-contract-card--red': profit_loss < 0 && !result,
     });
 
     const loader_el = (

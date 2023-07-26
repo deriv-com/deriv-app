@@ -3,7 +3,7 @@ import { Router } from 'react-router';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createBrowserHistory } from 'history';
-import { useDepositFiatAddress } from '@deriv/hooks';
+import { useDepositFiatAddress, useDepositLocked } from '@deriv/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { TStores } from '@deriv/stores/types';
 import OneTimeDepositModal from './one-time-deposit-modal';
@@ -15,6 +15,7 @@ jest.mock('@deriv/hooks', () => ({
         data: 'https://www.binary.com',
         isSuccess: true,
     })),
+    useDepositLocked: jest.fn(() => false),
 }));
 
 describe('<OneTimeDepositModal />', () => {
@@ -84,13 +85,9 @@ describe('<OneTimeDepositModal />', () => {
         expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
     });
 
-    it('should close modal when iframe is not loaded due to user have deposited', () => {
+    it('should close modal when iframe if user unable to deposit because they have deposited', () => {
         const history = createBrowserHistory();
-        (useDepositFiatAddress as jest.Mock).mockReturnValueOnce({
-            data: '',
-            isSuccess: false,
-            isError: true,
-        });
+        (useDepositLocked as jest.Mock).mockReturnValueOnce(true);
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>{children}</StoreProvider>
         );

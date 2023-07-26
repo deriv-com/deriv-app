@@ -10,13 +10,14 @@ import {
     Modal,
     Text,
 } from '@deriv/components';
-import { useDepositFiatAddress } from '@deriv/hooks';
+import { useDepositFiatAddress, useDepositLocked } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
 
 const OneTimeDepositModal = observer(() => {
-    const { data: iframe_url, isSuccess, isError } = useDepositFiatAddress();
+    const { data: iframe_url, isSuccess } = useDepositFiatAddress();
+    const is_deposit_locked = useDepositLocked();
     const [is_iframe_loading, setIsIframeLoading] = useState(true);
     const { client, ui } = useStore();
     const { loginid } = client;
@@ -33,10 +34,10 @@ const OneTimeDepositModal = observer(() => {
     }, [iframe_url]);
 
     React.useEffect(() => {
-        if (isError) {
+        if (is_deposit_locked) {
             onCloseModal();
         }
-    }, [isError]);
+    }, [is_deposit_locked]);
 
     const onLiveChatClick = () => {
         liveChat.widget?.call('maximize');

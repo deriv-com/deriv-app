@@ -8,7 +8,7 @@ import i18n, {
     switchLanguage,
 } from '../utils/i18next';
 import { Environment, Language, LanguageData } from '../utils/config';
-import { useWS } from '../../../shared/src/services/index';
+import { updateURLLanguage } from '../utils/misc';
 
 type TranslationData = {
     environment: Environment;
@@ -25,11 +25,18 @@ export const TranslationDataContext = React.createContext<TranslationData | null
 type TranslationProviderProps = {
     children?: ReactNode;
     environment?: Environment;
+    websocket: Record<string, any>;
     onInit?: (lang: Language) => void;
 };
 
-export const TranslationProvider = ({ children, onInit, environment = 'production' }: TranslationProviderProps) => {
-    const websocket = useWS();
+export const TranslationProvider = ({
+    children,
+    onInit,
+    websocket,
+    environment = 'production',
+}: TranslationProviderProps) => {
+    const first_load = React.useRef(true);
+
     const [is_loading, setIsLoading] = React.useState(false);
     const [allowed_languages, setAllowedLanguages] = React.useState<Partial<LanguageData>>(
         getAllowedLanguages(environment)
@@ -38,44 +45,56 @@ export const TranslationProvider = ({ children, onInit, environment = 'productio
         getInitialLanguage(environment) as Language
     );
 
-    setEnvironment(environment);
+    const initializeTranslations = async () => {
+        await websocket.wait('get_account_status');
+        const response = await websocket.authorized.send({ get_settings: 1 });
+        const { preferred_language } = response.get_settings;
+        const initial_language = preferred_language || getInitialLanguage(environment);
+        updateURLLanguage(initial_language);
 
-    React.useEffect(() => {
-        const setLanguageSettings = async () => {
+        if ((environment === 'staging' || environment === 'local') && initial_language === 'ACH') {
+            loadIncontextTranslation();
+        }
+        if (typeof onInit === 'function') {
+            onInit(initial_language);
+        }
+        await switchLanguage(initial_language, environment, async () => {
+            setCurrentLanguage(initial_language);
+            first_load.current = false;
+        });
+    };
+
+    const setLanguageSettings = React.useCallback(
+        async (lang: Language) => {
             setIsLoading(true);
-            await switchLanguage(current_language, environment, async () => {
-                setCurrentLanguage(current_language);
-                if (websocket) websocket.closeAndOpenNewConnection(current_language);
+            await switchLanguage(lang, environment, async () => {
+                setCurrentLanguage(lang);
+                if (websocket) websocket.closeAndOpenNewConnection(lang);
             });
             await websocket.wait('get_account_status');
             await websocket.authorized.send({
                 set_settings: 1,
-                preferred_language: current_language,
+                preferred_language: lang,
             });
-        };
-        setLanguageSettings();
-        setIsLoading(false);
-    }, [current_language, environment, websocket, websocket.authorized]);
+            setIsLoading(false);
+        },
+        [environment, websocket]
+    );
 
     React.useEffect(() => {
-        const initializeTranslations = async () => {
-            await websocket.wait('get_account_status');
-            const response = await websocket.authorized.send({ get_settings: 1 });
-
-            const { preferred_language } = response.get_settings;
-            const initial_language = preferred_language || getInitialLanguage(environment);
-
-            if ((environment === 'staging' || environment === 'local') && initial_language === 'ACH') {
-                loadIncontextTranslation();
-            }
-            if (typeof onInit === 'function') {
-                onInit(initial_language);
-            }
-            setCurrentLanguage(initial_language);
-        };
-
         initializeTranslations();
-    }, [environment, onInit, websocket]);
+    }, []);
+
+    React.useEffect(() => {
+        if (!first_load.current) {
+            setLanguageSettings(current_language);
+            updateURLLanguage(current_language);
+        }
+    }, [current_language, setLanguageSettings]);
+
+    React.useEffect(() => {
+        setEnvironment(environment);
+    }, [environment]);
 
     return (
         <I18nextProvider i18n={i18n}>

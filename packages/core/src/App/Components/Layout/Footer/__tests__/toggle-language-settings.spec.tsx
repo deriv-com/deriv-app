@@ -5,14 +5,32 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 import { ToggleLanguageSettings } from '../toggle-language-settings';
 import { TranslationProvider } from '@deriv/translations';
 import { TStores } from '@deriv/stores/types';
+import { WS } from '@deriv/shared';
 
 jest.mock('../../../../Containers/SettingsModal/settings-language', () => jest.fn(() => <div>LanguageSettings</div>));
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    __esModule: true, // this property makes it work,
+    default: 'mockedDefaultExport',
+    WS: {
+        wait: jest.fn(() => Promise.resolve()),
+        authorized: {
+            send: jest.fn(() =>
+                Promise.resolve({
+                    get_settings: {
+                        preferred_language: 'EN',
+                    },
+                })
+            ),
+        },
+    },
+}));
 
 describe('ToggleLanguageSettings Component', () => {
     const renderWithProviders = (mock_root_store: TStores) => {
         return render(<ToggleLanguageSettings />, {
             wrapper: ({ children }) => (
-                <TranslationProvider>
+                <TranslationProvider websocket={WS}>
                     <StoreProvider store={mock_root_store}>{children}</StoreProvider>
                 </TranslationProvider>
             ),

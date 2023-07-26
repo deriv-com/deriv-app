@@ -2,9 +2,28 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import LanguageLink, { TLanguageLink } from '../language-link';
 import { TranslationProvider } from '@deriv/translations';
+import { WS } from '@deriv/shared';
 
 jest.mock('@deriv/components', () => ({
     Icon: jest.fn(({ icon_classname }) => <div data-testid='dt_mocked_icon' className={icon_classname} />),
+}));
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    __esModule: true, // this property makes it work,
+    default: 'mockedDefaultExport',
+    WS: {
+        wait: jest.fn(() => Promise.resolve()),
+        authorized: {
+            send: jest.fn(() =>
+                Promise.resolve({
+                    get_settings: {
+                        preferred_language: 'EN',
+                    },
+                })
+            ),
+        },
+    },
 }));
 
 describe('LanguageLink component', () => {
@@ -15,7 +34,7 @@ describe('LanguageLink component', () => {
 
     const renderWithProvider = (props: TLanguageLink) => {
         render(
-            <TranslationProvider environment='local'>
+            <TranslationProvider websocket={WS} environment='local'>
                 <LanguageLink {...props} />
             </TranslationProvider>
         );

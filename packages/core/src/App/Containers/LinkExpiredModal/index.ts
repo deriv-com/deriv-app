@@ -1,1 +1,1 @@
-export { default as LinkExpiredModal } from './link-expired-modal';
+export { default } from './link-expired-modal';

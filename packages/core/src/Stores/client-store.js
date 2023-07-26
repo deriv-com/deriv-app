@@ -22,7 +22,6 @@ import {
     routes,
     setCurrencies,
     toMoment,
-    urlForLanguage,
 } from '@deriv/shared';
 import { RudderStack } from '@deriv/analytics';
 import { WS, requestLogout } from 'Services';
@@ -38,8 +37,6 @@ import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 import moment from 'moment';
 import { setDeviceDataCookie } from './Helpers/device';
 
-const LANGUAGE_KEY = 'i18n_language';
-const DEFAULT_LANGUAGE = 'EN';
 const storage_key = 'client.accounts';
 const store_name = 'client_store';
 const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
@@ -317,7 +314,6 @@ export default class ClientStore extends BaseStore {
             setMT5DisabledSignupTypes: action.bound,
             setCFDDisabledSignupTypes: action.bound,
             getLimits: action.bound,
-            setPreferredLanguage: action.bound,
             setCookieAccount: action.bound,
             setCFDScore: action.bound,
             updateSelfExclusion: action.bound,
@@ -422,15 +418,6 @@ export default class ClientStore extends BaseStore {
             ],
             () => {
                 this.setCookieAccount();
-            }
-        );
-
-        reaction(
-            () => [this.account_settings],
-            () => {
-                const lang_from_url = new URLSearchParams(window.location.search).get('lang') || DEFAULT_LANGUAGE;
-                this.setPreferredLanguage(lang_from_url);
-                LocalStore.set(LANGUAGE_KEY, lang_from_url);
             }
         );
 
@@ -1211,11 +1198,6 @@ export default class ClientStore extends BaseStore {
         });
     }
 
-    setPreferredLanguage = lang => {
-        this.preferred_language = lang;
-        LocalStore.setObject(LANGUAGE_KEY, lang);
-    };
-
     setCookieAccount() {
         const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
 
@@ -1682,12 +1664,6 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 this.is_populating_account_list = false;
             });
-            const { preferred_language } = authorize_response.authorize;
-            const stored_language = LocalStore.get(LANGUAGE_KEY);
-            if (preferred_language !== 'EN' && stored_language && preferred_language !== stored_language) {
-                this.setPreferredLanguage(preferred_language);
-                window.history.replaceState({}, document.title, urlForLanguage(preferred_language));
-            }
             if (this.citizen) {
                 await this.onSetCitizen(this.citizen);
             }
@@ -1723,7 +1699,6 @@ export default class ClientStore extends BaseStore {
                 this.setAccountSettings((await WS.authorized.cache.getSettings()).get_settings);
             }
 
-            if (this.account_settings) this.setPreferredLanguage(this.account_settings.preferred_language);
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
             if (this.account_settings && !this.account_settings.residence) {

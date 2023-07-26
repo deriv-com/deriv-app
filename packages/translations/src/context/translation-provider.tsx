@@ -8,6 +8,7 @@ import i18n, {
     switchLanguage,
 } from '../utils/i18next';
 import { Environment, Language, LanguageData } from '../utils/config';
+import { useWS } from '../../../shared/src/services/index';
 
 type TranslationData = {
     environment: Environment;
@@ -17,7 +18,6 @@ type TranslationData = {
     setAllowedLanguages: React.Dispatch<React.SetStateAction<Partial<LanguageData>>>;
     is_loading: boolean;
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-    websocket?: Record<string, any>;
 };
 
 export const TranslationDataContext = React.createContext<TranslationData | null>(null);
@@ -26,15 +26,10 @@ type TranslationProviderProps = {
     children?: ReactNode;
     environment?: Environment;
     onInit?: (lang: Language) => void;
-    websocket?: Record<string, any>;
 };
 
-export const TranslationProvider = ({
-    children,
-    onInit,
-    websocket,
-    environment = 'production',
-}: TranslationProviderProps) => {
+export const TranslationProvider = ({ children, onInit, environment = 'production' }: TranslationProviderProps) => {
+    const websocket = useWS();
     const [is_loading, setIsLoading] = React.useState(false);
     const [allowed_languages, setAllowedLanguages] = React.useState<Partial<LanguageData>>(
         getAllowedLanguages(environment)
@@ -46,31 +41,41 @@ export const TranslationProvider = ({
     setEnvironment(environment);
 
     React.useEffect(() => {
-        const getLanguageSettings = async () => {
-            if (websocket?.authorized) {
-                const response = await websocket.authorized.send({ get_settings: 1 });
-                const { preferred_language } = response.get_settings;
-                setCurrentLanguage(preferred_language);
-            }
+        const setLanguageSettings = async () => {
+            setIsLoading(true);
+            await switchLanguage(current_language, environment, async () => {
+                setCurrentLanguage(current_language);
+                if (websocket) websocket.closeAndOpenNewConnection(current_language);
+            });
+            await websocket.wait('get_account_status');
+            await websocket.authorized.send({
+                set_settings: 1,
+                preferred_language: current_language,
+            });
         };
-
-        getLanguageSettings();
-    }, [websocket]);
+        setLanguageSettings();
+        setIsLoading(false);
+    }, [current_language, environment, websocket, websocket.authorized]);
 
     React.useEffect(() => {
         const initializeTranslations = async () => {
-            if (environment === 'staging' || environment === 'local') {
-                loadIncontextTranslation(current_language);
-            }
+            await websocket.wait('get_account_status');
+            const response = await websocket.authorized.send({ get_settings: 1 });
 
-            await switchLanguage(current_language, environment);
+            const { preferred_language } = response.get_settings;
+            const initial_language = preferred_language || getInitialLanguage(environment);
+
+            if ((environment === 'staging' || environment === 'local') && initial_language === 'ACH') {
+                loadIncontextTranslation();
+            }
+            if (typeof onInit === 'function') {
+                onInit(initial_language);
+            }
+            setCurrentLanguage(initial_language);
         };
 
         initializeTranslations();
-        if (typeof onInit === 'function') {
-            onInit(current_language);
-        }
-    }, [current_language, environment, onInit]);
+    }, [environment, onInit, websocket]);
 
     return (
         <I18nextProvider i18n={i18n}>
@@ -83,7 +88,6 @@ export const TranslationProvider = ({
                     setAllowedLanguages,
                     is_loading,
                     setIsLoading,
-                    websocket,
                 }}
             >
                 <React.Suspense fallback={<React.Fragment />}>{children}</React.Suspense>

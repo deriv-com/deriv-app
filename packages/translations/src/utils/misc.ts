@@ -16,5 +16,5 @@ export const updateURLLanguage = (lang: Language, url: string = window.location.
         current_url.searchParams.set('lang', lang);
     }
 
-    return `${current_url}`;
+    window.history.pushState({ path: current_url.toString() }, '', current_url.toString());
 };

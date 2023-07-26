@@ -90,8 +90,6 @@ export const isLanguageAvailable = (lang: string, environment: Environment) => {
  * @returns {string} The initial language code to be used in the application.
  */
 export const getInitialLanguage = (environment: Environment) => {
-    if (i18n.language) return i18n.language;
-
     const url_params = new URLSearchParams(window.location.search);
     const query_lang = url_params.get('lang');
     const local_storage_language = localStorage.getItem(STORE_LANGUAGE_KEY);
@@ -119,11 +117,9 @@ export const getInitialLanguage = (environment: Environment) => {
  * @param {Language} current_language - The current language selected.
  * @returns {void}
  */
-export const loadIncontextTranslation = (current_language: Language) => {
+export const loadIncontextTranslation = () => {
     const in_context_loaded = document.getElementById('in_context_crowdin');
-    const is_ach = current_language.toUpperCase() === 'ACH';
-
-    if (!is_ach || in_context_loaded) return;
+    if (in_context_loaded) return;
 
     const jipt = document.createElement('script');
     jipt.id = 'in_context_crowdin';

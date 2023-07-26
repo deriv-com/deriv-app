@@ -544,6 +544,8 @@ type TTradersHubStore = {
     cfd_demo_balance: TBalance;
     platform_demo_balance: TBalance;
     cfd_real_balance: TBalance;
+    selected_platform_type: string;
+    is_tour_open: boolean;
     selectAccountType: (account_type: string) => void;
 };
 

@@ -375,6 +375,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTogglePlatformType: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
             selectAccountType: jest.fn(),
+            selected_platform_type: '',
+            is_tour_open: false,
         },
         menu: {
             attach: jest.fn(),

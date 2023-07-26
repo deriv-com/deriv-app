@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useFormik } from 'formik';
 import React, { useEffect } from 'react';
-import { Button, Dialog, Icon, Input, Text } from '@deriv/components';
+import { Dialog, FormSubmitButton, Icon, Input, Text } from '@deriv/components';
 import { useVerifyEmail } from '@deriv/hooks';
 import { getErrorMessages, validEmail } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -89,18 +89,14 @@ const LinkExpiredModal = observer(() => {
                                 />
                             </fieldset>
                             <div className='link-expired__spaced-container__button_container'>
-                                <Button secondary large onClick={() => toggleLinkExpiredModal(false)}>
-                                    <Localize i18n_default_text='Close' />
-                                </Button>
-                                <Button
-                                    type='submit'
-                                    primary
-                                    large
+                                <FormSubmitButton
+                                    has_cancel
+                                    cancel_label={localize('Close')}
+                                    onCancel={() => toggleLinkExpiredModal(false)}
                                     is_disabled={!formik.values.email || !!formik.errors.email || formik.isSubmitting}
                                     is_loading={formik.isSubmitting}
-                                >
-                                    <Localize i18n_default_text='Resend email' />
-                                </Button>
+                                    label={localize('Resend email')}
+                                />
                             </div>
                         </div>
                     )}

@@ -48,6 +48,7 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
         poi_acknowledged_for_vanuatu_maltainvest,
         poa_acknowledged,
         need_poa_resubmission,
+        poa_resubmit_for_labuan,
     } = getAuthenticationStatusInfo(account_status);
 
     React.useEffect(() => {
@@ -166,7 +167,12 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
                 toggleCFDVerificationModal();
             }
         } else if (is_labuan_selected) {
-            if (poi_acknowledged_for_bvi_labuan && poa_acknowledged && has_submitted_cfd_personal_details) {
+            if (
+                poi_acknowledged_for_bvi_labuan &&
+                poa_acknowledged &&
+                has_submitted_cfd_personal_details &&
+                !poa_resubmit_for_labuan
+            ) {
                 openPasswordModal(type_of_account);
             } else {
                 toggleCFDVerificationModal();

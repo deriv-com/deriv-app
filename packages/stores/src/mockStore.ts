@@ -329,6 +329,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleShouldShowRealAccountsList: jest.fn(),
             is_reset_trading_password_modal_visible: false,
             setResetTradingPasswordModalOpen: jest.fn(),
+            is_desktop: false,
         },
         traders_hub: {
             closeModal: jest.fn(),

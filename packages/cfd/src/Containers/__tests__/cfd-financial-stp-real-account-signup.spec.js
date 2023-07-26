@@ -1,36 +1,49 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import CFDFinancialStpRealAccountSignup from '../cfd-financial-stp-real-account-signup';
 import CFDProviders from '../../cfd-providers';
 import { mockStore } from '@deriv/stores';
+import { getAuthenticationStatusInfo } from '@deriv/shared';
 
 jest.mock('@deriv/account', () => ({
     ...jest.requireActual('@deriv/account'),
     FormSubHeader: () => <div>FormSubHeader</div>,
 }));
 
-jest.mock('../../Components/cfd-poa', () => jest.fn(() => <div> CFDPOA</div>));
-jest.mock('../../Components/cfd-poi', () =>
-    jest.fn(({ onSubmit }) => (
-        <div data-testid='poa-form' onClick={() => onSubmit(0, {})}>
-            CFDPOI
+const MockComponent = ({ prevStep, nextStep }) => (
+    <div>
+        <button onClick={prevStep}>Prev Step</button>
+        <button onClick={() => nextStep(0, {})}>Next Step</button>
+    </div>
+);
+
+jest.mock('../../Components/cfd-poa', () =>
+    jest.fn(({ onCancel, onSubmit }) => (
+        <div>
+            CFDPOA
+            <MockComponent prevStep={onCancel} nextStep={onSubmit} />
         </div>
     ))
 );
+jest.mock('../../Components/cfd-poi', () =>
+    jest.fn(({ onCancel, onSubmit }) => (
+        <div>
+            CFDPOI
+            <MockComponent prevStep={onCancel} nextStep={onSubmit} />
+        </div>
+    ))
+);
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    getAuthenticationStatusInfo: jest.fn().mockReturnValue({}),
+}));
 
 const getByTextFn = (text, should_be) => {
     if (should_be) {
         expect(screen.getByText(text)).toBeInTheDocument();
     } else {
         expect(screen.queryByText(text)).not.toBeInTheDocument();
-    }
-};
-
-const toHavaClassFn = (item, class_name, should_have) => {
-    if (should_have) {
-        expect(item).toHaveClass(class_name);
-    } else {
-        expect(item).not.toHaveClass(class_name);
     }
 };
 
@@ -181,6 +194,7 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
     });
 
     it('should render properly for the first step content', () => {
+        getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_bvi_labuan: true });
         render(<CFDFinancialStpRealAccountSignup />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
@@ -189,14 +203,51 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
     });
 
     it('should render properly for the second step content', () => {
+        getAuthenticationStatusInfo.mockReturnValueOnce({ poa_resubmit_for_labuan: true });
         const { getByTestId } = render(<CFDFinancialStpRealAccountSignup />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
 
-        const div = getByTestId('poa-form');
+        testAllStepsFn(steps, 1);
+    });
 
-        fireEvent.click(div);
+    it('should check for POI status when Jurisdiction is Vanuatu or maltainvest', () => {
+        const new_mock_store = {
+            ...mockRootStore,
+            modules: {
+                ...mockRootStore.modules,
+                cfd: {
+                    ...mockRootStore.modules.cfd,
+                    jurisdiction_selected_shortcode: 'vanuatu',
+                },
+            },
+        };
 
+        getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_vanuatu_maltainvest: true });
+
+        render(<CFDFinancialStpRealAccountSignup />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(new_mock_store)}>{children}</CFDProviders>,
+        });
+        testAllStepsFn(steps, 0);
+    });
+
+    it('should check for POA status when Jurisdiction is Labuan and resubmit status is set to true', () => {
+        const new_mock_store = {
+            ...mockRootStore,
+            modules: {
+                ...mockRootStore.modules,
+                cfd: {
+                    ...mockRootStore.modules.cfd,
+                    jurisdiction_selected_shortcode: 'labuan',
+                },
+            },
+        };
+
+        getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_vanuatu_maltainvest: true });
+
+        render(<CFDFinancialStpRealAccountSignup />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(new_mock_store)}>{children}</CFDProviders>,
+        });
         testAllStepsFn(steps, 1);
     });
 });

@@ -1,4 +1,6 @@
 import React from 'react';
+import { PoiPoaDocsSubmitted } from '@deriv/account';
+import { AccountStatusResponse } from '@deriv/api-types';
 import {
     Button,
     DesktopWrapper,
@@ -11,9 +13,7 @@ import {
     UILoader,
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { PoiPoaDocsSubmitted } from '@deriv/account';
 import { getAuthenticationStatusInfo, isMobile, WS, Jurisdiction } from '@deriv/shared';
-import { AccountStatusResponse } from '@deriv/api-types';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
@@ -59,8 +59,14 @@ const CFDDbviOnboarding = observer(() => {
             const { get_account_status } = response;
 
             if (get_account_status?.authentication) {
-                const { poi_acknowledged_for_vanuatu_maltainvest, poi_acknowledged_for_bvi_labuan, poa_acknowledged } =
-                    getAuthenticationStatusInfo(get_account_status);
+                const {
+                    poi_acknowledged_for_vanuatu_maltainvest,
+                    poi_acknowledged_for_bvi_labuan,
+                    poa_acknowledged,
+                    poa_resubmit_for_labuan,
+                    need_poa_submission,
+                } = getAuthenticationStatusInfo(get_account_status);
+
                 if (jurisdiction_selected_shortcode === Jurisdiction.VANUATU) {
                     setShowSubmittedModal(
                         poi_acknowledged_for_vanuatu_maltainvest &&
@@ -69,6 +75,12 @@ const CFDDbviOnboarding = observer(() => {
                     );
                 } else if (jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST) {
                     setShowSubmittedModal(poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged);
+                } else if (jurisdiction_selected_shortcode === Jurisdiction.LABUAN) {
+                    /* When verified with IDV+ Photo ID, POA is auto verified */
+                    const is_poa_submitted = poa_resubmit_for_labuan ? false : !need_poa_submission;
+                    setShowSubmittedModal(
+                        poi_acknowledged_for_bvi_labuan && has_submitted_cfd_personal_details && is_poa_submitted
+                    );
                 } else
                     setShowSubmittedModal(
                         poi_acknowledged_for_bvi_labuan && poa_acknowledged && has_submitted_cfd_personal_details

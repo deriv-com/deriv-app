@@ -13,14 +13,14 @@ const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TReset
     const reset_password_type = localStorage.getItem('cfd_reset_password_type') || 'main'; // Default to main
     const has_intent =
         reset_password_intent &&
-        /(real|demo)\.(financial_stp|financial|synthetic|synthetic_svg|synthetic_bvi|financial_svg|financial_bvi|financial_fx|financial_v)/.test(
+        /(real|demo)\.(financial_stp|financial|financial_demo|synthetic|synthetic_svg|synthetic_bvi|financial_svg|financial_bvi|financial_fx|financial_v)/.test(
             reset_password_intent
         );
 
     let group, type, login, title, server;
     if (has_intent && current_list) {
         [server, group, type] = reset_password_intent.split('.');
-        const title_type = type === 'financial_demo' ? 'financial' : type;
+        const title_type = type;
         login = current_list[`mt5.${group}.${type}@${server}`].login;
         title =
             getMtCompanies(is_eu)[group as keyof TMtCompanies][title_type as keyof TMtCompanies['demo' | 'real']]

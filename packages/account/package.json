@@ -27,7 +27,7 @@
         "deploy:production": "echo \"No deploy:production specified\""
     },
     "dependencies": {
-        "@binary-com/binary-document-uploader": "^2.4.7",
+        "@binary-com/binary-document-uploader": "^2.4.8",
         "@deriv/api-types": "^1.0.94",
         "@deriv/components": "^1.0.0",
         "@deriv/hooks": "^1.0.0",

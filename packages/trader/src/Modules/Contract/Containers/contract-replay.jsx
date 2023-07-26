@@ -37,6 +37,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 
 const ContractReplay = observer(({ contract_id }) => {
     const { common, contract_replay, ui } = useStore();
+    const [swipe_index, setSwipeIndex] = React.useState(0);
     const { contract_store } = contract_replay;
     const {
         is_market_closed,
@@ -73,6 +74,10 @@ const ContractReplay = observer(({ contract_id }) => {
         setIsVisible(false);
         const is_from_table_row = !isEmptyObject(location.state) ? location.state.from_table_row : false;
         return is_from_table_row ? history.goBack() : routeBackInApp(history);
+    };
+
+    const onChangeSwipeableIndex = index => {
+        setSwipeIndex(index);
     };
 
     if (!contract_info.underlying) return null;
@@ -160,7 +165,11 @@ const ContractReplay = observer(({ contract_id }) => {
                                 {is_digit_contract ? (
                                     <React.Fragment>
                                         <InfoBoxWidget />
-                                        <SwipeableWrapper className='replay-chart__container-swipeable-wrapper'>
+                                        <SwipeableWrapper
+                                            className='replay-chart__container-swipeable-wrapper'
+                                            is_swipe_disabled={swipe_index === 1}
+                                            onChange={onChangeSwipeableIndex}
+                                        >
                                             <DigitsWidget />
                                             <ReplayChart />
                                         </SwipeableWrapper>

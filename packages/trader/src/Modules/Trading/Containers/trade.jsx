@@ -66,6 +66,7 @@ const Trade = observer(() => {
     const [category, setCategory] = React.useState(null);
     const [subcategory, setSubcategory] = React.useState(null);
     const [is_digits_widget_active, setIsDigitsWidgetActive] = React.useState(false);
+    const [swipe_index, setSwipeIndex] = React.useState(0);
     const charts_ref = React.useRef();
 
     const open_market = React.useMemo(() => {
@@ -122,6 +123,7 @@ const Trade = observer(() => {
     const onChangeSwipeableIndex = index => {
         setMobileDigitView(index === 0);
         setIsDigitsWidgetActive(index === 0);
+        setSwipeIndex(index);
     };
 
     const onTryOtherMarkets = async () => {
@@ -193,6 +195,7 @@ const Trade = observer(() => {
                                 is_chart_loading ||
                                 should_show_active_symbols_loading
                             }
+                            is_swipe_disabled={swipe_index === 1}
                             className={classNames({ 'vanilla-trade-chart': is_vanilla })}
                         >
                             {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}

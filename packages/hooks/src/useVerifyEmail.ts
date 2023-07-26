@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRequest } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 import useCountdown from './useCountdown';
@@ -13,6 +13,10 @@ const useVerifyEmail = (
     const { client } = useStore();
     const [sent_count, setSentCount] = useState(0);
 
+    useEffect(() => {
+        if (WS.data) setSentCount(count => count + 1);
+    }, [WS.data]);
+
     const send = useCallback(
         (email?: Parameters<ReturnType<typeof useRequest<'verify_email'>>['mutate']>[0]['payload']['verify_email']) => {
             const request_email = email ?? client.email;
@@ -21,8 +25,6 @@ const useVerifyEmail = (
 
             counter.reset();
             counter.start();
-
-            setSentCount(old => old + 1);
 
             WS.mutate({ payload: { verify_email: request_email, type } });
         },

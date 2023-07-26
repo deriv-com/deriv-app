@@ -72,6 +72,19 @@ const getHighlightedIconLabel = (
             }
         case 'all':
         default:
+            if (trading_platforms.platform === 'mt5') {
+                return [
+                    { icon: 'Synthetics', text: localize('Synthetics'), highlighted: true },
+                    { icon: 'Baskets', text: localize('Baskets'), highlighted: false },
+                    { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: true },
+                    { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
+                    { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
+                    { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
+                    { icon: 'Forex', text: forex_label, highlighted: true },
+                    { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
+                    { icon: 'ETF', text: localize('ETF'), highlighted: true },
+                ];
+            }
             return [
                 { icon: 'Synthetics', text: localize('Synthetics'), highlighted: true },
                 { icon: 'Baskets', text: localize('Baskets'), highlighted: true },

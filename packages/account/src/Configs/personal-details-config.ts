@@ -118,7 +118,7 @@ export const personal_details_config = ({
         tax_residence: {
             //if tax_residence is already set, we will use it as default value else for mf clients we will use residence as default value
             default_value: account_settings?.tax_residence
-                ? residence_list.find(item => item.value === account_settings?.tax_residence)?.text || ''
+                ? residence_list.find(item => item.value === account_settings?.tax_residence)?.text ?? ''
                 : default_residence,
             supported_in: ['maltainvest'],
             rules: [['req', localize('Tax residence is required.')]],

@@ -6,4 +6,3 @@ export { onWorkspaceResize } from './workspace';
 export { getSavedWorkspaces, saveWorkspaceToRecent, removeExistingWorkspace } from './local-storage';
 export { timeSince } from './date-time-helper';
 export { setColors } from '../scratch/hooks/colours';
-export { blocksCoordinate } from '../scratch/hooks/block_svg';

@@ -63,11 +63,13 @@ type TOverrideTradeStore = Omit<
     | 'market_close_times'
     | 'market_open_times'
     | 'multiplier_range_list'
+    | 'multiplier'
     | 'sessions'
     | 'setIsTradeParamsExpanded'
     | 'stake_boundary'
     | 'start_dates_list'
     | 'start_time'
+    | 'symbol'
     | 'take_profit'
     | 'proposal_info'
     | 'trade_types'
@@ -91,6 +93,7 @@ type TOverrideTradeStore = Omit<
     form_components: string[];
     market_open_times: string[];
     market_close_times: string[];
+    multiplier: number;
     multiplier_range_list: number[];
     proposal_info: {
         [key: string]: {
@@ -123,6 +126,7 @@ type TOverrideTradeStore = Omit<
     };
     start_dates_list: Array<{ text: string; value: number }>;
     start_time: string | null;
+    symbol: string;
     take_profit?: string;
     ticks_history_stats: {
         ticks_stayed_in?: number[];

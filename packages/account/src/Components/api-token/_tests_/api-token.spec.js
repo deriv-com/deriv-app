@@ -147,69 +147,6 @@ describe('<ApiToken/>', () => {
         expect(screen.queryByText(read_scope_description)).not.toBeInTheDocument();
     });
 
-    //     isMobile.mockReturnValueOnce(true);
-    //     isDesktop.mockReturnValueOnce(false);
-
-    //     render(
-    //         <StoreProvider store={store}>
-    //             <ApiToken {...mock_props} />
-    //         </StoreProvider>
-    //     );
-
-    //     expect(await screen.findByText(admin_scope_description)).toBeInTheDocument();
-    //     expect(await screen.findByText(admin_scope_note)).toBeInTheDocument();
-    //     expect(await screen.findByText(trading_info_scope_description)).toBeInTheDocument();
-    //     expect(await screen.findByText(select_scopes_msg)).toBeInTheDocument();
-    //     expect(await screen.findByText(token_creation_description)).toBeInTheDocument();
-    //     expect(await screen.findByText(token_using_description)).toBeInTheDocument();
-    //     expect(await screen.findByText(trade_scope_description)).toBeInTheDocument();
-    //     expect(await screen.findByText(trading_info_description)).toBeInTheDocument();
-    //     expect(await screen.findByText(read_scope_description)).toBeInTheDocument();
-    //     expect(screen.queryByText(learn_more_title)).not.toBeInTheDocument();
-    // });
-
-    // it('should render ApiToken component with app_settings', async () => {
-    //     mock_props.is_app_settings = true;
-
-    //     render(
-    //         <StoreProvider store={store}>
-    //             <ApiToken {...mock_props} />
-    //         </StoreProvider>
-    //     );
-
-    //     await waitFor(() => {
-    //         expect(screen.queryByText(our_access_description)).not.toBeInTheDocument();
-    //     });
-    // });
-
-    // it('should render ApiTokenFooter, show and close ApiTokenOverlay after triggering links', async () => {
-    //     const footer_portal_root_el = document.createElement('div');
-    //     document.body.appendChild(footer_portal_root_el);
-    //     const overlay_portal_root_el = document.createElement('div');
-    //     document.body.appendChild(overlay_portal_root_el);
-
-    //     mock_props.footer_ref = footer_portal_root_el;
-    //     mock_props.overlay_ref = overlay_portal_root_el;
-
-    //     render(
-    //         <StoreProvider store={store}>
-    //             <ApiToken {...mock_props} />
-    //         </StoreProvider>
-    //     );
-
-    //     expect(await screen.findByText(learn_more_title)).toBeInTheDocument();
-    //     expect(screen.queryByText(our_access_description)).not.toBeInTheDocument();
-
-    //     fireEvent.click(await screen.findByText(learn_more_title));
-    //     expect(await screen.findByText(our_access_description)).toBeInTheDocument();
-
-    //     fireEvent.click(await screen.findByRole('button', { name: /done/i }));
-    //     expect(screen.queryByText(our_access_description)).not.toBeInTheDocument();
-
-    //     document.body.removeChild(footer_portal_root_el);
-    //     document.body.removeChild(overlay_portal_root_el);
-    // });
-
     it('should choose checkbox, enter a valid value and create token', async () => {
         render(
             <StoreProvider store={store}>
@@ -224,7 +161,7 @@ describe('<ApiToken/>', () => {
         const read_checkbox = checkboxes.find(card => card.name === 'read'); // Typecasting it since find can return undefined as well
         const token_name_input = await screen.findByLabelText('Token name');
 
-        expect(checkboxes.length).toBe(5);
+        expect(checkboxes).toHaveLength(5);
         expect(create_btn).toBeDisabled();
         expect(read_checkbox?.checked).toBeFalsy();
         expect(token_name_input?.value).toBe('');
@@ -289,7 +226,7 @@ describe('<ApiToken/>', () => {
         expect(await screen.findByText('Second test token')).toBeInTheDocument();
 
         const delete_btns_1 = screen.getAllByTestId('dt_token_delete_icon');
-        expect(delete_btns_1.length).toBe(2);
+        expect(delete_btns_1).toHaveLength(2);
 
         fireEvent.click(delete_btns_1[0]);
         const no_btn_1 = screen.getByRole('button', { name: /cancel/i });
@@ -301,7 +238,7 @@ describe('<ApiToken/>', () => {
         });
 
         const delete_btns_2 = await screen.findAllByTestId('dt_token_delete_icon');
-        expect(delete_btns_2.length).toBe(2);
+        expect(delete_btns_2).toHaveLength(2);
 
         fireEvent.click(delete_btns_2[0]);
         const yes_btn_1 = screen.getByRole('button', { name: /yes, delete/i });
@@ -350,7 +287,7 @@ describe('<ApiToken/>', () => {
         expect(screen.queryByText('FirstTokenID')).not.toBeInTheDocument();
 
         const toggle_visibility_btns = await screen.findAllByTestId('dt_toggle_visibility_icon');
-        expect(toggle_visibility_btns.length).toBe(2);
+        expect(toggle_visibility_btns).toHaveLength(2);
 
         fireEvent.click(toggle_visibility_btns[0]);
         expect(screen.getByText('FirstTokenID')).toBeInTheDocument();
@@ -359,7 +296,7 @@ describe('<ApiToken/>', () => {
         expect(screen.getByText('SecondTokenID')).toBeInTheDocument();
 
         const copy_btns_1 = await screen.findAllByTestId('dt_copy_token_icon');
-        expect(copy_btns_1.length).toBe(2);
+        expect(copy_btns_1).toHaveLength(2);
 
         fireEvent.click(copy_btns_1[0]);
         expect(screen.queryByText(warning_msg)).not.toBeInTheDocument();
@@ -412,16 +349,16 @@ describe('<ApiToken/>', () => {
             </StoreProvider>
         );
 
-        expect((await screen.findAllByText('Name')).length).toBe(3);
-        expect((await screen.findAllByText('Last Used')).length).toBe(3);
-        expect((await screen.findAllByText('Token')).length).toBe(3);
-        expect((await screen.findAllByText('Scopes')).length).toBe(3);
+        expect((await screen.findAllByText('Name'))).toHaveLength(3);
+        expect((await screen.findAllByText('Last Used'))).toHaveLength(3);
+        expect((await screen.findAllByText('Token'))).toHaveLength(3);
+        expect((await screen.findAllByText('Scopes'))).toHaveLength(3);
         expect(await screen.findByText('First test token')).toBeInTheDocument();
         expect(await screen.findByText('Second test token')).toBeInTheDocument();
         expect(screen.queryByText('Action')).not.toBeInTheDocument();
         expect(screen.queryByText('SecondTokenID')).not.toBeInTheDocument();
         const never_used = await screen.findAllByText('Never');
-        expect(never_used.length).toBe(2);
+        expect(never_used).toHaveLength(2);
     });
 
     it('should show token error if exists', async () => {

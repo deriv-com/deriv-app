@@ -376,6 +376,7 @@
                 @include desktop {
                     &:hover {
                         background-color: var(--general-hover);
+                        border-radius: 0.5rem;
                     }
                 }
 
@@ -390,6 +391,7 @@
                 @include desktop {
                     &:hover {
                         background-color: var(--general-hover);
+                        border-radius: 0.5rem;
                     }
                 }
 
@@ -404,6 +406,7 @@
                 @include desktop {
                     &:hover {
                         background-color: var(--general-hover);
+                        border-radius: 0.5rem;
                     }
                 }
 
@@ -418,11 +421,27 @@
                 @include desktop {
                     &:hover {
                         background-color: var(--general-hover);
+                        border-radius: 0.5rem;
                     }
                 }
 
                 @include mobile {
                     @include popoverIcons(var(--status-info), 100%, 6rem);
+                }
+            }
+
+            &__share {
+                @include popoverIcons(none, 3.2rem, 3.2rem);
+
+                @include desktop {
+                    &:hover {
+                        background-color: var(--general-hover);
+                        border-radius: 0.5rem;
+                    }
+                }
+
+                @include mobile {
+                    @include popoverIcons($color-green-1, 100%, 6rem);
                 }
             }
         }

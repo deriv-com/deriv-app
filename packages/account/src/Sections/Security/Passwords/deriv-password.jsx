@@ -70,11 +70,7 @@ const DerivPassword = ({
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
     const onClickSendEmail = () => {
-        if (social_identity_provider === 'apple') {
-            WS.verifyEmail(email, 'request_email');
-        } else {
-            WS.verifyEmail(email, 'reset_password');
-        }
+        WS.verifyEmail(email, 'reset_password');
         setIsSentEmailModalOpen(true);
     };
 

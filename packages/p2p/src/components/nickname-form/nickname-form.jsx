@@ -59,7 +59,7 @@ const NicknameForm = () => {
         general_store.setShouldShowPopup(false);
     };
 
-    // not moving it to hook since this component will be changed as part of refactoring.
+    // TODO: move it to hook when this component will be changed as part of refactoring.
     React.useEffect(() => {
         window.addEventListener('popstate', closeForm);
         return () => {

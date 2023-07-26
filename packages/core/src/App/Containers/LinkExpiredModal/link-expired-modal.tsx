@@ -19,7 +19,6 @@ const LinkExpiredModal = observer(() => {
         initialStatus: { error_msg: '' },
         validate: values => (!validEmail(values.email) ? { email: getErrorMessages().email() } : {}),
         onSubmit: values => send(values.email),
-        validateOnChange: true,
     });
 
     useEffect(() => {
@@ -74,7 +73,7 @@ const LinkExpiredModal = observer(() => {
                                     data-lpignore='true'
                                     type='text'
                                     name='email'
-                                    id={'email'}
+                                    id='email'
                                     onChange={e => {
                                         formik.setStatus({ error_msg: '' });
                                         formik.handleChange(e);

@@ -145,6 +145,7 @@ export default class BuySellStore extends BaseStore {
             fetchAdvertiserAdverts: action.bound,
             handleResponse: action.bound,
             setIsCreateOrderSubscribed: action.bound,
+            unsubscribeAdvertInfo: action.bound,
         });
     }
 
@@ -272,7 +273,6 @@ export default class BuySellStore extends BaseStore {
                 handleConfirm(response?.p2p_order_info);
             }
             handleClose();
-            this.unsubscribeAdvertInfo();
             this.payment_method_ids = [];
         }
         if (order?.p2p_order_info?.id && order?.p2p_order_info?.chat_channel_url) {
@@ -588,6 +588,7 @@ export default class BuySellStore extends BaseStore {
 
     setSelectedAdvert(selected_advert) {
         const { general_store } = this.root_store;
+        console.log(general_store.is_common_modal_open);
         if (!this.root_store.general_store.is_advertiser) {
             this.setShouldShowVerification(true);
         } else if (this.is_sell_advert) {
@@ -697,28 +698,34 @@ export default class BuySellStore extends BaseStore {
         return errors;
     }
 
-    handleAdvertInfoResponse = response => {
+    handleAdvertInfoResponse(response) {
         if(response.error) return;
         const { p2p_advert_info } = response;
         if (this.selected_ad_state?.id === p2p_advert_info.id) {
             this.setSelectedAdState(p2p_advert_info);
         }
     }
+
+    subscribeAdvertInfo() {
+        this.advert_info_subscription = subscribeWS(
+            {
+                p2p_advert_info: 1,
+                id: this.selected_ad_state.id,
+                use_client_limits: 1,
+                subscribe: 1,
+            },
+            [this.handleAdvertInfoResponse]
+        );
+    }
+
     registerAdvertIntervalReaction() {
         const disposeAdvertIntervalReaction = reaction(
-            () => this.selected_ad_state,
+            () => (this.selected_ad_state.id),
             () => {
-                if (this.selected_ad_state) {
-                    this.advert_info_subscription = subscribeWS(
-                        {
-                            p2p_advert_info: 1,
-                            id: this.selected_ad_state.id,
-                            use_client_limits: 1,
-                        },
-                        [this.handleAdvertInfoResponse]
-                    );
+                if (this.selected_ad_state.id) {
+                        this.subscribeAdvertInfo();
                     };
-                }
+                }, { fireImmediately: true }
         );
 
         return () => disposeAdvertIntervalReaction();
@@ -727,6 +734,7 @@ export default class BuySellStore extends BaseStore {
     unsubscribeAdvertInfo = () => {
         if (this.advert_info_subscription.unsubscribe) {
             this.advert_info_subscription.unsubscribe();
+            this.setSelectedAdState({});
         }
     };
 

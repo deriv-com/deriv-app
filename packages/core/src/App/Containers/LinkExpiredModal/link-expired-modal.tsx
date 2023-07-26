@@ -1,11 +1,12 @@
 import classNames from 'classnames';
 import { useFormik } from 'formik';
-import React, { useEffect } from 'react';
-import { Dialog, FormSubmitButton, Icon, Input, Text } from '@deriv/components';
+import React from 'react';
+import { Dialog, FormSubmitButton, Input, Text } from '@deriv/components';
 import { useVerifyEmail } from '@deriv/hooks';
 import { getErrorMessages, validEmail } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import EmailResent from './email-resent';
 
 const LinkExpiredModal = observer(() => {
     const { ui } = useStore();
@@ -34,14 +35,14 @@ const LinkExpiredModal = observer(() => {
         values,
     } = formik;
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (verify_data) {
             setSubmitting(false);
             setIsEmailSent(true);
         }
     }, [verify_data, setSubmitting]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (verify_error && typeof verify_error === 'object' && 'message' in verify_error) {
             resetForm();
             setStatus({ error_msg: verify_error?.message });
@@ -63,18 +64,7 @@ const LinkExpiredModal = observer(() => {
             >
                 <div className='link-expired'>
                     {is_email_sent ? (
-                        <div className='link-expired__spaced-container__content link-expired__spaced-container__email_sent'>
-                            <Icon icon='IcEmailVerificationResent' size={128} />
-                            <Text as='p' size='s' align='center'>
-                                <Localize
-                                    i18n_default_text="<0>We've sent you an email.</0>"
-                                    components={[<strong key={0} />]}
-                                />
-                            </Text>
-                            <Text as='p' size='s' align='center'>
-                                <Localize i18n_default_text='Please click on the link in the email to reset your password.' />
-                            </Text>
-                        </div>
+                        <EmailResent />
                     ) : (
                         <div className='link-expired__spaced-container__content'>
                             <Text as='p' size='xs' align='left'>

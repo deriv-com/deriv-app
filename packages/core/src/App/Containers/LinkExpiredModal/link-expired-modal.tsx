@@ -78,6 +78,7 @@ const LinkExpiredModal = observer(() => {
                                         formik.setStatus({ error_msg: '' });
                                         formik.handleChange(e);
                                     }}
+                                    disabled={formik.isSubmitting}
                                     onBlur={formik.handleBlur}
                                     error={(formik.touched.email && formik.errors.email) || formik.status.error_msg}
                                     label={localize('Email address')}

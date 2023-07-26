@@ -1,6 +1,7 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
-const { IS_RELEASE } = require('./constants');
+
+const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 const js_loaders = [
     '@deriv/shared/src/loaders/deriv-account-loader.js',
@@ -115,6 +116,7 @@ const css_loaders = [
 ];
 
 module.exports = {
+    IS_RELEASE,
     js_loaders,
     html_loaders,
     file_loaders,

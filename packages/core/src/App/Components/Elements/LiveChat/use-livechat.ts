@@ -39,6 +39,7 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
     }, []);
 
     const liveChatSetup = (is_logged_in: boolean) => {
+        window.LiveChatWidget.init();
         window.LiveChatWidget?.on('ready', () => {
             let client_first_name = '';
             let client_last_name = '';

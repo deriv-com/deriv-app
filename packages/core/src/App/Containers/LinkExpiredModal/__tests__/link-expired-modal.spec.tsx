@@ -1,10 +1,10 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import LinkExpiredModal from '../link-expired-modal';
+import { APIProvider, useRequest } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { TStores } from '@deriv/stores/types';
-import { APIProvider, useRequest } from '@deriv/api';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import LinkExpiredModal from '../link-expired-modal';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),

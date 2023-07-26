@@ -11,7 +11,7 @@ const LinkExpiredModal = observer(() => {
     const { ui } = useStore();
     const { enableApp, disableApp, is_link_expired_modal_visible: is_visible, toggleLinkExpiredModal } = ui;
 
-    const { send, error, data } = useVerifyEmail('reset_password');
+    const { send, error: verify_error, data: verify_data } = useVerifyEmail('reset_password');
     const [is_email_sent, setIsEmailSent] = React.useState(false);
 
     const formik = useFormik({
@@ -20,23 +20,36 @@ const LinkExpiredModal = observer(() => {
         validate: values => (!validEmail(values.email) ? { email: getErrorMessages().email() } : {}),
         onSubmit: values => send(values.email),
     });
+    const {
+        errors,
+        handleBlur,
+        handleChange,
+        handleSubmit,
+        isSubmitting,
+        resetForm,
+        setStatus,
+        setSubmitting,
+        status,
+        touched,
+        values,
+    } = formik;
 
     useEffect(() => {
-        if (data) {
-            formik.setSubmitting(false);
+        if (verify_data) {
+            setSubmitting(false);
             setIsEmailSent(true);
         }
-    }, [data, formik.setSubmitting]);
+    }, [verify_data, setSubmitting]);
 
     useEffect(() => {
-        if (error && typeof error === 'object' && 'message' in error) {
-            formik.resetForm();
-            formik.setStatus({ error_msg: error?.message });
+        if (verify_error && typeof verify_error === 'object' && 'message' in verify_error) {
+            resetForm();
+            setStatus({ error_msg: verify_error?.message });
         }
-    }, [error, formik.resetForm, formik.setStatus]);
+    }, [verify_error, resetForm, setStatus]);
 
     return (
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <Dialog
                 className={classNames('link-expired__spaced-container', {
                     'link-expired__spaced-container__fullscreen': is_email_sent,
@@ -78,14 +91,14 @@ const LinkExpiredModal = observer(() => {
                                     name='email'
                                     id='email'
                                     onChange={e => {
-                                        formik.setStatus({ error_msg: '' });
-                                        formik.handleChange(e);
+                                        setStatus({ error_msg: '' });
+                                        handleChange(e);
                                     }}
-                                    disabled={formik.isSubmitting}
-                                    onBlur={formik.handleBlur}
-                                    error={(formik.touched.email && formik.errors.email) || formik.status.error_msg}
+                                    disabled={isSubmitting}
+                                    onBlur={handleBlur}
+                                    error={(touched.email && errors.email) || status.error_msg}
                                     label={localize('Email address')}
-                                    value={formik.values.email}
+                                    value={values.email}
                                 />
                             </fieldset>
                             <div className='link-expired__spaced-container__button_container'>
@@ -93,8 +106,8 @@ const LinkExpiredModal = observer(() => {
                                     has_cancel
                                     cancel_label={localize('Close')}
                                     onCancel={() => toggleLinkExpiredModal(false)}
-                                    is_disabled={!formik.values.email || !!formik.errors.email || formik.isSubmitting}
-                                    is_loading={formik.isSubmitting}
+                                    is_disabled={!values.email || !!errors.email || isSubmitting}
+                                    is_loading={isSubmitting}
                                     label={localize('Resend email')}
                                 />
                             </div>

@@ -60,30 +60,27 @@ const CFDDbviOnboarding = observer(() => {
 
             if (get_account_status?.authentication) {
                 const {
-                    poi_acknowledged_for_vanuatu_maltainvest,
-                    poi_acknowledged_for_bvi_labuan,
+                    poi_acknowledged_for_maltainvest,
+                    poi_acknowledged_for_bvi_labuan_vanuatu,
                     poa_acknowledged,
                     poa_resubmit_for_labuan,
                     need_poa_submission,
                 } = getAuthenticationStatusInfo(get_account_status);
-
-                if (jurisdiction_selected_shortcode === Jurisdiction.VANUATU) {
-                    setShowSubmittedModal(
-                        poi_acknowledged_for_vanuatu_maltainvest &&
-                            poa_acknowledged &&
-                            has_submitted_cfd_personal_details
-                    );
-                } else if (jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST) {
-                    setShowSubmittedModal(poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged);
+                if (jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST) {
+                    setShowSubmittedModal(poi_acknowledged_for_maltainvest && poa_acknowledged);
                 } else if (jurisdiction_selected_shortcode === Jurisdiction.LABUAN) {
                     /* When verified with IDV+ Photo ID, POA is auto verified */
                     const is_poa_submitted = poa_resubmit_for_labuan ? false : !need_poa_submission;
                     setShowSubmittedModal(
-                        poi_acknowledged_for_bvi_labuan && has_submitted_cfd_personal_details && is_poa_submitted
+                        poi_acknowledged_for_bvi_labuan_vanuatu &&
+                            has_submitted_cfd_personal_details &&
+                            is_poa_submitted
                     );
                 } else
                     setShowSubmittedModal(
-                        poi_acknowledged_for_bvi_labuan && poa_acknowledged && has_submitted_cfd_personal_details
+                        poi_acknowledged_for_bvi_labuan_vanuatu &&
+                            poa_acknowledged &&
+                            has_submitted_cfd_personal_details
                     );
             }
 

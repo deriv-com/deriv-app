@@ -46,7 +46,6 @@ const LinkExpiredModal = observer(() => {
                 enableApp={enableApp}
                 title={is_email_sent ? '' : localize('Link Expired')}
                 has_close_icon
-                is_closed_on_cancel={true}
                 onConfirm={() => toggleLinkExpiredModal(false)}
             >
                 <div className='link-expired'>

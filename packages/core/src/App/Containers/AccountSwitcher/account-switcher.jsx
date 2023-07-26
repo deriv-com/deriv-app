@@ -186,7 +186,7 @@ const AccountSwitcher = ({
 
     const canResetBalance = account => {
         const account_init_balance = 10000;
-        return account.is_virtual && account.balance !== account_init_balance;
+        return account?.is_virtual && account?.balance !== account_init_balance;
     };
 
     const checkMultipleSvgAcc = () => {
@@ -445,7 +445,7 @@ const AccountSwitcher = ({
     };
 
     return (
-        <div className='acc-switcher__list' ref={wrapper_ref}>
+        <div className='acc-switcher__list' ref={wrapper_ref} data-testid='acc-switcher'>
             {is_landing_company_loaded ? (
                 <React.Fragment>
                     <Tabs

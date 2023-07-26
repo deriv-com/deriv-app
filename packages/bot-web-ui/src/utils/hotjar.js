@@ -26,7 +26,7 @@ const hotjar = client => {
         window.hj('identify', user_id, {
             'Account created': toMoment(account_open_date).format('YYYY-MM-DD'),
             'Account type': account_type,
-            'Country during signup': client.clients_country,
+            'User country': client.clients_country,
         });
     })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
 };

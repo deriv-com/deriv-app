@@ -1,11 +1,11 @@
 import React from 'react';
 import { ApiHelpers, ServerTime, setColors } from '@deriv/bot-skeleton';
 import { Loading } from '@deriv/components';
-import { epochToMoment, toMoment } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Audio, BotNotificationMessages, Dashboard, NetworkToastPopup, RoutePromptDialog } from 'Components';
 import BotBuilder from 'Components/dashboard/bot-builder';
 import GTM from 'Utils/gtm';
+import hotjar from 'Utils/hotjar';
 import { MobxContentProvider } from 'Stores/connect';
 import { useDBotStore } from 'Stores/useDBotStore';
 import BlocklyLoading from '../components/blockly-loading';
@@ -32,34 +32,7 @@ const AppContent = observer(() => {
     }, [is_dark_mode_on]);
 
     React.useEffect(() => {
-        /**
-         * Inject: External Script Hotjar - for DBot only
-         */
-        (function (h, o, t, j) {
-            /* eslint-disable */
-            h.hj =
-                h.hj ||
-                function () {
-                    (h.hj.q = h.hj.q || []).push(arguments);
-                };
-            /* eslint-enable */
-            h._hjSettings = { hjid: 3050531, hjsv: 6 };
-            const a = o.getElementsByTagName('head')[0];
-            const r = o.createElement('script');
-            r.async = 1;
-            r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-            a.appendChild(r);
-
-            const user_id = client.loginid;
-            const account_type = client.is_virtual ? 'Demo' : 'Real';
-            const account_open_date = epochToMoment(client.account_open_date);
-
-            window.hj('identify', user_id, {
-                'Account created': toMoment(account_open_date).format('YYYY-MM-DD'),
-                'Country during signup': client.clients_country,
-                'Account Type': account_type,
-            });
-        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+        hotjar(client);
     }, []);
 
     React.useEffect(() => {

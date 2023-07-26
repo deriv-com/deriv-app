@@ -106,6 +106,7 @@ const POISubmissionForMT5 = ({
                         has_idv_error={has_idv_error}
                         getChangeableFields={getChangeableFields}
                         account_settings={account_settings}
+                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                     />
                 );
             case service_code.onfido: {

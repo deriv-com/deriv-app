@@ -40,7 +40,7 @@ const personal_details_config = ({
 
     const config = {
         account_opening_reason: {
-            supported_in: ['iom', 'malta', 'maltainvest'],
+            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.account_opening_reason ?? '',
             rules: [['req', localize('Account opening reason is required.')]],
         },
@@ -81,7 +81,7 @@ const personal_details_config = ({
             ],
         },
         place_of_birth: {
-            supported_in: ['maltainvest', 'iom', 'malta'],
+            supported_in: ['svg', 'maltainvest', 'iom', 'malta'],
             default_value: account_settings.place_of_birth
                 ? residence_list.find(item => item.value === account_settings.place_of_birth)?.text
                 : '',
@@ -118,12 +118,12 @@ const personal_details_config = ({
                 real_account_signup_target === 'maltainvest'
                     ? account_settings.residence
                     : residence_list.find(item => item.value === account_settings.tax_residence)?.text || '',
-            supported_in: ['maltainvest'],
+            supported_in: ['svg', 'maltainvest'],
             rules: [['req', localize('Tax residence is required.')]],
         },
         tax_identification_number: {
             default_value: account_settings.tax_identification_number ?? '',
-            supported_in: ['maltainvest'],
+            supported_in: ['svg', 'maltainvest'],
             rules: [
                 ['req', localize('Tax Identification Number is required.')],
                 [

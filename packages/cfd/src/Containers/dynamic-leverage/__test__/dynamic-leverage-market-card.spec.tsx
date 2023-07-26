@@ -4,10 +4,10 @@ import { DynamicLeverageMarketCard } from '../dynamic-leverage-market-card';
 
 describe('DynamicLeverageMarketCard', () => {
     const mock_props = {
-        market: 'Metals',
-        market_example: '(XAUUSD, XAGUSD)',
+        title: 'Metals',
+        description: '(XAUUSD, XAGUSD)',
         leverage: 'Up to 1:1000',
-        dynamicLeverages: [
+        data: [
             { from: 0.01, to: 1, leverage: 1000 },
             { from: 101, to: 500, leverage: 1000 },
             { from: 501, to: 1000, leverage: 500 },
@@ -19,7 +19,7 @@ describe('DynamicLeverageMarketCard', () => {
 
         const market_title = screen.getByTestId('market_title');
         const leverage_title = screen.getByTestId('leverage_title');
-        const example_title = screen.getByTestId('example_title');
+        const example_title = screen.getByTestId('description_title');
         expect(market_title).toBeInTheDocument();
         expect(example_title).toBeInTheDocument();
         expect(leverage_title).toBeInTheDocument();
@@ -30,9 +30,9 @@ describe('DynamicLeverageMarketCard', () => {
 
     it('should not render example_title if not present', () => {
         const props = {
-            market: 'Forex',
+            title: 'Forex',
             leverage: 'Up to 1:1000',
-            dynamicLeverages: [
+            data: [
                 {
                     from: 0.01,
                     to: 1,
@@ -43,7 +43,7 @@ describe('DynamicLeverageMarketCard', () => {
         render(<DynamicLeverageMarketCard {...props} />);
         const market_title = screen.getByTestId('market_title');
         const leverage_title = screen.getByTestId('leverage_title');
-        const example_title = screen.queryByTestId('example_title');
+        const example_title = screen.queryByTestId('description_title');
         expect(market_title).toBeInTheDocument();
         expect(example_title).not.toBeInTheDocument();
         expect(leverage_title).toBeInTheDocument();

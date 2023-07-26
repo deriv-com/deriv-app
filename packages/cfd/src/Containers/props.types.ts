@@ -152,7 +152,6 @@ export type TJurisdictionCardProps = {
     account_type: string;
     disabled: boolean;
     is_non_idv_design: boolean;
-    toggleDynamicLeverage: React.MouseEventHandler<HTMLSpanElement>;
     type_of_card: TJurisdictionCardType;
 };
 
@@ -221,7 +220,6 @@ type TOpenAccountTransferMeta = {
 
 export type TJurisdictionModalContentWrapperProps = {
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
-    toggleDynamicLeverage: React.MouseEventHandler<HTMLSpanElement>;
 };
 
 export type TJurisdictionModalProps = {
@@ -232,7 +230,6 @@ export type TJurisdictionModalContentProps = {
     account_status: GetAccountStatus;
     account_type: string;
     is_non_idv_design: boolean;
-    toggleDynamicLeverage: React.MouseEventHandler<HTMLSpanElement>;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     synthetic_available_accounts: TTradingPlatformAvailableAccount[];
@@ -242,6 +239,11 @@ export type TJurisdictionModalContentProps = {
     real_financial_accounts_existing_data: TExistingData;
     real_swapfree_accounts_existing_data: TExistingData;
     is_virtual: boolean;
+};
+
+export type TJurisdictionModalTitleProps = {
+    show_eu_related_content: boolean;
+    account_type: string;
 };
 
 type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
@@ -327,8 +329,8 @@ type TDynamicLeverage = {
 };
 
 export type TDynamicLeverageMarketCardProps = {
-    market: string;
+    title: string;
+    description?: string;
     leverage: string;
-    market_example?: string;
-    dynamicLeverages: TDynamicLeverage[];
+    data: TDynamicLeverage[];
 };

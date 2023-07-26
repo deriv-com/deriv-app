@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 
-export const dynamicLeverages = [
+export const dynamic_leverages = [
     {
         key: 'forex',
         title: localize('Forex Majors'),

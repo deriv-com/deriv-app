@@ -195,7 +195,7 @@ const TourSlider = ({
                         {(!has_started_onboarding_tour || (has_started_onboarding_tour && step !== 1)) && (
                             <ProgressBarTracker
                                 step={step}
-                                number_of_steps={Object.keys(
+                                steps_list={Object.keys(
                                     !has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE
                                 )}
                                 setStep={setStep}

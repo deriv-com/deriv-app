@@ -11,7 +11,7 @@ import { useStore, observer } from '@deriv/stores';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 
 const JurisdictionModalContentWrapper = observer((props: TJurisdictionModalContentWrapperProps) => {
-    const { openPasswordModal, toggleDynamicLeverage } = props;
+    const { openPasswordModal } = props;
     const { client, traders_hub } = useStore();
 
     const { show_eu_related_content } = traders_hub;
@@ -190,7 +190,6 @@ const JurisdictionModalContentWrapper = observer((props: TJurisdictionModalConte
                     financial_available_accounts={financial_available_accounts}
                     is_non_idv_design={is_non_idv_design}
                     is_virtual={is_virtual}
-                    toggleDynamicLeverage={toggleDynamicLeverage}
                     real_financial_accounts_existing_data={real_financial_accounts_existing_data}
                     real_synthetic_accounts_existing_data={real_synthetic_accounts_existing_data}
                     jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}

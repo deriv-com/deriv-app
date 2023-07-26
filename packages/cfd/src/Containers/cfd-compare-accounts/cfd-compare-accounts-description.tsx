@@ -53,11 +53,13 @@ const CFDCompareAccountsDescription = ({ trading_platforms, is_demo }: TCompareA
                         <Text as='h1' weight='bold' size='xs' align='center'>
                             {juridisction_data.regulator}
                         </Text>
+                        {juridisction_data.regulator_license && (
+                            <Text as='p' size='xxxs' align='center'>
+                                {juridisction_data.regulator_license}
+                            </Text>
+                        )}
                         <Text as='p' size='xxxs' align='center'>
-                            {juridisction_data.regulator_description.split('<br />')[0]}
-                        </Text>
-                        <Text as='p' size='xxxs' align='center'>
-                            {juridisction_data.regulator_description.split('<br />')[1]}
+                            {juridisction_data.regulator_description}
                         </Text>
                     </div>
                 </React.Fragment>

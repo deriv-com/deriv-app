@@ -13,14 +13,7 @@ const InstrumentsIconWithLabel = ({ icon, text, highlighted, className, is_aster
             className={className}
         >
             <TradingInstrumentsIcon icon={icon} size={24} className='trading-instruments__icon' />
-            <Text
-                as='p'
-                weight='bolder'
-                line_height='xs'
-                size='xxs'
-                align='center'
-                className='trading-instruments__text'
-            >
+            <Text as='p' weight='bolder' line_height='xs' size='xxs' align='left' className='trading-instruments__text'>
                 {text}
             </Text>
             {is_asterisk && (

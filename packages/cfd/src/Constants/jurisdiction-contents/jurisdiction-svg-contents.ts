@@ -1,7 +1,9 @@
 import { localize } from '@deriv/translations';
-import { TJurisdictionCardItems } from 'Components/props.types';
+import { TJurisdictionCardItems, TJurisdictionCardParams } from 'Components/props.types';
 
-export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
+export const getJurisdictionSvgContents = ({
+    toggleDynamicLeverage,
+}: TJurisdictionCardParams): TJurisdictionCardItems => ({
     is_over_header_available: false,
     header: localize('St. Vincent & Grenadines'),
     synthetic_contents: [
@@ -57,6 +59,13 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
                 display_text: localize('1:1000'),
                 display_text_skin_color: 'yellow-light',
             },
+            clickable_description: [
+                {
+                    type: 'link',
+                    text: localize('Dynamic Leverage'),
+                    onClick: toggleDynamicLeverage,
+                },
+            ],
         },
         {
             key: 'spreadsFrom',

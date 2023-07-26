@@ -1,10 +1,12 @@
 import React from 'react';
-import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv/components';
+import classNames from 'classnames';
+import { DesktopWrapper, Icon, Text, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getMT5Title } from '@deriv/shared';
 import { TJurisdictionModalProps } from '../props.types';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
+import DynamicLeverageModalContent from '../dynamic-leverage/dynamic-leverage-modal-content';
 import JurisdictionModalContentWrapper from './jurisdiction-modal-content-wrapper';
 
 const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalProps) => {
@@ -15,11 +17,51 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
 
     const { account_type, is_jurisdiction_modal_visible, toggleJurisdictionModal } = useCfdStore();
 
-    const modal_title = show_eu_related_content
-        ? localize('Choose a jurisdiction for your Deriv MT5 CFDs account')
-        : localize('Choose a jurisdiction for your Deriv MT5 {{account_type}} account', {
-              account_type: localize(getMT5Title(account_type.type)),
-          });
+    const [is_dynamic_leverage_visible, setIsDynamicLeverageVisible] = React.useState(false);
+
+    const toggleDynamicLeverage: React.MouseEventHandler<HTMLSpanElement> = event => {
+        event.stopPropagation();
+        setIsDynamicLeverageVisible(!is_dynamic_leverage_visible);
+    };
+
+    let modal_title;
+    if (is_dynamic_leverage_visible) {
+        modal_title = (
+            <div className='jurisdiction-modal__title'>
+                <span
+                    data-testid='back_icon'
+                    className='jurisdiction-modal__title-back'
+                    onClick={toggleDynamicLeverage}
+                >
+                    <Icon icon='IcArrowLeftBold' />
+                </span>
+                <Text weight='bold' color='prominent'>
+                    {localize('Get more out of Deriv MT5 Financial')}
+                </Text>
+            </div>
+        );
+    } else if (show_eu_related_content) {
+        modal_title = localize('Choose a jurisdiction for your Deriv MT5 CFDs account');
+    } else {
+        modal_title = localize('Choose a jurisdiction for your Deriv MT5 {{account_type}} account', {
+            account_type: localize(getMT5Title(account_type.type)),
+        });
+    }
+
+    const modal_content = (
+        <div
+            data-testid='modal_content'
+            className={classNames('jurisdiction-modal__wrapper', {
+                'jurisdiction-modal__flipped': is_dynamic_leverage_visible,
+            })}
+        >
+            <JurisdictionModalContentWrapper
+                toggleDynamicLeverage={toggleDynamicLeverage}
+                openPasswordModal={openPasswordModal}
+            />
+            <DynamicLeverageModalContent />
+        </div>
+    );
 
     return (
         <div>
@@ -35,8 +77,9 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
                         toggleModal={toggleJurisdictionModal}
                         type='button'
                         width={account_type.type === 'financial' ? '1200px' : '1040px'}
+                        has_close_icon={!is_dynamic_leverage_visible}
                     >
-                        <JurisdictionModalContentWrapper openPasswordModal={openPasswordModal} />
+                        {modal_content}
                     </Modal>
                 </DesktopWrapper>
                 <MobileWrapper>
@@ -45,8 +88,9 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
                         title={modal_title}
                         visible={is_jurisdiction_modal_visible}
                         onClose={toggleJurisdictionModal}
+                        has_close_icon={!is_dynamic_leverage_visible}
                     >
-                        <JurisdictionModalContentWrapper openPasswordModal={openPasswordModal} />
+                        {modal_content}
                     </MobileDialog>
                 </MobileWrapper>
             </React.Suspense>

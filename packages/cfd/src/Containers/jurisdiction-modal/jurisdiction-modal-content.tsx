@@ -8,6 +8,7 @@ const JurisdictionModalContent = ({
     account_type,
     is_non_idv_design = false,
     is_virtual,
+    toggleDynamicLeverage,
     jurisdiction_selected_shortcode,
     setJurisdictionSelectedShortcode,
     synthetic_available_accounts,
@@ -68,6 +69,7 @@ const JurisdictionModalContent = ({
                             account_type={account_type}
                             disabled={disableCard(card)}
                             is_non_idv_design={is_non_idv_design}
+                            toggleDynamicLeverage={toggleDynamicLeverage}
                             jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                             key={card}
                             setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}

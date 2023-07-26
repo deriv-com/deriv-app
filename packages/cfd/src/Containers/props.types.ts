@@ -152,6 +152,7 @@ export type TJurisdictionCardProps = {
     account_type: string;
     disabled: boolean;
     is_non_idv_design: boolean;
+    toggleDynamicLeverage: React.MouseEventHandler<HTMLSpanElement>;
     type_of_card: TJurisdictionCardType;
 };
 
@@ -220,6 +221,7 @@ type TOpenAccountTransferMeta = {
 
 export type TJurisdictionModalContentWrapperProps = {
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
+    toggleDynamicLeverage: React.MouseEventHandler<HTMLSpanElement>;
 };
 
 export type TJurisdictionModalProps = {
@@ -230,6 +232,7 @@ export type TJurisdictionModalContentProps = {
     account_status: GetAccountStatus;
     account_type: string;
     is_non_idv_design: boolean;
+    toggleDynamicLeverage: React.MouseEventHandler<HTMLSpanElement>;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     synthetic_available_accounts: TTradingPlatformAvailableAccount[];
@@ -315,4 +318,17 @@ export type TCFDDbviOnboardingProps = {
     toggleCFDVerificationModal: () => void;
     updateAccountStatus: () => void;
     updateMT5Status: () => void;
+};
+
+type TDynamicLeverage = {
+    from: number;
+    to: number;
+    leverage: number;
+};
+
+export type TDynamicLeverageMarketCardProps = {
+    market: string;
+    leverage: string;
+    market_example?: string;
+    dynamicLeverages: TDynamicLeverage[];
 };

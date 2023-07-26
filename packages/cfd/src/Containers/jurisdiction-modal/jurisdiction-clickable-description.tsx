@@ -8,21 +8,22 @@ const JurisdictionClickableDescription = ({
 }: TJurisdictionClickableDescriptionProps) => (
     <div>
         {clickable_description.map(description_part => {
-            return description_part.type === 'link' ? (
-                <span key={description_part.text} onClick={toggleCardFlip}>
+            const { type, text, onClick } = description_part;
+            return type === 'link' ? (
+                <span key={text} onClick={onClick || toggleCardFlip}>
                     <Text
                         data-testid='dt_jurisdiction_clickable_description'
                         as='span'
                         size='xxs'
                         className='cfd-card-clickable-description-link'
                     >
-                        {description_part.text}
+                        {text}
                     </Text>
                     &nbsp;
                 </span>
             ) : (
-                <Text key={description_part.text} as='span' size='xxs'>
-                    {description_part.text}
+                <Text key={text} as='span' size='xxs'>
+                    {text}
                 </Text>
             );
         })}

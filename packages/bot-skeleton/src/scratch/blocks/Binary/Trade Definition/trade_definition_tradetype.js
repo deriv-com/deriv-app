@@ -31,8 +31,4 @@ Blockly.Blocks.trade_definition_tradetype = {
     enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
 };
 
-Blockly.Workspace.prototype.getTradeDefinitionTradeType = function () {
-    return this.getAllBlocks(true).find(b => b.type === 'trade_definition_tradetype');
-};
-
 Blockly.JavaScript.trade_definition_tradetype = () => {};

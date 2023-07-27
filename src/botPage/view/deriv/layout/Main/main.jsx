@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { TrackJS } from 'trackjs';
 import { api_base } from '@api-base';
-import { AppConstants } from '@constants';
 import { parseQueryString, getRelatedDeriveOrigin, queryToObjectArray } from '@utils';
 import { translate } from '@i18n';
 import {
@@ -85,7 +84,6 @@ const Main = () => {
                     addTokenIfValid(tokenObjectList[0].token, tokenObjectList).then(() => {
                         const accounts = getTokenList();
                         if (accounts.length) {
-                            setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, accounts[0].token);
                             dispatch(updateActiveToken(accounts[0].token));
                             dispatch(updateActiveAccount(accounts[0].loginInfo));
                         }
@@ -98,16 +96,11 @@ const Main = () => {
                         resolve();
                     });
                 }
-                const active_account = getStorage('active_loginid') || '';
                 let token_list = [];
                 if (getStorage('client.accounts')?.length) {
                     token_list = JSON.parse(getStorage('client.accounts'));
                 }
-                if (active_account && token_list.length) {
-                    const active_token = token_list.find(account => account.accountName === active_account).token;
-                    setStorage('activeToken', active_token);
-                    resolve();
-                }
+                resolve();
                 setStorage('tokenList', JSON.stringify(token_list));
                 setStorage('client.accounts', JSON.stringify(convertForDerivStore(token_list)));
             }

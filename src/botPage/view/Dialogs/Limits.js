@@ -4,8 +4,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { getToken } from '@storage';
 import { translate } from '@i18n';
+import { restrictInputCharacter } from '@utils';
 import Dialog from './Dialog';
-import { restrictInputCharacter } from '../shared';
 import * as style from '../style';
 import { showSpinnerInButton, removeSpinnerInButton, createUrl } from '../../../common/utils/tools';
 

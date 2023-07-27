@@ -3,7 +3,6 @@ import { getTokenList, removeAllTokens } from '@storage';
 import ActiveSymbols from './activeSymbols';
 import config from '../const';
 import { getObjectValue } from '../../../common/utils/tools';
-
 import { observer as globalObserver } from '../../../common/utils/observer';
 
 let parsed_asset_index;

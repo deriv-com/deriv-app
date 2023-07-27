@@ -11,7 +11,7 @@ import {
     setStorage,
     getStorage,
     updateTokenList,
-    getActiveToken,
+    getActiveAccountFromAccountsList,
     isLoggedIn,
 } from '@storage';
 import PlatformDropdown from './components/platform-dropdown.jsx';
@@ -99,7 +99,7 @@ const Header = () => {
 
     React.useEffect(() => {
         const token_list = getTokenList();
-        const active_storage_token = getActiveToken(token_list);
+        const active_storage_token = getActiveAccountFromAccountsList(token_list);
         const landing_company = active_storage_token?.loginInfo.landing_company_name;
         dispatch(updateShowMessagePage(landing_company === 'maltainvest'));
 

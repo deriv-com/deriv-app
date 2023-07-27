@@ -1,6 +1,5 @@
 import { api_base } from '@api-base';
-import { AppConstants } from '@constants';
-import { getTokenList, setStorage, syncWithDerivApp, getToken, removeAllTokens, updateTokenList } from '@storage';
+import { getTokenList, syncWithDerivApp, getToken, removeAllTokens, updateTokenList } from '@storage';
 import { translate } from '@i18n';
 import config, { updateConfigCurrencies } from '../../common/const';
 import logHandler from '../logger';
@@ -185,17 +184,12 @@ const addBindings = blockly => {
         logoutAllTokens().then(() => {
             updateTokenList();
             globalObserver.emit('ui.log.info', translate('Logged you out!'));
-            clearActiveTokens();
+            syncWithDerivApp();
 
             // Todo: Need to remove this reload, and add logic to clear redux state.
             // Need to stop the barspinner once removed this
             window.location.reload();
         });
-    };
-
-    const clearActiveTokens = () => {
-        setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, '');
-        syncWithDerivApp();
     };
 
     $('.panelExitButton').click(function onClick() {
@@ -309,7 +303,7 @@ const addEventHandlers = blockly => {
 
     window.addEventListener('storage', e => {
         window.onbeforeunload = null;
-        if (['activeToken', 'active_loginid'].includes(e.key) && e.newValue !== e.oldValue) {
+        if (['active_loginid'].includes(e.key) && e.newValue !== e.oldValue) {
             window.location.reload();
         }
     });

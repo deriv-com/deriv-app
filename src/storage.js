@@ -1,6 +1,5 @@
 import Cookies from 'js-cookie';
 import { parseQueryString, getRelatedDeriveOrigin, getDomainAppId } from '@utils';
-import { AppConstants } from '@constants';
 import { supported_languages, redirectToSupportedLang } from '@i18n';
 import { setCookieLanguage } from './common/utils/cookieManager';
 
@@ -254,16 +253,18 @@ export const setLanguage = lang => {
 
 export const isLoggedIn = () => !!getTokenList()?.length;
 
-export const getActiveToken = tokenList => {
-    const active_token = getStorage(AppConstants.STORAGE_ACTIVE_TOKEN);
-    const activeTokenObject = tokenList.filter(tokenObject => tokenObject.token === active_token);
-    return activeTokenObject.length ? activeTokenObject[0] : tokenList[0];
+export const getActiveAccountFromAccountsList = (accounts = []) => {
+    console.trace();
+    console.log(accounts, 'accounts');
+    const active_loginid = getStorage('active_loginid');
+    const active_account = accounts.find(acc => acc.accountName === active_loginid);
+    return active_account || accounts[0];
 };
 
 export const updateTokenList = () => {
     const token_list = getTokenList();
     if (token_list.length) {
-        const active_token = getActiveToken(token_list);
+        const active_token = getActiveAccountFromAccountsList(token_list);
         if ('loginInfo' in active_token) {
             const current_login_id = getStorage('active_loginid') || '';
             token_list.forEach(token => {
@@ -279,8 +280,8 @@ export const updateTokenList = () => {
 };
 
 const isRealAccount = () => {
-    const accountList = JSON.parse(getStorage('tokenList') || '{}');
-    const activeToken = getStorage(AppConstants.STORAGE_ACTIVE_TOKEN) || [];
+    const accountList = JSON.parse(getStorage('tokenList') || '[]');
+    const activeToken = getActiveAccountFromAccountsList(accountList);
     let activeAccount = null;
     let isReal = false;
     try {

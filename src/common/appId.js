@@ -1,5 +1,4 @@
 import { api_base } from '@api-base';
-import { AppConstants } from '@constants';
 import {
     addToken,
     removeToken,
@@ -12,26 +11,8 @@ import {
     getCustomEndpoint,
     getAppIdFallback,
 } from '@storage';
-import { parseQueryString, getRelatedDeriveOrigin, queryToObjectArray } from '@utils';
+import { getRelatedDeriveOrigin } from '@utils';
 import GTM from './gtm';
-
-export const oauthLogin = (done = () => 0) => {
-    const queryStr = parseQueryString();
-    const tokenObjectList = queryToObjectArray(queryStr);
-
-    if (tokenObjectList.length) {
-        $('#main').hide();
-        addTokenIfValid(tokenObjectList[0].token, tokenObjectList).then(() => {
-            const accounts = getTokenList();
-            if (accounts.length) {
-                setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, accounts[0].token);
-            }
-            document.location = 'bot.html';
-        });
-    } else {
-        done();
-    }
-};
 
 const generateOAuthDomain = () => {
     const related_deriv_origin = getRelatedDeriveOrigin;
@@ -103,7 +84,6 @@ export const logoutAndReset = () =>
     new Promise(resolve => {
         logoutAllTokens().then(() => {
             updateTokenList();
-            setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, '');
             setStorage('active_loginid', null);
             syncWithDerivApp();
             resolve();

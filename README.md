@@ -87,7 +87,7 @@ with Google Drive integration:
 
 Make sure to set the endpoint for running the application on the localhost
 
-1.  Run `npm start` on the binarybot directory. This will open the application in your default browser.
+1.  Run `sudo npm start` on the binarybot directory. This will open the application in your default browser.
 
     > **Note:** - [Getting Permission Denied Error](#q2)
 

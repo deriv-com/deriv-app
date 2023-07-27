@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import config from '@config';
-import { AppConstants } from '@constants';
 import { generateDerivLink } from '@utils';
 import { getTokenList, setStorage, isLoggedIn } from '@storage';
 import { translate } from '@i18n';
@@ -50,7 +49,6 @@ const AccountActions = () => {
         setStorage('tokenList', '');
 
         addTokenIfValid(account_switcher_token, tokenList).then(() => {
-            setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, account_switcher_token);
             const next_active_account = tokenList?.find(account => account.token === account_switcher_token);
 
             if (next_active_account?.accountName) {

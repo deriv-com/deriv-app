@@ -1,3 +1,4 @@
+import filesaver from 'file-saver';
 import { APP_ID_MAP, MAX_MOBILE_WIDTH } from '@constants';
 
 export const parseQueryString = () => {
@@ -82,3 +83,41 @@ export const queryToObjectArray = queryStr => {
 export const isMobile = () => window.innerWidth <= MAX_MOBILE_WIDTH;
 
 export const isDesktop = () => window.innerWidth > MAX_MOBILE_WIDTH;
+
+export const isNumber = num => num !== '' && Number.isFinite(Number(num));
+
+export const restrictInputCharacter = ({ whitelistRegEx, input }) => input.match(new RegExp(whitelistRegEx));
+
+export const saveAs = ({ data, filename, type }) => {
+    const blob = new Blob([data], { type });
+    filesaver.saveAs(blob, filename);
+};
+export const appendRow = (trade, state, isDesc = false) => ({
+    id: state.id + 1,
+    rows: isDesc
+        ? [
+            {
+                ...trade,
+                id: state.id + 1,
+            },
+            ...state.rows,
+        ]
+        : [
+            ...state.rows,
+            {
+                ...trade,
+                id: state.id + 1,
+            },
+        ],
+});
+
+export const updateRow = (prevRowIndex, trade, state) => ({
+    id: state.id,
+    rows: [
+        ...state.rows.slice(0, prevRowIndex),
+        {
+            ...trade,
+            id: state.id,
+        },
+    ],
+});

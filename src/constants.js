@@ -1,9 +1,5 @@
 export const MAX_MOBILE_WIDTH = 813;
 
-export const AppConstants = Object.freeze({
-    STORAGE_ACTIVE_TOKEN: 'activeToken',
-});
-
 export const APP_ID_MAP = Object.freeze({
     production: Object.freeze({
         'bot.deriv.com': '29864',

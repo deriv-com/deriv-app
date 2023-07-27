@@ -8,12 +8,12 @@ type TProgressBarTracker = {
 
 const ProgressBarTracker = ({ step, number_of_steps, setStep }: TProgressBarTracker) => (
     <div className='dc-progress-bar-tracker'>
-        {number_of_steps.map((st, index) => {
+        {number_of_steps.map((step_item, index) => {
             const active = step === index + 1;
 
             return (
                 <div
-                    key={st}
+                    key={step_item}
                     onClick={() => setStep(index + 1)}
                     className={active ? 'dc-progress-bar-tracker-rectangle' : 'dc-progress-bar-tracker-circle'}
                 />

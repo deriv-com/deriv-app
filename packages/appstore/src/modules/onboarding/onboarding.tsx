@@ -79,7 +79,7 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
         <div className='onboarding-wrapper'>
             <div className='onboarding-header'>
                 <div className='onboarding-header--deriv-logo'>
-                    <TradingPlatformIconProps icon={'DerivLogo'} />
+                    <TradingPlatformIconProps icon='DerivLogo' />
                 </div>
                 <Icon
                     icon='IcCross'

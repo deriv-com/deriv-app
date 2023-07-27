@@ -17,23 +17,22 @@ import DataListCell from './data-list-cell';
 import DataListRow from './data-list-row';
 import ThemedScrollbars from '../themed-scrollbars';
 import { MeasuredCellParent } from 'react-virtualized/dist/es/CellMeasurer';
+import { TTableRowItem } from '../types/common.types';
+import { TSource } from '../data-table/data-table';
 
 const List = _List as unknown as React.FC<ListProps>;
 const AutoSizer = _AutoSizer as unknown as React.FC<AutoSizerProps>;
 const CellMeasurer = _CellMeasurer as unknown as React.FC<CellMeasurerProps>;
 export type TRowRenderer = (params: { row: any; is_footer?: boolean; measure?: () => void }) => React.ReactNode;
-export type TPassThrough = { isTopUp: (item: TRow) => boolean };
-export type TRow = {
-    [key: string]: string;
-};
+export type TPassThrough = { isTopUp: (item: TSource) => boolean };
 
 type TDataList = {
     className?: string;
-    data_source: TRow[];
-    footer?: React.ReactNode;
-    getRowAction?: (row: TRow) => string;
+    data_source: TSource[];
+    footer?: Record<string, unknown> | React.ReactNode;
+    getRowAction?: (row: TSource) => TTableRowItem;
     getRowSize?: (params: { index: number }) => number;
-    keyMapper?: (row: TRow) => number | string;
+    keyMapper?: (row: TSource) => number | string;
     onRowsRendered?: (params: IndexRange) => void;
     onScroll?: React.UIEventHandler<HTMLDivElement>;
     passthrough?: TPassThrough;
@@ -66,13 +65,13 @@ const DataList = React.memo(
         const cache = React.useRef<CellMeasurerCache>();
         const list_ref = React.useRef<MeasuredCellParent | null>(null);
         const items_transition_map_ref = React.useRef<{ [key: string]: boolean }>({});
-        const data_source_ref = React.useRef<TRow[] | null>(null);
+        const data_source_ref = React.useRef<TSource[] | null>(null);
         data_source_ref.current = data_source;
 
         const is_dynamic_height = !getRowSize;
 
         const trackItemsForTransition = React.useCallback(() => {
-            data_source.forEach((item: TRow, index: number) => {
+            data_source.forEach((item: TSource, index: number) => {
                 const row_key: string | number = keyMapper?.(item) || `${index}-0`;
                 items_transition_map_ref.current[row_key] = true;
             });
@@ -114,6 +113,7 @@ const DataList = React.memo(
 
             const getContent = ({ measure }: GetContentType = {}) => (
                 <DataListRow
+                    //@ts-expect-error needs refactor
                     action_desc={action_desc}
                     destination_link={destination_link}
                     is_new_row={!items_transition_map_ref.current[row_key]}

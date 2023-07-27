@@ -18,6 +18,7 @@ import MarketSymbolIconRow from '../Components/market-symbol-icon-row';
 import ProfitLossCell from '../Components/profit_loss_cell';
 import CurrencyWrapper from '../Components/currency-wrapper';
 import { ITransformer } from 'mobx-utils';
+import { useStore } from '@deriv/stores';
 
 const map = {
     buy: 'success',
@@ -39,7 +40,7 @@ type TMultiplierOpenPositionstemplateProps = {
     currency: string;
     onClickCancel: () => void;
     onClickSell: () => void;
-    getPositionById: (id: string) => ITransformer<any, any>;
+    getPositionById: ReturnType<typeof useStore>['portfolio']['getPositionById'];
     server_time: moment.Moment;
 };
 
@@ -436,7 +437,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
     currency,
     onClickSell,
     getPositionById,
-}: TMultiplierOpenPositionstemplateProps) => [
+}: Pick<TMultiplierOpenPositionstemplateProps, 'currency' | 'onClickSell' | 'getPositionById'>) => [
     {
         title: isMobile() ? '' : localize('Type'),
         col_index: 'type',

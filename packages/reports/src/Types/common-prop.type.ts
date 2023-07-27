@@ -43,7 +43,15 @@ export type TErrorComponent = {
     type: string;
 };
 
+// export type TRoutes = {
+//     is_virtual?: boolean;
+//     passthrough?: TPassthrough;
+// };
 export type TRoutes = {
+    error?: TErrorComponent;
+    has_error?: boolean;
+    is_logged_in?: boolean;
+    is_logging_in?: boolean;
     is_virtual?: boolean;
     passthrough?: TPassthrough;
 };

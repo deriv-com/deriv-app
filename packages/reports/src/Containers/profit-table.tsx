@@ -12,46 +12,25 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import CompositeCalendar from '../Components/Form/CompositeCalendar';
-import {
-    TInputDateRange,
-    TColIndex,
-    TColumnTemplateType,
-    TSupportedContractType,
-    TUnsupportedContractType,
-} from 'Types';
-
-import { connect } from 'Stores/connect';
+import { TColIndex, TColumnTemplateType, TSupportedContractType, TUnsupportedContractType } from 'Types';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
 import PlaceholderComponent from '../Components/placeholder-component';
 import { ReportsMeta } from '../Components/reports-meta';
 import { getProfitTableColumnsTemplate } from 'Constants/data-table-constants';
-import { TRootStore } from 'Stores/index';
-import moment from 'moment/moment';
+import { observer, useStore } from '@deriv/stores';
+import { useReportsStore } from 'Stores/useReportsStores';
 
 type TProfitTable = {
     component_icon: string;
-    currency: string;
-    data: Array<{ [key: string]: string }>;
-    date_from: number;
-    date_to: number;
-    error: string;
-    filtered_date_range: TInputDateRange;
-    is_empty: boolean;
-    is_loading: boolean;
-    is_switching: boolean;
-    handleDateChange: (values: { [key: string]: moment.Moment }) => void;
-    handleScroll: (ev: React.UIEvent<HTMLElement>) => void;
-    has_selected_date: boolean;
-    onMount: VoidFunction;
-    onUnmount: VoidFunction;
-    totals: React.ReactNode;
 };
 
-const getRowAction = (row_obj: { [key: string]: string }) => {
-    const contract_type = extractInfoFromShortcode(row_obj?.shortcode)?.category?.toString().toUpperCase();
+const getRowAction = (row_obj: { [key: string]: unknown }) => {
+    const contract_type = extractInfoFromShortcode(row_obj?.shortcode as string)
+        ?.category?.toString()
+        .toUpperCase();
     return getSupportedContracts()[contract_type as TSupportedContractType] &&
-        !isForwardStarting(row_obj.shortcode, +row_obj.purchase_time_unix)
-        ? getContractPath(+row_obj.contract_id)
+        !isForwardStarting(row_obj.shortcode as string, Number(row_obj.purchase_time_unix))
+        ? getContractPath(Number(row_obj.contract_id))
         : {
               component: (
                   <Localize
@@ -64,24 +43,26 @@ const getRowAction = (row_obj: { [key: string]: string }) => {
           };
 };
 
-const ProfitTable = ({
-    component_icon,
-    currency,
-    data,
-    date_from,
-    date_to,
-    error,
-    filtered_date_range,
-    is_empty,
-    is_loading,
-    is_switching,
-    handleDateChange,
-    handleScroll,
-    has_selected_date,
-    onMount,
-    onUnmount,
-    totals,
-}: TProfitTable) => {
+const ProfitTable = observer(({ component_icon }: TProfitTable) => {
+    const { client } = useStore();
+    const { profit_table } = useReportsStore();
+    const { currency, is_switching } = client;
+    const {
+        data,
+        date_from,
+        date_to,
+        error,
+        filtered_date_range,
+        is_empty,
+        is_loading,
+        handleDateChange,
+        handleScroll,
+        has_selected_date,
+        onMount,
+        onUnmount,
+        totals,
+    } = profit_table;
+
     React.useEffect(() => {
         onMount();
         return () => {
@@ -181,7 +162,6 @@ const ProfitTable = ({
                                     columns={columns}
                                     onScroll={handleScroll}
                                     footer={totals}
-                                    is_empty={is_empty}
                                     getRowAction={getRowAction}
                                     getRowSize={() => 63}
                                     content_loader={ReportsTableRowLoader}
@@ -208,22 +188,6 @@ const ProfitTable = ({
             )}
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ modules, client }: TRootStore) => ({
-    currency: client.currency,
-    data: modules.profit_table.data,
-    date_from: modules.profit_table.date_from,
-    date_to: modules.profit_table.date_to,
-    error: modules.profit_table.error,
-    filtered_date_range: modules.profit_table.filtered_date_range,
-    is_empty: modules.profit_table.is_empty,
-    is_loading: modules.profit_table.is_loading,
-    is_switching: client.is_switching,
-    handleDateChange: modules.profit_table.handleDateChange,
-    handleScroll: modules.profit_table.handleScroll,
-    has_selected_date: modules.profit_table.has_selected_date,
-    onMount: modules.profit_table.onMount,
-    onUnmount: modules.profit_table.onUnmount,
-    totals: modules.profit_table.totals,
-}))(withRouter(ProfitTable));
+export default withRouter(ProfitTable);

@@ -1,4 +1,5 @@
 import { observer, useStore } from '@deriv/stores';
+import { withRouter } from 'react-router';
 import React from 'react';
 import BinaryRoutes from 'Components/Routes';
 import ErrorComponent from 'Components/Errors';
@@ -15,4 +16,4 @@ const Routes = observer(({ passthrough }: TRoutes) => {
     return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;
 });
 
-export default Routes;
+export default withRouter(Routes);

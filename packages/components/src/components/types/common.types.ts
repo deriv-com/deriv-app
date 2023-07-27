@@ -13,4 +13,9 @@ export type TItem = {
     value: Array<TItem> | string;
 };
 
-export type TTableRowItem = { component: React.ReactNode };
+export type TTableRowItem =
+    | {
+          message?: string;
+          component?: React.ReactElement;
+      }
+    | string;

@@ -18,6 +18,7 @@ type TPortfolioPos = {
         stop_loss?: null | number;
         take_profit?: null | number;
     };
+    underlying: string;
 };
 
 type TIsUnSupportedContract = {

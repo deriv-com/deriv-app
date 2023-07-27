@@ -1,10 +1,10 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import DerivPassword from './deriv-password.jsx';
 import DerivEmail from './deriv-email.jsx';
 import PasswordsPlatform from './passwords-platform.jsx';
-import { withRouter } from 'react-router';
 
 const Passwords = observer(() => {
     const [is_loading, setIsLoading] = React.useState(true);

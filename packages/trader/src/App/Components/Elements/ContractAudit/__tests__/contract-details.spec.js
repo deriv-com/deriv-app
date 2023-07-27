@@ -61,7 +61,7 @@ describe('ContractDetails', () => {
         expect(wrapper.queryAllByTestId('dt_bt_label')).toHaveLength(2);
     });
 
-    it('renders the Payout per point label when is_vanilla is true', () => {
+    it('renders the Payout per pip label when is_vanilla is true', () => {
         render(
             <ContractDetails
                 contract_end_time={123456789}
@@ -75,6 +75,6 @@ describe('ContractDetails', () => {
             />
         );
 
-        expect(screen.getByText('Payout per point')).toBeInTheDocument();
+        expect(screen.getByText('Payout per pip')).toBeInTheDocument();
     });
 });

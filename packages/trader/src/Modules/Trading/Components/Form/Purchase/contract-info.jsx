@@ -58,7 +58,7 @@ const ContractInfo = ({
         switch (basis) {
             case 'stake': {
                 if (is_vanilla) {
-                    return localize('Payout per point');
+                    return localize('Payout per pip');
                 }
                 return localized_basis.payout;
             }
@@ -72,7 +72,7 @@ const ContractInfo = ({
 
     const setBasisText = () => {
         if (is_vanilla) {
-            return localize('Payout per point');
+            return localize('Payout per pip');
         }
         return proposal_info.obj_contract_basis.text;
     };
@@ -86,9 +86,7 @@ const ContractInfo = ({
     const setHintMessage = () => {
         if (['VANILLALONGCALL', 'VANILLALONGPUT'].includes(type)) {
             return (
-                <Localize
-                    i18n_default_text='The payout at expiry is equal to the payout per point multiplied by the difference between the final price and the strike price.'
-                />
+                <Localize i18n_default_text='The payout at expiry is equal to the payout per pip multiplied by the difference, in pips, between the final price and the strike price.' />
             );
         }
         return message;
@@ -157,9 +155,7 @@ const ContractInfo = ({
                                         id='dt_vanilla-stake__tooltip'
                                         zIndex={9999}
                                         message={
-                                            <Localize
-                                                i18n_default_text='The payout at expiry is equal to the payout per point multiplied by the difference between the final price and the strike price.'
-                                            />
+                                            <Localize i18n_default_text='The payout at expiry is equal to the payout per pip multiplied by the difference, in pips, between the final price and the strike price.' />
                                         }
                                     />
                                 </div>

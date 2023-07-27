@@ -434,9 +434,10 @@ const TradeCategories = ({ category, onClick }) => {
                 TradeTypeTemplate = (
                     <React.Fragment>
                         <Text as='p'>
-                            {localize(
-                                'Vanilla options allow you to predict an upward (bullish) or downward (bearish) direction of the underlying asset by purchasing a "Call" or a "Put".'
-                            )}
+                            <Localize
+                                i18n_default_text='Vanilla options allow you to predict an upward (bullish) or downward (bearish) direction of the underlying asset by purchasing a <0>"Call"</0> or a <0>"Put"</0>.'
+                                components={[<strong key={0} />]}
+                            />
                         </Text>
                         <Text as='p'>
                             <Localize
@@ -459,19 +460,20 @@ const TradeCategories = ({ category, onClick }) => {
                         </Text>
                         <Text as='p'>
                             <Localize
-                                i18n_default_text='Your payout is equal to the <0>payout per point</0> multiplied by the difference between the final price and the strike price. You will only earn a profit if your payout is higher than your initial stake.'
+                                i18n_default_text='Your payout is equal to the <0>payout per pip</0> multiplied by the difference, <1>in pips</1>, between the final price and the strike price. You will only earn a profit when your payout is higher than your initial stake.'
                                 components={[
                                     <span
                                         className='contract-type-info__content-definition'
                                         onClick={onClick}
                                         key={0}
                                     />,
+                                    <strong key={1} />,
                                 ]}
                             />
                         </Text>
                         <Text as='p'>
                             <Localize
-                                i18n_default_text='You may sell the contract up until 60 seconds before expiry. If you do, we’ll pay you the <0>contract value</0>.'
+                                i18n_default_text='You may sell the contract up to 24 hours before expiry. If you do, we’ll pay you the <0>contract value</0>.'
                                 components={[
                                     <span
                                         className='contract-type-info__content-definition'

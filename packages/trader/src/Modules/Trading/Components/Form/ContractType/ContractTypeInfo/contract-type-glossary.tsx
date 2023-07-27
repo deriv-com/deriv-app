@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 
 const ContractTypeGlossary = ({ category }: { category: string }) => {
     let content;
@@ -41,18 +41,6 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                 break;
             case 'vanilla':
                 content = [
-                    { type: 'heading', text: localize('Payout') },
-                    {
-                        type: 'paragraph',
-                        text: localize(
-                            'Your payout is equal to the payout per point multiplied by the difference between the final price and the strike price.'
-                        ),
-                    },
-                    { type: 'heading', text: localize('Final price') },
-                    {
-                        type: 'paragraph',
-                        text: localize('This is the spot price of the last tick at expiry.'),
-                    },
                     { type: 'heading', text: localize('Strike price') },
                     {
                         type: 'paragraph',
@@ -69,6 +57,27 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                             ),
                         ],
                     },
+                    { type: 'heading', text: localize('Payout') },
+                    {
+                        type: 'paragraph',
+                        text: (
+                            <Localize
+                                i18n_default_text='Your payout is equal to the payout per pip multiplied by the difference, <0>in pips</0>, between the final price and the strike price.'
+                                components={[<strong key={0} />]}
+                            />
+                        ),
+                    },
+                    { type: 'heading', text: localize('Payout per pip') },
+                    {
+                        type: 'paragraph',
+                        text: localize('We calculate this based on the strike price and duration you’ve selected.'),
+                    },
+                    { type: 'heading', text: localize('Final price') },
+                    {
+                        type: 'paragraph',
+                        text: localize('This is the spot price of the last tick at expiry.'),
+                    },
+
                     { type: 'heading', text: localize('Expiry') },
                     {
                         type: 'paragraph',
@@ -84,28 +93,23 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                             ),
                         ],
                     },
-                    { type: 'heading', text: localize('Payout per point') },
-                    {
-                        type: 'paragraph',
-                        text: localize('We calculate this based on the strike price and duration you’ve selected.'),
-                    },
-                    { type: 'heading', text: localize('Contract value') },
-                    {
-                        type: 'paragraph',
-                        text: localize(
-                            'We’ll offer to buy your contract at this price should you choose to sell it before its expiry. This is based on several factors, such as the current spot price, duration, etc. However, we won’t offer a contract value if the remaining duration is below 60 seconds.'
-                        ),
-                    },
                     { type: 'heading', text: localize('Cut-off time') },
                     {
                         type: 'paragraph',
-                        text: localize('Contracts will expire at exactly 23:59:59 GMT on your selected expiry date.'),
+                        text: localize('Contracts will expire at exactly 14:00:00 GMT on your selected expiry date.'),
                     },
                     { type: 'heading', text: localize('Expiry date') },
                     {
                         type: 'paragraph',
                         text: localize(
                             'Your contract will expire on this date (in GMT), based on the End time you’ve selected.'
+                        ),
+                    },
+                    { type: 'heading', text: localize('Contract value') },
+                    {
+                        type: 'paragraph',
+                        text: localize(
+                            'We’ll offer to buy your contract at this price should you choose to sell it before its expiry. This is based on several factors, such as the current spot price, duration, etc. However, we won’t offer a contract value if the remaining duration is below 24 hours.'
                         ),
                     },
                 ];
@@ -117,7 +121,7 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
     }
     return (
         <React.Fragment>
-            {content?.map(({ type, text }: { type: string; text: string | string[] }) => {
+            {content?.map(({ type, text }: { type: string; text: string | string[] | JSX.Element }) => {
                 if (type === 'heading' && typeof text === 'string') {
                     return (
                         <Text
@@ -130,14 +134,14 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                         </Text>
                     );
                 }
-                if (type === 'paragraph' && typeof text === 'string') {
+                if (type === 'paragraph') {
                     return (
-                        <Text as='p' key={text.substring(0, 10)}>
+                        <Text as='p' key={typeof text === 'string' ? text.substring(0, 10) : typeof text}>
                             {text}
                         </Text>
                     );
                 }
-                if (type === 'list' && typeof text !== 'string') {
+                if (type === 'list' && Array.isArray(text)) {
                     return (
                         <ul key={text[0].substring(0, 15)}>
                             {text.map(list_item_text => (

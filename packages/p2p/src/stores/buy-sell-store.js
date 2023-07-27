@@ -588,7 +588,6 @@ export default class BuySellStore extends BaseStore {
 
     setSelectedAdvert(selected_advert) {
         const { general_store } = this.root_store;
-        console.log(general_store.is_common_modal_open);
         if (!this.root_store.general_store.is_advertiser) {
             this.setShouldShowVerification(true);
         } else if (this.is_sell_advert) {
@@ -743,5 +742,4 @@ export default class BuySellStore extends BaseStore {
             this.create_order_subscription.unsubscribe();
         }
     };
-
 }

@@ -698,6 +698,7 @@ export default class BuySellStore extends BaseStore {
     }
 
     handleAdvertInfoResponse(response) {
+        //TODO: error handling for response
         if(response.error) return;
         const { p2p_advert_info } = response;
         if (this.selected_ad_state?.id === p2p_advert_info.id) {

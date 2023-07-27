@@ -49,6 +49,7 @@ const Chart = ({
     wsSubscribe,
 }: TChartProps) => {
     const barriers: [] = [];
+
     return (
         <div
             className={classNames('dashboard__chart-wrapper', {

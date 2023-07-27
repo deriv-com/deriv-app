@@ -52,8 +52,8 @@ const App = ({ root_store }) => {
                 <StoreProvider store={root_store}>
                     <APIProvider>
                         <TranslationProvider
-                            environment={getRuntimeEnvironment()}
                             websocket={WS}
+                            environment={getRuntimeEnvironment()}
                             onInit={lang => initMoment(lang)}
                         >
                             <PlatformContainer>

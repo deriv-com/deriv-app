@@ -10,7 +10,7 @@ import { WS } from '@deriv/shared';
 jest.mock('../../../../Containers/SettingsModal/settings-language', () => jest.fn(() => <div>LanguageSettings</div>));
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    __esModule: true, // this property makes it work,
+    __esModule: true,
     default: 'mockedDefaultExport',
     WS: {
         wait: jest.fn(() => Promise.resolve()),

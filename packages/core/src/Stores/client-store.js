@@ -27,7 +27,7 @@ import { RudderStack } from '@deriv/analytics';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType, getAvailableAccount } from './Helpers/client';
-import { getLanguage, localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
@@ -44,7 +44,6 @@ const eu_excluded_regex = new RegExp('^mt$');
 
 export default class ClientStore extends BaseStore {
     loginid;
-    preferred_language;
     upgrade_info;
     email;
     accounts = {};
@@ -161,7 +160,6 @@ export default class ClientStore extends BaseStore {
             external_url_params: observable,
             setExternalParams: action.bound,
             redirectToLegacyPlatform: action.bound,
-            preferred_language: observable,
             upgrade_info: observable,
             email: observable,
             accounts: observable,
@@ -414,7 +412,7 @@ export default class ClientStore extends BaseStore {
                 this.currency,
                 this.residence,
                 this.account_settings,
-                this.preferred_language,
+                this.root_store?.common?.current_language,
             ],
             () => {
                 this.setCookieAccount();
@@ -1202,16 +1200,7 @@ export default class ClientStore extends BaseStore {
         const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
 
         // eslint-disable-next-line max-len
-        const {
-            loginid,
-            email,
-            landing_company_shortcode,
-            currency,
-            residence,
-            account_settings,
-            preferred_language,
-            user_id,
-        } = this;
+        const { loginid, email, landing_company_shortcode, currency, residence, account_settings, user_id } = this;
 
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
@@ -1224,7 +1213,7 @@ export default class ClientStore extends BaseStore {
                 first_name,
                 last_name,
                 name,
-                preferred_language,
+                preferred_language: this.root_store.common.current_language,
                 user_id,
             };
             Cookies.set('region', getRegion(landing_company_shortcode, residence), { domain });
@@ -1610,7 +1599,7 @@ export default class ClientStore extends BaseStore {
                 message: localize('Please Log in'),
                 should_show_refresh: false,
                 redirect_label: localize('Log in'),
-                redirectOnClick: () => redirectToLogin(false, getLanguage()),
+                redirectOnClick: () => redirectToLogin(false, this.root_store.common.current_language),
             });
             this.setIsLoggingIn(false);
             this.setInitialized(false);
@@ -1631,7 +1620,7 @@ export default class ClientStore extends BaseStore {
 
                 // Client comes back from oauth and logs in
                 RudderStack.identifyEvent(this.user_id, {
-                    language: getLanguage().toLowerCase(),
+                    language: this.root_store.common.current_language.toLowerCase(),
                 });
                 const current_page = window.location.hostname + window.location.pathname;
                 RudderStack.pageView(current_page);

@@ -9,11 +9,13 @@ import {
     isEmptyObject,
     default_title,
 } from '@deriv/shared';
-import { getLanguage } from '@deriv/translations';
+import { useLanguageSettings } from '@deriv/translations';
 import Page404 from 'Modules/Page404';
 import { connect } from 'Stores/connect';
 
 const RouteWithSubRoutes = route => {
+    const { current_language } = useLanguageSettings();
+
     const validateRoute = pathname => {
         if (pathname.startsWith('/cashier') && !pathname.startsWith('/cashier/p2p/') && !!route.routes) {
             return route.path === pathname || !!route?.routes.find(r => pathname === r.path);
@@ -48,9 +50,9 @@ const RouteWithSubRoutes = route => {
         } else if (is_valid_route && route.is_authenticated && !route.is_logged_in && !route.is_logging_in) {
             if (window.localStorage.getItem('is_redirecting') === 'true') {
                 window.localStorage.removeItem('is_redirecting');
-                redirectToLogin(route.is_logged_in, getLanguage(), true, 3000);
+                redirectToLogin(route.is_logged_in, current_language, true, 3000);
             } else {
-                redirectToLogin(route.is_logged_in, getLanguage());
+                redirectToLogin(route.is_logged_in, current_language);
             }
         } else {
             const default_subroute = route.routes ? route.routes.find(r => r.default) : {};

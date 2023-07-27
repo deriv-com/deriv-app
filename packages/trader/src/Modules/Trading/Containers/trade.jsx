@@ -279,7 +279,7 @@ const ChartTrade = observer(props => {
     const { all_positions } = portfolio;
     const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on } = ui;
     const { is_socket_opened } = common;
-    const { should_show_eu_content } = client;
+    const { currency, should_show_eu_content } = client;
     const {
         chartStateChange,
         is_trade_enabled,

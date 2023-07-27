@@ -24,12 +24,14 @@ export default class CommonStore extends BaseStore {
             app_id: observable,
             platform: observable,
             selected_contract_type: observable,
+            current_language: observable,
             setSelectedContractType: action.bound,
             init: action.bound,
             checkAppId: action.bound,
             setAppstorePlatform: action.bound,
             setPlatform: action.bound,
             is_from_derivgo: computed,
+            handleLanguageChange: action.bound,
             setInitialRouteHistoryItem: action.bound,
             setServerTime: action.bound,
             setIsSocketOpened: action.bound,
@@ -46,6 +48,7 @@ export default class CommonStore extends BaseStore {
         });
     }
 
+    current_language = 'EN';
     server_time = ServerTime.get() || toMoment(); // fallback: get current time from moment.js
     has_error = false;
 
@@ -69,6 +72,17 @@ export default class CommonStore extends BaseStore {
     app_id = undefined;
     platform = '';
     selected_contract_type = '';
+
+    /**
+     * This is an interface to the TranslationsProvider for backwards compatibility. It is
+     * meant to be one way - only to be updated from the TranslationsProvider. Do not invoke
+     * this function from any other place else the language will be out of sync.
+     *
+     * AVOID using this outside of stores
+     */
+    handleLanguageChange(lang) {
+        this.current_language = lang;
+    }
 
     setSelectedContractType(contract_type) {
         this.selected_contract_type = contract_type;

@@ -1,5 +1,4 @@
 import { getPlatformSettings, routes } from '@deriv/shared';
-
 import { localize } from '@deriv/translations';
 
 const platform_config = [

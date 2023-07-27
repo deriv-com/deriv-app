@@ -23,7 +23,7 @@ type TNumpad = {
     render?: (props: { value: string; className: string }) => React.ReactNode;
     submit_label: string;
     value: string;
-    format: (v: string) => number;
+    format?: (v: string) => number | string;
     onValueChange: (val: number | string) => void;
     onValidate: (default_value: number | string) => boolean | 'error';
 };

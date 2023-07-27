@@ -179,8 +179,7 @@ const Amount = observer(({ is_minimized }: { is_minimized: boolean }) => {
                 <React.Fragment>
                     <Multiplier />
                     <MultipliersInfo
-                        /* 
-                        // @ts-expect-error observer wrapped component props cant be detected until its ts-migrated */
+                        /*// @ts-expect-error observer wrapped component props cant be detected until its ts-migrated */
                         className='trade-container__multipliers-trade-info'
                         should_show_tooltip
                         is_tooltip_relative

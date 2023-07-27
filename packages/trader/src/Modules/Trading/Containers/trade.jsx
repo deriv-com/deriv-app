@@ -153,7 +153,7 @@ const Trade = observer(() => {
     return (
         <div
             id='trade_container'
-            className={classNames('trade-container', {
+            className={classNames('trade-container third', {
                 'trade-container--accumulators': is_accumulator,
             })}
         >

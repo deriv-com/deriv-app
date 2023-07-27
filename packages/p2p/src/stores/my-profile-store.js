@@ -269,8 +269,9 @@ export default class MyProfileStore extends BaseStore {
             if (methods.every(e => e.method !== key[1].method)) {
                 if (key[1].method === 'other' || key[1].method === 'bank_transfer') {
                     methods.push({ method: key[1].method, display_name: key[1].display_name });
-                } else if (key[1].method === 'upi' && !methods.some(e => e.method === 'bank_transfer')) {
-                    methods.push({ method: 'bank_transfer', display_name: 'Bank Transfer' });
+                } else if (key[1].method === 'upi') {
+                    if (!methods.some(e => e.method === 'bank_transfer'))
+                        methods.push({ method: 'bank_transfer', display_name: 'Bank Transfer' });
                 } else if (methods.every(e => e.method !== 'e_wallet')) {
                     methods.push({ method: 'e_wallet', display_name: localize('E-wallet') });
                 }

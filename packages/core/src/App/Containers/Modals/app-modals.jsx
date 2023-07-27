@@ -64,6 +64,10 @@ const VerificationDocumentSubmitted = React.lazy(() =>
     import(/* webpackChunkName: "verification-document-submitted-modal" */ './VerificationDocumentSubmitted')
 );
 
+const OneTimeDepositModal = React.lazy(() =>
+    import(/* webpackChunkName: "one-time-deposit-modal" */ '../OneTimeDepositModal')
+);
+
 const AppModals = ({
     is_account_needed_modal_on,
     is_acuity_modal_open,
@@ -89,7 +93,8 @@ const AppModals = ({
     is_need_real_account_for_cashier_modal_visible,
     is_verification_modal_visible,
     is_verification_submitted,
-    should_show_deposit_or_account_success_modal,
+    should_show_one_time_deposit_modal,
+    should_show_account_success_modal,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
@@ -181,7 +186,11 @@ const AppModals = ({
         ComponentToLoad = <VerificationDocumentSubmitted />;
     }
 
-    if (should_show_deposit_or_account_success_modal) {
+    if (should_show_one_time_deposit_modal) {
+        ComponentToLoad = <OneTimeDepositModal />;
+    }
+
+    if (should_show_account_success_modal) {
         ComponentToLoad = <ReadyToVerifyModal />;
     }
 
@@ -221,5 +230,6 @@ export default connect(({ client, ui, traders_hub }) => ({
     content_flag: traders_hub.content_flag,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     should_show_risk_accept_modal: ui.should_show_risk_accept_modal,
-    should_show_deposit_or_account_success_modal: ui.should_show_deposit_or_account_success_modal,
+    should_show_one_time_deposit_modal: ui.should_show_one_time_deposit_modal,
+    should_show_account_success_modal: ui.should_show_account_success_modal,
 }))(AppModals);

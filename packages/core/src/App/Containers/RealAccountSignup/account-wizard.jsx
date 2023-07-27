@@ -270,7 +270,7 @@ const AccountWizard = props => {
             .then(response => {
                 props.setIsRiskWarningVisible(false);
                 if (props.real_account_signup_target === 'maltainvest') {
-                    props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
+                    props.onOpenDepositModal();
                 } else if (props.real_account_signup_target === 'samoa') {
                     props.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
                 } else {

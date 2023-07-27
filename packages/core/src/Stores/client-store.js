@@ -832,6 +832,7 @@ export default class ClientStore extends BaseStore {
     get has_deposited_for_first_time() {
         return this.balance;
     }
+
     get has_mt5_account_with_rejected_poa() {
         return !!this.mt5_login_list.filter(mt5_account => mt5_account?.status?.includes('poa_rejected')).length;
     }

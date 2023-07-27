@@ -448,7 +448,8 @@ type TUiStore = {
     is_ready_to_deposit_modal_visible: boolean;
     reports_route_tab_index: number;
     should_show_cancellation_warning: boolean;
-    should_show_deposit_or_account_success_modal: boolean;
+    should_show_one_time_deposit_modal: boolean;
+    should_show_account_success_modal: boolean;
     should_trigger_tour_guide: boolean;
     toggleCancellationWarning: (state_change: boolean) => void;
     toggleUnsupportedContractModal: (state_change: boolean) => void;
@@ -477,7 +478,8 @@ type TUiStore = {
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     setShouldShowCooldownModal: (value: boolean) => void;
     setShouldTriggerTourGuide: (value: boolean) => void;
-    toggleDepositOrAccountSuccessModal: () => void;
+    setShouldShowOneTimeDepositModal: (value: boolean) => void;
+    toggleAccountSuccessModal: () => void;
     setIsMFVericationPendingModal: (value: boolean) => void;
 };
 

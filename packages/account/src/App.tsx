@@ -5,7 +5,6 @@ import { setWebsocket } from '@deriv/shared';
 import { StoreProvider } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 
-// TODO: add correct types for WS after implementing them
 type TAppProps = {
     passthrough: {
         root_store: TCoreStores;

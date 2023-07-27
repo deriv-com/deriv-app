@@ -26,7 +26,7 @@
         @include mobile {
             height: 100%;
         }
-        @media screen and (max-width: 330px) {
+        @media screen and (max-width: 320px) {
             height: unset;
         }
     }

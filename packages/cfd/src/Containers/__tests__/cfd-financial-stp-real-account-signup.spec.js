@@ -183,6 +183,7 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
                 storeProofOfAddress: jest.fn(),
             },
         },
+        jurisdiction_selected_shortcode: 'svg',
     };
 
     it('should render CFDFinancialStpRealAccountSignup component', () => {
@@ -194,7 +195,7 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
     });
 
     it('should render properly for the first step content', () => {
-        getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_bvi_labuan: true });
+        getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_bvi_labuan_vanuatu: true });
         render(<CFDFinancialStpRealAccountSignup />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
@@ -223,7 +224,7 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
             },
         };
 
-        getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_vanuatu_maltainvest: true });
+        getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_bvi_labuan_vanuatu: true });
 
         render(<CFDFinancialStpRealAccountSignup />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(new_mock_store)}>{children}</CFDProviders>,
@@ -243,7 +244,7 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
             },
         };
 
-        getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_vanuatu_maltainvest: true });
+        getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_maltainvest: true });
 
         render(<CFDFinancialStpRealAccountSignup />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(new_mock_store)}>{children}</CFDProviders>,

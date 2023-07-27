@@ -4,6 +4,7 @@ import { Icon, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 
 const ShareMyAdsIcons = () => {
+    // TODO: replace with proper url when available
     const advert_url = window.location.href;
 
     return (
@@ -24,14 +25,6 @@ const ShareMyAdsIcons = () => {
                     <Localize i18n_default_text='Facebook' />
                 </Text>
             </FacebookShareButton>
-            <TwitterShareButton url={advert_url}>
-                <div className='share-my-ads-icons__circle'>
-                    <Icon className='share-my-ads-icons__circle-icon--small' icon='IcStockTwitter' size={28} />
-                </div>
-                <Text size='xxxs'>
-                    <Localize i18n_default_text='Twitter' />
-                </Text>
-            </TwitterShareButton>
             <TelegramShareButton url={advert_url}>
                 <div className='share-my-ads-icons__circle'>
                     <Icon className='share-my-ads-icons__circle-icon' icon='IcTelegram' size={34} />
@@ -40,6 +33,14 @@ const ShareMyAdsIcons = () => {
                     <Localize i18n_default_text='Telegram' />
                 </Text>
             </TelegramShareButton>
+            <TwitterShareButton url={advert_url}>
+                <div className='share-my-ads-icons__circle'>
+                    <Icon className='share-my-ads-icons__circle-icon--small' icon='IcStockTwitter' size={28} />
+                </div>
+                <Text size='xxxs'>
+                    <Localize i18n_default_text='Twitter' />
+                </Text>
+            </TwitterShareButton>
             <div className='share-my-ads-icons__container'>
                 <a
                     className='share-my-ads-icons__container-link'

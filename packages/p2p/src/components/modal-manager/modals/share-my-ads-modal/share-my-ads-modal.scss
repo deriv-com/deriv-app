@@ -38,6 +38,11 @@
                 .dc-btn {
                     width: 50%;
                 }
+
+                &--bubble {
+                    top: 31px;
+                    left: -70px;
+                }
             }
 
             &-details {
@@ -145,6 +150,12 @@
             &--icon {
                 display: flex;
                 margin: 1.5rem 1rem;
+            }
+
+            &--popover {
+                display: flex;
+                right: 0;
+                top: 0;
             }
         }
 

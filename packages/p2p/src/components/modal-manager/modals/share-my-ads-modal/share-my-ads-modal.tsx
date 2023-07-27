@@ -18,7 +18,7 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import MyProfileSeparatorContainer from 'Components/my-profile/my-profile-separator-container';
 import { base64_images } from 'Constants/base64-images';
 import { TAdvertProps } from 'Types';
-import ShareMyAdsIcons from './share-my-ads-icons';
+import ShareMyAdsIcons from './share-my-ads-socials';
 import ShareMyAdsPopup from './share-my-ads-popup';
 
 const ShareMyAdsModal = ({ advert }: TAdvertProps) => {
@@ -27,10 +27,11 @@ const ShareMyAdsModal = ({ advert }: TAdvertProps) => {
 
     const isMounted = useIsMounted();
     const divRef = React.useRef(null);
+    // TODO: replace with proper url when available
     const advert_url = window.location.href;
 
     const { hideModal, is_modal_open } = useModalManagerContext();
-    const { id, min_order_amount_limit_display, max_order_amount_limit_display, account_currency, type, rate_display } =
+    const { account_currency, id, max_order_amount_limit_display, min_order_amount_limit_display, rate_display, type } =
         advert;
 
     const options = {
@@ -58,16 +59,12 @@ const ShareMyAdsModal = ({ advert }: TAdvertProps) => {
 
     const handleGenerateImage = () => {
         if (divRef.current) {
-            toPng(divRef.current)
-                .then(dataUrl => {
-                    const link = document.createElement('a');
-                    link.download = 'test.png';
-                    link.href = dataUrl;
-                    link.click();
-                })
-                .catch(error => {
-                    throw new Error(error);
-                });
+            toPng(divRef.current).then(dataUrl => {
+                const link = document.createElement('a');
+                link.download = 'test.png';
+                link.href = dataUrl;
+                link.click();
+            });
         }
     };
 
@@ -88,9 +85,7 @@ const ShareMyAdsModal = ({ advert }: TAdvertProps) => {
                 width='71rem'
             >
                 <Modal.Body className='share-my-ads-modal__body'>
-                    <MobileWrapper>
-                        {show_popup && <ShareMyAdsPopup onClose={() => setShowPopup(false)} />}
-                    </MobileWrapper>
+                    <MobileWrapper>{show_popup && <ShareMyAdsPopup onClose={setShowPopup} />}</MobileWrapper>
                     <DesktopWrapper>
                         <Text>
                             <Localize i18n_default_text='Promote your ad by sharing the QR code and link.' />
@@ -174,7 +169,7 @@ const ShareMyAdsModal = ({ advert }: TAdvertProps) => {
                                             is_copied ? (
                                                 <Icon icon='IcCheckmarkCircle' custom_color='var(--status-success)' />
                                             ) : (
-                                                <Icon icon='IcShareLink' />
+                                                <Icon icon='IcShareLink' data_testid='dt-copy-link-icon' />
                                             )
                                         }
                                         secondary
@@ -205,8 +200,11 @@ const ShareMyAdsModal = ({ advert }: TAdvertProps) => {
                                     <div className='share-my-ads-modal__copy-clipboard'>
                                         <Clipboard
                                             className='share-my-ads-modal__copy-clipboard--icon'
-                                            text_copy={advert_url}
+                                            popoverAlignment='top'
+                                            popoverClassName='share-my-ads-modal__copy-clipboard--popover'
                                             size='18'
+                                            success_message={localize('Copied!')}
+                                            text_copy={advert_url}
                                         />
                                     </div>
                                 </div>

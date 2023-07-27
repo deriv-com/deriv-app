@@ -3,10 +3,10 @@ import classNames from 'classnames';
 import { createPortal } from 'react-dom';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
-import ShareMyAdsIcons from '../share-my-ads-icons';
+import ShareMyAdsIcons from '../share-my-ads-socials';
 
 type TShareMyAdsPopupProps = {
-    onClose: () => void;
+    onClose: (value: boolean) => void;
 };
 
 const ShareMyAdsPopup = ({ onClose }: TShareMyAdsPopupProps) => {
@@ -15,12 +15,12 @@ const ShareMyAdsPopup = ({ onClose }: TShareMyAdsPopupProps) => {
 
     const closePopup = () => {
         setIsClosing(true);
-        setTimeout(() => onClose(), 500);
+        setTimeout(() => onClose(false), 500);
     };
 
     if (popup) {
         return createPortal(
-            <div className='share-my-ads-popup'>
+            <div className='share-my-ads-popup' data-testid='dt_share_my-ads_popup'>
                 <div
                     className={classNames('share-my-ads-popup__container', {
                         closing: is_closing,
@@ -30,7 +30,13 @@ const ShareMyAdsPopup = ({ onClose }: TShareMyAdsPopupProps) => {
                         <Text>
                             <Localize i18n_default_text='Share my ads' />
                         </Text>
-                        <Icon className='share-my-ads-popup__container-icon' icon='IcCross' onClick={closePopup} />
+                        <Icon
+                            className='share-my-ads-popup__container-icon'
+                            custom_color='less-prominent'
+                            data_testid='dt-close-popup-icon'
+                            icon='IcCross'
+                            onClick={closePopup}
+                        />
                     </div>
                     <ShareMyAdsIcons />
                 </div>

@@ -5,10 +5,7 @@
     margin: 2.5rem 0;
 
     @include mobile {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        grid-row-gap: 2rem;
-        margin: 1rem 2.5rem;
+        margin: 2rem;
     }
 
     .react-share__ShareButton {

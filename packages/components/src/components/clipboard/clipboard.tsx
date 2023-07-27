@@ -51,17 +51,16 @@ const Clipboard = ({
             alignment={popoverAlignment}
             classNameBubble={classNames('dc-clipboard__popover', popoverClassName)}
             message={is_copied ? success_message : info_message}
-            relative_render
             {...popover_props}
+            zIndex='9999'
         >
-            {is_copied && (
+            {is_copied ? (
                 <Icon
                     icon='IcCheckmarkCircle'
                     custom_color='var(--status-success)'
                     className={classNames('dc-clipboard', className)}
                 />
-            )}
-            {!is_copied && (
+            ) : (
                 <Icon
                     icon={icon || 'IcClipboard'}
                     custom_color='var(--text-less-prominent)'

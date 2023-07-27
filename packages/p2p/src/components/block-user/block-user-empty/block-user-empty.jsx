@@ -18,7 +18,7 @@ const BlockUserEmpty = () => {
                         height={128}
                         width={128}
                     />
-                    <Text className='block-user-empty__text' line_height='m' size='s' weight='bold'>
+                    <Text className='block-user-empty__text something' line_height='m' size='s' weight='bold'>
                         <Localize i18n_default_text='No one to show here' />
                     </Text>
                 </div>

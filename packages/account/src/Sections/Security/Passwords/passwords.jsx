@@ -4,6 +4,7 @@ import { observer, useStore } from '@deriv/stores';
 import DerivPassword from './deriv-password.jsx';
 import DerivEmail from './deriv-email.jsx';
 import PasswordsPlatform from './passwords-platform.jsx';
+import { withRouter } from 'react-router';
 
 const Passwords = observer(() => {
     const [is_loading, setIsLoading] = React.useState(true);
@@ -67,4 +68,4 @@ const Passwords = observer(() => {
     );
 });
 
-export default Passwords;
+export default withRouter(Passwords);

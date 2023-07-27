@@ -1,6 +1,6 @@
 import React from 'react';
 import { QRCode } from 'react-qrcode';
-import { TCFDsPlatformType } from 'Components/props.types';
+import { TCFDPlatform } from 'Components/props.types';
 import {
     getDXTradeWebTerminalLink,
     getDerivEzWebTerminalLink,
@@ -13,7 +13,7 @@ import { Localize } from '@deriv/translations';
 import { isMobile, OSDetect, isDesktopOs } from '@deriv/shared';
 import { TCFDDashboardContainer } from 'Containers/props.types';
 
-export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
+export const getPlatformQRCode = (acc_type: TCFDPlatform) => {
     const qr_code_width = isMobile() ? '100%' : '80%';
     const os = OSDetect();
     const checkForDesktop = isDesktopOs() ? (os === 'mac' ? 'ios' : 'android') : os;
@@ -36,7 +36,7 @@ export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
 };
 
 type TPlatformsDesktopDownload = {
-    platform: TCFDsPlatformType;
+    platform: TCFDPlatform;
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     derivez_tokens: TCFDDashboardContainer['derivez_tokens'];
     is_demo: string;

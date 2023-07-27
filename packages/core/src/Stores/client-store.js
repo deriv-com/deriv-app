@@ -1063,7 +1063,6 @@ export default class ClientStore extends BaseStore {
             }
             return existing_real_accounts.some(account => account.landing_company_short === shortcode);
         });
-
         return !has_no_matching_accounts;
     }
 

@@ -1,8 +1,8 @@
 import { OSDetect } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { TCFDsPlatformType } from 'Components/props.types';
+import { TCFDPlatform } from 'Components/props.types';
 
-const platformsText = (platform: TCFDsPlatformType) => {
+const platformsText = (platform: TCFDPlatform) => {
     switch (platform) {
         case 'derivez':
             return 'EZ';
@@ -13,7 +13,7 @@ const platformsText = (platform: TCFDsPlatformType) => {
     }
 };
 
-const platformsIcons = (platform: TCFDsPlatformType) => {
+const platformsIcons = (platform: TCFDPlatform) => {
     switch (platform) {
         case 'derivez':
             return 'DerivEz';
@@ -24,7 +24,7 @@ const platformsIcons = (platform: TCFDsPlatformType) => {
     }
 };
 
-const mobileDownloadLink = (platform: TCFDsPlatformType, type: 'ios' | 'android' | 'huawei') => {
+const mobileDownloadLink = (platform: TCFDPlatform, type: 'ios' | 'android' | 'huawei') => {
     switch (platform) {
         case 'dxtrade':
             return getPlatformDXTradeDownloadLink(type);

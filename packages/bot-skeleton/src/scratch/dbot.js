@@ -59,9 +59,14 @@ class DBot {
                             }
                         });
                         that.symbol = symbol;
-                        if (!that.is_bot_running && that.interpreter && !this.workspace.options.readOnly) {
+                        if (
+                            !that.is_bot_running &&
+                            that.interpreter &&
+                            !this.workspace.options.readOnly &&
+                            symbol !== that.interpreter.bot.tradeEngine.symbol
+                        ) {
                             that.interpreter.unsubscribeFromTicksService().then(async () => {
-                                that.interpreter.bot.tradeEngine.watchTicks(symbol, true);
+                                that.interpreter.bot.tradeEngine.watchTicks(symbol);
                             });
                         }
                     } else if (event.name === 'TRADETYPECAT_LIST' && event.blockId === this.id) {

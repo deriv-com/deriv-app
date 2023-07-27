@@ -223,7 +223,9 @@ export default class TicksService {
         if (style === 'ticks') {
             if (!this.ticks_history_promise || this.ticks_history_promise.stringified_options !== stringified_options) {
                 this.ticks_history_promise = {
-                    promise: this.requestPipSizes().then(() => this.requestTicks(options)),
+                    promise: this.requestPipSizes().then(async () => {
+                        await this.requestTicks(options);
+                    }),
                     stringified_options,
                 };
             }
@@ -299,7 +301,6 @@ export default class TicksService {
                 if (symbol) {
                     this.forget(this.subscriptions.getIn(['tick', symbol]))
                         .then(res => {
-                            this.ticks_history_promise = null;
                             resolve(res);
                         })
                         .catch(reject);

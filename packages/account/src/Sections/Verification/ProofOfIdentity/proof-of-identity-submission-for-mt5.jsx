@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { AutoHeightWrapper } from '@deriv/components';
-import { WS, Jurisdiction, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
+import { WS, IDV_NOT_APPLICABLE_OPTION, isVerificationServiceSupported } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import Unsupported from '../../../Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view-container';
@@ -10,35 +10,22 @@ import { IdvDocSubmitOnSignup } from '../../../Components/poi/poi-form-on-signup
 import { makeSettingsRequest } from '../../../Helpers/utils';
 
 const POISubmissionForMT5 = observer(
-    ({
-        idv,
-        is_idv_disallowed,
-        onfido,
-        onStateChange,
-        citizen_data,
-        has_idv_error,
-        jurisdiction_selected_shortcode,
-        residence_list,
-    }) => {
+    ({ idv, is_idv_disallowed, onfido, onStateChange, citizen_data, has_idv_error, residence_list }) => {
         const [submission_status, setSubmissionStatus] = React.useState(); // submitting
         const [submission_service, setSubmissionService] = React.useState();
 
-        const { client, notifications } = useStore();
+        const { client, notifications, traders_hub } = useStore();
         const { account_settings, getChangeableFields } = client;
         const { refreshNotifications } = notifications;
+        const { is_eu_user } = traders_hub;
 
         React.useEffect(() => {
             if (citizen_data) {
                 const { submissions_left: idv_submissions_left } = idv;
                 const { submissions_left: onfido_submissions_left } = onfido;
-                const is_idv_supported = citizen_data.identity.services.idv.is_country_supported;
-                const is_onfido_supported = citizen_data.identity.services.onfido.is_country_supported;
-                if (
-                    is_idv_supported &&
-                    Number(idv_submissions_left) > 0 &&
-                    !is_idv_disallowed &&
-                    jurisdiction_selected_shortcode !== Jurisdiction.VANUATU
-                ) {
+                const is_idv_supported = isVerificationServiceSupported(residence_list, account_settings, 'idv');
+                const is_onfido_supported = isVerificationServiceSupported(residence_list, account_settings, 'onfido');
+                if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed && !is_eu_user) {
                     setSubmissionService(service_code.idv);
                 } else if (onfido_submissions_left && is_onfido_supported) {
                     setSubmissionService(service_code.onfido);

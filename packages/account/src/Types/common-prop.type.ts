@@ -150,6 +150,10 @@ export type TPersonalDetailsForm = {
 
 export type TInputFieldValues = Record<string, string>;
 
+export type TVerificationStatus = Readonly<
+    Record<'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected', string>
+>;
+
 export type TIDVVerificationResponse = IdentityVerificationAddDocumentResponse & { error: { message: string } };
 
 export type TDocument = {

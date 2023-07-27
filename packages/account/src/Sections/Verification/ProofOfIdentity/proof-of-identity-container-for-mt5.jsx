@@ -9,7 +9,7 @@ import POISubmissionForMT5 from './proof-of-identity-submission-for-mt5.jsx';
 import { service_code } from './proof-of-identity-utils';
 import { populateVerificationStatus } from '../Helpers/verification';
 
-const ProofOfIdentityContainerForMt5 = observer(({ onStateChange, citizen_data, jurisdiction_selected_shortcode }) => {
+const ProofOfIdentityContainerForMt5 = observer(({ onStateChange, citizen_data }) => {
     const [api_error, setAPIError] = React.useState();
     const [residence_list, setResidenceList] = React.useState();
     const [is_status_loading, setStatusLoading] = React.useState(true);
@@ -69,7 +69,6 @@ const ProofOfIdentityContainerForMt5 = observer(({ onStateChange, citizen_data, 
             residence_list={residence_list}
             citizen_data={citizen_data}
             has_idv_error={has_idv_error}
-            jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
         />
     );
 });

@@ -1,5 +1,11 @@
 import React from 'react';
-import { DetailsOfEachMT5Loginid, GetAccountStatus, VerifyEmailResponse } from '@deriv/api-types';
+import {
+    DetailsOfEachMT5Loginid,
+    GetAccountStatus,
+    GetSettings,
+    ResidenceList,
+    VerifyEmailResponse,
+} from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
 import {
@@ -152,7 +158,6 @@ export type TJurisdictionCardProps = {
     account_type: string;
     disabled: boolean;
     is_non_idv_design: boolean;
-    toggleDynamicLeverage: React.MouseEventHandler<HTMLSpanElement>;
     type_of_card: TJurisdictionCardType;
 };
 
@@ -195,6 +200,8 @@ export type TJurisdictionCardSectionProps = {
 export type TJurisdictionCardType = 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest';
 
 export type TVerificationStatusBannerProps = {
+    account_status: GetAccountStatus;
+    account_settings: GetSettings;
     account_type: string;
     card_classname: string;
     disabled: boolean;
@@ -204,6 +211,7 @@ export type TVerificationStatusBannerProps = {
     real_swapfree_accounts_existing_data: TExistingData;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
+    residence_list: ResidenceList;
 };
 
 export type TJurisdictionCheckBoxProps = {
@@ -221,7 +229,6 @@ type TOpenAccountTransferMeta = {
 
 export type TJurisdictionModalContentWrapperProps = {
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
-    toggleDynamicLeverage: React.MouseEventHandler<HTMLSpanElement>;
 };
 
 export type TJurisdictionModalProps = {
@@ -232,7 +239,6 @@ export type TJurisdictionModalContentProps = {
     account_status: GetAccountStatus;
     account_type: string;
     is_non_idv_design: boolean;
-    toggleDynamicLeverage: React.MouseEventHandler<HTMLSpanElement>;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     synthetic_available_accounts: TTradingPlatformAvailableAccount[];
@@ -242,6 +248,11 @@ export type TJurisdictionModalContentProps = {
     real_financial_accounts_existing_data: TExistingData;
     real_swapfree_accounts_existing_data: TExistingData;
     is_virtual: boolean;
+};
+
+export type TJurisdictionModalTitleProps = {
+    show_eu_related_content: boolean;
+    account_type: string;
 };
 
 type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
@@ -276,6 +287,7 @@ export type TCompareAccountRowProps = TCompareAccountContentProps & {
     CFDs_restricted_countries: boolean;
     financial_restricted_countries: boolean;
     is_preappstore_restricted_cr_demo_account: boolean;
+    residence: string;
 };
 
 export type TCompareAccountContentProps = {
@@ -327,8 +339,8 @@ type TDynamicLeverage = {
 };
 
 export type TDynamicLeverageMarketCardProps = {
-    market: string;
+    title: string;
+    description?: string;
     leverage: string;
-    market_example?: string;
-    dynamicLeverages: TDynamicLeverage[];
+    data: TDynamicLeverage[];
 };

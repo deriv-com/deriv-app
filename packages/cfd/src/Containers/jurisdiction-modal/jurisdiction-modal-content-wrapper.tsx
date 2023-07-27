@@ -11,7 +11,7 @@ import { useStore, observer } from '@deriv/stores';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 
 const JurisdictionModalContentWrapper = observer((props: TJurisdictionModalContentWrapperProps) => {
-    const { openPasswordModal, toggleDynamicLeverage } = props;
+    const { openPasswordModal } = props;
     const { client, traders_hub } = useStore();
 
     const { show_eu_related_content } = traders_hub;
@@ -45,10 +45,11 @@ const JurisdictionModalContentWrapper = observer((props: TJurisdictionModalConte
 
     const {
         poi_or_poa_not_submitted,
-        poi_acknowledged_for_bvi_labuan,
-        poi_acknowledged_for_vanuatu_maltainvest,
+        poi_acknowledged_for_bvi_labuan_vanuatu,
+        poi_acknowledged_for_maltainvest,
         poa_acknowledged,
         need_poa_resubmission,
+        poa_resubmit_for_labuan,
     } = getAuthenticationStatusInfo(account_status);
 
     React.useEffect(() => {
@@ -144,7 +145,7 @@ const JurisdictionModalContentWrapper = observer((props: TJurisdictionModalConte
             openPasswordModal(type_of_account);
         } else if (is_vanuatu_selected) {
             if (
-                poi_acknowledged_for_vanuatu_maltainvest &&
+                poi_acknowledged_for_bvi_labuan_vanuatu &&
                 !poi_or_poa_not_submitted &&
                 !should_restrict_vanuatu_account_creation &&
                 poa_acknowledged &&
@@ -156,7 +157,7 @@ const JurisdictionModalContentWrapper = observer((props: TJurisdictionModalConte
             }
         } else if (is_bvi_selected) {
             if (
-                poi_acknowledged_for_bvi_labuan &&
+                poi_acknowledged_for_bvi_labuan_vanuatu &&
                 !poi_or_poa_not_submitted &&
                 !should_restrict_bvi_account_creation &&
                 poa_acknowledged &&
@@ -167,13 +168,18 @@ const JurisdictionModalContentWrapper = observer((props: TJurisdictionModalConte
                 toggleCFDVerificationModal();
             }
         } else if (is_labuan_selected) {
-            if (poi_acknowledged_for_bvi_labuan && poa_acknowledged && has_submitted_cfd_personal_details) {
+            if (
+                poi_acknowledged_for_bvi_labuan_vanuatu &&
+                poa_acknowledged &&
+                has_submitted_cfd_personal_details &&
+                !poa_resubmit_for_labuan
+            ) {
                 openPasswordModal(type_of_account);
             } else {
                 toggleCFDVerificationModal();
             }
         } else if (is_maltainvest_selected) {
-            if (poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged) {
+            if (poi_acknowledged_for_maltainvest && poa_acknowledged) {
                 openPasswordModal(type_of_account);
             } else {
                 toggleCFDVerificationModal();
@@ -190,7 +196,6 @@ const JurisdictionModalContentWrapper = observer((props: TJurisdictionModalConte
                     financial_available_accounts={financial_available_accounts}
                     is_non_idv_design={is_non_idv_design}
                     is_virtual={is_virtual}
-                    toggleDynamicLeverage={toggleDynamicLeverage}
                     real_financial_accounts_existing_data={real_financial_accounts_existing_data}
                     real_synthetic_accounts_existing_data={real_synthetic_accounts_existing_data}
                     jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}

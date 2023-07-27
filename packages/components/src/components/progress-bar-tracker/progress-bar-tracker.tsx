@@ -2,13 +2,13 @@ import React from 'react';
 
 type TProgressBarTracker = {
     step: number;
-    number_of_steps: Array<string>;
+    steps_list: Array<string>;
     setStep: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const ProgressBarTracker = ({ step, number_of_steps, setStep }: TProgressBarTracker) => (
+const ProgressBarTracker = ({ step, steps_list, setStep }: TProgressBarTracker) => (
     <div className='dc-progress-bar-tracker'>
-        {number_of_steps.map((step_item, index) => {
+        {steps_list.map((step_item, index) => {
             const active = step === index + 1;
 
             return (

@@ -10,7 +10,7 @@ describe('DynamicLeverageModalContent', () => {
     it('should render DynamicLeverageModalContent header properly', () => {
         render(<DynamicLeverageModalContent />);
 
-        const title = screen.getByTestId('header-text');
+        const title = screen.getByRole('heading');
         expect(title).toBeInTheDocument();
         expect(title).toHaveTextContent(
             'Enjoy dynamic leverage of up to 1:1500 when trading selected instruments in the forex, commodities, cryptocurrencies, and stock indices markets. Our dynamic leverage adjusts automatically to your trading position, based on asset type and trading volume.'

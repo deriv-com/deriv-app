@@ -5,6 +5,7 @@ import { getJurisdictionContents } from '../../Constants/jurisdiction-contents/j
 import { TJurisdictionCardProps } from '../props.types';
 import JurisdictionCardBack from './jurisdiction-card-back';
 import JurisdictionCardFront from './jurisdiction-card-front';
+import { useDynamicLeverage } from '../dynamic-leverage/dynamic-leverage-context';
 
 const JurisdictionCard = ({
     account_status,
@@ -13,12 +14,12 @@ const JurisdictionCard = ({
     is_non_idv_design = false,
     jurisdiction_selected_shortcode,
     setJurisdictionSelectedShortcode,
-    toggleDynamicLeverage,
     type_of_card,
 }: TJurisdictionCardProps) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
     const is_synthetic = account_type === 'synthetic';
     const is_swapfree = account_type === 'all';
+    const { toggleDynamicLeverage } = useDynamicLeverage();
     const card_values = getJurisdictionContents({ toggleDynamicLeverage })[type_of_card];
     const non_synthetic_card_data = is_swapfree
         ? card_values?.swapfree_contents ?? []

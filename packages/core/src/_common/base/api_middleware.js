@@ -1,3 +1,13 @@
+const datadogLogs = require('@datadog/browser-logs').datadogLogs;
+const formatDate = require('@deriv/shared').formatDate;
+const formatTime = require('@deriv/shared').formatTime;
+
+const datadog_client_token_logs = process.env.DATADOG_CLIENT_TOKEN_LOGS ?? '';
+const is_production = process.env.CIRCLE_JOB === 'release_production';
+const is_staging = process.env.CIRCLE_JOB === 'release_staging';
+const datadog_session_sample_rate = +process.env.DATADOG_SESSION_SAMPLE_RATE_LOGS ?? 1;
+let datadog_version = '';
+let datadog_env = '';
 const REQUESTS = [
     'authorize',
     'website_status',
@@ -8,6 +18,24 @@ const REQUESTS = [
     'p2p_order_create',
     'p2p_order_info',
 ];
+
+if (is_production) {
+    datadog_version = `deriv-app-${process.env.CIRCLE_TAG}`;
+    datadog_env = 'production';
+} else if (is_staging) {
+    datadog_version = `deriv-app-staging-v${formatDate(new Date(), 'YYYYMMDD')}-${formatTime(Date.now(), 'HH:mm')}`;
+    datadog_env = 'staging';
+}
+
+datadogLogs.init({
+    clientToken: datadog_client_token_logs,
+    site: 'datadoghq.com',
+    forwardErrorsToLogs: false,
+    service: 'Dp2p',
+    sessionSampleRate: datadog_session_sample_rate,
+    version: datadog_version,
+    env: datadog_env,
+});
 
 class APIMiddleware {
     constructor(config) {
@@ -26,11 +54,14 @@ class APIMiddleware {
         return request_type;
     };
 
-    log = (is_p2p_running, measures = []) => {
+    log = (measures = []) => {
         measures?.forEach(measure => {
-            /* eslint-disable no-console */
-            console.log(measure);
-            console.log(is_p2p_running);
+            datadogLogs.logger.info(measure.name, {
+                name: measure.name,
+                startTime: measure.startTimeDate,
+                duration: measure.duration,
+                detail: measure.detail,
+            });
         });
     };
 
@@ -38,18 +69,18 @@ class APIMiddleware {
         let measure;
         if (response_type === 'p2p_advert_create') {
             performance.mark('create_ad_end');
-            measure = performance.measure('create_ad', 'create_ad_start', 'create_ad_end');
-            performance.clearMarks('create_ad_start');
-
-            /* eslint-disable no-console */
-            console.log(measure);
+            if (performance.getEntriesByName('create_ad_start', 'mark').length) {
+                measure = performance.measure('create_ad', 'create_ad_start', 'create_ad_end');
+                performance.clearMarks('create_ad_start');
+                this.log([measure]);
+            }
         } else if (response_type === 'p2p_order_info') {
             performance.mark('create_order_end');
-            measure = performance.measure('create_order', 'create_order_start', 'create_order_end');
-            performance.clearMarks('create_order_start');
-
-            /* eslint-disable no-console */
-            console.log(measure);
+            if (performance.getEntriesByName('create_order_start', 'mark').length) {
+                measure = performance.measure('create_order', 'create_order_start', 'create_order_end');
+                performance.clearMarks('create_order_start');
+                this.log([measure]);
+            }
         } else {
             performance.mark(`${response_type}_end`);
             measure = performance.measure(`${response_type}`, `${response_type}_start`, `${response_type}_end`);
@@ -94,10 +125,10 @@ class APIMiddleware {
         return promise;
     }
 
-    sendRequestsStatistic = is_p2p_running => {
+    sendRequestsStatistic = () => {
         REQUESTS.forEach(request_type => {
             const measure = performance.getEntriesByName(request_type);
-            if (measure?.length) this.log(is_p2p_running, measure);
+            if (measure?.length) this.log(measure);
         });
         performance.clearMeasures();
     };

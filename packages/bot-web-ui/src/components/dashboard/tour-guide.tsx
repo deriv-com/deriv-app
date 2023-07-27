@@ -43,7 +43,7 @@ const TourGuide = ({ content, img, label, onCloseTour, step_index }: TTourGuide)
                 </div>
 
                 {img && (
-                    <div className='onboard__container'>
+                    <div className='onboard__image'>
                         {has_image_loaded ? <img src={img} loading='eager' /> : <Loading />}
                     </div>
                 )}

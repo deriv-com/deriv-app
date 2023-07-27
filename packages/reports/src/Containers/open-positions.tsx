@@ -194,12 +194,12 @@ const MobileRowRenderer = ({
                 //@ts-expect-error this component needs to be refactored. I'm using types from stores/types.ts
                 contract_info={contract_info}
                 contract_update={contract_update || {}}
-                currency={currency || ''}
+                currency={currency ?? ''}
                 is_link_disabled
                 onClickCancel={onClickCancel}
                 onClickSell={onClickSell}
                 server_time={server_time}
-                status={status || ''}
+                status={status ?? ''}
                 measure={measure}
                 {...props}
             />
@@ -222,7 +222,7 @@ const MobileRowRenderer = ({
                         ticks_count={tick_count}
                     />
                 ) : (
-                    <ProgressBar label={duration_type || ''} value={progress_value} />
+                    <ProgressBar label={duration_type ?? ''} value={progress_value} />
                 )}
             </div>
             <div className='data-list__row'>

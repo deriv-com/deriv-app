@@ -17,7 +17,6 @@ import IndicativeCell from '../Components/indicative-cell';
 import MarketSymbolIconRow from '../Components/market-symbol-icon-row';
 import ProfitLossCell from '../Components/profit_loss_cell';
 import CurrencyWrapper from '../Components/currency-wrapper';
-import { ITransformer } from 'mobx-utils';
 import { useStore } from '@deriv/stores';
 
 const map = {

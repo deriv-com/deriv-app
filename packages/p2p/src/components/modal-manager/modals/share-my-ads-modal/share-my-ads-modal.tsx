@@ -1,6 +1,5 @@
 import React from 'react';
 import { toPng } from 'html-to-image';
-import { QRCode } from 'react-qrcode-logo';
 import {
     Button,
     Clipboard,
@@ -11,17 +10,17 @@ import {
     Text,
     useCopyToClipboard,
 } from '@deriv/components';
-import { isMobile, useIsMounted } from '@deriv/shared';
+import { useIsMounted } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import MyProfileSeparatorContainer from 'Components/my-profile/my-profile-separator-container';
-import { base64_images } from 'Constants/base64-images';
-import { TAdvertProps } from 'Types';
+import { TAdvert } from 'Types';
 import ShareMyAdsIcons from './share-my-ads-socials';
 import ShareMyAdsPopup from './share-my-ads-popup';
+import ShareMyAdsCard from './share-my-ads-card';
 
-const ShareMyAdsModal = ({ advert }: TAdvertProps) => {
+const ShareMyAdsModal = ({ advert }: TAdvert) => {
     const [show_popup, setShowPopup] = React.useState(false);
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
 
@@ -31,19 +30,6 @@ const ShareMyAdsModal = ({ advert }: TAdvertProps) => {
     const advert_url = window.location.href;
 
     const { hideModal, is_modal_open } = useModalManagerContext();
-    const { account_currency, id, max_order_amount_limit_display, min_order_amount_limit_display, rate_display, type } =
-        advert;
-
-    const options = {
-        enableCORS: true,
-        size: isMobile() ? 120 : 150,
-        removeQrCodeBehindLogo: true,
-        logoPadding: 4,
-        logoImage: base64_images.dp2p_logo,
-        logoWidth: isMobile() ? 30 : 40,
-        logoHeight: isMobile() ? 30 : 40,
-        logoOpacity: 1,
-    };
 
     let timeout_clipboard: ReturnType<typeof setTimeout>;
 
@@ -93,65 +79,7 @@ const ShareMyAdsModal = ({ advert }: TAdvertProps) => {
                     </DesktopWrapper>
                     <div className='share-my-ads-modal__container'>
                         <div className='share-my-ads-modal__container__card'>
-                            <div className='share-my-ads-modal__container__card-details' ref={divRef}>
-                                <img
-                                    className='share-my-ads-modal__container__card-details-icon'
-                                    src={base64_images.deriv_p2p}
-                                />
-                                <Text
-                                    className='share-my-ads-modal__container__card-details-title'
-                                    weight='bold'
-                                    size='m'
-                                >
-                                    <Localize
-                                        i18n_default_text='{{type}} {{account_currency}}'
-                                        values={{ type, account_currency }}
-                                    />
-                                </Text>
-                                <div className='share-my-ads-modal__container__card-details--numbers'>
-                                    <div className='share-my-ads-modal__container__card-details--numbers-text'>
-                                        <Text color='colored-background' size='xs'>
-                                            <Localize i18n_default_text='ID number' />
-                                        </Text>
-                                        <Text color='colored-background' size='xs'>
-                                            <Localize i18n_default_text='Limit' />
-                                        </Text>
-                                        <Text color='colored-background' size='xs'>
-                                            <Localize i18n_default_text='Rate' />
-                                        </Text>
-                                    </div>
-                                    <div className='share-my-ads-modal__container__card-details--numbers-text'>
-                                        <Text color='colored-background' size='xs' weight='bold'>
-                                            <Localize i18n_default_text='{{id}}' values={{ id }} />
-                                        </Text>
-                                        <Text color='colored-background' size='xs' weight='bold'>
-                                            <Localize
-                                                i18n_default_text='{{min_order_amount_limit_display}} - {{max_order_amount_limit_display}} {{account_currency}}'
-                                                values={{
-                                                    min_order_amount_limit_display,
-                                                    max_order_amount_limit_display,
-                                                    account_currency,
-                                                }}
-                                            />
-                                        </Text>
-                                        <Text color='colored-background' size='xs' weight='bold'>
-                                            <Localize i18n_default_text='{{rate_display}}%' values={{ rate_display }} />
-                                        </Text>
-                                    </div>
-                                </div>
-                                <div className='share-my-ads-modal__container__card-qr'>
-                                    <div className='share-my-ads-modal__container__card-qr__background'>
-                                        <QRCode value={advert_url} {...options} />
-                                    </div>
-                                    <Text
-                                        className='share-my-ads-modal__container__card-qr__text'
-                                        color='less-prominent'
-                                        size='xxs'
-                                    >
-                                        <Localize i18n_default_text='Scan this code to order via Deriv P2P' />
-                                    </Text>
-                                </div>
-                            </div>
+                            <ShareMyAdsCard advert={advert} advert_url={advert_url} divRef={divRef} />
                             <Button
                                 className='share-my-ads-modal__container__card__download-button'
                                 secondary

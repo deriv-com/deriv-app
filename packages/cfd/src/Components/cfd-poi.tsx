@@ -31,7 +31,7 @@ export type TCFDPOIProps = {
 };
 
 const CFDPOI = observer(({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => {
-    const { client, common, notifications } = useStore();
+    const { client, common, notifications, traders_hub } = useStore();
 
     const {
         account_status,
@@ -48,6 +48,7 @@ const CFDPOI = observer(({ index, onSave, onSubmit, height, ...props }: TCFDPOIP
     } = client;
     const { routeBackInApp, app_routing_history } = common;
     const { refreshNotifications } = notifications;
+    const { is_eu_user } = traders_hub;
 
     const poi_props = {
         account_status,
@@ -64,6 +65,7 @@ const CFDPOI = observer(({ index, onSave, onSubmit, height, ...props }: TCFDPOIP
         refreshNotifications,
         getChangeableFields,
         updateAccountStatus,
+        is_eu_user,
         ...props,
     };
 

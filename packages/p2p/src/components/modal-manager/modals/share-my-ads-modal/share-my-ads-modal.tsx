@@ -89,7 +89,17 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                             </Button>
                             <MobileWrapper>
                                 <Button.Group className='share-my-ads-modal__container__card__button-group'>
-                                    <Button icon={<Icon icon='IcShare' />} secondary onClick={() => setShowPopup(true)}>
+                                    <Button
+                                        icon={<Icon icon='IcShare' />}
+                                        secondary
+                                        onClick={() => {
+                                            navigator.share({
+                                                url: advert_url,
+                                                title: 'P2P Advert',
+                                                text: 'This is my advert!',
+                                            });
+                                        }}
+                                    >
                                         <Localize i18n_default_text='Share link' />
                                     </Button>
                                     <Button

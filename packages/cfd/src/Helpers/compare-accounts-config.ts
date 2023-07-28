@@ -9,6 +9,7 @@ import {
 // Map the accounts according to the market type
 const getHighlightedIconLabel = (
     trading_platforms: TModifiedTradingPlatformAvailableAccount,
+    selected_region?: string,
     is_demo?: boolean
 ): TInstrumentsIcon[] => {
     const market_type = getMarketType(trading_platforms);
@@ -17,7 +18,8 @@ const getHighlightedIconLabel = (
     const forex_label =
         ['financial_labuan', 'financial_vanuatu'].includes(market_type_shortcode) ||
         is_demo ||
-        trading_platforms.platform === CFD_PLATFORMS.DXTRADE
+        trading_platforms.platform === CFD_PLATFORMS.DXTRADE ||
+        selected_region === 'EU'
             ? localize('Forex')
             : localize('Forex: standard/micro');
 
@@ -178,7 +180,7 @@ const getHeaderColor = (shortcode: string) => {
 // Config for different Jurisdictions
 const cfd_config = () => ({
     leverage: '1:1000',
-    leverage_description: localize('Maximum Leverage'),
+    leverage_description: localize('Maximum leverage'),
     spread: '0.5 pips',
     spread_description: localize('Spreads from'),
     counterparty_company: 'Deriv (SVG) LLC',
@@ -258,7 +260,7 @@ const getJuridisctionDescription = (shortcode: string) => {
                 localize('Financial Commission'),
                 localize('Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)'),
                 '',
-                '1:30'
+                'Up to 1:30'
             );
         // Dxtrade
         case 'all_':

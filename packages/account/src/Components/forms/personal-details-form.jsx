@@ -38,6 +38,7 @@ const PersonalDetailsForm = ({
         is_virtual,
         is_mf,
         is_svg,
+        is_high_risk,
         is_qualified_for_idv,
         should_hide_helper_image,
         is_appstore,
@@ -51,7 +52,6 @@ const PersonalDetailsForm = ({
         is_rendered_for_onfido,
         should_close_tooltip,
         setShouldCloseTooltip,
-        // jurisdiction_selected_shortcode,
     } = props;
     const autocomplete_value = 'none';
     const PoiNameDobExampleIcon = PoiNameDobExample;
@@ -397,60 +397,62 @@ const PersonalDetailsForm = ({
                 </FormBodySection>
             </div>
 
-            <div className='account-form__poi-additional-information'>
-                <FormSubHeader title={localize('Additional information')} />
-                {'phone' in values && (
-                    <PhoneField
-                        value={values.phone}
-                        editable_fields={editable_fields}
-                        has_real_account={has_real_account}
-                        required
-                    />
-                )}
-                {is_svg && (
-                    <Fragment>
-                        {'place_of_birth' in values && (
-                            <PlaceOfBirthField
-                                handleChange={handleChange}
-                                setFieldValue={setFieldValue}
-                                editable_fields={editable_fields}
-                                residence_list={residence_list}
-                                required
-                            />
-                        )}
-                        {'tax_residence' in values && (
-                            <TaxResidentField
-                                setFieldValue={setFieldValue}
-                                editable_fields={editable_fields}
-                                residence_list={residence_list}
-                                setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
-                                setIsTinPopoverOpen={setIsTinPopoverOpen}
-                                is_tax_residence_popover_open={is_tax_residence_popover_open}
-                                required
-                            />
-                        )}
-                        {'tax_identification_number' in values && (
-                            <TaxIdentificationNumberField
-                                warning_items={warning_items}
-                                is_tin_popover_open={is_tin_popover_open}
-                                setIsTinPopoverOpen={setIsTinPopoverOpen}
-                                setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
-                                editable_fields={editable_fields}
-                                required
-                            />
-                        )}
-                        {'account_opening_reason' in values && (
-                            <AccountOpeningReasonField
-                                noHeader
-                                account_opening_reason_list={account_opening_reason_list}
-                                setFieldValue={setFieldValue}
-                                editable_fields={editable_fields}
-                                required
-                            />
-                        )}
-                    </Fragment>
-                )}
-            </div>
+            {('phone' in values || is_svg) && (
+                <div className='account-form__poi-additional-information'>
+                    <FormSubHeader title={localize('Additional information')} />
+                    {'phone' in values && (
+                        <PhoneField
+                            value={values.phone}
+                            editable_fields={editable_fields}
+                            has_real_account={has_real_account}
+                            required
+                        />
+                    )}
+                    {!is_high_risk && is_svg && (
+                        <Fragment>
+                            {'place_of_birth' in values && (
+                                <PlaceOfBirthField
+                                    handleChange={handleChange}
+                                    setFieldValue={setFieldValue}
+                                    editable_fields={editable_fields}
+                                    residence_list={residence_list}
+                                    required
+                                />
+                            )}
+                            {'tax_residence' in values && (
+                                <TaxResidentField
+                                    setFieldValue={setFieldValue}
+                                    editable_fields={editable_fields}
+                                    residence_list={residence_list}
+                                    setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
+                                    setIsTinPopoverOpen={setIsTinPopoverOpen}
+                                    is_tax_residence_popover_open={is_tax_residence_popover_open}
+                                    required
+                                />
+                            )}
+                            {'tax_identification_number' in values && (
+                                <TaxIdentificationNumberField
+                                    warning_items={warning_items}
+                                    is_tin_popover_open={is_tin_popover_open}
+                                    setIsTinPopoverOpen={setIsTinPopoverOpen}
+                                    setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
+                                    editable_fields={editable_fields}
+                                    required
+                                />
+                            )}
+                            {'account_opening_reason' in values && (
+                                <AccountOpeningReasonField
+                                    noHeader
+                                    account_opening_reason_list={account_opening_reason_list}
+                                    setFieldValue={setFieldValue}
+                                    editable_fields={editable_fields}
+                                    required
+                                />
+                            )}
+                        </Fragment>
+                    )}
+                </div>
+            )}
         </React.Fragment>
     );
 };

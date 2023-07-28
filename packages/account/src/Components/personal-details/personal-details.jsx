@@ -51,7 +51,7 @@ const PersonalDetails = ({
     has_real_account,
     ...props
 }) => {
-    const { account_status, account_settings, residence, real_account_signup_target } = props;
+    const { account_status, account_settings, residence, real_account_signup_target, is_high_risk } = props;
     const { is_appstore } = React.useContext(PlatformContext);
     const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
     const [warning_items, setWarningItems] = React.useState({});
@@ -217,6 +217,7 @@ const PersonalDetails = ({
                                             should_close_tooltip={should_close_tooltip}
                                             setShouldCloseTooltip={setShouldCloseTooltip}
                                             should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
+                                            is_high_risk={is_high_risk}
                                         />
                                     </div>
                                 </ThemedScrollbars>

@@ -425,4 +425,5 @@ export default connect(({ client, notifications, ui, traders_hub }) => ({
     upgrade_info: client.upgrade_info,
     setSubSectionIndex: ui.setSubSectionIndex,
     sub_section_index: ui.sub_section_index,
+    is_high_risk: client.is_high_risk,
 }))(AccountWizard);

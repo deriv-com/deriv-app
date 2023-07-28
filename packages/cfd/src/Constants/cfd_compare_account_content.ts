@@ -150,12 +150,6 @@ export const getCrRealContent = (): TCompareAccountContentProps[] => [
                 { text: localize('Commodities') },
                 { text: localize('Cryptocurrencies') },
             ],
-            financial_vanuatu: [
-                { text: localize('Forex') },
-                { text: localize('Stock indices') },
-                { text: localize('Commodities') },
-                { text: localize('Cryptocurrencies') },
-            ],
             financial_labuan: [{ text: localize('Forex') }, { text: localize('Cryptocurrencies') }],
             derivx: [
                 { text: localize('Synthetics') },

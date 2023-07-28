@@ -43,10 +43,10 @@ export const getJurisdictionVanuatuContents = (): TJurisdictionCardItems => ({
         {
             key: 'assets',
             title: localize('Assets'),
-            description: localize('Forex, Stock indices, Commodities and Cryptocurrencies'),
+            description: localize('Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies'),
             title_indicators: {
                 type: 'displayText',
-                display_text: localize('90+'),
+                display_text: localize('170+'),
                 display_text_skin_color: 'red-dark',
             },
         },

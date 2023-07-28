@@ -8,4 +8,4 @@ const App = makeLazyLoader(
 )();
 
 export default App;
-export { DepositFiatModule } from './modules';
+export { DepositFiatModule, CashierOnboardingModule } from './modules';

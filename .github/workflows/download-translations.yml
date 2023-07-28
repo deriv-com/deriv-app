@@ -8,11 +8,13 @@ permissions:
   pull-requests: write
   statuses: write
   
-  
 on:
   repository_dispatch:
     types:
       - file-fully-reviewed
+
+concurrency:
+  group: download-translations-crowdin
 
 jobs:
   synchronize-with-crowdin:

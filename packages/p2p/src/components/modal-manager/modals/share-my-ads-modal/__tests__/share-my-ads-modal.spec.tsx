@@ -66,13 +66,16 @@ describe('<ShareMyAdsModal />', () => {
     });
 
     it('should call setShowPopup when clicking on Share link', () => {
+        const mockShare = jest.fn().mockResolvedValue(true);
+        global.navigator.share = mockShare;
+
         render(<ShareMyAdsModal advert={mock_advert} />);
 
         const share_link_button = screen.getByRole('button', { name: 'Share link' });
 
         userEvent.click(share_link_button);
 
-        expect(screen.getByTestId('dt_share_my-ads_popup')).toBeInTheDocument();
+        expect(mockShare).toBeCalled();
     });
 
     it('should call onCopy function when clicking on copy icon', async () => {

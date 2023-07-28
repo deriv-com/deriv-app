@@ -6,13 +6,13 @@ import { Localize } from 'Components/i18next';
 import { base64_images } from 'Constants/base64-images';
 import { TAdvertProps } from 'Types';
 
-type TShareMyAdsPopupProps = {
+type TShareMyAdsCardProps = {
     advert: TAdvertProps;
     advert_url: string;
     divRef: React.MutableRefObject<HTMLDivElement>;
 };
 
-const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsPopupProps) => {
+const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) => {
     const { account_currency, id, max_order_amount_limit_display, min_order_amount_limit_display, rate_display, type } =
         advert;
 

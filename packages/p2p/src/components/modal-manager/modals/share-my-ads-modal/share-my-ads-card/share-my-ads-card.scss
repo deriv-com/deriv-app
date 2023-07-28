@@ -1,5 +1,5 @@
 .share-my-ads-card {
-    background: linear-gradient(349deg, var(--general-section-1) 36%, var(--brand-red-coral) 25%);
+    background: linear-gradient(349deg, $color-grey-2 36%, var(--brand-red-coral) 25%);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -55,7 +55,7 @@
             background-color: #fff;
             display: flex;
             padding: 0.4rem;
-            border: 0.1rem solid var(--general-active);
+            border: 0.1rem solid $color-grey-5;
             border-radius: 1rem;
             position: relative;
             width: fit-content;
@@ -72,5 +72,6 @@
 
     &__title {
         margin-bottom: 2rem;
+        --text-color: #333 !important;
     }
 }

@@ -17,7 +17,6 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import MyProfileSeparatorContainer from 'Components/my-profile/my-profile-separator-container';
 import { TAdvert } from 'Types';
 import ShareMyAdsIcons from './share-my-ads-socials';
-import ShareMyAdsPopup from './share-my-ads-popup';
 import ShareMyAdsCard from './share-my-ads-card';
 
 const ShareMyAdsModal = ({ advert }: TAdvert) => {
@@ -54,6 +53,15 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
         }
     };
 
+    // TODO: Replace with proper message and url when available
+    const handleShareLink = () => {
+        navigator.share({
+            url: advert_url,
+            title: 'P2P Advert',
+            text: 'This is my advert!',
+        });
+    };
+
     React.useEffect(() => {
         return () => {
             clearTimeout(timeout_clipboard);
@@ -71,7 +79,6 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                 width='71rem'
             >
                 <Modal.Body className='share-my-ads-modal__body'>
-                    <MobileWrapper>{show_popup && <ShareMyAdsPopup onClose={setShowPopup} />}</MobileWrapper>
                     <DesktopWrapper>
                         <Text>
                             <Localize i18n_default_text='Promote your ad by sharing the QR code and link.' />
@@ -89,17 +96,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                             </Button>
                             <MobileWrapper>
                                 <Button.Group className='share-my-ads-modal__container__card__button-group'>
-                                    <Button
-                                        icon={<Icon icon='IcShare' />}
-                                        secondary
-                                        onClick={() => {
-                                            navigator.share({
-                                                url: advert_url,
-                                                title: 'P2P Advert',
-                                                text: 'This is my advert!',
-                                            });
-                                        }}
-                                    >
+                                    <Button icon={<Icon icon='IcShare' />} secondary onClick={handleShareLink}>
                                         <Localize i18n_default_text='Share link' />
                                     </Button>
                                     <Button

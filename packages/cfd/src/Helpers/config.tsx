@@ -1,22 +1,14 @@
 import React from 'react';
 import { QRCode } from 'react-qrcode';
 import { TCFDsPlatformType } from 'Components/props.types';
-import {
-    getDXTradeWebTerminalLink,
-    getDerivEzWebTerminalLink,
-    platformsText,
-    platformsIcons,
-    mobileDownloadLink,
-} from './constants';
+import { getDXTradeWebTerminalLink, getDerivEzWebTerminalLink, platformsText, platformsIcons } from './constants';
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { isMobile, OSDetect, isDesktopOs } from '@deriv/shared';
+import { isMobile } from '@deriv/shared';
 import { TCFDDashboardContainer } from 'Containers/props.types';
 
 export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
     const qr_code_width = isMobile() ? '100%' : '80%';
-    const os = OSDetect();
-    const checkForDesktop = isDesktopOs() ? (os === 'mac' ? 'ios' : 'android') : os;
 
     return (
         <React.Fragment>

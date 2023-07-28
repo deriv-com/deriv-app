@@ -1,13 +1,3 @@
-declare global {
-    interface Navigator {
-        msMaxTouchPoints: number;
-    }
-    interface Window {
-        // TODO DocumentTouch been removed from the standards, we need to change this with Touch and TouchList later
-        DocumentTouch: any;
-    }
-}
-
 export const MAX_MOBILE_WIDTH = 926; // iPhone 12 Pro Max has the world largest viewport size of 428 x 926
 export const MAX_TABLET_WIDTH = 1081;
 

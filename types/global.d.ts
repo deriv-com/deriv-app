@@ -11,6 +11,53 @@ declare global {
             open_chat_window: VoidFunction;
         };
         TrackJS: { console: { log: (arg0: unknown[]) => void }; track: (arg0: object) => void };
+        // TODO DocumentTouch been removed from the standards, we need to change this with Touch and TouchList later
+        DocumentTouch: any;
+        opera?: string;
+        MSStream?: {
+            readonly type: string;
+            msClose: () => void;
+            msDetachStream: () => void;
+        };
+    }
+    // https://wicg.github.io/ua-client-hints/#navigatorua
+    interface NavigatorUA {
+        readonly userAgentData?: NavigatorUAData;
+    }
+    // WICG Spec: https://wicg.github.io/ua-client-hints
+    interface Navigator extends NavigatorUA {
+        msMaxTouchPoints: number;
+    }
+    // https://wicg.github.io/ua-client-hints/#dictdef-navigatoruabrandversion
+    interface NavigatorUABrandVersion {
+        readonly brand: string;
+        readonly version: string;
+    }
+    // https://wicg.github.io/ua-client-hints/#dictdef-uadatavalues
+    interface UADataValues {
+        readonly brands?: NavigatorUABrandVersion[];
+        readonly mobile?: boolean;
+        readonly platform?: string;
+        readonly architecture?: string;
+        readonly bitness?: string;
+        readonly model?: string;
+        readonly platformVersion?: string;
+        /** @deprecated in favour of fullVersionList */
+        readonly uaFullVersion?: string;
+        readonly fullVersionList?: NavigatorUABrandVersion[];
+        readonly wow64?: boolean;
+    }
+    // https://wicg.github.io/ua-client-hints/#dictdef-ualowentropyjson
+    interface UALowEntropyJSON {
+        readonly brands: NavigatorUABrandVersion[];
+        readonly mobile: boolean;
+        readonly platform: string;
+    }
+
+    // https://wicg.github.io/ua-client-hints/#navigatoruadata
+    interface NavigatorUAData extends UALowEntropyJSON {
+        getHighEntropyValues(hints: string[]): Promise<UADataValues>;
+        toJSON(): UALowEntropyJSON;
     }
 }
 

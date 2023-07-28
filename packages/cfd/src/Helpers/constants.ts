@@ -88,7 +88,13 @@ const getPlatformDerivEZDownloadLink = (platform: 'ios' | 'android' | 'huawei') 
 };
 
 const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) => {
-    switch (platform || OSDetect()) {
+    let os = platform;
+    if (!os) {
+        (async () => {
+            os = await OSDetect();
+        })();
+    }
+    switch (os) {
         case 'windows':
             return 'https://download.mql5.com/cdn/web/deriv.limited/mt5/derivmt5setup.exe';
         case 'linux':

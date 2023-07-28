@@ -1,16 +1,27 @@
-declare global {
-    interface Window {
-        opera?: string;
-        MSStream?: {
-            readonly type: string;
-            msClose: () => void;
-            msDetachStream: () => void;
-        };
+/**
+ * Requests detailed data with User-Agent Client Hints
+ *
+ * @see https://wicg.github.io/ua-client-hints/
+ * @returns {Promise<UADataValues | null | undefined>} Promise with detailed data or null or undefined if not supported
+ * **/
+const getUserAgentData = async () => {
+    if ('userAgentData' in navigator) {
+        const user_agent_data = await navigator.userAgentData?.getHighEntropyValues([
+            'architecture',
+            'bitness',
+            'model',
+            'platform',
+            'platformVersion',
+            'fullVersionList',
+            'wow64',
+        ]);
+        return user_agent_data;
     }
-}
+    return null;
+};
 
 export const systems = {
-    mac: ['Mac68K', 'MacIntel', 'MacPPC'],
+    mac: ['Mac68K', 'MacIntel', 'MacPPC', 'macOS'],
     linux: [
         'HP-UX',
         'Linux i686',
@@ -34,25 +45,27 @@ export const systems = {
     windows: ['Win16', 'Win32', 'Win64', 'WinCE'],
 };
 
-export const isDesktopOs = () => {
-    const os = OSDetect();
+export const isDesktopOs = async () => {
+    const os = await OSDetect();
     return !!['windows', 'mac', 'linux'].find(system => system === os);
 };
 
 export const isMobileOs = () =>
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-export const OSDetect = () => {
+export const OSDetect = async () => {
     // For testing purposes or more compatibility, if we set 'config.os'
     // inside our localStorage, we ignore fetching information from
     // navigator object and return what we have straight away.
     if (localStorage.getItem('config.os')) {
         return localStorage.getItem('config.os');
     }
-    if (typeof navigator !== 'undefined' && navigator.platform) {
+    const user_agent_data = await getUserAgentData();
+    if (typeof navigator !== 'undefined') {
+        const user_platform = user_agent_data ? user_agent_data.platform : navigator?.platform ?? '';
         return Object.keys(systems)
             .map(os => {
-                if (systems[os as keyof typeof systems].some(platform => navigator.platform === platform)) {
+                if (systems[os as keyof typeof systems].some(platform => user_platform === platform)) {
                     return os;
                 }
                 return false;

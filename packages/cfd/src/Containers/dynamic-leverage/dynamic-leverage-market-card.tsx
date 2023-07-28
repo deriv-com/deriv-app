@@ -7,10 +7,10 @@ const dynamicLeverageTableColumnHeader = (column_title: string, column_subtitle:
     <Table.Head>
         <div className='dynamic-leverage-modal__market-table-header'>
             <Text size='xs' align='center' weight='bold'>
-                {localize(column_title)}
+                {column_title}
             </Text>
             <Text size='xxs' align='center'>
-                {localize(column_subtitle)}
+                {column_subtitle}
             </Text>
         </div>
     </Table.Head>
@@ -39,9 +39,9 @@ export const DynamicLeverageMarketCard = ({ title, description, leverage, data }
         <Table className='dynamic-leverage-modal__market-table'>
             <Table.Header>
                 <Table.Row className='dynamic-leverage-modal__market-table-header-row'>
-                    {dynamicLeverageTableColumnHeader('From', '(lots)')}
-                    {dynamicLeverageTableColumnHeader('to', '(lots)')}
-                    {dynamicLeverageTableColumnHeader('Leverage', '(1:x)')}
+                    {dynamicLeverageTableColumnHeader(localize('From'), localize('(lots)'))}
+                    {dynamicLeverageTableColumnHeader(localize('to'), localize('(lots)'))}
+                    {dynamicLeverageTableColumnHeader(localize('Leverage'), localize('(1:x)'))}
                 </Table.Row>
             </Table.Header>
             <Table.Body>

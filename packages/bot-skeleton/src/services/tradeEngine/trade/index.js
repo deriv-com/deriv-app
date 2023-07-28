@@ -93,10 +93,12 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
         globalObserver.emit('bot.running');
 
-        this.tradeOptions = tradeOptions;
+        const validated_trade_options = this.validateTradeOptions(tradeOptions);
+
+        this.tradeOptions = validated_trade_options;
         this.store.dispatch(start());
-        this.checkLimits(tradeOptions);
-        this.makeProposals({ ...this.options, ...tradeOptions });
+        this.checkLimits(validated_trade_options);
+        this.makeProposals({ ...this.options, ...validated_trade_options });
         this.checkProposalReady();
     }
 

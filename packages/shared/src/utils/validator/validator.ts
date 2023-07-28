@@ -90,8 +90,8 @@ class Validator {
                 const result = ruleObject.validator(this.input[attribute], ruleObject.options, this.store, this.input);
                 if (typeof result === 'boolean' && !result) {
                     this.addFailure(attribute, ruleObject);
-                } else {
-                    const { is_ok, message } = result as { is_ok: boolean; message: string };
+                } else if (typeof result === 'object') {
+                    const { is_ok, message } = result;
                     if (!is_ok) {
                         this.addFailure(attribute, ruleObject, message);
                     }

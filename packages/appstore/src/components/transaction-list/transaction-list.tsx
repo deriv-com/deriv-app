@@ -29,7 +29,7 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
             ? ([
                   {
                       text: localize('Reset balance'),
-                      value: 'reset_balance',
+                      value: 'virtual_credit',
                   },
               ] as const)
             : ([

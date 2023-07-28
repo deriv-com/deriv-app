@@ -8,9 +8,7 @@ import useWalletsList from './useWalletsList';
 import useActiveWallet from './useActiveWallet';
 
 /** A custom hook to get a list of transactions for an active wallet of a user, optionally filtered by transaction type */
-const useWalletTransactions = (
-    action_type?: 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer'
-) => {
+const useWalletTransactions = (action_type?: 'deposit' | 'withdrawal' | 'virtual_credit' | 'transfer') => {
     const {
         client: { loginid },
         ui: { is_dark_mode_on },
@@ -30,8 +28,7 @@ const useWalletTransactions = (
     // Get the paginated and filtered list of transactions from the API.
     const { data, ...rest } = usePaginatedFetch('statement', {
         payload: {
-            // @ts-expect-error reset_balance is not supported in the API yet
-            action_type: action_type || undefined,
+            action_type,
         },
         options: {
             cacheTime: 0,

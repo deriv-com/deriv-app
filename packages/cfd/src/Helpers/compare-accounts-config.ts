@@ -5,7 +5,6 @@ import {
     TModifiedTradingPlatformAvailableAccount,
     TDetailsOfEachMT5Loginid,
 } from '../Components/props.types';
-import { useStore } from '@deriv/stores';
 
 // Map the accounts according to the market type
 const getHighlightedIconLabel = (

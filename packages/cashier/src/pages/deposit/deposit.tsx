@@ -15,7 +15,7 @@ import SideNote from '../../components/side-note';
 import { useCashierStore } from '../../stores/useCashierStores';
 import { CashierOnboardingModule } from '../../modules';
 import { CashierOnboardingSideNotes } from '../../modules/cashier-onboarding/components';
-import { DepositFiatModule } from '../../modules/deposit-fiat';
+import { DepositFiatModule } from '../../modules';
 
 type TDeposit = {
     setSideNotes: (notes: object | null) => void;

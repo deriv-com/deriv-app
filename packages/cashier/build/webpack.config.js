@@ -16,6 +16,7 @@ module.exports = function (env) {
             'payment-agent': 'Pages/payment-agent',
             'payment-agent-transfer': 'Pages/payment-agent-transfer',
             withdrawal: 'Pages/withdrawal',
+            'deposit-fiat-module': 'Modules/deposit-fiat',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

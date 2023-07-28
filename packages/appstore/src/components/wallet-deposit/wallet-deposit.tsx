@@ -2,7 +2,7 @@ import React from 'react';
 import { useCurrencyConfig } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 import { Div100vhContainer } from '@deriv/components';
-import DepositFiatIframe from '@deriv/cashier/src/modules/deposit-fiat/components/deposit-fiat-iframe/deposit-fiat-iframe';
+import { DepositFiatModule } from '@deriv/cashier';
 import './wallet-deposit.scss';
 
 const WalletDeposit = observer(() => {
@@ -19,7 +19,7 @@ const WalletDeposit = observer(() => {
 
     return real_fiat_wallet ? (
         <Div100vhContainer height_offset={is_mobile ? '14rem' : '26.8rem'} className='wallet-deposit__fiat-container'>
-            <DepositFiatIframe />
+            <DepositFiatModule />
         </Div100vhContainer>
     ) : (
         <div> Deposit Development Is In Progress</div>

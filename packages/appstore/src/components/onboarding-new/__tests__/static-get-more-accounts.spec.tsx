@@ -2,6 +2,15 @@ import React from 'react';
 import StaticGetMoreAccounts from '../static-get-more-accounts';
 import { render, screen } from '@testing-library/react';
 
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    Icon: ({ icon, className }: { icon: string; className: string }) => (
+        <div data-testid='dt_icon' className={className}>
+            {icon}
+        </div>
+    ),
+}));
+
 describe('GetMoreAccounts', () => {
     const mock_props = {
         description: 'description',

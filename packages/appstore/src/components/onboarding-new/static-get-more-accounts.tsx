@@ -12,7 +12,7 @@ const StaticGetMoreAccounts = ({ icon, description, title }: IGetMoreAccounts) =
     return (
         <div className='static-get-more-accounts'>
             <div>
-                <Icon data_testid='dt_icon' icon={icon} size={32} className='static-get-more-accounts__icon' />
+                <Icon icon={icon} size={32} className='static-get-more-accounts__icon' />
             </div>
             <div className='static-get-more-accounts__details'>
                 <div className='static-get-more-accounts__details--title'>{title}</div>

@@ -15,6 +15,7 @@ type TAppProps = {
 
 const App = ({ passthrough }: TAppProps) => {
     const { root_store, WS } = passthrough;
+
     setWebsocket(WS);
 
     return (

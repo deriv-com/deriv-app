@@ -1,0 +1,137 @@
+name: 'Download translations from Crowdin'
+
+permissions:
+  actions: write
+  checks: write
+  contents: write
+  deployments: write
+  pull-requests: write
+  statuses: write
+  
+  
+on:
+  repository_dispatch:
+    types:
+      - file-fully-reviewed
+
+jobs:
+  synchronize-with-crowdin:
+    runs-on: ubuntu-latest
+    if: github.repository == 'binary-com/deriv-app'
+    steps:
+      - name: Checkout master branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          ref: master
+
+      - name: Get cached dependencies
+        id: cache_npm
+        uses: actions/cache@v3
+        with:
+          key: translations-build-${{ hashFiles('**/package-lock.json') }}
+          path: |
+              node_modules
+              packages/account/node_modules
+              packages/api/node_modules
+              packages/appstore/node_modules
+              packages/bot-skeleton/node_modules
+              packages/bot-web-ui/node_modules
+              packages/cashier/node_modules
+              packages/components/node_modules
+              packages/core/node_modules
+              packages/hooks/node_modules
+              packages/cfd/node_modules
+              packages/indicators/node_modules
+              packages/p2p/node_modules
+              packages/reports/node_modules
+              packages/shared/node_modules
+              packages/stores/node_modules
+              packages/trader/node_modules
+              packages/translations/node_modules
+              packages/utils/node_modules
+              packages/analytics/node_modules
+
+
+      - name: Install dependencies
+        if: ${{ steps.cache_npm.outputs.cache-hit != 'true' }}
+        run: |
+          npm run bootstrap
+
+      # In this step we're doing a couple things:
+      # - We download the latest translation files from Crowdin, if there are new files, we create a PR.
+      - name: Generate and push to Crowdin
+        run: |
+          branch_name="deriv_app_translations_2"
+
+          echo "Setting up Git identity"
+          git config --global user.name "DerivFE"
+          git config --global user.email "80095553+DerivFE@users.noreply.github.com"
+
+          if [ -z "$(git ls-remote --heads origin refs/heads/$branch_name)" ]; then
+            echo "Found no translations branch, creating the translations branch $branch_name."
+            git checkout -b "$branch_name"
+          else
+            echo "Found translations branch, checking out to the translations branch $branch_name"
+            git fetch origin "$branch_name"
+            git checkout "$branch_name" -f
+          fi
+          
+          echo "Installing Crowdin CLI"
+          sudo npm i -g @crowdin/cli
+
+          # Download latest translations from Deriv-app Crowdin
+          cd $(git rev-parse --show-toplevel)/packages/translations
+          echo "Attempting to download updated translations from Deriv-app Crowdin"
+          crowdin download -T ${{ secrets.CROWDIN_API_KEY }}
+
+          # Download latest translations from P2P Crowdin
+          cd $(git rev-parse --show-toplevel)/packages/p2p
+          echo "Attempting to download updated translations from P2P Crowdin"
+          crowdin download sources -T ${{ secrets.CROWDIN_API_KEY }}
+
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Found no new translation files that need to be merged with master. Not creating a PR."
+          else
+            echo "Found updated translation files that need to be merged with master. Creating a PR."
+
+            # Commit the newly downloaded files
+            cd $(git rev-parse --show-toplevel)
+            git add .
+            git commit -m "translations: 📚 sync translations on crowdin webhook trigger"
+
+            # Force push to this branch in case a previous run created it.
+            echo "Updating $branch_name branch with the updated translations..."
+            git push --set-upstream origin "$branch_name" -f
+
+            sudo apt install gh
+            gh auth login --with-token <<< ${{ github.token }}
+            
+            # Check if the translations branch has already created the pull request
+            if ! gh pr list --head "$branch_name" --state open | grep -q "$branch_name"; then
+              echo "Translations pull request has not been created yet, creating one..."
+
+              pr_title="translations: 📚 sync translations on crowdin webhook trigger"
+              pr_body="Synchronized approved translation files based on the Crowdin webhook trigger."
+              gh pr create --title $pr_title --body $pr_body --base "master" --head "deriv-com:$branch_name"
+            fi
+            
+            if [ -n "${{ secrets.SLACK_TRANSLATIONS_TEAM_WEBHOOK }}" ]; then
+                echo "Sending message to Slack (#project_deriv_translations)"
+          
+                project="${{ github.event.client_payload.project.name }}"
+                pull_request_id=$(gh pr list --head "$branch_name" --state open | grep "$branch_name" | awk '{print $1}' | sed 's/#//')
+                pull_request="https://github.com/$GITHUB_REPOSITORY/pull/$pull_request_id"
+                updated_language="${{ github.event.client_payload.targetLanguage.name }}"
+
+                content="Paimon noticed that there was an update in Crowdin for a language, here are the details of the changes:\n"
+                content+=":file_folder: *Project*: $project\n"
+                content+=":flag-${{ github.event.client_payload.targetLanguage.id }}: *Updated language*: $updated_language\n"
+                content+=":paperclip: *Pull Request*: $pull_request\n"
+                content+="_Paimon will soon post the generated test link for the pull request if its successful, hold on tight!_"
+                curl -X POST -H 'Content-type: application/json' --data "{\"text\": \"$content\" }" ${{ secrets.SLACK_TRANSLATIONS_TEAM_WEBHOOK }}
+            fi
+          fi
+
+
+      

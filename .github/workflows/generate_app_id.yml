@@ -61,6 +61,20 @@ jobs:
                         ```
                       </details>
 
+            - name: Retrieve pull request head branch
+              uses: xt0rted/pull-request-comment-branch@v2
+              id: comment-branch
+
+            - name: Notify translations team
+              if: ${{ success() && github.ref_name == 'deriv_app_translations_2' }}
+              run: |
+                content="Paimon has retrieved the generated test link for the updated translations:\n"
+                content+=":paperclip: *Pull Request*: ${{ steps.generate_app_id.outputs.pr_url }}\n"
+                content+=":link: *Test Link*: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}\n"
+                content+=":id: *App ID*: ${{ steps.generate_app_id.outputs.app_id }}"
+
+                curl -X POST -H 'Content-type: application/json' --data "{\"text\": \"$content\" }" ${{ secrets.SLACK_TRANSLATIONS_TEAM_WEBHOOK }}
+
             - name: Store generated URL in artifact
               run: echo "HOME_URL=${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=red.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}" >> ${{ github.workspace }}/url.txt
             - name: Upload artifact

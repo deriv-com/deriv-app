@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { compressImageFiles, isMobile, isDesktop, readFiles } from '@deriv/shared';
+import { compressImageFiles, isMobile, isDesktop, readFiles, TSettings } from '@deriv/shared';
 import FileUploader from '../file-uploader';
 
 jest.mock('@deriv/shared', () => ({
@@ -24,10 +24,12 @@ describe('<FileUploader />', () => {
         onFileDrop: (file: File | undefined) => void;
         getSocket: () => WebSocket;
         ref: React.RefObject<HTMLElement>;
+        settings: TSettings;
     } = {
         onFileDrop: jest.fn(),
         getSocket: jest.fn(),
         ref: React.createRef<HTMLElement>(),
+        settings: {},
     };
 
     const large_file_error_msg = /file size should be 8mb or less/i;

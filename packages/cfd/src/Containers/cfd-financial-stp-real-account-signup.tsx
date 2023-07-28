@@ -1,5 +1,6 @@
 import React from 'react';
 import { Div100vhContainer } from '@deriv/components';
+import { useIsAccountStatusPresent } from '@deriv/hooks';
 import { isDesktop, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
 import CFDPOA from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
@@ -85,7 +86,9 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
     const state_index = step;
     let is_mounted = React.useRef(true).current;
 
-    const { need_poi_for_vanuatu_maltainvest, need_poi_for_bvi_labuan } = getAuthenticationStatusInfo(account_status);
+    const { need_poi_for_maltainvest, need_poi_for_bvi_labuan_vanuatu } = getAuthenticationStatusInfo(account_status);
+
+    const is_authenticated_with_idv_photoid = useIsAccountStatusPresent('authenticated_with_idv_photoid');
 
     const poi_config: TItemsState<typeof passthroughProps> = {
         body: CFDPOI,
@@ -112,7 +115,13 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
             address_postcode: account_settings.address_postcode,
             upload_file: '',
         },
-        forwarded_props: ['states_list', 'account_settings', 'storeProofOfAddress', 'refreshNotifications'],
+        forwarded_props: [
+            'states_list',
+            'account_settings',
+            'storeProofOfAddress',
+            'refreshNotifications',
+            'jurisdiction_selected_shortcode',
+        ],
     };
 
     const personal_details_config: TItemsState<typeof passthroughProps> = {
@@ -128,19 +137,25 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
     };
 
     const should_show_poi = () => {
-        if ([Jurisdiction.VANUATU, Jurisdiction.MALTA_INVEST].includes(jurisdiction_selected_shortcode)) {
-            return need_poi_for_vanuatu_maltainvest;
+        if (jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST) {
+            return need_poi_for_maltainvest;
         }
-        return need_poi_for_bvi_labuan;
+        return need_poi_for_bvi_labuan_vanuatu;
     };
-    const should_show_poa = !['pending', 'verified'].includes(authentication_status.document_status);
+
+    const shouldShowPOA = () => {
+        if (Jurisdiction.LABUAN === jurisdiction_selected_shortcode && is_authenticated_with_idv_photoid) {
+            return true;
+        }
+        return !['pending', 'verified'].includes(authentication_status.document_status);
+    };
 
     const should_show_personal_details =
         !has_submitted_cfd_personal_details && jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST;
 
     const verification_configs = [
         ...(should_show_poi() ? [poi_config] : []),
-        ...(should_show_poa ? [poa_config] : []),
+        ...(shouldShowPOA() ? [poa_config] : []),
         ...(should_show_personal_details ? [personal_details_config] : []),
     ];
 
@@ -193,13 +208,20 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
 
     const form_value = getCurrent('form_value');
 
-    const passthrough = (
-        (getCurrent('forwarded_props') || []) as TItemsState<typeof passthroughProps>['forwarded_props']
-    ).reduce((forwarded_prop, item) => {
-        return Object.assign(forwarded_prop, {
-            [item]: passthroughProps[item],
-        });
-    }, {});
+    const passthrough: Partial<TCFDFinancialStpRealAccountSignupProps> & {
+        is_authenticated_with_idv_photoid?: boolean;
+    } = ((getCurrent('forwarded_props') || []) as TItemsState<typeof passthroughProps>['forwarded_props']).reduce(
+        (forwarded_prop, item) => {
+            return Object.assign(forwarded_prop, {
+                [item]: passthroughProps[item],
+            });
+        },
+        {}
+    );
+
+    if (shouldShowPOA()) {
+        passthrough.is_authenticated_with_idv_photoid = is_authenticated_with_idv_photoid;
+    }
 
     return (
         <Div100vhContainer

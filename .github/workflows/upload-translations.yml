@@ -1,14 +1,7 @@
 name: 'Upload translations to Crowdin'
 
-permissions:
-  actions: write
-  checks: write
-  contents: write
-  deployments: write
-  pull-requests: write
-  statuses: write
-  
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -63,19 +56,12 @@ jobs:
       # - We generate a new messages.json
       # - We hash the newly generated messages.json and compare it with the messages.json on Crowdin.
       # - We download the latest translation files from Crowdin, if there are new files, we create a PR.
-      - name: Generate and push to Crowdin
+      - name: Generate and upload to Crowdin
         run: |
           branch_name="deriv_app_translations_2"
 
-          echo "Setting up Git identity"
-          git config --global user.name "DerivFE"
-          git config --global user.email "80095553+DerivFE@users.noreply.github.com"
-
           echo "Installing Crowdin CLI"
           sudo npm i -g @crowdin/cli
-
-          # echo "Checking out new branch [$branch_name]"
-          # git checkout -b "$branch_name"
 
           echo "Running the translation script (extract-translations.js)"
           cd $(git rev-parse --show-toplevel)/packages/translations/scripts

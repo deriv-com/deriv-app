@@ -1,14 +1,11 @@
 name: 'Download translations from Crowdin'
 
 permissions:
-  actions: write
-  checks: write
   contents: write
-  deployments: write
   pull-requests: write
-  statuses: write
   
 on:
+  workflow_dispatch:
   repository_dispatch:
     types:
       - file-fully-reviewed
@@ -63,7 +60,7 @@ jobs:
 
       # In this step we're doing a couple things:
       # - We download the latest translation files from Crowdin, if there are new files, we create a PR.
-      - name: Generate and push to Crowdin
+      - name: Download from Crowdin
         run: |
           branch_name="deriv_app_translations_2"
 
@@ -116,7 +113,7 @@ jobs:
 
               pr_title="translations: 📚 sync translations on crowdin webhook trigger"
               pr_body="Synchronized approved translation files based on the Crowdin webhook trigger."
-              gh pr create --title $pr_title --body $pr_body --base "master" --head "deriv-com:$branch_name"
+              gh pr create --title "$pr_title" --body "$pr_body" --base "master" --head "binary-com:$branch_name"
             fi
             
             if [ -n "${{ secrets.SLACK_TRANSLATIONS_TEAM_WEBHOOK }}" ]; then

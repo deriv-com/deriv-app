@@ -59,9 +59,12 @@ class GoogleDriveUtil {
             .then(() => {
                 store.dispatch(setGdReady(true));
             })
-            .catch(err => {
-                errLogger(err, translate('There was an error loading Google Drive API script.'));
-            });
+            .catch(err =>
+                errLogger(
+                    JSON.stringify(err, ['message', 'arguments', 'type', 'name']),
+                    translate('There was an error loading Google Drive API script.')
+                )
+            );
     }
 
     initUrlIdentity = () => {

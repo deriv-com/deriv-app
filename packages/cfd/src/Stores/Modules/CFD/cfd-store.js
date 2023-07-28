@@ -289,7 +289,6 @@ export default class CFDStore extends BaseStore {
 
     async createCFDAccount({ category, platform, type, set_password }) {
         this.clearCFDError();
-        this.setIsAccountBeingCreated(true);
         this.setAccountType({
             category,
             type,
@@ -301,7 +300,10 @@ export default class CFDStore extends BaseStore {
                 this.demoCFDSignup();
             }
         } else if (platform === CFD_PLATFORMS.CTRADER) {
-            if (this.account_type.category === 'demo') this.setJurisdictionSelectedShortcode('svg');
+            if (this.account_type.category === 'demo') {
+                this.setJurisdictionSelectedShortcode('svg');
+                this.setIsAccountBeingCreated(true);
+            }
             const account_creation_values = {
                 platform,
                 account_type: this.account_type.category,
@@ -318,8 +320,10 @@ export default class CFDStore extends BaseStore {
                 );
                 this.root_store.client.responseTradingPlatformAccountsList(trading_platform_accounts_list_response);
                 WS.transferBetweenAccounts();
+                this.setIsAccountBeingCreated(false);
             } else {
                 this.setError(true, response.error);
+                this.setIsAccountBeingCreated(false);
             }
         } else if (platform === CFD_PLATFORMS.MT5) {
             if (category === 'real') {
@@ -331,6 +335,7 @@ export default class CFDStore extends BaseStore {
                 this.demoCFDSignup();
             }
         } else if (platform === CFD_PLATFORMS.DERIVEZ) {
+            this.setIsAccountBeingCreated(true);
             this.setJurisdictionSelectedShortcode('svg');
             const values = {
                 platform,

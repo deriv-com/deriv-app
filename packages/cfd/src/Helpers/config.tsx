@@ -103,17 +103,17 @@ export const PlatformsDesktopDownload = ({
     return (
         <React.Fragment>
             <a
-                className='cfd-trade-modal__dxtrade-button'
+                className='cfd-trade-modal__platform-button'
                 href={PlatformsDesktopDownloadLinks()}
                 target='_blank'
                 rel='noopener noreferrer'
             >
                 <Icon
-                    className='cfd-trade-modal__dxtrade-button-icon'
+                    className='cfd-trade-modal__platform-button-icon'
                     icon={`IcBrand${platformsIcons(platform)}Wordmark`}
                     size={36}
                 />
-                <div className='cfd-trade-modal__dxtrade-button-text'>
+                <div className='cfd-trade-modal__platform-button-text'>
                     <Text color='colored-background' size='xxs' weight='bold'>
                         <Localize i18n_default_text='Web terminal' />
                     </Text>

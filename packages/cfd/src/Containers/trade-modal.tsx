@@ -220,11 +220,33 @@ const TradeModal = ({
                             {platform === CFD_PLATFORMS.DERIVEZ && (
                                 <Localize i18n_default_text='Server maintenance starts at 01:00 GMT every Sunday and may last up to 2 hours. You may experience service disruption during this time.' />
                             )}
+                            {platform === CFD_PLATFORMS.CTRADER && (
+                                <Localize i18n_default_text='Server maintenance occurs every first Saturday of the month from 7 to 10 GMT time. You may experience service disruption during this time.' />
+                            )}
                         </Text>
                     </div>
                 </div>
             </div>
             <div className='cfd-trade-modal__download-center-app'>{downloadCenterAppOption(platform)}</div>
+            {platform === CFD_PLATFORMS.CTRADER && (
+                <div className='cfd-trade-modal__download-center-app--windows'>
+                    <Icon icon='IcWindowsLogo' size={32} />
+                    <Text className='cfd-trade-modal__download-center-app--windows-item' size='xs'>
+                        {localize('MetaTrader 5 Windows app')}
+                    </Text>
+                    <a
+                        className='dc-btn cfd-trade-modal__download-center-app--windows-link'
+                        type='button'
+                        href={'www.google.com'}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                    >
+                        <Text size='xxs' weight='bold' color='prominent'>
+                            {localize('Download')}
+                        </Text>
+                    </a>
+                </div>
+            )}
             <div className='cfd-trade-modal__download-center-description'>{downloadCenterDescription()}</div>
             <div className='cfd-trade-modal__download-center-options'>
                 <div className='cfd-trade-modal__download-center-options--mobile-links'>

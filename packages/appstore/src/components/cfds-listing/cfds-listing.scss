@@ -386,7 +386,8 @@
         }
     }
 
-    &__dxtrade-button {
+    &__dxtrade-button,
+    &__platform-button {
         display: flex;
         background: var(--brand-dark-grey);
         align-items: center;
@@ -404,9 +405,6 @@
                 padding-right: 0.5rem;
                 white-space: nowrap;
             }
-        }
-        &-icon {
-            margin-left: 0.6rem;
         }
     }
     &__specs {
@@ -478,6 +476,30 @@
                 &:last-child {
                     border-bottom: 1px solid var(--border-disabled);
                 }
+                &-item {
+                    flex-grow: 1;
+                }
+                &-link {
+                    align-items: center;
+                    display: flex;
+                    justify-content: center;
+                    text-decoration: none;
+                    @include typeface(--paragraph-center-bold-black, none);
+                    background-color: transparent;
+                    border: 1px solid var(--border-normal-2);
+                    color: var(--text-less-prominent);
+
+                    &:hover {
+                        background-color: var(--button-secondary-hover);
+                    }
+                }
+            }
+            &--windows {
+                display: flex;
+                gap: 1.6rem;
+                align-items: center;
+                padding: 1.6rem 2.4rem;
+                border-bottom: 1px solid var(--border-disabled);
                 &-item {
                     flex-grow: 1;
                 }

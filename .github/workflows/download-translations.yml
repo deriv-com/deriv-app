@@ -15,6 +15,7 @@ on:
 
 concurrency:
   group: download-translations-crowdin
+  cancel-in-progress: true
 
 jobs:
   synchronize-with-crowdin:

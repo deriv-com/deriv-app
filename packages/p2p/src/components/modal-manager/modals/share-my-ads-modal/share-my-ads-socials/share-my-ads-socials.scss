@@ -1,0 +1,49 @@
+.share-my-ads-icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 2.5rem 0;
+
+    @include mobile {
+        margin: 2rem;
+    }
+
+    .react-share__ShareButton {
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &-link {
+            margin-bottom: 0.4rem;
+        }
+    }
+
+    &__circle {
+        align-items: center;
+        background: var(--icon-grey-background);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+
+        @include mobile {
+            width: fit-content;
+        }
+
+        &-icon {
+            margin: 0.5rem;
+
+            &--small {
+                margin: 0.8rem;
+            }
+        }
+    }
+}

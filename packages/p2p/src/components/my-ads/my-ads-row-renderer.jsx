@@ -8,12 +8,14 @@ import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import AdStatus from 'Components/my-ads/ad-status.jsx';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
 import { generateEffectiveRate } from 'Utils/format-value';
 import AdType from './ad-type.jsx';
 
 const MyAdsRowRenderer = observer(({ row: advert }) => {
     const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
+    const { showModal } = useModalManagerContext();
 
     const {
         account_currency,
@@ -69,6 +71,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
     };
     const onClickDelete = () => !general_store.is_barred && my_ads_store.onClickDelete(id);
     const onClickEdit = () => !general_store.is_barred && my_ads_store.onClickEdit(id, rate_type);
+    const onClickShare = () => showModal({ key: 'ShareMyAdsModal', props: { advert } });
     const onClickSwitchAd = () => {
         if (!general_store.is_barred) {
             general_store.showModal({ key: 'MyAdsFloatingRateSwitchModal', props: {} });
@@ -107,12 +110,14 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                         >
                             <Icon
                                 icon={`${is_advert_active && !general_store.is_barred ? 'IcArchive' : 'IcUnarchive'}`}
-                                custom_color={'var(--general-main-1)'}
+                                custom_color='var(--general-main-1)'
                             />
                         </div>
-
                         <div className='p2p-my-ads__table-popovers__delete'>
                             <Icon icon='IcDelete' custom_color='var(--general-main-1)' onClick={onClickDelete} />
+                        </div>
+                        <div className='p2p-my-ads__table-popovers__share'>
+                            <Icon icon='IcShare' custom_color='var(--general-main-1)' onClick={onClickShare} />
                         </div>
                     </React.Fragment>
                 }
@@ -348,6 +353,18 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                                         'disabled'
                                     }
                                 />
+                            </Popover>
+                        </div>
+                        <div onClick={onClickShare}>
+                            <Popover
+                                alignment='bottom'
+                                className={classNames('p2p-my-ads__table-popovers__share', {
+                                    'p2p-my-ads__table-popovers--disable':
+                                        general_store.is_barred || is_activate_ad_disabled,
+                                })}
+                                message={localize('Share')}
+                            >
+                                <Icon icon='IcShare' color={general_store.is_barred && 'disabled'} />
                             </Popover>
                         </div>
                     </div>

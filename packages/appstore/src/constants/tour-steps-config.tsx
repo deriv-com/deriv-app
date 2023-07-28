@@ -116,13 +116,7 @@ export const getWalletStepConfig = (has_mt5_account: boolean, is_all_wallets_add
         placement: 'bottom',
         hideBackButton: true,
         spotlightPadding: 0,
-        styles: {
-            spotlight: {
-                width: 1152,
-                height: 80,
-                borderRadius: '1.6rem 1.6rem 0rem 0rem',
-            },
-        },
+        styles: { spotlight: { borderRadius: '1.6rem 1.6rem 0rem 0rem' } },
     },
     {
         title: (
@@ -142,13 +136,7 @@ export const getWalletStepConfig = (has_mt5_account: boolean, is_all_wallets_add
         target: '.wallet-header__balance-arrow-icon',
         disableBeacon: true,
         placement: 'left',
-        styles: {
-            spotlight: {
-                width: 32,
-                height: 32,
-                borderRadius: '50%',
-            },
-        },
+        styles: { spotlight: { borderRadius: '50%' } },
     },
     {
         title: (
@@ -200,9 +188,9 @@ export const getWalletStepConfig = (has_mt5_account: boolean, is_all_wallets_add
         target: '#trading-app-card__derived',
         disableBeacon: true,
         disableOverlayClose: true,
-        spotlightPadding: 3,
+        spotlightPadding: 5,
         placement: 'right',
-        styles: { spotlight: { borderRadius: '0.6rem', height: 100, width: 88 } },
+        styles: { spotlight: { borderRadius: '0.6rem', height: 88, width: 396 } },
     },
     {
         title: (
@@ -225,7 +213,7 @@ export const getWalletStepConfig = (has_mt5_account: boolean, is_all_wallets_add
         disableOverlayClose: true,
         placement: 'left',
         spotlightPadding: 0,
-        styles: { spotlight: { borderRadius: '0.6rem', height: 242, width: 40 } },
+        styles: { spotlight: { borderRadius: '0.6rem' } },
     },
     {
         title: (
@@ -244,9 +232,9 @@ export const getWalletStepConfig = (has_mt5_account: boolean, is_all_wallets_add
         target: '#trading-app-card__dtrader',
         disableBeacon: true,
         disableOverlayClose: true,
-        spotlightPadding: 3,
+        spotlightPadding: 5,
         placement: 'right',
-        styles: { spotlight: { borderRadius: '0.6rem', height: 100, width: 88 } },
+        styles: { spotlight: { borderRadius: '0.6rem' } },
     },
     {
         title: (
@@ -267,7 +255,7 @@ export const getWalletStepConfig = (has_mt5_account: boolean, is_all_wallets_add
         disableOverlayClose: true,
         spotlightPadding: 0,
         placement: 'right',
-        styles: { spotlight: { borderRadius: '1.7rem', height: 232, width: 288 } },
+        styles: { spotlight: { borderRadius: '1.7rem' } },
     },
     {
         title: (

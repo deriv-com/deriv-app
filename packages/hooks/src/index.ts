@@ -52,3 +52,4 @@ export { default as useWalletTransactions } from './useWalletTransactions';
 export { default as useExistingCFDAccounts } from './useExistingCFDAccounts';
 export { default as useAvailableMT5Accounts } from './useAvailableMT5Accounts';
 export { default as useFilteredCFDAccounts } from './useFilteredCFDAccounts';
+export { useIsAccountStatusPresent } from './useIsAccountStatusPresent';

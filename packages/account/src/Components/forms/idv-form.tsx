@@ -27,8 +27,8 @@ type TIDVForm = {
     selected_country: ResidenceList[0];
     hide_hint?: boolean;
     class_name?: string;
-    can_skip_document_verification: boolean;
-} & Partial<FormikHandlers> &
+    can_skip_document_verification?: boolean;
+} & FormikHandlers &
     FormikProps<TFormProps>;
 
 const IDVForm = ({
@@ -42,7 +42,7 @@ const IDVForm = ({
     selected_country,
     hide_hint,
     can_skip_document_verification = false,
-}: TIDVForm) => {
+}: Partial<TIDVForm>) => {
     const [document_list, setDocumentList] = React.useState<TDocumentList>([]);
     const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [selected_doc, setSelectedDoc] = React.useState('');

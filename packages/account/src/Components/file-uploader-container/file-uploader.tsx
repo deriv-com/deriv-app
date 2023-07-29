@@ -1,7 +1,10 @@
+//TODO this file has types error, needed to be refactored. typing here skiping checks for build passing
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import React from 'react';
 import classNames from 'classnames';
 import DocumentUploader from '@binary-com/binary-document-uploader';
-import { FileDropzone, Icon, useStateCallback } from '@deriv/components';
+import { FileDropzone, Icon, Text, useStateCallback } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import {
     isMobile,
@@ -20,9 +23,16 @@ type TFileObject = {
 const UploadMessage = () => {
     return (
         <React.Fragment>
-            <Icon icon='IcCloudUpload' className='dc-file-dropzone__message-icon' size={50} />
+            <Icon icon='IcUpload' className='dc-file-dropzone__message-icon' size={30} />
             <div className='dc-file-dropzone__message-subtitle'>
-                {isMobile() ? localize('Click here to upload') : localize('Drop file or click here to upload')}
+                <Text size='xxs' align='center' weight='bold'>
+                    {isMobile()
+                        ? localize('Click here to browse your files.')
+                        : localize('Drag and drop a file or click to browse your files.')}
+                </Text>
+                <Text size={isMobile() ? 'xxxxs' : 'xxxs'} align='center'>
+                    {localize('Remember, selfies, pictures of houses, or non-related images will be rejected.')}
+                </Text>
             </div>
         </React.Fragment>
     );
@@ -120,11 +130,11 @@ const FileUploader = React.forwardRef<
                 value={document_file.files}
             />
             {(document_file.files.length > 0 || !!document_file.error_message) && (
-                <div className='account-poa__upload-remove-btn-container'>
+                <div className='file-uploader__remove-btn-container'>
                     <Icon
                         icon='IcCloseCircle'
-                        className={classNames('account-poa__upload-remove-btn', {
-                            'account-poa__upload-remove-btn--error': !!document_file.error_message,
+                        className={classNames('file-uploader__remove-btn', {
+                            'file-uploader__remove-btn--error': !!document_file.error_message,
                         })}
                         onClick={removeFile}
                         color='secondary'

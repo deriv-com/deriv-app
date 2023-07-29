@@ -12,7 +12,7 @@ type TAutocompleteProps = {
     className: string;
     disabled?: boolean;
     dropdown_offset: string;
-    error: string;
+    error?: string;
     has_updating_list?: boolean;
     hide_list?: boolean;
     historyValue: string;

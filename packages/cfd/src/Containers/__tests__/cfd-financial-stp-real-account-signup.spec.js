@@ -9,7 +9,7 @@ jest.mock('@deriv/account', () => ({
     FormSubHeader: () => <div>FormSubHeader</div>,
 }));
 
-jest.mock('../../Components/cfd-poa', () => jest.fn(() => <div> CFDPOA</div>));
+jest.mock('@deriv/account/src/Sections/Verification/ProofOfAddress', () => jest.fn(() => <div> ProofOfAddress</div>));
 jest.mock('../../Components/cfd-poi', () =>
     jest.fn(({ onSubmit }) => (
         <div data-testid='poa-form' onClick={() => onSubmit(0, {})}>
@@ -49,7 +49,7 @@ const steps = [
         body: 'CFDPOI',
     },
     {
-        body: 'CFDPOA',
+        body: 'ProofOfAddress',
     },
 ];
 
@@ -163,11 +163,6 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
             states_list: {
                 text: 'Central Singapore',
                 value: '01',
-            },
-        },
-        modules: {
-            cfd: {
-                storeProofOfAddress: jest.fn(),
             },
         },
     };

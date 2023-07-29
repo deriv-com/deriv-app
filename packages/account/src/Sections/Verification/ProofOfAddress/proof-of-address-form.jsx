@@ -1,19 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {
-    Autocomplete,
-    Loading,
-    Button,
-    Input,
-    DesktopWrapper,
-    MobileWrapper,
-    SelectNative,
-    FormSubmitErrorMessage,
-    Text,
-    useStateCallback,
-} from '@deriv/components';
-import { Formik, Field } from 'formik';
-import { localize, Localize } from '@deriv/translations';
+import { Loading, Button, FormSubmitErrorMessage, Text, useStateCallback } from '@deriv/components';
+import { Formik } from 'formik';
+import { localize } from '@deriv/translations';
 import {
     isMobile,
     removeEmptyPropertiesFromObject,
@@ -24,14 +12,16 @@ import {
     getLocation,
     WS,
 } from '@deriv/shared';
-import FormFooter from 'Components/form-footer';
-import FormBody from 'Components/form-body';
-import FormBodySection from 'Components/form-body-section';
-import FormSubHeader from 'Components/form-sub-header';
-import LoadErrorMessage from 'Components/load-error-message';
-import LeaveConfirm from 'Components/leave-confirm';
-import FileUploaderContainer from 'Components/file-uploader-container';
 import { observer, useStore } from '@deriv/stores';
+import FormFooter from '../../../Components/form-footer';
+import FormBody from '../../../Components/form-body';
+import FormBodySection from '../../../Components/form-body-section';
+import FormSubHeader from '../../../Components/form-sub-header';
+import LoadErrorMessage from '../../../Components/load-error-message';
+import LeaveConfirm from '../../../Components/leave-confirm';
+import FileUploaderContainer from '../../../Components/file-uploader-container';
+import CommonMistakeExamples from '../../../Components/poa/common-mistakes/common-mistake-examples';
+import PersonalDetailsForm from '../../../Components/forms/personal-details-form.jsx';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
@@ -40,22 +30,40 @@ const validate = (errors, values) => (fn, arr, err_msg) => {
     });
 };
 
-let file_uploader_ref = null;
-
-const UploaderSideNote = () => (
-    <div className='account-poa__upload-box account-poa__upload-box-dashboard'>
-        <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'} line_height='s'>
-            <Localize i18n_default_text='A recent utility bill (e.g. electricity, water or gas)' />
+const FilesDescription = () => (
+    <div className='files-description'>
+        <Text size={isMobile() ? 'xxs' : 'xs'} as='div' className='files-description__title' weight='bold'>
+            {localize(
+                'We accept only these types of documents as proof of your address. The document must be recent (issued within last 6 months) and include your name and address:'
+            )}
         </Text>
-        <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'} line_height='s'>
-            <Localize i18n_default_text='A recent bank statement or government-issued letter with your name and address.' />
-        </Text>
+        <ul>
+            <li>
+                <Text size={isMobile() ? 'xxs' : 'xs'}>
+                    {localize('Utility bill: electricity, water, gas, or landline phone bill.')}
+                </Text>
+            </li>
+            <li>
+                <Text size={isMobile() ? 'xxs' : 'xs'}>
+                    {localize(
+                        'Financial, legal, or government document: recent bank statement, affidavit, or government-issued letter.'
+                    )}
+                </Text>
+            </li>
+            <li>
+                <Text size={isMobile() ? 'xxs' : 'xs'}>
+                    {localize('Home rental agreement: valid and current agreement.')}
+                </Text>
+            </li>
+        </ul>
     </div>
 );
 
+let file_uploader_ref = null;
+
 const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
     const { client, notifications } = useStore();
-    const { account_settings, fetchResidenceList, fetchStatesList, is_eu, states_list } = client;
+    const { account_settings, fetchResidenceList, fetchStatesList, getChangeableFields, is_eu, states_list } = client;
     const {
         addNotificationMessageByKey: addNotificationByKey,
         removeNotificationMessage,
@@ -81,6 +89,8 @@ const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
             });
         });
     }, [account_settings, fetchResidenceList, fetchStatesList, is_eu, setFormValues]);
+
+    const changeable_fields = [...getChangeableFields()];
 
     const validateFields = values => {
         Object.entries(values).forEach(([key, value]) => (values[key] = value.trim()));
@@ -109,7 +119,6 @@ const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
             errors.address_city = validation_letter_symbol_message;
         }
 
-        // only add state/province validation for countries that don't have states list fetched from API
         if (values.address_state && !validLetterSymbol(values.address_state) && states_list?.length < 1) {
             errors.address_state = validation_letter_symbol_message;
         }
@@ -133,7 +142,6 @@ const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
         setFormState({ ...form_state, ...{ should_show_form: bool } });
     };
 
-    // Settings update is handled here
     const onSubmitValues = (values, { setStatus, setSubmitting }) => {
         setStatus({ msg: '' });
         setFormState({ ...form_state, ...{ is_btn_loading: true } });
@@ -203,7 +211,6 @@ const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
                                                 const { identity, needs_verification } =
                                                     get_account_status.authentication;
                                                 const has_poi = !(identity && identity.status === 'none');
-                                                // TODO: clean all of this up by simplifying the manually toggled notifications functions
                                                 const needs_poi =
                                                     needs_verification.length &&
                                                     needs_verification.includes('identity');
@@ -271,6 +278,7 @@ const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
                 handleSubmit,
                 isSubmitting,
                 setFieldValue,
+                setFieldTouched,
             }) => (
                 <>
                     <LeaveConfirm onDirty={isMobile() ? showForm : null} />
@@ -284,142 +292,29 @@ const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
                                         )}
                                     </Text>
                                 )}
-                                <FormSubHeader
-                                    title={localize('1. Address')}
-                                    subtitle={localize('(All fields are required)')}
+                                <FormSubHeader title={localize('Address')} title_text_size='s' />
+                                <PersonalDetailsForm
+                                    is_qualified_for_poa
+                                    errors={errors}
+                                    touched={touched}
+                                    values={values}
+                                    handleChange={handleChange}
+                                    handleBlur={handleBlur}
+                                    setFieldValue={setFieldValue}
+                                    setFieldTouched={setFieldTouched}
+                                    editable_fields={changeable_fields}
+                                    states_list={states_list}
                                 />
-                                <FormBodySection
-                                    has_side_note
-                                    side_note={localize(
-                                        'An accurate and complete address helps to speed up your verification process.'
-                                    )}
-                                >
-                                    <div className='account-poa__details-section'>
-                                        <div className='account-poa__details-fields'>
-                                            <fieldset className='account-form__fieldset'>
-                                                <Input
-                                                    data-lpignore='true'
-                                                    autoComplete='off' // prevent chrome autocomplete
-                                                    type='text'
-                                                    maxLength={70}
-                                                    name='address_line_1'
-                                                    label={localize('First line of address')}
-                                                    value={values.address_line_1}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    error={touched.address_line_1 && errors.address_line_1}
-                                                    required
-                                                />
-                                            </fieldset>
-                                            <fieldset className='account-form__fieldset'>
-                                                <Input
-                                                    data-lpignore='true'
-                                                    autoComplete='off' // prevent chrome autocomplete
-                                                    type='text'
-                                                    maxLength={70}
-                                                    name='address_line_2'
-                                                    label={localize('Second line of address (optional)')}
-                                                    value={values.address_line_2}
-                                                    error={touched.address_line_2 && errors.address_line_2}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                />
-                                            </fieldset>
-                                            <fieldset className='account-form__fieldset'>
-                                                <Input
-                                                    data-lpignore='true'
-                                                    autoComplete='off' // prevent chrome autocomplete
-                                                    type='text'
-                                                    name='address_city'
-                                                    label={localize('Town/City')}
-                                                    value={values.address_city}
-                                                    error={touched.address_city && errors.address_city}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    required
-                                                />
-                                            </fieldset>
-                                            <fieldset className='account-form__fieldset'>
-                                                {states_list.length ? (
-                                                    <React.Fragment>
-                                                        <DesktopWrapper>
-                                                            <Field name='address_state'>
-                                                                {({ field }) => (
-                                                                    <Autocomplete
-                                                                        {...field}
-                                                                        data-lpignore='true'
-                                                                        autoComplete='new-password' // prevent chrome autocomplete
-                                                                        type='text'
-                                                                        label={localize('State/Province')}
-                                                                        error={
-                                                                            touched.address_state &&
-                                                                            errors.address_state
-                                                                        }
-                                                                        list_items={states_list}
-                                                                        onItemSelection={({ value, text }) =>
-                                                                            setFieldValue(
-                                                                                'address_state',
-                                                                                value ? text : '',
-                                                                                true
-                                                                            )
-                                                                        }
-                                                                    />
-                                                                )}
-                                                            </Field>
-                                                        </DesktopWrapper>
-                                                        <MobileWrapper>
-                                                            <SelectNative
-                                                                placeholder={localize('Please select')}
-                                                                label={localize('State/Province')}
-                                                                value={values.address_state}
-                                                                list_items={states_list}
-                                                                error={touched.address_state && errors.address_state}
-                                                                use_text={true}
-                                                                onChange={e =>
-                                                                    setFieldValue('address_state', e.target.value, true)
-                                                                }
-                                                            />
-                                                        </MobileWrapper>
-                                                    </React.Fragment>
-                                                ) : (
-                                                    <Input
-                                                        data-lpignore='true'
-                                                        autoComplete='off' // prevent chrome autocomplete
-                                                        type='text'
-                                                        name='address_state'
-                                                        label={localize('State/Province')}
-                                                        value={values.address_state}
-                                                        error={touched.address_state && errors.address_state}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                    />
-                                                )}
-                                            </fieldset>
-                                            <fieldset className='account-form__fieldset'>
-                                                <Input
-                                                    data-lpignore='true'
-                                                    autoComplete='off' // prevent chrome autocomplete
-                                                    type='text'
-                                                    name='address_postcode'
-                                                    label={localize('Postal/ZIP code')}
-                                                    value={values.address_postcode}
-                                                    error={touched.address_postcode && errors.address_postcode}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                />
-                                            </fieldset>
-                                        </div>
-                                    </div>
-                                </FormBodySection>
-
-                                <FormSubHeader title={localize('2. Please upload one of the following:')} />
-                                <FormBodySection has_side_note side_note={<UploaderSideNote />}>
+                                <FormSubHeader title={localize('Document submission')} title_text_size='s' />
+                                <FormBodySection>
                                     <FileUploaderContainer
                                         onRef={ref => (file_uploader_ref = ref)}
-                                        onFileDrop={df =>
-                                            setDocumentFile({ files: df.files, error_message: df.error_message })
-                                        }
+                                        onFileDrop={df => {
+                                            setDocumentFile({ files: df.files, error_message: df.error_message });
+                                        }}
                                         getSocket={WS.getSocket}
+                                        files_description={<FilesDescription />}
+                                        examples={<CommonMistakeExamples />}
                                     />
                                 </FormBodySection>
                             </FormBody>
@@ -455,10 +350,5 @@ const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
         </Formik>
     );
 });
-
-ProofOfAddressForm.propTypes = {
-    is_resubmit: PropTypes.bool,
-    onSubmit: PropTypes.func,
-};
 
 export default ProofOfAddressForm;

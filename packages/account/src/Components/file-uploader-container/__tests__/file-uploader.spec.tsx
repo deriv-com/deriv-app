@@ -15,25 +15,21 @@ jest.mock('@binary-com/binary-document-uploader');
 
 describe('<FileUploader />', () => {
     beforeEach(() => {
-        isDesktop.mockReturnValue(true);
-        isMobile.mockReturnValue(false);
+        (isDesktop as jest.Mock).mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(false);
         jest.clearAllMocks();
     });
 
-    const props: {
-        onFileDrop: (file: File | undefined) => void;
-        getSocket: () => WebSocket;
-        ref: React.RefObject<HTMLElement>;
-    } = {
+    const props: React.ComponentProps<typeof FileUploader> = {
         onFileDrop: jest.fn(),
         getSocket: jest.fn(),
-        ref: React.createRef<HTMLElement>(),
+        ref: React.createRef(),
     };
 
     const large_file_error_msg = /file size should be 8mb or less/i;
     const file_not_supported_msg = /file uploaded is not supported/i;
-    const drop_click_msg = /drop file or click here to upload/i;
-    const click_msg = /click here to upload/i;
+    const drop_click_msg = /drag and drop a file or click to browse your files/i;
+    const click_msg = /click here to browse your files/i;
 
     it('should render FileUploader component in desktop mode', () => {
         render(<FileUploader {...props} />);
@@ -41,8 +37,8 @@ describe('<FileUploader />', () => {
     });
 
     it('should render FileUploader component in mobile mode', () => {
-        isMobile.mockReturnValue(true);
-        isDesktop.mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
         render(<FileUploader {...props} />);
         expect(screen.getByText(click_msg)).toBeInTheDocument();
     });
@@ -126,12 +122,12 @@ describe('<FileUploader />', () => {
     it('upload function should return 0 if document is not selected', () => {
         render(<FileUploader {...props} />);
 
-        const uploadFn = props.ref.current.upload();
+        const uploadFn = props?.ref?.current?.upload();
         expect(uploadFn).toBe(0);
     });
 
     it('upload methods should reject if readFile returns empty array ', async () => {
-        readFiles.mockResolvedValue([]);
+        (readFiles as jest.Mock).mockResolvedValue([]);
 
         render(<FileUploader {...props} />);
         const blob = new Blob(['sample_data']);
@@ -143,7 +139,7 @@ describe('<FileUploader />', () => {
             expect(screen.getByText(/hello\.pdf/i)).toBeInTheDocument();
             expect(input?.files?.[0]).toBe(file);
         });
-        props.ref.current.upload();
+        props?.ref?.current.upload();
         expect(compressImageFiles).toBeCalled();
         expect(props.onFileDrop).toBeCalled();
     });

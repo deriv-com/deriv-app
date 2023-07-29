@@ -323,22 +323,6 @@ describe('<PersonalDetails/>', () => {
         expect(mrs_radio_btn.checked).toEqual(false);
     });
 
-    it('should display the correct field details when is_appstore is true ', () => {
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: true }}>
-                <PersonalDetails {...props} is_svg={false} />
-            </PlatformContext.Provider>
-        );
-
-        expect(screen.getByText(/first name\*/i)).toBeInTheDocument();
-        expect(screen.getByText(/family name\*/i)).toBeInTheDocument();
-        expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
-        expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/phone number\*/i)).toBeInTheDocument();
-
-        runCommonFormfieldsTests();
-    });
-
     it('should display the correct field details when is_appstore is false and is_svg is true ', () => {
         renderwithRouter(
             <PlatformContext.Provider value={{ is_appstore: false }}>

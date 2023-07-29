@@ -1,12 +1,13 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Div100vhContainer } from '@deriv/components';
 import { isDesktop, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
-import CFDPOA from '../Components/cfd-poa';
+import ProofOfAddress from '@deriv/account/src/Sections/Verification/ProofOfAddress';
 import CFDPOI from '../Components/cfd-poi';
 import CFDPersonalDetailsContainer from './cfd-personal-details-container';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
-import { TCoreStores } from '@deriv/stores/types';
+import type { TCoreStores } from '@deriv/stores/types';
 
 type TCFDFinancialStpRealAccountSignupProps = {
     onFinish: () => void;
@@ -28,14 +29,13 @@ type TItem = {
     states_list: TCoreStores['client']['states_list'];
     fetchStatesList: TCoreStores['client']['fetchStatesList'];
     account_status: TCoreStores['client']['account_status'];
-    storeProofOfAddress: TCoreStores['modules']['cfd']['storeProofOfAddress'];
     jurisdiction_selected_shortcode: TCoreStores['modules']['cfd']['jurisdiction_selected_shortcode'];
     has_submitted_cfd_personal_details: TCoreStores['modules']['cfd']['has_submitted_cfd_personal_details'];
     onFinish: TCFDFinancialStpRealAccountSignupProps['onFinish'];
 };
 
 type TItemsState<T extends TItem> = {
-    body: typeof CFDPOI | typeof CFDPOA | typeof CFDPersonalDetailsContainer;
+    body: typeof CFDPOI | typeof ProofOfAddress | typeof CFDPersonalDetailsContainer;
     form_value: { [key: string]: string | undefined };
     forwarded_props: Array<Partial<keyof T>>;
 };
@@ -58,7 +58,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
         account_status,
     } = client;
 
-    const { storeProofOfAddress, jurisdiction_selected_shortcode, has_submitted_cfd_personal_details } = useCfdStore();
+    const { jurisdiction_selected_shortcode, has_submitted_cfd_personal_details } = useCfdStore();
 
     const passthroughProps = {
         refreshNotifications,
@@ -74,7 +74,6 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
         states_list,
         fetchStatesList,
         account_status,
-        storeProofOfAddress,
         jurisdiction_selected_shortcode,
         has_submitted_cfd_personal_details,
         onFinish,
@@ -103,16 +102,9 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
     };
 
     const poa_config: TItemsState<typeof passthroughProps> = {
-        body: CFDPOA,
-        form_value: {
-            address_line_1: account_settings.address_line_1,
-            address_line_2: account_settings.address_line_2,
-            address_city: account_settings.address_city,
-            address_state: account_settings.address_state,
-            address_postcode: account_settings.address_postcode,
-            upload_file: '',
-        },
-        forwarded_props: ['states_list', 'account_settings', 'storeProofOfAddress', 'refreshNotifications'],
+        body: ProofOfAddress,
+        form_value: {},
+        forwarded_props: [],
     };
 
     const personal_details_config: TItemsState<typeof passthroughProps> = {
@@ -133,7 +125,8 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
         }
         return need_poi_for_bvi_labuan;
     };
-    const should_show_poa = !['pending', 'verified'].includes(authentication_status.document_status);
+    // const should_show_poa = !['pending', 'verified'].includes(authentication_status.document_status);
+    const should_show_poa = true;
 
     const should_show_personal_details =
         !has_submitted_cfd_personal_details && jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST;
@@ -189,7 +182,9 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
         return key ? items[state_index][key] : items[state_index];
     };
 
-    const BodyComponent = getCurrent('body') as typeof CFDPOI & typeof CFDPOA & typeof CFDPersonalDetailsContainer;
+    const BodyComponent = getCurrent('body') as typeof CFDPOI &
+        typeof ProofOfAddress &
+        typeof CFDPersonalDetailsContainer;
 
     const form_value = getCurrent('form_value');
 
@@ -203,7 +198,9 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
 
     return (
         <Div100vhContainer
-            className='cfd-financial-stp-modal'
+            className={classNames('cfd-financial-stp-modal', {
+                'cfd-proof-of-address': BodyComponent.displayName === 'ProofOfAddress',
+            })}
             id='real_mt5_financial_stp_account_opening'
             is_disabled={isDesktop()}
             height_offset='40px'

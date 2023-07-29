@@ -1,9 +1,15 @@
 .common-mistake-examples {
     display: grid;
     row-gap: 1.6rem;
+    margin-bottom: 2.4rem;
+
+    &__title {
+        margin-bottom: 1.6rem;
+    }
+
     @include desktop {
         grid-template-columns: repeat(3, 1fr);
-        column-gap: 4.15rem;
+        column-gap: calc((100% - 23.7rem * 3) / 2);
         row-gap: 3.2rem;
     }
 
@@ -17,6 +23,12 @@
         box-sizing: border-box;
         border: 1px solid var(--general-section-1);
         border-radius: 4px;
+        width: 23.7rem;
+        height: 21.8rem;
+
+        @include mobile {
+            margin-inline: auto;
+        }
     }
 
     .description {

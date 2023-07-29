@@ -1,17 +1,15 @@
+import React from 'react';
 import { Button, Loading, useStateCallback } from '@deriv/components';
 import { WS, getPlatformRedirect, platforms } from '@deriv/shared';
-
-import Expired from 'Components/poa/status/expired';
 import { Localize } from '@deriv/translations';
-import NeedsReview from 'Components/poa/status/needs-review';
-import NotRequired from 'Components/poa/status/not-required';
-import PoaStatusCodes from 'Components/poa/status/status-codes';
+import Expired from '../../../Components/poa/status/expired';
+import NeedsReview from '../../../Components/poa/status/needs-review';
+import NotRequired from '../../../Components/poa/status/not-required';
+import PoaStatusCodes from '../../../Components/poa/status/status-codes';
 import ProofOfAddressForm from './proof-of-address-form.jsx';
-import PropTypes from 'prop-types';
-import React from 'react';
-import Submitted from 'Components/poa/status/submitted';
-import Unverified from 'Components/poa/status/unverified';
-import Verified from 'Components/poa/status/verified';
+import Submitted from '../../../Components/poa/status/submitted';
+import Unverified from '../../../Components/poa/status/unverified';
+import Verified from '../../../Components/poa/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification';
 
 const ProofOfAddressContainer = ({
@@ -143,13 +141,6 @@ const ProofOfAddressContainer = ({
         default:
             return null;
     }
-};
-
-ProofOfAddressContainer.propTypes = {
-    is_mx_mlt: PropTypes.bool,
-    has_restricted_mt5_account: PropTypes.bool,
-    is_switching: PropTypes.bool,
-    refreshNotifications: PropTypes.func,
 };
 
 export default ProofOfAddressContainer;

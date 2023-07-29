@@ -1,3 +1,6 @@
+import React from 'react';
+import { FormikValues } from 'formik';
+import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
 import {
     getUrlBase,
     filterObjProperties,
@@ -7,8 +10,6 @@ import {
     IDV_NOT_APPLICABLE_OPTION,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
-import { FormikErrors, FormikValues } from 'formik';
 
 const getImageLocation = (image_name: string) => getUrlBase(`/public/images/common/${image_name}`);
 
@@ -194,7 +195,7 @@ export const getDocumentData = (country_code: string, document_type: string) => 
 };
 
 export const preventEmptyClipboardPaste = (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const clipboardData = (e.clipboardData ?? window.clipboardData).getData('text');
+    const clipboardData = (e.clipboardData ?? (window as any).clipboardData).getData('text');
     if (clipboardData.length === 0) {
         e.preventDefault();
     }

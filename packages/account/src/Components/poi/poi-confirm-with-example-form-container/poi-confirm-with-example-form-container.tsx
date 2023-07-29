@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Form, Formik, FormikHelpers } from 'formik';
-import { GetSettings } from '@deriv/api-types';
+import type { GetSettings } from '@deriv/api-types';
 import { Checkbox, HintBox, Loading, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import {
@@ -158,7 +158,6 @@ const PoiConfirmWithExampleFormContainer = ({
                             setFieldTouched={setFieldTouched}
                             editable_fields={rest_state.changeable_fields}
                             is_rendered_for_onfido
-                            warning_items={undefined}
                         />
                         <button
                             type='submit'

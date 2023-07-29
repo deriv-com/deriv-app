@@ -61,6 +61,7 @@
         &--has-file {
             border-style: solid;
             border-color: var(--status-success);
+            background-color: $color-grey-2;
         }
         &--has-error {
             border-style: solid;

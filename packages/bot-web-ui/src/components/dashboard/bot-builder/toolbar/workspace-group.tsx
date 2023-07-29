@@ -49,6 +49,12 @@ const WorkspaceGroup = ({
             icon_id='db-toolbar__save-button'
             action={toggleSaveModal}
         />
+        <ToolbarIcon
+            popover_message={localize('Sort blocks')}
+            icon='IcSort'
+            icon_id='db-toolbar__sort-button'
+            action={onSortClick}
+        />
         <div className='vertical-divider' />
         <ToolbarIcon
             popover_message={localize('Undo')}
@@ -64,12 +70,7 @@ const WorkspaceGroup = ({
             icon_color={has_redo_stack ? undefined : 'disabled'}
             action={() => onUndoClick(/* redo */ true)}
         />
-        <ToolbarIcon
-            popover_message={localize('Sort')}
-            icon='IcSort'
-            icon_id='db-toolbar__sort-button'
-            action={onSortClick}
-        />
+        <div className='vertical-divider' />
         <ToolbarIcon
             popover_message={localize('Zoom in')}
             icon='IcZoomIn'

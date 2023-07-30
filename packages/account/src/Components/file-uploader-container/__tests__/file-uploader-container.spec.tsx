@@ -29,6 +29,7 @@ describe('<FileUploaderContainer />', () => {
             getSocket: jest.fn(),
             onFileDrop: jest.fn(),
             onRef: jest.fn(),
+            settings: {},
         };
 
         (isDesktop as jest.Mock).mockReturnValue(true);

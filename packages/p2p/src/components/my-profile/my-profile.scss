@@ -21,6 +21,22 @@
             }
         }
 
+        @include tablet-up {
+            min-width: 672px;
+            max-width: 100%;
+        }
+
+        @include mobile {
+            display: block;
+            width: 100vw;
+            height: calc(100% - 5rem);
+            padding: 0 1.6rem;
+
+            .dc-mobile-full-page-modal {
+                opacity: 1 !important;
+            }
+        }
+
         display: flex;
         flex: 1;
         flex-direction: column;

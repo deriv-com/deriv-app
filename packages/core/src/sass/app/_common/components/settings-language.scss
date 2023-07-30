@@ -17,11 +17,21 @@
             grid-template-rows: auto;
             grid-template-columns: repeat(2, minmax(50%, 1fr));
             grid-gap: 0.3rem;
+            width: 100%;
+
+            &--has-padding {
+                grid-gap: 0;
+                padding: 0 1.6rem;
+            }
         }
 
         display: grid;
         grid-template-columns: repeat(4, minmax(90px, 1fr));
         grid-gap: 1.6rem;
+
+        &--has-padding {
+            padding: 1.6rem;
+        }
     }
 
     &__language {

@@ -20,6 +20,11 @@
     &-select {
         @include mobile {
             height: 100%;
+
+            &__input {
+                border: 1px solid var(--border-normal);
+                border-radius: 4px;
+            }
         }
 
         height: 30vh;
@@ -48,6 +53,7 @@
                 border-top: 2px solid var(--general-section-1);
 
                 &-profile {
+                    margin-bottom: 4rem;
                     padding: 0 2.4rem 2rem;
                 }
             }
@@ -89,6 +95,10 @@
                         padding-right: 0;
                         padding-left: 0;
                     }
+                }
+
+                & .dc-field--error {
+                    margin-top: 5.6rem;
                 }
             }
         }

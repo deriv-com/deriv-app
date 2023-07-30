@@ -261,6 +261,14 @@
 
     &__symbol {
         margin-left: 0.4rem;
+
+        &--ups-downs {
+            @include mobile {
+                width: initial;
+            }
+
+            width: 7rem;
+        }
     }
 
     &__header {
@@ -645,6 +653,10 @@
         width: 3.8em;
         line-height: 1.5;
         text-align: left;
+
+        &--ups-downs {
+            width: 7rem;
+        }
 
         &-trade-param {
             color: var(--text-less-prominent);

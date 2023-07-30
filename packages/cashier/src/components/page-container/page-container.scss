@@ -3,23 +3,53 @@
         height: calc(100vh - 8rem);
     }
 
-    display: flex;
-    flex-direction: column;
-    gap: 1.6rem;
-    width: 100%;
-    height: calc(100vh - 17rem);
-    background-color: var(--general-main-1);
-
     &__content {
         @include mobile {
             padding: 1.6rem;
         }
 
         display: flex;
+        flex: 1;
         flex-direction: column;
         gap: 2.4rem;
         align-items: center;
         min-height: 100%;
+        padding: 0 2.4rem 2.4rem;
+    }
+
+    &__left {
+        @include mobile {
+            max-width: 100%;
+            padding: 0;
+        }
+
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 1.6rem;
+        max-width: 31.2rem;
+        padding: 0 2.4rem 2.4rem 0;
+    }
+
+    &__right {
+        @include mobile {
+            max-width: 100%;
+            padding: 0;
+        }
+
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 1.6rem;
+        max-width: 31.2rem;
+        padding: 0 0 2.4rem 2.4rem;
+    }
+
+    &__main {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 2.4rem;
         padding: 0 2.4rem 2.4rem;
     }
 }

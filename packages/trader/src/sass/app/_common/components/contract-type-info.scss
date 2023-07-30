@@ -1,10 +1,10 @@
 /** @define contract-type-info; */
 .contract-type-info {
     @include mobile {
-        height: calc(100% - 148.5px);
+        height: calc(100% - 7.4rem);
 
         &--has-toggle-buttons {
-            height: calc(100% - 74px);
+            height: calc(100% - 14.85rem);
         }
     }
 
@@ -147,13 +147,21 @@
 
         width: 100%;
         height: 16.4rem;
-        margin-top: 0;
+        margin-top: 1.6rem;
         margin-bottom: 1.6rem;
         border-radius: 4px;
         text-align: center;
 
+        &--has-video {
+            @include mobile {
+                height: 18.45rem;
+            }
+
+            height: 27rem;
+        }
+
         &--has-toggle-buttons {
-            margin-top: 1.6rem;
+            margin-top: 0;
         }
     }
 

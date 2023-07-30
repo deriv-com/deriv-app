@@ -106,6 +106,10 @@
             }
         }
 
+        &-confirmations {
+            justify-content: center;
+        }
+
         &-time {
             @include mobile {
                 margin-bottom: 0.8rem;

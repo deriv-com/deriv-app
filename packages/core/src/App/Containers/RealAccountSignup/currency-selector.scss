@@ -120,6 +120,12 @@
         left: 4.8rem;
         margin-top: -16px;
     }
+
+    &__loading-wrapper {
+        @include desktop {
+            min-width: 768px;
+        }
+    }
 }
 
 .currency-hr {

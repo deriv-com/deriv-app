@@ -4,6 +4,16 @@
     align-items: center;
 }
 
+@mixin recent-list-properties {
+    display: -webkit-box;
+    overflow: hidden;
+    max-width: 90%;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
 .bot-dashboard {
     @include mobile {
         height: calc(100vh - 3.4rem);
@@ -226,8 +236,7 @@
         &__mobile-container {
             display: flex;
             align-items: center;
-            height: 3.2rem;
-            margin: 1.6rem 1.6rem 1.4rem;
+            margin: 1.6rem 1.6rem 1.4rem 0.5rem;
             column-gap: 1rem;
 
             &--minimized {
@@ -259,8 +268,7 @@
 
             &--listed {
                 align-items: unset;
-                margin-top: 10rem;
-                padding: 1rem 3rem;
+                padding: 1rem 2.4rem;
             }
         }
 
@@ -288,6 +296,7 @@
 
                     width: 12.8rem;
                     height: 4rem;
+                    padding: 1rem;
                     border: none;
                     border-radius: 2.4rem;
                     background: $color-grey-2;
@@ -297,7 +306,12 @@
 
                 &__text {
                     margin-left: 0.4rem;
-                    color: var(--text-less-prominent);
+                    color: var(--text-general);
+                }
+
+                &__icon {
+                    width: 2.4rem;
+                    height: 2.4rem;
                 }
             }
         }
@@ -314,6 +328,7 @@
 
                     width: 12.8rem;
                     height: 4rem;
+                    padding: 1rem;
                     border: none;
                     border-radius: 2.4rem;
                     background: $color-grey-2;
@@ -323,7 +338,12 @@
 
                 &__text {
                     margin-left: 0.4rem;
-                    color: var(--text-less-prominent);
+                    color: var(--text-general);
+                }
+
+                &__icon {
+                    width: 2.4rem;
+                    height: 2.4rem;
                 }
             }
         }
@@ -472,14 +492,9 @@
                     font-size: var(--text-size-xs);
                 }
 
-                &__recent-item-text {
-                    display: -webkit-box;
-                    overflow: hidden;
-                    max-width: 90%;
-                    text-overflow: ellipsis;
-                    word-break: break-all;
-                    -webkit-line-clamp: 1;
-                    -webkit-box-orient: vertical;
+                &__recent-item-text,
+                &__recent-item-saved {
+                    @include recent-list-properties;
                 }
             }
         }

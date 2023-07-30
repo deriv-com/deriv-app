@@ -11,8 +11,8 @@ export default class CFDStore extends BaseStore {
     jurisdiction_selected_shortcode = '';
 
     account_type = {
-        category: undefined,
-        type: undefined,
+        category: '',
+        type: '',
     };
 
     mt5_trade_account = {};
@@ -549,6 +549,7 @@ export default class CFDStore extends BaseStore {
             actions.resetForm({});
             actions.setSubmitting(false);
             actions.setStatus({ success: false });
+            return;
         }
 
         actions.setStatus({ success: true });

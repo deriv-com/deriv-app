@@ -11,8 +11,8 @@
 .p2p-my-ads {
     @include mobile {
         .page-return {
-            margin: 1rem 0;
-            padding: 0 1.6rem 1.6rem;
+            margin: 0;
+            padding: 1.6rem;
             border-bottom: 2px solid var(--general-section-1);
         }
 
@@ -33,6 +33,7 @@
     display: flex;
     flex: 1;
     flex-direction: column;
+    overflow-y: auto;
 
     .dc-input__wrapper {
         @include mobile {
@@ -766,14 +767,6 @@
 
         &__message {
             margin-right: 1.6rem;
-        }
-
-        &--on {
-            color: var(--text-profit-success);
-        }
-
-        &--off {
-            color: var(--text-less-prominent);
         }
     }
 

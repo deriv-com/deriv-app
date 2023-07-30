@@ -23,6 +23,10 @@
         }
     }
 
+    .dc-card__wrapper {
+        justify-content: center;
+    }
+
     .dc-card__wrapper:last-of-type {
         margin-bottom: 4rem !important;
     }

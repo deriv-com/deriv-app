@@ -43,14 +43,27 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
                 @include mobile {
                     margin-right: 0.8rem;
                 }
+            }
 
-                margin-right: 1.6rem;
-                padding: 0.4rem;
+            &-wrapper {
+                @include mobile {
+                    max-width: 23.3rem;
+
+                    a {
+                        font-size: 1rem;
+                    }
+                }
+
+                max-width: 35rem;
+
+                a {
+                    color: var(--brand-red-coral);
+                }
             }
 
             &-text {
                 @include mobile {
-                    max-width: 175px;
+                    max-width: 23.3rem;
                     font-size: 1rem;
                     line-height: 1.4;
                     letter-spacing: normal;
@@ -62,6 +75,16 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
                 }
 
                 max-width: 360px;
+                margin-right: 1.6rem;
+                padding: 0.4rem;
+
+                &--collapsed {
+                    display: -webkit-box;
+                    overflow: hidden;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 3;
+                    line-clamp: 3;
+                }
             }
         }
 

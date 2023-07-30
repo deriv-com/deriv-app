@@ -64,7 +64,7 @@
 
         @include mobile {
             overflow: hidden;
-            height: 100%;
+            padding-left: 0.5rem;
         }
     }
 
@@ -278,7 +278,6 @@
                 @include mobile {
                     width: unset;
                     font-size: var(--text-size-xxs);
-                    white-space: nowrap;
                 }
 
                 &:hover {
@@ -337,7 +336,7 @@
                 }
 
                 @include mobile {
-                    padding: 1rem 0.6rem;
+                    padding: 1rem 0.4rem;
                 }
 
                 padding: 1rem 3rem;
@@ -433,6 +432,11 @@
                         cursor: pointer;
                     }
                 }
+            }
+
+            span {
+                padding-right: 1.6rem;
+                word-break: break-word;
             }
         }
     }

@@ -36,7 +36,7 @@ const FileUploaderContainer = ({
 
     return (
         <div className='file-uploader__container' data-testid='dt_file_uploader_container'>
-            {files_description && files_description}
+            {files_description}
             <Text size={isMobile() ? 'xxs' : 'xs'} as='div' className='file-uploader__file-title' weight='bold'>
                 {localize('Upload file')}
             </Text>
@@ -49,7 +49,7 @@ const FileUploaderContainer = ({
                 </Text>
                 <Text size={isMobile() ? 'xxxs' : 'xxs'}>{localize('Maximum size: 8MB')}</Text>
             </div>
-            {examples && examples}
+            {examples}
         </div>
     );
 };

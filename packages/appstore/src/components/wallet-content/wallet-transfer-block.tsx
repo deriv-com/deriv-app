@@ -11,11 +11,16 @@ type TProps = {
 };
 
 const WalletTransferBlock = observer(({ wallet_account }: TProps) => {
-    const { traders_hub, ui } = useStore();
+    const { traders_hub, ui, client } = useStore();
     const { setIsWalletModalVisible } = ui;
     const { setWalletModalActiveWalletID, setWalletModalActiveTab } = traders_hub;
+    const { accounts } = client;
 
-    const { currency, balance, loginid } = wallet_account;
+    const { linked_to } = wallet_account;
+
+    const trading_account_loginid = linked_to?.find(account => account.platform === 'dtrade')?.loginid ?? '';
+    const currency = accounts?.[trading_account_loginid]?.currency ?? wallet_account.currency;
+    const balance = accounts?.[trading_account_loginid]?.balance ?? 0;
 
     return (
         <CurrencySwitcherContainer
@@ -42,7 +47,7 @@ const WalletTransferBlock = observer(({ wallet_account }: TProps) => {
                     {formatMoney(currency, balance, true)} {currency}
                 </Text>
                 <Text size='xxs' color='less-prominent'>
-                    {loginid}
+                    {trading_account_loginid}
                 </Text>
             </React.Fragment>
         </CurrencySwitcherContainer>

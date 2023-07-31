@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import { Button, Drawer, Modal, Money, Tabs, Text, ThemedScrollbars } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import Journal from 'Components/journal';
 import SelfExclusion from 'Components/self-exclusion';
@@ -10,9 +10,52 @@ import Summary from 'Components/summary';
 import TradeAnimation from 'Components/trade-animation';
 import Transactions from 'Components/transactions';
 import { popover_zindex } from 'Constants/z-indexes';
-import { connect } from 'Stores/connect';
+import { useDBotStore } from 'Stores/useDBotStore';
 
-const StatisticsTile = ({ content, contentClassName, title }) => (
+type TStatisticsTile = {
+    content: React.ElementType | string;
+    contentClassName: string;
+    title: string;
+};
+
+type TStatisticsSummary = {
+    currency: string;
+    is_mobile: boolean;
+    lost_contracts: number;
+    number_of_runs: number;
+    total_stake: number;
+    total_payout: number;
+    has_started_onboarding_tour: boolean;
+    toggleStatisticsInfoModal: () => void;
+    total_profit: number;
+    won_contracts: number;
+};
+type TDrawerHeader = {
+    is_clear_stat_disabled: boolean;
+    is_mobile: boolean;
+    is_drawer_open: boolean;
+    onClearStatClick: () => void;
+};
+
+type TDrawerContent = {
+    active_index: number;
+    is_drawer_open: boolean;
+    has_started_onboarding_tour: boolean;
+    setActiveTabIndex: () => void;
+};
+
+type TDrawerFooter = {
+    is_clear_stat_disabled: boolean;
+    onClearStatClick: () => void;
+};
+
+type TStatisticsInfoModal = {
+    is_mobile: boolean;
+    is_statistics_info_modal_open: boolean;
+    toggleStatisticsInfoModal: () => void;
+};
+
+const StatisticsTile = ({ content, contentClassName, title }: TStatisticsTile) => (
     <div className='run-panel__tile'>
         <div className='run-panel__tile-title'>{title}</div>
         <div className={classNames('run-panel__tile-content', contentClassName)}>{content}</div>
@@ -30,7 +73,7 @@ const StatisticsSummary = ({
     toggleStatisticsInfoModal,
     total_profit,
     won_contracts,
-}) => (
+}: TStatisticsSummary) => (
     <div
         className={classNames('run-panel__stat', {
             'run-panel__stat--tour-active': has_started_onboarding_tour,
@@ -69,7 +112,7 @@ const StatisticsSummary = ({
     </div>
 );
 
-const DrawerHeader = ({ is_clear_stat_disabled, is_mobile, is_drawer_open, onClearStatClick }) =>
+const DrawerHeader = ({ is_clear_stat_disabled, is_mobile, is_drawer_open, onClearStatClick }: TDrawerHeader) =>
     is_mobile &&
     is_drawer_open && (
         <Button
@@ -82,7 +125,13 @@ const DrawerHeader = ({ is_clear_stat_disabled, is_mobile, is_drawer_open, onCle
         />
     );
 
-const DrawerContent = ({ active_index, is_drawer_open, has_started_onboarding_tour, setActiveTabIndex, ...props }) => {
+const DrawerContent = ({
+    active_index,
+    is_drawer_open,
+    has_started_onboarding_tour,
+    setActiveTabIndex,
+    ...props
+}: TDrawerContent) => {
     return (
         <>
             <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
@@ -103,7 +152,7 @@ const DrawerContent = ({ active_index, is_drawer_open, has_started_onboarding_to
     );
 };
 
-const DrawerFooter = ({ is_clear_stat_disabled, onClearStatClick }) => (
+const DrawerFooter = ({ is_clear_stat_disabled, onClearStatClick }: TDrawerFooter) => (
     <div className='run-panel__footer'>
         <Button
             id='db-run-panel__clear-button'
@@ -127,7 +176,11 @@ const MobileDrawerFooter = () => {
     );
 };
 
-const StatisticsInfoModal = ({ is_mobile, is_statistics_info_modal_open, toggleStatisticsInfoModal }) => {
+const StatisticsInfoModal = ({
+    is_mobile,
+    is_statistics_info_modal_open,
+    toggleStatisticsInfoModal,
+}: TStatisticsInfoModal) => {
     return (
         <Modal
             className={classNames('statistics__modal', { 'statistics__modal--mobile': is_mobile })}
@@ -182,27 +235,27 @@ const StatisticsInfoModal = ({ is_mobile, is_statistics_info_modal_open, toggleS
     );
 };
 
-const RunPanel = ({
-    active_index,
-    currency,
-    has_started_onboarding_tour,
-    is_clear_stat_disabled,
-    is_drawer_open,
-    is_statistics_info_modal_open,
-    lost_contracts,
-    number_of_runs,
-    onClearStatClick,
-    onMount,
-    onRunButtonClick,
-    onUnmount,
-    setActiveTabIndex,
-    toggleDrawer,
-    toggleStatisticsInfoModal,
-    total_payout,
-    total_profit,
-    total_stake,
-    won_contracts,
-}) => {
+const RunPanel = observer(() => {
+    const { run_panel, dashboard } = useDBotStore();
+    const { client } = useStore();
+    const { currency } = client;
+    const {
+        active_index,
+        is_drawer_open,
+        is_statistics_info_modal_open,
+        is_clear_stat_disabled,
+        onClearStatClick,
+        onMount,
+        onRunButtonClick,
+        onUnmount,
+        setActiveTabIndex,
+        toggleDrawer,
+        toggleStatisticsInfoModal,
+        statistics,
+    } = run_panel;
+    const { has_started_onboarding_tour } = dashboard;
+    const { total_payout, total_profit, total_stake, won_contracts, lost_contracts, number_of_runs } = statistics;
+
     const is_mobile = isMobile();
 
     React.useEffect(() => {
@@ -274,47 +327,6 @@ const RunPanel = ({
             />
         </>
     );
-};
+});
 
-RunPanel.propTypes = {
-    active_index: PropTypes.number,
-    currency: PropTypes.string,
-    is_clear_stat_disabled: PropTypes.bool,
-    is_drawer_open: PropTypes.bool,
-    is_statistics_info_modal_open: PropTypes.bool,
-    lost_contracts: PropTypes.number,
-    number_of_runs: PropTypes.number,
-    onClearStatClick: PropTypes.func,
-    onMount: PropTypes.func,
-    onRunButtonClick: PropTypes.func,
-    onUnmount: PropTypes.func,
-    setActiveTabIndex: PropTypes.func,
-    toggleDrawer: PropTypes.func,
-    toggleStatisticsInfoModal: PropTypes.func,
-    total_payout: PropTypes.number,
-    total_profit: PropTypes.number,
-    total_stake: PropTypes.number,
-    won_contracts: PropTypes.number,
-};
-
-export default connect(({ run_panel, core, dashboard }) => ({
-    active_index: run_panel.active_index,
-    currency: core.client.currency,
-    has_started_onboarding_tour: dashboard.has_started_onboarding_tour,
-    is_clear_stat_disabled: run_panel.is_clear_stat_disabled,
-    is_drawer_open: run_panel.is_drawer_open,
-    is_statistics_info_modal_open: run_panel.is_statistics_info_modal_open,
-    lost_contracts: run_panel.statistics.lost_contracts,
-    number_of_runs: run_panel.statistics.number_of_runs,
-    onClearStatClick: run_panel.onClearStatClick,
-    onMount: run_panel.onMount,
-    onRunButtonClick: run_panel.onRunButtonClick,
-    onUnmount: run_panel.onUnmount,
-    setActiveTabIndex: run_panel.setActiveTabIndex,
-    toggleDrawer: run_panel.toggleDrawer,
-    toggleStatisticsInfoModal: run_panel.toggleStatisticsInfoModal,
-    total_payout: run_panel.statistics.total_payout,
-    total_profit: run_panel.statistics.total_profit,
-    total_stake: run_panel.statistics.total_stake,
-    won_contracts: run_panel.statistics.won_contracts,
-}))(RunPanel);
+export default RunPanel;

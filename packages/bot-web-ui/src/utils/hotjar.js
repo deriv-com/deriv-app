@@ -19,6 +19,7 @@ const hotjar = client => {
         r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
         a.appendChild(r);
 
+        // Hotjar attribution code for user segmentation
         const user_id = client?.loginid;
         const account_type = client.is_virtual ? 'Demo' : 'Real';
         const account_open_date = epochToMoment(client.account_open_date);

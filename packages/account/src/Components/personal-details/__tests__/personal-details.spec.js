@@ -240,6 +240,7 @@ describe('<PersonalDetails/>', () => {
     const renderwithRouter = component => {
         render(<BrowserRouter>{component}</BrowserRouter>);
     };
+    
     it('should autopopulate tax_residence for MF clients', () => {
         const new_props = {
             ...props,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
+import { screen, render, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import LanguageRadioButton, { TLanguageRadioButton } from '../language-radio-button';
 import { TranslationProvider } from '@deriv/translations';
@@ -56,8 +56,10 @@ describe('LanguageRadioButton', () => {
         onChange: jest.fn(),
     };
 
-    it('should render active LanguageRadioButton', () => {
-        renderWithProvider(mock_props);
+    it('should render active LanguageRadioButton', async () => {
+        await act(async () => {
+            renderWithProvider(mock_props);
+        });
 
         expect(screen.getByText('Flag Icon')).toBeInTheDocument();
         expect(screen.getByText('English')).toBeInTheDocument();
@@ -66,9 +68,11 @@ describe('LanguageRadioButton', () => {
         );
     });
 
-    it('should render not active LanguageRadioButton and trigger onchange', () => {
+    it('should render not active LanguageRadioButton and trigger onchange', async () => {
         mock_props.is_current_language = false;
-        renderWithProvider(mock_props);
+        await act(async () => {
+            renderWithProvider(mock_props);
+        });
 
         expect(screen.getByText('Flag Icon')).toBeInTheDocument();
         expect(screen.getByText('English')).toBeInTheDocument();

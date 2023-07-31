@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
+import { screen, render, act } from '@testing-library/react';
 import LanguageLink, { TLanguageLink } from '../language-link';
 import { TranslationProvider } from '@deriv/translations';
 import { WS } from '@deriv/shared';
@@ -40,8 +40,10 @@ describe('LanguageLink component', () => {
         );
     };
 
-    it('should render language link with active classname without active classname when not active', () => {
-        renderWithProvider(mock_props);
+    it('should render language link with active classname without active classname when not active', async () => {
+        await act(async () => {
+            renderWithProvider(mock_props);
+        });
 
         expect(screen.getByText('Indonesian')).toBeInTheDocument();
         expect(screen.getByTestId('dt_mocked_icon')).toBeInTheDocument();
@@ -51,11 +53,13 @@ describe('LanguageLink component', () => {
         expect(language_link).not.toHaveClass('settings-language__language-link--active');
     });
 
-    it('should render language link with active classname when active', () => {
+    it('should render language link with active classname when active', async () => {
         mock_props.is_active = true;
         mock_props.lang = 'FR';
 
-        renderWithProvider(mock_props);
+        await act(async () => {
+            renderWithProvider(mock_props);
+        });
 
         expect(screen.getByText('Français')).toBeInTheDocument();
         expect(screen.getByTestId('dt_mocked_icon')).toBeInTheDocument();

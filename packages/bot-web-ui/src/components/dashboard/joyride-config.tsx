@@ -194,11 +194,12 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('Looking to retake the tour?')}
                 content={[
-                    <Localize
-                        key={`${0}-id-tutorials`}
-                        i18n_default_text={`If you're interested, head to <0>Tutorials.</0>`}
-                        components={[<strong key={0} />]}
-                    />,
+                    <Text key={`${0}-id-tutorials`} line_height='xxs' as='p'>
+                        <Localize
+                            i18n_default_text={`If you're interested, head to <0>Tutorials.</0>`}
+                            components={[<strong key={0} />]}
+                        />
+                    </Text>,
                 ]}
                 dashboard_tab_index={0}
                 step_index={7}

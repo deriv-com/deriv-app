@@ -327,6 +327,9 @@
 
     &__content {
         text-align: left;
+        p {
+            font-size: 1.4rem;
+        }
 
         &__block {
             &:first-child {

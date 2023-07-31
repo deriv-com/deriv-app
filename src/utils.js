@@ -38,7 +38,9 @@ export const getExtension = () => {
 };
 
 export const generateDerivLink = (path, ...queries) => {
-    const redirect_query = `ext_platform_url=${encodeURIComponent(window.location.origin)}`;
+    const redirect_query = `ext_platform_url=${encodeURIComponent(window.location.origin)}&lang=${localStorage.getItem(
+        'lang'
+    )}`;
     queries.push(redirect_query);
     return `${getRelatedDeriveOrigin().origin}/${path}?${queries.join('&')}`;
 };

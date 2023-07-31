@@ -7,7 +7,7 @@ type TIndicativeCell = {
     amount: number;
     contract_info: TContractInfo;
     currency: string;
-    status: string;
+    status?: string;
     is_footer: boolean;
     is_sell_requested: boolean;
 };

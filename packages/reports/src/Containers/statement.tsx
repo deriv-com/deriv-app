@@ -19,28 +19,12 @@ import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message'
 import { observer, useStore } from '@deriv/stores';
 import { useReportsStore } from 'Stores/useReportsStores';
 import { TSupportedContractType, TUnsupportedContractType } from 'Types';
+import { TSource } from '../../../components/src/components/data-table/data-table';
+import { TRow } from '../../../components/src/components/data-list/data-list';
+import { TDataListCell } from '../../../components/src/components/data-list/data-list-cell';
 
 type TGetStatementTableColumnsTemplate = ReturnType<typeof getStatementTableColumnsTemplate>;
 type TColIndex = 'icon' | 'refid' | 'currency' | 'date' | 'action_type' | 'amount' | 'balance';
-
-type TFormatStatementTransaction = {
-    action: string;
-    date: string;
-    display_name: string;
-    refid: number;
-    payout: string;
-    amount: string;
-    balance: string;
-    desc: string;
-    id: number;
-    app_id: number;
-    shortcode: string;
-    action_type: string;
-    purchase_time: number;
-    transaction_time: number;
-    withdrawal_details: string;
-    longcode: string;
-};
 
 type TAction =
     | {
@@ -95,7 +79,11 @@ const DetailsComponent = ({ message = '', action_type = '' }: TDetailsComponent)
     );
 };
 
-const getRowAction = (row_obj: TFormatStatementTransaction) => {
+type TGetRowAction =
+    | React.ComponentProps<typeof DataList>['getRowAction']
+    | React.ComponentProps<typeof DataTable>['getRowAction'];
+
+const getRowAction: TGetRowAction = (row_obj: TSource | TRow) => {
     let action: TAction = {};
     if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
         const contract_type = extractInfoFromShortcode(row_obj.shortcode)?.category?.toUpperCase();
@@ -166,19 +154,35 @@ const Statement = observer(({ component_icon }: TStatement) => {
     const mobileRowRenderer = ({ row, passthrough }: any) => (
         <React.Fragment>
             <div className='data-list__row'>
-                <DataList.Cell row={row} column={columns_map.icon} passthrough={passthrough} />
-                <DataList.Cell row={row} column={columns_map.action_type} passthrough={passthrough} />
+                <DataList.Cell
+                    row={row}
+                    column={columns_map.icon as TDataListCell['column']}
+                    passthrough={passthrough}
+                />
+                <DataList.Cell
+                    row={row}
+                    column={columns_map.action_type as TDataListCell['column']}
+                    passthrough={passthrough}
+                />
             </div>
             <div className='data-list__row'>
-                <DataList.Cell row={row} column={columns_map.refid} />
-                <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.currency} />
+                <DataList.Cell row={row} column={columns_map.refid as TDataListCell['column']} />
+                <DataList.Cell
+                    className='data-list__row-cell--amount'
+                    row={row}
+                    column={columns_map.currency as TDataListCell['column']}
+                />
             </div>
             <div className='data-list__row'>
-                <DataList.Cell row={row} column={columns_map.date} />
-                <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.amount} />
+                <DataList.Cell row={row} column={columns_map.date as TDataListCell['column']} />
+                <DataList.Cell
+                    className='data-list__row-cell--amount'
+                    row={row}
+                    column={columns_map.amount as TDataListCell['column']}
+                />
             </div>
             <div className='data-list__row'>
-                <DataList.Cell row={row} column={columns_map.balance} />
+                <DataList.Cell row={row} column={columns_map.balance as TDataListCell['column']} />
             </div>
         </React.Fragment>
     );
@@ -215,11 +219,10 @@ const Statement = observer(({ component_icon }: TStatement) => {
                                     columns={columns}
                                     content_loader={ReportsTableRowLoader}
                                     data_source={data}
-                                    getRowAction={row => getRowAction(row)}
+                                    getRowAction={getRowAction}
                                     onScroll={handleScroll}
                                     passthrough={{
-                                        isTopUp: (item: TFormatStatementTransaction) =>
-                                            is_virtual && item.action === 'Deposit',
+                                        isTopUp: item => is_virtual && item.action === 'Deposit',
                                     }}
                                 >
                                     <PlaceholderComponent is_loading={is_loading} />
@@ -234,8 +237,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
                                     rowRenderer={mobileRowRenderer}
                                     row_gap={8}
                                     passthrough={{
-                                        isTopUp: (item: TFormatStatementTransaction) =>
-                                            is_virtual && item.action === 'Deposit',
+                                        isTopUp: item => is_virtual && item.action === 'Deposit',
                                     }}
                                 >
                                     <PlaceholderComponent is_loading={is_loading} />

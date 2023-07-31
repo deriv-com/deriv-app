@@ -18,6 +18,9 @@ import MarketSymbolIconRow from '../Components/market-symbol-icon-row';
 import ProfitLossCell from '../Components/profit_loss_cell';
 import CurrencyWrapper from '../Components/currency-wrapper';
 import { useStore } from '@deriv/stores';
+import moment from 'moment';
+
+type TPortfolioStore = ReturnType<typeof useStore>['portfolio'];
 
 const map = {
     buy: 'success',
@@ -35,11 +38,16 @@ export type TKeys = keyof typeof map;
 
 const getModeFromValue = (key: TKeys) => map[key] || map.default;
 
-type TMultiplierOpenPositionstemplateProps = {
+type TAccumulatorOpenPositionstemplateProps = Omit<
+    TMultiplierOpenPositionstemplateProps,
+    'onClickCancel' | 'server_time'
+>;
+
+type TMultiplierOpenPositionstemplateProps = Pick<
+    TPortfolioStore,
+    'getPositionById' | 'onClickCancel' | 'onClickSell'
+> & {
     currency: string;
-    onClickCancel: () => void;
-    onClickSell: () => void;
-    getPositionById: ReturnType<typeof useStore>['portfolio']['getPositionById'];
     server_time: moment.Moment;
 };
 
@@ -436,7 +444,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
     currency,
     onClickSell,
     getPositionById,
-}: Pick<TMultiplierOpenPositionstemplateProps, 'currency' | 'onClickSell' | 'getPositionById'>) => [
+}: TAccumulatorOpenPositionstemplateProps) => [
     {
         title: isMobile() ? '' : localize('Type'),
         col_index: 'type',
@@ -456,7 +464,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
     {
         title: localize('Growth rate'),
         col_index: 'growth_rate',
-        renderCellContent: ({ row_obj }) =>
+        renderCellContent: ({ row_obj }: TCellContentProps) =>
             row_obj.contract_info && row_obj.contract_info.growth_rate
                 ? `${getGrowthRatePercentage(row_obj.contract_info.growth_rate)}%`
                 : '',
@@ -560,4 +568,3 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
         },
     },
 ];
-/* eslint-enable react/display-name, react/prop-types */

@@ -45,9 +45,9 @@ type TDataTable = {
     getRowSize?: ((params: { index: number }) => number) | number;
     measure?: () => void;
     getRowAction?: (item: TSource) => TTableRowItem;
-    onScroll: React.UIEventHandler<HTMLDivElement>;
+    onScroll?: React.UIEventHandler<HTMLDivElement>;
     id?: number;
-    passthrough?: (item: TSource) => boolean;
+    passthrough?: React.ComponentProps<typeof TableRow>['passthrough'];
     autoHide?: boolean;
     footer?: Record<string, unknown> | React.ReactNode;
     preloaderCheck?: (param: TSource) => boolean;
@@ -132,7 +132,13 @@ const DataTable = ({
         );
 
         return is_dynamic_height ? (
-            <CellMeasurer cache={cache_ref.current!} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
+            <CellMeasurer
+                cache={cache_ref.current as CellMeasurerCache}
+                columnIndex={0}
+                key={row_key}
+                rowIndex={index}
+                parent={parent}
+            >
                 {({ measure }) => <div style={style}>{getContent({ measure })}</div>}
             </CellMeasurer>
         ) : (

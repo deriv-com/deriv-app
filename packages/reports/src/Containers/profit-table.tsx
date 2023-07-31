@@ -12,17 +12,22 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import CompositeCalendar from '../Components/Form/CompositeCalendar';
-import { TColIndex, TColumnTemplateType, TSupportedContractType, TUnsupportedContractType } from 'Types';
+import { TSupportedContractType, TUnsupportedContractType } from 'Types';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
 import PlaceholderComponent from '../Components/placeholder-component';
 import { ReportsMeta } from '../Components/reports-meta';
 import { getProfitTableColumnsTemplate } from 'Constants/data-table-constants';
 import { observer, useStore } from '@deriv/stores';
 import { useReportsStore } from 'Stores/useReportsStores';
+import dataListCell from '../../../components/src/components/data-list/data-list-cell';
 
 type TProfitTable = {
     component_icon: string;
 };
+
+type TDataListCell = React.ComponentProps<typeof dataListCell>;
+
+type TGetProfitTableColumnsTemplate = ReturnType<typeof getProfitTableColumnsTemplate>;
 
 const getRowAction = (row_obj: { [key: string]: unknown }) => {
     const contract_type = extractInfoFromShortcode(row_obj?.shortcode as string)
@@ -82,24 +87,29 @@ const ProfitTable = observer(({ component_icon }: TProfitTable) => {
         />
     );
 
-    const columns = getProfitTableColumnsTemplate(currency, data.length);
+    const columns: TGetProfitTableColumnsTemplate = getProfitTableColumnsTemplate(currency, data.length);
 
-    const columns_map = Object.fromEntries(columns.map(column => [column.col_index, column])) as {
-        [key in TColIndex]: TColumnTemplateType;
-    };
+    const columns_map = Object.fromEntries(columns.map(column => [column.col_index, column])) as Record<
+        TGetProfitTableColumnsTemplate[number]['col_index'],
+        TGetProfitTableColumnsTemplate[number]
+    >;
 
-    const mobileRowRenderer = ({ row, is_footer }: { row: any; is_footer?: boolean }) => {
-        const duration_type = /^(MULTUP|MULTDOWN)/.test(row.shortcode) ? '' : row.duration_type;
+    const mobileRowRenderer: React.ComponentProps<typeof DataList>['rowRenderer'] = ({ row, is_footer }) => {
+        const duration_type = /^(MULTUP|MULTDOWN)/.test(row?.shortcode) ? '' : row?.duration_type;
         const duration_classname = duration_type ? `duration-type__${duration_type.toLowerCase()}` : '';
 
         if (is_footer) {
             return (
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={columns_map.action_type} is_footer={is_footer} />
+                    <DataList.Cell
+                        row={row}
+                        column={columns_map.action_type as TDataListCell['column']}
+                        is_footer={is_footer}
+                    />
                     <DataList.Cell
                         className='data-list__row-cell--amount'
                         row={row}
-                        column={columns_map.profit_loss}
+                        column={columns_map.profit_loss as TDataListCell['column']}
                         is_footer={is_footer}
                     />
                 </div>
@@ -109,26 +119,38 @@ const ProfitTable = observer(({ component_icon }: TProfitTable) => {
         return (
             <>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={columns_map.action_type} />
+                    <DataList.Cell row={row} column={columns_map.action_type as TDataListCell['column']} />
                     <div className={classNames('duration-type', duration_classname)}>
                         <div className={classNames('duration-type__background', `${duration_classname}__background`)} />
                         <span className={`${duration_classname}__label`}>{localize(duration_type)}</span>
                     </div>
                 </div>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={columns_map.transaction_id} />
-                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.currency} />
+                    <DataList.Cell row={row} column={columns_map.transaction_id as TDataListCell['column']} />
+                    <DataList.Cell
+                        className='data-list__row-cell--amount'
+                        row={row}
+                        column={columns_map.currency as TDataListCell['column']}
+                    />
                 </div>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={columns_map.purchase_time} />
-                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.buy_price} />
+                    <DataList.Cell row={row} column={columns_map.purchase_time as TDataListCell['column']} />
+                    <DataList.Cell
+                        className='data-list__row-cell--amount'
+                        row={row}
+                        column={columns_map.buy_price as TDataListCell['column']}
+                    />
                 </div>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={columns_map.sell_time} />
-                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.sell_price} />
+                    <DataList.Cell row={row} column={columns_map.sell_time as TDataListCell['column']} />
+                    <DataList.Cell
+                        className='data-list__row-cell--amount'
+                        row={row}
+                        column={columns_map.sell_price as TDataListCell['column']}
+                    />
                 </div>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={columns_map.profit_loss} />
+                    <DataList.Cell row={row} column={columns_map.profit_loss as TDataListCell['column']} />
                 </div>
             </>
         );

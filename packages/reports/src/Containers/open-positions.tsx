@@ -42,17 +42,10 @@ import { observer, useStore } from '@deriv/stores';
 import { TUnsupportedContractType } from 'Types';
 
 type TRangeFloatZeroToOne = React.ComponentProps<typeof ProgressBar>['value'];
-type TActivePositions = ReturnType<typeof useStore>['portfolio']['active_positions'];
-type TGetMultiplierOpenPositionsColumnsTemplate = Partial<ReturnType<typeof getMultiplierOpenPositionsColumnsTemplate>>;
-type TGetAccumulatorOpenPositionsColumnsTemplate = Partial<
-    ReturnType<typeof getAccumulatorOpenPositionsColumnsTemplate>
->;
-type TGetOpenPositionsColumnsTemplate = Partial<ReturnType<typeof getOpenPositionsColumnsTemplate>>;
-type TColumnsMap =
-    | TGetMultiplierOpenPositionsColumnsTemplate
-    | TGetAccumulatorOpenPositionsColumnsTemplate
-    | TGetOpenPositionsColumnsTemplate;
-type TColumnsMapElement = TColumnsMap[number];
+type TPortfolioStore = ReturnType<typeof useStore>['portfolio'];
+type TDataList = React.ComponentProps<typeof DataList>;
+type TDataListCell = React.ComponentProps<typeof DataList.Cell>;
+type TRowRenderer = TDataList['rowRenderer'];
 type TColIndex =
     | 'type'
     | 'reference'
@@ -90,38 +83,28 @@ const EmptyPlaceholderWrapper = ({ is_empty, component_icon, children }: TEmptyP
 );
 
 type TMobileRowRenderer = {
-    row: TActivePositions[0];
-    is_footer: boolean;
-    columns_map: Record<TColIndex, TColumnsMapElement>;
+    row?: TDataList['data_source'][0];
+    is_footer?: boolean;
+    columns_map?: Record<TColIndex, TDataListCell['column']>;
     server_time: moment.Moment;
-    onClickCancel: () => void;
-    onClickSell: () => void;
+    onClickCancel: (contract_id?: number) => void;
+    onClickSell: (contract_id?: number) => void;
     measure: () => void;
 };
 
 type TOpenPositionsTable = {
     className: string;
-    columns: Record<string, any>[];
+    columns: Record<string, unknown>[];
     component_icon: string;
     currency: string;
-    active_positions: TActivePositions;
+    active_positions: TPortfolioStore['active_positions'];
     is_loading: boolean;
-    getRowAction: (row_obj: TRowObj) =>
-        | string
-        | {
-              component: JSX.Element;
-          };
-    mobileRowRenderer: (args: TMobileRowRenderer) => JSX.Element;
-    preloaderCheck: (item: { purchase: number }) => boolean;
+    getRowAction: TDataList['getRowAction'];
+    mobileRowRenderer: TRowRenderer;
+    preloaderCheck: (item: TTotals) => boolean;
     row_size: number;
     totals: TTotals;
     is_empty: boolean;
-};
-
-type TRowObj = {
-    is_unsupported: false;
-    id: number;
-    type: TUnsupportedContractType;
 };
 
 type TTotals = {
@@ -131,6 +114,11 @@ type TTotals = {
         bid_price?: number;
         cancellation?: {
             ask_price?: number;
+        };
+        limit_order?: {
+            take_profit?: {
+                order_amount?: number | null;
+            };
         };
     };
     indicative?: number;
@@ -157,30 +145,30 @@ const MobileRowRenderer = ({
         if (!is_footer) {
             measure();
         }
-    }, [row.contract_info?.underlying, measure, is_footer]);
+    }, [row?.contract_info?.underlying, measure, is_footer]);
 
     if (is_footer) {
         return (
             <>
                 <div className='open-positions__data-list-footer--content'>
                     <div>
-                        <DataList.Cell row={row} column={columns_map.purchase} />
-                        <DataList.Cell row={row} column={columns_map.payout} />
+                        <DataList.Cell row={row} column={columns_map?.purchase} />
+                        <DataList.Cell row={row} column={columns_map?.payout} />
                     </div>
                     <div>
                         <DataList.Cell
                             className='data-list__row-cell--amount'
                             row={row}
-                            column={columns_map.indicative}
+                            column={columns_map?.indicative}
                         />
-                        <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.profit} />
+                        <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map?.profit} />
                     </div>
                 </div>
             </>
         );
     }
 
-    const { contract_info, contract_update, type, is_sell_requested } = row;
+    const { contract_info, contract_update, type, is_sell_requested } = row as TPortfolioStore['active_positions'][0];
     const { currency, status, date_expiry, date_start, tick_count, purchase_time } = contract_info;
     const current_tick = tick_count ? getCurrentTick(contract_info) : null;
     let duration_type;
@@ -191,7 +179,7 @@ const MobileRowRenderer = ({
     if (isMultiplierContract(type ?? '') || isAccumulatorContract(type ?? '')) {
         return (
             <PositionsDrawerCard
-                //@ts-expect-error this component needs to be refactored. I'm using types from stores/types.ts
+                //@ts-expect-error wrong type in PositionsDrawerCard
                 contract_info={contract_info}
                 contract_update={contract_update || {}}
                 currency={currency ?? ''}
@@ -209,7 +197,7 @@ const MobileRowRenderer = ({
     return (
         <>
             <div className='data-list__row'>
-                <DataList.Cell row={row} column={columns_map.type} />
+                <DataList.Cell row={row} column={columns_map?.type} />
                 {isVanillaContract(type ?? '') ? (
                     <ProgressSliderMobile
                         current_tick={current_tick}
@@ -226,16 +214,16 @@ const MobileRowRenderer = ({
                 )}
             </div>
             <div className='data-list__row'>
-                <DataList.Cell row={row} column={columns_map.reference} />
-                <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.currency} />
+                <DataList.Cell row={row} column={columns_map?.reference} />
+                <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map?.currency} />
             </div>
             <div className='data-list__row'>
-                <DataList.Cell row={row} column={columns_map.purchase} />
-                <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.indicative} />
+                <DataList.Cell row={row} column={columns_map?.purchase} />
+                <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map?.indicative} />
             </div>
             <div className='data-list__row'>
-                <DataList.Cell row={row} column={columns_map.payout} />
-                <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.profit} />
+                <DataList.Cell row={row} column={columns_map?.payout} />
+                <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map?.profit} />
             </div>
             <div className='data-list__row-divider' />
             <div className='data-list__row'>
@@ -312,14 +300,14 @@ export const OpenPositionsTable = ({
     </React.Fragment>
 );
 
-const getRowAction = (row_obj: TRowObj) =>
+const getRowAction: TDataList['getRowAction'] = row_obj =>
     row_obj.is_unsupported
         ? {
               component: (
                   <Localize
                       i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
                       values={{
-                          trade_type_name: getUnsupportedContracts()[row_obj.type]?.name,
+                          trade_type_name: getUnsupportedContracts()[row_obj.type as TUnsupportedContractType]?.name,
                       }}
                   />
               ),
@@ -331,10 +319,11 @@ const getRowAction = (row_obj: TRowObj) =>
  * purchase property in contract positions object is somehow NaN or undefined in the first few responses.
  * So we set it to true in these cases to show a preloader for the data-table-row until the correct value is set.
  */
-const isPurchaseReceived = (item: { purchase: number }) => isNaN(item.purchase) || !item.purchase;
+const isPurchaseReceived: TOpenPositionsTable['preloaderCheck'] = (item: { purchase?: number }) =>
+    isNaN(Number(item.purchase)) || !item.purchase;
 
 const getOpenPositionsTotals = (
-    active_positions_filtered: TActivePositions,
+    active_positions_filtered: TPortfolioStore['active_positions'],
     is_multiplier_selected: boolean,
     is_accumulator_selected: boolean
 ) => {
@@ -526,7 +515,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [previous_active_positions]);
 
-    const checkForAccuAndMultContracts = (prev_active_positions: TActivePositions = []) => {
+    const checkForAccuAndMultContracts = (prev_active_positions: TPortfolioStore['active_positions'] = []) => {
         if (active_positions === prev_active_positions) return;
         if (!has_accumulator_contract) {
             setHasAccumulatorContract(
@@ -564,12 +553,12 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
 
     const columns = getColumns();
 
-    const columns_map = {} as Record<string, TColumnsMapElement>;
+    const columns_map = {} as Record<TColIndex, TDataListCell['column']>;
     columns.forEach(e => {
-        columns_map[e.col_index] = e;
+        columns_map[e.col_index as TColIndex] = e as TDataListCell['column'];
     });
 
-    const mobileRowRenderer = (args: TMobileRowRenderer) => (
+    const mobileRowRenderer: TRowRenderer = args => (
         <MobileRowRenderer
             {...args}
             columns_map={columns_map}

@@ -5,7 +5,7 @@ import type StatementStores from './Modules/Statement/statement-store';
 
 type TOverrideProfitStore = Omit<ProfitStores, 'totals' | 'data'> & {
     data: { [key: string]: string }[];
-    totals: string;
+    totals: { [key: string]: unknown };
 };
 
 type TOverrideStatementStore = Omit<

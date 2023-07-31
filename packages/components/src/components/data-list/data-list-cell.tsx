@@ -1,44 +1,53 @@
 import React from 'react';
 import classNames from 'classnames';
 import { isVanillaContract } from '@deriv/shared';
-import { TPassThrough } from './data-list';
+import { TPassThrough, TRow } from './data-list';
 
-type TRow = {
-    contract_info: {
-        [key: string]: string;
-    };
-} & {
-    [key: string]: string;
-};
+export type TColIndex =
+    | 'type'
+    | 'reference'
+    | 'currency'
+    | 'purchase'
+    | 'payout'
+    | 'profit'
+    | 'indicative'
+    | 'id'
+    | 'multiplier'
+    | 'buy_price'
+    | 'cancellation'
+    | 'limit_order'
+    | 'bid_price'
+    | 'action';
 
 type TRenderCellContent = {
     cell_value: string;
-    is_footer: boolean;
+    is_footer?: boolean;
     passthrough?: TPassThrough;
     row_obj: TRow;
     is_vanilla?: boolean;
 };
 
-type TDataListCell = {
-    className: string;
-    column: {
-        col_index: number | string;
-        title: string;
-        renderCellContent: (props: TRenderCellContent) => React.ReactNode;
-        renderHeader: (prop: renderHeaderType) => React.ReactNode;
+export type TDataListCell = {
+    className?: string;
+    column?: {
+        key?: string;
+        title?: string;
+        col_index?: TColIndex;
+        renderCellContent?: (props: TRenderCellContent) => React.ReactNode;
+        renderHeader?: (prop: renderHeaderType) => React.ReactNode;
     };
-    is_footer: boolean;
+    is_footer?: boolean;
     passthrough?: TPassThrough;
-    row: TRow;
+    row?: TRow;
 };
 
-type renderHeaderType = { title: string; is_vanilla?: boolean };
+type renderHeaderType = { title?: string; is_vanilla?: boolean };
 
 const DataListCell = ({ className, column, is_footer, passthrough, row }: TDataListCell) => {
     if (!column) return null;
     const { col_index, title } = column;
-    const cell_value = row[col_index];
-    const is_vanilla = isVanillaContract(row.contract_info?.contract_type);
+    const cell_value = row?.[col_index as TColIndex];
+    const is_vanilla = isVanillaContract(row?.contract_info?.contract_type);
 
     return (
         <div className={classNames(className, column.col_index)}>
@@ -49,7 +58,7 @@ const DataListCell = ({ className, column, is_footer, passthrough, row }: TDataL
             )}
             <div className='data-list__row-content'>
                 {column.renderCellContent
-                    ? column.renderCellContent({ cell_value, is_footer, passthrough, row_obj: row, is_vanilla })
+                    ? column.renderCellContent({ cell_value, is_footer, passthrough, row_obj: row as TRow, is_vanilla })
                     : cell_value}
             </div>
         </div>

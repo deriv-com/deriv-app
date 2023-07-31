@@ -25,9 +25,11 @@ import {
 // Error Routes
 const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
 
+// route_key is used as the value for the react key prop
 // Order matters
 const initRoutesConfig = ({ is_appstore }) => [
     {
+        route_key: 1,
         path: routes.account_closed,
         component: AccountClosed,
         is_authenticated: false,
@@ -35,11 +37,13 @@ const initRoutesConfig = ({ is_appstore }) => [
         getTitle: () => localize('Account closed'),
     },
     {
+        route_key: 2,
         // TODO: Remove once mobile team has changed this link
         path: routes.deactivate_account,
         component: DeactivateAccount,
     },
     {
+        route_key: 3,
         path: routes.account,
         component: Account,
         is_authenticated: true,
@@ -47,16 +51,19 @@ const initRoutesConfig = ({ is_appstore }) => [
         icon_component: 'IcUserOutline',
         routes: [
             {
+                route_key: 1,
                 getTitle: () => localize('Profile'),
                 icon: 'IcUserOutline',
                 subroutes: [
                     {
+                        route_key: 1,
                         path: routes.personal_details,
                         component: PersonalDetails,
                         getTitle: () => localize('Personal details'),
                         default: true,
                     },
                     {
+                        route_key: 2,
                         path: routes.languages,
                         component: LanguageSettings,
                         getTitle: () => localize('Languages'),
@@ -64,15 +71,18 @@ const initRoutesConfig = ({ is_appstore }) => [
                 ],
             },
             {
+                route_key: 2,
                 getTitle: () => localize('Assessments'),
                 icon: 'IcAssessment',
                 subroutes: [
                     {
+                        route_key: 1,
                         path: routes.trading_assessment,
                         component: TradingAssessment,
                         getTitle: () => localize('Trading assessment'),
                     },
                     {
+                        route_key: 2,
                         path: routes.financial_assessment,
                         component: FinancialAssessment,
                         getTitle: () => localize('Financial assessment'),
@@ -80,20 +90,24 @@ const initRoutesConfig = ({ is_appstore }) => [
                 ],
             },
             {
+                route_key: 3,
                 getTitle: () => localize('Verification'),
                 icon: 'IcVerification',
                 subroutes: [
                     {
+                        route_key: 1,
                         path: routes.proof_of_identity,
                         component: ProofOfIdentity,
                         getTitle: () => localize('Proof of identity'),
                     },
                     {
+                        route_key: 2,
                         path: routes.proof_of_address,
                         component: ProofOfAddress,
                         getTitle: () => localize('Proof of address'),
                     },
                     {
+                        route_key: 3,
                         path: routes.proof_of_ownership,
                         component: ProofOfOwnership,
                         getTitle: () => localize('Proof of ownership'),
@@ -101,25 +115,30 @@ const initRoutesConfig = ({ is_appstore }) => [
                 ],
             },
             {
+                route_key: 4,
                 getTitle: () => localize('Security and safety'),
                 icon: 'IcSecurity',
                 subroutes: [
                     {
+                        route_key: 1,
                         path: routes.passwords,
                         component: Passwords,
                         getTitle: () => localize('Email and passwords'),
                     },
                     {
+                        route_key: 2,
                         path: routes.self_exclusion,
                         component: SelfExclusion,
                         getTitle: () => (is_appstore ? localize('Self-exclusion') : localize('Self exclusion')),
                     },
                     {
+                        route_key: 3,
                         path: routes.account_limits,
                         component: AccountLimits,
                         getTitle: () => (is_appstore ? localize('Withdrawal limits') : localize('Account limits')),
                     },
                     {
+                        route_key: 4,
                         path: routes.login_history,
                         component: LoginHistory,
                         getTitle: () => localize('Login history'),
@@ -128,22 +147,26 @@ const initRoutesConfig = ({ is_appstore }) => [
                         ? []
                         : [
                               {
+                                  route_key: 5,
                                   path: routes.api_token,
                                   component: ApiToken,
                                   getTitle: () => localize('API token'),
                               },
                           ]),
                     {
+                        route_key: 6,
                         path: routes.connected_apps,
                         component: ConnectedApps,
                         getTitle: () => localize('Connected apps'),
                     },
                     {
+                        route_key: 7,
                         path: routes.two_factor_authentication,
                         component: TwoFactorAuthentication,
                         getTitle: () => localize('Two-factor authentication'),
                     },
                     {
+                        route_key: 8,
                         path: routes.closing_account,
                         component: ClosingAccount,
                         getTitle: () => localize('Close your account'),
@@ -169,7 +192,7 @@ const initRoutesConfig = ({ is_appstore }) => [
 let routesConfig;
 
 // For default page route if page/path is not found, must be kept at the end of routes_config array
-const route_default = { component: Page404, getTitle: () => localize('Error 404') };
+const route_default = { route_key: 0, component: Page404, getTitle: () => localize('Error 404') };
 
 const getRoutesConfig = ({ is_appstore }) => {
     if (!routesConfig) {

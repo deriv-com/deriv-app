@@ -57,6 +57,7 @@ export type TRealAccount = {
 export type TPopoverAlignment = 'top' | 'right' | 'bottom' | 'left';
 
 export type TRoute = {
+    route_key?: number;
     exact?: boolean;
     id?: string;
     icon_component?: string;

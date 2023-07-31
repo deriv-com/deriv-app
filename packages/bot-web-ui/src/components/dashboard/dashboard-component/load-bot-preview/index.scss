@@ -283,7 +283,6 @@
                 @include mobile {
                     width: unset;
                     font-size: var(--text-size-xxs);
-                    white-space: nowrap;
                 }
             }
 
@@ -438,7 +437,8 @@
             }
 
             span {
-                padding-right: 1.5rem;
+                padding-right: 1.6rem;
+                word-break: break-word;
             }
         }
     }

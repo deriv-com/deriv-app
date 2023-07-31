@@ -217,8 +217,7 @@ describe('JurisdictionModalContent', () => {
     it('should display content of 4 types of jurisdiction correctly for synthetics account', () => {
         render(<JurisdictionModalContent {...mock_props} account_type='financial' />);
         expect(screen.getAllByText('Assets')).toHaveLength(4);
-        expect(screen.getAllByText('Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies')).toHaveLength(2);
-        expect(screen.getByText('Forex, Stock indices, Commodities and Cryptocurrencies')).toBeInTheDocument();
+        expect(screen.getAllByText('Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies')).toHaveLength(3);
         expect(screen.getByText('Forex and Cryptocurrencies')).toBeInTheDocument();
         expect(screen.getAllByText('Leverage')).toHaveLength(4);
         expect(screen.getAllByText('1:1000')).toHaveLength(3);

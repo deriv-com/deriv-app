@@ -1,9 +1,11 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { translate } from '../../../common/i18n';
 import { roundBalance } from '../../common/tools';
 import useIsMounted from '../../../common/hooks/isMounted';
+import { setIsBotRunning } from '../../view/deriv/store/ui-slice';
 import Stage from './components/Stage';
 
 const INDICATOR_MESSAGES = {
@@ -28,6 +30,7 @@ const AnimateTrade = () => {
     const [sell_id, setSellId] = React.useState(0);
     const [contract_status, setContractStatus] = React.useState(CONTRACT_STATUS.not_running);
     const isMounted = useIsMounted();
+    const dispatch = useDispatch();
 
     React.useEffect(() => {
         globalObserver.register('reset_animation', resetSummary);
@@ -93,6 +96,30 @@ const AnimateTrade = () => {
     const is_attempting_to_buy = contract_status === CONTRACT_STATUS.attempting_to_buy;
     const is_buy_succeeded = contract_status === CONTRACT_STATUS.buy_succeeded;
     const is_contract_closed = contract_status === CONTRACT_STATUS.contract_closed;
+
+    React.useEffect(() => {
+        if (contract_status === CONTRACT_STATUS.contract_closed) {
+            setIndicatorMessage(INDICATOR_MESSAGES.stopped);
+            $('#summaryStopButton').hide();
+            $('#summaryRunButton').show();
+
+            const elRunButtons = document.querySelectorAll('#runButton, #summaryRunButton');
+            elRunButtons.forEach(elRunButton => {
+                elRunButton.style.display = 'initial';
+                elRunButton.removeAttribute('disabled');
+            });
+            $('#stopButton').hide();
+
+            globalObserver.register('bot.stop', () => {
+                if (isMounted()) setIndicatorMessage(INDICATOR_MESSAGES.stopped);
+            });
+        }
+    }, [contract_status]);
+
+    if (is_contract_closed) {
+        dispatch(setIsBotRunning(false));
+        globalObserver.setState({ isRunning: false });
+    }
 
     return (
         <div>

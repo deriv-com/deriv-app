@@ -136,7 +136,7 @@ const PersonalDetails = ({
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({ handleSubmit, errors, setFieldValue, setFieldTouched, touched, values, handleChange, handleBlur }) => (
+            {({ handleSubmit, errors, setFieldValue, touched, values, handleChange, handleBlur }) => (
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef, height }) => (
                         <Form
@@ -192,15 +192,12 @@ const PersonalDetails = ({
                                                 <FormSubHeader title={localize('Details')} />
                                             </React.Fragment>
                                         )}
-
                                         <PersonalDetailsForm
-                                            errors={errors}
-                                            touched={touched}
-                                            values={values}
-                                            handleChange={handleChange}
-                                            handleBlur={handleBlur}
-                                            setFieldValue={setFieldValue}
-                                            setFieldTouched={setFieldTouched}
+                                            className={classNames({
+                                                'account-form__poi-confirm-example_container':
+                                                    is_qualified_for_idv &&
+                                                    !shouldHideHelperImage(values?.document_type?.id),
+                                            })}
                                             is_virtual={is_virtual}
                                             is_svg={is_svg}
                                             is_mf={is_mf}

@@ -281,6 +281,14 @@ const PersonalDetailsForm = props => {
                                 )}
                             </Field>
                         )}
+                        {!is_svg && 'phone' in values && (
+                            <PhoneField
+                                value={values.phone}
+                                editable_fields={editable_fields}
+                                has_real_account={has_real_account}
+                                required
+                            />
+                        )}
                         {!is_svg && ('tax_residence' in values || 'tax_identification_number' in values) && (
                             <React.Fragment>
                                 <FormSubHeader title={localize('Tax information')} />
@@ -390,7 +398,7 @@ const PersonalDetailsForm = props => {
                 </FormBodySection>
             </div>
 
-            {('phone' in values || is_svg) && (
+            {is_svg && (
                 <div className='account-form__poi-additional-information'>
                     <FormSubHeader title={localize('Additional information')} />
                     {'phone' in values && (

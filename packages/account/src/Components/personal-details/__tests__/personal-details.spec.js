@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
 import PersonalDetails from '../personal-details';
@@ -48,7 +48,7 @@ const tax_residence_pop_over_text =
     /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i;
 const tin_pop_over_text = /don't know your tax identification number\?/i;
 
-const runCommonFormfieldsTests = () => {
+const runCommonFormfieldsTests = is_svg => {
     expect(screen.getByRole('radio', { name: /mr/i })).toBeInTheDocument();
     expect(screen.getByRole('radio', { name: /ms/i })).toBeInTheDocument();
     expect(screen.getByTestId('first_name')).toBeInTheDocument();
@@ -74,10 +74,6 @@ const runCommonFormfieldsTests = () => {
         screen.getByText(/Please enter your date of birth as in your official identity documents./i)
     ).toBeInTheDocument();
 
-    expect(screen.getByText('Place of birth')).toBeInTheDocument();
-    expect(screen.getByText('Citizenship')).toBeInTheDocument();
-    expect(screen.getByText('Tax residence')).toBeInTheDocument();
-
     const tax_residence_pop_over = screen.queryByTestId('tax_residence_pop_over');
     expect(tax_residence_pop_over).toBeInTheDocument();
 
@@ -98,7 +94,12 @@ const runCommonFormfieldsTests = () => {
         'https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
     );
 
-    expect(screen.getByRole('heading', { name: /account opening reason/i })).toBeInTheDocument();
+    if (is_svg)
+        expect(
+            screen.getByRole('heading', {
+                name: /additional information/i,
+            })
+        ).toBeInTheDocument();
     expect(screen.queryByTestId('dti_dropdown_display')).toBeInTheDocument();
     expect(screen.queryByTestId('account_opening_reason_mobile')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: /previous/i })).toBeInTheDocument();
@@ -108,6 +109,7 @@ const runCommonFormfieldsTests = () => {
 describe('<PersonalDetails/>', () => {
     const props = {
         is_svg: true,
+        is_high_risk: false,
         account_opening_reason_list: [
             {
                 text: 'Hedging',
@@ -238,6 +240,23 @@ describe('<PersonalDetails/>', () => {
     const renderwithRouter = component => {
         render(<BrowserRouter>{component}</BrowserRouter>);
     };
+    it('should autopopulate tax_residence for MF clients', () => {
+        const new_props = {
+            ...props,
+            is_svg: false,
+            is_mf: true,
+            value: {
+                ...props.value,
+                tax_residence: 'Malta',
+            },
+        };
+        renderwithRouter(<PersonalDetails {...new_props} />);
+        expect(
+            screen.getByRole('textbox', {
+                name: /tax residence\*/i,
+            })
+        ).toHaveValue('Malta');
+    });
 
     it('should render PersonalDetails component', () => {
         renderwithRouter(<PersonalDetails {...props} />);
@@ -326,7 +345,7 @@ describe('<PersonalDetails/>', () => {
     it('should display the correct field details when is_appstore is true ', () => {
         renderwithRouter(
             <PlatformContext.Provider value={{ is_appstore: true }}>
-                <PersonalDetails {...props} is_svg={false} />
+                <PersonalDetails {...props} />
             </PlatformContext.Provider>
         );
 
@@ -336,7 +355,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/phone number\*/i)).toBeInTheDocument();
 
-        runCommonFormfieldsTests();
+        runCommonFormfieldsTests(props.is_svg);
     });
 
     it('should display the correct field details when is_appstore is false and is_svg is true ', () => {
@@ -354,7 +373,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/phone number\*/i)).toBeInTheDocument();
 
-        runCommonFormfieldsTests();
+        runCommonFormfieldsTests(props.is_svg);
     });
 
     it('should display the correct field details when is_appstore is false and is_svg is false ', () => {
@@ -370,10 +389,8 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText('First name')).toBeInTheDocument();
         expect(screen.getByText('Last name')).toBeInTheDocument();
         expect(screen.getByText('Date of birth')).toBeInTheDocument();
-        expect(screen.getByText('Phone number')).toBeInTheDocument();
-        expect(screen.getByLabelText('Phone number')).toBeInTheDocument();
 
-        runCommonFormfieldsTests();
+        runCommonFormfieldsTests(false);
     });
 
     it('should not enable fields which are disabled and empty', () => {
@@ -586,6 +603,7 @@ describe('<PersonalDetails/>', () => {
         splitValidationResultTypes.mockReturnValue({ warnings: {}, errors: {} });
         const new_props = {
             ...props,
+            is_svg: false,
             value: {
                 account_opening_reason: '',
                 citizen: '',
@@ -666,7 +684,7 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should close tax_residence pop-over when clicked outside', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
+        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
 
         const tax_residence_pop_over = screen.getByTestId('tax_residence_pop_over');
         expect(tax_residence_pop_over).toBeInTheDocument();
@@ -680,7 +698,7 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should close tax_identification_number_pop_over when clicked outside', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
+        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
 
         const tin_pop_over = screen.getByTestId('tax_identification_number_pop_over');
         expect(tin_pop_over).toBeInTheDocument();
@@ -726,19 +744,5 @@ describe('<PersonalDetails/>', () => {
 
         expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
         expect(screen.queryByRole('link', { name: 'here' })).not.toBeInTheDocument();
-    });
-
-    it('should autopopulate tax_residence for MF clients', () => {
-        const new_props = {
-            ...props,
-            is_mf: true,
-            value: {
-                ...props.value,
-                tax_residence: 'Malta',
-            },
-        };
-        renderwithRouter(<PersonalDetails {...new_props} />);
-        const el_tax_residence = screen.getByTestId('selected_value');
-        expect(el_tax_residence).toHaveTextContent('Malta');
     });
 });

@@ -51,4 +51,13 @@ describe('<Verification />', () => {
         const el_dp2p_Dp2pBlocked_container = screen.getByTestId('dp2p-Dp2pBlocked_container');
         expect(el_dp2p_Dp2pBlocked_container).toBeInTheDocument();
     });
+    it('Should render empty content when nickname form is open', () => {
+        useStores.mockImplementation(() => ({
+            general_store: { ...mocked_store_values, should_show_popup: true },
+        }));
+
+        const { container } = render(<Verification should_wrap={false} />);
+
+        expect(container).toBeEmptyDOMElement();
+    });
 });

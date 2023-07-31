@@ -1,5 +1,10 @@
 import { useTraderStore } from 'Stores/useTraderStores';
 
+export type TTextValueStrings = {
+    text: string;
+    value: string;
+};
+
 export type TProposalTypeInfo = {
     has_error?: boolean;
     id: string;

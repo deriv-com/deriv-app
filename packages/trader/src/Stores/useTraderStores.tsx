@@ -2,7 +2,7 @@ import React from 'react';
 import { useStore } from '@deriv/stores';
 import TradeStore from './Modules/Trading/trade-store';
 import moment from 'moment';
-import { TTextValueStrings } from '../../../components/src/components/types/common.types';
+import { TTextValueStrings } from '../Types/common-prop.type';
 
 type TContractTypesList = {
     [key: string]: {

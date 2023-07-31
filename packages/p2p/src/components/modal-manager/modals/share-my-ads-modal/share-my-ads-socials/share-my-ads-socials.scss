@@ -8,21 +8,14 @@
         margin: 2rem;
     }
 
-    .react-share__ShareButton {
-        @include mobile {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-    }
-
-    &__container {
+    a {
         display: flex;
         flex-direction: column;
         align-items: center;
+        text-decoration: none;
 
-        &-link {
-            margin-bottom: 0.4rem;
+        span {
+            margin-top: 0.4rem;
         }
     }
 

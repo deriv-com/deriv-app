@@ -20,7 +20,6 @@ import ShareMyAdsIcons from './share-my-ads-socials';
 import ShareMyAdsCard from './share-my-ads-card';
 
 const ShareMyAdsModal = ({ advert }: TAdvert) => {
-    const [show_popup, setShowPopup] = React.useState(false);
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
 
     const isMounted = useIsMounted();
@@ -30,15 +29,9 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
 
     const { hideModal, is_modal_open } = useModalManagerContext();
 
-    let timeout_clipboard: ReturnType<typeof setTimeout>;
-
     const onCopy = (event: { stopPropagation: () => void }) => {
         copyToClipboard(advert_url);
-        timeout_clipboard = setTimeout(() => {
-            if (isMounted()) {
-                setIsCopied(false);
-            }
-        }, 2000);
+        setIsCopied(true);
         event.stopPropagation();
     };
 
@@ -46,7 +39,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
         if (divRef.current) {
             toPng(divRef.current).then(dataUrl => {
                 const link = document.createElement('a');
-                link.download = 'test.png';
+                link.download = `${advert.type}_${advert.id}.png`;
                 link.href = dataUrl;
                 link.click();
             });
@@ -63,11 +56,17 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
     };
 
     React.useEffect(() => {
+        let timeout_clipboard: ReturnType<typeof setTimeout>;
+        if (is_copied) {
+            timeout_clipboard = setTimeout(() => {
+                setIsCopied(false);
+            }, 2000);
+        }
         return () => {
             clearTimeout(timeout_clipboard);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [is_copied]);
 
     return (
         <React.Fragment>
@@ -75,7 +74,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                 has_close_icon
                 is_open={is_modal_open}
                 title={localize('Share this ad')}
-                toggleModal={() => (show_popup ? {} : hideModal())}
+                toggleModal={hideModal}
                 width='71rem'
             >
                 <Modal.Body className='share-my-ads-modal__body'>

@@ -9,7 +9,7 @@ import { TAdvertProps } from 'Types';
 type TShareMyAdsCardProps = {
     advert: TAdvertProps;
     advert_url: string;
-    divRef: React.MutableRefObject<HTMLDivElement>;
+    divRef: React.MutableRefObject<HTMLDivElement> | React.MutableRefObject<null>;
 };
 
 const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) => {
@@ -47,20 +47,13 @@ const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) =>
                 </div>
                 <div className='share-my-ads-card__numbers-text'>
                     <Text color='colored-background' size='xs' weight='bold'>
-                        <Localize i18n_default_text='{{id}}' values={{ id }} />
+                        {id}
                     </Text>
                     <Text color='colored-background' size='xs' weight='bold'>
-                        <Localize
-                            i18n_default_text='{{min_order_amount_limit_display}} - {{max_order_amount_limit_display}} {{account_currency}}'
-                            values={{
-                                min_order_amount_limit_display,
-                                max_order_amount_limit_display,
-                                account_currency,
-                            }}
-                        />
+                        {min_order_amount_limit_display} - {max_order_amount_limit_display} {account_currency}
                     </Text>
                     <Text color='colored-background' size='xs' weight='bold'>
-                        <Localize i18n_default_text='{{rate_display}}%' values={{ rate_display }} />
+                        {rate_display}%
                     </Text>
                 </div>
             </div>

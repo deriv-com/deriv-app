@@ -26,7 +26,7 @@ const Clipboard = ({
     popoverClassName,
     popover_props = {},
     popoverAlignment = 'bottom',
-    size,
+    size = '16',
 }: TClipboard) => {
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
     const isMounted = useIsMounted();
@@ -66,7 +66,7 @@ const Clipboard = ({
                     custom_color='var(--text-less-prominent)'
                     className={classNames('dc-clipboard', className)}
                     onClick={onClick}
-                    size={size ?? '16'}
+                    size={size}
                 />
             )}
         </Popover>

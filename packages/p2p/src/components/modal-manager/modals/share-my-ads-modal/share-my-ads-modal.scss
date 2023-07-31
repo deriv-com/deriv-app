@@ -3,8 +3,7 @@
         padding-top: 1rem;
 
         @include mobile {
-            padding-top: 0;
-            padding-bottom: 2rem;
+            padding: 0 2rem 2rem;
         }
     }
 

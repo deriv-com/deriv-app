@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AlertMessage from './alert-message';
 import './message-list.scss';
 
+type TMessageListProps = { list: (React.ComponentProps<typeof AlertMessage> & { key: string })[] };
+
 const animations = {
     initial: {
         height: 0,
@@ -33,7 +35,7 @@ const animations = {
     },
 };
 
-const MessageList = ({ list }: { list: (React.ComponentProps<typeof AlertMessage> & { key: string })[] }) => {
+const MessageList = ({ list }: TMessageListProps) => {
     return (
         <div className='message-list'>
             <AnimatePresence>

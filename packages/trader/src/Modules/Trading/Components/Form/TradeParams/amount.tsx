@@ -170,7 +170,7 @@ const Amount = observer(({ is_minimized }: { is_minimized: boolean }) => {
                 duration_unit={duration_unit}
                 expiry_type={expiry_type}
                 onChange={onChange}
-                value={parseInt(is_equal)}
+                value={Number(is_equal)}
                 has_equals_only={has_equals_only}
             />
             {is_multiplier && (

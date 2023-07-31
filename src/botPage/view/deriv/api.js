@@ -1,6 +1,6 @@
+import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import { getLanguage, get as getStorage, getAppIdFallback } from '@storage';
 import { getDomainAppId } from '@utils';
-import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 
 const isRealAccount = () => {
     const accountList = JSON.parse(getStorage('tokenList') || '{}');

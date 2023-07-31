@@ -85,7 +85,7 @@ describe('<OneTimeDepositModal />', () => {
         expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
     });
 
-    it('should close modal when iframe if user unable to deposit because they have deposited', () => {
+    it('should close modal if user unable to deposit because they have deposited', () => {
         const history = createBrowserHistory();
         (useDepositLocked as jest.Mock).mockReturnValueOnce(true);
         const wrapper = ({ children }: { children: JSX.Element }) => (

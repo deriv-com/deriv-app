@@ -11,7 +11,7 @@ declare global {
             open_chat_window: VoidFunction;
         };
         TrackJS: { console: { log: (arg0: unknown[]) => void }; track: (arg0: object) => void };
-        // TODO DocumentTouch been removed from the standards, we need to change this with Touch and TouchList later
+        /** @deprecated `DocumentTouch` has been removed from the standards, use `Touch` or `TouchList` instead. */
         DocumentTouch: any;
         opera?: string;
         MSStream?: {

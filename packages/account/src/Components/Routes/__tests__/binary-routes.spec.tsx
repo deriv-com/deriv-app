@@ -16,12 +16,8 @@ describe('<BinaryRoutes />', () => {
     it('should render BinaryRoutes with mocked route component', () => {
         const mock = mockStore({
             modules: {
-                cfd: {
-                    current_list: {
-                        CR1231123: {
-                            landing_company_short: 'maltainvest',
-                        },
-                    },
+                common: {
+                    current_language: 'EN',
                 },
             },
         });

@@ -10,7 +10,6 @@ import {
     Text,
     useCopyToClipboard,
 } from '@deriv/components';
-import { useIsMounted } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -22,7 +21,6 @@ import ShareMyAdsCard from './share-my-ads-card';
 const ShareMyAdsModal = ({ advert }: TAdvert) => {
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
 
-    const isMounted = useIsMounted();
     const divRef = React.useRef(null);
     // TODO: replace with proper url when available
     const advert_url = window.location.href;

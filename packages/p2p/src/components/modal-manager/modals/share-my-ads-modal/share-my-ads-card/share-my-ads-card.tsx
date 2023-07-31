@@ -7,7 +7,7 @@ import { base64_images } from 'Constants/base64-images';
 import { TAdvertProps } from 'Types';
 
 type TShareMyAdsCardProps = {
-    advert: TAdvertProps;
+    advert: Partial<TAdvertProps>;
     advert_url: string;
     divRef: React.MutableRefObject<HTMLDivElement> | React.MutableRefObject<null>;
 };

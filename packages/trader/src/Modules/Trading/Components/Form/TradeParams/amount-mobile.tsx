@@ -13,7 +13,7 @@ type TBasis = {
     duration_value: number;
     toggleModal: () => void;
     has_duration_error: boolean;
-    selected_basis: string;
+    selected_basis: string | number;
     setSelectedAmount: (basis: string, num: string | number) => void;
     setAmountError: (has_error: boolean) => void;
 };
@@ -145,10 +145,10 @@ const Basis = observer(
 );
 
 type TAmountMobile = React.ComponentProps<typeof Basis> & {
-    amount_tab_idx: number;
+    amount_tab_idx?: number;
     setAmountTabIdx: React.ComponentProps<typeof Tabs>['onTabItemClick'];
-    stake_value: string;
-    payout_value: string;
+    stake_value: string | number;
+    payout_value: string | number;
 };
 
 const Amount = observer(

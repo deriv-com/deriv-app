@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import Amount from 'Modules/Trading/Components/Form/TradeParams/amount';
@@ -17,14 +16,21 @@ import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 
-const TradeParams = observer(({ is_minimized }) => {
+type TTradeParams = {
+    is_minimized: boolean;
+};
+
+const TradeParams = observer(({ is_minimized }: TTradeParams) => {
     const { form_components } = useTraderStore();
-    const isVisible = component_key => {
+    const isVisible = (component_key: string) => {
         return form_components.includes(component_key);
     };
     return (
         <React.Fragment>
-            {isVisible('duration') && <Duration key={'duration'} is_minimized={is_minimized} />}
+            {isVisible('duration') && (
+                // @ts-expect-error: TODO: check if TS error is gone after <Duration /> is migrated to TS
+                <Duration key={'duration'} is_minimized={is_minimized} />
+            )}
             {isVisible('barrier') && <Barrier key={'barrier'} is_minimized={is_minimized} />}
             {isVisible('last_digit') && <LastDigit key={'last_digit'} is_minimized={is_minimized} />}
             {isVisible('accumulator') && <Accumulator key={'accumulator'} />}
@@ -41,8 +47,5 @@ const TradeParams = observer(({ is_minimized }) => {
         </React.Fragment>
     );
 });
-TradeParams.propTypes = {
-    is_minimized: PropTypes.bool,
-};
 
 export default TradeParams;

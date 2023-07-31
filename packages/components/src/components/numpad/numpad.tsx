@@ -22,7 +22,7 @@ type TNumpad = {
     v?: string;
     render?: (props: { value: string; className: string }) => React.ReactNode;
     submit_label: string;
-    value: string;
+    value: string | number;
     format?: (v: string) => number | string;
     onValueChange: (val: number | string) => void;
     onValidate: (default_value: number | string) => boolean | 'error';
@@ -71,7 +71,7 @@ const Numpad = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [default_value, value]);
 
-    const updateValue = (val: string) => {
+    const updateValue = (val: string | number) => {
         setValue(val);
         if (onValueChange) onValueChange(val);
     };

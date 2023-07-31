@@ -128,6 +128,6 @@ export const modals = {
         import(/* webpackChunkName: "recommended-modal" */ 'Components/modal-manager/modals/recommended-modal')
     ),
     ShareMyAdsModal: React.lazy(() =>
-        import(/* webpackChunkName: "share-ad-modal" */ 'Components/modal-manager/modals/share-my-ads-modal')
+        import(/* webpackChunkName: "share-my-ads-modal" */ 'Components/modal-manager/modals/share-my-ads-modal')
     ),
 };

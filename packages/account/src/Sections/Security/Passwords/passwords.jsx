@@ -1,5 +1,4 @@
 import React from 'react';
-import { withRouter } from 'react-router';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import DerivPassword from './deriv-password.jsx';
@@ -68,4 +67,4 @@ const Passwords = observer(() => {
     );
 });
 
-export default withRouter(Passwords);
+export default Passwords;

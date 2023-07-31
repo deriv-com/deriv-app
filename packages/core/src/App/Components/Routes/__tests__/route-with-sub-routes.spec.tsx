@@ -1,12 +1,32 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import RouteWithSubRoutes from '../route-with-sub-routes';
+import { TranslationProvider } from '@deriv/translations';
+import { WS } from '@deriv/shared';
 
 type TMockFunction = {
     path: string;
     exact?: boolean;
 };
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    __esModule: true,
+    default: 'mockedDefaultExport',
+    WS: {
+        wait: jest.fn(() => Promise.resolve()),
+        authorized: {
+            send: jest.fn(() =>
+                Promise.resolve({
+                    get_settings: {
+                        preferred_language: 'EN',
+                    },
+                })
+            ),
+        },
+    },
+}));
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -38,17 +58,25 @@ const route = {
     path: '/test-path',
 };
 
-const MockRouteWithSubRoutesRender = () => <RouteWithSubRoutes {...route} />;
+const MockRouteWithSubRoutesRender = () => (
+    <TranslationProvider websocket={WS}>
+        <RouteWithSubRoutes {...route} />
+    </TranslationProvider>
+);
 
 describe('RouteWithSubRoutes component', () => {
-    it('should render the "RouteWithSubRoutes" component', () => {
-        render(<MockRouteWithSubRoutesRender />);
+    it('should render the "RouteWithSubRoutes" component', async () => {
+        await act(async () => {
+            render(<MockRouteWithSubRoutesRender />);
+        });
         const span_element = screen.getByText(/path param: \/test-path/i);
         expect(span_element).toBeInTheDocument();
     });
 
-    it('should render properties', () => {
-        render(<MockRouteWithSubRoutesRender />);
+    it('should render properties', async () => {
+        await act(async () => {
+            render(<MockRouteWithSubRoutesRender />);
+        });
         const path_param = screen.getByText(/\/test-path/i);
         const exact_param = screen.getByText(/exact param: true/i);
         expect(path_param).toBeInTheDocument();

@@ -55,7 +55,6 @@ const MainTitleBar = () => {
             </DesktopWrapper>
             <MobileWrapper>
                 <WalletsBanner />
-
                 <Text weight='bold' className='main-title-bar__text' color='prominent'>
                     {localize("Trader's Hub")}
                 </Text>

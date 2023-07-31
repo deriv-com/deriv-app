@@ -1,5 +1,6 @@
 import React from 'react';
 import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, Button } from '@deriv/components';
+import { useWalletMigration } from '@deriv/hooks';
 import { ContentFlag } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
@@ -29,6 +30,13 @@ const RealWalletsUpgrade = observer(() => {
     const handleBack = () => setCurrentStep(prev_step => prev_step - 1);
 
     const handleClose = () => toggleWalletsUpgrade(false);
+
+    const { start_migration } = useWalletMigration();
+
+    const upgradeToWallets = () => {
+        start_migration();
+        toggleWalletsUpgrade(false);
+    };
 
     const toggleCheckbox = React.useCallback(() => {
         setIsDisabled(prevDisabled => !prevDisabled);
@@ -73,7 +81,7 @@ const RealWalletsUpgrade = observer(() => {
                     large
                     className='wallet-steps__footer-button'
                     disabled={!is_disabled}
-                    onClick={handleClose}
+                    onClick={upgradeToWallets}
                 >
                     {localize('Upgrade to Wallets')}
                 </Button>

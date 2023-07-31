@@ -467,7 +467,7 @@
                 border-color: var(--border-hover);
             }
             &:active,
-            &:focus {
+            &:focus-within {
                 border-color: var(--border-active);
             }
         }

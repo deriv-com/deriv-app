@@ -70,6 +70,7 @@ export default class RunPanelStore {
         this.dbot = this.root_store.dbot;
         this.core = core;
         this.disposeReactionsFn = this.registerReactions();
+        this.timer = null;
     }
 
     active_index = 0;
@@ -147,6 +148,21 @@ export default class RunPanelStore {
     }
 
     async onRunButtonClick() {
+        let timer_counter = 1;
+        if (window.sendRequestsStatistic) {
+            performance.clearMeasures();
+            performance.mark('bot-start');
+            // Log is sent every 10 seconds for 5 minutes
+            this.timer = setInterval(() => {
+                window.sendRequestsStatistic(true);
+                performance.clearMeasures();
+                if (timer_counter === 12) {
+                    clearInterval(this.timer);
+                } else {
+                    timer_counter++;
+                }
+            }, 10000);
+        }
         const { summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = this.core;
         const is_ios = mobileOSDetect() === 'iOS';
@@ -230,6 +246,14 @@ export default class RunPanelStore {
         if (this.error_type) {
             this.error_type = undefined;
         }
+
+        if (this.timer) {
+            clearInterval(this.timer);
+        }
+        if (window.sendRequestsStatistic) {
+            window.sendRequestsStatistic(true);
+            performance.clearMeasures();
+        }
     }
 
     onClearStatClick() {
@@ -278,6 +302,13 @@ export default class RunPanelStore {
         this.onCloseDialog();
         summary_card.clear();
         toggleStopBotDialog();
+        if (this.timer) {
+            clearInterval(this.timer);
+        }
+        if (window.sendRequestsStatistic) {
+            window.sendRequestsStatistic(true);
+            performance.clearMeasures();
+        }
     }
 
     closeMultiplierContract() {
@@ -297,6 +328,13 @@ export default class RunPanelStore {
         this.onOkButtonClick = () => {
             ui.setPromptHandler(false);
             this.dbot.terminateBot();
+            if (this.timer) {
+                clearInterval(this.timer);
+            }
+            if (window.sendRequestsStatistic) {
+                window.sendRequestsStatistic(true);
+                performance.clearMeasures();
+            }
             this.onCloseDialog();
             summary_card.clear();
         };
@@ -341,8 +379,8 @@ export default class RunPanelStore {
         this.onOkButtonClick = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
-            title: localize("DBot isn't quite ready for real accounts"),
-            message: localize('Please switch to your demo account to run your DBot.'),
+            title: localize("Deriv Bot isn't quite ready for real accounts"),
+            message: localize('Please switch to your demo account to run your Deriv Bot.'),
         };
         this.is_dialog_open = true;
     }
@@ -367,7 +405,7 @@ export default class RunPanelStore {
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
             title: localize('Import error'),
-            message: localize('This strategy is currently not compatible with DBot.'),
+            message: localize('This strategy is currently not compatible with Deriv Bot.'),
         };
         this.is_dialog_open = true;
     }

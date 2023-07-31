@@ -8,6 +8,7 @@ const { getLanguage } = require('@deriv/translations');
 const website_name = require('@deriv/shared').website_name;
 const SocketCache = require('./socket_cache');
 const APIMiddleware = require('./api_middleware');
+const { CFD_PLATFORMS } = require('@deriv/shared');
 
 /*
  * An abstraction layer over native javascript WebSocket,
@@ -138,7 +139,7 @@ const BinarySocketBase = (() => {
 
     const excludeAuthorize = type => !(type === 'authorize' && !client_store.is_logged_in);
 
-    const wait = (...responses) => deriv_api.expectResponse(...responses.filter(excludeAuthorize));
+    const wait = (...responses) => deriv_api?.expectResponse(...responses.filter(excludeAuthorize));
 
     const subscribe = (request, cb) => deriv_api.subscribe(request).subscribe(cb, cb); // Delegate error handling to the callback
 
@@ -379,12 +380,16 @@ const BinarySocketBase = (() => {
             name: 'test real labuan financial stp',
         });
 
-    const getServiceToken = (platform, server) =>
-        deriv_api.send({
+    const getServiceToken = (platform, server) => {
+        let temp_service = platform;
+        if (platform === CFD_PLATFORMS.DERIVEZ) temp_service = 'pandats';
+
+        return deriv_api.send({
             service_token: 1,
-            service: platform,
+            service: temp_service,
             server,
         });
+    };
 
     const changeEmail = api_request => deriv_api.send(api_request);
 
@@ -508,10 +513,10 @@ const proxied_socket_base = delegateToObject(BinarySocketBase, () => BinarySocke
 const proxyForAuthorize = obj =>
     new Proxy(obj, {
         get(target, field) {
-            if (typeof target[field] !== 'function') {
+            if (target[field] && typeof target[field] !== 'function') {
                 return proxyForAuthorize(target[field]);
             }
-            return (...args) => BinarySocketBase.wait('authorize').then(() => target[field](...args));
+            return (...args) => BinarySocketBase?.wait('authorize').then(() => target[field](...args));
         },
     });
 

@@ -54,10 +54,8 @@ const Basis = observer(
             setSelectedAmount(basis, num);
             validateAmount(num);
         };
-        const formatAmount = (value: number | string) => {
-            const numericValue = typeof value === 'string' ? Number(value) : value;
-            return !isNaN(numericValue) ? parseFloat(numericValue.toFixed(user_currency_decimal_places)) : numericValue;
-        };
+        const formatAmount = (value: number | string) =>
+            !isNaN(+value) && value !== '' ? Number(value).toFixed(user_currency_decimal_places) : value;
         const setBasisAndAmount = (amount: number | string) => {
             const on_change_obj = {} as TObject;
 
@@ -187,8 +185,6 @@ const Amount = observer(
 
         return (
             <div>
-                {/* 
-                // @ts-expect-error We explicitly defined children as React.ReactElement[] here we only return a single JSX.Element or null. Dont know how to fix without breaking Tabs it's used in 27 files*/}
                 <Tabs active_index={active_index} onTabItemClick={setAmountTabIdx} top>
                     {basis_list.map(basis_option => {
                         switch (basis_option.value) {

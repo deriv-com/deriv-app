@@ -193,7 +193,7 @@ const PersonalDetails = ({
                                             </React.Fragment>
                                         )}
                                         <PersonalDetailsForm
-                                            className={classNames({
+                                            class_name={classNames({
                                                 'account-form__poi-confirm-example_container':
                                                     is_qualified_for_idv &&
                                                     !shouldHideHelperImage(values?.document_type?.id),

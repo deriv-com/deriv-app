@@ -41,7 +41,7 @@ const getHighlightedIconLabel = (
                         { icon: 'Synthetics', text: localize('Synthetics'), highlighted: true, is_asterisk: true },
                         { icon: 'Forex', text: forex_label, highlighted: true },
                         { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
-                        { icon: 'StockIndices', text: localize('Stock Indices'), highlighted: true },
+                        { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
                         { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
                         { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
                     ];
@@ -51,7 +51,7 @@ const getHighlightedIconLabel = (
                         { icon: 'Baskets', text: localize('Baskets'), highlighted: false },
                         { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: false },
                         { icon: 'Stocks', text: localize('Stocks'), highlighted: false },
-                        { icon: 'StockIndices', text: localize('Stock Indices'), highlighted: false },
+                        { icon: 'StockIndices', text: localize('Stock indices'), highlighted: false },
                         { icon: 'Commodities', text: localize('Commodities'), highlighted: false },
                         { icon: 'Forex', text: forex_label, highlighted: true },
                         { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
@@ -63,7 +63,7 @@ const getHighlightedIconLabel = (
                         { icon: 'Baskets', text: localize('Baskets'), highlighted: false },
                         { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: false },
                         { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
-                        { icon: 'StockIndices', text: localize('Stock Indices'), highlighted: true },
+                        { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
                         { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
                         { icon: 'Forex', text: forex_label, highlighted: true },
                         { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
@@ -178,7 +178,7 @@ const getHeaderColor = (shortcode: string) => {
 // Config for different Jurisdictions
 const cfd_config = () => ({
     leverage: '1:1000',
-    leverage_description: localize('Maximum Leverage'),
+    leverage_description: localize('Maximum leverage'),
     spread: '0.5 pips',
     spread_description: localize('Spreads from'),
     counterparty_company: 'Deriv (SVG) LLC',

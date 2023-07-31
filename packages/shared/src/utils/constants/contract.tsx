@@ -379,14 +379,6 @@ export const getUnsupportedContracts = () => ({
         name: localize('Spread Down'),
         position: 'bottom',
     },
-    RUNHIGH: {
-        name: localize('Only Ups'),
-        position: 'top',
-    },
-    RUNLOW: {
-        name: localize('Only Downs'),
-        position: 'bottom',
-    },
 });
 
 export const getSupportedContracts = (is_high_low?: boolean) => ({
@@ -457,6 +449,14 @@ export const getSupportedContracts = (is_high_low?: boolean) => ({
     },
     VANILLALONGPUT: {
         name: <Localize i18n_default_text='Put' />,
+        position: 'bottom',
+    },
+    RUNHIGH: {
+        name: localize('Only Ups'),
+        position: 'top',
+    },
+    RUNLOW: {
+        name: localize('Only Downs'),
         position: 'bottom',
     },
 });

@@ -1,15 +1,11 @@
 .traders-hub {
     max-width: 123.2rem;
     margin: auto;
-    padding: 2.4rem 0;
+    padding: 5rem 0;
 
     @include mobile {
         padding: 2rem;
         width: 100%;
-    }
-
-    &__wallets-bg {
-        background-color: var(--general-section-1);
     }
 
     &__main-container {
@@ -36,6 +32,31 @@
 
         &::-webkit-scrollbar {
             display: none;
+        }
+    }
+}
+
+.disclamer {
+    position: fixed;
+    bottom: 3.6rem;
+    width: 100%;
+    height: 5rem;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    backface-visibility: hidden;
+    background: var(--icon-grey-background);
+
+    @include mobile {
+        height: 8rem;
+        border: 1px solid var(--icon-grey-background);
+    }
+
+    &-text {
+        padding: 0 3rem;
+
+        @include mobile {
+            padding: 0 1.5rem;
         }
     }
 }

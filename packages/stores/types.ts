@@ -435,7 +435,7 @@ type TCommonStoreError = {
     message: string | JSX.Element;
     redirect_label: string;
     redirect_to: string;
-    redirectOnClick: () => void;
+    redirectOnClick: (() => void) | null;
     setError: (has_error: boolean, error: React.ReactNode | null) => void;
     should_clear_error_on_click: boolean;
     should_show_refresh: boolean;
@@ -618,6 +618,8 @@ type TTradersHubStore = {
     selected_region: TRegionAvailability;
     getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
     available_dxtrade_accounts: AvailableAccount[];
+    can_get_more_cfd_mt5_accounts: boolean;
+    toggleAccountTypeModalVisibility: () => void;
     active_modal_tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions';
     setWalletModalActiveTab: (tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions') => void;
     active_modal_wallet_id?: string;

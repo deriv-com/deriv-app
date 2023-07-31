@@ -9,8 +9,8 @@ import { useStore } from '@deriv/stores';
  *
  */
 const useFilteredCFDAccounts = () => {
-    const { data: available_mt5_accounts, isLoading } = useAvailableMT5Accounts();
-    const { data: existing_cfd_accounts, isLoading: existing_cfd_accounts_loading } = useExistingCFDAccounts();
+    const { data: available_mt5_accounts, ...rest_available_mt5_accounts } = useAvailableMT5Accounts();
+    const { data: existing_cfd_accounts, ...rest_existing_cfd_accounts } = useExistingCFDAccounts();
     const { traders_hub } = useStore();
     const { getShortCodeAndRegion } = traders_hub;
 
@@ -23,11 +23,16 @@ const useFilteredCFDAccounts = () => {
                 .map(market_type => {
                     // Change the market type from 'gaming' to 'synthetic' to match the existing CFD accounts
                     const modified_market_type = market_type.replace('gaming', 'synthetic');
+                    const landing_company_order = ['svg', 'bvi', 'labuan', 'vanuatu'];
 
-                    // Find the existing CFD account that matches the market type
-                    const existing_mt5_accounts = existing_cfd_accounts?.mt5_accounts?.filter(
-                        mt5 => mt5.market_type === modified_market_type
-                    );
+                    // Find the existing CFD account that matches the market type and sort them by the correct landing companies
+                    const existing_mt5_accounts = existing_cfd_accounts?.mt5_accounts
+                        ?.filter(mt5 => mt5.market_type === modified_market_type)
+                        .sort((a, b) => {
+                            const a_index = landing_company_order.indexOf(a.landing_company_short || '');
+                            const b_index = landing_company_order.indexOf(b.landing_company_short || '');
+                            return a_index - b_index;
+                        });
 
                     // Map over the available accounts and add the existing CFD account if it exists
                     return available_mt5_accounts[market_type].map((available, index) => {
@@ -71,7 +76,8 @@ const useFilteredCFDAccounts = () => {
 
     return {
         data: categorized_mt5_accounts,
-        isLoading: isLoading || existing_cfd_accounts_loading,
+        ...rest_existing_cfd_accounts,
+        isLoading: rest_available_mt5_accounts.isLoading || rest_existing_cfd_accounts.isLoading,
     };
 };
 

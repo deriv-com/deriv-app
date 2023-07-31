@@ -10,13 +10,13 @@ const WalletFiatMT5Content = observer(() => {
     const { traders_hub, client } = useStore();
     const { is_authorize } = client;
     const { toggleAccountTypeModalVisibility, can_get_more_cfd_mt5_accounts } = traders_hub;
-    const { isLoading } = useFilteredCFDAccounts();
+    const { isFetchedAfterMount } = useFilteredCFDAccounts();
 
     return (
         <React.Fragment>
-            {isLoading && is_authorize && <PlatformLoader />}
-            {!isLoading && <WalletMT5CardList />}
-            {!isLoading && can_get_more_cfd_mt5_accounts && (
+            {!isFetchedAfterMount && is_authorize && <PlatformLoader />}
+            {isFetchedAfterMount && <WalletMT5CardList />}
+            {isFetchedAfterMount && can_get_more_cfd_mt5_accounts && (
                 <GetMoreAccounts
                     onClick={toggleAccountTypeModalVisibility}
                     icon='IcAppstoreGetMoreAccounts'

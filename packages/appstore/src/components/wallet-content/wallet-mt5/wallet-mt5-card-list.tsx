@@ -3,11 +3,14 @@ import { observer } from '@deriv/stores';
 import { useFilteredCFDAccounts } from '@deriv/hooks';
 import AddedMT5Card from './added-mt5-card';
 import AvailableMT5Card from './available-mt5-card';
+import PlatformLoader from 'Components/pre-loader/platform-loader';
 
 const market_types = ['gaming', 'synthetic', 'financial', 'all'];
 
 const WalletMT5CardList = observer(() => {
-    const { data: filtered_cfd_accounts } = useFilteredCFDAccounts();
+    const { data: filtered_cfd_accounts, isFetchedAfterMount } = useFilteredCFDAccounts();
+
+    if (!isFetchedAfterMount) return <PlatformLoader />;
     return (
         <React.Fragment>
             {filtered_cfd_accounts &&

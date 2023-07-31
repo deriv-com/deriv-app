@@ -115,9 +115,7 @@ const TradingAppCard = observer(
                     <div className='trading-app-card__details'>
                         <div>
                             <Text className='title' size='xs' line_height='s' color='prominent'>
-                                {(is_wallet && is_wallet_demo && sub_title) || (!is_wallet && !is_real && sub_title)
-                                    ? `${sub_title} ${localize('Demo')}`
-                                    : sub_title}
+                                {sub_title}
                             </Text>
 
                             {short_code_and_region && (

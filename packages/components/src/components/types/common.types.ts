@@ -14,3 +14,8 @@ export type TItem = {
 };
 
 export type TTableRowItem = { component: React.ReactNode };
+
+export type TTextValueStrings = {
+    text: string;
+    value: string;
+};

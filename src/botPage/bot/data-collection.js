@@ -1,6 +1,6 @@
 import crc32 from 'crc-32/crc32';
 import pako from 'pako';
-import { getTokenList, getStorage } from '@storage';
+import { getTokenList, getActiveLoginId } from '@storage';
 import { isProduction } from '@utils';
 import { observer } from '../../common/utils/observer';
 
@@ -21,7 +21,7 @@ export const getHash = string => btoa(crc32.str(string));
 
 export const getLoginId = () => {
     const tokenList = getTokenList();
-    const current_login_id = getStorage('active_loginid') || '';
+    const current_login_id = getActiveLoginId();
     let lognin_id = null;
     if (tokenList.length) {
         tokenList.forEach(token_list => {

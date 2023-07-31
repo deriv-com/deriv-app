@@ -3,20 +3,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { api_base } from '@api-base';
 import config from '@config';
-import { parseQueryString, queryToObjectArray, isMobile, isDesktop } from '@utils';
+import { isMobile, isDesktop } from '@utils';
 import {
-    getTokenList,
     removeAllTokens,
     syncWithDerivApp,
-    setStorage,
-    getStorage,
     updateTokenList,
-    getActiveAccountFromAccountsList,
     isLoggedIn,
+    getActiveLoginId,
+    setActiveLoginId,
+    getClientAccounts,
 } from '@storage';
 import PlatformDropdown from './components/platform-dropdown.jsx';
 import {
-    updateIsLogged,
     resetClient,
     updateActiveAccount,
     updateBalance,
@@ -34,17 +32,6 @@ let is_subscribed = false;
 const AccountSwitcher = () => {
     const { account_switcher_loader } = useSelector(state => state.ui);
     const { is_logged } = useSelector(state => state.client);
-    const query_string = parseQueryString();
-    const query_string_array = queryToObjectArray(query_string);
-
-    // [Todo] We should remove this after update the structure of get token list on login
-    if (query_string_array[0]?.token) {
-        return (
-            <div className='header__menu-right-loader'>
-                <AccountSwitcherLoader />
-            </div>
-        );
-    }
     if (account_switcher_loader) {
         return (
             <div className='header__menu-right-loader'>
@@ -68,69 +55,45 @@ const Header = () => {
     const dispatch = useDispatch();
     const hideDropdown = e => !platformDropdownRef?.current?.contains(e.target) && setIsPlatformSwitcherOpen(false);
 
+    // Login check or account check should not happen here
+    // it should happen in the main component which main.jsx
+    // We need to move every check related to login or active account to main.jsx
     React.useEffect(() => {
-        const mountSwitcher = async () => {
-            try {
-                const res = await checkSwitcherType();
-                dispatch(updateAccountType(res));
-                const current_login_id = localStorage.getItem('active_loginid');
-                if (current_login_id.startsWith('MF')) {
-                    dispatch(updateShowMessagePage(true));
-                }
-                return res;
-            } catch (error) {
-                globalObserver.emit('Error', error);
-                return error;
-            }
-        };
-        if (is_logged_in) {
-            mountSwitcher();
+        console.log(is_logged_in, 'is_logged_in');
+        const active_account = { ...api_base.account_info };
+        const { landing_company_name } = active_account;
+        if (landing_company_name === 'maltainvest') {
+            dispatch(updateShowMessagePage(true));
         }
-    }, [is_logged_in]);
-
-    React.useEffect(() => {
-        api_base.api.onMessage().subscribe(({ data }) => {
-            if (data?.error?.code) return;
-            if (data?.msg_type === 'balance') {
-                dispatch(updateBalance(data.balance));
-            }
-        });
-    }, []);
-
-    React.useEffect(() => {
-        const token_list = getTokenList();
-        const active_storage_token = getActiveAccountFromAccountsList(token_list);
-        const landing_company = active_storage_token?.loginInfo.landing_company_name;
-        dispatch(updateShowMessagePage(landing_company === 'maltainvest'));
 
         globalObserver.setState({
-            is_eu_country: isEuByAccount(token_list),
+            is_eu_country: isEuByAccount(active_account),
         });
 
-        if (!active_storage_token) {
+        if (!active_account) {
             removeAllTokens();
             dispatch(resetClient());
             dispatch(setAccountSwitcherLoader(false));
         }
-        const client_accounts = JSON.parse(getStorage('client.accounts'));
-        const current_login_id = getStorage('active_loginid') || '';
-        const logged_in_token = client_accounts[current_login_id]?.token || active_storage_token?.token || '';
+
+        const client_accounts = getClientAccounts();
+        const current_login_id = getActiveLoginId();
+        const logged_in_token = client_accounts[current_login_id]?.token || active_account?.token || '';
 
         if (logged_in_token) {
             api_base.api
                 .authorize(logged_in_token)
                 .then(account => {
-                    const active_loginid = account.authorize.account_list;
-                    const client_country = account.authorize.country;
-                    setStorage('client.country', client_country);
-                    active_loginid.forEach(acc => {
+                    const { account_list = [] } = account.authorize || {};
+
+                    account_list.forEach(acc => {
                         if (current_login_id === acc.loginid) {
-                            setStorage('active_loginid', current_login_id);
+                            setActiveLoginId(current_login_id);
                         } else {
-                            setStorage('active_loginid', account.authorize.loginid);
+                            setActiveLoginId(account.authorize.loginid);
                         }
-                        updateTokenList();
                     });
+                    updateTokenList();
                     if (account?.error?.code) return;
                     dispatch(updateActiveToken(logged_in_token));
                     dispatch(updateActiveAccount(account.authorize));
@@ -164,8 +127,33 @@ const Header = () => {
     }, [active_token]);
 
     React.useEffect(() => {
-        dispatch(updateIsLogged(isLoggedIn()));
-    }, [is_logged]);
+        const mountSwitcher = () => {
+            try {
+                const res = checkSwitcherType();
+
+                dispatch(updateAccountType(res));
+                const current_login_id = getActiveLoginId();
+                if (current_login_id.startsWith('MF')) {
+                    dispatch(updateShowMessagePage(true));
+                }
+                return res;
+            } catch (error) {
+                globalObserver.emit('Error', error);
+                return error;
+            }
+        };
+
+        mountSwitcher();
+    }, []);
+
+    React.useEffect(() => {
+        api_base.api.onMessage().subscribe(({ data }) => {
+            if (data?.error?.code) return;
+            if (data?.msg_type === 'balance') {
+                dispatch(updateBalance(data.balance));
+            }
+        });
+    }, []);
 
     React.useEffect(() => {
         window.addEventListener('beforeunload', onBeforeUnload, { capture: true });

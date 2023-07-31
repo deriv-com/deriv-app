@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import config from '@config';
-import { getTokenList } from '@storage';
+import { getTokenList, getClientCountry } from '@storage';
 import { translate } from '@i18n';
 import { setAccountSwitcherToken } from '../../../store/ui-slice';
 import { CRYPTO_CURRENCIES } from '../../../../../common/const';
@@ -23,7 +23,7 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
         }
     };
     const low_risk_countries = ['za', 'ec', 'bw'];
-    const is_country_low_risk = low_risk_countries.includes(localStorage.getItem('client.country'));
+    const is_country_low_risk = low_risk_countries.includes(getClientCountry());
     return (
         <div className={`account__switcher-tabs-content ${isActive ? '' : 'hide'}`}>
             <div className='account__switcher-accordion'>

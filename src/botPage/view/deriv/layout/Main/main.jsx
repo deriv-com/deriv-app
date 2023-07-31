@@ -1,52 +1,40 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { TrackJS } from 'trackjs';
-import { api_base } from '@api-base';
-import { parseQueryString, getRelatedDeriveOrigin, queryToObjectArray } from '@utils';
+import { getRelatedDeriveOrigin, queryToObjectArray } from '@utils';
 import { translate } from '@i18n';
-import {
-    convertForDerivStore,
-    getStorage,
-    getTokenList,
-    isDone,
-    removeAllTokens,
-    setStorage,
-    getLanguage,
-    isLoggedIn,
-} from '@storage';
-import { addTokenIfValid } from '../../../../../common/appId';
+import { getClientAccounts, isDone, getLanguage, getTourState } from '@storage';
+import { loginAndSetTokens } from '../../../../../common/appId';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
-import _Blockly from '../../../blockly';
+import Blockly from '../../../blockly';
 import LogTable from '../../../LogTable';
 import TradeInfoPanel from '../../../TradeInfoPanel';
 import initialize, { applyToolboxPermissions } from '../../blockly-worksace';
 import SidebarToggle from '../../components/SidebarToggle';
-import { updateActiveAccount, updateActiveToken, updateIsLogged } from '../../store/client-slice';
-import { setShouldReloadWorkspace, updateShowTour } from '../../store/ui-slice';
+import { updateActiveAccount, updateIsLogged } from '../../store/client-slice';
+import { setAccountSwitcherLoader, setShouldReloadWorkspace, updateShowTour } from '../../store/ui-slice';
 import BotUnavailableMessage from '../Error/bot-unavailable-message-page';
 import ToolBox from '../ToolBox';
+import useQuery from '../../../../../hooks/useQuery';
 
 const Main = () => {
     const [blockly, setBlockly] = React.useState(null);
     const [is_workspace_rendered, setIsWorkspaceRendered] = React.useState(false);
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const { should_reload_workspace } = useSelector(state => state.ui);
-    const { account_type } = useSelector(state => state.client);
+    const query_object = useQuery();
 
     React.useEffect(() => {
-        if (should_reload_workspace) {
-            // eslint-disable-next-line no-underscore-dangle
-            const _blockly = new _Blockly();
-            setBlockly(_blockly);
-            init(_blockly);
-            loginCheck()
-                .then(() => initializeBlockly(_blockly))
-                .then(() => setIsWorkspaceRendered(_blockly?.is_workspace_rendered));
-            dispatch(setShouldReloadWorkspace(false));
-        }
+        const new_blockly = new Blockly();
+        setBlockly(new_blockly);
+        init(new_blockly);
+        loginCheck()
+            .then(() => initializeBlockly(new_blockly))
+            .then(() => setIsWorkspaceRendered(new_blockly?.is_workspace_rendered));
+        dispatch(setShouldReloadWorkspace(false));
         // eslint-disable-next-line
     }, []);
 
@@ -57,7 +45,7 @@ const Main = () => {
             applyToolboxPermissions();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [should_reload_workspace, account_type]);
+    }, [should_reload_workspace]);
 
     const init = () => {
         const local_storage_sync = document.getElementById('localstorage-sync');
@@ -65,46 +53,44 @@ const Main = () => {
             local_storage_sync.src = `${getRelatedDeriveOrigin().origin}/localstorage-sync.html`;
         }
 
-        const days_passed = Date.now() > (parseInt(getStorage('closedTourPopup')) || 0) + 24 * 60 * 60 * 1000;
+        const days_passed = Date.now() > (getTourState() || 0) + 24 * 60 * 60 * 1000;
+
         dispatch(updateShowTour(isDone('welcomeFinished') || days_passed));
     };
 
     // eslint-disable-next-line arrow-body-style
     const loginCheck = async () => {
         return new Promise(resolve => {
-            const queryStr = parseQueryString();
-            const tokenObjectList = queryToObjectArray(queryStr);
-
-            if (!Array.isArray(getTokenList())) {
-                removeAllTokens();
-            }
-
-            if (!getTokenList().length) {
-                if (tokenObjectList.length) {
-                    addTokenIfValid(tokenObjectList[0].token, tokenObjectList).then(() => {
-                        const accounts = getTokenList();
-                        if (accounts.length) {
-                            dispatch(updateActiveToken(accounts[0].token));
-                            dispatch(updateActiveAccount(accounts[0].loginInfo));
-                        }
-                        dispatch(updateIsLogged(isLoggedIn()));
-                        history.replace('/');
-                        api_base.api.send({ balance: 1, account: 'all' }).catch(e => {
-                            globalObserver.emit('Error', e);
-                        });
-                        applyToolboxPermissions();
-                        resolve();
+            const token_list = queryToObjectArray(query_object) || [];
+            if (token_list?.length && token_list[0]?.token) {
+                navigate('/', { replace: true });
+            } else {
+                const client_accounts = getClientAccounts();
+                Object.keys(client_accounts).forEach(accountName => {
+                    token_list.push({
+                        accountName,
+                        cur: client_accounts[accountName].currency,
+                        token: client_accounts[accountName].token,
                     });
-                }
-                let token_list = [];
-                if (getStorage('client.accounts')?.length) {
-                    token_list = JSON.parse(getStorage('client.accounts'));
-                }
-                resolve();
-                setStorage('tokenList', JSON.stringify(token_list));
-                setStorage('client.accounts', JSON.stringify(convertForDerivStore(token_list)));
+                });
             }
-            resolve();
+            loginAndSetTokens(token_list)
+                .then(({ account_info = {} }) => {
+                    if (account_info?.loginid) {
+                        dispatch(updateIsLogged(true));
+                        dispatch(updateActiveAccount(account_info));
+                        applyToolboxPermissions();
+                    } else {
+                        dispatch(updateIsLogged(false));
+                    }
+                })
+                .catch(() => {
+                    dispatch(updateIsLogged(false));
+                })
+                .finally(() => {
+                    resolve();
+                    dispatch(setAccountSwitcherLoader(false));
+                });
         });
     };
 

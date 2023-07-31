@@ -1,5 +1,6 @@
+import { api_base } from '@api-base';
 import { APP_ID_MAP } from '@constants';
-import { getTokenList, getAppIdFallback } from '@storage';
+import { getAppIdFallback } from '@storage';
 
 const GTM = (() => {
     const isGtmApplicable = () => Object.values(APP_ID_MAP.production).includes(`${getAppIdFallback()}`);
@@ -31,9 +32,9 @@ const GTM = (() => {
     };
 
     const setVisitorId = () => {
-        const tokenList = getTokenList();
-        if (tokenList.length > 0) {
-            pushDataLayer({ visitorId: tokenList[0].loginInfo.loginid });
+        const { account_info } = api_base;
+        if (account_info?.loginid) {
+            pushDataLayer({ visitorId: account_info?.loginid });
         } else {
             pushDataLayer({ visitorId: undefined });
         }

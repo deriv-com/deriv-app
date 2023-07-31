@@ -1,5 +1,5 @@
 import { TrackJS } from 'trackjs';
-import { getStorage, setStorage, getTokenList, removeAllTokens } from '@storage';
+import { getContractsForStore, setContractsForStore, getTokenList, removeAllTokens } from '@storage';
 import { isProduction } from '@utils';
 import { api_base } from '@api-base';
 import { translate } from '@i18n';
@@ -191,7 +191,7 @@ export const dependentFieldMapping = {
     TRADETYPECAT_LIST: 'TRADETYPE_LIST',
 };
 
-const contractsForStore = JSON.parse(getStorage('contractsForStore') || '[]');
+let contractsForStore = getContractsForStore();
 
 const getContractCategory = input =>
     Object.keys(config.conditionsCategory).find(c => c === input || config.conditionsCategory[c].includes(input));
@@ -274,6 +274,8 @@ export const getDurationsForContracts = (contractsAvailable, selectedContractTyp
 };
 
 export const haveContractsForSymbol = underlyingSymbol => {
+    if (contractsForStore && !contractsForStore.length) contractsForStore = [];
+
     const contractsForSymbol = contractsForStore.find(c => c.symbol === underlyingSymbol);
     if (!contractsForSymbol) {
         return false;
@@ -338,7 +340,7 @@ export const getContractsAvailableForSymbolFromApi = async underlyingSymbol => {
                     )
                 );
             contractsForStore.push(contractsForSymbol);
-            setStorage('contractsForStore', JSON.stringify(contractsForStore));
+            setContractsForStore(contractsForStore);
             globalObserver.unregisterAll(`contractsLoaded.${underlyingSymbol}`);
         }
     } catch (e) {

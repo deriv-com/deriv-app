@@ -1,15 +1,15 @@
 import { api_base } from '@api-base';
 import {
+    setClientAccounts,
     addToken,
-    removeToken,
     getTokenList,
     removeAllTokens,
-    setStorage,
     syncWithDerivApp,
     getLanguage,
     updateTokenList,
     getCustomEndpoint,
     getAppIdFallback,
+    setActiveLoginId,
 } from '@storage';
 import { getRelatedDeriveOrigin } from '@utils';
 import GTM from './gtm';
@@ -34,28 +34,69 @@ export const generateWebSocketURL = serverUrl => `wss://${serverUrl}`;
 export const getOAuthURL = () =>
     `https://${generateOAuthDomain()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage()?.toUpperCase()}&brand=deriv`;
 
-export async function addTokenIfValid(token, tokenObjectList) {
+export async function addTokenIfValid(token) {
     try {
-        const { authorize } = await api_base.api.authorize(token);
-        const { landing_company_name: lcName } = authorize;
-        const {
-            landing_company_details: { has_reality_check: hasRealityCheck },
-        } = await api_base.api.send({ landing_company_details: lcName });
-        addToken(token, authorize, !!hasRealityCheck, ['iom', 'malta'].includes(lcName) && authorize.country === 'gb');
-
-        const { account_list: accountList } = authorize;
-        if (accountList.length > 1) {
-            tokenObjectList.forEach(tokenObject => {
-                if (tokenObject.token !== token) {
-                    const account = accountList.filter(o => o.loginid === tokenObject.accountName);
-                    if (account.length) {
-                        addToken(tokenObject.token, account[0], false, false);
-                    }
-                }
-            });
-        }
+        const { authorize } = await api_base.authorize(token);
+        const { landing_company_name } = authorize;
+        const { has_reality_check } = api_base.landing_company_details;
+        const account = addToken(
+            token,
+            authorize,
+            !!has_reality_check,
+            ['iom', 'malta'].includes(landing_company_name) && authorize.country === 'gb'
+        );
+        return account;
     } catch (e) {
-        removeToken(tokenObjectList[0].token);
+        GTM.setVisitorId();
+        throw e;
+    }
+}
+
+export async function loginAndSetTokens(token_list) {
+    try {
+        const [token1 = {}] = token_list;
+        if (!token1.token) throw new Error('Token not found');
+        const { authorize: account_info } = await api_base.authorize(token1.token);
+        const { landing_company_name, account_list = [] } = account_info;
+        // const { has_reality_check } = api_base.landing_company_details;
+        const has_trade_limitation = ['iom', 'malta'].includes(landing_company_name) && account_info.country === 'gb';
+
+        const accounts_list = {};
+
+        token_list.forEach(token => {
+            const acc = account_list.find(a => a.loginid === token.accountName);
+            let temp_account = {
+                account_category: acc.account_category,
+                account_type: acc.account_type,
+                created_at: acc.created_at,
+                currency: token.cur,
+                excluded_until: '', // self-exclusion wont work at this stage; needs to be copied form deriv-app
+                is_disabled: acc.is_disabled,
+                is_virtual: acc.is_virtual,
+                landing_company_name: acc.landing_company_name,
+                landing_company_shortcode: acc.landing_company_name, // how shortcode is different from name?
+                linked_to: acc.linked_to,
+                token: token.token,
+            };
+            if (account_info?.loginid === token.accountName) {
+                temp_account = {
+                    ...temp_account,
+                    upgradeable_landing_companies: account_info.upgradeable_landing_companies,
+                    email: account_info.email,
+                    residence: account_info.country,
+                    session_start: 0, // it will be synced from the app.deriv.com
+                    accepted_bch: 0,
+                    balance: account_info.balance,
+                    // hasRealityCheck: !!has_reality_check,
+                    hasTradeLimitation: has_trade_limitation,
+                };
+            }
+            accounts_list[token.accountName] = temp_account;
+        });
+        setActiveLoginId(token1.accountName);
+        setClientAccounts(accounts_list);
+        return { account_info, accounts_list };
+    } catch (e) {
         GTM.setVisitorId();
         throw e;
     }
@@ -84,7 +125,7 @@ export const logoutAndReset = () =>
     new Promise(resolve => {
         logoutAllTokens().then(() => {
             updateTokenList();
-            setStorage('active_loginid', null);
+            setActiveLoginId('');
             syncWithDerivApp();
             resolve();
         });

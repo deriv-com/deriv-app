@@ -1,13 +1,15 @@
 import React from 'react';
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import {
-    getStorage,
-    setStorage,
     getLanguage,
     isLoggedIn,
     getAppIdFallback,
     getDefaultEndpoint,
     getServerAddressFallback,
+    getConfigAppID,
+    setConfigAppID,
+    getConfigURL,
+    setConfigURL,
 } from '@storage';
 import { translate } from '@i18n';
 import useLogout from '../../../../../common/hooks/useLogout';
@@ -29,8 +31,8 @@ const Endpoint = () => {
 
     React.useEffect(() => {
         $('.barspinner').hide();
-        setServer(getStorage('config.server_url') || getDefaultEndpoint().url);
-        setAppId(getStorage('config.app_id') || getDefaultEndpoint().appId);
+        setServer(getConfigURL() || getDefaultEndpoint().url);
+        setAppId(getConfigAppID() || getDefaultEndpoint().appId);
     }, []);
 
     const checkConnection = async (appId, apiUrl) => {
@@ -67,10 +69,10 @@ const Endpoint = () => {
         setConnected(false);
         e.preventDefault();
 
-        if (server === getStorage('config.server_url') && app_id === getStorage('config.app_id')) return;
+        if (server === getConfigURL() && app_id === getConfigAppID()) return;
 
-        setStorage('config.server_url', server);
-        setStorage('config.app_id', app_id);
+        setConfigURL(server);
+        setConfigAppID(app_id);
 
         const urlReg = /^(?:http(s)?:\/\/)?[\w.-]+(?:.[\w.-]+)+[\w-._~:?#[\]@!$&'()*+,;=.]+$/;
 
@@ -88,8 +90,8 @@ const Endpoint = () => {
     const resetEndpoint = () => {
         setAppId(getDefaultEndpoint().appId);
         setServer(getDefaultEndpoint().url);
-        setStorage('config.app_id', getDefaultEndpoint().appId);
-        setStorage('config.server_url', getDefaultEndpoint().url);
+        setConfigAppID(getDefaultEndpoint().appId);
+        setConfigURL(getDefaultEndpoint().url);
     };
 
     const onReset = e => {
@@ -146,7 +148,7 @@ const Endpoint = () => {
                                     )}
                                     {is_connected && (
                                         <p id='connected'>
-                                            Connected to the Endpoint <b>{getStorage('config.server_url')}!</b>
+                                            Connected to the Endpoint <b>{getConfigURL()}!</b>
                                         </p>
                                     )}
                                 </td>

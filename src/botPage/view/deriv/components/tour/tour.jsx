@@ -1,24 +1,23 @@
 import React, { useState } from 'react';
 import Joyride, { STATUS, ACTIONS, EVENTS } from 'react-joyride';
 import { useLocation } from 'react-router-dom';
-import { setStorage, getStorage } from '@storage';
+import { closeTour, getTourState } from '@storage';
 import { isMobile } from '@utils';
 import { translate } from '@i18n';
 import welcome from './welcome';
 
-const getTourState = () => !getStorage('closedTourPopup');
 const Tour = () => {
     const location = useLocation();
-    const [run, setRun] = useState(() => (location?.pathname?.includes('endpoint') ? false : getTourState()));
+    const [run, setRun] = useState(() => (location?.pathname?.includes('endpoint') ? false : !getTourState()));
     const [step_index, setStepIndex] = useState(0);
 
     const closeTourPermanently = () => {
-        setStorage('closedTourPopup', Date.now());
+        closeTour();
         setRun(false);
     };
     const continueTour = is_checked => {
         if (is_checked) {
-            setStorage('closedTourPopup', Date.now());
+            closeTour();
         }
         setStepIndex(step_index + 1);
     };
@@ -31,7 +30,7 @@ const Tour = () => {
         }
         if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
             setRun(false);
-            setStorage('closedTourPopup', Date.now());
+            closeTour();
         }
         if ([ACTIONS.CLOSE].includes(action)) {
             setRun(false);

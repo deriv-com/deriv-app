@@ -1,9 +1,10 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Routes as Switch, Route } from 'react-router-dom';
 import Main from '../layout/Main';
 import Endpoint from '../layout/Endpoint';
 import NotFound from '../layout/NotFound';
-import RouteWrapper from './RouteWrapper.jsx';
+import Header from '../layout/Header';
+import Footer from '../layout/Footer';
 
 const generateBaseName = () => {
     const branch = process.env.BRANCH;
@@ -14,17 +15,16 @@ const generateBaseName = () => {
     return '/';
 };
 
-const Routes = () => {
-    return (
-        <BrowserRouter basename={generateBaseName()}>
-            <Switch>
-                <RouteWrapper exact path='/' component={Main} />
-                <RouteWrapper path='/endpoint' component={Endpoint} />
-                <Redirect from='/endpoint.html' to='/endpoint' />
-                <Route path='*' component={NotFound} />
-            </Switch>
-        </BrowserRouter>
-    );
-};
+const Routes = () => (
+    <BrowserRouter basename={generateBaseName()}>
+        <Header />
+        <Switch>
+            <Route exact path='/' element={<Main />} />
+            <Route exact path='/endpoint' element={<Endpoint />} />
+            <Route path='*' element={<NotFound />} />
+        </Switch>
+        <Footer />
+    </BrowserRouter>
+);
 
 export default Routes;

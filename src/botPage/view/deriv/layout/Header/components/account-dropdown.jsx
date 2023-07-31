@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import config from '@config';
 import { translate } from '@i18n';
+import { getClientCountry } from '@storage';
 import useLogout from '../../../../../../common/hooks/useLogout.js';
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
 import Modal from '../../../components/modal';
@@ -32,7 +33,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
     const { accounts, balance, currency, account_type } = useSelector(state => state.client);
 
     const { low_risk_without_account = false, high_risk_without_account = false } = account_type;
-    const is_country_low_risk = low_risk_countries.includes(localStorage.getItem('client.country'));
+    const is_country_low_risk = low_risk_countries.includes(getClientCountry());
     const { is_bot_running, show_bot_unavailable_page } = useSelector(state => state.ui);
     const { url } = config.add_account;
     const container_ref = React.useRef();

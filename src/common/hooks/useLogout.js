@@ -1,20 +1,13 @@
-import { useDispatch } from 'react-redux';
-import { setStorage, syncWithDerivApp, updateTokenList } from '@storage';
-import { resetClient } from '../../botPage/view/deriv/store/client-slice';
+import { setClientAccounts, setActiveLoginId } from '@storage';
 import { logoutAllTokens } from '../appId';
 
 const useLogout = () => {
-    const dispatch = useDispatch();
-
     const logout = () => {
         logoutAllTokens().then(() => {
-            updateTokenList();
-            setStorage('active_loginid', null);
-            syncWithDerivApp();
-            dispatch(resetClient());
+            setActiveLoginId('');
+            setClientAccounts({});
         });
     };
-
     return logout;
 };
 

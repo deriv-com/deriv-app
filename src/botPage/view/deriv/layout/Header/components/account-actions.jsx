@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import config from '@config';
 import { generateDerivLink } from '@utils';
-import { getTokenList, setStorage, isLoggedIn } from '@storage';
+import { getTokenList, setActiveLoginId, isLoggedIn, setTokenList } from '@storage';
 import { translate } from '@i18n';
 import Notifications from './notifications.jsx';
 import AccountDropdown from './account-dropdown.jsx';
@@ -46,14 +46,14 @@ const AccountActions = () => {
         dispatch(setAccountSwitcherLoader(true));
         $('.barspinner').show();
         const tokenList = getTokenList();
-        setStorage('tokenList', '');
+        setTokenList([]);
 
-        addTokenIfValid(account_switcher_token, tokenList).then(() => {
+        addTokenIfValid(account_switcher_token).then(() => {
             const next_active_account = tokenList?.find(account => account.token === account_switcher_token);
 
             if (next_active_account?.accountName) {
                 console.log('---- ---- ---- ---- account-actions onAccept');
-                setStorage('active_loginid', next_active_account.accountName);
+                setActiveLoginId(next_active_account.accountName);
                 dispatch(updateActiveToken(next_active_account.token));
                 dispatch(setShouldReloadWorkspace(true));
                 $('.barspinner').hide();

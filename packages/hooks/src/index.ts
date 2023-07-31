@@ -52,3 +52,5 @@ export { default as useVerifyEmail } from './useVerifyEmail';
 export { default as useWalletsList } from './useWalletsList';
 export { default as useWalletTransactions } from './useWalletTransactions';
 export { default as useWalletTransfer } from './useWalletTransfer';
+export { default as useWalletMigration } from './useWalletMigration';
+export { useIsAccountStatusPresent } from './useIsAccountStatusPresent';

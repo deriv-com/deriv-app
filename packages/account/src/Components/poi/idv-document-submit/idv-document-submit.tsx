@@ -185,7 +185,7 @@ const IdvDocumentSubmit = ({
                                     values?.document_type?.id
                                 ),
                             })}
-                            is_qualified_for_idv={true}
+                            is_qualified_for_idv
                             is_appstore
                             should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
                             editable_fields={changeable_fields}

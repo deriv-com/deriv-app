@@ -233,8 +233,8 @@ const DMT5CompareModalContent = observer(
         const is_high_risk_for_mt5 = synthetic_accounts_count === 1 && financial_accounts_count === 1;
         const {
             poi_or_poa_not_submitted,
-            poi_acknowledged_for_vanuatu_maltainvest,
-            poi_acknowledged_for_bvi_labuan,
+            poi_acknowledged_for_maltainvest,
+            poi_acknowledged_for_bvi_labuan_vanuatu,
             poa_acknowledged,
             poa_pending,
         } = getAuthenticationStatusInfo(account_status);
@@ -346,7 +346,7 @@ const DMT5CompareModalContent = observer(
                     setAppstorePlatform(CFD_PLATFORMS.MT5);
                     setJurisdictionSelectedShortcode(Jurisdiction.BVI);
                     if (
-                        poi_acknowledged_for_bvi_labuan &&
+                        poi_acknowledged_for_bvi_labuan_vanuatu &&
                         !poi_or_poa_not_submitted &&
                         !should_restrict_bvi_account_creation &&
                         has_submitted_personal_details &&
@@ -362,7 +362,7 @@ const DMT5CompareModalContent = observer(
                     setAppstorePlatform(CFD_PLATFORMS.MT5);
                     setJurisdictionSelectedShortcode(Jurisdiction.VANUATU);
                     if (
-                        poi_acknowledged_for_vanuatu_maltainvest &&
+                        poi_acknowledged_for_bvi_labuan_vanuatu &&
                         !poi_or_poa_not_submitted &&
                         !should_restrict_vanuatu_account_creation &&
                         has_submitted_personal_details &&
@@ -376,7 +376,7 @@ const DMT5CompareModalContent = observer(
                 case 'financial_labuan':
                     setAppstorePlatform(CFD_PLATFORMS.MT5);
                     setJurisdictionSelectedShortcode(Jurisdiction.LABUAN);
-                    if (poi_acknowledged_for_bvi_labuan && poa_acknowledged && has_submitted_personal_details) {
+                    if (poi_acknowledged_for_bvi_labuan_vanuatu && poa_acknowledged && has_submitted_personal_details) {
                         openPasswordModal(type_of_account);
                     } else {
                         toggleCFDVerificationModal();
@@ -385,7 +385,7 @@ const DMT5CompareModalContent = observer(
                 case 'financial_maltainvest':
                     setAppstorePlatform(CFD_PLATFORMS.MT5);
                     setJurisdictionSelectedShortcode(Jurisdiction.MALTA_INVEST);
-                    if ((poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged) || is_demo_tab) {
+                    if ((poi_acknowledged_for_maltainvest && poa_acknowledged) || is_demo_tab) {
                         openPasswordModal(type_of_account);
                     } else {
                         toggleCFDVerificationModal();

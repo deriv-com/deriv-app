@@ -1,16 +1,11 @@
 import React from 'react';
-import { useStores } from 'Stores';
-import { observer } from 'mobx-react-lite';
+import { connect } from 'Stores/connect';
+import PropTypes from 'prop-types';
 import { Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import MT5NotificationDescription from './mt5-notification-description';
 
-const MT5Notification = () => {
-    const { traders_hub, ui } = useStores();
-    const { is_mt5_notificaiton_modal_visible, setMT5NotificationModal } = traders_hub;
-    // const { setMT5NotificationModal } = notifications;
-    const { disableApp, enableApp } = ui;
-
+const MT5Notification = ({ setMT5NotificationModal, is_mt5_notificaiton_modal_visible, disableApp, enableApp }) => {
     const onclickFunc = () => {
         if (is_mt5_notificaiton_modal_visible) {
             setMT5NotificationModal(false);
@@ -78,4 +73,16 @@ const MT5Notification = () => {
     );
 };
 
-export default observer(MT5Notification);
+MT5Notification.propTypes = {
+    disableApp: PropTypes.func,
+    enableApp: PropTypes.func,
+    setMT5NotificationModal: PropTypes.func,
+    is_mt5_notificaiton_modal_visible: PropTypes.bool,
+};
+
+export default connect(({ traders_hub, ui }) => ({
+    setMT5NotificationModal: traders_hub.setMT5NotificationModal,
+    is_mt5_notificaiton_modal_visible: traders_hub.is_mt5_notificaiton_modal_visible,
+    disableApp: ui.disableApp,
+    enableApp: ui.enableApp,
+}))(MT5Notification);

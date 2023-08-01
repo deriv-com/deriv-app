@@ -17,9 +17,9 @@ import IndicativeCell from '../Components/indicative-cell';
 import MarketSymbolIconRow from '../Components/market-symbol-icon-row';
 import ProfitLossCell from '../Components/profit_loss_cell';
 import CurrencyWrapper from '../Components/currency-wrapper';
-import type { TRootStore } from 'Stores/index';
+import { useStore } from '@deriv/stores';
 
-type TPortfolioStore = TRootStore['portfolio'];
+type TPortfolioStore = ReturnType<typeof useStore>['portfolio'];
 
 const map = {
     buy: 'success',

@@ -417,8 +417,10 @@ type TUiStore = {
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
+    is_positions_drawer_on: boolean;
     sub_section_index: number;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
+    togglePositionsDrawer: () => void;
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;

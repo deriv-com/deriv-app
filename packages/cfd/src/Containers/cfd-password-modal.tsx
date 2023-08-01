@@ -98,7 +98,6 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     error_type?: string;
     form_error?: string;
     has_mt5_account: boolean;
-    is_bvi: boolean;
     is_dxtrade_allowed: boolean;
     is_real_financial_stp: boolean;
     jurisdiction_selected_shortcode: string;
@@ -595,15 +594,7 @@ const CFDPasswordForm = ({
 const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalProps) => {
     const { client, traders_hub } = useStore();
 
-    const {
-        email,
-        account_status,
-        landing_companies,
-        is_logged_in,
-        is_dxtrade_allowed,
-        mt5_login_list,
-        updateAccountStatus,
-    } = client;
+    const { email, account_status, is_logged_in, is_dxtrade_allowed, mt5_login_list, updateAccountStatus } = client;
     const { show_eu_related_content } = traders_hub;
 
     const {
@@ -627,7 +618,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const history = useHistory();
 
     const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);
-    const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
     const has_mt5_account = Boolean(mt5_login_list?.length);
     const should_set_trading_password =
         Array.isArray(account_status?.status) &&
@@ -822,19 +812,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         const mt5_platform_label = jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'Deriv MT5' : '';
 
         if (category === 'real') {
-            let platformName = '';
-            switch (platform) {
-                case CFD_PLATFORMS.MT5:
-                    platformName = mt5_platform_label;
-                    break;
-                case CFD_PLATFORMS.DERIVEZ:
-                    platformName = 'Deriv Ez';
-                    break;
-                default:
-                    platformName = 'Deriv X';
-                    break;
-            }
-
             return (
                 <React.Fragment>
                     <Localize
@@ -877,7 +854,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const cfd_password_form = (
         <CFDPasswordForm
-            is_bvi={is_bvi}
             account_title={account_title}
             account_type={account_type}
             closeModal={closeModal}

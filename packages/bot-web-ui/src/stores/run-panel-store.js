@@ -119,7 +119,6 @@ export default class RunPanelStore {
                 won_contracts: 0,
             }
         );
-
         statistics.number_of_runs = total_runs;
         return statistics;
     }
@@ -156,7 +155,7 @@ export default class RunPanelStore {
             this.timer = setInterval(() => {
                 window.sendRequestsStatistic(true);
                 performance.clearMeasures();
-                if (timer_counter === 30) {
+                if (timer_counter === 12) {
                     clearInterval(this.timer);
                 } else {
                     timer_counter++;

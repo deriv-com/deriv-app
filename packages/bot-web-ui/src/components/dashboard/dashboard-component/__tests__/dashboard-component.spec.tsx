@@ -5,26 +5,6 @@ import userEvent from '@testing-library/user-event';
 import Sidebar from '../sidebar';
 import UserGuide from '../user-guide';
 
-const mock_connect_props = {
-    dialog_options: {
-        title: 'string',
-        message: 'string',
-        ok_button_text: 'string',
-        cancel_button_text: 'string',
-    },
-    setStrategySaveType: jest.fn(),
-};
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect:
-        () =>
-        <T,>(Component: T) =>
-        props =>
-            Component({ ...props, ...mock_connect_props }),
-}));
-
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
 

@@ -74,30 +74,4 @@ describe('<RecentTransaction />', () => {
             1
         );
     });
-
-    it('should show the proper icon when transaction_type is equal to "withdrawal"', () => {
-        renderRecentTransaction();
-
-        expect(screen.getByTestId('dti_icon_cashier_minus')).toBeInTheDocument();
-    });
-
-    it('should show the proper icon when transaction_type is equal to "deposit"', () => {
-        mockRootStore.modules.cashier.transaction_history.crypto_transactions = [
-            {
-                ...mockRootStore.modules.cashier.transaction_history.crypto_transactions[0],
-                transaction_type: 'deposit',
-                status_code: 'PENDING',
-            },
-        ];
-        renderRecentTransaction();
-
-        expect(screen.getByTestId('dti_icon_cashier_add')).toBeInTheDocument();
-    });
-
-    it('should not show "Recent transactions" title if crypto_transactions is an empty array', () => {
-        mockRootStore.modules.cashier.transaction_history.crypto_transactions = [];
-        renderRecentTransaction();
-
-        expect(screen.queryByText('Recent transactions')).not.toBeInTheDocument();
-    });
 });

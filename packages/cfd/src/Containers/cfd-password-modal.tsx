@@ -1,6 +1,5 @@
 import React from 'react';
 import { Formik, FormikErrors, FormikHelpers } from 'formik';
-import { RouteComponentProps, withRouter } from 'react-router';
 import { useHistory } from 'react-router';
 import { SentEmailModal } from '@deriv/account';
 import {
@@ -477,6 +476,17 @@ const CFDPasswordForm = ({
         );
     }
 
+    const accountTitle = () => {
+        switch (platform) {
+            case 'ctrader':
+            case 'derivez':
+            case 'derivx':
+                return 'CFD';
+            default:
+                account_title;
+        }
+    };
+
     const showJuristiction = () => {
         if (platform === CFD_PLATFORMS.DXTRADE) {
             return '';
@@ -516,7 +526,7 @@ const CFDPasswordForm = ({
                                         values={{
                                             platform: getCFDPlatformLabel(platform),
                                             platform_name: getCFDPlatformNames(platform),
-                                            account: !show_eu_related_content ? account_title : '',
+                                            account: !show_eu_related_content ? accountTitle() : '',
                                             jurisdiction_shortcode: showJuristiction(),
                                         }}
                                     />
@@ -527,7 +537,7 @@ const CFDPasswordForm = ({
                                         values={{
                                             platform: getCFDPlatformLabel(platform),
                                             platform_name: getCFDPlatformNames(platform),
-                                            account: account_title,
+                                            account: accountTitle(),
                                         }}
                                     />
                                 )}

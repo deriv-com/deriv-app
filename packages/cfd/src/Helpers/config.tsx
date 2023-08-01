@@ -11,7 +11,7 @@ import {
     platformsText,
     platformsIcons,
 } from './constants';
-import { isMobile } from '@deriv/shared';
+import { isMobile, CFD_PLATFORMS } from '@deriv/shared';
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { TCFDDashboardContainer } from 'Containers/props.types';
@@ -108,11 +108,21 @@ export const PlatformsDesktopDownload = ({
                 target='_blank'
                 rel='noopener noreferrer'
             >
-                <Icon
-                    className='cfd-trade-modal__platform-button-icon'
-                    icon={`IcBrand${platformsIcons(platform)}Wordmark`}
-                    size={36}
-                />
+                {platform !== CFD_PLATFORMS.CTRADER && (
+                    <Icon
+                        className='cfd-trade-modal__platform-button-icon'
+                        icon={`IcBrand${platformsIcons(platform)}Wordmark`}
+                        size={36}
+                    />
+                )}
+                {platform === CFD_PLATFORMS.CTRADER && (
+                    <Icon
+                        className='cfd-trade-modal__platform-button-icon'
+                        icon={`IcBrand${platformsIcons(platform)}Wordmark`}
+                        width={60}
+                        height={40}
+                    />
+                )}
                 <div className='cfd-trade-modal__platform-button-text'>
                     <Text color='colored-background' size='xxs' weight='bold'>
                         <Localize i18n_default_text='Web terminal' />

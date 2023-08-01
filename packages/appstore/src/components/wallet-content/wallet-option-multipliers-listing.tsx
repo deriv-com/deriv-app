@@ -25,15 +25,16 @@ const WalletOptionsAndMultipliersListing = observer(() => {
         );
 
     const is_trading_account_exists = wallet_account.linked_to?.some(acc => acc.platform === 'dtrade');
+    const is_options_and_multipliers = wallet_account.landing_company_name === 'svg' || wallet_account.is_demo;
 
     const OptionsTitle = () => {
-        if (wallet_account.landing_company_name === 'svg' && !is_mobile) {
+        if (is_options_and_multipliers && !is_mobile) {
             return (
                 <Text size='sm' line_height='m' weight='bold' color='prominent'>
                     {localize('Options & multipliers')}
                 </Text>
             );
-        } else if (wallet_account.landing_company_name !== 'svg' && !is_mobile) {
+        } else if (!is_options_and_multipliers && !is_mobile) {
             return (
                 <Text size='sm' line_height='m' weight='bold' color='prominent'>
                     {localize('Multipliers')}
@@ -43,25 +44,24 @@ const WalletOptionsAndMultipliersListing = observer(() => {
         return null;
     };
 
-    const listing_container_description =
-        wallet_account.landing_company_name === 'svg' ? (
-            <Text size='xs' line_height='s'>
-                <Localize
-                    i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
-                    components={[
-                        <StaticUrl key={0} className='options' href='trade-types/options/' />,
-                        <StaticUrl key={1} className='options' href='trade-types/multiplier/' />,
-                    ]}
-                />
-            </Text>
-        ) : (
-            <Text size='xs' line_height='s'>
-                <Localize
-                    i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>multipliers</0>.'
-                    components={[<StaticUrl key={0} className='options' href='trade-types/multiplier/' />]}
-                />
-            </Text>
-        );
+    const listing_container_description = is_options_and_multipliers ? (
+        <Text size='xs' line_height='s'>
+            <Localize
+                i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
+                components={[
+                    <StaticUrl key={0} className='options' href='trade-types/options/' />,
+                    <StaticUrl key={1} className='options' href='trade-types/multiplier/' />,
+                ]}
+            />
+        </Text>
+    ) : (
+        <Text size='xs' line_height='s'>
+            <Localize
+                i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>multipliers</0>.'
+                components={[<StaticUrl key={0} className='options' href='trade-types/multiplier/' />]}
+            />
+        </Text>
+    );
 
     const get_account_card_name = wallet_account.is_malta_wallet ? 'Deriv Apps account' : 'Deriv Apps';
     const get_account_card_description = wallet_account.is_malta_wallet

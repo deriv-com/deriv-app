@@ -13,7 +13,7 @@ export type TContractCategory = {
 
 export type TList = {
     component?: JSX.Element | null;
-    contract_categories: TContractCategory[];
+    contract_categories?: TContractCategory[];
     contract_types?: TContractType[];
     icon: string;
     label?: string;

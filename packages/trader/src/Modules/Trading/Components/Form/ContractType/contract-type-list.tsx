@@ -3,7 +3,7 @@ import Item from './contract-type-item';
 import { localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
 import classNames from 'classnames';
-import { TContractType, TList } from './types';
+import { TContractType, TContractCategory } from './types';
 
 type TListProps = {
     handleInfoClick?: (clicked_item: TContractType) => void;
@@ -11,7 +11,7 @@ type TListProps = {
         clicked_item: TContractType,
         e: React.MouseEvent<HTMLDivElement | HTMLButtonElement | HTMLInputElement>
     ) => void;
-    list: TList['contract_categories'];
+    list: TContractCategory[];
     value?: string;
 };
 

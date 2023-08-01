@@ -2,8 +2,8 @@ import React from 'react';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ContractType from './contract-type';
-import { getContractTypeCategoryIcons, findContractCategory } from '../../../Helpers/contract-type.js';
-import { TList, TContractType, TContractCategory } from './types';
+import { getContractTypeCategoryIcons, findContractCategory } from '../../../Helpers/contract-type';
+import { TContractCategory, TContractType, TList } from './types';
 
 type TContractTypeWidget = {
     name?: string;
@@ -46,7 +46,7 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
     };
 
     const handleSelect = (
-        clicked_item: TContractType | undefined,
+        clicked_item: TContractType,
         e: React.MouseEvent<HTMLDivElement | HTMLButtonElement | HTMLInputElement>
     ) => {
         const categories = list_with_category();
@@ -142,7 +142,7 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
         }
 
         return categories.map(contract_category => {
-            const contract_types = contract_category.contract_categories.reduce<TContractType[]>(
+            const contract_types = contract_category?.contract_categories?.reduce<TContractType[]>(
                 (prev, current) => [...prev, ...current.contract_types],
                 []
             );
@@ -154,8 +154,8 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
             let contract_categories = contract_category.contract_categories;
 
             if (search_query) {
-                contract_categories = contract_category.contract_categories
-                    .filter(category =>
+                contract_categories = contract_category?.contract_categories
+                    ?.filter(category =>
                         category.contract_types.find(type =>
                             type.text?.toLowerCase().includes(search_query.toLowerCase())
                         )
@@ -221,7 +221,7 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
                     <ContractType.List
                         handleInfoClick={handleInfoClick}
                         handleSelect={handleSelect}
-                        list={selected_category_contracts()}
+                        list={selected_category_contracts() as TContractCategory[]}
                         value={value}
                     />
                 )}

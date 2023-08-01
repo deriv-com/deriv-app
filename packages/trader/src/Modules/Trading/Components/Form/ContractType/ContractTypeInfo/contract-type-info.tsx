@@ -11,7 +11,7 @@ import { TContractType, TList } from '../types';
 
 type TInfo = {
     handleSelect: (
-        type: TContractType | undefined,
+        type: TContractType,
         e: React.MouseEvent<HTMLDivElement | HTMLButtonElement | HTMLInputElement>
     ) => void;
     item: TContractType;
@@ -25,7 +25,7 @@ const TABS = {
 
 const Info = ({ handleSelect, item, list }: TInfo) => {
     const [selected_tab, setSelectedTab] = React.useState(TABS.DESCRIPTION);
-    const contract_types: TContractType[] = getContractTypes(list, item).filter(
+    const contract_types: TContractType[] | undefined = getContractTypes(list, item)?.filter(
         (i: { value: TContractType['value'] }) => i.value !== 'rise_fall_equal'
     );
     const has_toggle_buttons = /accumulator|vanilla/i.test(item.value);
@@ -35,7 +35,7 @@ const Info = ({ handleSelect, item, list }: TInfo) => {
     const scroll_bar_height = has_toggle_buttons ? '464px' : '560px';
     const onClickGlossary = () => setSelectedTab(TABS.GLOSSARY);
 
-    const cards = contract_types.map((type: TContractType) => {
+    const cards = contract_types?.map((type: TContractType) => {
         if (type.value !== item.value) return null;
         return (
             <div key={type.value} className='contract-type-info__card'>

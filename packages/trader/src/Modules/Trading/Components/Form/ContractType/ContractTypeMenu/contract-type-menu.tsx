@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import SearchInput from './search-input';
 import NoResultsMessage from './no-results-message';
 import { Header } from '../ContractTypeInfo/index.js';
-import { getContractCategoryKey } from '../../../../Helpers/contract-type.js';
+import { getContractCategoryKey } from '../../../../Helpers/contract-type';
 import { TList } from '../types';
 import ContractType from '../contract-type';
 
@@ -37,9 +37,9 @@ const Dialog = ({
     const input_ref = React.useRef<(HTMLInputElement & HTMLTextAreaElement) | null>(null);
     const [input_value, setInputValue] = React.useState('');
     const contract_category = getContractCategoryKey(categories, item);
-    const selected_item = selected ? { key: selected } : contract_category;
+    const selected_item = selected ? { key: selected } : { key: contract_category };
     const selected_category_contract = !categories?.find(category => category.key === selected_item.key)
-        ?.contract_categories.length;
+        ?.contract_categories?.length;
     const onChange: React.ComponentProps<typeof VerticalTab.Headers>['onChange'] = e => {
         if (is_info_dialog_open) {
             onBackButtonClick?.();

@@ -3,7 +3,7 @@ import React from 'react';
 import { Icon, DesktopWrapper } from '@deriv/components';
 import IconTradeCategory from 'Assets/Trading/Categories/icon-trade-categories.jsx';
 import { findContractCategory } from '../../../Helpers/contract-type';
-import { TContractCategory, TContractType } from './types';
+import { TContractCategory, TContractType, TList } from './types';
 
 type TDisplay = {
     is_open: boolean;
@@ -15,7 +15,9 @@ type TDisplay = {
 
 const Display = ({ is_open, name, list, onClick, value }: TDisplay) => {
     const getDisplayText = () =>
-        findContractCategory(list, { value })?.contract_types?.find((item: TContractType) => item.value === value).text;
+        findContractCategory(list as unknown as TList[], { value })?.contract_types?.find(
+            (item: TContractType) => item.value === value
+        )?.text;
 
     return (
         <div

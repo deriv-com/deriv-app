@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Field, useFormikContext } from 'formik';
 import classNames from 'classnames';
 import {
@@ -410,7 +410,7 @@ const PersonalDetailsForm = props => {
                         />
                     )}
                     {!is_high_risk && is_svg && (
-                        <Fragment>
+                        <React.Fragment>
                             {'place_of_birth' in values && (
                                 <PlaceOfBirthField
                                     handleChange={handleChange}
@@ -450,7 +450,7 @@ const PersonalDetailsForm = props => {
                                     required
                                 />
                             )}
-                        </Fragment>
+                        </React.Fragment>
                     )}
                 </div>
             )}

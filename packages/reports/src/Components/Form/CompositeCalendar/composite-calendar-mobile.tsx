@@ -44,14 +44,14 @@ export const RadioButton = ({ id, className, selected_value, value, label, onCha
 const CUSTOM_KEY = 'custom';
 
 type TCompositeCalendarMobile = {
-    input_date_range: TInputDateRange;
-    current_focus: string;
-    duration_list: Array<TInputDateRange>;
+    input_date_range?: TInputDateRange;
+    current_focus?: string;
+    duration_list?: Array<TInputDateRange>;
     onChange: (
         value: { from?: moment.Moment; to?: moment.Moment; is_batch?: boolean },
         extra_data?: { date_range: TInputDateRange }
     ) => void;
-    setCurrentFocus: (focus: string) => void;
+    setCurrentFocus?: (focus: string) => void;
     from: number;
     to: number;
 };

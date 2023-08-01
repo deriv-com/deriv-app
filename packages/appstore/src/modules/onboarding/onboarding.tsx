@@ -26,9 +26,10 @@ type TOnboardingProps = {
 const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboardingProps) => {
     const history = useHistory();
     const number_of_steps = Object.keys(contents);
-    const { traders_hub, client } = useStore();
-    const { toggleIsTourOpen, selectAccountType, is_demo_low_risk, content_flag } = traders_hub;
-    const { is_eu_country, is_logged_in, is_landing_company_loaded, prev_account_type, setPrevAccountType } = client;
+    const { traders_hub, client, ui } = useStore();
+    const { is_eu_country, is_landing_company_loaded, is_logged_in, prev_account_type, setPrevAccountType } = client;
+    const { is_mobile } = ui;
+    const { content_flag, is_demo_low_risk, selectAccountType, toggleIsTourOpen } = traders_hub;
     const [step, setStep] = React.useState<number>(1);
 
     const prevStep = () => {
@@ -97,13 +98,18 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
                         <Text
                             as='h2'
                             weight='bold'
-                            size='sm'
+                            size={is_mobile ? 's' : 'sm'}
                             align='center'
                             className='onboarding-footer-description__header'
                         >
                             {footer_header_text}
                         </Text>
-                        <Text as='p' size='xs' align='center' className='onboarding-footer-description__text'>
+                        <Text
+                            as='p'
+                            size={is_mobile ? 'xxs' : 'xs'}
+                            align='center'
+                            className='onboarding-footer-description__text'
+                        >
                             {footer_description}
                         </Text>
                     </div>

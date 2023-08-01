@@ -3,11 +3,6 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import userEvent from '@testing-library/user-event';
 import ReadyToVerifyModal from './ready-to-verify-modal';
-import { useDepositLocked } from '@deriv/hooks';
-
-jest.mock('@deriv/hooks', () => ({
-    useDepositLocked: jest.fn(() => false),
-}));
 
 describe('<ReadyToVerifyModal />', () => {
     let modal_root_el: HTMLDivElement;
@@ -27,8 +22,12 @@ describe('<ReadyToVerifyModal />', () => {
             ui: {
                 should_show_account_success_modal: true,
             },
+            client: {
+                account_status: {
+                    status: ['unwelcome'],
+                },
+            },
         });
-        (useDepositLocked as jest.Mock).mockReturnValueOnce(true);
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
@@ -60,6 +59,11 @@ describe('<ReadyToVerifyModal />', () => {
         const mock = mockStore({
             ui: {
                 should_show_account_success_modal: true,
+            },
+            client: {
+                account_status: {
+                    status: [],
+                },
             },
         });
 

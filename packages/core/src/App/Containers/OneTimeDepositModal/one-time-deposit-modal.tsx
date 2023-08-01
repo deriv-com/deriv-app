@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     Button,
     DesktopWrapper,
@@ -10,17 +10,14 @@ import {
     Modal,
     Text,
 } from '@deriv/components';
-import { useDepositFiatAddress, useDepositLocked } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import DepositFiatIframe from '@deriv/cashier/src/modules/deposit-fiat/components/deposit-fiat-iframe/deposit-fiat-iframe';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
 
 const OneTimeDepositModal = observer(() => {
-    const { data: iframe_url, isSuccess } = useDepositFiatAddress();
-    const is_deposit_locked = useDepositLocked();
-    const [is_iframe_loading, setIsIframeLoading] = useState(true);
     const { client, ui } = useStore();
-    const { loginid } = client;
+    const { account_status, loginid, updateAccountStatus } = client;
     const {
         is_mobile,
         should_show_one_time_deposit_modal,
@@ -29,15 +26,22 @@ const OneTimeDepositModal = observer(() => {
     } = ui;
     const liveChat = useLiveChat(false, loginid);
 
+    /** fetch account_status every 2 seconds since we can't subscribe for status updates */
     React.useEffect(() => {
-        setIsIframeLoading(true);
-    }, [iframe_url]);
+        const interval = setInterval(() => {
+            updateAccountStatus();
+        }, 2000);
+        return () => clearInterval(interval);
+    }, []);
 
     React.useEffect(() => {
-        if (is_deposit_locked) {
+        const has_client_deposited = account_status?.status?.some(
+            status => status === 'unwelcome' || status === 'withdrawal_locked' || status === 'cashier_locked'
+        );
+        if (has_client_deposited) {
             onCloseModal();
         }
-    }, [is_deposit_locked]);
+    }, [account_status]);
 
     const onLiveChatClick = () => {
         liveChat.widget?.call('maximize');
@@ -83,17 +87,7 @@ const OneTimeDepositModal = observer(() => {
                     </Text>
                 </Button>
             </div>
-            {is_iframe_loading && <Loading is_fullscreen={false} />}
-            {isSuccess && (
-                <iframe
-                    key={iframe_url}
-                    className='one-time-deposit-modal__deposit-fiat-iframe'
-                    src={iframe_url}
-                    onLoad={() => setIsIframeLoading(false)}
-                    style={{ display: is_iframe_loading ? 'none' : 'block' }}
-                    data-testid='dt_deposit_fiat_iframe'
-                />
-            )}
+            <DepositFiatIframe />
         </div>
     );
 

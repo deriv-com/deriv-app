@@ -7,7 +7,7 @@ import { useStore, observer } from '@deriv/stores';
 import './ready-to-verify-modal.scss';
 
 const ReadyToVerifyModal = observer(() => {
-    const { ui } = useStore();
+    const { client, ui } = useStore();
     const {
         should_show_account_success_modal,
         setShouldTriggerTourGuide,
@@ -16,7 +16,11 @@ const ReadyToVerifyModal = observer(() => {
         enableApp,
         // openPOIPOAModal,
     } = ui;
-    const is_deposit_locked = useDepositLocked();
+    const { account_status } = client;
+
+    const has_client_deposited = account_status?.status?.some(
+        status => status === 'unwelcome' || status === 'withdrawal_locked' || status === 'cashier_locked'
+    );
 
     const onConfirmeModal = () => {
         toggleAccountSuccessModal();
@@ -31,7 +35,7 @@ const ReadyToVerifyModal = observer(() => {
     return (
         <Dialog
             className='ready-to-verify-dialog'
-            title={is_deposit_locked ? localize('Successfully deposited') : localize('Account added')}
+            title={has_client_deposited ? localize('Successfully deposited') : localize('Account added')}
             confirm_button_text={localize('Verify now')}
             onConfirm={onConfirmeModal}
             cancel_button_text={localize('Maybe later')}
@@ -44,7 +48,7 @@ const ReadyToVerifyModal = observer(() => {
             onEscapeButtonCancel={onClose}
         >
             <Text align='center' size={isMobile() ? 'xxs' : 'xs'}>
-                {is_deposit_locked
+                {has_client_deposited
                     ? localize(
                           'Your funds will be available for trading once the verification of your account is complete.'
                       )

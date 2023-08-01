@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router } from 'react-router';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createBrowserHistory } from 'history';
 import { useDepositFiatAddress, useDepositLocked } from '@deriv/hooks';
@@ -35,8 +35,11 @@ describe('<OneTimeDepositModal />', () => {
                 toggleAccountSuccessModal: jest.fn(),
             },
             client: {
-                has_deposited_for_first_time: false,
+                account_status: {
+                    status: [],
+                },
                 loginid: 'MX12345',
+                updateAccountStatus: jest.fn(),
             },
         });
     });
@@ -61,7 +64,7 @@ describe('<OneTimeDepositModal />', () => {
         );
         expect(screen.getByText('Deposit')).toBeInTheDocument();
         expect(screen.getByText('Account created. Select payment method for deposit.')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_deposit_fiat_iframe')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_deposit_fiat_iframe_iframe')).toBeInTheDocument();
     });
 
     it('should render loading component if iframe has not loaded', () => {
@@ -87,7 +90,7 @@ describe('<OneTimeDepositModal />', () => {
 
     it('should close modal if user unable to deposit because they have deposited', () => {
         const history = createBrowserHistory();
-        (useDepositLocked as jest.Mock).mockReturnValueOnce(true);
+        mock_store.client.account_status.status = ['unwelcome', 'withdrawal_locked'];
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>{children}</StoreProvider>
         );
@@ -102,6 +105,27 @@ describe('<OneTimeDepositModal />', () => {
         );
         expect(mock_store.ui.setShouldShowOneTimeDepositModal).toHaveBeenCalled();
         expect(mock_store.ui.toggleAccountSuccessModal).toHaveBeenCalled();
+    });
+
+    it('should fetch account_status every 2 seconds', () => {
+        const history = createBrowserHistory();
+        jest.useFakeTimers();
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock_store}>{children}</StoreProvider>
+        );
+        render(
+            <Router history={history}>
+                <OneTimeDepositModal />
+            </Router>,
+            {
+                wrapper,
+            }
+        );
+        act(() => {
+            jest.advanceTimersByTime(2000);
+        });
+        expect(mock_store.client.updateAccountStatus).toHaveBeenCalled();
+        jest.useRealTimers();
     });
 
     it('should close modal after cllicking ESC key', () => {

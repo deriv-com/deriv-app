@@ -16,6 +16,7 @@ const Contract = observer(() => {
         contract_types_list,
         is_mobile_digit_view_selected: is_digit_view,
         is_equal,
+        non_available_contract_types_list,
         onChange,
         symbol,
     } = useTraderStore();
@@ -25,6 +26,14 @@ const Contract = observer(() => {
     } = useStore();
 
     const list = getAvailableContractTypes(contract_types_list, unsupported_contract_types_list);
+    const unavailable_trade_types_list = getAvailableContractTypes(
+        non_available_contract_types_list,
+        unsupported_contract_types_list
+    ).filter(type =>
+        !is_virtual
+            ? type.key !== 'Vanillas' && type.key !== 'Accumulators' && type.key !== 'Turbos'
+            : type.key !== 'Turbos'
+    );
 
     const digits_message = localize('Last digit stats for latest 1000 ticks for {{ underlying_name }}', {
         underlying_name: getMarketNamesMap()[symbol.toUpperCase()],
@@ -47,6 +56,7 @@ const Contract = observer(() => {
                 onChange={onChange}
                 value={contract_type}
                 languageChanged={prev_lang && prev_lang !== current_language}
+                unavailable_trade_types_list={unavailable_trade_types_list}
             />
         </React.Fragment>
     );

@@ -24,6 +24,7 @@ export const ContractType = (() => {
     let available_contract_types = {};
     let available_categories = {};
     let contract_types;
+    const non_available_categories = {};
     const trading_events = {};
     const trading_times = {};
     let has_only_forward_starting_contracts = false;
@@ -86,6 +87,20 @@ export const ContractType = (() => {
                 );
                 if (available_categories[key].categories?.length === 0) {
                     delete available_categories[key];
+                }
+            });
+
+            r.contracts_for.non_available.forEach(contract => {
+                const type = Object.keys(contract_types).find(
+                    key => contract_types[key].trade_types.indexOf(contract.contract_type) !== -1
+                );
+                const key = Object.keys(contract_categories).find(
+                    key => contract_categories[key]?.categories.indexOf(type) !== -1
+                );
+                const cat = contract_categories[key]?.categories ?? [];
+                cat[cat.indexOf(type)] = { value: type, text: contract_types[type]?.title };
+                if (key) {
+                    non_available_categories[key] = { categories: [...cat], ...contract_categories[key] };
                 }
             });
         });
@@ -563,6 +578,7 @@ export const ContractType = (() => {
         getTradingTimes,
         getContractCategories: () => ({
             contract_types_list: available_categories,
+            non_available_contract_types_list: non_available_categories,
             has_only_forward_starting_contracts,
         }),
     };

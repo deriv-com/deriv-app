@@ -19,7 +19,13 @@ const List = ({ handleInfoClick, handleSelect, list, name, value }) =>
         const is_new = contract_category.key === 'Accumulators' || contract_category.key === 'Vanillas';
 
         return (
-            <div key={key} className='contract-type-list' data-testid='contract_list'>
+            <div
+                key={key}
+                className={classNames('contract-type-list', {
+                    'contract-type-list--unavailable-category': contract_category.is_unavailable,
+                })}
+                data-testid='contract_list'
+            >
                 <div className='contract-type-item__container'>
                     <Text size='xs' className='contract-type-list__label'>
                         {contract_category.label}
@@ -33,8 +39,8 @@ const List = ({ handleInfoClick, handleSelect, list, name, value }) =>
                 <div className='contract-type-list__wrapper'>
                     <Item
                         contract_types={contract_types}
-                        handleSelect={handleSelect}
-                        handleInfoClick={handleInfoClick}
+                        handleSelect={!contract_category.is_unavailable && handleSelect}
+                        handleInfoClick={!contract_category.is_unavailable && handleInfoClick}
                         name={name}
                         value={value}
                     />

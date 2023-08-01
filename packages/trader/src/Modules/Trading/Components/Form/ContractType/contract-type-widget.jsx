@@ -5,7 +5,15 @@ import { localize } from '@deriv/translations';
 import ContractType from './contract-type.jsx';
 import { getContractTypeCategoryIcons, findContractCategory } from '../../../Helpers/contract-type';
 
-const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageChanged }) => {
+const ContractTypeWidget = ({
+    is_equal,
+    name,
+    value,
+    list,
+    onChange,
+    languageChanged,
+    unavailable_trade_types_list,
+}) => {
     const wrapper_ref = React.useRef(null);
     const [is_dialog_open, setDialogVisibility] = React.useState(false);
     const [is_info_dialog_open, setInfoDialogVisibility] = React.useState(false);
@@ -86,9 +94,21 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
         const contract_type_category_icon = getContractTypeCategoryIcons();
         const order_arr = ['Accumulators', 'Vanillas', 'Multipliers', 'Ups & Downs', 'Highs & Lows', 'Digits'];
         const ordered_list = list.sort((a, b) => order_arr.indexOf(a.key) - order_arr.indexOf(b.key));
+        const ordered_unavailable_types_list = unavailable_trade_types_list
+            .sort((a, b) => order_arr.indexOf(a.key) - order_arr.indexOf(b.key))
+            .map(item => ({ ...item, is_unavailable: true }));
         const accumulators_category = ordered_list.filter(({ label }) => label === localize('Accumulators'));
         const multipliers_category = ordered_list.filter(({ label }) => label === localize('Multipliers'));
         const options_category = ordered_list.filter(
+            ({ label }) => label !== localize('Multipliers') && label !== localize('Accumulators')
+        );
+        const non_av_accumulators_category = ordered_unavailable_types_list.filter(
+            ({ label }) => label === localize('Accumulators')
+        );
+        const non_av_multipliers_category = ordered_unavailable_types_list.filter(
+            ({ label }) => label === localize('Multipliers')
+        );
+        const non_av_options_category = ordered_unavailable_types_list.filter(
             ({ label }) => label !== localize('Multipliers') && label !== localize('Accumulators')
         );
 
@@ -97,7 +117,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
         if (list.length > 0) {
             categories.push({
                 label: localize('All'),
-                contract_categories: [...ordered_list],
+                contract_categories: [...ordered_list, ...ordered_unavailable_types_list],
                 key: 'All',
             });
         }
@@ -105,7 +125,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
         if (multipliers_category.length > 0) {
             categories.push({
                 label: localize('Multipliers'),
-                contract_categories: multipliers_category,
+                contract_categories: [...multipliers_category, ...non_av_multipliers_category],
                 key: 'Multipliers',
             });
         }
@@ -113,7 +133,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
         if (options_category.length > 0) {
             categories.push({
                 label: localize('Options'),
-                contract_categories: options_category,
+                contract_categories: [...options_category, ...non_av_options_category],
                 component: options_category.some(category => category.key === 'Vanillas') && (
                     <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>
                 ),
@@ -124,7 +144,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
         if (accumulators_category.length > 0) {
             categories.push({
                 label: localize('Accumulators'),
-                contract_categories: accumulators_category,
+                contract_categories: [...accumulators_category, ...non_av_accumulators_category],
                 component: <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>,
                 key: 'Accumulators',
             });
@@ -222,6 +242,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
 };
 
 ContractTypeWidget.propTypes = {
+    unavailable_trade_types_list: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     is_equal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     languageChanged: PropTypes.bool,
     list: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),

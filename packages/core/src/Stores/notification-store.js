@@ -571,9 +571,9 @@ export default class NotificationStore extends BaseStore {
                 } else if (svg_poi_expired) {
                     this.addNotificationMessage(this.client_notifications.svg_poi_expired);
                 }
-                if (this.root_store.client.mt5_login_list.length > 0) {
-                    this.addNotificationMessage(this.client_notifications.mt5_notification);
-                }
+            }
+            if (client && this.root_store.client.mt5_login_list.length > 0) {
+                this.addNotificationMessage(this.client_notifications.mt5_notification);
             }
         }
 
@@ -1490,14 +1490,10 @@ export default class NotificationStore extends BaseStore {
                 key: 'mt5_notification',
                 header: localize('Trouble accessing Deriv MT5 on your mobile?'),
                 message: localize('Follow these simple instructions to fix it.'),
-                primary_btn: {
+                action: {
                     text: localize('Learn more'),
                     onClick: () => {
-                        this.toggleNotificationsModal();
-
-                        setTimeout(() => {
-                            setMT5NotificationModal(true);
-                        }, 300);
+                        setMT5NotificationModal(true);
                     },
                 },
                 type: 'warning',

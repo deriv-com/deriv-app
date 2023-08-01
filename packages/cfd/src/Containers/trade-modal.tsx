@@ -232,12 +232,12 @@ const TradeModal = ({
                 <div className='cfd-trade-modal__download-center-app--windows'>
                     <Icon icon='IcWindowsLogo' size={32} />
                     <Text className='cfd-trade-modal__download-center-app--windows-item' size='xs'>
-                        {localize('MetaTrader 5 Windows app')}
+                        {localize('cTrader Windows app')}
                     </Text>
                     <a
                         className='dc-btn cfd-trade-modal__download-center-app--windows-link'
                         type='button'
-                        href={'www.google.com'}
+                        href={'https://spotware.ctrader.com/ctrader-spotware-setup.exe'}
                         target='_blank'
                         rel='noopener noreferrer'
                     >
@@ -258,9 +258,11 @@ const TradeModal = ({
                     <a href={mobileDownloadLink(platform, 'android')} target='_blank' rel='noopener noreferrer'>
                         <Icon icon='IcInstallationGoogle' width={135} height={40} />
                     </a>
-                    <a href={mobileDownloadLink(platform, 'huawei')} target='_blank' rel='noopener noreferrer'>
-                        <Icon icon='IcInstallationHuawei' width={135} height={40} />
-                    </a>
+                    {platform !== CFD_PLATFORMS.CTRADER && (
+                        <a href={mobileDownloadLink(platform, 'huawei')} target='_blank' rel='noopener noreferrer'>
+                            <Icon icon='IcInstallationHuawei' width={135} height={40} />
+                        </a>
+                    )}
                 </div>
                 {!isMobile() && (
                     <div className='cfd-trade-modal__download-center-options--qrcode'>

@@ -120,7 +120,7 @@ export const PlatformsDesktopDownload = ({
                         className='cfd-trade-modal__platform-button-icon'
                         icon={`IcBrand${platformsIcons(platform)}Wordmark`}
                         width={60}
-                        height={40}
+                        height={30}
                     />
                 )}
                 <div className='cfd-trade-modal__platform-button-text'>

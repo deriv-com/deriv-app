@@ -40,12 +40,13 @@
 #  bahar-deriv
 #  balakrishna-deriv
 #  farrah-deriv
-#  farzin-deriv
 #  hirad-deriv
 #  mahdiyeh-deriv
 #  maryia-deriv
 #  matin-deriv
 #  nijil-deriv
+#  prince-deriv
+#  sandeep-deriv
 #  yashim-deriv
 
 ######################################################################################################
@@ -66,7 +67,7 @@
 # (in case no pattern matches a path in a PR - this should be treated as a bug and result in adding the path to CODEOWNERS)
 # ==============================================================
 
-*                                                               @markwylde-deriv @matin-deriv @balakrishna-deriv @nijil-deriv @yashim-deriv
+*                                                               @balakrishna-deriv @yashim-deriv
 
 
 # ==============================================================
@@ -87,7 +88,7 @@
 #  deriv-app/appstore
 # ==============================================================
 
-/packages/appstore/**/*                                         @matin-deriv @balakrishna-deriv @mahdiyeh-deriv @nijil-deriv @yashim-deriv
+/packages/appstore/**/*                                         @matin-deriv @mahdiyeh-deriv @nijil-deriv
 
 
 # ==============================================================
@@ -103,7 +104,7 @@
 #  deriv-app/cashier
 # ==============================================================
 
-/packages/cashier/**/*                                          @nijil-deriv @farzin-deriv
+/packages/cashier/**/*                                          @farrah-deriv @nijil-deriv
 
 
 # ==============================================================
@@ -117,21 +118,21 @@
 #  deriv-app/core
 # ==============================================================
 
-/packages/api/**/*                                              @balakrishna-deriv @matin-deriv @yashim-deriv @farzin-deriv
-/packages/core/**/*                                             @balakrishna-deriv @matin-deriv @yashim-deriv @farzin-deriv
-/packages/shared/**/*                                           @balakrishna-deriv @matin-deriv @yashim-deriv @farzin-deriv
-/packages/components/**/*                                       @balakrishna-deriv @matin-deriv @yashim-deriv @farzin-deriv
-/packages/translations/**/*                                     @balakrishna-deriv @matin-deriv @yashim-deriv @farzin-deriv
-/packages/utils/**/*                                            @balakrishna-deriv @matin-deriv @yashim-deriv @farzin-deriv
-/packages/hooks/**/*                                            @balakrishna-deriv @matin-deriv @yashim-deriv @farzin-deriv
-/packages/stores/**/*                                           @balakrishna-deriv @matin-deriv @yashim-deriv @farzin-deriv
+/packages/api/**/*                                              @ali-hosseini-deriv @matin-deriv
+/packages/core/**/*                                             @ali-hosseini-deriv @matin-deriv
+/packages/shared/**/*                                           @ali-hosseini-deriv @matin-deriv
+/packages/components/**/*                                       @ali-hosseini-deriv @matin-deriv
+/packages/translations/**/*                                     @ali-hosseini-deriv @matin-deriv
+/packages/utils/**/*                                            @ali-hosseini-deriv @matin-deriv
+/packages/hooks/**/*                                            @ali-hosseini-deriv @matin-deriv
+/packages/stores/**/*                                           @ali-hosseini-deriv @matin-deriv
 
 
 # ==============================================================
 #  deriv-app/p2p
 # ==============================================================
 
-/packages/p2p/**/*                                              @farrah-deriv
+/packages/p2p/**/*                                              @farrah-deriv @nijil-deriv
 
 
 # ==============================================================
@@ -145,13 +146,13 @@
 #  deriv-app/reports
 # ==============================================================
 
-/packages/reports/**/*                                          @mahdiyeh-deriv @matin-deriv
+/packages/reports/**/*                                          @mahdiyeh-deriv @matin-deriv @maryia-deriv
 
 
 # ==============================================================
 #  deriv-app/trader
 # ==============================================================
 
-/packages/trader/**/*                                           @matin-deriv @balakrishna-deriv @maryia-deriv
+/packages/trader/**/*                                           @matin-deriv @maryia-deriv
 
 

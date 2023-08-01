@@ -11,7 +11,7 @@ import BuySellTable from './buy-sell-table.jsx';
 import './buy-sell.scss';
 
 const BuySell = () => {
-    const { buy_sell_store } = useStores();
+    const { buy_sell_store, general_store } = useStores();
     const previous_scroll_top = React.useRef(0);
 
     React.useEffect(() => {
@@ -35,11 +35,13 @@ const BuySell = () => {
     if (buy_sell_store.should_show_verification) {
         return (
             <React.Fragment>
-                <PageReturn
-                    className='buy-sell__page-return'
-                    onClick={buy_sell_store.hideVerification}
-                    page_title={localize('Verification')}
-                />
+                {!general_store.should_show_popup && (
+                    <PageReturn
+                        className='buy-sell__page-return'
+                        onClick={buy_sell_store.hideVerification}
+                        page_title={localize('Verification')}
+                    />
+                )}
                 <Verification />
             </React.Fragment>
         );

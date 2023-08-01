@@ -3,8 +3,8 @@ import { Jurisdiction } from '@deriv/shared';
 
 export type TDxCompanies = ReturnType<typeof getDxCompanies>;
 export type TMtCompanies = ReturnType<typeof getMtCompanies>;
-export type TCTraderCompanies = ReturnType<typeof getCTraderCompanies>;
 export type TDerivezCompanies = ReturnType<typeof getDerivezCompanies>;
+export type TCTraderCompanies = ReturnType<typeof getCTraderCompanies>;
 
 export const getDxCompanies = () => {
     const all_config = {
@@ -139,6 +139,12 @@ export const getMtCompanies = (is_eu: boolean) => {
                 title: localize('Demo'),
                 short_title: all_config.short_title,
             },
+            ctrader: {
+                mt5_account_type: all_config.account_type,
+                leverage: '500',
+                title: localize('Demo'),
+                short_title: localize('cTrader'),
+            },
             synthetic: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
@@ -186,9 +192,9 @@ export const getMtCompanies = (is_eu: boolean) => {
             },
             ctrader: {
                 mt5_account_type: all_config.account_type,
-                leverage: all_config.leverage,
+                leverage: '500',
                 title: localize('Real'),
-                short_title: all_config.short_title,
+                short_title: localize('cTrader'),
             },
             dxtrade: {
                 mt5_account_type: all_config.account_type,

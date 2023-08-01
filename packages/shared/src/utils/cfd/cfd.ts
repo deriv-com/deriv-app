@@ -56,7 +56,7 @@ type TGetCFDAccountKey = TGetAccount & {
 // sub_account_type financial_stp only happens in "financial" market_type
 // dxrade and swap_free both have market_type "all" so check for platform is neccessary
 export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shortcode }: TGetCFDAccountKey) => {
-    if (platform === CFD_PLATFORMS.MT5) {
+    if (platform === CFD_PLATFORMS.MT5 && market_type === 'all') {
         // currently we are only supporting SVG for SwapFree
         switch (shortcode) {
             case 'svg':

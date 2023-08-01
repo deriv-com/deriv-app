@@ -1,22 +1,18 @@
 import React from 'react';
 import { Button, Icon, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { observer } from '@deriv/stores';
+import { useDBotStore } from 'Stores/useDBotStore';
 
 type TDownloadProps = {
-    onClickDownloadTransaction: () => void;
-    onClickDownloadJournal: () => void;
     tab: string;
-    is_clear_stat_disabled: boolean;
 };
 
-const Download = ({
-    tab,
-    onClickDownloadTransaction,
-    onClickDownloadJournal,
-    is_clear_stat_disabled,
-}: TDownloadProps) => {
+const Download = observer(({ tab }: TDownloadProps) => {
+    const { download, run_panel } = useDBotStore();
+    const { is_clear_stat_disabled } = run_panel;
+    const { onClickDownloadTransaction, onClickDownloadJournal } = download;
+
     let clickFunction, popover_message;
     if (tab === 'transactions') {
         clickFunction = onClickDownloadTransaction;
@@ -44,10 +40,6 @@ const Download = ({
             />
         </Popover>
     );
-};
+});
 
-export default connect(({ download, run_panel }: RootStore) => ({
-    onClickDownloadTransaction: download.onClickDownloadTransaction,
-    onClickDownloadJournal: download.onClickDownloadJournal,
-    is_clear_stat_disabled: run_panel.is_clear_stat_disabled,
-}))(Download);
+export default Download;

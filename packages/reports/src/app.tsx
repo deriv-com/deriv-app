@@ -1,7 +1,5 @@
 import React from 'react';
 import Routes from 'Containers/routes';
-import { MobxContentProvider } from 'Stores/connect';
-import { StoreProvider } from '@deriv/stores';
 import ReportsProviders from './reports-providers';
 import 'Sass/app.scss';
 import initStore from './init-store';
@@ -19,11 +17,7 @@ const App = ({ passthrough }: TAppProps) => {
 
     return (
         <ReportsProviders store={root_store}>
-            <MobxContentProvider store={root_store}>
-                <StoreProvider store={passthrough.root_store}>
-                    <Routes />
-                </StoreProvider>
-            </MobxContentProvider>
+            <Routes />=
         </ReportsProviders>
     );
 };

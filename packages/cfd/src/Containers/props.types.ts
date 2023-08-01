@@ -1,6 +1,7 @@
 import React from 'react';
 import { DetailsOfEachMT5Loginid, GetAccountStatus, VerifyEmailResponse } from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
+import { RouteComponentProps } from 'react-router';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
 import {
     TTradingPlatformAvailableAccount,
@@ -316,4 +317,12 @@ export type TCFDDbviOnboardingProps = {
     toggleCFDVerificationModal: () => void;
     updateAccountStatus: () => void;
     updateMT5Status: () => void;
+};
+
+export type TObjectCFDAccount = { category: string; type: string; set_password?: number; platform?: string };
+
+export type TCFDDashboardProps = RouteComponentProps & {
+    account_status: object;
+    // TODO: update this type (DetailsOfEachMT5Loginid) when BE changed the schema
+    platform: 'mt5' | 'dxtrade';
 };

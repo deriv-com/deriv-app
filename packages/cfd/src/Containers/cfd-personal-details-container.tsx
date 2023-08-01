@@ -6,14 +6,15 @@ import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form';
 import { getPropertyValue, isDesktop, WS } from '@deriv/shared';
 import { GetSettings } from '@deriv/api-types';
 import { observer, useStore } from '@deriv/stores';
+import { useLandingCompany } from '@deriv/hooks';
 
 type TFormValues = { [key: string]: string };
 type TSetSubmitting = (isSubmitting: boolean) => void;
 
 const CFDPersonalDetailsContainer = observer(({ onSubmit }: TCFDPersonalDetailsContainerProps) => {
     const { client } = useStore();
-
-    const { account_settings, getChangeableFields, landing_company, residence_list, setAccountSettings } = client;
+    const { data: new_lc } = useLandingCompany();
+    const { account_settings, getChangeableFields, residence_list, setAccountSettings } = client;
 
     const [form_error, setFormError] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(false);
@@ -111,7 +112,7 @@ const CFDPersonalDetailsContainer = observer(({ onSubmit }: TCFDPersonalDetailsC
                     form_error={form_error}
                     index={2}
                     is_loading={is_loading}
-                    landing_company={landing_company}
+                    landing_company={new_lc}
                     onSubmit={updateValue}
                     residence_list={residence_list}
                     changeable_fields={getChangeableFields()}

@@ -77,10 +77,8 @@ type TCFDAttributeDescriberProps = {
 };
 
 type TFilterAvailableAccounts = (
-    landing_companies: TLandingCompany,
     table: TAccountsDescription[],
     is_logged_in: boolean,
-    is_eu_client: boolean,
     platform: string,
     is_australian: boolean
 ) => Array<{ [key: string]: string | React.ReactNode | undefined }>;
@@ -257,13 +255,7 @@ const CFDAttributeDescriber = ({ name, counter }: TCFDAttributeDescriberProps) =
     );
 };
 
-const filterAvailableAccounts: TFilterAvailableAccounts = (
-    landing_companies,
-    table,
-    is_logged_in,
-    is_eu_client,
-    platform
-) => {
+const filterAvailableAccounts: TFilterAvailableAccounts = (table, is_logged_in, platform) => {
     let footnote_number = 0;
     return table
         .filter(row => row[platform as keyof TAccountsDescription])
@@ -298,10 +290,8 @@ const compareAccountsData = ({
 }: TCompareAccountsDataParams) => {
     const is_australian = residence === 'au';
     return filterAvailableAccounts(
-        landing_companies,
         getAccounts({ landing_companies, platform, is_logged_in, is_uk }),
         is_logged_in,
-        is_eu_client,
         platform,
         is_australian
     );

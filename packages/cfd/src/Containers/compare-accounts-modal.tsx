@@ -8,6 +8,7 @@ import CfdDxtradeCompareContent from '../Components/cfd-dxtrade-compare-content'
 import { observer, useStore } from '@deriv/stores';
 import { LandingCompany } from '@deriv/api-types';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { useLandingCompany } from '@deriv/hooks';
 
 type TCompareAccountsReusedProps = {
     platform: string;
@@ -88,16 +89,10 @@ const CompareAccountsModal = observer(
         setShouldShowCooldownModal,
     }: TCompareAccountsModalProps) => {
         const { ui, client, traders_hub } = useStore();
-
+        const { data: new_lc } = useLandingCompany();
         const { disableApp, enableApp, openDerivRealAccountNeededModal } = ui;
-        const {
-            is_populating_mt5_account_list: is_loading,
-            is_eu,
-            is_uk,
-            is_logged_in,
-            landing_companies,
-            residence,
-        } = client;
+        const { is_populating_mt5_account_list: is_loading, is_eu, is_uk, is_logged_in, residence } = client;
+
         const { content_flag, show_eu_related_content, CFDs_restricted_countries } = traders_hub;
 
         const { is_compare_accounts_visible, toggleCompareAccountsModal } = useCfdStore();
@@ -107,17 +102,17 @@ const CompareAccountsModal = observer(
         // TODO : should change the type to all after changing derivx api
         const has_derivx =
             isLandingCompanyEnabled({
-                landing_companies,
+                new_lc,
                 platform: CFD_PLATFORMS.DXTRADE,
                 type: 'financial',
             }) ||
             isLandingCompanyEnabled({
-                landing_companies,
+                new_lc,
                 platform: CFD_PLATFORMS.DXTRADE,
                 type: 'gaming',
             }) ||
             isLandingCompanyEnabled({
-                landing_companies,
+                new_lc,
                 platform: CFD_PLATFORMS.DXTRADE,
                 type: 'all',
             });
@@ -131,9 +126,9 @@ const CompareAccountsModal = observer(
 
         const is_dxtrade = platform && platform === CFD_PLATFORMS.DXTRADE;
         const mt5_accounts = [
-            landing_companies?.mt_gaming_company?.financial,
-            landing_companies?.mt_financial_company?.financial,
-            landing_companies?.mt_financial_company?.financial_stp,
+            new_lc?.mt_gaming_company?.financial,
+            new_lc?.mt_financial_company?.financial,
+            new_lc?.mt_financial_company?.financial_stp,
         ];
 
         const cfd_account_button_label =
@@ -196,7 +191,7 @@ const CompareAccountsModal = observer(
                 <DxtradeCompareAccountContent
                     is_demo_tab={is_demo_tab}
                     is_logged_in={is_logged_in}
-                    landing_companies={landing_companies}
+                    landing_companies={new_lc}
                     platform={platform}
                     is_eu_client={!!show_eu_related_content}
                     residence={residence}

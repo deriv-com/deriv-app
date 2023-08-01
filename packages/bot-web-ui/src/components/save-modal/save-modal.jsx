@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
@@ -127,8 +127,10 @@ const SaveModalForm = ({
     </Formik>
 );
 const SaveModal = ({
+    active_tab,
     bot_name,
     button_status,
+    dashboard_strategies,
     is_authorised,
     is_save_modal_open,
     onConfirmSave,
@@ -137,8 +139,14 @@ const SaveModal = ({
     validateBotName,
     setCurrentFocus,
     is_onscreen_keyboard_active,
+    updateBotName,
 }) => {
     const is_mobile = isMobile();
+    useEffect(() => {
+        if (active_tab === 1) {
+            updateBotName(dashboard_strategies?.[0]?.name ?? '');
+        }
+    }, [active_tab, dashboard_strategies, updateBotName]);
     return is_mobile ? (
         <MobileFullPageModal
             is_modal_open={is_save_modal_open}
@@ -230,18 +238,25 @@ const IconRadio = ({ icon, text, google_drive_connected, onDriveConnect }) => {
 };
 
 SaveModal.propTypes = {
+    active_tab: PropTypes.number,
     button_status: PropTypes.number,
+    dashboard_strategies: PropTypes.array,
     is_authorised: PropTypes.bool,
     is_save_modal_open: PropTypes.bool,
+    is_onscreen_keyboard_active: PropTypes.bool,
     onConfirmSave: PropTypes.func,
     onDriveConnect: PropTypes.func,
     toggleSaveModal: PropTypes.func,
     bot_name: PropTypes.string,
     setCurrentFocus: PropTypes.func,
+    validateBotName: PropTypes.func,
+    updateBotName: PropTypes.func,
 };
 
-export default connect(({ save_modal, google_drive, ui }) => ({
+export default connect(({ save_modal, google_drive, ui, dashboard, load_modal }) => ({
+    active_tab: dashboard.active_tab,
     button_status: save_modal.button_status,
+    dashboard_strategies: load_modal.dashboard_strategies,
     is_authorised: google_drive.is_authorised,
     is_save_modal_open: save_modal.is_save_modal_open,
     is_onscreen_keyboard_active: ui.is_onscreen_keyboard_active,
@@ -251,4 +266,5 @@ export default connect(({ save_modal, google_drive, ui }) => ({
     validateBotName: save_modal.validateBotName,
     bot_name: save_modal.bot_name,
     setCurrentFocus: ui.setCurrentFocus,
+    updateBotName: save_modal.updateBotName,
 }))(SaveModal);

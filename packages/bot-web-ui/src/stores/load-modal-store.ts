@@ -1,17 +1,10 @@
 import React from 'react';
-import { action, autorun, computed, makeObservable, observable, reaction } from 'mobx';
-import {
-    config,
-    getSavedWorkspaces,
-    load,
-    observer as globalObserver,
-    removeExistingWorkspace,
-    save_types,
-    setColors,
-} from '@deriv/bot-skeleton';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
+import { config, getSavedWorkspaces, load, removeExistingWorkspace, save_types, setColors } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { clearInjectionDiv, tabs_title } from 'Constants/load-modal';
+import { TStrategy } from 'Types';
 import RootStore from './root-store';
 
 export type TWorkspace = {
@@ -31,12 +24,13 @@ interface ILoadModalStore {
     loaded_local_file: boolean | null;
     recent_strategies: string[];
     dashboard_strategies: Array<TWorkspace>;
-    selected_strategy_id: string[] | string | undefined;
+    selected_strategy_id: string | undefined;
     is_strategy_removed: boolean;
     is_delete_modal_open: boolean;
     current_workspace_id: string;
     getSelectedStrategyID: (current_workspace_id: string) => void;
     refreshStrategies: () => void;
+    loadStrategyToBuilder: (param: TStrategy) => void;
     refreshStrategiesTheme: () => void;
     preview_workspace: () => void;
     handleFileChange: (
@@ -55,7 +49,7 @@ interface ILoadModalStore {
     setActiveTabIndex: (index: number) => void;
     setLoadedLocalFile: (loaded_local_file: boolean | null) => void;
     setRecentStrategies: (recent_strategies: string[]) => void;
-    setSelectedStrategyId: (selected_strategy_id: string[] | undefined) => void;
+    setSelectedStrategyId: (selected_strategy_id: string | undefined) => void;
     toggleExplanationExpand: () => void;
     toggleLoadModal: () => void;
     toggleTourLoadModal: (toggle: boolean) => void;
@@ -67,10 +61,12 @@ interface ILoadModalStore {
 
 export default class LoadModalStore implements ILoadModalStore {
     root_store: RootStore;
+    previewed_strategy_id = '';
 
     constructor(root_store: RootStore) {
         makeObservable(this, {
             active_index: observable,
+            previewed_strategy_id: observable,
             is_load_modal_open: observable,
             is_explanation_expand: observable,
             is_open_button_loading: observable,
@@ -85,8 +81,10 @@ export default class LoadModalStore implements ILoadModalStore {
             preview_workspace: computed,
             selected_strategy: computed,
             tab_name: computed,
+            setPreviewedStrategyId: action.bound,
             getSelectedStrategyID: action.bound,
             refreshStrategies: action.bound,
+            loadStrategyToBuilder: action.bound,
             refreshStrategiesTheme: action.bound,
             handleFileChange: action.bound,
             loadFileFromRecent: action.bound,
@@ -139,7 +137,7 @@ export default class LoadModalStore implements ILoadModalStore {
     loaded_local_file = null;
     recent_strategies = [];
     dashboard_strategies = [];
-    selected_strategy_id = undefined;
+    selected_strategy_id = '';
     is_strategy_loaded = false;
     is_delete_modal_open = false;
     is_strategy_removed = false;
@@ -151,9 +149,10 @@ export default class LoadModalStore implements ILoadModalStore {
         return null;
     }
 
-    get selected_strategy() {
+    get selected_strategy(): TStrategy {
         return (
-            this.dashboard_strategies.find(ws => ws.id === this.selected_strategy_id) || this.dashboard_strategies[0]
+            this.dashboard_strategies.find((ws: { id: string }) => ws.id === this.selected_strategy_id) ||
+            this.dashboard_strategies[0]
         );
     }
 
@@ -168,6 +167,10 @@ export default class LoadModalStore implements ILoadModalStore {
         return '';
     }
 
+    setPreviewedStrategyId = (clicked_id: string) => {
+        this.previewed_strategy_id = clicked_id;
+    };
+
     getSelectedStrategyID = (current_workspace_id: string) => {
         this.current_workspace_id = current_workspace_id;
     };
@@ -175,7 +178,7 @@ export default class LoadModalStore implements ILoadModalStore {
     setDashboardStrategies(strategies: Array<TWorkspace>) {
         this.dashboard_strategies = strategies;
         if (!strategies.length) {
-            this.selected_strategy_id = undefined;
+            this.selected_strategy_id = '';
         }
     }
 
@@ -212,9 +215,23 @@ export default class LoadModalStore implements ILoadModalStore {
         event.target.value = '';
         return true;
     };
-    refreshStrategiesTheme = (strategy = this.selected_strategy?.xml): void => {
-        if (strategy) load({ block_string: strategy, drop_event: {}, workspace: this.recent_workspace });
+
+    loadStrategyToBuilder = (strategy: TStrategy): void => {
+        if (strategy?.id) {
+            load({
+                block_string: strategy.xml,
+                strategy_id: strategy.id,
+                file_name: strategy.name,
+                workspace: Blockly.derivWorkspace,
+                from: strategy.save_type,
+            });
+        }
     };
+
+    refreshStrategiesTheme = (): void => {
+        load({ block_string: this.selected_strategy?.xml, drop_event: {}, workspace: this.recent_workspace });
+    };
+
     loadFileFromRecent = async (): void => {
         this.is_open_button_loading = true;
         if (!this.selected_strategy) {
@@ -335,8 +352,8 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     previewRecentStrategy = (workspace_id: string): void => {
-        this.setSelectedStrategyId(workspace_id);
         if (!workspace_id) this.setSelectedStrategyId(this.current_workspace_id);
+        else this.setSelectedStrategyId(workspace_id);
         if (!this.selected_strategy) {
             return;
         }
@@ -349,20 +366,23 @@ export default class LoadModalStore implements ILoadModalStore {
             this.recent_workspace = null;
             this.setLoadedLocalFile(null);
         }
+
+        const dark_mode = document.body.classList.contains('theme--dark');
+        setColors(dark_mode);
+
         //to load the bot on first load
+        const ref = document.getElementById('load-strategy__blockly-container');
+        if (!ref) {
+            // eslint-disable-next-line no-console
+            console.warn('Could not find preview workspace element.');
+            return;
+        }
         if (this.tab_name !== tabs_title.TAB_LOCAL && this.recent_workspace) {
-            clearInjectionDiv('store', document.getElementById('load-strategy__blockly-container'));
+            clearInjectionDiv('store', ref);
             this.recent_workspace.dispose();
             this.recent_workspace = null;
         }
         if (!this.recent_workspace || !this.recent_workspace.rendered) {
-            const ref = document.getElementById('load-strategy__blockly-container');
-            if (!ref) {
-                // eslint-disable-next-line no-console
-                console.warn('Could not find preview workspace element.');
-                return;
-            }
-
             this.recent_workspace = Blockly.inject(ref, {
                 media: `${__webpack_public_path__}media/`,
                 zoom: {
@@ -373,13 +393,7 @@ export default class LoadModalStore implements ILoadModalStore {
                 scrollbars: true,
             });
         }
-        const dark_mode = document.body.classList.contains('theme--dark');
-        setColors(dark_mode);
         this.refreshStrategiesTheme();
-        const {
-            save_modal: { updateBotName },
-        } = this.root_store;
-        updateBotName(this.selected_strategy.name);
     };
 
     setActiveTabIndex = (index: number): void => {
@@ -398,7 +412,7 @@ export default class LoadModalStore implements ILoadModalStore {
         this.setRecentStrategies(this.recent_strategies);
     };
 
-    setSelectedStrategyId = (selected_strategy_id: string[] | undefined): void => {
+    setSelectedStrategyId = (selected_strategy_id: string): void => {
         this.selected_strategy_id = selected_strategy_id;
     };
 

@@ -18,6 +18,7 @@ const mocked_props = {
                 bid_price: 9.96,
                 buy_price: 10,
                 contract_id: 214693307868,
+                contract_type: 'NOTOUCH',
                 is_sold: 0,
                 underlying: '1HZ100V',
             },
@@ -45,6 +46,7 @@ const mocked_props = {
                 bid_price: 9.98,
                 buy_price: 10,
                 contract_id: 214693307999,
+                contract_type: 'NOTOUCH',
                 is_sold: 0,
                 underlying: '1HZ100V',
             },
@@ -84,9 +86,11 @@ jest.mock('@deriv/components', () => ({
     Icon: () => <div>Test Icon</div>,
 }));
 
-jest.mock('../../EmptyPortfolioMessage', () => jest.fn(() => <div>Test error</div>));
+jest.mock('../../EmptyPortfolioMessage', () => jest.fn(() => <div>Test Error</div>));
 
-// jest.mock('../toggle-positions.jsx', () => jest.fn(() => <div>Test toggle positions</div>));
+jest.mock('App/Components/Elements/PositionsDrawer/positions-modal-card.jsx', () =>
+    jest.fn(() => <div>Position modal card</div>)
+);
 
 describe('<TogglePositionsMobile />', () => {
     const mockProgressSliderStream = (mocked_store, mocked_props) => {
@@ -97,7 +101,7 @@ describe('<TogglePositionsMobile />', () => {
         );
     };
 
-    it('should render <TogglePositionsMobile /> with <TogglePositions/> and modal content if is_positions_drawer_on === true', () => {
+    it('should render <TogglePositionsMobile /> with <TogglePositions /> and <Modal /> content if is_positions_drawer_on === true', () => {
         const mock_root_store = mockStore({
             modules: {
                 trade: {
@@ -113,10 +117,30 @@ describe('<TogglePositionsMobile />', () => {
         });
         render(mockProgressSliderStream(mock_root_store, mocked_props));
 
-        screen.getAllByText('Test Icon').forEach(icon => expect(icon).toBeInTheDocument());
-        expect(screen.getByTestId('dt_positions_toggle')).toBeInTheDocument();
-        expect(screen.getByText('Recent positions')).toBeInTheDocument();
-        expect(screen.getByText('Go to Reports')).toBeInTheDocument();
+        screen.getAllByText(/test icon/i).forEach(icon => expect(icon).toBeInTheDocument());
+        screen.queryAllByAltText(/position modal card/i).forEach(card => expect(card).toBeInTheDocument());
+        expect(screen.getByTestId(/dt_positions_toggle/i)).toBeInTheDocument();
+        expect(screen.getByText(/recent positions/i)).toBeInTheDocument();
+        expect(screen.getByText(/go to reports/i)).toBeInTheDocument();
+    });
+    it('should not render <TogglePositionsMobile /> with <TogglePositions /> and <Modal /> content if is_positions_drawer_on === false', () => {
+        const mock_root_store = mockStore({
+            modules: {
+                trade: {
+                    symbol: '1HZ100V',
+                    contract_type: 'touch',
+                },
+            },
+        });
+
+        ReactDOM.createPortal = jest.fn(component => {
+            return component;
+        });
+        render(mockProgressSliderStream(mock_root_store, mocked_props));
+
+        screen.queryAllByAltText(/position modal card/i).forEach(card => expect(card).not.toBeInTheDocument());
+        expect(screen.queryByText(/recent positions/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/go to reports/i)).not.toBeInTheDocument();
     });
     it('should render <EmptyPortfolioMessage /> with error text if is_empty === true', () => {
         const mock_root_store = mockStore({
@@ -135,7 +159,7 @@ describe('<TogglePositionsMobile />', () => {
         });
         render(mockProgressSliderStream(mock_root_store, mocked_props));
 
-        expect(screen.getByText('Test error')).toBeInTheDocument();
+        expect(screen.getByText(/test error/i)).toBeInTheDocument();
     });
     it('should call function togglePositionsDrawer if <NavLink /> was clicked', () => {
         const mock_root_store = mockStore({
@@ -152,8 +176,8 @@ describe('<TogglePositionsMobile />', () => {
             return component;
         });
         render(mockProgressSliderStream(mock_root_store, mocked_props));
-
-        userEvent.click(screen.getByText('Go to Reports'));
+        const nav_link_button = screen.getByText(/go to reports/i);
+        userEvent.click(nav_link_button);
 
         expect(mock_root_store.ui.togglePositionsDrawer).toBeCalled();
     });
@@ -172,31 +196,31 @@ describe('<TogglePositionsMobile />', () => {
             return component;
         });
         render(mockProgressSliderStream(mock_root_store, mocked_props));
-
-        userEvent.click(screen.getAllByText('Test Icon')[2]);
+        const close_button = screen.getAllByText(/test icon/i)[2];
+        userEvent.click(close_button);
 
         expect(mock_root_store.ui.togglePositionsDrawer).toBeCalled();
     });
-    // it('should call function removePositionById if <NavLink /> was clocked and is_sold === 1', () => {
-    //     const mock_root_store = mockStore({
-    //         modules: {
-    //             trade: {
-    //                 symbol: '1HZ100V',
-    //                 contract_type: 'touch',
-    //             },
-    //         },
-    //         ui: { is_positions_drawer_on: true },
-    //     });
-    //     mocked_props.all_positions[0].contract_info.is_sold = 1;
-    //     mocked_props.all_positions[1].contract_info.is_sold = 1;
+    it('should call function removePositionById if <NavLink /> was clicked and is_sold === 1', () => {
+        const mock_root_store = mockStore({
+            modules: {
+                trade: {
+                    symbol: '1HZ100V',
+                    contract_type: 'touch',
+                },
+            },
+            ui: { is_positions_drawer_on: true },
+        });
+        mocked_props.all_positions[0].contract_info.is_sold = 1;
+        mocked_props.all_positions[1].contract_info.is_sold = 1;
 
-    //     ReactDOM.createPortal = jest.fn(component => {
-    //         return component;
-    //     });
-    //     render(mockProgressSliderStream(mock_root_store, mocked_props));
+        ReactDOM.createPortal = jest.fn(component => {
+            return component;
+        });
+        render(mockProgressSliderStream(mock_root_store, mocked_props));
+        const nav_link_button = screen.getByText(/go to reports/i);
+        userEvent.click(nav_link_button);
 
-    //     userEvent.click(screen.getByText('Go to Reports'));
-
-    //     expect(mock_root_store.portfolio.removePositionById).toBeCalled();
-    // });
+        expect(mock_root_store.portfolio.removePositionById).toBeCalled();
+    });
 });

@@ -1,9 +1,13 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import AlertMessage from './alert-message';
-import './message-list.scss';
+import classNames from 'classnames';
+import './animated-message-list.scss';
 
-type TMessageListProps = { list: (React.ComponentProps<typeof AlertMessage> & { key: string })[] };
+type TMessageListProps<T> = {
+    className?: string;
+    list: (T & { id: string })[];
+    Element: React.FC<T>;
+};
 
 const animations = {
     initial: {
@@ -35,14 +39,14 @@ const animations = {
     },
 };
 
-const MessageList = ({ list }: TMessageListProps) => {
+const AnimatedMessageList = <T,>({ className, list, Element }: TMessageListProps<T>) => {
     return (
-        <div className='message-list'>
+        <div className={classNames('animated-message-list', className)}>
             <AnimatePresence>
-                {list.map(item => {
+                {list.map(list_item => {
                     return (
-                        <motion.div {...animations} layout key={item.key}>
-                            <AlertMessage {...item} />
+                        <motion.div {...animations} layout key={list_item.id} data-testid='dt_list_item'>
+                            <Element {...list_item} />
                         </motion.div>
                     );
                 })}
@@ -51,4 +55,4 @@ const MessageList = ({ list }: TMessageListProps) => {
     );
 };
 
-export default MessageList;
+export default AnimatedMessageList;

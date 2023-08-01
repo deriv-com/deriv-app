@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, Formik, Form, FormikHelpers } from 'formik';
-import { AmountInput, Button, Loading, MessageList } from '@deriv/components';
+import { AmountInput, AnimatedMessageList, AlertMessage, Button, Loading } from '@deriv/components';
 import { useCurrencyConfig, useWalletTransfer } from '@deriv/hooks';
 import { validNumber } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -16,6 +16,9 @@ type TWalletTransferProps = {
     is_wallet_name_visible: boolean;
     setIsWalletNameVisible: (value: boolean) => void;
 };
+
+type TMessageList = (React.ComponentProps<typeof AnimatedMessageList>['list'][number] &
+    React.ComponentProps<typeof AlertMessage>)[];
 
 const Divider = () => <div className='wallet-transfer__divider' />;
 
@@ -73,7 +76,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         );
     }, [active_wallet?.loginid, active_wallet_name, from_account, to_account?.loginid]);
 
-    const [message_list, setMessageList] = React.useState<TMessageItem[]>([]);
+    const [message_list, setMessageList] = React.useState<TMessageList>([]);
 
     const clearErrorMessages = React.useCallback(
         () => setMessageList(list => list.filter(el => el.type !== 'error')),
@@ -99,36 +102,30 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                 active_wallet?.balance < initial_demo_balance;
 
             if (from_account?.loginid === active_wallet.loginid && should_reset_balance) {
-                setMessageList(list => {
-                    if (list.some(el => el.key === ERROR_CODES.is_demo.insufficient_fund)) return list;
-                    return [
-                        ...list,
-                        {
-                            variant: 'with-action-button',
-                            key: ERROR_CODES.is_demo.insufficient_fund,
-                            button_label: localize('Reset balance'),
-                            onClickHandler: () => setWalletModalActiveTab('Deposit'),
-                            message: localize(
-                                'You have insufficient fund in the selected wallet, please reset your virtual balance'
-                            ),
-                            type: 'error',
-                        },
-                    ];
-                });
+                setMessageList(list => [
+                    ...list,
+                    {
+                        variant: 'with-action-button',
+                        id: ERROR_CODES.is_demo.insufficient_fund,
+                        button_label: localize('Reset balance'),
+                        onClickHandler: () => setWalletModalActiveTab('Deposit'),
+                        message: localize(
+                            'You have insufficient fund in the selected wallet, please reset your virtual balance'
+                        ),
+                        type: 'error',
+                    },
+                ]);
             } else if (!is_ok) {
                 //else if not wallet loginid and not is_ok message
-                setMessageList(list => {
-                    if (list.some(el => el.key === ERROR_CODES.is_demo.between_min_max)) return list;
-                    return [
-                        ...list,
-                        {
-                            variant: 'base',
-                            key: ERROR_CODES.is_demo.between_min_max,
-                            message: `${message} ${from_account?.display_currency_code}` || '',
-                            type: 'error',
-                        },
-                    ];
-                });
+                setMessageList(list => [
+                    ...list,
+                    {
+                        variant: 'base',
+                        id: ERROR_CODES.is_demo.between_min_max,
+                        message: `${message} ${from_account?.display_currency_code}` || '',
+                        type: 'error',
+                    },
+                ]);
             }
         }
     };
@@ -227,7 +224,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                     value={from_account}
                                 />
                             </div>
-                            <MessageList list={message_list} />
+                            <AnimatedMessageList list={message_list} Element={AlertMessage} />
                             <div className='wallet-transfer__tile'>
                                 <Field name='to_amount'>
                                     {({ field }: FieldProps<number>) => (

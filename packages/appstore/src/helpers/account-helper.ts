@@ -61,11 +61,11 @@ export const getSwapFreeAccount = (): TAccountType => ({
 export const mt5_details_mapper = {
     synthetic: {
         name: localize('Derived'),
-        description: localize('Trade CFDs on MT5 with synthetics, baskets, and derived FX.'),
+        description: localize('This account offers CFDs on derived instruments.'),
     },
     financial: {
         name: localize('Financial'),
-        description: localize('Trade CFDs on MT5 with forex, stock indices, commodities, and cryptocurrencies.'),
+        description: localize('This account offers CFDs on financial instruments.'),
     },
     all: {
         name: localize('Swap-Free'),

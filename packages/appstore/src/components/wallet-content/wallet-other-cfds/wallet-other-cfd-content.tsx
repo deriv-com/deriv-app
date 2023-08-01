@@ -79,7 +79,7 @@ const WalletOtherCFDContent = observer(({ wallet_account }: TWalletOtherCFDConte
                     clickable_icon
                     name={localize('Deriv X')}
                     platform='dxtrade'
-                    description={localize('Trade CFDs on Deriv X with financial markets and our Derived indices')}
+                    description={localize('This account offers CFDs on a highly customisable CFD trading platform.')}
                     is_wallet={true}
                     is_wallet_demo={!!wallet_account.is_virtual}
                     onAction={() => {

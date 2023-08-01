@@ -31,14 +31,9 @@ type AptTokenState = {
 };
 
 export type TApiToken = {
-    footer_ref: Element | DocumentFragment | undefined;
+    footer_ref: Element | DocumentFragment;
     is_app_settings: boolean;
-    overlay_ref:
-        | undefined
-        | ((...args: unknown[]) => unknown)
-        | import('prop-types').InferProps<{
-              current: import('prop-types').Requireable<unknown>;
-          }>;
+    overlay_ref: HTMLDivElement;
     setIsOverlayShown: (is_overlay_shown: boolean | undefined) => void;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
 };

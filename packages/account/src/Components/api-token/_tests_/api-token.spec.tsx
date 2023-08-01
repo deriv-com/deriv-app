@@ -3,6 +3,7 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { getPropertyValue, isDesktop, isMobile, useIsMounted, WS } from '@deriv/shared';
 import ApiToken from '../api-token';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { FormikValues } from 'formik';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -40,9 +41,8 @@ jest.mock('@deriv/components', () => ({
     Loading: () => <div>Loading</div>,
 }));
 
-let modal_root_el;
+const modal_root_el = document.createElement('div');
 beforeAll(() => {
-    modal_root_el = document.createElement('div');
     modal_root_el.setAttribute('id', 'modal_root');
     document.body.appendChild(modal_root_el);
 });
@@ -72,16 +72,16 @@ describe('<ApiToken/>', () => {
     const your_access_description =
         "To access your mobile apps and other third-party apps, you'll first need to generate an API token.";
 
-    let store = mockStore();
+    let store = mockStore({});
     store = mockStore({
         client: {
             is_switching: false,
         },
     });
     const mock_props = {
-        footer_ref: undefined,
+        footer_ref: document.createElement('div'),
         is_app_settings: false,
-        overlay_ref: undefined,
+        overlay_ref: document.createElement('div'),
         setIsOverlayShown: jest.fn(),
         WS: {
             apiToken: jest.fn(() =>
@@ -126,7 +126,7 @@ describe('<ApiToken/>', () => {
     });
 
     it('should not render ApiToken component if is not mounted', () => {
-        useIsMounted.mockImplementationOnce(() => () => false);
+        (useIsMounted as jest.Mock).mockImplementationOnce(() => () => false);
 
         render(
             <StoreProvider store={store}>
@@ -151,8 +151,8 @@ describe('<ApiToken/>', () => {
     });
 
     it('should render ApiToken component without app_settings and footer for mobile', async () => {
-        isMobile.mockReturnValueOnce(true);
-        isDesktop.mockReturnValueOnce(false);
+        (isMobile as jest.Mock).mockReturnValueOnce(true);
+        (isDesktop as jest.Mock).mockReturnValueOnce(false);
 
         render(
             <StoreProvider store={store}>
@@ -225,10 +225,10 @@ describe('<ApiToken/>', () => {
 
         const checkboxes = await screen.findAllByRole('checkbox');
         const create_btn = await screen.findByRole('button');
-        const read_checkbox = checkboxes.find(card => card.name === 'read'); // Typecasting it since find can return undefined as well
-        const token_name_input = await screen.findByLabelText('Token name');
+        const read_checkbox = checkboxes.find((card: FormikValues) => card.name === 'read') as HTMLInputElement; // Typecasting it since find can return undefined as well
+        const token_name_input = (await screen.findByLabelText('Token name')) as HTMLInputElement;
 
-        expect(checkboxes.length).toBe(5);
+        expect(checkboxes).toHaveLength(5);
         expect(create_btn).toBeDisabled();
         expect(read_checkbox?.checked).toBeFalsy();
         expect(token_name_input?.value).toBe('');
@@ -252,7 +252,7 @@ describe('<ApiToken/>', () => {
         expect(create_btn).toBeEnabled();
 
         fireEvent.click(create_btn);
-        const updated_token_name_input = await screen.findByLabelText('Token name');
+        const updated_token_name_input = (await screen.findByLabelText('Token name')) as HTMLInputElement;
         expect(updated_token_name_input.value).toBe('');
 
         const createToken = WS.apiToken;
@@ -262,7 +262,7 @@ describe('<ApiToken/>', () => {
     it('should render created tokens and trigger delete', async () => {
         jest.useFakeTimers();
 
-        getPropertyValue.mockReturnValue([
+        (getPropertyValue as jest.Mock).mockReturnValue([
             {
                 display_name: 'First test token',
                 last_used: '',
@@ -293,7 +293,7 @@ describe('<ApiToken/>', () => {
         expect(await screen.findByText('Second test token')).toBeInTheDocument();
 
         const delete_btns_1 = screen.getAllByTestId('dt_token_delete_icon');
-        expect(delete_btns_1.length).toBe(2);
+        expect(delete_btns_1).toHaveLength(2);
 
         fireEvent.click(delete_btns_1[0]);
         const no_btn_1 = screen.getByRole('button', { name: /cancel/i });
@@ -305,7 +305,7 @@ describe('<ApiToken/>', () => {
         });
 
         const delete_btns_2 = await screen.findAllByTestId('dt_token_delete_icon');
-        expect(delete_btns_2.length).toBe(2);
+        expect(delete_btns_2).toHaveLength(2);
 
         fireEvent.click(delete_btns_2[0]);
         const yes_btn_1 = screen.getByRole('button', { name: /yes, delete/i });
@@ -327,7 +327,7 @@ describe('<ApiToken/>', () => {
 
         document.execCommand = jest.fn();
 
-        getPropertyValue.mockReturnValue([
+        (getPropertyValue as jest.Mock).mockReturnValue([
             {
                 display_name: 'First test token',
                 last_used: '',
@@ -354,7 +354,7 @@ describe('<ApiToken/>', () => {
         expect(screen.queryByText('FirstTokenID')).not.toBeInTheDocument();
 
         const toggle_visibility_btns = await screen.findAllByTestId('dt_toggle_visibility_icon');
-        expect(toggle_visibility_btns.length).toBe(2);
+        expect(toggle_visibility_btns).toHaveLength(2);
 
         fireEvent.click(toggle_visibility_btns[0]);
         expect(screen.getByText('FirstTokenID')).toBeInTheDocument();
@@ -363,12 +363,14 @@ describe('<ApiToken/>', () => {
         expect(screen.getByText('SecondTokenID')).toBeInTheDocument();
 
         const copy_btns_1 = await screen.findAllByTestId('dt_copy_token_icon');
-        expect(copy_btns_1.length).toBe(2);
+        expect(copy_btns_1).toHaveLength(2);
 
         fireEvent.click(copy_btns_1[0]);
         expect(screen.queryByText(warning_msg)).not.toBeInTheDocument();
 
-        act(() => jest.advanceTimersByTime(2100));
+        act(() => {
+            jest.advanceTimersByTime(2100);
+        });
         expect(screen.queryByTestId('dt_token_copied_icon')).not.toBeInTheDocument();
 
         fireEvent.click(copy_btns_1[1]);
@@ -383,10 +385,10 @@ describe('<ApiToken/>', () => {
     });
 
     it('should render created tokens for mobile', async () => {
-        isMobile.mockReturnValue(true);
-        isDesktop.mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
 
-        getPropertyValue.mockReturnValue([
+        (getPropertyValue as jest.Mock).mockReturnValue([
             {
                 display_name: 'First test token',
                 last_used: '',
@@ -416,16 +418,16 @@ describe('<ApiToken/>', () => {
             </StoreProvider>
         );
 
-        expect((await screen.findAllByText('Name')).length).toBe(3);
-        expect((await screen.findAllByText('Last Used')).length).toBe(3);
-        expect((await screen.findAllByText('Token')).length).toBe(3);
-        expect((await screen.findAllByText('Scopes')).length).toBe(3);
+        expect(await screen.findAllByText('Name')).toHaveLength(3);
+        expect(await screen.findAllByText('Last Used')).toHaveLength(3);
+        expect(await screen.findAllByText('Token')).toHaveLength(3);
+        expect(await screen.findAllByText('Scopes')).toHaveLength(3);
         expect(await screen.findByText('First test token')).toBeInTheDocument();
         expect(await screen.findByText('Second test token')).toBeInTheDocument();
         expect(screen.queryByText('Action')).not.toBeInTheDocument();
         expect(screen.queryByText('SecondTokenID')).not.toBeInTheDocument();
         const never_used = await screen.findAllByText('Never');
-        expect(never_used.length).toBe(2);
+        expect(never_used).toHaveLength(2);
     });
 
     it('should show token error if exists', async () => {
@@ -436,7 +438,7 @@ describe('<ApiToken/>', () => {
             })
         );
 
-        getPropertyValue.mockReturnValue('New test error');
+        (getPropertyValue as jest.Mock).mockReturnValue('New test error');
 
         render(
             <StoreProvider store={store}>

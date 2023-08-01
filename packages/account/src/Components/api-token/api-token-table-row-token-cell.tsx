@@ -9,7 +9,7 @@ type TApiTokenTableRowTokenCell = {
 };
 
 const HiddenPasswordDots = () => (
-    <div className='da-api-token__pass-dot-container'>
+    <div data-testid='dt_hidden_tokens' className='da-api-token__pass-dot-container'>
         {[...Array(15)].map((el, index) => (
             <div key={index} className='da-api-token__pass-dot' />
         ))}

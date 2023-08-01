@@ -93,7 +93,7 @@ jest.mock('App/Components/Elements/PositionsDrawer/positions-modal-card.jsx', ()
 );
 
 describe('<TogglePositionsMobile />', () => {
-    const mockProgressSliderStream = (mocked_store, mocked_props) => {
+    const mockTogglePositionsMobile = (mocked_store, mocked_props) => {
         return (
             <TraderProviders store={mocked_store}>
                 <TogglePositionsMobile {...mocked_props} />
@@ -115,7 +115,7 @@ describe('<TogglePositionsMobile />', () => {
         ReactDOM.createPortal = jest.fn(component => {
             return component;
         });
-        render(mockProgressSliderStream(mock_root_store, mocked_props));
+        render(mockTogglePositionsMobile(mock_root_store, mocked_props));
 
         screen.getAllByText(/test icon/i).forEach(icon => expect(icon).toBeInTheDocument());
         screen.queryAllByAltText(/position modal card/i).forEach(card => expect(card).toBeInTheDocument());
@@ -136,7 +136,7 @@ describe('<TogglePositionsMobile />', () => {
         ReactDOM.createPortal = jest.fn(component => {
             return component;
         });
-        render(mockProgressSliderStream(mock_root_store, mocked_props));
+        render(mockTogglePositionsMobile(mock_root_store, mocked_props));
 
         screen.queryAllByAltText(/position modal card/i).forEach(card => expect(card).not.toBeInTheDocument());
         expect(screen.queryByText(/recent positions/i)).not.toBeInTheDocument();
@@ -157,7 +157,7 @@ describe('<TogglePositionsMobile />', () => {
         ReactDOM.createPortal = jest.fn(component => {
             return component;
         });
-        render(mockProgressSliderStream(mock_root_store, mocked_props));
+        render(mockTogglePositionsMobile(mock_root_store, mocked_props));
 
         expect(screen.getByText(/test error/i)).toBeInTheDocument();
     });
@@ -175,7 +175,7 @@ describe('<TogglePositionsMobile />', () => {
         ReactDOM.createPortal = jest.fn(component => {
             return component;
         });
-        render(mockProgressSliderStream(mock_root_store, mocked_props));
+        render(mockTogglePositionsMobile(mock_root_store, mocked_props));
         const nav_link_button = screen.getByText(/go to reports/i);
         userEvent.click(nav_link_button);
 
@@ -195,7 +195,7 @@ describe('<TogglePositionsMobile />', () => {
         ReactDOM.createPortal = jest.fn(component => {
             return component;
         });
-        render(mockProgressSliderStream(mock_root_store, mocked_props));
+        render(mockTogglePositionsMobile(mock_root_store, mocked_props));
         const close_button = screen.getAllByText(/test icon/i)[2];
         userEvent.click(close_button);
 
@@ -217,7 +217,7 @@ describe('<TogglePositionsMobile />', () => {
         ReactDOM.createPortal = jest.fn(component => {
             return component;
         });
-        render(mockProgressSliderStream(mock_root_store, mocked_props));
+        render(mockTogglePositionsMobile(mock_root_store, mocked_props));
         const nav_link_button = screen.getByText(/go to reports/i);
         userEvent.click(nav_link_button);
 

@@ -5,7 +5,6 @@ import { observer, useStore } from '@deriv/stores';
 import { Audio, BotNotificationMessages, Dashboard, NetworkToastPopup, RoutePromptDialog } from 'Components';
 import BotBuilder from 'Components/dashboard/bot-builder';
 import GTM from 'Utils/gtm';
-import { MobxContentProvider } from 'Stores/connect';
 import { useDBotStore } from 'Stores/useDBotStore';
 import BlocklyLoading from '../components/blockly-loading';
 import './app.scss';
@@ -99,8 +98,7 @@ const AppContent = observer(() => {
     return is_loading ? (
         <Loading />
     ) : (
-        // TODO: remove MobxContentProvider when all connect method is removed
-        <MobxContentProvider store={combinedStore}>
+        <>
             <BlocklyLoading />
             <div className='bot-dashboard bot'>
                 <Audio />
@@ -110,7 +108,7 @@ const AppContent = observer(() => {
                 <BotBuilder />
                 <RoutePromptDialog />
             </div>
-        </MobxContentProvider>
+        </>
     );
 });
 

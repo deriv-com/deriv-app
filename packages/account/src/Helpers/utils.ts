@@ -294,3 +294,21 @@ export const isDocumentNumberValid = (document_number: string, document_type: Fo
 };
 
 export const shouldHideHelperImage = (document_id: string) => document_id === IDV_NOT_APPLICABLE_OPTION.id;
+
+/**
+ * Given 2 strings, it determines if one is greater than the other or not.
+ *
+ * @param {string} a: first string
+ * @param {string} b: second string
+ *
+ * @returns {number} - 1 if a is greater than b, -1 if b is greater than a, 0 if both are equal
+ * **/
+export const isGreater = (a: string, b: string) => {
+    a > b ? 1 : b > a ? -1 : 0;
+    if (a > b) {
+        return 1;
+    } else if (b > a) {
+        return -1;
+    }
+    return 0;
+};

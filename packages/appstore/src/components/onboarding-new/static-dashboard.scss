@@ -61,10 +61,14 @@
         &__bordered--with-margin {
             @include mobile {
                 padding: 3rem 3rem 15rem;
-                height: 45vh;
+                height: 48vh;
                 border: none;
                 overflow-y: scroll;
                 overflow-x: hidden;
+
+                @media (max-height: 600px) {
+                    height: 38vh;
+                }
             }
         }
 

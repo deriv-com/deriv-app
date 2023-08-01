@@ -101,6 +101,7 @@ const Numbers = observer(
         setDurationError,
         setSelectedDuration,
         stake_value,
+        show_expiry = false,
         toggleModal,
     }) => {
         const { ui } = useStore();
@@ -186,12 +187,16 @@ const Numbers = observer(
 
         return (
             <div className='trade-params__amount-keypad'>
-                <Text as='div' size='xxxs' line_height='s' className='expiry-text-container--mobile'>
-                    <Localize
-                        i18n_default_text='Expiry: {{date}}'
-                        values={{ date: !has_error ? setExpiryDate(expiry_epoch, duration_values?.d_duration) : '' }}
-                    />
-                </Text>
+                {show_expiry && (
+                    <Text as='div' size='xxxs' line_height='s' className='expiry-text-container--mobile'>
+                        <Localize
+                            i18n_default_text='Expiry: {{date}}'
+                            values={{
+                                date: !has_error ? setExpiryDate(expiry_epoch, duration_values?.d_duration) : '',
+                            }}
+                        />
+                    </Text>
+                )}
                 <Numpad
                     value={selected_duration}
                     onSubmit={setDuration}
@@ -342,6 +347,7 @@ const Duration = observer(
                                             setDurationError={setDurationError}
                                             setSelectedDuration={setSelectedDuration}
                                             stake_value={stake_value}
+                                            show_expiry={true}
                                             payout_value={payout_value}
                                             expiry_epoch={expiry_epoch}
                                             duration_values={duration_values}

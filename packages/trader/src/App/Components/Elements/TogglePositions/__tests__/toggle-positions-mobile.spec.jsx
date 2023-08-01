@@ -101,6 +101,16 @@ describe('<TogglePositionsMobile />', () => {
         );
     };
 
+    beforeAll(() => {
+        ReactDOM.createPortal = jest.fn(component => {
+            return component;
+        });
+    });
+
+    afterAll(() => {
+        ReactDOM.createPortal.mockClear();
+    });
+
     it('should render <TogglePositionsMobile /> with <TogglePositions /> and <Modal /> content if is_positions_drawer_on === true', () => {
         const mock_root_store = mockStore({
             modules: {
@@ -112,9 +122,6 @@ describe('<TogglePositionsMobile />', () => {
             ui: { is_positions_drawer_on: true },
         });
 
-        ReactDOM.createPortal = jest.fn(component => {
-            return component;
-        });
         render(mockTogglePositionsMobile(mock_root_store, mocked_props));
 
         screen.getAllByText(/test icon/i).forEach(icon => expect(icon).toBeInTheDocument());
@@ -133,9 +140,6 @@ describe('<TogglePositionsMobile />', () => {
             },
         });
 
-        ReactDOM.createPortal = jest.fn(component => {
-            return component;
-        });
         render(mockTogglePositionsMobile(mock_root_store, mocked_props));
 
         screen.queryAllByAltText(/position modal card/i).forEach(card => expect(card).not.toBeInTheDocument());
@@ -154,9 +158,6 @@ describe('<TogglePositionsMobile />', () => {
         });
         mocked_props.is_empty = true;
 
-        ReactDOM.createPortal = jest.fn(component => {
-            return component;
-        });
         render(mockTogglePositionsMobile(mock_root_store, mocked_props));
 
         expect(screen.getByText(/test error/i)).toBeInTheDocument();
@@ -172,9 +173,6 @@ describe('<TogglePositionsMobile />', () => {
             ui: { is_positions_drawer_on: true },
         });
 
-        ReactDOM.createPortal = jest.fn(component => {
-            return component;
-        });
         render(mockTogglePositionsMobile(mock_root_store, mocked_props));
         const nav_link_button = screen.getByText(/go to reports/i);
         userEvent.click(nav_link_button);
@@ -192,9 +190,6 @@ describe('<TogglePositionsMobile />', () => {
             ui: { is_positions_drawer_on: true },
         });
 
-        ReactDOM.createPortal = jest.fn(component => {
-            return component;
-        });
         render(mockTogglePositionsMobile(mock_root_store, mocked_props));
         const close_button = screen.getAllByText(/test icon/i)[2];
         userEvent.click(close_button);
@@ -214,9 +209,6 @@ describe('<TogglePositionsMobile />', () => {
         mocked_props.all_positions[0].contract_info.is_sold = 1;
         mocked_props.all_positions[1].contract_info.is_sold = 1;
 
-        ReactDOM.createPortal = jest.fn(component => {
-            return component;
-        });
         render(mockTogglePositionsMobile(mock_root_store, mocked_props));
         const nav_link_button = screen.getByText(/go to reports/i);
         userEvent.click(nav_link_button);

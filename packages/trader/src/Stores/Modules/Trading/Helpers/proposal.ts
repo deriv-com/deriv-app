@@ -57,7 +57,7 @@ export const getProposalInfo = (
     const basis_list = store.basis_list;
 
     const contract_basis: TObjContractBasis | undefined = store.is_vanilla
-        ? { text: 'Payout', value: 'number_of_contracts' }
+        ? { text: 'Payout', value: 'display_number_of_contracts' }
         : basis_list.find(o => o.value !== store.basis) || ({} as TObjContractBasis);
 
     const is_stake = contract_basis?.value === 'stake';

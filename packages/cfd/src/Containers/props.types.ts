@@ -1,5 +1,11 @@
 import React from 'react';
-import { DetailsOfEachMT5Loginid, GetAccountStatus, VerifyEmailResponse } from '@deriv/api-types';
+import {
+    DetailsOfEachMT5Loginid,
+    GetAccountStatus,
+    GetSettings,
+    ResidenceList,
+    VerifyEmailResponse,
+} from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
 import { RouteComponentProps } from 'react-router';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
@@ -195,6 +201,8 @@ export type TJurisdictionCardSectionProps = {
 export type TJurisdictionCardType = 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest';
 
 export type TVerificationStatusBannerProps = {
+    account_status: GetAccountStatus;
+    account_settings: GetSettings;
     account_type: string;
     card_classname: string;
     disabled: boolean;
@@ -204,6 +212,7 @@ export type TVerificationStatusBannerProps = {
     real_swapfree_accounts_existing_data: TExistingData;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
+    residence_list: ResidenceList;
 };
 
 export type TJurisdictionCheckBoxProps = {

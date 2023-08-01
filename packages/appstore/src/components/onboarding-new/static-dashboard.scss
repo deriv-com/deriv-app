@@ -4,6 +4,9 @@
     padding: 1.2rem;
     height: inherit;
     @include desktop {
+        display: flex;
+        gap: 2.4rem;
+        flex-direction: column;
         min-width: 132rem;
         padding: 3rem;
     }
@@ -22,6 +25,7 @@
     &--eu {
         @include desktop {
             padding-bottom: 7rem;
+            flex-direction: column-reverse;
         }
         @include mobile {
             height: 100%;

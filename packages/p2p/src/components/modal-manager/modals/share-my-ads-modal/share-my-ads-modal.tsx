@@ -34,43 +34,48 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
         event.stopPropagation();
     };
 
-    const dataURLtoFile = (dataurl: string, filename: string): File => {
-        const arr = dataurl.split(',');
-        const mimeType = arr[0].match(/:(.*?);/)[1];
-        const decodedData = atob(arr[1]);
-        let lengthOfDecodedData = decodedData.length;
-        const u8array = new Uint8Array(lengthOfDecodedData);
+    // const dataURLtoFile = (dataurl: string, filename: string): File => {
+    //     const arr = dataurl.split(',');
+    //     const mimeType = arr[0].match(/:(.*?);/)[1];
+    //     const decodedData = atob(arr[1]);
+    //     let lengthOfDecodedData = decodedData.length;
+    //     const u8array = new Uint8Array(lengthOfDecodedData);
 
-        while (lengthOfDecodedData--) {
-            u8array[lengthOfDecodedData] = decodedData.charCodeAt(lengthOfDecodedData);
-        }
-        return new File([u8array], filename, { type: mimeType });
-    };
+    //     while (lengthOfDecodedData--) {
+    //         u8array[lengthOfDecodedData] = decodedData.charCodeAt(lengthOfDecodedData);
+    //     }
+    //     return new File([u8array], filename, { type: mimeType });
+    // };
 
-    const shareFile = (file: File, title: string, text: string) => {
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            navigator.share({
-                files: [file],
-                title,
-                text,
-            });
-        }
-    };
+    // const shareFile = (file: File, title: string, text: string) => {
+    //     if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    //         navigator.share({
+    //             files: [file],
+    //             title,
+    //             text,
+    //         });
+    //     }
+    // };
 
-    const handleGenerateImage = () => {
+    const handleGenerateImage = async () => {
         if (divRef.current) {
-            toPng(divRef.current).then(dataUrl => {
-                const file_name = `${advert.type}_${advert.id}.png`;
-                if (isDesktop()) {
-                    const link = document.createElement('a');
-                    link.download = file_name;
-                    link.href = dataUrl;
-                    link.click();
-                } else {
-                    const file = dataURLtoFile(dataUrl, file_name);
-                    shareFile(file, 'This is my advert!', advert_url);
-                }
-            });
+            const dataUrl = await toPng(divRef.current);
+            const file_name = `${advert.type}_${advert.id}.png`;
+
+            if (isDesktop()) {
+                const link = document.createElement('a');
+                link.download = file_name;
+                link.href = dataUrl;
+                link.click();
+            } else {
+                const blob = await fetch(dataUrl).then(res => res.blob());
+                const file = new File([blob], file_name, { type: 'image/png' });
+                navigator.share({
+                    files: [file],
+                    title: 'This is my advert!',
+                    text: advert_url,
+                });
+            }
         }
     };
 

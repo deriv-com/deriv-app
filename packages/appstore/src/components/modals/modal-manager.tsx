@@ -12,6 +12,7 @@ import CFDDbviOnBoarding from '@deriv/cfd/src/Containers/cfd-dbvi-onboarding';
 import CFDResetPasswordModal from '@deriv/cfd/src/Containers/cfd-reset-password-modal';
 import CFDTopUpDemoModal from '@deriv/cfd/src/Containers/cfd-top-up-demo-modal';
 import MT5TradeModal from '@deriv/cfd/src/Containers/mt5-trade-modal';
+import MT5Notification from './mt5-notification';
 import CFDPasswordManagerModal from '@deriv/cfd/src/Containers/cfd-password-manager-modal';
 import CompareAccountsModal from '@deriv/cfd/src/Containers/compare-accounts-modal';
 import { TOpenAccountTransferMeta } from 'Types';
@@ -122,6 +123,7 @@ const ModalManager = () => {
             <CFDPasswordModal platform={platform} />
             <CFDDbviOnBoarding />
             <CFDResetPasswordModal platform={platform} />
+            <MT5Notification />
             <CFDServerErrorDialog />
             <CFDTopUpDemoModal platform={platform} />
             <MT5TradeModal

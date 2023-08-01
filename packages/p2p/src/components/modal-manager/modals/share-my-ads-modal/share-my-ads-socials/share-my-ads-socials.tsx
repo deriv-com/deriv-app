@@ -40,7 +40,7 @@ const ShareMyAdsIcons = () => {
     ];
 
     return (
-        <div className='share-my-ads-icons'>
+        <div className='share-my-ads-socials'>
             {share_buttons.map(({ ShareButton, href, icon, messagePropName, rel, size, small_icon, target, text }) => (
                 <ShareButton
                     key={text}
@@ -50,10 +50,10 @@ const ShareMyAdsIcons = () => {
                     {...(target && { target: '_blank' })}
                     {...(rel && { rel: 'noreferrer' })}
                 >
-                    <div className='share-my-ads-icons__circle'>
+                    <div className='share-my-ads-socials__circle'>
                         <Icon
-                            className={classNames('share-my-ads-icons__circle-icon', {
-                                'share-my-ads-icons__circle-icon--small': small_icon,
+                            className={classNames('share-my-ads-socials__circle-icon', {
+                                'share-my-ads-socials__circle-icon--small': small_icon,
                             })}
                             icon={icon}
                             size={size}

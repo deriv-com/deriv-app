@@ -24,7 +24,6 @@ const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) =>
         logoImage: base64_images.dp2p_logo,
         logoWidth: isMobile() ? 30 : 40,
         logoHeight: isMobile() ? 30 : 40,
-        logoOpacity: 1,
     };
 
     return (

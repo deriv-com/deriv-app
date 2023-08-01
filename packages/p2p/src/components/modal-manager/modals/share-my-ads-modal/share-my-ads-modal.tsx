@@ -17,6 +17,7 @@ import MyProfileSeparatorContainer from 'Components/my-profile/my-profile-separa
 import { TAdvert } from 'Types';
 import ShareMyAdsIcons from './share-my-ads-socials';
 import ShareMyAdsCard from './share-my-ads-card';
+import { isDesktop } from '@deriv/shared';
 
 const ShareMyAdsModal = ({ advert }: TAdvert) => {
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
@@ -33,13 +34,42 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
         event.stopPropagation();
     };
 
+    const dataURLtoFile = (dataurl: string, filename: string): File => {
+        const arr = dataurl.split(',');
+        const mimeType = arr[0].match(/:(.*?);/)[1];
+        const decodedData = atob(arr[1]);
+        let lengthOfDecodedData = decodedData.length;
+        const u8array = new Uint8Array(lengthOfDecodedData);
+
+        while (lengthOfDecodedData--) {
+            u8array[lengthOfDecodedData] = decodedData.charCodeAt(lengthOfDecodedData);
+        }
+        return new File([u8array], filename, { type: mimeType });
+    };
+
+    const shareFile = (file: File, title: string, text: string) => {
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            navigator.share({
+                files: [file],
+                title,
+                text,
+            });
+        }
+    };
+
     const handleGenerateImage = () => {
         if (divRef.current) {
             toPng(divRef.current).then(dataUrl => {
-                const link = document.createElement('a');
-                link.download = `${advert.type}_${advert.id}.png`;
-                link.href = dataUrl;
-                link.click();
+                const file_name = `${advert.type}_${advert.id}.png`;
+                if (isDesktop()) {
+                    const link = document.createElement('a');
+                    link.download = file_name;
+                    link.href = dataUrl;
+                    link.click();
+                } else {
+                    const file = dataURLtoFile(dataUrl, file_name);
+                    shareFile(file, 'This is my advert!', advert_url);
+                }
             });
         }
     };

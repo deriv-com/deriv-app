@@ -137,9 +137,7 @@ const TradingAppCard = observer(
                                 weight='bold'
                                 color={action_type === 'trade' ? 'prominent' : 'general'}
                             >
-                                {is_wallet_demo && !sub_title && !is_deriv_platform
-                                    ? `${name} ${localize('Demo')}`
-                                    : name}
+                                {name}
                             </Text>
                         ) : (
                             <Text

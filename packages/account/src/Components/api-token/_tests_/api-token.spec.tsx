@@ -325,8 +325,6 @@ describe('<ApiToken/>', () => {
         const warning_msg =
             'Be careful who you share this token with. Anyone with this token can perform the following actions on your account behalf';
 
-        document.execCommand = jest.fn();
-
         (getPropertyValue as jest.Mock).mockReturnValue([
             {
                 display_name: 'First test token',

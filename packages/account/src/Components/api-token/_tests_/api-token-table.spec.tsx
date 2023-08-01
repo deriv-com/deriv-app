@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv/shared';
 import ApiTokenContext from '../api-token-context';
 import ApiTokenTable from '../api-token-table';
 

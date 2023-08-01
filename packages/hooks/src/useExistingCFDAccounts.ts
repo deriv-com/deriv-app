@@ -58,7 +58,6 @@ const useExistingCFDAccounts = () => {
         data,
         ...{ ...mt5_rest, ...dxtrade_rest, ...derivez_rest },
         isLoading: mt5_rest.isLoading || dxtrade_rest.isLoading || derivez_rest.isLoading,
-        isSuccess: mt5_rest.isSuccess && dxtrade_rest.isSuccess && derivez_rest.isSuccess,
     };
 };
 

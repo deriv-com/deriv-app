@@ -10,7 +10,14 @@ const WalletModal = observer(() => {
     const store = useStore();
 
     const {
-        client: { balance, currency, landing_company_shortcode: shortcode, is_authorize, switchAccount },
+        client: {
+            balance,
+            currency,
+            landing_company_shortcode: shortcode,
+            is_authorize,
+            switchAccount,
+            setVerificationCode,
+        },
         ui: { is_dark_mode_on, is_wallet_modal_visible, is_mobile, setIsWalletModalVisible },
         traders_hub: {
             active_modal_tab,
@@ -66,6 +73,7 @@ const WalletModal = observer(() => {
     const closeModal = () => {
         setIsWalletModalVisible(false);
         setWalletModalActiveTab(active_modal_tab);
+        setVerificationCode('', 'payment_withdraw');
     };
 
     const contentScrollHandler = React.useCallback(

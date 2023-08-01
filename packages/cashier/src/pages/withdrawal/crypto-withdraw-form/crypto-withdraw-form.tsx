@@ -151,7 +151,7 @@ const CryptoWithdrawForm = observer(({ is_wallet }: { is_wallet?: boolean }) => 
                                         type='text'
                                         label={
                                             <Localize
-                                                i18n_default_text='Your {{currency_symbol}} wallet address'
+                                                i18n_default_text='Your {{currency_symbol}} cryptocurrency wallet address'
                                                 values={{
                                                     currency_symbol: currency?.toUpperCase(),
                                                 }}

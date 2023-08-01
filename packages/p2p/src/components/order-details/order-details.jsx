@@ -21,8 +21,8 @@ import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-cont
 import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value';
 import { getDateAfterHours } from 'Utils/date-time';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import ChatMessage, { admin_message } from 'Utils/chat-message';
 import 'Components/order-details/order-details.scss';
-import ChatMessage, { admin_message } from 'Utils/chat-message.js';
 
 const OrderDetails = observer(() => {
     const { buy_sell_store, general_store, my_profile_store, order_store, sendbird_store } = useStores();

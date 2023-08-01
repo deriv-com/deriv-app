@@ -22,7 +22,6 @@ type TPersonalDetailsConfig = {
     is_appstore?: boolean;
     residence: string;
     account_status: GetAccountStatus;
-    is_high_risk?: boolean;
 };
 
 const personal_details_config = ({
@@ -212,7 +211,6 @@ const personalDetailsConfig = <T>(
         account_settings,
         account_status,
         residence,
-        is_high_risk,
     }: TPersonalDetailsConfig,
     PersonalDetails: T,
     is_appstore = false
@@ -246,7 +244,6 @@ const personalDetailsConfig = <T>(
             ),
             is_svg: upgrade_info?.can_upgrade_to === 'svg',
             is_mf: real_account_signup_target === 'maltainvest',
-            is_high_risk,
             account_opening_reason_list: [
                 {
                     text: localize('Hedging'),

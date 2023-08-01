@@ -84,6 +84,48 @@ jest.mock('@deriv/api', () => ({
     })),
 }));
 
+jest.mock('@deriv/hooks', () => ({
+    useFilteredCFDAccounts: jest.fn(() => ({
+        data: {
+            synthetic: [
+                {
+                    account_type: 'synthetic',
+                    email: '',
+                    id: 'CRW909900',
+                    is_disabled: 0,
+                    is_virtual: 1,
+                    leverage: '1000',
+                    login: 'CRW909900',
+                    server: 'Deriv-Server',
+                    server_description: 'Deriv-Server',
+                    short_title: 'CRW909900',
+                    title: 'CRW909900',
+                    type: 'demo',
+                    is_added: true,
+                },
+            ],
+            financial: [
+                {
+                    account_type: 'financial',
+                    email: '',
+                    id: 'CRW909900',
+                    is_disabled: 0,
+                    is_virtual: 1,
+                    leverage: '1000',
+                    login: 'CRW909001',
+                    server: 'Deriv-Server',
+                    server_description: 'Deriv-Server',
+                    short_title: 'CRW909001',
+                    title: 'CRW909900',
+                    type: 'demo',
+                    is_added: false,
+                },
+            ],
+        },
+        isFetchedAfterMount: true,
+    })),
+}));
+
 jest.mock('../added-mt5-card', () => {
     return {
         __esModule: true,
@@ -111,7 +153,7 @@ describe('WalletMT5CardList', () => {
                 </StoreProvider>
             </APIProvider>
         );
-        expect(screen.getAllByText('AvailableMT5Card').length).toEqual(3);
+        expect(screen.getByText('AvailableMT5Card')).toBeInTheDocument();
     });
 
     it('should render AddedMT5Card when account is added', () => {
@@ -126,5 +168,7 @@ describe('WalletMT5CardList', () => {
                 </StoreProvider>
             </APIProvider>
         );
+
+        expect(screen.getByText('AddedMT5Card')).toBeInTheDocument();
     });
 });

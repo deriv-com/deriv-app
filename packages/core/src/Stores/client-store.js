@@ -1834,6 +1834,7 @@ export default class ClientStore extends BaseStore {
     }
 
     setAccounts(accounts) {
+        // TODO: delete this code when BE will be fixed
         // hide orphan trading account after wallet migration
         if (Object.keys(accounts).some(key => accounts[key]?.account_category === 'wallet')) {
             let is_orphan_trading_account_exists = false;
@@ -1850,7 +1851,7 @@ export default class ClientStore extends BaseStore {
 
             if (is_orphan_trading_account_exists)
                 // eslint-disable-next-line no-console
-                console.error('There is a trading account that is not linked to any wallet');
+                console.warning('There is a trading account that is not linked to any wallet');
         }
 
         this.accounts = accounts;

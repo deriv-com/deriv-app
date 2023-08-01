@@ -110,7 +110,7 @@ const CompositeCalendar = observer((props: TCompositeCalendar) => {
 
     useOnClickOutside(
         wrapper_ref,
-        event => {
+        (event: React.MouseEvent) => {
             event?.stopPropagation();
             event?.preventDefault();
             hideCalendar();

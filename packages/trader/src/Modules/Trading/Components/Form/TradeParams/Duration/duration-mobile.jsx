@@ -347,7 +347,7 @@ const Duration = observer(
                                             setDurationError={setDurationError}
                                             setSelectedDuration={setSelectedDuration}
                                             stake_value={stake_value}
-                                            show_expiry={true}
+                                            show_expiry
                                             payout_value={payout_value}
                                             expiry_epoch={expiry_epoch}
                                             duration_values={duration_values}

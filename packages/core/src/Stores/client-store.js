@@ -1834,6 +1834,25 @@ export default class ClientStore extends BaseStore {
     }
 
     setAccounts(accounts) {
+        // hide orphan trading account after wallet migration
+        if (Object.keys(accounts).some(key => accounts[key]?.account_category === 'wallet')) {
+            let is_orphan_trading_account_exists = false;
+
+            Object.keys(accounts).forEach(key => {
+                if (
+                    accounts[key]?.account_category === 'trading' &&
+                    !accounts[key]?.linked_to?.some(acc => acc?.platform === 'dwallet')
+                ) {
+                    is_orphan_trading_account_exists = true;
+                    delete accounts[key];
+                }
+            });
+
+            if (is_orphan_trading_account_exists)
+                // eslint-disable-next-line no-console
+                console.error('There is a trading account that is not linked to any wallet');
+        }
+
         this.accounts = accounts;
     }
 

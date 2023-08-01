@@ -19,8 +19,7 @@
         list-style: auto;
         padding: 1.5rem;
         font-size: 1.6rem;
-        -webkit-text-fill-color: var(--text-general);
-        // color: var(--text-general);
+        color: var(--text-general);
         &-item {
             list-style: decimal !important;
         }

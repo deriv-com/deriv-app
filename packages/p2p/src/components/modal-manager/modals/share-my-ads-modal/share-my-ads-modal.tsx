@@ -38,14 +38,12 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
         if (divRef.current) {
             const dataUrl = await toPng(divRef.current);
             const file_name = `${advert.type}_${advert.id}.png`;
+            const blob = await fetch(dataUrl).then(res => res.blob());
+            const file = new File([blob], file_name, { type: 'image/png' });
 
-            if (navigator.canShare && navigator.canShare({ files: [new File([], '')] })) {
-                const blob = await fetch(dataUrl).then(res => res.blob());
-                const file = new File([blob], file_name, { type: 'image/png' });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 navigator.share({
-                    url: advert_url,
                     files: [file],
-                    text: 'This is my advert!',
                 });
             } else {
                 const link = document.createElement('a');

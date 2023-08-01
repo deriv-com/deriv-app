@@ -90,12 +90,12 @@ export default class TradersHubStore extends BaseStore {
             toggleAccountTransferModal: action.bound,
             closeAccountTransferModal: action.bound,
             toggleAccountTypeModalVisibility: action.bound,
+            setIsOnboardingVisited: action.bound,
             setMT5NotificationModal: action.bound,
             toggleFailedVerificationModalVisibility: action.bound,
             openFailedVerificationModal: action.bound,
             toggleIsTourOpen: action.bound,
             toggleRegulatorsCompareModal: action.bound,
-            toggleMT5NotificationModal: action.bound,
             showTopUpModal: action.bound,
             financial_restricted_countries: computed,
         });
@@ -332,10 +332,6 @@ export default class TradersHubStore extends BaseStore {
 
     toggleRegulatorsCompareModal() {
         this.is_regulators_compare_modal_visible = !this.is_regulators_compare_modal_visible;
-    }
-
-    toggleMT5NotificationModal() {
-        this.is_mt5_notificaiton_modal_visible = !this.is_mt5_notificaiton_modal_visible;
     }
 
     setMT5NotificationModal(is_visible) {

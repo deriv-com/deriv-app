@@ -4,7 +4,7 @@ import { Icon, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 import classNames from 'classnames';
 
-const ShareMyAdsIcons = () => {
+const ShareMyAdsSocials = () => {
     // TODO: replace with proper url and message when available
     const advert_url = window.location.href;
     const custom_message = 'This is my advert!';
@@ -68,4 +68,4 @@ const ShareMyAdsIcons = () => {
     );
 };
 
-export default ShareMyAdsIcons;
+export default ShareMyAdsSocials;

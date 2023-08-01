@@ -34,7 +34,7 @@ const MT5NotificationDescription = () => {
                     </ul>
                 </li>
                 <li className='mt5-notification-list-container-item'>
-                    <Text as='p' size='s'>
+                    <Text as='p' size='xs'>
                         <Localize
                             i18n_default_text='Search for the broker <0>Deriv Holdings (Guernsey) Limited</0> and select it.'
                             components={[<strong key={0} />]}

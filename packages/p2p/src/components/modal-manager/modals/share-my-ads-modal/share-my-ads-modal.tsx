@@ -34,47 +34,24 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
         event.stopPropagation();
     };
 
-    // const dataURLtoFile = (dataurl: string, filename: string): File => {
-    //     const arr = dataurl.split(',');
-    //     const mimeType = arr[0].match(/:(.*?);/)[1];
-    //     const decodedData = atob(arr[1]);
-    //     let lengthOfDecodedData = decodedData.length;
-    //     const u8array = new Uint8Array(lengthOfDecodedData);
-
-    //     while (lengthOfDecodedData--) {
-    //         u8array[lengthOfDecodedData] = decodedData.charCodeAt(lengthOfDecodedData);
-    //     }
-    //     return new File([u8array], filename, { type: mimeType });
-    // };
-
-    // const shareFile = (file: File, title: string, text: string) => {
-    //     if (navigator.canShare && navigator.canShare({ files: [file] })) {
-    //         navigator.share({
-    //             files: [file],
-    //             title,
-    //             text,
-    //         });
-    //     }
-    // };
-
     const handleGenerateImage = async () => {
         if (divRef.current) {
             const dataUrl = await toPng(divRef.current);
             const file_name = `${advert.type}_${advert.id}.png`;
 
-            if (isDesktop()) {
+            if (navigator.canShare && navigator.canShare({ files: [new File([], '')] })) {
+                const blob = await fetch(dataUrl).then(res => res.blob());
+                const file = new File([blob], file_name, { type: 'image/png' });
+                navigator.share({
+                    url: advert_url,
+                    files: [file],
+                    text: 'This is my advert!',
+                });
+            } else {
                 const link = document.createElement('a');
                 link.download = file_name;
                 link.href = dataUrl;
                 link.click();
-            } else {
-                const blob = await fetch(dataUrl).then(res => res.blob());
-                const file = new File([blob], file_name, { type: 'image/png' });
-                navigator.share({
-                    files: [file],
-                    title: 'This is my advert!',
-                    text: advert_url,
-                });
             }
         }
     };

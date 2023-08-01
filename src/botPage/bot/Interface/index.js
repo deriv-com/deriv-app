@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import TradeEngine from '../TradeEngine';
 import { noop, createDetails } from '../tools';
 import TicksInterface from './TicksInterface';
@@ -57,6 +58,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
     sleep(arg = 1) {
         return new Promise(
             r =>
+                // eslint-disable-next-line no-promise-executor-return
                 setTimeout(() => {
                     r();
                     setTimeout(() => this.observer.emit('CONTINUE'), 0);

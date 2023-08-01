@@ -1,30 +1,6 @@
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
-import AppIdMap from '../../../common/appIdResolver';
-import { supported_languages } from '../../../common/i18n';
-
-// [Todo] getStorage, setStorage are duplicated here after update the structure of project we should remove them
-
-function getStorage(label) {
-    return window.localStorage.getItem(label);
-}
-
-export const parseQueryString = () => {
-    if (typeof window === 'undefined') {
-        return {};
-    }
-    const str = window.location.search;
-    const objURL = {};
-    str.replace(new RegExp('([^?=&]+)(=([^&]*))?', 'g'), (a0, a1, a2, a3) => {
-        objURL[a1] = a3;
-    });
-    return objURL;
-};
-
-export const getLanguage = () => {
-    const queryLang = parseQueryString().l ? parseQueryString().l : 'en' || getStorage('lang');
-    const lang = queryLang in supported_languages ? queryLang : 'en';
-    return lang;
-};
+import { getLanguage, get as getStorage, getAppIdFallback } from '@storage';
+import { getDomainAppId } from '@utils';
 
 const isRealAccount = () => {
     const accountList = JSON.parse(getStorage('tokenList') || '{}');
@@ -36,22 +12,6 @@ const isRealAccount = () => {
         isReal = !activeAccount[0].accountName.startsWith('VRT');
     } catch (e) {} // eslint-disable-line no-empty
     return isReal;
-};
-
-const hostName = document.location.hostname;
-
-const getDomainAppId = () => {
-    const hostname = hostName.replace(/^www./, '');
-
-    // eslint-disable-next-line no-nested-ternary
-    return hostname in AppIdMap.production
-        ? AppIdMap.production[hostname]
-        : // eslint-disable-next-line no-nested-ternary
-        hostname in AppIdMap.staging
-        ? AppIdMap.staging[hostname]
-        : hostname in AppIdMap.dev
-        ? AppIdMap.dev[hostname]
-        : 29864;
 };
 
 export const getCustomEndpoint = () => ({
@@ -66,8 +26,6 @@ export const getDefaultEndpoint = () => ({
 
 export const getServerAddressFallback = () => getCustomEndpoint().url || getDefaultEndpoint().url;
 export const getWebSocketURL = () => `wss://${getServerAddressFallback()}`;
-
-export const getAppIdFallback = () => getCustomEndpoint().appId || getDefaultEndpoint().appId;
 
 const socket_url = `wss://${getServerAddressFallback()}/websockets/v3?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}&brand=deriv`;
 

@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { translate } from '../../../../../../common/utils/tools';
+import { useSelector, useDispatch } from 'react-redux';
+import config from '@config';
+import { AppConstants } from '@constants';
+import { generateDerivLink } from '@utils';
+import { getTokenList, set as setStorage, isLoggedIn } from '@storage';
+import { translate } from '@i18n';
 import Notifications from './notifications.jsx';
 import AccountDropdown from './account-dropdown.jsx';
-import { generateDerivLink, isLoggedIn } from '../../../utils';
 import Modal from '../../../components/modal';
 import AccountSwitchModal from './account-switch-modal.jsx';
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
@@ -16,11 +18,9 @@ import {
     setShouldReloadWorkspace,
 } from '../../../store/ui-slice';
 import Tour, { TourTargets } from '../../../components/tour';
-import { addTokenIfValid, AppConstants } from '../../../../../../common/appId';
-import { getTokenList, set as setStorage } from '../../../../../../common/utils/storageManager';
+import { addTokenIfValid } from '../../../../../../common/appId';
 import { updateActiveToken } from '../../../store/client-slice';
 import Popover from '../../../components/popover';
-import config from '../../../../../../app.config';
 
 const AccountActions = () => {
     const { currency, is_virtual, balance, active_token, active_account_name } = useSelector(state => state.client);
@@ -67,29 +67,30 @@ const AccountActions = () => {
     };
 
     const renderAccountMenu = () => {
-        const account_icon = is_bot_running ? 'image/deriv/ic-lock.svg' : 'image/deriv/ic-chevron-down-bold.svg';
+        const account_icon = is_bot_running ? 'ic-lock' : 'ic-chevron-down-bold';
         const currency_icon = is_virtual ? 'virtual' : currency.toLowerCase() || 'unknown';
+
         return (
             <div className={classNames('header__acc-info', { disabled: is_bot_running })}>
                 <img
                     id='header__acc-icon'
                     className='header__acc-icon'
-                    src={`image/deriv/currency/ic-currency-${currency_icon}.svg`}
+                    src={`/public/images/currency/ic-currency-${currency_icon}.svg`}
                 />
                 <div id='header__acc-balance' className='header__acc-balance'>
                     {currency
                         ? balance.toLocaleString(undefined, {
-                              minimumFractionDigits: currency_name_map[currency]?.fractional_digits ?? 2,
-                          })
+                            minimumFractionDigits: currency_name_map[currency]?.fractional_digits ?? 2,
+                        })
                         : ''}
-                    <span className='symbols'>&nbsp;{currency ? currency : translate('No currency assigned')}</span>
+                    <span className='symbols'>&nbsp;{currency || translate('No currency assigned')}</span>
                     {active_account_name.includes('MF') && !is_virtual && (
                         <div className='is_symbol_multiplier'>{translate('Multipliers')}</div>
                     )}
                 </div>
                 <img
                     className={`header__icon header__expand ${is_acc_dropdown_open ? 'open' : ''}`}
-                    src={account_icon}
+                    src={`/public/images/${account_icon}.svg`}
                 />
             </div>
         );
@@ -108,7 +109,7 @@ const AccountActions = () => {
                 <img
                     className='header__icon-button'
                     id='header__account-settings'
-                    src='image/deriv/ic-user-outline.svg'
+                    src='/public/images/ic-user-outline.svg'
                 />
             </a>
             <div className='header__divider mobile-hide'></div>

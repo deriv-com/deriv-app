@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { createInterpreter } from '../CliTools';
+import { createInterpreter } from '../Interpreter';
 
 export const init = options => `
   Bot.init('Xkq6oGFEHh6hJH8', {
@@ -49,7 +49,7 @@ export const parts = {
 
 export const run = code => createInterpreter().run(code);
 
-export const runAndGetResult = (initCode = '', code) =>
+export const runAndGetResult = (initCode, code) =>
     new Promise(r => {
         run(
             `

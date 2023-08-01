@@ -60,7 +60,8 @@ commands:
             echo TRACKJS_TOKEN=${TRACKJS_TOKEN} >> .env
       - run:
           name: "npm run build"
-          command: node_modules/gulp/bin/gulp.js build-min
+          # command: node_modules/gulp/bin/gulp.js build-min
+          command: npm run build
   deploy:
     description: "Deploy to static branches"
     parameters:

@@ -1,5 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3qghes
-import { translate } from '../../../../../common/i18n';
+import { translate } from '@i18n';
 import config from '../../../../common/const';
 import { expectValue } from '../shared';
 
@@ -8,18 +8,10 @@ Blockly.Blocks.macda = {
         this.appendDummyInput()
             .appendField(translate('MACD Array'))
             .appendField(new Blockly.FieldDropdown(config.macdFields), 'MACDFIELDS_LIST');
-        this.appendValueInput('INPUT')
-            .setCheck('Array')
-            .appendField(translate('Input List'));
-        this.appendValueInput('FAST_EMA_PERIOD')
-            .setCheck('Number')
-            .appendField(translate('Fast EMA Period'));
-        this.appendValueInput('SLOW_EMA_PERIOD')
-            .setCheck('Number')
-            .appendField(translate('Slow EMA Period'));
-        this.appendValueInput('SIGNAL_EMA_PERIOD')
-            .setCheck('Number')
-            .appendField(translate('Signal EMA Period'));
+        this.appendValueInput('INPUT').setCheck('Array').appendField(translate('Input List'));
+        this.appendValueInput('FAST_EMA_PERIOD').setCheck('Number').appendField(translate('Fast EMA Period'));
+        this.appendValueInput('SLOW_EMA_PERIOD').setCheck('Number').appendField(translate('Slow EMA Period'));
+        this.appendValueInput('SIGNAL_EMA_PERIOD').setCheck('Number').appendField(translate('Signal EMA Period'));
         this.setOutput(true, 'Array');
         this.setColour('#dedede');
         this.setTooltip(translate('Calculates Moving Average Convergence Divergence (MACD) list from a list'));

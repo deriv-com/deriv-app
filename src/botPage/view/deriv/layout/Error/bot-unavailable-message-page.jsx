@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { getRelatedDeriveOrigin } from '@utils';
+import { translate } from '@i18n';
 import MessagePage from './message-page.jsx';
-import { translate } from '../../../../../common/i18n';
-import { getRelatedDeriveOrigin } from '../../utils/index.js';
 
 const BotUnavailableMessage = () => {
     const { show_bot_unavailable_page } = useSelector(state => state.ui);

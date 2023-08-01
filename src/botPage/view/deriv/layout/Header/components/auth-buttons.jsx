@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import config from '@config';
+import { translate } from '@i18n';
 import { saveBeforeUnload } from '../../../../blockly/utils';
 import { setIsHeaderLoaded } from '../../../store/ui-slice';
 import Tour, { TourTargets } from '../../../components/tour';
-import config from '../../../../../../app.config';
-import { translate } from '../../../../../../common/i18n';
 
 const AuthButtons = () => {
     const dispatch = useDispatch();

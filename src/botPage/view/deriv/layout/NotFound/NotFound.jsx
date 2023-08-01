@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './not-found.scss';
+
 const NotFound = () => {
     React.useEffect(() => {
         // Todo: Remove jquery

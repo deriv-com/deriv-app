@@ -1,5 +1,5 @@
+import { translate } from '@i18n';
 import { notify } from '../broadcast';
-import { translate } from '../../../common/i18n';
 
 export default Interface =>
     class extends Interface {

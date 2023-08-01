@@ -3,9 +3,10 @@ import { Parser } from 'json2csv';
 import React from 'react';
 import Draggable from 'react-draggable';
 import { Table, Column } from 'react-virtualized';
+import PropTypes from 'prop-types';
+import { translate } from '@i18n';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { appendRow, updateRow, saveAs, isNumber } from '../shared';
-import { translate } from '../../../common/i18n';
 import { roundBalance } from '../../common/tools';
 import * as style from '../style';
 
@@ -27,7 +28,14 @@ const getTimestamp = date => {
 };
 
 const ProfitColor = ({ value }) => <div style={value > 0 ? style.greenLeft : style.redLeft}>{value}</div>;
+ProfitColor.propTypes = {
+    value: PropTypes.string,
+};
+
 const StatusFormat = ({ value }) => <div style={style.left}>{value}</div>;
+StatusFormat.propTypes = {
+    value: PropTypes.string,
+};
 
 const TradeTable = ({ account_id, api }) => {
     const initial_state = { id: 0, rows: [] };
@@ -108,7 +116,14 @@ const TradeTable = ({ account_id, api }) => {
     const settledContract = async ({ contract_id }) => {
         let settled = false;
         let delay = 3000;
-        const sleep = () => new Promise(resolve => setTimeout(() => resolve(), delay));
+
+        // const sleep = () => new Promise(resolve => setTimeout(() => ( resolve() ), delay));
+        const sleep = () =>
+            new Promise(resolve => {
+                setTimeout(() => {
+                    resolve();
+                }, delay);
+            });
 
         while (!settled) {
             await sleep();
@@ -174,6 +189,7 @@ const TradeTable = ({ account_id, api }) => {
             globalObserver.unregister('bot.contract', contractBot);
             globalObserver.unregister('contract.settled', settledContract);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account_state]);
 
     const rowGetter = ({ index }) => {
@@ -267,6 +283,11 @@ const TradeTable = ({ account_id, api }) => {
             </Table>
         </div>
     );
+};
+
+TradeTable.propTypes = {
+    account_id: PropTypes.string,
+    api: PropTypes.object,
 };
 
 export default TradeTable;

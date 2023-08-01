@@ -1,5 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#qx2zox
-import { translate } from '../../../../../common/i18n';
+import { translate } from '@i18n';
 import './sell_at_market';
 import './check_sell';
 import './sell_price';

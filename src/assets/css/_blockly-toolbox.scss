@@ -1,0 +1,135 @@
+.blocklyTreeRow {
+    box-shadow: inset 0 -0.063em 0 0 var(--color-light-grey);
+}
+
+.blocklyText {
+    fill: #000 !important;
+}
+
+.blocklyTreeSelected .blocklyTreeLabel {
+    color: #fff !important;
+}
+
+.blocklyTreeRow.blocklyTreeSelected .blocklyTreeIcon.blocklyTreeIconOpen,
+.blocklyTreeRow.blocklyTreeSelected .blocklyTreeIcon.blocklyTreeIconClosedLtr {
+    filter: invert(100%);
+}
+
+.blocklyTreeIcon.blocklyTreeIconOpen {
+    background-image: url('/public/images/down-arrow.svg') !important;
+    background-position: -0.188em -0.375em !important;
+}
+
+.blocklyTreeIcon.blocklyTreeIconClosedLtr {
+    background-image: url('/public/images/down-arrow.svg') !important;
+    background-position: -0.188em -0.375em !important;
+}
+
+.blocklyTreeRow.blocklyTreeSelected {
+    background-color: var(--color-blue) !important;
+}
+
+.blocklyTreeRow:not(.blocklyTreeSelected):hover {
+    background-color: var(--color-light-grey) !important;
+}
+
+.blocklyToolboxDiv .blocklyTreeRow {
+    color: #000;
+}
+
+.blocklyEditableText tspan {
+    fill: #000 !important;
+}
+
+.blocklyEditableText rect {
+    fill-opacity: 1 !important;
+}
+
+.blocklyFlyoutBackground {
+    fill: #fff !important;
+    fill-opacity: 1 !important;
+    stroke: var(--color-light-grey);
+    stroke-width: 0.063em;
+}
+
+.blocklyToolboxDiv {
+    background-color: var(--disabled-color) !important;
+    border-width: thin;
+    color: var(--color-light-grey);
+    border-right: 0.063em solid;
+    width: 11em;
+    transition: width 0.3s ease-in-out;
+    @media (max-width: $desktop-width) {
+        width: 0;
+        &__toolbox-open {
+            width: 11em;
+        }
+    }
+}
+
+.collapse-toolbox {
+    position: absolute;
+    left: 0;
+    top: auto;
+    height: calc(100vh - #{$HEADER_HEIGHT} - #{$TOOLBOX_HEIGHT});
+    width: 20px;
+    background: var(--disabled-color);
+    justify-content: center;
+    align-items: center;
+    transition: left 0.3s ease-in-out;
+    border-right: 1px solid var(--color-light-grey);
+
+    span img {
+        transform: rotate(270deg);
+        transition: transform 0.3s ease-out;
+    }
+
+    &__collapse-open {
+        left: 10.95em;
+
+        span img {
+            transform: rotate(90deg);
+        }
+    }
+
+    display: none;
+
+    @include mobile {
+        display: flex;
+        height: calc(100vh - 7.5rem);
+    }
+}
+
+.blocklyIconShape {
+    fill: var(--color-blue) !important;
+}
+
+.blocklyIconGroup:not(:hover),
+.blocklyIconGroupReadonly {
+    opacity: 1 !important;
+}
+
+.blocklyScrollbarVertical,
+.blocklyScrollbarHorizontal {
+    display: none;
+}
+
+.blocklyTreeRow {
+    margin-bottom: 0px !important;
+    height: 1.9em !important;
+    padding-top: 0.25em;
+}
+
+.blocklyToolboxDiv {
+    z-index: 99 !important;
+    left: -100%;
+    overflow-x: hidden !important;
+}
+
+.blocklySvg {
+    position: absolute;
+}
+
+.blocklyMainBackground {
+    stroke: none;
+}

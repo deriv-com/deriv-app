@@ -1,10 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import config from '@config';
+import { getRelatedDeriveOrigin } from '@utils';
 import { useLocation } from 'react-router-dom';
-import { translate } from '../../../../../../common/utils/tools';
-import config from '../../../../../../app.config';
-import { getRelatedDeriveOrigin } from '../../../utils';
+import { translate } from '@i18n';
 
+// eslint-disable-next-line react/display-name
 const PlatformDropdown = React.forwardRef(({ hideDropdown, setIsPlatformSwitcherOpen }, platformDropdownRef) => {
     const location = useLocation();
 
@@ -26,15 +28,15 @@ const PlatformDropdown = React.forwardRef(({ hideDropdown, setIsPlatformSwitcher
                 {config.platforms.map(platform => {
                     if (platform.title === 'DTrader') {
                         const related_deriv_origin = getRelatedDeriveOrigin();
-                        platform.link = `${related_deriv_origin.origin}/?lang=${localStorage
-                            .getItem('lang')
-                            .toLowerCase() || 'en'}`;
+                        platform.link = `${related_deriv_origin.origin}/?lang=${
+                            localStorage.getItem('lang').toLowerCase() || 'en'
+                        }`;
                     }
                     if (platform.title === 'DBot') {
                         const related_deriv_origin = getRelatedDeriveOrigin();
-                        platform.link = `${related_deriv_origin.origin}/bot/?lang=${localStorage
-                            .getItem('lang')
-                            .toLowerCase() || 'en'}`;
+                        platform.link = `${related_deriv_origin.origin}/bot/?lang=${
+                            localStorage.getItem('lang').toLowerCase() || 'en'
+                        }`;
                     }
                     if (platform.title === 'SmartTrader') {
                         const related_deriv_origin = getRelatedDeriveOrigin();
@@ -62,10 +64,15 @@ const PlatformDropdown = React.forwardRef(({ hideDropdown, setIsPlatformSwitcher
                 })}
             </div>
             <a href={config.tradershub.url}>
-                <span>{translate("Looking for CFDs? Go to Trader's Hub")}</span>
+                <span>{translate('Looking for CFDs? Go to Trader\'s Hub')}</span>
             </a>
         </div>
     );
 });
+
+PlatformDropdown.propTypes = {
+    hideDropdown: PropTypes.func,
+    setIsPlatformSwitcherOpen: PropTypes.func,
+};
 
 export default PlatformDropdown;

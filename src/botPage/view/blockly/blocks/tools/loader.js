@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#tkcvmb
+import { translate } from '@i18n';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
-import { translate } from '../../../../../common/i18n';
 import { deleteBlocksLoadedBy, loadRemote, recoverDeletedBlock } from '../../utils';
 
 Blockly.Blocks.loader = {
@@ -55,5 +55,5 @@ Blockly.Blocks.loader = {
 Blockly.JavaScript.loader = block =>
     block.loadedVariables.length
         ? // eslint-disable-next-line no-underscore-dangle
-          `var ${block.loadedVariables.map(v => Blockly.JavaScript.variableDB_.safeName_(v)).toString()};`
+        `var ${block.loadedVariables.map(v => Blockly.JavaScript.variableDB_.safeName_(v)).toString()};`
         : '';

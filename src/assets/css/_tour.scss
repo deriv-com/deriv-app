@@ -1,0 +1,24 @@
+.tour {
+    &__beacon {
+        margin-top: 6px;
+
+        &__button {
+            margin-right: 8px;
+        }
+    }
+
+    &__checkbox {
+        margin-top: 1em;
+    }
+}
+
+@keyframes joyride-animation {
+    0% {
+        transform: scale(0.1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: perspective(1px) scale(1);
+    }
+}

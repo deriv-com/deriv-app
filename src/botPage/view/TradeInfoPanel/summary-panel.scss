@@ -1,0 +1,61 @@
+@import '../../../assets/css/mixins';
+@import '../../../assets/css/variables';
+
+#summary-panel {
+    border-radius: 4px;
+    border: 1px solid var(--disabled-color);
+    box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.1);
+
+    .content-row {
+        margin-bottom: 1em;
+    }
+
+    p {
+        margin: 0em;
+    }
+
+    #sync-warning {
+        font-size: 11px;
+        color: lightgray;
+    }
+
+    .summary-toolbox {
+        text-align: center;
+        position: relative;
+
+        .toolbox-button {
+            border-radius: 50%;
+            margin: 0 auto 0.313em;
+            @include toolbox-button-base;
+
+            &:hover {
+                @include toolbox-runButton-hover;
+            }
+
+            &[disabled],
+            &[disabled]:hover {
+                @include toolbox-runButton-disabled;
+            }
+        }
+
+        .toolbox-button:focus {
+            @include toolbox-button-focus;
+        }
+
+        #summaryClearButton {
+            position: absolute;
+            right: 10px;
+        }
+    }
+
+    & > div {
+        @include mobile {
+            overflow: scroll;
+        }
+    }
+
+    .react-grid-Row .react-grid-Cell:last-child,
+    .react-grid-Row .react-grid-Cell:nth-last-child(2) {
+        text-align: right;
+    }
+}

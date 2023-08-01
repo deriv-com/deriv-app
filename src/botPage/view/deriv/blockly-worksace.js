@@ -1,16 +1,18 @@
-import config, { updateConfigCurrencies } from '../../../botPage/common/const';
-import logHandler from '../../view/logger';
-import { updateTokenList } from './utils';
+import { AppConstants } from '@constants';
 import {
     getTokenList,
     set as setStorage,
     syncWithDerivApp,
     getToken,
     removeAllTokens,
-} from '../../../common/utils/storageManager';
+    updateTokenList,
+} from '@storage';
+import { translate } from '@i18n';
+import config, { updateConfigCurrencies } from '../../common/const';
+import logHandler from '../logger';
 import { observer as globalObserver } from '../../../common/utils/observer';
-import { translate } from '../../../common/i18n';
-import { logoutAllTokens, AppConstants } from '../../../common/appId';
+
+import { logoutAllTokens } from '../../../common/appId';
 import IntegrationsDialog from '../Dialogs/IntegrationsDialog';
 import Chart from '../Dialogs/Chart';
 import TradingView from '../Dialogs/TradingView';
@@ -23,7 +25,7 @@ import {
 } from '../blockly/utils';
 import GTM from '../../../common/gtm';
 import google_drive_util from '../../../common/integrations/GoogleDrive';
-import { load } from '../../view/blockly';
+import { load } from '../blockly';
 import api from './api';
 
 const integrationsDialog = new IntegrationsDialog();
@@ -71,10 +73,7 @@ const checkForRequiredBlocks = () => {
 
 export function applyToolboxPermissions() {
     const fn = getTokenList().length ? 'show' : 'hide';
-    $('#runButton')
-        [fn]()
-        .prevAll('.toolbox-separator:first')
-        [fn]();
+    $('#runButton')[fn]().prevAll('.toolbox-separator:first')[fn]();
 }
 
 const setFileBrowser = () => {
@@ -149,13 +148,13 @@ const setElementActions = blockly => {
     addEventHandlers(blockly);
 };
 
-const exportContent = {};
-exportContent.summaryPanel = () => {
-    globalObserver.emit('summary.export');
-};
-
-exportContent.logPanel = () => {
-    globalObserver.emit('log.export');
+const exportContent = {
+    'summary-panel': () => {
+        globalObserver.emit('summary.export');
+    },
+    logPanel: () => {
+        globalObserver.emit('log.export');
+    },
 };
 
 const addExportButtonToPanel = panelId => {
@@ -173,10 +172,8 @@ const addExportButtonToPanel = panelId => {
 };
 
 export const showSummary = () => {
-    $('#summaryPanel')
-        .dialog('option', 'minWidth', 770)
-        .dialog('open');
-    addExportButtonToPanel('summaryPanel');
+    $('#summary-panel').dialog('option', 'minWidth', 770).dialog('open');
+    addExportButtonToPanel('summary-panel');
 };
 
 export const logButton = () => {
@@ -210,9 +207,7 @@ const addBindings = blockly => {
     };
 
     $('.panelExitButton').click(function onClick() {
-        $(this)
-            .parent()
-            .hide();
+        $(this).parent().hide();
     });
 
     $('.draggable-dialog')
@@ -292,11 +287,11 @@ const addBindings = blockly => {
         .click(e => stop(e))
         .hide();
 
-    $('[aria-describedby="summaryPanel"]').on('click', '#summaryRunButton', () => {
+    $('[aria-describedby="summary-panel"]').on('click', '#summaryRunButton', () => {
         $('#runButton').trigger('click');
     });
 
-    $('[aria-describedby="summaryPanel"]').on('click', '#summaryStopButton', () => {
+    $('[aria-describedby="summary-panel"]').on('click', '#summaryStopButton', () => {
         $('#stopButton').trigger('click');
     });
 

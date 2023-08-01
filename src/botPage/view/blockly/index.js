@@ -1,3 +1,6 @@
+import { parseQueryString, getRelatedDeriveOrigin } from '@utils';
+import { getActiveAccount, getLanguage } from '@storage';
+import { translate, xml as translateXml } from '@i18n';
 import './customBlockly';
 import blocks from './blocks';
 import {
@@ -21,17 +24,12 @@ import {
     getPreviousStrat,
 } from './utils';
 import Interpreter from '../../bot/Interpreter';
-import { translate, xml as translateXml } from '../../../common/i18n';
-import { getLanguage } from '../../../common/lang';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
 import GTM from '../../../common/gtm';
-import { parseQueryString } from '../../../common/utils/tools';
 import { TrackJSError } from '../logger';
 import { createDataStore } from '../../bot/data-collection';
 import config from '../../common/const';
-import { getActiveAccount } from '../../../common/utils/storageManager';
-import { getRelatedDeriveOrigin } from '../deriv/utils';
 import { trackJSTrack } from '../../../common/integrations/trackJSTrack';
 
 const disableStrayBlocks = () => {
@@ -99,7 +97,7 @@ const addBlocklyTranslation = () => {
         lang = 'zh-hant';
     }
     return new Promise(resolve => {
-        $.getScript(`translations/${lang}.js`, resolve);
+        $.getScript(`blockly-translations/${lang}.js`, resolve);
     });
 };
 
@@ -296,7 +294,7 @@ export default class _Blockly {
         // eslint-disable-next-line no-underscore-dangle
         Blockly.WorkspaceSvg.prototype.preloadAudio_ = () => {}; // https://github.com/google/blockly/issues/299
         this.initPromise = new Promise(resolve => {
-            $.get('xml/toolbox.xml', toolboxXml => {
+            $.get('public/xml/toolbox.xml', toolboxXml => {
                 blocks();
                 const workspace = Blockly.inject('blocklyDiv', {
                     toolbox: xmlToStr(translateXml(toolboxXml.getElementsByTagName('xml')[0])),
@@ -362,7 +360,7 @@ export default class _Blockly {
                         defaultStrat = 'main';
                     }
 
-                    const xmlFile = `xml/${defaultStrat}.xml`;
+                    const xmlFile = `public/xml/${defaultStrat}.xml`;
                     const getFile = xml => {
                         importFile(xml).then(dom => {
                             loadDomToWorkspace(dom.getElementsByTagName('xml')[0]);
@@ -387,7 +385,7 @@ export default class _Blockly {
         }
     }
     resetWorkspace() {
-        importFile('xml/main.xml').then(dom => {
+        importFile('public/xml/main.xml').then(dom => {
             Blockly.Events.setGroup('reset');
             Blockly.mainWorkspace.clear();
             Blockly.Xml.domToWorkspace(dom.getElementsByTagName('xml')[0], Blockly.mainWorkspace);

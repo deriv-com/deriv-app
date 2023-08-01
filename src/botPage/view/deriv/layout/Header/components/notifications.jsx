@@ -1,5 +1,6 @@
 import React from 'react';
-import { translate } from '../../../../../../common/utils/tools';
+import PropTypes from 'prop-types';
+import { translate } from '@i18n';
 
 const NotificationsContainer = React.forwardRef(({ setIsOpen }, containerRef) => {
     const hideNotifications = e => !containerRef.current.contains(e.target) && setIsOpen(false);
@@ -17,13 +18,13 @@ const NotificationsContainer = React.forwardRef(({ setIsOpen }, containerRef) =>
                 <img
                     id='header__notification-close'
                     className='btn__close mobile-show'
-                    src='image/deriv/ic-close.svg'
+                    src='/public/images/ic-close.svg'
                     onClick={() => setIsOpen(false)}
                 />
             </div>
             <div id='header__notification-content' className='header__notification-content'>
                 <div id='header__notification-empty' className='header__notification-empty'>
-                    <img id='header__notification-empty-img' src='image/deriv/ic-box.svg' />
+                    <img id='header__notification-empty-img' src='/public/images/ic-box.svg' />
                     <div className='header__notification-empty-text'>{translate('No notifications')}</div>
                     <div className='header__notification-empty-desc'>
                         {translate('You have yet to receive any notifications')}
@@ -33,6 +34,12 @@ const NotificationsContainer = React.forwardRef(({ setIsOpen }, containerRef) =>
         </div>
     );
 });
+
+NotificationsContainer.displayName = 'NotificationsContainer';
+
+NotificationsContainer.propTypes = {
+    setIsOpen: PropTypes.func,
+};
 
 const Notifications = () => {
     const [isOpen, setIsOpen] = React.useState(false);
@@ -48,7 +55,7 @@ const Notifications = () => {
                 <img
                     id='header__notification-icon'
                     className='header__notification-icon header__icon-button'
-                    src='image/deriv/ic-bell.svg'
+                    src='/public/images/ic-bell.svg'
                 />
                 <div id='header__notification-count' className='header__notification-count'></div>
             </div>

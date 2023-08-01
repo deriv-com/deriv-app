@@ -1,9 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import { translate } from '../../../../../../common/utils/tools';
+import config from '@config';
+import { translate } from '@i18n';
+import PropTypes from 'prop-types';
 import MenuLinks from './menu-links.jsx';
 import PlatformDropdown from './platform-dropdown.jsx';
-import config from '../../../../../../app.config';
 
 const DrawerMenu = ({
     updateShowDrawerMenu,
@@ -29,7 +30,7 @@ const DrawerMenu = ({
             <div className='header__drawer' ref={drawer_ref}>
                 <div className='header__drawer-top'>
                     <img
-                        src='image/deriv/ic-close.svg'
+                        src='/public/images/ic-close.svg'
                         className='header__drawer-close'
                         onClick={() => {
                             updateShowDrawerMenu(false);
@@ -47,7 +48,7 @@ const DrawerMenu = ({
                         <img
                             id='platform__switcher-expand'
                             className={classNames('header__icon header__expand', { open: isPlatformSwitcherOpen })}
-                            src='image/deriv/ic-chevron-down-bold.svg'
+                            src='/public/images/ic-chevron-down-bold.svg'
                         />
                     </div>
                     {isPlatformSwitcherOpen && (
@@ -62,6 +63,15 @@ const DrawerMenu = ({
             </div>
         </div>
     );
+};
+
+DrawerMenu.propTypes = {
+    hideDropdown: PropTypes.func,
+    isPlatformSwitcherOpen: PropTypes.bool,
+    is_logged: PropTypes.bool,
+    platformDropdownRef: PropTypes.object,
+    setIsPlatformSwitcherOpen: PropTypes.func,
+    updateShowDrawerMenu: PropTypes.func,
 };
 
 export default DrawerMenu;

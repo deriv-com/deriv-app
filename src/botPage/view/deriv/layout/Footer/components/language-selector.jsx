@@ -1,8 +1,10 @@
 import React from 'react';
 import Cookies from 'js-cookie';
-import config from '../../../../../../app.config';
-import { getLanguage } from '../../../../../../common/lang';
-import { redirectToSupportedLang, setLanguage, translate } from '../../../../../../common/utils/tools';
+import PropTypes from 'prop-types';
+import config from '@config';
+import { getLanguage, setLanguage } from '@storage';
+import { redirectToSupportedLang, translate } from '@i18n';
+import './language-selector.scss';
 
 const current_language = getLanguage();
 const toggleModal = () => $('#language-menu-modal').toggleClass('invisible');
@@ -52,16 +54,20 @@ const LanguageItem = ({ lang }) => {
                 }
             }}
         >
-            <img src={`image/deriv/flag/ic-flag-${lang}.svg`} />
+            <img src={`/public/images/flags/ic-flag-${lang}.svg`} />
             <span>{config.supported_languages[lang]}</span>
         </div>
     );
 };
 
+LanguageItem.propTypes = {
+    lang: PropTypes.string,
+};
+
 const LanguageSelector = () => (
     <React.Fragment>
         <div id='language-select' onClick={toggleModal}>
-            <img id='language-select__logo' src={`image/deriv/flag/ic-flag-${getLanguage()}.svg`} />
+            <img id='language-select__logo' src={`/public/images/flags/ic-flag-${getLanguage()}.svg`} />
         </div>
         <LanguageModal />
     </React.Fragment>

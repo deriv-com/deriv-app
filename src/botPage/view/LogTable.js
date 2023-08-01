@@ -1,9 +1,10 @@
 import { Parser } from 'json2csv';
 import React from 'react';
 import Draggable from 'react-draggable';
+import PropTypes from 'prop-types';
 import { Table, Column, CellMeasurerCache } from 'react-virtualized';
+import { translate } from '@i18n';
 import { observer as globalObserver } from '../../common/utils/observer';
-import { translate } from '../../common/i18n';
 import { appendRow, saveAs } from './shared';
 
 const Logtable = () => {
@@ -35,6 +36,7 @@ const Logtable = () => {
             globalObserver.unregister('log.export', exportLogs);
             globalObserver.unregister('bot.notify', notify);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [rows]);
 
     const exportLogs = () => {
@@ -94,8 +96,12 @@ const Logtable = () => {
     const rowRenderer = ({ rowData, columns: cols, className, key }) => (
         <div className={`${className} ${rowData.type}`} key={key} style={{ height: cell_height }}>
             {cols?.map(({ props, key: inner_key }) => (
+                // eslint-disable-next-line react/prop-types
                 <div style={props.style} className={props.className} role={props.role} key={inner_key}>
-                    {props.title}
+                    {
+                        // eslint-disable-next-line react/prop-types
+                        props.title
+                    }
                 </div>
             ))}
         </div>
@@ -139,6 +145,10 @@ const Logtable = () => {
             </div>
         </span>
     );
+};
+
+Logtable.propTypes = {
+    rows: PropTypes.array,
 };
 
 export default Logtable;

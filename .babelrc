@@ -1,24 +1,7 @@
 {
   "presets": [
-    "@babel/preset-react",
-    [
-      "@babel/preset-env",
-      {
-        "targets": {
-          "browsers": [
-            "last 2 versions",
-            "ios_saf >= 8",
-            "not IE <= 10",
-            "chrome >= 49",
-            "firefox >= 49",
-            "> 1%"
-          ]
-        },
-        "loose": true,
-        "useBuiltIns": "usage",
-        "corejs": "3.18"
-      }
-    ]
+    "@babel/preset-env",
+    "@babel/preset-react"
   ],
   "plugins": [
     [

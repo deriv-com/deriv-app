@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { translate } from '../../../../../common/i18n';
-import { isMobile } from '../../../../../common/utils/tools';
+import { isMobile } from '@utils';
+import { translate } from '@i18n';
 
 // [TODO]: Refactor direct DOM calls
 const CustomBeaconComponent = ({ closeTourPermanently, continueTour }) => (
@@ -22,6 +22,11 @@ const CustomBeaconComponent = ({ closeTourPermanently, continueTour }) => (
     </div>
 );
 
+CustomBeaconComponent.propTypes = {
+    closeTourPermanently: () => {},
+    continueTour: () => {},
+};
+
 const SecondStep = () => <p>{translate('Drag and drop block files or make your own strategies.')}</p>;
 
 const ThirdStep = () => <p>{translate('Add more blocks from here to your bot.')}</p>;
@@ -41,9 +46,9 @@ const SixthStep = () => (
     </p>
 );
 
-function welcome(closeTourPermanently, continueTour) {
+function Welcome(closeTourPermanently, continueTour) {
     const { is_logged } = useSelector(state => state.client);
-
+    // [TODO]: Translations are not working
     const steps = [
         {
             title: 'Take a quick tour',
@@ -125,4 +130,9 @@ function welcome(closeTourPermanently, continueTour) {
     return steps;
 }
 
-export default welcome;
+Welcome.propTypes = {
+    closeTourPermanently: () => {},
+    continueTour: () => {},
+};
+
+export default Welcome;

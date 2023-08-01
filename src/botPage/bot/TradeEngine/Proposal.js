@@ -1,4 +1,4 @@
-import { translate } from '../../../common/i18n';
+import { translate } from '@i18n';
 import { tradeOptionToProposal, doUntilDone } from '../tools';
 import { proposalsReady, clearProposals } from './state/actions';
 import { TrackJSError } from '../../view/logger';

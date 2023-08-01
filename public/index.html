@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bot trading | Automated trading system – Deriv</title>
+        <link rel="apple-touch-icon" sizes="57x57" href="image/favicons/apple-touch-icon-57x57.png" />
+        <link rel="apple-touch-icon" sizes="114x114" href="image/favicons/apple-touch-icon-114x114.png" />
+        <link rel="apple-touch-icon" sizes="72x72" href="image/favicons/apple-touch-icon-72x72.png" />
+        <link rel="apple-touch-icon" sizes="144x144" href="image/favicons/apple-touch-icon-144x144.png" />
+        <link rel="apple-touch-icon" sizes="60x60" href="image/favicons/apple-touch-icon-60x60.png" />
+        <link rel="apple-touch-icon" sizes="120x120" href="image/favicons/apple-touch-icon-120x120.png" />
+        <link rel="apple-touch-icon" sizes="76x76" href="image/favicons/apple-touch-icon-76x76.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="image/favicons/apple-touch-icon-152x152.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="image/favicons/apple-touch-icon-180x180.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="image/favicons/favicon-192x192.png" />
+        <link rel="icon" type="image/png" sizes="160x160" href="image/favicons/favicon-160x160.png" />
+        <link rel="icon" type="image/png" sizes="96x96" href="image/favicons/favicon-96x96.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="image/favicons/favicon-16x16.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="image/favicons/favicon-32x32.png" />
+        <meta http-equiv="cache-control" content="no-cache, must-revalidate, post-check=0, pre-check=0" />
+        <meta http-equiv="pragma" content="no-cache" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="referrer" content="origin" />
+        <meta
+            name="description"
+            content="Automate your trades with Deriv’s bot trading platform, no coding needed. Trade now on forex, synthetic indices, commodities, stock indices, and more."
+        />
+        <style id="antiClickjack">
+            body {
+                display: none !important;
+            }
+        </style>
+        <script type="text/javascript">
+            if (self === top) {
+                var antiClickjack = document.getElementById('antiClickjack');
+                antiClickjack.parentNode.removeChild(antiClickjack);
+            } else {
+                top.location = self.location;
+            }
+        </script>
+    </head>
+
+    <body>
+        <span id="limits-dialog"></span>
+        <span id="integrations-dialog"></span>
+        <span id="chart-dialog"></span>
+        <span id="trading-view-dialog"></span>
+
+        <span id="bbot-portal"></span>
+
+        <div class="barspinner dark">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+        </div>
+
+        <div id="main"></div>
+
+        <form id="fileUploadForm" style="display: none">
+            <input
+                data-i18n-title="Open an already saved XML file and retrieve its blocks"
+                type="file"
+                id="files"
+                accept=".xml"
+                multiple
+            />
+        </form>
+
+        <!-- TODO move to separate component after routes refacotr -->
+        <audio id="announcement" autostart="false" preload="auto">
+            <source src="public/sound/announcement.ogg" type="audio/ogg" />
+            <source src="public/sound/announcement.mp3" type="audio/mp3" />
+        </audio>
+        <audio id="earned-money" autostart="false" preload="auto">
+            <source src="public/sound/coins.ogg" type="audio/ogg" />
+            <source src="public/sound/coins.mp3" type="audio/mp3" />
+        </audio>
+        <audio id="job-done" autostart="false" preload="auto">
+            <source src="public/sound/job-done.ogg" type="audio/ogg" />
+            <source src="public/sound/job-done.mp3" type="audio/mp3" />
+        </audio>
+        <audio id="error" autostart="false" preload="auto">
+            <source src="public/sound/out-of-bounds.ogg" type="audio/ogg" />
+            <source src="public/sound/out-of-bounds.mp3" type="audio/mp3" />
+        </audio>
+        <audio id="severe-error" autostart="false" preload="auto">
+            <source src="public/sound/i-am-being-serious.ogg" type="audio/ogg" />
+            <source src="public/sound/i-am-being-serious.mp3" type="audio/mp3" />
+        </audio>
+
+        <!-- bundles -->
+        <script src="blockly.js"></script>
+        <script src="index.js"></script>
+
+        <noscript>
+            <iframe
+                src="https://www.googletagmanager.com/ns.html?id=GTM-P97C2DZ"
+                height="0"
+                width="0"
+                style="display: none; visibility: hidden"
+            ></iframe>
+        </noscript>
+        <iframe
+            id="localstorage-sync"
+            sandbox="allow-same-origin allow-scripts"
+            style="display: none; visibility: hidden"
+        ></iframe>
+        <div class="notifyjs-corner" style="bottom: 0px; right: 0px"></div>
+        <div class="notifyjs-corner" style="bottom: 0px; left: 0px"></div>
+        <script>
+            document.getElementById('localstorage-sync').src = window.location.hostname.includes('staging')
+                ? 'https://staging-app.deriv.com/localstorage-sync.html'
+                : 'https://app.deriv.com/localstorage-sync.html';
+
+            // Auto login from deriv app
+            const login_url = localStorage.getItem('login_url');
+            const token_list = JSON.parse(localStorage.getItem('tokenList'));
+            const is_logged_in = token_list && token_list.length > 0;
+
+            if (login_url && !is_logged_in) {
+                const { origin } = window.location;
+                localStorage.setItem('is_logging_in', true);
+                window.location.href = `${origin}?${login_url}`;
+            }
+
+            localStorage.removeItem('login_url');
+        </script>
+
+        <!-- Start of Survicate (www.survicate.com) code -->
+        <script type="text/javascript">
+            const initServicate = w => {
+                const script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.async = true;
+                script.src = 'https://survey.survicate.com/workspaces/83b651f6b3eca1ab4551d95760fe5deb/web_surveys.js';
+                const firstScript = document.getElementsByTagName('script')[0];
+                firstScript.parentNode.insertBefore(script, firstScript);
+            };
+
+            if (
+                window &&
+                window.location &&
+                window.location.hostname &&
+                window.location.hostname.includes('deriv.com')
+            ) {
+                initServicate(window);
+            }
+        </script>
+        <!-- End of Survicate code -->
+    </body>
+</html>

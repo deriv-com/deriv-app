@@ -1,7 +1,8 @@
+/* eslint-disable max-classes-per-file */
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+import { translate } from '@i18n';
 import { durationToSecond } from '../../../common/utils/tools';
-import { translate } from '../../..//common/i18n';
 import { createError } from '../../common/error';
 import { doUntilDone } from '../tools';
 import { expectInitArg, expectTradeOptions } from '../sanitize';
@@ -106,6 +107,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         if (this.token === token) return Promise.resolve();
         doUntilDone(() => this.api.authorize(token)).catch(e => this.$scope.observer.emit('Error', e));
         return new Promise(resolve =>
+            // eslint-disable-next-line no-promise-executor-return
             this.api.expectResponse('authorize').then(({ authorize }) => {
                 this.accountInfo = authorize;
                 this.token = token;

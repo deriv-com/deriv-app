@@ -1,0 +1,173 @@
+$mobile-width: 320px;
+$desktop-width: 720px;
+$FONT_BASE: 1rem;
+$FONT_SCALE: 1.15rem;
+
+/*------------------------------------*
+ *  # Constants
+ *------------------------------------*/
+
+/* stylelint-disable color-no-hex */
+
+/* COLOR PALETTE */
+
+/* colors */
+$color-black: #0e0e0e;
+$color-black-1: #333333;
+$color-black-3: #151717;
+$color-black-4: #1d1f20;
+$color-black-7: #000000;
+$color-white: #ffffff;
+$color-red: #ff444f;
+$color-red-1: #ec3f3f;
+$color-red-4: #d33636;
+$color-red-5: #eb3e48;
+$color-grey: #c2c2c2;
+$color-grey-1: #999999;
+$color-grey-2: #f2f3f4;
+$color-grey-3: #eaeced;
+$color-grey-4: #e6e9e9;
+$color-grey-5: #d6dadb;
+$color-grey-6: #d6d6d6;
+$color-green: #85acb0;
+$color-green-1: #4bb4b3;
+$color-green-2: #3d9494;
+$color-orange: #ff6444;
+$color-yellow: #ffad3a;
+$color-blue: #377cfc;
+$color-purple: #722fe4;
+
+/* alpha colors */
+$alpha-color-black-1: transparentize($color-black-7, 0.28);
+$alpha-color-black-3: transparentize($color-black-7, 0.92);
+$alpha-color-black-4: transparentize($color-black-7, 0.84);
+$alpha-color-red-1: transparentize($color-red, 0.92);
+
+$BORDER_RADIUS: 4px;
+$HEADER_HEIGHT: 48px;
+$FOOTER_HEIGHT: 36px;
+$TOOLBOX_HEIGHT: 42px;
+
+/*
+    Variables
+*/
+$FONT_SIZES: (
+    'xheading' 3.2em,
+    'heading' 3em,
+    'large' 2.8em,
+    'title' 1.6em,
+    'paragraph' 1.4em,
+    'small' 1.2em,
+    'xsmall' 1em,
+    'xxsmall' 0.8em,
+    'xxxsmall' 0.6em
+);
+
+$FONT_COLORS: (
+    'active' var(--text-colored-background),
+    'prominent' var(--text-prominent),
+    'black' var(--text-general),
+    'grey' var(--text-less-prominent),
+    'disabled' var(--text-disabled),
+    'green' var(--text-profit-success),
+    'red' var(--text-loss-danger)
+);
+
+$FONT_WEIGHTS: ('bold' 700, 'semibold' 500, 'normal' 400, 'light' 300);
+
+$TEXT_ALIGN: ('center' center, 'left' left, 'right' right);
+
+$LINEHEIGHTS: (
+    'large': 1.75,
+    'medium': 1.5,
+    'small': 1.25,
+    'xsmall': 1.4,
+);
+
+@function generate-typefaces() {
+    $typeface_list: ();
+
+    @each $fontsize_name, $size in $FONT_SIZES {
+        @each $textalign_name, $text_align in $TEXT_ALIGN {
+            @each $color_name, $color in $FONT_COLORS {
+                @each $fontweight_name, $weight in $FONT_WEIGHTS {
+                    $key: --#{$fontsize_name}-#{$textalign_name}-#{$fontweight_name}-#{$color_name};
+                    $val: ($size, $text_align, $weight, $color);
+                    $typeface: (
+                        $key: $val,
+                    );
+                    $typeface_list: map-merge($typeface_list, $typeface);
+                }
+            }
+        }
+    }
+
+    // @debug $typeface_list; /* uncomment to debug */
+    @return $typeface_list;
+}
+
+/*
+    List of all typefaces variables in the format: --$FONT_SIZES-$TEXT_ALIGN-$FONT_WEIGHTS-COLORS.
+    See $FONT_SIZES, $TEXT_ALIGN, $FONT_WEIGHTS, $COLORS maps above for references.
+    Variables name example: --title-center-semibold-red
+ */
+$TYPEFACES_LIST: generate-typefaces();
+
+:host,
+:root {
+    --color-green-btn: #2e8836;
+    --color-green-btn-active: #14602b;
+    --color-light-grey: #dedede;
+    --color-light-grey-2: #dddddd;
+    --color-blue: #2a3052;
+    --color-orange: #e98024;
+    --color-red: #c03;
+    --color-yellow: #fef1cf;
+    --disabled-color: #f2f2f2;
+    --static-circle-diameter: 0.5rem;
+    --dynamic-circle-diameter: 2rem;
+    --color-driv-red: #ff444f;
+
+    --font-size-l: 18px;
+    --font-size-n: 16px;
+    --font-size-s: 14px;
+    --font-size-xs: 12px;
+    --font-size-xxs: 10px;
+    --font-stack: 'IBM Plex Sans', sans-serif;
+    --brand-secondary: #{$color-green};
+    --general-main-1: #{$color-white};
+    --general-main-2: #{$color-white};
+    --general-section-1: #{$color-grey-2};
+    --general-section-2: #{$color-grey-2};
+    --general-hover: #{$color-grey-4};
+    --general-active: #{$color-grey-5};
+    --text-prominent: #{$color-black-1};
+    --text-general: #{$color-black-1};
+    --text-less-prominent: #{$color-grey-1};
+    --text-disabled: #{$color-grey-6};
+    --text-profit-success: #{$color-green-1};
+    --text-loss-danger: #{$color-red-1};
+    --text-colored-background: #{$color-white};
+    // Buttons
+    --button-primary-default: var(--color-driv-red);
+    --button-secondary-default: #{$color-grey-1};
+    --button-tertiary-default: transparent;
+    --button-primary-hover: #{$color-red-5};
+    --button-secondary-hover: #{$alpha-color-black-3};
+    --button-tertiary-hover: #{$alpha-color-red-1};
+    // Overlay
+    --overlay-outside-dialog: #{$alpha-color-black-1};
+    // Shadow
+    --shadow-menu: #{$alpha-color-black-4};
+    // States
+    --state-hover: #{$color-grey-4};
+    --state-active: #{$color-grey-5};
+    // Border
+    --border-normal: #{$color-grey-5};
+    --border-hover: #{$color-grey-1};
+    --border-active: var(--brand-secondary);
+    --border-disabled: #{$color-grey-3};
+    // Status
+    --status-default: #{$color-grey-3};
+    --status-danger: #{$color-red-1};
+}

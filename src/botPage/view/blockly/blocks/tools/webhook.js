@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { translate } from '../../../../../common/i18n';
+import { translate } from '@i18n';
 import { expectValue } from '../shared';
 
 Blockly.Blocks.webhook = {

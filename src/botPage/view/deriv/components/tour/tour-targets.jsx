@@ -1,8 +1,5 @@
 import React from 'react';
-import renderHTML from 'react-render-html';
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { isMobile } from '../../../../../common/utils/tools';
 
 const FirstStepTarget = () => (
     <div
@@ -54,11 +51,14 @@ function createReactNode(id, style, current_node, parent_node) {
     new_account_position.id = id;
     new_account_position.style = style;
     const current_account_position =
-        document.getElementById(current_node) ?? document.getElementsByClassName(current_node)[0];
-    const parentDiv = document.getElementById(parent_node) ?? document.getElementsByClassName(parent_node)[0];
+        document.getElementById(current_node) || document.getElementsByClassName(current_node)[0];
+    const parentDiv = document.getElementById(parent_node) || document.getElementsByClassName(parent_node)[0];
 
-    parentDiv?.insertBefore?.(new_account_position, current_account_position);
-    return renderHTML(new_account_position.outerHTML);
+    if (typeof parentDiv?.insertBefore === 'function') {
+        parentDiv.insertBefore(new_account_position, current_account_position);
+    }
+
+    return <div dangerouslySetInnerHTML={{ __html: new_account_position.outerHTML }} />;
 }
 
 const TourTargets = () => {

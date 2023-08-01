@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import Joyride, { STATUS, ACTIONS, EVENTS } from 'react-joyride';
 import { useLocation } from 'react-router-dom';
-import { set as setStorage, get as getStorage } from '../../../../../common/utils/storageManager';
-import { translate } from '../../../../../common/i18n';
+import { set as setStorage, get as getStorage } from '@storage';
+import { isMobile } from '@utils';
+import { translate } from '@i18n';
 import welcome from './welcome';
-import { isMobile } from '../../../../../common/utils/tools';
 
 const getTourState = () => !getStorage('closedTourPopup');
 const Tour = () => {
@@ -68,14 +68,14 @@ const Tour = () => {
                     },
 
                     buttonNext: {
-                        backgroundColor: '#2e8836',
+                        backgroundColor: 'var(--color-green-btn)',
                         borderRadius: '4px',
                         color: '#fff',
                         padding: '10px 25px',
                         border: 'none',
                     },
                     buttonBack: {
-                        backgroundColor: '#f2f2f2',
+                        backgroundColor: 'var(--disabled-color)',
                         color: '#000',
                         padding: '10px 25px',
                         marginRight: '8px',
@@ -87,7 +87,7 @@ const Tour = () => {
                         color: '#555',
                         textAlign: 'left',
                         paddingBottom: '5px',
-                        borderBottom: '1px solid #e98024',
+                        borderBottom: '1px solid var(--color-orange)',
                     },
                     tooltipContent: {
                         textAlign: 'left',

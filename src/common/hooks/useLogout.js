@@ -1,8 +1,8 @@
 import { useDispatch } from 'react-redux';
+import { AppConstants } from '@constants';
+import { set, syncWithDerivApp, updateTokenList } from '@storage';
 import { resetClient } from '../../botPage/view/deriv/store/client-slice';
-import { updateTokenList } from '../../botPage/view/deriv/utils';
-import { AppConstants, logoutAllTokens } from '../appId';
-import { set, syncWithDerivApp } from '../utils/storageManager';
+import { logoutAllTokens } from '../appId';
 
 const useLogout = () => {
     const dispatch = useDispatch();

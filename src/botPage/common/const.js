@@ -1,11 +1,28 @@
-import { translate } from '../../common/i18n';
+import { load as loadLang } from '@lang';
+import { translate } from '@i18n';
 import api from '../view/deriv/api';
-import { load as loadLang } from '../../common/lang';
 
 loadLang();
 
-export const CRYPTO_CURRENCIES = ['BTC', 'BUSD', 'DAI', 'EURS', 'IDK', 'PAX', 'TUSD', 'USDC',
-    'USDK', 'eUSDT', 'tUSDT','BCH', 'ETH', 'ETC', 'LTC', 'UST', 'USDT'];
+export const CRYPTO_CURRENCIES = [
+    'BTC',
+    'BUSD',
+    'DAI',
+    'EURS',
+    'IDK',
+    'PAX',
+    'TUSD',
+    'USDC',
+    'USDK',
+    'eUSDT',
+    'tUSDT',
+    'BCH',
+    'ETH',
+    'ETC',
+    'LTC',
+    'UST',
+    'USDT',
+];
 
 const config = {
     lists: {

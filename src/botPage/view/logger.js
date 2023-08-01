@@ -1,6 +1,6 @@
 import { TrackJS } from 'trackjs';
+import { isMobile } from '@utils';
 import { observer as globalObserver } from '../../common/utils/observer';
-import { isMobile } from '../../common/utils/tools';
 import { isIOS } from './osDetect';
 import { trackJSTrack } from '../../common/integrations/trackJSTrack';
 

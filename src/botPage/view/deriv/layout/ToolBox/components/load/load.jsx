@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { translate } from '@i18n';
 import LoadingButton from '../loading_button';
-import SAVE_LOAD_TYPE from '../../common/';
+import SAVE_LOAD_TYPE from '../../common';
 import * as style from '../../../../../style';
-import { translate } from '../../../../../../../common/i18n';
-import google_drive_util from '../../../../../../../common/integrations/GoogleDrive';
+import google_drive_util, { removeGdBackground } from '../../../../../../../common/integrations/GoogleDrive';
 import useIsMounted from '../../../../../../../common/hooks/isMounted';
 
 const Load = ({ closeDialog, is_gd_logged_in }) => {
@@ -27,7 +27,7 @@ const Load = ({ closeDialog, is_gd_logged_in }) => {
         if (load_type === SAVE_LOAD_TYPE.google_drive) {
             setLoading(true);
             google_drive_util.client.callback = response => {
-                google_drive_util.removeGdBackground();
+                removeGdBackground();
                 google_drive_util.access_token = response.access_token;
                 localStorage.setItem('access_token', response.access_token);
                 createFilePicker();

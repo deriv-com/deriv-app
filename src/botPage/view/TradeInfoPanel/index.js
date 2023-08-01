@@ -1,13 +1,14 @@
 import React from 'react';
+import { translate } from '@i18n';
 import AnimateTrade from './AnimateTrade';
 import { observer as globalObserver } from '../../../common/utils/observer';
-import { translate } from '../../../common/i18n';
 import Summary from './Summary';
 import TradeTable from './TradeTable';
 import RunButton from './RunButton';
 import ClearButton from './ClearButton';
 import useIsMounted from '../../../common/hooks/isMounted';
 import api from '../deriv/api';
+import './summary-panel.scss';
 
 const TradeInfoPanel = () => {
     const [account_id, setAccountId] = React.useState('');
@@ -26,10 +27,11 @@ const TradeInfoPanel = () => {
                 }
             }
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
-        <span id='summaryPanel' className='draggable-dialog' title={translate('Summary')}>
+        <span id='summary-panel' className='draggable-dialog' title={translate('Summary')}>
             <div>
                 <div className='content'>
                     <div className='content-row'>

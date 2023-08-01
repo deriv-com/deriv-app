@@ -1,11 +1,11 @@
+import { getLanguage } from '@storage';
+import { translate, translateLangToLang } from '@i18n';
 import GTM from '../../../common/gtm';
-import { translate, translateLangToLang } from '../../../common/i18n';
-import { getLanguage } from '../../../common/lang';
 import { save } from './utils';
 
 /* eslint-disable */
-Blockly.WorkspaceAudio.prototype.preload = function() {};
-Blockly.FieldDropdown.prototype.render_ = function() {
+Blockly.WorkspaceAudio.prototype.preload = function () {};
+Blockly.FieldDropdown.prototype.render_ = function () {
     if (!this.visible_) {
         this.size_.width = 0;
         return;
@@ -27,7 +27,7 @@ Blockly.FieldDropdown.prototype.render_ = function() {
     this.borderRect_.setAttribute('width', this.size_.width + Blockly.BlockSvg.SEP_SPACE_X);
 };
 
-Blockly.FieldDropdown.prototype.renderSelectedText_ = function() {
+Blockly.FieldDropdown.prototype.renderSelectedText_ = function () {
     // Text option is selected.
     // Replace the text.
     const textNode = document.createTextNode(this.getDisplayText_());
@@ -46,7 +46,7 @@ Blockly.FieldDropdown.prototype.renderSelectedText_ = function() {
 };
 
 Blockly.BlockSvg.SEP_SPACE_X = 20;
-Blockly.Field.prototype.init = function() {
+Blockly.Field.prototype.init = function () {
     if (this.fieldGroup_) {
         // Field has already been initialized once.
         return;
@@ -79,7 +79,7 @@ Blockly.Field.prototype.init = function() {
     // Force a render.
     this.render_();
 };
-Blockly.FieldLabel.prototype.init = function() {
+Blockly.FieldLabel.prototype.init = function () {
     if (this.textElement_) {
         // Text has already been initialized once.
         return;
@@ -104,7 +104,7 @@ Blockly.FieldLabel.prototype.init = function() {
     // Force a render.
     this.render_();
 };
-Blockly.BlockSvg.prototype.renderCompute_ = function(iconWidth) {
+Blockly.BlockSvg.prototype.renderCompute_ = function (iconWidth) {
     const inputList = this.inputList;
     const inputRows = [];
     inputRows.rightEdge = iconWidth + Blockly.BlockSvg.SEP_SPACE_X * 2;
@@ -245,7 +245,7 @@ Blockly.BlockSvg.prototype.renderCompute_ = function(iconWidth) {
     inputRows.hasDummy = hasDummy;
     return inputRows;
 };
-Blockly.FieldLabel.prototype.init = function() {
+Blockly.FieldLabel.prototype.init = function () {
     if (this.textElement_) {
         // Text has already been initialized once.
         return;
@@ -271,7 +271,7 @@ Blockly.FieldLabel.prototype.init = function() {
     this.render_();
 };
 // Override inline editor blockly
-Blockly.FieldTextInput.prototype.showInlineEditor_ = function(quietInput) {
+Blockly.FieldTextInput.prototype.showInlineEditor_ = function (quietInput) {
     Blockly.WidgetDiv.show(this, this.sourceBlock_.RTL, this.widgetDispose_());
     const div = Blockly.WidgetDiv.DIV;
     // Create the input.
@@ -333,7 +333,7 @@ Blockly.ContextMenu.show = (e, menuOptions, rtl) => {
     }
     originalContextMenuFn(e, menuOptions, rtl);
 };
-Blockly.Input.prototype.attachShadowBlock = function(value, name, shadowBlockType) {
+Blockly.Input.prototype.attachShadowBlock = function (value, name, shadowBlockType) {
     const shadowBlock = this.sourceBlock_.workspace.newBlock(shadowBlockType);
     shadowBlock.setShadow(true);
     shadowBlock.setFieldValue(value, name); // Refactor when using shadow block for strings in future
@@ -347,7 +347,7 @@ Blockly.Input.prototype.attachShadowBlock = function(value, name, shadowBlockTyp
  * @param {!goog.events.BrowserEvent} _e The browser event.
  * @override
  */
-Blockly.Toolbox.TreeNode.prototype.onClick_ = function(_e) {
+Blockly.Toolbox.TreeNode.prototype.onClick_ = function (_e) {
     // eslint-disable-next-line no-underscore-dangle
     const blocklyCategoryName = translateLangToLang(_e.target.innerText, getLanguage(), 'en');
     GTM.pushDataLayer({ event: 'Click Block Category', blocklyCategoryName });
@@ -368,11 +368,11 @@ Blockly.Toolbox.TreeNode.prototype.onClick_ = function(_e) {
  * Preload all the audio files so that they play quickly when asked for.
  * @package
  */
-Blockly.WorkspaceAudio.prototype.preload = function() {
+Blockly.WorkspaceAudio.prototype.preload = function () {
     for (const name in this.SOUNDS_) {
         const sound = this.SOUNDS_[name];
         sound.volume = 0.01;
-        sound.play().catch(function() {});
+        sound.play().catch(function () {});
         sound.pause();
         // iOS can only process one sound at a time.  Trying to load more than one
         // corrupts the earlier ones.  Just load one and leave the others uncached.
@@ -398,13 +398,13 @@ const addDownloadOption = (callback, options, block) => {
 
 const originalCustomContextVarFn =
     Blockly.Constants.Variables.CUSTOM_CONTEXT_MENU_VARIABLE_GETTER_SETTER_MIXIN.customContextMenu;
-Blockly.Constants.Variables.CUSTOM_CONTEXT_MENU_VARIABLE_GETTER_SETTER_MIXIN.customContextMenu = function(options) {
+Blockly.Constants.Variables.CUSTOM_CONTEXT_MENU_VARIABLE_GETTER_SETTER_MIXIN.customContextMenu = function (options) {
     addDownloadOption(originalCustomContextVarFn.bind(this), options, this);
 };
 
 const originalCustomContextLoopFn =
     Blockly.Constants.Loops.CUSTOM_CONTEXT_MENU_CREATE_VARIABLES_GET_MIXIN.customContextMenu;
-Blockly.Constants.Loops.CUSTOM_CONTEXT_MENU_CREATE_VARIABLES_GET_MIXIN.customContextMenu = function(options) {
+Blockly.Constants.Loops.CUSTOM_CONTEXT_MENU_CREATE_VARIABLES_GET_MIXIN.customContextMenu = function (options) {
     addDownloadOption(originalCustomContextLoopFn.bind(this), options, this);
 };
 
@@ -412,7 +412,7 @@ Blockly.Constants.Loops.CUSTOM_CONTEXT_MENU_CREATE_VARIABLES_GET_MIXIN.customCon
  * Return the parent block or null if this block is at the top level.
  * @return {Blockly.Block} The block that holds the current block.
  */
-Blockly.Block.prototype.getRootInputTargetBlock = function() {
+Blockly.Block.prototype.getRootInputTargetBlock = function () {
     let inputName;
     let currentBlock = this.getParent();
 

@@ -18,15 +18,15 @@ export default class NetworkMonitor {
     }
     setStatus() {
         if (navigator.onLine) {
-            this.parentElement.html("<span class='connecting'></span>");
+            this.parentElement.html('<span class=\'connecting\'></span>');
             this.api
                 .send({ ping: '1' })
                 .then(() => {
-                    this.parentElement.html("<span class='online'></span>");
+                    this.parentElement.html('<span class=\'online\'></span>');
                 })
                 .catch(e => globalObserver.emit('Error', e));
         } else {
-            this.parentElement.html("<span class='offline'></span>");
+            this.parentElement.html('<span class=\'offline\'></span>');
         }
     }
 }

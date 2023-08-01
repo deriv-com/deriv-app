@@ -1,8 +1,8 @@
 import { Map } from 'immutable';
+import { isLoggedIn } from '@storage';
 import { historyToTicks, getLast } from '../../common/utils/binary';
 import { observer as globalObserver } from '../../common/utils/observer';
 import { doUntilDone, getUUID } from '../bot/tools';
-import { isLoggedIn } from '../view/deriv/utils';
 
 const parseTick = tick => ({
     epoch: +tick.epoch,
@@ -114,9 +114,7 @@ export default class TicksService {
     }
     monitor(options) {
         const { symbol, granularity, callback } = options;
-
         const type = getType(granularity);
-
         const key = getUUID();
 
         this.request(options).catch(e => globalObserver.emit('Error', e));
@@ -145,18 +143,15 @@ export default class TicksService {
     }
     unsubscribeIfEmptyListeners(options) {
         const { symbol, granularity } = options;
-
         let needToUnsubscribe = false;
-
         const tickListener = this.tickListeners.get(symbol);
+        const ohlcListener = this.ohlcListeners.getIn([symbol, Number(granularity)]);
 
         if (tickListener && !tickListener.size) {
             this.tickListeners = this.tickListeners.delete(symbol);
             this.ticks = this.ticks.delete(symbol);
             needToUnsubscribe = true;
         }
-
-        const ohlcListener = this.ohlcListeners.getIn([symbol, Number(granularity)]);
 
         if (ohlcListener && !ohlcListener.size) {
             this.ohlcListeners = this.ohlcListeners.deleteIn([symbol, Number(granularity)]);
@@ -171,23 +166,25 @@ export default class TicksService {
     unsubscribeAllAndSubscribeListeners(symbol) {
         const ohlcSubscriptions = this.subscriptions.getIn(['ohlc', symbol]);
         const tickSubscription = this.subscriptions.getIn(['tick', symbol]);
+        const subscription = [];
+        const ohlc = ohlcSubscriptions ? Array.from(ohlcSubscriptions.values()) : [];
 
-        const subscription = [
-            ...(ohlcSubscriptions ? Array.from(ohlcSubscriptions.values()) : []),
-            ...(tickSubscription || []),
-        ];
+        if (ohlc?.length) {
+            subscription.push(...ohlc);
+        }
 
+        if (tickSubscription) {
+            subscription.push(tickSubscription);
+        }
         Promise.all(subscription.map(id => doUntilDone(() => this.api.forget(id))));
-
         this.subscriptions = new Map();
     }
     updateTicksAndCallListeners(symbol, ticks) {
         if (this.ticks.get(symbol) === ticks) {
             return;
         }
-        this.ticks = this.ticks.set(symbol, ticks);
-
         const listeners = this.tickListeners.get(symbol);
+        this.ticks = this.ticks.set(symbol, ticks);
 
         if (listeners) {
             listeners.forEach(callback => callback(this.ticks.get(symbol)));
@@ -197,9 +194,8 @@ export default class TicksService {
         if (this.ticks.getIn(address) === candles) {
             return;
         }
-        this.candles = this.candles.setIn(address, candles);
-
         const listeners = this.ohlcListeners.getIn(address);
+        this.candles = this.candles.setIn(address, candles);
 
         if (listeners) {
             listeners.forEach(callback => callback(this.candles.getIn(address)));

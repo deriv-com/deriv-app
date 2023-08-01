@@ -1,13 +1,54 @@
-/* global google,gapi */
+import { getLanguage } from '@storage';
+import { translate } from '@i18n';
 import GD_CONFIG from '../../botPage/common/google_drive_config';
 import { load } from '../../botPage/view/blockly';
 import store from '../../botPage/view/deriv/store';
 import { setGdLoggedIn } from '../../botPage/view/deriv/store/client-slice';
 import { setGdReady } from '../../botPage/view/deriv/store/ui-slice';
 import { TrackJSError } from '../../botPage/view/logger';
-import { getLanguage } from '../lang';
 import { observer as globalObserver } from '../utils/observer';
-import { errLogger, loadExternalScript, translate } from '../utils/tools';
+import { trackJSTrack } from './trackJSTrack';
+
+export const loadExternalScript = (src, async = true, defer = true) =>
+    new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.async = async;
+        script.defer = defer;
+        script.crossorigin = 'anonymous';
+        script.onerror = reject;
+
+        function handleLoad() {
+            const load_state = this.readyState;
+            if (load_state && !/loaded|complete/.test(load_state)) return;
+
+            script.onload = null;
+            script.onreadystatechange = null;
+            resolve();
+        }
+
+        script.onload = handleLoad;
+        script.onreadystatechange = handleLoad;
+
+        document.head.appendChild(script);
+    });
+
+const errLogger = (err, msg) => {
+    const err_str = JSON.stringify(err);
+    const err_msg = `${msg} - Error: ${err_str}`;
+    // eslint-disable-next-line no-console
+    console.warn(err_msg);
+    trackJSTrack(new TrackJSError(translate(err_msg), err_str));
+};
+
+export const removeGdBackground = () => {
+    const picker_background = document.getElementsByClassName('picker-dialog-bg');
+    if (picker_background.length) {
+        for (let i = 0; i < picker_background.length; i++) {
+            picker_background[i].style.display = 'none';
+        }
+    }
+};
 
 const getPickerLanguage = () => {
     const language = getLanguage();
@@ -98,15 +139,6 @@ class GoogleDriveUtil {
         }
     };
 
-    removeGdBackground = () => {
-        const picker_background = document.getElementsByClassName('picker-dialog-bg');
-        if (picker_background.length) {
-            for (let i = 0; i < picker_background.length; i++) {
-                picker_background[i].style.display = 'none';
-            }
-        }
-    };
-
     updateLoginStatus(is_logged_in) {
         store.dispatch(setGdLoggedIn(is_logged_in));
         this.is_authorized = is_logged_in;
@@ -150,9 +182,7 @@ class GoogleDriveUtil {
         afterAuthCallback()
             .then(() => {
                 const view = new google.picker.DocsView();
-                view.setIncludeFolders(true)
-                    .setSelectFolderEnabled(true)
-                    .setMimeTypes(mime_type);
+                view.setIncludeFolders(true).setSelectFolderEnabled(true).setMimeTypes(mime_type);
 
                 const picker = new google.picker.PickerBuilder();
                 picker

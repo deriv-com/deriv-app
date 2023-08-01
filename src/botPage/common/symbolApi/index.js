@@ -1,7 +1,8 @@
+import { getTokenList, removeAllTokens } from '@storage';
 import ActiveSymbols from './activeSymbols';
-import config from '../../common/const';
+import config from '../const';
 import { getObjectValue } from '../../../common/utils/tools';
-import { getTokenList, removeAllTokens } from '../../../common/utils/storageManager';
+
 import { observer as globalObserver } from '../../../common/utils/observer';
 
 let parsed_asset_index;

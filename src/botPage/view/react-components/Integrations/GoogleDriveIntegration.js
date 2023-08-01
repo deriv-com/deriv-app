@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { translate } from '../../../../common/i18n';
+import { translate } from '@i18n';
 import google_drive_util from '../../../../common/integrations/GoogleDrive';
 
 const GoogleDriveIntegration = () => {

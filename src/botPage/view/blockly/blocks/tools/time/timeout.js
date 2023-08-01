@@ -1,13 +1,11 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#wupwb4
-import { translate } from '../../../../../../common/i18n';
+import { translate } from '@i18n';
 import { mainScope } from '../../../relationChecker';
 
 Blockly.Blocks.timeout = {
     init: function init() {
         this.appendStatementInput('TIMEOUTSTACK').setCheck(null);
-        this.appendValueInput('SECONDS')
-            .setCheck(null)
-            .appendField(translate('Run After'));
+        this.appendValueInput('SECONDS').setCheck(null).appendField(translate('Run After'));
         this.appendDummyInput().appendField(translate('Second(s)'));
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);

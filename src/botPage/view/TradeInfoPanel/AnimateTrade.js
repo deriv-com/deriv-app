@@ -1,11 +1,11 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
+import { translate } from '@i18n';
 import { observer as globalObserver } from '../../../common/utils/observer';
-import { translate } from '../../../common/i18n';
 import { roundBalance } from '../../common/tools';
 import useIsMounted from '../../../common/hooks/isMounted';
-import { setIsBotRunning } from '../../view/deriv/store/ui-slice';
+import { setIsBotRunning } from '../deriv/store/ui-slice';
 import Stage from './components/Stage';
 
 const INDICATOR_MESSAGES = {
@@ -58,6 +58,7 @@ const AnimateTrade = () => {
             $('#stopButton').off('click');
             $('#runButton').off('click');
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const resetSummary = () => {

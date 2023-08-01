@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { observer as globalObserver } from '../../../common/utils/observer';
 
 const ServerTime = ({ api }) => {
@@ -43,11 +44,17 @@ const ServerTime = ({ api }) => {
             clearInterval(updateTimeInterval);
             clearInterval(serverTimeInterval);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [hasApiResponse]);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => updateTime(), [date]);
 
     return <b>{dateString}</b>;
+};
+
+ServerTime.propTypes = {
+    api: PropTypes.shape,
 };
 
 export default ServerTime;

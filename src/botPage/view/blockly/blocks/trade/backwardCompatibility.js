@@ -1,4 +1,4 @@
-import { translate } from '../../../../../common/i18n';
+import { translate } from '@i18n';
 import config from '../../../../common/const';
 import { symbolApi } from '../../../shared';
 import { setInputList, marketDefPlaceHolders, marketToTradeOption } from './tools';

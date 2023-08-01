@@ -1,0 +1,92 @@
+.react-tiny-popover-container {
+    z-index: 10000;
+    @include mobile {
+        display: none;
+    }
+}
+
+.notifyjs {
+    &-corner {
+        @include mobile {
+            max-width: 90vw;
+            min-height: 30px;
+            font-size: 12px;
+        }
+    }
+
+    &-bootstrap {
+        &-info {
+            @include mobile {
+                white-space: break-spaces !important;
+            }
+        }
+
+        &-base {
+            @include mobile {
+                background-position: left !important;
+            }
+
+            span {
+                @include mobile {
+                    min-height: 30px;
+                    max-width: 40vw;
+                    word-break: break-word;
+                }
+            }
+        }
+    }
+}
+
+.notifyjs-bootstrap-base,
+.notifyjs-bootstrap-success,
+.notifyjs-bootstrap-warn,
+.notifyjs-bootstrap-error {
+    white-space: unset !important;
+    max-width: 40vw;
+    min-height: 30px;
+    padding: 8px 30px !important;
+    word-break: break-word !important;
+
+    @include mobile {
+        max-width: 80vw !important;
+    }
+}
+
+// Make summary panel to cover full viewport
+.ui-dialog[aria-describedby='summary-panel'] {
+    @include mobile {
+        width: 100vw !important;
+        height: auto !important;
+        top: 0;
+        left: 0;
+    }
+}
+
+.ui-dialog {
+    @include mobile {
+        width: 90vw !important;
+    }
+    &-content {
+        padding: 0px !important;
+
+        &.ui-widget-content {
+            input[type='text'] {
+                height: 40px;
+                width: 100%;
+            }
+
+            .description {
+                font-size: 75%;
+                margin: 0.5em 0;
+            }
+
+            .input-row {
+                margin: 1em 0;
+
+                &.last {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}

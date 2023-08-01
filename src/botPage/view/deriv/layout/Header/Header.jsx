@@ -1,16 +1,19 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
-import { isMobile, isDesktop, parseQueryString } from '../../../../../common/utils/tools';
-import PlatformDropdown from './components/platform-dropdown.jsx';
-import { isLoggedIn, getActiveToken, updateTokenList } from '../../utils';
+import config from '@config';
+import { parseQueryString, queryToObjectArray, isMobile, isDesktop } from '@utils';
 import {
     getTokenList,
     removeAllTokens,
     syncWithDerivApp,
     set as setStorage,
     get as getStorage,
-} from '../../../../../common/utils/storageManager';
+    updateTokenList,
+    getActiveToken,
+    isLoggedIn,
+} from '@storage';
+import PlatformDropdown from './components/platform-dropdown.jsx';
 import {
     updateIsLogged,
     resetClient,
@@ -21,11 +24,10 @@ import {
 } from '../../store/client-slice';
 import { setAccountSwitcherLoader, updateShowMessagePage } from '../../store/ui-slice';
 import { DrawerMenu, AuthButtons, AccountActions, MenuLinks, AccountSwitcherLoader } from './components';
-import { queryToObjectArray } from '../../../../../common/appId';
 import api from '../../api';
-import config from '../../../../../app.config';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
 import { checkSwitcherType, isEuByAccount } from '../../../../../common/footer-checks';
+import './header.scss';
 
 // [Todo] We will update this during the API improvement process
 let is_subscribed = false;
@@ -64,7 +66,7 @@ const Header = () => {
     const { is_bot_running } = useSelector(state => state.ui);
     const is_logged_in = isLoggedIn();
     const dispatch = useDispatch();
-    const hideDropdown = e => !platformDropdownRef.current.contains(e.target) && setIsPlatformSwitcherOpen(false);
+    const hideDropdown = e => !platformDropdownRef?.current?.contains(e.target) && setIsPlatformSwitcherOpen(false);
 
     React.useEffect(() => {
         const mountSwitcher = async () => {
@@ -200,7 +202,7 @@ const Header = () => {
                                 className={classNames('header__icon header__expand', {
                                     open: isPlatformSwitcherOpen,
                                 })}
-                                src='image/deriv/ic-chevron-down-bold.svg'
+                                src='/public/images/ic-chevron-down-bold.svg'
                             />
                         </div>
                         {is_logged && <MenuLinks />}
@@ -209,7 +211,7 @@ const Header = () => {
                 {isMobile() && (
                     <img
                         className='btn__close header__hamburger'
-                        src='image/deriv/ic-hamburger.svg'
+                        src='/public/images/ic-hamburger.svg'
                         onClick={() => {
                             updateShowDrawerMenu(true);
                         }}

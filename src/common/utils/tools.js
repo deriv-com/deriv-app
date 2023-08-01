@@ -1,44 +1,14 @@
-import RenderHTML from 'react-render-html';
-import { TrackJSError } from '../../botPage/view/logger';
-import AppIdMap from '../../common/appIdResolver';
-import { translate as i18nTranslate } from '../../common/i18n';
-import { trackJSTrack } from '../../common/integrations/trackJSTrack';
-import { getLanguage } from '../../common/lang';
-import { setCookieLanguage } from './cookieManager';
-import { set as setStorage } from './storageManager';
-
-export const MAX_MOBILE_WIDTH = 813;
-
-export const parseQueryString = () => {
-    if (typeof window === 'undefined') {
-        return {};
-    }
-    const str = window.location.search;
-    const objURL = {};
-    str.replace(new RegExp('([^?=&]+)(=([^&]*))?', 'g'), (a0, a1, a2, a3) => {
-        objURL[a1] = a3;
-    });
-    return objURL;
-};
+import { getLanguage } from '@storage';
+import { isProduction, getExtension } from '@utils';
+import { translate as i18nTranslate } from '@i18n';
 
 export const getQueryParams = (qs = '') => {
     if (!qs) return {};
     const data = {};
-    qs.replace(new RegExp('([^?=&]+)(=([^&]*))?', 'g'), (a0, a1, a2, a3) => {
+    qs.replace(/([^?=&]+)(=([^&]*))?/g, (a0, a1, a2, a3) => {
         data[a1] = a3;
     });
     return data;
-};
-
-export const setLanguage = lang => {
-    setStorage('lang', lang);
-    setCookieLanguage(lang);
-    return lang;
-};
-
-export const redirectToSupportedLang = lang => {
-    const new_search = document.location.search.replace(/(lang|l)+=[a-z]{2}/, `l=${lang}`);
-    window.history.pushState(null, '/', new_search);
 };
 
 export const getObjectValue = obj => obj[Object.keys(obj)[0]];
@@ -74,8 +44,6 @@ export const durationToSecond = duration => {
     }
     return 0;
 };
-
-export const isProduction = () => document.location.hostname.replace(/^www./, '') in AppIdMap.production;
 
 export const createUrl = options => {
     const getOption = property => Object.prototype.hasOwnProperty.call(options, property) && options[property];
@@ -114,13 +82,7 @@ export const translate = (input, params = []) => {
         }
     });
 
-    return RenderHTML(translatedString);
-};
-
-export const getExtension = () => {
-    const host = document.location.hostname;
-    const extension = host.split('.').slice(-1)[0];
-    return host !== extension ? extension : '';
+    return translatedString;
 };
 
 export const showSpinnerInButton = $buttonElement => {
@@ -138,40 +100,4 @@ export const showSpinnerInButton = $buttonElement => {
 
 export const removeSpinnerInButton = ($buttonElement, initialText) => {
     $buttonElement.html(() => initialText).prop('disabled', false);
-};
-
-export const isMobile = () => window.innerWidth <= MAX_MOBILE_WIDTH;
-
-export const isDesktop = () => window.innerWidth > MAX_MOBILE_WIDTH;
-
-export const loadExternalScript = (src, async = true, defer = true) =>
-    new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = src;
-        script.async = async;
-        script.defer = defer;
-        script.crossorigin = 'anonymous';
-        script.onerror = reject;
-
-        function handleLoad() {
-            const load_state = this.readyState;
-            if (load_state && !/loaded|complete/.test(load_state)) return;
-
-            script.onload = null;
-            script.onreadystatechange = null;
-            resolve();
-        }
-
-        script.onload = handleLoad;
-        script.onreadystatechange = handleLoad;
-
-        document.head.appendChild(script);
-    });
-
-export const errLogger = (err, msg) => {
-    const err_str = JSON.stringify(err);
-    const err_msg = `${msg} - Error: ${err_str}`;
-    // eslint-disable-next-line no-console
-    console.warn(err_msg);
-    trackJSTrack(new TrackJSError(translate(err_msg), err_str));
 };

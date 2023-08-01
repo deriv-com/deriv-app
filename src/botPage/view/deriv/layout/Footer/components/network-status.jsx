@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
+import { translate } from '@i18n';
 import Popover from '../../../components/popover';
-import { translate } from '../../../../../../common/utils/tools';
 import api from '../../../api';
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
 
@@ -65,7 +65,7 @@ const NetworkStatus = () => {
 
     return (
         <div id='network-status' className='network-status__wrapper'>
-            <Popover content={<>{translate('Network status: {$0}', [status])}</>}>
+            <Popover content={translate('Network status: {$0}', [status])}>
                 <div
                     className={classNames('network-status__circle', {
                         'network-status__circle--offline': status === 'offline',

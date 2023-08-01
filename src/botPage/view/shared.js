@@ -1,8 +1,8 @@
 import filesaver from 'file-saver';
-import { AppConstants } from '../../common/appId';
+import { AppConstants } from '@constants';
+import { get as getStorage } from '@storage';
 import _Symbol from '../common/symbolApi';
 import TicksService from '../common/TicksService';
-import { get as getStorage } from '../../common/utils/storageManager';
 import api from './deriv/api';
 
 export const symbolApi = new _Symbol(api);
@@ -19,19 +19,19 @@ export const appendRow = (trade, state, isDesc = false) => ({
     id: state.id + 1,
     rows: isDesc
         ? [
-              {
-                  ...trade,
-                  id: state.id + 1,
-              },
-              ...state.rows,
-          ]
+            {
+                ...trade,
+                id: state.id + 1,
+            },
+            ...state.rows,
+        ]
         : [
-              ...state.rows,
-              {
-                  ...trade,
-                  id: state.id + 1,
-              },
-          ],
+            ...state.rows,
+            {
+                ...trade,
+                id: state.id + 1,
+            },
+        ],
 });
 
 export const updateRow = (prevRowIndex, trade, state) => ({

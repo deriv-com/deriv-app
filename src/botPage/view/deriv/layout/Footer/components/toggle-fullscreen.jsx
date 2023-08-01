@@ -41,9 +41,9 @@ const ToggleFullScreen = () => {
     return (
         <a className={`${full_screen_icon_class} footer__link`} onClick={toggleFullScreen} id='dt_fullscreen_toggle'>
             {is_full_screen ? (
-                <img src='image/deriv/ic-fullscreen-restore.svg' />
+                <img src='/public/images/ic-fullscreen-restore.svg' />
             ) : (
-                <img src='image/deriv/ic-fullscreen.svg' />
+                <img src='/public/images/ic-fullscreen.svg' />
             )}
         </a>
     );

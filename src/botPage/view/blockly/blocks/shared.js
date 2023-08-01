@@ -1,19 +1,17 @@
 import { TrackJS } from 'trackjs';
-import { oppositesToDropdown } from '../utils';
+import { get as getStorage, set as setStorage, getTokenList, removeAllTokens } from '@storage';
+import { isProduction } from '@utils';
+
+import { translate } from '@i18n';
 import { symbolApi } from '../../shared';
 import config from '../../../common/const';
-import { translate } from '../../../../common/i18n';
-import {
-    get as getStorage,
-    set as setStorage,
-    getTokenList,
-    removeAllTokens,
-} from '../../../../common/utils/storageManager';
 import { observer as globalObserver } from '../../../../common/utils/observer';
-import { isProduction } from '../../../../common/utils/tools';
+
 import api from '../../deriv/api';
 
 let purchaseChoices = [[translate('Click to select'), '']];
+
+export const oppositesToDropdown = op => op.map(k => Object.entries(k)[0].reverse());
 
 export const getPurchaseChoices = () => purchaseChoices;
 
@@ -358,7 +356,7 @@ export const getBarriersForContracts = (contracts, selectedContractType, selecte
     const category = getContractCategory(selectedContractType);
     const contractsForContractCategory = filterContractsByCategory(contracts, category, selectedContractType);
 
-    const offsetRegex = new RegExp('^[-|+]([0-9]+.[0-9]+)$');
+    const offsetRegex = /^[-|+]([0-9]+.[0-9]+)$/;
     const isOffset = input => input && offsetRegex.test(input.toString());
 
     if (contractsForContractCategory) {

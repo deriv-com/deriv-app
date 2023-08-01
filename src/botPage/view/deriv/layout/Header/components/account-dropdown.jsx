@@ -2,10 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import config from '../../../../../../app.config';
+import PropTypes from 'prop-types';
+import config from '@config';
+import { translate } from '@i18n';
 import useLogout from '../../../../../../common/hooks/useLogout.js';
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
-import { translate } from '../../../../../../common/utils/tools';
 import Modal from '../../../components/modal';
 import { setShouldReloadWorkspace } from '../../../store/ui-slice.js';
 import AccountSwitchModal from './account-switch-modal.jsx';
@@ -39,15 +40,15 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
     const location = useLocation();
     const logout = useLogout();
 
-    let virtual_accounts = [];
-    let eu_accounts = [];
-    let non_eu_accounts = [];
+    const virtual_accounts = [];
+    const eu_accounts = [];
+    const non_eu_accounts = [];
     Object.keys(accounts).forEach(account => {
         if (account.startsWith('VR')) virtual_accounts.push({ ...accounts[account], account });
         if (account.startsWith('MF')) eu_accounts.push({ ...accounts[account], account });
         if (account.startsWith('CR')) non_eu_accounts.push({ ...accounts[account], account });
     });
-    let real_account = [...non_eu_accounts, ...eu_accounts];
+    const real_account = [...non_eu_accounts, ...eu_accounts];
 
     const is_real = activeTab === 'real';
 
@@ -70,27 +71,24 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
         dispatch(setShouldReloadWorkspace(true));
     };
 
-    const ShouldShowNoAcc = () => {
-        return (
-            <RiskComponent
-                eu_accounts={eu_accounts}
-                non_eu_accounts={non_eu_accounts}
-                is_country_low_risk={is_country_low_risk}
-            />
-        );
-    };
+    const shouldShowNoAcc = () => (
+        <RiskComponent
+            eu_accounts={eu_accounts}
+            non_eu_accounts={non_eu_accounts}
+            is_country_low_risk={is_country_low_risk}
+        />
+    );
 
-    const ShouldShowRealAcc = ({ title = 'Deriv accounts', acc = real_account }) => {
-        return (
-            <TabContent
-                tab='real'
-                isActive={activeTab === 'real'}
-                setIsAccDropdownOpen={setIsAccDropdownOpen}
-                accounts={acc}
-                title={title}
-            />
-        );
-    };
+    const shouldShowRealAcc = ({ title = 'Deriv accounts', acc = real_account }) => (
+        <TabContent
+            tab='real'
+            isActive={activeTab === 'real'}
+            setIsAccDropdownOpen={setIsAccDropdownOpen}
+            accounts={acc}
+            title={title}
+        />
+    );
+
     const is_eu_country = globalObserver.getState('is_eu_country');
     return (
         <div className='account__switcher-dropdown-wrapper show' ref={dropdownRef}>
@@ -111,41 +109,42 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                         </li>
                     </ul>
                     {/* country low risk and does not have both accounts */}
-                    {is_real && is_country_low_risk && !real_account.length ? <ShouldShowNoAcc /> : null}
+                    {is_real && is_country_low_risk && !real_account.length ? shouldShowNoAcc() : null}
                     {/* country is eu and no account */}
-                    {is_real && !is_country_low_risk && is_eu_country && !eu_accounts.length ? (
-                        <ShouldShowNoAcc />
-                    ) : null}
+                    {is_real && !is_country_low_risk && is_eu_country && !eu_accounts.length ? shouldShowNoAcc() : null}
                     {/* country is non eu and no account */}
-                    {is_real && !is_country_low_risk && !is_eu_country && !non_eu_accounts.length ? (
-                        <ShouldShowNoAcc />
-                    ) : null}
+                    {is_real && !is_country_low_risk && !is_eu_country && !non_eu_accounts.length
+                        ? shouldShowNoAcc()
+                        : null}
                     {/* only real eu account */}
                     {is_real && is_country_low_risk && eu_accounts.length && !non_eu_accounts.length ? (
                         <>
-                            <ShouldShowNoAcc />
+                            {shouldShowNoAcc()}
                             <Separator />
-                            <ShouldShowRealAcc title={'Eu Deriv account'} />
+                            {shouldShowRealAcc({ title: 'Eu Deriv account' })}
                         </>
                     ) : null}
-                    {/* only real non eu account*/}
-                    {is_real && is_country_low_risk && non_eu_accounts.length && !eu_accounts.length ? (
-                        <>
-                            <ShouldShowRealAcc title={'Non-Eu Deriv accounts'} />
-                            <Separator />
-                            <ShouldShowNoAcc />
-                        </>
-                    ) : null}
+
+                    {
+                        /* only for non eu accounts */
+                        is_real && is_country_low_risk && non_eu_accounts.length && !eu_accounts.length ? (
+                            <>
+                                {shouldShowRealAcc({ title: 'Non-Eu Deriv accounts' })}
+                                <Separator />
+                                {shouldShowNoAcc()}
+                            </>
+                        ) : null
+                    }
                     {/* country should have both real and non eu accounts */}
                     {is_real && is_country_low_risk && eu_accounts.length && non_eu_accounts.length ? (
                         <>
-                            <ShouldShowRealAcc title={'Non-Eu Deriv accounts'} acc={non_eu_accounts} />
+                            {shouldShowRealAcc({ title: 'Non-Eu Deriv accounts', acc: non_eu_accounts })}
                             <Separator />
-                            <ShouldShowRealAcc title={'Eu Deriv account'} acc={eu_accounts} />
+                            {shouldShowRealAcc({ title: 'Eu Deriv account', acc: eu_accounts })}
                         </>
                     ) : null}
                     {/* should show real accounts */}
-                    {is_real && !is_country_low_risk ? <ShouldShowRealAcc title={'Deriv Accounts'} /> : null}
+                    {is_real && !is_country_low_risk ? shouldShowRealAcc({ title: 'Deriv Accounts' }) : null}
                     <TabContent
                         tab='demo'
                         isActive={activeTab === 'demo'}
@@ -158,13 +157,18 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                     <div className='account__switcher-total-balance'>
                         <span className='account__switcher-total-balance-text'>{translate('Total assets')}</span>
                         <span className='account__switcher-total-balance-amount account__switcher-balance'>
-                            {activeTab === 'demo'
-                                ? getTotalDemo(accounts)
-                                : low_risk_without_account || high_risk_without_account
-                                ? 0
-                                : balance.toLocaleString(undefined, {
-                                      minimumFractionDigits: config.currency_name_map[currency]?.fractional_digits ?? 2,
-                                  })}
+                            {
+                                // eslint-disable-next-line no-nested-ternary
+                                activeTab === 'demo'
+                                    ? getTotalDemo(accounts)
+                                    : low_risk_without_account || high_risk_without_account
+                                        ? 0
+                                        : balance.toLocaleString(undefined, {
+                                            // eslint-disable-next-line max-len
+                                            minimumFractionDigits:
+                                              config.currency_name_map[currency]?.fractional_digits ?? 2,
+                                        })
+                            }
                             <span className='symbols'>&nbsp;{activeTab === 'demo' ? 'USD' : currency}</span>
                         </span>
                     </div>
@@ -177,10 +181,10 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                     {(eu_accounts && eu_accounts.length) ||
                     (non_eu_accounts && non_eu_accounts.length) ||
                     activeTab === 'demo' ? (
-                        <a href={config.tradershub.url} className={'account__switcher-total--link'}>
-                            <span>{translate("Looking for CFD accounts? Go to Trader's hub")}</span>
-                        </a>
-                    ) : null}
+                            <a href={config.tradershub.url} className={'account__switcher-total--link'}>
+                                <span>{translate('Looking for CFD accounts? Go to Trader\'s hub')}</span>
+                            </a>
+                        ) : null}
                     <Separator />
                     <div
                         className={classNames('account__switcher-footer', {
@@ -208,7 +212,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                             <span className='account__switcher-logout-text'>{translate('Log out')}</span>
                             <img
                                 className='account__switcher-logout-icon logout-icon'
-                                src='image/deriv/ic-logout.svg'
+                                src='/public/images/ic-logout.svg'
                             />
                         </div>
                     </div>
@@ -230,5 +234,12 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
         </div>
     );
 });
+
+AccountDropdown.displayName = 'AccountDropdown';
+
+AccountDropdown.propTypes = {
+    setIsAccDropdownOpen: PropTypes.func,
+    virtual: PropTypes.bool,
+};
 
 export default AccountDropdown;

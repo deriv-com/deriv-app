@@ -9,11 +9,11 @@ import {
     ToolbarWidget,
     Views,
 } from '@deriv/deriv-charts';
-import { translate } from '../../../common/i18n';
+import { getLanguage } from '@storage';
+import { translate } from '@i18n';
 import Dialog from './Dialog';
 import ChartTicksService from '../../common/ChartTicksService';
 import { observer as globalObserver } from '../../../common/utils/observer';
-import { getLanguage } from '../../../common/lang';
 import api from '../deriv/api';
 
 setSmartChartsPublicPath('./js/');
@@ -49,6 +49,7 @@ const ChartContent = () => {
             globalObserver.unregister('bot.init', initializeBot);
             globalObserver.unregister('bot.contract', updateContract);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state.symbol]);
 
     const initializeBot = symbol => {

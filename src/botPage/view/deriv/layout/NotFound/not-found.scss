@@ -1,0 +1,18 @@
+.page-not-found {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+
+    &__inner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, 50%);
+        text-align: center;
+
+        p {
+            margin-bottom: 0;
+            margin-top: 0.5rem;
+        }
+    }
+}

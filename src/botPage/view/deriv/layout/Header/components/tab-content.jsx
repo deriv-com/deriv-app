@@ -1,11 +1,11 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { translate } from '../../../../../../common/utils/tools';
-import { getTokenList } from '../../../../../../common/utils/storageManager';
-import { useDispatch } from 'react-redux';
-import { setAccountSwitcherToken } from '../../../store/ui-slice';
+import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
-import config from '../../../../../../app.config';
+import config from '@config';
+import { getTokenList } from '@storage';
+import { translate } from '@i18n';
+import { setAccountSwitcherToken } from '../../../store/ui-slice';
 import { CRYPTO_CURRENCIES } from '../../../../../common/const';
 
 const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, title = 'Deriv Accounts' }) => {
@@ -38,7 +38,7 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
                             </span>
                             <img
                                 className={`header__expand ${isAccordionOpen ? 'open' : ''}`}
-                                src='image/deriv/ic-chevron-down.svg'
+                                src='/public/images/ic-chevron-down.svg'
                             />
                         </div>
                     </h3>
@@ -56,9 +56,11 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
                                 const b_is_fiat = !b_is_crypto;
                                 if (acc.is_virtual || acc1.is_virtual) {
                                     return acc.is_virtual ? 1 : -1;
-                                } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
+                                }
+                                if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
                                     return a_currency < b_currency ? -1 : 1;
-                                } else if (a_is_fiat && b_is_crypto) {
+                                }
+                                if (a_is_fiat && b_is_crypto) {
                                     return -1;
                                 }
                                 return 1;
@@ -66,12 +68,11 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
                             .map((account, index) => {
                                 const { demo_account, currency, balance } = account;
                                 const currency_icon = demo_account ? 'virtual' : currency?.toLowerCase() || 'unknown';
-                                const getBalance = () => {
-                                    return balance.toLocaleString(undefined, {
+                                const getBalance = () =>
+                                    balance.toLocaleString(undefined, {
                                         minimumFractionDigits:
                                             config.currency_name_map[currency]?.fractional_digits ?? 2,
                                     });
-                                };
                                 return (
                                     isReal !== Boolean(demo_account) && (
                                         <div
@@ -87,18 +88,20 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
                                             ref={el => (item_ref.current[index] = el)}
                                         >
                                             <input type='hidden' name='account_name' value={account.account} />
-                                            <img src={`image/deriv/currency/ic-currency-${currency_icon}.svg`} />
+                                            <img src={`/public/images/currency/ic-currency-${currency_icon}.svg`} />
                                             <span>
                                                 {!currency && !active_account_name?.includes('MF') && (
                                                     <span className='symbols'>{translate('No currency assigned')}</span>
                                                 )}
-                                                {demo_account
-                                                    ? translate('Demo')
-                                                    : account.account?.includes('MF') &&
-                                                        (active_account_name?.includes('MF'))
-                                                        ? translate('Multipliers')
-                                                        : config.currency_name_map[currency]?.name || currency}
-
+                                                {
+                                                    // eslint-disable-next-line no-nested-ternary
+                                                    demo_account
+                                                        ? translate('Demo')
+                                                        : account.account?.includes('MF') &&
+                                                          active_account_name?.includes('MF')
+                                                            ? translate('Multiplers')
+                                                            : config.currency_name_map[currency]?.name || currency
+                                                }
                                                 <div className='account__switcher-loginid'>{account.account}</div>
                                             </span>
                                             <span className='account__switcher-balance'>
@@ -116,6 +119,14 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
             </div>
         </div>
     );
+};
+
+TabContent.propTypes = {
+    accounts: PropTypes.array,
+    isActive: PropTypes.bool,
+    setIsAccDropdownOpen: PropTypes.func,
+    tab: PropTypes.string,
+    title: PropTypes.string,
 };
 
 export default TabContent;

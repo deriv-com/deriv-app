@@ -1,4 +1,4 @@
-import { translate } from '../../../common/i18n';
+import { translate } from '@i18n';
 import { roundBalance } from '../../common/tools';
 import { info, notify } from '../broadcast';
 import { createError } from '../../common/error';
@@ -90,9 +90,9 @@ export default Engine =>
             const accountStat = this.getAccountStat();
             return toString && accountStat.totalProfit !== 0
                 ? roundBalance({
-                      currency,
-                      balance: +accountStat.totalProfit,
-                  })
+                    currency,
+                    balance: +accountStat.totalProfit,
+                })
                 : +accountStat.totalProfit;
         }
         /* eslint-enable */

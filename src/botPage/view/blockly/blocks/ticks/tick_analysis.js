@@ -1,5 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#i7qkfj
-import { translate } from '../../../../../common/i18n';
+import { translate } from '@i18n';
 
 Blockly.Blocks.tick_analysis = {
     init: function init() {

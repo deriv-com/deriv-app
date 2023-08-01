@@ -30,6 +30,7 @@ describe('<FileUploaderContainer />', () => {
         getSocket: jest.fn(),
         onFileDrop: jest.fn(),
         onRef: jest.fn(),
+        settings: {},
     };
 
     const file_size_msg = /less than 8mb/i;

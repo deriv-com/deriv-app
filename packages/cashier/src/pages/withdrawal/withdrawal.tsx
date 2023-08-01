@@ -64,11 +64,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
     const is_cashier_locked = useCashierLocked();
     const is_system_maintenance = useIsSystemMaintenance();
     const { iframe_url } = iframe;
-    const {
-        crypto_transactions,
-        is_crypto_transactions_visible,
-        onMount: recentTransactionOnMount,
-    } = transaction_history;
+    const { is_crypto_transactions_visible } = transaction_history;
     const {
         check10kLimit,
         error,
@@ -78,12 +74,6 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         error: { setErrorMessage },
         willMountWithdraw,
     } = withdraw;
-
-    React.useEffect(() => {
-        if (!is_crypto_transactions_visible) {
-            recentTransactionOnMount();
-        }
-    }, [is_crypto_transactions_visible, is_switching, recentTransactionOnMount]);
 
     React.useEffect(() => {
         setActiveTab('withdraw');
@@ -125,7 +115,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
             setSideNotes?.([]);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, tab_index, crypto_transactions]);
+    }, [currency, tab_index]);
 
     // TODO: Fix if conditions, use else if and combine conditions when possible
     if (is_system_maintenance) {

@@ -40,20 +40,10 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
     } = account_transfer;
     const { is_loading, setActiveTab } = general_store;
     const is_cashier_locked = useCashierLocked();
-
-    const { is_crypto_transactions_visible, onMount: recentTransactionOnMount } = transaction_history;
-
+    const { is_crypto_transactions_visible } = transaction_history;
     const { is_switching, is_virtual } = client;
-
     const [is_loading_status, setIsLoadingStatus] = React.useState(true);
     const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
-
-    React.useEffect(() => {
-        if (!is_crypto_transactions_visible) {
-            recentTransactionOnMount();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_switching]);
 
     React.useEffect(() => {
         setActiveTab('account_transfer');

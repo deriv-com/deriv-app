@@ -48,7 +48,6 @@ describe('<Deposit />', () => {
                     iframe: {},
                     transaction_history: {
                         is_crypto_transactions_visible: false,
-                        onMount: jest.fn(),
                     },
                     general_store: {
                         is_deposit: false,
@@ -89,7 +88,6 @@ describe('<Deposit />', () => {
                     iframe: {},
                     transaction_history: {
                         is_crypto_transactions_visible: true,
-                        onMount: jest.fn(),
                     },
                     general_store: {
                         is_deposit: false,

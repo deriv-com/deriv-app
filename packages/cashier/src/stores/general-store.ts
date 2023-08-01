@@ -182,7 +182,6 @@ export default class GeneralStore extends BaseStore {
             ) {
                 routeTo(routes.cashier_deposit);
                 transaction_history.setIsCryptoTransactionsVisible(true);
-                transaction_history.onMount();
             }
         }
     }

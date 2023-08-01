@@ -17,6 +17,9 @@ jest.mock('@deriv/api', () => ({
             },
         },
     })),
+    useSubscription: jest.fn(() => ({
+        subscribe: jest.fn(),
+    })),
 }));
 
 describe('CryptoTransactionsSideNoteRecentTransaction', () => {

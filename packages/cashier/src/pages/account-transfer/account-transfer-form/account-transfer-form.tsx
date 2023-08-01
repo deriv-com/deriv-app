@@ -83,7 +83,7 @@ const AccountTransferForm = observer(
         } = useStore();
 
         const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
-        const { account_transfer, crypto_fiat_converter, transaction_history, general_store } = useCashierStore();
+        const { account_transfer, crypto_fiat_converter, general_store } = useCashierStore();
 
         const {
             account_transfer_amount,
@@ -112,7 +112,6 @@ const AccountTransferForm = observer(
             onChangeConverterToAmount,
             resetConverter,
         } = crypto_fiat_converter;
-        const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
 
         const [from_accounts, setFromAccounts] = React.useState({});
         const [to_accounts, setToAccounts] = React.useState({});
@@ -133,10 +132,6 @@ const AccountTransferForm = observer(
         const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
 
         const history = useHistory();
-
-        React.useEffect(() => {
-            recentTransactionOnMount();
-        }, [recentTransactionOnMount]);
 
         const validateAmount = (amount: string) => {
             if (!amount) return localize('This field is required.');
@@ -288,7 +283,6 @@ const AccountTransferForm = observer(
             minimum_fee,
             from_accounts,
             is_dxtrade_allowed,
-            crypto_transactions,
             setSideNotes,
             is_crypto,
             internal_remaining_transfers?.allowed,

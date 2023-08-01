@@ -46,7 +46,6 @@ const cashier_mock = {
     },
     crypto_fiat_converter: {},
     transaction_history: {
-        onMount: jest.fn(),
         is_crypto_transactions_visible: false,
     },
 };

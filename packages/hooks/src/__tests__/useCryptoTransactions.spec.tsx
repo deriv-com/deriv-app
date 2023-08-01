@@ -1,30 +1,32 @@
 import * as React from 'react';
-import { APIProvider, useFetch } from '@deriv/api';
+import { APIProvider, useSubscription } from '@deriv/api';
 import { renderHook } from '@testing-library/react-hooks';
 import useCryptoTransactions from '../useCryptoTransactions';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useFetch: jest.fn(),
+    useSubscription: jest.fn(),
 }));
 
-const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'cashier_payments'>>;
+const mockUseSubscription = useSubscription as jest.MockedFunction<typeof useSubscription<'cashier_payments'>>;
 
 describe('useCryptoTransactions', () => {
     test("should return an empty list if the user doesn't have any crypto transactions", () => {
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({});
+        // @ts-expect-error need to come up with a way to mock the return type of useSubscription
+        mockUseSubscription.mockReturnValue({
+            subscribe: jest.fn(),
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useCryptoTransactions(), { wrapper });
 
-        expect(result.current.data.length).toBe(0);
+        expect(result.current.data).toBe(undefined);
     });
 
     test('should return the list of crypto transactions', () => {
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({
+        // @ts-expect-error need to come up with a way to mock the return type of useSubscription
+        mockUseSubscription.mockReturnValue({
             data: {
                 cashier_payments: {
                     crypto: [
@@ -57,6 +59,7 @@ describe('useCryptoTransactions', () => {
                     ],
                 },
             },
+            subscribe: jest.fn(),
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
@@ -66,6 +69,6 @@ describe('useCryptoTransactions', () => {
         expect(result.current.data?.length).toBe(2);
         expect(result.current.data?.[0].is_deposit).toBe(true);
         expect(result.current.has_transactions).toBe(true);
-        expect(result.current.last_transactions?.id).toBe('69');
+        expect(result.current.last_transaction?.id).toBe('69');
     });
 });

@@ -7,17 +7,11 @@ import { useStore, observer } from '@deriv/stores';
 import RecentTransaction from '../../../components/recent-transaction';
 import EmailVerificationEmptyState from '../../../components/email-verification-empty-state';
 import Error from '../../../components/error';
-import { useCashierStore } from '../../../stores/useCashierStores';
 import ErrorStore from '../../../stores/error-store';
 
 const WithdrawalVerificationEmail = observer(() => {
     const verify = useVerifyEmail('payment_withdraw');
     const { client } = useStore();
-    const { transaction_history } = useCashierStore();
-
-    React.useEffect(() => {
-        transaction_history.onMount();
-    }, [transaction_history]);
 
     if (verify.error) return <Error error={verify.error as ErrorStore} />;
 

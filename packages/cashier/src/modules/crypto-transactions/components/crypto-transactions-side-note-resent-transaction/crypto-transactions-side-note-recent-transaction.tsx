@@ -13,11 +13,11 @@ const CryptoTransactionsSideNoteRecentTransaction: React.FC = observer(() => {
     const { is_mobile } = ui;
     const { transaction_history } = useCashierStore();
     const { setIsCryptoTransactionsVisible } = transaction_history;
-    const { last_transactions, has_transactions, isLoading, error, refetch } = useCryptoTransactions();
+    const { last_transaction, has_transactions, is_loading, error, subscribe } = useCryptoTransactions();
     const currency_config = useCurrentCurrencyConfig();
 
     const TransactionDetail = useCallback(() => {
-        if (!last_transactions) return null;
+        if (!last_transaction) return null;
 
         const {
             is_deposit,
@@ -28,7 +28,7 @@ const CryptoTransactionsSideNoteRecentTransaction: React.FC = observer(() => {
             address_url_display,
             confirmation_display,
             transaction_hash_display,
-        } = cryptoTransactionMapper(last_transactions);
+        } = cryptoTransactionMapper(last_transaction);
 
         return (
             <>
@@ -92,7 +92,7 @@ const CryptoTransactionsSideNoteRecentTransaction: React.FC = observer(() => {
                 />
             </>
         );
-    }, [currency_config.display_code, last_transactions, setIsCryptoTransactionsVisible]);
+    }, [currency_config.display_code, last_transaction, setIsCryptoTransactionsVisible]);
 
     const LoadingState = useCallback(() => <Loading is_fullscreen={false} />, []);
 
@@ -105,14 +105,14 @@ const CryptoTransactionsSideNoteRecentTransaction: React.FC = observer(() => {
                 <div className='crypto-transactions-side-note-recent-transaction__divider' />
                 <Button
                     text={localize('Refresh')}
-                    onClick={() => refetch()}
+                    onClick={() => subscribe()}
                     secondary
                     small
                     className='crypto-transactions-side-note-recent-transaction__button'
                 />
             </>
         ),
-        [is_mobile, refetch]
+        [is_mobile, subscribe]
     );
 
     const NoTransactionState = useCallback(
@@ -129,9 +129,9 @@ const CryptoTransactionsSideNoteRecentTransaction: React.FC = observer(() => {
         <SideNote type={error ? 'warning' : undefined} title={localize('Transaction status')}>
             <div className='crypto-transactions-side-note-recent-transaction'>
                 <div className='crypto-transactions-side-note-recent-transaction__divider' />
-                {isLoading && <LoadingState />}
-                {!isLoading && !error && has_transactions && <TransactionDetail />}
-                {!isLoading && !error && !has_transactions && <NoTransactionState />}
+                {is_loading && <LoadingState />}
+                {!is_loading && !error && has_transactions && <TransactionDetail />}
+                {!is_loading && !error && !has_transactions && <NoTransactionState />}
                 {error ? <ErrorState /> : <></>}
             </div>
         </SideNote>

@@ -4,7 +4,6 @@ import { useStores } from 'Stores/index';
 import BuySell from '../buy-sell';
 
 const mock_store = {
-
     general_store: {
         should_show_popup: false,
     },
@@ -25,12 +24,24 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(() => mock_store),
 }));
 
+jest.mock('@sendbird/chat', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/groupChannel', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/message', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
 describe('<BuySellPage/>', () => {
     it('should render Verification Section when user is not verified', () => {
         render(<BuySell />);
 
-        expect(screen.getByText("Verification")).toBeInTheDocument();
-        expect(screen.getByText("Verification Section")).toBeInTheDocument();
+        expect(screen.getByText('Verification')).toBeInTheDocument();
+        expect(screen.getByText('Verification Section')).toBeInTheDocument();
     });
     it('should not render the page return section when nickname form is open ', () => {
         useStores.mockReturnValue({

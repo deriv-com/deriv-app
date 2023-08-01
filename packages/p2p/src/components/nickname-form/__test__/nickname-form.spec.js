@@ -28,6 +28,18 @@ jest.mock('@deriv/components', () => ({
     Modal: jest.fn(({ children }) => <div>{children}</div>),
 }));
 
+jest.mock('@sendbird/chat', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/groupChannel', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/message', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
 describe('<NicknameForm/>', () => {
     it('closes the popup if close icon is clicked', () => {
         const { general_store } = useStores();

@@ -1,3 +1,4 @@
+import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { getUnsupportedContracts } from '../constants';
 import { getSymbolDisplayName, TActiveSymbols } from './active-symbols';
 import { getMarketInformation } from './market-underlying';
@@ -53,4 +54,16 @@ export const formatPortfolioPosition = (
         is_unsupported: isUnSupportedContract(portfolio_pos),
         contract_update: portfolio_pos.limit_order,
     };
+};
+
+export const isVerificationServiceSupported = (
+    residence_list: ResidenceList,
+    account_settings: GetSettings,
+    service: 'idv' | 'onfido'
+): boolean => {
+    const citizen = account_settings?.citizen || account_settings?.country_code;
+    if (!citizen) return false;
+    const citizen_data = residence_list.find(item => item.value === citizen);
+
+    return !!citizen_data?.identity?.services?.[service]?.is_country_supported;
 };

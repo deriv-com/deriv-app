@@ -93,7 +93,7 @@ commands:
           name: Pushing Image to docker hub
           command: |
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-            docker push ${DOCKHUB_ORGANISATION}/deriv-static-bot
+            docker push -a ${DOCKHUB_ORGANISATION}/deriv-static-bot
   k8s_deploy:
     description: "Deploy to k8s cluster"
     parameters:
@@ -155,7 +155,7 @@ commands:
 jobs:
   test:
     docker:
-      - image: cimg/node:12.18
+      - image: cimg/node:18.16
     steps:
       - git_checkout_from_cache
       - npm_install
@@ -163,7 +163,7 @@ jobs:
 
   release_staging:
     docker:
-      - image: cimg/node:12.18
+      - image: cimg/node:18.16
     steps:
       - git_checkout_from_cache
       - npm_install

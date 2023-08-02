@@ -48,10 +48,6 @@ module.exports = {
                     to: path.resolve(__dirname, 'www/js'),
                 },
                 {
-                    from: 'node_modules/binary-style/src/images/favicons',
-                    to: path.resolve(__dirname, 'www/image/favicons'),
-                },
-                {
                     from: 'public',
                     to: path.resolve(__dirname, 'www/public'),
                     globOptions: {

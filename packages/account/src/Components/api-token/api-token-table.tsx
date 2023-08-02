@@ -53,7 +53,7 @@ const ApiTokenTable = () => {
                 {api_tokens?.map((token_data: TToken) => {
                     const token: TToken = getScopeValue(token_data);
                     return (
-                        <div data-testid='dt_mobile_api_token_scope' key={token.token} className='da-api-token__scope'>
+                        <div key={token.token} className='da-api-token__scope'>
                             <div className='da-api-token__scope-item'>
                                 <div>
                                     <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>

@@ -32,12 +32,11 @@ describe('ApiTokenTable', () => {
                 <ApiTokenTable />
             </ApiTokenContext.Provider>
         );
-        expect(screen.queryByTestId('dt_mobile_api_token_scope')).not.toBeInTheDocument();
         expect(screen.getByText('Name')).toBeInTheDocument();
         expect(screen.getByText('Token')).toBeInTheDocument();
         expect(screen.getByText('Scopes')).toBeInTheDocument();
         expect(screen.getByText('Last used')).toBeInTheDocument();
-        expect(screen.getByText('Token 1')).toBeInTheDocument();
+        expect(screen.getByText('Token 1')).not.toHaveClass('da-api-token__scope-item--name');
         expect(screen.getByText('Read')).toBeInTheDocument();
         expect(screen.getByText('Trade')).toBeInTheDocument();
         expect(screen.getByText('Payments')).toBeInTheDocument();
@@ -54,9 +53,8 @@ describe('ApiTokenTable', () => {
                 <ApiTokenTable />
             </ApiTokenContext.Provider>
         );
-        expect(screen.getByTestId('dt_mobile_api_token_scope')).toBeInTheDocument();
         expect(screen.getByText('Name')).toBeInTheDocument();
-        expect(screen.getByText('Token 1')).toBeInTheDocument();
+        expect(screen.getByText('Token 1')).toHaveClass('da-api-token__scope-item--name');
         expect(screen.getByText('Token')).toBeInTheDocument();
         expect(screen.getByText('Scopes')).toBeInTheDocument();
         expect(screen.getByText('Read')).toBeInTheDocument();

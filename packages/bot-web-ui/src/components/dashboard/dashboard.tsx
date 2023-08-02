@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
+import { updateWorkspaceName } from '@deriv/bot-skeleton';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
@@ -29,7 +30,6 @@ const Dashboard = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy } = useDBotStore();
     const {
         active_tab,
-        has_file_loaded,
         has_tour_started,
         setTourActive,
         has_started_onboarding_tour,
@@ -43,11 +43,10 @@ const Dashboard = observer(() => {
         setBotBuilderTokenCheck,
         setOnBoardingTokenCheck,
     } = dashboard;
-    const { onEntered } = load_modal;
+    const { onEntered, dashboard_strategies } = load_modal;
     const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
         run_panel;
     const { is_strategy_modal_open } = quick_strategy;
-
     const { DASHBOARD, BOT_BUILDER, CHART, TUTORIAL } = DBOT_TABS;
     const is_tour_complete = React.useRef(true);
     let bot_tour_token: string | number = '';
@@ -59,15 +58,15 @@ const Dashboard = observer(() => {
     const { ui } = useStore();
     const { url_hashed_values } = ui;
 
-    let tab_value = active_tab;
+    let tab_value: number | string = active_tab;
     const GetHashedValue = (tab: number) => {
         tab_value = url_hashed_values?.split('#')[1];
         if (tab_value === 'dashboard') return DASHBOARD;
         if (tab_value === 'bot_builder') return BOT_BUILDER;
         if (tab_value === 'chart') return CHART;
         if (tab_value === 'tutorial') return TUTORIAL;
-        if (isNaN(tab_value) || isNaN(tab)) return active_tab;
-        if (tab_value > 4 || tab > 4) return active_tab;
+        if (isNaN(Number(tab_value)) || isNaN(tab)) return active_tab;
+        if (Number(tab_value) > 4 || tab > 4) return active_tab;
         return tab_value;
     };
     const active_hash_tab = GetHashedValue(active_tab);
@@ -114,9 +113,6 @@ const Dashboard = observer(() => {
                 window.dispatchEvent(new Event('resize')); // make the trash can work again after resize
             }, 500);
         }
-        if (active_tab === DASHBOARD && has_file_loaded) {
-            onEntered();
-        }
         if (active_tab === DASHBOARD) {
             setTourType('onboard_tour');
             onboard_tour_token = getTourSettings('token');
@@ -134,6 +130,20 @@ const Dashboard = observer(() => {
         tour_status = getTourSettings('onboard_tour_status');
         setTourStatus(tour_status);
     }, [active_tab, is_drawer_open, has_started_onboarding_tour, tour_status_ended, is_tour_dialog_visible]);
+
+    useEffect(() => {
+        let timer: ReturnType<typeof setTimeout>;
+        if (dashboard_strategies.length > 0) {
+            // Needed to pass this to the Callback Queue as on tab changes
+            // document title getting override by 'Bot | Deriv' only
+            timer = setTimeout(() => {
+                updateWorkspaceName();
+            });
+        }
+        return () => {
+            if (timer) clearTimeout(timer);
+        };
+    }, [dashboard_strategies, active_tab]);
 
     const botStorageSetting = () => {
         tour_status = getTourSettings('bot_builder_status');

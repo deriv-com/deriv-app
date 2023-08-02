@@ -30,6 +30,8 @@ import {
 } from '../components/dashboard/quick-strategy/quick-strategy.types';
 import RootStore from './root-store';
 
+const Blockly = window.Blockly;
+
 export default class QuickStrategyStore {
     root_store: RootStore;
     qs_cache: TQSCache = (getSetting('quick_strategy') as TQSCache) || {};
@@ -333,7 +335,12 @@ export default class QuickStrategyStore {
 
         const { derivWorkspace: workspace } = Blockly;
 
-        load({ block_string: Blockly.Xml.domToText(strategy_dom), file_name, workspace, from: save_types.UNSAVED });
+        await load({
+            block_string: Blockly.Xml.domToText(strategy_dom),
+            file_name,
+            workspace,
+            from: save_types.UNSAVED,
+        });
 
         if (button === 'run') {
             workspace

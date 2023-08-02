@@ -5,7 +5,7 @@ import RootStore from './root-store';
 interface IToolbarStore {
     is_animation_info_modal_open: boolean;
     is_dialog_open: boolean;
-    file_name: { [key: string]: string };
+    file_name: string;
     has_undo_stack: boolean;
     has_redo_stack: boolean;
     toggleAnimationInfoModal: () => void;
@@ -20,6 +20,7 @@ interface IToolbarStore {
     setHasRedoStack: () => void;
 }
 
+const Blockly = window.Blockly;
 export default class ToolbarStore implements IToolbarStore {
     root_store: RootStore;
 
@@ -77,15 +78,19 @@ export default class ToolbarStore implements IToolbarStore {
         }
     };
 
-    resetDefaultStrategy = () => {
-        const workspace = Blockly.derivWorkspace;
+    resetDefaultStrategy = async () => {
+        const workspace = Blockly.DerivWorkspace;
         workspace.current_strategy_id = Blockly.utils.genUid();
-        load({
+        await load({
             block_string: workspace.cached_xml.main,
             file_name: config.default_file_name,
             workspace,
+            drop_event: null,
+            strategy_id: null,
+            from: null,
+            showIncompatibleStrategyDialog: null,
         });
-        Blockly.derivWorkspace.strategy_to_load = workspace.cached_xml.main;
+        workspace.strategy_to_load = workspace.cached_xml.main;
     };
 
     onSortClick = () => {

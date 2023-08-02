@@ -30,6 +30,8 @@ interface ISaveModalStore {
     setButtonStatus: (status: { [key: string]: string } | string | number) => void;
 }
 
+const Blockly = window.Blockly;
+
 export default class SaveModalStore implements ISaveModalStore {
     root_store: RootStore;
 
@@ -130,7 +132,7 @@ export default class SaveModalStore implements ISaveModalStore {
 
     async onConfirmSave({ is_local, save_as_collection, bot_name }: IOnConfirmProps) {
         const { load_modal, dashboard, google_drive } = this.root_store;
-        const { selected_strategy, refreshStrategiesTheme, loadStrategyToBuilder } = load_modal;
+        const { selected_strategy, loadStrategyToBuilder } = load_modal;
         const { active_tab } = dashboard;
         this.setButtonStatus(button_status.LOADING);
         const { saveFile } = google_drive;
@@ -165,8 +167,7 @@ export default class SaveModalStore implements ISaveModalStore {
             saveWorkspaceToRecent(xml, is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
         }
         this.updateBotName(bot_name);
-        if (main_strategy) loadStrategyToBuilder(main_strategy);
-        else refreshStrategiesTheme();
+        if (main_strategy && active_tab === 0) loadStrategyToBuilder(main_strategy);
         this.toggleSaveModal();
     }
 

@@ -13,7 +13,7 @@ module.exports = {
         path: path.resolve(__dirname, 'www'),
         filename: 'index.js',
     },
-    target: 'node',
+    target: 'web',
     module: {
         rules: [
             {
@@ -69,10 +69,6 @@ module.exports = {
                 {
                     from: 'node_modules/@deriv/deriv-charts/dist/',
                     to: path.resolve(__dirname, 'www/js'),
-                },
-                {
-                    from: 'node_modules/binary-style/src/images/favicons',
-                    to: path.resolve(__dirname, 'www/image/favicons'),
                 },
                 {
                     from: 'public',

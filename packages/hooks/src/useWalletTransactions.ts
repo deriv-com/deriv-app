@@ -91,10 +91,6 @@ const useWalletTransactions = (action_type?: 'deposit' | 'withdrawal' | 'virtual
                                   ...transaction,
                                   /** The currency of a trading account that was part of the transfer to/from the wallet. */
                                   account_currency: other_account.currency,
-                                  /** The gradient class name for the account card background. */
-                                  gradient_card_class: `wallet-card__${
-                                      other_account.is_virtual === 1 ? 'demo' : other_account?.currency?.toLowerCase()
-                                  }-bg${is_dark_mode_on ? '--dark' : ''}`,
                                   /** Local asset name for the account icon. ex: `IcWalletCurrencyUsd` for `USD`  */
                                   icon: getWalletCurrencyIcon(
                                       other_account.is_virtual ? 'demo' : other_account.currency || '',

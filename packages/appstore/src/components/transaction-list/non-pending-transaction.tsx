@@ -20,12 +20,15 @@ const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
         action_type,
         amount,
         balance_after = 0,
-        gradient_card_class,
         icon,
         icon_type,
         is_virtual,
         landing_company_shortcode,
     } = transaction;
+
+    const gradient_card_class = `wallet-card__${is_virtual === 1 ? 'demo' : account_currency?.toLowerCase()}-bg${
+        is_dark_mode_on ? '--dark' : ''
+    }`;
 
     const getAccountName = () => {
         return account_category === 'wallet'

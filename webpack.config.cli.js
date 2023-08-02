@@ -13,7 +13,7 @@ module.exports = {
         path: path.resolve(__dirname, 'www'),
         filename: 'index.js',
     },
-    target: 'node',
+    target: 'web',
     module: {
         rules: [
             {

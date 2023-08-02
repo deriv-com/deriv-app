@@ -386,7 +386,7 @@ export default class AccountTransferStore {
                 mt5: { name: 'Deriv MT5', icon: 'IcMt5' },
                 ctrader: { name: 'Deriv cTrader', icon: 'IcBrand' },
                 dxtrade: { name: 'Deriv X', icon: 'IcRebranding' },
-                derivez: { name: 'Deriv EZ', icon: 'IcDerivez' },
+                derivez: { name: 'Deriv EZ', icon: 'IcRebranding' },
             };
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const is_cfd = Object.keys(cfd_platforms).includes(account.account_type!);

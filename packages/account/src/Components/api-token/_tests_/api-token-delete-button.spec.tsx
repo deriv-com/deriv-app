@@ -24,33 +24,29 @@ describe('ApiTokenDeleteButton', () => {
         },
     };
 
-    it('should render ApiTokenDeleteButton', () => {
+    const renderAPiDeleteButton = () => {
         render(
             <ApiTokenContext.Provider value={mock_props}>
                 <ApiTokenDeleteButton {...mock_token} />
             </ApiTokenContext.Provider>
         );
+    };
+
+    it('should render ApiTokenDeleteButton', () => {
+        renderAPiDeleteButton();
         expect(screen.getByTestId('dt_token_delete_icon')).toBeInTheDocument();
         expect(screen.queryByText('Delete this token')).not.toBeInTheDocument();
     });
 
     it('should display Delete this token when mouse enter', () => {
-        render(
-            <ApiTokenContext.Provider value={mock_props}>
-                <ApiTokenDeleteButton {...mock_token} />
-            </ApiTokenContext.Provider>
-        );
+        renderAPiDeleteButton();
         const delete_icon = screen.getByTestId('dt_token_delete_icon');
         fireEvent.mouseEnter(delete_icon);
         expect(screen.getByText('Delete this token')).toBeInTheDocument();
     });
 
     it('should not Delete this token when mouse leave', () => {
-        render(
-            <ApiTokenContext.Provider value={mock_props}>
-                <ApiTokenDeleteButton {...mock_token} />
-            </ApiTokenContext.Provider>
-        );
+        renderAPiDeleteButton();
         const delete_icon = screen.getByTestId('dt_token_delete_icon');
         fireEvent.mouseEnter(delete_icon);
         expect(screen.getByText('Delete this token')).toBeInTheDocument();
@@ -59,11 +55,7 @@ describe('ApiTokenDeleteButton', () => {
     });
 
     it('should display Popup when delete icon is clicked', () => {
-        render(
-            <ApiTokenContext.Provider value={mock_props}>
-                <ApiTokenDeleteButton {...mock_token} />
-            </ApiTokenContext.Provider>
-        );
+        renderAPiDeleteButton();
         const delete_icon = screen.getByTestId('dt_token_delete_icon');
         fireEvent.click(delete_icon);
         expect(screen.getByText('Delete token')).toBeInTheDocument();
@@ -73,11 +65,7 @@ describe('ApiTokenDeleteButton', () => {
     });
 
     it('should close the modal when clicked on Cancel', async () => {
-        render(
-            <ApiTokenContext.Provider value={mock_props}>
-                <ApiTokenDeleteButton {...mock_token} />
-            </ApiTokenContext.Provider>
-        );
+        renderAPiDeleteButton();
         const delete_icon = screen.getByTestId('dt_token_delete_icon');
         fireEvent.click(delete_icon);
         expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
@@ -90,11 +78,7 @@ describe('ApiTokenDeleteButton', () => {
     });
 
     it('should should trigger deleteToken when clicked on Yes, delete', async () => {
-        render(
-            <ApiTokenContext.Provider value={mock_props}>
-                <ApiTokenDeleteButton {...mock_token} />
-            </ApiTokenContext.Provider>
-        );
+        renderAPiDeleteButton();
         const delete_icon = screen.getByTestId('dt_token_delete_icon');
         fireEvent.click(delete_icon);
         expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();

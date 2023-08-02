@@ -30,7 +30,7 @@ const MainTitleBar = () => {
     }, [selected_region]);
 
     // TODO: Remove this when we have BE API ready
-    removeAllNotificationMessages();
+    removeAllNotificationMessages(true);
 
     React.useEffect(() => {
         filterNotificationMessages();

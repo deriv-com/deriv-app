@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { APIProvider } from '@deriv/api';
 import MainTitleBar from '..';
 
 describe('MainTitleBar', () => {
@@ -8,7 +9,9 @@ describe('MainTitleBar', () => {
         const mock = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
         );
 
         return render(<MainTitleBar />, {

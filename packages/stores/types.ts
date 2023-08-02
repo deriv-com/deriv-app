@@ -562,11 +562,12 @@ type TNotificationStore = {
     client_notifications: object;
     filterNotificationMessages: () => void;
     refreshNotifications: () => void;
+    removeAllNotificationMessages: (should_close_persistent: boolean) => void;
     removeNotificationByKey: (key: string) => void;
     removeNotificationMessage: (key: string, should_show_again?: boolean) => void;
     setP2POrderProps: () => void;
-    showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setP2PRedirectTo: () => void;
+    showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
 };
 
 type TBalance = {

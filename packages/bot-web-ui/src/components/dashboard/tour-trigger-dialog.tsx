@@ -2,26 +2,15 @@ import React from 'react';
 import classNames from 'classnames';
 import { Dialog, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { useDBotStore } from '../../stores/useDBotStore';
 import { setTourSettings, tour_status_ended, tour_type } from './joyride-config';
 
-type TTourTriggrerDialog = {
-    active_tab: number;
-    has_tour_ended: boolean;
-    is_tour_dialog_visible: boolean;
-    setTourDialogVisibility: (param: boolean) => void;
-    toggleOnConfirm: (active_tab: number, value: boolean) => void;
-};
+const TourTriggrerDialog = observer(() => {
+    const { dashboard } = useDBotStore();
+    const { active_tab, has_tour_ended, is_tour_dialog_visible, setTourDialogVisibility, toggleOnConfirm } = dashboard;
 
-const TourTriggrerDialog = ({
-    active_tab,
-    has_tour_ended,
-    is_tour_dialog_visible,
-    setTourDialogVisibility,
-    toggleOnConfirm,
-}: TTourTriggrerDialog) => {
     const is_mobile = isMobile();
 
     const toggleTour = (value: boolean, type: string) => {
@@ -110,7 +99,7 @@ const TourTriggrerDialog = ({
                         </>
                     ) : (
                         <>
-                            <div className='dc-dialog__content__description__text'>
+                            <div className='dc-dialog__content__description__text' data-testid='tour-success-message'>
                                 <Localize
                                     key={0}
                                     i18n_default_text={
@@ -177,12 +166,6 @@ const TourTriggrerDialog = ({
             </Dialog>
         </div>
     );
-};
+});
 
-export default connect(({ dashboard }: RootStore) => ({
-    active_tab: dashboard.active_tab,
-    has_tour_ended: dashboard.has_tour_ended,
-    is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
-    setTourDialogVisibility: dashboard.setTourDialogVisibility,
-    toggleOnConfirm: dashboard.toggleOnConfirm,
-}))(TourTriggrerDialog);
+export default TourTriggrerDialog;

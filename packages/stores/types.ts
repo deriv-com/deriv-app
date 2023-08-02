@@ -456,6 +456,7 @@ type TCommonStore = {
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
     is_language_changing: boolean;
+    is_socket_opened: boolean;
     setAppstorePlatform: (value: string) => void;
     app_routing_history: TAppRoutingHistory[];
     getExchangeRate: (from_currency: string, to_currency: string) => Promise<number>;
@@ -504,6 +505,7 @@ type TUiStore = {
     toggleReports: (is_visible: boolean) => void;
     is_real_acc_signup_on: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
+    is_chart_layout_default: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
     setIsAcuityModalOpen: (value: boolean) => void;
     is_switch_to_deriv_account_modal_visible: boolean;
@@ -526,6 +528,17 @@ type TUiStore = {
     setShouldShowCooldownModal: (value: boolean) => void;
     is_wallet_switching: boolean;
     setIsWalletSwitching: (value: boolean) => void;
+    populateFooterExtensions: (
+        footer_extensions:
+            | [
+                  {
+                      position?: string;
+                      Component?: React.FunctionComponent;
+                      has_right_separator?: boolean;
+                  }
+              ]
+            | []
+    ) => void;
 };
 
 type TPortfolioStore = {
@@ -551,11 +564,12 @@ type TNotificationStore = {
     client_notifications: object;
     filterNotificationMessages: () => void;
     refreshNotifications: () => void;
+    removeAllNotificationMessages: (should_close_persistent: boolean) => void;
     removeNotificationByKey: (key: string) => void;
     removeNotificationMessage: (key: string, should_show_again?: boolean) => void;
     setP2POrderProps: () => void;
-    showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setP2PRedirectTo: () => void;
+    showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
 };
 
 type TBalance = {
@@ -586,12 +600,16 @@ type TTradersHubStore = {
         login: string;
         account_id: string;
     };
+    handleTabItemClick: (idx: number) => void;
+    is_account_transfer_modal_open: boolean;
     is_low_risk_cr_eu_real: boolean;
     is_eu_user: boolean;
     show_eu_related_content: boolean;
     setTogglePlatformType: (platform_type: string) => void;
     is_demo: boolean;
     is_real: boolean;
+    is_regulators_compare_modal_visible: boolean;
+    is_tour_open: boolean;
     selectRegion: (region: string) => void;
     closeAccountTransferModal: () => void;
     toggleRegulatorsCompareModal: () => void;
@@ -599,6 +617,7 @@ type TTradersHubStore = {
     multipliers_account_status: string;
     financial_restricted_countries: boolean;
     selected_account_type: string;
+    selected_platform_type: string;
     setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
     no_CR_account: boolean;
     no_MF_account: boolean;
@@ -613,8 +632,6 @@ type TTradersHubStore = {
     selectAccountType: (account_type: string) => void;
     is_wallet_migration_failed: boolean;
     setWalletsMigrationFailedPopup: (value: boolean) => void;
-    is_tour_open: boolean;
-    selected_platform_type: string;
     available_platforms: BrandConfig[];
     is_demo_low_risk: boolean;
     selected_region: TRegionAvailability;

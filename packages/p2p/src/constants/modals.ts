@@ -1,6 +1,12 @@
 import React from 'react';
 
 export const Modals = {
+    AdCreateEditErrorModal: React.lazy(
+        () =>
+            import(
+                /* webpackChunkName: "ad-create-edit-error-modal" */ 'Components/modal-manager/modals/ad-create-edit-error-modal'
+            )
+    ),
     AdErrorTooltipModal: React.lazy(
         () =>
             import(
@@ -41,12 +47,6 @@ export const Modals = {
         () =>
             import(
                 /* webpackChunkName: "currency-selector-modal" */ 'Components/modal-manager/modals/currency-selector-modal'
-            )
-    ),
-    CreateAdErrorModal: React.lazy(
-        () =>
-            import(
-                /* webpackChunkName: "create-ad-error-modal" */ 'Components/modal-manager/modals/create-ad-error-modal'
             )
     ),
     CreateAdAddPaymentMethodModal: React.lazy(

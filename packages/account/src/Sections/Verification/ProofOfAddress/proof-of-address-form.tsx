@@ -163,7 +163,6 @@ const ProofOfAddressForm = observer(
             errors.address_city ||
             !values.address_city ||
             errors.address_state ||
-            !values.address_state ||
             errors.address_postcode;
 
         const onSubmitValues = (values, { setStatus, setSubmitting }) => {

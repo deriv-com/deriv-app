@@ -122,7 +122,7 @@ const PersonalDetailsForm = ({
                 <InlineNoteWithIcon
                     icon='IcAlertWarning'
                     message={poa_clarification_message}
-                    font_size={isMobile() ? 'xxxxs' : 'xs'}
+                    font_size={isMobile() ? 'xxxs' : 'xs'}
                 />
             )}
             <FormBodySection
@@ -226,7 +226,7 @@ const PersonalDetailsForm = ({
                     {'address_line_1' in values && (
                         <FormInputField
                             name='address_line_1'
-                            label={localize('First line of address')}
+                            label={localize('First line of address*')}
                             disabled={isFieldImmutable('address_line_1', editable_fields)}
                             data-testid='address_line_1'
                             autoComplete='off'
@@ -250,7 +250,6 @@ const PersonalDetailsForm = ({
                             data-lpignore='true'
                             type='text'
                             maxLength={70}
-                            required
                             onChange={handleChange}
                             onBlur={handleBlur}
                             error={touched.address_line_2 && errors.address_line_2}
@@ -260,7 +259,7 @@ const PersonalDetailsForm = ({
                     {'address_city' in values && (
                         <FormInputField
                             name='address_city'
-                            label={localize('Town/City')}
+                            label={localize('Town/City*')}
                             disabled={isFieldImmutable('address_city', editable_fields)}
                             data-testid='address_city'
                             autoComplete='off'
@@ -330,7 +329,6 @@ const PersonalDetailsForm = ({
                             data-lpignore='true'
                             type='text'
                             maxLength={70}
-                            required
                             onChange={handleChange}
                             onBlur={handleBlur}
                             error={touched.address_postcode && errors.address_postcode}

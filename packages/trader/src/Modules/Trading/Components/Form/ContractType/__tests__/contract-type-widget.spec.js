@@ -61,14 +61,41 @@ describe('<ContractTypeWidget />', () => {
             label: 'Digits',
         },
     ];
-
+    const unavailable_trade_types_list = [
+        {
+            contract_types: [
+                {
+                    text: 'Vanillas',
+                    value: 'vanilla',
+                },
+            ],
+            icon: 'IcVanillas',
+            label: 'Vanillas',
+        },
+        {
+            contract_types: [
+                {
+                    text: 'Accumulators',
+                    value: 'accumulator',
+                },
+            ],
+            icon: 'IcAccumulators',
+            label: 'Accumulators',
+        },
+    ];
     const item = {
         text: 'Multipliers',
         value: 'multiplier',
     };
 
     it('should render <ContractTypeMenu /> component when click on ', () => {
-        const wrapper = render(<ContractTypeWidget list={list} value={item.value} />);
+        const wrapper = render(
+            <ContractTypeWidget
+                list={list}
+                unavailable_trade_types_list={unavailable_trade_types_list}
+                value={item.value}
+            />
+        );
         const dt_contract_widget = wrapper.getByTestId('dt_contract_widget');
 
         expect(dt_contract_widget).toBeInTheDocument();

@@ -22,17 +22,18 @@ const Contract = observer(() => {
     } = useTraderStore();
     const {
         common: { current_language },
-        client: { is_virtual },
+        client: { is_logged_in, is_virtual },
     } = useStore();
 
     const list = getAvailableContractTypes(contract_types_list, unsupported_contract_types_list);
     const unavailable_trade_types_list = getAvailableContractTypes(
         non_available_contract_types_list,
         unsupported_contract_types_list
-    ).filter(type =>
-        !is_virtual
-            ? type.key !== 'Vanillas' && type.key !== 'Accumulators' && type.key !== 'Turbos'
-            : type.key !== 'Turbos'
+    ).filter(
+        type =>
+            is_virtual ||
+            !is_logged_in ||
+            (type.key !== 'Vanillas' && type.key !== 'Accumulators' && type.key !== 'Turbos')
     );
 
     const digits_message = localize('Last digit stats for latest 1000 ticks for {{ underlying_name }}', {

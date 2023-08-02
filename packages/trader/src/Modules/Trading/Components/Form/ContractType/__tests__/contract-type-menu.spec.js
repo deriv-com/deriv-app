@@ -217,7 +217,6 @@ describe('ContractTypeMenu', () => {
             key: 'Options',
         },
     ];
-
     const list = [
         {
             contract_types: [
@@ -280,7 +279,28 @@ describe('ContractTypeMenu', () => {
             key: 'Digits',
         },
     ];
-
+    const unavailable_trade_types_list = [
+        {
+            contract_types: [
+                {
+                    text: 'Vanillas',
+                    value: 'vanilla',
+                },
+            ],
+            icon: 'IcVanillas',
+            label: 'Vanillas',
+        },
+        {
+            contract_types: [
+                {
+                    text: 'Accumulators',
+                    value: 'accumulator',
+                },
+            ],
+            icon: 'IcAccumulators',
+            label: 'Accumulators',
+        },
+    ];
     const item = {
         text: 'Multipliers',
         value: 'multiplier',
@@ -292,7 +312,13 @@ describe('ContractTypeMenu', () => {
     });
 
     it('should render <ContractTypeMenu /> component when click on ', () => {
-        render(<ContractTypeWidget list={list} value={item.value} />);
+        render(
+            <ContractTypeWidget
+                list={list}
+                value={item.value}
+                unavailable_trade_types_list={unavailable_trade_types_list}
+            />
+        );
         const dt_contract_dropdown = screen.getByTestId('dt_contract_dropdown');
         fireEvent.click(dt_contract_dropdown);
 

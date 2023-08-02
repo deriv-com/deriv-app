@@ -12,7 +12,7 @@ const ContractTypeWidget = ({
     list,
     onChange,
     languageChanged,
-    unavailable_trade_types_list,
+    unavailable_trade_types_list = [],
 }) => {
     const wrapper_ref = React.useRef(null);
     const [is_dialog_open, setDialogVisibility] = React.useState(false);

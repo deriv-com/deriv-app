@@ -33,7 +33,7 @@ const ConfirmDeletePaymentMethodModal = () => {
             </Modal.Body>
             <Modal.Footer>
                 <Button has_effect text={localize('Yes, remove')} onClick={onClickDelete} secondary large />
-                <Button has_effect text={localize('No')} onClick={hideModal} primary large />
+                <Button has_effect text={localize('No')} onClick={() => hideModal()} primary large />
             </Modal.Footer>
         </Modal>
     );

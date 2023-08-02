@@ -22,7 +22,7 @@ const DeletePaymentMethodErrorModal = () => {
                 </Text>
             </Modal.Body>
             <Modal.Footer>
-                <Button has_effect text={localize('Ok')} onClick={hideModal} primary large />
+                <Button has_effect text={localize('Ok')} onClick={() => hideModal()} primary large />
             </Modal.Footer>
         </Modal>
     );

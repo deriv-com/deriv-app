@@ -6,7 +6,7 @@ import { mockStore } from '@deriv/stores';
 import TraderProviders from '../../../../../trader-providers';
 import TogglePositionsMobile from '../toggle-positions-mobile';
 
-const mocked_props = {
+const default_mocked_props = {
     active_positions_count: 2,
     all_positions: [
         {
@@ -92,6 +92,16 @@ jest.mock('App/Components/Elements/PositionsDrawer/positions-modal-card.jsx', ()
     jest.fn(() => <div>Position modal card</div>)
 );
 
+const default_mock_store = {
+    modules: {
+        trade: {
+            symbol: '1HZ100V',
+            contract_type: 'touch',
+        },
+    },
+    ui: { is_positions_drawer_on: true },
+};
+
 describe('<TogglePositionsMobile />', () => {
     const mockTogglePositionsMobile = (mocked_store, mocked_props) => {
         return (
@@ -112,17 +122,9 @@ describe('<TogglePositionsMobile />', () => {
     });
 
     it('should render <TogglePositionsMobile /> with <TogglePositions /> and <Modal /> content if is_positions_drawer_on === true', () => {
-        const mock_root_store = mockStore({
-            modules: {
-                trade: {
-                    symbol: '1HZ100V',
-                    contract_type: 'touch',
-                },
-            },
-            ui: { is_positions_drawer_on: true },
-        });
+        const mock_root_store = mockStore({ ...default_mock_store });
 
-        render(mockTogglePositionsMobile(mock_root_store, mocked_props));
+        render(mockTogglePositionsMobile(mock_root_store, { ...default_mocked_props }));
 
         screen.getAllByText(/test icon/i).forEach(icon => expect(icon).toBeInTheDocument());
         screen.queryAllByAltText(/position modal card/i).forEach(card => expect(card).toBeInTheDocument());
@@ -131,85 +133,46 @@ describe('<TogglePositionsMobile />', () => {
         expect(screen.getByText(/go to reports/i)).toBeInTheDocument();
     });
     it('should not render <TogglePositionsMobile /> with <TogglePositions /> and <Modal /> content if is_positions_drawer_on === false', () => {
-        const mock_root_store = mockStore({
-            modules: {
-                trade: {
-                    symbol: '1HZ100V',
-                    contract_type: 'touch',
-                },
-            },
-        });
+        const mock_root_store = mockStore({ ...default_mock_store, ui: { is_positions_drawer_on: false } });
 
-        render(mockTogglePositionsMobile(mock_root_store, mocked_props));
+        render(mockTogglePositionsMobile(mock_root_store, { ...default_mocked_props }));
 
         screen.queryAllByAltText(/position modal card/i).forEach(card => expect(card).not.toBeInTheDocument());
         expect(screen.queryByText(/recent positions/i)).not.toBeInTheDocument();
         expect(screen.queryByText(/go to reports/i)).not.toBeInTheDocument();
     });
     it('should render <EmptyPortfolioMessage /> with error text if is_empty === true', () => {
-        const mock_root_store = mockStore({
-            modules: {
-                trade: {
-                    symbol: '1HZ100V',
-                    contract_type: 'touch',
-                },
-            },
-            ui: { is_positions_drawer_on: true },
-        });
-        mocked_props.is_empty = true;
+        const mock_root_store = mockStore({ ...default_mock_store });
 
-        render(mockTogglePositionsMobile(mock_root_store, mocked_props));
+        render(mockTogglePositionsMobile(mock_root_store, { ...default_mocked_props, is_empty: true }));
 
         expect(screen.getByText(/test error/i)).toBeInTheDocument();
     });
     it('should call function togglePositionsDrawer if <NavLink /> was clicked', () => {
-        const mock_root_store = mockStore({
-            modules: {
-                trade: {
-                    symbol: '1HZ100V',
-                    contract_type: 'touch',
-                },
-            },
-            ui: { is_positions_drawer_on: true },
-        });
+        const mock_root_store = mockStore({ ...default_mock_store });
 
-        render(mockTogglePositionsMobile(mock_root_store, mocked_props));
+        render(mockTogglePositionsMobile(mock_root_store, { ...default_mocked_props }));
         const nav_link_button = screen.getByText(/go to reports/i);
         userEvent.click(nav_link_button);
 
         expect(mock_root_store.ui.togglePositionsDrawer).toBeCalled();
     });
     it('should call function togglePositionsDrawer if close button in positions-modal was clicked', () => {
-        const mock_root_store = mockStore({
-            modules: {
-                trade: {
-                    symbol: '1HZ100V',
-                    contract_type: 'touch',
-                },
-            },
-            ui: { is_positions_drawer_on: true },
-        });
+        const mock_root_store = mockStore({ ...default_mock_store });
 
-        render(mockTogglePositionsMobile(mock_root_store, mocked_props));
+        render(mockTogglePositionsMobile(mock_root_store, { ...default_mocked_props }));
         const close_button = screen.getAllByText(/test icon/i)[2];
         userEvent.click(close_button);
 
         expect(mock_root_store.ui.togglePositionsDrawer).toBeCalled();
     });
     it('should call function removePositionById if <NavLink /> was clicked and is_sold === 1', () => {
-        const mock_root_store = mockStore({
-            modules: {
-                trade: {
-                    symbol: '1HZ100V',
-                    contract_type: 'touch',
-                },
-            },
-            ui: { is_positions_drawer_on: true },
-        });
-        mocked_props.all_positions[0].contract_info.is_sold = 1;
-        mocked_props.all_positions[1].contract_info.is_sold = 1;
+        const mock_root_store = mockStore({ ...default_mock_store });
+        const new_mocked_props = { ...default_mocked_props };
+        new_mocked_props.all_positions[0].contract_info.is_sold = 1;
+        new_mocked_props.all_positions[1].contract_info.is_sold = 1;
 
-        render(mockTogglePositionsMobile(mock_root_store, mocked_props));
+        render(mockTogglePositionsMobile(mock_root_store, { ...new_mocked_props }));
         const nav_link_button = screen.getByText(/go to reports/i);
         userEvent.click(nav_link_button);
 

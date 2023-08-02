@@ -32,18 +32,24 @@ describe('ApiTokenTable', () => {
                 <ApiTokenTable />
             </ApiTokenContext.Provider>
         );
-        expect(screen.getByText('Name')).toBeInTheDocument();
-        expect(screen.getByText('Token')).toBeInTheDocument();
-        expect(screen.getByText('Scopes')).toBeInTheDocument();
-        expect(screen.getByText('Last used')).toBeInTheDocument();
         expect(screen.getByText('Token 1')).not.toHaveClass('da-api-token__scope-item--name');
-        expect(screen.getByText('Read')).toBeInTheDocument();
-        expect(screen.getByText('Trade')).toBeInTheDocument();
-        expect(screen.getByText('Payments')).toBeInTheDocument();
-        expect(screen.getByText('Admin')).toBeInTheDocument();
-        expect(screen.getByText('Trading information')).toBeInTheDocument();
-        expect(screen.getByText('Write')).toBeInTheDocument();
-        expect(screen.getByText('28/07/2023')).toBeInTheDocument();
+        const expectedTexts = [
+            'Name',
+            'Token',
+            'Scopes',
+            'Last used',
+            'Token 1',
+            'Read',
+            'Trade',
+            'Payments',
+            'Admin',
+            'Trading information',
+            'Write',
+            '28/07/2023',
+        ];
+        expectedTexts.forEach(text => {
+            expect(screen.getByText(text)).toBeInTheDocument();
+        });
     });
 
     it('should render in mobile view', () => {
@@ -53,18 +59,24 @@ describe('ApiTokenTable', () => {
                 <ApiTokenTable />
             </ApiTokenContext.Provider>
         );
-        expect(screen.getByText('Name')).toBeInTheDocument();
         expect(screen.getByText('Token 1')).toHaveClass('da-api-token__scope-item--name');
-        expect(screen.getByText('Token')).toBeInTheDocument();
-        expect(screen.getByText('Scopes')).toBeInTheDocument();
-        expect(screen.getByText('Read')).toBeInTheDocument();
-        expect(screen.getByText('Trade')).toBeInTheDocument();
-        expect(screen.getByText('Payments')).toBeInTheDocument();
-        expect(screen.getByText('Admin')).toBeInTheDocument();
-        expect(screen.getByText('Trading information')).toBeInTheDocument();
-        expect(screen.getByText('Write')).toBeInTheDocument();
-        expect(screen.getByText('Last Used')).toBeInTheDocument();
-        expect(screen.getByText('28/07/2023')).toBeInTheDocument();
+        const expectedTexts = [
+            'Name',
+            'Token',
+            'Scopes',
+            'Last Used',
+            'Token 1',
+            'Read',
+            'Trade',
+            'Payments',
+            'Admin',
+            'Trading information',
+            'Write',
+            '28/07/2023',
+        ];
+        expectedTexts.forEach(text => {
+            expect(screen.getByText(text)).toBeInTheDocument();
+        });
     });
 
     it('should display Never if last_used is undefined', () => {

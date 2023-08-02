@@ -68,18 +68,22 @@ export default class TicksService {
     }
 
     async request(options) {
-        const { symbol, granularity } = options;
+        return new Promise(resolve => {
+            const { symbol, granularity } = options;
 
-        const style = getType(granularity);
+            const style = getType(granularity);
 
-        if (style === 'ticks' && this.ticks.has(symbol)) {
-            return Promise.resolve(this.ticks.get(symbol));
-        }
+            if (style === 'ticks' && this.ticks.has(symbol)) {
+                resolve(this.ticks.get(symbol));
+            }
 
-        if (style === 'candles' && this.candles.hasIn([symbol, Number(granularity)])) {
-            return Promise.resolve(this.candles.getIn([symbol, Number(granularity)]));
-        }
-        return this.requestStream({ ...options, style });
+            if (style === 'candles' && this.candles.hasIn([symbol, Number(granularity)])) {
+                resolve(this.candles.getIn([symbol, Number(granularity)]));
+            }
+            this.requestStream({ ...options, style }).then(res => {
+                resolve(res);
+            });
+        });
     }
 
     monitor(options) {
@@ -89,11 +93,12 @@ export default class TicksService {
             const type = getType(granularity);
 
             const key = getUUID();
-
             this.request(options)
                 .then(() => {
                     if (type === 'ticks') {
                         this.tickListeners = this.tickListeners.setIn([symbol, key], callback);
+                        globalObserver.emit('bot.bot_ready');
+                        api_base.toggleRunButton(false);
                     } else {
                         this.ohlcListeners = this.ohlcListeners.setIn([symbol, Number(granularity), key], callback);
                     }
@@ -149,12 +154,8 @@ export default class TicksService {
 
     unsubscribeAllAndSubscribeListeners(symbol) {
         const ohlcSubscriptions = this.subscriptions.getIn(['ohlc', symbol]);
-        const tickSubscription = this.subscriptions.getIn(['tick', symbol]);
 
-        const subscription = [
-            ...(ohlcSubscriptions ? Array.from(ohlcSubscriptions.values()) : []),
-            ...(tickSubscription ? [tickSubscription] : []),
-        ];
+        const subscription = [...(ohlcSubscriptions ? Array.from(ohlcSubscriptions.values()) : [])];
 
         Promise.all(subscription.map(id => doUntilDone(() => api_base.api.forget(id))));
 
@@ -308,6 +309,7 @@ export default class TicksService {
                     resolve();
                 }
             }
+            this.ticks_history_promise = null;
             if (this.candles_promise) {
                 const { stringified_options } = this.candles_promise;
                 const { symbol = '' } = JSON.parse(stringified_options);

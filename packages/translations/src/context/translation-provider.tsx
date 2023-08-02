@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { I18nextProvider } from 'react-i18next';
-import i18n, {
+import i18n from '../utils/i18n-instance';
+import {
     getAllowedLanguages,
     getInitialLanguage,
     loadIncontextTranslation,
@@ -51,17 +52,16 @@ export const TranslationProvider = ({
         const { preferred_language } = response.get_settings;
         const initial_language = preferred_language || getInitialLanguage(environment);
         if (typeof onInit === 'function') await onInit(initial_language);
-        updateURLLanguage(initial_language);
 
         if ((environment === 'staging' || environment === 'local') && initial_language === 'ACH') {
             loadIncontextTranslation();
         }
-
-        await switchLanguage(initial_language, environment, async () => {
+        await switchLanguage(initial_language, environment, () => {
             setCurrentLanguage(initial_language);
-            setIsLoading(false);
+            updateURLLanguage(initial_language);
         });
 
+        setIsLoading(false);
         first_load.current = false;
     };
 
@@ -76,16 +76,12 @@ export const TranslationProvider = ({
                         set_settings: 1,
                         preferred_language: lang,
                     });
-                    setIsLoading(false);
                 }
             });
+            setIsLoading(false);
         },
         [environment, websocket]
     );
-
-    React.useEffect(() => {
-        initializeTranslations();
-    }, []);
 
     React.useEffect(() => {
         updateURLLanguage(current_language);
@@ -94,8 +90,9 @@ export const TranslationProvider = ({
     }, [current_language, setLanguageSettings]);
 
     React.useEffect(() => {
+        initializeTranslations();
         setEnvironment(environment);
-    }, [environment]);
+    }, []);
 
     return (
         <I18nextProvider i18n={i18n}>

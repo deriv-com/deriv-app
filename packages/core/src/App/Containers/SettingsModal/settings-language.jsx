@@ -7,7 +7,7 @@ const LanguageSettings = observer(() => {
     const { ui } = useStore();
     const { toggleLanguageSettingsModal } = ui;
     const { allowed_languages } = useLanguageChecks();
-    const { current_language, handleChangeLanguage } = useLanguageSettings();
+    const { is_loading, current_language, handleChangeLanguage } = useLanguageSettings();
 
     return (
         <div className='settings-language'>
@@ -22,7 +22,7 @@ const LanguageSettings = observer(() => {
                             lang={lang}
                             is_active={is_matching}
                             onClick={async () => {
-                                if (!is_clickable) return;
+                                if (!is_clickable || is_loading) return;
                                 toggleLanguageSettingsModal();
                                 await handleChangeLanguage(lang);
                             }}

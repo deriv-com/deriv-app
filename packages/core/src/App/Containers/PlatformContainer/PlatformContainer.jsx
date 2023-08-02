@@ -6,8 +6,8 @@ import { useStore } from '@deriv/stores';
 const DERIV_APPSTORE_KEY = 'is_appstore';
 
 const PlatformContainer = props => {
-    const { current_language } = useLanguageSettings();
     const { common } = useStore();
+    const { current_language } = useLanguageSettings();
     // TODO: set is_appstore based on a flag from BE.
     const is_appstore_storage = window.localStorage.getItem(DERIV_APPSTORE_KEY) === 'true';
     const [is_appstore, setIsAppStore] = React.useState(is_appstore_storage);

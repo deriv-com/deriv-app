@@ -1,6 +1,4 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import { str as crc32 } from 'crc-32';
+import i18n from './i18n-instance';
 import {
     ALL_LANGUAGES,
     ALLOWED_LANGUAGES,
@@ -10,23 +8,6 @@ import {
     Environment,
     LanguageData,
 } from './config';
-import ach from '../translations/ach.json';
-import ar from '../translations/ar.json';
-import bn from '../translations/bn.json';
-import de from '../translations/de.json';
-import es from '../translations/es.json';
-import fr from '../translations/fr.json';
-import id from '../translations/id.json';
-import it from '../translations/it.json';
-import ko from '../translations/ko.json';
-import pl from '../translations/pl.json';
-import pt from '../translations/pt.json';
-import ru from '../translations/ru.json';
-import si from '../translations/si.json';
-import th from '../translations/th.json';
-import vi from '../translations/vi.json';
-import zh_cn from '../translations/zh_cn.json';
-import zh_tw from '../translations/zh_tw.json';
 
 let temp_environment: Environment = 'production';
 
@@ -150,61 +131,14 @@ export const loadLanguageJson = async (lang: string) => {
     }
 };
 
-/**
- * Asynchronously switches the application language to the specified language if it is available in the given environment.
- *
- * @async
- * @param {Language} lang - The language code to switch to.
- * @param {Environment} environment - The environment in which the language availability is to be checked.
- * @param {Function} [onChange] - An optional callback function to be executed after the language switch is completed.
- *                                It will be called with the new language code as an argument.
- * @returns {Promise<void>} A promise that resolves after the language switch is completed successfully, or rejects if the
- *                          specified language is not available in the given environment.
- */
 export const switchLanguage = async (
     lang: Language,
     environment: Environment,
     onChange?: (lang: Language) => void | Promise<void>
 ) => {
-    if (isLanguageAvailable(lang, environment)) {
-        await i18n.changeLanguage(lang, async () => {
-            localStorage.setItem(STORE_LANGUAGE_KEY, lang);
-            if (typeof onChange === 'function') await onChange(lang);
-        });
-    }
+    if (!isLanguageAvailable(lang, environment)) return;
+    await i18n.changeLanguage(lang, () => {
+        localStorage.setItem(STORE_LANGUAGE_KEY, lang);
+        if (typeof onChange === 'function') onChange(lang);
+    });
 };
-
-i18n.use(initReactI18next).init({
-    resources: {
-        ACH: { translations: { ...ach } },
-        AR: { translations: { ...ar } },
-        BN: { translations: { ...bn } },
-        DE: { translations: { ...de } },
-        ES: { translations: { ...es } },
-        FR: { translations: { ...fr } },
-        ID: { translations: { ...id } },
-        IT: { translations: { ...it } },
-        KO: { translations: { ...ko } },
-        PL: { translations: { ...pl } },
-        PT: { translations: { ...pt } },
-        RU: { translations: { ...ru } },
-        SI: { translations: { ...si } },
-        TH: { translations: { ...th } },
-        VI: { translations: { ...vi } },
-        ZH_CN: { translations: { ...zh_cn } },
-        ZH_TW: { translations: { ...zh_tw } },
-    },
-    react: {
-        bindI18n: 'loaded languageChanged',
-        bindI18nStore: 'added',
-        hashTransKey(defaultValue: string) {
-            return crc32(defaultValue);
-        },
-        useSuspense: false,
-    },
-    fallbackLng: 'EN',
-    ns: ['translations'],
-    defaultNS: 'translations',
-});
-
-export default i18n;

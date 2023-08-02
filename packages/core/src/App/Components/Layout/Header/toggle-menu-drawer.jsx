@@ -23,7 +23,7 @@ import PlatformSwitcher from './platform-switcher';
 const MenuLink = observer(
     ({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink, is_hidden }) => {
         const { ui, client } = useStore();
-        const { handleChangeLanguage } = useLanguageSettings();
+        const { is_loading, handleChangeLanguage } = useLanguageSettings();
         const deriv_static_url = getStaticUrl(link_to);
         const history = useHistory();
         const { has_any_real_account, is_virtual } = client;
@@ -94,10 +94,11 @@ const MenuLink = observer(
             return (
                 <span
                     className={classNames('header__menu-mobile-link', {
-                        'header__menu-mobile-link--disabled': is_disabled,
+                        'header__menu-mobile-link--disabled': is_disabled || is_loading,
                         'header__menu-mobile-link--active': is_active,
                     })}
                     onClick={() => {
+                        if (is_loading) return;
                         onClickLink();
                         handleChangeLanguage(link_to);
                     }}

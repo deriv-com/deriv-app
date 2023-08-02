@@ -24,5 +24,7 @@ export default class FeatureFlagsStore extends BaseStore<{ [k in keyof typeof FL
                 });
             }
         });
+
+        this.data = FLAGS;
     }
 }

@@ -18,7 +18,7 @@ const WalletHeaderButtons = observer(({ is_disabled, is_open, buttons, wallet_ac
     return (
         <div className='wallet-header__description-buttons'>
             {buttons.map(button => {
-                button.action = async () => {
+                button.action = () => {
                     setWalletModalActiveTab(button.name);
                     setIsWalletModalVisible(true);
                     setWalletModalActiveWalletID(wallet_account.loginid);

@@ -818,8 +818,8 @@ type TSocketEndpoints = {
         request: ServerStatusRequest;
         response: ServerStatusResponse;
     };
-} & TPrivateEndpoints &
-    TPrivateSocketEndpoints;
+} & TPrivateSocketEndpoints &
+    TPrivateEndpoints;
 
 export type TSocketEndpointNames = keyof TSocketEndpoints;
 

@@ -1,14 +1,14 @@
 import { useCallback } from 'react';
 import { useFetch, useInvalidateQuery, useRequest } from '@deriv/api';
 
-/** A custom hook to get the state of wallet_migration API and to start/reset the migration process */
+/** A custom hook to get the status of wallet_migration API and to start/reset the migration process */
 const useWalletMigration = () => {
     const invalidate = useInvalidateQuery();
 
     /** Make a request to wallet_migration API and onSuccess it will invalidate the cached data  */
     const { mutate } = useRequest('wallet_migration', { onSuccess: () => invalidate('wallet_migration') });
 
-    /** Fetch the wallet_migration API and refetch it every second if the state is in_progress */
+    /** Fetch the wallet_migration API and refetch it every second if the status is in_progress */
     const { data } = useFetch('wallet_migration', {
         payload: { wallet_migration: 'state' },
         options: {
@@ -23,17 +23,17 @@ const useWalletMigration = () => {
     const state = data?.wallet_migration?.state;
 
     return {
-        /** The state of the wallet_migration API */
+        /** The status of the wallet_migration API */
         state,
-        /** A boolean to check if the state is not_eligible */
+        /** A boolean to check if the status is not_eligible */
         is_ineligible: state === 'ineligible',
-        /** A boolean to check if the state is eligible */
+        /** A boolean to check if the status is eligible */
         is_eligible: state === 'eligible',
-        /** A boolean to check if the state is in_progress */
+        /** A boolean to check if the status is in_progress */
         is_in_progress: state === 'in_progress',
-        /** A boolean to check if the state is completed */
+        /** A boolean to check if the status is completed */
         is_migrated: state === 'migrated',
-        /** A boolean to check if the state is failed */
+        /** A boolean to check if the status is failed */
         is_failed: state === 'failed',
         /** Sends a request to wallet_migration API to start the migration process */
         start_migration,

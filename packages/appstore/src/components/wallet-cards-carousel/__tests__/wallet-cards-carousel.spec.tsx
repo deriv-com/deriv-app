@@ -3,55 +3,116 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import WalletCardsCarousel from '..';
-import { TWalletAccount } from 'Types';
+import { APIProvider } from '@deriv/api';
 
-const mockedRootStore = mockStore({});
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useFetch: jest.fn((name: string) => {
+        if (name === 'authorize') {
+            return {
+                data: {
+                    authorize: {
+                        account_list: [
+                            {
+                                account_category: 'wallet',
+                                currency: 'USD',
+                                is_virtual: 0,
+                                loginid: 'CRW10001',
+                            },
+                            {
+                                account_category: 'trading',
+                                currency: 'USD',
+                                is_virtual: 0,
+                                loginid: 'CRW10002',
+                            },
+                            {
+                                account_category: 'wallet',
+                                currency: 'UST',
+                                is_virtual: 0,
+                                loginid: 'CRW10003',
+                            },
+                            {
+                                account_category: 'wallet',
+                                currency: 'BTC',
+                                is_virtual: 1,
+                                loginid: 'VRW10001',
+                            },
+                            {
+                                account_category: 'wallet',
+                                currency: 'AUD',
+                                is_virtual: 0,
+                                loginid: 'CRW10004',
+                            },
+                            {
+                                account_category: 'wallet',
+                                currency: 'ETH',
+                                is_virtual: 0,
+                                loginid: 'CRW10005',
+                            },
+                        ],
+                    },
+                },
+            };
+        } else if (name === 'balance') {
+            return {
+                data: {
+                    balance: {
+                        accounts: {
+                            CRW909900: {
+                                balance: 0,
+                            },
+                        },
+                    },
+                },
+            };
+        } else if (name === 'website_status') {
+            return {
+                data: {
+                    website_status: {
+                        currencies_config: {
+                            AUD: { type: 'fiat' },
+                            BTC: { type: 'crypto' },
+                            ETH: { type: 'crypto' },
+                            UST: { type: 'crypto' },
+                            USD: { type: 'fiat' },
+                        },
+                    },
+                },
+            };
+        }
+
+        return undefined;
+    }),
+}));
 
 jest.mock('./../cards-slider-swiper', () => jest.fn(() => <div>slider</div>));
 
 describe('<WalletCardsCarousel />', () => {
-    const items: TWalletAccount[] = [
-        {
-            name: 'USD',
-            currency: 'USD',
-            icon: '',
-            balance: 10784,
-            icon_type: 'fiat',
-            landing_company_name: 'svg',
-            is_disabled: 0,
-            is_demo: false,
-            loginid: 'CRW10001',
-        },
-        {
-            name: 'Demo USD',
-            currency: 'USD',
-            icon: '',
-            balance: 100000,
-            icon_type: 'fiat',
-            landing_company_name: 'svg',
-            is_disabled: 0,
-            is_demo: true,
-            loginid: 'CRW10002',
-        },
-    ];
-
     it('Should render slider', () => {
-        render(
-            <StoreProvider store={mockedRootStore}>
-                <WalletCardsCarousel items={items} />
-            </StoreProvider>
+        const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
         );
+
+        render(<WalletCardsCarousel />, { wrapper });
         const slider = screen.queryByText('slider');
 
         expect(slider).toBeInTheDocument();
     });
 
     it('Should render buttons for REAL', () => {
-        render(
-            <StoreProvider store={mockedRootStore}>
-                <WalletCardsCarousel items={items} />
-            </StoreProvider>
+        const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
         );
+
+        render(<WalletCardsCarousel />, { wrapper });
 
         const btn1 = screen.queryByText(/Deposit/i);
         const btn2 = screen.queryByText(/Withdraw/i);
@@ -65,12 +126,15 @@ describe('<WalletCardsCarousel />', () => {
     });
 
     it('Should render buttons for DEMO', () => {
-        mockedRootStore.client.loginid = 'CRW10002';
-        render(
-            <StoreProvider store={mockedRootStore}>
-                <WalletCardsCarousel items={items} />
-            </StoreProvider>
+        const mock = mockStore({ client: { accounts: { VRW10001: { token: '12345' } }, loginid: 'VRW10001' } });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
         );
+
+        render(<WalletCardsCarousel />, { wrapper });
 
         const btn1 = screen.queryByText(/Transfer/i);
         const btn2 = screen.queryByText(/Transactions/i);

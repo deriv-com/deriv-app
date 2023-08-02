@@ -243,7 +243,7 @@ const ProofOfAddressForm = observer(
                                                         const needs_poi =
                                                             needs_verification.length &&
                                                             needs_verification.includes('identity');
-                                                        onSubmit({ has_poi });
+                                                        onSubmit(has_poi);
                                                         removeNotificationMessage({ key: 'authenticate' });
                                                         removeNotificationByKey({ key: 'authenticate' });
                                                         removeNotificationMessage({ key: 'needs_poa' });

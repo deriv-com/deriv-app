@@ -1,6 +1,8 @@
 import React from 'react';
-import { Button, Loading, useStateCallback } from '@deriv/components';
+import { AccountStatusResponse, GetAccountStatus } from '@deriv/api-types';
+import { Button, Loading } from '@deriv/components';
 import { WS, getPlatformRedirect, platforms } from '@deriv/shared';
+import { TCoreStores } from '@deriv/stores/types';
 import { Localize } from '@deriv/translations';
 import Expired from '../../../Components/poa/status/expired';
 import NeedsReview from '../../../Components/poa/status/needs-review';
@@ -12,61 +14,82 @@ import Unverified from '../../../Components/poa/status/unverified';
 import Verified from '../../../Components/poa/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification';
 
+type TProofOfAddressContainer = {
+    is_mx_mlt?: boolean;
+    is_switching?: boolean;
+    has_restricted_mt5_account?: boolean;
+    refreshNotifications: TCoreStores['notifications']['refreshNotifications'];
+    app_routing_history: TCoreStores['portfolio']['error']['app_routing_history'];
+};
+
+type TAuthenticationStatus = Record<
+    | 'allow_document_upload'
+    | 'allow_poi_resubmission'
+    | 'allow_poa_resubmission'
+    | 'is_age_verified'
+    | 'has_poi'
+    | 'has_submitted_poa'
+    | 'needs_poa'
+    | 'needs_poi'
+    | 'poa_address_mismatch'
+    | 'resubmit_poa',
+    boolean
+> & { document_status?: DeepRequired<GetAccountStatus>['authentication']['document']['status'] };
+
 const ProofOfAddressContainer = ({
     is_mx_mlt,
     is_switching,
     has_restricted_mt5_account,
     refreshNotifications,
     app_routing_history,
-}) => {
+}: TProofOfAddressContainer) => {
     const [is_loading, setIsLoading] = React.useState(true);
-    const [authentication_status, setAuthenticationStatus] = useStateCallback({
+    const [authentication_status, setAuthenticationStatus] = React.useState<TAuthenticationStatus>({
         allow_document_upload: false,
         allow_poi_resubmission: false,
+        allow_poa_resubmission: false,
         needs_poi: false,
         needs_poa: false,
         has_poi: false,
         resubmit_poa: false,
         has_submitted_poa: false,
-        document_status: null,
+        document_status: undefined,
         is_age_verified: false,
         poa_address_mismatch: false,
     });
 
+    // authentication_status
+
     React.useEffect(() => {
         if (!is_switching) {
-            WS.authorized.getAccountStatus().then(response => {
+            WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
                 const { get_account_status } = response;
-                const {
-                    allow_document_upload,
-                    allow_poa_resubmission,
-                    needs_poi,
-                    needs_poa,
-                    document_status,
-                    is_age_verified,
-                    poa_address_mismatch,
-                } = populateVerificationStatus(get_account_status);
-                const has_submitted_poa = document_status === PoaStatusCodes.pending && !allow_poa_resubmission;
+                if (get_account_status) {
+                    const {
+                        allow_document_upload,
+                        allow_poa_resubmission,
+                        needs_poi,
+                        needs_poa,
+                        document_status,
+                        is_age_verified,
+                        poa_address_mismatch,
+                    } = populateVerificationStatus(get_account_status);
+                    const has_submitted_poa = document_status === PoaStatusCodes.pending && !allow_poa_resubmission;
 
-                setAuthenticationStatus(
-                    {
+                    setAuthenticationStatus({
                         ...authentication_status,
-                        ...{
-                            allow_document_upload,
-                            allow_poa_resubmission,
-                            needs_poi,
-                            needs_poa,
-                            document_status,
-                            has_submitted_poa,
-                            is_age_verified,
-                            poa_address_mismatch,
-                        },
-                    },
-                    () => {
-                        setIsLoading(false);
-                        refreshNotifications();
-                    }
-                );
+                        allow_document_upload,
+                        allow_poa_resubmission,
+                        needs_poi,
+                        needs_poa,
+                        document_status,
+                        has_submitted_poa,
+                        is_age_verified,
+                        poa_address_mismatch,
+                    });
+                    setIsLoading(false);
+                    refreshNotifications();
+                }
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,7 +99,7 @@ const ProofOfAddressContainer = ({
         setAuthenticationStatus({ ...authentication_status, ...{ resubmit_poa: true } });
     };
 
-    const onSubmit = ({ needs_poi }) => {
+    const onSubmit = (needs_poi: boolean) => {
         setAuthenticationStatus({ ...authentication_status, ...{ has_submitted_poa: true, needs_poi } });
     };
 
@@ -93,16 +116,18 @@ const ProofOfAddressContainer = ({
 
     const from_platform = getPlatformRedirect(app_routing_history);
 
-    const should_show_redirect_btn = Object.keys(platforms).includes(from_platform?.ref);
+    const should_show_redirect_btn = Object.keys(platforms).includes(from_platform?.ref ?? '');
 
     const redirect_button = should_show_redirect_btn ? (
         <Button
             primary
             className='proof-of-identity__redirect'
             onClick={() => {
-                const url = platforms[from_platform.ref]?.url;
-                window.location.href = url;
-                window.sessionStorage.removeItem('config.platform');
+                const url = platforms[from_platform.ref as keyof typeof platforms]?.url;
+                if (url) {
+                    window.location.href = url;
+                    window.sessionStorage.removeItem('config.platform');
+                }
             }}
         >
             <Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name: from_platform.name }} />
@@ -120,15 +145,18 @@ const ProofOfAddressContainer = ({
     if (
         resubmit_poa ||
         allow_poa_resubmission ||
-        (has_restricted_mt5_account && ['expired', 'rejected', 'suspected'].includes(document_status)) ||
+        (has_restricted_mt5_account &&
+            (['expired', 'rejected', 'suspected'] as TAuthenticationStatus['document_status'][]).includes(
+                document_status
+            )) ||
         poa_address_mismatch
     ) {
-        return <ProofOfAddressForm is_resubmit onSubmit={() => onSubmit({ needs_poi })} />;
+        return <ProofOfAddressForm is_resubmit onSubmit={onSubmit} />;
     }
 
     switch (document_status) {
         case PoaStatusCodes.none:
-            return <ProofOfAddressForm onSubmit={() => onSubmit({ needs_poi })} />;
+            return <ProofOfAddressForm onSubmit={onSubmit} />;
         case PoaStatusCodes.pending:
             return <NeedsReview needs_poi={needs_poi} redirect_button={redirect_button} />;
         case PoaStatusCodes.verified:

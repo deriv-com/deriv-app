@@ -79,7 +79,7 @@ commands:
     parameters:
       docker_latest_image_tag:
         type: string
-        default: "latest"
+        default: "latest-staging"
       docker_image_tag:
         type: string
         default: ${CIRCLE_SHA1}
@@ -93,7 +93,7 @@ commands:
           name: Pushing Image to docker hub
           command: |
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-            docker push ${DOCKHUB_ORGANISATION}/deriv-static-bot
+            docker push -a ${DOCKHUB_ORGANISATION}/deriv-static-bot
   k8s_deploy:
     description: "Deploy to k8s cluster"
     parameters:

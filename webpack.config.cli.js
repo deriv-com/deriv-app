@@ -79,15 +79,18 @@ module.exports = {
                 },
                 {
                     from: 'public/index.html',
-                    to: path.resolve(__dirname, 'www'),
+                    to: path.resolve(__dirname, 'www/index.html'),
+                    toType: 'file',
                 },
                 {
                     from: 'public/beta.html',
-                    to: path.resolve(__dirname, 'www'),
+                    to: path.resolve(__dirname, 'www/beta.html'),
+                    toType: 'file',
                 },
                 {
                     from: 'public/localstorage-sync.html',
-                    to: path.resolve(__dirname, 'www'),
+                    to: path.resolve(__dirname, 'www/localstorage-sync.html'),
+                    toType: 'file',
                 },
             ],
         }),

@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { compressImageFiles, isMobile, isDesktop, readFiles } from '@deriv/shared';
 import FileUploader from '../file-uploader';
+import { DocumentUploadResponse } from '@deriv/api-types';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -123,7 +124,9 @@ describe('<FileUploader />', () => {
     it('upload function should return 0 if document is not selected', () => {
         render(<FileUploader {...props} />);
 
-        const uploadFn = props?.ref?.current?.upload();
+        const uploadFn = (
+            props?.ref as React.RefObject<HTMLElement & { upload: () => Promise<DocumentUploadResponse> }>
+        ).current?.upload();
         expect(uploadFn).toBe(0);
     });
 
@@ -140,7 +143,9 @@ describe('<FileUploader />', () => {
             expect(screen.getByText(/hello\.pdf/i)).toBeInTheDocument();
             expect(input?.files?.[0]).toBe(file);
         });
-        props?.ref?.current.upload();
+        (
+            props?.ref as React.RefObject<HTMLElement & { upload: () => Promise<DocumentUploadResponse> }>
+        ).current?.upload();
         expect(compressImageFiles).toBeCalled();
         expect(props.onFileDrop).toBeCalled();
     });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormikValues } from 'formik';
+import { FormikErrors, FormikValues } from 'formik';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
 import {
     getUrlBase,
@@ -225,7 +225,7 @@ export const generatePlaceholderText = (selected_doc: string) => {
 };
 
 export const validate =
-    (errors: Record<string, string>, values: Record<string, string>) =>
+    (errors: Record<string, string> | FormikErrors<FormikValues>, values: Record<string, string> | FormikValues) =>
     (fn: (value: string) => string, arr: string[], err_msg: string) => {
         arr.forEach(field => {
             const value = values[field];

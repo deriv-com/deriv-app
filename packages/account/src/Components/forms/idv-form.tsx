@@ -28,8 +28,8 @@ type TIDVForm = {
     hide_hint?: boolean;
     class_name?: string;
     can_skip_document_verification?: boolean;
-} & FormikHandlers &
-    FormikProps<TFormProps>;
+} & Partial<FormikHandlers> &
+    Partial<FormikProps<TFormProps>>;
 
 const IDVForm = ({
     errors,
@@ -42,7 +42,7 @@ const IDVForm = ({
     selected_country,
     hide_hint,
     can_skip_document_verification = false,
-}: Partial<TIDVForm>) => {
+}: TIDVForm) => {
     const [document_list, setDocumentList] = React.useState<TDocumentList>([]);
     const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [selected_doc, setSelectedDoc] = React.useState('');
@@ -112,7 +112,7 @@ const IDVForm = ({
 
     const onKeyUp = (e: { target: HTMLInputElement }, document_name: string) => {
         const { example_format } =
-            document_name === 'document_number' ? values.document_type : values.document_type.additional;
+            document_name === 'document_number' ? values?.document_type : values?.document_type.additional;
         let current_input: string | null = null;
         current_input = example_format.includes('-')
             ? formatInput(example_format, current_input ?? e.target.value, '-')

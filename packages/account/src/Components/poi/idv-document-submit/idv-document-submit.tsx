@@ -175,7 +175,6 @@ const IdvDocumentSubmit = ({
                             setFieldValue={setFieldValue}
                             hide_hint={false}
                             selected_country={selected_country}
-                            is_from_external={is_from_external}
                             class_name='idv-layout'
                         />
 

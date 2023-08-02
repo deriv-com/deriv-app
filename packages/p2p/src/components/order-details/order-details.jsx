@@ -65,6 +65,11 @@ const OrderDetails = observer(() => {
     } = order_store?.order_information;
 
     const { chat_channel_url } = sendbird_store;
+    const should_send_admin_message =
+        buy_sell_store.is_create_order_subscribed &&
+        sendbird_store.chat_messages.length === 0 &&
+        sendbird_store.chat_channel_url &&
+        !sendbird_store.is_chat_loading;
 
     const [should_expand_all, setShouldExpandAll] = React.useState(false);
     const [remaining_review_time, setRemainingReviewTime] = React.useState(null);
@@ -195,7 +200,7 @@ const OrderDetails = observer(() => {
     );
     const rate_amount = removeTrailingZeros(formatMoney(local_currency, rate, true, 6));
 
-    if (buy_sell_store.is_create_order_subscribed && sendbird_store.chat_messages.length === 0) {
+    if (should_send_admin_message) {
         sendbird_store.sendMessage(admin_message, ChatMessage.TYPE_ADMIN);
     }
 

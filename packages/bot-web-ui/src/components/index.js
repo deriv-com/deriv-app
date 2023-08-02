@@ -13,7 +13,6 @@ export { default as NetworkToastPopup } from './network-toast-popup';
 export { arrayAsMessage, messageWithButton, messageWithImage } from './notify-item';
 export { default as RoutePromptDialog } from './route-prompt-dialog';
 export { default as RunPanel } from './run-panel';
-export { default as SaveModal } from './save-modal';
 export { default as SelfExclusion } from './self-exclusion';
 export { default as Summary } from './summary';
 export { default as TradeAnimation } from './trade-animation';

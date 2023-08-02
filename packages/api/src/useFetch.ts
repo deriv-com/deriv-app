@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { getQueryKeys, send } from './utils';
+import { isAuthorized, getQueryKeys, send } from './utils';
+
 import type {
     TSocketAcceptableProps,
     TSocketEndpointNames,
@@ -13,7 +14,12 @@ const useFetch = <T extends TSocketEndpointNames>(name: T, ...props: TSocketAcce
     const payload = prop && 'payload' in prop ? (prop.payload as TSocketRequestPayload<T>) : undefined;
     const options = prop && 'options' in prop ? (prop.options as TSocketRequestQueryOptions<T>) : undefined;
 
-    return useQuery<TSocketResponseData<T>, unknown>(getQueryKeys(name, payload), () => send(name, payload), options);
+    const is_authorized = isAuthorized(name);
+
+    return useQuery<TSocketResponseData<T>, unknown>(getQueryKeys(name, payload), () => send(name, payload), {
+        ...options,
+        enabled: options?.enabled ?? is_authorized,
+    });
 };
 
 export default useFetch;

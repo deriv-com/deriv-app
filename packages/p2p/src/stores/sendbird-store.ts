@@ -1,6 +1,6 @@
 import SendbirdChat, { BaseChannel } from '@sendbird/chat';
 import { epochToMoment, toMoment } from '@deriv/shared';
-import { action, computed, observable, reaction, makeObservable, IReactionDisposer, when } from 'mobx';
+import { action, computed, observable, reaction, makeObservable, IReactionDisposer } from 'mobx';
 import BaseStore from 'Stores/base_store';
 import ChatMessage, { convertFromChannelMessage } from 'Utils/chat-message';
 import { requestWS } from 'Utils/websocket';

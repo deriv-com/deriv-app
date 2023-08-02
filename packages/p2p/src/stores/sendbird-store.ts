@@ -12,7 +12,7 @@ import { P2PAdvertiserCreate, P2PAdvertiserInfo } from '@deriv/api-types';
 type TChatInfo = { app_id: string; user_id: string; token?: string };
 
 export default class SendbirdStore extends BaseStore {
-    active_chat_channel?: GroupChannel;
+    active_chat_channel: GroupChannel | null = null;
     chat_channel_url: string | null = null;
     chat_info: TChatInfo = { app_id: '', user_id: '' };
     chat_messages: Array<ChatMessage> = [];
@@ -101,7 +101,7 @@ export default class SendbirdStore extends BaseStore {
         this.chat_messages.splice(idx_to_replace, num_items_to_delete, chat_message);
     }
 
-    setActiveChatChannel(active_chat_channel: GroupChannel) {
+    setActiveChatChannel(active_chat_channel: GroupChannel | null) {
         this.active_chat_channel = active_chat_channel;
     }
 
@@ -172,7 +172,6 @@ export default class SendbirdStore extends BaseStore {
         this.setIsChatLoading(true);
         try {
             const group_channel = await this.sendbird_api?.groupChannel.getChannel(this.chat_channel_url ?? '');
-
             if (!group_channel) {
                 this.setHasChatError(true);
             } else {
@@ -244,7 +243,6 @@ export default class SendbirdStore extends BaseStore {
 
                 const { server_time } = this.root_store.general_store;
                 const { service_token } = service_token_response;
-
                 this.setChatInfo({
                     app_id: service_token.sendbird.app_id,
                     token: service_token.sendbird.token,
@@ -353,6 +351,7 @@ export default class SendbirdStore extends BaseStore {
                     this.setChannelMessages([]);
                     this.setIsChatLoading(true);
                     this.setShouldShowChatModal(false);
+                    this.setActiveChatChannel(null);
                 }
             }
         );
@@ -371,13 +370,16 @@ export default class SendbirdStore extends BaseStore {
             { fireImmediately: true }
         );
 
-        this.disposeActiveChatChannelReaction = when(
-            () => !!this.active_chat_channel,
-            () => {
-                (async () => {
-                    await this.initialiseOrderMessages();
-                })();
-            }
+        this.disposeActiveChatChannelReaction = reaction(
+            () => this.active_chat_channel,
+            active_chat_channel => {
+                if (active_chat_channel) {
+                    this.initialiseOrderMessages();
+                } else {
+                    this.setChannelMessages([]);
+                }
+            },
+            { fireImmediately: true }
         );
 
         return () => {

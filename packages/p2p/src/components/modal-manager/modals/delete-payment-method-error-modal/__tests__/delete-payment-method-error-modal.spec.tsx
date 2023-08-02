@@ -1,9 +1,9 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores/index';
 import DeletePaymentMethodErrorModal from '../delete-payment-method-error-modal';
-import userEvent from '@testing-library/user-event';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     my_profile_store: {

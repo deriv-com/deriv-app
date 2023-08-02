@@ -3,6 +3,7 @@ import { screen, render } from '@testing-library/react';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores/index';
 import DeletePaymentMethodErrorModal from '../delete-payment-method-error-modal';
+import userEvent from '@testing-library/user-event';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     my_profile_store: {
@@ -43,5 +44,14 @@ describe('<DeletePaymentMethodErrorModal />', () => {
         expect(screen.getByText('That payment method cannot be deleted')).toBeInTheDocument();
         expect(screen.getByText('error message')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Ok' })).toBeInTheDocument();
+    });
+
+    it('should call hideModal when clicking on the Ok button', () => {
+        render(<DeletePaymentMethodErrorModal />);
+
+        const ok_button = screen.getByRole('button', { name: 'Ok' });
+        userEvent.click(ok_button);
+
+        expect(mock_modal_manager.hideModal).toHaveBeenCalledTimes(1);
     });
 });

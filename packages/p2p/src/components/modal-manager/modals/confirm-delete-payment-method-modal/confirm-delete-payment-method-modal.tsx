@@ -7,6 +7,8 @@ import { useStores } from 'Stores';
 const ConfirmDeletePaymentMethodModal = () => {
     const { my_profile_store } = useStores();
     const { hideModal, is_modal_open } = useModalManagerContext();
+    const { payment_method_to_delete, onClickDelete } = my_profile_store;
+    const { display_name, fields } = payment_method_to_delete;
 
     return (
         <Modal
@@ -18,10 +20,7 @@ const ConfirmDeletePaymentMethodModal = () => {
                     <Localize
                         i18n_default_text='Delete {{payment_method_name}}?'
                         values={{
-                            payment_method_name:
-                                my_profile_store?.payment_method_to_delete?.fields?.bank_name?.value ||
-                                my_profile_store?.payment_method_to_delete?.fields?.name?.value ||
-                                my_profile_store?.payment_method_to_delete?.display_name,
+                            payment_method_name: fields?.bank_name?.value || fields?.name?.value || display_name,
                         }}
                     />
                 </Text>
@@ -33,13 +32,7 @@ const ConfirmDeletePaymentMethodModal = () => {
                 </Text>
             </Modal.Body>
             <Modal.Footer>
-                <Button
-                    has_effect
-                    text={localize('Yes, remove')}
-                    onClick={my_profile_store.onClickDelete}
-                    secondary
-                    large
-                />
+                <Button has_effect text={localize('Yes, remove')} onClick={onClickDelete} secondary large />
                 <Button has_effect text={localize('No')} onClick={hideModal} primary large />
             </Modal.Footer>
         </Modal>

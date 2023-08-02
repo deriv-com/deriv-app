@@ -1,5 +1,6 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores/index';
 import ConfirmDeletePaymentMethodModal from '../confirm-delete-payment-method-modal';
@@ -47,5 +48,23 @@ describe('<ConfirmDeletePaymentMethodModal />', () => {
         expect(screen.getByText('Are you sure you want to remove this payment method?')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Yes, remove' })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'No' })).toBeInTheDocument();
+    });
+
+    it('should call onClickDelete when deleting a payment method', () => {
+        render(<ConfirmDeletePaymentMethodModal />);
+
+        const remove_button = screen.getByRole('button', { name: 'Yes, remove' });
+        userEvent.click(remove_button);
+
+        expect(mock_store.my_profile_store.onClickDelete).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call hideModal when user clicks No', () => {
+        render(<ConfirmDeletePaymentMethodModal />);
+
+        const no_button = screen.getByRole('button', { name: 'No' });
+        userEvent.click(no_button);
+
+        expect(mock_modal_manager.hideModal).toHaveBeenCalledTimes(1);
     });
 });

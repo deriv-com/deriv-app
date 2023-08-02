@@ -17,10 +17,10 @@ const MockComponent = ({ prevStep, nextStep }) => (
     </div>
 );
 
-jest.mock('@deriv/account/src/Sections/Verification/ProofOfAddress', () =>
+jest.mock('../../Components/cfd-poa', () =>
     jest.fn(({ onCancel, onSubmit }) => (
         <div>
-            ProofOfAddress
+            CFDPOA
             <MockComponent prevStep={onCancel} nextStep={onSubmit} />
         </div>
     ))
@@ -33,7 +33,6 @@ jest.mock('../../Components/cfd-poi', () =>
         </div>
     ))
 );
-
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     getAuthenticationStatusInfo: jest.fn().mockReturnValue({}),
@@ -62,7 +61,7 @@ const steps = [
         body: 'CFDPOI',
     },
     {
-        body: 'ProofOfAddress',
+        body: 'CFDPOA',
     },
 ];
 

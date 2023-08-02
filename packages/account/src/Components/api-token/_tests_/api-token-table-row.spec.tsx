@@ -13,13 +13,21 @@ describe('ApiTokenTableRow', () => {
     };
     it('should render ApiTokenTableRow', () => {
         render(<ApiTokenTableRow {...mock_props} />);
-        expect(screen.getByText('Api Token')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_hidden_tokens')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_copy_token_icon')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_toggle_visibility_icon')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_token_delete_icon')).toBeInTheDocument();
-        expect(screen.getByText('Api scope 1')).toBeInTheDocument();
-        expect(screen.getByText('Api scope 2')).toBeInTheDocument();
-        expect(screen.getByText('31/12/2022')).toBeInTheDocument();
+        const texts = ['Api Token', 'Api scope 1', 'Api scope 2', '31/12/2022'];
+
+        const test_ids = [
+            'dt_hidden_tokens',
+            'dt_copy_token_icon',
+            'dt_toggle_visibility_icon',
+            'dt_token_delete_icon',
+        ];
+
+        texts.forEach(text => {
+            expect(screen.getByText(text)).toBeInTheDocument();
+        });
+
+        test_ids.forEach(test_id => {
+            expect(screen.getByTestId(test_id)).toBeInTheDocument();
+        });
     });
 });

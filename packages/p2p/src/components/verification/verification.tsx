@@ -56,6 +56,8 @@ const Verification = () => {
         },
     ];
 
+    if (general_store.should_show_popup) return <></>;
+
     return (
         <div className='verification' data-testid='dt_verification_container'>
             <Icon icon='IcCashierSendEmail' className='verification__icon' size={102} />

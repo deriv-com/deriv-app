@@ -155,7 +155,7 @@ commands:
 jobs:
   test:
     docker:
-      - image: cimg/node:12.18
+      - image: cimg/node:18.16
     steps:
       - git_checkout_from_cache
       - npm_install
@@ -163,7 +163,7 @@ jobs:
 
   release_staging:
     docker:
-      - image: cimg/node:12.18
+      - image: cimg/node:18.16
     steps:
       - git_checkout_from_cache
       - npm_install

@@ -92,7 +92,7 @@ const ContractTypeWidget = ({
 
     const list_with_category = () => {
         const contract_type_category_icon = getContractTypeCategoryIcons();
-        const order_arr = ['Accumulators', 'Vanillas', 'Multipliers', 'Ups & Downs', 'Highs & Lows', 'Digits'];
+        const order_arr = ['Accumulators', 'Multipliers', 'Vanillas', 'Ups & Downs', 'Highs & Lows', 'Digits'];
         const ordered_list = list.sort((a, b) => order_arr.indexOf(a.key) - order_arr.indexOf(b.key));
         const ordered_unavailable_types_list = unavailable_trade_types_list
             .sort((a, b) => order_arr.indexOf(a.key) - order_arr.indexOf(b.key))

@@ -17,6 +17,18 @@ jest.mock('Stores', () => ({
     }),
 }));
 
+jest.mock('@sendbird/chat', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/groupChannel', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/message', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
 describe('<FloatingRate/>', () => {
     it('should render default state of the component with hint message and increment, decrement buttons', () => {
         render(<FloatingRate />, {
@@ -25,7 +37,7 @@ describe('<FloatingRate/>', () => {
         });
 
         expect(screen.getByText('of the market rate')).toBeInTheDocument();
-        expect(screen.getAllByRole('button').length).toBe(2);
+        expect(screen.getAllByRole('button')).toHaveLength(2);
     });
 
     it('should display error messages when error is passed as props', () => {

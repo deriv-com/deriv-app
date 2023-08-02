@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { isAuthorized, getQueryKeys, send } from './utils';
+
 import type {
     TSocketAcceptableProps,
     TSocketEndpointNames,

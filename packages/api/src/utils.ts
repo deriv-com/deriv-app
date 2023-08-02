@@ -67,11 +67,10 @@ const AUTH_REQUIRED_ENDPOINTS = [
 export const isAuthorized = (name: TSocketEndpointNames) => {
     let is_authorized = true;
 
-    const accounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
-    const active_loginid = localStorage.getItem('active_loginid');
-    const current_token = accounts?.[active_loginid || '']?.token;
-
     if (AUTH_REQUIRED_ENDPOINTS.includes(name)) {
+        const accounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
+        const active_loginid = localStorage.getItem('active_loginid');
+        const current_token = accounts?.[active_loginid || '']?.token;
         const state = queryClient.getQueryState<TSocketResponseData<'authorize'>>([
             'authorize',
             JSON.stringify({ authorize: current_token }),

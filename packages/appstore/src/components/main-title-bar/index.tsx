@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, DesktopWrapper, MobileWrapper, Tabs, Icon } from '@deriv/components';
+import { useHasWallet, useFeatureFlags } from '@deriv/hooks';
 import { ContentFlag } from '@deriv/shared';
 import AccountTypeDropdown from './account-type-dropdown';
 import AssetSummary from './asset-summary';
@@ -27,6 +28,11 @@ const MainTitleBar = () => {
 
     const [active_index, setActiveIndex] = React.useState(selected_region === 'Non-EU' ? 0 : 1);
 
+    const { is_wallet_enabled } = useFeatureFlags();
+    const has_wallet = useHasWallet();
+
+    const should_show_banner = is_wallet_enabled && !has_wallet;
+
     // TODO: Remove this when we have BE API ready
     removeAllNotificationMessages();
 
@@ -38,10 +44,7 @@ const MainTitleBar = () => {
     return (
         <React.Fragment>
             <DesktopWrapper>
-                {/* TODO: This is for testing purposes only */}
-                <button onClick={() => setWalletsMigrationFailedPopup(true)}>Modal wallet migration failed</button>
-                {/* TODO: Add logic to show and hide the banner here */}
-                <WalletsBanner />
+                {should_show_banner && <WalletsBanner />}
                 <div className='main-title-bar'>
                     <div className='main-title-bar__right'>
                         <Text size='m' weight='bold' color='prominent'>
@@ -54,7 +57,7 @@ const MainTitleBar = () => {
                 </div>
             </DesktopWrapper>
             <MobileWrapper>
-                <WalletsBanner />
+                {should_show_banner && <WalletsBanner />}
                 <Text weight='bold' className='main-title-bar__text' color='prominent'>
                     {localize("Trader's Hub")}
                 </Text>

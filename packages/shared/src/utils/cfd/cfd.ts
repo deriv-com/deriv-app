@@ -252,7 +252,7 @@ export const getCFDPlatformLabel = (platform: TPlatform) => {
         case CFD_PLATFORMS.DERIVEZ:
             return 'Deriv EZ';
         case CFD_PLATFORMS.CTRADER:
-            return 'cTrader';
+            return 'Deriv cTrader';
         default:
             return '';
     }

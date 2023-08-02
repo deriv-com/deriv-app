@@ -834,7 +834,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             if (platform === 'dxtrade' && type_label === 'Derived') {
                 return 'Synthetic';
             } else if (platform === 'derivez' || platform === 'ctrader') {
-                return 'CFD';
+                return 'CFDs';
             }
             return type_label;
         };

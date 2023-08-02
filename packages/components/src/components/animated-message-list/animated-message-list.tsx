@@ -3,10 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import classNames from 'classnames';
 import './animated-message-list.scss';
 
-type TMessageListProps<T> = {
+type TMessageListProps = {
     className?: string;
-    list: (T & { id: string })[];
-    Element: React.FC<T>;
 };
 
 const animations = {
@@ -39,14 +37,14 @@ const animations = {
     },
 };
 
-const AnimatedMessageList = <T,>({ className, list, Element }: TMessageListProps<T>) => {
+const AnimatedMessageList = ({ className, children }: React.PropsWithChildren<TMessageListProps>) => {
     return (
         <div className={classNames('animated-message-list', className)}>
             <AnimatePresence>
-                {list.map(list_item => {
+                {React.Children.toArray(children).map((child, index) => {
                     return (
-                        <motion.div {...animations} layout key={list_item.id} data-testid='dt_list_item'>
-                            <Element {...list_item} />
+                        <motion.div {...animations} layout key={index} data-testid='dt_list_item'>
+                            {child}
                         </motion.div>
                     );
                 })}

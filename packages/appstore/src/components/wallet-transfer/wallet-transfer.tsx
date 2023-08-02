@@ -224,7 +224,11 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                     value={from_account}
                                 />
                             </div>
-                            <AnimatedMessageList list={message_list} Element={AlertMessage} />
+                            <AnimatedMessageList>
+                                {message_list.map((item, index) => (
+                                    <AlertMessage key={index} {...item} />
+                                ))}
+                            </AnimatedMessageList>
                             <div className='wallet-transfer__tile'>
                                 <Field name='to_amount'>
                                     {({ field }: FieldProps<number>) => (

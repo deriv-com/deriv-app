@@ -320,14 +320,12 @@ const getModules = () => {
                             component: P2P,
                             getTitle: () => localize('My profile'),
                         },
+                        {
+                            path: routes.p2p_verification,
+                            component: P2P,
+                            getTitle: () => localize('P2P verification'),
+                        },
                     ],
-                },
-                {
-                    path: routes.p2p_verification,
-                    component: Cashier,
-                    getTitle: () => localize('P2P verification'),
-                    icon_component: 'IcDp2p',
-                    is_invisible: true,
                 },
                 {
                     id: 'gtm-onramp-tab',

@@ -32,6 +32,7 @@ export interface IDashboardStore {
     setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => void;
     setOpenSettings: (toast_message: string, show_toast: boolean) => void;
     setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
+    setStrategySaveType: (param: string) => void;
     show_toast: boolean;
     showVideoDialog: (param: { [key: string]: string }) => void;
     strategy_save_type: string;

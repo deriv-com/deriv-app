@@ -38,7 +38,6 @@ export default class GeneralStore extends BaseStore {
     is_high_risk = false;
     is_listed = false;
     is_loading = false;
-    is_modal_open = false;
     is_p2p_blocked_for_pa = false;
     is_restricted = false;
     nickname = null;
@@ -54,7 +53,6 @@ export default class GeneralStore extends BaseStore {
     should_show_popup = false;
     user_blocked_count = 0;
     user_blocked_until = null;
-    is_modal_open = false;
 
     list_item_limit = isMobile() ? 10 : 50;
     path = {
@@ -115,7 +113,6 @@ export default class GeneralStore extends BaseStore {
             should_show_popup: observable,
             user_blocked_count: observable,
             user_blocked_until: observable,
-            is_modal_open: observable,
             active_tab_route: computed,
             blocked_until_date_time: computed,
             is_active_tab: computed,
@@ -158,7 +155,6 @@ export default class GeneralStore extends BaseStore {
             setIsLoading: action.bound,
             setIsP2pBlockedForPa: action.bound,
             setIsRestricted: action.bound,
-            setIsModalOpen: action.bound,
             setNickname: action.bound,
             setNicknameError: action.bound,
             setOrderTableType: action.bound,
@@ -714,10 +710,6 @@ export default class GeneralStore extends BaseStore {
 
     setIsRestricted(is_restricted) {
         this.is_restricted = is_restricted;
-    }
-
-    setIsModalOpen(is_modal_open) {
-        this.is_modal_open = is_modal_open;
     }
 
     setNickname(nickname) {

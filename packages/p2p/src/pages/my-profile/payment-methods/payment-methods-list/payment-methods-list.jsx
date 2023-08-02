@@ -1,21 +1,13 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import {
-    Button,
-    DesktopWrapper,
-    MobileFullPageModal,
-    MobileWrapper,
-    Modal,
-    Text,
-    ThemedScrollbars,
-} from '@deriv/components';
+import { Button, DesktopWrapper, MobileFullPageModal, MobileWrapper, Text, ThemedScrollbars } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
 import PaymentMethodCard from '../payment-method-card';
 
 const PaymentMethodsList = () => {
-    const { general_store, my_profile_store } = useStores();
+    const { my_profile_store } = useStores();
 
     const independent_categories = ['bank_transfer', 'other'];
 
@@ -137,48 +129,6 @@ const PaymentMethodsList = () => {
                     </div>
                 </MobileFullPageModal>
             </MobileWrapper>
-            <Modal
-                is_open={my_profile_store.is_confirm_delete_modal_open}
-                small
-                has_close_icon={false}
-                onMount={() => general_store.setIsModalOpen(true)}
-                onUnmount={() => general_store.setIsModalOpen(false)}
-                title={
-                    <Text color='prominent' weight='bold'>
-                        <Localize
-                            i18n_default_text='Delete {{payment_method_name}}?'
-                            values={{
-                                payment_method_name:
-                                    my_profile_store?.payment_method_to_delete?.fields?.bank_name?.value ||
-                                    my_profile_store?.payment_method_to_delete?.fields?.name?.value ||
-                                    my_profile_store?.payment_method_to_delete?.display_name,
-                            }}
-                        />
-                    </Text>
-                }
-            >
-                <Modal.Body className='payment-methods-list__modal-wrapper'>
-                    <Text as='p' size='xs' color='prominent'>
-                        <Localize i18n_default_text='Are you sure you want to remove this payment method?' />
-                    </Text>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        has_effect
-                        text={localize('Yes, remove')}
-                        onClick={my_profile_store.onClickDelete}
-                        secondary
-                        large
-                    />
-                    <Button
-                        has_effect
-                        text={localize('No')}
-                        onClick={() => my_profile_store.setIsConfirmDeleteModalOpen(false)}
-                        primary
-                        large
-                    />
-                </Modal.Footer>
-            </Modal>
         </>
     );
 };

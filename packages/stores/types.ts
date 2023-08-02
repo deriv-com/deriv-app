@@ -641,6 +641,8 @@ type TTradersHubStore = {
     setWalletModalActiveTab: (tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions') => void;
     active_modal_wallet_id?: string;
     setWalletModalActiveWalletID: (wallet_id?: string) => void;
+    is_mt5_notificaiton_modal_visible: boolean;
+    setMT5NotificationModal: (value: boolean) => void;
 };
 
 /**

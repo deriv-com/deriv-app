@@ -19,7 +19,7 @@ const WalletCardsCarousel = observer(() => {
             <CardsSliderSwiper />
             <div className='wallet-cards-carousel__buttons'>
                 {wallet_buttons.map(button => {
-                    button.action = async () => {
+                    button.action = () => {
                         setWalletModalActiveTab(button.name);
                         setIsWalletModalVisible(true);
                         setWalletModalActiveWalletID(active_wallet?.loginid);

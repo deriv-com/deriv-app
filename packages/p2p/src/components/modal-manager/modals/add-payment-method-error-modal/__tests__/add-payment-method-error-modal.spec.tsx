@@ -47,7 +47,7 @@ describe('<AddPaymentMethodErrorModal />', () => {
     it('should close the modal on clicking ok button', () => {
         render(<AddPaymentMethodErrorModal />);
 
-        const ok_button = screen.getByText('Ok');
+        const ok_button = screen.getByRole('button', { name: 'Ok' });
         ok_button.click();
         expect(mock_modal_manager.hideModal).toBeCalledWith({
             should_save_form_history: true,

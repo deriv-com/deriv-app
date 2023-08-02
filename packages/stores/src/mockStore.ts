@@ -383,6 +383,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTogglePlatformType: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
             selectAccountType: jest.fn(),
+            is_mt5_notificaiton_modal_visible: false,
+            setMT5NotificationModal: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

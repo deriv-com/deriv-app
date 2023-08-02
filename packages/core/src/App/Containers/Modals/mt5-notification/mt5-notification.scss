@@ -2,14 +2,16 @@
     &-body {
         border-top: 2px solid #f2f3f4;
     }
-    &-mobile {
-        margin: 2rem;
-        &--button {
-            display: flex;
-            width: 100%;
-        }
-        &--footer {
-            padding: 1rem 1.6rem !important;
+    @include mobile {
+        &-description {
+            margin: 2rem;
+            &--button {
+                display: flex;
+                width: 100%;
+            }
+            &--footer {
+                padding: 1rem 1.6rem;
+            }
         }
     }
 }
@@ -21,7 +23,7 @@
         font-size: 1.6rem;
         color: var(--text-general);
         &-item {
-            list-style: decimal !important;
+            list-style: decimal;
         }
     }
     &-contact {

@@ -6,12 +6,8 @@ import { localize } from '@deriv/translations';
 import MT5NotificationDescription from './mt5-notification-description';
 
 const MT5Notification = ({ setMT5NotificationModal, is_mt5_notificaiton_modal_visible, disableApp, enableApp }) => {
-    const onclickFunc = () => {
-        if (is_mt5_notificaiton_modal_visible) {
-            setMT5NotificationModal(false);
-        } else {
-            setMT5NotificationModal(true);
-        }
+    const clickHandler = () => {
+        setMT5NotificationModal(!is_mt5_notificaiton_modal_visible);
     };
 
     return (
@@ -23,7 +19,7 @@ const MT5Notification = ({ setMT5NotificationModal, is_mt5_notificaiton_modal_vi
                     has_close_icon={false}
                     is_open={is_mt5_notificaiton_modal_visible}
                     title={localize('Trouble accessing Deriv MT5 on your mobile?')}
-                    toggleModal={onclickFunc}
+                    toggleModal={clickHandler}
                     className='mt5-notification-modal'
                     height='455px'
                     width='510px'
@@ -46,7 +42,7 @@ const MT5Notification = ({ setMT5NotificationModal, is_mt5_notificaiton_modal_vi
             <MobileWrapper>
                 <MobileDialog
                     portal_element_id='modal_root'
-                    wrapper_classname='mt5-notification-modal-mobile'
+                    wrapper_classname='mt5-notification-modal-description'
                     title={localize('Trouble accessing Deriv MT5 on your mobile?')}
                     visible={is_mt5_notificaiton_modal_visible}
                     onClose={() => {
@@ -55,9 +51,9 @@ const MT5Notification = ({ setMT5NotificationModal, is_mt5_notificaiton_modal_vi
                     has_full_height
                     has_close_icon={false}
                     footer={
-                        <div className='mt5-notification-modal-mobile--footer'>
+                        <div className='mt5-notification-modal-description--footer'>
                             <Button
-                                className='mt5-notification-modal-mobile--button'
+                                className='mt5-notification-modal-description--button'
                                 primary
                                 onClick={() => setMT5NotificationModal(false)}
                             >

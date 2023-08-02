@@ -1,11 +1,10 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
 const MT5NotificationDescription = () => {
     return (
-        <div className={isMobile() ? 'mt5-notification-modal-mobile' : ''}>
+        <div className={'mt5-notification-modal-description'}>
             <Text as='p' size='xs'>
                 <Localize i18n_default_text='Follow these simple steps to fix it:' />
             </Text>

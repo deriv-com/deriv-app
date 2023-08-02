@@ -8,6 +8,7 @@ import ReadyToUpgradeWallets from './components/ready-to-upgrade-wallets';
 import './real-wallets-upgrade.scss';
 import WalletLinkingStep from './wallet-linking-step/wallet-linking-step';
 import mock_wallet_migration_response from '../../../constants/mock_wallet_migration_response';
+import { useWalletMigration } from '@deriv/hooks';
 
 const RealWalletsUpgrade = observer(() => {
     const { traders_hub } = useStore();
@@ -29,6 +30,13 @@ const RealWalletsUpgrade = observer(() => {
     const handleBack = () => setCurrentStep(prev_step => prev_step - 1);
 
     const handleClose = () => toggleWalletsUpgrade(false);
+
+    const { start_migration } = useWalletMigration();
+
+    const upgradeToWallets = () => {
+        start_migration();
+        toggleWalletsUpgrade(false);
+    };
 
     const toggleCheckbox = React.useCallback(() => {
         setIsDisabled(prevDisabled => !prevDisabled);
@@ -73,7 +81,7 @@ const RealWalletsUpgrade = observer(() => {
                     large
                     className='wallet-steps__footer-button'
                     disabled={!is_disabled}
-                    onClick={handleClose}
+                    onClick={upgradeToWallets}
                 >
                     {localize('Upgrade to Wallets')}
                 </Button>

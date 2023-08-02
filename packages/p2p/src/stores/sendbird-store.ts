@@ -1,28 +1,36 @@
-import SendBird from 'sendbird';
+import SendbirdChat, { BaseChannel } from '@sendbird/chat';
 import { epochToMoment, toMoment } from '@deriv/shared';
-import { action, computed, observable, reaction, makeObservable } from 'mobx';
+import { action, computed, observable, reaction, makeObservable, IReactionDisposer } from 'mobx';
 import BaseStore from 'Stores/base_store';
 import ChatMessage, { convertFromChannelMessage } from 'Utils/chat-message';
 import { requestWS } from 'Utils/websocket';
+import { TCoreStores } from '@deriv/stores/types';
+import { GroupChannel, GroupChannelHandler, GroupChannelModule } from '@sendbird/chat/groupChannel';
+import { BaseMessage, FileMessage, MessageType, MessageTypeFilter, UserMessage } from '@sendbird/chat/message';
+import { P2PAdvertiserCreate, P2PAdvertiserInfo } from '@deriv/api-types';
+
+type TChatInfo = { app_id: string; user_id: string; token?: string };
 
 export default class SendbirdStore extends BaseStore {
-    active_chat_channel = null;
-    chat_channel_url = null;
-    chat_info = { app_id: null, user_id: null, token: null };
-    chat_messages = [];
-    has_chat_error = null;
+    active_chat_channel?: GroupChannel;
+    chat_channel_url: string | null = null;
+    chat_info: TChatInfo = { app_id: '', user_id: '' };
+    chat_messages: Array<ChatMessage> = [];
+    has_chat_error = false;
     is_chat_loading = true;
     should_show_chat_modal = false;
     should_show_chat_on_orders = false;
-
-    file_upload_properties = null;
+    file_upload_properties: FileMessage | null = null;
     is_upload_complete = false;
-    messages_ref = null;
-    scroll_debounce = null;
-    sendbird_api = null;
-    service_token_timeout = null;
+    messages_ref: React.RefObject<HTMLDivElement> | null = null;
+    scroll_debounce?: ReturnType<typeof setTimeout>;
+    sendbird_api: ReturnType<typeof SendbirdChat.init<GroupChannelModule[]>> | null = null;
+    service_token_timeout?: ReturnType<typeof setTimeout>;
+    disposeOrderIdReaction?: IReactionDisposer;
+    disposeChannelUrlReaction?: IReactionDisposer;
+    disposeActiveChatChannelReaction?: IReactionDisposer;
 
-    constructor(root_store) {
+    constructor(root_store: TCoreStores) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
         super(root_store);
 
@@ -69,12 +77,12 @@ export default class SendbirdStore extends BaseStore {
         return message ? epochToMoment(Math.floor(message.created_at / 1000)).fromNow() : null;
     }
 
-    addChannelMessage(chat_message) {
+    addChannelMessage(chat_message: ChatMessage) {
         this.chat_messages.push(chat_message);
     }
 
     // TODO: remove when access chat_channel_url from p2p_order_create is activated in BO
-    createChatForNewOrder(id) {
+    createChatForNewOrder(id: string) {
         if (!this.chat_channel_url) {
             // If order_information doesn't have chat_channel_url this is a new order
             // and we need to instruct BE to create a chat on Sendbird's side.
@@ -89,39 +97,39 @@ export default class SendbirdStore extends BaseStore {
         }
     }
 
-    replaceChannelMessage(idx_to_replace, num_items_to_delete, chat_message) {
+    replaceChannelMessage(idx_to_replace: number, num_items_to_delete: number, chat_message: ChatMessage) {
         this.chat_messages.splice(idx_to_replace, num_items_to_delete, chat_message);
     }
 
-    setActiveChatChannel(active_chat_channel) {
+    setActiveChatChannel(active_chat_channel: GroupChannel) {
         this.active_chat_channel = active_chat_channel;
     }
 
-    setChatChannelUrl(chat_channel_url) {
+    setChatChannelUrl(chat_channel_url: string | null) {
         this.chat_channel_url = chat_channel_url;
     }
 
-    setChatInfo(chat_info) {
+    setChatInfo(chat_info: TChatInfo) {
         this.chat_info = chat_info;
     }
 
-    setHasChatError(has_chat_error) {
+    setHasChatError(has_chat_error: boolean) {
         this.has_chat_error = has_chat_error;
     }
 
-    setIsChatLoading(is_chat_loading) {
+    setIsChatLoading(is_chat_loading: boolean) {
         this.is_chat_loading = is_chat_loading;
     }
 
-    setChannelMessages(chat_messages) {
+    setChannelMessages(chat_messages: Array<ChatMessage>) {
         this.chat_messages = chat_messages;
     }
 
-    setShouldShowChatModal(should_show_chat_modal) {
+    setShouldShowChatModal(should_show_chat_modal: boolean) {
         this.should_show_chat_modal = should_show_chat_modal;
     }
 
-    setShouldShowChatOnOrders(should_show_chat_on_orders) {
+    setShouldShowChatOnOrders(should_show_chat_on_orders: boolean) {
         this.should_show_chat_on_orders = should_show_chat_on_orders;
     }
 
@@ -130,87 +138,96 @@ export default class SendbirdStore extends BaseStore {
         this.setIsChatLoading(false);
     }
 
-    initialiseChatWsConnection() {
-        this.setFileUploadProperties(null);
-        this.setIsUploadComplete(false);
-        this.setHasChatError(false);
-        this.setIsChatLoading(true);
+    async initialiseChatWsConnection() {
+        try {
+            this.setFileUploadProperties(null);
+            this.setIsUploadComplete(false);
+            this.setHasChatError(false);
+            this.setIsChatLoading(true);
 
-        const { user_id: sendbird_user_id, token: service_token, app_id } = this.chat_info;
-        this.sendbird_api = new SendBird({ appId: app_id });
-        this.sendbird_api
-            .connect(sendbird_user_id, service_token, (user, error) => {
-                if (error) {
-                    // TODO: remove console statement and better presentation of warnings to user.
-                    // eslint-disable-next-line no-console
-                    console.warn(error);
-                    this.setChatError();
-                } else {
-                    const channel_event_handler = new this.sendbird_api.ChannelHandler();
-
-                    channel_event_handler.onMessageReceived = this.onMessageReceived.bind(this);
-                    channel_event_handler.onReadReceiptUpdated = this.onReadReceiptUpdated.bind(this);
-                    this.progressHandler = this.progressHandler.bind(this);
-                    this.sendbird_api.addChannelHandler('channel_event_handler', channel_event_handler);
-                    this.initialiseOrderChannel();
-                }
-            })
-            .catch(() => this.setChatError());
+            this.sendbird_api = SendbirdChat.init({
+                appId: this.chat_info.app_id,
+                modules: [new GroupChannelModule()],
+            });
+            const send_bird_user = await this.sendbird_api.connect(this.chat_info.user_id, this.chat_info.token);
+            if (!send_bird_user) {
+                this.setChatError();
+            } else {
+                this.sendbird_api.groupChannel.addGroupChannelHandler(
+                    'P2P_SENDBIRD_GROUP_CHANNEL_HANDLER',
+                    new GroupChannelHandler({
+                        onMessageReceived: this.onMessageReceived.bind(this),
+                        onUnreadMemberStatusUpdated: this.onReadReceiptUpdated.bind(this),
+                    })
+                );
+                await this.initialiseOrderChannel();
+            }
+        } catch (error) {
+            this.setChatError();
+        }
     }
 
-    initialiseOrderChannel() {
+    async initialiseOrderChannel() {
         this.setHasChatError(false);
         this.setIsChatLoading(true);
+        try {
+            const group_channel = await this.sendbird_api?.groupChannel.getChannel(this.chat_channel_url ?? '');
 
-        this.sendbird_api.GroupChannel.getChannel(this.chat_channel_url, (group_channel, error) => {
-            if (error) {
-                // eslint-disable-next-line no-console
-                console.warn(error);
+            if (!group_channel) {
                 this.setHasChatError(true);
             } else {
                 this.setActiveChatChannel(group_channel);
             }
+        } catch (error) {
+            this.setChatError();
+        } finally {
             this.setIsChatLoading(false);
-        }).catch(() => this.setChatError());
+        }
     }
 
-    initialiseOrderMessages() {
+    async initialiseOrderMessages() {
         this.setHasChatError(false);
-
-        this.getPreviousMessages((chat_messages, error) => {
-            if (error) {
-                // eslint-disable-next-line no-console
-                console.warn(error);
-                this.setHasChatError(true);
-            } else {
+        try {
+            const chat_messages = await this.getPreviousMessages();
+            if (chat_messages && chat_messages.length > 0) {
                 this.setChannelMessages(chat_messages.map(msg => convertFromChannelMessage(msg)));
             }
-
+        } catch (error) {
+            this.setHasChatError(true);
+        } finally {
             this.setIsChatLoading(false);
-        });
+        }
     }
 
-    getPreviousMessages(callback, timestamp = null) {
+    async getPreviousMessages(timestamp: number | null = null) {
+        if (!this.active_chat_channel) return null;
+        const chat_messages: Array<UserMessage | FileMessage> = [];
+
         const is_inclusive_of_timestamp = false;
         const result_size = 50;
         const reverse_results = false;
-        const message_type = '';
-        const custom_type = '';
+        const custom_type = [''];
 
-        this.active_chat_channel
-            .getPreviousMessagesByTimestamp(
-                timestamp || toMoment(this.root_store.general_store.server_time.get()).utc().valueOf(),
-                is_inclusive_of_timestamp,
-                result_size,
-                reverse_results,
-                message_type,
-                custom_type,
-                callback
-            )
-            .catch(() => this.setChatError());
+        const messages_timestamp =
+            timestamp ?? toMoment(this.root_store.general_store.server_time.get()).utc().valueOf();
+
+        const retrieved_messages = await this.active_chat_channel?.getMessagesByTimestamp(messages_timestamp, {
+            isInclusive: is_inclusive_of_timestamp,
+            prevResultSize: result_size,
+            nextResultSize: result_size,
+            reverse: reverse_results,
+            messageTypeFilter: MessageTypeFilter.ALL,
+            customTypesFilter: custom_type,
+        });
+        retrieved_messages?.forEach(message => {
+            if (message.isUserMessage() || message.isFileMessage()) {
+                chat_messages.push(message);
+            }
+        });
+        return chat_messages;
     }
 
-    handleP2pAdvertiserInfo(response) {
+    handleP2pAdvertiserInfo(response: Record<string, P2PAdvertiserCreate | P2PAdvertiserInfo>) {
         if (response.error) return;
         if (this.service_token_timeout) {
             // Function keeps being called by subscription in GeneralStore (onMount). If we
@@ -231,7 +248,7 @@ export default class SendbirdStore extends BaseStore {
                 this.setChatInfo({
                     app_id: service_token.sendbird.app_id,
                     token: service_token.sendbird.token,
-                    user_id: p2p_advertiser_info.chat_user_id,
+                    user_id: p2p_advertiser_info?.chat_user_id ?? '',
                 });
 
                 // Refresh chat token ±1 hour before it expires (BE will refresh the token
@@ -246,25 +263,31 @@ export default class SendbirdStore extends BaseStore {
         getSendbirdServiceToken();
     }
 
-    markMessagesAsRead(should_check_scroll) {
+    async markMessagesAsRead(should_check_scroll: boolean) {
         if (!this.active_chat_channel) return;
+        try {
+            if (document.hasFocus()) {
+                if (should_check_scroll && this.messages_ref?.current) {
+                    const { scrollHeight, scrollTop, clientHeight } = this.messages_ref.current;
+                    const is_at_bottom = scrollHeight - scrollTop === clientHeight;
 
-        if (document.hasFocus()) {
-            if (should_check_scroll && this.messages_ref?.current) {
-                const { scrollHeight, scrollTop, clientHeight } = this.messages_ref.current;
-                const is_at_bottom = scrollHeight - scrollTop === clientHeight;
-
-                if (is_at_bottom) {
-                    this.active_chat_channel.markAsRead();
+                    if (is_at_bottom) {
+                        await this.active_chat_channel.markAsRead();
+                    }
+                } else {
+                    await this.active_chat_channel.markAsRead();
                 }
-            } else {
-                this.active_chat_channel.markAsRead();
             }
+        } catch (error) {
+            this.setHasChatError(true);
         }
     }
 
-    onMessageReceived(channel, channel_message) {
-        if (channel_message.channelUrl === this.chat_channel_url) {
+    onMessageReceived(channel: BaseChannel, channel_message: BaseMessage) {
+        if (
+            channel_message.channelUrl === this.chat_channel_url &&
+            (channel_message.isUserMessage() || channel_message.isFileMessage())
+        ) {
             this.addChannelMessage(convertFromChannelMessage(channel_message));
         }
     }
@@ -275,7 +298,7 @@ export default class SendbirdStore extends BaseStore {
         }
 
         this.scroll_debounce = setTimeout(() => {
-            if (!this.messages_ref.current) return;
+            if (!this.messages_ref?.current) return;
 
             if (this.messages_ref.current.scrollTop === 0) {
                 const oldest_message_timestamp = this.chat_messages.reduce(
@@ -283,26 +306,28 @@ export default class SendbirdStore extends BaseStore {
                         chat_message.created_at < prev_created_at ? chat_message.created_at : prev_created_at,
                     Infinity
                 );
+                this.getPreviousMessages(oldest_message_timestamp)
+                    .then(chat_messages => {
+                        if (chat_messages && chat_messages.length > 0) {
+                            const previous_messages = chat_messages.map(chat_message =>
+                                convertFromChannelMessage(chat_message)
+                            );
 
-                this.getPreviousMessages((chat_messages, error) => {
-                    if (error) {
-                        // eslint-disable-next-line no-console
-                        console.warn(error);
-                    } else if (chat_messages.length) {
-                        const previous_messages = chat_messages.map(chat_message =>
-                            convertFromChannelMessage(chat_message)
-                        );
-
-                        this.replaceChannelMessage(0, 0, ...previous_messages);
-                    }
-                }, oldest_message_timestamp);
+                            this.replaceChannelMessage(0, 0, previous_messages[0]);
+                        }
+                    })
+                    .catch(() => {
+                        this.setHasChatError(true);
+                    });
             } else {
-                this.markMessagesAsRead(true);
+                (async () => {
+                    await this.markMessagesAsRead(true);
+                })();
             }
         }, 1000);
     }
 
-    onReadReceiptUpdated(channel) {
+    onReadReceiptUpdated(channel: GroupChannel) {
         if (channel.url === this.chat_channel_url) {
             // Force a re-render to reflect correct read receipts.
             this.setChannelMessages(this.chat_messages.slice());
@@ -310,7 +335,11 @@ export default class SendbirdStore extends BaseStore {
     }
 
     registerEventListeners() {
-        const markMessagesAsReadCheckScroll = () => this.markMessagesAsRead(true);
+        const markMessagesAsReadCheckScroll = () => {
+            (async () => {
+                await this.markMessagesAsRead(true);
+            })();
+        };
         window.addEventListener('focus', markMessagesAsReadCheckScroll);
         return () => window.removeEventListener('focus', markMessagesAsReadCheckScroll);
     }
@@ -318,7 +347,7 @@ export default class SendbirdStore extends BaseStore {
     registerMobXReactions() {
         this.disposeOrderIdReaction = reaction(
             () => this.root_store.order_store.order_id,
-            order_id => {
+            (order_id: string) => {
                 if (!order_id) {
                     this.setChatChannelUrl(null);
                     this.setChannelMessages([]);
@@ -329,10 +358,12 @@ export default class SendbirdStore extends BaseStore {
         );
 
         this.disposeChannelUrlReaction = reaction(
-            () => this.chat_channel_url && this.has_chat_info,
-            is_ready_to_intialise => {
+            () => !!this.chat_channel_url && !!this.has_chat_info,
+            (is_ready_to_intialise: boolean) => {
                 if (is_ready_to_intialise) {
-                    this.initialiseChatWsConnection();
+                    (async () => {
+                        await this.initialiseChatWsConnection();
+                    })();
                 } else {
                     this.terminateChatWsConnection();
                 }
@@ -342,9 +373,11 @@ export default class SendbirdStore extends BaseStore {
 
         this.disposeActiveChatChannelReaction = reaction(
             () => this.active_chat_channel,
-            active_chat_channel => {
+            (active_chat_channel?: GroupChannel) => {
                 if (active_chat_channel) {
-                    this.initialiseOrderMessages();
+                    (async () => {
+                        await this.initialiseOrderMessages();
+                    })();
                 } else {
                     this.setChannelMessages([]);
                 }
@@ -364,100 +397,90 @@ export default class SendbirdStore extends BaseStore {
         };
     }
 
-    setIsUploadComplete(is_upload_complete) {
+    setIsUploadComplete(is_upload_complete: boolean) {
         this.is_upload_complete = is_upload_complete;
     }
 
-    setFileUploadProperties(file_upload_properties) {
+    setFileUploadProperties(file_upload_properties: FileMessage | null) {
         this.file_upload_properties = file_upload_properties;
     }
 
-    progressHandler(progress) {
-        const { order_id } = this.root_store.order_store;
-        this.setIsUploadComplete(progress.loaded === progress.total);
-        if (progress.loaded === progress.total) {
-            setTimeout(() => {
-                if (!this.should_show_chat_on_orders && !order_id) {
-                    this.terminateChatWsConnection();
-                }
-            }, 1000);
-        }
-    }
-
-    sendFile(file) {
+    sendFile(file: File) {
         if (!file) return;
 
-        const params = new this.sendbird_api.FileMessageParams();
-
-        params.file = file;
-        params.fileName = file.name;
-        params.fileSize = file.size;
-        params.mimeType = file.type;
-
-        this.file_upload_properties = this.active_chat_channel.sendFileMessage(
-            params,
-            this.progressHandler,
-            (channel_message, error) => {
-                if (error) {
-                    // eslint-disable-next-line no-console
-                    console.warn(error);
-                } else if (channel_message.channelUrl === this.chat_channel_url) {
+        this.active_chat_channel
+            ?.sendFileMessage({
+                file,
+                fileName: file.name,
+                fileSize: file.size,
+                mimeType: file.type,
+            })
+            .onPending(() => {
+                this.setIsUploadComplete(false);
+            })
+            .onSucceeded(channel_message => {
+                if (channel_message.channelUrl === this.chat_channel_url && channel_message.isFileMessage()) {
                     this.addChannelMessage(convertFromChannelMessage(channel_message));
+                    this.setFileUploadProperties(channel_message);
                 }
-            }
-        );
+                this.setIsUploadComplete(true);
+            })
+            .onFailed(() => {
+                this.setIsUploadComplete(false);
+            });
     }
 
-    sendMessage(message) {
-        const modified_message = message.replace(/^[\r\n]+|[\r\n]+$/g, '');
+    sendMessage(message: string) {
+        const modified_message = message.trim();
 
-        if (modified_message.length === 0 || modified_message.trim().length === 0) {
+        if (modified_message.length === 0) {
             return;
         }
 
-        const params = new this.sendbird_api.UserMessageParams();
         const msg_identifier = `${Date.now()}${message.substring(0, 9)}${this.chat_messages.length}`;
-
-        params.message = modified_message;
-        params.data = msg_identifier;
 
         // Add a placeholder message with a pending indicator
         const placeholder_msg_options = {
-            created_at: toMoment(this.root_store.general_store.server_time.get()).utc(),
-            chat_channel_url: this.active_chat_channel.url,
+            created_at: toMoment(this.root_store.general_store.server_time.get()).utc().valueOf(),
+            channel_url: this.active_chat_channel?.url ?? '',
             message,
             id: msg_identifier,
-            message_type: ChatMessage.TYPE_USER,
+            message_type: MessageType.USER,
             sender_user_id: this.chat_info.user_id,
             status: ChatMessage.STATUS_PENDING,
         };
 
         this.addChannelMessage(new ChatMessage(placeholder_msg_options));
 
-        this.active_chat_channel.sendUserMessage(params, (channel_message, error) => {
-            const msg_idx = this.chat_messages.findIndex(msg => msg.messageId === msg_identifier);
-
-            if (error) {
+        this.active_chat_channel
+            ?.sendUserMessage({
+                message: modified_message,
+                data: msg_identifier,
+            })
+            .onSucceeded(channel_message => {
+                const msg_idx = this.chat_messages.findIndex(msg => msg.id === msg_identifier);
+                if (channel_message.isUserMessage()) {
+                    this.replaceChannelMessage(msg_idx, 1, convertFromChannelMessage(channel_message));
+                }
+            })
+            .onFailed(() => {
+                const msg_idx = this.chat_messages.findIndex(msg => msg.id === msg_identifier);
                 const errored_message = new ChatMessage({
                     ...placeholder_msg_options,
                     status: ChatMessage.STATUS_ERRORED,
                 });
 
                 this.replaceChannelMessage(msg_idx, 1, errored_message);
-            } else {
-                this.replaceChannelMessage(msg_idx, 1, convertFromChannelMessage(channel_message));
-            }
-        });
+            });
     }
 
-    setMessagesRef(ref) {
+    setMessagesRef(ref: React.RefObject<HTMLDivElement> | null) {
         this.messages_ref = ref;
     }
 
     terminateChatWsConnection() {
         if (
             this.sendbird_api &&
-            typeof this.sendbird_api.disconnect === 'function' &&
             ((this.file_upload_properties && this.is_upload_complete) || !this.file_upload_properties)
         ) {
             // eslint-disable-next-line no-console

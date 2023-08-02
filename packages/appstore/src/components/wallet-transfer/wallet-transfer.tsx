@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, Formik, Form, FormikHelpers } from 'formik';
-import { AmountInput, AnimatedMessageList, AlertMessage, Button, Loading } from '@deriv/components';
+import { AmountInput, AnimatedList, AlertMessage, Button, Loading } from '@deriv/components';
 import { useCurrencyConfig, useWalletTransfer } from '@deriv/hooks';
 import { validNumber } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -214,11 +214,11 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                     value={from_account}
                                 />
                             </div>
-                            <AnimatedMessageList>
+                            <AnimatedList>
                                 {message_list.map((item, index) => (
                                     <AlertMessage key={index} {...item} />
                                 ))}
-                            </AnimatedMessageList>
+                            </AnimatedList>
                             <div className='wallet-transfer__tile'>
                                 <Field name='to_amount'>
                                     {({ field }: FieldProps<number>) => (

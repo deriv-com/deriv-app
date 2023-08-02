@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import classNames from 'classnames';
-import './animated-message-list.scss';
+import './animated-list.scss';
 
-type TMessageListProps = {
+type TAnimatedListProps = {
     className?: string;
 };
 
@@ -37,9 +37,9 @@ const animations = {
     },
 };
 
-const AnimatedMessageList = ({ className, children }: React.PropsWithChildren<TMessageListProps>) => {
+const AnimatedList = ({ className, children }: React.PropsWithChildren<TAnimatedListProps>) => {
     return (
-        <div className={classNames('animated-message-list', className)}>
+        <div className={classNames('animated-list', className)}>
             <AnimatePresence>
                 {React.Children.toArray(children).map((child, index) => {
                     return (
@@ -53,4 +53,4 @@ const AnimatedMessageList = ({ className, children }: React.PropsWithChildren<TM
     );
 };
 
-export default AnimatedMessageList;
+export default AnimatedList;

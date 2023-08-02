@@ -52,7 +52,7 @@ const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503'
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
 const DXTRADE_HUAWEI_APP_URL = 'https://appgallery.huawei.com/app/C104633219';
 
-const getBrokerName = () => 'Deriv Limited';
+const getBrokerName = () => 'Deriv Holdings (Guernsey) Limited';
 
 const getTopUpConfig = () => {
     return {

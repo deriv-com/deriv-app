@@ -19,6 +19,18 @@ jest.mock('@deriv/components', () => ({
     Modal: jest.fn(() => <div>Modal</div>),
 }));
 
+jest.mock('@sendbird/chat', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/groupChannel', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/message', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
 describe('<NicknameFormWrapper/>', () => {
     it('renders mobile view if isMobile is evaluted to true', () => {
         isMobile.mockImplementation(() => true);

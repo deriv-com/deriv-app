@@ -26,18 +26,13 @@ describe('ApiTokenTable', () => {
         toggleOverlay: jest.fn(),
     };
 
-    it('should render ApiTokenTable', () => {
-        render(
-            <ApiTokenContext.Provider value={mock_props}>
-                <ApiTokenTable />
-            </ApiTokenContext.Provider>
-        );
-        expect(screen.getByText('Token 1')).not.toHaveClass('da-api-token__scope-item--name');
-        const expectedTexts = [
+    let expectedTexts = [''];
+
+    beforeEach(() => {
+        expectedTexts = [
             'Name',
             'Token',
             'Scopes',
-            'Last used',
             'Token 1',
             'Read',
             'Trade',
@@ -47,12 +42,23 @@ describe('ApiTokenTable', () => {
             'Write',
             '28/07/2023',
         ];
+    });
+
+    it('should render ApiTokenTable', () => {
+        expectedTexts.push('Last used');
+        render(
+            <ApiTokenContext.Provider value={mock_props}>
+                <ApiTokenTable />
+            </ApiTokenContext.Provider>
+        );
+        expect(screen.getByText('Token 1')).not.toHaveClass('da-api-token__scope-item--name');
         expectedTexts.forEach(text => {
             expect(screen.getByText(text)).toBeInTheDocument();
         });
     });
 
     it('should render in mobile view', () => {
+        expectedTexts.push('Last Used');
         (isMobile as jest.Mock).mockImplementationOnce(() => true);
         render(
             <ApiTokenContext.Provider value={mock_props}>
@@ -60,20 +66,6 @@ describe('ApiTokenTable', () => {
             </ApiTokenContext.Provider>
         );
         expect(screen.getByText('Token 1')).toHaveClass('da-api-token__scope-item--name');
-        const expectedTexts = [
-            'Name',
-            'Token',
-            'Scopes',
-            'Last Used',
-            'Token 1',
-            'Read',
-            'Trade',
-            'Payments',
-            'Admin',
-            'Trading information',
-            'Write',
-            '28/07/2023',
-        ];
         expectedTexts.forEach(text => {
             expect(screen.getByText(text)).toBeInTheDocument();
         });

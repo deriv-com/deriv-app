@@ -2,20 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, Form, Formik } from 'formik';
 import { config, save_types } from '@deriv/bot-skeleton';
-import {
-    Button,
-    Checkbox,
-    Icon,
-    Input,
-    MobileFullPageModal,
-    Modal,
-    RadioGroup,
-    Text,
-    ThemedScrollbars,
-} from '@deriv/components';
+import { Button, Icon, Input, MobileFullPageModal, Modal, RadioGroup, Text, ThemedScrollbars } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+import { useDBotStore } from '../../../../stores/useDBotStore';
 import IconRadio from './icon-radio';
 
 type TSaveModalForm = {
@@ -56,12 +47,18 @@ const SaveModalForm = ({
         validate={validateBotName}
         onSubmit={onConfirmSave}
     >
-        {({ values: { is_local, save_as_collection }, setFieldValue, touched, errors }) => {
+        {({ values: { is_local }, setFieldValue, touched, errors }) => {
             const content_height = !is_mobile ? '500px' : `calc(100%)`;
             return (
                 <ThemedScrollbars height={content_height} autohide>
                     <Form className={classNames({ 'form--active-keyboard': is_onscreen_keyboard_active })}>
                         <div className='modal__content'>
+                            <Text size='xs' line_height='l'>
+                                {localize(
+                                    'Enter your bot name, choose to save on your computer or Google Drive, and hit '
+                                )}
+                                <strong>{localize('Save.')}</strong>
+                            </Text>
                             <div className='modal__content-row'>
                                 <Field name='bot_name'>
                                     {({ field }) => (
@@ -70,7 +67,7 @@ const SaveModalForm = ({
                                             type='text'
                                             placeholder={localize('Untitled Strategy')}
                                             error={touched[field.name] && errors[field.name]}
-                                            label={localize('Strategy name')}
+                                            label={localize('Bot name')}
                                             onFocus={e => setCurrentFocus(e.currentTarget.name)}
                                             onBlur={() => setCurrentFocus(null)}
                                             {...field}
@@ -116,7 +113,8 @@ const SaveModalForm = ({
                                     />
                                 </RadioGroup>
                             </div>
-                            <>
+                            {/* removed this from the save modal popup because it is not there in the design */}
+                            {/* <>
                                 <Field name='save_as_collection'>
                                     {({ field }) => (
                                         <Checkbox
@@ -137,7 +135,7 @@ const SaveModalForm = ({
                                         'Enabling this allows you to save your blocks as one collection which can be easily integrated into other bots.'
                                     )}
                                 </div>
-                            </>
+                            </> */}
                         </div>
                         <div
                             className={classNames('modal__footer', {
@@ -166,18 +164,22 @@ const SaveModalForm = ({
         }}
     </Formik>
 );
-const SaveModal = ({
-    bot_name,
-    button_status,
-    is_authorised,
-    is_save_modal_open,
-    onConfirmSave,
-    onDriveConnect,
-    toggleSaveModal,
-    validateBotName,
-    setCurrentFocus,
-    is_onscreen_keyboard_active,
-}: TSaveModalForm) => {
+const SaveModal = observer(() => {
+    const { save_modal, google_drive } = useDBotStore();
+    const { ui } = useStore();
+
+    const {
+        button_status,
+        is_save_modal_open,
+        onConfirmSave,
+        onDriveConnect,
+        toggleSaveModal,
+        validateBotName,
+        bot_name,
+    } = save_modal;
+    const { is_authorised } = google_drive;
+    const { is_onscreen_keyboard_active, setCurrentFocus } = ui;
+
     const is_mobile = isMobile();
     return is_mobile ? (
         <MobileFullPageModal
@@ -222,17 +224,6 @@ const SaveModal = ({
             />
         </Modal>
     );
-};
+});
 
-export default connect(({ save_modal, google_drive, ui }) => ({
-    button_status: save_modal.button_status,
-    is_authorised: google_drive.is_authorised,
-    is_save_modal_open: save_modal.is_save_modal_open,
-    is_onscreen_keyboard_active: ui.is_onscreen_keyboard_active,
-    onConfirmSave: save_modal.onConfirmSave,
-    onDriveConnect: save_modal.onDriveConnect,
-    toggleSaveModal: save_modal.toggleSaveModal,
-    validateBotName: save_modal.validateBotName,
-    bot_name: save_modal.bot_name,
-    setCurrentFocus: ui.setCurrentFocus,
-}))(SaveModal);
+export default SaveModal;

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { isVanillaContract } from '@deriv/shared';
-import { TPassThrough, TRow } from './data-list';
+import { TPassThrough, TRow } from '../types/common.types';
 
 export type TColIndex =
     | 'type'

@@ -19,3 +19,7 @@ export type TTableRowItem =
           component?: React.ReactElement;
       }
     | string;
+
+export type TRow = { [key: string]: any };
+
+export type TPassThrough = { isTopUp: (item: TRow) => boolean };

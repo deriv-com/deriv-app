@@ -20,7 +20,7 @@ import { observer, useStore } from '@deriv/stores';
 import { useReportsStore } from 'Stores/useReportsStores';
 import { TSupportedContractType, TUnsupportedContractType } from 'Types';
 import { TSource } from '../../../components/src/components/data-table/data-table';
-import { TRow } from '../../../components/src/components/data-list/data-list';
+import { TRow } from '../../../components/src/components/types/common.types';
 import { TDataListCell } from '../../../components/src/components/data-list/data-list-cell';
 
 type TGetStatementTableColumnsTemplate = ReturnType<typeof getStatementTableColumnsTemplate>;
@@ -41,6 +41,8 @@ type TDetailsComponent = {
     message: string;
     action_type: string;
 };
+
+type TDataList = React.ComponentProps<typeof DataList>;
 
 const DetailsComponent = ({ message = '', action_type = '' }: TDetailsComponent) => {
     const address_hash_match = /:\s([0-9a-zA-Z]+.{25,28})/gm.exec(message.split(/,\s/)[0]);
@@ -79,9 +81,7 @@ const DetailsComponent = ({ message = '', action_type = '' }: TDetailsComponent)
     );
 };
 
-type TGetRowAction =
-    | React.ComponentProps<typeof DataList>['getRowAction']
-    | React.ComponentProps<typeof DataTable>['getRowAction'];
+type TGetRowAction = TDataList['getRowAction'] | React.ComponentProps<typeof DataTable>['getRowAction'];
 
 const getRowAction: TGetRowAction = (row_obj: TSource | TRow) => {
     let action: TAction = {};
@@ -151,7 +151,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
     }, {} as Record<TColIndex, typeof columns[number]>);
 
     // TODO: Export type instead of any from 'DataList' component when it migrates to tsx
-    const mobileRowRenderer = ({ row, passthrough }: any) => (
+    const mobileRowRenderer = ({ row, passthrough }: TDataList['rowRenderer']) => (
         <React.Fragment>
             <div className='data-list__row'>
                 <DataList.Cell
@@ -222,7 +222,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
                                     getRowAction={getRowAction}
                                     onScroll={handleScroll}
                                     passthrough={{
-                                        isTopUp: item => is_virtual && item.action === 'Deposit',
+                                        isTopUp: (item: { action: string }) => is_virtual && item.action === 'Deposit',
                                     }}
                                 >
                                     <PlaceholderComponent is_loading={is_loading} />
@@ -237,7 +237,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
                                     rowRenderer={mobileRowRenderer}
                                     row_gap={8}
                                     passthrough={{
-                                        isTopUp: item => is_virtual && item.action === 'Deposit',
+                                        isTopUp: (item: { action: string }) => is_virtual && item.action === 'Deposit',
                                     }}
                                 >
                                     <PlaceholderComponent is_loading={is_loading} />

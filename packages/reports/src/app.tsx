@@ -17,7 +17,7 @@ const App = ({ passthrough }: TAppProps) => {
 
     return (
         <ReportsProviders store={root_store}>
-            <Routes />=
+            <Routes />
         </ReportsProviders>
     );
 };

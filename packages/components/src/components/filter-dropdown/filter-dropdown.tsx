@@ -41,7 +41,7 @@ const FilterDropdown = ({
             handleFilterChange(event.target.value);
         }
     };
-    if (isMobile() && label) {
+    if (isMobile()) {
         return (
             <SelectNative
                 list_items={filter_list}

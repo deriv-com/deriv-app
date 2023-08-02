@@ -2,7 +2,8 @@ import classNames from 'classnames';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useIsMounted } from '@deriv/shared';
-import { TPassThrough, TRowRenderer } from './data-list';
+import { TRowRenderer } from './data-list';
+import { TPassThrough } from '../types/common.types';
 import { TSource } from '../data-table/data-table';
 
 type TDataListRow = {

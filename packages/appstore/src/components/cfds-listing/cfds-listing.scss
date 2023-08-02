@@ -449,6 +449,9 @@
     &__spec-text {
         font-family: 'Courier', monospace;
         overflow: hidden;
+        &-broker {
+            text-align: right;
+        }
     }
     &__download-center {
         border-top: 2px solid var(--general-section-1);

@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { ContentFlag, moduleLoader } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import MT5Notification from './mt5-notification';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import CooldownWarningModal from './cooldown-warning-modal.jsx';
@@ -19,6 +20,7 @@ const AccountSignupModal = React.lazy(() =>
 const AcuityDownloadModal = React.lazy(() =>
     import(/* webpackChunkName: "acuity-download-modal"  */ '../AcuityDownloadModal')
 );
+
 const CloseMxMltAccountModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseMxMltAccountModal'))
 );
@@ -84,6 +86,7 @@ const AppModals = ({
     fetchFinancialAssessment,
     setCFDScore,
     content_flag,
+    is_mt5_notificaiton_modal_visible,
     active_account_landing_company,
     is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible,
@@ -163,6 +166,8 @@ const AppModals = ({
         ComponentToLoad = <RealityCheckModal />;
     } else if (should_show_cooldown_modal) {
         ComponentToLoad = <CooldownWarningModal />;
+    } else if (is_mt5_notificaiton_modal_visible) {
+        ComponentToLoad = <MT5Notification />;
     } else if (should_show_assessment_complete_modal) {
         ComponentToLoad = <CompletedAssessmentModal />;
     } else if (is_deriv_account_needed_modal_visible) {
@@ -217,6 +222,7 @@ export default connect(({ client, ui, traders_hub }) => ({
     is_verification_submitted: ui.is_verification_submitted,
     has_maltainvest_account: client.has_maltainvest_account,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
+    is_mt5_notificaiton_modal_visible: traders_hub.is_mt5_notificaiton_modal_visible,
     setCFDScore: client.setCFDScore,
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     should_show_cooldown_modal: ui.should_show_cooldown_modal,

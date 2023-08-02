@@ -85,7 +85,7 @@ const useCryptoTransactions = () => {
     const has_transactions = modified_transactions && modified_transactions.length > 0;
 
     // Get the last transaction if exists.
-    const last_transaction = has_transactions ? modified_transactions?.[0] : undefined;
+    const last_transaction = modified_transactions?.[0];
 
     return {
         /** List of user transactions sorted by submit time. */

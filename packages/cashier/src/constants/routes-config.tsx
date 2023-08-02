@@ -5,6 +5,7 @@ import { localize } from '@deriv/translations';
 import { Cashier } from '../containers';
 import { AccountTransfer, Deposit, OnRamp, PaymentAgent, PaymentAgentTransfer, Withdrawal } from '../pages';
 import { TRouteConfig, TRoute } from '../types';
+import { CashierLockedChecker } from '../components/cashier-locked-checker';
 
 // Error Routes
 const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ '../components/page-404')));
@@ -22,7 +23,11 @@ const initRoutesConfig = (): TRouteConfig[] => [
         routes: [
             {
                 path: routes.cashier_deposit,
-                component: Deposit,
+                component: () => (
+                    <CashierLockedChecker>
+                        <Deposit />
+                    </CashierLockedChecker>
+                ),
                 getTitle: () => localize('Deposit'),
                 icon_component: 'IcCashierAdd',
                 default: true,

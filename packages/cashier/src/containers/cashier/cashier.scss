@@ -325,6 +325,10 @@
         }
     }
 
+    .dc-vertical-tab__tab--floating {
+        min-width: 27.8rem;
+    }
+
     .dc-vertical-tab__content-side-note {
         position: sticky;
         top: calc(2.4rem + 4.1rem);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useCashierLocked, useCurrentCurrencyConfig, useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
+import { PageContainer } from 'Components/page-container';
 import { Virtual } from '../cashier-container';
 import CashierLocked from '../cashier-locked';
 
@@ -12,15 +13,29 @@ const CashierLockedChecker: React.FC<React.PropsWithChildren<unknown>> = observe
     const is_system_maintenance = useIsSystemMaintenance();
     const is_deposit_locked = useDepositLocked();
 
-    if (is_virtual) return <Virtual />;
+    if (is_virtual)
+        return (
+            <PageContainer hide_breadcrumb>
+                <Virtual />
+            </PageContainer>
+        );
 
     if (is_system_maintenance) {
         if (is_cashier_locked || (is_deposit_locked && currency_config.is_crypto)) {
-            return <CashierLocked />;
+            return (
+                <PageContainer hide_breadcrumb>
+                    <CashierLocked />
+                </PageContainer>
+            );
         }
     }
 
-    if (is_cashier_locked) return <CashierLocked />;
+    if (is_cashier_locked)
+        return (
+            <PageContainer hide_breadcrumb>
+                <CashierLocked />
+            </PageContainer>
+        );
 
     return <>{children}</>;
 });

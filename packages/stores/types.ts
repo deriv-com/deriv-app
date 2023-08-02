@@ -505,13 +505,16 @@ type TNotificationStore = {
     addNotificationMessage: (message: TNotification) => void;
     addNotificationMessageByKey: (key: string) => void;
     client_notifications: object;
+    is_notifications_visible: boolean;
     filterNotificationMessages: () => void;
+    notifications: TNotificationMessage[];
     refreshNotifications: () => void;
     removeNotificationByKey: (key: string) => void;
     removeNotificationMessage: (key: string, should_show_again?: boolean) => void;
     setP2POrderProps: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setP2PRedirectTo: () => void;
+    toggleNotificationsModal: () => void;
 };
 
 type TBalance = {
@@ -538,6 +541,7 @@ type TTradersHubStore = {
     is_account_transfer_modal_open: boolean;
     is_low_risk_cr_eu_real: boolean;
     is_eu_user: boolean;
+    setIsOnboardingVisited: (is_visited: boolean) => void;
     show_eu_related_content: boolean;
     setTogglePlatformType: (platform_type: string) => void;
     is_real: boolean;

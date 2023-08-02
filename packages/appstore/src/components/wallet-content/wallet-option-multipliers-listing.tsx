@@ -63,10 +63,12 @@ const WalletOptionsAndMultipliersListing = observer(() => {
         </Text>
     );
 
-    const get_account_card_name = wallet_account.is_malta_wallet ? 'Deriv Apps account' : 'Deriv Apps';
+    const get_account_card_name = wallet_account.is_malta_wallet
+        ? localize('Deriv Apps account')
+        : localize('Deriv Apps');
     const get_account_card_description = wallet_account.is_malta_wallet
-        ? 'Get a Deriv Apps trading account regulated by MFSA to trade multipliers on Deriv Trader.'
-        : 'Get a Deriv Apps trading account to trade options and multipliers on these apps.';
+        ? localize('Get a Deriv Apps trading account regulated by MFSA to trade multipliers on Deriv Trader.')
+        : localize('Get a Deriv Apps trading account to trade options and multipliers on these apps.');
 
     return (
         <ListingContainer
@@ -82,8 +84,8 @@ const WalletOptionsAndMultipliersListing = observer(() => {
                         action_type='get'
                         availability='All'
                         clickable_icon
-                        name={localize(get_account_card_name)}
-                        description={localize(get_account_card_description)}
+                        name={get_account_card_name}
+                        description={get_account_card_description}
                         icon='Options'
                         onAction={() => {
                             if (no_MF_account) {

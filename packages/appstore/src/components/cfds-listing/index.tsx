@@ -104,7 +104,11 @@ const CFDsListing = () => {
                     return null;
                 }
                 default:
-                    return null;
+                    if (current_acc_status === 'proof_failed') {
+                        return 'failed';
+                    } else if (current_acc_status === 'verification_pending') {
+                        return 'pending';
+                    }
             }
         }
         return null;
@@ -183,7 +187,7 @@ const CFDsListing = () => {
                             existing_account.status || is_idv_revoked
                                 ? getMT5AccountAuthStatus(
                                       existing_account.status,
-                                      existing_account?.short_code_and_region?.toLowerCase()
+                                      existing_account?.landing_company_short
                                   )
                                 : null;
 

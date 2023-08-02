@@ -61,7 +61,7 @@ describe('<CryptoWithdrawForm />', () => {
     it('component and header should be rendered', () => {
         renderCryptoWithdrawForm();
 
-        expect(screen.getByText('Your BTC wallet address')).toBeInTheDocument();
+        expect(screen.getByText('Your BTC cryptocurrency wallet address')).toBeInTheDocument();
         expect(screen.getByTestId('dt_crypto_withdraw_form')).toBeInTheDocument();
     });
 

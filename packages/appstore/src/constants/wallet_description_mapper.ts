@@ -6,9 +6,7 @@ type TWalletDescriptionMapper = {
 
 const wallet_description_mapper: TWalletDescriptionMapper = {
     AUD: localize('Deposit and withdraw Australian dollars using credit or debit cards, e-wallets, or bank wires.'),
-    EUR: localize(
-        'Deposit and withdraw euros into your accounts regulated by MFSA using credit or debit cards and e-wallets.'
-    ),
+    EUR: localize('Deposit and withdraw Euros using credit or debit cards, e-wallets, or bank wires.'),
     USD: localize('Deposit and withdraw US dollars using credit or debit cards, e-wallets, or bank wires.'),
     BTC: localize(
         "Deposit and withdraw Bitcoin, the world's most popular cryptocurrency, hosted on the Bitcoin blockchain."

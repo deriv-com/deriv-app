@@ -1,3 +1,20 @@
 .cfd-proof-of-address {
-    overflow: auto !important;
+    .dc-themed-scrollbars {
+        padding: 1.6rem 3rem;
+    }
+
+    .dc-input {
+        margin-bottom: 0.8rem;
+    }
+
+    .account__scrollbars_container--grid-layout {
+        @include mobile {
+            padding: 2.4rem 1.6rem;
+            overflow-y: auto;
+        }
+    }
+
+    .dc-form-submit-button {
+        background-color: var(--general-main-1) !important;
+    }
 }

@@ -1,14 +1,13 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Div100vhContainer } from '@deriv/components';
 import { useIsAccountStatusPresent } from '@deriv/hooks';
 import { isDesktop, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
-import ProofOfAddress from '@deriv/account/src/Sections/Verification/ProofOfAddress';
+import { observer, useStore } from '@deriv/stores';
+import type { TCoreStores } from '@deriv/stores/types';
+import CFDPOA from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
 import CFDPersonalDetailsContainer from './cfd-personal-details-container';
-import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
-import type { TCoreStores } from '@deriv/stores/types';
 
 type TCFDFinancialStpRealAccountSignupProps = {
     onFinish: () => void;
@@ -36,7 +35,7 @@ type TItem = {
 };
 
 type TItemsState<T extends TItem> = {
-    body: typeof CFDPOI | typeof ProofOfAddress | typeof CFDPersonalDetailsContainer;
+    body: typeof CFDPOI | typeof CFDPOA | typeof CFDPersonalDetailsContainer;
     form_value: { [key: string]: string | undefined };
     forwarded_props: Array<Partial<keyof T>>;
 };
@@ -105,7 +104,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
     };
 
     const poa_config: TItemsState<typeof passthroughProps> = {
-        body: ProofOfAddress,
+        body: CFDPOA,
         form_value: {},
         forwarded_props: [],
     };
@@ -190,9 +189,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
         return key ? items[state_index][key] : items[state_index];
     };
 
-    const BodyComponent = getCurrent('body') as typeof CFDPOI &
-        typeof ProofOfAddress &
-        typeof CFDPersonalDetailsContainer;
+    const BodyComponent = getCurrent('body') as typeof CFDPOI & typeof CFDPOA & typeof CFDPersonalDetailsContainer;
 
     const form_value = getCurrent('form_value');
 
@@ -213,9 +210,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
 
     return (
         <Div100vhContainer
-            className={classNames('cfd-financial-stp-modal', {
-                'cfd-proof-of-address': BodyComponent.displayName === 'ProofOfAddress',
-            })}
+            className='cfd-financial-stp-modal'
             id='real_mt5_financial_stp_account_opening'
             is_disabled={isDesktop()}
             height_offset='40px'

@@ -410,11 +410,12 @@ const mock = (): TStores & { is_mock: boolean } => {
             client_notifications: {},
             filterNotificationMessages: jest.fn(),
             refreshNotifications: jest.fn(),
+            removeAllNotificationMessages: jest.fn(),
             removeNotificationByKey: jest.fn(),
             removeNotificationMessage: jest.fn(),
             setP2POrderProps: jest.fn(),
-            showAccountSwitchToRealNotification: jest.fn(),
             setP2PRedirectTo: jest.fn(),
+            showAccountSwitchToRealNotification: jest.fn(),
         },
         portfolio: {
             active_positions: [],

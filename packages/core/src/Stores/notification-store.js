@@ -633,7 +633,7 @@ export default class NotificationStore extends BaseStore {
         this.handleClientNotifications();
     }
 
-    removeAllNotificationMessages(should_close_persistent) {
+    removeAllNotificationMessages(should_close_persistent = false) {
         this.notification_messages = should_close_persistent
             ? []
             : [...this.notification_messages.filter(notifs => notifs.is_persistent)];

@@ -7,16 +7,16 @@ export const Modals = {
                 /* webpackChunkName: "ad-create-edit-error-modal" */ 'Components/modal-manager/modals/ad-create-edit-error-modal'
             )
     ),
-    AdErrorTooltipModal: React.lazy(
-        () =>
-            import(
-                /* webpackChunkName: "ad-error-tooltip-modal" */ 'Components/modal-manager/modals/ad-error-tooltip-modal'
-            )
-    ),
     AddPaymentMethodErrorModal: React.lazy(
         () =>
             import(
                 /* webpackChunkName: "add-payment-method-error-modal" */ 'Components/modal-manager/modals/add-payment-method-error-modal'
+            )
+    ),
+    AdErrorTooltipModal: React.lazy(
+        () =>
+            import(
+                /* webpackChunkName: "ad-error-tooltip-modal" */ 'Components/modal-manager/modals/ad-error-tooltip-modal'
             )
     ),
     AdVisibilityErrorModal: React.lazy(

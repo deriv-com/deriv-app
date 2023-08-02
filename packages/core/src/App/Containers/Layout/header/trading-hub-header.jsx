@@ -2,10 +2,10 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useHistory, useLocation, withRouter } from 'react-router-dom';
-import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button, StaticUrl } from '@deriv/components';
+import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, StaticUrl } from '@deriv/components';
 import { routes, platforms, formatMoney } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { ToggleNotifications, MenuLinks } from 'App/Components/Layout/Header';
+import { MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { connect } from 'Stores/connect';
@@ -16,6 +16,9 @@ import CurrencySelectionModal from '../../CurrencySelectionModal';
 import AccountInfo from 'App/Components/Layout/Header/account-info';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
+import DefaultMobileLinks from './default-mobile-links';
+import ShowNotifications from './show-notifications';
+import TradingHubOnboarding from './trading-hub-onboarding';
 
 const Divider = () => {
     return <div className='trading-hub-header__divider' />;
@@ -45,111 +48,16 @@ export const TradersHubHomeButton = ({ is_dark_mode }) => {
     );
 };
 
-const TradingHubOnboarding = ({ is_dark_mode, setIsOnboardingVisited }) => {
-    const history = useHistory();
-    return (
-        <div className='trading-hub-header__tradinghub--onboarding'>
-            <div className='trading-hub-header__tradinghub--onboarding--logo'>
-                <Popover
-                    classNameBubble='account-settings-toggle__tooltip'
-                    alignment='bottom'
-                    message={<Localize i18n_default_text='View onboarding' />}
-                    should_disable_pointer_events
-                    zIndex={9999}
-                >
-                    <Icon
-                        icon={is_dark_mode ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
-                        size={20}
-                        onClick={() => {
-                            history.push(routes.onboarding);
-                            setIsOnboardingVisited(false);
-                        }}
-                    />
-                </Popover>
-            </div>
-        </div>
-    );
-};
-
-const ShowNotifications = ({ is_notifications_visible, notifications_count, toggleNotifications }) => {
-    return (
-        <div className='trading-hub-header__notification'>
-            <ToggleNotifications
-                count={notifications_count}
-                is_visible={is_notifications_visible}
-                toggleDialog={toggleNotifications}
-                tooltip_message={<Localize i18n_default_text='View notifications' />}
-            />
-        </div>
-    );
-};
-
-const DefaultMobileLinks = ({
-    is_dark_mode,
-    toggleIsTourOpen,
-    is_mf,
-    is_eu,
-    is_eu_country,
-    setIsOnboardingVisited,
-    is_notifications_visible,
-    notifications_count,
-    toggleNotifications,
-    handleClickCashier,
-}) => (
-    <React.Fragment>
-        <div className='trading-hub-header__menu-right--items--onboarding'>
-            <TradingHubOnboarding
-                is_dark_mode={is_dark_mode}
-                toggleIsTourOpen={toggleIsTourOpen}
-                is_mf={is_mf}
-                is_eu={is_eu}
-                is_eu_country={is_eu_country}
-                setIsOnboardingVisited={setIsOnboardingVisited}
-            />
-        </div>
-        <div className='trading-hub-header__menu-right--items--notifications'>
-            <ShowNotifications
-                is_notifications_visible={is_notifications_visible}
-                notifications_count={notifications_count}
-                toggleNotifications={toggleNotifications}
-            />
-        </div>
-        <Popover
-            classNameBubble='account-settings-toggle__tooltip'
-            alignment='bottom'
-            message={<Localize i18n_default_text='Manage account settings' />}
-            should_disable_pointer_events
-            zIndex={9999}
-        >
-            <BinaryLink className='trading-hub-header__setting' to={routes.personal_details}>
-                <Icon icon='IcUserOutline' size={20} />
-            </BinaryLink>
-        </Popover>
-        <div className='trading-hub-header__cashier-button'>
-            <Button primary small onClick={handleClickCashier}>
-                <Localize i18n_default_text='Cashier' />
-            </Button>
-        </div>
-    </React.Fragment>
-);
-
 const TradingHubHeader = ({
     header_extension,
     is_app_disabled,
     is_dark_mode,
-    is_eu_country,
     is_eu,
     is_logged_in,
     is_mt5_allowed,
-    is_notifications_visible,
     is_route_modal_on,
-    loginid,
     modal_data,
-    notifications_count,
     platform,
-    setIsOnboardingVisited,
-    toggleIsTourOpen,
-    toggleNotifications,
     acc_switcher_disabled_message,
     account_type,
     balance,
@@ -165,7 +73,6 @@ const TradingHubHeader = ({
 }) => {
     const { pathname } = useLocation();
     const cashier_routes = pathname.startsWith(routes.cashier);
-    const is_mf = loginid?.startsWith('MF');
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
@@ -255,17 +162,10 @@ const TradingHubHeader = ({
                     <Divider />
                     <div className='trading-hub-header__menu-right--items'>
                         <div className='trading-hub-header__menu-right--items--onboarding'>
-                            <TradingHubOnboarding
-                                is_dark_mode={is_dark_mode}
-                                setIsOnboardingVisited={setIsOnboardingVisited}
-                            />
+                            <TradingHubOnboarding />
                         </div>
                         <div className='trading-hub-header__menu-right--items--notifications'>
-                            <ShowNotifications
-                                is_notifications_visible={is_notifications_visible}
-                                notifications_count={notifications_count}
-                                toggleNotifications={toggleNotifications}
-                            />
+                            <ShowNotifications />
                         </div>
                         <Popover
                             classNameBubble='account-settings-toggle__tooltip'
@@ -293,29 +193,14 @@ const TradingHubHeader = ({
                         {cashier_routes ? (
                             <React.Fragment>
                                 <div className='trading-hub-header__menu-right--items--notifications__cashier'>
-                                    <ShowNotifications
-                                        is_notifications_visible={is_notifications_visible}
-                                        notifications_count={notifications_count}
-                                        toggleNotifications={toggleNotifications}
-                                    />
+                                    <ShowNotifications />
                                 </div>
                                 <div className='trading-hub-header__menu-right--items--account-toggle'>
                                     <AccountInfoComponent />
                                 </div>
                             </React.Fragment>
                         ) : (
-                            <DefaultMobileLinks
-                                is_dark_mode={is_dark_mode}
-                                toggleIsTourOpen={toggleIsTourOpen}
-                                is_mf={is_mf}
-                                is_eu={is_eu}
-                                is_eu_country={is_eu_country}
-                                setIsOnboardingVisited={setIsOnboardingVisited}
-                                is_notifications_visible={is_notifications_visible}
-                                notifications_count={notifications_count}
-                                toggleNotifications={toggleNotifications}
-                                handleClickCashier={handleClickCashier}
-                            />
+                            <DefaultMobileLinks handleClickCashier={handleClickCashier} />
                         )}
                     </div>
                 </div>
@@ -331,21 +216,14 @@ TradingHubHeader.propTypes = {
     header_extension: PropTypes.any,
     is_app_disabled: PropTypes.bool,
     is_dark_mode: PropTypes.bool,
-    is_eu_country: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
-    is_notifications_visible: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
     is_settings_modal_on: PropTypes.bool,
-    loginid: PropTypes.string,
     modal_data: PropTypes.object,
-    notifications_count: PropTypes.number,
     platform: PropTypes.string,
-    setIsOnboardingVisited: PropTypes.func,
     settings_extension: PropTypes.array,
-    toggleIsTourOpen: PropTypes.func,
-    toggleNotifications: PropTypes.func,
     acc_switcher_disabled_message: PropTypes.string,
     account_type: PropTypes.string,
     balance: PropTypes.string,
@@ -360,22 +238,16 @@ TradingHubHeader.propTypes = {
     toggleNeedRealAccountForCashierModal: PropTypes.func,
 };
 
-export default connect(({ client, common, notifications, ui, traders_hub }) => ({
+export default connect(({ client, common, ui, traders_hub }) => ({
     header_extension: ui.header_extension,
     is_app_disabled: ui.is_app_disabled,
     is_dark_mode: ui.is_dark_mode_on,
-    is_eu_country: client.is_eu_country,
     is_eu: client.is_eu,
     is_logged_in: client.is_logged_in,
     is_mt5_allowed: client.is_mt5_allowed,
-    is_notifications_visible: notifications.is_notifications_visible,
     is_route_modal_on: ui.is_route_modal_on,
     modal_data: traders_hub.modal_data,
-    notifications_count: notifications.notifications.length,
-    toggleNotifications: notifications.toggleNotificationsModal,
-    loginid: client.loginid,
     platform: common.platform,
-    setIsOnboardingVisited: traders_hub.setIsOnboardingVisited,
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_type: client.account_type,
     balance: client.balance,
@@ -384,7 +256,6 @@ export default connect(({ client, common, notifications, ui, traders_hub }) => (
     is_acc_switcher_on: !!ui.is_accounts_switcher_on,
     is_virtual: client.is_virtual,
     toggleAccountsDialog: ui.toggleAccountsDialog,
-    toggleIsTourOpen: traders_hub.toggleIsTourOpen,
     has_any_real_account: client.has_any_real_account,
     toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
     toggleNeedRealAccountForCashierModal: ui.toggleNeedRealAccountForCashierModal,

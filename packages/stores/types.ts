@@ -390,8 +390,8 @@ type TCommonStoreError = {
 };
 
 type TCommonStoreServicesError = {
-    code: string;
-    message: string;
+    code?: string;
+    message?: string;
     type?: string;
 };
 

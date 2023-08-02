@@ -14,7 +14,6 @@ const mock = (): TStores & { is_mock: boolean } => {
         redirectOnClick: jest.fn(),
         setError: jest.fn(),
     };
-    const services_error = { code: '', message: '', type: '' };
     return {
         is_mock: true,
         client: {
@@ -266,7 +265,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             changeCurrentLanguage: jest.fn(),
             changeSelectedLanguage: jest.fn(),
             is_network_online: false,
-            services_error,
+            services_error: {},
             server_time: undefined,
             is_language_changing: false,
             is_socket_opened: false,

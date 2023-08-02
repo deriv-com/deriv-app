@@ -6,7 +6,7 @@ import { useStore } from '@deriv/stores';
 const useAuthorize = (token?: string) => {
     const { client } = useStore();
     const { accounts, loginid = '' } = client;
-    const current_token = accounts[loginid || ''].token;
+    const current_token = accounts[loginid || '']?.token;
 
     const { data, ...rest } = useFetch('authorize', { payload: { authorize: token || current_token } });
 

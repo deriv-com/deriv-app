@@ -17,19 +17,11 @@ type TWalletTransferProps = {
     setIsWalletNameVisible: (value: boolean) => void;
 };
 
-type TMessageList = (React.ComponentProps<typeof AnimatedMessageList>['list'][number] &
-    React.ComponentProps<typeof AlertMessage>)[];
+type TMessageList = React.ComponentProps<typeof AlertMessage>[];
 
 const Divider = () => <div className='wallet-transfer__divider' />;
 
 const initial_demo_balance = 10000.0;
-
-const ERROR_CODES = {
-    is_demo: {
-        between_min_max: 'BetweenMinMax',
-        insufficient_fund: 'InsufficientFund',
-    },
-};
 
 const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisible }: TWalletTransferProps) => {
     const { client, ui, traders_hub } = useStore();
@@ -106,7 +98,6 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                     ...list,
                     {
                         variant: 'with-action-button',
-                        id: ERROR_CODES.is_demo.insufficient_fund,
                         button_label: localize('Reset balance'),
                         onClickHandler: () => setWalletModalActiveTab('Deposit'),
                         message: localize(
@@ -121,7 +112,6 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                     ...list,
                     {
                         variant: 'base',
-                        id: ERROR_CODES.is_demo.between_min_max,
                         message: `${message} ${from_account?.display_currency_code}` || '',
                         type: 'error',
                     },

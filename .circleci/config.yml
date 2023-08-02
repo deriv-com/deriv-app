@@ -79,7 +79,7 @@ commands:
     parameters:
       docker_latest_image_tag:
         type: string
-        default: "latest-staging"
+        default: "latest"
       docker_image_tag:
         type: string
         default: ${CIRCLE_SHA1}

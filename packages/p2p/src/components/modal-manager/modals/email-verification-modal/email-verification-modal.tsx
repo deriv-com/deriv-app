@@ -22,7 +22,7 @@ const EmailVerificationModal = (
             className='email-verification-modal'
             is_open={is_modal_open}
             renderTitle={() => <></>}
-            toggleModal={hideModal}
+            toggleModal={() => hideModal()}
             width='440px'
         >
             <Modal.Body className='email-verification-modal__body'>

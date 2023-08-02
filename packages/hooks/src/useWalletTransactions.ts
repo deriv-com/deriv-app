@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useStore } from '@deriv/stores';
-import { getWalletCurrencyIcon } from '@deriv/utils';
 import { usePaginatedFetch } from '@deriv/api';
 import useCurrencyConfig from './useCurrencyConfig';
 import usePlatformAccounts from './usePlatformAccounts';
@@ -89,34 +88,16 @@ const useWalletTransactions = (action_type?: 'deposit' | 'withdrawal' | 'virtual
                               return {
                                   ...other_account,
                                   ...transaction,
-                                  /** The currency of a trading account that was part of the transfer to/from the wallet. */
-                                  account_currency: other_account.currency,
-                                  /** Local asset name for the account icon. ex: `IcWalletCurrencyUsd` for `USD`  */
-                                  icon: getWalletCurrencyIcon(
-                                      other_account.is_virtual ? 'demo' : other_account.currency || '',
-                                      is_dark_mode_on,
-                                      false
-                                  ),
-                                  /** The type of the icon: `demo`, `fiat`, or `crypto`. */
-                                  icon_type:
-                                      getConfig(other_account.currency)?.is_crypto || current_wallet.is_virtual
-                                          ? 'crypto'
-                                          : 'fiat',
-                                  /** Landing company shortcode the account belongs to. */
-                                  landing_company_shortcode: other_account.landing_company_shortcode,
+                                  /** The currency config of a trading account that was part of the transfer to/from the wallet. */
+                                  account_currency_config: getConfig(other_account.currency),
                               };
                           }
 
                           return {
                               ...current_wallet,
                               ...transaction,
-                              /** The currency of the active wallet. */
-                              account_currency: current_wallet.currency,
-                              /** The type of the icon: `demo`, `fiat`, or `crypto`. */
-                              icon_type:
-                                  current_wallet.currency_config?.is_crypto || current_wallet.is_virtual
-                                      ? 'crypto'
-                                      : 'fiat',
+                              /** The currency config of the active wallet. */
+                              account_currency_config: getConfig(current_wallet?.currency || ''),
                               /** Landing company shortcode the account belongs to. */
                               landing_company_shortcode: undefined,
                           };

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { AppLinkedWithWalletIcon, Text, WalletIcon } from '@deriv/components';
-import { getTradingAccountName } from '@deriv/utils';
+import { getTradingAccountName, getWalletCurrencyIcon } from '@deriv/utils';
 import { useWalletTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 
@@ -15,24 +15,36 @@ const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
 
     const {
         account_category,
-        account_currency,
+        account_currency_config,
         account_type,
         action_type,
         amount,
         balance_after = 0,
-        icon,
-        icon_type,
         is_virtual,
         landing_company_shortcode,
     } = transaction;
 
-    const gradient_card_class = `wallet-card__${is_virtual === 1 ? 'demo' : account_currency?.toLowerCase()}-bg${
-        is_dark_mode_on ? '--dark' : ''
-    }`;
+    const gradient_card_class = useMemo(
+        () =>
+            `wallet-card__${is_virtual === 1 ? 'demo' : account_currency_config?.code?.toLowerCase()}-bg${
+                is_dark_mode_on ? '--dark' : ''
+            }`,
+        [is_virtual, account_currency_config, is_dark_mode_on]
+    );
+
+    const icon = useMemo(
+        () => getWalletCurrencyIcon(is_virtual ? 'demo' : account_currency_config?.code || '', is_dark_mode_on, false),
+        [is_virtual, account_currency_config, is_dark_mode_on]
+    );
+
+    const icon_type = useMemo(
+        () => (is_virtual ? 'demo' : account_currency_config?.type),
+        [is_virtual, account_currency_config]
+    );
 
     const getAccountName = () => {
         return account_category === 'wallet'
-            ? `${is_virtual ? 'Demo ' : ''}${account_currency} Wallet`
+            ? `${is_virtual ? 'Demo ' : ''}${account_currency_config?.code} Wallet`
             : getTradingAccountName(
                   account_type as 'standard' | 'mt5' | 'dxtrade' | 'binary',
                   !!is_virtual,
@@ -106,7 +118,7 @@ const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
                     weight='bold'
                     line_height={is_mobile ? 's' : 'm'}
                 >
-                    {(amount > 0 ? '+' : '') + formatAmount(amount)} {account_currency}
+                    {(amount > 0 ? '+' : '') + formatAmount(amount)} {account_currency_config?.code}
                 </Text>
                 <Text
                     size={is_mobile ? 'xxxxs' : 'xxxs'}
@@ -114,7 +126,7 @@ const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
                     weight='lighter'
                     line_height={is_mobile ? 'm' : 's'}
                 >
-                    Balance: {formatAmount(balance_after)} {account_currency}
+                    Balance: {formatAmount(balance_after)} {account_currency_config?.code}
                 </Text>
             </div>
         </div>

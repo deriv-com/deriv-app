@@ -1,4 +1,4 @@
-import React from 'react';
+import { PoiPoaDocsSubmitted } from '@deriv/account';
 import {
     Button,
     DesktopWrapper,
@@ -10,13 +10,13 @@ import {
     Text,
     UILoader,
 } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { PoiPoaDocsSubmitted } from '@deriv/account';
-import { isMobile, Jurisdiction } from '@deriv/shared';
-import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
-import { observer, useStore } from '@deriv/stores';
-import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { useAuthenticationStatusInfo } from '@deriv/hooks';
+import { Jurisdiction, isMobile } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+import React from 'react';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
 
 const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) => (
     <div className='da-icon-with-message'>

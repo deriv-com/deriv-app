@@ -1,13 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
 import Icon from '../icon';
-import Input from '../input';
+import Input, { TInputProps } from '../input';
+import { TIconProps } from '../types';
 
-const DatePickerIcon = ({ icon, ...props }:  React.ComponentProps<typeof Icon>) => (
+const DatePickerIcon = ({ icon, ...props }: TIconProps) => (
     <Icon className='dc-datepicker__icon' icon={icon} {...props} />
 );
 
-type TDatePickerInputProps = React.ComponentProps<typeof Input> & {
+type TDatePickerInputProps = TInputProps & {
     is_placeholder_visible: boolean;
     is_clearable?: boolean;
     show_leading_icon?: boolean;

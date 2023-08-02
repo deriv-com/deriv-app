@@ -2,26 +2,15 @@ import React from 'react';
 import classNames from 'classnames';
 import { Dialog, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { useDBotStore } from '../../stores/useDBotStore';
 import { setTourSettings, tour_status_ended, tour_type } from './joyride-config';
 
-type TTourTriggrerDialog = {
-    active_tab: number;
-    has_tour_ended: boolean;
-    is_tour_dialog_visible: boolean;
-    setTourDialogVisibility: (param: boolean) => void;
-    toggleOnConfirm: (active_tab: number, value: boolean) => void;
-};
+const TourTriggrerDialog = observer(() => {
+    const { dashboard } = useDBotStore();
+    const { active_tab, has_tour_ended, is_tour_dialog_visible, setTourDialogVisibility, toggleOnConfirm } = dashboard;
 
-const TourTriggrerDialog = ({
-    active_tab,
-    has_tour_ended,
-    is_tour_dialog_visible,
-    setTourDialogVisibility,
-    toggleOnConfirm,
-}: TTourTriggrerDialog) => {
     const is_mobile = isMobile();
 
     const toggleTour = (value: boolean, type: string) => {
@@ -61,12 +50,23 @@ const TourTriggrerDialog = ({
     const getTourHeaders = (tour_check: boolean, tab_id: number) => {
         let text;
         if (!tour_check) {
-            if (tab_id === 1) text = localize(is_mobile ? 'Bot Builder guide' : "Let's build a Bot!");
+            if (tab_id === 1 && is_mobile) text = localize('Bot Builder guide');
+            else if (tab_id === 1) text = localize("Let's build a Bot!");
             else text = localize('Get started on Deriv Bot');
         } else if (tab_id === 1) text = localize('Congratulations');
         else text = localize('Want to retake the tour?');
         return text;
     };
+
+    const tourDialogInfo = is_mobile
+        ? localize('Here’s a quick guide on how to use Deriv Bot on the go.')
+        : localize('Learn how to build your bot from scratch using a simple strategy.');
+
+    const tourDialogAction = is_mobile
+        ? localize(
+              'You can import a bot from your mobile device or from Google drive, see a preview in the bot builder, and start trading by running the bot.'
+          )
+        : localize('Hit the <0>Start</0> button to begin and follow the tutorial.');
 
     const getTourContent = (type: string) => {
         return (
@@ -78,23 +78,12 @@ const TourTriggrerDialog = ({
                     (!has_tour_ended ? (
                         <>
                             <div className='dc-dialog__content__description__text'>
-                                <Localize
-                                    key={0}
-                                    i18n_default_text={
-                                        is_mobile
-                                            ? 'Here’s a quick guide on how to use Deriv Bot on the go.'
-                                            : 'Learn how to build your bot from scratch using a simple strategy.'
-                                    }
-                                />
+                                <Localize key={0} i18n_default_text={tourDialogInfo} />
                             </div>
                             <div className='dc-dialog__content__description__text'>
                                 <Localize
                                     key={0}
-                                    i18n_default_text={
-                                        is_mobile
-                                            ? 'You can import a bot from your mobile device or from Google drive, see a preview in the bot builder, and start trading by running the bot.'
-                                            : 'Hit the <0>Start</0> button to begin and follow the tutorial.'
-                                    }
+                                    i18n_default_text={tourDialogAction}
                                     components={[<strong key={0} />]}
                                 />
                             </div>
@@ -110,7 +99,7 @@ const TourTriggrerDialog = ({
                         </>
                     ) : (
                         <>
-                            <div className='dc-dialog__content__description__text'>
+                            <div className='dc-dialog__content__description__text' data-testid='tour-success-message'>
                                 <Localize
                                     key={0}
                                     i18n_default_text={
@@ -177,12 +166,6 @@ const TourTriggrerDialog = ({
             </Dialog>
         </div>
     );
-};
+});
 
-export default connect(({ dashboard }: RootStore) => ({
-    active_tab: dashboard.active_tab,
-    has_tour_ended: dashboard.has_tour_ended,
-    is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
-    setTourDialogVisibility: dashboard.setTourDialogVisibility,
-    toggleOnConfirm: dashboard.toggleOnConfirm,
-}))(TourTriggrerDialog);
+export default TourTriggrerDialog;

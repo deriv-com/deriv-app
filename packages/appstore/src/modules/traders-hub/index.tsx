@@ -8,7 +8,7 @@ import MainTitleBar from 'Components/main-title-bar';
 import ModalManager from 'Components/modals/modal-manager';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
-import TourGuide from 'Modules/tour-guide/tour-guide';
+import TourGuide from '../tour-guide/tour-guide';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import './traders-hub.scss';

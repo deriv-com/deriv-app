@@ -65,8 +65,11 @@ class DBot {
                             !this.workspace.options.readOnly &&
                             symbol !== that.interpreter.bot.tradeEngine.symbol
                         ) {
+                            const run_button = document.querySelector('#db-animation__run-button');
+                            if (run_button) run_button.disabled = true;
+
                             that.interpreter.unsubscribeFromTicksService().then(async () => {
-                                that.interpreter.bot.tradeEngine.watchTicks(symbol);
+                                await that.interpreter.bot.tradeEngine.watchTicks(symbol);
                             });
                         }
                     } else if (event.name === 'TRADETYPECAT_LIST' && event.blockId === this.id) {
@@ -288,9 +291,9 @@ class DBot {
 
         await this.interpreter.stop();
         this.is_bot_running = false;
+        this.interpreter = null;
         this.interpreter = Interpreter();
-
-        this.interpreter.bot.tradeEngine.watchTicks(this.symbol);
+        await this.interpreter.bot.tradeEngine.watchTicks(this.symbol);
     }
 
     /**
@@ -301,7 +304,7 @@ class DBot {
             await this.interpreter.terminateSession();
             this.interpreter = null;
             this.interpreter = Interpreter();
-            this.interpreter.bot.tradeEngine.watchTicks(this.symbol);
+            await this.interpreter.bot.tradeEngine.watchTicks(this.symbol);
         }
     }
 

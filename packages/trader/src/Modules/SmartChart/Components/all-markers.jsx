@@ -153,17 +153,16 @@ const draw_shaded_barriers = ({
     bottom,
     stroke_color,
     fill_color,
-    has_persistent_borders,
     previous_tick,
     scale,
 }) => {
     ctx.save();
     const end_left = ctx.canvas.offsetWidth - ctx.canvas.parentElement.stx.panels.chart.yaxisTotalWidthRight;
     const end_top = ctx.canvas.offsetHeight - ctx.canvas.parentElement.stx.xaxisHeight;
-    const is_top_visible = top < end_top && (top >= 0 || !has_persistent_borders);
+    const is_top_visible = top < end_top && top >= 0;
     const is_bottom_visible = bottom < end_top;
     // using 2 instead of 0 to distance the top barrier line from the top of the chart and make it clearly visible in C.Details:
-    const persistent_top = top < 0 && has_persistent_borders ? 2 : end_top;
+    const persistent_top = top < 0 ? 2 : end_top;
     const displayed_top = is_top_visible ? top : persistent_top;
     const displayed_bottom = is_bottom_visible ? bottom : end_top;
     const is_start_left_visible = start_left < end_left;
@@ -174,22 +173,22 @@ const draw_shaded_barriers = ({
     ctx.setLineDash([]);
     ctx.font = labels?.font;
     ctx.textAlign = 'right';
-
-    if (is_top_visible || has_persistent_borders) {
-        ctx.fillStyle = stroke_color;
-        // draw difference between high barrier and previous spot price
-        if (labels?.top) {
-            ctx.fillText(labels?.top, end_left - 1, displayed_top - 10);
-        }
-        // draw top barrier with an arrow
-        ctx.beginPath();
-        ctx.moveTo(end_left, displayed_top);
-        ctx.lineTo(start_left - 2.5, displayed_top);
-        ctx.lineTo(start_left, displayed_top + 4.5);
-        ctx.lineTo(start_left + 2.5, displayed_top);
-        ctx.fill();
-        ctx.stroke();
+    // top barrier:
+    ctx.fillStyle = stroke_color;
+    // draw difference between high barrier and previous spot price
+    if (labels?.top) {
+        const y_position = displayed_top - 10 < 2 ? displayed_top + 12 : displayed_top - 10;
+        ctx.fillText(labels?.top, end_left - 1, y_position);
     }
+    // draw top barrier with an arrow
+    ctx.beginPath();
+    ctx.moveTo(end_left, displayed_top);
+    ctx.lineTo(start_left - 2.5, displayed_top);
+    ctx.lineTo(start_left, displayed_top + 4.5);
+    ctx.lineTo(start_left + 2.5, displayed_top);
+    ctx.fill();
+    ctx.stroke();
+    // middle line:
     if (middle_top < end_top && previous_tick) {
         const { draw_line_without_tick_marker, radius, stroke_color: prev_tick_stroke_color } = previous_tick || {};
         ctx.fillStyle = prev_tick_stroke_color;
@@ -211,22 +210,22 @@ const draw_shaded_barriers = ({
         ctx.stroke();
         ctx.globalCompositeOperation = 'source-over';
     }
-    if (is_bottom_visible || has_persistent_borders) {
-        ctx.fillStyle = stroke_color;
-        // draw difference between low barrier and previous spot price
-        if (labels?.bottom && displayed_bottom + 12 < end_top) {
-            ctx.fillText(labels?.bottom, end_left - 1, displayed_bottom + 12);
-        }
-        // draw bottom barrier with an arrow
-        ctx.beginPath();
-        ctx.setLineDash([]);
-        ctx.moveTo(end_left, displayed_bottom);
-        ctx.lineTo(start_left - 2.5, displayed_bottom);
-        ctx.lineTo(start_left, displayed_bottom - 4.5);
-        ctx.lineTo(start_left + 2.5, displayed_bottom);
-        ctx.fill();
-        ctx.stroke();
+    // bottom barrier:
+    ctx.fillStyle = stroke_color;
+    // draw difference between low barrier and previous spot price
+    if (labels?.bottom) {
+        const y_position = displayed_bottom + 12 < end_top ? displayed_bottom + 12 : displayed_bottom - 10;
+        ctx.fillText(labels?.bottom, end_left - 1, y_position);
     }
+    // draw bottom barrier with an arrow
+    ctx.beginPath();
+    ctx.setLineDash([]);
+    ctx.moveTo(end_left, displayed_bottom);
+    ctx.lineTo(start_left - 2.5, displayed_bottom);
+    ctx.lineTo(start_left, displayed_bottom - 4.5);
+    ctx.lineTo(start_left + 2.5, displayed_bottom);
+    ctx.fill();
+    ctx.stroke();
     // draw shaded area between barriers
     ctx.fillStyle = fill_color;
     ctx.fillRect(start_left, displayed_top, end_left - start_left, Math.abs(displayed_bottom - displayed_top));
@@ -352,7 +351,6 @@ const TickContract = RawMarkerMaker(
                     is_dark_theme,
                 }),
                 // we should show barrier lines in contract details even when they are outside of the chart:
-                has_persistent_borders: is_in_contract_details,
                 labels: !is_in_contract_details && accu_barriers_difference,
                 previous_tick: {
                     draw_line_without_tick_marker: is_in_contract_details,

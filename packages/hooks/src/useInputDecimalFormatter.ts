@@ -12,7 +12,7 @@ const useInputDecimalFormatter = (initial?: number, options?: TOptions) => {
     const onChange = useCallback(
         (e: DeepPartial<React.ChangeEvent<HTMLInputElement>> | React.ChangeEvent<HTMLInputElement>) => {
             setValue(old_value => {
-                const new_value = e?.target?.value || '';
+                const new_value = e?.target?.value ?? '';
                 const isEmpty = new_value === '';
 
                 // The field has been cleared, So we return the new value.
@@ -20,26 +20,20 @@ const useInputDecimalFormatter = (initial?: number, options?: TOptions) => {
 
                 const text = with_sign ? new_value : new_value.replaceAll(/[+-]/g, '');
                 const inputs = text.split('.');
+                const is_number = !isNaN(Number(new_value));
 
                 // The field contains more than one dot, So we return the old value as only one dot
                 // is allowed.
-                if (inputs.length > 2) return old_value;
+                // Or if the input value is not a valid number, So we return the old value.
+                if (inputs.length > 2 || !is_number) return old_value;
 
                 const left = inputs[0];
                 const right = inputs.length > 1 ? inputs[1] : null;
                 const has_right = right !== null && right !== '';
 
-                // The field value is positive or negative sign, So we return the new value without
+                // The field value is positive or negative sign or 0, So we return the new value without
                 // any calculations.
-                if ((left === '-' || left === '+') && !has_right) return new_value;
-
-                // The field value is 0, So we return the new value without any calculations.
-                if (left === '0' && !has_right) return new_value;
-
-                const is_number = !isNaN(Number(new_value));
-
-                // The input value is not a valid number, So we return the old value.
-                if (!is_number) return old_value;
+                if (['-', '+', '0'].includes(left) && !has_right) return new_value;
 
                 const new_left = left.replaceAll(/[+-]/g, '');
                 const has_decimal = new_value.includes('.');

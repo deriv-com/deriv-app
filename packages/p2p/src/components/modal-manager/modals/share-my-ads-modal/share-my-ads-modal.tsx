@@ -14,17 +14,22 @@ import { observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import MyProfileSeparatorContainer from 'Components/my-profile/my-profile-separator-container';
+import { ad_type } from 'Constants/floating-rate';
 import { TAdvert } from 'Types';
-import ShareMyAdsIcons from './share-my-ads-socials';
+import ShareMyAdsSocials from './share-my-ads-socials';
 import ShareMyAdsCard from './share-my-ads-card';
-import { isDesktop } from '@deriv/shared';
 
 const ShareMyAdsModal = ({ advert }: TAdvert) => {
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
+    const { account_currency, local_currency, rate_display, rate_type } = advert;
 
     const divRef = React.useRef(null);
     // TODO: replace with proper url when available
     const advert_url = window.location.href;
+    const custom_message =
+        rate_type === ad_type.FLOAT
+            ? `Hello! I'd like to exchange ${local_currency} for ${account_currency} at ${rate_display}% on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n${advert_url}\n\nThanks!`
+            : `Hello! I'd like to exchange ${local_currency} for ${account_currency} at ${rate_display} ${local_currency} on Deriv P2P.\n\nIf you're interested, check out my ad ${advert_url}\n\nThanks!`;
 
     const { hideModal, is_modal_open } = useModalManagerContext();
 
@@ -57,9 +62,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
     // TODO: Replace with proper message and url when available
     const handleShareLink = () => {
         navigator.share({
-            url: advert_url,
-            title: 'P2P Advert',
-            text: 'This is my advert!',
+            text: custom_message,
         });
     };
 
@@ -127,7 +130,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                                 <Text weight='bold'>
                                     <Localize i18n_default_text='Share link to' />
                                 </Text>
-                                <ShareMyAdsIcons />
+                                <ShareMyAdsSocials custom_message={custom_message} />
                                 <MyProfileSeparatorContainer.Line
                                     className='share-my-ads-modal__line'
                                     is_invisible={false}

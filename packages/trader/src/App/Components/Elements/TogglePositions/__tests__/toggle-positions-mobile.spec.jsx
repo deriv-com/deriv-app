@@ -122,7 +122,7 @@ describe('<TogglePositionsMobile />', () => {
     });
 
     it('should render <TogglePositionsMobile /> with <TogglePositions /> and <Modal /> content if is_positions_drawer_on === true', () => {
-        const mock_root_store = mockStore({ ...default_mock_store });
+        const mock_root_store = mockStore(default_mock_store);
 
         render(mockTogglePositionsMobile(mock_root_store, default_mocked_props));
 
@@ -142,14 +142,14 @@ describe('<TogglePositionsMobile />', () => {
         expect(screen.queryByText(/go to reports/i)).not.toBeInTheDocument();
     });
     it('should render <EmptyPortfolioMessage /> with error text if is_empty === true', () => {
-        const mock_root_store = mockStore({ ...default_mock_store });
+        const mock_root_store = mockStore(default_mock_store);
         const new_mocked_props = { ...default_mocked_props, is_empty: true };
         render(mockTogglePositionsMobile(mock_root_store, new_mocked_props));
 
         expect(screen.getByText(/test error/i)).toBeInTheDocument();
     });
     it('should call function togglePositionsDrawer if <NavLink /> was clicked', () => {
-        const mock_root_store = mockStore({ ...default_mock_store });
+        const mock_root_store = mockStore(default_mock_store);
 
         render(mockTogglePositionsMobile(mock_root_store, default_mocked_props));
         const nav_link_button = screen.getByText(/go to reports/i);
@@ -158,7 +158,7 @@ describe('<TogglePositionsMobile />', () => {
         expect(mock_root_store.ui.togglePositionsDrawer).toBeCalled();
     });
     it('should call function togglePositionsDrawer if close button in positions-modal was clicked', () => {
-        const mock_root_store = mockStore({ ...default_mock_store });
+        const mock_root_store = mockStore(default_mock_store);
 
         render(mockTogglePositionsMobile(mock_root_store, default_mocked_props));
         const close_button = screen.getAllByText(/test icon/i)[2];
@@ -167,7 +167,7 @@ describe('<TogglePositionsMobile />', () => {
         expect(mock_root_store.ui.togglePositionsDrawer).toBeCalled();
     });
     it('should call function removePositionById if <NavLink /> was clicked and is_sold === 1', () => {
-        const mock_root_store = mockStore({ ...default_mock_store });
+        const mock_root_store = mockStore(default_mock_store);
         const new_mocked_props = { ...default_mocked_props };
         new_mocked_props.all_positions[0].contract_info.is_sold = 1;
         new_mocked_props.all_positions[1].contract_info.is_sold = 1;

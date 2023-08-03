@@ -8,8 +8,8 @@ import { api_base } from '@api-base';
 import { translate } from '@i18n';
 import { isNumber, saveAs, appendRow, updateRow } from '@utils';
 import { observer as globalObserver } from '@utilities/observer';
-import { roundBalance } from '../../common/tools';
-import * as style from '../style';
+import * as style from '@components/style';
+import { roundBalance } from '../../bot/helpers';
 
 const getProfit = ({ sell_price, buy_price, currency }) => {
     if (isNumber(sell_price) && isNumber(buy_price)) {

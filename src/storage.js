@@ -370,6 +370,7 @@ export const getActiveAccountFromAccountsList = (accounts = []) => {
 };
 
 export const updateTokenList = () => {
+    // eslint-disable-next-line no-console
     console.log('updateTokenList updateTokenList updateTokenList');
     const token_list = getTokenList();
     if (token_list.length) {

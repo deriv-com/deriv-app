@@ -14,7 +14,7 @@ import { getLanguage } from '@storage';
 import { translate } from '@i18n';
 import { observer as globalObserver } from '@utilities/observer';
 import Dialog from './Dialog';
-import ChartTicksService from '../../common/ChartTicksService';
+import ChartTicksService from '../../botPage/common/ChartTicksService';
 
 setSmartChartsPublicPath('./js/');
 

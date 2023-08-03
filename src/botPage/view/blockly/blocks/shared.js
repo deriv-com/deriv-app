@@ -4,8 +4,8 @@ import { isProduction } from '@utils';
 import { api_base } from '@api-base';
 import { translate } from '@i18n';
 import { observer as globalObserver } from '@utilities/observer';
+import config from '@currency-config';
 import { symbolApi } from '../../shared';
-import config from '../../../common/const';
 
 let purchaseChoices = [[translate('Click to select'), '']];
 

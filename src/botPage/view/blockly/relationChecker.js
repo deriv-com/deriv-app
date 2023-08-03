@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import { translate } from '@i18n';
 import { observer as globalObserver } from '@utilities/observer';
-import { durationToSecond } from '../../../common/utils/tools';
-import config from '../../common/const';
+import config from '@currency-config';
+import { durationToSecond } from '@utils';
 import { symbolApi } from '../shared';
 import { findTopParentBlock, disable, enable, expandDuration } from './utils';
 

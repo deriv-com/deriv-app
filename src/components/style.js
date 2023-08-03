@@ -48,30 +48,7 @@ export const loading = {
 
 export const iframe = { width: '100%', height: '100%' };
 
-export const exportButton = {
-    position: 'absolute',
-    left: '41em',
-    zIndex: 2,
-    padding: 0,
-    width: '2em',
-    height: '2em',
-};
-
 export const tradeTableExport = { marginTop: '-2.5em' };
-
-export const bottomWarning = {
-    bottom: '0px',
-    position: 'fixed',
-    zIndex: 9999,
-    background: 'var(--color-red)',
-    color: 'white',
-    width: '100%',
-    textAlign: 'center',
-    lineHeight: '25px',
-    fontSize: '0.8em',
-};
-
-export const bottomWarningLink = { textDecoration: 'underline' };
 
 export const green = { color: 'green' };
 

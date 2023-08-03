@@ -24,7 +24,7 @@ export const CRYPTO_CURRENCIES = [
     'USDT',
 ];
 
-const config = {
+const CONFIG = {
     lists: {
         CRYPTO_CURRENCIES,
         DETAILS: [
@@ -292,13 +292,13 @@ export async function updateConfigCurrencies() {
         // TODO: this need to be moved inside the api-base class since called only one time
         // save the currencies in the api-base instance
         const response = await api_base.api.send({ payout_currencies: 1 });
-        config.lists.CURRENCY = response.payout_currencies.map(c => {
+        CONFIG.lists.CURRENCY = response.payout_currencies.map(c => {
             if (c === 'UST') return ['USDT', 'UST'];
             return [c, c];
         });
     } catch (e) {
-        config.lists.CURRENCY = ['USD', 'EUR', 'GBP', 'AUD', ...CRYPTO_CURRENCIES].map(c => [c, c]);
+        CONFIG.lists.CURRENCY = ['USD', 'EUR', 'GBP', 'AUD', ...CRYPTO_CURRENCIES].map(c => [c, c]);
     }
 }
 
-export default config;
+export default CONFIG;

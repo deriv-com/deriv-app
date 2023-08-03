@@ -1,6 +1,5 @@
 import { translate } from '@i18n';
-import { getUTCTime } from '../../common/utils/tools';
-import { roundBalance } from '../common/tools';
+import { roundBalance, getUTCTime } from './helpers';
 import { notify } from './broadcast';
 
 export const noop = () => {};

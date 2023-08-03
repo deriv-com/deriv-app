@@ -109,6 +109,7 @@ module.exports = {
             '@redux-store': path.resolve(__dirname, 'src/redux-store'),
             '@blockly': path.resolve(__dirname, 'src/blockly'),
             '@utilities': path.resolve(__dirname, 'src/utilities'),
+            '@currency-config': path.resolve(__dirname, 'src/currency-config'),
         },
     },
     optimization: {

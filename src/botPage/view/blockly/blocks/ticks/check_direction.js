@@ -1,6 +1,6 @@
 import { translate } from '@i18n';
+import config from '@currency-config';
 import { mainScope } from '../../relationChecker';
-import config from '../../../../common/const';
 
 Blockly.Blocks.check_direction = {
     init: function init() {

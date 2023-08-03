@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { translate } from '@i18n';
 import { observer as globalObserver } from '@utilities/observer';
-import * as style from '../style';
+import * as style from '@components/style';
 
 const Summary = ({ accountID }) => {
     const [summary_info, setSummaryInfo] = React.useState({});

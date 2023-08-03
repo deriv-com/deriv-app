@@ -1,8 +1,8 @@
 import { TrackJS } from 'trackjs';
 import { isMobile } from '@utils';
 import { observer as globalObserver } from '@utilities/observer';
+import { trackJSTrack } from '@utilities/integrations/trackJSTrack';
 import { isIOS } from './osDetect';
-import { trackJSTrack } from '../../common/integrations/trackJSTrack';
 
 const log = (type, ...args) => {
     if (type === 'warn') {

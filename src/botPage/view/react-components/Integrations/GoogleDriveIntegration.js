@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { translate } from '@i18n';
-import google_drive_util from '../../../../common/integrations/GoogleDrive';
+import google_drive_util from '@utilities/integrations/GoogleDrive';
 
 const GoogleDriveIntegration = () => {
     const { is_gd_logged_in } = useSelector(state => state.client);

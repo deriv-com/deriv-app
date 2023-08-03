@@ -1,6 +1,6 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2jo335
 import { translate } from '@i18n';
-import config from '../../../../common/const';
+import config from '@currency-config';
 import { mainScope } from '../../relationChecker';
 import candleInterval, { getGranularity } from './candleInterval';
 

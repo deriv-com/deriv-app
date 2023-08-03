@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { translate } from '@i18n';
+import google_drive_util, { removeGdBackground } from '@utilities/integrations/GoogleDrive';
 import LoadingButton from '../loading_button';
 import SAVE_LOAD_TYPE from '../common';
-import * as style from '../../../botPage/view/style';
-import google_drive_util, { removeGdBackground } from '../../../common/integrations/GoogleDrive';
+import * as style from '../../style';
 import useIsMounted from '../../../common/hooks/isMounted';
 
 const Load = ({ closeDialog, is_gd_logged_in }) => {

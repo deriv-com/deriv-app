@@ -2,13 +2,14 @@ import { api_base } from '@api-base';
 import { getTokenList, syncWithDerivApp, getToken, removeAllTokens, updateTokenList } from '@storage';
 import { translate } from '@i18n';
 import { observer as globalObserver } from '@utilities/observer';
-import config, { updateConfigCurrencies } from '../botPage/common/const';
+import google_drive_util from '@utilities/integrations/GoogleDrive';
+import IntegrationsDialog from '@components/Dialogs/IntegrationsDialog';
+import Chart from '@components/Dialogs/Chart';
+import TradingView from '@components/Dialogs/TradingView';
+import Limits from '@components/Dialogs/Limits';
+import config, { updateConfigCurrencies } from '@currency-config';
 import logHandler from '../botPage/view/logger';
 import { logoutAllTokens } from '../common/appId';
-import IntegrationsDialog from '../botPage/view/Dialogs/IntegrationsDialog';
-import Chart from '../botPage/view/Dialogs/Chart';
-import TradingView from '../botPage/view/Dialogs/TradingView';
-import Limits from '../botPage/view/Dialogs/Limits';
 import {
     saveBeforeUnload,
     getMissingBlocksTypes,
@@ -16,7 +17,6 @@ import {
     getUnattachedMandatoryPairs,
 } from '../botPage/view/blockly/utils';
 import GTM from '../common/gtm';
-import google_drive_util from '../common/integrations/GoogleDrive';
 import { load } from '../botPage/view/blockly';
 
 const integrationsDialog = new IntegrationsDialog();

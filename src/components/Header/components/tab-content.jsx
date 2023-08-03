@@ -6,7 +6,7 @@ import config from '@config';
 import { getTokenList, getClientCountry } from '@storage';
 import { translate } from '@i18n';
 import { setAccountSwitcherToken } from '@redux-store/ui-slice';
-import { CRYPTO_CURRENCIES } from '../../../botPage/common/const';
+import { CRYPTO_CURRENCIES } from '@currency-config';
 
 const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, title = 'Deriv Accounts' }) => {
     const [isAccordionOpen, setIsAccordionOpen] = React.useState(true);

@@ -2,6 +2,8 @@ import { parseQueryString, getRelatedDeriveOrigin } from '@utils';
 import { getActiveAccount, getLanguage } from '@storage';
 import { translate, xml as translateXml } from '@i18n';
 import { observer as globalObserver } from '@utilities/observer';
+import { trackJSTrack } from '@utilities/integrations/trackJSTrack';
+import config from '@currency-config';
 import './customBlockly';
 import blocks from './blocks';
 import {
@@ -29,8 +31,6 @@ import { showDialog } from '../../bot/tools';
 import GTM from '../../../common/gtm';
 import { TrackJSError } from '../logger';
 import { createDataStore } from '../../bot/data-collection';
-import config from '../../common/const';
-import { trackJSTrack } from '../../../common/integrations/trackJSTrack';
 
 const disableStrayBlocks = () => {
     const topBlocks = Blockly.mainWorkspace.getTopBlocks();

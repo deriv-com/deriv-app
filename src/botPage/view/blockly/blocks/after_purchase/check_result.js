@@ -1,5 +1,5 @@
 import { translate } from '@i18n';
-import config from '../../../../common/const';
+import config from '@currency-config';
 import { insideAfterPurchase } from '../../relationChecker';
 
 Blockly.Blocks.contract_check_result = {

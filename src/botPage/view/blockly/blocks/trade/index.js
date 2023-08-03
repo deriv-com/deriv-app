@@ -1,6 +1,6 @@
 import { translate } from '@i18n';
 import { observer as globalObserver } from '@utilities/observer';
-import config from '../../../../common/const';
+import config from '@currency-config';
 import { setBlockTextColor, findTopParentBlock, deleteBlockIfExists } from '../../utils';
 import { defineContract } from '../images';
 import { updatePurchaseChoices, fieldGeneratorMapping, dependentFieldMapping } from '../shared';

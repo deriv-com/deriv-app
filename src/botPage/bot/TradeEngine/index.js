@@ -4,7 +4,7 @@ import thunk from 'redux-thunk';
 import { api_base } from '@api-base';
 import { translate } from '@i18n';
 import { observer as globalObserver } from '@utilities/observer';
-import { durationToSecond } from '../../../common/utils/tools';
+import { durationToSecond } from '@utils';
 import { createError } from '../../common/error';
 import { doUntilDone } from '../tools';
 import { expectInitArg, expectTradeOptions } from '../sanitize';

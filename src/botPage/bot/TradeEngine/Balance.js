@@ -1,6 +1,6 @@
 import { api_base } from '@api-base';
 import { observer as globalObserver } from '@utilities/observer';
-import { roundBalance } from '../../common/tools';
+import { roundBalance } from '../helpers';
 import { info } from '../broadcast';
 
 export default Engine =>

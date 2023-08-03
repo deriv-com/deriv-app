@@ -2,12 +2,35 @@
 import { api_base } from '@api-base';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { getToken } from '@storage';
+import { getToken, getLanguage } from '@storage';
 import { translate } from '@i18n';
-import { restrictInputCharacter } from '@utils';
-import Dialog from './Dialog';
+import { restrictInputCharacter, showSpinnerInButton, removeSpinnerInButton, isProduction, getExtension } from '@utils';
 import * as style from '../style';
-import { showSpinnerInButton, removeSpinnerInButton, createUrl } from '../../../common/utils/tools';
+import Dialog from './Dialog';
+
+const createUrl = options => {
+    const getOption = property => Object.prototype.hasOwnProperty.call(options, property) && options[property];
+    const language = getOption('addLanguage') ? `/${getLanguage()}` : '';
+    const path = getOption('path') ? `/${getOption('path')}` : '';
+    const htmlExtension = getOption('addHtmlExtension') ? '.html' : '';
+    const subdomain = getOption('subdomain') ? `${getOption('subdomain')}.` : 'www.';
+    if (isProduction()) {
+        let domainExtension = `.${getExtension()}`;
+        if (getOption('isNonBotPage')) {
+            switch (document.location.hostname.replace(/^www./, '')) {
+                case 'bot.binary.me':
+                case 'binary.bot':
+                    domainExtension = '.me';
+                    break;
+                default:
+                    domainExtension = '.com';
+                    break;
+            }
+        }
+        return `${document.location.protocol}//${subdomain}binary${domainExtension}${language}${path}${htmlExtension}`;
+    }
+    return `https://${subdomain}binary.com${language}${path}${htmlExtension}`;
+};
 
 class LimitsContent extends PureComponent {
     constructor() {

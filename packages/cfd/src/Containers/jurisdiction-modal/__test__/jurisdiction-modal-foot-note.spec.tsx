@@ -3,13 +3,19 @@ import JurisdictionModalFootNote from '../jurisdiction-modal-foot-note';
 import { render, screen } from '@testing-library/react';
 import RootStore from 'Stores/index';
 import { Jurisdiction } from '@deriv/shared';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 describe('JurisdictionModalFootNote', () => {
-    const mock_store = {
+    const mock_store = mockStore({
         common: {},
         client: {},
         ui: {},
-    };
+    });
+
+    const wrapper = ({ children }: { children: JSX.Element }) => (
+        <StoreProvider store={mock_store}>{children}</StoreProvider>
+    );
+
     const mock_context = new RootStore(mock_store);
     const mock_props = {
         account_status: {
@@ -33,12 +39,12 @@ describe('JurisdictionModalFootNote', () => {
         should_restrict_vanuatu_account_creation: false,
     };
     it('should render JurisdictionModalFootNote', () => {
-        render(<JurisdictionModalFootNote {...mock_props} />);
+        render(<JurisdictionModalFootNote {...mock_props} />, { wrapper });
         expect(screen.getByTestId('dt-jurisdiction-footnote')).toBeInTheDocument();
     });
 
     it('should render JurisdictionModalFootNote with className', () => {
-        render(<JurisdictionModalFootNote {...mock_props} card_classname='mock_jurisdiction' />);
+        render(<JurisdictionModalFootNote {...mock_props} card_classname='mock_jurisdiction' />, { wrapper });
         const container = screen.getByTestId('dt-jurisdiction-footnote');
         expect(container).toHaveClass('mock_jurisdiction__footnote');
     });
@@ -49,7 +55,8 @@ describe('JurisdictionModalFootNote', () => {
                 {...mock_props}
                 jurisdiction_selected_shortcode={Jurisdiction.SVG}
                 account_type='synthetic'
-            />
+            />,
+            { wrapper }
         );
         expect(
             screen.getByText('Add your Deriv MT5 Derived account under Deriv (SVG) LLC (company no. 273 LLC 2020).')
@@ -62,7 +69,8 @@ describe('JurisdictionModalFootNote', () => {
                 {...mock_props}
                 jurisdiction_selected_shortcode={Jurisdiction.BVI}
                 account_type='synthetic'
-            />
+            />,
+            { wrapper }
         );
         expect(
             screen.getByText(
@@ -78,7 +86,8 @@ describe('JurisdictionModalFootNote', () => {
                 jurisdiction_selected_shortcode={Jurisdiction.BVI}
                 account_type='synthetic'
                 should_restrict_bvi_account_creation
-            />
+            />,
+            { wrapper }
         );
         expect(
             screen.getByText('To create this account first we need you to resubmit your proof of address.')
@@ -107,7 +116,8 @@ describe('JurisdictionModalFootNote', () => {
                 account_type='synthetic'
                 should_restrict_bvi_account_creation
                 card_classname='mock_jurisdiction'
-            />
+            />,
+            { wrapper }
         );
         const poa_message = screen.getByText(
             'You can open this account once your submitted documents have been verified.'
@@ -122,7 +132,8 @@ describe('JurisdictionModalFootNote', () => {
                 {...mock_props}
                 jurisdiction_selected_shortcode={Jurisdiction.VANUATU}
                 account_type='synthetic'
-            />
+            />,
+            { wrapper }
         );
         expect(
             screen.getByText(
@@ -138,7 +149,8 @@ describe('JurisdictionModalFootNote', () => {
                 jurisdiction_selected_shortcode={Jurisdiction.VANUATU}
                 account_type='synthetic'
                 should_restrict_vanuatu_account_creation
-            />
+            />,
+            { wrapper }
         );
         expect(
             screen.getByText('To create this account first we need you to resubmit your proof of address.')
@@ -167,7 +179,8 @@ describe('JurisdictionModalFootNote', () => {
                 account_type='synthetic'
                 should_restrict_vanuatu_account_creation
                 card_classname='mock_jurisdiction'
-            />
+            />,
+            { wrapper }
         );
         const poa_message = screen.getByText(
             'You can open this account once your submitted documents have been verified.'
@@ -182,7 +195,8 @@ describe('JurisdictionModalFootNote', () => {
                 {...mock_props}
                 jurisdiction_selected_shortcode={Jurisdiction.LABUAN}
                 account_type='synthetic'
-            />
+            />,
+            { wrapper }
         );
         expect(
             screen.getByText(
@@ -197,7 +211,8 @@ describe('JurisdictionModalFootNote', () => {
                 {...mock_props}
                 jurisdiction_selected_shortcode={Jurisdiction.MALTA_INVEST}
                 account_type='synthetic'
-            />
+            />,
+            { wrapper }
         );
         expect(
             screen.getByText(
@@ -207,7 +222,7 @@ describe('JurisdictionModalFootNote', () => {
     });
 
     it('should not render JurisdictionModalFootNote when jurisdiction_shortcode is empty', () => {
-        render(<JurisdictionModalFootNote {...mock_props} jurisdiction_selected_shortcode='' />);
+        render(<JurisdictionModalFootNote {...mock_props} jurisdiction_selected_shortcode='' />, { wrapper });
         expect(screen.queryByTestId('dt-jurisdiction-footnote')).not.toBeInTheDocument();
     });
 });

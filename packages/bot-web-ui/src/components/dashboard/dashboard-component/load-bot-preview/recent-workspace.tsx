@@ -78,7 +78,8 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                 setPreviewedStrategyId(workspace.id);
                 // Fires for mobile on clicking preview button
                 if (is_mobile) setPreviewOnDialog(true);
-                await waitForDomElement('#load-strategy__blockly-container');
+                const dashboard_tab_dom_element = document.getElementsByClassName('tab__dashboard')?.[0];
+                await waitForDomElement('#load-strategy__blockly-container', dashboard_tab_dom_element);
                 previewRecentStrategy(workspace.id);
                 break;
             }

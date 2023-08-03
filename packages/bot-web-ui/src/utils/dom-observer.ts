@@ -1,4 +1,4 @@
-export const waitForDomElement = (selector: string) => {
+export const waitForDomElement = (selector: string, observingParent?: Element) => {
     return new Promise(resolve => {
         if (document.querySelector(selector)) {
             return resolve(document.querySelector(selector));
@@ -11,7 +11,7 @@ export const waitForDomElement = (selector: string) => {
             }
         });
 
-        observer.observe(document.body, {
+        observer.observe(observingParent ?? document.body, {
             childList: true,
             subtree: true,
         });

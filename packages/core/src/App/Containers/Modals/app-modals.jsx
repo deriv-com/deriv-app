@@ -16,9 +16,6 @@ import NeedRealAccountForCashierModal from './need-real-account-for-cashier-moda
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
 );
-const AcuityDownloadModal = React.lazy(() =>
-    import(/* webpackChunkName: "acuity-download-modal"  */ '../AcuityDownloadModal')
-);
 
 const CloseMxMltAccountModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseMxMltAccountModal'))
@@ -61,7 +58,6 @@ const WarningCloseCreateRealAccountModal = React.lazy(() =>
 
 const AppModals = ({
     is_account_needed_modal_on,
-    is_acuity_modal_open,
     is_closing_create_real_account_modal,
     is_welcome_modal_visible,
     is_reality_check_visible,
@@ -133,8 +129,6 @@ const AppModals = ({
         content_flag !== ContentFlag.LOW_RISK_CR_NON_EU
     ) {
         ComponentToLoad = <TradingAssessmentExistingUser />;
-    } else if (is_acuity_modal_open) {
-        ComponentToLoad = <AcuityDownloadModal />;
     } else if (is_close_mx_mlt_account_modal_visible) {
         ComponentToLoad = <CloseMxMltAccountModal />;
     } else if (is_close_uk_account_modal_visible) {
@@ -179,7 +173,6 @@ const AppModals = ({
 export default connect(({ client, ui, traders_hub }) => ({
     is_welcome_modal_visible: ui.is_welcome_modal_visible,
     is_account_needed_modal_on: ui.is_account_needed_modal_on,
-    is_acuity_modal_open: ui.is_acuity_modal_open,
     is_closing_create_real_account_modal: ui.is_closing_create_real_account_modal,
     is_close_mx_mlt_account_modal_visible: ui.is_close_mx_mlt_account_modal_visible,
     is_close_uk_account_modal_visible: ui.is_close_uk_account_modal_visible,

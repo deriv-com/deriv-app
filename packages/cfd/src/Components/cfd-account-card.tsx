@@ -199,7 +199,7 @@ const CFDAccountCardComponent = observer(
     }: TCFDAccountCard) => {
         const { ui, common, traders_hub, client } = useStore();
 
-        const { setIsAcuityModalOpen, setShouldShowCooldownModal } = ui;
+        const { setShouldShowCooldownModal } = ui;
         const { setAppstorePlatform } = common;
         const { show_eu_related_content } = traders_hub;
         const {
@@ -398,26 +398,6 @@ const CFDAccountCardComponent = observer(
                                 )}
                         </div>
                     </div>
-                    {platform === CFD_PLATFORMS.MT5 && isDesktop() && is_logged_in && (
-                        <div className='cfd-account-card__acuity-container'>
-                            {type.type === 'financial' && (
-                                <Button
-                                    onClick={() => setIsAcuityModalOpen(true)}
-                                    className='cfd-account-card__acuity-banner'
-                                    type='button'
-                                    transparent
-                                >
-                                    <div className='cfd-account-card__acuity-banner--wrapper'>
-                                        <Icon icon='icMt5Acuity' />
-                                        <Text as='p' size='xxs' weight='bold' color='prominent'>
-                                            <Localize i18n_default_text='Get Acuity trading tools' />
-                                        </Text>
-                                        <Icon icon='IcAddOutline' color='secondary' />
-                                    </div>
-                                </Button>
-                            )}
-                        </div>
-                    )}
                     {existing_data && <div className='cfd-account-card__divider' />}
 
                     <div className='cfd-account-card__cta' style={!existing_data?.login ? { marginTop: 'auto' } : {}}>

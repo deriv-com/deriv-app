@@ -1,7 +1,7 @@
 import React from 'react';
 import { useStore } from '@deriv/stores';
-import type ProfitStores from './Modules/Profit/profit-store';
-import type StatementStores from './Modules/Statement/statement-store';
+import ProfitStores from './Modules/Profit/profit-store';
+import StatementStores from './Modules/Statement/statement-store';
 
 type TOverrideProfitStore = Omit<ProfitStores, 'totals' | 'data'> & {
     data: { [key: string]: string }[];
@@ -46,11 +46,13 @@ type TReportsStore = {
 const ReportsStoreContext = React.createContext<TReportsStore | null>(null);
 
 export const ReportsStoreProvider = ({ children }: React.PropsWithChildren<unknown>) => {
-    const { modules } = useStore();
-    const memoizedValue = React.useMemo(
-        () => ({ profit_table: modules.profit_table, statement: modules.statement }),
-        [modules]
-    );
+    const root_store = useStore();
+    const memoizedValue = React.useMemo(() => {
+        return {
+            profit_table: new ProfitStores({ root_store }),
+            statement: new StatementStores({ root_store }),
+        } as unknown as TReportsStore;
+    }, [root_store]);
 
     return <ReportsStoreContext.Provider value={memoizedValue}>{children}</ReportsStoreContext.Provider>;
 };

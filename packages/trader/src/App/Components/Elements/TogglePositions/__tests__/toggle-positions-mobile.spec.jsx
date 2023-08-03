@@ -124,7 +124,7 @@ describe('<TogglePositionsMobile />', () => {
     it('should render <TogglePositionsMobile /> with <TogglePositions /> and <Modal /> content if is_positions_drawer_on === true', () => {
         const mock_root_store = mockStore({ ...default_mock_store });
 
-        render(mockTogglePositionsMobile(mock_root_store, { ...default_mocked_props }));
+        render(mockTogglePositionsMobile(mock_root_store, default_mocked_props));
 
         screen.getAllByText(/test icon/i).forEach(icon => expect(icon).toBeInTheDocument());
         screen.queryAllByAltText(/position modal card/i).forEach(card => expect(card).toBeInTheDocument());
@@ -135,7 +135,7 @@ describe('<TogglePositionsMobile />', () => {
     it('should not render <TogglePositionsMobile /> with <TogglePositions /> and <Modal /> content if is_positions_drawer_on === false', () => {
         const mock_root_store = mockStore({ ...default_mock_store, ui: { is_positions_drawer_on: false } });
 
-        render(mockTogglePositionsMobile(mock_root_store, { ...default_mocked_props }));
+        render(mockTogglePositionsMobile(mock_root_store, default_mocked_props));
 
         screen.queryAllByAltText(/position modal card/i).forEach(card => expect(card).not.toBeInTheDocument());
         expect(screen.queryByText(/recent positions/i)).not.toBeInTheDocument();
@@ -143,15 +143,15 @@ describe('<TogglePositionsMobile />', () => {
     });
     it('should render <EmptyPortfolioMessage /> with error text if is_empty === true', () => {
         const mock_root_store = mockStore({ ...default_mock_store });
-
-        render(mockTogglePositionsMobile(mock_root_store, { ...default_mocked_props, is_empty: true }));
+        const new_mocked_props = { ...default_mocked_props, is_empty: true };
+        render(mockTogglePositionsMobile(mock_root_store, new_mocked_props));
 
         expect(screen.getByText(/test error/i)).toBeInTheDocument();
     });
     it('should call function togglePositionsDrawer if <NavLink /> was clicked', () => {
         const mock_root_store = mockStore({ ...default_mock_store });
 
-        render(mockTogglePositionsMobile(mock_root_store, { ...default_mocked_props }));
+        render(mockTogglePositionsMobile(mock_root_store, default_mocked_props));
         const nav_link_button = screen.getByText(/go to reports/i);
         userEvent.click(nav_link_button);
 
@@ -160,7 +160,7 @@ describe('<TogglePositionsMobile />', () => {
     it('should call function togglePositionsDrawer if close button in positions-modal was clicked', () => {
         const mock_root_store = mockStore({ ...default_mock_store });
 
-        render(mockTogglePositionsMobile(mock_root_store, { ...default_mocked_props }));
+        render(mockTogglePositionsMobile(mock_root_store, default_mocked_props));
         const close_button = screen.getAllByText(/test icon/i)[2];
         userEvent.click(close_button);
 
@@ -172,7 +172,7 @@ describe('<TogglePositionsMobile />', () => {
         new_mocked_props.all_positions[0].contract_info.is_sold = 1;
         new_mocked_props.all_positions[1].contract_info.is_sold = 1;
 
-        render(mockTogglePositionsMobile(mock_root_store, { ...new_mocked_props }));
+        render(mockTogglePositionsMobile(mock_root_store, new_mocked_props));
         const nav_link_button = screen.getByText(/go to reports/i);
         userEvent.click(nav_link_button);
 

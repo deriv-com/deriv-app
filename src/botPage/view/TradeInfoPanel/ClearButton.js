@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { translate } from '@i18n';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
 
 const ClearButton = () => {
-    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+    const { is_bot_running } = useSelector(state => state.ui);
+    const [is_button_disabled, setIsButtonDisabled] = React.useState(true);
 
-    useEffect(() => {
-        const enableClear = () => setIsButtonDisabled(false);
-        const disableClear = () => setIsButtonDisabled(true);
-        const disableButtonOnBotRunning = () => setIsButtonDisabled(true);
+    const isRunning = globalObserver.getState('isRunning');
 
-        globalObserver.register('summary.enable_clear', enableClear);
-        globalObserver.register('summary.disable_clear', disableClear);
-        globalObserver.register('bot.running', disableButtonOnBotRunning);
-
-        return () => {
-            globalObserver.unregister('summary.enable_clear', enableClear);
-            globalObserver.unregister('summary.disable_clear', disableClear);
-            globalObserver.unregister('bot.running', disableButtonOnBotRunning);
-        };
+    React.useEffect(() => {
+        globalObserver.register('summary.enable_clear', () => setIsButtonDisabled(false));
+        globalObserver.register('summary.disable_clear', () => setIsButtonDisabled(true));
+        globalObserver.register('bot.running', () => setIsButtonDisabled(true));
     }, []);
+
+    React.useEffect(() => {
+        if (!is_bot_running && !isRunning) {
+            setIsButtonDisabled(false);
+        }
+    }, [is_bot_running, isRunning]);
 
     const confirmClearLog = () => {
         showDialog({
@@ -34,14 +34,13 @@ const ClearButton = () => {
             .then(() => globalObserver.emit('summary.clear'))
             .catch(() => {});
     };
-
     return (
         <button
-            title='Clear summary log'
+            title={translate('Clear summary log')}
             id='summaryClearButton'
             className='toolbox-button icon-clear'
             onClick={confirmClearLog}
-            disabled={isButtonDisabled}
+            disabled={is_button_disabled}
         />
     );
 };

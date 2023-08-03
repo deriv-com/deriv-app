@@ -1,23 +1,25 @@
 import React from 'react';
 import { Text, DesktopWrapper, MobileWrapper, Tabs, Icon } from '@deriv/components';
 import { ContentFlag } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import AccountTypeDropdown from './account-type-dropdown';
 import AssetSummary from './asset-summary';
 import RegulatorSwitcher from './regulators-switcher';
 import { localize } from '@deriv/translations';
 import './main-title-bar.scss';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores/index';
 import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
 
 const MainTitleBar = () => {
-    const { traders_hub, client } = useStores();
+    const { traders_hub, client } = useStore();
     const { selected_region, handleTabItemClick, toggleRegulatorsCompareModal, content_flag } = traders_hub;
     const { is_landing_company_loaded, is_switching } = client;
     const is_low_risk_cr_real_account =
         content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
 
-    const [active_index, setActiveIndex] = React.useState(selected_region === 'Non-EU' ? 0 : 1);
+    const [active_index, setActiveIndex] = React.useState(0);
+    React.useEffect(() => {
+        setActiveIndex(selected_region === 'Non-EU' ? 0 : 1);
+    }, [selected_region]);
 
     return (
         <React.Fragment>

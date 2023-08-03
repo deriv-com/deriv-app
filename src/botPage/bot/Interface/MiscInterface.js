@@ -1,6 +1,6 @@
 import { translate } from '@i18n';
+import { observer as globalObserver } from '@utilities/observer';
 import { notify } from '../broadcast';
-import { observer as globalObserver } from '../../../common/utils/observer';
 
 export default Interface =>
     class extends Interface {

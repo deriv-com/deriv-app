@@ -3,6 +3,7 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { api_base } from '@api-base';
 import { translate } from '@i18n';
+import { observer as globalObserver } from '@utilities/observer';
 import { durationToSecond } from '../../../common/utils/tools';
 import { createError } from '../../common/error';
 import { doUntilDone } from '../tools';
@@ -17,7 +18,6 @@ import Ticks from './Ticks';
 import rootReducer from './state/reducers';
 import * as constants from './state/constants';
 import { start } from './state/actions';
-import { observer as globalObserver } from '../../../common/utils/observer';
 
 const watchBefore = store =>
     watchScope({

@@ -2,10 +2,10 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { translate } from '@i18n';
-import { observer as globalObserver } from '../../../common/utils/observer';
+import { observer as globalObserver } from '@utilities/observer';
 import { roundBalance } from '../../common/tools';
 import useIsMounted from '../../../common/hooks/isMounted';
-import { setIsBotRunning } from '../deriv/store/ui-slice';
+import { setIsBotRunning } from '../../../redux-store/ui-slice';
 import Stage from './components/Stage';
 
 const INDICATOR_MESSAGES = {

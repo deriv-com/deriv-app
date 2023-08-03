@@ -2,12 +2,11 @@ import {
     getLanguage,
     getAppIdFallback,
     getServerAddressFallback,
-    getActiveLoginId,
     getClientAccounts,
     setClientAccounts,
 } from '@storage';
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
-// import { observer as globalObserver } from './common/utils/observer';
+// import { observer as globalObserver } from '@utilities/observer';
 
 const socket_url = `wss://${getServerAddressFallback()}/websockets/v3?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}&brand=deriv`;
 
@@ -22,6 +21,7 @@ class APIBase {
     account_status = {};
 
     constructor() {
+        this.init();
         this.initEventListeners();
     }
 
@@ -32,18 +32,7 @@ class APIBase {
 
         this.api.onOpen().subscribe(() => {
             // eslint-disable-next-line no-console
-            console.log('Connection has been established!');
-            // eslint-disable-next-line no-console
-            console.log('WEBSOCKET', this.api);
-            this.active_login_id = getActiveLoginId();
-
-            if (this.active_login_id) {
-                const accounts = getClientAccounts() || {};
-                const account = accounts[this.active_login_id] || {};
-                if (account?.token) {
-                    this.authorize(account?.token);
-                }
-            }
+            console.log('Connection has been established!', this.api);
         });
     }
 

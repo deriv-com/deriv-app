@@ -1,6 +1,6 @@
+import { observer as globalObserver } from '@utilities/observer';
 import { marketDropdown, tradeTypeDropdown, candleInterval, contractTypes, restart } from './components';
 import { findTopParentBlock } from '../../utils';
-import { observer as globalObserver } from '../../../../../common/utils/observer';
 
 export const getParentValue = (block, fieldName) => {
     const parentBlock = findTopParentBlock(block);

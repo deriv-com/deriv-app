@@ -1,9 +1,9 @@
 // eslint-disable-next-line max-classes-per-file
 import { translate } from '@i18n';
 import { saveAs } from '@utils';
+import { observer as globalObserver } from '@utilities/observer';
 import { fieldGeneratorMapping } from './blocks/shared';
 import config from '../../common/const';
-import { observer as globalObserver } from '../../../common/utils/observer';
 import { TrackJSError } from '../logger';
 
 export const isMainBlock = blockType => config.mainBlocks.indexOf(blockType) >= 0;

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { translate } from '@i18n';
-import { observer as globalObserver } from '../../../common/utils/observer';
+import { observer as globalObserver } from '@utilities/observer';
 import * as style from '../style';
 
 const Summary = ({ accountID }) => {

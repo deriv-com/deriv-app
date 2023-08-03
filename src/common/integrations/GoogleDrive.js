@@ -1,12 +1,12 @@
 import { getLanguage } from '@storage';
 import { translate } from '@i18n';
+import { setGdLoggedIn } from '@redux-store/client-slice';
+import { setGdReady } from '@redux-store/ui-slice';
+import { observer as globalObserver } from '@utilities/observer';
 import GD_CONFIG from '../../botPage/common/google_drive_config';
 import { load } from '../../botPage/view/blockly';
-import store from '../../botPage/view/deriv/store';
-import { setGdLoggedIn } from '../../botPage/view/deriv/store/client-slice';
-import { setGdReady } from '../../botPage/view/deriv/store/ui-slice';
+import store from '../../redux-store';
 import { TrackJSError } from '../../botPage/view/logger';
-import { observer as globalObserver } from '../utils/observer';
 import { trackJSTrack } from './trackJSTrack';
 
 export const loadExternalScript = (src, async = true, defer = true) =>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import store from '../deriv/store';
+import { observer as globalObserver } from '@utilities/observer';
+import store from '@redux-store';
 import DialogComponent from './DialogComponent';
-import { observer as globalObserver } from '../../../common/utils/observer';
 
 export default class Dialog {
     constructor(id, title, content, options = {}) {

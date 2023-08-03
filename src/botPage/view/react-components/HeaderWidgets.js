@@ -1,6 +1,6 @@
 import React from 'react';
 import { api_base } from '@api-base';
-import { observer as globalObserver } from '../../../common/utils/observer';
+import { observer as globalObserver } from '@utilities/observer';
 
 const ServerTime = () => {
     const [hasApiResponse, setHasApiResponse] = React.useState(false);

@@ -2,7 +2,7 @@ import crc32 from 'crc-32/crc32';
 import pako from 'pako';
 import { getTokenList, getActiveLoginId } from '@storage';
 import { isProduction } from '@utils';
-import { observer } from '../../common/utils/observer';
+import { observer } from '@utilities/observer';
 
 export const cleanXmlDom = xmlDom => {
     const uselessAttributes = ['x', 'y'];

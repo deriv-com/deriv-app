@@ -1,5 +1,5 @@
 import { api_base } from '@api-base';
-import { observer as globalObserver } from '../../common/utils/observer';
+import { observer as globalObserver } from '@utilities/observer';
 
 export default class NetworkMonitor {
     constructor(apiInstance, parentElement) {

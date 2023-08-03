@@ -1,6 +1,7 @@
 import { parseQueryString, getRelatedDeriveOrigin } from '@utils';
 import { getActiveAccount, getLanguage } from '@storage';
 import { translate, xml as translateXml } from '@i18n';
+import { observer as globalObserver } from '@utilities/observer';
 import './customBlockly';
 import blocks from './blocks';
 import {
@@ -24,7 +25,6 @@ import {
     getPreviousStrat,
 } from './utils';
 import Interpreter from '../../bot/Interpreter';
-import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
 import GTM from '../../../common/gtm';
 import { TrackJSError } from '../logger';

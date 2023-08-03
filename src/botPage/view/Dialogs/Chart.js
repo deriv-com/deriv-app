@@ -12,9 +12,9 @@ import {
 } from '@deriv/deriv-charts';
 import { getLanguage } from '@storage';
 import { translate } from '@i18n';
+import { observer as globalObserver } from '@utilities/observer';
 import Dialog from './Dialog';
 import ChartTicksService from '../../common/ChartTicksService';
-import { observer as globalObserver } from '../../../common/utils/observer';
 
 setSmartChartsPublicPath('./js/');
 

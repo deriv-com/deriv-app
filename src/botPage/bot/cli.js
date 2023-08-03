@@ -1,7 +1,7 @@
 import fs from 'fs';
+import { observer as globalObserver } from '@utilities/observer';
 import readline from 'readline';
 import program from 'commander';
-import { observer as globalObserver } from '../../common/utils/observer';
 import { createInterpreter } from './Interpreter';
 
 const log = (...args) => console.log(`${new Date().toLocaleTimeString()}:`, ...args); // eslint-disable-line no-console

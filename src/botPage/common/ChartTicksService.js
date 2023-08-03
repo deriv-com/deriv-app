@@ -1,5 +1,5 @@
 import { api_base } from '@api-base';
-import { observer as globalObserver } from '../../common/utils/observer';
+import { observer as globalObserver } from '@utilities/observer';
 import { doUntilDone } from '../bot/tools';
 import TicksService from './TicksService';
 

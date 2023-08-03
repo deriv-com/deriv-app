@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { api_base } from '@api-base';
 import { translate } from '@i18n';
 import { isNumber, saveAs, appendRow, updateRow } from '@utils';
-import { observer as globalObserver } from '../../../common/utils/observer';
+import { observer as globalObserver } from '@utilities/observer';
 import { roundBalance } from '../../common/tools';
 import * as style from '../style';
 

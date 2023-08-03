@@ -3,9 +3,9 @@ import { getContractsForStore, setContractsForStore, getTokenList, removeAllToke
 import { isProduction } from '@utils';
 import { api_base } from '@api-base';
 import { translate } from '@i18n';
+import { observer as globalObserver } from '@utilities/observer';
 import { symbolApi } from '../../shared';
 import config from '../../../common/const';
-import { observer as globalObserver } from '../../../../common/utils/observer';
 
 let purchaseChoices = [[translate('Click to select'), '']];
 

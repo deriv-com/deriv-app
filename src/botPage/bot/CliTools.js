@@ -1,4 +1,4 @@
-import Observer from '../../common/utils/observer';
+import Observer from '@utilities/observer';
 import TicksService from '../common/TicksService';
 
 export const createScope = () => ({

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { observer as globalObserver } from '../../../../../common/utils/observer';
+import { observer as globalObserver } from '@utilities/observer';
 import { runAndGetResult } from '../../tools';
 
 describe('Misc. tools', () => {

@@ -292,7 +292,7 @@ const PersonalDetailsForm = props => {
                             <React.Fragment>
                                 <FormSubHeader title={localize('Tax information')} />
                                 {'tax_residence' in values && (
-                                    <TaxResidentField
+                                    <TaxResidenceField
                                         setFieldValue={setFieldValue}
                                         editable_fields={editable_fields}
                                         residence_list={residence_list}
@@ -419,7 +419,7 @@ const PersonalDetailsForm = props => {
                             />
                         )}
                         {'tax_residence' in values && (
-                            <TaxResidentField
+                            <TaxResidenceField
                                 setFieldValue={setFieldValue}
                                 editable_fields={editable_fields}
                                 residence_list={residence_list}
@@ -516,7 +516,7 @@ const PlaceOfBirthField = ({ handleChange, setFieldValue, editable_fields, resid
     </Field>
 );
 
-const TaxResidentField = ({
+const TaxResidenceField = ({
     setFieldValue,
     editable_fields,
     residence_list,

@@ -16,9 +16,8 @@ const WalletTransferBlock = observer(({ wallet_account }: TProps) => {
     const { setWalletModalActiveWalletID, setWalletModalActiveTab } = traders_hub;
     const { accounts } = client;
 
-    const { linked_to } = wallet_account;
-
-    const trading_account_loginid = linked_to?.find(account => account.platform === 'dtrade')?.loginid ?? '';
+    const trading_account_loginid =
+        wallet_account.linked_to?.find(account => account.platform === 'dtrade')?.loginid ?? '';
     const currency = accounts?.[trading_account_loginid]?.currency ?? wallet_account.currency;
     const balance = accounts?.[trading_account_loginid]?.balance ?? 0;
 

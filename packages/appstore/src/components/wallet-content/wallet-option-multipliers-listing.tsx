@@ -25,26 +25,25 @@ const WalletOptionsAndMultipliersListing = observer(() => {
         );
 
     const is_trading_account_exists = wallet_account.linked_to?.some(acc => acc.platform === 'dtrade');
-    const is_options_and_multipliers = wallet_account.landing_company_name === 'svg' || wallet_account.is_demo;
+    const is_svg_jurisdiction_text = wallet_account.landing_company_name === 'svg' || wallet_account.is_demo;
 
     const OptionsTitle = () => {
-        if (is_options_and_multipliers && !is_mobile) {
-            return (
-                <Text size='sm' line_height='m' weight='bold' color='prominent'>
-                    {localize('Options & multipliers')}
-                </Text>
-            );
-        } else if (!is_options_and_multipliers && !is_mobile) {
-            return (
-                <Text size='sm' line_height='m' weight='bold' color='prominent'>
-                    {localize('Multipliers')}
-                </Text>
-            );
+        if (is_mobile) {
+            return null;
         }
-        return null;
+
+        return is_svg_jurisdiction_text ? (
+            <Text size='sm' line_height='m' weight='bold' color='prominent'>
+                {localize('Options & multipliers')}
+            </Text>
+        ) : (
+            <Text size='sm' line_height='m' weight='bold' color='prominent'>
+                {localize('Multipliers')}
+            </Text>
+        );
     };
 
-    const listing_container_description = is_options_and_multipliers ? (
+    const listing_container_description = is_svg_jurisdiction_text ? (
         <Text size='xs' line_height='s'>
             <Localize
                 i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'

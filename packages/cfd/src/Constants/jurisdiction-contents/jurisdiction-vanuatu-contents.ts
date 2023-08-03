@@ -47,7 +47,7 @@ export const getJurisdictionVanuatuContents = (): TJurisdictionCardItems => ({
             title_indicators: {
                 type: 'displayText',
                 display_text: localize('170+'),
-                display_text_skin_color: 'red-dark',
+                display_text_skin_color: 'red-light',
             },
         },
         {

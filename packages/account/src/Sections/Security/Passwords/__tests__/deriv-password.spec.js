@@ -40,7 +40,9 @@ describe('<DerivPassword />', () => {
             })
         ).toBeInTheDocument();
         expect(
-            screen.getByText(/use the to log in to deriv\.com, deriv go, deriv trader, smarttrader, and deriv bot\./i)
+            screen.getByText(
+                /use the to log in to deriv\.com, deriv go, deriv trader, smarttrader, deriv bot and deriv ctrader\./i
+            )
         ).toBeInTheDocument();
         // expect BrandDerivRed not to be in the document
         expect(screen.queryByText(/BrandDerivRed/i)).toBeInTheDocument();
@@ -50,7 +52,7 @@ describe('<DerivPassword />', () => {
         expect(screen.queryByText(/unlink from/i)).not.toBeInTheDocument();
 
         const popover_wrapper = screen.getAllByTestId('dt_popover_wrapper');
-        expect(popover_wrapper).toHaveLength(5);
+        expect(popover_wrapper).toHaveLength(6);
     });
 
     it('displays the correct platform information for non-MF clients & restricted countries', () => {
@@ -59,8 +61,8 @@ describe('<DerivPassword />', () => {
         expect(screen.getByText(/use the to log in to deriv\.com, deriv trader and deriv go\./i));
 
         const popover_wrapper = screen.getAllByTestId('dt_popover_wrapper');
-        // expect popover to have length of 2
-        expect(popover_wrapper).toHaveLength(3);
+        // expect popover to have length of 4
+        expect(popover_wrapper).toHaveLength(4);
         // expect button with text change password to be in the document
         expect(screen.getByRole('button', { name: /change password/i })).toBeInTheDocument();
     });

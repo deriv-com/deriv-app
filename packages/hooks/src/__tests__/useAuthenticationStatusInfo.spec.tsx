@@ -1,28 +1,103 @@
 import * as React from 'react';
-import { mockStore, StoreProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
+import { APIProvider, useFetch } from '@deriv/api';
 import useAuthenticationStatusInfo from '../useAuthenticationStatusInfo';
+
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useFetch: jest.fn(),
+}));
+
+const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'get_account_status'>>;
+
+const mockAccountStatus = {
+    authentication: {
+        attempts: {
+            count: 1,
+            history: [
+                {
+                    country_code: 'id',
+                    id: '8919',
+                    service: 'manual',
+                    status: 'verified',
+                    timestamp: 1674633681,
+                },
+            ],
+            latest: {
+                country_code: 'id',
+                id: '8919',
+                service: 'manual',
+                status: 'verified',
+                timestamp: 1674633681,
+            },
+        },
+        document: {
+            status: 'none',
+        },
+
+        identity: {
+            services: {
+                idv: {
+                    last_rejected: [],
+                    reported_properties: {},
+                    status: 'none',
+                    submissions_left: 3,
+                },
+                manual: {
+                    status: 'none',
+                },
+                onfido: {
+                    country_code: 'IDN',
+                    documents_supported: ['Driving Licence', 'National Identity Card', 'Passport', 'Residence Permit'],
+                    is_country_supported: 1,
+                    last_rejected: [],
+                    reported_properties: {},
+                    status: 'none',
+                    submissions_left: 3,
+                },
+            },
+            status: 'none',
+        },
+        income: {
+            status: 'none',
+        },
+        needs_verification: [],
+        ownership: {
+            requests: [],
+            status: 'none',
+        },
+    },
+    currency_config: {
+        USD: {
+            is_deposit_suspended: 0,
+            is_withdrawal_suspended: 0,
+        },
+    },
+    p2p_status: 'none',
+    prompt_client_to_authenticate: 0,
+    risk_classification: 'low',
+    status: [
+        'age_verification',
+        'allow_document_upload',
+        'authenticated',
+        'dxtrade_password_not_set',
+        'financial_information_not_complete',
+        'idv_disallowed',
+        'mt5_password_not_set',
+        'trading_experience_not_complete',
+    ],
+};
 
 describe('useAuthenticationStatusInfo', () => {
     test('should return correct authentication status for POA and POI documents when none of them are submitted', () => {
-        const mock = mockStore({
-            client: {
-                account_status: {
-                    authentication: {
-                        document: {
-                            status: 'none',
-                        },
-                        identity: {
-                            status: 'none',
-                        },
-                    },
-                },
+        mockUseFetch.mockReturnValueOnce({
+            data: {
+                // @ts-expect-error need to come up with a way to mock the return type of useFetch
+                get_account_status: mockAccountStatus,
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useAuthenticationStatusInfo(), { wrapper });
 
@@ -31,29 +106,18 @@ describe('useAuthenticationStatusInfo', () => {
     });
 
     test('should return correct authentication status for POA and POI documents when POA is pending and POI is verified', () => {
-        const mock = mockStore({
-            client: {
-                account_status: {
-                    authentication: {
-                        document: {
-                            status: 'pending',
-                        },
-                        identity: {
-                            status: 'verified',
-                            services: {
-                                manual: {
-                                    status: 'verified',
-                                },
-                            },
-                        },
-                    },
-                },
+        mockAccountStatus.authentication.document.status = 'pending';
+        mockAccountStatus.authentication.identity.status = 'verified';
+        mockAccountStatus.authentication.identity.services.manual.status = 'verified';
+
+        mockUseFetch.mockReturnValueOnce({
+            data: {
+                // @ts-expect-error need to come up with a way to mock the return type of useFetch
+                get_account_status: mockAccountStatus,
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useAuthenticationStatusInfo(), { wrapper });
 
@@ -62,29 +126,16 @@ describe('useAuthenticationStatusInfo', () => {
     });
 
     test('should return correct authentication status for POA and POI documents when both POA and POI are verified', () => {
-        const mock = mockStore({
-            client: {
-                account_status: {
-                    authentication: {
-                        document: {
-                            status: 'verified',
-                        },
-                        identity: {
-                            status: 'verified',
-                            services: {
-                                manual: {
-                                    status: 'verified',
-                                },
-                            },
-                        },
-                    },
-                },
+        mockAccountStatus.authentication.document.status = 'verified';
+        mockAccountStatus.authentication.identity.status = 'verified';
+
+        mockUseFetch.mockReturnValueOnce({
+            data: {
+                // @ts-expect-error need to come up with a way to mock the return type of useFetch
+                get_account_status: mockAccountStatus,
             },
         });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useAuthenticationStatusInfo(), { wrapper });
 
@@ -93,29 +144,13 @@ describe('useAuthenticationStatusInfo', () => {
     });
 
     test('should return correct authentication status for POA and POI documents when POA services are missing', () => {
-        const mock = mockStore({
-            client: {
-                account_status: {
-                    authentication: {
-                        document: {
-                            status: 'none',
-                        },
-                        identity: {
-                            status: 'none',
-                            services: {
-                                onfido: {
-                                    status: 'none',
-                                },
-                            },
-                        },
-                    },
-                },
+        mockUseFetch.mockReturnValueOnce({
+            data: {
+                // @ts-expect-error need to come up with a way to mock the return type of useFetch
+                get_account_status: mockAccountStatus,
             },
         });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useAuthenticationStatusInfo(), { wrapper });
         expect(result.current.poa.not_submitted).toBe(true);
@@ -123,29 +158,14 @@ describe('useAuthenticationStatusInfo', () => {
     });
 
     test('should return correct authentication status for POA and POI documents when POI services are missing', () => {
-        const mock = mockStore({
-            client: {
-                account_status: {
-                    authentication: {
-                        document: {
-                            status: 'none',
-                        },
-                        identity: {
-                            status: 'none',
-                            services: {
-                                manual: {
-                                    status: 'none',
-                                },
-                            },
-                        },
-                    },
-                },
+        mockUseFetch.mockReturnValueOnce({
+            data: {
+                // @ts-expect-error need to come up with a way to mock the return type of useFetch
+                get_account_status: mockAccountStatus,
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useAuthenticationStatusInfo(), { wrapper });
 
@@ -154,25 +174,18 @@ describe('useAuthenticationStatusInfo', () => {
     });
 
     test('should return correct authentication status for POA and POI documents when POA and POI services are missing', () => {
-        const mock = mockStore({
-            client: {
-                account_status: {
-                    authentication: {
-                        document: {
-                            status: 'none',
-                        },
-                        identity: {
-                            status: 'none',
-                            services: {},
-                        },
-                    },
-                },
+        mockAccountStatus.authentication.document.status = 'none';
+        // @ts-expect-error need to check by not providing services
+        mockAccountStatus.authentication.identity.services = {};
+
+        mockUseFetch.mockReturnValueOnce({
+            data: {
+                // @ts-expect-error need to come up with a way to mock the return type of useFetch
+                get_account_status: mockAccountStatus,
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useAuthenticationStatusInfo(), { wrapper });
 
@@ -181,29 +194,15 @@ describe('useAuthenticationStatusInfo', () => {
     });
 
     test('should return correct authentication status for POA and POI documents when POI service status is unknown', () => {
-        const mock = mockStore({
-            client: {
-                account_status: {
-                    authentication: {
-                        document: {
-                            status: 'none',
-                        },
-                        identity: {
-                            status: 'none',
-                            services: {
-                                manual: {
-                                    status: undefined,
-                                },
-                            },
-                        },
-                    },
-                },
+        mockAccountStatus.authentication.identity.services.manual.status = 'unknown';
+        mockUseFetch.mockReturnValueOnce({
+            data: {
+                // @ts-expect-error need to come up with a way to mock the return type of useFetch
+                get_account_status: mockAccountStatus,
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useAuthenticationStatusInfo(), { wrapper });
 
@@ -212,35 +211,19 @@ describe('useAuthenticationStatusInfo', () => {
     });
 
     test('should return correct authentication status for POI documents for maltainvest jurisdiction', () => {
-        const mock = mockStore({
-            client: {
-                account_status: {
-                    authentication: {
-                        document: {
-                            status: 'verified',
-                        },
-                        identity: {
-                            status: 'verified',
-                            services: {
-                                idv: {
-                                    status: 'verified',
-                                },
-                                onfido: {
-                                    status: 'none',
-                                },
-                                manual: {
-                                    status: 'verified',
-                                },
-                            },
-                        },
-                    },
-                },
+        mockAccountStatus.authentication.document.status = 'verified';
+        mockAccountStatus.authentication.identity.status = 'verified';
+        mockAccountStatus.authentication.identity.services.manual.status = 'verified';
+        mockAccountStatus.authentication.identity.services.onfido.status = 'none';
+        mockAccountStatus.authentication.identity.services.idv.status = 'verified';
+        mockUseFetch.mockReturnValueOnce({
+            data: {
+                // @ts-expect-error need to come up with a way to mock the return type of useFetch
+                get_account_status: mockAccountStatus,
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useAuthenticationStatusInfo(), { wrapper });
 
@@ -253,31 +236,17 @@ describe('useAuthenticationStatusInfo', () => {
     });
 
     test('should return correct authentication status for maltainvest with IDV and Onfido verified', () => {
-        const mock = mockStore({
-            client: {
-                account_status: {
-                    authentication: {
-                        identity: {
-                            services: {
-                                idv: {
-                                    status: 'verified',
-                                },
-                                onfido: {
-                                    status: 'verified',
-                                },
-                                manual: {
-                                    status: 'none',
-                                },
-                            },
-                        },
-                    },
-                },
+        mockAccountStatus.authentication.identity.services.idv.status = 'verified';
+        mockAccountStatus.authentication.identity.services.onfido.status = 'verified';
+        mockAccountStatus.authentication.identity.services.manual.status = 'none';
+        mockAccountStatus.authentication.identity.status = 'verified';
+        mockUseFetch.mockReturnValueOnce({
+            data: {
+                // @ts-expect-error need to come up with a way to mock the return type of useFetch
+                get_account_status: mockAccountStatus,
             },
         });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useAuthenticationStatusInfo(), { wrapper });
 
@@ -290,31 +259,17 @@ describe('useAuthenticationStatusInfo', () => {
     });
 
     test('should return correct authentication status for maltainvest with Onfido pending and IDV rejected', () => {
-        const mock = mockStore({
-            client: {
-                account_status: {
-                    authentication: {
-                        identity: {
-                            services: {
-                                idv: {
-                                    status: 'rejected',
-                                },
-                                onfido: {
-                                    status: 'pending',
-                                },
-                                manual: {
-                                    status: 'none',
-                                },
-                            },
-                        },
-                    },
-                },
+        mockAccountStatus.authentication.identity.services.idv.status = 'rejected';
+        mockAccountStatus.authentication.identity.services.onfido.status = 'pending';
+        mockAccountStatus.authentication.identity.services.manual.status = 'none';
+        mockAccountStatus.authentication.identity.status = 'pending';
+        mockUseFetch.mockReturnValueOnce({
+            data: {
+                // @ts-expect-error need to come up with a way to mock the return type of useFetch
+                get_account_status: mockAccountStatus,
             },
         });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useAuthenticationStatusInfo(), { wrapper });
 
@@ -327,31 +282,19 @@ describe('useAuthenticationStatusInfo', () => {
     });
 
     test('should return correct authentication status for maltainvest with Onfido and IDV not submitted', () => {
-        const mock = mockStore({
-            client: {
-                account_status: {
-                    authentication: {
-                        identity: {
-                            services: {
-                                idv: {
-                                    status: 'none',
-                                },
-                                onfido: {
-                                    status: 'none',
-                                },
-                                manual: {
-                                    status: 'none',
-                                },
-                            },
-                        },
-                    },
-                },
+        mockAccountStatus.authentication.identity.services.idv.status = 'none';
+        mockAccountStatus.authentication.identity.services.onfido.status = 'none';
+        mockAccountStatus.authentication.identity.services.manual.status = 'none';
+        mockAccountStatus.authentication.identity.status = 'none';
+
+        mockUseFetch.mockReturnValueOnce({
+            data: {
+                // @ts-expect-error need to come up with a way to mock the return type of useFetch
+                get_account_status: mockAccountStatus,
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useAuthenticationStatusInfo(), { wrapper });
 
@@ -364,35 +307,19 @@ describe('useAuthenticationStatusInfo', () => {
     });
 
     test('should return correct authentication status for POI documents for bvi_labuan_vanuatu jurisdiction', () => {
-        const mock = mockStore({
-            client: {
-                account_status: {
-                    authentication: {
-                        document: {
-                            status: 'verified',
-                        },
-                        identity: {
-                            status: 'verified',
-                            services: {
-                                idv: {
-                                    status: 'verified',
-                                },
-                                onfido: {
-                                    status: 'rejected',
-                                },
-                                manual: {
-                                    status: 'none',
-                                },
-                            },
-                        },
-                    },
-                },
+        mockAccountStatus.authentication.document.status = 'verified';
+        mockAccountStatus.authentication.identity.status = 'verified';
+        mockAccountStatus.authentication.identity.services.manual.status = 'verified';
+        mockAccountStatus.authentication.identity.services.onfido.status = 'none';
+        mockAccountStatus.authentication.identity.services.idv.status = 'verified';
+        mockUseFetch.mockReturnValueOnce({
+            data: {
+                // @ts-expect-error need to come up with a way to mock the return type of useFetch
+                get_account_status: mockAccountStatus,
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useAuthenticationStatusInfo(), { wrapper });
 
@@ -405,25 +332,17 @@ describe('useAuthenticationStatusInfo', () => {
     });
 
     test('should return correct authentication status for bvi_labuan_vanuatu with IDV, Onfido, and Manual verified', () => {
-        const mock = mockStore({
-            client: {
-                account_status: {
-                    authentication: {
-                        identity: {
-                            services: {
-                                idv: {
-                                    status: 'verified',
-                                },
-                            },
-                        },
-                    },
-                },
+        mockAccountStatus.authentication.identity.services.idv.status = 'verified';
+        mockAccountStatus.authentication.identity.status = 'verified';
+
+        mockUseFetch.mockReturnValueOnce({
+            data: {
+                // @ts-expect-error need to come up with a way to mock the return type of useFetch
+                get_account_status: mockAccountStatus,
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useAuthenticationStatusInfo(), { wrapper });
 
@@ -435,32 +354,19 @@ describe('useAuthenticationStatusInfo', () => {
     });
 
     test('should return correct authentication status for bvi_labuan_vanuatu with Onfido and Manual pending and IDV rejected', () => {
-        const mock = mockStore({
-            client: {
-                account_status: {
-                    authentication: {
-                        identity: {
-                            status: 'pending',
-                            services: {
-                                idv: {
-                                    status: 'rejected',
-                                },
-                                onfido: {
-                                    status: 'pending',
-                                },
-                                manual: {
-                                    status: 'none',
-                                },
-                            },
-                        },
-                    },
-                },
+        mockAccountStatus.authentication.identity.services.idv.status = 'rejected';
+        mockAccountStatus.authentication.identity.services.onfido.status = 'pending';
+        mockAccountStatus.authentication.identity.services.manual.status = 'none';
+        mockAccountStatus.authentication.identity.status = 'pending';
+
+        mockUseFetch.mockReturnValueOnce({
+            data: {
+                // @ts-expect-error need to come up with a way to mock the return type of useFetch
+                get_account_status: mockAccountStatus,
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useAuthenticationStatusInfo(), { wrapper });
 
@@ -473,32 +379,19 @@ describe('useAuthenticationStatusInfo', () => {
     });
 
     test('should return correct authentication status for bvi_labuan_vanuatu with Onfido and Manual not submitted and IDV rejected', () => {
-        const mock = mockStore({
-            client: {
-                account_status: {
-                    authentication: {
-                        identity: {
-                            status: 'rejected',
-                            services: {
-                                idv: {
-                                    status: 'rejected',
-                                },
-                                onfido: {
-                                    status: 'none',
-                                },
-                                manual: {
-                                    status: 'none',
-                                },
-                            },
-                        },
-                    },
-                },
+        mockAccountStatus.authentication.identity.services.idv.status = 'rejected';
+        mockAccountStatus.authentication.identity.services.onfido.status = 'none';
+        mockAccountStatus.authentication.identity.services.manual.status = 'none';
+        mockAccountStatus.authentication.identity.status = 'rejected';
+
+        mockUseFetch.mockReturnValueOnce({
+            data: {
+                // @ts-expect-error need to come up with a way to mock the return type of useFetch
+                get_account_status: mockAccountStatus,
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useAuthenticationStatusInfo(), { wrapper });
 

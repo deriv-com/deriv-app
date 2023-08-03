@@ -4,6 +4,12 @@ import CFDFinancialStpRealAccountSignup from '../cfd-financial-stp-real-account-
 import CFDProviders from '../../cfd-providers';
 import { mockStore } from '@deriv/stores';
 import { getAuthenticationStatusInfo } from '@deriv/shared';
+import { useAuthenticationStatusInfo } from '@deriv/hooks';
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useAuthenticationStatusInfo: jest.fn(),
+}));
 
 jest.mock('@deriv/account', () => ({
     ...jest.requireActual('@deriv/account'),
@@ -195,7 +201,13 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
     });
 
     it('should render properly for the first step content', () => {
-        getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_bvi_labuan_vanuatu: true });
+        useAuthenticationStatusInfo.mockReturnValueOnce({
+            poi: {
+                bvi_labuan_vanuatu: {
+                    need_submission: true,
+                },
+            },
+        });
         render(<CFDFinancialStpRealAccountSignup />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
@@ -204,7 +216,16 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
     });
 
     it('should render properly for the second step content', () => {
-        getAuthenticationStatusInfo.mockReturnValueOnce({ poa_resubmit_for_labuan: true });
+        useAuthenticationStatusInfo.mockReturnValueOnce({
+            poa: {
+                poa_resubmit_for_labuan: true,
+            },
+            poi: {
+                bvi_labuan_vanuatu: {
+                    need_submission: false,
+                },
+            },
+        });
         const { getByTestId } = render(<CFDFinancialStpRealAccountSignup />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
@@ -213,6 +234,13 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
     });
 
     it('should check for POI status when Jurisdiction is Vanuatu or maltainvest', () => {
+        useAuthenticationStatusInfo.mockReturnValueOnce({
+            poi: {
+                bvi_labuan_vanuatu: {
+                    need_submission: true,
+                },
+            },
+        });
         const new_mock_store = {
             ...mockRootStore,
             modules: {
@@ -224,8 +252,6 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
             },
         };
 
-        getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_bvi_labuan_vanuatu: true });
-
         render(<CFDFinancialStpRealAccountSignup />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(new_mock_store)}>{children}</CFDProviders>,
         });
@@ -233,6 +259,16 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
     });
 
     it('should check for POA status when Jurisdiction is Labuan and resubmit status is set to true', () => {
+        useAuthenticationStatusInfo.mockReturnValueOnce({
+            poi: {
+                bvi_labuan_vanuatu: {
+                    need_submission: false,
+                },
+                maltainvest: {
+                    need_submission: true,
+                },
+            },
+        });
         const new_mock_store = {
             ...mockRootStore,
             modules: {
@@ -244,7 +280,7 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
             },
         };
 
-        getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_maltainvest: true });
+        // getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_maltainvest: true });
 
         render(<CFDFinancialStpRealAccountSignup />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(new_mock_store)}>{children}</CFDProviders>,

@@ -1,17 +1,18 @@
-import React from 'react';
-import { observer } from 'mobx-react-lite';
-import { Text, StaticUrl } from '@deriv/components';
-import { isMobile, formatMoney, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import ListingContainer from 'Components/containers/listing-container';
+import { StaticUrl, Text } from '@deriv/components';
+import { useAuthenticationStatusInfo } from '@deriv/hooks';
+import { Jurisdiction, formatMoney, isMobile } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import AddOptionsAccount from 'Components/add-options-account';
+import ListingContainer from 'Components/containers/listing-container';
 import TradingAppCard from 'Components/containers/trading-app-card';
-import PlatformLoader from 'Components/pre-loader/platform-loader';
-import GetMoreAccounts from 'Components/get-more-accounts';
 import { Actions } from 'Components/containers/trading-app-card-actions';
+import GetMoreAccounts from 'Components/get-more-accounts';
+import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
 import { useStores } from 'Stores/index';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
+import { observer } from 'mobx-react-lite';
+import React from 'react';
 import './cfds-listing.scss';
 
 type TDetailedExistingAccount = AvailableAccount &
@@ -55,15 +56,15 @@ const CFDsListing = () => {
     } = traders_hub;
 
     const { toggleCompareAccountsModal, setAccountType } = cfd;
-    const { is_landing_company_loaded, real_account_creation_unlock_date, account_status } = client;
+    const { is_landing_company_loaded, real_account_creation_unlock_date } = client;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal, setShouldShowCooldownModal } = ui;
     const has_no_real_account = !has_any_real_account;
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
-
-    const { poi_pending_for_bvi_labuan, poi_resubmit_for_bvi_labuan, poa_resubmit_for_labuan, is_idv_revoked } =
-        getAuthenticationStatusInfo(account_status);
+    const { poi, is_idv_revoked, poa } = useAuthenticationStatusInfo();
+    // const { poi_pending_for_bvi_labuan, poi_resubmit_for_bvi_labuan, poa_resubmit_for_labuan, is_idv_revoked } =
+    //     getAuthenticationStatusInfo(account_status);
 
     const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
 
@@ -74,13 +75,13 @@ const CFDsListing = () => {
                     if (
                         getAuthStatus([
                             is_idv_revoked,
-                            poi_resubmit_for_bvi_labuan,
+                            poi.bvi_labuan_vanuatu.need_resubmission,
                             current_acc_status === 'proof_failed',
                         ])
                     ) {
                         return 'failed';
                     } else if (
-                        getAuthStatus([poi_pending_for_bvi_labuan, current_acc_status === 'verification_pending'])
+                        getAuthStatus([poi.bvi_labuan_vanuatu.pending, current_acc_status === 'verification_pending'])
                     ) {
                         return 'pending';
                     }
@@ -89,15 +90,15 @@ const CFDsListing = () => {
                 case Jurisdiction.LABUAN: {
                     if (
                         getAuthStatus([
-                            poa_resubmit_for_labuan,
+                            poa.poa_resubmit_for_labuan,
                             is_idv_revoked,
-                            poi_resubmit_for_bvi_labuan,
+                            poi.bvi_labuan_vanuatu.need_resubmission,
                             current_acc_status === 'proof_failed',
                         ])
                     ) {
                         return 'failed';
                     } else if (
-                        getAuthStatus([poi_pending_for_bvi_labuan, current_acc_status === 'verification_pending'])
+                        getAuthStatus([poi.bvi_labuan_vanuatu.pending, current_acc_status === 'verification_pending'])
                     ) {
                         return 'pending';
                     }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Div100vhContainer } from '@deriv/components';
 import { useIsAccountStatusPresent, useAuthenticationStatusInfo } from '@deriv/hooks';
-import { isDesktop, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
+import { isDesktop, Jurisdiction } from '@deriv/shared';
 import CFDPOA from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
 import CFDPersonalDetailsContainer from './cfd-personal-details-container';
@@ -231,7 +231,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
             <div className='cfd-financial-stp-modal__body' data-testid='dt_cfd_financial_stp_modal_body'>
                 <BodyComponent
                     /** TODO: Body component is 3 different component in which one of them does not have prop `value`
-                     * it needs a refactor
+                     * it needs a refactorp
                      */
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore

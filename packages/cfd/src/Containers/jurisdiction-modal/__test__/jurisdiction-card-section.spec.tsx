@@ -3,38 +3,43 @@ import { screen, render } from '@testing-library/react';
 import JurisdictionCardSection from '../jurisdiction-card-section';
 import { Jurisdiction } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { APIProvider } from '@deriv/api';
+import { useAuthenticationStatusInfo } from '@deriv/hooks';
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useAuthenticationStatusInfo: jest.fn(),
+}));
+
+const mockUseAuthenticationStatusInfo = useAuthenticationStatusInfo as jest.MockedFunction<
+    typeof useAuthenticationStatusInfo
+>;
 
 describe('JurisdictionCardSection', () => {
-    const mock_store = mockStore({
-        client: {
-            account_status: {
-                authentication: {
-                    document: {
-                        status: 'none',
-                    },
-                    identity: {
-                        services: {
-                            idv: {
-                                status: 'none',
-                            },
-                            onfido: {
-                                status: 'none',
-                            },
-                            manual: {
-                                status: 'none',
-                            },
-                        },
-                    },
-                    needs_verification: [],
-                },
-                currency_config: {},
-                p2p_status: 'none',
-                prompt_client_to_authenticate: 0,
-                risk_classification: '',
-                status: [''],
+    beforeAll(() => {
+        const mockReturnValue = {
+            poa: {
+                pending: true,
+                need_resubmission: false,
+                failed: false,
             },
-        },
+            poi: {
+                bvi_labuan_vanuatu: {
+                    pending: true,
+                    need_resubmission: false,
+                    failed: false,
+                },
+                maltainvest: {
+                    pending: true,
+                    need_resubmission: false,
+                    failed: false,
+                },
+            },
+        };
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockUseAuthenticationStatusInfo.mockReturnValue(mockReturnValue);
     });
+
     type TMockProps = {
         card_section_item: {
             key: string;
@@ -69,9 +74,9 @@ describe('JurisdictionCardSection', () => {
 
     it('should render JurisdictionCardSection component', () => {
         render(
-            <StoreProvider store={mock_store}>
+            <APIProvider>
                 <JurisdictionCardSection {...mock_props} />
-            </StoreProvider>
+            </APIProvider>
         );
         expect(screen.getByText('Test Title')).toBeInTheDocument();
         expect(screen.getByText('Test Title Indicators Text')).toBeInTheDocument();
@@ -88,9 +93,9 @@ describe('JurisdictionCardSection', () => {
         };
 
         render(
-            <StoreProvider store={mock_store}>
+            <APIProvider>
                 <JurisdictionCardSection {...mock_props_with_clickable_description} />
-            </StoreProvider>
+            </APIProvider>
         );
         expect(screen.getByText('Test Title')).toBeInTheDocument();
         expect(screen.getByText('Test Title Indicators Text')).toBeInTheDocument();
@@ -101,9 +106,9 @@ describe('JurisdictionCardSection', () => {
     it('should render JurisdictionCardSection component without displaying title indicators if it is empty', () => {
         mock_props.card_section_item.title_indicators = undefined;
         render(
-            <StoreProvider store={mock_store}>
+            <APIProvider>
                 <JurisdictionCardSection {...mock_props} />
-            </StoreProvider>
+            </APIProvider>
         );
         expect(screen.getByText('Test Title')).toBeInTheDocument();
         expect(screen.queryByText('Test Title Indicators Text')).not.toBeInTheDocument();

@@ -1,4 +1,6 @@
-import { useStore } from '@deriv/stores';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { GetAccountStatus } from '@deriv/api-types';
+import { useFetch } from '@deriv/api';
 
 type TAcknowledgeStatuses = ('pending' | 'verified')[];
 type TFailedCases = ('rejected' | 'expired' | 'suspected')[];
@@ -20,12 +22,14 @@ const STATUSES: {
 };
 
 const useAuthenticationStatusInfo = () => {
-    const {
-        client: { account_status },
-    } = useStore();
+    const { data, ...rest } = useFetch('get_account_status');
+    const account_status = data?.get_account_status ?? ({} as GetAccountStatus);
+
     const { NONE, PENDING, VERIFIED, REJECTED, EXPIRED, SUSPECTED } = STATUSES;
     const poa_status = account_status?.authentication?.document?.status ?? NONE;
     const poi_status = account_status?.authentication?.identity?.status ?? NONE;
+
+    const risk_classification = account_status.risk_classification;
 
     const services = account_status?.authentication?.identity?.services ?? {};
     const {
@@ -47,6 +51,10 @@ const useAuthenticationStatusInfo = () => {
     const poi_not_submitted = poi_status === NONE;
     const poi_or_poa_not_submitted = poa_not_submitted || poi_not_submitted;
     const poi_and_poa_not_submitted = poa_not_submitted && poi_not_submitted;
+
+    const is_idv_revoked = account_status?.status?.includes('idv_revoked');
+
+    const is_authenticated_with_idv_photoid = account_status?.status?.includes('authenticated_with_idv_photoid');
 
     //maltainvest
 
@@ -71,9 +79,18 @@ const useAuthenticationStatusInfo = () => {
     const poi_poa_verified_for_maltainvest = poi_verified_for_maltainvest && poa_verified;
 
     //bvi-labuan-vanuatu
-    const poi_acknowledged_for_bvi_labuan_vanuatu = bvi_labuan_vanuatu_jurisdiction_statuses.some(status =>
+    let poi_acknowledged_for_bvi_labuan_vanuatu = bvi_labuan_vanuatu_jurisdiction_statuses.some(status =>
         acknowledged_status.includes(status as TAcknowledgeStatuses[number])
     );
+    if (risk_classification === 'high') {
+        poi_acknowledged_for_bvi_labuan_vanuatu = Boolean(
+            onfido_status && acknowledged_status.includes(onfido_status as TAcknowledgeStatuses[number])
+        );
+    } else {
+        poi_acknowledged_for_bvi_labuan_vanuatu = bvi_labuan_vanuatu_jurisdiction_statuses.some(status =>
+            acknowledged_status.includes(status as TAcknowledgeStatuses[number])
+        );
+    }
     const need_poi_for_bvi_labuan_vanuatu = !poi_acknowledged_for_bvi_labuan_vanuatu;
     const poi_not_submitted_for_bvi_labuan_vanuatu = bvi_labuan_vanuatu_jurisdiction_statuses.every(
         status => status === NONE
@@ -91,7 +108,10 @@ const useAuthenticationStatusInfo = () => {
 
     const poi_poa_verified_for_bvi_labuan_vanuatu = poi_verified_for_bvi_labuan_vanuatu && poa_verified;
 
-    return {
+    // TODO: verify if this flag is specifically related to labuan only
+    const poa_resubmit_for_labuan = is_authenticated_with_idv_photoid;
+
+    const config = {
         // flags and statuses related to POA
         poa: {
             status: poa_status,
@@ -101,6 +121,9 @@ const useAuthenticationStatusInfo = () => {
             need_submission: need_poa_submission,
             need_resubmission: need_poa_resubmission,
             acknowledged: poa_acknowledged,
+
+            // flags and statuses related to POA for labuan
+            poa_resubmit_for_labuan,
         },
 
         // flags and statuses related to POI
@@ -143,7 +166,11 @@ const useAuthenticationStatusInfo = () => {
         poi_or_poa_not_submitted,
         // to check if both POI and POA are not submitted
         poi_and_poa_not_submitted,
+        is_idv_revoked,
+        ...rest,
     };
+
+    return config;
 };
 
 export default useAuthenticationStatusInfo;

@@ -50,12 +50,12 @@ const CFDDbviOnboarding = observer(() => {
         enableCFDPasswordModal,
         toggleCFDVerificationModal,
     } = useCfdStore();
-    const { poi, poa } = useAuthenticationStatusInfo();
+    const { poi, poa, refetch } = useAuthenticationStatusInfo();
     const [showSubmittedModal, setShowSubmittedModal] = React.useState(true);
     const [is_loading, setIsLoading] = React.useState(false);
 
     const getAccountStatusFromAPI = async () => {
-        await updateAccountStatus();
+        await refetch();
         if (jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST) {
             setShowSubmittedModal(poi.maltainvest.acknowledged && poa.acknowledged);
         } else {

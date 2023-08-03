@@ -10,6 +10,7 @@ import {
     Modal,
     Text,
 } from '@deriv/components';
+import { useHasMFAccountDeposited } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import DepositFiatIframe from '@deriv/cashier/src/modules/deposit-fiat/components/deposit-fiat-iframe/deposit-fiat-iframe';
@@ -17,7 +18,7 @@ import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
 
 const OneTimeDepositModal = observer(() => {
     const { client, ui } = useStore();
-    const { account_status, loginid, updateAccountStatus } = client;
+    const { loginid } = client;
     const {
         is_mobile,
         should_show_one_time_deposit_modal,
@@ -25,23 +26,13 @@ const OneTimeDepositModal = observer(() => {
         toggleAccountSuccessModal,
     } = ui;
     const liveChat = useLiveChat(false, loginid);
-
-    /** fetch account_status every 2 seconds since we can't subscribe for status updates */
-    React.useEffect(() => {
-        const interval = setInterval(() => {
-            updateAccountStatus();
-        }, 2000);
-        return () => clearInterval(interval);
-    }, []);
+    const has_mf_account_deposited = useHasMFAccountDeposited();
 
     React.useEffect(() => {
-        const has_client_deposited = account_status?.status?.some(
-            status => status === 'unwelcome' || status === 'withdrawal_locked' || status === 'cashier_locked'
-        );
-        if (has_client_deposited) {
+        if (has_mf_account_deposited) {
             onCloseModal();
         }
-    }, [account_status]);
+    }, [has_mf_account_deposited]);
 
     const onLiveChatClick = () => {
         liveChat.widget?.call('maximize');

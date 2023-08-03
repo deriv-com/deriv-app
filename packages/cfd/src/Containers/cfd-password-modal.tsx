@@ -483,7 +483,7 @@ const CFDPasswordForm = ({
             case 'derivx':
                 return 'CFD';
             default:
-                account_title;
+                return account_title;
         }
     };
 

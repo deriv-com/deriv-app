@@ -151,7 +151,10 @@ const Statement = observer(({ component_icon }: TStatement) => {
     }, {} as Record<TColIndex, typeof columns[number]>);
 
     // TODO: Export type instead of any from 'DataList' component when it migrates to tsx
-    const mobileRowRenderer = ({ row, passthrough }: TDataList['rowRenderer']) => (
+    const mobileRowRenderer = ({
+        row,
+        passthrough,
+    }: Pick<Parameters<TDataList['rowRenderer']>[0], 'row' | 'passthrough'>) => (
         <React.Fragment>
             <div className='data-list__row'>
                 <DataList.Cell
@@ -222,7 +225,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
                                     getRowAction={getRowAction}
                                     onScroll={handleScroll}
                                     passthrough={{
-                                        isTopUp: (item: { action: string }) => is_virtual && item.action === 'Deposit',
+                                        isTopUp: (item: { action?: string }) => is_virtual && item.action === 'Deposit',
                                     }}
                                 >
                                     <PlaceholderComponent is_loading={is_loading} />
@@ -237,7 +240,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
                                     rowRenderer={mobileRowRenderer}
                                     row_gap={8}
                                     passthrough={{
-                                        isTopUp: (item: { action: string }) => is_virtual && item.action === 'Deposit',
+                                        isTopUp: (item: { action?: string }) => is_virtual && item.action === 'Deposit',
                                     }}
                                 >
                                     <PlaceholderComponent is_loading={is_loading} />

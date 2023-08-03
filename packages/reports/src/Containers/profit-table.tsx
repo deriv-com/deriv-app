@@ -57,7 +57,6 @@ const ProfitTable = observer(({ component_icon }: TProfitTable) => {
         date_from,
         date_to,
         error,
-        filtered_date_range,
         is_empty,
         is_loading,
         handleDateChange,
@@ -78,14 +77,7 @@ const ProfitTable = observer(({ component_icon }: TProfitTable) => {
 
     if (error) return <p>{error}</p>;
 
-    const filter_component = (
-        <CompositeCalendar
-            input_date_range={filtered_date_range}
-            onChange={handleDateChange}
-            from={date_from}
-            to={date_to}
-        />
-    );
+    const filter_component = <CompositeCalendar onChange={handleDateChange} from={date_from} to={date_to} />;
 
     const columns: TGetProfitTableColumnsTemplate = getProfitTableColumnsTemplate(currency, data.length);
 

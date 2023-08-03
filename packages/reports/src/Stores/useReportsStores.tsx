@@ -3,7 +3,8 @@ import { useStore } from '@deriv/stores';
 import ProfitStores from './Modules/Profit/profit-store';
 import StatementStores from './Modules/Statement/statement-store';
 
-type TOverrideProfitStore = Omit<ProfitStores, 'totals' | 'data'> & {
+type TOverrideProfitStore = Omit<ProfitStores, 'data' | 'date_from' | 'totals'> & {
+    date_from: number;
     data: { [key: string]: string }[];
     totals: { [key: string]: unknown };
 };

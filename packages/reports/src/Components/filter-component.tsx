@@ -7,7 +7,7 @@ import { useReportsStore } from 'Stores/useReportsStores';
 
 const FilterComponent = observer(() => {
     const { statement } = useReportsStore();
-    const { action_type, date_from, date_to, handleFilterChange, handleDateChange, filtered_date_range } = statement;
+    const { action_type, date_from, date_to, handleFilterChange, handleDateChange } = statement;
 
     const filter_list = [
         {
@@ -38,12 +38,7 @@ const FilterComponent = observer(() => {
 
     return (
         <React.Fragment>
-            <CompositeCalendar
-                input_date_range={filtered_date_range}
-                onChange={handleDateChange}
-                from={date_from}
-                to={date_to}
-            />
+            <CompositeCalendar onChange={handleDateChange} from={date_from} to={date_to} />
             <FilterDropdown
                 dropdown_display_className='dc-dropdown__display--has-suffix-icon'
                 filter_list={filter_list}

@@ -6,8 +6,9 @@ const useDepositFiatAddress = () => {
     const { ui } = useStore();
     const { is_dark_mode_on } = ui;
     const { data, mutate, ...rest } = useRequest('cashier');
+    const should_enable_dark_mode = is_dark_mode_on ? 'on' : 'off';
     const deposit_iframe_url =
-        typeof data?.cashier === 'string' ? `${data?.cashier}&DarkMode=${is_dark_mode_on ? 'on' : 'off'}` : undefined;
+        typeof data?.cashier === 'string' ? `${data?.cashier}&DarkMode=${should_enable_dark_mode}` : undefined;
 
     const send = useCallback(() => mutate({ payload: { cashier: 'deposit', provider: 'doughflow' } }), [mutate]);
 

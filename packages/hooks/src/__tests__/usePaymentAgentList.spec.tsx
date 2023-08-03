@@ -3,6 +3,7 @@ import { APIProvider, useFetch } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import usePaymentAgentList from '../usePaymentAgentList';
+import type { TStores } from '@deriv/stores/types';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -11,6 +12,14 @@ jest.mock('@deriv/api', () => ({
 
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'paymentagent_list'>>;
 
+const createWrapper = (mock: TStores) => {
+    const Wrapper = ({ children }: { children: JSX.Element }) => (
+        <StoreProvider store={mock}>
+            <APIProvider>{children}</APIProvider>
+        </StoreProvider>
+    );
+    return Wrapper;
+};
 describe('usePaymentAgentList', () => {
     test('should return undefined if there is no response', () => {
         const mock = mockStore({});
@@ -18,11 +27,7 @@ describe('usePaymentAgentList', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({});
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>
-                <APIProvider>{children}</APIProvider>
-            </StoreProvider>
-        );
+        const wrapper = createWrapper(mock);
 
         const { result } = renderHook(() => usePaymentAgentList(), { wrapper });
 
@@ -35,11 +40,7 @@ describe('usePaymentAgentList', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({ data: { paymentagent_list: { list: [] } } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>
-                <APIProvider>{children}</APIProvider>
-            </StoreProvider>
-        );
+        const wrapper = createWrapper(mock);
 
         const { result } = renderHook(() => usePaymentAgentList(), { wrapper });
 
@@ -52,11 +53,7 @@ describe('usePaymentAgentList', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({ data: { paymentagent_list: { list: ['PAYMENT AGENT 1', 'PAYMENT AGENT 2'] } } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>
-                <APIProvider>{children}</APIProvider>
-            </StoreProvider>
-        );
+        const wrapper = createWrapper(mock);
 
         const { result } = renderHook(() => usePaymentAgentList(), { wrapper });
 

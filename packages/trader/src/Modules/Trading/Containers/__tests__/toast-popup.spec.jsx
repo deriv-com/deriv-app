@@ -23,25 +23,23 @@ jest.mock('@deriv/components', () => ({
 }));
 
 describe('<ToastPopup />', () => {
+    let container;
     beforeEach(() => {
         document.body.innerHTML = '';
+        container = document.createElement('div');
+        document.body.appendChild(container);
+        ReactDOM.createPortal(<ToastPopup {...mocked_props_toast_popup} />, container);
     });
 
     it('should render <ToastPopup /> component if portal_id exist in the document', () => {
-        const container = document.createElement('div');
         container.setAttribute('id', 'popup_root_1');
-        document.body.appendChild(container);
-        ReactDOM.createPortal(<ToastPopup {...mocked_props_toast_popup} />, container);
         render(<ToastPopup {...mocked_props_toast_popup} />);
 
         expect(container).toBeInTheDocument();
         expect(screen.getByText(/Toast component/i)).toBeInTheDocument();
     });
     it('should not render <ToastPopup /> component if portal_id do not exist in the document', () => {
-        const container = document.createElement('div');
         container.setAttribute('id', 'popup_root');
-        document.body.appendChild(container);
-        ReactDOM.createPortal(<ToastPopup {...mocked_props_toast_popup} />, container);
         render(<ToastPopup {...mocked_props_toast_popup} />);
 
         expect(screen.queryByText(/Toast component/i)).not.toBeInTheDocument();
@@ -56,28 +54,25 @@ describe('<NetworkStatusToastErrorPopup />', () => {
             </TraderProviders>
         );
     };
+    let container;
     beforeEach(() => {
         document.body.innerHTML = '';
-    });
-
-    it('should render <NetworkStatusToastError />', () => {
-        const mock_root_store = mockStore({
-            common: { network_status: { tooltip: 'test tooltip', class: 'test class' } },
-        });
-        const container = document.createElement('div');
+        container = document.createElement('div');
         container.setAttribute('id', 'popup_root');
         document.body.appendChild(container);
         ReactDOM.createPortal(<NetworkStatusToastErrorPopup />, container);
+    });
+
+    it('should render <NetworkStatusToastError /> if <NetworkStatusToastErrorPopup /> was rendered and message or portal id exist', () => {
+        const mock_root_store = mockStore({
+            common: { network_status: { tooltip: 'test tooltip', class: 'test class' } },
+        });
         render(mockNetworkStatusToastErrorPopup(mock_root_store));
 
         expect(screen.getByText(/MobileWrapper component/i)).toBeInTheDocument();
     });
     it('should not render <NetworkStatusToastError />', () => {
         const mock_root_store = mockStore({});
-        const container = document.createElement('div');
-        container.setAttribute('id', 'popup_root');
-        document.body.appendChild(container);
-        ReactDOM.createPortal(<NetworkStatusToastErrorPopup />, container);
         render(mockNetworkStatusToastErrorPopup(mock_root_store));
 
         expect(screen.queryByText(/MobileWrapper component/i)).not.toBeInTheDocument();

@@ -17,6 +17,15 @@ type ListingContainerProps = {
     is_outside_grid_container?: boolean;
 };
 
+const Switcher = ({
+    is_deriv_platform,
+    wallet_account,
+}: Pick<ListingContainerProps, 'is_deriv_platform' | 'wallet_account'>) => {
+    if (!is_deriv_platform) return null;
+    if (wallet_account) return <WalletTransferBlock wallet_account={wallet_account} />;
+    return <CurrencySwitcherCard />;
+};
+
 const ListingContainer = ({
     title,
     description,
@@ -48,17 +57,11 @@ const ListingContainer = ({
         return <TitleCardLoader />;
     };
 
-    const Switcher = () => {
-        if (!is_deriv_platform) return null;
-        if (wallet_account) return <WalletTransferBlock wallet_account={wallet_account} />;
-        return <CurrencySwitcherCard />;
-    };
-
     return (
         <div className={classNames('listing-container', className)}>
             <div className='listing-container__top-container'>
                 <Options />
-                <Switcher />
+                <Switcher is_deriv_platform={is_deriv_platform} wallet_account={wallet_account} />
             </div>
             {is_outside_grid_container ? children : <GridContainer>{children}</GridContainer>}
         </div>

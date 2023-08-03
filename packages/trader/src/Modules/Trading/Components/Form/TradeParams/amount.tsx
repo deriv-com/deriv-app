@@ -1,7 +1,6 @@
 import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces } from '@deriv/shared';
 import { ButtonToggle, Dropdown, InputField, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-
 import AllowEquals from './allow-equals';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import Multiplier from './Multiplier/multiplier.jsx';

@@ -234,6 +234,28 @@ describe('WithdrawStore', () => {
         expect(setLoading).toHaveBeenCalledWith(false);
     });
 
+    it('should return is_withdrawal_locked equal to false if there is no account status', () => {
+        withdraw_store.root_store.client.account_status = {
+            currency_config: {},
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+            status: [],
+            p2p_status: 'none',
+        };
+        expect(withdraw_store.is_withdrawal_locked).toBeFalsy();
+    });
+
+    it('should return is_withdrawal_locked equal to true if client needs POI verification', () => {
+        withdraw_store.root_store.client.account_status.status = ['authentication_needed'];
+        withdraw_store.error.is_ask_authentication = true;
+        expect(withdraw_store.is_withdrawal_locked).toBeTruthy();
+    });
+
+    it('should return is_withdrawal_locked equal to true if client needs financial risk approval', () => {
+        withdraw_store.error.is_ask_financial_risk_approval = true;
+        expect(withdraw_store.is_withdrawal_locked).toBeTruthy();
+    });
+
     it('should set max_withdraw_amount', () => {
         withdraw_store.setMaxWithdrawAmount(100);
         expect(withdraw_store.max_withdraw_amount).toBe(100);
@@ -261,11 +283,11 @@ describe('WithdrawStore', () => {
         const { percentageSelectorSelectionStatus } = withdraw_store.root_store.modules.cashier.general_store;
         const spyValidateWithdrawFromAmount = jest.spyOn(withdraw_store, 'validateWithdrawFromAmount');
 
-        withdraw_store.setWithdrawPercentageSelectorResult('100');
+        withdraw_store.setWithdrawPercentageSelectorResult('100', 1000);
         expect(setConverterFromAmount).toHaveBeenCalledWith('100');
         expect(spyValidateWithdrawFromAmount).toHaveBeenCalled();
 
-        withdraw_store.setWithdrawPercentageSelectorResult('0');
+        withdraw_store.setWithdrawPercentageSelectorResult('0', 0);
         expect(resetConverter).toHaveBeenCalled();
         expect(setIsTimerVisible).toHaveBeenCalledWith(false);
         expect(percentageSelectorSelectionStatus).toHaveBeenCalledWith(false);

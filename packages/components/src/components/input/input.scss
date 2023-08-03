@@ -52,7 +52,7 @@
         height: 4rem;
 
         &:hover:not(.dc-input--disabled) {
-            border-color: var(--border-hover);
+            border-color: var(--general-disabled);
         }
         &:focus-within {
             border-color: var(--brand-secondary);

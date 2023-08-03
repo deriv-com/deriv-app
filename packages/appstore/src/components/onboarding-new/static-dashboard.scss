@@ -3,6 +3,9 @@
     border-radius: 1.6rem;
     padding: 3rem;
     @include desktop {
+        display: flex;
+        gap: 2.4rem;
+        flex-direction: column;
         min-width: 132rem;
     }
     @include mobile {
@@ -11,6 +14,7 @@
     }
     &--deposit-button {
         cursor: not-allowed;
+        pointer-events: none;
         &-blurry {
             opacity: 0.2;
         }
@@ -21,6 +25,9 @@
         }
     }
     &--eu {
+        @include desktop {
+            flex-direction: column-reverse;
+        }
         padding-bottom: 7rem;
     }
 
@@ -135,7 +142,8 @@
         }
 
         &__body {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
 
             &--header {
                 margin-top: 2rem;
@@ -160,6 +168,7 @@
             }
 
             @include mobile {
+                display: flex;
                 flex-direction: column;
             }
 

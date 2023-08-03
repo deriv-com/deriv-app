@@ -3,9 +3,9 @@ import React from 'react';
 import { Field, FieldProps, Formik, FormikProps } from 'formik';
 import { Button, Icon, Input, Loading, MobileWrapper, Text } from '@deriv/components';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
-import { useCurrentAccountDetails } from '@deriv/hooks';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
+import { useCurrentAccountDetails } from '@deriv/hooks';
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
 import PercentageSelector from '../../../components/percentage-selector';
 import RecentTransaction from '../../../components/recent-transaction';
@@ -158,10 +158,11 @@ const CryptoWithdrawForm = observer(() => {
                             <div className='crypto-withdraw-form__percentage-selector'>
                                 <PercentageSelector
                                     amount={Number(balance)}
-                                    currency={currency}
                                     getCalculatedAmount={setWithdrawPercentageSelectorResult}
                                     percentage={percentage}
                                     should_percentage_reset={should_percentage_reset}
+                                    from_currency={crypto_currency}
+                                    to_currency={current_fiat_currency || DEFAULT_FIAT_CURRENCY}
                                 />
                             </div>
                             <CryptoFiatConverter
@@ -194,9 +195,7 @@ const CryptoWithdrawForm = observer(() => {
                     </form>
                 )}
             </Formik>
-            <MobileWrapper>
-                {isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
-            </MobileWrapper>
+            <MobileWrapper>{isCryptocurrency(currency) ? <RecentTransaction /> : null}</MobileWrapper>
         </div>
     );
 });

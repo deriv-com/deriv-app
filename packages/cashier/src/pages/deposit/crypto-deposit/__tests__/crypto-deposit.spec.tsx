@@ -32,10 +32,12 @@ jest.mock('@deriv/api', () => {
         ...jest.requireActual('@deriv/api'),
         useFetch: jest.fn(() => ({
             data: {
-                currencies_config: {
-                    tUSDT: {
-                        minimum_deposit: 2,
-                        minimum_withdrawal: 4.54,
+                crypto_config: {
+                    currencies_config: {
+                        tUSDT: {
+                            minimum_deposit: 2,
+                            minimum_withdrawal: 4.54,
+                        },
                     },
                 },
             },
@@ -101,6 +103,8 @@ describe('<CryptoDeposit />', () => {
                         onMount: jest.fn(),
                     },
                     general_store: {
+                        is_crypto: true,
+                        is_deposit: true,
                         setIsDeposit: jest.fn(),
                     },
                 },

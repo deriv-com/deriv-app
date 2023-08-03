@@ -26,6 +26,7 @@ export default class WithdrawStore {
             setBlockchainAddress: action.bound,
             onMountWithdraw: action.bound,
             onMountCryptoWithdraw: action.bound,
+            is_withdrawal_locked: computed,
             setMaxWithdrawAmount: action.bound,
             check10kLimit: action.bound,
             set10kLimitation: action.bound,
@@ -267,6 +268,17 @@ export default class WithdrawStore {
         this.crypto_config = (await this.WS.cryptoConfig())?.crypto_config;
     }
 
+    get is_withdrawal_locked() {
+        const { client } = this.root_store;
+        const { authentication } = client.account_status;
+
+        if (!client.account_status?.status) return false;
+        const need_poi = authentication?.needs_verification.includes('identity');
+        const need_authentication = this.error.is_ask_authentication && need_poi;
+
+        return client.is_withdrawal_lock || need_authentication || this.error.is_ask_financial_risk_approval;
+    }
+
     setMaxWithdrawAmount(amount: number) {
         this.max_withdraw_amount = amount;
     }
@@ -285,7 +297,7 @@ export default class WithdrawStore {
         this.is_10k_withdrawal_limit_reached = is_limit_reached;
     }
 
-    setWithdrawPercentageSelectorResult(amount: string) {
+    setWithdrawPercentageSelectorResult(amount: string, exchanged_amount: number) {
         const { client, modules } = this.root_store;
         const { crypto_fiat_converter, general_store } = modules.cashier;
         const { currency, current_fiat_currency } = client;
@@ -296,7 +308,8 @@ export default class WithdrawStore {
             crypto_fiat_converter.onChangeConverterFromAmount(
                 { target: { value: amount } },
                 currency,
-                current_fiat_currency || 'USD'
+                current_fiat_currency || 'USD',
+                exchanged_amount
             );
         } else {
             crypto_fiat_converter.resetConverter();

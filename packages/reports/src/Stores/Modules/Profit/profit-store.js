@@ -12,7 +12,7 @@ const delay_on_scroll_time = 150;
 export default class ProfitTableStore extends BaseStore {
     data = [];
     date_from = null;
-    date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's');
+    date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     error = '';
     has_loaded_all = false;
     is_loading = false;
@@ -171,13 +171,22 @@ export default class ProfitTableStore extends BaseStore {
 
     clearDateFilter() {
         this.date_from = null;
-        this.date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's');
+        this.date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     }
 
     handleDateChange(date_values, { date_range } = {}) {
+        const { from, to, is_batch } = date_values;
+
         this.filtered_date_range = date_range;
-        this.date_from = date_values?.from ?? (date_values.is_batch ? null : this.date_from);
-        this.date_to = date_values?.to ?? this.date_to;
+
+        if (from) {
+            this.date_from = toMoment(from).unix();
+        } else if (is_batch) {
+            this.date_from = null;
+        }
+
+        if (to) this.date_to = toMoment(to).unix();
+
         this.clearTable();
         this.fetchNextBatch();
     }

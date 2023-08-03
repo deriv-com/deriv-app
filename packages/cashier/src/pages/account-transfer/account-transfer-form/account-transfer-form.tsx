@@ -58,7 +58,7 @@ const AccountOption = ({ account, idx }: TAccountsList) => {
                 <Money
                     amount={account.balance}
                     currency={account.currency}
-                    has_sign={Boolean(account.balance && account.balance < 0)}
+                    has_sign={Boolean(account.balance && Number(account.balance) < 0)}
                     show_currency
                 />
             </span>
@@ -256,7 +256,7 @@ const AccountTransferForm = observer(
         React.useEffect(() => {
             if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
                 const side_notes = [];
-                if (is_crypto && crypto_transactions?.length) {
+                if (is_crypto) {
                     side_notes.push(<RecentTransaction key={2} />);
                 }
                 side_notes.push(
@@ -529,12 +529,13 @@ const AccountTransferForm = observer(
                                             <div className='account-transfer-form__crypto--percentage-selector'>
                                                 <PercentageSelector
                                                     amount={selected_from.balance ? Number(selected_from.balance) : 0}
-                                                    currency={selected_from.currency || ''}
                                                     from_account={selected_from.value}
                                                     getCalculatedAmount={setTransferPercentageSelectorResult}
                                                     percentage={percentage}
                                                     should_percentage_reset={should_percentage_reset}
                                                     to_account={selected_to.value}
+                                                    from_currency={selected_from.currency || ''}
+                                                    to_currency={selected_to.currency || ''}
                                                 />
                                             </div>
                                             <CryptoFiatConverter
@@ -611,7 +612,7 @@ const AccountTransferForm = observer(
                                     </div>
                                     {!is_from_outside_cashier && (
                                         <SideNote title={<Localize i18n_default_text='Notes' />} is_mobile>
-                                            {is_crypto && crypto_transactions?.length ? <RecentTransaction /> : null}
+                                            {is_crypto ? <RecentTransaction /> : null}
                                             <AccountTransferNote
                                                 allowed_transfers_count={{
                                                     internal: internal_remaining_transfers?.allowed,

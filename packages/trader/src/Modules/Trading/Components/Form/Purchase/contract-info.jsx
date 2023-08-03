@@ -6,17 +6,26 @@ import { Localize, localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, getLocalizedBasis, isMobile, getGrowthRatePercentage } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
 
-const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased, is_vanilla }) => (
+export const ValueMovement = ({
+    has_error_or_not_loaded,
+    proposal_info,
+    currency,
+    has_increased,
+    is_vanilla,
+    value,
+    show_currency = true,
+}) => (
     <div className='strike--value-container'>
         <div className={classNames('trade-container__price-info-value', { 'strike--info': is_vanilla })}>
             {!has_error_or_not_loaded && (
                 <Money
-                    amount={proposal_info.obj_contract_basis.value}
+                    amount={proposal_info?.obj_contract_basis?.value || value}
                     className={classNames('trade-container__price-info-currency', {
                         'strike--info__value': is_vanilla,
                     })}
                     currency={currency}
-                    show_currency
+                    show_currency={show_currency}
+                    should_format={!is_vanilla}
                 />
             )}
         </div>
@@ -78,12 +87,7 @@ const ContractInfo = ({
         if (['VANILLALONGCALL', 'VANILLALONGPUT'].includes(type)) {
             return (
                 <Localize
-                    i18n_default_text='<0>For {{title}}:</0> Your payout will grow by this amount for every point {{trade_type}} your strike price. You will start making a profit when the payout is higher than your stake.'
-                    components={[<strong key={0} />]}
-                    values={{
-                        trade_type: type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
-                        title: type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
-                    }}
+                    i18n_default_text='The payout at expiry is equal to the payout per point multiplied by the difference between the final price and the strike price.'
                 />
             );
         }
@@ -154,16 +158,7 @@ const ContractInfo = ({
                                         zIndex={9999}
                                         message={
                                             <Localize
-                                                i18n_default_text='<0>For {{title}}:</0> Your payout will grow by this amount for every point {{trade_type}} your strike price. You will start making a profit when the payout is higher than your stake.'
-                                                components={[<strong key={0} />]}
-                                                values={{
-                                                    trade_type:
-                                                        type === 'VANILLALONGCALL'
-                                                            ? localize('above')
-                                                            : localize('below'),
-                                                    title:
-                                                        type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
-                                                }}
+                                                i18n_default_text='The payout at expiry is equal to the payout per point multiplied by the difference between the final price and the strike price.'
                                             />
                                         }
                                     />

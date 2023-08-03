@@ -1,25 +1,40 @@
-import { CFD_PLATFORMS } from '../platform';
-import { LandingCompany, GetAccountStatus, DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
+import { CFD_PLATFORMS } from '../platform';
 
 let CFD_text_translated: { [key: string]: () => void };
 
-// TODO: add swap_free to this file when ready
-const CFD_text: { [key: string]: string } = {
+export const CFD_text: { [key: string]: string } = {
     dxtrade: 'Deriv X',
     mt5: 'MT5',
     mt5_cfds: 'MT5 CFDs',
     cfd: 'CFDs',
+    derivez: 'DerivEz',
     synthetic: 'Derived',
+    synthetic_demo: 'Derived Demo',
     synthetic_bvi: 'Derived BVI',
     synthetic_svg: 'Derived SVG',
     synthetic_v: 'Derived Vanuatu',
     financial: 'Financial',
+    financial_demo: 'Financial Demo',
     financial_bvi: 'Financial BVI',
     financial_fx: 'Financial Labuan',
     financial_v: 'Financial Vanuatu',
     financial_svg: 'Financial SVG',
+    all: 'Swap-Free',
+    all_demo: 'Swap-Free Demo',
+    all_svg: 'Swap-Free SVG',
 } as const;
+
+export const getMT5Title = (account_type: string) => {
+    if (account_type === 'synthetic') {
+        return CFD_text.synthetic;
+    }
+    if (account_type === 'all') {
+        return CFD_text.all;
+    }
+    return CFD_text.financial;
+};
 
 type TPlatform = 'dxtrade' | 'mt5' | 'derivez';
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
@@ -38,9 +53,20 @@ type TGetCFDAccountKey = TGetAccount & {
 // sub_account_type: "financial" | "financial_stp" | "swap_free"
 // *
 // sub_account_type financial_stp only happens in "financial" market_type
+// dxrade and swap_free both have market_type "all" so check for platform is neccessary
 export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shortcode }: TGetCFDAccountKey) => {
     if (market_type === 'all') {
-        return platform === CFD_PLATFORMS.DERIVEZ ? 'derivez' : 'dxtrade';
+        if (platform === CFD_PLATFORMS.MT5) {
+            // currently we are only supporting SVG for SwapFree
+            switch (shortcode) {
+                case 'svg':
+                    return 'all_svg';
+                default:
+                    return 'all_demo';
+            }
+        } else {
+            return platform === CFD_PLATFORMS.DERIVEZ ? 'derivez' : 'dxtrade';
+        }
     }
 
     if (market_type === 'gaming' || market_type === 'synthetic') {
@@ -53,7 +79,7 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
                 case 'vanuatu':
                     return 'synthetic_v';
                 default:
-                    return 'synthetic';
+                    return 'synthetic_demo';
             }
         }
     }
@@ -73,7 +99,7 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
                 case 'vanuatu':
                     return 'financial_v';
                 default:
-                    return 'financial';
+                    return 'financial_demo';
             }
         }
     }
@@ -90,7 +116,7 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
 
 type TGetAccountTypeFields = {
     category: 'real' | 'demo';
-    type: 'financial' | 'synthetic';
+    type: 'financial' | 'synthetic' | 'all';
 };
 
 type TAccountType = {
@@ -112,6 +138,9 @@ export const getAccountTypeFields = ({ category, type }: TGetAccountTypeFields) 
                 account_type: 'financial',
                 mt5_account_type: 'financial',
             },
+            all: {
+                account_type: 'all',
+            },
         },
         demo: {
             synthetic: {
@@ -120,6 +149,9 @@ export const getAccountTypeFields = ({ category, type }: TGetAccountTypeFields) 
             financial: {
                 account_type: 'demo',
                 mt5_account_type: 'financial',
+            },
+            all: {
+                account_type: 'demo',
             },
         },
     };
@@ -186,7 +218,9 @@ export const getAccountListKey = (account: TAccount, platform: TPlatform, shortc
         sub_account_type: account.sub_account_type,
         platform,
         shortcode,
-    })}@${platform === CFD_PLATFORMS.DXTRADE ? account.market_type : account.server}`;
+    })}@${
+        platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.DERIVEZ ? account.market_type : account.server
+    }`;
 };
 
 export const getCFDPlatformLabel = (platform: TPlatform) => {
@@ -195,6 +229,8 @@ export const getCFDPlatformLabel = (platform: TPlatform) => {
             return 'Deriv MT5';
         case CFD_PLATFORMS.DXTRADE:
             return 'Deriv X';
+        case CFD_PLATFORMS.DERIVEZ:
+            return 'Deriv EZ';
         default:
             return '';
     }
@@ -219,76 +255,124 @@ export const isLandingCompanyEnabled = ({ landing_companies, platform, type }: T
     return false;
 };
 
-export const getAuthenticationStatusInfo = (account_status: GetAccountStatus) => {
-    const poa_status = account_status?.authentication?.document?.status || '';
-    const poi_status = account_status?.authentication?.identity?.status || '';
+// Define the AuthenticationStatusInfo type
+type TAuthenticationStatusInfo = {
+    poa_status?: string;
+    poi_status?: string;
+    idv_status?: string;
+    onfido_status?: string;
+    manual_status?: string;
+    acknowledged_status: string[];
+    poi_acknowledged_for_maltainvest: boolean;
+    poi_poa_verified_for_bvi_labuan_vanuatu: boolean;
+    poa_acknowledged: boolean;
+    poi_poa_verified_for_maltainvest: boolean;
+    need_poa_submission: boolean;
+    poi_verified_for_maltainvest: boolean;
+    poi_acknowledged_for_bvi_labuan_vanuatu: boolean;
+    poi_verified_for_bvi_labuan_vanuatu: boolean;
+    poa_verified: boolean;
+    poi_or_poa_not_submitted: boolean;
+    need_poa_resubmission: boolean;
+    poi_and_poa_not_submitted: boolean;
+    poa_not_submitted: boolean;
+    poi_not_submitted: boolean;
+    need_poi_for_maltainvest: boolean;
+    need_poi_for_bvi_labuan_vanuatu: boolean;
+    poi_not_submitted_for_maltainvest: boolean;
+    poi_pending_for_bvi_labuan_vanuatu: boolean;
+    poi_pending_for_maltainvest: boolean;
+    poi_resubmit_for_maltainvest: boolean;
+    poi_resubmit_for_bvi_labuan_vanuatu: boolean;
+    poa_pending: boolean;
+    poa_resubmit_for_labuan: boolean;
+    is_idv_revoked: boolean;
+};
 
-    const idv_status = account_status?.authentication?.identity?.services?.idv?.status;
-    const onfido_status = account_status?.authentication?.identity?.services?.onfido?.status;
-    const manual_status = account_status?.authentication?.identity?.services?.manual?.status;
+export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): TAuthenticationStatusInfo => {
+    const risk_classification = account_status.risk_classification;
 
-    const acknowledged_status = ['pending', 'verified'];
-    const failed_cases = ['rejected', 'expired', 'suspected'];
+    const poa_status: string = account_status?.authentication?.document?.status || '';
+    const poi_status: string = account_status?.authentication?.identity?.status || '';
 
-    const poa_not_submitted = poa_status === 'none';
-    const poa_acknowledged = acknowledged_status.includes(poa_status);
-    const need_poa_submission = !poa_acknowledged;
-    const need_poa_resubmission = failed_cases.includes(poa_status);
-    const poa_verified = poa_status === 'verified';
-    const poa_pending = poa_status === 'pending';
+    const services = account_status?.authentication?.identity?.services ?? {};
+    const {
+        idv: { status: idv_status } = {},
+        onfido: { status: onfido_status } = {},
+        manual: { status: manual_status } = {},
+    } = services;
 
-    const poi_not_submitted = poi_status === 'none';
-    const poi_or_poa_not_submitted = poa_not_submitted || poi_not_submitted;
-    const poi_and_poa_not_submitted = poa_not_submitted && poi_not_submitted;
+    const is_authenticated_with_idv_photoid = account_status?.status?.includes('authenticated_with_idv_photoid');
+    const is_idv_revoked = account_status?.status?.includes('idv_revoked');
 
-    //vanuatu-maltainvest
+    const acknowledged_status: string[] = ['pending', 'verified'];
+    const failed_cases: string[] = ['rejected', 'expired', 'suspected'];
 
-    const poi_verified_for_vanuatu_maltainvest = [onfido_status, manual_status].includes('verified');
-    const poi_acknowledged_for_vanuatu_maltainvest =
-        (onfido_status && acknowledged_status.includes(onfido_status)) ||
-        (manual_status && acknowledged_status.includes(manual_status));
+    const poa_not_submitted: boolean = poa_status === 'none';
+    const need_poa_submission = !acknowledged_status.includes(poa_status);
+    const need_poa_resubmission: boolean = failed_cases.includes(poa_status);
+    const poa_verified: boolean = poa_status === 'verified';
+    const poa_pending: boolean = poa_status === 'pending';
+    const poa_acknowledged: boolean = acknowledged_status.includes(poa_status);
 
-    const poi_pending_for_vanuatu_maltainvest =
-        onfido_status &&
-        manual_status &&
-        [onfido_status, manual_status].includes('pending') &&
-        !poi_verified_for_vanuatu_maltainvest;
+    const poi_not_submitted: boolean = poi_status === 'none';
+    const poi_or_poa_not_submitted: boolean = poa_not_submitted || poi_not_submitted;
+    const poi_and_poa_not_submitted: boolean = poa_not_submitted && poi_not_submitted;
 
-    const need_poi_for_vanuatu_maltainvest = !poi_acknowledged_for_vanuatu_maltainvest;
-    const poi_not_submitted_for_vanuatu_maltainvest =
-        onfido_status && manual_status && [onfido_status, manual_status].every(status => status === 'none');
-    const poi_resubmit_for_vanuatu_maltainvest =
-        !poi_pending_for_vanuatu_maltainvest &&
-        !poi_not_submitted_for_vanuatu_maltainvest &&
-        !poi_verified_for_vanuatu_maltainvest;
+    //maltainvest
 
-    const poi_poa_verified_for_vanuatu_maltainvest = poi_verified_for_vanuatu_maltainvest && poa_verified;
+    // mf = maltainvest: only require onfido and manual
+    const mf_jurisdiction_statuses: string[] = [onfido_status, manual_status].filter(
+        (status: string | undefined) => status
+    ) as string[];
+    // bvi_labuan_vanuatu jurisdictions: require idv, onfido and manual
+    const bvi_labuan_vanuatu_jurisdiction_statuses: string[] = [idv_status, onfido_status, manual_status].filter(
+        status => status
+    ) as string[];
 
-    //bvi-labuan
-    const poi_acknowledged_for_bvi_labuan =
-        (idv_status && acknowledged_status.includes(idv_status)) ||
-        (onfido_status && acknowledged_status.includes(onfido_status)) ||
-        (manual_status && acknowledged_status.includes(manual_status));
+    const poi_verified_for_maltainvest: boolean = mf_jurisdiction_statuses.includes('verified');
+    const poi_acknowledged_for_maltainvest: boolean = mf_jurisdiction_statuses.some(status =>
+        acknowledged_status.includes(status)
+    );
+    const poi_pending_for_maltainvest: boolean =
+        mf_jurisdiction_statuses.some(status => status === 'pending') && !poi_verified_for_maltainvest;
 
-    const need_poi_for_bvi_labuan = !poi_acknowledged_for_bvi_labuan;
-    const poi_not_submitted_for_bvi_labuan =
-        idv_status &&
-        onfido_status &&
-        manual_status &&
-        [idv_status, onfido_status, manual_status].every(status => status === 'none');
+    const need_poi_for_maltainvest = !poi_acknowledged_for_maltainvest;
+    const poi_not_submitted_for_maltainvest: boolean = mf_jurisdiction_statuses.every(status => status === 'none');
 
-    const poi_verified_for_bvi_labuan = [idv_status, onfido_status, manual_status].includes('verified');
+    const poi_resubmit_for_maltainvest: boolean =
+        !poi_pending_for_maltainvest && !poi_not_submitted_for_maltainvest && !poi_verified_for_maltainvest;
 
-    const poi_pending_for_bvi_labuan =
-        idv_status &&
-        onfido_status &&
-        manual_status &&
-        [idv_status, onfido_status, manual_status].includes('pending') &&
-        !poi_verified_for_bvi_labuan;
+    const poi_poa_verified_for_maltainvest = poi_verified_for_maltainvest && poa_verified;
 
-    const poi_resubmit_for_bvi_labuan =
-        !poi_pending_for_bvi_labuan && !poi_not_submitted_for_bvi_labuan && !poi_verified_for_bvi_labuan;
-    const poi_poa_verified_for_bvi_labuan = poi_verified_for_bvi_labuan && poa_verified;
+    //bvi-labuan-vanuatu
+    let poi_acknowledged_for_bvi_labuan_vanuatu: boolean = bvi_labuan_vanuatu_jurisdiction_statuses.some(status =>
+        acknowledged_status.includes(status)
+    );
+    if (risk_classification === 'high') {
+        poi_acknowledged_for_bvi_labuan_vanuatu = Boolean(onfido_status && acknowledged_status.includes(onfido_status));
+    } else {
+        poi_acknowledged_for_bvi_labuan_vanuatu = bvi_labuan_vanuatu_jurisdiction_statuses.some(status =>
+            acknowledged_status.includes(status)
+        );
+    }
+    const need_poi_for_bvi_labuan_vanuatu = !poi_acknowledged_for_bvi_labuan_vanuatu;
+    const poi_not_submitted_for_bvi_labuan_vanuatu: boolean = bvi_labuan_vanuatu_jurisdiction_statuses.every(
+        status => status === 'none'
+    );
+
+    const poi_verified_for_bvi_labuan_vanuatu: boolean = bvi_labuan_vanuatu_jurisdiction_statuses.includes('verified');
+
+    const poi_pending_for_bvi_labuan_vanuatu: boolean =
+        bvi_labuan_vanuatu_jurisdiction_statuses.includes('pending') && !poi_verified_for_bvi_labuan_vanuatu;
+
+    const poi_resubmit_for_bvi_labuan_vanuatu: boolean =
+        !poi_pending_for_bvi_labuan_vanuatu &&
+        !poi_not_submitted_for_bvi_labuan_vanuatu &&
+        !poi_verified_for_bvi_labuan_vanuatu;
+
+    const poi_poa_verified_for_bvi_labuan_vanuatu: boolean = poi_verified_for_bvi_labuan_vanuatu && poa_verified;
+    const poa_resubmit_for_labuan = is_authenticated_with_idv_photoid;
 
     return {
         poa_status,
@@ -297,27 +381,29 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus) =>
         onfido_status,
         manual_status,
         acknowledged_status,
-        poi_acknowledged_for_vanuatu_maltainvest,
-        poi_poa_verified_for_bvi_labuan,
+        poi_acknowledged_for_maltainvest,
+        poi_poa_verified_for_bvi_labuan_vanuatu,
         poa_acknowledged,
-        poi_poa_verified_for_vanuatu_maltainvest,
+        poi_poa_verified_for_maltainvest,
         need_poa_submission,
-        poi_verified_for_vanuatu_maltainvest,
-        poi_acknowledged_for_bvi_labuan,
-        poi_verified_for_bvi_labuan,
+        poi_verified_for_maltainvest,
+        poi_acknowledged_for_bvi_labuan_vanuatu,
+        poi_verified_for_bvi_labuan_vanuatu,
         poa_verified,
         poi_or_poa_not_submitted,
         need_poa_resubmission,
         poi_and_poa_not_submitted,
         poa_not_submitted,
         poi_not_submitted,
-        need_poi_for_vanuatu_maltainvest,
-        need_poi_for_bvi_labuan,
-        poi_not_submitted_for_vanuatu_maltainvest,
-        poi_pending_for_bvi_labuan,
-        poi_pending_for_vanuatu_maltainvest,
-        poi_resubmit_for_vanuatu_maltainvest,
-        poi_resubmit_for_bvi_labuan,
+        need_poi_for_maltainvest,
+        need_poi_for_bvi_labuan_vanuatu,
+        poi_not_submitted_for_maltainvest,
+        poi_pending_for_bvi_labuan_vanuatu,
+        poi_pending_for_maltainvest,
+        poi_resubmit_for_maltainvest,
+        poi_resubmit_for_bvi_labuan_vanuatu,
         poa_pending,
+        poa_resubmit_for_labuan,
+        is_idv_revoked,
     };
 };

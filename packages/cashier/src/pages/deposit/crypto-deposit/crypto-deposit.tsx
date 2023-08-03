@@ -20,7 +20,7 @@ const CryptoDeposit = observer(() => {
     const { setIsDeposit } = general_store;
 
     const { data } = useFetch('crypto_config', { payload: { currency_code: currency } });
-    const minimum_deposit = data?.currencies_config[currency]?.minimum_deposit;
+    const minimum_deposit = data?.crypto_config?.currencies_config[currency]?.minimum_deposit;
 
     React.useEffect(() => {
         recentTransactionOnMount();
@@ -134,7 +134,7 @@ const CryptoDeposit = observer(() => {
 
     return (
         <div className='cashier__wrapper crypto-deposit__wrapper'>
-            <CashierBreadcrumb is_crypto_deposit />
+            <CashierBreadcrumb />
             <div className='crypto-deposit__transaction-wrapper'>
                 <Icon icon={`IcCurrency-${currency?.toLowerCase()}`} size={64} />
                 <Text
@@ -261,7 +261,7 @@ const CryptoDeposit = observer(() => {
                     </Text>
                 </ButtonLink>
             </div>
-            {isMobile() && isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
+            {isMobile() && isCryptocurrency(currency) ? <RecentTransaction /> : null}
         </div>
     );
 });

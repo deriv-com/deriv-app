@@ -258,9 +258,11 @@ const CFDsListing = () => {
                 </div>
             )}
 
-            <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
-                <Text weight='bold'>{localize('Deriv cTrader')}</Text>
-            </div>
+            {!is_eu_user && (
+                <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
+                    <Text weight='bold'>{localize('Deriv cTrader')}</Text>
+                </div>
+            )}
 
             {is_landing_company_loaded ? (
                 available_ctrader_accounts.map((account: AvailableAccount) => {

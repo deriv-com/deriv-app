@@ -466,9 +466,16 @@ export default class TradersHubStore extends BaseStore {
         );
     }
     getAvailableCTraderAccounts() {
+        if (this.CFDs_restricted_countries || this.financial_restricted_countries) {
+            this.available_ctrader_accounts = [];
+            return;
+        }
+
         if (this.is_eu_user && !this.is_demo_low_risk) {
             this.available_ctrader_accounts = this.available_cfd_accounts.filter(
-                account => account.platform === CFD_PLATFORMS.CTRADER
+                account =>
+                    ['EU', 'All'].some(region => region === account.availability) &&
+                    account.platform === CFD_PLATFORMS.CTRADER
             );
             return;
         }

@@ -231,7 +231,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
             <div className='cfd-financial-stp-modal__body' data-testid='dt_cfd_financial_stp_modal_body'>
                 <BodyComponent
                     /** TODO: Body component is 3 different component in which one of them does not have prop `value`
-                     * it needs a refactorp
+                     * it needs a refactor
                      */
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore

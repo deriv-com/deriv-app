@@ -1,20 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import { useStores } from 'Stores';
 import RecommendedModal from '../recommended-modal';
-
-const mocked_store_values: DeepPartial<ReturnType<typeof useStores>> = {
-    my_profile_store: {
-        add_payment_method_error_message: 'this is the error message',
-        setAddPaymentMethodErrorMessage: jest.fn(),
-    },
-};
-
-jest.mock('Stores', () => ({
-    ...jest.requireActual('Stores'),
-    useStores: jest.fn(() => mocked_store_values),
-}));
 
 const mock_modal_manager: Partial<ReturnType<typeof useModalManagerContext>> = {
     hideModal: jest.fn(),

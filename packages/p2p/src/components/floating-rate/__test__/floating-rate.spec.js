@@ -17,6 +17,18 @@ jest.mock('Stores', () => ({
     }),
 }));
 
+jest.mock('@sendbird/chat', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/groupChannel', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/message', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
 describe('<FloatingRate/>', () => {
     it('should render default state of the component with hint message and increment, decrement buttons', () => {
         render(<FloatingRate />, {

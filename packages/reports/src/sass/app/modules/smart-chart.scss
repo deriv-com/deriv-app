@@ -385,8 +385,11 @@
             animation: 0.1s cubic-bezier(0.49, -0.4, 0.11, 0.65) 3 both slide-decimal;
         }
         &__currency {
-            padding-left: 0.3rem;
-            transform: translateY(-92%);
+            padding-left: 0.2rem;
+            transform: translateY(-83%);
+            @include mobile {
+                transform: translateY(-78%);
+            }
         }
         &:before {
             content: '';

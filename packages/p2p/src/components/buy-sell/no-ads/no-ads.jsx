@@ -16,8 +16,7 @@ const NoAds = ({ is_ads_page = false }) => {
     const history = useHistory();
 
     const is_default_currency = local_currencies.filter(
-        currency =>
-            currency.text.toLowerCase() === selected_local_currency?.toLowerCase() && currency.is_default
+        currency => currency.text.toLowerCase() === selected_local_currency?.toLowerCase() && currency.is_default
     ).length;
 
     const onClickButton = () => {
@@ -32,14 +31,7 @@ const NoAds = ({ is_ads_page = false }) => {
             <Icon icon='IcCashierNoAds' size={128} />
             {is_default_currency || is_ads_page ? (
                 <React.Fragment>
-                    <Text
-                        align='center'
-                        className='no-ads__title'
-                        color='general'
-                        line_height='m'
-                        size='s'
-                        weight='bold'
-                    >
+                    <Text align='center' className='no-ads__title' weight='bold'>
                         {is_ads_page ? (
                             <Localize i18n_default_text='You have no ads.' />
                         ) : (
@@ -49,13 +41,7 @@ const NoAds = ({ is_ads_page = false }) => {
                     <Text className='no-ads__message' align='center'>
                         <Localize i18n_default_text='Looking to buy or sell USD? You can post your own ad for others to respond.' />
                     </Text>
-                    <Button
-                        className='no-ads__button'
-                        disabled={is_barred}
-                        primary
-                        large
-                        onClick={onClickButton}
-                    >
+                    <Button className='no-ads__button' disabled={is_barred} primary large onClick={onClickButton}>
                         {is_ads_page ? (
                             <Localize i18n_default_text='Create new ad' />
                         ) : (

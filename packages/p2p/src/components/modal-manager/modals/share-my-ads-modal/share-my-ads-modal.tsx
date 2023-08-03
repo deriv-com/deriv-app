@@ -29,7 +29,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
     const custom_message =
         rate_type === ad_type.FLOAT
             ? `Hello! I'd like to exchange ${local_currency} for ${account_currency} at ${rate_display}% on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n${advert_url}\n\nThanks!`
-            : `Hello! I'd like to exchange ${local_currency} for ${account_currency} at ${rate_display} ${local_currency} on Deriv P2P.\n\nIf you're interested, check out my ad ${advert_url}\n\nThanks!`;
+            : `Hello! I'd like to exchange ${local_currency} for ${account_currency} at ${rate_display} ${local_currency} on Deriv P2P.\n\nIf you're interested, check out my ad 👉${advert_url}\n\nThanks!`;
 
     const { hideModal, is_modal_open } = useModalManagerContext();
 

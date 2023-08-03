@@ -407,6 +407,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             setWalletModalActiveTab: jest.fn(),
             active_modal_wallet_id: '',
             setWalletModalActiveWalletID: jest.fn(),
+            is_mt5_notificaiton_modal_visible: false,
+            setMT5NotificationModal: jest.fn(),
         },
         notifications: {
             addNotificationMessage: jest.fn(),

@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Loading } from '@deriv/components';
 import { useActiveWallet, useWalletsList } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import AddMoreWallets from 'Components/add-more-wallets';
@@ -11,7 +10,7 @@ import './wallets.scss';
 
 const Wallets = observer(() => {
     const { client, ui } = useStore();
-    const { switchAccount, is_authorize } = client;
+    const { switchAccount } = client;
     const { is_mobile } = ui;
     const { data } = useWalletsList();
     const active_wallet = useActiveWallet();
@@ -23,14 +22,11 @@ const Wallets = observer(() => {
     }, [active_wallet, data, switchAccount]);
 
     return (
-        <div className={'wallets-module'}>
-            {!is_authorize && <Loading />}
-            {is_authorize && (
-                <div className={'wallets-module__content'}>
-                    {is_mobile ? <MobileWalletsCarousel /> : <DesktopWalletsList />}
-                    <AddMoreWallets />
-                </div>
-            )}
+        <div className='wallets-module'>
+            <div className='wallets-module__content'>
+                {is_mobile ? <MobileWalletsCarousel /> : <DesktopWalletsList />}
+                <AddMoreWallets />
+            </div>
             <ModalManager />
             <WalletTourGuide />
         </div>

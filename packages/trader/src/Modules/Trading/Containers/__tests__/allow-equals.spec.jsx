@@ -7,9 +7,6 @@ import AllowEquals from '../allow-equals';
 
 const default_mocked_props = {
     className: 'test className',
-    // is_allow_equal: PropTypes.bool,
-    // has_equals_only: PropTypes.bool,
-    // onChange: PropTypes.func,
 };
 
 const default_mock_store = {

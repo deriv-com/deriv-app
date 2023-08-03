@@ -1,8 +1,11 @@
 import React from 'react';
+import { Router } from 'react-router';
 import { render, screen } from '@testing-library/react';
-import CashierLocked from '../cashier-locked';
+import userEvent from '@testing-library/user-event';
+import { createBrowserHistory } from 'history';
 import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
 import { mockStore } from '@deriv/stores';
+import CashierLocked from '../cashier-locked';
 import CashierProviders from '../../../cashier-providers';
 
 jest.mock('@deriv/hooks', () => ({
@@ -10,10 +13,16 @@ jest.mock('@deriv/hooks', () => ({
     useDepositLocked: jest.fn(() => false),
     useCashierLocked: jest.fn(() => false),
 }));
+
 const mockUseDepositLocked = useDepositLocked as jest.MockedFunction<typeof useDepositLocked>;
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 
 describe('<CashierLocked />', () => {
+    const history = createBrowserHistory();
+    const wrapWithRouter = (component: React.ReactElement) => {
+        return <Router history={history}>{component}</Router>;
+    };
+
     beforeEach(() => {
         mockUseDepositLocked.mockReturnValue(false);
         mockUseCashierLocked.mockReturnValue(false);
@@ -34,7 +43,8 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(
@@ -60,7 +70,8 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(
@@ -86,7 +97,8 @@ describe('<CashierLocked />', () => {
         mockUseDepositLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(
@@ -111,7 +123,8 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(
@@ -137,7 +150,8 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(
@@ -163,7 +177,8 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(
@@ -189,7 +204,8 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(container).toHaveTextContent(
@@ -213,7 +229,8 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(container).toHaveTextContent(
@@ -237,7 +254,8 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(
@@ -261,10 +279,208 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(screen.getByText(/Your account has not been authenticated./i)).toBeInTheDocument();
+    });
+
+    it('should show the proper message if eu client is not fully authenticated and landed in deposit page', () => {
+        const mock_root_store = mockStore({
+            client: {
+                account_status: { cashier_validation: ['ASK_AUTHENTICATE'] },
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+                is_eu: true,
+            },
+        });
+        mockUseCashierLocked.mockReturnValue(true);
+        history.push('/cashier/deposit');
+
+        render(<CashierLocked />, {
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
+        });
+
+        expect(
+            screen.getByText('You can make a new deposit once the verification of your account is complete.')
+        ).toBeInTheDocument();
+    });
+
+    it('should show the proper message if eu client is not fully authenticated and landed in withdrawal page', () => {
+        const mock_root_store = mockStore({
+            client: {
+                account_status: { cashier_validation: ['ASK_AUTHENTICATE'] },
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+                is_eu: true,
+            },
+        });
+        mockUseCashierLocked.mockReturnValue(true);
+        history.push('/cashier/withdrawal');
+
+        render(<CashierLocked />, {
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
+        });
+
+        expect(
+            screen.getByText('You can make a withdrawal once the verification of your account is complete.')
+        ).toBeInTheDocument();
+    });
+
+    it('should show the proper message if eu client is not fully authenticated and landed in transfers page', () => {
+        const mock_root_store = mockStore({
+            client: {
+                account_status: { cashier_validation: ['ASK_AUTHENTICATE'] },
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+                is_eu: true,
+            },
+        });
+        mockUseCashierLocked.mockReturnValue(true);
+        history.push('/cashier/account-transfer');
+
+        render(<CashierLocked />, {
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
+        });
+
+        expect(
+            screen.getByText('You can make a funds transfer once the verification of your account is complete.')
+        ).toBeInTheDocument();
+    });
+
+    it('should redirect eu client that is not fully authenticated to POI page when `Verify now` button is clicked', () => {
+        const mock_root_store = mockStore({
+            client: {
+                account_status: { cashier_validation: ['ASK_AUTHENTICATE'] },
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+                is_eu: true,
+            },
+        });
+        mockUseCashierLocked.mockReturnValue(true);
+        history.push('/cashier/account-transfer');
+
+        render(<CashierLocked />, {
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
+        });
+
+        const verify_button = screen.getByRole('button', { name: 'Verify now' });
+        expect(verify_button).toBeInTheDocument();
+        userEvent.click(verify_button);
+
+        expect(history.location.pathname).toBe('/account/proof-of-identity');
+    });
+
+    it('should show the proper message if eu client`s verification is pending and landed in deposit page', () => {
+        const mock_root_store = mockStore({
+            client: {
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+                mf_account_status: 'pending',
+                is_eu: true,
+            },
+        });
+        mockUseCashierLocked.mockReturnValue(true);
+        history.push('/cashier/deposit');
+
+        render(<CashierLocked />, {
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
+        });
+
+        expect(
+            screen.getByText(
+                'You cannot make further deposits as your documents are still under review. We will notify you by email within 3 days once your verification is approved.'
+            )
+        ).toBeInTheDocument();
+    });
+
+    it('should show the proper message if eu client`s verification is pending and landed in withdrawal page', () => {
+        const mock_root_store = mockStore({
+            client: {
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+                mf_account_status: 'pending',
+                is_eu: true,
+            },
+        });
+        mockUseCashierLocked.mockReturnValue(true);
+        history.push('/cashier/withdrawal');
+
+        render(<CashierLocked />, {
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
+        });
+
+        expect(
+            screen.getByText(
+                'You cannot make a withdrawal as your documents are still under review. We will notify you by email within 3 days once your verification is approved.'
+            )
+        ).toBeInTheDocument();
+    });
+
+    it('should show the proper message if eu client`s verification is pending and landed in transfer page', () => {
+        const mock_root_store = mockStore({
+            client: {
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+                mf_account_status: 'pending',
+                is_eu: true,
+            },
+        });
+        mockUseCashierLocked.mockReturnValue(true);
+        history.push('/cashier/account-transfer');
+
+        render(<CashierLocked />, {
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
+        });
+
+        expect(
+            screen.getByText(
+                'You cannot make a fund transfer as your documents are still under review. We will notify you by email within 3 days once your verification is approved.'
+            )
+        ).toBeInTheDocument();
     });
 
     it('should show the proper message if the client has ask_financial_risk_approval status', () => {
@@ -283,7 +499,8 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(screen.getByTestId('dt_financial_assessment_link')).toHaveAttribute(
@@ -308,7 +525,8 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(screen.getByText(/Your cashier is locked./i)).toBeInTheDocument();
@@ -334,7 +552,8 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(screen.getByText(/You have not provided your tax identification number./i)).toBeInTheDocument();
@@ -356,7 +575,8 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(screen.getByText(/Your cashier is locked./i)).toBeInTheDocument();
@@ -378,7 +598,8 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(
@@ -404,7 +625,8 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(
@@ -432,7 +654,8 @@ describe('<CashierLocked />', () => {
         mockUseDepositLocked.mockReturnValue(true);
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(container).toHaveTextContent(
@@ -456,7 +679,8 @@ describe('<CashierLocked />', () => {
         mockUseDepositLocked.mockReturnValue(true);
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(container).toHaveTextContent('Please contact us via live chat.');
@@ -478,7 +702,8 @@ describe('<CashierLocked />', () => {
         });
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(container).toHaveTextContent(
@@ -502,7 +727,8 @@ describe('<CashierLocked />', () => {
         });
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(container).toHaveTextContent(
@@ -526,7 +752,8 @@ describe('<CashierLocked />', () => {
         });
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(container).toHaveTextContent(
@@ -550,7 +777,8 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(screen.getByText(/Your account has not been authenticated./i)).toBeInTheDocument();
@@ -572,7 +800,8 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(container).toHaveTextContent(
@@ -596,7 +825,8 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+            wrapper: ({ children }) =>
+                wrapWithRouter(<CashierProviders store={mock_root_store}>{children}</CashierProviders>),
         });
 
         expect(

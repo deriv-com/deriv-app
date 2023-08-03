@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router';
 import { useStore, observer } from '@deriv/stores';
 import { useCashierLocked, useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
 import EmptyState from 'Components/empty-state';
@@ -10,26 +11,32 @@ const CashierLocked = observer(() => {
         account_status,
         accounts,
         current_currency_type,
+        is_eu,
         is_withdrawal_lock: is_withdrawal_locked,
         loginid,
         is_identity_verification_needed,
+        mf_account_status,
     } = client;
     const is_cashier_locked = useCashierLocked();
     const is_system_maintenance = useIsSystemMaintenance();
     const is_deposit_locked = useDepositLocked();
+    const history = useHistory();
 
     const state = getMessage({
         cashier_validation: account_status.cashier_validation,
+        excluded_until: loginid ? accounts[loginid]?.excluded_until : undefined,
+        history,
         is_crypto: current_currency_type === 'crypto',
+        is_eu,
         is_system_maintenance,
         is_cashier_locked,
         is_deposit_locked,
         is_withdrawal_locked,
         is_identity_verification_needed,
-        excluded_until: loginid ? accounts[loginid]?.excluded_until : undefined,
+        is_pending_verification: mf_account_status === 'pending',
     });
 
-    return <EmptyState icon={state.icon} title={state.title} description={state.description} />;
+    return <EmptyState icon={state.icon} title={state.title} description={state.description} action={state.action} />;
 });
 
 export default CashierLocked;

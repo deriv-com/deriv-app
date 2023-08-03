@@ -20,7 +20,6 @@
 .compare-cfd-account {
     max-width: 123.2rem;
     margin: auto;
-    padding: 5rem 0;
     &-container {
         margin: 1.5rem;
         @include mobile {
@@ -54,7 +53,7 @@
             box-shadow: 0 2px 8px 0 var(--shadow-menu);
         }
         @include mobile {
-            width: 17rem;
+            width: 18rem;
         }
         &__eu-clients {
             position: relative;
@@ -78,10 +77,10 @@
     &-outline {
         display: flex;
         flex-direction: column;
-        padding: 2rem 2.4rem 0;
+        padding: 4rem 2.4rem 0;
         border-radius: 2.4rem;
         @include mobile {
-            padding-top: 4.5rem;
+            padding: 7rem 1.5rem 0;
         }
     }
     &-text-container {

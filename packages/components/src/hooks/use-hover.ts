@@ -8,14 +8,17 @@ export const useHover = <T extends HTMLElement & SVGSVGElement>(
     const default_ref = React.useRef(null);
     const ref = refSetter || default_ref;
 
-    const handleHoverBegin = () => setValue(true);
+    const handleHoverBegin = () => {
+        setValue(true);
+    };
     const handleHoverFinish = () => setValue(false);
 
     React.useEffect(() => {
         const node = ref.current;
+
         if (node) {
             if (should_prevent_bubbling) {
-                node.addEventListener('mouseenter', handleHoverBegin);
+                node.addEventListener('mouseover', handleHoverBegin);
                 node.addEventListener('mouseleave', handleHoverFinish);
             } else {
                 node.addEventListener('mouseover', handleHoverBegin);

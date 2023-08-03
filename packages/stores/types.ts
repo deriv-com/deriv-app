@@ -430,6 +430,7 @@ type TUiStore = {
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
+    is_positions_drawer_on: boolean;
     is_services_error_visible: boolean;
     is_unsupported_contract_modal_visible: boolean;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
@@ -450,6 +451,7 @@ type TUiStore = {
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
     toggleLanguageSettingsModal: () => void;
+    togglePositionsDrawer: () => void;
     toggleReadyToDepositModal: () => void;
     toggleServicesErrorModal: (is_visible: boolean) => void;
     toggleSetCurrencyModal: () => void;
@@ -520,6 +522,7 @@ type TPortfolioPosition = {
 
 type TPortfolioStore = {
     active_positions: TPortfolioPosition[];
+    active_positions_count: number;
     all_positions: TPortfolioPosition[];
     error: string;
     getPositionById: (id: number) => TPortfolioPosition;

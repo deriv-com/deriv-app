@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, DesktopWrapper, MobileWrapper, Tabs, Icon } from '@deriv/components';
-import { useHasWallet, useFeatureFlags } from '@deriv/hooks';
+import { useWalletsList, useFeatureFlags } from '@deriv/hooks';
 import { ContentFlag } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import AccountTypeDropdown from './account-type-dropdown';
@@ -31,7 +31,7 @@ const MainTitleBar = () => {
     }, [selected_region]);
 
     const { is_wallet_enabled } = useFeatureFlags();
-    const has_wallet = useHasWallet();
+    const { has_wallet } = useWalletsList();
 
     const should_show_banner = is_wallet_enabled && !has_wallet;
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, useFetch } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useWalletsList from '../useWalletsList';
@@ -100,5 +100,47 @@ describe('useWalletsList', () => {
         const { result } = renderHook(() => useWalletsList(), { wrapper });
 
         expect(result.current.data?.map(wallet => wallet.currency)).toEqual(['AUD', 'BTC', 'ETH', 'UST', 'USD']);
+    });
+
+    test('should return has_wallet equals to true if the client has at least one wallet', () => {
+        const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
+        );
+
+        const { result } = renderHook(() => useWalletsList(), { wrapper });
+
+        expect(result.current.has_wallet).toEqual(true);
+    });
+
+    test("should return has_wallet equals to false if the client doesn't have any wallet", () => {
+        const mock = mockStore({ client: { accounts: { CR123456: { token: '12345' } }, loginid: 'CR123456' } });
+
+        (useFetch as jest.Mock).mockReturnValue({
+            data: {
+                authorize: {
+                    account_list: [
+                        {
+                            account_category: 'trading',
+                            currency: 'USD',
+                            is_virtual: 0,
+                        },
+                    ],
+                },
+            },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
+        );
+
+        const { result } = renderHook(() => useWalletsList(), { wrapper });
+
+        expect(result.current.has_wallet).toEqual(false);
     });
 });

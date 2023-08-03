@@ -16,32 +16,38 @@ jest.mock('@deriv/api', () => ({
                                 account_category: 'trading',
                                 currency: 'USD',
                                 is_virtual: 1,
+                                loginid: 'CR1001',
                             },
                             {
                                 account_category: 'trading',
                                 currency: 'USD',
                                 is_virtual: 0,
+                                loginid: 'CR1002',
                             },
 
                             {
                                 account_category: 'trading',
                                 currency: 'UST',
                                 is_virtual: 0,
+                                loginid: 'CR1003',
                             },
                             {
                                 account_category: 'trading',
                                 currency: 'BTC',
                                 is_virtual: 0,
+                                loginid: 'CR1004',
                             },
                             {
                                 account_category: 'wallet',
                                 currency: 'USD',
                                 is_virtual: 0,
+                                loginid: 'CRW1001',
                             },
                             {
                                 account_category: 'wallet',
                                 currency: 'BTC',
                                 is_virtual: 0,
+                                loginid: 'CRW1002',
                             },
                         ],
                     },
@@ -94,5 +100,20 @@ describe('useTradingAccountsList', () => {
 
         expect(result.current.data?.every(account => account.account_category === 'trading')).toEqual(true);
         expect(result.current.data?.length).toEqual(4);
+        expect(result.current.data?.find(account => account.loginid === 'CR1003')?.balance).toEqual(179);
+    });
+
+    test('should return correct balance', () => {
+        const mock = mockStore({ client: { accounts: { CR1001: { token: '12345' } }, loginid: 'CR1001' } });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
+        );
+
+        const { result } = renderHook(() => useTradingAccountsList(), { wrapper });
+
+        expect(result.current.data?.find(account => account.loginid === 'CR1003')?.balance).toEqual(179);
     });
 });

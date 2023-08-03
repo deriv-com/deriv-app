@@ -565,6 +565,16 @@ type TTradersHubStore = {
     selectAccountType: (account_type: string) => void;
     is_mt5_notificaiton_modal_visible: boolean;
     setMT5NotificationModal: (value: boolean) => void;
+    available_dxtrade_accounts: DetailsOfEachMT5Loginid[];
+    available_derivez_accounts: DetailsOfEachMT5Loginid[];
+    has_any_real_account: boolean;
+    startTrade: () => void;
+    getExistingAccounts: () => void;
+    getAccount: () => void;
+    toggleAccountTypeModalVisibility: () => void;
+    can_get_more_cfd_mt5_accounts: boolean;
+    is_demo_low_risk: boolean;
+    showTopUpModal: () => void;
 };
 
 /**

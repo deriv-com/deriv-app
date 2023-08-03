@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
+import { observer, useStore } from '@deriv/stores';
 import { Text, StaticUrl } from '@deriv/components';
 import { isMobile, formatMoney, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -10,7 +10,6 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 import GetMoreAccounts from 'Components/get-more-accounts';
 import { Actions } from 'Components/containers/trading-app-card-actions';
 import { getHasDivider } from 'Constants/utils';
-import { useStores } from 'Stores/index';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import './cfds-listing.scss';
 
@@ -20,14 +19,14 @@ type TDetailedExistingAccount = AvailableAccount &
         key: string;
     };
 
-const CFDsListing = () => {
+const CFDsListing = observer(() => {
     const {
         client,
         modules: { cfd },
         traders_hub,
         common,
         ui,
-    } = useStores();
+    } = useStore();
     const {
         available_dxtrade_accounts,
         available_derivez_accounts,
@@ -403,6 +402,6 @@ const CFDsListing = () => {
                 : !is_real && <PlatformLoader />} */}
         </ListingContainer>
     );
-};
+});
 
-export default observer(CFDsListing);
+export default CFDsListing;

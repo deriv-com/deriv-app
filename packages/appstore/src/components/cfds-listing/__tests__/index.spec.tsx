@@ -1,7 +1,7 @@
 import React from 'react';
-import CFDsListing from '../index';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import CFDsListing from '../index';
 
 jest.mock('Components/containers/listing-container', () =>
     jest.fn(({ children }) => <div data-testid='listing-container'>{children}</div>)

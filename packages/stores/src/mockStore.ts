@@ -387,6 +387,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             selectAccountType: jest.fn(),
             toggleIsTourOpen: jest.fn(),
             is_demo_low_risk: false,
+            is_mt5_notification_modal_visible: false,
+            setMT5NotificationModal: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

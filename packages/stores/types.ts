@@ -567,6 +567,8 @@ type TTradersHubStore = {
     selectAccountType: (account_type: string) => void;
     toggleIsTourOpen: (is_tour_open: boolean) => void;
     is_demo_low_risk: boolean;
+    is_mt5_notification_modal_visible: boolean;
+    setMT5NotificationModal: (value: boolean) => void;
 };
 
 /**

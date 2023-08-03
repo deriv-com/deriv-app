@@ -63,7 +63,9 @@ const CryptoWithdrawForm = observer(({ is_wallet }: { is_wallet?: boolean }) => 
     } = withdraw;
     const {
         converter_from_error,
+        converter_from_amount,
         converter_to_error,
+        converter_to_amount,
         onChangeConverterFromAmount,
         onChangeConverterToAmount,
         resetConverter,
@@ -189,6 +191,8 @@ const CryptoWithdrawForm = observer(({ is_wallet }: { is_wallet?: boolean }) => 
                                             !!validateAddress(values.address) ||
                                             !!converter_from_error ||
                                             !!converter_to_error ||
+                                            !converter_from_amount ||
+                                            !converter_to_amount ||
                                             isSubmitting ||
                                             !blockchain_address
                                         }

@@ -82,8 +82,18 @@ const useWalletsList = () => {
                 ...wallet,
                 /** Wallet balance */
                 balance: balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance || 0,
+                /** add balance and currency to linked_to accounts */
+                linked_to: wallet.linked_to?.map(linked_account => ({
+                    ...linked_account,
+                    balance: balance_data?.balance?.accounts?.[linked_account.loginid || '']?.balance || 0,
+                    // currency: balance_data?.balance?.accounts?.[linked_account.loginid || '']?.balance || 0,
+                    currency:
+                        authorize_data?.account_list?.find(account => account.loginid === linked_account.loginid)
+                            ?.currency || wallet.currency,
+                })),
             })),
-        [balance_data?.balance?.accounts, wallets]
+        [authorize_data?.account_list, balance_data?.balance?.accounts, wallets]
+        // [balance_data?.balance?.accounts, wallets]
     );
 
     // Add additional information to each wallet.

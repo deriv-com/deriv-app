@@ -189,3 +189,24 @@
         width: 31.2rem !important;
     }
 }
+
+.bot-stop-notification {
+    position: fixed;
+    z-index: 9;
+    right: 38rem;
+    top: 12rem;
+
+    .dc-toast {
+        width: 100%;
+        &__message {
+            background: var(--text-prominent);
+            color: var(--general-main-1);
+        }
+    }
+
+    @include mobile {
+        top: unset;
+        right: 0;
+        bottom: 12rem;
+    }
+}

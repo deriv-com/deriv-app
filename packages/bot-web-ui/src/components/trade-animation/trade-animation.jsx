@@ -5,6 +5,7 @@ import { Button, Icon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import ContractResultOverlay from 'Components/contract-result-overlay';
+import BotStopNotification from 'Components/dashboard/bot-stop-notification';
 import { contract_stages } from 'Constants/contract-stage';
 import { useDBotStore } from 'Stores/useDBotStore';
 
@@ -48,9 +49,14 @@ const TradeAnimation = observer(({ className }) => {
     } = run_panel;
     const { account_status } = client;
     const cashier_validation = account_status?.cashier_validation;
-
     const [is_button_disabled, updateIsButtonDisabled] = React.useState(false);
     const is_unavailable_for_payment_agent = cashier_validation?.includes('WithdrawServiceUnavailableForPA');
+    const [show_bot_stop_message, setshowBotStopMessage] = React.useState(false);
+
+    const handleStopBot = () => {
+        setshowBotStopMessage(true);
+    };
+
     // perform self-exclusion checks which will be stored under the self-exclusion-store
     React.useEffect(() => {
         performSelfExclusionCheck();
@@ -97,13 +103,16 @@ const TradeAnimation = observer(({ className }) => {
                     updateIsButtonDisabled(true);
                     if (is_stop_button_visible) {
                         onStopButtonClick();
+                        handleStopBot();
                         return;
                     }
                     onRunButtonClick();
+                    setshowBotStopMessage(false);
                 }}
                 has_effect
                 {...(is_stop_button_visible || !is_unavailable_for_payment_agent ? { primary: true } : { green: true })}
             />
+            {show_bot_stop_message && <BotStopNotification />}
             <div
                 className={classNames('animation__container', className, {
                     'animation--running': contract_stage > 0,

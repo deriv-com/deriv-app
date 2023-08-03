@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Toast } from '@deriv/components';
-import { localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 
-const BotNotification = observer(() => {
+const StrategyNotification = observer(() => {
     const { dashboard } = useDBotStore();
     const { show_toast, toast_message, setOpenSettings } = dashboard;
 
@@ -33,4 +33,4 @@ const BotNotification = observer(() => {
     return null;
 });
 
-export default BotNotification;
+export default StrategyNotification;

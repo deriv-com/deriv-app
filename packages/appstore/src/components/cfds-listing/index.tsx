@@ -63,8 +63,6 @@ const CFDsListing = () => {
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
     const { poi, is_idv_revoked, poa } = useAuthenticationStatusInfo();
-    // const { poi_pending_for_bvi_labuan, poi_resubmit_for_bvi_labuan, poa_resubmit_for_labuan, is_idv_revoked } =
-    //     getAuthenticationStatusInfo(account_status);
 
     const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
 

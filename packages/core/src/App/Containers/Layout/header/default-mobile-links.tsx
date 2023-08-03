@@ -6,7 +6,7 @@ import { BinaryLink } from 'App/Components/Routes';
 import ShowNotifications from './show-notifications';
 import TradingHubOnboarding from './trading-hub-onboarding';
 
-export type TDefaultMobileLinks = {
+type TDefaultMobileLinks = {
     handleClickCashier: () => void;
 };
 

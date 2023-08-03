@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import DefaultMobileLinks, { TDefaultMobileLinks } from '../default-mobile-links';
+import DefaultMobileLinks from '../default-mobile-links';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -15,14 +15,14 @@ jest.mock('../trading-hub-onboarding', () => jest.fn(() => 'mockedTradingHubOnbo
 
 describe('DefaultMobileLinks', () => {
     it('should render the component', () => {
-        const mock_props: TDefaultMobileLinks = {
+        const mock_props: React.ComponentProps<typeof DefaultMobileLinks> = {
             handleClickCashier: jest.fn(),
         };
         render(<DefaultMobileLinks {...mock_props} />);
     });
 
     it('should display the cashier button', () => {
-        const mock_props: TDefaultMobileLinks = {
+        const mock_props: React.ComponentProps<typeof DefaultMobileLinks> = {
             handleClickCashier: jest.fn(),
         };
         render(<DefaultMobileLinks {...mock_props} />);

@@ -1,9 +1,9 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { Actions } from 'Components/containers/trading-app-card-actions';
-import React from 'react';
-import { Link } from 'react-router-dom';
 
 const TradeButton = observer(
     ({

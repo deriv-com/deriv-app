@@ -163,7 +163,7 @@ export default class SendbirdStore extends BaseStore {
                 await this.initialiseOrderChannel();
             }
         } catch (error) {
-            this.setChatError();
+            // handle sendbird error
         }
     }
 
@@ -178,7 +178,7 @@ export default class SendbirdStore extends BaseStore {
                 this.setActiveChatChannel(group_channel);
             }
         } catch (error) {
-            this.setChatError();
+            // handle sendbird error
         } finally {
             this.setIsChatLoading(false);
         }
@@ -186,13 +186,14 @@ export default class SendbirdStore extends BaseStore {
 
     async initialiseOrderMessages() {
         this.setHasChatError(false);
+        this.setIsChatLoading(true);
         try {
             const chat_messages = await this.getPreviousMessages();
             if (chat_messages && chat_messages.length > 0) {
                 this.setChannelMessages(chat_messages.map(msg => convertFromChannelMessage(msg)));
             }
         } catch (error) {
-            this.setHasChatError(true);
+            // handle sendbird error
         } finally {
             this.setIsChatLoading(false);
         }
@@ -277,7 +278,7 @@ export default class SendbirdStore extends BaseStore {
                 }
             }
         } catch (error) {
-            this.setHasChatError(true);
+            // handle sendbird error
         }
     }
 
@@ -299,6 +300,7 @@ export default class SendbirdStore extends BaseStore {
             if (!this.messages_ref?.current) return;
 
             if (this.messages_ref.current.scrollTop === 0) {
+                this.setIsChatLoading(true);
                 const oldest_message_timestamp = this.chat_messages.reduce(
                     (prev_created_at, chat_message) =>
                         chat_message.created_at < prev_created_at ? chat_message.created_at : prev_created_at,
@@ -313,9 +315,10 @@ export default class SendbirdStore extends BaseStore {
 
                             this.replaceChannelMessage(0, 0, previous_messages[0]);
                         }
+                        this.setIsChatLoading(false);
                     })
                     .catch(() => {
-                        this.setHasChatError(true);
+                        // handle sendbird error
                     });
             } else {
                 (async () => {

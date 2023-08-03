@@ -335,7 +335,9 @@ const ChartTrade = observer(props => {
     const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;
 
     // max ticks to display for mobile view for tick chart
-    const max_ticks = granularity === 0 ? 8 : 24;
+    const accumulator_whitespace = isMobile() ? 150 : 180;
+    const max_ticks_for_0_granularity = is_accumulator ? 40 : 8;
+    const max_ticks = granularity === 0 ? max_ticks_for_0_granularity : 24;
 
     if (!symbol || active_symbols.length === 0) return null;
 
@@ -389,6 +391,7 @@ const ChartTrade = observer(props => {
             yAxisMargin={{
                 top: isMobile() ? 76 : 106,
             }}
+            whitespace={is_accumulator ? accumulator_whitespace : undefined}
         >
             <ChartMarkers />
             {is_accumulator && (

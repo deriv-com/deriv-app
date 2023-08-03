@@ -5,6 +5,7 @@ import './animated-list.scss';
 
 type TAnimatedListProps = {
     className?: string;
+    children: JSX.Element[];
 };
 
 const animations = {
@@ -37,13 +38,13 @@ const animations = {
     },
 };
 
-const AnimatedList = ({ className, children }: React.PropsWithChildren<TAnimatedListProps>) => {
+const AnimatedList = ({ className, children }: TAnimatedListProps) => {
     return (
         <div className={classNames('animated-list', className)}>
             <AnimatePresence>
-                {React.Children.toArray(children).map((child, index) => {
+                {children.map(child => {
                     return (
-                        <motion.div {...animations} layout key={index} data-testid='dt_list_item'>
+                        <motion.div {...animations} layout key={child.key} data-testid='dt_list_item'>
                             {child}
                         </motion.div>
                     );

@@ -17,11 +17,16 @@ type TWalletTransferProps = {
     setIsWalletNameVisible: (value: boolean) => void;
 };
 
-type TMessageList = React.ComponentProps<typeof AlertMessage>[];
-
 const Divider = () => <div className='wallet-transfer__divider' />;
 
 const initial_demo_balance = 10000.0;
+
+const ERROR_CODES = {
+    is_demo: {
+        between_min_max: 'BetweenMinMax',
+        insufficient_fund: 'InsufficientFund',
+    },
+};
 
 const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisible }: TWalletTransferProps) => {
     const { client, ui, traders_hub } = useStore();
@@ -68,7 +73,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         );
     }, [active_wallet?.loginid, active_wallet_name, from_account, to_account?.loginid]);
 
-    const [message_list, setMessageList] = React.useState<TMessageList>([]);
+    const [message_list, setMessageList] = React.useState<TMessageItem[]>([]);
 
     const clearErrorMessages = React.useCallback(
         () => setMessageList(list => list.filter(el => el.type !== 'error')),
@@ -98,6 +103,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                     ...list,
                     {
                         variant: 'with-action-button',
+                        id: ERROR_CODES.is_demo.insufficient_fund,
                         button_label: localize('Reset balance'),
                         onClickHandler: () => setWalletModalActiveTab('Deposit'),
                         message: localize(
@@ -112,6 +118,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                     ...list,
                     {
                         variant: 'base',
+                        id: ERROR_CODES.is_demo.between_min_max,
                         message: `${message} ${from_account?.display_currency_code}` || '',
                         type: 'error',
                     },
@@ -215,8 +222,8 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                 />
                             </div>
                             <AnimatedList>
-                                {message_list.map((item, index) => (
-                                    <AlertMessage key={index} {...item} />
+                                {message_list.map(item => (
+                                    <AlertMessage key={item.id} {...item} />
                                 ))}
                             </AnimatedList>
                             <div className='wallet-transfer__tile'>

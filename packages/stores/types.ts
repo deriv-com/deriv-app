@@ -563,7 +563,7 @@ type TTradersHubStore = {
     platform_demo_balance: TBalance;
     cfd_real_balance: TBalance;
     selectAccountType: (account_type: string) => void;
-    is_mt5_notificaiton_modal_visible: boolean;
+    is_mt5_notification_modal_visible: boolean;
     setMT5NotificationModal: (value: boolean) => void;
 };
 

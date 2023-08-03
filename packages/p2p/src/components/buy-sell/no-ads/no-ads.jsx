@@ -1,23 +1,30 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { useHistory } from 'react-router-dom';
 import { Button, Icon, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import { routes } from '@deriv/shared';
 import './no-ads.scss';
 import classNames from 'classnames';
 
 const NoAds = ({ is_ads_page = false }) => {
     const { buy_sell_store, general_store, my_ads_store } = useStores();
+    const { handleTabClick, is_barred } = general_store;
+    const { is_buy, local_currencies, selected_local_currency, setCreateSellAdFromNoAds } = buy_sell_store;
+    const { setShowAdForm } = my_ads_store;
+    const history = useHistory();
 
-    const is_default_currency = buy_sell_store.local_currencies.filter(
+    const is_default_currency = local_currencies.filter(
         currency =>
-            currency.text.toLowerCase() === buy_sell_store.selected_local_currency.toLowerCase() && currency.is_default
+            currency.text.toLowerCase() === selected_local_currency?.toLowerCase() && currency.is_default
     ).length;
 
     const onClickButton = () => {
-        if (!is_ads_page) general_store.handleTabClick(2);
-        if (!buy_sell_store.is_buy) buy_sell_store.setCreateSellAdFromNoAds(true);
-        my_ads_store.setShowAdForm(true);
+        if (!is_ads_page) handleTabClick(2);
+        if (!is_buy) setCreateSellAdFromNoAds(true);
+        setShowAdForm(true);
+        history.push(routes.p2p_my_ads);
     };
 
     return (
@@ -39,12 +46,12 @@ const NoAds = ({ is_ads_page = false }) => {
                             <Localize i18n_default_text='No ads for this currency 😞' />
                         )}
                     </Text>
-                    <Text className='no-ads__message' align='center' color='general' line_height='m' size='s'>
+                    <Text className='no-ads__message' align='center'>
                         <Localize i18n_default_text='Looking to buy or sell USD? You can post your own ad for others to respond.' />
                     </Text>
                     <Button
                         className='no-ads__button'
-                        disabled={general_store.is_barred}
+                        disabled={is_barred}
                         primary
                         large
                         onClick={onClickButton}
@@ -57,7 +64,7 @@ const NoAds = ({ is_ads_page = false }) => {
                     </Button>
                 </React.Fragment>
             ) : (
-                <Text align='center' className='no-ads__title' color='general' line_height='m' size='s' weight='bold'>
+                <Text align='center' className='no-ads__title' weight='bold'>
                     <Localize i18n_default_text='No ads for this currency at the moment 😞' />
                 </Text>
             )}

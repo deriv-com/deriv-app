@@ -4,30 +4,31 @@ import { formatDate, formatTime } from '@deriv/shared';
 const DATADOG_CLIENT_TOKEN_LOGS = process.env.DATADOG_CLIENT_TOKEN_LOGS ?? '';
 const isProduction = process.env.CIRCLE_JOB === 'release_production';
 const isStaging = process.env.CIRCLE_JOB === 'release_staging';
-
 let dataDogSessionSampleRate = 0;
+
+dataDogSessionSampleRate = +process.env.DATADOG_SESSION_SAMPLE_RATE_LOGS ?? 1;
 let dataDogVersion = '';
 let dataDogEnv = '';
 
 if (isProduction) {
     dataDogVersion = `deriv-app-${process.env.CIRCLE_TAG}`;
-    dataDogSessionSampleRate = 5;
     dataDogEnv = 'production';
 } else if (isStaging) {
     dataDogVersion = `deriv-app-staging-v${formatDate(new Date(), 'YYYYMMDD')}-${formatTime(Date.now(), 'HH:mm')}`;
-    dataDogSessionSampleRate = 5;
     dataDogEnv = 'staging';
 }
 
-datadogLogs.init({
-    clientToken: DATADOG_CLIENT_TOKEN_LOGS,
-    site: 'datadoghq.com',
-    forwardErrorsToLogs: false,
-    service: 'Dbot',
-    sessionSampleRate: dataDogSessionSampleRate,
-    version: dataDogVersion,
-    env: dataDogEnv,
-});
+if (DATADOG_CLIENT_TOKEN_LOGS) {
+    datadogLogs.init({
+        clientToken: DATADOG_CLIENT_TOKEN_LOGS,
+        site: 'datadoghq.com',
+        forwardErrorsToLogs: false,
+        service: 'Dbot',
+        sessionSampleRate: dataDogSessionSampleRate,
+        version: dataDogVersion,
+        env: dataDogEnv,
+    });
+}
 
 export const REQUESTS = [
     'active_symbols',
@@ -39,6 +40,7 @@ export const REQUESTS = [
     'run-proposal',
     'transaction',
     'ticks_history',
+    'history',
 ];
 
 class APIMiddleware {
@@ -109,7 +111,9 @@ class APIMiddleware {
         REQUESTS.forEach(req_type => {
             const measure = performance.getEntriesByName(req_type);
             if (measure && measure.length) {
-                this.log(measure, is_bot_running, req_type);
+                if (process.env.DATADOG_CLIENT_TOKEN_LOGS) {
+                    this.log(measure, is_bot_running, req_type);
+                }
             }
         });
         performance.clearMeasures();

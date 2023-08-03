@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import { ContinueTradingButton } from '../../continue-trading-button/continue-trading-button';
 import IconMessageContent from '../../../icon-message-content';
 import { PoiButton } from '../../../poi/poi-button/poi-button';
-import { TPoaStatusProps } from '../../../../Types/common-prop.type';
+import { TPoaStatusProps } from '../../../../Types/common.type';
 
 export const Verified = ({ needs_poi, redirect_button }: TPoaStatusProps) => {
     const message = localize('Your proof of address is verified');

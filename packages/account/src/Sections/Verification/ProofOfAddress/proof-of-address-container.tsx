@@ -8,7 +8,7 @@ import Expired from '../../../Components/poa/status/expired';
 import NeedsReview from '../../../Components/poa/status/needs-review';
 import NotRequired from '../../../Components/poa/status/not-required';
 import PoaStatusCodes from '../../../Components/poa/status/status-codes';
-import ProofOfAddressForm from './proof-of-address-form.jsx';
+import ProofOfAddressForm from './proof-of-address-form';
 import Submitted from '../../../Components/poa/status/submitted';
 import Unverified from '../../../Components/poa/status/unverified';
 import Verified from '../../../Components/poa/status/verified';
@@ -135,21 +135,22 @@ const ProofOfAddressContainer = ({
     ) : null;
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
+    // if (
+    //     !allow_document_upload ||
+    //     (!is_age_verified && !allow_poa_resubmission && document_status === 'none' && is_mx_mlt)
+    // )
+    //     return <NotRequired />;
+    // if (has_submitted_poa && !poa_address_mismatch)
+    //     return <Submitted needs_poi={needs_poi} redirect_button={redirect_button} />;
     if (
-        !allow_document_upload ||
-        (!is_age_verified && !allow_poa_resubmission && document_status === 'none' && is_mx_mlt)
-    )
-        return <NotRequired />;
-    if (has_submitted_poa && !poa_address_mismatch)
-        return <Submitted needs_poi={needs_poi} redirect_button={redirect_button} />;
-    if (
-        resubmit_poa ||
-        allow_poa_resubmission ||
-        (has_restricted_mt5_account &&
-            (['expired', 'rejected', 'suspected'] as TAuthenticationStatus['document_status'][]).includes(
-                document_status
-            )) ||
-        poa_address_mismatch
+        // resubmit_poa ||
+        // allow_poa_resubmission ||
+        // (has_restricted_mt5_account &&
+        //     (['expired', 'rejected', 'suspected'] as TAuthenticationStatus['document_status'][]).includes(
+        //         document_status
+        //     )) ||
+        // poa_address_mismatch
+        true
     ) {
         return <ProofOfAddressForm is_resubmit onSubmit={onSubmit} />;
     }

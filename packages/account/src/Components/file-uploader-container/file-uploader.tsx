@@ -28,7 +28,7 @@ const UploadMessage = () => {
             <div className='dc-file-dropzone__message-subtitle'>
                 <Text size='xxs' align='center' weight='bold'>
                     {isMobile()
-                        ? localize('Click here to browse your files.')
+                        ? localize('Click here to upload.')
                         : localize('Drag and drop a file or click to browse your files.')}
                 </Text>
                 <Text size={isMobile() ? 'xxxxs' : 'xxxs'} align='center'>
@@ -45,7 +45,7 @@ const fileReadErrorMessage = (filename: string) => {
 
 const FileUploader = React.forwardRef<
     HTMLElement,
-    { onFileDrop: (file: TFile | undefined) => void; getSocket: () => WebSocket; settings: Partial<TSettings> }
+    { onFileDrop: (file: TFile | undefined) => void; getSocket: () => WebSocket; settings?: Partial<TSettings> }
 >(({ onFileDrop, getSocket, settings = {} }, ref) => {
     const [document_file, setDocumentFile] = useStateCallback({ files: [], error_message: null });
 

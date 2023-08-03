@@ -13,7 +13,7 @@ type TLeaveConfirmMessage = {
 
 type TTransitionBlocker = RouteComponentProps & {
     dirty: boolean;
-    onDirty: (prop: boolean) => void;
+    onDirty?: (prop: boolean) => void;
 };
 
 const LeaveConfirmMessage = ({ back, leave }: TLeaveConfirmMessage) => {
@@ -101,7 +101,7 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
 };
 export const TransitionBlockerWithRouter = withRouter(TransitionBlocker);
 
-const LeaveConfirm = ({ onDirty }: { onDirty: (prop: boolean) => void }) => (
+const LeaveConfirm = ({ onDirty }: { onDirty?: (prop: boolean) => void }) => (
     <FormikConsumer>
         {formik => <TransitionBlockerWithRouter onDirty={onDirty} dirty={formik.dirty && formik.submitCount === 0} />}
     </FormikConsumer>

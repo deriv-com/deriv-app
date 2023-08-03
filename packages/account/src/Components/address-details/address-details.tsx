@@ -1,5 +1,6 @@
 import { Formik, Field, FormikProps, FormikValues } from 'formik';
 import React from 'react';
+import { StatesList } from '@deriv/api-types';
 import {
     Modal,
     Autocomplete,
@@ -15,20 +16,13 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import {
-    isDesktop,
-    isMobile,
-    getLocation,
-    makeCancellablePromise,
-    PlatformContext,
-    TLocationList,
-} from '@deriv/shared';
+import { isDesktop, isMobile, getLocation, makeCancellablePromise, PlatformContext } from '@deriv/shared';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import classNames from 'classnames';
 
 type TAddressDetails = {
     disabled_items: string[];
-    states_list: TLocationList[];
+    states_list: StatesList;
     getCurrentStep?: () => number;
     onSave: (current_step: number, values: FormikValues) => void;
     onCancel: (current_step: number, goToPreviousStep: () => void) => void;
@@ -112,7 +106,7 @@ const AddressDetails = ({
         promise.then(() => {
             setHasFetchedStatesList(true);
             if (props.value.address_state) {
-                setAddressStateToDisplay(getLocation(states_list, props.value.address_state, 'text'));
+                setAddressStateToDisplay(getLocation(states_list, props.value.address_state, 'text') ?? '');
             }
         });
         return () => {
@@ -282,7 +276,11 @@ const AddressDetails = ({
                                                                 placeholder={localize('Please select')}
                                                                 label={localize('State/Province')}
                                                                 value={address_state_to_display || values.address_state}
-                                                                list_items={states_list}
+                                                                list_items={
+                                                                    states_list as React.ComponentProps<
+                                                                        typeof SelectNative
+                                                                    >['list_items']
+                                                                }
                                                                 use_text={true}
                                                                 onChange={(e: { target: { value: string } }) => {
                                                                     setFieldValue(

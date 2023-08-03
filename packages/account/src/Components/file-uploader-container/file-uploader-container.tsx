@@ -4,13 +4,13 @@ import { isMobile, WS } from '@deriv/shared';
 import type { TSettings } from '@deriv/shared/src/utils/files/file-uploader-utils';
 import { localize } from '@deriv/translations';
 import FileUploader from './file-uploader';
-import { TFile } from '../../Types/common-prop.type';
+import { TFile } from '../../Types/common.type';
 
 type TFileUploaderContainer = {
     getSocket?: () => WebSocket;
     onFileDrop: (file: TFile | undefined) => void;
-    onRef: (ref: React.RefObject<unknown> | undefined) => void;
-    settings: Partial<TSettings>;
+    onRef: (ref: React.RefObject<null | { upload: () => void }> | undefined) => void;
+    settings?: Partial<TSettings>;
     files_description: React.ReactNode;
     examples: React.ReactNode;
 };

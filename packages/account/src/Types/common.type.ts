@@ -153,3 +153,13 @@ export type TInputFieldValues = Record<string, string>;
 export type TVerificationStatus = Readonly<
     Record<'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected', string>
 >;
+
+export type TServerError = {
+    code: string;
+    message: string;
+    details?: { [key: string]: string };
+    fields?: string[];
+};
+
+export const isServerError = (error: unknown): error is TServerError =>
+    typeof error === 'object' && error !== null && 'code' in error;

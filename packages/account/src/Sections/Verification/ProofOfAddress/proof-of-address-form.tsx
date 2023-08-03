@@ -1,27 +1,18 @@
 import React from 'react';
+import { Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
+import { DocumentUploadResponse } from '@deriv/api-types';
 import {
     Loading,
     Button,
     FormSubmitErrorMessage,
     Text,
-    useStateCallback,
     ThemedScrollbars,
     FormSubmitButton,
     Modal,
 } from '@deriv/components';
-import { Formik } from 'formik';
-import { localize } from '@deriv/translations';
-import {
-    isMobile,
-    removeEmptyPropertiesFromObject,
-    validAddress,
-    validPostCode,
-    validLetterSymbol,
-    validLength,
-    getLocation,
-    WS,
-} from '@deriv/shared';
+import { isMobile, validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 import FormFooter from '../../../Components/form-footer';
 import FormBody from '../../../Components/form-body';
 import FormBodySection from '../../../Components/form-body-section';
@@ -31,13 +22,8 @@ import LeaveConfirm from '../../../Components/leave-confirm';
 import FileUploaderContainer from '../../../Components/file-uploader-container';
 import CommonMistakeExamples from '../../../Components/poa/common-mistakes/common-mistake-examples';
 import PersonalDetailsForm from '../../../Components/forms/personal-details-form.jsx';
-
-const validate = (errors, values) => (fn, arr, err_msg) => {
-    arr.forEach(field => {
-        const value = values[field];
-        if (!fn(value) && !errors[field] && err_msg !== true) errors[field] = err_msg;
-    });
-};
+import { validate } from '../../../Helpers/utils';
+import { isServerError } from '../../../Types/common.type';
 
 const FilesDescription = () => (
     <div className='files-description'>
@@ -68,10 +54,33 @@ const FilesDescription = () => (
     </div>
 );
 
-let file_uploader_ref = null;
+let file_uploader_ref: React.MutableRefObject<null | { upload: () => Promise<DocumentUploadResponse> }> | undefined;
+
+type TProofOfAddressForm = {
+    is_resubmit: boolean;
+    is_qualified_for_cfd_modal?: boolean;
+    onCancel: () => void;
+    onSubmit: (needs_poi: boolean) => void;
+    onSubmitForCFDModal: (index: number, values: FormikValues) => void;
+    step_index: number;
+};
+
+type TFormInitialValues = Record<
+    'address_line_1' | 'address_line_2' | 'address_city' | 'address_state' | 'address_postcode',
+    string
+>;
+
+type TFormState = Record<'is_btn_loading' | 'is_submit_success' | 'should_allow_submit' | 'should_show_form', boolean>;
 
 const ProofOfAddressForm = observer(
-    ({ is_resubmit, is_qualified_for_cfd_modal, onCancel, onSubmit, onSubmitForCFDModal, step_index }) => {
+    ({
+        is_resubmit,
+        is_qualified_for_cfd_modal,
+        onCancel,
+        onSubmit,
+        onSubmitForCFDModal,
+        step_index,
+    }: Partial<TProofOfAddressForm>) => {
         const { client, notifications } = useStore();
         const { account_settings, fetchResidenceList, fetchStatesList, getChangeableFields, is_eu, states_list } =
             client;
@@ -82,32 +91,45 @@ const ProofOfAddressForm = observer(
         } = notifications;
         const [document_file, setDocumentFile] = React.useState({ files: [], error_message: null });
         const [is_loading, setIsLoading] = React.useState(true);
-        const [form_values, setFormValues] = useStateCallback({});
+        const [form_values, setFormValues] = React.useState<TFormInitialValues>({
+            address_line_1: '',
+            address_line_2: '',
+            address_city: '',
+            address_state: '',
+            address_postcode: '',
+        });
         const [api_initial_load_error, setAPIInitialLoadError] = React.useState(null);
-        const [form_state, setFormState] = useStateCallback({ should_show_form: true });
+        const [form_state, setFormState] = React.useState<TFormState>({
+            is_btn_loading: false,
+            is_submit_success: false,
+            should_allow_submit: true,
+            should_show_form: true,
+        });
 
         React.useEffect(() => {
-            fetchResidenceList().then(() => {
+            fetchResidenceList?.().then(() => {
                 Promise.all([fetchStatesList(), WS.wait('get_settings')]).then(() => {
-                    const { citizen, tax_identification_number, tax_residence } = account_settings;
-                    setFormValues(
-                        {
-                            ...account_settings,
-                            ...(is_eu ? { citizen, tax_identification_number, tax_residence } : {}),
-                        },
-                        () => setIsLoading(false)
-                    );
+                    setFormValues({
+                        address_line_1: account_settings.address_line_1 ?? '',
+                        address_line_2: account_settings.address_line_2 ?? '',
+                        address_city: account_settings.address_city ?? '',
+                        address_state: account_settings.address_state ?? '',
+                        address_postcode: account_settings.address_postcode ?? '',
+                    });
+                    setIsLoading(false);
                 });
             });
-        }, [account_settings, fetchResidenceList, fetchStatesList, is_eu, setFormValues]);
+        }, [account_settings, fetchResidenceList, fetchStatesList, is_eu]);
 
         const changeable_fields = [...getChangeableFields()];
 
-        const validateFields = values => {
-            Object.entries(values).forEach(([key, value]) => (values[key] = value.trim()));
+        const validateFields = (values: TFormInitialValues) => {
+            (Object.entries(values) as ObjectEntries<TFormInitialValues>).forEach(
+                ([key, value]) => (values[key] = value.trim())
+            );
 
             setFormState({ ...form_state, ...{ should_allow_submit: false } });
-            const errors = {};
+            const errors: FormikErrors<TFormInitialValues> = {};
             const validateValues = validate(errors, values);
 
             const required_fields = ['address_line_1', 'address_city'];
@@ -152,11 +174,11 @@ const ProofOfAddressForm = observer(
             return errors;
         };
 
-        const showForm = bool => {
-            setFormState({ ...form_state, ...{ should_show_form: bool } });
+        const showForm = (should_show_form: boolean) => {
+            setFormState({ ...form_state, ...{ should_show_form } });
         };
 
-        const isFieldsIssue = (errors, values) =>
+        const isFieldsIssue = (errors: FormikErrors<TFormInitialValues>, values: TFormInitialValues) =>
             errors.address_line_1 ||
             !values.address_line_1 ||
             errors.address_line_2 ||
@@ -165,111 +187,90 @@ const ProofOfAddressForm = observer(
             errors.address_state ||
             errors.address_postcode;
 
-        const onSubmitValues = (values, { setStatus, setSubmitting }) => {
+        const onSubmitValues = async (
+            values: TFormInitialValues,
+            { setStatus, setSubmitting }: FormikHelpers<TFormInitialValues>
+        ) => {
             setStatus({ msg: '' });
             setFormState({ ...form_state, ...{ is_btn_loading: true } });
-            let settings_values = { ...values };
-
+            const settings_values = { ...values };
             if (values.address_state && states_list.length) {
                 settings_values.address_state = getLocation(states_list, values.address_state, 'value') || '';
             }
 
-            if (is_eu) {
-                const { citizen, tax_residence, tax_identification_number } = form_values;
-                settings_values = removeEmptyPropertiesFromObject({
-                    ...settings_values,
-                    citizen,
-                    tax_identification_number,
-                    tax_residence,
-                });
+            const data = await WS.setSettings(settings_values);
+
+            if (data.error) {
+                setStatus({ msg: data.error.message });
+                setFormState({ ...form_state, ...{ is_btn_loading: false } });
+                setSubmitting(false);
+                return;
             }
 
-            WS.setSettings(settings_values).then(data => {
-                if (data.error) {
-                    setStatus({ msg: data.error.message });
-                    setFormState({ ...form_state, ...{ is_btn_loading: false } });
-                    setSubmitting(false);
-                } else {
-                    // force request to update settings cache since settings have been updated
-                    WS.authorized.storage
-                        .getSettings()
-                        .then(({ error, get_settings }) => {
-                            if (error) {
-                                setAPIInitialLoadError(error.message);
-                                setSubmitting(false);
-                                return;
-                            }
-                            const { address_line_1, address_line_2, address_city, address_state, address_postcode } =
-                                get_settings;
+            const get_settings = WS.authorized.storage.getSettings();
 
-                            setFormValues(
-                                {
-                                    address_line_1,
-                                    address_line_2,
-                                    address_city,
-                                    address_state,
-                                    address_postcode,
-                                },
-                                () => setIsLoading(false)
-                            );
-                        })
-                        .then(() => {
-                            // upload files
-                            file_uploader_ref?.current
-                                .upload()
-                                .then(api_response => {
-                                    if (api_response.warning) {
-                                        setStatus({ msg: api_response.message });
-                                        setFormState({ ...form_state, ...{ is_btn_loading: false } });
-                                    } else {
-                                        WS.authorized.storage
-                                            .getAccountStatus()
-                                            .then(({ error, get_account_status }) => {
-                                                if (error) {
-                                                    setAPIInitialLoadError(error.message);
-                                                    setSubmitting(false);
-                                                    return;
-                                                }
-                                                setFormState(
-                                                    {
-                                                        ...form_state,
-                                                        ...{ is_submit_success: true, is_btn_loading: false },
-                                                    },
-                                                    () => {
-                                                        const { identity, needs_verification } =
-                                                            get_account_status.authentication;
-                                                        const has_poi = !(identity && identity.status === 'none');
-                                                        const needs_poi =
-                                                            needs_verification.length &&
-                                                            needs_verification.includes('identity');
-                                                        onSubmit(has_poi);
-                                                        removeNotificationMessage({ key: 'authenticate' });
-                                                        removeNotificationByKey({ key: 'authenticate' });
-                                                        removeNotificationMessage({ key: 'needs_poa' });
-                                                        removeNotificationByKey({ key: 'needs_poa' });
-                                                        removeNotificationMessage({ key: 'poa_expired' });
-                                                        removeNotificationByKey({ key: 'poa_expired' });
-                                                        if (needs_poi) {
-                                                            addNotificationByKey('needs_poi');
-                                                        }
-                                                    }
-                                                );
-                                            });
-                                    }
-                                })
-                                .catch(error => {
-                                    setStatus({ msg: error.message });
-                                    setFormState({ ...form_state, ...{ is_btn_loading: false } });
-                                })
-                                .then(() => {
-                                    setSubmitting(false);
-                                    setFormState({ ...form_state, ...{ is_btn_loading: false } });
-                                });
-                        });
-                }
+            if (get_settings.error) {
+                setAPIInitialLoadError(get_settings.error.message);
+                setSubmitting(false);
+                return;
+            }
+            const { address_line_1, address_line_2, address_city, address_state, address_postcode } = get_settings;
+
+            setFormValues({
+                address_line_1,
+                address_line_2,
+                address_city,
+                address_state,
+                address_postcode,
             });
-            if (is_qualified_for_cfd_modal) {
-                onSubmitForCFDModal(step_index, values);
+            setIsLoading(false);
+
+            // upload files
+            try {
+                const api_response = await file_uploader_ref?.current?.upload();
+                if (api_response?.warning) {
+                    setStatus({ msg: api_response?.message });
+                    setFormState({ ...form_state, ...{ is_btn_loading: false } });
+                    return;
+                }
+
+                const get_account_status = WS.authorized.storage.getAccountStatus();
+
+                if (get_account_status.error) {
+                    setAPIInitialLoadError(get_account_status.error.message);
+                    setSubmitting(false);
+                    return;
+                }
+
+                setFormState({
+                    ...form_state,
+                    ...{ is_submit_success: true, is_btn_loading: false },
+                });
+
+                const { identity, needs_verification } = get_account_status.authentication;
+                const has_poi = !(identity && identity.status === 'none');
+                const needs_poi = needs_verification.length && needs_verification.includes('identity');
+                onSubmit?.(has_poi);
+                removeNotificationMessage({ key: 'authenticate' });
+                removeNotificationByKey({ key: 'authenticate' });
+                removeNotificationMessage({ key: 'needs_poa' });
+                removeNotificationByKey({ key: 'needs_poa' });
+                removeNotificationMessage({ key: 'poa_expired' });
+                removeNotificationByKey({ key: 'poa_expired' });
+                if (needs_poi) {
+                    addNotificationByKey('needs_poi');
+                }
+            } catch (error) {
+                if (isServerError(error)) {
+                    setStatus({ msg: error.message });
+                    setFormState({ ...form_state, ...{ is_btn_loading: false } });
+                }
+            } finally {
+                setSubmitting(false);
+                setFormState({ ...form_state, ...{ is_btn_loading: false } });
+            }
+            if (is_qualified_for_cfd_modal && typeof step_index !== 'undefined') {
+                onSubmitForCFDModal?.(step_index, values);
             }
         };
 
@@ -287,16 +288,18 @@ const ProofOfAddressForm = observer(
             return <LoadErrorMessage error_message={api_initial_load_error} />;
         }
         if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-        const mobile_scroll_offset = status && status.msg ? '200px' : '154px';
 
         if (form_initial_values.address_state) {
-            form_initial_values.address_state = states_list.length
-                ? getLocation(states_list, form_initial_values.address_state, 'text')
-                : form_initial_values.address_state;
+            const current_value = getLocation(states_list, form_initial_values.address_state, 'text');
+            form_initial_values.address_state =
+                states_list.length && current_value ? current_value : form_initial_values.address_state;
         } else {
             form_initial_values.address_state = '';
         }
-
+        const offsetCalc = (status: { msg: string }) => {
+            const mobile_scroll_offset = status && status.msg ? '200px' : '154px';
+            return isMobile() && !is_qualified_for_cfd_modal ? mobile_scroll_offset : '80px';
+        };
         return (
             <Formik initialValues={form_initial_values} onSubmit={onSubmitValues} validate={validateFields}>
                 {({
@@ -312,19 +315,14 @@ const ProofOfAddressForm = observer(
                     setFieldTouched,
                 }) => (
                     <>
-                        <LeaveConfirm onDirty={isMobile() ? showForm : null} />
+                        <LeaveConfirm onDirty={isMobile() ? showForm : undefined} />
                         {form_state.should_show_form && (
                             <form noValidate className='account-form account-form_poa' onSubmit={handleSubmit}>
                                 <ThemedScrollbars
-                                    // autohide={false}
                                     height={`572px`}
                                     is_bypassed={!is_qualified_for_cfd_modal || isMobile()}
                                 >
-                                    <FormBody
-                                        scroll_offset={
-                                            isMobile() && !is_qualified_for_cfd_modal ? mobile_scroll_offset : '80px'
-                                        }
-                                    >
+                                    <FormBody scroll_offset={offsetCalc(status)}>
                                         {is_resubmit && (
                                             <Text size='xs' align='left' color='loss-danger'>
                                                 {localize(

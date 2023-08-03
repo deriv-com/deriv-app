@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import DemoMessage from '../../../Components/demo-message';
-import ProofOfAddressContainer from './proof-of-address-container.jsx';
+import ProofOfAddressContainer from './proof-of-address-container';
 
 const ProofOfAddress = observer(() => {
     const { client, notifications, common } = useStore();

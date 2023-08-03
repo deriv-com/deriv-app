@@ -1,6 +1,5 @@
 import React from 'react';
-// @ts-expect-error remove this line after implementing TS to ProofOfAddressForm
-import ProofOfAddressForm from '@deriv/account/src/Sections/Verification/ProofOfAddress/proof-of-address-form.jsx';
+import ProofOfAddressForm from '@deriv/account/src/Sections/Verification/ProofOfAddress/proof-of-address-form';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { observer } from '@deriv/stores';
 import { FormikValues } from 'formik/dist/types';

@@ -1,4 +1,4 @@
-import { TVerificationStatus } from '../../../../Types/common-prop.type';
+import { TVerificationStatus } from '../../../../Types/common.type';
 
 export const poa_status_codes: TVerificationStatus = {
     none: 'none',

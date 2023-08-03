@@ -4,7 +4,6 @@ import {
     DesktopWrapper,
     Icon,
     InlineMessage,
-    Loading,
     MobileFullPageModal,
     MobileWrapper,
     Modal,

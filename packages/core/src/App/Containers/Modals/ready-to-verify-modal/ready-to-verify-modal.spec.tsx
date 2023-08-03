@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import userEvent from '@testing-library/user-event';
 import ReadyToVerifyModal from './ready-to-verify-modal';

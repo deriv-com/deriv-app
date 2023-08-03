@@ -62,8 +62,12 @@ const CFDsListing = () => {
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
 
-    const { poi_pending_for_bvi_labuan, poi_resubmit_for_bvi_labuan, poa_resubmit_for_labuan, is_idv_revoked } =
-        getAuthenticationStatusInfo(account_status);
+    const {
+        poi_pending_for_bvi_labuan_vanuatu,
+        poi_resubmit_for_bvi_labuan_vanuatu,
+        poa_resubmit_for_labuan,
+        is_idv_revoked,
+    } = getAuthenticationStatusInfo(account_status);
 
     const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
 
@@ -74,13 +78,16 @@ const CFDsListing = () => {
                     if (
                         getAuthStatus([
                             is_idv_revoked,
-                            poi_resubmit_for_bvi_labuan,
+                            poi_resubmit_for_bvi_labuan_vanuatu,
                             current_acc_status === 'proof_failed',
                         ])
                     ) {
                         return 'failed';
                     } else if (
-                        getAuthStatus([poi_pending_for_bvi_labuan, current_acc_status === 'verification_pending'])
+                        getAuthStatus([
+                            poi_pending_for_bvi_labuan_vanuatu,
+                            current_acc_status === 'verification_pending',
+                        ])
                     ) {
                         return 'pending';
                     }
@@ -91,13 +98,16 @@ const CFDsListing = () => {
                         getAuthStatus([
                             poa_resubmit_for_labuan,
                             is_idv_revoked,
-                            poi_resubmit_for_bvi_labuan,
+                            poi_resubmit_for_bvi_labuan_vanuatu,
                             current_acc_status === 'proof_failed',
                         ])
                     ) {
                         return 'failed';
                     } else if (
-                        getAuthStatus([poi_pending_for_bvi_labuan, current_acc_status === 'verification_pending'])
+                        getAuthStatus([
+                            poi_pending_for_bvi_labuan_vanuatu,
+                            current_acc_status === 'verification_pending',
+                        ])
                     ) {
                         return 'pending';
                     }

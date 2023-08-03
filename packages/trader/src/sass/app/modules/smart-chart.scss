@@ -556,6 +556,44 @@
         animation: 0.5s spot-emphasizer 0.2s;
     }
 }
+.sc-accu-high-barrier {
+    position: relative;
+
+    &:before {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 0;
+        transform: translateX(-50%) translateY(-50%);
+        border-left: 0.3rem solid transparent;
+        border-right: 0.3rem solid transparent;
+        border-top: 0.6rem solid var(--text-profit-success);
+    }
+    &--lost {
+        &:before {
+            border-top: 0.6rem solid var(--text-loss-danger);
+        }
+    }
+}
+.sc-accu-low-barrier {
+    position: relative;
+
+    &:before {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 0;
+        transform: translateX(-50%) translateY(-50%);
+        border-left: 0.3rem solid transparent;
+        border-right: 0.3rem solid transparent;
+        border-bottom: 0.6rem solid var(--text-profit-success);
+    }
+    &--lost {
+        &:before {
+            border-bottom: 0.6rem solid var(--text-loss-danger);
+        }
+    }
+}
 
 //Vanilla specific styles
 .vanilla-trade-chart {

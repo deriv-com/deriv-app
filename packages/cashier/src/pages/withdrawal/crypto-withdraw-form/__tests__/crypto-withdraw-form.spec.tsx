@@ -28,6 +28,8 @@ describe('<CryptoWithdrawForm />', () => {
                         percentageSelectorSelectionStatus: jest.fn(),
                     },
                     crypto_fiat_converter: {
+                        converter_from_amount: '0.006',
+                        converter_to_amount: '1',
                         onChangeConverterFromAmount: jest.fn(),
                         onChangeConverterToAmount: jest.fn(),
                         resetConverter: jest.fn(),
@@ -125,7 +127,7 @@ describe('<CryptoWithdrawForm />', () => {
         act(() => {
             fireEvent.click(withdraw_button);
         });
-
+        expect(withdraw_button).toBeEnabled();
         await waitFor(() => expect(mockRootStore.modules.cashier.withdraw.requestWithdraw).toHaveBeenCalled());
     });
 
@@ -145,6 +147,7 @@ describe('<CryptoWithdrawForm />', () => {
         act(() => {
             fireEvent.click(withdraw_button);
         });
+        expect(withdraw_button).toBeEnabled();
         await waitFor(() => expect(mockRootStore.modules.cashier.withdraw.requestWithdraw).toHaveBeenCalled());
     });
 });

@@ -163,7 +163,8 @@ export default class SendbirdStore extends BaseStore {
                 await this.initialiseOrderChannel();
             }
         } catch (error) {
-            // handle sendbird error
+            // eslint-disable-next-line no-console
+            console.warn(error);
         }
     }
 
@@ -178,7 +179,8 @@ export default class SendbirdStore extends BaseStore {
                 this.setActiveChatChannel(group_channel);
             }
         } catch (error) {
-            // handle sendbird error
+            // eslint-disable-next-line no-console
+            console.warn(error);
         } finally {
             this.setIsChatLoading(false);
         }
@@ -193,7 +195,8 @@ export default class SendbirdStore extends BaseStore {
                 this.setChannelMessages(chat_messages.map(msg => convertFromChannelMessage(msg)));
             }
         } catch (error) {
-            // handle sendbird error
+            // eslint-disable-next-line no-console
+            console.warn(error);
         } finally {
             this.setIsChatLoading(false);
         }
@@ -278,7 +281,8 @@ export default class SendbirdStore extends BaseStore {
                 }
             }
         } catch (error) {
-            // handle sendbird error
+            // eslint-disable-next-line no-console
+            console.warn(error);
         }
     }
 
@@ -317,8 +321,9 @@ export default class SendbirdStore extends BaseStore {
                         }
                         this.setIsChatLoading(false);
                     })
-                    .catch(() => {
-                        // handle sendbird error
+                    .catch(error => {
+                        // eslint-disable-next-line no-console
+                        console.warn(error);
                     });
             } else {
                 (async () => {

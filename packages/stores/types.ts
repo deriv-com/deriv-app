@@ -390,8 +390,8 @@ type TCommonStoreError = {
 };
 
 type TCommonStoreServicesError = {
-    code: string;
-    message: string;
+    code?: string;
+    message?: string;
     type?: string;
 };
 
@@ -409,6 +409,7 @@ type TCommonStore = {
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
     is_language_changing: boolean;
+    is_socket_opened: boolean;
     services_error: TCommonStoreServicesError;
     setAppstorePlatform: (value: string) => void;
     app_routing_history: TAppRoutingHistory[];
@@ -462,6 +463,7 @@ type TUiStore = {
     toggleReports: (is_visible: boolean) => void;
     is_real_acc_signup_on: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
+    is_chart_layout_default: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
     setIsAcuityModalOpen: (value: boolean) => void;
     is_switch_to_deriv_account_modal_visible: boolean;
@@ -483,6 +485,17 @@ type TUiStore = {
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     purchase_states: boolean[];
     setShouldShowCooldownModal: (value: boolean) => void;
+    populateFooterExtensions: (
+        footer_extensions:
+            | [
+                  {
+                      position?: string;
+                      Component?: React.FunctionComponent;
+                      has_right_separator?: boolean;
+                  }
+              ]
+            | []
+    ) => void;
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
 };
 
@@ -567,11 +580,15 @@ type TTradersHubStore = {
         login: string;
         account_id: string;
     };
+    handleTabItemClick: (idx: number) => void;
+    is_account_transfer_modal_open: boolean;
     is_low_risk_cr_eu_real: boolean;
     is_eu_user: boolean;
     show_eu_related_content: boolean;
     setTogglePlatformType: (platform_type: string) => void;
     is_real: boolean;
+    is_regulators_compare_modal_visible: boolean;
+    is_tour_open: boolean;
     selectRegion: (region: string) => void;
     closeAccountTransferModal: () => void;
     toggleRegulatorsCompareModal: () => void;
@@ -580,6 +597,7 @@ type TTradersHubStore = {
     multipliers_account_status: string;
     financial_restricted_countries: boolean;
     selected_account_type: string;
+    selected_platform_type: string;
     setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
     no_CR_account: boolean;
     no_MF_account: boolean;
@@ -591,6 +609,8 @@ type TTradersHubStore = {
     platform_demo_balance: TBalance;
     cfd_real_balance: TBalance;
     selectAccountType: (account_type: string) => void;
+    is_mt5_notificaiton_modal_visible: boolean;
+    setMT5NotificationModal: (value: boolean) => void;
 };
 
 /**

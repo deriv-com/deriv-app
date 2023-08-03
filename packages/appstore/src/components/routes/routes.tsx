@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useFeatureFlags, useHasWallet } from '@deriv/hooks';
+import { useFeatureFlags, useWalletsList } from '@deriv/hooks';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import Onboarding from 'Modules/onboarding';
@@ -10,7 +10,7 @@ import RouteWithSubroutes from './route-with-sub-routes.jsx';
 
 const Routes: React.FC = observer(() => {
     const { is_wallet_enabled } = useFeatureFlags();
-    const has_wallet = useHasWallet();
+    const { has_wallet } = useWalletsList();
 
     const should_show_wallets = is_wallet_enabled && has_wallet;
 

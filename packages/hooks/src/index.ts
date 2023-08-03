@@ -27,7 +27,6 @@ export { default as useHasSetCurrency } from './useHasSetCurrency';
 export { default as useHasSvgAccount } from './useHasSvgAccount';
 export { default as useHasSwapFreeAccount } from './useHasSwapFreeAccount';
 export { default as useHasUSDCurrency } from './useHasUSDCurrency';
-export { default as useHasWallet } from './useHasWallet';
 export { default as useInputATMFormatter } from './useInputATMFormatter';
 export { default as useInputDecimalFormatter } from './useInputDecimalFormatter';
 export { useIsAccountStatusPresent } from './useIsAccountStatusPresent';

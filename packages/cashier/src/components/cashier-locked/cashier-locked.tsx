@@ -4,6 +4,7 @@ import { useStore, observer } from '@deriv/stores';
 import { useCashierLocked, useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
 import EmptyState from 'Components/empty-state';
 import getMessage from './cashier-locked-provider';
+import './cashier-locked.scss';
 
 const CashierLocked = observer(() => {
     const { client } = useStore();
@@ -36,7 +37,11 @@ const CashierLocked = observer(() => {
         is_pending_verification: mf_account_status === 'pending',
     });
 
-    return <EmptyState icon={state.icon} title={state.title} description={state.description} action={state.action} />;
+    return (
+        <div className='cashier-locked'>
+            <EmptyState icon={state.icon} title={state.title} description={state.description} action={state.action} />
+        </div>
+    );
 });
 
 export default CashierLocked;

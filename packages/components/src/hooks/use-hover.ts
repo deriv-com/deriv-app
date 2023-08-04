@@ -18,7 +18,7 @@ export const useHover = <T extends HTMLElement & SVGSVGElement>(
 
         if (node) {
             if (should_prevent_bubbling) {
-                node.addEventListener('mouseover', handleHoverBegin);
+                node.addEventListener('touchstart', handleHoverBegin);
                 node.addEventListener('mouseleave', handleHoverFinish);
             } else {
                 node.addEventListener('mouseover', handleHoverBegin);

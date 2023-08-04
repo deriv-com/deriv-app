@@ -6,6 +6,8 @@ import MainTitleBar from '..';
 
 jest.mock('Components/wallets-banner', () => jest.fn(() => 'WalletsBanner'));
 
+const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
+
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useFetch: jest.fn((name: string) => {
@@ -91,7 +93,8 @@ describe('MainTitleBar', () => {
             feature_flags: { data: { wallet: true } },
         });
 
-        (useFetch as jest.Mock).mockReturnValue({
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
                     account_list: [

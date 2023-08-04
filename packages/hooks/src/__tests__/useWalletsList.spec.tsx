@@ -4,6 +4,8 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useWalletsList from '../useWalletsList';
 
+const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
+
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useFetch: jest.fn((name: string) => {
@@ -119,7 +121,8 @@ describe('useWalletsList', () => {
     test("should return has_wallet equals to false if the client doesn't have any wallet", () => {
         const mock = mockStore({ client: { accounts: { CR123456: { token: '12345' } }, loginid: 'CR123456' } });
 
-        (useFetch as jest.Mock).mockReturnValue({
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
                     account_list: [

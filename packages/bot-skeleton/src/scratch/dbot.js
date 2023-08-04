@@ -1,6 +1,5 @@
-import { localize } from '@deriv/translations';
 import './blockly';
-import { hasAllRequiredBlocks, isAllRequiredBlocksEnabled, updateDisabledBlocks } from './utils';
+import { isAllRequiredBlocksEnabled, updateDisabledBlocks, validateErrorOnBlockDelete } from './utils';
 import main_xml from './xml/main.xml';
 import DBotStore from './dbot-store';
 import { save_types } from '../constants';
@@ -10,6 +9,7 @@ import { observer as globalObserver } from '../utils/observer';
 import ApiHelpers from '../services/api/api-helpers';
 import Interpreter from '../services/tradeEngine/utils/interpreter';
 import { api_base } from '../services/api/api-base';
+import { initErrorHandlingListener } from '../utils';
 
 class DBot {
     constructor() {
@@ -58,6 +58,9 @@ class DBot {
                 this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
                 this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
                 this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
+                this.workspace.addChangeListener(event => {
+                    if (event.type === 'endDrag') validateErrorOnBlockDelete();
+                });
 
                 Blockly.derivWorkspace = this.workspace;
 
@@ -65,6 +68,8 @@ class DBot {
                 this.addBeforeRunFunction(this.disableStrayBlocks.bind(this));
                 this.addBeforeRunFunction(this.checkForErroredBlocks.bind(this));
                 this.addBeforeRunFunction(this.checkForRequiredBlocks.bind(this));
+
+                initErrorHandlingListener('keydown', globalObserver);
 
                 // Push main.xml to workspace and reset the undo stack.
                 this.workspace.current_strategy_id = Blockly.utils.genUid();
@@ -98,6 +103,7 @@ class DBot {
                 api_base.init();
                 // disable overflow
                 el_scratch_div.parentNode.style.overflow = 'hidden';
+
                 resolve();
             } catch (error) {
                 // TODO: Handle error.
@@ -335,24 +341,9 @@ class DBot {
      * Checks whether the workspace contains all required blocks before running the strategy.
      */
     checkForRequiredBlocks() {
-        let error;
+        const { required_blocks_present } = isAllRequiredBlocksEnabled(this.workspace);
 
-        if (!hasAllRequiredBlocks(this.workspace)) {
-            error = new Error(
-                localize(
-                    'One or more mandatory blocks are missing from your workspace. Please add the required block(s) and then try again.'
-                )
-            );
-        } else if (!isAllRequiredBlocksEnabled(this.workspace)) {
-            error = new Error(
-                localize(
-                    'One or more mandatory blocks are disabled in your workspace. Please enable the required block(s) and then try again.'
-                )
-            );
-        }
-
-        if (error) {
-            globalObserver.emit('Error', error);
+        if (!required_blocks_present) {
             return false;
         }
 

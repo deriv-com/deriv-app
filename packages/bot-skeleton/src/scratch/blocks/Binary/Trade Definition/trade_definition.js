@@ -2,11 +2,13 @@ import { localize } from '@deriv/translations';
 import { defineContract } from '../../images';
 import DBotStore from '../../../dbot-store';
 import { runIrreversibleEvents } from '../../../utils';
+import { observer, removeErrorHandlingEventListener } from '../../../../utils';
 import { config } from '../../../../constants/config';
 
 Blockly.Blocks.trade_definition = {
     init() {
         this.jsonInit(this.definition());
+        this.setDeletable(false);
     },
     definition() {
         return {
@@ -99,6 +101,9 @@ Blockly.Blocks.trade_definition = {
         };
     },
     onchange(event) {
+        if (!Blockly.selected) {
+            removeErrorHandlingEventListener('keydown', observer);
+        }
         if (!this.workspace || this.workspace.isDragging() || this.isInFlyout) {
             return;
         }

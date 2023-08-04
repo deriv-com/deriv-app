@@ -8,6 +8,53 @@ import { saveWorkspaceToRecent } from '../../utils/local-storage';
 import DBotStore from '../dbot-store';
 import { log_types } from '../../constants/messages';
 
+export const matchTranslateAttribute = translateString => {
+    const match = translateString.match(/translate\((-?\d*\.?\d+),(-?\d*\.?\d+)\)/);
+
+    if (match) {
+        const x = parseFloat(match[1]);
+        const y = parseFloat(match[2]);
+        return { x, y };
+    } 
+        return null; // Invalid or no match
+    
+};
+
+export const extractTranslateValues = () => {
+    const transform_value = Blockly?.derivWorkspace?.trashcan.svgGroup_.getAttribute('transform');
+    const translate_xy = matchTranslateAttribute(transform_value);
+
+    if (!translate_xy) {
+        globalObserver.emit('Error', 'Invalid String');
+    }
+
+    return {
+        translate_X: translate_xy.x,
+        translate_Y: translate_xy.y,
+    };
+};
+
+export const validateErrorOnBlockDelete = () => {
+    // Get the bounding rectangle of the selected block
+    const mandatory_blocks = ['trade_definition', 'before_purchase', 'during_purchase'];
+    const { translate_X, translate_Y } = extractTranslateValues();
+    const blockRect = Blockly.selected?.getSvgRoot().getBoundingClientRect();
+
+    // Extract coordinates from the bounding rectangles
+    const blockX = blockRect?.left || 0;
+    const blockY = blockRect?.top || 0;
+    if (mandatory_blocks?.includes(Blockly?.selected?.type)) {
+        if (
+            blockY >= translate_Y - 100 &&
+            blockY <= translate_Y + 200 &&
+            blockX >= translate_X - 100 &&
+            blockX <= translate_X + 200
+        ) {
+            globalObserver.emit('ui.log.error', `${Blockly.selected.type  } cannot be deleted`);
+        }
+    }
+};
+
 export const updateWorkspaceName = () => {
     const { save_modal } = DBotStore.instance;
 
@@ -303,21 +350,6 @@ export const addDomAsBlock = (el_block, parent_block = null) => {
     return block;
 };
 
-export const hasAllRequiredBlocks = workspace => {
-    const blocks_in_workspace = workspace.getAllBlocks();
-    const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
-    if (!trade_type_block) return false;
-    const selected_trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
-    const mandatory_tradeoptions_block =
-        selected_trade_type === 'multiplier' ? 'trade_definition_multiplier' : 'trade_definition_tradeoptions';
-    const { mandatoryMainBlocks } = config;
-    const required_block_types = [mandatory_tradeoptions_block, ...mandatoryMainBlocks];
-    const all_block_types = blocks_in_workspace.map(block => block.type);
-    const has_all_required_blocks = required_block_types.every(block_type => all_block_types.includes(block_type));
-
-    return has_all_required_blocks;
-};
-
 export const isAllRequiredBlocksEnabled = workspace => {
     const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
     const selected_trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
@@ -326,12 +358,41 @@ export const isAllRequiredBlocksEnabled = workspace => {
     const { mandatoryMainBlocks } = config;
     const required_block_types = [mandatory_tradeoptions_block, ...mandatoryMainBlocks];
 
-    const enabled_blocks_types = workspace
-        .getAllBlocks()
-        .filter(block => !block.disabled)
-        .map(block => block.type);
+    const mandatory_blocks = ['trade_parameters', 'purchase_conditions'];
+    const get_all_required_blocks = workspace.getAllBlocks().filter(block => {
+        if (
+            block.type === 'trade_definition' ||
+            block.type === 'before_purchase' ||
+            required_block_types.includes(block.type)
+        ) {
+            return (
+                (block.childBlocks_.length === 0 && mandatory_blocks.includes(block.category_)) ||
+                block.parentBlock_ === null
+            );
+        }
+    });
 
-    return required_block_types.every(required_type => enabled_blocks_types.includes(required_type));
+    const misplaced_blocks = get_all_required_blocks.filter(block => {
+        if (block.type !== 'trade_definition' && block.type !== 'before_purchase') {
+            return block.parentBlock_ === null;
+        }
+    });
+    misplaced_blocks.forEach(block => {
+        globalObserver.emit('ui.log.error', `${block  } is misplaced`);
+    });
+
+    const missing_blocks = required_block_types.filter(blockType => {
+        return !workspace.getAllBlocks().some(block => block.type === blockType);
+    });
+
+    missing_blocks.forEach(blockType => {
+        globalObserver.emit('ui.log.error', `${blockType} is missing`);
+    });
+
+    const is_required_blocks_present = [...missing_blocks, ...misplaced_blocks];
+    const required_blocks_present = is_required_blocks_present.length === 0;
+
+    return required_blocks_present;
 };
 
 export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chronological) => {

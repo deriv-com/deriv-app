@@ -11,7 +11,7 @@ const useAvailableWallets = () => {
     const { data } = useAuthorize();
 
     const { data: get_account_types_data, ...rest } = useFetch('get_account_types', {
-        payload: { company: data?.landing_company_name },
+        payload: { company: data?.landing_company_name === 'virtual' ? 'svg' : data?.landing_company_name },
         options: { enabled: Boolean(data?.landing_company_name) },
     });
 
@@ -38,7 +38,7 @@ const useAvailableWallets = () => {
             .filter(currency => !modified_wallets?.some(wallet => wallet.currency === currency))
             .map(currency => ({
                 currency,
-                landing_company_name: data?.landing_company_name,
+                landing_company_name: data?.landing_company_name === 'virtual' ? 'svg' : data?.landing_company_name,
                 is_added: false,
                 gradient_card_class: `wallet-card__${currency.toLowerCase()}-bg${is_dark_mode_on ? '--dark' : ''}`,
             }));

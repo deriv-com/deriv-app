@@ -59,10 +59,9 @@ export const TranslationProvider = ({
         await switchLanguage(initial_language, environment, () => {
             setCurrentLanguage(initial_language);
             updateURLLanguage(initial_language);
+            setIsLoading(false);
+            first_load.current = false;
         });
-
-        setIsLoading(false);
-        first_load.current = false;
     };
 
     const setLanguageSettings = React.useCallback(
@@ -70,15 +69,13 @@ export const TranslationProvider = ({
             setIsLoading(true);
             await switchLanguage(lang, environment, async () => {
                 if (websocket && !first_load.current) {
-                    websocket.closeAndOpenNewConnection(lang);
-                    await websocket.wait('get_account_status');
                     await websocket.authorized.send({
                         set_settings: 1,
                         preferred_language: lang,
                     });
                 }
+                setIsLoading(false);
             });
-            setIsLoading(false);
         },
         [environment, websocket]
     );

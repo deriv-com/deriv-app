@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Text, Button, Icon, Money, Popover } from '@deriv/components';
 import { TPasswordBoxProps, TTradingPlatformAccounts } from '../Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
@@ -33,11 +34,16 @@ type TMT5TradeModalProps = {
 export type TSpecBoxProps = {
     value: string | undefined;
     is_bold?: boolean;
+    is_broker?: boolean;
 };
 
-const SpecBox = ({ value, is_bold }: TSpecBoxProps) => (
+const SpecBox = ({ value, is_bold, is_broker }: TSpecBoxProps) => (
     <div className='cfd-trade-modal__spec-box'>
-        <Text size='xs' weight={is_bold ? 'bold' : ''} className='cfd-trade-modal__spec-text'>
+        <Text
+            size='xs'
+            weight={is_bold ? 'bold' : ''}
+            className={classNames('cfd-trade-modal__spec-text', { 'cfd-trade-modal__spec-text-broker': is_broker })}
+        >
             {value}
         </Text>
         <CFDAccountCopy text={value} className='cfd-trade-modal__spec-copy' />
@@ -150,7 +156,7 @@ const DMT5TradeModal = ({
             <div className='cfd-trade-modal__login-specs'>
                 <div className='cfd-trade-modal__login-specs-item'>
                     <Text className='cfd-trade-modal--paragraph'>{localize('Broker')}</Text>
-                    <SpecBox is_bold value={'Deriv Limited'} />
+                    <SpecBox is_bold is_broker value={'Deriv Holdings (Guernsey) Limited'} />
                 </div>
                 <div className='cfd-trade-modal__login-specs-item'>
                     <Text className='cfd-trade-modal--paragraph'>{localize('Server')}</Text>

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import { WS, IDV_NOT_APPLICABLE_OPTION, formatIDVError, Jurisdiction } from '@deriv/shared';
+import { WS, IDV_NOT_APPLICABLE_OPTION, formatIDVError, isVerificationServiceSupported } from '@deriv/shared';
 import Unsupported from 'Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view-container';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
@@ -20,7 +20,7 @@ const POISubmissionForMT5 = ({
     refreshNotifications,
     citizen_data,
     residence_list,
-    jurisdiction_selected_shortcode,
+    is_eu_user,
     identity_last_attempt,
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // submitting
@@ -31,14 +31,9 @@ const POISubmissionForMT5 = ({
         if (citizen_data) {
             const { submissions_left: idv_submissions_left, last_rejected, status } = idv;
             const { submissions_left: onfido_submissions_left } = onfido;
-            const is_idv_supported = citizen_data.identity.services.idv.is_country_supported;
-            const is_onfido_supported = citizen_data.identity.services.onfido.is_country_supported;
-            if (
-                is_idv_supported &&
-                Number(idv_submissions_left) > 0 &&
-                !is_idv_disallowed &&
-                jurisdiction_selected_shortcode !== Jurisdiction.VANUATU
-            ) {
+            const is_idv_supported = isVerificationServiceSupported(residence_list, account_settings, 'idv');
+            const is_onfido_supported = isVerificationServiceSupported(residence_list, account_settings, 'onfido');
+            if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed && !is_eu_user) {
                 setSubmissionService(service_code.idv);
                 if (
                     [
@@ -154,7 +149,14 @@ const POISubmissionForMT5 = ({
                 );
             }
             case service_code.manual:
-                return <Unsupported is_mt5 handlePOIforMT5Complete={handlePOIComplete} />;
+                return (
+                    <Unsupported
+                        onfido={onfido}
+                        country_code={citizen_data.value}
+                        is_mt5
+                        handlePOIforMT5Complete={handlePOIComplete}
+                    />
+                );
             default:
                 return null;
         }

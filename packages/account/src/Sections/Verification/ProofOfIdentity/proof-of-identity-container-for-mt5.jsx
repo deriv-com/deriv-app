@@ -4,7 +4,8 @@ import { WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ErrorMessage from 'Components/error-component';
 import IconWithMessage from 'Components/icon-with-message';
-import POISubmissionForMT5 from './proof-of-identity-submission-for-mt5.jsx';
+import POISubmissionForMT5 from './proof-of-identity-submission-for-mt5';
+import { service_code } from './proof-of-identity-utils';
 import { populateVerificationStatus } from '../Helpers/verification';
 
 const ProofOfIdentityContainerForMt5 = ({
@@ -19,8 +20,7 @@ const ProofOfIdentityContainerForMt5 = ({
     onStateChange,
     refreshNotifications,
     citizen_data,
-    jurisdiction_selected_shortcode,
-    updateAccountStatus,
+    is_eu_user,
 }) => {
     const [api_error, setAPIError] = React.useState();
     const [residence_list, setResidenceList] = React.useState();
@@ -65,6 +65,11 @@ const ProofOfIdentityContainerForMt5 = ({
     const { idv, has_attempted_idv, identity_last_attempt, is_idv_disallowed, manual, needs_poa, onfido } =
         verification_status;
 
+    const poi_resubmission_cases = ['rejected', 'suspected', 'expired'];
+
+    const has_idv_error =
+        identity_last_attempt?.service && service_code.idv && poi_resubmission_cases.includes(idv.status);
+
     return (
         <POISubmissionForMT5
             account_settings={account_settings}
@@ -81,9 +86,9 @@ const ProofOfIdentityContainerForMt5 = ({
             refreshNotifications={refreshNotifications}
             residence_list={residence_list}
             citizen_data={citizen_data}
-            jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+            has_idv_error={has_idv_error}
             getChangeableFields={getChangeableFields}
-            updateAccountStatus={updateAccountStatus}
+            is_eu_user={is_eu_user}
         />
     );
 };

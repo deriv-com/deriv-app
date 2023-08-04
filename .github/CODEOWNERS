@@ -35,14 +35,17 @@
 #  (just to make this file easier to understand)
 # ================================================
 
-#  akmal-binary
-#  bahar-fs
-#  balakrishna-binary
-#  carol-binary
-#  matin-binary
-#  mehrzad-fs
-#  nijil-binary
-#  njazuli-deriv
+#  ali-hosseini-deriv
+#  amina-deriv
+#  balakrishna-deriv
+#  farrah-deriv
+#  hirad-deriv
+#  mahdiyeh-deriv
+#  maryia-deriv
+#  matin-deriv
+#  nijil-deriv
+#  prince-deriv
+#  sandeep-deriv
 #  yashim-deriv
 
 ######################################################################################################
@@ -63,76 +66,92 @@
 # (in case no pattern matches a path in a PR - this should be treated as a bug and result in adding the path to CODEOWNERS)
 # ==============================================================
 
-*                                                               @matin-binary @nijil-binary @mehrzad-fs @balakrishna-binary 
-
+*                                                               @balakrishna-deriv @yashim-deriv
 
 
 # ==============================================================
 #  deriv-app/account
 # ==============================================================
 
-/packages/account/**/*                                          @yashim-deriv
+/packages/account/**/*                                          @matin-deriv @amina-deriv
 
+
+# ==============================================================
+#  deriv-app/analytics
+# ==============================================================
+
+/packages/analytics/**/*                                        @ali-hosseini-deriv
+
+
+# ==============================================================
+#  deriv-app/appstore
+# ==============================================================
+
+/packages/appstore/**/*                                         @matin-deriv @mahdiyeh-deriv @nijil-deriv
 
 
 # ==============================================================
 #  deriv-app/bot
 # ==============================================================
 
-/packages/bot-skeleton/**/*                                     @mehrzad-fs
-/packages/bot-web-ui/**/*                                       @mehrzad-fs
-/packages/indicators/**/*                                       @mehrzad-fs
-
-
-# ==============================================================
-#  deriv-app/core
-# ==============================================================
-
-/packages/core/**/*                                             @balakrishna-binary @matin-binary 
-/packages/shared/**/*                                           @balakrishna-binary @matin-binary 
-/packages/components/**/*                                       @balakrishna-binary @matin-binary 
-/packages/translations/**/*                                     @balakrishna-binary @matin-binary 
-
-
-# ==============================================================
-#  deriv-app/p2p
-# ==============================================================
-
-/packages/p2p/**/*                                              @carol-binary @nijil-binary
+/packages/bot-skeleton/**/*                                     @prince-deriv @sandeep-deriv
+/packages/bot-web-ui/**/*                                       @prince-deriv @sandeep-deriv
+/packages/indicators/**/*                                       @prince-deriv @sandeep-deriv
 
 
 # ==============================================================
 #  deriv-app/cashier
 # ==============================================================
 
-/packages/cashier/**/*                                          @bahar-fs @nijil-binary
+/packages/cashier/**/*                                          @farrah-deriv @nijil-deriv
+
 
 # ==============================================================
 #  deriv-app/cfd
 # ==============================================================
 
-/packages/cfd/**/*                                             @balakrishna-binary @matin-binary @yashim-deriv 
+/packages/cfd/**/*                                              @hirad-deriv @matin-deriv
+
 
 # ==============================================================
-#  deriv-app/trader
+#  deriv-app/core
 # ==============================================================
 
-/packages/trader/**/*                                           @matin-binary @balakrishna-binary @akmal-binary 
+/packages/api/**/*                                              @ali-hosseini-deriv @matin-deriv
+/packages/core/**/*                                             @ali-hosseini-deriv @matin-deriv
+/packages/shared/**/*                                           @ali-hosseini-deriv @matin-deriv
+/packages/components/**/*                                       @ali-hosseini-deriv @matin-deriv
+/packages/translations/**/*                                     @ali-hosseini-deriv @matin-deriv
+/packages/utils/**/*                                            @ali-hosseini-deriv @matin-deriv
+/packages/hooks/**/*                                            @ali-hosseini-deriv @matin-deriv
+/packages/stores/**/*                                           @ali-hosseini-deriv @matin-deriv
+
 
 # ==============================================================
-#  deriv-app/reports
+#  deriv-app/p2p
 # ==============================================================
 
-/packages/reports/**/*                                           @matin-binary @balakrishna-binary
+/packages/p2p/**/*                                              @farrah-deriv @nijil-deriv
+
 
 # ==============================================================
 #  deriv-app/publisher
 # ==============================================================
 
-/packages/publisher/**/*                                        @nijil-binary
+/packages/publisher/**/*                                        @nijil-deriv
+
 
 # ==============================================================
-#  deriv-app/appstore
+#  deriv-app/reports
 # ==============================================================
 
-/packages/appstore/**/*                                         @matin-binary @balakrishna-binary @njazuli-deriv @bahar-fs
+/packages/reports/**/*                                          @mahdiyeh-deriv @matin-deriv @maryia-deriv
+
+
+# ==============================================================
+#  deriv-app/trader
+# ==============================================================
+
+/packages/trader/**/*                                           @matin-deriv @maryia-deriv
+
+

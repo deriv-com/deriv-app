@@ -1,3 +1,4 @@
+import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { getUnsupportedContracts } from '../constants';
 import { getSymbolDisplayName, TActiveSymbols } from './active-symbols';
 import { getMarketInformation } from './market-underlying';
@@ -84,4 +85,16 @@ export const formatIDVError = (errors: string[], status_code: string) => {
     return status.includes(error_keys.name) && status.includes(error_keys.birth)
         ? 'POI_NAME_DOB_MISMATCH'
         : status[0] ?? 'POI_FAILED';
+};
+
+export const isVerificationServiceSupported = (
+    residence_list: ResidenceList,
+    account_settings: GetSettings,
+    service: 'idv' | 'onfido'
+): boolean => {
+    const citizen = account_settings?.citizen || account_settings?.country_code;
+    if (!citizen) return false;
+    const citizen_data = residence_list.find(item => item.value === citizen);
+
+    return !!citizen_data?.identity?.services?.[service]?.is_country_supported;
 };

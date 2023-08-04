@@ -147,3 +147,7 @@ export type TPersonalDetailsForm = {
     last_name: string;
     date_of_birth: string;
 };
+
+export type TVerificationStatus = Readonly<
+    Record<'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected', string>
+>;

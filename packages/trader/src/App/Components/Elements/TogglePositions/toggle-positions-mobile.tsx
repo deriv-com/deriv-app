@@ -7,34 +7,39 @@ import { NavLink } from 'react-router-dom';
 import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import PositionsModalCard from 'App/Components/Elements/PositionsDrawer/positions-modal-card.jsx';
 import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers';
-import TogglePositions from './toggle-positions.jsx';
+import TogglePositions from './toggle-positions';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
+
+type TTogglePositionsMobile = Pick<
+    ReturnType<typeof useStore>['portfolio'],
+    'active_positions_count' | 'all_positions' | 'error' | 'onClickSell' | 'onClickCancel'
+> & {
+    currency: ReturnType<typeof useStore>['client']['currency'];
+    is_empty: number;
+};
 
 const TogglePositionsMobile = observer(
     ({
         active_positions_count,
         all_positions,
         currency,
-        disableApp,
-        enableApp,
         error,
         is_empty,
         onClickSell,
         onClickCancel,
-        toggleUnsupportedContractModal,
-    }) => {
+    }: TTogglePositionsMobile) => {
         const { portfolio, ui } = useStore();
         const { symbol, contract_type: trade_contract_type } = useTraderStore();
         const { removePositionById: onClickRemove } = portfolio;
-        const { togglePositionsDrawer, is_positions_drawer_on } = ui;
-        let filtered_positions = [];
+        const { togglePositionsDrawer, toggleUnsupportedContractModal, is_positions_drawer_on } = ui;
+        let filtered_positions: TTogglePositionsMobile['all_positions'] = [];
 
         const closeModal = () => {
             filtered_positions.slice(0, 5).map(position => {
                 const { contract_info } = position;
                 if (contract_info?.is_sold) {
-                    onClickRemove(contract_info.contract_id);
+                    onClickRemove(contract_info.contract_id as number);
                 }
             });
             togglePositionsDrawer();
@@ -44,6 +49,7 @@ const TogglePositionsMobile = observer(
             p =>
                 p.contract_info &&
                 symbol === p.contract_info.underlying &&
+                //@ts-expect-error filterByContractType function needs to be in typescript
                 filterByContractType(p.contract_info, trade_contract_type)
         );
 
@@ -66,6 +72,7 @@ const TogglePositionsMobile = observer(
                             unmountOnExit
                         >
                             <PositionsModalCard
+                                // @ts-expect-error observer wrapped component needs to be ts migrated for props to be detected
                                 onClickSell={onClickSell}
                                 onClickCancel={onClickCancel}
                                 onClickRemove={onClickRemove}
@@ -94,8 +101,6 @@ const TogglePositionsMobile = observer(
                     id='dt_mobile_positions'
                     is_vertical_top
                     has_close_icon
-                    enableApp={enableApp}
-                    disableApp={disableApp}
                     width='calc(100vw - 32px)'
                 >
                     <Div100vhContainer className='positions-modal' height_offset='48px'>

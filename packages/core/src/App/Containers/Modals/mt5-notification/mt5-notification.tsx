@@ -20,7 +20,6 @@ const MT5Notification = observer(() => {
                     title={localize('Trouble accessing Deriv MT5 on your mobile?')}
                     toggleModal={clickHandler}
                     className='mt5-notification-modal'
-                    height='455px'
                     width='510px'
                 >
                     <Modal.Body className='mt5-notification-modal-body'>

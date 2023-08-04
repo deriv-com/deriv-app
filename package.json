@@ -90,7 +90,7 @@
     },
     "dependencies": {
         "@babel/preset-typescript": "^7.16.5",
-        "@sendbird/chat": "^4.9.3",
+        "@sendbird/chat": "^4.9.5",
         "@types/react-transition-group": "^4.4.4",
         "babel-jest": "^27.3.1",
         "dotenv": "^8.2.0",

@@ -3,28 +3,16 @@ import classNames from 'classnames';
 import debounce from 'lodash.debounce';
 import { DesktopWrapper, Icon, MobileWrapper, SelectNative, Tabs } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { useDBotStore } from 'Stores/useDBotStore';
 import FAQContent from './faq-content';
 import GuideContent from './guide-content';
 import { faq_content, guide_content, user_guide_content } from './tutorial-content';
 
-type TSidebarProps = {
-    active_tab_tutorials: number;
-    active_tab: number;
-    faq_search_value: string;
-    setActiveTabTutorial: (active_tab_tutorials: number) => void;
-    setFAQSearchValue: (setFAQSearchValue: string) => void;
-};
-
-const Sidebar = ({
-    active_tab_tutorials,
-    active_tab,
-    faq_search_value,
-    setActiveTabTutorial,
-    setFAQSearchValue,
-}: TSidebarProps) => {
+const Sidebar = observer(() => {
+    const { dashboard } = useDBotStore();
+    const { active_tab_tutorials, active_tab, faq_search_value, setActiveTabTutorial, setFAQSearchValue } = dashboard;
     const guide_tab_content = [...user_guide_content, ...guide_content];
     const [search_filtered_list, setsearchFilteredList] = React.useState(guide_tab_content);
     const [search_faq_list, setsearchFAQList] = React.useState(faq_content);
@@ -123,12 +111,6 @@ const Sidebar = ({
             </MobileWrapper>
         </>
     );
-};
+});
 
-export default connect(({ dashboard }: RootStore) => ({
-    active_tab_tutorials: dashboard.active_tab_tutorials,
-    active_tab: dashboard.active_tab,
-    faq_search_value: dashboard.faq_search_value,
-    setActiveTabTutorial: dashboard.setActiveTabTutorial,
-    setFAQSearchValue: dashboard.setFAQSearchValue,
-}))(Sidebar);
+export default Sidebar;

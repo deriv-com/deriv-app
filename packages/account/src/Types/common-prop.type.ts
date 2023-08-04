@@ -178,3 +178,7 @@ export type TIDVForm = {
     can_skip_document_verification: boolean;
 } & Partial<FormikHandlers> &
     FormikProps<TFormProps>;
+
+export type TVerificationStatus = Readonly<
+    Record<'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected', string>
+>;

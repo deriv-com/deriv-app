@@ -1,14 +1,13 @@
 import React from 'react';
-import { Accordion, Text } from '@deriv/components';
+import { Text, Accordion } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { observer } from '@deriv/stores';
+import { useDBotStore } from 'Stores/useDBotStore';
 import { TDescription } from './tutorial-content';
 
 type TFAQContent = {
     faq_list: TFAQList[];
-    faq_search_value: string;
     hide_header?: boolean;
 };
 
@@ -34,7 +33,11 @@ const FAQ = ({ type, content, src }: TDescription) => {
     );
 };
 
-const FAQContent = ({ faq_list, faq_search_value, hide_header = false }: TFAQContent) => {
+const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => {
+    const { dashboard } = useDBotStore();
+
+    const { faq_search_value } = dashboard;
+
     const getList = () => {
         return faq_list.map(({ title, description }: TFAQList) => ({
             header: (
@@ -75,8 +78,6 @@ const FAQContent = ({ faq_list, faq_search_value, hide_header = false }: TFAQCon
             </div>
         </div>
     );
-};
+});
 
-export default connect(({ dashboard }: RootStore) => ({
-    faq_search_value: dashboard.faq_search_value,
-}))(FAQContent);
+export default FAQContent;

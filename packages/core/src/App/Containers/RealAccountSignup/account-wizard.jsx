@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv/components';
-import { WS, getLocation, makeCancellablePromise, toMoment, getIDVNotApplicableOption } from '@deriv/shared';
+import { WS, getLocation, toMoment, getIDVNotApplicableOption } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AcceptRiskForm from './accept-risk-form.jsx';
@@ -60,31 +60,37 @@ const AccountWizard = props => {
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
 
     const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
+    const {
+        setIsTradingAssessmentForNewUserEnabled,
+        residence_list,
+        states_list,
+        fetchResidenceList,
+        fetchStatesList,
+        has_residence,
+        setLoading,
+    } = props;
+
+    const getData = async () => {
+        setLoading(true);
+        if (!residence_list.length) await fetchResidenceList();
+        if (has_residence && !states_list.length) {
+            await fetchStatesList();
+        }
+        setLoading(false);
+    };
 
     React.useEffect(() => {
-        props.setIsTradingAssessmentForNewUserEnabled(true);
-        props.fetchStatesList();
-        const { cancel, promise } = makeCancellablePromise(props.fetchResidenceList());
-        const { cancel: cancelFinancialAssessment, promise: financial_assessment_promise } = makeCancellablePromise(
-            props.fetchFinancialAssessment()
-        );
-
-        Promise.all([promise, financial_assessment_promise]).then(() => {
-            setStateItems(previous_state => {
-                if (!previous_state.length) {
-                    return getItems(props);
-                }
-                return previous_state;
-            });
-            setPreviousData(fetchFromStorage());
-            setMounted(true);
+        setIsTradingAssessmentForNewUserEnabled(true);
+        getData();
+        setStateItems(previous_state => {
+            if (!previous_state.length) {
+                return getItems(props);
+            }
+            return previous_state;
         });
-
-        return () => {
-            cancel();
-            cancelFinancialAssessment();
-        };
-    }, []);
+        setPreviousData(fetchFromStorage());
+        setMounted(true);
+    }, [residence_list, states_list, fetchResidenceList, fetchStatesList, has_residence]);
 
     React.useEffect(() => {
         if (previous_data.length > 0) {
@@ -100,7 +106,7 @@ const AccountWizard = props => {
     }, [previous_data]);
 
     React.useEffect(() => {
-        if (props.residence_list.length) {
+        if (residence_list.length) {
             const setDefaultPhone = country_code => {
                 let items;
                 if (state_items.length) {
@@ -114,9 +120,9 @@ const AccountWizard = props => {
                     setStateItems(items);
                 }
             };
-            getCountryCode(props.residence_list).then(setDefaultPhone);
+            getCountryCode(residence_list).then(setDefaultPhone);
         }
-    }, [props.residence_list]);
+    }, [residence_list]);
 
     const fetchFromStorage = () => {
         const stored_items = localStorage.getItem('real_account_signup_wizard');
@@ -130,8 +136,8 @@ const AccountWizard = props => {
         }
     };
 
-    const getCountryCode = async residence_list => {
-        const response = residence_list.find(item => item.value === props.residence);
+    const getCountryCode = async residences => {
+        const response = residences.find(item => item.value === props.residence);
         if (!response || !response.phone_idd) return '';
         return `+${response.phone_idd}`;
     };
@@ -153,16 +159,16 @@ const AccountWizard = props => {
                 }
                 if (values.place_of_birth) {
                     values.place_of_birth = values.place_of_birth
-                        ? getLocation(props.residence_list, values.place_of_birth, 'value')
+                        ? getLocation(residence_list, values.place_of_birth, 'value')
                         : '';
                 }
                 if (values.citizen) {
-                    values.citizen = values.citizen ? getLocation(props.residence_list, values.citizen, 'value') : '';
+                    values.citizen = values.citizen ? getLocation(residence_list, values.citizen, 'value') : '';
                 }
 
                 if (values.tax_residence) {
                     values.tax_residence = values.tax_residence
-                        ? getLocation(props.residence_list, values.tax_residence, 'value')
+                        ? getLocation(residence_list, values.tax_residence, 'value')
                         : values.tax_residence;
                 }
 
@@ -266,7 +272,7 @@ const AccountWizard = props => {
     };
 
     const createRealAccount = (payload = undefined) => {
-        props.setLoading(true);
+        setLoading(true);
         const form_data = { ...form_values() };
         submitForm(payload)
             .then(response => {
@@ -300,7 +306,7 @@ const AccountWizard = props => {
                 }
             })
             .finally(() => {
-                props.setLoading(false);
+                setLoading(false);
                 localStorage.removeItem('current_question_index');
             });
     };
@@ -321,6 +327,7 @@ const AccountWizard = props => {
     }
 
     if (!mounted) return null;
+
     if (!finished) {
         const wizard_steps = state_items.map((step, step_index) => {
             const passthrough = getPropsForChild(step_index);
@@ -378,11 +385,12 @@ AccountWizard.propTypes = {
     account_status: PropTypes.object,
     closeRealAccountSignup: PropTypes.func,
     content_flag: PropTypes.string,
-    fetchFinancialAssessment: PropTypes.func,
     fetchResidenceList: PropTypes.func,
+    fetchAccountSettings: PropTypes.func,
     fetchStatesList: PropTypes.func,
     has_currency: PropTypes.bool,
     has_real_account: PropTypes.bool,
+    has_residence: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_virtual: PropTypes.bool,
     onClose: PropTypes.func,
@@ -394,8 +402,11 @@ AccountWizard.propTypes = {
     realAccountSignup: PropTypes.func,
     residence_list: PropTypes.array,
     residence: PropTypes.string,
+    states_list: PropTypes.array,
+    setIsTradingAssessmentForNewUserEnabled: PropTypes.func,
     setIsRiskWarningVisible: PropTypes.func,
     setLoading: PropTypes.func,
+    setShouldShowRiskWarningModal: PropTypes.func,
     setSubSectionIndex: PropTypes.func,
     sub_section_index: PropTypes.number,
 };
@@ -406,12 +417,12 @@ export default connect(({ client, notifications, ui, traders_hub }) => ({
     closeRealAccountSignup: ui.closeRealAccountSignup,
     content_flag: traders_hub.content_flag,
     fetchAccountSettings: client.fetchAccountSettings,
-    fetchFinancialAssessment: client.fetchFinancialAssessment,
     fetchResidenceList: client.fetchResidenceList,
     fetchStatesList: client.fetchStatesList,
     financial_assessment: client.financial_assessment,
     has_currency: !!client.currency,
     has_real_account: client.has_active_real_account,
+    has_residence: client.residence,
     is_fully_authenticated: client.is_fully_authenticated,
     is_virtual: client.is_virtual,
     real_account_signup_target: ui.real_account_signup_target,

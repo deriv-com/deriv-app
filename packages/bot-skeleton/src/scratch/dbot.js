@@ -108,7 +108,7 @@ class DBot {
     }
 
     /** Compare stored strategy xml with currently running xml */
-    isStrategyChanged(current_xml_dom, recent_files) {
+    isStrategyUpdated(current_xml_dom, recent_files) {
         if (recent_files && recent_files.length) {
             const stored_strategy = recent_files.filter(
                 strategy => strategy?.id === this.workspace?.current_strategy_id
@@ -131,7 +131,7 @@ class DBot {
         const current_xml_dom = this?.workspace ? Blockly?.Xml?.workspaceToDom(this.workspace) : null;
         try {
             const recent_files = await getSavedWorkspaces();
-            if (current_xml_dom && this.isStrategyChanged(current_xml_dom, recent_files)) {
+            if (current_xml_dom && this.isStrategyUpdated(current_xml_dom, recent_files)) {
                 await saveWorkspaceToRecent(current_xml_dom, save_types.UNSAVED);
             }
         } catch (error) {

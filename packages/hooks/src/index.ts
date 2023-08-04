@@ -51,3 +51,8 @@ export { default as useAuthorize } from './useAuthorize';
 export { default as useWalletTransactions } from './useWalletTransactions';
 export { default as useWalletMigration } from './useWalletMigration';
 export { useIsAccountStatusPresent } from './useIsAccountStatusPresent';
+export { default as useAccountsList } from './useAccountsList';
+export { default as useActiveAccount } from './useActiveAccount';
+export { default as useBalance } from './useBalance';
+export { default as useTradingAccountsList } from './useTradingAccountsList';
+export { default as useWalletAccountsList } from './useWalletAccountsList';

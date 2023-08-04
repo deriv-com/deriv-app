@@ -4,13 +4,12 @@ export const useHover = <T extends HTMLElement & SVGSVGElement>(
     refSetter?: RefObject<T> | null,
     should_prevent_bubbling?: boolean
 ) => {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     const [value, setValue] = React.useState(false);
     const default_ref = React.useRef(null);
     const ref = refSetter || default_ref;
 
-    const handleHoverBegin = () => {
-        setValue(true);
-    };
+    const handleHoverBegin = () => setValue(true);
     const handleHoverFinish = () => setValue(false);
 
     React.useEffect(() => {
@@ -18,11 +17,23 @@ export const useHover = <T extends HTMLElement & SVGSVGElement>(
 
         if (node) {
             if (should_prevent_bubbling) {
-                node.addEventListener('touchstart', handleHoverBegin);
-                node.addEventListener('mouseleave', handleHoverFinish);
+                if (isMobile) {
+                    node.addEventListener('touchstart', handleHoverBegin);
+                    node.addEventListener('touchend', handleHoverFinish);
+                } else {
+                    node.addEventListener('mouseenter', handleHoverBegin);
+                    node.addEventListener('mouseleave', handleHoverFinish);
+                }
             } else {
-                node.addEventListener('mouseover', handleHoverBegin);
-                node.addEventListener('mouseout', handleHoverFinish);
+                isMobile
+                    ? () => {
+                          node.addEventListener('touchstart', handleHoverBegin);
+                          node.addEventListener('touchend', handleHoverFinish);
+                      }
+                    : () => {
+                          node.addEventListener('mouseover', handleHoverBegin);
+                          node.addEventListener('mouseout', handleHoverFinish);
+                      };
             }
 
             return () => {

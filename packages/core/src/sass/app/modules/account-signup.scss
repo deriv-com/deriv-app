@@ -6,6 +6,9 @@
             max-height: 36.5rem;
         }
     }
+    form:has(.account-signup__main) {
+        max-height: unset;
+    }
     & .dc-select-native {
         &__placeholder {
             background-color: var(--general-main-2);
@@ -23,6 +26,9 @@
     &__dialog {
         .dc-dialog__content {
             margin-bottom: 0;
+        }
+        .dc-dialog__dialog {
+            max-height: unset;
         }
     }
     &__error-wrapper {
@@ -116,6 +122,13 @@
                 margin-top: -1.4rem;
                 margin-bottom: 0.8rem;
             }
+        }
+    }
+    &__checkbox {
+        align-items: flex-start;
+        margin: 2.4rem 0 2.4rem -0.6rem;
+        @include mobile {
+            margin: 2.4rem 0 0 -0.6rem;
         }
     }
     &__footer {

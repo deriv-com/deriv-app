@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Field } from 'formik';
 import classNames from 'classnames';
 import {
@@ -108,14 +108,20 @@ const PersonalDetailsForm = ({
         />
     );
 
+    const is_form_body_side_note_visible = useMemo(
+        () => (is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image,
+        [is_qualified_for_idv, is_rendered_for_onfido, should_hide_helper_image]
+    );
+
     return (
         <div className={classNames({ 'account-form__poi-confirm-example': is_qualified_for_idv })}>
-            {(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image && (
+            {is_form_body_side_note_visible && (
                 <InlineNoteWithIcon message={name_dob_clarification_message} font_size={isMobile() ? 'xxxs' : 'xs'} />
             )}
             <FormBodySection
-                has_side_note={(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image}
+                has_side_note={is_form_body_side_note_visible}
                 side_note={<PoiNameDobExampleIcon />}
+                is_reversed
             >
                 <fieldset className='account-form__fieldset'>
                     {'salutation' in values && (

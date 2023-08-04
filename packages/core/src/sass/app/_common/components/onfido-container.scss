@@ -225,6 +225,13 @@
                 width: 100%;
             }
         }
+
+        &--reversed {
+            @include desktop() {
+                grid-template-areas: 'section-content section-side-note';
+                grid-template-columns: 1fr auto;
+            }
+        }
     }
 }
 

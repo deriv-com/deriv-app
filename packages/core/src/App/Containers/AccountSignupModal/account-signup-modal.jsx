@@ -22,10 +22,17 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
     const history_value = React.useRef();
     const [pw_input, setPWInput] = React.useState('');
     const [is_password_modal, setIsPasswordModal] = React.useState(false);
-    const [checked, setChecked] = React.useState(false);
+    const [is_disclaimer_accepted, setIsDisclaimerAccepted] = React.useState(false);
+
+    const checkResidenceIsBrazil = selected_country =>
+        selected_country && residence_list[indexOfSelection(selected_country)]?.value?.toLowerCase() === 'br';
 
     const disableButton = (values, errors) =>
-        !values.residence || !!errors.residence || !values.citizenship || !!errors.citizenship;
+        !(checkResidenceIsBrazil(values.residence) ? is_disclaimer_accepted : true) ||
+        !values.residence ||
+        !!errors.residence ||
+        !values.citizenship ||
+        !!errors.citizenship;
 
     const updatePassword = new_password => {
         setPWInput(new_password);
@@ -44,11 +51,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
     const validateSignupPassthrough = values => validateSignupFields(values, residence_list);
 
     const indexOfSelection = selected_country =>
-        residence_list.findIndex(item => item.text.toLowerCase() === selected_country.toLowerCase());
-
-    const checkBoxRequired = selected_country => [localize('Brazil')].includes(selected_country);
-
-    const checkBoxConfirmed = selected_country => (checkBoxRequired(selected_country) ? checked : true);
+        residence_list.findIndex(item => item.text.toLowerCase() === selected_country?.toLowerCase());
 
     const onSignupPassthrough = values => {
         const index_of_selected_residence = indexOfSelection(values.residence);
@@ -71,6 +74,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
             enableApp();
         }
     };
+
     return (
         <div className='account-signup'>
             {is_loading ? (
@@ -102,7 +106,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                         class_prefix='account-signup'
                                         errors={errors}
                                         touched={touched}
-                                        onResidenceSelectionChanged={() => setChecked(false)}
+                                        onResidenceSelectionChanged={() => setIsDisclaimerAccepted(false)}
                                         setFieldTouched={setFieldTouched}
                                         setFieldValue={setFieldValue}
                                         residence_list={residence_list}
@@ -117,10 +121,10 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                         setFieldValue={setFieldValue}
                                         citizenship_list={residence_list}
                                     />
-                                    {checkBoxRequired(values.residence) && (
+                                    {checkResidenceIsBrazil(values.residence) && (
                                         <Checkbox
-                                            checked={checked}
-                                            onChange={() => setChecked(!checked)}
+                                            checked={is_disclaimer_accepted}
+                                            onChange={() => setIsDisclaimerAccepted(!is_disclaimer_accepted)}
                                             className='account-signup__checkbox'
                                             label={localize(
                                                 'I hereby confirm that my request for opening an account with Deriv to trade OTC products issued and offered exclusively outside Brazil was initiated by me. I fully understand that Deriv is not regulated by CVM and by approaching Deriv I intend to set up a relation with a foreign company.'
@@ -132,9 +136,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                             className={classNames('account-signup__btn', {
                                                 'account-signup__btn--disabled': disableButton(values, errors),
                                             })}
-                                            is_disabled={
-                                                !checkBoxConfirmed(values.residence) || disableButton(values, errors)
-                                            }
+                                            is_disabled={disableButton(values, errors)}
                                             type='button'
                                             onClick={() => {
                                                 history_value.current = values;

@@ -75,7 +75,7 @@ const AppModals = ({
     fetchFinancialAssessment,
     setCFDScore,
     content_flag,
-    is_mt5_notificaiton_modal_visible,
+    is_mt5_notification_modal_visible,
     active_account_landing_company,
     is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible,
@@ -151,7 +151,7 @@ const AppModals = ({
         ComponentToLoad = <RealityCheckModal />;
     } else if (should_show_cooldown_modal) {
         ComponentToLoad = <CooldownWarningModal />;
-    } else if (is_mt5_notificaiton_modal_visible) {
+    } else if (is_mt5_notification_modal_visible) {
         ComponentToLoad = <MT5Notification />;
     } else if (should_show_assessment_complete_modal) {
         ComponentToLoad = <CompletedAssessmentModal />;
@@ -189,7 +189,7 @@ export default connect(({ client, ui, traders_hub }) => ({
     is_reality_check_visible: client.is_reality_check_visible,
     has_maltainvest_account: client.has_maltainvest_account,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
-    is_mt5_notificaiton_modal_visible: traders_hub.is_mt5_notificaiton_modal_visible,
+    is_mt5_notification_modal_visible: traders_hub.is_mt5_notification_modal_visible,
     setCFDScore: client.setCFDScore,
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     should_show_cooldown_modal: ui.should_show_cooldown_modal,

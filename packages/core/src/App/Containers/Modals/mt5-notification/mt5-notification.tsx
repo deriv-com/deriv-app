@@ -6,9 +6,9 @@ import MT5NotificationDescription from './mt5-notification-description';
 
 const MT5Notification = observer(() => {
     const { traders_hub } = useStore();
-    const { setMT5NotificationModal, is_mt5_notificaiton_modal_visible } = traders_hub;
+    const { setMT5NotificationModal, is_mt5_notification_modal_visible } = traders_hub;
     const clickHandler = () => {
-        setMT5NotificationModal(!is_mt5_notificaiton_modal_visible);
+        setMT5NotificationModal(!is_mt5_notification_modal_visible);
     };
 
     return (
@@ -16,11 +16,10 @@ const MT5Notification = observer(() => {
             <DesktopWrapper>
                 <Modal
                     has_close_icon={false}
-                    is_open={is_mt5_notificaiton_modal_visible}
+                    is_open={is_mt5_notification_modal_visible}
                     title={localize('Trouble accessing Deriv MT5 on your mobile?')}
                     toggleModal={clickHandler}
                     className='mt5-notification-modal'
-                    height='455px'
                     width='510px'
                 >
                     <Modal.Body className='mt5-notification-modal-body'>
@@ -43,7 +42,7 @@ const MT5Notification = observer(() => {
                     portal_element_id='modal_root'
                     wrapper_classname='mt5-notification-modal-description'
                     title={localize('Trouble accessing Deriv MT5 on your mobile?')}
-                    visible={is_mt5_notificaiton_modal_visible}
+                    visible={is_mt5_notification_modal_visible}
                     onClose={() => {
                         setMT5NotificationModal(false);
                     }}

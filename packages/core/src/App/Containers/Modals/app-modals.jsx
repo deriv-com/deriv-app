@@ -193,7 +193,6 @@ const AppModals = ({
     if (should_show_account_success_modal) {
         ComponentToLoad = <ReadyToVerifyModal />;
     }
-
     return (
         <>
             <RedirectNoticeModal is_logged_in={is_logged_in} is_eu={is_eu_user} portal_id='popup_root' />

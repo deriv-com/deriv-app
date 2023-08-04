@@ -1,12 +1,13 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import userEvent from '@testing-library/user-event';
 import ReadyToVerifyModal from './ready-to-verify-modal';
-import { useDepositLocked } from '@deriv/hooks';
+import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
 
 jest.mock('@deriv/hooks', () => ({
     useDepositLocked: jest.fn(() => false),
+    useCashierLocked: jest.fn(() => false),
 }));
 
 describe('<ReadyToVerifyModal />', () => {
@@ -29,6 +30,7 @@ describe('<ReadyToVerifyModal />', () => {
             },
         });
         (useDepositLocked as jest.Mock).mockReturnValueOnce(true);
+        (useCashierLocked as jest.Mock).mockReturnValueOnce(true);
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );

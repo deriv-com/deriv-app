@@ -41,8 +41,8 @@ const CurrencyDropdown = () => {
                     default_value={selected_local_currency}
                     list={local_currencies}
                     onSelect={value => {
-                        onLocalCurrencySelect(value);
                         setIsListVisible(false);
+                        onLocalCurrencySelect(value);
                     }}
                 />
             )}

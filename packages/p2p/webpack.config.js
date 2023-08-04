@@ -30,6 +30,7 @@ module.exports = function (env) {
                 Assets: path.resolve(__dirname, 'src/assets'),
                 Components: path.resolve(__dirname, 'src/components'),
                 Constants: path.resolve(__dirname, 'src/constants'),
+                Hooks: path.resolve(__dirname, 'src/hooks'),
                 Translations: path.resolve(__dirname, 'src/translations'),
                 Utils: path.resolve(__dirname, 'src/utils'),
                 Stores: path.resolve(__dirname, 'src/stores'),

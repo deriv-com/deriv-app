@@ -252,7 +252,7 @@ export default class BuySellStore extends BaseStore {
     }
 
     handleResponse = async order => {
-        const { sendbird_store, order_store, general_store, floating_rate_store } = this.root_store;
+        const { sendbird_store, order_store, general_store } = this.root_store;
         const { setErrorMessage, handleConfirm, handleClose } = this.form_props;
         if (order.error) {
             setErrorMessage(order.error.message);
@@ -263,7 +263,6 @@ export default class BuySellStore extends BaseStore {
             }
             setErrorMessage(null);
             general_store.hideModal();
-            floating_rate_store.setIsMarketRateChanged(false);
             sendbird_store.setChatChannelUrl(order?.p2p_order_create?.chat_channel_url ?? '');
             if (order?.p2p_order_create?.id) {
                 const response = await requestWS({ p2p_order_info: 1, id: order?.p2p_order_create?.id });
@@ -415,14 +414,11 @@ export default class BuySellStore extends BaseStore {
     }
 
     onLocalCurrencySelect(local_currency) {
-        const { floating_rate_store } = this.root_store;
         this.setSelectedLocalCurrency(local_currency);
         this.setLocalCurrency(local_currency);
         this.setItems([]);
         this.setIsLoading(true);
         this.loadMoreItems({ startIndex: 0 });
-        floating_rate_store.previous_exchange_rate = null;
-        floating_rate_store.setIsMarketRateChanged(false);
     }
 
     registerIsListedReaction() {

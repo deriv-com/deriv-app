@@ -36,23 +36,25 @@ class DBot {
 
             this.enforceLimitations();
 
-            if (event.type === Blockly.Events.BLOCK_CHANGE) {
-                if (event.name === 'SYMBOL_LIST' || event.name === 'TRADETYPECAT_LIST') {
+            const { name, type } = event;
+
+            if (type === Blockly.Events.BLOCK_CHANGE) {
+                if (name === 'SYMBOL_LIST' || name === 'TRADETYPECAT_LIST') {
                     const { contracts_for } = ApiHelpers.instance;
                     const top_parent_block = this.getTopParent();
                     const market_block = top_parent_block.getChildByType('trade_definition_market');
                     const market = market_block.getFieldValue('MARKET_LIST');
                     const submarket = market_block.getFieldValue('SUBMARKET_LIST');
                     const symbol = market_block.getFieldValue('SYMBOL_LIST');
-                    const trade_type_cat = this.getFieldValue('TRADETYPECAT_LIST');
+                    const category = this.getFieldValue('TRADETYPECAT_LIST');
                     const trade_type = this.getFieldValue('TRADETYPE_LIST');
 
-                    if (event.name === 'SYMBOL_LIST') {
+                    if (name === 'SYMBOL_LIST') {
                         contracts_for.getTradeTypeCategories(market, submarket, symbol).then(categories => {
-                            const trade_type_cat_field = this.getField('TRADETYPECAT_LIST');
-                            if (trade_type_cat_field) {
-                                trade_type_cat_field.updateOptions(categories, {
-                                    default_value: trade_type_cat,
+                            const category_field = this.getField('TRADETYPECAT_LIST');
+                            if (category_field) {
+                                category_field.updateOptions(categories, {
+                                    default_value: category,
                                     should_pretend_empty: true,
                                     event_group: event.group,
                                 });
@@ -72,8 +74,8 @@ class DBot {
                                 await that.interpreter.bot.tradeEngine.watchTicks(symbol);
                             });
                         }
-                    } else if (event.name === 'TRADETYPECAT_LIST' && event.blockId === this.id) {
-                        contracts_for.getTradeTypes(market, submarket, symbol, trade_type_cat).then(trade_types => {
+                    } else if (name === 'TRADETYPECAT_LIST' && event.blockId === this.id) {
+                        contracts_for.getTradeTypes(market, submarket, symbol, category).then(trade_types => {
                             const trade_type_field = this.getField('TRADETYPE_LIST');
 
                             trade_type_field.updateOptions(trade_types, {

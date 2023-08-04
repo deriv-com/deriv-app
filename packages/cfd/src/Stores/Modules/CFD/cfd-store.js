@@ -279,7 +279,7 @@ export default class CFDStore extends BaseStore {
                 this.toggleJurisdictionModal();
             } else {
                 if (this.root_store.traders_hub.show_eu_related_content) {
-                    // this.setJurisdictionSelectedShortcode(Jurisdiction.MALTA_INVEST);
+                    this.setJurisdictionSelectedShortcode(Jurisdiction.MALTA_INVEST);
                 } else this.setJurisdictionSelectedShortcode(Jurisdiction.SVG);
                 this.demoCFDSignup();
             }

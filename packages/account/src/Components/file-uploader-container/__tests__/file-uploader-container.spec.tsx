@@ -41,7 +41,7 @@ describe('<FileUploaderContainer />', () => {
     const file_type_msg = /supported formats: JPEG, JPG, PNG and PDF only/i;
     const file_warning_msg = /remember, selfies, pictures of houses, or non-related images will be rejected./i;
     const hint_msg_desktop = /drag and drop a file or click to browse your files/i;
-    const hint_msg_mobile = /click here to browse your files/i;
+    const hint_msg_mobile = /click here to upload/i;
 
     const runCommonTests = () => {
         expect(screen.getByTestId('dt_file_uploader_container')).toBeInTheDocument();

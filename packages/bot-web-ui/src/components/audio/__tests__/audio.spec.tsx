@@ -14,7 +14,7 @@ describe('Audio', () => {
         expect(screen.getAllByLabelText('audio')).toHaveLength(5);
     });
 
-    it('should have mandatory src attributes in audio tag', () => {
+    it('should have mandatory src attribute in audio tags', () => {
         render(<Audio />);
 
         const audio_announcement = screen.getByLabelText('audio', { selector: '#announcement' });

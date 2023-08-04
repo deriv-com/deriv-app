@@ -43,16 +43,22 @@ export const Modals = {
                 /* webpackChunkName: "cancel-edit-payment-method-modal" */ 'Components/modal-manager/modals/cancel-edit-payment-method-modal'
             )
     ),
-    CurrencySelectorModal: React.lazy(
+    ConfirmDeletePaymentMethodModal: React.lazy(
         () =>
             import(
-                /* webpackChunkName: "currency-selector-modal" */ 'Components/modal-manager/modals/currency-selector-modal'
+                /* webpackChunkName: "confirm-delete-payment-method-modal" */ 'Components/modal-manager/modals/confirm-delete-payment-method-modal'
             )
     ),
     CreateAdAddPaymentMethodModal: React.lazy(
         () =>
             import(
                 /* webpackChunkName: "create-ad-add-payment-method-modal" */ 'Components/modal-manager/modals/create-ad-add-payment-method-modal'
+            )
+    ),
+    CurrencySelectorModal: React.lazy(
+        () =>
+            import(
+                /* webpackChunkName: "currency-selector-modal" */ 'Components/modal-manager/modals/currency-selector-modal'
             )
     ),
     DeletePaymentMethodErrorModal: React.lazy(

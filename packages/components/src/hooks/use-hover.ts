@@ -15,38 +15,63 @@ export const useHover = <T extends HTMLElement & SVGSVGElement>(
     React.useEffect(() => {
         const node = ref.current;
 
-        if (node) {
-            if (should_prevent_bubbling) {
-                if (isMobile) {
-                    node.addEventListener('touchstart', handleHoverBegin);
-                    node.addEventListener('touchend', handleHoverFinish);
-                } else {
-                    node.addEventListener('mouseenter', handleHoverBegin);
-                    node.addEventListener('mouseleave', handleHoverFinish);
-                }
-            } else {
-                isMobile
-                    ? () => {
-                          node.addEventListener('touchstart', handleHoverBegin);
-                          node.addEventListener('touchend', handleHoverFinish);
-                      }
-                    : () => {
-                          node.addEventListener('mouseover', handleHoverBegin);
-                          node.addEventListener('mouseout', handleHoverFinish);
-                      };
-            }
+        if (!node) return;
 
-            return () => {
-                if (should_prevent_bubbling) {
-                    node.removeEventListener('mouseenter', handleHoverBegin);
-                    node.removeEventListener('mouseleave', handleHoverFinish);
-                } else {
-                    node.removeEventListener('mouseover', handleHoverBegin);
-                    node.removeEventListener('mouseout', handleHoverFinish);
-                }
-            };
+        const addMouseEnterEvent = () => {
+            if (isMobile) {
+                node.addEventListener('touchstart', handleHoverBegin);
+                node.addEventListener('touchend', handleHoverFinish);
+            } else {
+                node.addEventListener('mouseenter', handleHoverBegin);
+                node.addEventListener('mouseleave', handleHoverFinish);
+            }
+        };
+
+        const removeMouseEnterEvent = () => {
+            if (isMobile) {
+                node.removeEventListener('touchstart', handleHoverBegin);
+                node.removeEventListener('touchend', handleHoverFinish);
+            } else {
+                node.removeEventListener('mouseenter', handleHoverBegin);
+                node.removeEventListener('mouseleave', handleHoverFinish);
+            }
+        };
+
+        const addMouseOverEvent = () => {
+            if (isMobile) {
+                node.addEventListener('touchstart', handleHoverBegin);
+                node.addEventListener('touchend', handleHoverFinish);
+            } else {
+                node.addEventListener('mouseover', handleHoverBegin);
+                node.addEventListener('mouseout', handleHoverFinish);
+            }
+        };
+
+        const removeMouseOverEvent = () => {
+            if (isMobile) {
+                node.removeEventListener('touchstart', handleHoverBegin);
+                node.removeEventListener('touchend', handleHoverFinish);
+            } else {
+                node.removeEventListener('mouseover', handleHoverBegin);
+                node.removeEventListener('mouseout', handleHoverFinish);
+            }
+        };
+
+        const removeEventListerner = () => {
+            if (should_prevent_bubbling) {
+                removeMouseEnterEvent();
+            } else {
+                removeMouseOverEvent();
+            }
+        };
+
+        if (should_prevent_bubbling) {
+            addMouseEnterEvent();
+        } else {
+            addMouseOverEvent();
         }
-        return undefined;
+
+        return removeEventListerner;
     }, [ref, should_prevent_bubbling]);
 
     return [ref, value] as const;

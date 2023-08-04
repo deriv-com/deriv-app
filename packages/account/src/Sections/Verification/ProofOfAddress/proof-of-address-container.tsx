@@ -135,22 +135,21 @@ const ProofOfAddressContainer = ({
     ) : null;
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    // if (
-    //     !allow_document_upload ||
-    //     (!is_age_verified && !allow_poa_resubmission && document_status === 'none' && is_mx_mlt)
-    // )
-    //     return <NotRequired />;
-    // if (has_submitted_poa && !poa_address_mismatch)
-    //     return <Submitted needs_poi={needs_poi} redirect_button={redirect_button} />;
     if (
-        // resubmit_poa ||
-        // allow_poa_resubmission ||
-        // (has_restricted_mt5_account &&
-        //     (['expired', 'rejected', 'suspected'] as TAuthenticationStatus['document_status'][]).includes(
-        //         document_status
-        //     )) ||
-        // poa_address_mismatch
-        true
+        !allow_document_upload ||
+        (!is_age_verified && !allow_poa_resubmission && document_status === 'none' && is_mx_mlt)
+    )
+        return <NotRequired />;
+    if (has_submitted_poa && !poa_address_mismatch)
+        return <Submitted needs_poi={needs_poi} redirect_button={redirect_button} />;
+    if (
+        resubmit_poa ||
+        allow_poa_resubmission ||
+        (has_restricted_mt5_account &&
+            (['expired', 'rejected', 'suspected'] as TAuthenticationStatus['document_status'][]).includes(
+                document_status
+            )) ||
+        poa_address_mismatch
     ) {
         return <ProofOfAddressForm is_resubmit onSubmit={onSubmit} />;
     }

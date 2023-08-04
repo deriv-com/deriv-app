@@ -17,61 +17,29 @@ export const useHover = <T extends HTMLElement & SVGSVGElement>(
 
         if (!node) return;
 
-        const addMouseEnterEvent = () => {
+        const handleAddEvents = () => {
             if (isMobile) {
                 node.addEventListener('touchstart', handleHoverBegin);
                 node.addEventListener('touchend', handleHoverFinish);
             } else {
-                node.addEventListener('mouseenter', handleHoverBegin);
-                node.addEventListener('mouseleave', handleHoverFinish);
+                node.addEventListener(should_prevent_bubbling ? 'mouseenter' : 'mouseover', handleHoverBegin);
+                node.addEventListener(should_prevent_bubbling ? 'mouseleave' : 'mouseout', handleHoverFinish);
             }
         };
 
-        const removeMouseEnterEvent = () => {
+        const handleRemoveEvents = () => {
             if (isMobile) {
                 node.removeEventListener('touchstart', handleHoverBegin);
                 node.removeEventListener('touchend', handleHoverFinish);
             } else {
-                node.removeEventListener('mouseenter', handleHoverBegin);
-                node.removeEventListener('mouseleave', handleHoverFinish);
+                node.removeEventListener(should_prevent_bubbling ? 'mouseenter' : 'mouseover', handleHoverBegin);
+                node.removeEventListener(should_prevent_bubbling ? 'mouseleave' : 'mouseout', handleHoverFinish);
             }
         };
 
-        const addMouseOverEvent = () => {
-            if (isMobile) {
-                node.addEventListener('touchstart', handleHoverBegin);
-                node.addEventListener('touchend', handleHoverFinish);
-            } else {
-                node.addEventListener('mouseover', handleHoverBegin);
-                node.addEventListener('mouseout', handleHoverFinish);
-            }
-        };
+        handleAddEvents();
 
-        const removeMouseOverEvent = () => {
-            if (isMobile) {
-                node.removeEventListener('touchstart', handleHoverBegin);
-                node.removeEventListener('touchend', handleHoverFinish);
-            } else {
-                node.removeEventListener('mouseover', handleHoverBegin);
-                node.removeEventListener('mouseout', handleHoverFinish);
-            }
-        };
-
-        const removeEventListerner = () => {
-            if (should_prevent_bubbling) {
-                removeMouseEnterEvent();
-            } else {
-                removeMouseOverEvent();
-            }
-        };
-
-        if (should_prevent_bubbling) {
-            addMouseEnterEvent();
-        } else {
-            addMouseOverEvent();
-        }
-
-        return removeEventListerner;
+        return handleRemoveEvents;
     }, [ref, should_prevent_bubbling]);
 
     return [ref, value] as const;

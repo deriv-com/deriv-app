@@ -62,7 +62,14 @@ describe('AddWalletCard', () => {
         render(
             <StoreProvider store={mock}>
                 <APIProvider>
-                    <AddWalletCard wallet_info={{ currency: 'BTC', is_added: false, landing_company_name: 'svg' }} />
+                    <AddWalletCard
+                        wallet_info={{
+                            currency: 'BTC',
+                            gradient_card_class: '',
+                            is_added: false,
+                            landing_company_name: 'svg',
+                        }}
+                    />
                 </APIProvider>
             </StoreProvider>
         );
@@ -85,7 +92,14 @@ describe('AddWalletCard', () => {
         render(
             <StoreProvider store={mock}>
                 <APIProvider>
-                    <AddWalletCard wallet_info={{ currency: 'BTC', is_added: true, landing_company_name: 'svg' }} />
+                    <AddWalletCard
+                        wallet_info={{
+                            currency: 'BTC',
+                            gradient_card_class: '',
+                            is_added: true,
+                            landing_company_name: 'svg',
+                        }}
+                    />
                 </APIProvider>
             </StoreProvider>
         );
@@ -101,7 +115,14 @@ describe('AddWalletCard', () => {
         render(
             <StoreProvider store={mock}>
                 <APIProvider>
-                    <AddWalletCard wallet_info={{ currency: 'UST', is_added: false, landing_company_name: 'svg' }} />
+                    <AddWalletCard
+                        wallet_info={{
+                            currency: 'UST',
+                            gradient_card_class: '',
+                            is_added: false,
+                            landing_company_name: 'svg',
+                        }}
+                    />
                 </APIProvider>
             </StoreProvider>
         );

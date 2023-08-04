@@ -1,33 +1,31 @@
 import React, { useEffect } from 'react';
-import { Modal, Loading } from '@deriv/components';
+import { Loading, Modal } from '@deriv/components';
+import { useActiveWallet } from '@deriv/hooks';
+import { observer, useStore } from '@deriv/stores';
 import WalletModalHeader from './wallet-modal-header';
 import WalletModalBody from './wallet-modal-body';
-import { observer, useStore } from '@deriv/stores';
-import { useActiveWallet } from '@deriv/hooks';
 
 const WalletModal = observer(() => {
     const store = useStore();
 
     const {
-        client: { balance, currency, landing_company_shortcode: shortcode, is_authorize, switchAccount },
+        client: { is_authorize, switchAccount },
         ui: { is_dark_mode_on, is_wallet_modal_visible, is_mobile, setIsWalletModalVisible },
         traders_hub: { active_modal_tab, active_modal_wallet_id, setWalletModalActiveTab },
     } = store;
 
-    const wallet = useActiveWallet();
+    const active_wallet = useActiveWallet();
 
     useEffect(() => {
         let timeout_id: NodeJS.Timeout;
-        if (is_wallet_modal_visible && wallet?.loginid !== active_modal_wallet_id) {
+
+        if (is_wallet_modal_visible && active_wallet?.loginid !== active_modal_wallet_id) {
             /** Adding a delay as per requirement because the modal must appear first, then switch the account */
-            timeout_id = setTimeout(() => switchAccount(active_modal_wallet_id), 700);
+            timeout_id = setTimeout(() => switchAccount(active_modal_wallet_id), 500);
         }
 
         return () => clearTimeout(timeout_id);
-    }, [active_modal_wallet_id, is_wallet_modal_visible, switchAccount, wallet?.loginid]);
-
-    const is_demo = wallet?.is_demo || false;
-    const wallet_type = is_demo ? 'demo' : 'real';
+    }, [active_modal_wallet_id, active_wallet?.loginid, is_wallet_modal_visible, switchAccount]);
 
     const [is_wallet_name_visible, setIsWalletNameVisible] = React.useState<boolean>(true);
 
@@ -42,39 +40,36 @@ const WalletModal = observer(() => {
 
     const contentScrollHandler = React.useCallback(
         (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
-            if (is_mobile) {
+            if (is_mobile && is_wallet_modal_visible) {
                 const target = e.target as HTMLDivElement;
                 setIsWalletNameVisible(!(target.scrollTop > 0));
             }
         },
-        [is_mobile]
+        [is_mobile, is_wallet_modal_visible]
     );
+
+    const is_loading = active_wallet?.loginid !== active_modal_wallet_id || !is_authorize || !active_wallet;
 
     return (
         <Modal is_open={is_wallet_modal_visible} className='wallet-modal' portalId='deriv_app'>
-            {wallet?.loginid !== active_modal_wallet_id || !is_authorize ? (
+            {is_loading ? (
                 <Loading is_fullscreen={false} />
             ) : (
                 <React.Fragment>
                     <WalletModalHeader
-                        balance={balance}
                         closeModal={closeModal}
-                        currency={currency}
                         is_dark={is_dark_mode_on}
-                        is_demo={is_demo}
                         is_mobile={is_mobile}
-                        shortcode={shortcode}
                         is_wallet_name_visible={is_wallet_name_visible}
-                        gradient_class={wallet?.gradient_header_class || ''}
+                        wallet={active_wallet}
                     />
                     <WalletModalBody
                         contentScrollHandler={contentScrollHandler}
                         is_dark={is_dark_mode_on}
-                        is_demo={is_demo}
                         is_mobile={is_mobile}
                         is_wallet_name_visible={is_wallet_name_visible}
                         setIsWalletNameVisible={setIsWalletNameVisible}
-                        wallet_type={wallet_type}
+                        wallet={active_wallet}
                     />
                 </React.Fragment>
             )}

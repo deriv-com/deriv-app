@@ -288,7 +288,7 @@ describe('ProofOfIdentityContainer', () => {
         expect(screen.getByText('mockedOnfido')).toBeInTheDocument();
     });
 
-    it('should render Onfido section when there was a previous onfido submission', async () => {
+    it('should render IDV section when there was a previous IDV submission', async () => {
         populateVerificationStatus.mockReturnValue({
             identity_last_attempt: { service: service_code.idv },
             is_age_verified: true,
@@ -301,7 +301,7 @@ describe('ProofOfIdentityContainer', () => {
         expect(screen.getByText('mockedIDV')).toBeInTheDocument();
     });
 
-    it('should render Onfido section when there was a previous onfido submission', async () => {
+    it('should render Manual section when there was a previous manual submission', async () => {
         populateVerificationStatus.mockReturnValue({
             identity_last_attempt: { service: service_code.manual },
             is_age_verified: true,

@@ -105,19 +105,26 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
     React.useEffect(() => {
         if (isDesktop()) {
             if (isCryptocurrency(currency) && typeof setSideNotes === 'function' && !is_switching) {
-                const side_notes = [];
-                if (crypto_transactions?.length) {
-                    side_notes.push(<RecentTransaction key={2} />);
-                }
-                const side_note = [
+                const side_notes = [
+                    <RecentTransaction key={2} />,
                     <WithdrawalSideNote currency={currency} key={0} />,
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
                     ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
                 ];
-                side_notes.push(side_note);
-                setSideNotes(side_notes);
+
+                setSideNotes([
+                    ...side_notes.map((side_note, index) => (
+                        <SideNote has_title={false} key={index}>
+                            {side_note}
+                        </SideNote>
+                    )),
+                ]);
             } else setSideNotes(null);
         }
+
+        return () => {
+            setSideNotes?.([]);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, tab_index, crypto_transactions]);
 

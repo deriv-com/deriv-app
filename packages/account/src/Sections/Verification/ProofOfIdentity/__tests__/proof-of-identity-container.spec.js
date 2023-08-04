@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, act } from '@testing-library/react';
+import { render, screen, act, waitFor } from '@testing-library/react';
 import ProofOfIdentityContainer from '../proof-of-identity-container';
 import { populateVerificationStatus } from '../../Helpers/verification.js';
 import { identity_status_codes, service_code } from '../proof-of-identity-utils';
@@ -158,9 +158,9 @@ describe('ProofOfIdentityContainer', () => {
             ...mock_props,
             is_switching: true,
         };
-        await act(() => {
-            render(<ProofOfIdentityContainer {...new_props} />);
-        });
+
+        render(<ProofOfIdentityContainer {...new_props} />);
+        await waitFor(() => {});
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
@@ -169,9 +169,9 @@ describe('ProofOfIdentityContainer', () => {
             ...mock_props,
             is_virtual: true,
         };
-        await act(() => {
-            render(<ProofOfIdentityContainer {...new_props} />);
-        });
+
+        render(<ProofOfIdentityContainer {...new_props} />);
+        await waitFor(() => {});
         expect(screen.getByText('mockedDemoMessage')).toBeInTheDocument();
     });
 
@@ -184,17 +184,14 @@ describe('ProofOfIdentityContainer', () => {
                 },
             }),
         };
-        await act(() => {
-            render(<ProofOfIdentityContainer {...new_props} />);
-        });
-
+        render(<ProofOfIdentityContainer {...new_props} />);
+        await waitFor(() => {});
         expect(screen.getByText('mockedErrorMessage')).toBeInTheDocument();
     });
 
     it('should render messages that POA is not required', async () => {
-        await act(() => {
-            render(<ProofOfIdentityContainer {...mock_props} />);
-        });
+        render(<ProofOfIdentityContainer {...mock_props} />);
+        await waitFor(() => {});
         expect(screen.getByText('mockedNotRequired')).toBeInTheDocument();
     });
 
@@ -204,9 +201,8 @@ describe('ProofOfIdentityContainer', () => {
             is_age_verified: true,
         });
 
-        await act(() => {
-            render(<ProofOfIdentityContainer {...mock_props} />);
-        });
+        render(<ProofOfIdentityContainer {...mock_props} />);
+        await waitFor(() => {});
         expect(screen.getByText('mockedProofOfIdentitySubmission')).toBeInTheDocument();
     });
 
@@ -217,9 +213,8 @@ describe('ProofOfIdentityContainer', () => {
             identity_status: identity_status_codes.verified,
         });
 
-        await act(() => {
-            render(<ProofOfIdentityContainer {...mock_props} />);
-        });
+        render(<ProofOfIdentityContainer {...mock_props} />);
+        await waitFor(() => {});
         expect(screen.getByText('mockedProofOfIdentitySubmission')).toBeInTheDocument();
     });
 
@@ -230,9 +225,8 @@ describe('ProofOfIdentityContainer', () => {
             identity_status: identity_status_codes.pending,
         });
 
-        await act(() => {
-            render(<ProofOfIdentityContainer {...mock_props} />);
-        });
+        render(<ProofOfIdentityContainer {...mock_props} />);
+        await waitFor(() => {});
         expect(screen.getByText('mockedUploadComplete')).toBeInTheDocument();
     });
 
@@ -243,9 +237,8 @@ describe('ProofOfIdentityContainer', () => {
             identity_status: identity_status_codes.verified,
         });
 
-        await act(() => {
-            render(<ProofOfIdentityContainer {...mock_props} />);
-        });
+        render(<ProofOfIdentityContainer {...mock_props} />);
+        await waitFor(() => {});
         expect(screen.getByText('mockedVerified')).toBeInTheDocument();
     });
 
@@ -256,9 +249,8 @@ describe('ProofOfIdentityContainer', () => {
             identity_status: identity_status_codes.expired,
         });
 
-        await act(() => {
-            render(<ProofOfIdentityContainer {...mock_props} />);
-        });
+        render(<ProofOfIdentityContainer {...mock_props} />);
+        await waitFor(() => {});
         expect(screen.getByText('mockedExpired')).toBeInTheDocument();
     });
 
@@ -269,9 +261,8 @@ describe('ProofOfIdentityContainer', () => {
             identity_status: identity_status_codes.rejected,
         });
 
-        await act(() => {
-            render(<ProofOfIdentityContainer {...mock_props} />);
-        });
+        render(<ProofOfIdentityContainer {...mock_props} />);
+        await waitFor(() => {});
         expect(screen.getByText('mockedLimited')).toBeInTheDocument();
     });
 
@@ -282,9 +273,8 @@ describe('ProofOfIdentityContainer', () => {
             identity_status: identity_status_codes.rejected,
         });
 
-        await act(() => {
-            render(<ProofOfIdentityContainer {...mock_props} />);
-        });
+        render(<ProofOfIdentityContainer {...mock_props} />);
+        await waitFor(() => {});
         expect(screen.getByText('mockedOnfido')).toBeInTheDocument();
     });
 
@@ -295,9 +285,8 @@ describe('ProofOfIdentityContainer', () => {
             identity_status: identity_status_codes.rejected,
         });
 
-        await act(() => {
-            render(<ProofOfIdentityContainer {...mock_props} />);
-        });
+        render(<ProofOfIdentityContainer {...mock_props} />);
+        await waitFor(() => {});
         expect(screen.getByText('mockedIDV')).toBeInTheDocument();
     });
 
@@ -308,9 +297,8 @@ describe('ProofOfIdentityContainer', () => {
             identity_status: identity_status_codes.rejected,
         });
 
-        await act(() => {
-            render(<ProofOfIdentityContainer {...mock_props} />);
-        });
+        render(<ProofOfIdentityContainer {...mock_props} />);
+        await waitFor(() => {});
         expect(screen.getByText('mockedUnsupported')).toBeInTheDocument();
     });
 });

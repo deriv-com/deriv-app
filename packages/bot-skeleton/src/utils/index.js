@@ -7,4 +7,4 @@ export { getSavedWorkspaces, saveWorkspaceToRecent, removeExistingWorkspace } fr
 export { timeSince } from './date-time-helper';
 export { setColors } from '../scratch/hooks/colours';
 export { blocksCoordinate } from '../scratch/hooks/block_svg';
-export { removeAttributesFromXml, removeWhiteSpaceFromXml, ATTRIBUTES_TO_REMOVE } from './xml-string-conversion';
+export { compareXml, pipe, extractBlocksFromXml, sortBlockChild } from './strategy-helper';

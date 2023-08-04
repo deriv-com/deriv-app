@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Dialog, Loading, Text } from '@deriv/components';
+import { Button, Checkbox, Dialog, Loading, Text } from '@deriv/components';
 import { getLocation, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
@@ -22,7 +22,9 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
     const history_value = React.useRef();
     const [pw_input, setPWInput] = React.useState('');
     const [is_password_modal, setIsPasswordModal] = React.useState(false);
-    const disableBtn = (values, errors) =>
+    const [checked, setChecked] = React.useState(false);
+
+    const disableButton = (values, errors) =>
         !values.residence || !!errors.residence || !values.citizenship || !!errors.citizenship;
 
     const updatePassword = new_password => {
@@ -43,6 +45,10 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
 
     const indexOfSelection = selected_country =>
         residence_list.findIndex(item => item.text.toLowerCase() === selected_country.toLowerCase());
+
+    const checkBoxRequired = selected_country => [localize('Brazil')].includes(selected_country);
+
+    const checkBoxConfirmed = selected_country => (checkBoxRequired(selected_country) ? checked : true);
 
     const onSignupPassthrough = values => {
         const index_of_selected_residence = indexOfSelection(values.residence);
@@ -96,6 +102,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                         class_prefix='account-signup'
                                         errors={errors}
                                         touched={touched}
+                                        onResidenceSelectionChanged={() => setChecked(false)}
                                         setFieldTouched={setFieldTouched}
                                         setFieldValue={setFieldValue}
                                         residence_list={residence_list}
@@ -110,12 +117,24 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                         setFieldValue={setFieldValue}
                                         citizenship_list={residence_list}
                                     />
+                                    {checkBoxRequired(values.residence) && (
+                                        <Checkbox
+                                            checked={checked}
+                                            onChange={() => setChecked(!checked)}
+                                            className='account-signup__checkbox'
+                                            label={localize(
+                                                'I hereby confirm that my request for opening an account with Deriv to trade OTC products issued and offered exclusively outside Brazil was initiated by me. I fully understand that Deriv is not regulated by CVM and by approaching Deriv I intend to set up a relation with a foreign company.'
+                                            )}
+                                        />
+                                    )}
                                     <div className='account-signup__footer'>
                                         <Button
                                             className={classNames('account-signup__btn', {
-                                                'account-signup__btn--disabled': disableBtn(values, errors),
+                                                'account-signup__btn--disabled': disableButton(values, errors),
                                             })}
-                                            is_disabled={disableBtn(values, errors)}
+                                            is_disabled={
+                                                !checkBoxConfirmed(values.residence) || disableButton(values, errors)
+                                            }
                                             type='button'
                                             onClick={() => {
                                                 history_value.current = values;

@@ -2,8 +2,8 @@ import React from 'react';
 import UploadComplete from 'Components/poi/status/upload-complete';
 import Expired from 'Components/poi/status/expired';
 import Verified from 'Components/poi/status/verified';
-import Unsupported from 'Components/poi/status/unsupported';
 import RejectedReasons from 'Components/poi/status/rejected-reasons';
+import Unsupported from 'Components/poi/status/unsupported';
 import { identity_status_codes } from './proof-of-identity-utils';
 
 const Onfido = ({

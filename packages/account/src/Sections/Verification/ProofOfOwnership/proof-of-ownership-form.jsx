@@ -283,6 +283,7 @@ ProofOfOwnershipForm.propTypes = {
     grouped_payment_method_data: PropTypes.object,
     refreshNotifications: PropTypes.func,
     updateAccountStatus: PropTypes.func,
+    citizen: PropTypes.string,
 };
 
 export default ProofOfOwnershipForm;

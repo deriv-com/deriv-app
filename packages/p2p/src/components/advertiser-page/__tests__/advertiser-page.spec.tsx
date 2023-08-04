@@ -86,18 +86,6 @@ jest.mock('react-router-dom', () => ({
     })),
 }));
 
-jest.mock('@sendbird/chat', () => ({
-    SendbirdChat: jest.fn().mockReturnValue({}),
-}));
-
-jest.mock('@sendbird/chat/groupChannel', () => ({
-    SendbirdChat: jest.fn().mockReturnValue({}),
-}));
-
-jest.mock('@sendbird/chat/message', () => ({
-    SendbirdChat: jest.fn().mockReturnValue({}),
-}));
-
 describe('<Advertiserpage />', () => {
     it('should call setCounterpartyAdvertiserId when component mounted', () => {
         render(<AdvertiserPage />);

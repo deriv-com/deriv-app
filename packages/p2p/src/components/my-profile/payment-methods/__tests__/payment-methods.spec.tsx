@@ -1,19 +1,7 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { useStores } from 'Stores/index';
 import PaymentMethods from '../payment-methods';
-
-jest.mock('@sendbird/chat', () => ({
-    SendbirdChat: jest.fn().mockReturnValue({}),
-}));
-
-jest.mock('@sendbird/chat/groupChannel', () => ({
-    SendbirdChat: jest.fn().mockReturnValue({}),
-}));
-
-jest.mock('@sendbird/chat/message', () => ({
-    SendbirdChat: jest.fn().mockReturnValue({}),
-}));
 
 let mock_store: DeepPartial<ReturnType<typeof useStores>>;
 

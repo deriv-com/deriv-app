@@ -4,6 +4,8 @@ import React from 'react';
 import { Button, Icon, Modal, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
+//will migrate this to ts
+
 const Checkmark = ({ className }) => (
     <Icon className={className} icon='IcCheckmarkCircle' custom_color='var(--status-success)' size={24} />
 );

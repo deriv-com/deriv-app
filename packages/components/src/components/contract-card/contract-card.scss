@@ -215,6 +215,9 @@
         display: flex;
         justify-content: flex-start;
         font-weight: bold;
+        &--accumulators {
+            margin-left: -3px;
+        }
 
         /* postcss-bem-linter: ignore */
         .category-type {

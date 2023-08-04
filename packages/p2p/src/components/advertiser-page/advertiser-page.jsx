@@ -3,7 +3,7 @@ import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components'
 import { daysSince, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
@@ -25,12 +25,15 @@ import './advertiser-page.scss';
 const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store, general_store, my_profile_store } = useStores();
     const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
+    const { advertiser_details_name, advertiser_details_id, counterparty_advertiser_info } = advertiser_page_store;
+    const { advertiser_id, advertiser_info, counterparty_advertiser_id } = general_store;
 
-    const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
+    const is_my_advert = advertiser_details_id === advertiser_id;
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
-    const info = is_my_advert ? general_store.advertiser_info : advertiser_page_store.counterparty_advertiser_info;
+    const info = is_my_advert ? advertiser_info : counterparty_advertiser_info;
 
     const history = useHistory();
+    const location = useLocation();
 
     const {
         basic_verification,
@@ -49,11 +52,11 @@ const AdvertiserPage = () => {
         sell_orders_count,
     } = info;
 
-    const nickname = advertiser_page_store.advertiser_details_name ?? name;
-
+    const joined_since = daysSince(created_time);
+    const nickname = advertiser_details_name ?? name;
     // rating_average_decimal converts rating_average to 1 d.p number
     const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
-    const joined_since = daysSince(created_time);
+
     const error_message = () => {
         return !!advertiser_page_store.is_counterparty_advertiser_blocked && !is_my_advert
             ? localize("Unblocking wasn't possible as {{name}} is not using Deriv P2P anymore.", {
@@ -65,6 +68,11 @@ const AdvertiserPage = () => {
     };
 
     React.useEffect(() => {
+        if (location.search || counterparty_advertiser_id) {
+            const url_params = new URLSearchParams(location.search);
+            general_store.setCounterpartyAdvertiserId(url_params.get('id'));
+        }
+
         advertiser_page_store.onMount();
         advertiser_page_store.setIsDropdownMenuVisible(false);
 
@@ -77,11 +85,11 @@ const AdvertiserPage = () => {
             { fireImmediately: true }
         );
 
-        reaction(
+        const disposeBlockUnblockUserErrorReaction = reaction(
             () => [advertiser_page_store.active_index, general_store.block_unblock_user_error],
             () => {
                 advertiser_page_store.onTabChange();
-                if (general_store.block_unblock_user_error && buy_sell_store.show_advertiser_page) {
+                if (general_store.block_unblock_user_error) {
                     showModal({
                         key: 'ErrorModal',
                         props: {
@@ -109,7 +117,6 @@ const AdvertiserPage = () => {
                             width: isMobile() ? '90rem' : '40rem',
                         },
                     });
-                    general_store.setBlockUnblockUserError(null);
                 }
             },
             { fireImmediately: true }
@@ -117,6 +124,7 @@ const AdvertiserPage = () => {
 
         return () => {
             disposeCounterpartyAdvertiserIdReaction();
+            disposeBlockUnblockUserErrorReaction();
             advertiser_page_store.onUnmount();
         };
 

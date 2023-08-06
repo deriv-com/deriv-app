@@ -24,7 +24,7 @@ const FloatingRate = ({
         ui: { current_focus, setCurrentFocus },
     } = useStore();
 
-    const { p2p_config } = useP2PConfig();
+    const { data: p2p_config } = useP2PConfig();
     const { getRate } = useExchangeRate();
     const override_exchange_rate = p2p_config?.override_exchange_rate;
     const market_rate = override_exchange_rate ? Number(override_exchange_rate) : getRate(local_currency);

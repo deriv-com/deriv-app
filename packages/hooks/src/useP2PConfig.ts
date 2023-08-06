@@ -29,7 +29,7 @@ const useP2PConfig = () => {
 
     return {
         /** The p2p config response. */
-        p2p_config: modified_p2p_config,
+        data: modified_p2p_config,
         ...rest,
     };
 };

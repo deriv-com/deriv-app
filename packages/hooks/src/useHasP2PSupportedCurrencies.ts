@@ -4,14 +4,14 @@ import useP2PConfig from './useP2PConfig';
 const useHasP2PSupportedCurrencies = () => {
     const { client } = useStore();
     const { active_accounts } = client;
-    const { p2p_config, ...rest } = useP2PConfig();
+    const { data, ...rest } = useP2PConfig();
 
     const real_account_currencies_list = active_accounts
         .filter(account => !account.is_virtual)
         .map(account => account.currency?.toLowerCase());
 
     const has_p2p_supported_currencies = Boolean(
-        p2p_config?.supported_currencies.some((currency: string) => real_account_currencies_list.includes(currency))
+        data?.supported_currencies.some((currency: string) => real_account_currencies_list.includes(currency))
     );
 
     return {

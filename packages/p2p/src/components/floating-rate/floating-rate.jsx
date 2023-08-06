@@ -4,9 +4,8 @@ import PropTypes from 'prop-types';
 import { InputField, Text } from '@deriv/components';
 import { formatMoney, isMobile, mobileOSDetect } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useExchangeRate } from '@deriv/hooks';
+import { useExchangeRate, useP2PConfig } from '@deriv/hooks';
 import { localize } from 'Components/i18next';
-import useP2PConfig from 'Hooks/useP2PConfig';
 import { setDecimalPlaces, removeTrailingZeros, percentOf, roundOffDecimal } from 'Utils/format-value';
 import './floating-rate.scss';
 
@@ -25,9 +24,9 @@ const FloatingRate = ({
         ui: { current_focus, setCurrentFocus },
     } = useStore();
 
-    const { modified_p2p_config } = useP2PConfig();
+    const { p2p_config } = useP2PConfig();
     const { getRate } = useExchangeRate();
-    const override_exchange_rate = modified_p2p_config?.override_exchange_rate;
+    const override_exchange_rate = p2p_config?.override_exchange_rate;
     const market_rate = override_exchange_rate ? Number(override_exchange_rate) : getRate(local_currency);
     const os = mobileOSDetect();
     const { name, value, required } = props;

@@ -21,6 +21,7 @@ const sizes = {
         medium: 24,
         large: 32,
         xlarge: 48,
+        xxlarge: 64,
     },
     // The crypto and demo sizes are the same
     box: {
@@ -44,6 +45,10 @@ const sizes = {
             width: 96,
             height: 60,
         },
+        xxlarge: {
+            width: 120,
+            height: 80,
+        },
     },
 } as const;
 
@@ -59,6 +64,7 @@ const WalletIcon = ({ gradient_class, icon, size = 'medium', type, has_bg, hide_
                     (!!gradient_class && type !== 'app') || has_bg,
                 'wallet-card--hide-watermark': hide_watermark,
             })}
+            data-testid='dt_wallet_icon'
         >
             {(type === 'fiat' || type === 'app') && <Icon icon={icon} size={sizes.square[size]} />}
             {(type === 'demo' || type === 'crypto') && (

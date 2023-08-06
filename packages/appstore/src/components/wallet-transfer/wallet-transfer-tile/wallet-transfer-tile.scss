@@ -1,8 +1,8 @@
-.wallet-tile {
+.wallet-transfer-tile {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    background-color: $color-white;
+    background-color: var(--general-main-1);
     border-radius: $BORDER_RADIUS;
     flex-grow: 1;
 
@@ -19,12 +19,16 @@
 
     &--hover {
         &:hover {
-            background-color: $color-grey-4;
+            background-color: var(--general-hover);
         }
     }
 
     &--active {
-        background-color: $color-grey-5;
+        background-color: var(--state-active);
+    }
+
+    &--list-item-background {
+        background-color: var(--general-main-2);
     }
 
     &__icon {

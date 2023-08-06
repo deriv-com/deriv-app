@@ -13,7 +13,7 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
-import { TReactChangeEvent, TAccount, TAccountsList, TError, TSideNotesProps } from '../../../types';
+import { TReactChangeEvent, TAccount, TAccountsList, TError } from '../../../types';
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
 import ErrorDialog from '../../../components/error-dialog';
 import PercentageSelector from '../../../components/percentage-selector';
@@ -28,7 +28,7 @@ type TAccountTransferFormProps = {
     onClickDeposit?: () => void;
     onClickNotes?: () => void;
     onClose?: () => void;
-    setSideNotes?: (notes: TSideNotesProps) => void;
+    setSideNotes: (notes: React.ReactNode[]) => void;
 };
 
 const AccountOption = ({ account, idx }: TAccountsList) => {
@@ -248,7 +248,7 @@ const AccountTransferForm = observer(
         }, [accounts_list, selected_to, selected_from]); // eslint-disable-line react-hooks/exhaustive-deps
 
         React.useEffect(() => {
-            if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
+            if (Object.keys(from_accounts).length) {
                 const side_notes = [];
                 side_notes.push(
                     <AccountTransferNote
@@ -276,6 +276,10 @@ const AccountTransferForm = observer(
                     </SideNote>,
                 ]);
             }
+
+            return () => {
+                setSideNotes([]);
+            };
         }, [
             transfer_fee,
             selected_from,

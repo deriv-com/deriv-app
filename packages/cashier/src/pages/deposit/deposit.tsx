@@ -11,12 +11,8 @@ const Deposit = observer(() => {
     const { transaction_history, general_store } = useCashierStore();
     const { is_low_risk_cr_eu_real } = traders_hub;
     const { is_crypto_transactions_visible } = transaction_history;
-    const { is_crypto, is_deposit, setActiveTab } = general_store;
+    const { is_crypto, is_deposit } = general_store;
     const is_deposit_locked = useDepositLocked();
-
-    React.useEffect(() => {
-        setActiveTab('deposit');
-    }, [setActiveTab]);
 
     if (is_deposit_locked) return <DepositLocked />;
 

@@ -25,7 +25,7 @@ type TWithdrawalSideNoteProps = {
 };
 
 type TWithdrawalProps = {
-    setSideNotes: (notes: (JSX.Element | JSX.Element[])[] | null) => void;
+    setSideNotes: (notes: React.ReactNode[]) => void;
 };
 
 const WithdrawalSideNote = ({ is_mobile, currency }: TWithdrawalSideNoteProps) => {
@@ -60,7 +60,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         verification_code: { payment_withdraw: verification_code },
     } = client;
     const { iframe, general_store, transaction_history, withdraw } = useCashierStore();
-    const { is_crypto, setActiveTab, cashier_route_tab_index: tab_index } = general_store;
+    const { is_crypto, cashier_route_tab_index: tab_index } = general_store;
     const is_cashier_locked = useCashierLocked();
     const is_system_maintenance = useIsSystemMaintenance();
     const { iframe_url } = iframe;
@@ -76,11 +76,10 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
     } = withdraw;
 
     React.useEffect(() => {
-        setActiveTab('withdraw');
         return () => {
             setErrorMessage({ code: '', message: '' });
         };
-    }, [setActiveTab, setErrorMessage]);
+    }, [setErrorMessage]);
 
     React.useEffect(() => {
         check10kLimit();
@@ -93,7 +92,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
 
     React.useEffect(() => {
         if (isDesktop()) {
-            if (isCryptocurrency(currency) && typeof setSideNotes === 'function' && !is_switching) {
+            if (isCryptocurrency(currency) && !is_switching) {
                 const side_notes = [
                     <RecentTransaction key={2} />,
                     <WithdrawalSideNote currency={currency} key={0} />,
@@ -108,11 +107,11 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
                         </SideNote>
                     )),
                 ]);
-            } else setSideNotes(null);
+            } else setSideNotes([]);
         }
 
         return () => {
-            setSideNotes?.([]);
+            setSideNotes([]);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, tab_index]);

@@ -8,7 +8,7 @@ import { useCashierStore } from '../../stores/useCashierStores';
 import { useCashierLocked } from '@deriv/hooks';
 
 type TPaymentAgent = {
-    setSideNotes: (notes: (React.ReactNode | React.ReactNode[])[] | null) => void;
+    setSideNotes: (notes: React.ReactNode[]) => void;
 };
 
 const PaymentAgent = observer(({ setSideNotes }: TPaymentAgent) => {
@@ -18,8 +18,7 @@ const PaymentAgent = observer(({ setSideNotes }: TPaymentAgent) => {
         is_virtual,
         verification_code: { payment_agent_withdraw: verification_code },
     } = client;
-    const { general_store, payment_agent } = useCashierStore();
-    const { setActiveTab } = general_store;
+    const { payment_agent } = useCashierStore();
     const is_cashier_locked = useCashierLocked();
     const {
         is_withdraw: is_payment_agent_withdraw,
@@ -32,7 +31,6 @@ const PaymentAgent = observer(({ setSideNotes }: TPaymentAgent) => {
     setPaymentAgentActiveTabIndex(initial_active_index);
 
     React.useEffect(() => {
-        setActiveTab('payment_agent');
         return () => {
             setPaymentAgentActiveTabIndex(0);
         };

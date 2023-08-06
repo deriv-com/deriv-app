@@ -2,7 +2,6 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import { TSideNotesProps } from '../../types';
 import Error from '../../components/error';
 import NoBalance from '../../components/no-balance';
 import { Virtual } from '../../components/cashier-container';
@@ -20,7 +19,7 @@ type TAccountTransferProps = {
     onClickNotes?: VoidFunction;
     onClose: VoidFunction;
     openAccountSwitcherModal?: VoidFunction;
-    setSideNotes?: (notes: TSideNotesProps) => void;
+    setSideNotes: (notes: React.ReactNode[]) => void;
 };
 
 const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSideNotes }: TAccountTransferProps) => {
@@ -38,7 +37,7 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
         setAccountTransferAmount,
         setIsTransferConfirm,
     } = account_transfer;
-    const { is_loading, setActiveTab } = general_store;
+    const { is_loading } = general_store;
     const is_cashier_locked = useCashierLocked();
     const { is_crypto_transactions_visible } = transaction_history;
     const { is_switching, is_virtual } = client;
@@ -46,7 +45,6 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
     const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
 
     React.useEffect(() => {
-        setActiveTab('account_transfer');
         onMount();
 
         WS.wait('authorize', 'website_status', 'get_settings', 'paymentagent_list').then(() => {
@@ -61,8 +59,8 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
     }, []);
 
     React.useEffect(() => {
-        if (typeof setSideNotes === 'function' && (has_no_accounts_balance || is_switching)) {
-            setSideNotes(null);
+        if (has_no_accounts_balance || is_switching) {
+            setSideNotes([]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setSideNotes, has_no_accounts_balance]);

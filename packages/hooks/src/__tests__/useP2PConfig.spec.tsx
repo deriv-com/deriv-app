@@ -38,9 +38,10 @@ describe('useP2PConfig', () => {
             },
         });
 
-        const mock_data = {
+        mockUseFetch.mockReturnValue({
             data: {
                 website_status: {
+                    // @ts-expect-error need to come up with a way to mock the return type of useFetch
                     p2p_config: {
                         payment_methods_enabled: 1,
                         adverts_active_limit: 3,
@@ -49,10 +50,7 @@ describe('useP2PConfig', () => {
                     },
                 },
             },
-        };
-
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue(mock_data);
+        });
 
         const wrapper = ({ children }: TWrapper) => (
             <APIProvider>

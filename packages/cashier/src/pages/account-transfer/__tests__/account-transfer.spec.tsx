@@ -105,7 +105,7 @@ describe('<AccountTransfer />', () => {
         renderAccountTransfer(mock_root_store);
 
         await waitFor(() => {
-            expect(props.setSideNotes).toHaveBeenCalledWith(null);
+            expect(props.setSideNotes).toHaveBeenCalledWith([]);
         });
     });
 

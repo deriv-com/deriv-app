@@ -336,8 +336,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             setResetTradingPasswordModalOpen: jest.fn(),
         },
         traders_hub: {
+            getAccount: jest.fn(),
             closeModal: jest.fn(),
             combined_cfd_mt5_accounts: [],
+            available_cfd_accounts: [],
             content_flag: '',
             CFDs_restricted_countries: false,
             openModal: jest.fn(),
@@ -385,6 +387,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTogglePlatformType: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
             selectAccountType: jest.fn(),
+            available_dxtrade_accounts: [],
             is_mt5_notification_modal_visible: false,
             setMT5NotificationModal: jest.fn(),
         },

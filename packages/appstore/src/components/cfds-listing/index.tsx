@@ -7,9 +7,11 @@ import ListingContainer from 'Components/containers/listing-container';
 import AddOptionsAccount from 'Components/add-options-account';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
+import CompareAccount from 'Components/compare-account';
 import GetMoreAccounts from 'Components/get-more-accounts';
 import { Actions } from 'Components/containers/trading-app-card-actions';
 import { getHasDivider } from 'Constants/utils';
+import { useHistory } from 'react-router-dom';
 import { useStores } from 'Stores/index';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import './cfds-listing.scss';
@@ -21,6 +23,8 @@ type TDetailedExistingAccount = AvailableAccount &
     };
 
 const CFDsListing = () => {
+    const history = useHistory();
+
     const {
         client,
         modules: { cfd },
@@ -54,7 +58,7 @@ const CFDsListing = () => {
         financial_restricted_countries,
     } = traders_hub;
 
-    const { toggleCompareAccountsModal, setAccountType } = cfd;
+    const { setAccountType } = cfd;
     const { is_landing_company_loaded, real_account_creation_unlock_date, account_status } = client;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal, setShouldShowCooldownModal } = ui;
@@ -141,11 +145,7 @@ const CFDsListing = () => {
                         <Text size='sm' line_height='m' weight='bold' color='prominent'>
                             {localize('CFDs')}
                         </Text>
-                        <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
-                            <Text key={0} color='red' size='xxs' weight='bold' styles={{ marginLeft: '1rem' }}>
-                                <Localize i18n_default_text={accounts_sub_text} />
-                            </Text>
-                        </div>
+                        <CompareAccount accounts_sub_text={accounts_sub_text} is_desktop={!isMobile()} />
                     </div>
                 )
             }
@@ -160,13 +160,7 @@ const CFDsListing = () => {
                 </Text>
             }
         >
-            {isMobile() && (
-                <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
-                    <Text size='xs' color='red' weight='bold' line_height='s'>
-                        <Localize i18n_default_text={accounts_sub_text} />
-                    </Text>
-                </div>
-            )}
+            {isMobile() && <CompareAccount accounts_sub_text={accounts_sub_text} />}
 
             <AddDerivAccount />
 

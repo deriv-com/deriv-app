@@ -6,6 +6,7 @@ export default class ConfigStore extends BaseStore {
     public routes = {
         traders_hub: '/appstore/traders-hub',
         onboarding: '/appstore/onboarding',
+        compare_cfds: '/appstore/compare-accounts',
 
         my_apps: '/my-apps',
         explore: '/explore',

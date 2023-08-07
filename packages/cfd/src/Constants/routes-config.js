@@ -2,7 +2,7 @@ import React from 'react';
 import CFD from '../Containers';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-
+import CFDCompareAccounts from 'Containers/cfd-compare-accounts';
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ '../Modules/Page404'));
 
@@ -21,6 +21,14 @@ const initRoutesConfig = () => {
             // eslint-disable-next-line react/display-name
             component: props => <CFD {...props} platform='mt5' />,
             getTitle: () => localize('MT5'),
+            is_authenticated: false,
+        },
+        // This is placed here to avoid conflict with other routes
+        // TODO: [refactoring] - Remove this route once we do refactoring
+        {
+            path: routes.compare_cfds,
+            component: props => <CFDCompareAccounts {...props} />,
+            getTitle: () => localize('Compare CFD accounts'),
             is_authenticated: false,
         },
     ];

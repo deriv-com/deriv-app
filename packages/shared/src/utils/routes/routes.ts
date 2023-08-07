@@ -71,4 +71,5 @@ export const routes = {
     appstore: '/appstore',
     traders_hub: '/appstore/traders-hub',
     onboarding: '/appstore/onboarding',
+    compare_cfds: '/appstore/cfd-compare-acccounts',
 };

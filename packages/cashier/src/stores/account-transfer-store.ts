@@ -105,8 +105,8 @@ export default class AccountTransferStore {
         return need_financial_assessment && this.error.is_ask_financial_risk_approval;
     }
 
-    setShouldSwitchAccount() {
-        this.should_switch_account = true;
+    setShouldSwitchAccount(value: boolean) {
+        this.should_switch_account = value;
     }
 
     setBalanceByLoginId(loginid: string, balance: string | number) {
@@ -377,7 +377,7 @@ export default class AccountTransferStore {
             const cfd_platforms = {
                 mt5: { name: 'Deriv MT5', icon: 'IcMt5' },
                 dxtrade: { name: 'Deriv X', icon: 'IcRebranding' },
-                derivez: { name: 'Deriv EZ', icon: 'IcDerivez' },
+                derivez: { name: 'Deriv EZ', icon: 'IcRebranding' },
             };
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const is_cfd = Object.keys(cfd_platforms).includes(account.account_type!);

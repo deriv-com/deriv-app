@@ -5,7 +5,6 @@ import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import TraderProviders from '../../../../../trader-providers';
 import MultiplierAmountModal from '../multiplier-amount-modal';
-import * as preview_proposal_functions from 'Stores/Modules/Trading/Helpers/preview-proposal';
 
 const default_mocked_props = {
     is_open: true,
@@ -21,8 +20,6 @@ const default_mock_store = {
     },
 };
 
-const mockRequestPreviewProposal = jest.spyOn(preview_proposal_functions, 'requestPreviewProposal');
-
 jest.mock('Modules/Trading/Components/Form/TradeParams/amount-mobile', () =>
     jest.fn(props => (
         <div>
@@ -34,10 +31,20 @@ jest.mock('Modules/Trading/Components/Form/TradeParams/amount-mobile', () =>
         </div>
     ))
 );
+jest.mock('Stores/Modules/Trading/Helpers/preview-proposal', () => ({
+    ...jest.requireActual('Stores/Modules/Trading/Helpers/preview-proposal'),
+    requestPreviewProposal: (store, new_store, fn) =>
+        fn({
+            proposal: { commission: '1%', limit_order: { stop_out: { order_amount: '10' } } },
+            echo_req: { contract_type: 'MULTUP', amount: 20 },
+            subscription: {},
+        }),
+}));
 jest.mock('Modules/Trading/Components/Form/TradeParams/Multiplier/info', () =>
-    jest.fn(() => (
+    jest.fn(props => (
         <div>
             <span>MultipliersInfo component</span>
+            <span>{props.commission}</span>
         </div>
     ))
 );
@@ -50,6 +57,7 @@ describe('<MultiplierAmountModal />', () => {
             </TraderProviders>
         );
     };
+
     beforeAll(() => {
         ReactDOM.createPortal = jest.fn(component => {
             return component;
@@ -58,9 +66,10 @@ describe('<MultiplierAmountModal />', () => {
 
     afterAll(() => {
         ReactDOM.createPortal.mockClear();
+        jest.clearAllMocks();
     });
 
-    it('should render modal and <TradeParamsMobile/> inside if is_open == true', () => {
+    it('should render modal and <TradeParamsMobile/> inside', () => {
         const mock_root_store = mockStore(default_mock_store);
         render(mockMultiplierAmountModal(mock_root_store, default_mocked_props));
 
@@ -77,18 +86,19 @@ describe('<MultiplierAmountModal />', () => {
 
         expect(screen.getByText(/To ensure your loss/i)).toBeInTheDocument();
     });
-    it('should change stake_value and call mockRequestPreviewProposal after setSelectedAmount was called by pressing the proper button', () => {
+    it('should change stake_value and commission if setSelectedAmount was called by pressing the proper button', () => {
         const mock_root_store = mockStore(default_mock_store);
         const { rerender } = render(mockMultiplierAmountModal(mock_root_store, default_mocked_props));
 
         expect(screen.getByText(10)).toBeInTheDocument();
+        expect(screen.queryByText(/1%/i)).not.toBeInTheDocument();
 
         const selected_amount_button = screen.getByText(/SelectedAmount button/i);
         userEvent.click(selected_amount_button);
         rerender(mockMultiplierAmountModal(mock_root_store, default_mocked_props));
 
-        expect(mockRequestPreviewProposal).toBeCalled();
         expect(screen.getByText(20)).toBeInTheDocument();
+        expect(screen.getByText(/1%/i)).toBeInTheDocument();
     });
     it('should call toggleModal if the proper button was clicked', () => {
         const mock_root_store = mockStore(default_mock_store);

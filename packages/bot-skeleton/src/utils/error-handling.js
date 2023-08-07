@@ -3,7 +3,7 @@ import { error_message_map } from './error-config';
 
 const onKeyDownHandleError = observer => {
     if (Blockly.selected !== null) {
-        //keyboard gives keyCode 46 and Laptop gives 46
+        //keyboard gives keyCode 46 and Laptop gives 8
         if (event.keyCode === 8 || event.keyCode === 46) {
             handleError('BLOCK_DELETION', observer);
         }

@@ -378,6 +378,7 @@ import './common/ic-email-typo.svg';
 import './common/ic-email-verification-link-blocked.svg';
 import './common/ic-email-verification-link-invalid.svg';
 import './common/ic-email-verification-link-valid.svg';
+import './common/ic-email-verification-resent.svg';
 import './common/ic-email-verified.svg';
 import './common/ic-email.svg';
 import './common/ic-empty-blocked-advertisers.svg';

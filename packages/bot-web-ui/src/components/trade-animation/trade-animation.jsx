@@ -3,10 +3,11 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Button, Icon, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import ContractResultOverlay from 'Components/contract-result-overlay';
 import { contract_stages } from 'Constants/contract-stage';
-import { connect } from 'Stores/connect';
+import { useDBotStore } from 'Stores/useDBotStore';
 
 const CircularWrapper = ({ className }) => (
     <div className={classNames('circular-wrapper', className)}>
@@ -71,22 +72,23 @@ const ContractStageText = ({ contract_stage }) => {
     }
 };
 
-const TradeAnimation = ({
-    className,
-    contract_stage,
-    is_animation_info_modal_open,
-    is_contract_completed,
-    is_stop_button_visible,
-    is_stop_button_disabled,
-    profit,
-    should_show_overlay,
-    onRunButtonClick,
-    onStopButtonClick,
-    info_direction,
-    toggleAnimationInfoModal,
-    cashier_validation,
-    performSelfExclusionCheck,
-}) => {
+const TradeAnimation = observer(({ className, info_direction }) => {
+    const { run_panel, toolbar, summary_card } = useDBotStore();
+    const { client } = useStore();
+    const { is_contract_completed, profit } = summary_card;
+    const {
+        contract_stage,
+        is_stop_button_visible,
+        is_stop_button_disabled,
+        onRunButtonClick,
+        onStopButtonClick,
+        performSelfExclusionCheck,
+        should_show_overlay,
+    } = run_panel;
+    const { is_animation_info_modal_open, toggleAnimationInfoModal } = toolbar;
+    const { account_status } = client;
+    const cashier_validation = account_status?.cashier_validation;
+
     const [is_button_disabled, updateIsButtonDisabled] = React.useState(false);
     const is_unavailable_for_payment_agent = cashier_validation?.includes('WithdrawServiceUnavailableForPA');
     // perform self-exclusion checks which will be stored under the self-exclusion-store
@@ -170,33 +172,11 @@ const TradeAnimation = ({
             />
         </div>
     );
-};
+});
 
 TradeAnimation.propTypes = {
     className: PropTypes.string,
-    contract_stage: PropTypes.number,
-    is_animation_info_modal_open: PropTypes.bool,
-    is_contract_completed: PropTypes.bool,
-    is_stop_button_visible: PropTypes.bool,
-    is_stop_button_disabled: PropTypes.bool,
-    onRunButtonClick: PropTypes.func,
-    onStopButtonClick: PropTypes.func,
-    performSelfExclusionCheck: PropTypes.func,
-    profit: PropTypes.number,
-    should_show_overlay: PropTypes.bool,
+    info_direction: PropTypes.string,
 };
 
-export default connect(({ summary_card, run_panel, toolbar, client }) => ({
-    contract_stage: run_panel.contract_stage,
-    is_animation_info_modal_open: toolbar.is_animation_info_modal_open,
-    is_contract_completed: summary_card.is_contract_completed,
-    is_stop_button_visible: run_panel.is_stop_button_visible,
-    is_stop_button_disabled: run_panel.is_stop_button_disabled,
-    onRunButtonClick: run_panel.onRunButtonClick,
-    onStopButtonClick: run_panel.onStopButtonClick,
-    performSelfExclusionCheck: run_panel.performSelfExclusionCheck,
-    profit: summary_card.profit,
-    should_show_overlay: run_panel.should_show_overlay,
-    toggleAnimationInfoModal: toolbar.toggleAnimationInfoModal,
-    cashier_validation: client.account_status.cashier_validation,
-}))(TradeAnimation);
+export default TradeAnimation;

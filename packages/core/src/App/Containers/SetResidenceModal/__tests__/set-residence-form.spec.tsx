@@ -11,7 +11,7 @@ jest.mock('@deriv/components', () => {
     };
 });
 describe('SetResidenceForm', () => {
-    it('should render the component', () => {
+    it('should render the component with autocomplete input box', () => {
         const mock_props = {
             class_prefix: 'set-residence',
             errors: { residence: [] },
@@ -23,6 +23,7 @@ describe('SetResidenceForm', () => {
                 <SetResidenceForm {...mock_props} />
             </Formik>
         );
+        expect(screen.getByText('mockedAutocomplete')).toBeInTheDocument();
     });
 
     it('should not display the hint text if there are errors', () => {
@@ -52,6 +53,6 @@ describe('SetResidenceForm', () => {
                 <SetResidenceForm {...mock_props} />
             </Formik>
         );
-        expect(screen.queryByText('Country of residence is where you currently live.')).toBeInTheDocument();
+        expect(screen.getByText('Country of residence is where you currently live.')).toBeInTheDocument();
     });
 });

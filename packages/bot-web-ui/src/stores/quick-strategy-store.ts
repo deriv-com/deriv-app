@@ -335,13 +335,6 @@ export default class QuickStrategyStore {
 
         const { derivWorkspace: workspace } = Blockly;
 
-        await load({
-            block_string: Blockly.Xml.domToText(strategy_dom),
-            file_name,
-            workspace,
-            from: save_types.UNSAVED,
-        });
-
         if (button === 'run') {
             workspace
                 .waitForBlockEvent({
@@ -353,9 +346,20 @@ export default class QuickStrategyStore {
                     this.root_store.run_panel.onRunButtonClick();
                 });
         }
+
         if (this.is_strategy_modal_open) {
             this.loadDataStrategy();
         }
+
+        await load({
+            block_string: Blockly.Xml.domToText(strategy_dom),
+            file_name,
+            workspace,
+            from: save_types.UNSAVED,
+            drop_event: null,
+            strategy_id: null,
+            showIncompatibleStrategyDialog: null,
+        });
     }
 
     async updateSymbolDropdown() {

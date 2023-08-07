@@ -81,7 +81,7 @@ export default class SaveModalStore implements ISaveModalStore {
     ) => {
         try {
             const workspace = await getSavedWorkspaces();
-            const current_workspace_index = workspace.findIndex(strategy => strategy.id === workspace_id);
+            const current_workspace_index = workspace.findIndex((strategy: TStrategy) => strategy.id === workspace_id);
             const {
                 load_modal: { getSaveType },
             } = this.root_store;
@@ -107,7 +107,7 @@ export default class SaveModalStore implements ISaveModalStore {
             }
 
             workspace
-                .sort((a, b) => {
+                .sort((a: TStrategy, b: TStrategy) => {
                     return new Date(a.timestamp) - new Date(b.timestamp);
                 })
                 .reverse();
@@ -115,9 +115,8 @@ export default class SaveModalStore implements ISaveModalStore {
             if (workspace.length > MAX_STRATEGIES) {
                 workspace.pop();
             }
-            const {
-                load_modal: { setRecentStrategies },
-            } = this.root_store;
+            const { load_modal } = this.root_store;
+            const { setRecentStrategies } = load_modal;
             localForage.setItem('saved_workspaces', LZString.compress(JSON.stringify(workspace)));
             const updated_strategies = await getSavedWorkspaces();
             setRecentStrategies(updated_strategies);
@@ -132,7 +131,7 @@ export default class SaveModalStore implements ISaveModalStore {
 
     async onConfirmSave({ is_local, save_as_collection, bot_name }: IOnConfirmProps) {
         const { load_modal, dashboard, google_drive } = this.root_store;
-        const { selected_strategy, loadStrategyToBuilder } = load_modal;
+        const { loadStrategyToBuilder, selected_strategy } = load_modal;
         const { active_tab } = dashboard;
         this.setButtonStatus(button_status.LOADING);
         const { saveFile } = google_drive;
@@ -144,6 +143,7 @@ export default class SaveModalStore implements ISaveModalStore {
             const recent_files = await getSavedWorkspaces();
             main_strategy = recent_files.filter((strategy: TStrategy) => strategy.id === selected_strategy.id)?.[0];
             main_strategy.name = bot_name;
+            main_strategy.save_type = is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE;
             xml = Blockly?.Xml?.textToDom(main_strategy.xml);
         }
         xml?.setAttribute('is_dbot', 'true');
@@ -162,12 +162,12 @@ export default class SaveModalStore implements ISaveModalStore {
 
         if (active_tab === 0) {
             const workspace_id = selected_strategy.id || Blockly?.utils?.genUid();
-            this.addStrategyToWorkspace(workspace_id, is_local, save_as_collection, bot_name, xml);
+            await this.addStrategyToWorkspace(workspace_id, is_local, save_as_collection, bot_name, xml);
+            if (main_strategy) await loadStrategyToBuilder(main_strategy);
         } else {
-            saveWorkspaceToRecent(xml, is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
+            await saveWorkspaceToRecent(xml, is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
         }
         this.updateBotName(bot_name);
-        if (main_strategy && active_tab === 0) loadStrategyToBuilder(main_strategy);
         this.toggleSaveModal();
     }
 

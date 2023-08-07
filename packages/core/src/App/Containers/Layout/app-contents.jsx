@@ -36,26 +36,27 @@ const AppContents = ({
 
     const scroll_ref = React.useRef(null);
 
+    const current_page = window.location.hostname + window.location.pathname;
+
     React.useEffect(() => {
         // rudderstack page view trigger
         WS.wait('authorize').then(response => {
-            if (!response.error) {
-                const { user_id } = response.authorize;
-                const account_type = response.authorize.loginid.substring(0, 2);
-                
-                if (is_logged_in && user_id) {
-                    RudderStack.identifyEvent(user_id, account_type, {
-                        language: getLanguage().toLowerCase() || 'en',
-                    });
-                    const current_page = window.location.hostname + window.location.pathname;
-                    RudderStack.pageView(current_page);
-                }
+            if (response.error) return;
+            const user_id = response.authorize?.user_id;
+
+            if (is_logged_in && user_id) {
+                RudderStack.identifyEvent(user_id, {
+                    language: getLanguage().toLowerCase() || 'en',
+                });
+                RudderStack.pageView(current_page);
             }
         });
 
         if (scroll_ref.current) setAppContentsScrollRef(scroll_ref);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    RudderStack.pageView(current_page);
 
     React.useEffect(() => {
         const allow_tracking = !is_eu_country || tracking_status === 'accepted';

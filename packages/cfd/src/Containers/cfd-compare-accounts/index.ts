@@ -1,0 +1,1 @@
+//initizling the compare account

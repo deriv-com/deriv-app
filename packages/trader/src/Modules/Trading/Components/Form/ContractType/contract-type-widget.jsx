@@ -77,13 +77,11 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
 
     const list_with_category = () => {
         const contract_type_category_icon = getContractTypeCategoryIcons();
-
-        // Order the list based on categories provided in order_arr
         const order_arr = [
             'Accumulators',
-            'Multipliers',
-            'Turbos',
             'Vanillas',
+            'Turbos',
+            'Multipliers',
             'Ups & Downs',
             'Highs & Lows',
             'Digits',

@@ -126,6 +126,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_virtual: false,
             is_withdrawal_lock: false,
             is_populating_account_list: false,
+            is_language_loaded: false,
+            prev_account_type: '',
             landing_company_shortcode: '',
             local_currency_config: {
                 currency: '',
@@ -385,6 +387,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTogglePlatformType: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
             selectAccountType: jest.fn(),
+            toggleIsTourOpen: jest.fn(),
+            is_demo_low_risk: false,
             is_mt5_notification_modal_visible: false,
             setMT5NotificationModal: jest.fn(),
         },

@@ -6,7 +6,7 @@ const useBalance = () => {
     const { data: balance_data, ...rest } = useFetch('balance', {
         payload: { account: 'all' },
         // Updating the balance every 5 seconds, This will be replaced by a subscription when we have `BalanceProvider`.
-        // options: { refetchInterval: 5000 },
+        options: { refetchInterval: 5000 },
     });
 
     // Add additional information to the balance data.

@@ -43,6 +43,7 @@
                 grid-template-columns: 1.2fr 1fr;
                 &--accumulator {
                     display: flex;
+                    grid-gap: 1px;
                     &-sold {
                         padding-top: 1rem;
                     }
@@ -215,9 +216,6 @@
         display: flex;
         justify-content: flex-start;
         font-weight: bold;
-        &--accumulators {
-            margin-left: -3px;
-        }
 
         /* postcss-bem-linter: ignore */
         .category-type {

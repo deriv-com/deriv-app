@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react';
 import { Loading, Modal } from '@deriv/components';
 import { useActiveWallet } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
@@ -8,7 +8,7 @@ import WalletModalBody from './wallet-modal-body';
 
 const WalletModal = observer(() => {
     const {
-        client: { is_authorize, switchAccount },
+        client: { switchAccount },
         ui: { is_dark_mode_on, is_wallet_modal_visible, is_mobile, setIsWalletModalVisible },
         traders_hub: {
             active_modal_tab,

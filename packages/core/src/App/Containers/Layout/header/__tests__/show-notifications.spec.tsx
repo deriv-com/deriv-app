@@ -24,6 +24,8 @@ describe('ShowNotifications', () => {
                 <ShowNotifications />
             </StoreProvider>
         );
+        expect(screen.getByTestId('dt_trading_hub_show_notifications')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_trading_hub_show_notifications')).toHaveClass('trading-hub-header__notification');
     });
 
     it('should render the ToggleNotifications child component', () => {

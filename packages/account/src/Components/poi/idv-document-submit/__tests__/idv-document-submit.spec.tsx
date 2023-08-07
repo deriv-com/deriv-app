@@ -2,6 +2,13 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import IdvDocumentSubmit from '../idv-document-submit';
+import { StoreProvider, mockStore } from '@deriv/stores';
+
+const mock_store = mockStore({
+    client: {
+        getChangeableFields: jest.fn(() => []),
+    },
+});
 
 jest.mock('react-router');
 jest.mock('Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
@@ -67,12 +74,14 @@ describe('<IdvDocumentSubmit/>', () => {
             },
         },
         is_from_external: false,
-        account_settings: {},
-        getChangeableFields: jest.fn(() => []),
     };
 
     it('should render IdvDocumentSubmit component', () => {
-        render(<IdvDocumentSubmit {...mock_props} />);
+        render(
+            <StoreProvider store={mock_store}>
+                <IdvDocumentSubmit {...mock_props} />
+            </StoreProvider>
+        );
 
         expect(screen.getByText(/Identity verification/i)).toBeInTheDocument();
         expect(screen.getByText(/details/i)).toBeInTheDocument();
@@ -80,13 +89,17 @@ describe('<IdvDocumentSubmit/>', () => {
         expect(screen.queryByText('Please select a document type.')).not.toBeInTheDocument();
 
         const inputs = screen.getAllByRole<HTMLTextAreaElement>('textbox');
-        expect(inputs.length).toBe(5);
+        expect(inputs).toHaveLength(5);
         expect(inputs[0].name).toBe('document_type');
         expect(inputs[1].name).toBe('document_number');
     });
 
     it('should  trigger "go back" button, inputs and check document_type validation after rendering IdvDocumentSubmit component', async () => {
-        render(<IdvDocumentSubmit {...mock_props} />);
+        render(
+            <StoreProvider store={mock_store}>
+                <IdvDocumentSubmit {...mock_props} />
+            </StoreProvider>
+        );
 
         const backBtn = screen.getByRole('button', { name: /go back/i });
         fireEvent.click(backBtn);
@@ -115,10 +128,17 @@ describe('<IdvDocumentSubmit/>', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
 
-        render(<IdvDocumentSubmit {...mock_props} />);
+        render(
+            <StoreProvider store={mock_store}>
+                <IdvDocumentSubmit {...mock_props} />
+            </StoreProvider>
+        );
 
         const verifyBtn = screen.getByRole('button', { name: /verify/i });
         expect(verifyBtn).toBeDisabled();
+
+        const confirmation_checkbox = screen.getByLabelText(/i confirm that the name and date of birth/i);
+        expect(confirmation_checkbox).toBeDisabled();
 
         const document_type_input = screen.getByRole<HTMLTextAreaElement>('combobox');
         expect(document_type_input.name).toBe('document_type');
@@ -138,12 +158,15 @@ describe('<IdvDocumentSubmit/>', () => {
         expect(await screen.findByText(/please enter the correct format/i)).toBeInTheDocument();
 
         fireEvent.change(document_number_input, { target: { value: '5436454364243' } });
+
         await waitFor(() => {
             expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
             expect(screen.queryByText(/please enter a valid ID number/i)).not.toBeInTheDocument();
-            expect(verifyBtn).toBeEnabled();
+            expect(confirmation_checkbox).toBeEnabled();
         });
+        fireEvent.click(confirmation_checkbox);
 
+        expect(verifyBtn).toBeEnabled();
         fireEvent.click(verifyBtn);
         await waitFor(() => {
             expect(mock_props.handleViewComplete).toHaveBeenCalledTimes(1);

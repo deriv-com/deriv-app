@@ -21,6 +21,7 @@ export default class RunPanelStore {
             is_sell_requested: observable,
             run_id: observable,
             error_type: observable,
+            show_bot_stop_message: observable,
             statistics: computed,
             is_stop_button_visible: computed,
             is_stop_button_disabled: computed,
@@ -82,6 +83,7 @@ export default class RunPanelStore {
     is_drawer_open = true;
     is_dialog_open = false;
     is_sell_requested = false;
+    show_bot_stop_message = false;
 
     run_id = '';
 
@@ -139,6 +141,10 @@ export default class RunPanelStore {
             this.has_open_contract ||
             (journal.unfiltered_messages.length === 0 && transactions.elements.length === 0)
         );
+    }
+
+    setShowBotStopMessage(value) {
+        this.show_bot_stop_message = value;
     }
 
     async performSelfExclusionCheck() {
@@ -207,6 +213,7 @@ export default class RunPanelStore {
             this.setContractStage(contract_stages.STARTING);
             this.dbot.runBot();
         });
+        this.setShowBotStopMessage(false);
     }
 
     onStopButtonClick() {
@@ -217,6 +224,7 @@ export default class RunPanelStore {
         } else {
             this.stopBot();
         }
+        this.setShowBotStopMessage(true);
     }
 
     stopBot() {

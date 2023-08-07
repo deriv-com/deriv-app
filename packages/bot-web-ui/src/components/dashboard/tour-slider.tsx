@@ -1,24 +1,15 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, ProgressBarOnboarding, Text } from '@deriv/components';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { useDBotStore } from 'Stores/useDBotStore';
 import { BOT_BUILDER_MOBILE, DBOT_ONBOARDING_MOBILE, TStepMobile } from './joyride-config';
 
 type TTourButton = {
     type?: string;
     onClick: () => void;
     label: string;
-};
-
-type TTourSlider = {
-    has_started_bot_builder_tour: boolean;
-    has_started_onboarding_tour: boolean;
-    onCloseTour: () => void;
-    onTourEnd: (step: number, has_started_onboarding_tour: boolean) => void;
-    setTourActiveStep: (param: number) => void;
-    toggleTourLoadModal: (toggle: boolean) => void;
 };
 
 type TAccordion = {
@@ -67,14 +58,11 @@ const Accordion = ({ content_data, expanded = false, ...props }: TAccordion) => 
     );
 };
 
-const TourSlider = ({
-    onCloseTour,
-    onTourEnd,
-    has_started_onboarding_tour,
-    has_started_bot_builder_tour,
-    setTourActiveStep,
-    toggleTourLoadModal,
-}: TTourSlider) => {
+const TourSlider = observer(() => {
+    const { dashboard, load_modal } = useDBotStore();
+    const { has_started_bot_builder_tour, has_started_onboarding_tour, onCloseTour, onTourEnd, setTourActiveStep } =
+        dashboard;
+    const { toggleTourLoadModal } = load_modal;
     const [step, setStep] = React.useState<number>(1);
     const [slider_content, setContent] = React.useState<string | string[]>('');
     const [slider_header, setheader] = React.useState<string>('');
@@ -226,15 +214,6 @@ const TourSlider = ({
             </div>
         </>
     );
-};
+});
 
-export default connect(({ dashboard, load_modal }: RootStore) => ({
-    active_tab: dashboard.active_tab,
-    has_started_bot_builder_tour: dashboard.has_started_bot_builder_tour,
-    has_started_onboarding_tour: dashboard.has_started_onboarding_tour,
-    onCloseTour: dashboard.onCloseTour,
-    onTourEnd: dashboard.onTourEnd,
-    setActiveTab: dashboard.setActiveTab,
-    setTourActiveStep: dashboard.setTourActiveStep,
-    toggleTourLoadModal: load_modal.toggleTourLoadModal,
-}))(TourSlider);
+export default TourSlider;

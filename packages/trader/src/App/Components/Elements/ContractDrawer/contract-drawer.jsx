@@ -30,6 +30,7 @@ const ContractDrawer = observer(
         is_market_closed,
         is_multiplier,
         is_vanilla,
+        is_only_ups_downs,
         onClickCancel,
         onClickSell,
         status,
@@ -56,11 +57,12 @@ const ContractDrawer = observer(
                     is_accumulator={is_accumulator}
                     is_dark_theme={is_dark_theme}
                     is_multiplier={is_multiplier}
+                    is_only_ups_downs={is_only_ups_downs}
                     is_open
                     duration={getDurationTime(contract_info)}
                     duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                     exit_spot={exit_spot}
-                    has_result={!!is_sold || is_multiplier || is_vanilla || is_accumulator}
+                    has_result={!!is_sold || is_multiplier || is_vanilla || is_accumulator || is_only_ups_downs}
                     toggleHistoryTab={toggleHistoryTab}
                     is_vanilla={is_vanilla}
                     symbol={symbol}
@@ -109,10 +111,11 @@ const ContractDrawer = observer(
                 duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                 duration={getDurationTime(contract_info)}
                 exit_spot={exit_spot}
-                has_result={!!is_sold || is_multiplier || is_vanilla || is_accumulator}
+                has_result={!!is_sold || is_multiplier || is_vanilla || is_accumulator || is_only_ups_downs}
                 is_accumulator={is_accumulator}
                 is_dark_theme={is_dark_theme}
                 is_multiplier={is_multiplier}
+                is_only_ups_downs={is_only_ups_downs}
                 is_open
                 is_vanilla={is_vanilla}
                 symbol={symbol}
@@ -187,6 +190,7 @@ ContractDrawer.propTypes = {
     is_accumulator: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_vanilla: PropTypes.bool,
+    is_only_ups_downs: PropTypes.bool,
     toggleHistoryTab: PropTypes.func,
 };
 

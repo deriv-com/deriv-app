@@ -9,7 +9,7 @@ type TPlatform = {
     is_hard_redirect: boolean;
     platform_name: string;
     route_to_path: string;
-    url: string;
+    url?: string;
 };
 
 type TPlatforms = Record<'p2p' | 'derivgo', TPlatform>;

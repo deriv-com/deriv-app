@@ -4,15 +4,16 @@ import { Money, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import {
     epochToMoment,
-    toGMTFormat,
     getCancellationPrice,
-    isAccumulatorContract,
     getCurrencyDisplayCode,
+    isAccumulatorContract,
     isMobile,
     isMultiplierContract,
+    isOnlyUpsDownsContract,
     isUserSold,
     isEndedBeforeCancellationExpired,
     isUserCancelled,
+    toGMTFormat,
 } from '@deriv/shared';
 import {
     addCommaToNumber,
@@ -45,7 +46,7 @@ const ContractDetails = ({
         tick_count,
         tick_passed,
         transaction_ids: { buy, sell } = {},
-        number_of_contracts,
+        display_number_of_contracts,
     } = contract_info;
 
     const is_profit = profit >= 0;
@@ -115,25 +116,27 @@ const ContractDetails = ({
                                     id='dt_bt_label'
                                     icon={<Icon icon='IcContractPayout' size={24} />}
                                     label={vanilla_payout_text}
-                                    value={`${number_of_contracts} ${getCurrencyDisplayCode(currency)}` || ' - '}
+                                    value={`${display_number_of_contracts} ${getCurrencyDisplayCode(currency)}` || ' - '}
                                     should_format={!is_vanilla}
                                 />
                             </React.Fragment>
                         )}
-                        {!isAccumulatorContract(contract_type) && !is_vanilla && (
-                            <ContractAuditItem
-                                id='dt_bt_label'
-                                icon={
-                                    isDigitType(contract_type) ? (
-                                        <Icon icon='IcContractTarget' size={24} />
-                                    ) : (
-                                        <Icon icon='IcContractBarrier' size={24} />
-                                    )
-                                }
-                                label={getBarrierLabel(contract_info)}
-                                value={getBarrierValue(contract_info) || ' - '}
-                            />
-                        )}
+                        {!isAccumulatorContract(contract_type) &&
+                            !is_vanilla &&
+                            !isOnlyUpsDownsContract(contract_type) && (
+                                <ContractAuditItem
+                                    id='dt_bt_label'
+                                    icon={
+                                        isDigitType(contract_type) ? (
+                                            <Icon icon='IcContractTarget' size={24} />
+                                        ) : (
+                                            <Icon icon='IcContractBarrier' size={24} />
+                                        )
+                                    }
+                                    label={getBarrierLabel(contract_info)}
+                                    value={getBarrierValue(contract_info) || ' - '}
+                                />
+                            )}
                     </React.Fragment>
                 )}
                 <ContractAuditItem

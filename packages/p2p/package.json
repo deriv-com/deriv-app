@@ -35,6 +35,7 @@
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",
+        "@deriv/api-types": "^1.0.94",
         "@testing-library/react": "^12.0.0",
         "@testing-library/user-event": "^13.5.0",
         "classnames": "^2.2.6",
@@ -56,7 +57,7 @@
         "react-simple-star-rating": "4.0.4",
         "react-svg-loader": "^3.0.3",
         "react-transition-group": "4.4.2",
-        "sendbird": "~3.0.137"
+        "@sendbird/chat": "^4.9.3"
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.17.0",

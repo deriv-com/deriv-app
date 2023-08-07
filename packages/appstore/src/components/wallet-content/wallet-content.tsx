@@ -4,6 +4,7 @@ import ContentDivider from './wallet-content-divider';
 import WalletCfdsListing from './wallet-cfds-listing';
 import WalletOptionsAndMultipliersListing from './wallet-option-multipliers-listing';
 import EUDisclaimer from 'Components/eu-disclaimer';
+
 import './wallet-content.scss';
 
 type TProps = {

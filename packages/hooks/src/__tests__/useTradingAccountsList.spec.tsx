@@ -135,7 +135,6 @@ describe('useTradingAccountsList', () => {
 
         expect(result.current.data?.every(account => account.account_category === 'trading')).toEqual(true);
         expect(result.current.data?.length).toEqual(4);
-        expect(result.current.data?.find(account => account.loginid === 'CR1003')?.balance).toEqual(179);
     });
 
     test('should return correct balance', () => {

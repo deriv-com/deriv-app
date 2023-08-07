@@ -112,6 +112,7 @@ describe('useWalletsList', () => {
         const { result } = renderHook(() => useWalletAccountsList(), { wrapper });
 
         expect(result.current.data?.every(wallet => wallet.account_category === 'wallet')).toEqual(true);
+        expect(result.current.data?.length).toEqual(5);
     });
 
     test('should return sorted wallet list where virtual is the last and crypto is after fiat currency', () => {

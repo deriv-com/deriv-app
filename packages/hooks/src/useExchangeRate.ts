@@ -20,11 +20,12 @@ const useExchangeRate = () => {
     // we can have another useEffect to decide when or how we want to update the firstLoadedRates (eg, every x seconds)
 
     const getRate = useCallback((currency: string) => rates?.[currency] || 1, [rates]);
-    const getStaticRate = useCallback((currency: string) => firstLoadedRates?.[currency] || 1, [firstLoadedRates]);
+
+    const getInitialRate = useCallback((currency: string) => firstLoadedRates?.[currency] || 1, [firstLoadedRates]);
 
     return {
         getRate,
-        getStaticRate,
+        getInitialRate,
         last_update: data?.date,
         base_currency: data?.base_currency || 'USD',
     };

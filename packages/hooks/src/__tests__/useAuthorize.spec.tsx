@@ -1,7 +1,6 @@
 import React from 'react';
 import { APIProvider } from '@deriv/api';
 import { renderHook } from '@testing-library/react-hooks';
-import { StoreProvider, mockStore } from '@deriv/stores';
 import useAuthorize from '../useAuthorize';
 
 jest.mock('@deriv/api', () => ({
@@ -23,14 +22,22 @@ jest.mock('@deriv/api', () => ({
 }));
 
 describe('useAuthorize', () => {
-    test('should return correct data for the given token', () => {
-        const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
+    beforeEach(() => {
+        localStorage.clear();
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
+        localStorage.setItem(
+            'client.accounts',
+            JSON.stringify({
+                CRW909900: {
+                    token: '12345',
+                },
+            })
         );
+        localStorage.setItem('active_loginid', 'CRW909900');
+    });
+
+    test('should return correct data for the given token', () => {
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useAuthorize(), { wrapper });
 

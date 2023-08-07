@@ -1,11 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import { Icon, Input, Text, ThemedScrollbars } from '@deriv/components';
 import { getPlatformSettings } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { help_content_config } from 'Utils/help-content/help-content.config';
-import { connect } from 'Stores/connect';
+import { useDBotStore } from 'Stores/useDBotStore';
 import FlyoutBlockGroup from './flyout-block-group.jsx';
 import HelpBase from './help-contents';
 
@@ -159,7 +159,10 @@ const FlyoutContent = props => {
     );
 };
 
-const Flyout = props => {
+const Flyout = observer(() => {
+    const { flyout, flyout_help } = useDBotStore();
+    const { gtm } = useStore();
+    const { active_helper, initFlyoutHelp, setHelpContent } = flyout_help;
     const {
         flyout_content,
         flyout_width,
@@ -168,9 +171,11 @@ const Flyout = props => {
         is_visible,
         onMount,
         onUnmount,
-        pushDataLayer,
         search_term,
-    } = props;
+        selected_category,
+        first_get_variable_block_index,
+    } = flyout;
+    const { pushDataLayer } = gtm;
 
     React.useEffect(() => {
         onMount();
@@ -198,43 +203,23 @@ const Flyout = props => {
                 {is_search_flyout && !is_help_content && (
                     <SearchResult search_term={search_term} total_result={total_result} />
                 )}
-                {is_help_content ? <HelpBase /> : <FlyoutContent is_empty={is_empty} {...props} />}
+                {is_help_content ? (
+                    <HelpBase />
+                ) : (
+                    <FlyoutContent
+                        is_empty={is_empty}
+                        flyout_content={flyout_content}
+                        active_helper={active_helper}
+                        setHelpContent={setHelpContent}
+                        initFlyoutHelp={initFlyoutHelp}
+                        is_search_flyout={is_search_flyout}
+                        selected_category={selected_category}
+                        first_get_variable_block_index={first_get_variable_block_index}
+                    />
+                )}
             </div>
         )
     );
-};
+});
 
-Flyout.propTypes = {
-    active_helper: PropTypes.string,
-    flyout_content: PropTypes.any,
-    flyout_width: PropTypes.number,
-    initFlyoutHelp: PropTypes.func,
-    is_help_content: PropTypes.bool,
-    is_search_flyout: PropTypes.bool,
-    is_visible: PropTypes.bool,
-    onMount: PropTypes.func,
-    onUnmount: PropTypes.func,
-    setActiveHelper: PropTypes.func,
-    search_term: PropTypes.string,
-    setHelpContent: PropTypes.func,
-    selected_category: PropTypes.object,
-    first_get_variable_block_index: PropTypes.number,
-};
-
-export default connect(({ flyout, flyout_help, gtm }) => ({
-    active_helper: flyout_help.active_helper,
-    pushDataLayer: gtm.pushDataLayer,
-    flyout_content: flyout.flyout_content,
-    flyout_width: flyout.flyout_width,
-    initFlyoutHelp: flyout_help.initFlyoutHelp,
-    is_help_content: flyout.is_help_content,
-    is_search_flyout: flyout.is_search_flyout,
-    is_visible: flyout.is_visible,
-    onMount: flyout.onMount,
-    onUnmount: flyout.onUnmount,
-    setActiveHelper: flyout_help.setActiveHelper,
-    search_term: flyout.search_term,
-    setHelpContent: flyout_help.setHelpContent,
-    selected_category: flyout.selected_category,
-    first_get_variable_block_index: flyout.first_get_variable_block_index,
-}))(Flyout);
+export default Flyout;

@@ -494,6 +494,11 @@
                         background-color: var(--button-secondary-hover);
                     }
                 }
+                &-hide {
+                    @include mobile {
+                        display: none;
+                    }
+                }
             }
         }
 
@@ -540,6 +545,9 @@
                 align-items: center;
                 border: 1px solid var(--border-disabled);
                 border-radius: 5px;
+                @include mobile {
+                    display: none;
+                }
             }
         }
         &-text {

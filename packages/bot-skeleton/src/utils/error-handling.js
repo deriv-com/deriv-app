@@ -4,8 +4,7 @@ import { observer } from './observer';
 
 const onKeyDownHandleError = event => {
     if (Blockly.selected !== null) {
-        //keyboard gives keyCode 46 and Laptop gives 8
-        if (event.keyCode === 8 || event.keyCode === 46) {
+        if (event.key === 'Delete' || event.key === 'Backspace') {
             handleError('BLOCK_DELETION', observer);
         }
     }

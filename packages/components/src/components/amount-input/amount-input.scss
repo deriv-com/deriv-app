@@ -9,6 +9,23 @@
     position: relative;
     height: 2.8rem;
 
+    .dc-input__field {
+        color: var(--text-general);
+    }
+
+    &--error {
+        .dc-input__field {
+            color: var(--text-loss-danger);
+            -webkit-text-fill-color: var(--text-loss-danger);
+        }
+    }
+
+    &--disabled {
+        .dc-input__field {
+            color: var(--text-disabled-1);
+        }
+    }
+
     @include mobile {
         height: 2.4rem;
     }

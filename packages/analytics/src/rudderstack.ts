@@ -128,11 +128,10 @@ export class RudderStack {
         this.account_type = account_type;
     }
 
-    identifyEvent = (user_id: string, account_type: string, payload: TEvents['identify']) => {
+    identifyEvent = (user_id: string, payload: TEvents['identify']) => {
         if (this.has_initialized) {
             RudderAnalytics.identify(user_id, payload);
             this.has_identified = true;
-            this.account_type = account_type;
         }
     };
 
@@ -161,7 +160,10 @@ export class RudderStack {
      */
     track<T extends keyof TEvents>(event: T, payload: TEvents[T]) {
         if (this.has_initialized && this.has_identified) {
-            RudderAnalytics.track(event, payload);
+            RudderAnalytics.track(event, {
+                ...payload,
+                account_type: this.account_type,
+            });
         }
     }
 }

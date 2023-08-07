@@ -43,8 +43,10 @@ const AppContents = ({
         WS.wait('authorize').then(response => {
             if (response.error) return;
             const user_id = response.authorize?.user_id;
+            const account_type = response.authorize?.loginid.substring(0, 2);
 
             if (is_logged_in && user_id) {
+                RudderStack.setAccountType(account_type);
                 RudderStack.identifyEvent(user_id, {
                     language: getLanguage().toLowerCase() || 'en',
                 });

@@ -32,14 +32,14 @@ jest.mock('Components/trade-button', () => {
 });
 
 describe('Test Cases for Multi Action Button Group:', () => {
-    it('should render the component', () => {
+    it('should display Open and Transfer button within component', () => {
         render(<MultiActionButtonGroup {...mock_props} />);
 
         expect(screen.getByText('Open')).toBeInTheDocument();
         expect(screen.getByText('Transfer')).toBeInTheDocument();
     });
 
-    it('should render "Top up" button instead of "Transfer"', () => {
+    it('should display "Top up" button instead of "Transfer" if it is not real', () => {
         render(<MultiActionButtonGroup {...mock_props} is_real={false} />);
 
         expect(screen.getByText('Open')).toBeInTheDocument();
@@ -47,7 +47,7 @@ describe('Test Cases for Multi Action Button Group:', () => {
         expect(screen.queryByText('Transfer')).not.toBeInTheDocument();
     });
 
-    it('should disable "Open" button', () => {
+    it('should disable "Open" button if is_buttons_disabled is true', () => {
         render(<MultiActionButtonGroup {...mock_props} is_buttons_disabled />);
 
         const open_btn = screen.getByText('Open');

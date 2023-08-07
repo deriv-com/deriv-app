@@ -27,7 +27,15 @@ const TogglePositionsMobile = observer(
         const { symbol, contract_type: trade_contract_type } = useTraderStore();
         const { togglePositionsDrawer, is_positions_drawer_on } = useStore().ui;
         const [hidden_positions_ids, setHiddenPositionsIds] = React.useState([]);
-        let filtered_positions = [];
+        const filtered_positions = all_positions
+            .filter(
+                p =>
+                    p.contract_info &&
+                    symbol === p.contract_info.underlying &&
+                    filterByContractType(p.contract_info, trade_contract_type) &&
+                    hidden_positions_ids.every(hidden_position_id => hidden_position_id !== p.contract_info.contract_id)
+            )
+            .slice(0, 5);
 
         const closeModal = () => {
             setHiddenPositionsIds([
@@ -40,16 +48,6 @@ const TogglePositionsMobile = observer(
             ]);
             togglePositionsDrawer();
         };
-
-        filtered_positions = all_positions
-            .filter(
-                p =>
-                    p.contract_info &&
-                    symbol === p.contract_info.underlying &&
-                    filterByContractType(p.contract_info, trade_contract_type) &&
-                    hidden_positions_ids.every(hidden_position_id => hidden_position_id !== p.contract_info.contract_id)
-            )
-            .slice(0, 5);
 
         // Show only 5 most recent open contracts
         const body_content = (

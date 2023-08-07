@@ -59,6 +59,7 @@ const currency_to_icon_mapper: Record<string, Record<'light' | 'dark', string>> 
     },
 };
 
+/** @deprecated Use `useWalletAccountsList` instead. */
 /** A custom hook to get the list of wallets for the current user. */
 const useWalletsList = () => {
     const { client, ui } = useStore();

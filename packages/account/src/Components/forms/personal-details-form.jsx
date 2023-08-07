@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Field } from 'formik';
 import classNames from 'classnames';
 import {
@@ -108,7 +108,7 @@ const PersonalDetailsForm = ({
         />
     );
 
-    const is_form_body_side_note_visible = useMemo(
+    const is_form_body_side_note_visible = React.useMemo(
         () => (is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image,
         [is_qualified_for_idv, is_rendered_for_onfido, should_hide_helper_image]
     );

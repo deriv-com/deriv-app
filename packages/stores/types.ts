@@ -418,6 +418,7 @@ type TUiStore = {
     is_dark_mode_on: boolean;
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
+    is_app_disabled: boolean;
     is_link_expired_modal_visible: boolean;
     is_mobile: boolean;
     sub_section_index: number;
@@ -470,6 +471,7 @@ type TUiStore = {
     populateHeaderExtensions: (header_items: JSX.Element | null) => void;
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     setShouldShowCooldownModal: (value: boolean) => void;
+    setAppContentsScrollRef: (ref: React.MutableRefObject<null | HTMLDivElement>) => void;
     populateFooterExtensions: (
         footer_extensions:
             | [

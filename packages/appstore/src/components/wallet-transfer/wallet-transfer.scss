@@ -12,17 +12,16 @@
     &__tiles-container {
         display: flex;
         flex-direction: column;
-        row-gap: 3.2rem;
     }
 
     &__divider {
-        border: 0.5px solid $color-grey-5;
+        border: 0.5px solid var(--border-normal);
         margin: 0.8rem 0;
     }
 
     &__tile {
         display: flex;
-        border: 1px solid $color-grey-5;
+        border: 1px solid var(--border-normal);
         border-radius: $BORDER_RADIUS;
 
         .amount-input-wrapper {

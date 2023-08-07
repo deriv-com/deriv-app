@@ -28,6 +28,7 @@ import { splitValidationResultTypes } from '../real-account-signup/helpers/utils
 import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
 import FormSubHeader from '../form-sub-header';
+import FormikConfirmationCheckbox from '../formik-confirmation-checkbox';
 
 const PersonalDetails = ({
     getCurrentStep,
@@ -56,9 +57,10 @@ const PersonalDetails = ({
     const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
     const [warning_items, setWarningItems] = React.useState({});
     const is_submit_disabled_ref = React.useRef(true);
+    const [is_confirmed, setIsConfirmed] = React.useState(false);
 
     const isSubmitDisabled = errors => {
-        return selected_step_ref?.current?.isSubmitting || Object.keys(errors).length > 0;
+        return !is_confirmed || selected_step_ref?.current?.isSubmitting || Object.keys(errors).length > 0;
     };
 
     const checkSubmitStatus = errors => {
@@ -225,6 +227,13 @@ const PersonalDetails = ({
                                                     setShouldCloseTooltip={setShouldCloseTooltip}
                                                     should_hide_helper_image={shouldHideHelperImage(
                                                         values?.document_type?.id
+                                                    )}
+                                                />
+                                                <FormikConfirmationCheckbox
+                                                    confirmed={is_confirmed}
+                                                    setConfirmed={setIsConfirmed}
+                                                    label={localize(
+                                                        'I confirm that the name and date of birth above match my chosen identity document'
                                                     )}
                                                 />
                                             </div>

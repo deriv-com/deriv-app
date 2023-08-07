@@ -284,3 +284,9 @@
         }
     }
 }
+
+.formik__confirmation-checkbox {
+    @include mobile {
+        margin-bottom: 1.6rem;
+    }
+}

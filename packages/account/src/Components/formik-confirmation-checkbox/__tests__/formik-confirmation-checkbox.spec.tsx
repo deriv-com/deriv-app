@@ -1,8 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import FormikConfirmationCheckbox from '../formik-confirmation-checkbox';
+import { FormikConfirmationCheckbox } from '../formik-confirmation-checkbox';
 import { Formik, Form } from 'formik'; // Import Formik and Form
-import { StoreProvider, mockStore } from '@deriv/stores';
 
 describe('ConfirmationCheckbox', () => {
     test('renders checkbox with label', () => {
@@ -13,13 +12,11 @@ describe('ConfirmationCheckbox', () => {
         };
 
         render(
-            <StoreProvider store={mockStore({})}>
-                <Formik initialValues={{}} onSubmit={jest.fn()}>
-                    <Form>
-                        <FormikConfirmationCheckbox {...props} />
-                    </Form>
-                </Formik>
-            </StoreProvider>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+                <Form>
+                    <FormikConfirmationCheckbox {...props} />
+                </Form>
+            </Formik>
         );
 
         const checkbox = screen.getByLabelText('I confirm my details are correct.');
@@ -35,13 +32,11 @@ describe('ConfirmationCheckbox', () => {
         };
 
         render(
-            <StoreProvider store={mockStore({})}>
-                <Formik initialValues={{}} onSubmit={jest.fn()}>
-                    <Form>
-                        <FormikConfirmationCheckbox {...props} />
-                    </Form>
-                </Formik>
-            </StoreProvider>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+                <Form>
+                    <FormikConfirmationCheckbox {...props} />
+                </Form>
+            </Formik>
         );
 
         const checkbox = screen.getByLabelText('I confirm my details are correct.');

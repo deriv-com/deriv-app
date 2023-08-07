@@ -17,6 +17,7 @@ import IDVForm from 'Components/forms/idv-form';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
 import FormFooter from 'Components/form-footer';
 import { GetSettings } from '@deriv/api-types';
+import FormikConfirmationCheckbox from '../../../formik-confirmation-checkbox';
 
 type TIdvDocSubmitOnSignup = {
     citizen_data: FormikValues;
@@ -37,6 +38,7 @@ export const IdvDocSubmitOnSignup = ({
     account_settings,
     getChangeableFields,
 }: TIdvDocSubmitOnSignup) => {
+    const [is_confirmed, setIsConfirmed] = React.useState(false);
     const validateFields = (values: FormikValues) => {
         const errors: FormikErrors<FormikValues> = {};
         const { document_type, document_number, document_additional } = values;
@@ -142,6 +144,13 @@ export const IdvDocSubmitOnSignup = ({
                                 should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
                                 editable_fields={changeable_fields}
                             />
+                            <FormikConfirmationCheckbox
+                                confirmed={is_confirmed}
+                                setConfirmed={setIsConfirmed}
+                                label={localize(
+                                    'I confirm that the name and date of birth above match my chosen identity document'
+                                )}
+                            />
                         </div>
                     </section>
                     <FormFooter className='proof-of-identity__footer'>
@@ -149,7 +158,7 @@ export const IdvDocSubmitOnSignup = ({
                             className='proof-of-identity__submit-button'
                             type='submit'
                             has_effect
-                            is_disabled={!dirty || isSubmitting || !isValid}
+                            is_disabled={!dirty || isSubmitting || !isValid || !is_confirmed}
                             text={localize('Next')}
                             large
                             primary

@@ -18,7 +18,7 @@ import IDVForm from 'Components/forms/idv-form';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
 import FormSubHeader from 'Components/form-sub-header';
 import { observer, useStore } from '@deriv/stores';
-import { FormikConfirmationCheckbox } from 'Components/formik-confirmation-checkbox';
+import FormikConfirmationCheckbox from 'Components/formik-confirmation-checkbox';
 
 type TIdvDocumentSubmit = {
     handleBack?: () => void;

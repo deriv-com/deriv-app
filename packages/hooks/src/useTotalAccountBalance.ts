@@ -14,13 +14,13 @@ type TUseTotalAccountBalance = {
 
 const useTotalAccountBalance = (accounts: TUseTotalAccountBalance[]) => {
     const total_assets_real_currency = useRealTotalAssetCurrency();
-    const { getInitialRate } = useExchangeRate();
+    const { getInitialRates } = useExchangeRate();
 
     if (!accounts.length) return { balance: 0, currency: total_assets_real_currency };
 
     const balance = accounts.reduce((total, account) => {
-        const base_rate = account?.account_type === 'demo' ? 1 : getInitialRate(total_assets_real_currency || '');
-        const rate = getInitialRate(account.currency || total_assets_real_currency || '');
+        const base_rate = account?.account_type === 'demo' ? 1 : getInitialRates(total_assets_real_currency || '');
+        const rate = getInitialRates(account.currency || total_assets_real_currency || '');
         const exchange_rate = base_rate / rate;
 
         return total + (account.balance || 0) * exchange_rate;

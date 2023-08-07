@@ -1,8 +1,9 @@
 import { localize } from '@deriv/translations';
 import { error_message_map } from './error-config';
 
-const keyDownListner = observer => {
+const onKeyDownHandleError = observer => {
     if (Blockly.selected !== null) {
+        //keyboard gives keyCode 46 and Laptop gives 46
         if (event.keyCode === 8 || event.keyCode === 46) {
             handleError('BLOCK_DELETION', observer);
         }
@@ -10,14 +11,12 @@ const keyDownListner = observer => {
 };
 
 export const removeErrorHandlingEventListener = (type = 'keydown', observer) => {
-    document.removeEventListener(type, () => {
-        keyDownListner(observer);
-    });
+    document.removeEventListener(type, () => onKeyDownHandleError(observer));
 };
 
 export const initErrorHandlingListener = (type = 'keydown', observer) => {
     document.addEventListener(type, () => {
-        if (type === 'keydown') keyDownListner(observer);
+        if (type === 'keydown') onKeyDownHandleError(observer);
     });
 };
 

@@ -15,9 +15,8 @@ export const matchTranslateAttribute = translateString => {
         const x = parseFloat(match[1]);
         const y = parseFloat(match[2]);
         return { x, y };
-    } 
-        return null; // Invalid or no match
-    
+    }
+    return null; // Invalid or no match
 };
 
 export const extractTranslateValues = () => {
@@ -50,7 +49,7 @@ export const validateErrorOnBlockDelete = () => {
             blockX >= translate_X - 100 &&
             blockX <= translate_X + 200
         ) {
-            globalObserver.emit('ui.log.error', `${Blockly.selected.type  } cannot be deleted`);
+            globalObserver.emit('ui.log.error', `${Blockly.selected.type} cannot be deleted`);
         }
     }
 };
@@ -359,7 +358,7 @@ export const isAllRequiredBlocksEnabled = workspace => {
     const required_block_types = [mandatory_tradeoptions_block, ...mandatoryMainBlocks];
 
     const mandatory_blocks = ['trade_parameters', 'purchase_conditions'];
-    const get_all_required_blocks = workspace.getAllBlocks().filter(block => {
+    const required_blocks_check = workspace.getAllBlocks().filter(block => {
         if (
             block.type === 'trade_definition' ||
             block.type === 'before_purchase' ||
@@ -372,13 +371,13 @@ export const isAllRequiredBlocksEnabled = workspace => {
         }
     });
 
-    const misplaced_blocks = get_all_required_blocks.filter(block => {
+    const misplaced_blocks = required_blocks_check.filter(block => {
         if (block.type !== 'trade_definition' && block.type !== 'before_purchase') {
             return block.parentBlock_ === null;
         }
     });
     misplaced_blocks.forEach(block => {
-        globalObserver.emit('ui.log.error', `${block  } is misplaced`);
+        globalObserver.emit('ui.log.error', `${block} is misplaced`);
     });
 
     const missing_blocks = required_block_types.filter(blockType => {

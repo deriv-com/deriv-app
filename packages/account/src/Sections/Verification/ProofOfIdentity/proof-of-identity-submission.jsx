@@ -132,8 +132,6 @@ const POISubmission = ({
                             handleViewComplete={handleViewComplete}
                             handleBack={handleBack}
                             selected_country={selected_country}
-                            account_settings={account_settings}
-                            getChangeableFields={getChangeableFields}
                         />
                     );
                 case service_code.onfido: {

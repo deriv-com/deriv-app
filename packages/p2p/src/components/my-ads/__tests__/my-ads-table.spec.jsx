@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import MyAdsTable from '../my-ads-table';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import MyAdsTable from '../my-ads-table';
 
 const mock_store_values = {
     general_store: {

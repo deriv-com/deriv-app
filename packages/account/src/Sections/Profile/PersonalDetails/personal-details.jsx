@@ -132,7 +132,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
         showPOAAddressMismatchFailureNotification,
     } = notifications;
 
-    const { Notifications } = ui;
+    const { notification_messages_ui: Notifications } = ui;
     const { is_language_changing } = common;
     const is_mf = landing_company_shortcode === 'maltainvest';
     const has_poa_address_mismatch = account_status.status?.includes('poa_address_mismatch');

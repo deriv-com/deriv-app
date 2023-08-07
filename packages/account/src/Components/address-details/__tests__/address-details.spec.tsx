@@ -79,14 +79,10 @@ describe('<AddressDetails/>', () => {
         expect(screen.queryByLabelText(address_town)).not.toBeInTheDocument();
     };
 
-    const provider_value = { is_appstore: false, is_deriv_crypto: false, is_pre_appstore: false };
-
-    const renderComponent = ({ props = mock_props, store_config = store, provider_config = provider_value }) => {
+    const renderComponent = ({ props = mock_props, store_config = store }) => {
         return render(
             <StoreProvider store={store_config}>
-                <PlatformContext.Provider value={provider_config}>
-                    <AddressDetails {...props} />
-                </PlatformContext.Provider>
+                <AddressDetails {...props} />
             </StoreProvider>
         );
     };
@@ -215,36 +211,6 @@ describe('<AddressDetails/>', () => {
         expect(screen.queryByText(address_postcode_marked)).not.toBeInTheDocument();
         expect(screen.queryByText(address_town_marked)).not.toBeInTheDocument();
         expect(screen.queryByText(verification_info)).not.toBeInTheDocument();
-    });
-
-    it('should render AddressDetails component for appstore', async () => {
-        const new_provider = { is_appstore: true, is_deriv_crypto: false, is_pre_appstore: false };
-        renderComponent({ provider_config: new_provider });
-
-        expect(mock_props.onSubmitEnabledChange).toHaveBeenCalledTimes(1);
-        await waitFor(() => {
-            expect(screen.getByText(verification_info)).toBeInTheDocument();
-        });
-        expect(screen.queryByText(use_address_info)).not.toBeInTheDocument();
-
-        const inputs: HTMLTextAreaElement[] = screen.getAllByRole('textbox');
-        expect(inputs.length).toBe(5);
-
-        const required_fields = inputs.filter(input => input.required === true);
-        expect(required_fields.length).toBe(4);
-
-        expect(screen.getByLabelText(address_line_1_marked)).toBeInTheDocument();
-        expect(screen.getByLabelText(address_line_2_marked)).toBeInTheDocument();
-        expect(screen.getByLabelText(address_postcode_marked)).toBeInTheDocument();
-        expect(screen.getByLabelText(address_state)).toBeInTheDocument();
-        expect(screen.getByLabelText(address_town_marked)).toBeInTheDocument();
-        expect(screen.getByText(verification_info)).toBeInTheDocument();
-
-        expect(screen.queryByText(address_line_1)).not.toBeInTheDocument();
-        expect(screen.queryByText(address_line_2)).not.toBeInTheDocument();
-        expect(screen.queryByText(address_postcode)).not.toBeInTheDocument();
-        expect(screen.queryByText(address_town)).not.toBeInTheDocument();
-        expect(screen.queryByText(use_address_info)).not.toBeInTheDocument();
     });
 
     it('should render AddressDetails component with states_list for mobile', async () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import DefaultMobileLinks from '../default-mobile-links';
 
 jest.mock('@deriv/components', () => {
@@ -14,19 +14,23 @@ jest.mock('../show-notifications', () => jest.fn(() => 'mockedShowNotifications'
 jest.mock('../trading-hub-onboarding', () => jest.fn(() => 'mockedTradingHubOnboarding'));
 
 describe('DefaultMobileLinks', () => {
+    const mock_props: React.ComponentProps<typeof DefaultMobileLinks> = {
+        handleClickCashier: jest.fn(),
+    };
+
     it('should render the component', () => {
-        const mock_props: React.ComponentProps<typeof DefaultMobileLinks> = {
-            handleClickCashier: jest.fn(),
-        };
         render(<DefaultMobileLinks {...mock_props} />);
         expect(screen.getByText('mockedTradingHubOnboarding')).toBeInTheDocument();
     });
 
     it('should display the cashier button', () => {
-        const mock_props: React.ComponentProps<typeof DefaultMobileLinks> = {
-            handleClickCashier: jest.fn(),
-        };
         render(<DefaultMobileLinks {...mock_props} />);
         expect(screen.getByText('Cashier')).toBeInTheDocument();
+    });
+
+    it('should fire the "handleClickCashier" event on clicking the button', () => {
+        render(<DefaultMobileLinks {...mock_props} />);
+        fireEvent.click(screen.getByRole('button', { name: 'Cashier' }));
+        expect(mock_props.handleClickCashier).toHaveBeenCalledTimes(1);
     });
 });

@@ -417,6 +417,7 @@ type TUiStore = {
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
     is_desktop: boolean;
+    is_link_expired_modal_visible: boolean;
     is_mobile: boolean;
     is_tablet: boolean;
     sub_section_index: number;
@@ -435,6 +436,7 @@ type TUiStore = {
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
     toggleLanguageSettingsModal: () => void;
+    toggleLinkExpiredModal: (state_change: boolean) => void;
     toggleReadyToDepositModal: () => void;
     toggleSetCurrencyModal: () => void;
     removeToast: (key: string) => void;

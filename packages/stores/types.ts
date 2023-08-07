@@ -674,6 +674,7 @@ type TTradersHubStore = {
     has_any_real_account: boolean;
     getShortCodeAndRegion: (account: Partial<ExistingMT5Account>) => string;
     is_mt5_notificaiton_modal_visible: boolean;
+    is_mt5_notification_modal_visible: boolean;
     setMT5NotificationModal: (value: boolean) => void;
 };
 

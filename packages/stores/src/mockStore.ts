@@ -409,6 +409,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_any_real_account: false,
             getShortCodeAndRegion: jest.fn(),
             is_mt5_notificaiton_modal_visible: false,
+            is_mt5_notification_modal_visible: false,
             setMT5NotificationModal: jest.fn(),
         },
         notifications: {

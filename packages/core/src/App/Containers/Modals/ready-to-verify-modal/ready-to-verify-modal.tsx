@@ -17,7 +17,7 @@ const ReadyToVerifyModal = observer(() => {
         setIsVerificationModalVisible,
     } = ui;
     const is_deposit_locked = useDepositLocked();
-    const is_cashier_locked = useCashierLocked;
+    const is_cashier_locked = useCashierLocked();
 
     const onConfirmModal = () => {
         toggleAccountSuccessModal();

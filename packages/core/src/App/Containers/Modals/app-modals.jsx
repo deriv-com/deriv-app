@@ -12,6 +12,7 @@ import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
 import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
+import VerificationModal from '../VerificationModal';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -57,8 +58,6 @@ const WarningScamMessageModal = React.lazy(() =>
 const WarningCloseCreateRealAccountModal = React.lazy(() =>
     import(/* webpackChunkName: "warning-close-create-real-account" */ '../WarningCloseCreateRealAccountModal')
 );
-
-const VerificationModal = React.lazy(() => import(/* webpackChunkName: "verification-modal" */ '../VerificationModal'));
 
 const VerificationDocumentSubmitted = React.lazy(() =>
     import(/* webpackChunkName: "verification-document-submitted-modal" */ './VerificationDocumentSubmitted')
@@ -177,7 +176,7 @@ const AppModals = ({
     if (is_need_real_account_for_cashier_modal_visible) {
         ComponentToLoad = <NeedRealAccountForCashierModal />;
     }
-    //TODO: Have to update this when cashier pop-up is done,this is just temporary
+
     if (is_verification_modal_visible) {
         ComponentToLoad = <VerificationModal />;
     }

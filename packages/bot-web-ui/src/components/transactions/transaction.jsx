@@ -5,9 +5,10 @@ import ContentLoader from 'react-content-loader';
 import { getContractTypeName } from '@deriv/bot-skeleton';
 import { Icon, IconTradeTypes, Money, Popover } from '@deriv/components';
 import { convertDateFormat } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { popover_zindex } from 'Constants/z-indexes';
-import { connect } from 'Stores/connect';
+import { useDBotStore } from 'Stores/useDBotStore';
 
 const TransactionIconWithText = ({ icon, title, message, className }) => (
     <React.Fragment>
@@ -133,86 +134,86 @@ const PopoverContent = ({ contract }) => (
     </div>
 );
 
-const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }) => (
-    <Popover
-        zIndex={popover_zindex.TRANSACTION}
-        alignment='left'
-        className='transactions__item-wrapper'
-        is_open={contract && active_transaction_id === contract.transaction_ids.buy}
-        message={contract && <PopoverContent contract={contract} />}
-    >
-        <div
-            className='transactions__item'
-            onClick={contract && (() => setActiveTransactionId(contract.transaction_ids.buy))}
+const Transaction = observer(({ contract }) => {
+    const { transactions } = useDBotStore();
+    const { active_transaction_id, setActiveTransactionId } = transactions;
+
+    return (
+        <Popover
+            zIndex={popover_zindex.TRANSACTION}
+            alignment='left'
+            className='transactions__item-wrapper'
+            is_open={contract && active_transaction_id === contract.transaction_ids.buy}
+            message={contract && <PopoverContent contract={contract} />}
         >
-            <div className='transactions__cell transactions__trade-type'>
-                <div className='transactions__loader-container'>
-                    {contract ? (
-                        <TransactionIconWithText
-                            icon={<Icon icon={`IcUnderlying${contract.underlying}`} size={16} />}
-                            title={contract.display_name}
-                        />
-                    ) : (
-                        <TransactionIconLoader />
-                    )}
-                </div>
-                <div className='transactions__loader-container'>
-                    {contract ? (
-                        <TransactionIconWithText
-                            icon={<IconTradeTypes type={contract.contract_type} size={16} />}
-                            title={getContractTypeName(contract)}
-                        />
-                    ) : (
-                        <TransactionIconLoader />
-                    )}
-                </div>
-            </div>
-            <div className='transactions__cell transactions__entry-spot'>
-                <TransactionIconWithText
-                    icon={<Icon icon='IcContractEntrySpot' />}
-                    title={localize('Entry spot')}
-                    message={(contract && contract.entry_tick) || <TransactionFieldLoader />}
-                />
-            </div>
-            <div className='transactions__cell transactions__exit-spot'>
-                <TransactionIconWithText
-                    icon={<Icon icon='IcContractExitSpot' />}
-                    title={localize('Exit spot')}
-                    message={(contract && contract.exit_tick) || <TransactionFieldLoader />}
-                />
-            </div>
-            <div className='transactions__cell transactions__stake'>
-                {contract ? (
-                    <Money amount={contract.buy_price} currency={contract.currency} show_currency />
-                ) : (
-                    <TransactionFieldLoader />
-                )}
-            </div>
-            <div className='transactions__cell transactions__profit'>
-                {contract?.is_completed ? (
-                    <div
-                        className={classNames({
-                            'transactions__profit--win': contract.profit >= 0,
-                            'transactions__profit--loss': contract.profit < 0,
-                        })}
-                    >
-                        <Money amount={Math.abs(contract.profit)} currency={contract.currency} show_currency />
+            <div
+                className='transactions__item'
+                onClick={contract && (() => setActiveTransactionId(contract.transaction_ids.buy))}
+            >
+                <div className='transactions__cell transactions__trade-type'>
+                    <div className='transactions__loader-container'>
+                        {contract ? (
+                            <TransactionIconWithText
+                                icon={<Icon icon={`IcUnderlying${contract.underlying}`} size={16} />}
+                                title={contract.display_name}
+                            />
+                        ) : (
+                            <TransactionIconLoader />
+                        )}
                     </div>
-                ) : (
-                    <TransactionFieldLoader />
-                )}
+                    <div className='transactions__loader-container'>
+                        {contract ? (
+                            <TransactionIconWithText
+                                icon={<IconTradeTypes type={contract.contract_type} size={16} />}
+                                title={getContractTypeName(contract)}
+                            />
+                        ) : (
+                            <TransactionIconLoader />
+                        )}
+                    </div>
+                </div>
+                <div className='transactions__cell transactions__entry-spot'>
+                    <TransactionIconWithText
+                        icon={<Icon icon='IcContractEntrySpot' />}
+                        title={localize('Entry spot')}
+                        message={(contract && contract.entry_tick) || <TransactionFieldLoader />}
+                    />
+                </div>
+                <div className='transactions__cell transactions__exit-spot'>
+                    <TransactionIconWithText
+                        icon={<Icon icon='IcContractExitSpot' />}
+                        title={localize('Exit spot')}
+                        message={(contract && contract.exit_tick) || <TransactionFieldLoader />}
+                    />
+                </div>
+                <div className='transactions__cell transactions__stake'>
+                    {contract ? (
+                        <Money amount={contract.buy_price} currency={contract.currency} show_currency />
+                    ) : (
+                        <TransactionFieldLoader />
+                    )}
+                </div>
+                <div className='transactions__cell transactions__profit'>
+                    {contract?.is_completed ? (
+                        <div
+                            className={classNames({
+                                'transactions__profit--win': contract.profit >= 0,
+                                'transactions__profit--loss': contract.profit < 0,
+                            })}
+                        >
+                            <Money amount={Math.abs(contract.profit)} currency={contract.currency} show_currency />
+                        </div>
+                    ) : (
+                        <TransactionFieldLoader />
+                    )}
+                </div>
             </div>
-        </div>
-    </Popover>
-);
+        </Popover>
+    );
+});
 
 Transaction.propTypes = {
-    active_transaction_id: PropTypes.number,
     contract: PropTypes.object,
-    setActiveTransactionId: PropTypes.func,
 };
 
-export default connect(({ transactions }) => ({
-    active_transaction_id: transactions.active_transaction_id,
-    setActiveTransactionId: transactions.setActiveTransactionId,
-}))(Transaction);
+export default Transaction;

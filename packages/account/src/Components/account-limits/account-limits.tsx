@@ -15,7 +15,7 @@ import AccountLimitsTableHeader from './account-limits-table-header';
 import AccountLimitsTurnoverLimitRow from './account-limits-turnover-limit-row';
 import { observer, useStore } from '@deriv/stores';
 import { FormikValues } from 'formik';
-import { isGreater } from 'Helpers/utils';
+import { compareStrings } from '@deriv/utils';
 
 type TAccountLimits = {
     footer_ref?: React.RefObject<HTMLElement>;
@@ -106,7 +106,7 @@ const AccountLimits = observer(
         }
 
         const { commodities, forex, indices, synthetic_index } = { ...market_specific };
-        const forex_ordered = forex?.slice().sort((a: FormikValues, b: FormikValues) => isGreater(a.name, b.name));
+        const forex_ordered = forex?.slice().sort((a: FormikValues, b: FormikValues) => compareStrings(a.name, b.name));
         const derived_ordered = synthetic_index
             ?.slice()
             .sort((a: FormikValues, b: FormikValues) => (a.level > b.level ? 1 : -1));

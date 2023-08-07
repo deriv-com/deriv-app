@@ -138,10 +138,10 @@ const MarketCountdownTimer = observer(
 
         let timer_components = '';
 
-        if (Object.keys(time_left).length && time_left.days) {
-            const hours = (time_left.days * 24 + time_left.hours).toString().padStart(2, '0');
-            const minutes = time_left.minutes.toString().padStart(2, '0');
-            const seconds = time_left.seconds.toString().padStart(2, '0');
+        if (Object.keys(time_left).length) {
+            const hours = ((time_left.days ?? 0) * 24 + (time_left.hours ?? 0)).toString().padStart(2, '0');
+            const minutes = (time_left.minutes ?? 0).toString().padStart(2, '0');
+            const seconds = (time_left.seconds ?? 0).toString().padStart(2, '0');
             timer_components = `${hours}:${minutes}:${seconds}`;
         }
 

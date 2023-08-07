@@ -12,7 +12,7 @@ import ProofOfAddressForm from './proof-of-address-form';
 import Submitted from '../../../Components/poa/status/submitted';
 import Unverified from '../../../Components/poa/status/unverified';
 import Verified from '../../../Components/poa/status/verified';
-import { populateVerificationStatus } from '../Helpers/verification';
+import { populateVerificationStatus } from '../Helpers/verification.js';
 
 type TProofOfAddressContainer = {
     is_mx_mlt?: boolean;
@@ -57,8 +57,6 @@ const ProofOfAddressContainer = ({
         is_age_verified: false,
         poa_address_mismatch: false,
     });
-
-    // authentication_status
 
     React.useEffect(() => {
         if (!is_switching) {

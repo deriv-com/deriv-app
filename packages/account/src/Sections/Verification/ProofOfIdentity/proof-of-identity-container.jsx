@@ -14,7 +14,7 @@ import React from 'react';
 import Unsupported from 'Components/poi/status/unsupported';
 import UploadComplete from 'Components/poi/status/upload-complete';
 import Verified from 'Components/poi/status/verified';
-import { populateVerificationStatus } from '../Helpers/verification';
+import { populateVerificationStatus } from '../Helpers/verification.js';
 import { useHistory } from 'react-router';
 
 const ProofOfIdentityContainer = ({

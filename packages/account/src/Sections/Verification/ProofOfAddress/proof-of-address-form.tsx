@@ -1,4 +1,4 @@
-//TODO this file has types error on file uploader container, needed to be refactored. typing here skiping checks for build passing
+//TODO all file upload process needed to be checked and refactored with TS. skipping checks for passing CFD build
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import React from 'react';
@@ -57,7 +57,9 @@ const FilesDescription = () => (
     </div>
 );
 
-let file_uploader_ref: React.MutableRefObject<null | { upload: () => Promise<DocumentUploadResponse> }> | undefined;
+export type TFileRef = React.RefObject<null | { upload: () => Promise<DocumentUploadResponse> }> | undefined;
+
+let file_uploader_ref: TFileRef;
 
 type TProofOfAddressForm = {
     is_resubmit: boolean;

@@ -22,6 +22,4 @@ const ProofOfAddress = observer(() => {
     );
 });
 
-ProofOfAddress.displayName = 'ProofOfAddress';
-
 export default ProofOfAddress;

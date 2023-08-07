@@ -105,7 +105,7 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
     );
 
     const onClickAdd = () => {
-        setAppstorePlatform(trading_platforms.platform);
+        setAppstorePlatform(trading_platforms.platform as string);
         if (trading_platforms.platform === CFD_PLATFORMS.MT5) {
             setJurisdictionSelectedShortcode(trading_platforms.shortcode);
             if (is_account_status_verified) {

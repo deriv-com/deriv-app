@@ -145,4 +145,37 @@ describe('TogglePositionsMobile component', () => {
             expect(screen.getByText(/PositionsModalCard/i)).toBeInTheDocument();
         });
     });
+    it('should display no more than 5 recent positions', () => {
+        const positions_pair = [
+            {
+                contract_info: {
+                    contract_id: '1',
+                    contract_type: 'CALL',
+                    is_sold: 0,
+                    shortcode: 'CALL_R_10_19.54_1691443851_1691444751_S0P_0',
+                    underlying: 'R_100',
+                },
+            },
+            {
+                contract_info: {
+                    contract_id: '2',
+                    contract_type: 'PUT',
+                    is_sold: 0,
+                    shortcode: 'PUT_R_10_19.53_1691443887_1691444787_S0P_0',
+                    underlying: 'R_100',
+                },
+            },
+        ];
+        const new_mocked_props = {
+            active_positions_count: 6,
+            all_positions: [...positions_pair, ...positions_pair, ...positions_pair],
+            is_empty: false,
+        };
+        const mock_root_store = mockStore({
+            ...default_mock_store,
+            ui: { ...default_mock_store.ui, is_positions_drawer_on: true },
+        });
+        render(mockTogglePositionsMobile(mock_root_store, { ...default_mocked_props, ...new_mocked_props }));
+        expect(screen.getAllByText(/PositionsModalCard/i)).toHaveLength(5);
+    });
 });

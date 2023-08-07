@@ -28,18 +28,6 @@ jest.mock('Stores', () => ({
 
 jest.mock('../../buy-sell/no-ads', () => jest.fn(() => <div>No Ads Component</div>));
 
-jest.mock('@sendbird/chat', () => ({
-    SendbirdChat: jest.fn().mockReturnValue({}),
-}));
-
-jest.mock('@sendbird/chat/groupChannel', () => ({
-    SendbirdChat: jest.fn().mockReturnValue({}),
-}));
-
-jest.mock('@sendbird/chat/message', () => ({
-    SendbirdChat: jest.fn().mockReturnValue({}),
-}));
-
 const mock_use_store_values = mockStore({
     client: {
         currency: 'USD',

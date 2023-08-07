@@ -1,10 +1,10 @@
 import React, { RefObject } from 'react';
+import { isMobileOs } from '@deriv/shared';
 
 export const useHover = <T extends HTMLElement & SVGSVGElement>(
     refSetter?: RefObject<T> | null,
     should_prevent_bubbling?: boolean
 ) => {
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     const [value, setValue] = React.useState(false);
     const default_ref = React.useRef(null);
     const ref = refSetter || default_ref;
@@ -18,7 +18,7 @@ export const useHover = <T extends HTMLElement & SVGSVGElement>(
         if (!node) return;
 
         const handleAddEvents = () => {
-            if (isMobile) {
+            if (isMobileOs()) {
                 node.addEventListener('touchstart', handleHoverBegin);
                 node.addEventListener('touchend', handleHoverFinish);
             } else {
@@ -28,7 +28,7 @@ export const useHover = <T extends HTMLElement & SVGSVGElement>(
         };
 
         const handleRemoveEvents = () => {
-            if (isMobile) {
+            if (isMobileOs()) {
                 node.removeEventListener('touchstart', handleHoverBegin);
                 node.removeEventListener('touchend', handleHoverFinish);
             } else {

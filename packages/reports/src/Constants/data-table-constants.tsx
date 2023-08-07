@@ -103,7 +103,7 @@ export const getStatementTableColumnsTemplate = (currency: string) => [
         title: localize('Balance'),
         col_index: 'balance',
         renderCellContent: ({ cell_value }: TCellContentProps) => (
-            <Money amount={cell_value.replace(/[,]+/g, '')} currency={currency} />
+            <Money amount={cell_value.replace('.', '')} currency={currency} />
         ),
     },
 ];
@@ -457,9 +457,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
         title: localize('Growth rate'),
         col_index: 'growth_rate',
         renderCellContent: ({ row_obj }) =>
-            row_obj.contract_info && row_obj.contract_info.growth_rate
-                ? `${getGrowthRatePercentage(row_obj.contract_info.growth_rate)}%`
-                : '',
+            row_obj.contract_info?.growth_rate ? `${getGrowthRatePercentage(row_obj.contract_info.growth_rate)}%` : '',
     },
     {
         title: localize('Currency'),

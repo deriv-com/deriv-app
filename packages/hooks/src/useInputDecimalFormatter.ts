@@ -21,6 +21,10 @@ const useInputDecimalFormatter = (initial?: number, options?: TOptions) => {
                 const text = with_sign ? new_value : new_value.replaceAll(/[+-]/g, '');
                 const inputs = text.split('.');
 
+                // The field contains more than one dot, So we return the old value as only one dot
+                // is allowed.
+                if (inputs.length > 2) return old_value;
+
                 const left = inputs[0];
                 const right = inputs.length > 1 ? inputs[1] : null;
                 const has_right = right !== null && right !== '';
@@ -30,10 +34,9 @@ const useInputDecimalFormatter = (initial?: number, options?: TOptions) => {
                 if (['-', '+', '0'].includes(left) && !has_right) return new_value;
 
                 const is_number = !isNaN(Number(new_value));
-                // The field contains more than one dot, So we return the old value as only one dot
-                // is allowed.
-                // Or if the input value is not a valid number, So we return the old value.
-                if (inputs.length > 2 || !is_number) return old_value;
+
+                // If the input value is not a valid number, So we return the old value.
+                if (!is_number) return old_value;
 
                 const new_left = left.replaceAll(/[+-]/g, '');
                 const has_decimal = new_value.includes('.');

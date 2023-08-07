@@ -3,11 +3,20 @@ import { APIProvider, useFetch } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useHasP2PSupportedCurrencies from '../useHasP2PSupportedCurrencies';
+import type { TStores } from '@deriv/stores/types';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useFetch: jest.fn(() => ({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } })),
 }));
+const createWrapper = (mock: TStores) => {
+    const wrapper = ({ children }: { children: JSX.Element }) => (
+        <APIProvider>
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        </APIProvider>
+    );
+    return wrapper;
+};
 
 describe('useHasP2PSupportedCurrencies', () => {
     test('should return false if supported currencies is not in the account info', () => {
@@ -17,11 +26,7 @@ describe('useHasP2PSupportedCurrencies', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
+        const wrapper = createWrapper(mock);
 
         const { result } = renderHook(() => useHasP2PSupportedCurrencies(), { wrapper });
 
@@ -35,11 +40,7 @@ describe('useHasP2PSupportedCurrencies', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
+        const wrapper = createWrapper(mock);
 
         const { result } = renderHook(() => useHasP2PSupportedCurrencies(), { wrapper });
 
@@ -53,11 +54,7 @@ describe('useHasP2PSupportedCurrencies', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
+        const wrapper = createWrapper(mock);
 
         const { result } = renderHook(() => useHasP2PSupportedCurrencies(), { wrapper });
 

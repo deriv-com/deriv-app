@@ -17,7 +17,7 @@ export default class TradersHubStore extends BaseStore {
     is_onboarding_visited = false;
     is_failed_verification_modal_visible = false;
     is_regulators_compare_modal_visible = false;
-    is_mt5_notificaiton_modal_visible = false;
+    is_mt5_notification_modal_visible = false;
     is_tour_open = false;
     is_account_type_modal_visible = false;
     account_type_card = '';
@@ -44,7 +44,7 @@ export default class TradersHubStore extends BaseStore {
             is_account_transfer_modal_open: observable,
             is_account_type_modal_visible: observable,
             is_regulators_compare_modal_visible: observable,
-            is_mt5_notificaiton_modal_visible: observable,
+            is_mt5_notification_modal_visible: observable,
             is_failed_verification_modal_visible: observable,
             is_tour_open: observable,
             modal_data: observable,
@@ -335,7 +335,7 @@ export default class TradersHubStore extends BaseStore {
     }
 
     setMT5NotificationModal(is_visible) {
-        this.is_mt5_notificaiton_modal_visible = is_visible;
+        this.is_mt5_notification_modal_visible = is_visible;
     }
 
     get has_any_real_account() {

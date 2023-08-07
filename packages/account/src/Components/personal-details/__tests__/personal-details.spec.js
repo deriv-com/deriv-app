@@ -571,6 +571,12 @@ describe('<PersonalDetails/>', () => {
 
         const previous_btn = screen.getByRole('button', { name: /previous/i });
         const next_btn = screen.getByRole('button', { name: /next/i });
+
+        const checkbox = screen.getByLabelText(
+            /i confirm that the name and date of birth above match my chosen identity document/i
+        );
+        fireEvent.click(checkbox);
+
         expect(previous_btn).toBeEnabled();
         expect(next_btn).toBeEnabled();
         fireEvent.click(next_btn);
@@ -629,6 +635,11 @@ describe('<PersonalDetails/>', () => {
 
         expect(mr_radio_btn.checked).toEqual(true);
         const next_btn = screen.getByRole('button', { name: /next/i });
+        const checkbox = screen.getByLabelText(
+            /i confirm that the name and date of birth above match my chosen identity document/i
+        );
+
+        fireEvent.click(checkbox);
 
         expect(next_btn).toBeEnabled();
         fireEvent.click(next_btn);

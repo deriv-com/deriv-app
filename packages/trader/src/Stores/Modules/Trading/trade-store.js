@@ -831,11 +831,6 @@ export default class TradeStore extends BaseStore {
                             // this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
                             if (isDesktop()) {
                                 this.root_store.ui.openPositionsDrawer();
-                            } else if (isMobile()) {
-                                // TODO: Remove this when markers for multipliers are enabled
-                                if (this.is_multiplier || this.is_accumulator) {
-                                    this.root_store.ui.openPositionsDrawer();
-                                }
                             }
                             this.proposal_info = {};
                             this.forgetAllProposal();

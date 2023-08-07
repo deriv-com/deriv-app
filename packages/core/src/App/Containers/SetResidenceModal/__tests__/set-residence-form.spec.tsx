@@ -2,7 +2,6 @@ import React from 'react';
 import { Formik } from 'formik';
 import { render, screen } from '@testing-library/react';
 import SetResidenceForm from '../set-residence-form';
-import { error } from 'console';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');

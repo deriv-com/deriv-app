@@ -21,21 +21,12 @@ jest.mock('@deriv/api', () => ({
     })),
 }));
 
+jest.mock('@deriv/utils', () => ({
+    ...jest.requireActual('@deriv/api'),
+    getActiveToken: jest.fn(() => '12345'),
+}));
+
 describe('useAuthorize', () => {
-    beforeEach(() => {
-        localStorage.clear();
-
-        localStorage.setItem(
-            'client.accounts',
-            JSON.stringify({
-                CRW909900: {
-                    token: '12345',
-                },
-            })
-        );
-        localStorage.setItem('active_loginid', 'CRW909900');
-    });
-
     test('should return correct data for the given token', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 

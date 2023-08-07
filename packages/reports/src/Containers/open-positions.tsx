@@ -145,10 +145,12 @@ type TOpenPositions = {
     currency: string;
     error: string;
     getPositionById: (id: number) => TFormatPortfolioPosition;
+    is_eu: boolean;
     is_loading: boolean;
     is_multiplier: boolean;
     is_accumulator: boolean;
     is_vanilla: boolean;
+    is_virtual: boolean;
     NotificationMessages: () => JSX.Element;
     onClickCancel: () => void;
     onClickSell: () => void;
@@ -455,9 +457,11 @@ const OpenPositions = ({
     error,
     getPositionById,
     is_accumulator,
+    is_eu,
     is_loading,
     is_multiplier,
     is_vanilla,
+    is_virtual,
     NotificationMessages,
     onClickCancel,
     onClickSell,
@@ -480,7 +484,10 @@ const OpenPositions = ({
     const [accumulator_rate, setAccumulatorRate] = React.useState(accumulator_rates[0]);
     const is_accumulator_selected = contract_type_value === contract_types[2].text;
     const is_multiplier_selected = contract_type_value === contract_types[1].text;
-    const contract_types_list = contract_types.map(({ text }) => ({ text, value: text }));
+    const show_accu_in_dropdown = !is_eu && is_virtual;
+    const contract_types_list = contract_types
+        .filter(contract_type => contract_type.text !== localize('Accumulators') || show_accu_in_dropdown)
+        .map(({ text }) => ({ text, value: text }));
     const accumulators_rates_list = accumulator_rates.map(value => ({ text: value, value }));
     const active_positions_filtered = active_positions?.filter(({ contract_info }) => {
         if (contract_info) {
@@ -630,7 +637,7 @@ const OpenPositions = ({
                                     onChange={e => setContractTypeValue(e.target.value)}
                                 />
                             </div>
-                            {is_accumulator_selected && (
+                            {is_accumulator_selected && show_accu_in_dropdown && (
                                 <div className='open-positions__accumulator-container__rates-dropdown'>
                                     <Dropdown
                                         is_align_text_left
@@ -658,7 +665,7 @@ const OpenPositions = ({
                                 should_show_empty_option={false}
                                 onChange={e => setContractTypeValue(e.target.value)}
                             />
-                            {is_accumulator_selected && (
+                            {is_accumulator_selected && show_accu_in_dropdown && (
                                 <SelectNative
                                     className='open-positions__accumulator-container--mobile__rates-dropdown'
                                     list_items={accumulators_rates_list}
@@ -680,6 +687,8 @@ export default withRouter(
     connect(({ client, common, ui, portfolio, contract_trade }: TRootStore) => ({
         active_positions: portfolio.active_positions,
         currency: client.currency,
+        is_eu: client.is_eu,
+        is_virtual: client.is_virtual,
         error: portfolio.error,
         getPositionById: portfolio.getPositionById,
         is_accumulator: portfolio.is_accumulator,

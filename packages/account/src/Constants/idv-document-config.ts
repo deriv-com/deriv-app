@@ -5,7 +5,7 @@ const getImageLocation = (image_name: string) => getUrlBase(`/public/images/comm
 
 // Note: Ensure that the object keys matches BE API's keys. This is simply a mapping for FE templates
 
-export const getIDVDocumentConfig = () => ({
+const getIDVDocumentConfig = () => ({
     ke: {
         alien_card: {
             new_display_name: '',
@@ -175,3 +175,8 @@ export const getIDVDocumentConfig = () => ({
         },
     },
 });
+
+export const getIDVDocuments = (country_code: string) => {
+    const IDV_DOCUMENT_DATA: { [key: string]: object } = getIDVDocumentConfig();
+    return IDV_DOCUMENT_DATA[country_code];
+};

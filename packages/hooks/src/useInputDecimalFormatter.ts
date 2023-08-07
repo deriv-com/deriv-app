@@ -35,7 +35,7 @@ const useInputDecimalFormatter = (initial?: number, options?: TOptions) => {
 
                 const is_number = !isNaN(Number(new_value));
 
-                // If the input value is not a valid number, So we return the old value.
+                // The input value is not a valid number, So we return the old value.
                 if (!is_number) return old_value;
 
                 const new_left = left.replaceAll(/[+-]/g, '');

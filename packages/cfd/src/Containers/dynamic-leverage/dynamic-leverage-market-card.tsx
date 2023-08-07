@@ -2,19 +2,7 @@ import React from 'react';
 import { Table, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { TDynamicLeverageMarketCardProps } from 'Containers/props.types';
-
-const dynamicLeverageTableColumnHeader = (column_title: string, column_subtitle: string) => (
-    <Table.Head>
-        <div className='dynamic-leverage-modal__market-table-header'>
-            <Text size='xs' align='center' weight='bold'>
-                {column_title}
-            </Text>
-            <Text size='xxs' align='center'>
-                {column_subtitle}
-            </Text>
-        </div>
-    </Table.Head>
-);
+import { DynamicLeverageTableColumnHeader } from './dynamic-leverage-table-column-header';
 
 export const DynamicLeverageMarketCard = ({ title, description, leverage, data }: TDynamicLeverageMarketCardProps) => (
     <div className='dynamic-leverage-modal__market'>
@@ -39,9 +27,9 @@ export const DynamicLeverageMarketCard = ({ title, description, leverage, data }
         <Table className='dynamic-leverage-modal__market-table'>
             <Table.Header>
                 <Table.Row className='dynamic-leverage-modal__market-table-header-row'>
-                    {dynamicLeverageTableColumnHeader(localize('From'), localize('(lots)'))}
-                    {dynamicLeverageTableColumnHeader(localize('to'), localize('(lots)'))}
-                    {dynamicLeverageTableColumnHeader(localize('Leverage'), localize('(1:x)'))}
+                    <DynamicLeverageTableColumnHeader title={localize('From')} subtitle={localize('(lots)')} />
+                    <DynamicLeverageTableColumnHeader title={localize('to')} subtitle={localize('(lots)')} />
+                    <DynamicLeverageTableColumnHeader title={localize('Leverage')} subtitle={localize('(1:x)')} />
                 </Table.Row>
             </Table.Header>
             <Table.Body>

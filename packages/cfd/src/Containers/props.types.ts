@@ -344,3 +344,8 @@ export type TDynamicLeverageMarketCardProps = {
     leverage: string;
     data: TDynamicLeverage[];
 };
+
+export type TDynamicLeverageTableColumnHeader = {
+    title: string;
+    subtitle: string;
+};

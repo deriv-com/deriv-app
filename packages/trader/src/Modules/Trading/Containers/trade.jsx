@@ -335,7 +335,7 @@ const ChartTrade = observer(props => {
     const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;
 
     // max ticks to display for mobile view for tick chart
-    const accumulator_whitespace = isMobile() ? 150 : 180;
+    const accumulator_whitespace = isMobile() ? 160 : 190;
     const max_ticks_for_0_granularity = is_accumulator ? 40 : 8;
     const max_ticks = granularity === 0 ? max_ticks_for_0_granularity : 24;
 

@@ -13,7 +13,7 @@ import { updateActiveAccount, updateIsLogged } from '@redux-store/client-slice';
 import { setAccountSwitcherLoader, setShouldReloadWorkspace, updateShowTour } from '@redux-store/ui-slice';
 import { observer as globalObserver } from '@utilities/observer';
 import { loginAndSetTokens } from '../../common/appId';
-import Blockly from '../../botPage/view/blockly';
+import Blockly from '../../blockly';
 import LogTable from '../../botPage/view/LogTable';
 import TradeInfoPanel from '../../botPage/view/TradeInfoPanel';
 import initialize, { applyToolboxPermissions } from '../../blockly/blockly-worksace';

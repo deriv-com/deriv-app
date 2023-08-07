@@ -1,10 +1,10 @@
 import { api_base } from '@api-base';
 import { translate } from '@i18n';
+import GTM from '@utilities/integrations/gtm';
 import { getUUID, recoverFromError, doUntilDone } from '../tools';
 import { contractStatus, info, notify } from '../broadcast';
 import { purchaseSuccessful } from './state/actions';
 import { BEFORE_PURCHASE } from './state/constants';
-import GTM from '../../../common/gtm';
 
 let delay_index = 0;
 let purchase_reference;

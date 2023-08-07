@@ -3,7 +3,7 @@ import { api_base } from '@api-base';
 import { isLoggedIn } from '@storage';
 import { observer as globalObserver } from '@utilities/observer';
 import { historyToTicks, getLast } from '../../common/utils/binary';
-import { doUntilDone, getUUID } from '../bot/tools';
+import { doUntilDone, getUUID } from '../../blockly/bot/tools';
 
 const parseTick = tick => ({
     epoch: +tick.epoch,

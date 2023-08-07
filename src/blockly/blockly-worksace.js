@@ -8,16 +8,16 @@ import Chart from '@components/Dialogs/Chart';
 import TradingView from '@components/Dialogs/TradingView';
 import Limits from '@components/Dialogs/Limits';
 import config, { updateConfigCurrencies } from '@currency-config';
-import logHandler from '../botPage/view/logger';
+import GTM from '@utilities/integrations/gtm';
+import logHandler from '@utilities/logger';
 import { logoutAllTokens } from '../common/appId';
 import {
     saveBeforeUnload,
     getMissingBlocksTypes,
     getDisabledMandatoryBlocks,
     getUnattachedMandatoryPairs,
-} from '../botPage/view/blockly/utils';
-import GTM from '../common/gtm';
-import { load } from '../botPage/view/blockly';
+} from './utils';
+import { load } from '.';
 
 const integrationsDialog = new IntegrationsDialog();
 const tradingView = new TradingView();

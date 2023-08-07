@@ -1,5 +1,5 @@
 import Observer from '@utilities/observer';
-import TicksService from '../common/TicksService';
+import TicksService from '../../botPage/common/TicksService';
 
 export const createScope = () => ({
     observer: new Observer(),

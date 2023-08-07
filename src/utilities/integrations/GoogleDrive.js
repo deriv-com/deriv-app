@@ -3,10 +3,10 @@ import { translate } from '@i18n';
 import { setGdLoggedIn } from '@redux-store/client-slice';
 import { setGdReady } from '@redux-store/ui-slice';
 import { observer as globalObserver } from '@utilities/observer';
+import { TrackJSError } from '@utilities/logger';
 import GD_CONFIG from '../../botPage/common/google_drive_config';
-import { load } from '../../botPage/view/blockly';
+import { load } from '../../blockly';
 import store from '../../redux-store';
-import { TrackJSError } from '../../botPage/view/logger';
 import { trackJSTrack } from './trackJSTrack';
 
 export const loadExternalScript = (src, async = true, defer = true) =>

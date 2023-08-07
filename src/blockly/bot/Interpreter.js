@@ -2,7 +2,7 @@ import JSInterpreter from 'js-interpreter';
 import { observer as globalObserver } from '@utilities/observer';
 import { createScope } from './CliTools';
 import Interface from './Interface';
-import { clone } from '../common/clone';
+import { clone } from '../../botPage/common/clone';
 
 /* eslint-disable func-names, no-underscore-dangle */
 JSInterpreter.prototype.takeStateSnapshot = function () {

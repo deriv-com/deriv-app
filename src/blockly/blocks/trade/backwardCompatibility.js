@@ -1,6 +1,6 @@
 import { translate } from '@i18n';
 import config from '@currency-config';
-import { symbolApi } from '../../../shared';
+import { symbolApi } from '../shared';
 import { setInputList, marketDefPlaceHolders, marketToTradeOption } from './tools';
 import { duration, payout, prediction, barrierOffsetGenerator } from './components';
 

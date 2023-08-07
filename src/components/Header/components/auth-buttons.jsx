@@ -4,7 +4,7 @@ import config from '@config';
 import { translate } from '@i18n';
 import { setIsHeaderLoaded } from '@redux-store/ui-slice';
 import Tour, { TourTargets } from '@components/common/tour';
-import { saveBeforeUnload } from '../../../botPage/view/blockly/utils';
+import { saveBeforeUnload } from '../../../blockly/utils';
 
 const AuthButtons = () => {
     const dispatch = useDispatch();

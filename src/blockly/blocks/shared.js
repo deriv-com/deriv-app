@@ -5,7 +5,15 @@ import { api_base } from '@api-base';
 import { translate } from '@i18n';
 import { observer as globalObserver } from '@utilities/observer';
 import config from '@currency-config';
-import { symbolApi } from '../../shared';
+import _Symbol from '../../botPage/common/symbolApi';
+
+export const symbolApi = new _Symbol();
+
+export const symbolPromise = new Promise(resolve => {
+    symbolApi.initPromise.then(() => {
+        resolve();
+    });
+});
 
 let purchaseChoices = [[translate('Click to select'), '']];
 

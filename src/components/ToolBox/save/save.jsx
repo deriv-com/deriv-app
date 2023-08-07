@@ -6,7 +6,7 @@ import google_drive_util from '@utilities/integrations/GoogleDrive';
 import LoadingButton from '../loading_button';
 import SAVE_LOAD_TYPE from '../common';
 import useIsMounted from '../../../common/hooks/isMounted';
-import { cleanBeforeExport } from '../../../botPage/view/blockly/utils';
+import { cleanBeforeExport } from '../../../blockly/utils';
 import * as style from '../../style';
 
 const Save = ({ blockly, closeDialog, is_gd_logged_in }) => {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { TrackJS } from 'trackjs';
+import { symbolPromise } from '@blockly/blocks/shared';
+import GTM from '@utilities/integrations/gtm';
 import trackjs_config from '../botPage/view/trackJs_config';
-import GTM from '../common/gtm';
-import { symbolPromise } from '../botPage/view/shared';
 import Routes from '../routes';
 
 // Todo create symbol slice and update/add info from here;

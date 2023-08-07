@@ -12,7 +12,7 @@ import {
     setActiveLoginId,
 } from '@storage';
 import { getRelatedDeriveOrigin } from '@utils';
-import GTM from './gtm';
+import GTM from '@utilities/integrations/gtm';
 
 const generateOAuthDomain = () => {
     const related_deriv_origin = getRelatedDeriveOrigin;

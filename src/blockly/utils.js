@@ -3,8 +3,8 @@ import { translate } from '@i18n';
 import { saveAs } from '@utils';
 import { observer as globalObserver } from '@utilities/observer';
 import config from '@currency-config';
+import { TrackJSError } from '@utilities/logger';
 import { fieldGeneratorMapping } from './blocks/shared';
-import { TrackJSError } from '../logger';
 
 export const isMainBlock = blockType => config.mainBlocks.indexOf(blockType) >= 0;
 

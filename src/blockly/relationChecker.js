@@ -3,7 +3,7 @@ import { translate } from '@i18n';
 import { observer as globalObserver } from '@utilities/observer';
 import config from '@currency-config';
 import { durationToSecond } from '@utils';
-import { symbolApi } from '../shared';
+import { symbolApi } from './blocks/shared';
 import { findTopParentBlock, disable, enable, expandDuration } from './utils';
 
 const isInRange = (amount, min, max) => !Number.isNaN(+amount) && +amount >= min && +amount <= max;

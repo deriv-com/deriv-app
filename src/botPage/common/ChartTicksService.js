@@ -1,6 +1,6 @@
 import { api_base } from '@api-base';
 import { observer as globalObserver } from '@utilities/observer';
-import { doUntilDone } from '../bot/tools';
+import { doUntilDone } from '../../blockly/bot/tools';
 import TicksService from './TicksService';
 
 export default class ChartTicksService extends TicksService {

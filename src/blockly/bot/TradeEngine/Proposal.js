@@ -1,8 +1,8 @@
 import { api_base } from '@api-base';
 import { translate } from '@i18n';
+import { TrackJSError } from '@utilities/logger';
 import { tradeOptionToProposal, doUntilDone } from '../tools';
 import { proposalsReady, clearProposals } from './state/actions';
-import { TrackJSError } from '../../view/logger';
 
 export default Engine =>
     class Proposal extends Engine {

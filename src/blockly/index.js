@@ -4,6 +4,8 @@ import { translate, xml as translateXml } from '@i18n';
 import { observer as globalObserver } from '@utilities/observer';
 import { trackJSTrack } from '@utilities/integrations/trackJSTrack';
 import config from '@currency-config';
+import GTM from '@utilities/integrations/gtm';
+import { TrackJSError } from '@utilities/logger';
 import './customBlockly';
 import blocks from './blocks';
 import {
@@ -26,11 +28,9 @@ import {
     updateRenamedFields,
     getPreviousStrat,
 } from './utils';
-import Interpreter from '../../bot/Interpreter';
-import { showDialog } from '../../bot/tools';
-import GTM from '../../../common/gtm';
-import { TrackJSError } from '../logger';
-import { createDataStore } from '../../bot/data-collection';
+import Interpreter from './bot/Interpreter';
+import { showDialog } from './bot/tools';
+import { createDataStore } from './bot/data-collection';
 
 const disableStrayBlocks = () => {
     const topBlocks = Blockly.mainWorkspace.getTopBlocks();

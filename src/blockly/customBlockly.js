@@ -1,6 +1,6 @@
 import { getLanguage } from '@storage';
 import { translate, translateLangToLang } from '@i18n';
-import GTM from '../../../common/gtm';
+import GTM from '../utilities/integrations/gtm';
 import { save } from './utils';
 
 /* eslint-disable */

@@ -9,7 +9,7 @@ import { translate } from '@i18n';
 import { isNumber, saveAs, appendRow, updateRow } from '@utils';
 import { observer as globalObserver } from '@utilities/observer';
 import * as style from '@components/style';
-import { roundBalance } from '../../bot/helpers';
+import { roundBalance } from '../../../blockly/bot/helpers';
 
 const getProfit = ({ sell_price, buy_price, currency }) => {
     if (isNumber(sell_price) && isNumber(buy_price)) {

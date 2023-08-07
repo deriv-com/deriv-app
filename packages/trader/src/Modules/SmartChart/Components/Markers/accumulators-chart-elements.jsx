@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import AccumulatorsProfitLossTooltip from './accumulators-profit-loss-tooltip.jsx';
 import ChartMarker from './marker.jsx';
-import classNames from 'classnames';
 
 const AccumulatorsChartElements = ({
     all_positions,
@@ -22,40 +21,11 @@ const AccumulatorsChartElements = ({
         <React.Fragment>
             {!!accumulators_positions.length &&
                 accumulators_positions.map(({ contract_info }) => (
-                    <React.Fragment key={contract_info.contract_id}>
-                        <AccumulatorsProfitLossTooltip
-                            {...contract_info}
-                            should_show_profit_text={should_show_profit_text}
-                        />
-                        {!!contract_info.is_sold && (
-                            <React.Fragment>
-                                <ChartMarker
-                                    marker_config={{
-                                        ContentComponent: 'div',
-                                        x: contract_info.exit_tick_time,
-                                        y: contract_info.high_barrier,
-                                    }}
-                                    marker_content_props={{
-                                        className: classNames('sc-accu-high-barrier', {
-                                            'sc-accu-high-barrier--lost': contract_info.profit <= 0,
-                                        }),
-                                    }}
-                                />
-                                <ChartMarker
-                                    marker_config={{
-                                        ContentComponent: 'div',
-                                        x: contract_info.exit_tick_time,
-                                        y: contract_info.low_barrier,
-                                    }}
-                                    marker_content_props={{
-                                        className: classNames('sc-accu-low-barrier', {
-                                            'sc-accu-low-barrier--lost': contract_info.profit <= 0,
-                                        }),
-                                    }}
-                                />
-                            </React.Fragment>
-                        )}
-                    </React.Fragment>
+                    <AccumulatorsProfitLossTooltip
+                        key={contract_info.contract_id}
+                        {...contract_info}
+                        should_show_profit_text={should_show_profit_text}
+                    />
                 ))}
             {has_crossed_accu_barriers && !!current_spot_time && (
                 <ChartMarker

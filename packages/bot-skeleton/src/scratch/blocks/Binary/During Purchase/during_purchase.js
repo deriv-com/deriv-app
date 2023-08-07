@@ -1,6 +1,5 @@
 import { localize } from '@deriv/translations';
 import { sellContract } from '../../images';
-import { observer, removeErrorHandlingEventListener } from '../../../../utils';
 
 Blockly.Blocks.during_purchase = {
     init() {
@@ -49,11 +48,6 @@ Blockly.Blocks.during_purchase = {
                 'Here is where you can decide to sell your contract before it expires. Only one copy of this block is allowed.'
             ),
         };
-    },
-    onchange() {
-        if (!Blockly.selected) {
-            removeErrorHandlingEventListener('keydown', observer);
-        }
     },
 };
 

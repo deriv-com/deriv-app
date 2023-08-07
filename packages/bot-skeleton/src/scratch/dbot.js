@@ -9,7 +9,6 @@ import { observer as globalObserver } from '../utils/observer';
 import ApiHelpers from '../services/api/api-helpers';
 import Interpreter from '../services/tradeEngine/utils/interpreter';
 import { api_base } from '../services/api/api-base';
-import { initErrorHandlingListener } from '../utils';
 
 class DBot {
     constructor() {
@@ -68,8 +67,6 @@ class DBot {
                 this.addBeforeRunFunction(this.disableStrayBlocks.bind(this));
                 this.addBeforeRunFunction(this.checkForErroredBlocks.bind(this));
                 this.addBeforeRunFunction(this.checkForRequiredBlocks.bind(this));
-
-                initErrorHandlingListener('keydown', globalObserver);
 
                 // Push main.xml to workspace and reset the undo stack.
                 this.workspace.current_strategy_id = Blockly.utils.genUid();

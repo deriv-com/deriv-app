@@ -1,6 +1,5 @@
 import { localize } from '@deriv/translations';
 import { purchase } from '../../images';
-import { observer, removeErrorHandlingEventListener } from '../../../../utils';
 
 Blockly.Blocks.before_purchase = {
     init() {
@@ -49,11 +48,6 @@ Blockly.Blocks.before_purchase = {
                 'This block is mandatory. Only one copy of this block is allowed. You can place the Purchase block (see below) here as well as conditional blocks to define your purchase conditions.'
             ),
         };
-    },
-    onchange() {
-        if (!Blockly.selected) {
-            removeErrorHandlingEventListener('keydown', observer);
-        }
     },
 };
 

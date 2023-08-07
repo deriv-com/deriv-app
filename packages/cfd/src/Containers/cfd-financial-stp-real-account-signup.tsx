@@ -1,6 +1,6 @@
 import React from 'react';
 import { Div100vhContainer } from '@deriv/components';
-import { useIsAccountStatusPresent } from '@deriv/hooks';
+import { useIsAccountStatusPresent, useLandingCompany } from '@deriv/hooks';
 import { isDesktop, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
 import CFDPOA from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
@@ -24,7 +24,7 @@ type TItem = {
     account_settings: TCoreStores['client']['account_settings'];
     email: TCoreStores['client']['email'];
     is_fully_authenticated: TCoreStores['client']['is_fully_authenticated'];
-    landing_company: TCoreStores['client']['landing_company'];
+    new_lc: TCoreStores['client']['landing_company'];
     residence_list: TCoreStores['client']['residence_list'];
     states_list: TCoreStores['client']['states_list'];
     fetchStatesList: TCoreStores['client']['fetchStatesList'];
@@ -43,6 +43,7 @@ type TItemsState<T extends TItem> = {
 
 const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialStpRealAccountSignupProps) => {
     const { notifications, client } = useStore();
+    const { data: new_lc } = useLandingCompany();
 
     const { refreshNotifications, removeNotificationMessage, removeNotificationByKey, addNotificationMessageByKey } =
         notifications;
@@ -52,7 +53,6 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
         account_settings,
         email,
         is_fully_authenticated,
-        landing_company,
         residence_list,
         states_list,
         fetchStatesList,
@@ -70,7 +70,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
         account_settings,
         email,
         is_fully_authenticated,
-        landing_company,
+        new_lc,
         residence_list,
         states_list,
         fetchStatesList,
@@ -133,7 +133,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
             tax_identification_number: '',
             account_opening_reason: '',
         },
-        forwarded_props: ['residence_list', 'landing_company'],
+        forwarded_props: ['residence_list', 'new_lc'],
     };
 
     const should_show_poi = () => {

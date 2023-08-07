@@ -330,7 +330,7 @@ const StaticDashboard = observer(
                                 {isMobile() ? (
                                     <React.Fragment>
                                         <ButtonToggle
-                                            buttons_arr={toggle_options}
+                                            buttons_arr={is_eu_user ? toggle_options_eu : toggle_options}
                                             className='static-dashboard-wrapper__header--toggle-account'
                                             has_rounded_button
                                             is_animated

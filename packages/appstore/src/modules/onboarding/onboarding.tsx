@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { isMobile, isDesktop, routes, ContentFlag } from '@deriv/shared';
+import { isDesktop, routes, ContentFlag } from '@deriv/shared';
 import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import { getTradingHubContents } from 'Constants/trading-hub-content';
@@ -126,7 +126,7 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
                             </Button>
                         </div>
                     )}
-                    {isMobile() && (
+                    {is_mobile && (
                         <React.Fragment>
                             <div className='onboarding-footer__progress-bar'>
                                 <ProgressBarOnboarding

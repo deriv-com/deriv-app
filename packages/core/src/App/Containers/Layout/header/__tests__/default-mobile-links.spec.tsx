@@ -19,6 +19,7 @@ describe('DefaultMobileLinks', () => {
             handleClickCashier: jest.fn(),
         };
         render(<DefaultMobileLinks {...mock_props} />);
+        expect(screen.getByText('mockedTradingHubOnboarding')).toBeInTheDocument();
     });
 
     it('should display the cashier button', () => {

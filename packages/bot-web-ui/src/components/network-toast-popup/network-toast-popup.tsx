@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { MobileWrapper, Toast } from '@deriv/components';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 
 // TODO: Need to sanitize,
 // Same sort of component is being used inside DTrader,
@@ -12,8 +12,13 @@ import { connect } from 'Stores/connect';
 /**
  * Network status Toast components
  */
-const NetworkStatusToastError = ({ status, portal_id, message }) => {
+
+const NetworkStatusToastError = observer(() => {
+    const { common } = useStore();
+    const { network_status } = common;
     const [is_open, setIsOpen] = React.useState(false);
+    const { message, status } = network_status;
+    const portal_id = 'popup_root';
 
     if (!document.getElementById(portal_id) || !message) return null;
 
@@ -40,16 +45,6 @@ const NetworkStatusToastError = ({ status, portal_id, message }) => {
         </MobileWrapper>,
         document.getElementById(portal_id)
     );
-};
+});
 
-NetworkStatusToastError.propTypes = {
-    portal_id: PropTypes.string,
-    status: PropTypes.string,
-    message: PropTypes.string,
-};
-
-export default connect(({ common }) => ({
-    network_status: common.network_status,
-}))(({ network_status }) => (
-    <NetworkStatusToastError portal_id='popup_root' message={network_status.tooltip} status={network_status.class} />
-));
+export default NetworkStatusToastError;

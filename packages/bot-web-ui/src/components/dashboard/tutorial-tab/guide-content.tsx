@@ -2,40 +2,32 @@ import React from 'react';
 import classNames from 'classnames';
 import { Dialog, Icon, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { useDBotStore } from 'Stores/useDBotStore';
 import { removeKeyValue } from '../../../utils/settings';
 import { tour_type } from '../joyride-config';
 
 type TGuideContent = {
-    dialog_options: { [key: string]: string };
-    faq_search_value: string;
     guide_list: [];
-    is_dialog_open: boolean;
-    onOkButtonClick: () => void;
-    setActiveTab: (tab_title: number) => void;
-    setHasTourEnded: (param: boolean) => boolean;
-    setOnBoardTourRunState: (param: boolean) => boolean;
-    setTourActive: (param: boolean) => boolean;
-    setTourDialogVisibility: (param: boolean) => boolean;
-    showVideoDialog: (param: { [key: string]: string }) => void;
 };
 
-const GuideContent = ({
-    dialog_options,
-    faq_search_value,
-    guide_list,
-    is_dialog_open,
-    onOkButtonClick,
-    setActiveTab,
-    setHasTourEnded,
-    setOnBoardTourRunState,
-    setTourActive,
-    setTourDialogVisibility,
-    showVideoDialog,
-}: TGuideContent) => {
+const GuideContent = observer(({ guide_list }: TGuideContent) => {
+    const { dashboard } = useDBotStore();
+    const {
+        dialog_options,
+        faq_search_value,
+        is_dialog_open,
+        onCloseDialog: onOkButtonClick,
+        setActiveTab,
+        setHasTourEnded,
+        setOnBoardTourRunState,
+        setTourActive,
+        setTourDialogVisibility,
+        showVideoDialog,
+    } = dashboard;
+
     const triggerTour = (type: string) => {
         const storage = JSON.parse(localStorage?.dbot_settings);
         if (type === 'OnBoard') {
@@ -72,7 +64,7 @@ const GuideContent = ({
             <div className='tutorials-wrap'>
                 {guide_list?.length > 0 && (
                     <Text align='center' weight='bold' color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
-                        Step-by-step guides
+                        {localize('Step-by-step guides')}
                     </Text>
                 )}
                 <div className='tutorials-wrap__group'>
@@ -108,7 +100,7 @@ const GuideContent = ({
                 </div>
                 {guide_list?.length > 0 && (
                     <Text align='center' weight='bold' color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
-                        Videos on Deriv Bot
+                        {localize('Videos on Deriv Bot')}
                     </Text>
                 )}
                 <div className='tutorials-wrap__group'>
@@ -180,18 +172,6 @@ const GuideContent = ({
         ),
         [guide_list, is_dialog_open]
     );
-};
+});
 
-export default connect(({ dashboard, load_modal }: RootStore) => ({
-    dialog_options: dashboard.dialog_options,
-    faq_search_value: dashboard.faq_search_value,
-    is_dialog_open: dashboard.is_dialog_open,
-    onOkButtonClick: dashboard.onCloseDialog,
-    setActiveTab: dashboard.setActiveTab,
-    setHasTourEnded: dashboard.setHasTourEnded,
-    setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
-    setTourActive: dashboard.setTourActive,
-    setTourDialogVisibility: dashboard.setTourDialogVisibility,
-    showVideoDialog: dashboard.showVideoDialog,
-    toggleLoadModal: load_modal.toggleLoadModal,
-}))(GuideContent);
+export default GuideContent;

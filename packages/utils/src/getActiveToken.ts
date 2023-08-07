@@ -1,6 +1,6 @@
 /**
- * Get active_loginid
- * @returns {string} - Active loginid or empty string
+ * Get active account token
+ * @returns {string} - Active token or empty string
  */
 export const getActiveToken = (): string => {
     // Temporarily fix for getting the active token from local storage to avoid using `useStore`.

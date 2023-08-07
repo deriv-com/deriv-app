@@ -386,7 +386,7 @@ export const isAllRequiredBlocksEnabled = workspace => {
     });
 
     missing_blocks.forEach(blockType => {
-        if (blockType !== null) globalObserver.emit('ui.log.error', error_message_map[blockType]?.missing);
+        if (blockType) globalObserver.emit('ui.log.error', error_message_map[blockType]?.missing);
     });
 
     const is_required_blocks_present = [...missing_blocks, ...misplaced_blocks];

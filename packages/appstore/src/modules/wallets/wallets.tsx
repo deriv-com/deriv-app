@@ -23,13 +23,10 @@ const Wallets = observer(() => {
 
     return (
         <ThemedScrollbars className={'wallets-module'}>
-            {!is_authorize && <Loading />}
-            {is_authorize && (
-                <div className={'wallets-module__content'}>
-                    {is_mobile ? <MobileWalletsCarousel /> : <DesktopWalletsList />}
-                    <AddMoreWallets />
-                </div>
-            )}
+            <div className={'wallets-module__content'}>
+                {is_mobile ? <MobileWalletsCarousel /> : <DesktopWalletsList />}
+                <AddMoreWallets />
+            </div>
             <ModalManager />
         </ThemedScrollbars>
     );

@@ -576,6 +576,9 @@ export default class NotificationStore extends BaseStore {
                     this.addNotificationMessage(this.client_notifications.svg_poi_expired);
                 }
             }
+            if (client && this.root_store.client.mt5_login_list.length > 0) {
+                this.addNotificationMessage(this.client_notifications.mt5_notification);
+            }
         }
 
         if (!is_eu && isMultiplierContract(selected_contract_type) && current_language === 'EN' && is_logged_in) {
@@ -633,7 +636,7 @@ export default class NotificationStore extends BaseStore {
         this.handleClientNotifications();
     }
 
-    removeAllNotificationMessages(should_close_persistent) {
+    removeAllNotificationMessages(should_close_persistent = false) {
         this.notification_messages = should_close_persistent
             ? []
             : [...this.notification_messages.filter(notifs => notifs.is_persistent)];
@@ -708,6 +711,7 @@ export default class NotificationStore extends BaseStore {
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
         const { has_enabled_two_fa, setTwoFAChangedStatus, logout } = this.root_store.client;
+        const { setMT5NotificationModal } = this.root_store.traders_hub;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
         const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
         const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
@@ -1513,6 +1517,18 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Go to LiveChat'),
                 },
                 type: 'danger',
+            },
+            mt5_notification: {
+                key: 'mt5_notification',
+                header: localize('Trouble accessing Deriv MT5 on your mobile?'),
+                message: localize('Follow these simple instructions to fix it.'),
+                action: {
+                    text: localize('Learn more'),
+                    onClick: () => {
+                        setMT5NotificationModal(true);
+                    },
+                },
+                type: 'warning',
             },
         };
 

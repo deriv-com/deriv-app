@@ -66,6 +66,27 @@ type TAutoComplete = {
     text: string;
 };
 
+/**
+ * Component to display address details form
+ * @name AddressDetails
+ * @param {Function} getCurrentStep - function to get current step
+ * @param {Function} onSave - function to save form values
+ * @param {Function} onCancel - function to cancel form values
+ * @param {Function} goToNextStep - function to go to next step
+ * @param {Function} goToPreviousStep - function to go to previous step
+ * @param {Function} validate - function to validate form values
+ * @param {Function} onSubmit - function to submit form values
+ * @param {boolean} is_svg - is broker code SVG
+ * @param {boolean} is_mf - is broker code MF
+ * @param {boolean} is_gb_residence - is residence Great Britan
+ * @param {Function} onSubmitEnabledChange - function to change submit button status
+ * @param {React.RefObject} selected_step_ref - reference to selected step
+ * @param {Function} fetchStatesList - function to fetch states list
+ * @param {Object} value - form values
+ * @param {Array} disabled_items - array of disabled fields
+ * @param {boolean} has_real_account - has real account
+ * @returns {React.ReactNode} - returns react node
+ */
 const AddressDetails = observer(
     ({
         getCurrentStep,

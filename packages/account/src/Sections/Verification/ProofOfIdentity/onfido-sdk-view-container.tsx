@@ -101,6 +101,7 @@ const OnfidoSdkViewContainer = ({
     const initOnfido = React.useCallback(
         async (service_token: string) => {
             if (!service_token) return;
+
             try {
                 onfido_init.current = await init({
                     containerId: 'onfido',

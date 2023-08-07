@@ -16,6 +16,10 @@ describe('TradingHubOnboarding', () => {
                 <TradingHubOnboarding />
             </StoreProvider>
         );
+        expect(screen.getByTestId('dt_trading_hub_onboarding')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_trading_hub_onboarding')).toHaveClass(
+            'trading-hub-header__tradinghub--onboarding'
+        );
     });
 
     it('should display the trading hub onboarding icon', () => {
@@ -24,6 +28,6 @@ describe('TradingHubOnboarding', () => {
                 <TradingHubOnboarding />
             </StoreProvider>
         );
-        expect(screen.getByTestId('dt_trading_hub_onboarding')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_trading_hub_onboarding_icon')).toBeInTheDocument();
     });
 });

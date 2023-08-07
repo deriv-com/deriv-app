@@ -12,7 +12,7 @@ const TradingHubOnboarding = observer(() => {
     const { is_dark_mode_on } = ui;
 
     return (
-        <div className='trading-hub-header__tradinghub--onboarding'>
+        <div data-testid='dt_trading_hub_onboarding' className='trading-hub-header__tradinghub--onboarding'>
             <div className='trading-hub-header__tradinghub--onboarding--logo'>
                 <Popover
                     classNameBubble='account-settings-toggle__tooltip'
@@ -22,7 +22,7 @@ const TradingHubOnboarding = observer(() => {
                     zIndex='9999'
                 >
                     <Icon
-                        data_testid='dt_trading_hub_onboarding'
+                        data_testid='dt_trading_hub_onboarding_icon'
                         icon={is_dark_mode_on ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
                         size={20}
                         onClick={() => {

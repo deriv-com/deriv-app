@@ -24,9 +24,17 @@
 }
 
 .ads-page {
-    margin-top: 4.5rem;
+    margin: 4.5rem 1.6rem;
+
+    @include desktop {
+        position: absolute;
+        left: 5rem;
+    }
 
     @include mobile {
         margin-top: 11.8rem;
+        .no-ads__message {
+            width: 100%;
+        }
     }
 }

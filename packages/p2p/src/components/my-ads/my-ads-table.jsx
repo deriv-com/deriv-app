@@ -9,7 +9,7 @@ import { TableError } from 'Components/table/table-error.jsx';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
-import NoAds from '../buy-sell/no-ads/no-ads.jsx';
+import NoAds from '../buy-sell/no-ads';
 
 const getHeaders = offered_currency => [
     { text: localize('Ad ID') },

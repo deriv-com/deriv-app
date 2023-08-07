@@ -768,8 +768,18 @@
             padding-bottom: 1rem;
 
             &-header {
-                display: flex;
-                flex-direction: column;
+                &-cell {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                &-row {
+                    grid-template-columns: 1fr 0.5fr 1.25fr;
+                    justify-items: center;
+                    border-bottom: 0;
+                    padding: 0.4rem 0;
+                    background-color: var(--general-hover);
+                }
             }
 
             &-row {
@@ -777,14 +787,6 @@
                 justify-items: center;
                 border-bottom: 0;
                 padding: 0.4rem 0;
-            }
-
-            &-header-row {
-                grid-template-columns: 1fr 0.5fr 1.25fr;
-                justify-items: center;
-                border-bottom: 0;
-                padding: 0.4rem 0;
-                background-color: var(--general-hover);
             }
 
             &-row:nth-child(even) {

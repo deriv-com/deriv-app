@@ -10,8 +10,7 @@ import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
 import { useStore, observer } from '@deriv/stores';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 
-const JurisdictionModalContentWrapper = observer((props: TJurisdictionModalContentWrapperProps) => {
-    const { openPasswordModal } = props;
+const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisdictionModalContentWrapperProps) => {
     const { client, traders_hub } = useStore();
 
     const { show_eu_related_content } = traders_hub;

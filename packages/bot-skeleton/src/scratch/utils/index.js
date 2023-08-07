@@ -7,6 +7,7 @@ import { removeLimitedBlocks } from '../../utils/workspace';
 import { saveWorkspaceToRecent } from '../../utils/local-storage';
 import DBotStore from '../dbot-store';
 import { log_types } from '../../constants/messages';
+import { error_message_map } from '../../utils/error-config';
 
 export const matchTranslateAttribute = translateString => {
     const match = translateString.match(/translate\((-?\d*\.?\d+),(-?\d*\.?\d+)\)/);
@@ -377,7 +378,7 @@ export const isAllRequiredBlocksEnabled = workspace => {
         }
     });
     misplaced_blocks.forEach(block => {
-        globalObserver.emit('ui.log.error', `${block} is misplaced`);
+        if (block) globalObserver.emit('ui.log.error', error_message_map[block?.type]?.misplaced);
     });
 
     const missing_blocks = required_block_types.filter(blockType => {
@@ -385,7 +386,7 @@ export const isAllRequiredBlocksEnabled = workspace => {
     });
 
     missing_blocks.forEach(blockType => {
-        globalObserver.emit('ui.log.error', `${blockType} is missing`);
+        if (blockType !== null) globalObserver.emit('ui.log.error', error_message_map[blockType]?.missing);
     });
 
     const is_required_blocks_present = [...missing_blocks, ...misplaced_blocks];

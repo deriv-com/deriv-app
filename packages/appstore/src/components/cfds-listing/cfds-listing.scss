@@ -3,12 +3,12 @@
         display: flex;
         flex-direction: column;
         @include desktop {
-            overflow: scroll;
+            overflow: auto;
         }
     }
     &__scrollable-content {
         @include desktop {
-            overflow: scroll;
+            overflow: auto;
         }
     }
     &__footer-content {
@@ -449,6 +449,9 @@
     &__spec-text {
         font-family: 'Courier', monospace;
         overflow: hidden;
+        &-broker {
+            text-align: right;
+        }
     }
     &__download-center {
         border-top: 2px solid var(--general-section-1);

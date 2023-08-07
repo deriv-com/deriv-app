@@ -1731,6 +1731,7 @@ export default class ClientStore extends BaseStore {
             }
             if (this.residence) {
                 await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
+                await this.fetchStatesList();
             }
             if (!this.is_virtual) await this.getLimits();
 

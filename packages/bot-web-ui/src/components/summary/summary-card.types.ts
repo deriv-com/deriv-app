@@ -1,6 +1,3 @@
-import moment from 'moment';
-import SummaryCardStore from 'Stores/summary-card-store';
-
 type TTransactionIds = {
     buy: number;
 };
@@ -49,26 +46,7 @@ export type TContractInfo = {
     validation_error: string;
 };
 
-type TToastConfig = {
-    key?: number;
-    content: string;
-    timeout?: number;
-    is_bottom?: boolean;
-    type?: string;
-};
-
 export interface TSummaryCardProps {
-    addToast: (toast_config: TToastConfig) => void;
-    contract_info?: TContractInfo;
-    contract_store: SummaryCardStore;
-    current_focus: string | null;
-    is_contract_completed: boolean;
+    contract_info?: TContractInfo | null;
     is_contract_loading: boolean;
-    is_contract_inactive: boolean;
-    is_multiplier: boolean;
-    onClickSell: () => void;
-    is_sell_requested: boolean;
-    removeToast: (key: number) => void;
-    server_time: moment.Moment;
-    setCurrentFocus: (value: string) => void;
 }

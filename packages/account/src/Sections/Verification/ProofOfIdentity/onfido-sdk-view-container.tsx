@@ -55,6 +55,7 @@ const OnfidoSdkViewContainer = ({
     const [is_onfido_initialized, setIsOnfidoInitialized] = React.useState(false);
     // IDV country code - Alpha ISO2. Onfido country code - Alpha ISO3
     // Ensures that any form of country code passed here is supported.
+
     const onfido_country_code =
         country_code.length !== 3 ? countries.alpha2ToAlpha3(country_code.toUpperCase()) : country_code;
 

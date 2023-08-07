@@ -19,16 +19,16 @@ describe('DynamicLeverageMarketCard', () => {
 
         const market_title = screen.getByTestId('market_title');
         const leverage_title = screen.getByTestId('leverage_title');
-        const example_title = screen.getByTestId('description_title');
+        const description = screen.getByTestId('description_title');
         expect(market_title).toBeInTheDocument();
-        expect(example_title).toBeInTheDocument();
+        expect(description).toBeInTheDocument();
         expect(leverage_title).toBeInTheDocument();
         expect(market_title).toHaveTextContent('Metals');
-        expect(example_title).toHaveTextContent('(XAUUSD, XAGUSD)');
+        expect(description).toHaveTextContent('(XAUUSD, XAGUSD)');
         expect(leverage_title).toHaveTextContent('Up to 1:1000');
     });
 
-    it('should not render example_title if not present', () => {
+    it('should not render description if not present', () => {
         const props = {
             title: 'Forex',
             leverage: 'Up to 1:1000',
@@ -43,13 +43,13 @@ describe('DynamicLeverageMarketCard', () => {
         render(<DynamicLeverageMarketCard {...props} />);
         const market_title = screen.getByTestId('market_title');
         const leverage_title = screen.getByTestId('leverage_title');
-        const example_title = screen.queryByTestId('description_title');
+        const description = screen.queryByTestId('description_title');
         expect(market_title).toBeInTheDocument();
-        expect(example_title).not.toBeInTheDocument();
+        expect(description).not.toBeInTheDocument();
         expect(leverage_title).toBeInTheDocument();
     });
 
-    it('should render dynamic levers correctly', () => {
+    it('should render dynamic leverages correctly', () => {
         render(<DynamicLeverageMarketCard {...mock_props} />);
 
         const market_table = screen.getByRole('table');
@@ -65,6 +65,6 @@ describe('DynamicLeverageMarketCard', () => {
         const table_rows = screen.getAllByRole('row');
         const [header_row, ...data_rows] = table_rows;
         expect(header_row).toHaveClass('dynamic-leverage-modal__market-table-header-row');
-        expect(data_rows.length).toBe(3);
+        expect(data_rows).toHaveLength(3);
     });
 });

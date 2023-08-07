@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Button, Checkbox, Text } from '@deriv/components';
+import { Button } from '@deriv/components';
 import { Formik } from 'formik';
 import { localize } from '@deriv/translations';
 import {
@@ -10,7 +10,6 @@ import {
     filterObjProperties,
     isDesktop,
     removeEmptyPropertiesFromObject,
-    isEmptyObject,
 } from '@deriv/shared';
 import { documentAdditionalError, getRegex, validate, makeSettingsRequest, validateName } from 'Helpers/utils';
 import FormFooter from 'Components/form-footer';
@@ -31,7 +30,6 @@ type TIdvDocumentSubmit = {
 const IdvDocumentSubmit = observer(
     ({ handleBack, handleViewComplete, selected_country, is_from_external }: TIdvDocumentSubmit) => {
         const {
-            ui: { is_mobile },
             client: { account_settings, getChangeableFields },
         } = useStore();
         const [is_confirmed, setIsConfirmed] = React.useState(false);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { TRootStore } from 'Stores/index';
+import { TCoreStores } from '@deriv/stores/types';
 import {
     getMultiplierOpenPositionsColumnsTemplate,
     getOpenPositionsColumnsTemplate,
@@ -11,7 +11,7 @@ import {
 import { getSupportedContracts, getUnsupportedContracts } from '@deriv/shared';
 
 export type TPassthrough = {
-    root_store: TRootStore;
+    root_store: TCoreStores;
     WS: Record<string, any>;
 };
 

@@ -19,9 +19,8 @@ import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message'
 import { observer, useStore } from '@deriv/stores';
 import { useReportsStore } from 'Stores/useReportsStores';
 import { TSupportedContractType, TUnsupportedContractType } from 'Types';
-import { TSource } from '../../../components/src/components/data-table/data-table';
-import { TRow } from '../../../components/src/components/types/common.types';
-import { TDataListCell } from '../../../components/src/components/data-list/data-list-cell';
+import { TSource } from '@deriv/components/src/components/data-table/data-table';
+import { TRow } from '@deriv/components/src/components/types/common.types';
 
 type TGetStatementTableColumnsTemplate = ReturnType<typeof getStatementTableColumnsTemplate>;
 type TColIndex = 'icon' | 'refid' | 'currency' | 'date' | 'action_type' | 'amount' | 'balance';
@@ -43,6 +42,7 @@ type TDetailsComponent = {
 };
 
 type TDataList = React.ComponentProps<typeof DataList>;
+type TDataListCell = React.ComponentProps<typeof DataList.Cell>;
 
 const DetailsComponent = ({ message = '', action_type = '' }: TDetailsComponent) => {
     const address_hash_match = /:\s([0-9a-zA-Z]+.{25,28})/gm.exec(message.split(/,\s/)[0]);

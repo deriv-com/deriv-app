@@ -445,11 +445,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             update: jest.fn(),
             unmount: jest.fn(),
         },
-        gtm: {},
-        pushwoosh: {},
-        contract_replay: {},
-        chart_barrier_store: {},
-        active_symbols: {},
     };
 };
 

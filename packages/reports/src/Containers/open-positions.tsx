@@ -483,7 +483,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
             if (is_accumulator_selected)
                 return (
                     isAccumulatorContract(contract_info.contract_type) &&
-                    (`${getGrowthRatePercentage(contract_info.growth_rate || 1)}%` === accumulator_rate ||
+                    (`${getGrowthRatePercentage(Number(contract_info.growth_rate))}%` === accumulator_rate ||
                         !accumulator_rate.includes('%'))
                 );
             return (

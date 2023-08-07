@@ -19,13 +19,12 @@ import { ReportsMeta } from '../Components/reports-meta';
 import { getProfitTableColumnsTemplate } from 'Constants/data-table-constants';
 import { observer, useStore } from '@deriv/stores';
 import { useReportsStore } from 'Stores/useReportsStores';
-import dataListCell from '../../../components/src/components/data-list/data-list-cell';
 
 type TProfitTable = {
     component_icon: string;
 };
 
-type TDataListCell = React.ComponentProps<typeof dataListCell>;
+type TDataListCell = React.ComponentProps<typeof DataList.Cell>;
 
 type TGetProfitTableColumnsTemplate = ReturnType<typeof getProfitTableColumnsTemplate>;
 

@@ -15,8 +15,9 @@ const ProgressSliderStream = observer(({ contract_info }: TProgressSliderStream)
     if (!contract_info) {
         return <div />;
     }
-    if (!server_time) return null;
     const current_tick = contract_info.tick_count && getCurrentTick(contract_info);
+
+    if (!server_time) return null;
 
     return (
         <ProgressSlider

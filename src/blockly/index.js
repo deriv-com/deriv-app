@@ -295,9 +295,10 @@ export default class _Blockly {
         Blockly.WorkspaceSvg.prototype.preloadAudio_ = () => {}; // https://github.com/google/blockly/issues/299
         this.initPromise = new Promise(resolve => {
             $.get('public/xml/toolbox.xml', toolboxXml => {
+                if (!toolboxXml) return;
                 blocks();
                 const workspace = Blockly.inject('blocklyDiv', {
-                    toolbox: xmlToStr(translateXml(toolboxXml.getElementsByTagName('xml')[0])),
+                    toolbox: xmlToStr(translateXml(toolboxXml?.getElementsByTagName('xml')[0])),
                     zoom: {
                         wheel: false,
                     },

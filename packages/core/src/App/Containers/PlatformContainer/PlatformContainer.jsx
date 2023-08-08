@@ -7,7 +7,7 @@ const DERIV_APPSTORE_KEY = 'is_appstore';
 
 const PlatformContainer = props => {
     const { common } = useStore();
-    const { current_language } = useLanguageSettings();
+    const { is_loading, current_language } = useLanguageSettings();
     // TODO: set is_appstore based on a flag from BE.
     const is_appstore_storage = window.localStorage.getItem(DERIV_APPSTORE_KEY) === 'true';
     const [is_appstore, setIsAppStore] = React.useState(is_appstore_storage);
@@ -19,8 +19,10 @@ const PlatformContainer = props => {
     };
 
     React.useEffect(() => {
-        common.handleLanguageChange(current_language);
-    }, [common, current_language]);
+        if (!is_loading) {
+            common.handleLanguageChange(current_language);
+        }
+    }, [common, current_language, is_loading]);
 
     return <PlatformContext.Provider value={platform_store} {...props} />;
 };

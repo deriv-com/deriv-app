@@ -4,13 +4,13 @@ import { FormikConfirmationCheckbox } from '../formik-confirmation-checkbox';
 import { Formik, Form } from 'formik'; // Import Formik and Form
 
 describe('ConfirmationCheckbox', () => {
-    test('renders checkbox with label', () => {
-        const props = {
-            confirmed: true,
-            setConfirmed: jest.fn(),
-            label: 'I confirm my details are correct.',
-        };
+    const props = {
+        confirmed: true,
+        setConfirmed: jest.fn(),
+        label: 'I confirm my details are correct.',
+    };
 
+    test('renders checkbox with label', () => {
         render(
             <Formik initialValues={{}} onSubmit={jest.fn()}>
                 <Form>
@@ -24,13 +24,6 @@ describe('ConfirmationCheckbox', () => {
     });
 
     test('calls setConfirmed function when checkbox is clicked', () => {
-        const setConfirmedMock = jest.fn();
-        const props = {
-            confirmed: true,
-            setConfirmed: setConfirmedMock,
-            label: 'I confirm my details are correct.',
-        };
-
         render(
             <Formik initialValues={{}} onSubmit={jest.fn()}>
                 <Form>
@@ -42,6 +35,6 @@ describe('ConfirmationCheckbox', () => {
         const checkbox = screen.getByLabelText('I confirm my details are correct.');
         fireEvent.click(checkbox);
 
-        expect(setConfirmedMock).toHaveBeenCalledTimes(1);
+        expect(props.setConfirmed).toHaveBeenCalledTimes(1);
     });
 });

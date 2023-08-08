@@ -284,9 +284,19 @@ const AccountWizard = props => {
                     props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 }
                 const { document_type, document_number, document_additional } = { ...form_values() };
-                if (document_type && document_type.id !== IDV_NOT_APPLICABLE_OPTION.id && document_number) {
+                /**
+                 * If user opted-out of IDV verification, we send the value "none" for document_number and document_type.id to the API.
+                 */
+                const is_IDV_opted_out = document_type.id === IDV_NOT_APPLICABLE_OPTION.id;
+                let processed_doc_number = document_number;
+                const processed_doc_type = { ...document_type };
+                if (is_IDV_opted_out) {
+                    processed_doc_number = IDV_NOT_APPLICABLE_OPTION.value;
+                    processed_doc_type.id = IDV_NOT_APPLICABLE_OPTION.value;
+                }
+                if (document_type && processed_doc_number) {
                     const country_code = props.account_settings.citizen || props.residence;
-                    submitIDVData(document_type, document_number, document_additional, country_code);
+                    submitIDVData(processed_doc_type, processed_doc_number, document_additional, country_code);
                 }
             })
             .catch(error => {

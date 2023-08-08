@@ -1,3 +1,6 @@
 import { localize } from '@deriv/translations';
 
-export const IDV_NOT_APPLICABLE_OPTION = { id: '#NA', text: localize('I don’t have any of these') };
+/**
+ * Configuration that allows user to opt-out of IDV
+ */
+export const IDV_NOT_APPLICABLE_OPTION = { id: '#NA', text: localize('I want to do this later'), value: 'none' };

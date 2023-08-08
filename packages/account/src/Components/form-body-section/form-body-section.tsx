@@ -6,7 +6,7 @@ import { PlatformContext, isMobile } from '@deriv/shared';
 export type TFormBodySection = {
     has_side_note?: boolean;
     side_note?: string | React.ReactElement;
-    is_reversed?: boolean;
+    side_note_position?: 'left' | 'right';
 };
 
 /**
@@ -18,14 +18,14 @@ export type TFormBodySection = {
  *  @param {TFormBodySection} props - The properties of the FormBodySection component.
  *  @param {boolean} props.has_side_note - Whether to display a side note.
  *  @param {string | React.ReactElement} props.side_note - The content of the side note.
- *  @param {boolean} props.is_reversed - Whether to reverse the order of the side note and the content.
+ *  @param {'left' | 'right'} props.side_note_position - The position of the side note.
  *  @returns {JSX.Element} A React component that renders a form body section.
  */
 const FormBodySection = ({
     children,
     has_side_note,
     side_note,
-    is_reversed,
+    side_note_position = 'left',
 }: React.PropsWithChildren<TFormBodySection>): JSX.Element => {
     const { is_appstore } = React.useContext(PlatformContext);
 
@@ -35,7 +35,7 @@ const FormBodySection = ({
                 data-testid='dt_side_note_container'
                 className={classNames('account-form__section', {
                     'account-form__section--dashboard': is_appstore,
-                    'account-form__section--reversed': is_reversed,
+                    'account-form__section--reversed': side_note_position === 'right',
                 })}
             >
                 <div className='account-form__section-side-note'>

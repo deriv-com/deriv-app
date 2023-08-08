@@ -121,7 +121,7 @@ const PersonalDetailsForm = ({
             <FormBodySection
                 has_side_note={is_form_body_side_note_visible}
                 side_note={<PoiNameDobExampleIcon />}
-                is_reversed
+                side_note_position='right'
             >
                 <fieldset className='account-form__fieldset'>
                     {'salutation' in values && (

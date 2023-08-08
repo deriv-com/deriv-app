@@ -16,11 +16,27 @@ describe('WalletModalBody', () => {
         mocked_props = {
             contentScrollHandler: jest.fn(),
             is_dark: false,
-            is_demo: true,
             is_mobile: false,
-            setIsWalletNameVisible: jest.fn(),
             is_wallet_name_visible: true,
-            wallet_type: 'demo',
+            setIsWalletNameVisible: jest.fn(),
+            wallet: {
+                balance: 1000,
+                currency: 'USD',
+                currency_config: {
+                    display_code: 'USD',
+                    is_crypto: false,
+                } as typeof mocked_props['wallet']['currency_config'],
+                gradient_card_class: 'wallet-card__usd',
+                gradient_header_class: 'wallet-header__usd',
+                icon: '',
+                is_demo: true,
+                is_disabled: 0,
+                is_malta_wallet: false,
+                is_selected: true,
+                is_virtual: 1,
+                landing_company_name: 'svg',
+                wallet_currency_type: 'Demo',
+            },
         };
     });
 
@@ -46,7 +62,6 @@ describe('WalletModalBody', () => {
     });
 
     it('Should render proper content under the Transfer tab', () => {
-        mocked_props.wallet_type = 'real';
         const mocked_store = mockStore({
             traders_hub: {
                 active_modal_tab: 'Transfer',
@@ -61,11 +76,11 @@ describe('WalletModalBody', () => {
         const el_transfer_tab = screen.getByText('Transfer');
         userEvent.click(el_transfer_tab);
 
-        expect(screen.getByText('Transfer Real')).toBeInTheDocument();
+        expect(screen.getByText('WalletTransfer')).toBeInTheDocument();
     });
 
     it('Should trigger setWalletModalActiveTab callback when the user clicked on the tab', () => {
-        mocked_props.wallet_type = 'real';
+        mocked_props.wallet.is_demo = false;
         const mocked_store = mockStore({
             traders_hub: {
                 active_modal_tab: 'Deposit',
@@ -84,7 +99,7 @@ describe('WalletModalBody', () => {
     });
 
     it('Should trigger contentScrollHandler callback when the user scrolls the content', () => {
-        mocked_props.wallet_type = 'real';
+        mocked_props.wallet.is_demo = false;
         const mocked_store = mockStore({
             traders_hub: {
                 active_modal_tab: 'Deposit',

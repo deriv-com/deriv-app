@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import classNames from 'classnames';
 import { isMobile } from '@deriv/shared';
 import Input from '../input';
 import Text from '../text';
@@ -7,6 +8,7 @@ type TAmountInput = {
     currency: string;
     decimal_places?: number;
     disabled?: boolean;
+    has_error?: boolean;
     initial_value?: number;
     label?: string;
     locale?: Intl.LocalesArgument;
@@ -18,6 +20,7 @@ const AmountInput = ({
     currency,
     decimal_places = 2,
     disabled = false,
+    has_error,
     initial_value = 0,
     label,
     locale,
@@ -110,7 +113,12 @@ const AmountInput = ({
     return (
         <div className='amount-input-wrapper'>
             <Text size={isMobile() ? 'xxs' : 'xs'}>{label}</Text>
-            <div className='amount-input-container'>
+            <div
+                className={classNames('amount-input-container', {
+                    'amount-input-container--error': has_error,
+                    'amount-input-container--disabled': disabled,
+                })}
+            >
                 <Input
                     className='amount-input'
                     disabled={disabled || focus}

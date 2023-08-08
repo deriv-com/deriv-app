@@ -19,7 +19,7 @@ type TMobileFullPageModal = {
     renderPageFooterChildren?: () => React.ReactNode;
     page_footer_className?: string;
     page_header_className?: string;
-    page_header_text?: string;
+    page_header_text?: string | JSX.Element;
     renderPageHeaderTrailingIcon?: () => React.ReactNode;
     renderPageHeaderText?: () => string;
     should_header_stick_body?: boolean;

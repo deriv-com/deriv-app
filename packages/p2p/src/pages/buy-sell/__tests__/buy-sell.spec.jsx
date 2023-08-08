@@ -6,10 +6,11 @@ import BuySell from '../buy-sell';
 const mock_store = {
     general_store: {
         should_show_popup: false,
+        setShouldShowPopup: jest.fn(),
     },
     buy_sell_store: {
-        registerIsListedReaction: jest.fn(),
-        registerAdvertIntervalReaction: jest.fn(),
+        registerIsListedReaction: jest.fn(() => jest.fn()),
+        registerAdvertIntervalReaction: jest.fn(() => jest.fn()),
         selected_local_currency: 'USD',
         show_advertiser_page: false,
         should_show_verification: true,
@@ -17,23 +18,11 @@ const mock_store = {
     },
 };
 
-jest.mock('Components/verification/verification.jsx', () => jest.fn(() => <div>Verification Section</div>));
+jest.mock('Components/verification/verification', () => jest.fn(() => <div>Verification Section</div>));
 
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
     useStores: jest.fn(() => mock_store),
-}));
-
-jest.mock('@sendbird/chat', () => ({
-    SendbirdChat: jest.fn().mockReturnValue({}),
-}));
-
-jest.mock('@sendbird/chat/groupChannel', () => ({
-    SendbirdChat: jest.fn().mockReturnValue({}),
-}));
-
-jest.mock('@sendbird/chat/message', () => ({
-    SendbirdChat: jest.fn().mockReturnValue({}),
 }));
 
 describe('<BuySellPage/>', () => {

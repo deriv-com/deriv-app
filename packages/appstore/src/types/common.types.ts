@@ -61,7 +61,7 @@ export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
         TJurisdictionData & {
             platform?: string;
         };
-    platform?: string;
+    platform?: TPlatform;
     openFailedVerificationModal?: (from_account: string) => void;
 };
 

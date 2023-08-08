@@ -132,12 +132,7 @@ const getDXTradeWebTerminalLink = (category: string, token?: string) => {
 };
 
 const getCTraderWebTerminalLink = (category: string, token?: string) => {
-    let url = CTRADER_URL;
-
-    if (token) {
-        url += `?token=${token}`;
-    }
-    return url;
+    return `${CTRADER_URL}${token && `?token=${token}`}`;
 };
 
 const getDerivEzWebTerminalLink = (category: string, token?: string) => {

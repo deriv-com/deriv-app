@@ -5,7 +5,7 @@ import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { CFD_PLATFORMS, getCFDAccountKey, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getPlatformQRCode, PlatformsDesktopDownload, mobileDownloadLink } from '../Helpers/config';
-import { getTitle, platformsText } from '../Helpers/constants';
+import { getTitle, platformsText, CTRADER_DESKTOP_DOWNLOAD } from '../Helpers/constants';
 import SpecBox from '../Components/specbox';
 import PasswordBox from '../Components/passwordbox';
 import { TCFDPasswordReset } from './props.types';
@@ -237,7 +237,7 @@ const TradeModal = ({
                     <a
                         className='dc-btn cfd-trade-modal__download-center-app--windows-link'
                         type='button'
-                        href={'https://spotware.ctrader.com/ctrader-spotware-setup.exe'}
+                        href={CTRADER_DESKTOP_DOWNLOAD}
                         target='_blank'
                         rel='noopener noreferrer'
                     >

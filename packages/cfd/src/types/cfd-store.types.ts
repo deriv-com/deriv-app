@@ -53,7 +53,6 @@ export type TCFDStore = {
     toggleCompareAccountsModal: () => void;
     dxtrade_companies: TDxCompanies;
     derivez_companies: TDerivezCompanies;
-    ctrader_companies: TCTraderCompanies;
     mt5_companies: TMtCompanies;
     platform: string;
     topUpVirtual: (platform: string) => void;

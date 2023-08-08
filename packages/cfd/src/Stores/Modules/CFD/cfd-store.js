@@ -1,7 +1,7 @@
 import { action, computed, observable, reaction, runInAction, makeObservable, override } from 'mobx';
 import { getAccountListKey, getAccountTypeFields, CFD_PLATFORMS, WS, Jurisdiction } from '@deriv/shared';
 import BaseStore from 'Stores/base-store';
-import { getDxCompanies, getMtCompanies, getCTraderCompanies, getDerivezCompanies } from './Helpers/cfd-config';
+import { getDxCompanies, getMtCompanies, getDerivezCompanies } from './Helpers/cfd-config';
 
 export default class CFDStore extends BaseStore {
     is_compare_accounts_visible = false;
@@ -213,10 +213,6 @@ export default class CFDStore extends BaseStore {
     // eslint-disable-next-line class-methods-use-this
     get dxtrade_companies() {
         return getDxCompanies();
-    }
-    // eslint-disable-next-line class-methods-use-this
-    get ctrader_companies() {
-        return getCTraderCompanies();
     }
 
     // eslint-disable-next-line class-methods-use-this

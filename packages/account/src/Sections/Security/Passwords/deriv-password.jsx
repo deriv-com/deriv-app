@@ -35,33 +35,51 @@ const DerivPassword = ({
     const platform_name_ctrader = getPlatformSettings('ctrader').name;
 
     const PlatformDescription = () => {
-        let text =
-            'Use the <0>Deriv password</0> to log in to {{brand_website_name}}, {{platform_name_go}}, {{platform_name_trader}}, {{platform_name_smarttrader}}, {{platform_name_dbot}} and {{platform_name_ctrader}}.';
-        let values = {
-            brand_website_name,
-            platform_name_trader,
-            platform_name_dbot,
-            platform_name_smarttrader,
-            platform_name_go,
-            platform_name_ctrader,
-        };
         if (is_eu_user) {
-            text = 'Use the <0>Deriv password</0> to log in to {{brand_website_name}} and {{platform_name_trader}}.';
-            values = {
-                brand_website_name,
-                platform_name_trader,
-            };
+            return (
+                <Localize
+                    i18n_default_text={
+                        'Use the <0>Deriv password</0> to log in to {{brand_website_name}} and {{platform_name_trader}}.'
+                    }
+                    components={[<strong key={0} />]}
+                    values={{
+                        brand_website_name,
+                        platform_name_trader,
+                    }}
+                />
+            );
         } else if (financial_restricted_countries) {
-            text =
-                'Use the <0>Deriv password</0> to log in to {{brand_website_name}}, {{platform_name_trader}} and {{platform_name_go}}.';
-            values = {
-                brand_website_name,
-                platform_name_trader,
-                platform_name_go,
-            };
+            return (
+                <Localize
+                    i18n_default_text={
+                        'Use the <0>Deriv password</0> to log in to {{brand_website_name}}, {{platform_name_trader}} and {{platform_name_go}}.'
+                    }
+                    components={[<strong key={0} />]}
+                    values={{
+                        brand_website_name,
+                        platform_name_trader,
+                        platform_name_go,
+                    }}
+                />
+            );
         }
 
-        return <Localize i18n_default_text={text} components={[<strong key={0} />]} values={values} />;
+        return (
+            <Localize
+                i18n_default_text={
+                    'Use the <0>Deriv password</0> to log in to {{brand_website_name}}, {{platform_name_go}}, {{platform_name_trader}}, {{platform_name_smarttrader}}, {{platform_name_dbot}} and {{platform_name_ctrader}}.'
+                }
+                components={[<strong key={0} />]}
+                values={{
+                    brand_website_name,
+                    platform_name_trader,
+                    platform_name_dbot,
+                    platform_name_smarttrader,
+                    platform_name_go,
+                    platform_name_ctrader,
+                }}
+            />
+        );
     };
 
     return (

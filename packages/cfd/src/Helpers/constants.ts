@@ -36,6 +36,8 @@ const getTitle = (market_type: string, is_eu_user: boolean) => {
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
+const CTRADER_DESKTOP_DOWNLOAD = 'https://spotware.ctrader.com/ctrader-spotware-setup.exe';
+
 const CTRADER_DOWNLOAD_LINK = 'https://ctrader.com/download/';
 
 const CTRADER_URL = 'https://ct-uat.deriv.com/info';
@@ -176,6 +178,7 @@ export {
     getPlatformCTraderDownloadLink,
     getPlatformDerivEZDownloadLink,
     getPlatformMt5DownloadLink,
+    CTRADER_DESKTOP_DOWNLOAD,
     getDXTradeWebTerminalLink,
     getCTraderWebTerminalLink,
     platformsIcons,

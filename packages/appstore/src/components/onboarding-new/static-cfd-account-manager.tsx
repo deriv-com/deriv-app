@@ -142,6 +142,10 @@ const StaticCFDAccountManager = ({
                     />
                 )}
 
+                {
+                    //TODO: move all of these to a reusable component
+                }
+
                 {platform === CFD_PLATFORMS.CTRADER && (
                     <TradigPlatformIconProps
                         icon='CTrader'

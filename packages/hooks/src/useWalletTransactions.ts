@@ -10,7 +10,6 @@ import useActiveWallet from './useActiveWallet';
 const useWalletTransactions = (action_type?: 'deposit' | 'withdrawal' | 'virtual_credit' | 'transfer') => {
     const {
         client: { loginid },
-        ui: { is_dark_mode_on },
     } = useStore();
     const { data: wallets } = useWalletsList();
     const current_wallet = useActiveWallet();
@@ -104,7 +103,7 @@ const useWalletTransactions = (action_type?: 'deposit' | 'withdrawal' | 'virtual
                       })
                       .filter(<T>(value: T | null): value is T => value !== null)
                 : [],
-        [accounts, current_wallet, getConfig, is_dark_mode_on, loginid, transactions, wallets]
+        [accounts, current_wallet, getConfig, loginid, transactions, wallets]
     );
 
     return {

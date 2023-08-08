@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import useFetch from './useFetch';
 import {
     TSocketAcceptableProps,

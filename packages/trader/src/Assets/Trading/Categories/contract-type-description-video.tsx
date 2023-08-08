@@ -17,11 +17,12 @@ const ContractTypeDescriptionVideo = ({ selected_contract_type }: { selected_con
         [is_dark_theme, selected_contract_type]
     );
 
+    const should_show_video = /accumulator|vanilla/i.test(selected_contract_type);
     // memoize file paths for videos and open the modal only after we get them
     const mp4_src = React.useMemo(() => getVideoSource('mp4'), [getVideoSource]);
     const webm_src = React.useMemo(() => getVideoSource('webm'), [getVideoSource]);
 
-    if (selected_contract_type !== 'accumulator') return null;
+    if (!should_show_video) return null;
     return (
         <video
             autoPlay

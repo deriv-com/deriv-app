@@ -354,6 +354,80 @@ const getRowAction = (row_obj: TRowObj) =>
  */
 const isPurchaseReceived = (item: { purchase: number }) => isNaN(item.purchase) || !item.purchase;
 
+const calculateMultiplierTotals = (active_positions_filtered: TFormatPortfolioPosition[]): TTotals => {
+    let ask_price = 0;
+    let profit = 0;
+    let buy_price = 0;
+    let bid_price = 0;
+    let purchase = 0;
+    active_positions_filtered.forEach(portfolio_pos => {
+        buy_price += Number(portfolio_pos.contract_info.buy_price);
+        bid_price += Number(portfolio_pos.contract_info.bid_price);
+        purchase += Number(portfolio_pos.purchase);
+        if (portfolio_pos.contract_info) {
+            const prices = {
+                bid_price: portfolio_pos.contract_info.bid_price ?? 0,
+                buy_price: portfolio_pos.contract_info.buy_price ?? 0,
+            };
+            profit += getTotalProfit(prices);
+
+            if (portfolio_pos.contract_info.cancellation) {
+                ask_price += portfolio_pos.contract_info.cancellation.ask_price || 0;
+            }
+        }
+    });
+
+    const totals = {
+        contract_info: {
+            profit,
+            buy_price,
+            bid_price,
+        },
+        purchase,
+    };
+
+    if (ask_price > 0) {
+        if (totals.contract_info)
+            totals.contract_info.cancellation = {
+                ask_price,
+            };
+    }
+
+    return totals;
+};
+
+const calculateAccumulatorTotals = (active_positions_filtered: TFormatPortfolioPosition[]) => {
+    let buy_price = 0;
+    let bid_price = 0;
+    let take_profit = 0;
+    let profit = 0;
+
+    active_positions_filtered?.forEach(({ contract_info }) => {
+        buy_price += +contract_info.buy_price;
+        bid_price += +contract_info.bid_price;
+        take_profit += contract_info.limit_order?.take_profit?.order_amount;
+        if (contract_info) {
+            profit += getTotalProfit(contract_info);
+        }
+    });
+
+    const totals = {
+        contract_info: {
+            buy_price,
+            bid_price,
+            profit,
+            limit_order: {
+                take_profit: {
+                    order_amount: take_profit,
+                },
+            },
+        },
+        purchase: buy_price,
+    };
+
+    return totals;
+};
+
 const getOpenPositionsTotals = (
     active_positions_filtered: TFormatPortfolioPosition[],
     is_multiplier_selected: boolean,
@@ -362,70 +436,9 @@ const getOpenPositionsTotals = (
     let totals: TTotals;
 
     if (is_multiplier_selected) {
-        let ask_price = 0;
-        let profit = 0;
-        let buy_price = 0;
-        let bid_price = 0;
-        let purchase = 0;
-
-        active_positions_filtered.forEach(portfolio_pos => {
-            buy_price += Number(portfolio_pos.contract_info.buy_price);
-            bid_price += Number(portfolio_pos.contract_info.bid_price);
-            purchase += Number(portfolio_pos.purchase);
-            if (portfolio_pos.contract_info) {
-                const prices = {
-                    bid_price: portfolio_pos.contract_info.bid_price ?? 0,
-                    buy_price: portfolio_pos.contract_info.buy_price ?? 0,
-                };
-                profit += getTotalProfit(prices);
-
-                if (portfolio_pos.contract_info.cancellation) {
-                    ask_price += portfolio_pos.contract_info.cancellation.ask_price || 0;
-                }
-            }
-        });
-        totals = {
-            contract_info: {
-                profit,
-                buy_price,
-                bid_price,
-            },
-            purchase,
-        };
-
-        if (ask_price > 0) {
-            if (totals.contract_info)
-                totals.contract_info.cancellation = {
-                    ask_price,
-                };
-        }
+        totals = calculateMultiplierTotals(active_positions_filtered);
     } else if (is_accumulator_selected) {
-        let buy_price = 0;
-        let bid_price = 0;
-        let take_profit = 0;
-        let profit = 0;
-
-        active_positions_filtered?.forEach(({ contract_info }) => {
-            buy_price += +contract_info.buy_price;
-            bid_price += +contract_info.bid_price;
-            take_profit += contract_info.limit_order?.take_profit?.order_amount;
-            if (contract_info) {
-                profit += getTotalProfit(contract_info);
-            }
-        });
-        totals = {
-            contract_info: {
-                buy_price,
-                bid_price,
-                profit,
-                limit_order: {
-                    take_profit: {
-                        order_amount: take_profit,
-                    },
-                },
-            },
-            purchase: buy_price,
-        };
+        totals = calculateAccumulatorTotals(active_positions_filtered);
     } else {
         let indicative = 0;
         let purchase = 0;

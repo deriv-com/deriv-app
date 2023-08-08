@@ -6,8 +6,8 @@ import {
     getOpenPositionsColumnsTemplate,
     getProfitTableColumnsTemplate,
     getStatementTableColumnsTemplate,
-    TKeys,
 } from 'Constants/data-table-constants';
+import { TKeys } from 'Constants/data-table-cells';
 import { getSupportedContracts, getUnsupportedContracts } from '@deriv/shared';
 
 export type TPassthrough = {

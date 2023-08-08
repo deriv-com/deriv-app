@@ -1,7 +1,7 @@
 import { match, matchPath, RouteProps } from 'react-router';
 import { TRouteConfig } from 'Types';
 
-export const normalizePath = (path: string) => (/^\//.test(path) ? path : `/${path || ''}`); // Default to '/'
+export const normalizePath = (path: string) => (path.startsWith('/') ? path : `/${path || ''}`); // Default to '/'
 
 export const findRouteByPath = (path: string, routes_config?: TRouteConfig[]): RouteProps | undefined => {
     let result: RouteProps | undefined;

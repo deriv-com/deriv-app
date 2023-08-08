@@ -9,7 +9,7 @@ import { CashierOnboardingCard } from '../cashier-onboarding-card';
 import { CashierOnboardingIconMarquee } from '../cashier-onboarding-icon-marquee';
 
 const icons: React.ComponentProps<typeof CashierOnboardingIconMarquee>['icons'] = [
-    { light: 'IcWalletCreditDebitLight', dark: 'IcWalletCreditDebitDark' },
+    { light: 'IcCashierCreditDebitLight', dark: 'IcCashierCreditDebitDark' },
     { light: 'IcCashierInstantBankTransferLight', dark: 'IcCashierInstantBankTransferDark' },
     { light: 'IcCashierEwalletLight', dark: 'IcCashierEwalletDark' },
     { light: 'IcCashierLocalPaymentMethodsLight', dark: 'IcCashierLocalPaymentMethodsDark' },

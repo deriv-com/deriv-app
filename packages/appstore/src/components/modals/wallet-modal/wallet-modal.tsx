@@ -1,20 +1,46 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Loading, Modal } from '@deriv/components';
 import { useActiveWallet } from '@deriv/hooks';
+import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import WalletModalHeader from './wallet-modal-header';
 import WalletModalBody from './wallet-modal-body';
 
 const WalletModal = observer(() => {
-    const store = useStore();
-
     const {
-        client: { is_authorize, switchAccount },
+        client: { switchAccount },
         ui: { is_dark_mode_on, is_wallet_modal_visible, is_mobile, setIsWalletModalVisible },
-        traders_hub: { active_modal_tab, active_modal_wallet_id, setWalletModalActiveTab },
-    } = store;
+        traders_hub: {
+            active_modal_tab,
+            active_modal_wallet_id,
+            setWalletModalActiveTab,
+            setWalletModalActiveWalletID,
+        },
+    } = useStore();
 
     const active_wallet = useActiveWallet();
+
+    const url_query_string = window.location.search;
+
+    const url_params = useMemo(() => new URLSearchParams(url_query_string), [url_query_string]);
+    const action_param = url_params.get('action');
+    const loginid = url_params.get('loginid');
+
+    useEffect(() => {
+        if (action_param === 'payment_withdraw' && loginid) {
+            window.history.replaceState({}, '', routes.traders_hub);
+            setWalletModalActiveTab('Withdraw');
+            setIsWalletModalVisible(true);
+            setWalletModalActiveWalletID(loginid);
+        }
+    }, [
+        action_param,
+        loginid,
+        setIsWalletModalVisible,
+        setWalletModalActiveTab,
+        setWalletModalActiveWalletID,
+        url_params,
+    ]);
 
     useEffect(() => {
         let timeout_id: NodeJS.Timeout;
@@ -48,7 +74,7 @@ const WalletModal = observer(() => {
         [is_mobile, is_wallet_modal_visible]
     );
 
-    const is_loading = active_wallet?.loginid !== active_modal_wallet_id || !is_authorize || !active_wallet;
+    const is_loading = !active_wallet?.loginid || active_wallet?.loginid !== active_modal_wallet_id;
 
     return (
         <Modal is_open={is_wallet_modal_visible} className='wallet-modal' portalId='deriv_app'>

@@ -269,6 +269,7 @@ type TClientStore = {
     is_withdrawal_lock: boolean;
     landing_company_shortcode: string;
     is_populating_account_list: boolean;
+    is_language_loaded: boolean;
     local_currency_config: {
         currency: string;
         decimal_places?: number;
@@ -370,6 +371,7 @@ type TClientStore = {
         payload: SetFinancialAssessmentRequest
     ) => Promise<SetFinancialAssessmentResponse>;
     preferred_language: string;
+    prev_account_type: string;
 };
 
 type TCommonStoreError = {
@@ -413,6 +415,8 @@ type TUiStore = {
     is_dark_mode_on: boolean;
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
+    is_app_disabled: boolean;
+    is_link_expired_modal_visible: boolean;
     is_mobile: boolean;
     sub_section_index: number;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
@@ -430,6 +434,7 @@ type TUiStore = {
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
     toggleLanguageSettingsModal: () => void;
+    toggleLinkExpiredModal: (state_change: boolean) => void;
     toggleReadyToDepositModal: () => void;
     toggleSetCurrencyModal: () => void;
     is_tablet: boolean;
@@ -463,6 +468,7 @@ type TUiStore = {
     populateHeaderExtensions: (header_items: JSX.Element | null) => void;
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     setShouldShowCooldownModal: (value: boolean) => void;
+    setAppContentsScrollRef: (ref: React.MutableRefObject<null | HTMLDivElement>) => void;
     populateFooterExtensions: (
         footer_extensions:
             | [
@@ -560,6 +566,8 @@ type TTradersHubStore = {
     selected_platform_type: string;
     is_tour_open: boolean;
     selectAccountType: (account_type: string) => void;
+    toggleIsTourOpen: (is_tour_open: boolean) => void;
+    is_demo_low_risk: boolean;
     is_mt5_notification_modal_visible: boolean;
     setMT5NotificationModal: (value: boolean) => void;
 };

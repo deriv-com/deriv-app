@@ -1,6 +1,4 @@
 import React from 'react';
-// import ReactDOM from 'react-dom';
-// import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import TraderProviders from '../../../../../trader-providers';
@@ -67,7 +65,7 @@ describe('<MultiplierOptions />', () => {
         expect(screen.getByText(/0/i)).toBeInTheDocument();
         expect(screen.getByText(/RadioGroupWithInfoMobile component/i)).toBeInTheDocument();
     });
-    it('should change the amount after rerendering', () => {
+    it('should change the amount after rerendering if echo_req.amount === amount and amount is truthy', () => {
         const new_mocked_store = { ...default_mock_store };
         new_mocked_store.modules = {
             trade: {

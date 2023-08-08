@@ -9,9 +9,7 @@ const ContractTypeDescriptionVideo = ({ selected_contract_type }: { selected_con
     const getVideoSource = React.useCallback(
         (extension: 'mp4' | 'webm') => {
             return getUrlBase(
-                `/public/images/common/${selected_contract_type}_description${
-                    is_dark_theme ? '_dark' : '_light'
-                }.${extension}`
+                `/public/video/${selected_contract_type}_description${is_dark_theme ? '_dark' : '_light'}.${extension}`
             );
         },
         [is_dark_theme, selected_contract_type]
@@ -23,6 +21,7 @@ const ContractTypeDescriptionVideo = ({ selected_contract_type }: { selected_con
     const webm_src = React.useMemo(() => getVideoSource('webm'), [getVideoSource]);
 
     if (!should_show_video) return null;
+
     return (
         <video
             autoPlay
@@ -35,6 +34,7 @@ const ContractTypeDescriptionVideo = ({ selected_contract_type }: { selected_con
             controls
             width={isMobile() ? 328 : 480}
             height={isMobile() ? 184.5 : 270}
+            data-testid='description_video'
         >
             {/* a browser will select a source with extension it recognizes */}
             <source src={mp4_src} type='video/mp4' />

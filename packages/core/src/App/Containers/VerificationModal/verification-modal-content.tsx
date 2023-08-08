@@ -179,7 +179,7 @@ const VerificationModalContent = (props: TVerificationModalContent) => {
         return key ? items[state_index][key] : items[state_index];
     };
 
-    const BodyComponent = getCurrent('body') as typeof ProofOfIdentityContainer | typeof ProofOfAddressContainer;
+    const BodyComponent = getCurrent('body');
 
     const form_value = getCurrent('form_value');
 

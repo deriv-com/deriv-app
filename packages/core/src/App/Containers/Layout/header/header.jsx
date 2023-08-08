@@ -2,7 +2,7 @@ import React from 'react';
 import { PlatformContext, routes } from '@deriv/shared';
 import DefaultHeader from './default-header.jsx';
 import DashboardHeader from './dashboard-header.jsx';
-import TradingHubHeader from './trading-hub-header.jsx';
+import TradersHubHeader from './traders-hub-header.jsx';
 import DTraderHeader from './dtrader-header.jsx';
 import { connect } from 'Stores/connect';
 import { useLocation } from 'react-router-dom';
@@ -18,7 +18,7 @@ const Header = ({ is_logged_in }) => {
     } else if (is_logged_in) {
         let result;
         if (trading_hub_routes) {
-            result = <TradingHubHeader />;
+            result = <TradersHubHeader />;
         } else if (pathname === routes.onboarding) {
             result = null;
         } else {

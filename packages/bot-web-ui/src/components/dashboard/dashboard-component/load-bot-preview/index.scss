@@ -157,7 +157,7 @@
             &__list {
                 overflow: auto;
                 width: 100%;
-                height: calc(100% - 15rem);
+                height: calc(100% - 20rem);
                 @include mobile {
                     height: 40rem;
                 }

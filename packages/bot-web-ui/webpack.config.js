@@ -6,6 +6,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
+const vm = require('vm-browserify');
+const styles = require('@deriv/shared/src/styles/index.js');
 
 const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
@@ -63,7 +65,7 @@ module.exports = function (env) {
                         {
                             loader: 'sass-resources-loader',
                             options: {
-                                resources: require('@deriv/shared/src/styles/index.js'),
+                                resources: styles,
                             },
                         },
                     ],
@@ -104,6 +106,7 @@ module.exports = function (env) {
             ],
         },
         resolve: {
+            fallback: { vm },
             alias: {
                 Components: path.resolve(__dirname, 'src', 'components'),
                 Constants: path.resolve(__dirname, './src/constants'),

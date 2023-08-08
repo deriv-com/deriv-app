@@ -127,6 +127,10 @@
                 padding: 0;
             }
 
+            &--disabled {
+                opacity: 0.32;
+            }
+
             &-icon {
                 width: 16px;
                 height: 16px;

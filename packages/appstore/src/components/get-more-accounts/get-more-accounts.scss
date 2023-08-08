@@ -18,4 +18,8 @@
             padding-bottom: 0.5rem;
         }
     }
+    &__disabled {
+        cursor: not-allowed !important;
+        opacity: 0.32;
+    }
 }

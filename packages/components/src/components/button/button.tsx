@@ -26,6 +26,7 @@ export type TButtonCommonProps = {
     tertiary: boolean;
     text: string;
     transparent: boolean;
+    as_disabled: boolean;
 };
 export type TButtonProps = React.PropsWithChildren<React.ButtonHTMLAttributes<HTMLButtonElement>> &
     TButtonCommonProps & {
@@ -76,6 +77,7 @@ const Button = ({
     small,
     tertiary,
     renderText,
+    as_disabled,
     ...props
 }: Partial<TButtonProps>) => {
     const classes = classNames(
@@ -100,6 +102,7 @@ const Button = ({
             'dc-btn--circle': is_circle,
             'dc-btn--circular': is_circular,
             'dc-btn--transparent': transparent,
+            'dc-btn--as-disabled': as_disabled,
         },
         className
     );

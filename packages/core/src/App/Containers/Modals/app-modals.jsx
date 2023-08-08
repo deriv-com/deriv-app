@@ -12,6 +12,7 @@ import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
 import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
+import WalletsMigrationInProgress from './wallets-upgrade-in-progress/wallets-migration-in-progress';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -83,6 +84,7 @@ const AppModals = ({
     is_trading_experience_incomplete,
     should_show_risk_accept_modal,
     is_need_real_account_for_cashier_modal_visible,
+    is_wallet_migration_in_progress_popup,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
@@ -163,9 +165,11 @@ const AppModals = ({
     if (is_ready_to_deposit_modal_visible) {
         ComponentToLoad = <ReadyToDepositModal />;
     }
-
     if (is_need_real_account_for_cashier_modal_visible) {
         ComponentToLoad = <NeedRealAccountForCashierModal />;
+    }
+    if (is_wallet_migration_in_progress_popup) {
+        ComponentToLoad = <WalletsMigrationInProgress />;
     }
 
     return (
@@ -203,4 +207,5 @@ export default connect(({ client, ui, traders_hub }) => ({
     content_flag: traders_hub.content_flag,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     should_show_risk_accept_modal: ui.should_show_risk_accept_modal,
+    is_wallet_migration_in_progress_popup: client.is_wallet_migration_in_progress_popup,
 }))(AppModals);

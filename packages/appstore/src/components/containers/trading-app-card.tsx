@@ -15,6 +15,7 @@ import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
 import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS, ContentFlag, getStaticUrl, getUrlSmartTrader, getUrlBinaryBot } from '@deriv/shared';
+import { useWalletMigration } from '@deriv/hooks';
 import './trading-app-card.scss';
 
 type TWalletsProps = {
@@ -42,6 +43,7 @@ const TradingAppCard = ({
     is_wallet_demo,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid & TWalletsProps) => {
     const {
+        client,
         common,
         traders_hub,
         modules: { cfd },
@@ -49,6 +51,8 @@ const TradingAppCard = ({
     const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
     const { current_language } = common;
     const { is_account_being_created } = cfd;
+    const { setWalletsMigrationInProgressPopup } = client;
+    const { is_in_progress } = useWalletMigration();
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
@@ -94,6 +98,11 @@ const TradingAppCard = ({
         else if (platform === CFD_PLATFORMS.DERIVEZ) window.open(getStaticUrl(`/derivez`));
         else if (icon === 'Options' && !is_eu_user) window.open(getStaticUrl(`/trade-types/options/`));
         else;
+    };
+
+    const onButtonAction = () => {
+        if (is_in_progress) setWalletsMigrationInProgressPopup(true);
+        else onAction?.();
     };
 
     return (
@@ -165,12 +174,13 @@ const TradingAppCard = ({
                     <TradingAppCardActions
                         action_type={action_type}
                         link_to={link_to}
-                        onAction={onAction}
+                        onAction={onButtonAction}
                         is_external={is_external}
                         new_tab={new_tab}
                         is_buttons_disabled={!!mt5_acc_auth_status}
                         is_account_being_created={!!is_account_being_created}
                         is_real={is_real}
+                        as_disabled={is_in_progress}
                     />
                 </div>
             </div>

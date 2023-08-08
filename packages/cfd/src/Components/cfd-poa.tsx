@@ -22,6 +22,7 @@ const CFDPOA = observer(({ index, onSave, onSubmit }: TCFDPOA) => {
         onSave(index, values);
         onSubmit(index, values);
     };
+
     return (
         <div className='cfd-proof-of-address'>
             <ProofOfAddressForm

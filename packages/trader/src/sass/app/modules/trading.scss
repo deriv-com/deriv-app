@@ -146,12 +146,26 @@
         }
         .dc-datepicker {
             .dc-input {
-                border: 1px solid var(--fill-normal);
                 background-color: var(--general-main-1);
+                border-radius: $BORDER_RADIUS;
                 margin-bottom: 0;
 
                 &__field {
                     height: 3.2rem;
+                }
+                &__container {
+                    border: none;
+
+                    &:hover:not(.dc-input--disabled) {
+                        border: 1px solid var(--border-hover);
+                    }
+                    &:focus-within {
+                        border: 1px solid var(--brand-secondary);
+
+                        &:hover {
+                            border: 1px solid var(--brand-secondary);
+                        }
+                    }
                 }
             }
         }
@@ -453,7 +467,7 @@
                 border-color: var(--border-hover);
             }
             &:active,
-            &:focus {
+            &:focus-within {
                 border-color: var(--border-active);
             }
         }

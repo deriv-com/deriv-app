@@ -60,8 +60,9 @@ class APIBase {
         if (token) {
             this.token = token;
             this.account_id = account_id;
+            this.api.authorize(this.token);
             this.api
-                .authorize(this.token)
+                .expectResponse('authorize')
                 .then(({ authorize }) => {
                     if (this.has_activeSymbols) {
                         this.toggleRunButton(false);

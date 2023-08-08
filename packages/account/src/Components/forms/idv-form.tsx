@@ -6,22 +6,7 @@ import { localize } from '@deriv/translations';
 import { formatInput, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
 import { Autocomplete, DesktopWrapper, Input, MobileWrapper, SelectNative, Text } from '@deriv/components';
 import { getDocumentData, preventEmptyClipboardPaste, generatePlaceholderText, getExampleFormat } from 'Helpers/utils';
-
-type TDocumentList = Array<{
-    id: string;
-    text: string;
-    value?: string;
-    sample_image?: string;
-    example_format?: string;
-    additional?: any;
-}>;
-
-type TFormProps = {
-    document_type: TDocumentList[0];
-    document_number: string;
-    document_additional?: string;
-    error_message?: string;
-};
+import { TIDVFormValues } from 'Types';
 
 type TIDVForm = {
     selected_country: ResidenceList[0];
@@ -29,7 +14,7 @@ type TIDVForm = {
     class_name?: string;
     can_skip_document_verification: boolean;
 } & Partial<FormikHandlers> &
-    FormikProps<TFormProps>;
+    FormikProps<TIDVFormValues>;
 
 const IDVForm = ({
     errors,

@@ -11,6 +11,7 @@ import {
     filterObjProperties,
     isDesktop,
     removeEmptyPropertiesFromObject,
+    formatIDVFormValues,
 } from '@deriv/shared';
 import { documentAdditionalError, getRegex, validate, makeSettingsRequest, validateName } from 'Helpers/utils';
 import FormFooter from 'Components/form-footer';
@@ -18,6 +19,17 @@ import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import IDVForm from 'Components/forms/idv-form';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
 import FormSubHeader from 'Components/form-sub-header';
+import { GetSettings, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
+import { TIDVFormValues } from 'Types';
+
+type TIdvDocumentSubmitProps = {
+    handleBack: () => void;
+    handleViewComplete: () => void;
+    selected_country: { text: string; value: string };
+    is_from_external: boolean;
+    account_settings: GetSettings;
+    getChangeableFields: () => string[];
+};
 
 const IdvDocumentSubmit = ({
     handleBack,
@@ -26,7 +38,7 @@ const IdvDocumentSubmit = ({
     is_from_external,
     account_settings,
     getChangeableFields,
-}) => {
+}: TIdvDocumentSubmitProps) => {
     const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
     const form_initial_values = filterObjProperties(account_settings, visible_settings) || {};
 
@@ -83,7 +95,7 @@ const IdvDocumentSubmit = ({
         return undefined;
     };
 
-    const validateFields = values => {
+    const validateFields = (values: TIDVFormValues) => {
         const errors = {};
         const { document_type, document_number, document_additional } = values;
         const needs_additional_document = !!document_type.additional;
@@ -127,25 +139,22 @@ const IdvDocumentSubmit = ({
             setSubmitting(false);
             return;
         }
+
         const submit_data = {
             identity_verification_document_add: 1,
-            document_number: values.document_number,
-            document_additional: values.document_additional || '',
-            document_type: values.document_type.id,
-            issuing_country: selected_country.value,
+            ...formatIDVFormValues(values, selected_country.value),
         };
 
-        if (submit_data.document_type === IDV_NOT_APPLICABLE_OPTION.id) {
-            return;
-        }
-        WS.send(submit_data).then(response => {
-            setSubmitting(false);
-            if (response.error) {
-                setErrors({ error_message: response.error.message });
-                return;
+        WS.send(submit_data).then(
+            (response: IdentityVerificationAddDocumentResponse & { error: { message: string } }) => {
+                setSubmitting(false);
+                if (response.error) {
+                    setErrors({ error_message: response.error.message });
+                    return;
+                }
+                handleViewComplete();
             }
-            handleViewComplete();
-        });
+        );
     };
 
     return (

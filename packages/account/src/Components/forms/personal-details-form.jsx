@@ -110,11 +110,11 @@ const PersonalDetailsForm = ({
 
     return (
         <div className={classNames({ 'account-form__poi-confirm-example': is_qualified_for_idv })}>
-            {is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image && (
+            {(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image && (
                 <InlineNoteWithIcon message={name_dob_clarification_message} font_size={isMobile() ? 'xxxs' : 'xs'} />
             )}
             <FormBodySection
-                has_side_note={is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image}
+                has_side_note={(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image}
                 side_note={<PoiNameDobExampleIcon />}
                 side_note_position='right'
             >

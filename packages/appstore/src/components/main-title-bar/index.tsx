@@ -13,13 +13,7 @@ import WalletsBanner from 'Components/wallets-banner';
 
 const MainTitleBar = () => {
     const { traders_hub, client, notifications } = useStore();
-    const {
-        selected_region,
-        handleTabItemClick,
-        toggleRegulatorsCompareModal,
-        content_flag,
-        setWalletsMigrationFailedPopup,
-    } = traders_hub;
+    const { selected_region, handleTabItemClick, toggleRegulatorsCompareModal, content_flag } = traders_hub;
     const { is_landing_company_loaded, is_switching } = client;
     const { removeAllNotificationMessages, filterNotificationMessages } = notifications;
     const is_low_risk_cr_real_account =
@@ -67,8 +61,6 @@ const MainTitleBar = () => {
                     <div className='main-title-bar-mobile--account-type-dropdown'>
                         <AccountTypeDropdown />
                     </div>
-                    {/* TODO: This is for testing purposes only */}
-                    <button onClick={() => setWalletsMigrationFailedPopup(true)}>Modal wallet migration failed</button>
                     {is_low_risk_cr_real_account && is_landing_company_loaded ? (
                         <div className='main-title-bar-mobile--regulator'>
                             {!is_switching ? (

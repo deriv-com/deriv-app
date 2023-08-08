@@ -43,6 +43,23 @@ export const REQUESTS = [
     'history',
 ];
 
+// eslint-disable-next-line consistent-return
+const log = (measures = [], req_type = '') => {
+    if (!measures || !measures.length) return null;
+    //eslint-disable-next-line no-console
+    console.table(measures);
+    const max = Math.max(...measures.map(i => i.duration));
+    const min = Math.min(...measures.map(i => i.duration));
+
+    if (measures.length > 1) {
+        //eslint-disable-next-line no-console
+        console.log(`%c ${req_type} --- min: ${min}`, 'color: #00AB41');
+        //eslint-disable-next-line no-console
+        console.log(`%c ${req_type} --- max: ${max}`, 'color: #FF0000');
+    }
+    return { max, min };
+};
+
 class APIMiddleware {
     constructor(config) {
         this.config = config;
@@ -120,8 +137,33 @@ class APIMiddleware {
     };
 
     addGlobalMethod() {
-        if (window) window.sendRequestsStatistic = this.sendRequestsStatistic;
+        // if (window) window.sendRequestsStatistic = this.sendRequestsStatistic;
+        if (window) window.printStats = this.printStats;
     }
+
+    printStats = (should_clear = true) => {
+        let stats = [];
+        REQUESTS.forEach(req_type => {
+            const measure = performance.getEntriesByName(req_type);
+
+            if (measure && measure.length) {
+                const { min, max } = log(measure, req_type);
+                stats.push({
+                    'request type': req_type,
+                    'min(milliseconds)': min,
+                    'max(milliseconds)': max,
+                    runs: measure.length,
+                });
+            }
+        });
+        //eslint-disable-next-line no-console
+        console.table(stats);
+        if (should_clear) {
+            stats = [];
+            performance.clearMeasures();
+            performance.clearMarks();
+        }
+    };
 }
 
 export default APIMiddleware;

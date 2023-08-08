@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog, Text } from '@deriv/components';
-import { useDepositLocked } from '@deriv/hooks';
+import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
@@ -14,26 +14,28 @@ const ReadyToVerifyModal = observer(() => {
         toggleAccountSuccessModal,
         disableApp,
         enableApp,
-        // openPOIPOAModal,
+        setIsVerificationModalVisible,
     } = ui;
     const is_deposit_locked = useDepositLocked();
+    const is_cashier_locked = useCashierLocked();
 
-    const onConfirmeModal = () => {
+    const onConfirmModal = () => {
         toggleAccountSuccessModal();
-        // openPOIPOAModal(); // route to poi-poa modal
+        setIsVerificationModalVisible(true); // route to poi-poa modal
     };
 
     const onClose = () => {
         toggleAccountSuccessModal();
         setShouldTriggerTourGuide(true); // route to onboarding -switch accounts
     };
+    const has_deposited_for_first_time = is_deposit_locked || is_cashier_locked;
 
     return (
         <Dialog
             className='ready-to-verify-dialog'
-            title={is_deposit_locked ? localize('Successfully deposited') : localize('Account added')}
+            title={has_deposited_for_first_time ? localize('Successfully deposited') : localize('Account added')}
             confirm_button_text={localize('Verify now')}
-            onConfirm={onConfirmeModal}
+            onConfirm={onConfirmModal}
             cancel_button_text={localize('Maybe later')}
             onCancel={onClose}
             disableApp={disableApp}
@@ -44,7 +46,7 @@ const ReadyToVerifyModal = observer(() => {
             onEscapeButtonCancel={onClose}
         >
             <Text align='center' size={isMobile() ? 'xxs' : 'xs'}>
-                {is_deposit_locked
+                {has_deposited_for_first_time
                     ? localize(
                           'Your funds will be available for trading once the verification of your account is complete.'
                       )

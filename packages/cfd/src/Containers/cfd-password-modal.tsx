@@ -476,7 +476,7 @@ const CFDPasswordForm = ({
         );
     }
 
-    const showJuristiction = () => {
+    const showJurisdiction = () => {
         if (platform === CFD_PLATFORMS.DXTRADE) {
             return '';
         } else if (!show_eu_related_content) {
@@ -520,7 +520,7 @@ const CFDPasswordForm = ({
                                             account: !show_eu_related_content
                                                 ? getAccountTitle(platform, account_type, account_title)
                                                 : '',
-                                            jurisdiction_shortcode: showJuristiction(),
+                                            jurisdiction_shortcode: showJurisdiction(),
                                         }}
                                     />
                                 )}
@@ -856,7 +856,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     ) : (
                         <ReviewMessageForMT5
                             is_selected_mt5_verified={is_selected_mt5_verified}
-                            jurisdiction_selected_shortcode={jurisdiction_label}
+                            jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                             manual_status={manual_status}
                         />
                     )}

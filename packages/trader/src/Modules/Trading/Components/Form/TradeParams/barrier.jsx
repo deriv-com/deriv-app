@@ -4,25 +4,25 @@ import React from 'react';
 import { DesktopWrapper, Icon, InputField, MobileWrapper, Modal, Text, usePrevious } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { ValueMovement } from '../Purchase/contract-info';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 import { localize } from '@deriv/translations';
 import LabeledQuantityInputMobile from '../LabeledQuantityInputMobile';
 
-const Barrier = ({
-    barrier_1,
-    barrier_2,
-    barrier_count,
-    barrier_pipsize,
-    current_focus,
-    proposal_info,
-    duration_unit,
-    is_minimized,
-    is_absolute_only,
-    onChange,
-    setCurrentFocus,
-    validation_errors,
-    trade_types,
-}) => {
+const Barrier = observer(({ is_minimized, is_absolute_only }) => {
+    const { ui } = useStore();
+    const { current_focus, setCurrentFocus } = ui;
+    const {
+        barrier_1,
+        barrier_2,
+        barrier_count,
+        barrier_pipsize,
+        duration_unit,
+        onChange,
+        validation_errors,
+        proposal_info,
+        trade_types,
+    } = useTraderStore();
     const [show_modal, setShowModal] = React.useState(false);
     const type_with_current_spot = Object.keys(trade_types).find(type => proposal_info?.[type]?.spot);
     const contract_info = proposal_info?.[type_with_current_spot];
@@ -217,34 +217,11 @@ const Barrier = ({
             </MobileWrapper>
         </React.Fragment>
     );
-};
+});
 
 Barrier.propTypes = {
-    barrier_1: PropTypes.string,
-    barrier_2: PropTypes.string,
-    barrier_count: PropTypes.number,
-    barrier_pipsize: PropTypes.number,
-    current_focus: PropTypes.string,
-    duration_unit: PropTypes.string,
     is_absolute_only: PropTypes.bool,
     is_minimized: PropTypes.bool,
-    onChange: PropTypes.func,
-    proposal_info: PropTypes.object,
-    setCurrentFocus: PropTypes.func,
-    validation_errors: PropTypes.object,
-    trade_types: PropTypes.object,
 };
 
-export default connect(({ modules, ui }) => ({
-    barrier_1: modules.trade.barrier_1,
-    barrier_2: modules.trade.barrier_2,
-    barrier_pipsize: modules.trade.barrier_pipsize,
-    barrier_count: modules.trade.barrier_count,
-    current_focus: ui.current_focus,
-    duration_unit: modules.trade.duration_unit,
-    onChange: modules.trade.onChange,
-    proposal_info: modules.trade.proposal_info,
-    setCurrentFocus: ui.setCurrentFocus,
-    validation_errors: modules.trade.validation_errors,
-    trade_types: modules.trade.trade_types,
-}))(Barrier);
+export default Barrier;

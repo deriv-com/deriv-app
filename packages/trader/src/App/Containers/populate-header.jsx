@@ -1,23 +1,23 @@
 import React from 'react';
 import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggle-positions-mobile.jsx';
 import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers';
-import { connect } from 'Stores/connect';
-import { PropTypes as MobxPropTypes } from 'mobx-react';
-import PropTypes from 'prop-types';
+import { useTraderStore } from 'Stores/useTraderStores';
+import { observer, useStore } from '@deriv/stores';
 
-const PopulateHeader = ({
-    active_positions_count,
-    positions,
-    positions_currency,
-    disableApp,
-    enableApp,
-    positions_error,
-    onPositionsSell,
-    onPositionsRemove,
-    onPositionsCancel,
-    symbol,
-    trade_contract_type,
-}) => {
+const PopulateHeader = observer(() => {
+    const { portfolio, ui, client } = useStore();
+    const { symbol, contract_type: trade_contract_type } = useTraderStore();
+    const { currency: positions_currency } = client;
+    const { disableApp, enableApp } = ui;
+    const {
+        active_positions_count,
+        all_positions: positions,
+        error: positions_error,
+        onClickSell: onPositionsSell,
+        removePositionById: onPositionsRemove,
+        onClickCancel: onPositionsCancel,
+    } = portfolio;
+
     const symbol_positions = positions.filter(
         p =>
             p.contract_info &&
@@ -39,32 +39,6 @@ const PopulateHeader = ({
             onClickCancel={onPositionsCancel}
         />
     );
-};
+});
 
-PopulateHeader.propTypes = {
-    active_positions_count: PropTypes.number,
-    positions: MobxPropTypes.arrayOrObservableArray,
-    positions_currency: PropTypes.string,
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
-    positions_error: PropTypes.string,
-    onPositionsSell: PropTypes.func,
-    onPositionsRemove: PropTypes.func,
-    onPositionsCancel: PropTypes.func,
-    symbol: PropTypes.string,
-    trade_contract_type: PropTypes.string,
-};
-
-export default connect(({ client, modules, ui, portfolio }) => ({
-    active_positions_count: portfolio.active_positions_count,
-    positions: portfolio.all_positions,
-    positions_currency: client.currency,
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
-    positions_error: portfolio.error,
-    onPositionsSell: portfolio.onClickSell,
-    onPositionsRemove: portfolio.removePositionById,
-    onPositionsCancel: portfolio.onClickCancel,
-    symbol: modules.trade.symbol,
-    trade_contract_type: modules.trade.contract_type,
-}))(PopulateHeader);
+export default PopulateHeader;

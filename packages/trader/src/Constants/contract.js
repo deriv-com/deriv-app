@@ -27,6 +27,7 @@ export const getCardLabels = () => ({
     PROFIT_LOSS: localize('Profit/Loss:'),
     POTENTIAL_PROFIT_LOSS: localize('Potential profit/loss:'),
     INDICATIVE_PRICE: localize('Indicative price:'),
+    INITIAL_STAKE: localize('Initial stake:'),
     LOST: localize('Lost'),
     PAYOUT: localize('Sell price:'),
     PURCHASE_PRICE: localize('Buy price:'),
@@ -196,14 +197,6 @@ export const getUnsupportedContracts = () => ({
         name: <Localize i18n_default_text='Spread Down' />,
         position: 'bottom',
     },
-    RUNHIGH: {
-        name: <Localize i18n_default_text='Only Ups' />,
-        position: 'top',
-    },
-    RUNLOW: {
-        name: <Localize i18n_default_text='Only Downs' />,
-        position: 'bottom',
-    },
 });
 
 // Config to display trade button and their position
@@ -275,6 +268,14 @@ export const getSupportedContracts = is_high_low => ({
     },
     VANILLALONGPUT: {
         name: <Localize i18n_default_text='Put' />,
+        position: 'bottom',
+    },
+    RUNHIGH: {
+        name: <Localize i18n_default_text='Only Ups' />,
+        position: 'top',
+    },
+    RUNLOW: {
+        name: <Localize i18n_default_text='Only Downs' />,
         position: 'bottom',
     },
 });

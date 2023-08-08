@@ -1,4 +1,4 @@
-import { observable, action, runInAction, makeObservable } from 'mobx';
+import { action, makeObservable, observable, runInAction } from 'mobx';
 import { config } from '@deriv/bot-skeleton';
 import { help_content_config } from 'Utils/help-content/help-content.config';
 import * as help_strings from 'Utils/help-content/help-strings';

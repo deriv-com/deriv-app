@@ -46,12 +46,6 @@
 
 /** @define modal-dialog; weak */
 .dc-mobile-dialog {
-    &__contracts-modal-list {
-        /* postcss-bem-linter: ignore */
-        .category-wrapper {
-            background-color: var(--general-main-1) !important;
-        }
-    }
     .dc-select-native__placeholder:not(.dc-select-native__placeholder--has-value) {
         background: initial;
     }
@@ -132,33 +126,46 @@
             padding: 0;
         }
         &.accu-info-display {
-            height: 7rem;
+            height: 7.6rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 1.5rem 1.6rem;
+            padding: 1.5rem 0.8rem 1.5rem 1.6rem;
 
-            .accu-info-display__row {
+            .accu-info-display__row,
+            .accu-info-display__row > div {
                 display: flex;
                 height: 2rem;
                 justify-content: space-between;
                 align-items: center;
-                span {
-                    line-height: 1rem;
-                    &:not(:first-child) {
-                        flex-shrink: 0;
-                    }
+                gap: 0.8rem;
+                .dc-popover__target {
+                    height: 1.6rem;
                 }
             }
         }
         .dc-datepicker {
             .dc-input {
-                border: 1px solid var(--fill-normal);
                 background-color: var(--general-main-1);
+                border-radius: $BORDER_RADIUS;
                 margin-bottom: 0;
 
                 &__field {
                     height: 3.2rem;
+                }
+                &__container {
+                    border: none;
+
+                    &:hover:not(.dc-input--disabled) {
+                        border: 1px solid var(--border-hover);
+                    }
+                    &:focus-within {
+                        border: 1px solid var(--brand-secondary);
+
+                        &:hover {
+                            border: 1px solid var(--brand-secondary);
+                        }
+                    }
                 }
             }
         }
@@ -349,7 +356,7 @@
         &-modal {
             @include mobile {
                 &--vanilla {
-                    max-width: 33rem;
+                    max-width: calc(min(33rem, 85vw));
                 }
             }
         }
@@ -460,7 +467,7 @@
                 border-color: var(--border-hover);
             }
             &:active,
-            &:focus {
+            &:focus-within {
                 border-color: var(--border-active);
             }
         }
@@ -785,6 +792,16 @@
     /* postcss-bem-linter: ignore */
     .dropdown-container {
         margin-top: 0.8em;
+    }
+}
+
+.expiry-text-container {
+    margin-top: 0.4rem;
+
+    &--mobile {
+        margin: 0 0 0.8rem;
+        position: relative;
+        top: -0.8rem;
     }
 }
 

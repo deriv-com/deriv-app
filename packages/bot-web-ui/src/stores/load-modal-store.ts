@@ -1,17 +1,17 @@
+import React from 'react';
+import { action, autorun, computed, makeObservable, observable, reaction } from 'mobx';
 import {
     config,
     getSavedWorkspaces,
     load,
+    observer as globalObserver,
     removeExistingWorkspace,
     save_types,
     setColors,
-    observer as globalObserver,
 } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { tabs_title, clearInjectionDiv } from 'Constants/load-modal';
-import { action, computed, makeObservable, observable, reaction, autorun } from 'mobx';
-import React from 'react';
+import { clearInjectionDiv, tabs_title } from 'Constants/load-modal';
 import RootStore from './root-store';
 
 export type TWorkspace = {
@@ -56,6 +56,7 @@ interface ILoadModalStore {
     setLoadedLocalFile: (loaded_local_file: boolean | null) => void;
     setRecentStrategies: (recent_strategies: string[]) => void;
     setSelectedStrategyId: (selected_strategy_id: string[] | undefined) => void;
+    setDashboardStrategies: (strategies: Array<TWorkspace>) => void;
     toggleExplanationExpand: () => void;
     toggleLoadModal: () => void;
     toggleTourLoadModal: (toggle: boolean) => void;
@@ -456,9 +457,8 @@ export default class LoadModalStore implements ILoadModalStore {
         const reader = new FileReader();
         reader.onload = action(e => {
             const load_options = { block_string: e.target.result, drop_event, from: save_types.LOCAL };
-            if (is_preview) {
-                const ref = document.getElementById('load-strategy__blockly-container');
-
+            const ref = document.getElementById('load-strategy__blockly-container');
+            if (is_preview && ref) {
                 this.local_workspace = Blockly.inject(ref, {
                     media: `${__webpack_public_path__}media/`, // eslint-disable-line
                     zoom: {

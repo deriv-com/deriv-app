@@ -1,4 +1,4 @@
-import { observable, action, makeObservable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 
 export default class RoutePromptDialogStore {
     constructor(root_store, core) {
@@ -23,7 +23,7 @@ export default class RoutePromptDialogStore {
     shouldNavigateAfterPrompt(next_location) {
         if (!this.is_confirmed) {
             this.last_location = next_location;
-            this.should_show = true;
+            if (next_location.pathname !== '/bot') this.should_show = true;
             return false;
         }
 

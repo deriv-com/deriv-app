@@ -55,9 +55,9 @@ export const isDXtrade = () =>
     /^\/derivx/.test(window.location.pathname) ||
     (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'derivx');
 
-export const isNavigationFromDerivGO = () => localStorage.getItem('config.platform') === 'derivgo';
+export const isNavigationFromDerivGO = () => window.sessionStorage.getItem('config.platform') === 'derivgo';
 
-export const isNavigationFromP2P = () => localStorage.getItem('config.platform') === 'dp2p';
+export const isNavigationFromP2P = () => window.sessionStorage.getItem('config.platform') === 'dp2p';
 
 export const getPathname = () => {
     const { is_pathname_bot } = isBot();
@@ -120,7 +120,6 @@ export const getPlatformRedirect = (routing_history: TRoutingHistory) => {
     if (isNavigationFromP2P()) return { name: 'P2P', route: routes.cashier_p2p, ref: 'p2p' };
     if (isNavigationFromExternalPlatform(routing_history, routes.binarybot))
         return { name: platform_name.BinaryBot, route: routes.binarybot };
-    if (isNavigationFromDerivGO()) return { name: platform_name.DerivGO, route: '', ref: 'derivgo' };
     return { name: platform_name.DTrader, route: routes.trade };
 };
 

@@ -22,33 +22,6 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
 
 describe('<PersonalDetailsForm />', () => {
     const history = createBrowserHistory();
-    const mock_props = {
-        authentication_status: {},
-        is_eu: true,
-        is_mf: false,
-        is_uk: false,
-        is_svg: false,
-        is_virtual: false,
-        residence_list: [{}],
-        states_list: [],
-        refreshNotifications: jest.fn(),
-        showPOAAddressMismatchSuccessNotification: jest.fn(),
-        showPOAAddressMismatchFailureNotification: jest.fn(),
-        Notifications: '',
-        fetchResidenceList: jest.fn(),
-        fetchStatesList: jest.fn(),
-        has_residence: false,
-        account_settings: {},
-        getChangeableFields: jest
-            .fn()
-            .mockReturnValue(['first_name', 'last_name', 'phone', 'address_line_1', 'address_city']),
-        current_landing_company: {},
-        history: {},
-        is_social_signup: false,
-        updateAccountStatus: jest.fn(),
-        has_poa_address_mismatch: false,
-        is_language_changing: false,
-    };
 
     const promise = Promise.resolve();
     const fetchResidenceList = jest.fn(() => promise);

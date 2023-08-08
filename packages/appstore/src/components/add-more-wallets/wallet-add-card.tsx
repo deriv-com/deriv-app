@@ -1,7 +1,7 @@
 import React from 'react';
 import { TWalletInfo } from 'Types';
 import { Text, WalletCard } from '@deriv/components';
-import { useCurrencyConfig } from '@deriv/hooks';
+import { useCurrencyConfig, useNewWalletCreation } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { getWalletCurrencyIcon } from '@deriv/utils';
 import wallet_description_mapper from 'Constants/wallet_description_mapper';
@@ -19,6 +19,8 @@ const AddWalletCard = observer(({ wallet_info }: TAddWalletCard) => {
     const { getConfig } = useCurrencyConfig();
     const currency_config = getConfig(currency);
 
+    const { mutate: createWallet } = useNewWalletCreation();
+
     const wallet_details = {
         currency,
         icon: getWalletCurrencyIcon(currency, is_dark_mode_on),
@@ -31,7 +33,16 @@ const AddWalletCard = observer(({ wallet_info }: TAddWalletCard) => {
     return (
         <div className='add-wallets__card'>
             <div className='add-wallets__card-wrapper'>
-                <WalletCard wallet={wallet_details} size='medium' state={is_added ? 'added' : 'add'} />
+                <WalletCard
+                    wallet={wallet_details}
+                    size='medium'
+                    state={is_added ? 'added' : 'add'}
+                    onClick={() => {
+                        if (!is_added) {
+                            createWallet({ payload: { currency, account_type: 'crypto' } });
+                        }
+                    }}
+                />
                 <div className='add-wallets__card-description'>
                     <Text as='h3' weight='bold' color='prominent' className='add-wallets__card-description__header'>
                         {`${currency_config?.display_code} Wallet`}

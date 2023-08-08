@@ -269,12 +269,14 @@ export default class BuySellStore extends BaseStore {
                 const response = await requestWS({ p2p_order_info: 1, id: order?.p2p_order_create?.id });
                 handleConfirm(response?.p2p_order_info);
             }
+
+            if (order?.p2p_order_info?.id && order?.p2p_order_info?.chat_channel_url) {
+                sendbird_store.setChatChannelUrl(order?.p2p_order_info?.chat_channel_url ?? '');
+                order_store.setOrderDetails(order);
+            }
+
             handleClose();
             this.payment_method_ids = [];
-        }
-        if (order?.p2p_order_info?.id && order?.p2p_order_info?.chat_channel_url) {
-            sendbird_store.setChatChannelUrl(order?.p2p_order_info?.chat_channel_url ?? '');
-            order_store.setOrderDetails(order);
         }
     };
 

@@ -16,7 +16,10 @@ const MultiActionButtonGroup = ({
     onAction,
     is_buttons_disabled,
     is_real,
-}: Pick<Actions, 'link_to' | 'onAction' | 'is_buttons_disabled' | 'is_real'>) => {
+    as_disabled_deposit_button,
+}: Pick<Actions, 'link_to' | 'onAction' | 'is_buttons_disabled' | 'is_real'> & {
+    as_disabled_deposit_button?: boolean;
+}) => {
     return (
         <div className='multi-action-button-group'>
             <Button
@@ -24,6 +27,7 @@ const MultiActionButtonGroup = ({
                 name={`${is_real ? 'transfer-btn' : 'topup-btn'}`}
                 onClick={onAction}
                 is_disabled={is_buttons_disabled}
+                as_disabled={as_disabled_deposit_button}
             >
                 {is_real ? localize('Transfer') : localize('Top up')}
             </Button>

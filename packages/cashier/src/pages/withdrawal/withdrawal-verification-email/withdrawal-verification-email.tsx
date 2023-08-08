@@ -39,7 +39,7 @@ const WithdrawalVerificationEmail = observer(() => {
                 }
                 action={{
                     label: localize('Send email'),
-                    onClick: verify.send,
+                    onClick: () => verify.send(),
                 }}
             />
         </>

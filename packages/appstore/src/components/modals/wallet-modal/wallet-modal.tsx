@@ -7,10 +7,8 @@ import WalletModalHeader from './wallet-modal-header';
 import WalletModalBody from './wallet-modal-body';
 
 const WalletModal = observer(() => {
-    const store = useStore();
-
     const {
-        client: { is_authorize, switchAccount, setVerificationCode },
+        client: { switchAccount, setVerificationCode },
         ui: { is_dark_mode_on, is_wallet_modal_visible, is_mobile, setIsWalletModalVisible },
         traders_hub: {
             active_modal_tab,
@@ -18,7 +16,7 @@ const WalletModal = observer(() => {
             setWalletModalActiveTab,
             setWalletModalActiveWalletID,
         },
-    } = store;
+    } = useStore();
 
     const active_wallet = useActiveWallet();
 
@@ -77,7 +75,7 @@ const WalletModal = observer(() => {
         [is_mobile, is_wallet_modal_visible]
     );
 
-    const is_loading = active_wallet?.loginid !== active_modal_wallet_id || !is_authorize || !active_wallet;
+    const is_loading = !active_wallet?.loginid || active_wallet?.loginid !== active_modal_wallet_id;
 
     return (
         <Modal is_open={is_wallet_modal_visible} className='wallet-modal' portalId='deriv_app'>

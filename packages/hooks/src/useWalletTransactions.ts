@@ -7,11 +7,11 @@ import useAccountsList from './useAccountsList';
 
 /** A custom hook to get a list of transactions for an active wallet of a user, optionally filtered by transaction type */
 const useWalletTransactions = (action_type?: 'deposit' | 'withdrawal' | 'virtual_credit' | 'transfer') => {
+    const { data: accounts } = useAccountsList();
     const { data: wallets } = useWalletAccountsList();
     const current_wallet = useActiveWallet();
     const { getConfig } = useCurrencyConfig();
     const loginid = current_wallet?.loginid;
-    const { data: accounts } = useAccountsList();
 
     // Get the paginated and filtered list of transactions from the API.
     const { data, ...rest } = usePaginatedFetch('statement', {

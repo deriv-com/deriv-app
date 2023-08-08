@@ -7,90 +7,6 @@ jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useFetch: jest.fn(),
     usePaginatedFetch: jest.fn(),
-    // useFetch: jest.fn((name: string) => {
-    //     if (name === 'balance') {
-    //         return {
-    //             data: {
-    //                 balance: {
-    //                     accounts: {
-    //                         CRW000000: {
-    //                             balance: 100,
-    //                         },
-    //                     },
-    //                 },
-    //             },
-    //         };
-    //     }
-    //     if (name === 'authorize') {
-    //         return {
-    //             data: {
-    //                 authorize: {
-    //                     account_list: [
-    //                         {
-    //                             loginid: 'CRW000000',
-    //                             account_category: 'wallet',
-    //                             is_virtual: 0,
-    //                             landing_company_name: 'maltainvest',
-    //                             currency: 'USD',
-    //                         },
-    //                         {
-    //                             loginid: 'MXN000000',
-    //                             account_category: 'trading',
-    //                             is_virtual: 0,
-    //                             landing_company_name: 'maltainvest',
-    //                             currency: 'BTC',
-    //                         },
-    //                     ],
-    //                     loginid: 'CRW000000',
-    //                 },
-    //             },
-    //         };
-    //     }
-
-    //     return { data: undefined };
-    // }),
-    // usePaginatedFetch: jest.fn((name: string) => {
-    //     if (name === 'balance') {
-    //         return {
-    //             data: {
-    //                 balance: {
-    //                     accounts: {
-    //                         CRW000000: {
-    //                             balance: 100,
-    //                         },
-    //                     },
-    //                 },
-    //             },
-    //         };
-    //     }
-    //     if (name === 'authorize') {
-    //         return {
-    //             data: {
-    //                 authorize: {
-    //                     account_list: [
-    //                         {
-    //                             loginid: 'CRW000000',
-    //                             account_category: 'wallet',
-    //                             is_virtual: 0,
-    //                             landing_company_name: 'maltainvest',
-    //                             currency: 'USD',
-    //                         },
-    //                         {
-    //                             loginid: 'MXN000000',
-    //                             account_category: 'trading',
-    //                             is_virtual: 0,
-    //                             landing_company_name: 'maltainvest',
-    //                             currency: 'BTC',
-    //                         },
-    //                     ],
-    //                     loginid: 'CRW000000',
-    //                 },
-    //             },
-    //         };
-    //     }
-
-    //     return { data: undefined };
-    // }),
 }));
 
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
@@ -98,14 +14,6 @@ const mockUsePaginatedFetch = usePaginatedFetch as jest.MockedFunction<typeof us
 
 describe('useWalletTransactions', () => {
     test('should return a list of transactions for a real wallet', () => {
-        // const mock = mockStore({
-        //     client: {
-        //         accounts: { CRW909900: { token: '12345' } },
-        //         currency: 'USD',
-        //         loginid: 'CRW909900',
-        //     },
-        // });
-
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
@@ -114,11 +22,11 @@ describe('useWalletTransactions', () => {
                             account_category: 'wallet',
                             account_type: 'doughflow',
                             currency: 'USD',
-                            is_selected: true,
                             is_virtual: 0,
                             loginid: 'CRW909900',
                         },
                     ],
+                    loginid: 'CRW909900',
                 },
                 website_status: {
                     currencies_config: {
@@ -225,14 +133,6 @@ describe('useWalletTransactions', () => {
     });
 
     test('should return a list of transactions for a demo wallet', () => {
-        // const mock = mockStore({
-        //     client: {
-        //         accounts: { CRW909900: { token: '12345' } },
-        //         currency: 'USD',
-        //         loginid: 'CRW909900',
-        //     },
-        // });
-
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
@@ -246,6 +146,7 @@ describe('useWalletTransactions', () => {
                             loginid: 'CRW909900',
                         },
                     ],
+                    loginid: 'CRW909900',
                 },
                 website_status: {
                     currencies_config: {
@@ -284,19 +185,6 @@ describe('useWalletTransactions', () => {
                             transaction_time: 1685942131,
                         },
                     ],
-                },
-                website_status: {
-                    currencies_config: {
-                        USD: {
-                            fractional_digits: 2,
-                            is_deposit_suspended: 0,
-                            is_suspended: 0,
-                            is_withdrawal_suspended: 0,
-                            name: 'US Dollar',
-                            stake_default: 10,
-                            type: 'fiat',
-                        },
-                    },
                 },
             },
             isLoading: false,

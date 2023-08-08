@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useFeatureFlags } from '@deriv/hooks';
+import { useFeatureFlags, useWalletsList } from '@deriv/hooks';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import Onboarding from 'Modules/onboarding';
@@ -10,6 +10,9 @@ import RouteWithSubroutes from './route-with-sub-routes.jsx';
 
 const Routes: React.FC = observer(() => {
     const { is_wallet_enabled } = useFeatureFlags();
+    const { has_wallet } = useWalletsList();
+
+    const should_show_wallets = is_wallet_enabled && has_wallet;
 
     return (
         <React.Suspense
@@ -22,7 +25,7 @@ const Routes: React.FC = observer(() => {
             <Switch>
                 <RouteWithSubroutes
                     path={'/appstore/traders-hub'}
-                    component={is_wallet_enabled ? WalletsModule : TradersHub}
+                    component={should_show_wallets ? WalletsModule : TradersHub}
                     getTitle={() => localize('TradersHub')}
                 />
                 <RouteWithSubroutes

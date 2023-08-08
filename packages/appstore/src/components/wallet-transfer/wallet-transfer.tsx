@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, Formik, Form, FormikHelpers } from 'formik';
 import { AmountInput, AnimatedList, AlertMessage, Button, Loading } from '@deriv/components';
@@ -47,11 +47,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         setToAccount,
     } = useWalletTransfer();
 
-    useEffect(() => {
-        if (!from_account?.loginid) {
-            setFromAccount(active_wallet);
-        }
-    }, [active_wallet, from_account, setFromAccount]);
+    const [message_list, setMessageList] = React.useState<TMessageItem[]>([]);
 
     const portal_id = is_mobile ? 'mobile_list_modal_root' : 'modal_root';
 
@@ -73,8 +69,6 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         );
     }, [active_wallet?.loginid, active_wallet_name, from_account, to_account?.loginid]);
 
-    const [message_list, setMessageList] = React.useState<TMessageItem[]>([]);
-
     const clearErrorMessages = React.useCallback(
         () => setMessageList(list => list.filter(el => el.type !== 'error')),
         []
@@ -86,7 +80,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         if (!amount || is_amount_to_input_disabled) return;
 
         if (active_wallet?.is_demo) {
-            const { is_ok, message } = validNumber(amount.toString(), {
+            const { is_valid, message } = validNumber(amount.toString(), {
                 type: 'float',
                 decimals: getConfig(from_account?.currency || '')?.fractional_digits,
                 min: 1,
@@ -112,7 +106,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                         type: 'error',
                     },
                 ]);
-            } else if (!is_ok) {
+            } else if (!is_valid) {
                 //else if not wallet loginid and not is_ok message
                 setMessageList(list => [
                     ...list,
@@ -209,6 +203,8 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                 </Field>
                                 <Divider />
                                 <TransferAccountSelector
+                                    //add key to reset the selector state when value updated
+                                    key={JSON.stringify(from_account)}
                                     is_mobile={is_mobile}
                                     is_wallet_name_visible={is_wallet_name_visible}
                                     label={localize('Transfer from')}
@@ -247,6 +243,8 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                 </Field>
                                 <Divider />
                                 <TransferAccountSelector
+                                    //add key to reset the selector state when value updated
+                                    key={JSON.stringify(to_account)}
                                     is_mobile={is_mobile}
                                     is_wallet_name_visible={is_wallet_name_visible}
                                     label={localize('Transfer to')}

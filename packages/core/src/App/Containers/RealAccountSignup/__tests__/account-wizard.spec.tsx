@@ -209,8 +209,9 @@ describe('<AccountWizard />', () => {
     it('should invoke Create account and IDV data submission APIs on click of Submit button', async () => {
         render(<AccountWizard {...mock_props} />);
         const ele_submit_btn = screen.getByRole('button', { name: 'Submit' });
-        userEvent.click(ele_submit_btn);
-        await waitFor(() => {});
+        await waitFor(() => {
+            userEvent.click(ele_submit_btn);
+        });
         expect(WS.send).toHaveBeenCalled();
     });
 });

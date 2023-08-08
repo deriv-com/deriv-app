@@ -12,8 +12,8 @@ import NewVersionNotification from 'App/Containers/new-version-notification.jsx'
 import { connect } from 'Stores/connect';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
-
 import { TradersHubHomeButton } from './trading-hub-header';
+import { useWalletMigration } from '@deriv/hooks';
 
 const Divider = () => <div className='header__menu--dtrader--separator' />;
 
@@ -53,6 +53,7 @@ const DTraderHeader = ({
     toggleReadyToDepositModal,
     has_any_real_account,
     setTogglePlatformType,
+    setWalletsMigrationInProgressPopup,
 }) => {
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -60,13 +61,17 @@ const DTraderHeader = ({
         [removeNotificationMessage]
     );
 
+    const { is_in_progress } = useWalletMigration();
+
     React.useEffect(() => {
         document.addEventListener('IgnorePWAUpdate', removeUpdateNotification);
         return () => document.removeEventListener('IgnorePWAUpdate', removeUpdateNotification);
     }, [removeUpdateNotification]);
 
     const handleClickCashier = () => {
-        if (!has_any_real_account && is_virtual) {
+        if (is_in_progress) {
+            setWalletsMigrationInProgressPopup(true);
+        } else if (!has_any_real_account && is_virtual) {
             toggleReadyToDepositModal();
         } else {
             history.push(routes.cashier_deposit);
@@ -162,6 +167,7 @@ const DTraderHeader = ({
                             toggleAccountsDialog={toggleAccountsDialog}
                             toggleNotifications={toggleNotifications}
                             openRealAccountSignup={openRealAccountSignup}
+                            is_deposit_button_disabled={is_in_progress}
                         />
                     </div>
                 </div>
@@ -210,6 +216,7 @@ DTraderHeader.propTypes = {
     toggleReadyToDepositModal: PropTypes.func,
     has_any_real_account: PropTypes.bool,
     setTogglePlatformType: PropTypes.func,
+    setWalletsMigrationInProgressPopup: PropTypes.func,
 };
 
 export default connect(({ client, common, ui, notifications, traders_hub }) => ({
@@ -248,4 +255,5 @@ export default connect(({ client, common, ui, notifications, traders_hub }) => (
     has_any_real_account: client.has_any_real_account,
     setTogglePlatformType: traders_hub.setTogglePlatformType,
     current_language: common.current_language,
+    setWalletsMigrationInProgressPopup: client.setWalletsMigrationInProgressPopup,
 }))(withRouter(DTraderHeader));

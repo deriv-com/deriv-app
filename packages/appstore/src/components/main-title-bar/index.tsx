@@ -6,9 +6,9 @@ import AccountTypeDropdown from './account-type-dropdown';
 import AssetSummary from './asset-summary';
 import RegulatorSwitcher from './regulators-switcher';
 import { localize } from '@deriv/translations';
-import './main-title-bar.scss';
 import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
 import WalletsBanner from 'Components/wallets-banner';
+import './main-title-bar.scss';
 
 const MainTitleBar = () => {
     const { traders_hub, client, notifications } = useStore();

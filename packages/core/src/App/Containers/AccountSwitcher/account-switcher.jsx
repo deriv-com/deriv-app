@@ -22,7 +22,7 @@ import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
 import { getSortedAccountList, getSortedCFDList, isDemo } from './helpers';
 import { BinaryLink } from 'App/Components/Routes';
-import { useHasSetCurrency } from '@deriv/hooks';
+import { useHasSetCurrency, useWalletMigration } from '@deriv/hooks';
 
 const AccountSwitcher = ({
     available_crypto_currencies,
@@ -64,6 +64,7 @@ const AccountSwitcher = ({
     content_flag,
     virtual_account_loginid,
     setTogglePlatformType,
+    setWalletsMigrationInProgressPopup,
 }) => {
     const [active_tab_index, setActiveTabIndex] = React.useState(!is_virtual || should_show_real_accounts_list ? 0 : 1);
     const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
@@ -73,6 +74,8 @@ const AccountSwitcher = ({
 
     const wrapper_ref = React.useRef();
     const scroll_ref = React.useRef(null);
+
+    const { is_in_progress } = useWalletMigration();
 
     const account_total_balance_currency = obj_total_balance.currency;
 
@@ -243,6 +246,7 @@ const AccountSwitcher = ({
                                     redirectAccount={account.is_disabled ? undefined : () => doSwitch(account.loginid)}
                                     onClickResetVirtualBalance={resetBalance}
                                     selected_loginid={account_loginid}
+                                    setWalletsMigrationInProgressPopup={setWalletsMigrationInProgressPopup}
                                 />
                             ))}
                     </div>
@@ -292,6 +296,7 @@ const AccountSwitcher = ({
                                                 }
                                                 selected_loginid={account_loginid}
                                                 should_show_server_name={checkMultipleSvgAcc()}
+                                                setWalletsMigrationInProgressPopup={setWalletsMigrationInProgressPopup}
                                             />
                                         );
                                     })}
@@ -312,7 +317,10 @@ const AccountSwitcher = ({
                                             <Button
                                                 id='dt_core_account-switcher_add-new-account'
                                                 onClick={() => {
-                                                    if (real_account_creation_unlock_date) {
+                                                    if (is_in_progress) {
+                                                        closeAccountsDialog();
+                                                        setWalletsMigrationInProgressPopup(true);
+                                                    } else if (real_account_creation_unlock_date) {
                                                         closeAccountsDialog();
                                                         setShouldShowCooldownModal(true);
                                                     } else openRealAccountSignup('svg');
@@ -320,6 +328,7 @@ const AccountSwitcher = ({
                                                 className='acc-switcher__new-account-btn'
                                                 secondary
                                                 small
+                                                as_disabled={is_in_progress}
                                             >
                                                 {localize('Add')}
                                             </Button>
@@ -365,6 +374,7 @@ const AccountSwitcher = ({
                                             }
                                             selected_loginid={account_loginid}
                                             should_show_server_name={checkMultipleSvgAcc()}
+                                            setWalletsMigrationInProgressPopup={setWalletsMigrationInProgressPopup}
                                         />
                                     );
                                 })}
@@ -385,7 +395,10 @@ const AccountSwitcher = ({
                                         <Button
                                             id='dt_core_account-switcher_add-new-account'
                                             onClick={() => {
-                                                if (real_account_creation_unlock_date) {
+                                                if (is_in_progress) {
+                                                    closeAccountsDialog();
+                                                    setWalletsMigrationInProgressPopup(true);
+                                                } else if (real_account_creation_unlock_date) {
                                                     closeAccountsDialog();
                                                     setShouldShowCooldownModal(true);
                                                 } else {
@@ -395,6 +408,7 @@ const AccountSwitcher = ({
                                             className='acc-switcher__new-account-btn'
                                             secondary
                                             small
+                                            as_disabled={is_in_progress}
                                         >
                                             {localize('Add')}
                                         </Button>
@@ -508,11 +522,14 @@ const AccountSwitcher = ({
                     <Button
                         className='acc-switcher__btn--traders_hub'
                         secondary
-                        onClick={
-                            has_any_real_account && !hasSetCurrency
-                                ? setAccountCurrency
-                                : () => openRealAccountSignup('manage')
-                        }
+                        onClick={() => {
+                            if (is_in_progress) {
+                                closeAccountsDialog();
+                                setWalletsMigrationInProgressPopup(true);
+                            } else if (has_any_real_account && !hasSetCurrency) setAccountCurrency();
+                            else openRealAccountSignup('manage');
+                        }}
+                        as_disabled={is_in_progress}
                     >
                         {localize('Manage accounts')}
                     </Button>
@@ -569,6 +586,7 @@ AccountSwitcher.propTypes = {
     content_flag: PropTypes.string,
     virtual_account_loginid: PropTypes.string,
     setTogglePlatformType: PropTypes.func,
+    setWalletsMigrationInProgressPopup: PropTypes.func,
 };
 
 const account_switcher = withRouter(
@@ -609,6 +627,7 @@ const account_switcher = withRouter(
         has_any_real_account: client.has_any_real_account,
         virtual_account_loginid: client.virtual_account_loginid,
         setTogglePlatformType: traders_hub.setTogglePlatformType,
+        setWalletsMigrationInProgressPopup: client.setWalletsMigrationInProgressPopup,
     }))(AccountSwitcher)
 );
 

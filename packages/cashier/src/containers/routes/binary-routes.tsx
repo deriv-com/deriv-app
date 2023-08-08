@@ -7,6 +7,8 @@ import RouteWithSubRoutes from './route-with-sub-routes';
 type TBinaryRoutesProps = {
     is_logged_in: boolean;
     is_logging_in: boolean;
+    is_wallet_migration: boolean;
+    showPopup: (value: boolean) => void;
 };
 
 const Loading = () => {

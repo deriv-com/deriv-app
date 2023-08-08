@@ -114,6 +114,7 @@ describe('useWalletTransactions', () => {
                             account_category: 'wallet',
                             account_type: 'doughflow',
                             currency: 'USD',
+                            is_selected: true,
                             is_virtual: 0,
                             loginid: 'CRW909900',
                         },

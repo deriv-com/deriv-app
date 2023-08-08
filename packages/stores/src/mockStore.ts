@@ -241,7 +241,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             real_account_creation_unlock_date: '',
             has_any_real_account: false,
             setPrevAccountType: jest.fn(),
-            prev_account_type: 'demo',
             mf_account_status: '',
         },
         common: {
@@ -405,10 +404,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             openFailedVerificationModal: jest.fn(),
             setTogglePlatformType: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
-            toggleIsTourOpen: jest.fn(),
             selectAccountType: jest.fn(),
             toggleIsTourOpen: jest.fn(),
-            is_demo_low_risk: false,
             is_mt5_notification_modal_visible: false,
             setMT5NotificationModal: jest.fn(),
         },

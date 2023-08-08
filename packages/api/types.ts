@@ -1088,3 +1088,8 @@ export type TSocketAcceptableProps<T extends TSocketEndpointNames, O extends boo
     : Partial<TSocketRequestProps<T, O>> extends TSocketRequestProps<T, O>
     ? [TSocketRequestProps<T, O>?]
     : [TSocketRequestProps<T, O>];
+
+export type TSocketPaginateableEndpointNames = KeysMatching<
+    TSocketEndpoints,
+    { request: { limit?: number; offset?: number } }
+>;

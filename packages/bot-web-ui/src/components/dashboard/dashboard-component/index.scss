@@ -234,9 +234,7 @@
         }
 
         &__mobile-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            @include align-center;
             margin: 1.4rem 0;
             column-gap: 1rem;
             height: 3.2rem;

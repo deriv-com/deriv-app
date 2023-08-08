@@ -247,7 +247,6 @@ const TradeParamsMobile = observer(
                             d_duration={d_duration}
                             stake_value={stake_value}
                             payout_value={payout_value}
-                            is_vanilla={is_vanilla}
                             expiry_epoch={expiry_epoch}
                         />
                     </div>

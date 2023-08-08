@@ -287,14 +287,13 @@ const AccountWizard = props => {
                 /**
                  * If user opted-out of IDV verification, we send the value "none" for document_number and document_type to the API.
                  */
-                const is_IDV_opted_out = document_type.id === IDV_NOT_APPLICABLE_OPTION.id;
-                let processed_doc_number = document_number;
-                if (is_IDV_opted_out) {
-                    processed_doc_number = IDV_NOT_APPLICABLE_OPTION.value;
-                }
-                if (document_type && processed_doc_number) {
+                const idv_doc_number =
+                    document_type.id === IDV_NOT_APPLICABLE_OPTION.id
+                        ? IDV_NOT_APPLICABLE_OPTION.value
+                        : document_number;
+                if (document_type && idv_doc_number) {
                     const country_code = props.account_settings.citizen || props.residence;
-                    submitIDVData(document_type, processed_doc_number, document_additional, country_code);
+                    submitIDVData(document_type, idv_doc_number, document_additional, country_code);
                 }
             })
             .catch(error => {

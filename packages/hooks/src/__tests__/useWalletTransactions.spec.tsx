@@ -284,6 +284,19 @@ describe('useWalletTransactions', () => {
                         },
                     ],
                 },
+                website_status: {
+                    currencies_config: {
+                        USD: {
+                            fractional_digits: 2,
+                            is_deposit_suspended: 0,
+                            is_suspended: 0,
+                            is_withdrawal_suspended: 0,
+                            name: 'US Dollar',
+                            stake_default: 10,
+                            type: 'fiat',
+                        },
+                    },
+                },
             },
             isLoading: false,
             isSuccess: true,

@@ -4,7 +4,7 @@ import { TCFDPasswordFormValues } from 'Containers/cfd-password-modal';
 import { TDerivezCompanies, TDxCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 import { FormikHelpers } from 'formik';
 
-type TStoreProofOfAddressArgs = {
+export type TStoreProofOfAddressArgs = {
     file_uploader_ref: HTMLDivElement | null;
     values: {
         [key: string]: string;

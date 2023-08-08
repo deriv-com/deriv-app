@@ -7,7 +7,7 @@ type TListenerResponse = {
 };
 
 type TBaseStoreOptions = {
-    root_store?: TRootStore;
+    root_store: TRootStore;
 };
 
 /**
@@ -26,7 +26,7 @@ export default class BaseStore {
 
     client_init_listener: null | (() => TListenerResponse) = null;
     clientInitDisposer: null | (() => void) = null;
-    root_store?: TRootStore;
+    root_store: TRootStore;
     switch_account_listener: null | (() => TListenerResponse) = null;
     switchAccountDisposer: null | (() => void) = null;
 
@@ -40,7 +40,7 @@ export default class BaseStore {
      *     @property {Object}   validation_rules - An object that contains the validation rules for each property of the store.
      *     @property {String}   store_name - Explicit store name for browser application storage (to bypass minification)
      */
-    constructor(options: TBaseStoreOptions = {}) {
+    constructor(options: TBaseStoreOptions) {
         makeObservable(this, {
             onSwitchAccount: action.bound,
             onClientInit: action.bound,

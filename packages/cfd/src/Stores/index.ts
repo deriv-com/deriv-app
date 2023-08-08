@@ -1,15 +1,15 @@
 import ModulesStore from './Modules';
-import { TRootStore } from '../types';
+import type { TCoreStores } from '@deriv/stores/types';
 
 export default class RootStore {
-    client: any;
-    common: any;
+    client: TCoreStores['client'];
+    common: TCoreStores['common'];
     modules: ModulesStore;
-    ui: any;
-    notifications: any;
-    traders_hub: any;
+    ui: TCoreStores['ui'];
+    notifications: TCoreStores['notifications'];
+    traders_hub: TCoreStores['traders_hub'];
 
-    constructor(core_store: any) {
+    constructor(core_store: TCoreStores) {
         this.client = core_store.client;
         this.common = core_store.common;
         this.modules = new ModulesStore(core_store);

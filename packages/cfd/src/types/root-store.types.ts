@@ -1,10 +1,10 @@
-import type { TStores } from '@deriv/stores/types';
+import type { TCoreStores } from '@deriv/stores/types';
 import type CFDStore from '../Stores/Modules/CFD/cfd-store';
 
 /**
- * @deprecated - Use `TStores` from `@deriv/stores` instead of this type.
+ * @deprecated - Use `TCoreStores` from `@deriv/stores` instead of this type.
  */
-export type TRootStore = TStores & {
+export type TRootStore = TCoreStores & {
     modules: {
         cfd: CFDStore;
     };

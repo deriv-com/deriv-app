@@ -1,7 +1,6 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import useActiveWallet from '../useActiveWallet';
-import { StoreProvider, mockStore } from '@deriv/stores';
 import { APIProvider } from '@deriv/api';
 
 jest.mock('@deriv/api', () => ({
@@ -40,6 +39,7 @@ jest.mock('@deriv/api', () => ({
                                 currency: 'BTC',
                             },
                         ],
+                        loginid: 'CRW000000',
                     },
                 },
             };
@@ -51,26 +51,11 @@ jest.mock('@deriv/api', () => ({
 
 describe('useActiveWallet', () => {
     it('should return active wallet', () => {
-        const mock = mockStore({
-            client: {
-                loginid: 'CRW000000',
-                accounts: {
-                    CRW000000: {
-                        token: 'token',
-                    },
-                },
-            },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useActiveWallet(), { wrapper });
 
-        expect(result?.current?.is_selected).toEqual(true);
-        expect(result?.current?.loginid).toEqual(mock.client.loginid);
+        expect(result?.current?.is_active).toEqual(true);
+        expect(result?.current?.loginid).toEqual('CRW000000');
     });
 });

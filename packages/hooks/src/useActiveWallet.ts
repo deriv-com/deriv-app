@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
-import useWalletsList from './useWalletsList';
+import useWalletAccountsList from './useWalletAccountsList';
 
 /** A custom hook that returns the wallet object for the current active wallet. */
 const useActiveWallet = () => {
-    const { data } = useWalletsList();
-    const active_wallet = useMemo(() => data?.find(wallet => wallet.is_selected), [data]);
+    const { data } = useWalletAccountsList();
+    const active_wallet = useMemo(() => data?.find(wallet => wallet.is_active), [data]);
 
     /** User's current active wallet. */
     return active_wallet;

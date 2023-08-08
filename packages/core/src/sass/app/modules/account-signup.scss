@@ -42,6 +42,7 @@
         }
     }
     &__main {
+        margin: -1.2rem -1.2rem 0;
         @include mobile {
             padding: 9rem 1.6rem;
         }
@@ -131,6 +132,13 @@
             margin: 2.4rem 0 0 -0.6rem;
         }
     }
+    &__label {
+        line-height: var(--text-lh-m);
+        @include mobile {
+            line-height: var(--text-lh-l);
+            font-size: var(--text-size-xxs);
+        }
+    }
     &__footer {
         display: flex;
         justify-content: flex-end;
@@ -154,7 +162,7 @@
             left: 0;
             right: 0;
             position: absolute;
-            width: calc(100% - 8rem);
+            width: calc(100% - 4rem);
             margin: 0 auto;
         }
     }

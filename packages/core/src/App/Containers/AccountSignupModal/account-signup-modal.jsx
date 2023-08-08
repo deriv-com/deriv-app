@@ -126,6 +126,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                             checked={is_disclaimer_accepted}
                                             onChange={() => setIsDisclaimerAccepted(!is_disclaimer_accepted)}
                                             className='account-signup__checkbox'
+                                            classNameLabel='account-signup__label'
                                             label={localize(
                                                 'I hereby confirm that my request for opening an account with Deriv to trade OTC products issued and offered exclusively outside Brazil was initiated by me. I fully understand that Deriv is not regulated by CVM and by approaching Deriv I intend to set up a relation with a foreign company.'
                                             )}

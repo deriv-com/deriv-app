@@ -53,6 +53,7 @@ export default class RunPanelStore {
             setContractStage: action.bound,
             setHasOpenContract: action.bound,
             setIsRunning: action.bound,
+            setShowBotStopMessage: action.bound,
             onMount: action.bound,
             onUnmount: action.bound,
             handleInvalidToken: action.bound,

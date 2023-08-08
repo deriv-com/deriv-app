@@ -1,12 +1,16 @@
 import React from 'react';
-import { Toast } from '@deriv/components';
+import { observer } from 'mobx-react';
+import { Icon, Toast } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { useDBotStore } from 'Stores/useDBotStore';
 
-const BotStopNotification = () => {
+const BotStopNotification = observer(() => {
+    const { run_panel } = useDBotStore();
+    const { setShowBotStopMessage } = run_panel;
     return (
         <div className='bot-stop-notification'>
-            <div>
-                <Toast timeout={6000}>
+            <Toast timeout={6000}>
+                <div>
                     <Localize
                         i18n_default_text='You’ve just stopped the bot. Any open contracts can be viewed on the <0>Reports</0> page.'
                         components={[
@@ -19,10 +23,11 @@ const BotStopNotification = () => {
                             />,
                         ]}
                     />
-                </Toast>
-            </div>
+                </div>
+                <Icon icon='IcCross' className={'notification-close'} onClick={() => setShowBotStopMessage(false)} />
+            </Toast>
         </div>
     );
-};
+});
 
 export default BotStopNotification;

@@ -141,7 +141,6 @@ describe('useWalletTransactions', () => {
                             account_category: 'wallet',
                             account_type: 'virtual',
                             currency: 'USD',
-                            is_selected: true,
                             is_virtual: 1,
                             loginid: 'CRW909900',
                         },

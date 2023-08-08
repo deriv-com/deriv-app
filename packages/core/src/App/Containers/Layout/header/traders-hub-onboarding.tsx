@@ -5,7 +5,7 @@ import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 
-const TradingHubOnboarding = observer(() => {
+const TradersHubOnboarding = observer(() => {
     const history = useHistory();
     const { traders_hub, ui } = useStore();
     const { setIsOnboardingVisited } = traders_hub;
@@ -36,4 +36,4 @@ const TradingHubOnboarding = observer(() => {
     );
 });
 
-export default TradingHubOnboarding;
+export default TradersHubOnboarding;

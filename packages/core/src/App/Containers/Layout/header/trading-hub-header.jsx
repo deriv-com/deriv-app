@@ -18,7 +18,7 @@ import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
 import DefaultMobileLinks from './default-mobile-links';
 import ShowNotifications from './show-notifications';
-import TradingHubOnboarding from './trading-hub-onboarding';
+import TradersHubOnboarding from './traders-hub-onboarding';
 
 const Divider = () => {
     return <div className='trading-hub-header__divider' />;
@@ -162,7 +162,7 @@ const TradingHubHeader = ({
                     <Divider />
                     <div className='trading-hub-header__menu-right--items'>
                         <div className='trading-hub-header__menu-right--items--onboarding'>
-                            <TradingHubOnboarding />
+                            <TradersHubOnboarding />
                         </div>
                         <div className='trading-hub-header__menu-right--items--notifications'>
                             <ShowNotifications />

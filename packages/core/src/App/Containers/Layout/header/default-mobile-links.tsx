@@ -4,7 +4,7 @@ import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import ShowNotifications from './show-notifications';
-import TradingHubOnboarding from './trading-hub-onboarding';
+import TradersHubOnboarding from './traders-hub-onboarding';
 
 type TDefaultMobileLinks = {
     handleClickCashier: () => void;
@@ -14,7 +14,7 @@ const DefaultMobileLinks = ({ handleClickCashier }: TDefaultMobileLinks) => {
     return (
         <React.Fragment>
             <div className='trading-hub-header__menu-right--items--onboarding'>
-                <TradingHubOnboarding />
+                <TradersHubOnboarding />
             </div>
             <div className='trading-hub-header__menu-right--items--notifications'>
                 <ShowNotifications />

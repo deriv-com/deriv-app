@@ -11,7 +11,7 @@ jest.mock('@deriv/components', () => {
 });
 jest.mock('App/Components/Routes', () => jest.fn(() => 'mockedBinaryLink'));
 jest.mock('../show-notifications', () => jest.fn(() => 'mockedShowNotifications'));
-jest.mock('../trading-hub-onboarding', () => jest.fn(() => 'mockedTradingHubOnboarding'));
+jest.mock('../traders-hub-onboarding', () => jest.fn(() => 'mockedTradersHubOnboarding'));
 
 describe('DefaultMobileLinks', () => {
     const mock_props: React.ComponentProps<typeof DefaultMobileLinks> = {
@@ -20,7 +20,7 @@ describe('DefaultMobileLinks', () => {
 
     it('should render the component', () => {
         render(<DefaultMobileLinks {...mock_props} />);
-        expect(screen.getByText('mockedTradingHubOnboarding')).toBeInTheDocument();
+        expect(screen.getByText('mockedTradersHubOnboarding')).toBeInTheDocument();
     });
 
     it('should display the cashier button', () => {

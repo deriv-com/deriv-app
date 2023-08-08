@@ -153,24 +153,11 @@
 
         &__files {
             flex-basis: 100%;
-            height: calc(100% - 3.8rem);
-
-            @include mobile {
-                overflow: auto;
-                height: calc(100vh - 35rem);
-            }
 
             &__list {
                 overflow: auto;
-
-                @include mobile {
-                    overflow: unset;
-                    height: calc(100vh - 18rem);
-                    padding-right: 1rem;
-                }
-
-                height: calc(100% - 15rem); // 100% - Title height
                 width: 100%;
+                height: 40rem;
             }
         }
 
@@ -487,7 +474,6 @@
             position: relative;
 
             @include mobile {
-                padding: 1.6rem;
                 height: calc(100% - 7.4rem); // - footer height
                 &--active {
                     height: calc(70% - 7.4rem);

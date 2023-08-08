@@ -244,7 +244,7 @@ const DMT5TradeModal = ({
                     </a>
                 </div>
 
-                <div className='cfd-trade-modal__download-center-options--qrcode'>
+                <div className='cfd-trade-modal__download-center-options--qrcode cfd-trade-modal__download-center-options--qrcode-hide'>
                     <img src={getUrlBase('/public/images/common/mt5_download.png')} width={80} height={80} />
                     <Text align='center' size='xxs'>
                         {localize('Scan the QR code to download {{ platform }}.', {

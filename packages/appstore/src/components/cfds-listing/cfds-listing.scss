@@ -545,8 +545,10 @@
                 align-items: center;
                 border: 1px solid var(--border-disabled);
                 border-radius: 5px;
-                @include mobile {
-                    display: none;
+                &-hide {
+                    @include mobile {
+                        display: none;
+                    }
                 }
             }
         }

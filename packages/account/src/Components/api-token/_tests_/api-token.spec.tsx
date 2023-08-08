@@ -1,19 +1,15 @@
 import React from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { getPropertyValue, isDesktop, isMobile, useIsMounted, WS } from '@deriv/shared';
+import { getPropertyValue, useIsMounted, WS, isMobile, isDesktop } from '@deriv/shared';
 import ApiToken from '../api-token';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { FormikValues } from 'formik';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     getPropertyValue: jest.fn(() => []),
-    isDesktop: jest.fn(() => true),
     isMobile: jest.fn(() => false),
     useIsMounted: jest.fn().mockImplementation(() => () => true),
-}));
-jest.mock('@deriv/shared/src/services/ws-methods', () => ({
-    __esModule: true, // this property makes it work,
-    default: 'mockedDefaultExport',
     WS: {
         apiToken: jest.fn(() =>
             Promise.resolve({
@@ -32,7 +28,6 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
             ),
         },
     },
-    useWS: () => undefined,
 }));
 
 jest.mock('@deriv/components', () => ({
@@ -40,9 +35,9 @@ jest.mock('@deriv/components', () => ({
     Loading: () => <div>Loading</div>,
 }));
 
-let modal_root_el;
+const modal_root_el = document.createElement('div');
+
 beforeAll(() => {
-    modal_root_el = document.createElement('div');
     modal_root_el.setAttribute('id', 'modal_root');
     document.body.appendChild(modal_root_el);
 });
@@ -70,8 +65,7 @@ describe('<ApiToken/>', () => {
     const your_access_description =
         "To access your mobile apps and other third-party apps, you'll first need to generate an API token.";
 
-    let store = mockStore();
-    store = mockStore({
+    const store = mockStore({
         client: {
             is_switching: false,
         },
@@ -80,31 +74,11 @@ describe('<ApiToken/>', () => {
             is_mobile: true,
         },
     });
-    const mock_props = {
-        WS: {
-            apiToken: jest.fn(() =>
-                Promise.resolve({
-                    api_token: {
-                        tokens: [],
-                    },
-                })
-            ),
-            authorized: {
-                apiToken: jest.fn(() =>
-                    Promise.resolve({
-                        api_token: {
-                            tokens: [],
-                        },
-                    })
-                ),
-            },
-        },
-    };
 
     it('should render ApiToken component without app_settings and footer', async () => {
         render(
             <StoreProvider store={store}>
-                <ApiToken {...mock_props} />
+                <ApiToken />
             </StoreProvider>
         );
 
@@ -122,12 +96,33 @@ describe('<ApiToken/>', () => {
         expect(screen.queryByText(learn_more_title)).not.toBeInTheDocument();
     });
 
-    it('should not render ApiToken component if is not mounted', () => {
-        useIsMounted.mockImplementationOnce(() => () => false);
+    it('should render ApiToken component without app_settings and footer for mobile', async () => {
+        (isMobile as jest.Mock).mockReturnValueOnce(true);
 
         render(
             <StoreProvider store={store}>
-                <ApiToken {...mock_props} />
+                <ApiToken />
+            </StoreProvider>
+        );
+
+        expect(await screen.findByText(admin_scope_description)).toBeInTheDocument();
+        expect(await screen.findByText(admin_scope_note)).toBeInTheDocument();
+        expect(await screen.findByText(trading_info_scope_description)).toBeInTheDocument();
+        expect(await screen.findByText(select_scopes_msg)).toBeInTheDocument();
+        expect(await screen.findByText(token_creation_description)).toBeInTheDocument();
+        expect(await screen.findByText(token_using_description)).toBeInTheDocument();
+        expect(await screen.findByText(trade_scope_description)).toBeInTheDocument();
+        expect(await screen.findByText(trading_info_description)).toBeInTheDocument();
+        expect(await screen.findByText(read_scope_description)).toBeInTheDocument();
+        expect(screen.queryByText(learn_more_title)).not.toBeInTheDocument();
+    });
+
+    it('should not render ApiToken component if is not mounted', () => {
+        useIsMounted();
+
+        render(
+            <StoreProvider store={store}>
+                <ApiToken />
             </StoreProvider>
         );
 
@@ -150,7 +145,7 @@ describe('<ApiToken/>', () => {
     it('should choose checkbox, enter a valid value and create token', async () => {
         render(
             <StoreProvider store={store}>
-                <ApiToken {...mock_props} />
+                <ApiToken />
             </StoreProvider>
         );
 
@@ -158,8 +153,8 @@ describe('<ApiToken/>', () => {
 
         const checkboxes = await screen.findAllByRole('checkbox');
         const create_btn = await screen.findByRole('button');
-        const read_checkbox = checkboxes.find(card => card.name === 'read'); // Typecasting it since find can return undefined as well
-        const token_name_input = await screen.findByLabelText('Token name');
+        const read_checkbox = checkboxes.find((card: FormikValues) => card.name === 'read') as HTMLInputElement; // Typecasting it since find can return undefined as well
+        const token_name_input = (await screen.findByLabelText('Token name')) as HTMLInputElement;
 
         expect(checkboxes).toHaveLength(5);
         expect(create_btn).toBeDisabled();
@@ -185,7 +180,7 @@ describe('<ApiToken/>', () => {
         expect(create_btn).toBeEnabled();
 
         fireEvent.click(create_btn);
-        const updated_token_name_input = await screen.findByLabelText('Token name');
+        const updated_token_name_input = (await screen.findByLabelText('Token name')) as HTMLInputElement;
         expect(updated_token_name_input.value).toBe('');
 
         const createToken = WS.apiToken;
@@ -195,7 +190,7 @@ describe('<ApiToken/>', () => {
     it('should render created tokens and trigger delete', async () => {
         jest.useFakeTimers();
 
-        getPropertyValue.mockReturnValue([
+        (getPropertyValue as jest.Mock).mockReturnValue([
             {
                 display_name: 'First test token',
                 last_used: '',
@@ -214,7 +209,7 @@ describe('<ApiToken/>', () => {
 
         render(
             <StoreProvider store={store}>
-                <ApiToken {...mock_props} />
+                <ApiToken />
             </StoreProvider>
         );
 
@@ -258,9 +253,7 @@ describe('<ApiToken/>', () => {
         const warning_msg =
             'Be careful who you share this token with. Anyone with this token can perform the following actions on your account behalf';
 
-        document.execCommand = jest.fn();
-
-        getPropertyValue.mockReturnValue([
+        (getPropertyValue as jest.Mock).mockReturnValue([
             {
                 display_name: 'First test token',
                 last_used: '',
@@ -279,7 +272,7 @@ describe('<ApiToken/>', () => {
 
         render(
             <StoreProvider store={store}>
-                <ApiToken {...mock_props} />
+                <ApiToken />
             </StoreProvider>
         );
 
@@ -301,7 +294,9 @@ describe('<ApiToken/>', () => {
         fireEvent.click(copy_btns_1[0]);
         expect(screen.queryByText(warning_msg)).not.toBeInTheDocument();
 
-        act(() => jest.advanceTimersByTime(2100));
+        act(() => {
+            jest.advanceTimersByTime(2100);
+        });
         expect(screen.queryByTestId('dt_token_copied_icon')).not.toBeInTheDocument();
 
         fireEvent.click(copy_btns_1[1]);
@@ -316,10 +311,8 @@ describe('<ApiToken/>', () => {
     });
 
     it('should render created tokens for mobile', async () => {
-        isMobile.mockReturnValue(true);
-        isDesktop.mockReturnValue(false);
-
-        getPropertyValue.mockReturnValue([
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (getPropertyValue as jest.Mock).mockReturnValue([
             {
                 display_name: 'First test token',
                 last_used: '',
@@ -345,14 +338,14 @@ describe('<ApiToken/>', () => {
 
         render(
             <StoreProvider store={store}>
-                <ApiToken {...mock_props} />
+                <ApiToken />
             </StoreProvider>
         );
 
-        expect((await screen.findAllByText('Name'))).toHaveLength(3);
-        expect((await screen.findAllByText('Last Used'))).toHaveLength(3);
-        expect((await screen.findAllByText('Token'))).toHaveLength(3);
-        expect((await screen.findAllByText('Scopes'))).toHaveLength(3);
+        expect(await screen.findAllByText('Name')).toHaveLength(3);
+        expect(await screen.findAllByText('Last Used')).toHaveLength(3);
+        expect(await screen.findAllByText('Token')).toHaveLength(3);
+        expect(await screen.findAllByText('Scopes')).toHaveLength(3);
         expect(await screen.findByText('First test token')).toBeInTheDocument();
         expect(await screen.findByText('Second test token')).toBeInTheDocument();
         expect(screen.queryByText('Action')).not.toBeInTheDocument();
@@ -369,11 +362,11 @@ describe('<ApiToken/>', () => {
             })
         );
 
-        getPropertyValue.mockReturnValue('New test error');
+        (getPropertyValue as jest.Mock).mockReturnValue('New test error');
 
         render(
             <StoreProvider store={store}>
-                <ApiToken {...mock_props} />
+                <ApiToken />
             </StoreProvider>
         );
 

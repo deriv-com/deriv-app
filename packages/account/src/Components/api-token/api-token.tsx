@@ -86,8 +86,6 @@ const ApiToken = () => {
         admin: false,
     };
 
-    const toggleOverlay = () => setState({ is_overlay_shown: !state.is_overlay_shown });
-
     const validateFields = (values: TApiTokenForm) => {
         const errors: FormikErrors<TApiTokenForm> = {};
         const token_name = values.token_name && values.token_name.trim();
@@ -187,7 +185,6 @@ const ApiToken = () => {
 
     const context_value = {
         api_tokens,
-        toggleOverlay,
         deleteToken,
     };
 

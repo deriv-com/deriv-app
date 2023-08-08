@@ -55,7 +55,7 @@ describe('<FloatingRate/>', () => {
         });
 
         expect(screen.getByText('of the market rate')).toBeInTheDocument();
-        expect(screen.getAllByRole('button').length).toBe(2);
+        expect(screen.getAllByRole('button')).toHaveLength(2);
     });
 
     it('should display error messages when error is passed as props', () => {

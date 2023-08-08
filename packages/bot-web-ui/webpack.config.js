@@ -6,8 +6,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
-const vm = require('vm-browserify');
-const styles = require('@deriv/shared/src/styles/index.js');
 
 const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
@@ -65,7 +63,8 @@ module.exports = function (env) {
                         {
                             loader: 'sass-resources-loader',
                             options: {
-                                resources: styles,
+                                // eslint-disable-next-line global-require
+                                resources: require('@deriv/shared/src/styles/index.js'),
                             },
                         },
                     ],
@@ -106,7 +105,7 @@ module.exports = function (env) {
             ],
         },
         resolve: {
-            fallback: { vm },
+            fallback: { vm: require.resolve('vm-browserify') },
             alias: {
                 Components: path.resolve(__dirname, 'src', 'components'),
                 Constants: path.resolve(__dirname, './src/constants'),

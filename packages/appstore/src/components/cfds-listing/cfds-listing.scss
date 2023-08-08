@@ -26,6 +26,7 @@
     &__scrollable-content {
         @include desktop {
             overflow: auto;
+            height: 69rem;
         }
     }
     &__footer-content {
@@ -185,6 +186,7 @@
     &__footnotes-container {
         display: flex;
         flex-direction: column;
+        justify-content: center;
         gap: 1rem;
         margin: 1rem;
         @include desktop {

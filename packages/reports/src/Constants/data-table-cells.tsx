@@ -18,8 +18,6 @@ import ProfitLossCell from '../Components/profit_loss_cell';
 import CurrencyWrapper from '../Components/currency-wrapper';
 import { ITransformer } from 'mobx-utils';
 
-/* eslint-disable react/display-name, react/prop-types */
-
 export const map = {
     buy: 'success',
     deposit: 'success',
@@ -44,6 +42,7 @@ export type TMultiplierOpenPositionstemplateProps = {
     server_time: moment.Moment;
 };
 
+/* eslint-disable react/display-name, react/prop-types */
 export const StatementTableCells = {
     icon: ({ passthrough, row_obj }: TCellContentProps) => {
         const icon = passthrough.isTopUp(row_obj) ? 'icCashierTopUp' : null;
@@ -128,7 +127,73 @@ export const ProfitTableCell = {
             ),
 };
 
+export const OpenPositionsCell = {
+    type: ({ row_obj, is_footer, is_vanilla }: TCellContentProps) => {
+        if (is_footer) return localize('Total');
+
+        return (
+            <MarketSymbolIconRow
+                key={row_obj.id}
+                payload={row_obj.contract_info}
+                show_description={is_vanilla}
+                is_vanilla={is_vanilla}
+            />
+        );
+    },
+    currency: ({ row_obj }: TCellContentProps) => (
+        <CurrencyWrapper currency={getCurrencyDisplayCode(row_obj.contract_info?.currency)} />
+    ),
+    purchase:
+        (currency: string) =>
+        ({ cell_value }: TCellContentProps) =>
+            <Money amount={cell_value} currency={currency} />,
+    payout:
+        (currency: string) =>
+        ({ cell_value, row_obj, is_vanilla }: TCellContentProps) => {
+            const non_vanilla_payout = cell_value ? <Money amount={cell_value} currency={currency} /> : <span>-</span>;
+            return is_vanilla ? row_obj.barrier?.toFixed(2) : non_vanilla_payout;
+        },
+    profit:
+        (currency: string) =>
+        ({ row_obj }: TCellContentProps) => {
+            if (!row_obj.profit_loss && !row_obj?.contract_info?.profit) return;
+            const profit = row_obj.profit_loss || row_obj.contract_info.profit;
+            // eslint-disable-next-line consistent-return
+            return (
+                <div
+                    className={classNames('open-positions__profit-loss', {
+                        'open-positions__profit-loss--negative': profit < 0,
+                        'open-positions__profit-loss--positive': profit > 0,
+                    })}
+                >
+                    <Money amount={Math.abs(profit)} currency={currency} />
+                    <div className='open-positions__profit-loss--movement'>
+                        {profit > 0 ? <Icon icon='IcProfit' /> : <Icon icon='IcLoss' />}
+                    </div>
+                </div>
+            );
+        },
+    indicative:
+        (currency: string) =>
+        ({ cell_value, row_obj, is_footer }: TCellContentProps) =>
+            (
+                <IndicativeCell
+                    amount={+cell_value}
+                    currency={currency}
+                    contract_info={row_obj.contract_info}
+                    is_sell_requested={row_obj.is_sell_requested}
+                    is_footer={is_footer}
+                />
+            ),
+    id: ({ row_obj }: TCellContentProps) => <ProgressSliderStream contract_info={row_obj.contract_info} />,
+};
+
 export const MultiplierOpenPositionsCell = {
+    type: ({ row_obj, is_footer }: TCellContentProps) => {
+        if (is_footer) return localize('Total');
+
+        return <MarketSymbolIconRow key={row_obj.id} payload={row_obj.contract_info} should_show_multiplier={false} />;
+    },
     action: ({ getPositionById, onClickCancel, onClickSell, server_time }: TMultiplierOpenPositionstemplateProps) => {
         return ({ row_obj, is_footer }: TCellContentProps) => {
             if (is_footer) {
@@ -253,73 +318,6 @@ export const MultiplierOpenPositionsCell = {
     multiplier: ({ row_obj }: TCellContentProps) => {
         return row_obj?.contract_info?.multiplier ? `x${row_obj.contract_info.multiplier}` : '';
     },
-
-    type: ({ row_obj, is_footer }: TCellContentProps) => {
-        if (is_footer) return localize('Total');
-
-        return <MarketSymbolIconRow key={row_obj.id} payload={row_obj.contract_info} should_show_multiplier={false} />;
-    },
-};
-
-export const OpenPositionsCell = {
-    type: ({ row_obj, is_footer, is_vanilla }: TCellContentProps) => {
-        if (is_footer) return localize('Total');
-
-        return (
-            <MarketSymbolIconRow
-                key={row_obj.id}
-                payload={row_obj.contract_info}
-                show_description={is_vanilla}
-                is_vanilla={is_vanilla}
-            />
-        );
-    },
-    currency: ({ row_obj }: TCellContentProps) => (
-        <CurrencyWrapper currency={getCurrencyDisplayCode(row_obj.contract_info?.currency)} />
-    ),
-    purchase:
-        (currency: string) =>
-        ({ cell_value }: TCellContentProps) =>
-            <Money amount={cell_value} currency={currency} />,
-    payout:
-        (currency: string) =>
-        ({ cell_value, row_obj, is_vanilla }: TCellContentProps) => {
-            const non_vanilla_payout = cell_value ? <Money amount={cell_value} currency={currency} /> : <span>-</span>;
-            return is_vanilla ? row_obj.barrier?.toFixed(2) : non_vanilla_payout;
-        },
-    profit:
-        (currency: string) =>
-        ({ row_obj }: TCellContentProps) => {
-            if (!row_obj.profit_loss && !row_obj?.contract_info?.profit) return;
-            const profit = row_obj.profit_loss || row_obj.contract_info.profit;
-            // eslint-disable-next-line consistent-return
-            return (
-                <div
-                    className={classNames('open-positions__profit-loss', {
-                        'open-positions__profit-loss--negative': profit < 0,
-                        'open-positions__profit-loss--positive': profit > 0,
-                    })}
-                >
-                    <Money amount={Math.abs(profit)} currency={currency} />
-                    <div className='open-positions__profit-loss--movement'>
-                        {profit > 0 ? <Icon icon='IcProfit' /> : <Icon icon='IcLoss' />}
-                    </div>
-                </div>
-            );
-        },
-    indicative:
-        (currency: string) =>
-        ({ cell_value, row_obj, is_footer }: TCellContentProps) =>
-            (
-                <IndicativeCell
-                    amount={+cell_value}
-                    currency={currency}
-                    contract_info={row_obj.contract_info}
-                    is_sell_requested={row_obj.is_sell_requested}
-                    is_footer={is_footer}
-                />
-            ),
-    id: ({ row_obj }: TCellContentProps) => <ProgressSliderStream contract_info={row_obj.contract_info} />,
 };
 
 export const AccumulatorOpenPositionsCell = {
@@ -422,3 +420,4 @@ export const AccumulatorOpenPositionsCell = {
             );
         },
 };
+/* eslint-enable react/display-name, react/prop-types */

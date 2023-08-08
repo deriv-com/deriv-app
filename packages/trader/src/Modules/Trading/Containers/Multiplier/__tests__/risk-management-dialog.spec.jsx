@@ -46,8 +46,8 @@ jest.mock('Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit', 
     jest.fn(props => (
         <div>
             <span>TakeProfit component</span>
-            <span>{props.take_profit}</span>
             <button onClick={() => props.onChangeMultiple({ take_profit: '20' })}>ChangeMultiple</button>
+            <button onClick={() => props.onChange({ target: { name: 'take_profit', value: '20' } })}>Change</button>
         </div>
     ))
 );
@@ -58,6 +58,7 @@ jest.mock('Modules/Trading/Components/Elements/Multiplier/cancel-deal-mobile', (
         </div>
     ))
 );
+const setState = jest.fn();
 
 describe('<RiskManagementDialog />', () => {
     const mockRiskManagementDialog = (mocked_store, mocked_props) => {
@@ -123,15 +124,22 @@ describe('<RiskManagementDialog />', () => {
 
         expect(default_mocked_props.toggleDialog).toBeCalled();
     });
-    // fit('should change state object with new velue of take profit if onChangeMultiple was called', () => {
-    //     const mock_root_store = mockStore(default_mock_store);
-    //     // const { rerender } = render(mockRiskManagementDialog(mock_root_store, default_mocked_props));
-    //     render(mockRiskManagementDialog(mock_root_store, default_mocked_props));
+    it('should change state object with setState function if onChangeMultiple was called', () => {
+        jest.spyOn(React, 'useState').mockImplementation(init => [init, setState]);
+        const mock_root_store = mockStore(default_mock_store);
+        render(mockRiskManagementDialog(mock_root_store, default_mocked_props));
 
-    //     expect(screen.getByText(/10/i)).toBeInTheDocument();
-    //     userEvent.click(screen.getByText(/ChangeMultiple/i));
-    //     // rerender(mockRiskManagementDialog(mock_root_store, default_mocked_props));
+        userEvent.click(screen.getByText('ChangeMultiple'));
 
-    //     expect(screen.getByText(/20/i)).toBeInTheDocument();
-    // });
+        expect(setState).toBeCalled();
+    });
+    it('should change state object with setState function if onChange was called', () => {
+        jest.spyOn(React, 'useState').mockImplementation(init => [init, setState]);
+        const mock_root_store = mockStore(default_mock_store);
+        render(mockRiskManagementDialog(mock_root_store, default_mocked_props));
+
+        userEvent.click(screen.getByText('Change'));
+
+        expect(setState).toBeCalled();
+    });
 });

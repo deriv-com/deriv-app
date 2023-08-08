@@ -351,6 +351,7 @@ type TClientStore = {
     is_withdrawal_lock: boolean;
     landing_company_shortcode: string;
     is_populating_account_list: boolean;
+    is_language_loaded: boolean;
     local_currency_config: {
         currency: string;
         decimal_places?: number;
@@ -454,6 +455,7 @@ type TClientStore = {
     setFinancialAndTradingAssessment: (
         payload: SetFinancialAssessmentRequest
     ) => Promise<SetFinancialAssessmentResponse>;
+    prev_account_type: string;
 };
 
 type TCommonStoreError = {
@@ -502,6 +504,8 @@ type TUiStore = {
     is_dark_mode_on: boolean;
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
+    is_app_disabled: boolean;
+    is_link_expired_modal_visible: boolean;
     is_mobile: boolean;
     sub_section_index: number;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
@@ -520,6 +524,7 @@ type TUiStore = {
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
     toggleLanguageSettingsModal: () => void;
+    toggleLinkExpiredModal: (state_change: boolean) => void;
     toggleReadyToDepositModal: () => void;
     toggleSetCurrencyModal: () => void;
     is_tablet: boolean;
@@ -553,6 +558,7 @@ type TUiStore = {
     populateHeaderExtensions: (header_items: JSX.Element | null) => void;
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     setShouldShowCooldownModal: (value: boolean) => void;
+    setAppContentsScrollRef: (ref: React.MutableRefObject<null | HTMLDivElement>) => void;
     populateFooterExtensions: (
         footer_extensions:
             | [
@@ -658,7 +664,6 @@ type TTradersHubStore = {
     is_wallet_migration_failed: boolean;
     setWalletsMigrationFailedPopup: (value: boolean) => void;
     available_platforms: BrandConfig[];
-    is_demo_low_risk: boolean;
     selected_region: TRegionAvailability;
     getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
     available_dxtrade_accounts: AvailableAccount[];
@@ -674,6 +679,8 @@ type TTradersHubStore = {
     has_any_real_account: boolean;
     getShortCodeAndRegion: (account: Partial<ExistingMT5Account>) => string;
     is_mt5_notificaiton_modal_visible: boolean;
+    toggleIsTourOpen: (is_tour_open: boolean) => void;
+    is_demo_low_risk: boolean;
     is_mt5_notification_modal_visible: boolean;
     setMT5NotificationModal: (value: boolean) => void;
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { getStatusBadgeConfig } from '@deriv/account';
 import { Text, StatusBadge } from '@deriv/components';
-import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
+import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import {
     getAppstorePlatforms,
     getMFAppstorePlatforms,
@@ -39,7 +39,6 @@ const TradingAppCard = observer(
         selected_mt5_jurisdiction,
         openFailedVerificationModal,
         is_wallet,
-        is_wallet_demo,
     }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid & TWalletsProps) => {
         const {
             common,
@@ -103,7 +102,7 @@ const TradingAppCard = observer(
                         'trading-app-card__icon--container__clickable': clickable_icon,
                     })}
                 >
-                    <TradigPlatformIconProps
+                    <TradingPlatformIconProps
                         icon={icon}
                         onClick={clickable_icon ? openStaticPage : undefined}
                         size={48}

@@ -5,7 +5,7 @@ const formatTime = require('@deriv/shared').formatTime;
 const datadog_client_token_logs = process.env.DATADOG_CLIENT_TOKEN_LOGS ?? '';
 const is_production = process.env.CIRCLE_JOB === 'release_production';
 const is_staging = process.env.CIRCLE_JOB === 'release_staging';
-const datadog_session_sample_rate = +process.env.DATADOG_SESSION_SAMPLE_RATE_LOGS ?? 1;
+const datadog_session_sample_rate = +process.env.DATADOG_SESSION_SAMPLE_RATE ?? 10;
 let datadog_version = '';
 let datadog_env = '';
 const REQUESTS = [
@@ -125,16 +125,12 @@ class APIMiddleware {
         return promise;
     }
 
-    sendRequestsStatistic = () => {
-        REQUESTS.forEach(request_type => {
-            const measure = performance.getEntriesByName(request_type);
-            if (measure?.length) this.log(measure);
-        });
+    clearPerformanceMeasures = () => {
         performance.clearMeasures();
     };
 
     addGlobalMethod() {
-        if (window) window.sendRequestsStatistic = this.sendRequestsStatistic;
+        if (window) window.clearPerformanceMeasures = this.clearPerformanceMeasures;
     }
 }
 

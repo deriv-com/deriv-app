@@ -130,6 +130,7 @@ const plugins = ({ base, is_test_env }) => {
         new DefinePlugin({
             'process.env.DATADOG_APPLICATION_ID': JSON.stringify(process.env.DATADOG_APPLICATION_ID),
             'process.env.DATADOG_CLIENT_TOKEN': JSON.stringify(process.env.DATADOG_CLIENT_TOKEN),
+            'process.env.DATADOG_CLIENT_TOKEN_LOGS': JSON.stringify(process.env.DATADOG_CLIENT_TOKEN_LOGS),
             'process.env.DATADOG_SESSION_REPLAY_SAMPLE_RATE': JSON.stringify(
                 process.env.DATADOG_SESSION_REPLAY_SAMPLE_RATE
             ),

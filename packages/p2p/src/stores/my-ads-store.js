@@ -309,9 +309,8 @@ export default class MyAdsStore extends BaseStore {
     }
 
     onClickCreate() {
-        if (window.sendRequestsStatistic) {
-            window.sendRequestsStatistic(true);
-            performance.clearMeasures();
+        if (window.clearPerformanceMeasures) {
+            window.clearPerformanceMeasures();
             performance.mark('create_ad_start');
         }
 

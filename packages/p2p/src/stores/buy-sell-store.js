@@ -584,9 +584,8 @@ export default class BuySellStore extends BaseStore {
     }
 
     setSelectedAdvert(selected_advert) {
-        if (window.sendRequestsStatistic) {
-            window.sendRequestsStatistic(true);
-            performance.clearMeasures();
+        if (window.clearPerformanceMeasures) {
+            window.clearPerformanceMeasures();
             performance.mark('create_order_start');
         }
 

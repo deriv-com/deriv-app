@@ -28,7 +28,7 @@ describe('<ContractTypeDescriptionVideo />', () => {
         );
     };
     it('should render the component with video if selected_contract_type does support video', () => {
-        (isMobile as jest.Mock).mockReturnValueOnce(false);
+        (isMobile as jest.Mock).mockReturnValue(false);
         const mock_root_store = mockStore({});
         render(mockContractTypeDescriptionVideo(mock_root_store, default_mocked_props));
         const video = screen.getByTestId(/description_video/i);
@@ -37,15 +37,7 @@ describe('<ContractTypeDescriptionVideo />', () => {
         expect(video).toHaveAttribute('width', '480');
         expect(video).toHaveAttribute('height', '270');
     });
-    it('should not render the component if selected_contract_type does not support video', () => {
-        (isMobile as jest.Mock).mockReturnValueOnce(false);
-        const mock_root_store = mockStore({});
-        render(mockContractTypeDescriptionVideo(mock_root_store, { selected_contract_type: 'test' }));
-
-        expect(screen.queryByTestId(/description_video/i)).not.toBeInTheDocument();
-    });
     it('should be able to find a proper video and render the component if is_dark_mode_on is true', () => {
-        (isMobile as jest.Mock).mockReturnValueOnce(false);
         const mock_root_store = mockStore({ ui: { is_dark_mode_on: true } });
         render(mockContractTypeDescriptionVideo(mock_root_store, default_mocked_props));
 

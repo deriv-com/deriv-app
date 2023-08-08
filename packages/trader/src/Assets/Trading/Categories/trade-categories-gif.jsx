@@ -20,6 +20,7 @@ import ContractTypeDescriptionVideo from './contract-type-description-video';
 
 // TODO: Replace static image svgs with themed GIFs or animated SVGs
 const TradeCategoriesGIF = ({ category, selected_contract_type }) => {
+    if (category !== selected_contract_type) return null;
     switch (category) {
         case 'asian':
             return <ImageAsianUpDown />;

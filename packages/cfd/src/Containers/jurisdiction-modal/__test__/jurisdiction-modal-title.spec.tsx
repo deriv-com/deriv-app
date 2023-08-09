@@ -21,11 +21,17 @@ const JurisdictionModalTitleComponent = ({
     is_dynamic_leverage_visible,
     toggleDynamicLeverage,
     ...mockProps
-}: TMockProps) => (
-    <DynamicLeverageContext.Provider value={{ is_dynamic_leverage_visible, toggleDynamicLeverage }}>
-        <JurisdictionModalTitle {...mockProps} />
-    </DynamicLeverageContext.Provider>
-);
+}: TMockProps) => {
+    const dynamic_leverage_value = React.useMemo(
+        () => ({ is_dynamic_leverage_visible, toggleDynamicLeverage }),
+        [is_dynamic_leverage_visible, toggleDynamicLeverage]
+    );
+    return (
+        <DynamicLeverageContext.Provider value={dynamic_leverage_value}>
+            <JurisdictionModalTitle {...mockProps} />
+        </DynamicLeverageContext.Provider>
+    );
+};
 
 describe('JurisdictionModalTitle', () => {
     it('should render JurisdictionModalTitle', () => {

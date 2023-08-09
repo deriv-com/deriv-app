@@ -82,7 +82,7 @@ describe('<CreateAdAddPaymentMethodModal />', () => {
         });
     });
 
-    it('should now show Cancel button if selected_payment_method is not empty in desktop view', () => {
+    it('should not show Cancel button if selected_payment_method is not empty in desktop view', () => {
         mock_store.my_profile_store.selected_payment_method = ['Bank transfer'];
         render(<CreateAdAddPaymentMethodModal />);
         expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();

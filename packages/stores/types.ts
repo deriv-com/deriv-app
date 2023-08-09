@@ -118,6 +118,33 @@ interface AvailableAccount {
     login?: string;
 }
 
+interface ExistingMT5Account {
+    account_type: string;
+    action_type: string;
+    availability: TRegionAvailability;
+    balance: number;
+    country: string;
+    email: string;
+    leverage: number;
+    market_type: string;
+    login: string;
+    landing_company_short: string;
+    group: string;
+    is_added: boolean;
+    short_code_and_region: string;
+    platform: 'derivez' | 'dtrade' | 'dwallet' | 'dxtrade' | 'mt5';
+    description?: string | undefined;
+    name: string;
+    shortcode: string;
+    status: string | null;
+    sub_account_type: string;
+    sub_account_category: string;
+    sub_title: string;
+    display_balance: string;
+    linkable_landing_companies: string[];
+    server: string;
+}
+
 type BrandConfig = {
     name: string;
     icon: TIconTypes;
@@ -599,7 +626,7 @@ type TTradersHubStore = {
             landing_company_short?: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
             platform?: string;
             description?: string;
-            market_type?: 'all' | 'financial' | 'synthetic';
+            market_type?: 'all' | 'financial' | 'gaming';
         }[];
     openModal: (modal_id: string, props?: unknown) => void;
     selected_account: {
@@ -650,6 +677,12 @@ type TTradersHubStore = {
     setWalletModalActiveTab: (tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions') => void;
     active_modal_wallet_id?: string;
     setWalletModalActiveWalletID: (wallet_id?: string) => void;
+    getAccount: () => void;
+    showTopUpModal: (existing_account: Partial<ExistingMT5Account>) => void;
+    startTrade: (platform: string, account: Partial<ExistingMT5Account>) => void;
+    has_any_real_account: boolean;
+    getShortCodeAndRegion: (account: Partial<ExistingMT5Account>) => string;
+    is_mt5_notificaiton_modal_visible: boolean;
     toggleIsTourOpen: (is_tour_open: boolean) => void;
     is_demo_low_risk: boolean;
     is_mt5_notification_modal_visible: boolean;

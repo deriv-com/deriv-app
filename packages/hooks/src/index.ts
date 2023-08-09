@@ -52,6 +52,8 @@ export { default as useTransferBetweenAccounts } from './useTransferBetweenAccou
 export { default as useVerifyEmail } from './useVerifyEmail';
 export { default as useWalletsList } from './useWalletsList';
 export { default as useWalletTransactions } from './useWalletTransactions';
+export { default as useAvailableMT5Accounts } from './useAvailableMT5Accounts';
+export { default as useFilteredCFDAccounts } from './useFilteredCFDAccounts';
 export { default as useWalletTransfer } from './useWalletTransfer';
 export { default as useWalletMigration } from './useWalletMigration';
 export { default as useAccountsList } from './useAccountsList';

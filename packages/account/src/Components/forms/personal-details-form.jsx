@@ -41,7 +41,6 @@ const PersonalDetailsForm = props => {
         is_rendered_for_onfido,
         should_close_tooltip,
         setShouldCloseTooltip,
-        warning_items,
         class_name,
     } = props;
     const autocomplete_value = 'none';
@@ -304,16 +303,12 @@ const PersonalDetailsForm = props => {
                                 )}
                                 {'tax_identification_number' in values && (
                                     <TaxIdentificationNumberField
-                                        warning_items={warning_items}
                                         is_tin_popover_open={is_tin_popover_open}
                                         setIsTinPopoverOpen={setIsTinPopoverOpen}
                                         setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                                         editable_fields={editable_fields}
                                         required
                                     />
-                                )}
-                                {warning_items?.tax_identification_number && (
-                                    <div className='details-form__tin-warn-divider' />
                                 )}
                                 {'employment_status' in values && (
                                     <fieldset className={classNames('account-form__fieldset', 'emp-status')}>
@@ -431,7 +426,6 @@ const PersonalDetailsForm = props => {
                         )}
                         {'tax_identification_number' in values && (
                             <TaxIdentificationNumberField
-                                warning_items={warning_items}
                                 is_tin_popover_open={is_tin_popover_open}
                                 setIsTinPopoverOpen={setIsTinPopoverOpen}
                                 setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
@@ -587,7 +581,6 @@ const TaxResidenceField = ({
 );
 
 const TaxIdentificationNumberField = ({
-    warning_items,
     is_tin_popover_open,
     setIsTinPopoverOpen,
     setIsTaxResidencePopoverOpen,
@@ -599,7 +592,6 @@ const TaxIdentificationNumberField = ({
             name='tax_identification_number'
             label={required ? localize('Tax Identification Number*') : localize('Tax Identification Number')}
             placeholder={localize('Tax Identification Number')}
-            warn={warning_items?.tax_identification_number}
             data-testid='tax_identification_number'
             disabled={isFieldImmutable('tax_identification_number', editable_fields)}
         />

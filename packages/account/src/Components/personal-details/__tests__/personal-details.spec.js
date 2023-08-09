@@ -540,27 +540,25 @@ describe('<PersonalDetails/>', () => {
         ).toBeInTheDocument();
     });
 
-    it('should show warning', async () => {
+    it('should show error for invalid TIN', async () => {
         const newvalidate = {
-            warnings: {
-                tax_identification_number:
-                    'This Tax Identification Number (TIN) is invalid. You may continue using it, but to facilitate future payment processes, valid tax information will be required.',
+            errors: {
+                ...mock_errors,
+                tax_identification_number: 'Tax Identification Number is not properly formatted.',
             },
-            errors: { ...mock_errors },
         };
         splitValidationResultTypes.mockReturnValue(newvalidate);
         renderwithRouter(
             <PlatformContext.Provider value={{ is_appstore: false }}>
-                (<PersonalDetails {...props} />
-                );
+                <PersonalDetails {...props} />
             </PlatformContext.Provider>
         );
+        const tax_identification_number = screen.getByTestId('tax_identification_number');
 
-        expect(
-            await screen.findByText(
-                /this tax identification number \(tin\) is invalid\. you may continue using it, but to facilitate future payment processes, valid tax information will be required\./i
-            )
-        ).toBeInTheDocument();
+        fireEvent.blur(tax_identification_number);
+        fireEvent.change(tax_identification_number, { target: { value: '123456789012345678901234567890' } });
+
+        expect(await screen.findByText(/tax identification number is not properly formatted/i)).toBeInTheDocument();
     });
 
     it('should submit the form if there is no validation error on desktop', async () => {

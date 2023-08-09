@@ -55,7 +55,7 @@ const WalletOtherCFDContent = observer(({ wallet_account }: TWalletOtherCFDConte
                         platform={account.platform}
                         key={`trading_app_card_${account.login}`}
                         is_wallet={true}
-                        is_wallet_demo={!!wallet?.is_demo}
+                        is_wallet_demo={!!wallet?.is_virtual}
                         onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                             const button_name = e?.currentTarget?.name;
                             if (button_name === 'transfer-btn') {

@@ -30,7 +30,7 @@ const MobileWalletsCarousel = observer(() => {
             <WalletCardsCarousel />
             <div
                 className={classNames('wallet-carousel-content-container', {
-                    'wallet-carousel-content-container-demo': active_wallet?.is_demo,
+                    'wallet-carousel-content-container-demo': active_wallet?.is_virtual,
                 })}
             >
                 {is_landing_company_loaded ? (

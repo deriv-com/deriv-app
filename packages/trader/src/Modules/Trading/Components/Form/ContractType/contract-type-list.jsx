@@ -9,14 +9,14 @@ const List = ({ handleInfoClick, handleSelect, list, name, value }) =>
     list.map((contract_category, key) => {
         const contract_types = contract_category.contract_types?.filter(contract_type => {
             const base_contract_type = /^(.*)_equal$/.exec(contract_type.value)?.[1];
-
+            if (contract_type.value === 'turbosshort') return false;
             if (base_contract_type) {
                 return !contract_category.contract_types.some(c => c.value === base_contract_type);
             }
 
             return true;
         });
-        const is_new = contract_category.key === 'Accumulators' || contract_category.key === 'Vanillas';
+        const is_new = /(Accumulators|Turbos|Vanillas)/i.test(contract_category.key);
 
         return (
             <div key={key} className='contract-type-list' data-testid='contract_list'>

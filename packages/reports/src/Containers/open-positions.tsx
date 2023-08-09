@@ -431,7 +431,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         onMount,
         removePositionById,
     } = portfolio;
-    const { currency } = client;
+    const { currency, is_eu, is_virtual } = client;
     const {
         notification_messages_ui: NotificationMessages,
         addToast,
@@ -475,7 +475,10 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     const [accumulator_rate, setAccumulatorRate] = React.useState(accumulator_rates[0]);
     const is_accumulator_selected = contract_type_value === contract_types[2].text;
     const is_multiplier_selected = contract_type_value === contract_types[1].text;
-    const contract_types_list = contract_types.map(({ text }) => ({ text, value: text }));
+    const show_accu_in_dropdown = !is_eu && is_virtual;
+    const contract_types_list = contract_types
+        .filter(contract_type => contract_type.text !== localize('Accumulators') || show_accu_in_dropdown)
+        .map(({ text }) => ({ text, value: text }));
     const accumulators_rates_list = accumulator_rates.map(value => ({ text: value, value }));
     const active_positions_filtered = active_positions?.filter(({ contract_info }) => {
         if (contract_info) {
@@ -626,7 +629,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                                     onChange={e => setContractTypeValue(e.target.value)}
                                 />
                             </div>
-                            {is_accumulator_selected && (
+                            {is_accumulator_selected && show_accu_in_dropdown && (
                                 <div className='open-positions__accumulator-container__rates-dropdown'>
                                     <Dropdown
                                         is_align_text_left
@@ -654,7 +657,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                                 should_show_empty_option={false}
                                 onChange={e => setContractTypeValue(e.target.value)}
                             />
-                            {is_accumulator_selected && (
+                            {is_accumulator_selected && show_accu_in_dropdown && (
                                 <SelectNative
                                     className='open-positions__accumulator-container--mobile__rates-dropdown'
                                     list_items={accumulators_rates_list}

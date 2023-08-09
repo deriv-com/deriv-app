@@ -4,4 +4,9 @@
         top: 0.4rem;
         right: -1.5rem;
     }
+
+    &__disabled {
+        cursor: not-allowed !important;
+        opacity: 0.32;
+    }
 }

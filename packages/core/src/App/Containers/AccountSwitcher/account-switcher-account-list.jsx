@@ -3,6 +3,7 @@ import React from 'react';
 import { Icon, Money, Button, Text } from '@deriv/components';
 import { formatMoney, getCurrencyName, getCFDAccountDisplay, getCurrencyDisplayCode, isBot } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { useWalletMigration } from '@deriv/hooks';
 
 const AccountList = ({
     balance,
@@ -27,8 +28,11 @@ const AccountList = ({
     sub_account_type,
     platform,
     should_show_server_name,
+    setWalletsMigrationInProgressPopup,
 }) => {
     const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
+    const { is_in_progress } = useWalletMigration();
+
     return (
         <React.Fragment>
             <div
@@ -80,12 +84,16 @@ const AccountList = ({
                         <Button
                             is_disabled={is_disabled}
                             onClick={e => {
-                                e.stopPropagation();
-                                onClickResetVirtualBalance();
+                                if (is_in_progress) setWalletsMigrationInProgressPopup(true);
+                                else {
+                                    e.stopPropagation();
+                                    onClickResetVirtualBalance();
+                                }
                             }}
                             className='acc-switcher__reset-account-btn'
                             secondary
                             small
+                            as_disabled={is_in_progress}
                         >
                             {localize('Reset balance')}
                         </Button>

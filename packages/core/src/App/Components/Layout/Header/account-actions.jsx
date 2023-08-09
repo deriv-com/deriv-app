@@ -37,6 +37,7 @@ const AccountActions = React.memo(
         openRealAccountSignup,
         toggleAccountsDialog,
         toggleNotifications,
+        is_deposit_button_disabled,
     }) => {
         const { is_appstore } = React.useContext(PlatformContext);
 
@@ -121,6 +122,7 @@ const AccountActions = React.memo(
                                 text={localize('Deposit')}
                                 onClick={onClickDeposit}
                                 primary
+                                as_disabled={is_deposit_button_disabled}
                             />
                         )}
                     </DesktopWrapper>
@@ -157,6 +159,7 @@ AccountActions.propTypes = {
     openRealAccountSignup: PropTypes.func,
     toggleAccountsDialog: PropTypes.any,
     toggleNotifications: PropTypes.any,
+    is_deposit_button_disabled: PropTypes.bool,
 };
 
 export { AccountActions };

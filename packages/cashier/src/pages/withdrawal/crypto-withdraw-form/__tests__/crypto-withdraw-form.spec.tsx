@@ -28,12 +28,16 @@ describe('<CryptoWithdrawForm />', () => {
                         percentageSelectorSelectionStatus: jest.fn(),
                     },
                     crypto_fiat_converter: {
+                        converter_from_amount: '0.006',
+                        converter_to_amount: '1',
                         onChangeConverterFromAmount: jest.fn(),
                         onChangeConverterToAmount: jest.fn(),
                         resetConverter: jest.fn(),
                     },
                     transaction_history: {
+                        crypto_transactions: [],
                         onMount: jest.fn(),
+                        setIsCryptoTransactionsVisible: jest.fn(),
                     },
                     withdraw: {
                         blockchain_address: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
@@ -59,7 +63,7 @@ describe('<CryptoWithdrawForm />', () => {
     it('component and header should be rendered', () => {
         renderCryptoWithdrawForm();
 
-        expect(screen.getByText('Your BTC wallet address')).toBeInTheDocument();
+        expect(screen.getByText('Your BTC cryptocurrency wallet address')).toBeInTheDocument();
         expect(screen.getByTestId('dt_crypto_withdraw_form')).toBeInTheDocument();
     });
 
@@ -123,7 +127,7 @@ describe('<CryptoWithdrawForm />', () => {
         act(() => {
             fireEvent.click(withdraw_button);
         });
-
+        expect(withdraw_button).toBeEnabled();
         await waitFor(() => expect(mockRootStore.modules.cashier.withdraw.requestWithdraw).toHaveBeenCalled());
     });
 
@@ -143,6 +147,7 @@ describe('<CryptoWithdrawForm />', () => {
         act(() => {
             fireEvent.click(withdraw_button);
         });
+        expect(withdraw_button).toBeEnabled();
         await waitFor(() => expect(mockRootStore.modules.cashier.withdraw.requestWithdraw).toHaveBeenCalled());
     });
 });

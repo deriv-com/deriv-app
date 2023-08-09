@@ -155,6 +155,7 @@ export default class ClientStore extends BaseStore {
     p2p_advertiser_info = {};
     prev_account_type = 'demo';
     external_url_params = {};
+    is_wallet_migration_in_progress_popup = false;
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -225,6 +226,7 @@ export default class ClientStore extends BaseStore {
             prev_real_account_loginid: observable,
             p2p_advertiser_info: observable,
             prev_account_type: observable,
+            is_wallet_migration_in_progress_popup: observable,
             balance: computed,
             account_open_date: computed,
             is_reality_check_visible: computed,
@@ -408,6 +410,7 @@ export default class ClientStore extends BaseStore {
             setPrevRealAccountLoginid: action.bound,
             setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
+            setWalletsMigrationInProgressPopup: action.bound,
         });
 
         reaction(
@@ -2763,6 +2766,10 @@ export default class ClientStore extends BaseStore {
         const is_p2p_visible = is_p2p_supported_currency && !this.is_virtual && !is_low_risk_cr_eu_real;
 
         return is_p2p_visible;
+    }
+
+    setWalletsMigrationInProgressPopup(value) {
+        this.is_wallet_migration_in_progress_popup = value;
     }
 }
 /* eslint-enable */

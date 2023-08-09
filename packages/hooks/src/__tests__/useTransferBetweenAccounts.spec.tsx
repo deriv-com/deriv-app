@@ -247,8 +247,8 @@ describe('useTransferBetweenAccounts', () => {
             },
         } = renderHook(() => useTransferBetweenAccounts(), { wrapper });
 
-        expect(Object.keys(trading_accounts).length).toBe(4);
-        expect(Object.keys(wallet_accounts).length).toBe(1);
+        expect(Object.keys(trading_accounts)).toHaveLength(4);
+        expect(Object.keys(wallet_accounts)).toHaveLength(1);
     });
 
     it('all transfer accounts should have extended properties', () => {

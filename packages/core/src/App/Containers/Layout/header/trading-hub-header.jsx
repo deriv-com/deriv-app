@@ -15,7 +15,7 @@ import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import CurrencySelectionModal from '../../CurrencySelectionModal';
 import AccountInfo from 'App/Components/Layout/Header/account-info';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
-import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
+import { useIsRealAccountNeededForCashier, useWalletMigration } from '@deriv/hooks';
 
 const Divider = () => {
     return <div className='trading-hub-header__divider' />;
@@ -113,6 +113,7 @@ const TradingHubHeader = ({
     has_any_real_account,
     toggleReadyToDepositModal,
     toggleNeedRealAccountForCashierModal,
+    setWalletsMigrationInProgressPopup,
 }) => {
     const { pathname } = useLocation();
     const cashier_routes = pathname.startsWith(routes.cashier);
@@ -125,6 +126,7 @@ const TradingHubHeader = ({
             return true;
         });
     const history = useHistory();
+    const { is_in_progress } = useWalletMigration();
 
     const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
 
@@ -137,7 +139,9 @@ const TradingHubHeader = ({
     };
 
     const handleClickCashier = () => {
-        if ((!has_any_real_account && is_virtual) || real_account_needed_for_cashier) {
+        if (is_in_progress) {
+            setWalletsMigrationInProgressPopup(true);
+        } else if ((!has_any_real_account && is_virtual) || real_account_needed_for_cashier) {
             toggleModal();
         } else {
             history.push(routes.cashier_deposit);
@@ -204,7 +208,7 @@ const TradingHubHeader = ({
                 </BinaryLink>
             </Popover>
             <div className='trading-hub-header__cashier-button'>
-                <Button primary small onClick={handleClickCashier}>
+                <Button primary small onClick={handleClickCashier} as_disabled={is_in_progress}>
                     <Localize i18n_default_text='Cashier' />
                 </Button>
             </div>
@@ -335,6 +339,7 @@ TradingHubHeader.propTypes = {
     has_any_real_account: PropTypes.bool,
     toggleReadyToDepositModal: PropTypes.func,
     toggleNeedRealAccountForCashierModal: PropTypes.func,
+    setWalletsMigrationInProgressPopup: PropTypes.func,
 };
 
 export default connect(({ client, common, notifications, ui, traders_hub }) => ({
@@ -366,4 +371,5 @@ export default connect(({ client, common, notifications, ui, traders_hub }) => (
     toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
     toggleNeedRealAccountForCashierModal: ui.toggleNeedRealAccountForCashierModal,
     content_flag: traders_hub.content_flag,
+    setWalletsMigrationInProgressPopup: client.setWalletsMigrationInProgressPopup,
 }))(withRouter(TradingHubHeader));

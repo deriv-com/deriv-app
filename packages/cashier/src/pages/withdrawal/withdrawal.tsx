@@ -4,7 +4,7 @@ import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
-import CryptoWithdrawForm from './crypto-withdraw-form';
+import CryptoWithdrawal from './crypto-withdrawal';
 import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
 import Withdraw from './withdraw';
 import WithdrawalLocked from './withdrawal-locked';
@@ -20,7 +20,6 @@ import { useCashierStore } from '../../stores/useCashierStores';
 import { useCashierLocked, useIsSystemMaintenance } from '@deriv/hooks';
 
 type TWithdrawalSideNoteProps = {
-    currency: string;
     is_mobile?: boolean;
 };
 
@@ -28,23 +27,10 @@ type TWithdrawalProps = {
     setSideNotes: (notes: (JSX.Element | JSX.Element[])[] | null) => void;
 };
 
-const WithdrawalSideNote = ({ is_mobile, currency }: TWithdrawalSideNoteProps) => {
+const WithdrawalSideNote = ({ is_mobile }: TWithdrawalSideNoteProps) => {
     const notes = [
-        <Localize
-            i18n_default_text='Do not enter an address linked to an ICO purchase or crowdsale. If you do, the ICO tokens will not be credited into your account.'
-            key={0}
-        />,
-        <Localize
-            i18n_default_text='Please note that your maximum and minimum withdrawal limits aren’t fixed. They change due to the high volatility of cryptocurrency.'
-            key={1}
-        />,
+        <Localize i18n_default_text="We'll send you an email once your transaction has been processed." key={1} />,
     ];
-
-    if (!isCryptocurrency(currency)) {
-        notes.push(
-            <Localize i18n_default_text="We'll send you an email once your transaction has been processed." key={1} />
-        );
-    }
 
     return <SideNote has_bullets is_mobile={is_mobile} side_notes={notes} className='outside-wrapper' />;
 };
@@ -105,20 +91,22 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
     React.useEffect(() => {
         if (isDesktop()) {
             if (isCryptocurrency(currency) && typeof setSideNotes === 'function' && !is_switching) {
-                const side_notes = [
-                    <RecentTransaction key={2} />,
-                    <WithdrawalSideNote currency={currency} key={0} />,
-                    ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
-                    ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
-                ];
+                const side_notes = [];
+                if (verification_code || is_withdraw_confirmed) {
+                    side_notes.push(<RecentTransaction key={2} />);
+                }
+                side_notes.push(...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []));
+                side_notes.push(...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []));
 
-                setSideNotes([
-                    ...side_notes.map((side_note, index) => (
-                        <SideNote has_title={false} key={index}>
-                            {side_note}
-                        </SideNote>
-                    )),
-                ]);
+                if (side_notes.length) {
+                    setSideNotes([
+                        ...side_notes.map((side_note, index) => (
+                            <SideNote has_title={false} key={index}>
+                                {side_note}
+                            </SideNote>
+                        )),
+                    ]);
+                }
             } else setSideNotes(null);
         }
 
@@ -155,7 +143,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         return (
             <>
                 <NoBalance />
-                {is_crypto && <WithdrawalSideNote currency={currency} is_mobile />}
+                {!isCryptocurrency(currency) && <WithdrawalSideNote is_mobile />}
             </>
         );
     }
@@ -169,12 +157,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
     }
 
     if (verification_code && is_crypto && !is_withdraw_confirmed && !is_crypto_transactions_visible) {
-        return (
-            <>
-                <CryptoWithdrawForm />
-                {is_crypto && <WithdrawalSideNote currency={currency} is_mobile />}
-            </>
-        );
+        return <CryptoWithdrawal />;
     }
 
     if (is_withdraw_confirmed && !is_crypto_transactions_visible) {
@@ -188,7 +171,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
     return (
         <>
             <WithdrawalVerificationEmail />
-            {is_crypto && <WithdrawalSideNote currency={currency} is_mobile />}
+            {!isCryptocurrency(currency) && <WithdrawalSideNote is_mobile />}
         </>
     );
 });

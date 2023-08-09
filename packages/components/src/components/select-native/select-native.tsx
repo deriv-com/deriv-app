@@ -29,8 +29,8 @@ type TSelectNativeOptions = {
 };
 
 type TListItem = {
-    text: string;
-    value: string;
+    text?: string;
+    value?: string;
     disabled?: boolean;
     nativepicker_text?: React.ReactNode;
     group?: string;

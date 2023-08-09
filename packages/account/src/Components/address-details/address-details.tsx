@@ -276,11 +276,7 @@ const AddressDetails = ({
                                                                 placeholder={localize('Please select')}
                                                                 label={localize('State/Province')}
                                                                 value={address_state_to_display || values.address_state}
-                                                                list_items={
-                                                                    states_list as React.ComponentProps<
-                                                                        typeof SelectNative
-                                                                    >['list_items']
-                                                                }
+                                                                list_items={states_list}
                                                                 use_text={true}
                                                                 onChange={(e: { target: { value: string } }) => {
                                                                     setFieldValue(

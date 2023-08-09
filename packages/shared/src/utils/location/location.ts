@@ -5,8 +5,7 @@ export const getLocation = (location_list: StatesList, value: string, type: keyo
         location => location[type === 'text' ? 'value' : 'text']?.toLowerCase() === value.toLowerCase()
     );
 
-    if (location_obj) return location_obj[type];
-    return '';
+    return location_obj?.[type] ?? '';
 };
 
 // eu countries to support

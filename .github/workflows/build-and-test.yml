@@ -29,23 +29,36 @@ jobs:
           cache-name: cache-node-modules
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
+          path: |
+            - "node_modules"
+            - "packages/account/node_modules"
+            - "packages/api/node_modules"
+            - "packages/appstore/node_modules"
+            - "packages/bot-skeleton/node_modules"
+            - "packages/bot-web-ui/node_modules"
+            - "packages/cashier/node_modules"
+            - "packages/components/node_modules"
+            - "packages/core/node_modules"
+            - "packages/hooks/node_modules"
+            - "packages/cfd/node_modules"
+            - "packages/indicators/node_modules"
+            - "packages/p2p/node_modules"
+            - "packages/reports/node_modules"
+            - "packages/shared/node_modules"
+            - "packages/stores/node_modules"
+            - "packages/trader/node_modules"
+            - "packages/translations/node_modules"
+            - "packages/utils/node_modules"
+            - "packages/analytics/node_modules"
+            
+          key: node_modules-${{ hashFiles('**/package-lock.json') }}
+          
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         name: List the state of node modules
         continue-on-error: true
-        run: npm list
-
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Bootstrap
-        run: npm run bootstrap
+        run: | 
+          npm ci
+          npm run bootstrap
 
       - name: Build
         run: npm run build:all

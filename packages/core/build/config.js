@@ -115,8 +115,8 @@ const copyConfig = base => {
             to: 'public/images/common',
         },
         {
-            from: path.resolve(__dirname, '../src/public/video/'),
-            to: 'public/video',
+            from: path.resolve(__dirname, '../src/public/videos/'),
+            to: 'public/videos',
         },
         // { from: path.resolve(__dirname, '../src/public/images/common/og_image.gif'), to: 'images/common/og_image.gif' }, // Once the design for og_image is ready, bring this back.
         {

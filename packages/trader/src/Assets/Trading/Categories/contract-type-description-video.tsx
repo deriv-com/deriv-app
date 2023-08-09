@@ -9,7 +9,7 @@ const ContractTypeDescriptionVideo = ({ selected_contract_type }: { selected_con
     const getVideoSource = React.useCallback(
         (extension: 'mp4' | 'webm') => {
             return getUrlBase(
-                `/public/video/${selected_contract_type}_description${is_dark_theme ? '_dark' : '_light'}.${extension}`
+                `/public/videos/${selected_contract_type}_description${is_dark_theme ? '_dark' : '_light'}.${extension}`
             );
         },
         [is_dark_theme, selected_contract_type]

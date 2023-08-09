@@ -191,7 +191,7 @@ export type TWalletInfo = NonNullable<ReturnType<typeof useAvailableWallets>['da
 
 export type TTransferAccount = {
     active_wallet_icon: string | undefined;
-    account_type?: 'wallet' | 'trading' | 'dxtrade' | 'mt5' | 'derivez' | 'binary';
+    account_type?: 'wallet' | 'trading' | 'dxtrade' | 'mt5' | 'derivez' | 'binary' | 'ctrader';
     balance: number;
     currency?: string;
     display_currency_code: string | undefined;

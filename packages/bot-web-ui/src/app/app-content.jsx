@@ -2,10 +2,10 @@ import React from 'react';
 import { ApiHelpers, ServerTime, setColors } from '@deriv/bot-skeleton';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { Audio, BotNotificationMessages, Dashboard, NetworkToastPopup, RoutePromptDialog } from 'Components';
 import BotBuilder from 'Components/dashboard/bot-builder';
 import GTM from 'Utils/gtm';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { Audio, BotNotificationMessages, Dashboard, NetworkToastPopup, RoutePromptDialog } from '../components';
 import BlocklyLoading from '../components/blockly-loading';
 import './app.scss';
 

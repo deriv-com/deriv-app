@@ -8,10 +8,7 @@ import { isMobile } from '@deriv/shared';
 
 const default_mocked_props = {
     selected_contract_type: 'vanilla',
-};
-
-type Tmocked_props = {
-    selected_contract_type: string;
+    data_testid: 'description_video',
 };
 
 jest.mock('@deriv/shared', () => ({
@@ -20,7 +17,10 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<ContractTypeDescriptionVideo />', () => {
-    const mockContractTypeDescriptionVideo = (mocked_store: TCoreStores, mocked_props: Tmocked_props) => {
+    const mockContractTypeDescriptionVideo = (
+        mocked_store: TCoreStores,
+        mocked_props: React.ComponentProps<typeof ContractTypeDescriptionVideo>
+    ) => {
         return (
             <TraderProviders store={mocked_store}>
                 <ContractTypeDescriptionVideo {...mocked_props} />

@@ -58,9 +58,7 @@ const WalletSuccessDialog = observer(() => {
                         primary
                         onClick={() => {
                             toggleIsWalletCreationSuccessModalOpen();
-                            setTimeout(() => {
-                                setWalletModalActiveTab('Deposit');
-                            }, 2000);
+                            setWalletModalActiveTab('Deposit');
                         }}
                     >
                         {localize('Deposit')}

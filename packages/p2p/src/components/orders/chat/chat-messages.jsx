@@ -68,6 +68,7 @@ const ChatMessages = observer(() => {
                                         is_admin_message ? 'admin' : is_my_message ? 'outgoing' : 'incoming'
                                     }`
                                 )}
+                                data-testid='dt_chat_message'
                             >
                                 {chat_message.message_type === ChatMessage.TYPE_USER && (
                                     <ChatMessageText colour={message_colour} type={chat_message.custom_type}>

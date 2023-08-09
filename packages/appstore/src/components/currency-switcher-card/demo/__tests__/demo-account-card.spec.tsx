@@ -2,6 +2,14 @@ import React from 'react';
 import DemoAccountCard from '../demo-account-card';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { APIProvider, useFetch } from '@deriv/api';
+
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useFetch: jest.fn(),
+}));
+
+const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'wallet_migration'>>;
 
 describe('DemoAccountCard', () => {
     it('should render correctly', () => {
@@ -29,8 +37,13 @@ describe('DemoAccountCard', () => {
             },
         });
 
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockUseFetch.mockReturnValue({ data: { wallet_migration: { state: 'eligible' } } });
+
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
         );
 
         const { container } = render(<DemoAccountCard />, {
@@ -65,8 +78,13 @@ describe('DemoAccountCard', () => {
             },
         });
 
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockUseFetch.mockReturnValue({ data: { wallet_migration: { state: 'eligible' } } });
+
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
         );
 
         const { container } = render(<DemoAccountCard />, {
@@ -103,8 +121,13 @@ describe('DemoAccountCard', () => {
             },
         });
 
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockUseFetch.mockReturnValue({ data: { wallet_migration: { state: 'eligible' } } });
+
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
         );
 
         const { container } = render(<DemoAccountCard />, {

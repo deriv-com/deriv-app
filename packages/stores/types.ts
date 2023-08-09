@@ -182,7 +182,7 @@ type TAccountsList = {
             Derived: React.SVGAttributes<SVGElement>;
             Financial: React.SVGAttributes<SVGElement>;
             Options: React.SVGAttributes<SVGElement>;
-            CFDs: React.SVGAttributes<SVGAElement>;
+            CFDs: React.SVGAttributes<SVGElement>;
         };
         text?: JSX.Element | string;
         value?: string;
@@ -449,6 +449,8 @@ type TClientStore = {
     is_svg: boolean;
     real_account_creation_unlock_date: string;
     setPrevAccountType: (account_type: string) => void;
+    is_wallet_migration_in_progress_popup: boolean;
+    setWalletsMigrationInProgressPopup: (value: boolean) => void;
     init: (login_new_user?: LoginURLParams<1>) => void;
     setLoginId: (loginid: string) => void;
     resetLocalStorageValues: (loginid: string) => void;

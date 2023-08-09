@@ -8,6 +8,7 @@ import {
     useIsRealAccountNeededForCashier,
     useIsP2PEnabled,
     usePaymentAgentTransferVisible,
+    useWalletMigration,
 } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -22,7 +23,18 @@ import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 import PlatformSwitcher from './platform-switcher';
 
 const MenuLink = observer(
-    ({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink, is_hidden }) => {
+    ({
+        link_to,
+        icon,
+        is_active,
+        is_disabled,
+        as_disabled,
+        is_language,
+        suffix_icon,
+        text,
+        onClickLink,
+        is_hidden,
+    }) => {
         const { common, ui, client } = useStore();
         const { changeCurrentLanguage } = common;
         const deriv_static_url = getStaticUrl(link_to);
@@ -113,7 +125,9 @@ const MenuLink = observer(
                 <div
                     className={classNames('header__menu-mobile-link', {
                         'header__menu-mobile-link--disabled': is_disabled,
+                        'dc-mobile-drawer__submenu-toggle--disabled': as_disabled,
                     })}
+                    onClick={onClickLink}
                 >
                     <Icon className='header__menu-mobile-link-icon' icon={icon} />
                     <span className='header__menu-mobile-link-text'>{text}</span>
@@ -184,6 +198,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_landing_company_loaded,
         is_pending_proof_of_ownership,
         is_eu,
+        setWalletsMigrationInProgressPopup,
     } = client;
     const { cashier } = modules;
     const { payment_agent } = cashier;
@@ -203,6 +218,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { is_appstore } = React.useContext(PlatformContext);
     const timeout = React.useRef();
     const history = useHistory();
+    const { is_in_progress } = useWalletMigration();
 
     React.useEffect(() => {
         const processRoutes = () => {
@@ -260,14 +276,21 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         const has_access = route_config.is_authenticated ? is_logged_in : true;
         if (!has_access) return null;
 
-        if (!route_config.routes) {
+        const is_cashier = route_config.path === routes.cashier;
+        const should_disable_cashier = is_cashier && is_in_progress;
+
+        if (should_disable_cashier || !route_config.routes) {
             return (
                 <MobileDrawer.Item key={idx}>
                     <MenuLink
-                        link_to={route_config.path}
+                        link_to={should_disable_cashier ? undefined : route_config.path}
                         icon={route_config.icon_component}
                         text={route_config.getTitle()}
-                        onClickLink={toggleDrawer}
+                        as_disabled={should_disable_cashier}
+                        onClickLink={() => {
+                            toggleDrawer();
+                            if (should_disable_cashier) setWalletsMigrationInProgressPopup(true);
+                        }}
                     />
                 </MobileDrawer.Item>
             );
@@ -287,6 +310,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             }
             return false;
         };
+
         return (
             <MobileDrawer.SubMenu
                 key={idx}

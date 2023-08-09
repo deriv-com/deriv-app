@@ -14,6 +14,7 @@ import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import { useStore, observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS, ContentFlag, getStaticUrl, getUrlSmartTrader, getUrlBinaryBot } from '@deriv/shared';
+import { useWalletMigration } from '@deriv/hooks';
 import './trading-app-card.scss';
 
 type TWalletsProps = {
@@ -41,6 +42,7 @@ const TradingAppCard = observer(
         is_wallet,
     }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid & TWalletsProps) => {
         const {
+            client,
             common,
             traders_hub,
             modules: { cfd },
@@ -48,6 +50,8 @@ const TradingAppCard = observer(
         const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
         const { current_language } = common;
         const { is_account_being_created } = cfd;
+        const { setWalletsMigrationInProgressPopup } = client;
+        const { is_in_progress } = useWalletMigration();
 
         const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
@@ -94,6 +98,11 @@ const TradingAppCard = observer(
             openFailedVerificationModal,
             selected_mt5_jurisdiction
         );
+
+        const onButtonAction = () => {
+            if (is_in_progress) setWalletsMigrationInProgressPopup(true);
+            else onAction?.();
+        };
 
         return (
             <div className='trading-app-card' key={`trading-app-card__${current_language}`}>
@@ -165,12 +174,13 @@ const TradingAppCard = observer(
                         <TradingAppCardActions
                             action_type={action_type}
                             link_to={link_to}
-                            onAction={onAction}
+                            onAction={onButtonAction}
                             is_external={is_external}
                             new_tab={new_tab}
                             is_buttons_disabled={!!mt5_acc_auth_status}
                             is_account_being_created={!!is_account_being_created}
                             is_real={is_real}
+                            as_disabled={is_in_progress}
                         />
                     </div>
                 </div>

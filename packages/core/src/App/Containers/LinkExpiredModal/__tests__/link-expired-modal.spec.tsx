@@ -25,7 +25,7 @@ describe('LinkExpiredModal', () => {
                 </APIProvider>
             ),
         });
-        expect(screen.queryByText('Link Expired')).toBeInTheDocument();
+        expect(screen.queryByText('Link expired')).toBeInTheDocument();
     });
 
     it('should not render the component when is_link_expired_modal_visible is false', () => {
@@ -39,7 +39,7 @@ describe('LinkExpiredModal', () => {
                 </APIProvider>
             ),
         });
-        expect(screen.queryByText('Link Expired')).not.toBeInTheDocument();
+        expect(screen.queryByText('Link expired')).not.toBeInTheDocument();
     });
 
     it('should not render the component close and resend email buttons', () => {

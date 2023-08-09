@@ -12,6 +12,6 @@ describe('MessageList', () => {
 
         render(<MessageList list={list} />);
 
-        expect(screen.getAllByTestId('dt_alert_message').length).toBe(3);
+        expect(screen.getAllByTestId('dt_alert_message')).toHaveLength(3);
     });
 });

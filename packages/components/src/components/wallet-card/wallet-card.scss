@@ -52,6 +52,7 @@
         clip-path: polygon(40% 10%, 104% -6.94%, 92.5% 100%, 28% 100%);
         mix-blend-mode: overlay;
         opacity: 0.16;
+        border-top-right-radius: $BORDER_RADIUS_2;
         background-color: $color-white;
     }
 

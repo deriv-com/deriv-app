@@ -6,26 +6,16 @@ import TradingAppCard from 'Components/containers/trading-app-card';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
 import { useStore, observer } from '@deriv/stores';
-import { useActiveWallet, useContentFlag } from '@deriv/hooks';
+import { useActiveWallet } from '@deriv/hooks';
 import './wallet-content.scss';
 
 const WalletOptionsAndMultipliersListing = observer(() => {
     const { traders_hub, client, ui } = useStore();
     const { is_mobile, setShouldShowCooldownModal, openRealAccountSignup } = ui;
-    const {
-        is_landing_company_loaded,
-        has_maltainvest_account,
-        real_account_creation_unlock_date,
-        is_logging_in,
-        is_switching,
-    } = client;
-    const { available_platforms, is_eu_user, is_real, no_MF_account, no_CR_account, is_demo } = traders_hub;
+    const { is_landing_company_loaded, real_account_creation_unlock_date, is_logging_in, is_switching } = client;
+    const { available_platforms, no_MF_account } = traders_hub;
 
     const wallet_account = useActiveWallet();
-
-    const { is_cr_demo } = useContentFlag();
-
-    const svg_content = wallet_account?.landing_company_name === 'svg' || is_cr_demo;
 
     if (!wallet_account || is_switching || is_logging_in || !is_landing_company_loaded)
         return (
@@ -34,24 +24,26 @@ const WalletOptionsAndMultipliersListing = observer(() => {
             </div>
         );
 
+    const is_trading_account_exists = wallet_account.linked_to?.some(acc => acc.platform === 'dtrade');
+    const is_svg_jurisdiction_text = wallet_account.landing_company_name === 'svg' || wallet_account.is_demo;
+
     const OptionsTitle = () => {
-        if (svg_content && !is_mobile) {
-            return (
-                <Text size='sm' line_height='m' weight='bold' color='prominent'>
-                    {localize('Options & multipliers')}
-                </Text>
-            );
-        } else if (wallet_account.landing_company_name === 'malta' && !is_mobile) {
-            return (
-                <Text size='sm' line_height='m' weight='bold' color='prominent'>
-                    {localize('Multipliers')}
-                </Text>
-            );
+        if (is_mobile) {
+            return null;
         }
-        return null;
+
+        return is_svg_jurisdiction_text ? (
+            <Text size='sm' line_height='m' weight='bold' color='prominent'>
+                {localize('Options & multipliers')}
+            </Text>
+        ) : (
+            <Text size='sm' line_height='m' weight='bold' color='prominent'>
+                {localize('Multipliers')}
+            </Text>
+        );
     };
 
-    const listing_container_description = svg_content ? (
+    const listing_container_description = is_svg_jurisdiction_text ? (
         <Text size='xs' line_height='s'>
             <Localize
                 i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
@@ -70,22 +62,29 @@ const WalletOptionsAndMultipliersListing = observer(() => {
         </Text>
     );
 
+    const get_account_card_name = wallet_account.is_malta_wallet
+        ? localize('Deriv Apps account')
+        : localize('Deriv Apps');
+    const get_account_card_description = wallet_account.is_malta_wallet
+        ? localize('Get a Deriv Apps trading account regulated by MFSA to trade multipliers on Deriv Trader.')
+        : localize('Get a Deriv Apps trading account to trade options and multipliers on these apps.');
+
     return (
         <ListingContainer
-            wallet_account={wallet_account}
+            wallet_account={is_trading_account_exists ? wallet_account : undefined}
             className='wallet-content__border-reset'
             title={<OptionsTitle />}
             description={listing_container_description}
-            is_deriv_platform
+            is_deriv_platform={is_trading_account_exists}
         >
-            {is_real && (no_CR_account || no_MF_account) && (
+            {!is_trading_account_exists && (
                 <div className='full-row'>
                     <TradingAppCard
                         action_type='get'
                         availability='All'
                         clickable_icon
-                        name={localize('Deriv account')}
-                        description={localize('Get a real Deriv account, start trading and manage your funds.')}
+                        name={get_account_card_name}
+                        description={get_account_card_description}
                         icon='Options'
                         onAction={() => {
                             if (no_MF_account) {
@@ -105,11 +104,7 @@ const WalletOptionsAndMultipliersListing = observer(() => {
                 <TradingAppCard
                     key={`trading_app_card_${available_platform.name}`}
                     {...available_platform}
-                    action_type={
-                        is_demo || (!no_CR_account && !is_eu_user) || (has_maltainvest_account && is_eu_user)
-                            ? 'trade'
-                            : 'none'
-                    }
+                    action_type={is_trading_account_exists ? 'trade' : 'none'}
                     is_deriv_platform
                     has_divider={getHasDivider(index, available_platforms.length, 3)}
                 />

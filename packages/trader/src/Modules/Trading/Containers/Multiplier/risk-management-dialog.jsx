@@ -3,24 +3,24 @@ import React from 'react';
 import { MobileDialog, Button, Div100vhContainer } from '@deriv/components';
 import { isDeepEqual, pick } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { observer } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 import StopLoss from 'Modules/Trading/Components/Form/TradeParams/Multiplier/stop-loss.jsx';
 import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit.jsx';
 import CancelDeal from 'Modules/Trading/Components/Elements/Multiplier/cancel-deal-mobile.jsx';
 
-const RiskManagementDialog = ({
-    is_open,
-    onClose,
-    take_profit,
-    stop_loss,
-    has_take_profit,
-    has_stop_loss,
-    has_cancellation,
-    cancellation_duration,
-    cancellation_range_list,
-    onChangeMultiple,
-    toggleDialog,
-}) => {
+const RiskManagementDialog = observer(({ is_open, onClose, toggleDialog }) => {
+    const {
+        is_turbos,
+        take_profit,
+        has_take_profit,
+        has_stop_loss,
+        stop_loss,
+        has_cancellation,
+        cancellation_range_list,
+        cancellation_duration,
+        onChangeMultiple,
+    } = useTraderStore();
     const applied_risk_management_state = {
         take_profit,
         stop_loss,
@@ -104,13 +104,15 @@ const RiskManagementDialog = ({
                         onChangeMultiple={onChangeMultipleLocal}
                         validation_errors={validation_errors}
                     />
-                    <StopLoss
-                        stop_loss={state.stop_loss}
-                        has_stop_loss={state.has_stop_loss}
-                        onChange={onChange}
-                        onChangeMultiple={onChangeMultipleLocal}
-                        validation_errors={validation_errors}
-                    />
+                    {!is_turbos && (
+                        <StopLoss
+                            stop_loss={state.stop_loss}
+                            has_stop_loss={state.has_stop_loss}
+                            onChange={onChange}
+                            onChangeMultiple={onChangeMultipleLocal}
+                            validation_errors={validation_errors}
+                        />
+                    )}
                     {should_show_deal_cancellation && (
                         <CancelDeal
                             has_take_profit={state.has_take_profit}
@@ -137,15 +139,6 @@ const RiskManagementDialog = ({
             </MobileDialog>
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ modules }) => ({
-    take_profit: modules.trade.take_profit,
-    has_take_profit: modules.trade.has_take_profit,
-    stop_loss: modules.trade.stop_loss,
-    has_stop_loss: modules.trade.has_stop_loss,
-    has_cancellation: modules.trade.has_cancellation,
-    cancellation_range_list: modules.trade.cancellation_range_list,
-    cancellation_duration: modules.trade.cancellation_duration,
-    onChangeMultiple: modules.trade.onChangeMultiple,
-}))(RiskManagementDialog);
+export default RiskManagementDialog;

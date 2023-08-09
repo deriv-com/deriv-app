@@ -131,7 +131,7 @@ const Redirect = ({
             WS.wait('get_account_status').then(() => {
                 if (!currency) return openRealAccountSignup('set_currency');
                 if (hasAnyRealAccount()) return openRealAccountSignup('manage');
-                return openRealAccountSignup();
+                return openRealAccountSignup('svg');
             });
             const ext_platform_url = url_params.get('ext_platform_url');
             if (ext_platform_url) {
@@ -154,7 +154,7 @@ const Redirect = ({
         }
         case 'verification': {
             // Removing this will break mobile DP2P app. Do not remove.
-            SessionStore.set('redirect_url', routes.cashier_p2p_verification);
+            sessionStorage.setItem('redirect_url', routes.p2p_verification);
             const new_href = loginUrl({
                 language: getLanguage(),
             });
@@ -181,7 +181,7 @@ const Redirect = ({
             break;
     }
 
-    if (!redirected_to_route) {
+    if (!redirected_to_route && history.location.pathname !== routes.root) {
         history.push({
             pathname: routes.root,
             search: url_query_string,
@@ -211,7 +211,6 @@ Redirect.propTypes = {
 export default withRouter(
     connect(({ client, ui }) => ({
         currency: client.currency,
-        loginid: client.loginid,
         is_eu: client.is_eu,
         setVerificationCode: client.setVerificationCode,
         verification_code: client.verification_code,

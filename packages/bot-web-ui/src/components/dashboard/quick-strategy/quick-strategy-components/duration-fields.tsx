@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { SelectField } from '.';
+import { isMobile } from '@deriv/shared';
 import { TDropdownItems, TSelectsFieldNames } from '../quick-strategy.types';
 import { TDurationFields } from './components.types';
-import { isMobile } from '@deriv/shared';
+import { SelectField } from '.';
 
 const DurationFields = ({
     id,

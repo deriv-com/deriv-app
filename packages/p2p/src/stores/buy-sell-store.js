@@ -254,24 +254,26 @@ export default class BuySellStore extends BaseStore {
     handleResponse = async order => {
         const { sendbird_store, order_store, general_store, floating_rate_store } = this.root_store;
         const { setErrorMessage, handleConfirm, handleClose } = this.form_props;
-        if (order.error) {
-            setErrorMessage(order.error.message);
-            this.setFormErrorCode(order.error.code);
+        const { error, p2p_order_create, p2p_order_info, subscription } = order || {};
+
+        if (error) {
+            setErrorMessage(error.message);
+            this.setFormErrorCode(error.code);
         } else {
-            if (order?.subscription?.id && !this.is_create_order_subscribed) {
+            if (subscription?.id && !this.is_create_order_subscribed) {
                 this.setIsCreateOrderSubscribed(true);
             }
             setErrorMessage(null);
             general_store.hideModal();
             floating_rate_store.setIsMarketRateChanged(false);
-            sendbird_store.setChatChannelUrl(order?.p2p_order_create?.chat_channel_url ?? '');
-            if (order?.p2p_order_create?.id) {
-                const response = await requestWS({ p2p_order_info: 1, id: order?.p2p_order_create?.id });
+
+            if (p2p_order_create?.id) {
+                const response = await requestWS({ p2p_order_info: 1, id: p2p_order_create.id });
                 handleConfirm(response?.p2p_order_info);
             }
 
-            if (order?.p2p_order_info?.id && order?.p2p_order_info?.chat_channel_url) {
-                sendbird_store.setChatChannelUrl(order?.p2p_order_info?.chat_channel_url ?? '');
+            if (p2p_order_info?.id && p2p_order_info?.chat_channel_url) {
+                sendbird_store.setChatChannelUrl(p2p_order_info.chat_channel_url);
                 order_store.setOrderDetails(order);
             }
 

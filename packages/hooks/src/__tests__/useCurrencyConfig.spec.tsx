@@ -2,7 +2,7 @@ import * as React from 'react';
 import { APIProvider, useFetch } from '@deriv/api';
 import { renderHook } from '@testing-library/react-hooks';
 import useCurrencyConfig from '../useCurrencyConfig';
-import { withMockAPIProvider } from './mocks';
+import { withMockAPIProvider } from '../mocks';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),

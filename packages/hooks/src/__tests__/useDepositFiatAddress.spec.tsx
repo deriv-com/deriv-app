@@ -2,7 +2,7 @@ import * as React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { mockStore } from '@deriv/stores';
 import useDepositFiatAddress from '../useDepositFiatAddress';
-import { withMockAPIProvider } from './mocks';
+import { withMockAPIProvider } from '../mocks';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),

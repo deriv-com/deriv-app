@@ -3,7 +3,7 @@ import { useFetch } from '@deriv/api';
 import { mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useIsP2PEnabled from '../useIsP2PEnabled';
-import { withMockAPIProvider } from './mocks';
+import { withMockAPIProvider } from '../mocks';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),

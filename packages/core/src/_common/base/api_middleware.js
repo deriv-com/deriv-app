@@ -27,15 +27,17 @@ if (is_production) {
     datadog_env = 'staging';
 }
 
-datadogLogs.init({
-    clientToken: datadog_client_token_logs,
-    site: 'datadoghq.com',
-    forwardErrorsToLogs: false,
-    service: 'Dp2p',
-    sessionSampleRate: datadog_session_sample_rate,
-    version: datadog_version,
-    env: datadog_env,
-});
+if (datadog_client_token_logs) {
+    datadogLogs.init({
+        clientToken: datadog_client_token_logs,
+        site: 'datadoghq.com',
+        forwardErrorsToLogs: false,
+        service: 'Dp2p',
+        sessionSampleRate: datadog_session_sample_rate,
+        version: datadog_version,
+        env: datadog_env,
+    });
+}
 
 class APIMiddleware {
     constructor(config) {
@@ -55,14 +57,16 @@ class APIMiddleware {
     };
 
     log = (measures = []) => {
-        measures?.forEach(measure => {
-            datadogLogs.logger.info(measure.name, {
-                name: measure.name,
-                startTime: measure.startTimeDate,
-                duration: measure.duration,
-                detail: measure.detail,
+        if (process.env.DATADOG_CLIENT_TOKEN_LOGS) {
+            measures?.forEach(measure => {
+                datadogLogs.logger.info(measure.name, {
+                    name: measure.name,
+                    startTime: measure.startTimeDate,
+                    duration: measure.duration,
+                    detail: measure.detail,
+                });
             });
-        });
+        }
     };
 
     defineMeasure = response_type => {

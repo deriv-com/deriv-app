@@ -1,14 +1,6 @@
 /* @define account-signup; weak */
 .account-signup {
     padding: 1.2rem 1.2rem 0;
-    form {
-        @include mobile {
-            max-height: 36.5rem;
-        }
-    }
-    form:has(.account-signup__main) {
-        max-height: unset;
-    }
     & .dc-select-native {
         &__placeholder {
             background-color: var(--general-main-2);

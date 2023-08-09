@@ -294,7 +294,6 @@ const ChartTrade = observer(props => {
         wsSubscribe,
         active_symbols,
         has_alternative_source,
-        refToAddTick,
     } = useTraderStore();
 
     const settings = {
@@ -384,7 +383,6 @@ const ChartTrade = observer(props => {
             onExportLayout={exportLayout}
             shouldFetchTradingTimes={!end_epoch}
             hasAlternativeSource={has_alternative_source}
-            refToAddTick={refToAddTick}
             getMarketsOrder={getMarketsOrder}
             yAxisMargin={{
                 top: isMobile() ? 76 : 106,

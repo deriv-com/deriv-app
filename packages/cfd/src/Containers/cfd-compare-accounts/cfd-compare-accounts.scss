@@ -116,11 +116,11 @@
         top: 0.2rem;
         &--msg {
             position: relative;
-            width: 65%;
+            width: 62%;
             @include mobile {
                 display: block;
                 position: fixed;
-                width: 14.8rem;
+                width: 15.2rem;
                 right: 0;
             }
         }

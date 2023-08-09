@@ -2,7 +2,7 @@ import { initSurvicate, initSurvicateCalled } from '../../public-path';
 import React from 'react';
 import moment from 'moment';
 import { mockStore } from '@deriv/stores';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { TRootStore } from 'Types';
 import App from '../app-main';
 

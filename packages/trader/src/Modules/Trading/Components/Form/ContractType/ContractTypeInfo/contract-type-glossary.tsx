@@ -3,9 +3,8 @@ import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { vanilla_financials } from 'Constants/trade-categories';
 
-
-const ContractTypeGlossary = ({ category, symbol }: { category: string, symbol?: string }) => {
-    const vanilla_payout_text = vanilla_financials.includes((symbol as any))
+const ContractTypeGlossary = ({ category, symbol }: { category: string; symbol?: string }) => {
+    const vanilla_payout_text = vanilla_financials.includes(symbol as typeof vanilla_financials[number])
         ? localize('Payout per pip')
         : localize('Payout per point');
     let content;

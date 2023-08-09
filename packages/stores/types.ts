@@ -5,10 +5,10 @@ import type {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
-    Portfolio1,
     GetSettings,
     LandingCompany,
     LogOutResponse,
+    Portfolio1,
     ProposalOpenContract,
     ResidenceList,
     SetFinancialAssessmentRequest,
@@ -532,9 +532,10 @@ type TPortfolioStore = {
     all_positions: TPortfolioPosition[];
     error: string;
     getPositionById: (id: number) => TPortfolioPosition;
+    is_accumulator: boolean;
     is_loading: boolean;
     is_multiplier: boolean;
-    is_accumulator: boolean;
+    is_turbos: boolean;
     onClickCancel: (contract_id?: number) => void;
     onClickSell: (contract_id?: number) => void;
     onMount: () => void;

@@ -433,6 +433,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_loading: false,
             is_accumulator: false,
             is_multiplier: false,
+            is_turbos: false,
             onClickCancel: jest.fn(),
             onClickSell: jest.fn(),
             onMount: jest.fn(),

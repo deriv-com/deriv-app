@@ -1,11 +1,11 @@
-import { Localize, localize } from '@deriv/translations';
-import { Money, Numpad, Tabs, Text } from '@deriv/components';
-import { getDecimalPlaces, isEmptyObject } from '@deriv/shared';
-
 import React from 'react';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { Localize, localize } from '@deriv/translations';
+import { Money, Numpad, Tabs } from '@deriv/components';
+import { getDecimalPlaces, isEmptyObject } from '@deriv/shared';
+import MinMaxStakeInfo from './min-max-stake-info';
 
 type TBasis = {
     basis: string;
@@ -30,16 +30,17 @@ const Basis = observer(
         setAmountError,
     }: TBasis) => {
         const { ui, client } = useStore();
-        const { addToast, vanilla_trade_type } = ui;
+        const { addToast } = ui;
         const { currency } = client;
         const {
+            is_turbos,
+            is_vanilla,
             onChangeMultiple,
             amount: trade_amount,
             basis: trade_basis,
             duration_unit: trade_duration_unit,
             duration: trade_duration,
             contract_type,
-            stake_boundary,
         } = useTraderStore();
 
         const user_currency_decimal_places = getDecimalPlaces(currency);
@@ -86,53 +87,42 @@ const Basis = observer(
         };
 
         return (
-            <div className='trade-params__strike'>
-                {contract_type === 'vanilla' && (
-                    <section className='trade-container__stake-field'>
-                        <div className='trade-container__stake-field--min'>
-                            <Text size='xxs'>{localize('Min. stake')}</Text>
-                            <Text size='xxs'>
-                                {stake_boundary[vanilla_trade_type].min_stake} {currency}
-                            </Text>
-                        </div>
-                        <div className='trade-container__stake-field--max'>
-                            <Text size='xxs'>{localize('Max. stake')}</Text>
-                            <Text size='xxs'>
-                                {stake_boundary[vanilla_trade_type].max_stake} {currency}
-                            </Text>
-                        </div>
-                    </section>
-                )}
-                <div
-                    className={classNames('trade-params__amount-keypad', { strike__pos: contract_type === 'vanilla' })}
-                >
-                    <Numpad
-                        value={selected_basis}
-                        format={formatAmount}
-                        onSubmit={setBasisAndAmount}
-                        currency={currency}
-                        min={min_amount}
-                        is_currency
-                        render={({ value: v, className }) => {
-                            return (
-                                <div className={className}>
-                                    {parseFloat(v) > 0 ? (
-                                        <Money currency={currency} amount={v} should_format={false} />
-                                    ) : (
-                                        v
-                                    )}
-                                </div>
-                            );
-                        }}
-                        reset_press_interval={450}
-                        reset_value=''
-                        pip_size={user_currency_decimal_places}
-                        onValidate={validateAmount}
-                        submit_label={localize('OK')}
-                        onValueChange={onNumberChange}
-                    />
+            <React.Fragment>
+                <div className='trade-params__stake-container'>
+                    {(is_turbos || is_vanilla) && <MinMaxStakeInfo />}
+                    <div
+                        className={classNames('trade-params__amount-keypad', {
+                            strike__pos: contract_type === 'vanilla',
+                        })}
+                    >
+                        <Numpad
+                            value={selected_basis}
+                            format={formatAmount}
+                            onSubmit={setBasisAndAmount}
+                            currency={currency}
+                            min={min_amount}
+                            is_currency
+                            render={({ value, className }) => {
+                                return (
+                                    <div className={className}>
+                                        {parseFloat(value) > 0 ? (
+                                            <Money currency={currency} amount={value} should_format={false} />
+                                        ) : (
+                                            value
+                                        )}
+                                    </div>
+                                );
+                            }}
+                            reset_press_interval={450}
+                            reset_value=''
+                            pip_size={user_currency_decimal_places}
+                            onValidate={validateAmount}
+                            submit_label={localize('OK')}
+                            onValueChange={onNumberChange}
+                        />
+                    </div>
                 </div>
-            </div>
+            </React.Fragment>
         );
     }
 );

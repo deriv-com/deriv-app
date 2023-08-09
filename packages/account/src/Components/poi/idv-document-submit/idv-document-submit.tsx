@@ -23,7 +23,6 @@ const IdvDocumentSubmit = ({
     handleBack,
     handleViewComplete,
     selected_country,
-    is_from_external,
     account_settings,
     getChangeableFields,
 }) => {
@@ -195,7 +194,6 @@ const IdvDocumentSubmit = ({
                                 setFieldValue={setFieldValue}
                                 setFieldTouched={setFieldTouched}
                                 is_qualified_for_idv={true}
-                                is_appstore
                                 should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
                                 editable_fields={changeable_fields}
                             />
@@ -229,7 +227,6 @@ IdvDocumentSubmit.propTypes = {
     getChangeableFields: PropTypes.func,
     handleBack: PropTypes.func,
     handleViewComplete: PropTypes.func,
-    is_from_external: PropTypes.bool,
     selected_country: PropTypes.object,
 };
 

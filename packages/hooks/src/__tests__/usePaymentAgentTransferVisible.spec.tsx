@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { APIProvider, useFetch } from '@deriv/api';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { useFetch } from '@deriv/api';
+import { mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import usePaymentAgentTransferVisible from '../usePaymentAgentTransferVisible';
-import type { TStores } from '@deriv/stores/types';
+import { withMockAPIProvider } from './mocks';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -12,15 +12,6 @@ jest.mock('@deriv/api', () => ({
 
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'get_settings'>>;
 
-const createWrapper = (mock: TStores) => {
-    const wrapper = ({ children }: { children: JSX.Element }) => (
-        <APIProvider>
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        </APIProvider>
-    );
-    return wrapper;
-};
-
 describe('usePaymentAgentTransferVisible', () => {
     test('should return false if is_authenticated_payment_agent is 0', () => {
         const mock = mockStore({});
@@ -28,7 +19,7 @@ describe('usePaymentAgentTransferVisible', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({ data: { get_settings: { is_authenticated_payment_agent: 0 } } });
 
-        const wrapper = createWrapper(mock);
+        const wrapper = withMockAPIProvider(mock);
 
         const { result } = renderHook(() => usePaymentAgentTransferVisible(), { wrapper });
 
@@ -41,7 +32,7 @@ describe('usePaymentAgentTransferVisible', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({ data: { get_settings: { is_authenticated_payment_agent: 1 } } });
 
-        const wrapper = createWrapper(mock);
+        const wrapper = withMockAPIProvider(mock);
 
         const { result } = renderHook(() => usePaymentAgentTransferVisible(), { wrapper });
 

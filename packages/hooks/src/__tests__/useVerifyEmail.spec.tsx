@@ -1,29 +1,19 @@
 import * as React from 'react';
-import { APIProvider } from '@deriv/api';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import { act, renderHook } from '@testing-library/react-hooks';
 import useVerifyEmail from '../useVerifyEmail';
-import type { TStores } from '@deriv/stores/types';
+import { withMockAPIProvider } from './mocks';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useRequest: jest.fn(() => ({ mutate: jest.fn() })),
 }));
 
-const createWrapper = (mock: TStores) => {
-    const Wrapper = ({ children }: { children: JSX.Element }) => (
-        <APIProvider>
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        </APIProvider>
-    );
-    return Wrapper;
-};
-
 describe('useVerifyEmail', () => {
     test("should not send the request if client does't have email", () => {
         const mock = mockStore({});
 
-        const wrapper = createWrapper(mock);
+        const wrapper = withMockAPIProvider(mock);
 
         const { result } = renderHook(() => useVerifyEmail('reset_password'), { wrapper });
 
@@ -35,7 +25,7 @@ describe('useVerifyEmail', () => {
     test('should send the request if client have email', () => {
         const mock = mockStore({ client: { email: 'john@company.com' } });
 
-        const wrapper = createWrapper(mock);
+        const wrapper = withMockAPIProvider(mock);
 
         const { result } = renderHook(() => useVerifyEmail('reset_password'), { wrapper });
 
@@ -47,7 +37,7 @@ describe('useVerifyEmail', () => {
     test('should not send the request if the counter is still running', () => {
         const mock = mockStore({ client: { email: 'john@company.com' } });
 
-        const wrapper = createWrapper(mock);
+        const wrapper = withMockAPIProvider(mock);
 
         const { result } = renderHook(() => useVerifyEmail('reset_password'), { wrapper });
 

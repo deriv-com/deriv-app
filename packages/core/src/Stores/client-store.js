@@ -1683,7 +1683,9 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 this.is_populating_account_list = false;
             });
-            const language = authorize_response.authorize.preferred_language;
+            const language =
+                new URLSearchParams(window.location.search).get('lang') ??
+                authorize_response.authorize.preferred_language;
             const stored_language = LocalStore.get(LANGUAGE_KEY);
             if (language !== 'EN' && stored_language && language !== stored_language) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));

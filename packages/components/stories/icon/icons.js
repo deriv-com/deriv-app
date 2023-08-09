@@ -387,6 +387,7 @@ export const icons =
         'IcEmailVerificationLinkBlocked',
         'IcEmailVerificationLinkInvalid',
         'IcEmailVerificationLinkValid',
+        'IcEmailVerificationResent',
         'IcEmailVerified',
         'IcEmail',
         'IcEmptyBlockedAdvertisers',

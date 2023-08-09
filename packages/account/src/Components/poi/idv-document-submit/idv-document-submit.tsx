@@ -22,7 +22,7 @@ import FormSubHeader from 'Components/form-sub-header';
 import { GetSettings, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
 import { TIDVFormValues } from 'Types';
 
-type TIdvDocumentSubmitProps = {
+type TIDVDocumentSubmitProps = {
     handleBack: () => void;
     handleViewComplete: () => void;
     selected_country: { text: string; value: string };
@@ -38,7 +38,7 @@ const IdvDocumentSubmit = ({
     is_from_external,
     account_settings,
     getChangeableFields,
-}: TIdvDocumentSubmitProps) => {
+}: TIDVDocumentSubmitProps) => {
     const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
     const form_initial_values = filterObjProperties(account_settings, visible_settings) || {};
 

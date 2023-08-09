@@ -59,6 +59,16 @@ const ContractInfo = ({
         ? localize('Payout per pip')
         : localize('Payout per point');
 
+    const vanilla_payout_message =
+        vanilla_financials.includes(symbol) ? (
+            <Localize
+                i18n_default_text='The payout at expiry is equal to the payout per pip multiplied by the difference, <0>in pips</0>, between the final price and the strike price.'
+                components={[<strong key={0} />]}
+            />
+        ) : (
+            <Localize i18n_default_text='The payout at expiry is equal to the payout per point multiplied by the difference, between the final price and the strike price.' />
+        );
+
     const stakeOrPayout = () => {
         switch (basis) {
             case 'stake': {
@@ -90,9 +100,7 @@ const ContractInfo = ({
 
     const setHintMessage = () => {
         if (['VANILLALONGCALL', 'VANILLALONGPUT'].includes(type)) {
-            return (
-                <Localize i18n_default_text='The payout at expiry is equal to the payout per point multiplied by the difference between the final price and the strike price.' />
-            );
+            return vanilla_payout_message;
         }
         return message;
     };
@@ -159,9 +167,7 @@ const ContractInfo = ({
                                         icon='info'
                                         id='dt_vanilla-stake__tooltip'
                                         zIndex={9999}
-                                        message={
-                                            <Localize i18n_default_text='The payout at expiry is equal to the payout per point multiplied by the difference between the final price and the strike price.' />
-                                        }
+                                        message={vanilla_payout_message}
                                     />
                                 </div>
                             </div>

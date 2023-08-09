@@ -1,8 +1,13 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { vanilla_financials } from 'Constants/trade-categories';
 
-const ContractTypeGlossary = ({ category }: { category: string }) => {
+
+const ContractTypeGlossary = ({ category, symbol }: { category: string, symbol?: string }) => {
+    const vanilla_payout_text = vanilla_financials.includes((symbol as any))
+        ? localize('Payout per pip')
+        : localize('Payout per point');
     let content;
     if (category) {
         switch (category) {
@@ -45,7 +50,8 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                     {
                         type: 'paragraph',
                         text: localize(
-                            'Your payout is equal to the payout per point multiplied by the difference between the final price and the strike price.'
+                            'Your payout is equal to the {{vanilla_payout_text}} multiplied by the difference between the final price and the strike price.',
+                            { vanilla_payout_text: vanilla_payout_text.toLowerCase() }
                         ),
                     },
                     { type: 'heading', text: localize('Final price') },
@@ -84,7 +90,7 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                             ),
                         ],
                     },
-                    { type: 'heading', text: localize('Payout per point') },
+                    { type: 'heading', text: vanilla_payout_text },
                     {
                         type: 'paragraph',
                         text: localize('We calculate this based on the strike price and duration you’ve selected.'),

@@ -3,10 +3,14 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import AccumulatorTradeDescription from './accumulator-trade-description';
+import { vanilla_financials } from 'Constants/trade-categories';
 
 // Templates are from Binary 1.0, it should be checked if they need change or not and add all of trade types
 // TODO: refactor the rest of descriptions to use them as components like AccumulatorTradeDescription
-const TradeCategories = ({ category, onClick }) => {
+const TradeCategories = ({ category, symbol, onClick }) => {
+    const vanilla_payout_text = vanilla_financials.includes((symbol))
+        ? localize('Payout per pip')
+        : localize('Payout per point');
     let TradeTypeTemplate;
     if (category) {
         switch (category) {
@@ -459,7 +463,7 @@ const TradeCategories = ({ category, onClick }) => {
                         </Text>
                         <Text as='p'>
                             <Localize
-                                i18n_default_text='Your payout is equal to the <0>payout per point</0> multiplied by the difference between the final price and the strike price. You will only earn a profit if your payout is higher than your initial stake.'
+                                i18n_default_text='Your payout is equal to the <0>{{payout_label}}</0> multiplied by the difference between the final price and the strike price. You will only earn a profit if your payout is higher than your initial stake.'
                                 components={[
                                     <span
                                         className='contract-type-info__content-definition'
@@ -467,6 +471,7 @@ const TradeCategories = ({ category, onClick }) => {
                                         key={0}
                                     />,
                                 ]}
+                                values={{ payout_label: vanilla_payout_text }}
                             />
                         </Text>
                         <Text as='p'>

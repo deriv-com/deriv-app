@@ -12,6 +12,7 @@ const useFilteredCFDAccounts = () => {
     const { data: available_mt5_accounts, ...rest_available_mt5_accounts } = useAvailableMT5Accounts();
     const { data: existing_cfd_accounts, ...rest_existing_cfd_accounts } = useExistingCFDAccounts();
     const { traders_hub } = useStore();
+    // TODO: move this to utils
     const { getShortCodeAndRegion } = traders_hub;
 
     const combined_mt5_accounts = useMemo(() => {

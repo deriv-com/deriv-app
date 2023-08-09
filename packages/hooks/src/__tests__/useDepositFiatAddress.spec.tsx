@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { mockStore } from '@deriv/stores';
 import useDepositFiatAddress from '../useDepositFiatAddress';

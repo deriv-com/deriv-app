@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { APIProvider, useFetch } from '@deriv/api';
+import { useFetch } from '@deriv/api';
 import { renderHook } from '@testing-library/react-hooks';
 import useCurrencyConfig from '../useCurrencyConfig';
 import { withMockAPIProvider } from '../mocks';

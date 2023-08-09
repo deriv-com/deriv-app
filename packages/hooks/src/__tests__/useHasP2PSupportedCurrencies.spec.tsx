@@ -1,9 +1,7 @@
-import * as React from 'react';
-import { APIProvider, useFetch } from '@deriv/api';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { useFetch } from '@deriv/api';
+import { mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useHasP2PSupportedCurrencies from '../useHasP2PSupportedCurrencies';
-import type { TStores } from '@deriv/stores/types';
 import { withMockAPIProvider } from '../mocks';
 
 jest.mock('@deriv/api', () => ({

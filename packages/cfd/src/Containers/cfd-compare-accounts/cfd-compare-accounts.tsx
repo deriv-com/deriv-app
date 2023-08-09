@@ -19,7 +19,7 @@ const CompareCFDs = observer(() => {
     const store = useStore();
     const { client, traders_hub } = store;
     const { trading_platform_available_accounts } = client;
-    const { is_demo, is_eu_user, available_dxtrade_accounts } = traders_hub;
+    const { is_demo, is_eu_user, available_dxtrade_accounts, selected_region } = traders_hub;
 
     const sorted_available_accounts = !is_eu_user
         ? getSortedCFDAvailableAccounts(trading_platform_available_accounts)
@@ -68,9 +68,14 @@ const CompareCFDs = observer(() => {
             <h1 className='compare-cfd-header-title'>
                 <Text size='m' weight='bold' color='prominent'>
                     <Localize
-                        i18n_default_text='Compare CFDs {{demo_title}} accounts'
+                        i18n_default_text={
+                            selected_region === 'EU'
+                                ? 'Deriv MT5 CFDs {{real_title}} account'
+                                : 'Compare CFDs {{demo_title}} accounts'
+                        }
                         values={{
                             demo_title: is_demo ? localize('demo') : '',
+                            real_title: is_demo ? localize('Demo') : localize('real'),
                         }}
                     />
                 </Text>

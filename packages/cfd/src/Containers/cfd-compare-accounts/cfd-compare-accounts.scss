@@ -27,7 +27,7 @@
             overflow-x: auto;
             overflow-y: scroll;
             padding: 0 0 20.1rem;
-            height: 80rem;
+            max-height: 80rem;
             width: 100%;
         }
         &__card-count {
@@ -84,9 +84,9 @@
         }
     }
     &-text-container {
-        height: 25.5rem;
+        max-height: 25.5rem;
         &--demo {
-            height: 13.5rem;
+            max-height: 13.5rem;
         }
         &__separator {
             margin: 0.9rem;

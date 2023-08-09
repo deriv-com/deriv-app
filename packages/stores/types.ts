@@ -642,6 +642,8 @@ type TTradersHubStore = {
     selected_region: TRegionAvailability;
     getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
     available_dxtrade_accounts: AvailableAccount[];
+    is_wallet_tour_open: boolean;
+    toggleIsWalletTourOpen: (value: boolean) => void;
     can_get_more_cfd_mt5_accounts: boolean;
     toggleAccountTypeModalVisibility: () => void;
     active_modal_tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions';

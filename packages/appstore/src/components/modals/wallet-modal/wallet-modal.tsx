@@ -1,20 +1,21 @@
 import React, { useEffect, useMemo } from 'react';
-import { Loading, Modal } from '@deriv/components';
-import { useActiveWallet } from '@deriv/hooks';
+import { Modal, Loading } from '@deriv/components';
 import { routes } from '@deriv/shared';
+import { useActiveWallet } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import WalletModalHeader from './wallet-modal-header';
 import WalletModalBody from './wallet-modal-body';
 
 const WalletModal = observer(() => {
     const {
-        client: { switchAccount },
+        client: { switchAccount, setVerificationCode },
         ui: { is_dark_mode_on, is_wallet_modal_visible, is_mobile, setIsWalletModalVisible },
         traders_hub: {
             active_modal_tab,
             active_modal_wallet_id,
             setWalletModalActiveTab,
             setWalletModalActiveWalletID,
+            is_wallet_tour_open,
         },
     } = useStore();
 
@@ -51,7 +52,7 @@ const WalletModal = observer(() => {
         }
 
         return () => clearTimeout(timeout_id);
-    }, [active_modal_wallet_id, active_wallet?.loginid, is_wallet_modal_visible, switchAccount]);
+    }, [active_modal_wallet_id, active_wallet?.loginid, is_wallet_modal_visible, switchAccount, is_wallet_tour_open]);
 
     const [is_wallet_name_visible, setIsWalletNameVisible] = React.useState<boolean>(true);
 
@@ -62,6 +63,7 @@ const WalletModal = observer(() => {
     const closeModal = () => {
         setIsWalletModalVisible(false);
         setWalletModalActiveTab(active_modal_tab);
+        setVerificationCode('', 'payment_withdraw');
     };
 
     const contentScrollHandler = React.useCallback(

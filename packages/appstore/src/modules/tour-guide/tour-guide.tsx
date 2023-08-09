@@ -10,7 +10,7 @@ import {
     tour_styles_dark_mode,
     getTourStepConfigHighRisk,
     getHighRiskTourStepLocale,
-} from 'Constants/tour-steps-config-new';
+} from 'Constants/tour-steps-config';
 import { useStores } from 'Stores/index';
 import { routes, ContentFlag } from '@deriv/shared';
 import { SpanButton } from '@deriv/components';

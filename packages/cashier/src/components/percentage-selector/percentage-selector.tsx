@@ -127,7 +127,13 @@ const PercentageSelector = ({
                     />
                 </div>
             </div>
-            <Text color='less-prominent' size='xxs' line_height='l' className='percentage-selector__text'>
+            <Text
+                color='less-prominent'
+                size='xxs'
+                line_height='l'
+                align='center'
+                className='percentage-selector__text'
+            >
                 <Localize
                     i18n_default_text='{{selected_percentage}}% of available balance ({{format_amount}} {{currency__display_code}})'
                     values={{ selected_percentage, format_amount, currency__display_code }}

@@ -31,6 +31,7 @@ export default class TradersHubStore extends BaseStore {
     selected_account = {};
     is_real_wallets_upgrade_on = false;
     is_wallet_migration_failed = false;
+    is_wallet_tour_open = false;
     active_modal_tab = undefined;
     active_modal_wallet_id = undefined;
 
@@ -110,6 +111,8 @@ export default class TradersHubStore extends BaseStore {
             showTopUpModal: action.bound,
             toggleWalletsUpgrade: action.bound,
             setWalletsMigrationFailedPopup: action.bound,
+            is_wallet_tour_open: observable,
+            toggleIsWalletTourOpen: action.bound,
         });
 
         reaction(
@@ -150,7 +153,7 @@ export default class TradersHubStore extends BaseStore {
             () => {
                 const residence = this.root_store.client.residence;
                 const active_demo = /^VRT|VRW/.test(this.root_store.client.loginid);
-                const active_real_mf = /^MF/.test(this.root_store.client.loginid);
+                const active_real_mf = /^MF|MFW/.test(this.root_store.client.loginid);
 
                 const default_region = () => {
                     if (((active_demo || active_real_mf) && isEuCountry(residence)) || active_real_mf) {
@@ -807,5 +810,9 @@ export default class TradersHubStore extends BaseStore {
 
     setWalletsMigrationFailedPopup(value) {
         this.is_wallet_migration_failed = value;
+    }
+
+    toggleIsWalletTourOpen(value) {
+        this.is_wallet_tour_open = value;
     }
 }

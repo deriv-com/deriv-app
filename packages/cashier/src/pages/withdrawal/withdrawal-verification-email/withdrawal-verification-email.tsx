@@ -1,10 +1,7 @@
 import React from 'react';
-import { MobileWrapper } from '@deriv/components';
 import { useVerifyEmail } from '@deriv/hooks';
 import { localize, Localize } from '@deriv/translations';
-import { isCryptocurrency } from '@deriv/shared';
-import { useStore, observer } from '@deriv/stores';
-import RecentTransaction from '../../../components/recent-transaction';
+import { observer, useStore } from '@deriv/stores';
 import EmailVerificationEmptyState from '../../../components/email-verification-empty-state';
 import EmptyState from '../../../components/empty-state';
 import Error from '../../../components/error';
@@ -13,8 +10,8 @@ import ErrorStore from '../../../stores/error-store';
 
 const WithdrawalVerificationEmail = observer(() => {
     const verify = useVerifyEmail('payment_withdraw');
-    const { client } = useStore();
     const { transaction_history } = useCashierStore();
+    const { is_mobile } = useStore().ui;
 
     React.useEffect(() => {
         transaction_history.onMount();
@@ -31,7 +28,10 @@ const WithdrawalVerificationEmail = observer(() => {
                 title={localize('Please help us verify your withdrawal request.')}
                 description={
                     <>
-                        <Localize i18n_default_text="Click the button below and we'll send you an email with a link. Click that link to verify your withdrawal request." />
+                        <Localize
+                            i18n_default_text="{{click_text}} the button below and we'll send you an email with a link. Click that link to verify your withdrawal request."
+                            values={{ click_text: is_mobile ? 'Tap' : 'Click' }}
+                        />
                         <br />
                         <br />
                         <Localize i18n_default_text='This is to protect your account from unauthorised withdrawals.' />
@@ -42,7 +42,6 @@ const WithdrawalVerificationEmail = observer(() => {
                     onClick: () => verify.send(),
                 }}
             />
-            <MobileWrapper>{isCryptocurrency(client.currency) && <RecentTransaction />}</MobileWrapper>
         </>
     );
 });

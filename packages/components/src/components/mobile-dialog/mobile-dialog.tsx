@@ -16,7 +16,7 @@ type TMobileDialog = {
     onClose: React.MouseEventHandler;
     portal_element_id: string;
     renderTitle?: () => string;
-    title?: string;
+    title?: React.ReactNode;
     visible?: boolean;
     wrapper_classname?: string;
 };

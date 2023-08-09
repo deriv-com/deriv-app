@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { useFetch } from '@deriv/api';
 import useActiveWallet from './useActiveWallet';
-import { useStore } from '@deriv/stores';
 
 type TAccount = {
     cfd_type?: 'mt5' | 'derivez' | 'dxtrade';
@@ -35,8 +34,6 @@ const getAccountIcon = ({ cfd_type, market_type }: TAccount) => {
  * @description This hook is used to get the created CFD accounts of the user.
  */
 const useExistingCFDAccounts = () => {
-    const { traders_hub } = useStore();
-    const { combined_cfd_mt5_accounts } = traders_hub;
     const wallet = useActiveWallet();
     const { data: mt5, ...mt5_rest } = useFetch('mt5_login_list');
     const { data: derivez, ...derivez_rest } = useFetch('trading_platform_accounts', {
@@ -47,18 +44,14 @@ const useExistingCFDAccounts = () => {
     });
 
     /**
-     *
      * @description This is the modified MT5 accounts that will be used in the CFD account creation.
      */
     const modified_mt5_accounts = useMemo(() => {
+        /** Adding the neccesary properties to the response */
         const getAccountInfo = (login?: string) => {
             return {
                 platform: wallet?.linked_to?.find(linked => linked.loginid === login)?.platform,
-                icon: combined_cfd_mt5_accounts?.find(cfd => cfd.login === login)?.icon,
-                description: combined_cfd_mt5_accounts?.find(cfd => cfd.login === login)?.description,
-                name: combined_cfd_mt5_accounts?.find(cfd => cfd.login === login)?.name,
-                sub_title: combined_cfd_mt5_accounts?.find(cfd => cfd.login === login)?.sub_title,
-                action_type: 'multi-action',
+                display_login: login?.replace(/^(MT[DR]?)/, ''),
             };
         };
 
@@ -68,7 +61,7 @@ const useExistingCFDAccounts = () => {
             loginid: account.login,
             transfer_icon: getAccountIcon({ cfd_type: 'mt5', ...account }),
         }));
-    }, [mt5?.mt5_login_list, wallet?.linked_to, combined_cfd_mt5_accounts]);
+    }, [mt5?.mt5_login_list, wallet?.linked_to]);
 
     const modified_derivez_accounts = useMemo(
         () =>
@@ -79,15 +72,18 @@ const useExistingCFDAccounts = () => {
             })),
         [derivez?.trading_platform_accounts]
     );
+
     const modified_dxtrade_accounts = useMemo(
         () =>
             dxtrade?.trading_platform_accounts?.map(account => ({
                 ...account,
+                is_added: true,
                 loginid: account.account_id,
                 transfer_icon: getAccountIcon({ cfd_type: 'dxtrade' }),
             })),
         [dxtrade?.trading_platform_accounts]
     );
+
     const data = useMemo(
         () => ({
             mt5_accounts: modified_mt5_accounts || [],
@@ -99,6 +95,8 @@ const useExistingCFDAccounts = () => {
 
     return {
         data,
+        ...{ ...mt5_rest, ...dxtrade_rest, ...derivez_rest },
+        isLoading: mt5_rest.isLoading || dxtrade_rest.isLoading || derivez_rest.isLoading,
         isSuccess: [mt5_rest.isSuccess, dxtrade_rest.isSuccess, derivez_rest.isSuccess].every(Boolean),
     };
 };

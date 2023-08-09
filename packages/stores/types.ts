@@ -1,12 +1,14 @@
 import type {
     AccountLimitsResponse,
     Authorize,
+    ContractUpdate,
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
     GetSettings,
     LandingCompany,
     LogOutResponse,
+    Portfolio1,
     ProposalOpenContract,
     ResidenceList,
     SetFinancialAssessmentRequest,
@@ -118,11 +120,57 @@ interface AvailableAccount {
     login?: string;
 }
 
+interface ExistingMT5Account {
+    account_type: string;
+    action_type: string;
+    availability: TRegionAvailability;
+    balance: number;
+    country: string;
+    email: string;
+    leverage: number;
+    market_type: string;
+    login: string;
+    landing_company_short: string;
+    group: string;
+    is_added: boolean;
+    short_code_and_region: string;
+    platform: 'derivez' | 'dtrade' | 'dwallet' | 'dxtrade' | 'mt5';
+    description?: string | undefined;
+    name: string;
+    shortcode: string;
+    status: string | null;
+    sub_account_type: string;
+    sub_account_category: string;
+    sub_title: string;
+    display_balance: string;
+    linkable_landing_companies: string[];
+    server: string;
+}
+
 type BrandConfig = {
     name: string;
     icon: TIconTypes;
     availability: TRegionAvailability;
     is_deriv_platform?: boolean;
+};
+
+type TPortfolioPosition = {
+    contract_info: ProposalOpenContract &
+        Portfolio1 & {
+            contract_update?: ContractUpdate;
+        };
+    details?: string;
+    display_name: string;
+    id?: number;
+    indicative: number;
+    payout?: number;
+    purchase?: number;
+    reference: number;
+    type?: string;
+    is_unsupported: boolean;
+    contract_update: ProposalOpenContract['limit_order'];
+    is_sell_requested: boolean;
+    profit_loss: number;
 };
 
 type TAppRoutingHistory = {
@@ -469,6 +517,7 @@ type TCommonStore = {
     setAppstorePlatform: (value: string) => void;
     app_routing_history: TAppRoutingHistory[];
     getExchangeRate: (from_currency: string, to_currency: string) => Promise<number>;
+    network_status: Record<string, never> | { [key: string]: string };
 };
 
 type TUiStore = {
@@ -555,15 +604,17 @@ type TUiStore = {
 };
 
 type TPortfolioStore = {
-    active_positions: ProposalOpenContract[];
-    error: TCommonStoreError;
-    getPositionById: (id: number) => ProposalOpenContract;
+    active_positions: TPortfolioPosition[];
+    error: string;
+    getPositionById: (id: number) => TPortfolioPosition;
+    is_accumulator: boolean;
     is_loading: boolean;
     is_multiplier: boolean;
-    is_accumulator: boolean;
-    onClickCancel: (contract_id: number) => void;
-    onClickSell: (contract_id: number) => void;
+    is_turbos: boolean;
+    onClickCancel: (contract_id?: number) => void;
+    onClickSell: (contract_id?: number) => void;
     onMount: () => void;
+    positions: TPortfolioPosition[];
     removePositionById: (id: number) => void;
 };
 
@@ -606,7 +657,7 @@ type TTradersHubStore = {
             landing_company_short?: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
             platform?: string;
             description?: string;
-            market_type?: 'all' | 'financial' | 'synthetic';
+            market_type?: 'all' | 'financial' | 'gaming';
         }[];
     openModal: (modal_id: string, props?: unknown) => void;
     selected_account: {
@@ -649,12 +700,20 @@ type TTradersHubStore = {
     selected_region: TRegionAvailability;
     getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
     available_dxtrade_accounts: AvailableAccount[];
+    is_wallet_tour_open: boolean;
+    toggleIsWalletTourOpen: (value: boolean) => void;
     can_get_more_cfd_mt5_accounts: boolean;
     toggleAccountTypeModalVisibility: () => void;
     active_modal_tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions';
     setWalletModalActiveTab: (tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions') => void;
     active_modal_wallet_id?: string;
     setWalletModalActiveWalletID: (wallet_id?: string) => void;
+    getAccount: () => void;
+    showTopUpModal: (existing_account: Partial<ExistingMT5Account>) => void;
+    startTrade: (platform: string, account: Partial<ExistingMT5Account>) => void;
+    has_any_real_account: boolean;
+    getShortCodeAndRegion: (account: Partial<ExistingMT5Account>) => string;
+    is_mt5_notificaiton_modal_visible: boolean;
     toggleIsTourOpen: (is_tour_open: boolean) => void;
     is_demo_low_risk: boolean;
     is_mt5_notification_modal_visible: boolean;

@@ -1,56 +1,68 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import StaticDashboard from '../static-dashboard';
+import { ContentFlag } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { render, screen } from '@testing-library/react';
+import StaticDashboard, { TStaticDashboard } from '../static-dashboard';
 
-describe('<StaticDashboard />', () => {
-    const is_blurry = {
-        icon: true,
-        item: false,
-        text: false,
-        get: false,
-        topup: false,
-        trade: false,
-        cfd_item: false,
-        cfd_text: false,
-        options_item: false,
-        options_text: false,
-        cfd_description: false,
-        options_description: false,
-        platformlauncher: false,
-    };
-
-    const is_onboarding_animated = {
-        text: false,
-        trade: false,
-        topup: false,
-        button: false,
-        get: false,
-    };
-
-    test('should render derivez in page if !CFDs_restricted_countries (non-eu countries)', () => {
-        const mock = mockStore({});
-
-        render(
-            <StoreProvider store={mock}>
-                <StaticDashboard is_blurry={is_blurry} is_onboarding_animated={is_onboarding_animated} />
-            </StoreProvider>
+describe('StaticDashboard', () => {
+    const render_container = (mock_store_override = {}) => {
+        const mock_store = mockStore(mock_store_override);
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock_store}>{children}</StoreProvider>
         );
-        expect(screen.queryByText('Deriv EZ')).toBeInTheDocument();
+        const mock_props: TStaticDashboard = {
+            is_blurry: {
+                icon: false,
+                item: false,
+                text: false,
+                get: false,
+                topup: false,
+                trade: false,
+                cfd_item: false,
+                cfd_text: false,
+                options_item: false,
+                options_text: false,
+                cfd_description: false,
+                options_description: false,
+                platformlauncher: false,
+            },
+            is_onboarding_animated: {
+                text: false,
+                trade: false,
+                topup: false,
+                button: false,
+                get: false,
+            },
+        };
+        return render(<StaticDashboard {...mock_props} />, {
+            wrapper,
+        });
+    };
+
+    it('should display the component', () => {
+        const { container } = render_container();
+        expect(container).toBeInTheDocument();
     });
 
-    test('should not render derivez if CFDs_restricted_countries: true (eu countries)', () => {
-        const mock = mockStore({
-            traders_hub: {
-                CFDs_restricted_countries: true,
-            },
-        });
+    it('should display both CFDs and Multipliers section', () => {
+        render_container();
+        const dashboard_sections = screen.getByTestId('dt_onboarding_dashboard');
+        expect(dashboard_sections?.textContent?.match(/Multipliers/)).not.toBeNull();
+        expect(dashboard_sections?.textContent?.match(/CFDs/)).not.toBeNull();
+    });
 
-        render(
-            <StoreProvider store={mock}>
-                <StaticDashboard is_blurry={is_blurry} is_onboarding_animated={is_onboarding_animated} />
-            </StoreProvider>
-        );
-        expect(screen.queryByText('Deriv Ez')).not.toBeInTheDocument();
+    it('should display Multipliers and CFDs section in order if the user is non eu', () => {
+        render_container({
+            client: { is_logged_in: true },
+            traders_hub: { content_flag: ContentFlag.LOW_RISK_CR_NON_EU },
+        });
+        const dashboard_sections = screen.getByTestId('dt_onboarding_dashboard');
+        expect(dashboard_sections).not.toHaveClass('static-dashboard--eu');
+    });
+
+    it('should display Multipliers and CFDs section in reverse order if the user is eu', () => {
+        render_container({ client: { is_logged_in: true }, traders_hub: { content_flag: ContentFlag.EU_REAL } });
+        const dashboard_sections = screen.getByTestId('dt_onboarding_dashboard');
+        expect(dashboard_sections).toHaveClass('static-dashboard--eu');
     });
 });

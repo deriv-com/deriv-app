@@ -120,7 +120,6 @@ export const getPlatformRedirect = (routing_history: TRoutingHistory) => {
     if (isNavigationFromP2P()) return { name: 'P2P', route: routes.cashier_p2p, ref: 'p2p' };
     if (isNavigationFromExternalPlatform(routing_history, routes.binarybot))
         return { name: platform_name.BinaryBot, route: routes.binarybot };
-    if (isNavigationFromDerivGO()) return { name: platform_name.DerivGO, route: '', ref: 'derivgo' };
     return { name: platform_name.DTrader, route: routes.trade };
 };
 

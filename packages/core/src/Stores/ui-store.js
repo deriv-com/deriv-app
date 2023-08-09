@@ -6,6 +6,7 @@ import BaseStore from './base-store';
 const store_name = 'ui_store';
 
 export default class UIStore extends BaseStore {
+    url_hashed_values = '';
     is_account_settings_visible = false;
     is_positions_drawer_on = false;
     is_reports_visible = false;
@@ -37,6 +38,7 @@ export default class UIStore extends BaseStore {
     is_unsupported_contract_modal_visible = false;
     is_new_account = localStorage.getItem('isNewAccount') || false;
     is_account_signup_modal_visible = false;
+    is_link_expired_modal_visible = false;
     is_set_residence_modal_visible = false;
     is_reset_password_modal_visible = false;
     is_reset_email_modal_visible = false;
@@ -213,6 +215,7 @@ export default class UIStore extends BaseStore {
             is_unsupported_contract_modal_visible: observable,
             is_new_account: observable,
             is_account_signup_modal_visible: observable,
+            is_link_expired_modal_visible: observable,
             is_set_residence_modal_visible: observable,
             is_reset_password_modal_visible: observable,
             is_reset_email_modal_visible: observable,
@@ -317,6 +320,7 @@ export default class UIStore extends BaseStore {
             is_mobile: computed,
             is_tablet: computed,
             is_warning_scam_message_modal_visible: computed,
+            url_hashed_values: observable,
             notifyAppInstall: action.bound,
             onChangeUiStore: action.bound,
             openAccountNeededModal: action.bound,
@@ -341,6 +345,7 @@ export default class UIStore extends BaseStore {
             setCurrentFocus: action.bound,
             setDarkMode: action.bound,
             setHasOnlyForwardingContracts: action.bound,
+            setHashedValue: action.bound,
             setIsAcuityModalOpen: action.bound,
             setIsClosingCreateRealAccountModal: action.bound,
             setIsNativepickerVisible: action.bound,
@@ -383,6 +388,7 @@ export default class UIStore extends BaseStore {
             toggleCancellationWarning: action.bound,
             toggleCashier: action.bound,
             toggleHistoryTab: action.bound,
+            toggleLinkExpiredModal: action.bound,
             toggleOnScreenKeyboard: action.bound,
             togglePositionsDrawer: action.bound,
             toggleReports: action.bound,
@@ -439,7 +445,12 @@ export default class UIStore extends BaseStore {
         this.is_new_account = localStorage.getItem('isNewAccount') || false;
     }
 
+    setHashedValue(url_hashed_values) {
+        this.url_hashed_values = url_hashed_values;
+    }
+
     init(notification_messages) {
+        this.setHashedValue(window.location.hash);
         this.notification_messages_ui = notification_messages;
     }
 
@@ -727,6 +738,10 @@ export default class UIStore extends BaseStore {
 
     toggleResetPasswordModal(state_change = !this.is_reset_password_modal_visible) {
         this.is_reset_password_modal_visible = state_change;
+    }
+
+    toggleLinkExpiredModal(state_change = !this.is_link_expired_modal_visible) {
+        this.is_link_expired_modal_visible = state_change;
     }
 
     toggleResetEmailModal(state_change = !this.is_reset_email_modal_visible) {

@@ -5,11 +5,14 @@ import { CSSTransition } from 'react-transition-group';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars';
 import { ResidenceList } from '@deriv/api-types';
 
-type TItem = string &
-    ResidenceList[0] & {
-        component?: React.ReactNode;
-        group?: string;
-    };
+export type TItem =
+    | string
+    | (ResidenceList[0] & {
+          component?: React.ReactNode;
+          group?: string;
+          text?: string;
+          value?: string;
+      });
 
 type TListItem = {
     is_active: boolean;
@@ -26,9 +29,15 @@ type TListItems = {
     active_index: number;
     is_object_list?: boolean;
     list_items: TItem[];
-    not_found_text: string;
+    not_found_text?: string;
     onItemSelection: (item: TItem) => void;
-    setActiveIndex: () => void;
+    setActiveIndex: (index: number) => void;
+};
+
+type TDropdownRefs = {
+    dropdown_ref: React.RefObject<HTMLDivElement & SVGSVGElement> | null;
+    list_item_ref?: React.RefObject<HTMLDivElement>;
+    list_wrapper_ref: React.RefObject<HTMLDivElement>;
 };
 
 type TDropDownList = {
@@ -36,24 +45,16 @@ type TDropDownList = {
     is_visible: boolean;
     list_items: TItem[];
     list_height: string;
-    onScrollStop: () => void;
-    onItemSelection: () => void;
-    setActiveIndex: () => void;
+    onScrollStop?: React.UIEventHandler<HTMLDivElement>;
+    onItemSelection: (item: TItem) => void;
+    setActiveIndex: (index: number) => void;
     style: React.CSSProperties;
-    not_found_text: string;
+    not_found_text?: string;
     portal_id?: string;
+    dropdown_refs?: TDropdownRefs;
 };
 
-const ListItem = ({
-    is_active,
-    is_disabled,
-    index,
-    item,
-    child_ref,
-    onItemSelection,
-    is_object_list,
-    setActiveIndex,
-}: TListItem) => {
+const ListItem = ({ is_active, is_disabled, index, item, child_ref, onItemSelection, setActiveIndex }: TListItem) => {
     return (
         <div
             ref={child_ref}
@@ -68,20 +69,20 @@ const ListItem = ({
                 'dc-dropdown-list__item--disabled': is_disabled,
             })}
         >
-            {is_object_list ? item.component || item.text : item}
+            {typeof item === 'object' ? item.component || item.text : item}
         </div>
     );
 };
 
 const ListItems = React.forwardRef<HTMLDivElement, TListItems>((props, ref) => {
     const { active_index, list_items, is_object_list, onItemSelection, setActiveIndex, not_found_text } = props;
-    const is_grouped_list = list_items.some(list_item => !!list_item.group);
+    const is_grouped_list = list_items.some(list_item => typeof list_item === 'object' && !!list_item.group);
 
     if (is_grouped_list) {
         const groups: { [key: string]: TItem[] } = {};
 
         list_items.forEach(list_item => {
-            const group = list_item.group || '?';
+            const group = (typeof list_item === 'object' && list_item.group) || '?';
             if (!groups[group]) {
                 groups[group] = [];
             }
@@ -110,7 +111,7 @@ const ListItems = React.forwardRef<HTMLDivElement, TListItems>((props, ref) => {
                                         onItemSelection={onItemSelection}
                                         setActiveIndex={setActiveIndex}
                                         is_object_list={is_object_list}
-                                        is_disabled={item.disabled === 'DISABLED'}
+                                        is_disabled={typeof item === 'object' && item.disabled === 'DISABLED'}
                                         child_ref={item_idx === active_index ? ref : null}
                                     />
                                 );
@@ -146,14 +147,8 @@ const ListItems = React.forwardRef<HTMLDivElement, TListItems>((props, ref) => {
 });
 ListItems.displayName = 'ListItems';
 
-type TRef = {
-    dropdown_ref: React.RefObject<HTMLDivElement & SVGSVGElement> | null;
-    list_item_ref: React.RefObject<HTMLDivElement>;
-    list_wrapper_ref: React.RefObject<HTMLDivElement>;
-};
-
-const DropdownList = React.forwardRef<TRef, TDropDownList>((props, ref) => {
-    const { dropdown_ref, list_item_ref, list_wrapper_ref } = ref as unknown as TRef;
+const DropdownList = (props: TDropDownList) => {
+    const { dropdown_ref, list_item_ref, list_wrapper_ref } = props.dropdown_refs || {};
     const {
         active_index,
         is_visible,
@@ -221,7 +216,7 @@ const DropdownList = React.forwardRef<TRef, TDropDownList>((props, ref) => {
         return container && ReactDOM.createPortal(el_dropdown_list, container);
     }
     return el_dropdown_list;
-});
+};
 
 DropdownList.displayName = 'DropdownList';
 

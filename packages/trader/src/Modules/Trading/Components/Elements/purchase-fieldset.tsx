@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
+import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info';
 import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button';
 import CancelDealInfo from '../Form/Purchase/cancel-deal-info';
 import { TProposalTypeInfo } from 'Types';
@@ -24,6 +24,7 @@ type TPurchaseFieldset = {
     is_proposal_empty: boolean;
     is_proposal_error: boolean;
     is_vanilla: boolean;
+    is_turbos: boolean;
     onClickPurchase: (proposal_id: string, price: string | number, type: string) => void;
     onHoverPurchase: (is_over: boolean, contract_type: string) => void;
     purchased_states_arr: boolean[];
@@ -48,6 +49,7 @@ const PurchaseFieldset = ({
     is_vanilla,
     is_proposal_empty,
     is_proposal_error,
+    is_turbos,
     purchased_states_arr,
     onClickPurchase,
     onHoverPurchase,
@@ -76,6 +78,7 @@ const PurchaseFieldset = ({
                 is_multiplier={is_multiplier}
                 is_vanilla={is_vanilla}
                 is_proposal_empty={is_proposal_empty}
+                is_turbos={is_turbos}
                 purchased_states_arr={purchased_states_arr}
                 onClickPurchase={onClickPurchase}
                 setPurchaseState={setPurchaseState}
@@ -95,6 +98,7 @@ const PurchaseFieldset = ({
         <Fieldset
             className={classNames('trade-container__fieldset', 'purchase-container__option', {
                 'purchase-container__option--has-cancellation': has_cancellation,
+                'purchase-container__option--turbos': is_turbos,
             })}
         >
             <DesktopWrapper>
@@ -111,6 +115,7 @@ const PurchaseFieldset = ({
                             has_increased={info.has_increased}
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}
+                            is_turbos={is_turbos}
                             is_vanilla={is_vanilla}
                             should_fade={should_fade}
                             type={type}

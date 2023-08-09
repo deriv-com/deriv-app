@@ -24,7 +24,9 @@ import 'Sass/app/_common/mobile-widget.scss';
 import classNames from 'classnames';
 import AccumulatorsStats from 'Modules/Contract/Components/AccumulatorsStats';
 import Strike from 'Modules/Trading/Components/Form/TradeParams/strike.jsx';
-import VanillaTradeTypes from 'Modules/Trading/Components/Form/TradeParams/vanilla-trade-types.jsx';
+import BarrierSelector from 'Modules/Trading/Components/Form/TradeParams/Turbos/barrier-selector';
+import PayoutPerPointMobile from 'Modules/Trading/Components/Elements/payout-per-point-mobile';
+import TradeTypeTabs from 'Modules/Trading/Components/Form/TradeParams/trade-type-tabs';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
@@ -35,8 +37,9 @@ const CollapsibleTradeParams = ({
     previous_symbol,
     is_allow_equal,
     is_accumulator,
-    is_trade_params_expanded,
     is_multiplier,
+    is_trade_params_expanded,
+    is_turbos,
     is_vanilla,
     onChange,
     take_profit,
@@ -65,8 +68,8 @@ const CollapsibleTradeParams = ({
             <div className='trade-params__contract-type-container'>
                 <ContractType />
                 {is_multiplier && <MultiplierOptionsWidget />}
+                {isVisible('trade_type_tabs') && <TradeTypeTabs />}
                 {is_accumulator && <AccumulatorOptionsWidget />}
-                {is_vanilla && <VanillaTradeTypes />}
             </div>
             {isVisible('last_digit') && (
                 <div data-collapsible='true'>
@@ -76,6 +79,11 @@ const CollapsibleTradeParams = ({
             {isVisible('barrier') && (
                 <div data-collapsible='true'>
                     <BarrierMobile />
+                </div>
+            )}
+            {isVisible('barrier_selector') && (
+                <div data-collapsible='true'>
+                    <BarrierSelector />
                 </div>
             )}
             {isVisible('strike') && (
@@ -90,7 +98,7 @@ const CollapsibleTradeParams = ({
                     <AllowEqualsMobile />
                 </div>
             )}
-            {is_multiplier && (
+            {(is_multiplier || is_turbos) && (
                 <div data-collapsible='true'>
                     <RiskManagementInfo />
                 </div>
@@ -113,13 +121,15 @@ const CollapsibleTradeParams = ({
                     <AccumulatorsInfoDisplay />
                 </div>,
             ]}
-            {is_vanilla ? (
+            {(is_turbos || is_vanilla) && <PayoutPerPointMobile />}
+            <div
+                className={classNames({
+                    'purchase-container': !is_vanilla,
+                    [`purchase-container__${is_accumulator ? 'accumulator' : 'turbos'}`]: is_accumulator || is_turbos,
+                })}
+            >
                 <Purchase />
-            ) : (
-                <div className={`purchase-container${is_accumulator ? '--accumulator' : ''}`}>
-                    <Purchase />
-                </div>
-            )}
+            </div>
         </Collapsible>
     );
 };
@@ -129,6 +139,7 @@ const ScreenSmall = observer(({ is_trade_enabled }) => {
     const {
         is_accumulator,
         is_multiplier,
+        is_turbos,
         is_vanilla,
         duration_unit,
         contract_types_list,
@@ -148,6 +159,7 @@ const ScreenSmall = observer(({ is_trade_enabled }) => {
     const collapsible_trade_params_props = {
         is_accumulator,
         is_multiplier,
+        is_turbos,
         is_vanilla,
         form_components,
         has_take_profit,

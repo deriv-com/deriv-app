@@ -1,5 +1,13 @@
 import { PriceProposalResponse, Proposal } from '@deriv/api-types';
-import { convertToUnix, getDecimalPlaces, getPropertyValue, isAccumulatorContract, toMoment } from '@deriv/shared';
+import {
+    convertToUnix,
+    getDecimalPlaces,
+    getLocalizedBasis,
+    getPropertyValue,
+    isAccumulatorContract,
+    isTurbosContract,
+    toMoment,
+} from '@deriv/shared';
 import { TError, TTradeStore } from 'Types';
 
 type TObjContractBasis = {
@@ -56,9 +64,13 @@ export const getProposalInfo = (
     const stake = proposal.display_value;
     const basis_list = store.basis_list;
 
-    const contract_basis: TObjContractBasis | undefined = store.is_vanilla
-        ? { text: 'Payout', value: 'display_number_of_contracts' }
-        : basis_list.find(o => o.value !== store.basis) || ({} as TObjContractBasis);
+    const contract_basis: TObjContractBasis | undefined =
+        store.is_vanilla || store.is_turbos
+            ? {
+                  text: store.is_vanilla ? getLocalizedBasis().payout : getLocalizedBasis().payout_per_point,
+                  value: 'display_number_of_contracts',
+              }
+            : basis_list.find(o => o.value !== store.basis) || ({} as TObjContractBasis);
 
     const is_stake = contract_basis?.value === 'stake';
 
@@ -147,6 +159,7 @@ const createProposalRequestForContract = (store: TTradeStore, type_of_contract: 
     const obj_accumulator: TObjAccum = {};
     const obj_expiry: TObjExpiry = {};
     const obj_multiplier: TObjMultiplier = {};
+    let limit_order;
 
     if (store.expiry_type === 'endtime' && store.expiry_time) {
         const expiry_date = toMoment(store.expiry_date);
@@ -159,6 +172,10 @@ const createProposalRequestForContract = (store: TTradeStore, type_of_contract: 
 
     if (store.contract_type === 'accumulator') {
         setProposalAccumulator(store, obj_accumulator);
+    }
+
+    if (isTurbosContract(store.contract_type) && store.has_take_profit && store.take_profit) {
+        limit_order = { take_profit: +store.take_profit || 0 };
     }
 
     return {
@@ -183,5 +200,6 @@ const createProposalRequestForContract = (store: TTradeStore, type_of_contract: 
         ...(store.barrier_count === 2 && !isAccumulatorContract(type_of_contract) && { barrier2: store.barrier_2 }),
         ...obj_accumulator,
         ...obj_multiplier,
+        limit_order,
     };
 };

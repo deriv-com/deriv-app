@@ -1,18 +1,11 @@
 import React from 'react';
-import {
-    getContractTypePosition,
-    getSupportedContracts,
-    isAccumulatorContract,
-    isEmptyObject,
-    isMobile,
-} from '@deriv/shared';
+import { getContractTypePosition, getSupportedContracts, isAccumulatorContract, isEmptyObject } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import PurchaseButtonsOverlay from 'Modules/Trading/Components/Elements/purchase-buttons-overlay.jsx';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
 import { TProposalTypeInfo } from 'Types';
-import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 
 type TGetSupportedContractsKey = keyof ReturnType<typeof getSupportedContracts>;
 
@@ -42,6 +35,7 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) 
         growth_rate,
         has_cancellation,
         is_purchase_enabled,
+        is_turbos,
         is_vanilla,
         onPurchase: onClickPurchase,
         onHoverPurchase,
@@ -69,44 +63,31 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) 
         const is_proposal_error =
             is_multiplier || (is_accumulator && !is_mobile) ? is_accum_or_mult_error : info?.has_error;
         const purchase_fieldset = (
-            <div className='trade-params--mobile__payout-container'>
-                {is_vanilla && isMobile() && (
-                    <ContractInfo
-                        basis={basis}
-                        currency={currency}
-                        has_increased={info?.has_increased}
-                        is_loading={isLoading(info)}
-                        is_multiplier={is_multiplier}
-                        is_vanilla={is_vanilla}
-                        proposal_info={info}
-                        type={type}
-                    />
-                )}
-                <PurchaseFieldset
-                    basis={basis}
-                    buy_info={purchase_info}
-                    currency={currency}
-                    info={info}
-                    key={type}
-                    index={getSortedIndex(type, index)}
-                    growth_rate={growth_rate}
-                    has_cancellation={has_cancellation}
-                    is_disabled={is_disabled}
-                    is_accumulator={is_accumulator}
-                    is_high_low={is_high_low}
-                    is_loading={isLoading(info)}
-                    is_market_closed={is_market_closed}
-                    is_multiplier={is_multiplier}
-                    is_vanilla={is_vanilla}
-                    is_proposal_empty={is_proposal_empty}
-                    is_proposal_error={!!is_proposal_error}
-                    purchased_states_arr={purchased_states_arr}
-                    onHoverPurchase={onHoverPurchase}
-                    onClickPurchase={onClickPurchase}
-                    setPurchaseState={setPurchaseState}
-                    type={type}
-                />
-            </div>
+            <PurchaseFieldset
+                basis={basis}
+                buy_info={purchase_info}
+                currency={currency}
+                growth_rate={growth_rate}
+                info={info}
+                key={type}
+                index={getSortedIndex(type, index)}
+                has_cancellation={has_cancellation}
+                is_accumulator={is_accumulator}
+                is_disabled={is_disabled}
+                is_high_low={is_high_low}
+                is_loading={isLoading(info)}
+                is_market_closed={is_market_closed}
+                is_multiplier={is_multiplier}
+                is_turbos={is_turbos}
+                is_vanilla={is_vanilla}
+                is_proposal_empty={is_proposal_empty}
+                is_proposal_error={!!is_proposal_error}
+                purchased_states_arr={purchased_states_arr}
+                onHoverPurchase={onHoverPurchase}
+                onClickPurchase={onClickPurchase}
+                setPurchaseState={setPurchaseState}
+                type={type}
+            />
         );
 
         if (!is_vanilla && getContractTypePosition(type as TGetSupportedContractsKey) === 'top') {

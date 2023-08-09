@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes, Text } from '@deriv/components';
-import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
+import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info';
 import { getContractTypeDisplay, getGrowthRatePercentage } from '@deriv/shared';
 import { TProposalTypeInfo } from 'Types';
 
@@ -20,6 +20,7 @@ type TPurchaseButton = {
     is_multiplier: boolean;
     is_proposal_empty: boolean;
     is_vanilla: boolean;
+    is_turbos: boolean;
     onClickPurchase: (proposal_id: string, price: string | number, type: string) => void;
     purchased_states_arr: boolean[];
     should_fade: boolean;
@@ -66,6 +67,7 @@ const PurchaseButton = ({
     is_multiplier,
     is_vanilla,
     is_proposal_empty,
+    is_turbos,
     purchased_states_arr,
     setPurchaseState,
     should_fade,
@@ -89,7 +91,7 @@ const PurchaseButton = ({
                 <Money amount={info.stake} currency={currency} show_currency />
             </Text>
         );
-    } else if (!is_vanilla) {
+    } else if (!is_vanilla && !is_turbos) {
         button_value = (
             <Text size='xs' weight='bold' color='colored-background'>
                 {!(is_loading || is_disabled) ? non_multiplier_info_right : ''}
@@ -111,6 +113,7 @@ const PurchaseButton = ({
                 'btn-purchase--accumulator': is_accumulator,
                 'btn-purchase--multiplier': is_multiplier,
                 'btn-purchase--multiplier-deal-cancel': has_deal_cancellation,
+                'btn-purchase--turbos': is_turbos,
                 'btn-purchase--1__vanilla-opts': index === 0 && is_vanilla,
                 'btn-purchase--2__vanilla-opts': index === 1 && is_vanilla,
             })}
@@ -152,7 +155,7 @@ const PurchaseButton = ({
                         is_high_low={is_high_low}
                     />
                 </div>
-                {!is_vanilla && (
+                {!is_turbos && !is_vanilla && (
                     <div className='btn-purchase__bottom'>
                         <ContractInfo
                             basis={basis}
@@ -162,6 +165,7 @@ const PurchaseButton = ({
                             is_accumulator={is_accumulator}
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}
+                            is_turbos={is_turbos}
                             should_fade={should_fade}
                             proposal_info={info}
                             type={type}

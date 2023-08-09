@@ -1,13 +1,15 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { shouldShowCancellation, shouldShowExpiration } from '../contract';
+import { shouldShowCancellation, shouldShowExpiration, TURBOS } from '../contract';
 
 export const getLocalizedBasis = () =>
     ({
         accumulator: localize('Accumulator'),
         payout: localize('Payout'),
+        payout_per_point: localize('Payout per point'),
         stake: localize('Stake'),
         multiplier: localize('Multiplier'),
+        turbos: localize('Turbos'),
     } as const);
 
 /**
@@ -145,11 +147,25 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         ],
         config: { hide_duration: true },
     }, // hide Duration for Multiplier contracts for now
+    turboslong: {
+        title: localize('Long/Short'),
+        trade_types: ['TURBOSLONG'],
+        basis: ['stake'],
+        barrier_count: 1,
+        components: ['trade_type_tabs', 'barrier_selector', 'take_profit'],
+    },
+    turbosshort: {
+        title: localize('Long/Short'),
+        trade_types: ['TURBOSSHORT'],
+        basis: ['stake'],
+        barrier_count: 1,
+        components: ['trade_type_tabs', 'barrier_selector', 'take_profit'],
+    },
     vanilla: {
         title: localize('Call/Put'),
         trade_types: ['VANILLALONGCALL', 'VANILLALONGPUT'],
         basis: ['stake'],
-        components: ['duration', 'strike', 'amount', 'vanilla_trade_type'],
+        components: ['duration', 'strike', 'amount', 'trade_type_tabs'],
         barrier_count: 1,
         config: { should_override: true },
     },
@@ -158,6 +174,7 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
 // Config for rendering trade options
 export const getContractCategoriesConfig = () =>
     ({
+        Turbos: { name: localize('Turbos'), categories: [TURBOS.LONG, TURBOS.SHORT] },
         Multipliers: { name: localize('Multipliers'), categories: ['multiplier'] },
         'Ups & Downs': {
             name: localize('Ups & Downs'),
@@ -188,6 +205,7 @@ export const unsupported_contract_types_list = [
 export const getCardLabels = () =>
     ({
         APPLY: localize('Apply'),
+        BARRIER: localize('Barrier:'),
         BUY_PRICE: localize('Buy price:'),
         CANCEL: localize('Cancel'),
         CLOSE: localize('Close'),
@@ -455,6 +473,16 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
         },
         MULTDOWN: {
             name: localize('Down'),
+            position: 'bottom',
+        },
+        TURBOSLONG: {
+            name: localize('Turbos'),
+            button_name: localize('Long'),
+            position: 'top',
+        },
+        TURBOSSHORT: {
+            name: localize('Turbos'),
+            button_name: localize('Short'),
             position: 'bottom',
         },
         VANILLALONGCALL: {

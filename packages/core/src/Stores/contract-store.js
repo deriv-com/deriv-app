@@ -1,10 +1,12 @@
 import { action, extendObservable, observable, toJS, makeObservable, runInAction } from 'mobx';
 import {
+    isAccumulatorContract,
+    isDigitContract,
     isEnded,
     isEqualObject,
-    isAccumulatorContract,
     isMultiplierContract,
-    isDigitContract,
+    isOpen,
+    isTurbosContract,
     getDigitInfo,
     getDisplayStatus,
     WS,
@@ -17,7 +19,6 @@ import {
     getAccuBarriersDefaultTimeout,
     getAccuBarriersForContractDetails,
     getEndTime,
-    isOpen,
 } from '@deriv/shared';
 import { getChartConfig } from './Helpers/logic';
 import { setLimitOrderBarriers, getLimitOrder } from './Helpers/limit-orders';
@@ -139,8 +140,9 @@ export default class ContractStore extends BaseStore {
 
         const is_multiplier = isMultiplierContract(this.contract_info.contract_type);
         const is_accumulator = isAccumulatorContract(this.contract_info.contract_type);
+        const is_turbos = isTurbosContract(this.contract_info.contract_type);
 
-        if ((is_accumulator || is_multiplier) && contract_info.contract_id && contract_info.limit_order) {
+        if ((is_accumulator || is_multiplier || is_turbos) && contract_info.contract_id && contract_info.limit_order) {
             this.populateContractUpdateConfig(this.contract_info);
         }
     }
@@ -302,9 +304,11 @@ export default class ContractStore extends BaseStore {
     }
 
     updateLimitOrder() {
-        const limit_order = isAccumulatorContract(this.contract_info.contract_type)
-            ? { take_profit: getLimitOrder(this).take_profit }
-            : getLimitOrder(this);
+        const limit_order =
+            isAccumulatorContract(this.contract_info.contract_type) ||
+            isTurbosContract(this.contract_info.contract_type)
+                ? { take_profit: getLimitOrder(this).take_profit }
+                : getLimitOrder(this);
 
         WS.contractUpdate(this.contract_id, limit_order).then(response => {
             if (response.error) {

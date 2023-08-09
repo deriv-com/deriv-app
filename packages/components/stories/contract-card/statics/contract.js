@@ -2,6 +2,7 @@ import { localize } from '@deriv/translations';
 
 export const getCardLabels = () => ({
     APPLY: 'Apply',
+    BARRIER: 'Barrier:',
     STAKE: 'Stake:',
     CLOSE: 'Close',
     CANCEL: 'Cancel',
@@ -233,6 +234,16 @@ export const getSupportedContracts = is_high_low => ({
     },
     MULTDOWN: {
         name: 'Down',
+        position: 'bottom',
+    },
+    TURBOSLONG: {
+        button_name: 'Long',
+        name: 'Turbos',
+        position: 'top',
+    },
+    TURBOSSHORT: {
+        button_name: 'Short',
+        name: 'Turbos',
         position: 'bottom',
     },
     RUNHIGH: {

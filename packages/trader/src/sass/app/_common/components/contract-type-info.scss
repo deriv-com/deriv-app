@@ -101,11 +101,16 @@
                 margin-bottom: 1.6rem;
             }
             /* postcss-bem-linter: ignore */
+            h6,
+            span {
+                @include typeface(--small-left-bold-black, none);
+            }
             p,
             ul li {
                 @include typeface(--small-left-normal-black, none);
             }
             h2,
+            h6,
             p,
             ul li {
                 line-height: 1.5;
@@ -121,11 +126,13 @@
         margin-bottom: 1.6rem;
 
         @include mobile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 32.8rem;
             height: 16.4rem;
             background-color: var(--general-section-1);
             svg {
-                width: 100%;
                 height: 100%;
             }
         }

@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { FormikConfirmationCheckbox } from '../formik-confirmation-checkbox';
-import { Formik, Form } from 'formik'; // Import Formik and Form
+import { Formik, Form } from 'formik';
 
 describe('ConfirmationCheckbox', () => {
-    const props = {
+    const props: React.ComponentProps<typeof FormikConfirmationCheckbox> = {
         confirmed: true,
         setConfirmed: jest.fn(),
         label: 'I confirm my details are correct.',

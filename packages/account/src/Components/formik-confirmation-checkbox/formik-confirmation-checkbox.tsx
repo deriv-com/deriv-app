@@ -28,35 +28,7 @@ type TConfirmationCheckboxProps = {
  * and conditions. It also allows displaying an optional description next to the checkbox.
  *
  * @name FormikConfirmationCheckbox
- * @param props - props of the confirmation checkbox
- * @param {boolean} props.confirmed - A boolean value indicating whether the checkbox is confirmed or not
- * @param {function} props.setConfirmed - A React.SetStateAction function to update the state of the confirmation checkbox
- * @param {string} props.label - The label to be displayed next to the confirmation checkbox
  * @returns {JSX.Element} React component that renders a checkbox with a label
- *
- * @example
- * // Import the component
- * import FormikConfirmationCheckbox from './FormikConfirmationCheckbox';
- * import { Formik, Form } from 'formik';
- *
- * // Inside a form component
- * const MyForm = () => {
- *     const [isConfirmed, setIsConfirmed] = useState(false);
- *
- *     // Your form logic and onSubmit handler
- *
- *     return (
- *         <Formik ...>
- *             <Form>
- *                <FormikConfirmationCheckbox
- *                  confirmed={isConfirmed}
- *                  setConfirmed={setIsConfirmed}
- *                  label={localize("I confirm my details are correct.")}
- *                />
- *             </Form>
- *         </Formik>
- *     );
- * };
  */
 export const FormikConfirmationCheckbox = ({
     confirmed,

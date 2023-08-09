@@ -111,6 +111,7 @@ export default class TradersHubStore extends BaseStore {
             showTopUpModal: action.bound,
             toggleWalletsUpgrade: action.bound,
             setWalletsMigrationFailedPopup: action.bound,
+            getShortCodeAndRegion: action.bound,
             is_wallet_tour_open: observable,
             toggleIsWalletTourOpen: action.bound,
         });

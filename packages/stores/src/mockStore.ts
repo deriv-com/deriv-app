@@ -270,6 +270,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setAppstorePlatform: jest.fn(),
             app_routing_history: [],
             getExchangeRate: jest.fn(),
+            network_status: {},
         },
         ui: {
             app_contents_scroll_ref: {

@@ -15,7 +15,13 @@ import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import CurrencySelectionModal from '../../CurrencySelectionModal';
 import AccountInfo from 'App/Components/Layout/Header/account-info';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
-import { useIsRealAccountNeededForCashier, useWalletMigration } from '@deriv/hooks';
+import {
+    useActiveWallet,
+    useFeatureFlags,
+    useIsRealAccountNeededForCashier,
+    useWalletsList,
+    useWalletMigration,
+} from '@deriv/hooks';
 
 const Divider = () => {
     return <div className='trading-hub-header__divider' />;
@@ -45,8 +51,38 @@ export const TradersHubHomeButton = ({ is_dark_mode }) => {
     );
 };
 
-const TradingHubOnboarding = ({ is_dark_mode, setIsOnboardingVisited }) => {
+const TradingHubOnboarding = ({
+    is_dark_mode,
+    is_landing_company_loaded,
+    is_logged_in,
+    is_switching,
+    is_wallet_modal_visible,
+    setIsOnboardingVisited,
+    setIsWalletModalVisible,
+    switchAccount,
+    toggleIsWalletTourOpen,
+}) => {
     const history = useHistory();
+
+    const { data } = useWalletsList();
+    const { is_wallet_enabled } = useFeatureFlags();
+    const wallet_account = useActiveWallet();
+
+    const first_loginid = data?.[0]?.loginid;
+
+    const handleSwitchAndToggle = async () => {
+        // if the modal is open, then close it and open the tour
+        if (is_wallet_modal_visible) await setIsWalletModalVisible(false);
+        // switch to the first account when the tour is opened
+        if (wallet_account?.loginid !== first_loginid) {
+            await switchAccount(first_loginid);
+        }
+        // open the tour
+        if (!is_switching && is_logged_in && is_landing_company_loaded) {
+            toggleIsWalletTourOpen(true);
+        }
+    };
+
     return (
         <div className='trading-hub-header__tradinghub--onboarding'>
             <div className='trading-hub-header__tradinghub--onboarding--logo'>
@@ -61,8 +97,12 @@ const TradingHubOnboarding = ({ is_dark_mode, setIsOnboardingVisited }) => {
                         icon={is_dark_mode ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
                         size={20}
                         onClick={() => {
-                            history.push(routes.onboarding);
-                            setIsOnboardingVisited(false);
+                            if (data?.length > 0 && is_wallet_enabled) {
+                                handleSwitchAndToggle();
+                            } else {
+                                history.push(routes.onboarding);
+                                setIsOnboardingVisited(false);
+                            }
                         }}
                     />
                 </Popover>
@@ -85,7 +125,15 @@ const ShowNotifications = ({ is_notifications_visible, notifications_count, togg
 };
 
 const TradingHubHeader = ({
+    acc_switcher_disabled_message,
+    account_type,
+    balance,
+    country_standpoint,
+    currency,
+    has_any_real_account,
     header_extension,
+    is_acc_switcher_disabled,
+    is_acc_switcher_on,
     is_app_disabled,
     is_dark_mode,
     is_eu_country,
@@ -94,26 +142,24 @@ const TradingHubHeader = ({
     is_mt5_allowed,
     is_notifications_visible,
     is_route_modal_on,
+    is_switching,
+    is_virtual,
+    is_wallet_modal_visible,
     loginid,
     modal_data,
     notifications_count,
     platform,
     setIsOnboardingVisited,
-    toggleIsTourOpen,
-    toggleNotifications,
-    acc_switcher_disabled_message,
-    account_type,
-    balance,
-    is_acc_switcher_disabled,
-    is_virtual,
-    currency,
-    country_standpoint,
-    is_acc_switcher_on,
-    toggleAccountsDialog,
-    has_any_real_account,
-    toggleReadyToDepositModal,
-    toggleNeedRealAccountForCashierModal,
+    setIsWalletModalVisible,
     setWalletsMigrationInProgressPopup,
+    switchAccount,
+    toggleAccountsDialog,
+    toggleIsTourOpen,
+    toggleIsWalletTourOpen,
+    toggleNeedRealAccountForCashierModal,
+    toggleNotifications,
+    toggleReadyToDepositModal,
+    is_landing_company_loaded,
 }) => {
     const { pathname } = useLocation();
     const cashier_routes = pathname.startsWith(routes.cashier);
@@ -249,7 +295,14 @@ const TradingHubHeader = ({
                         <div className='trading-hub-header__menu-right--items--onboarding'>
                             <TradingHubOnboarding
                                 is_dark_mode={is_dark_mode}
+                                is_logged_in={is_logged_in}
+                                is_switching={is_switching}
+                                is_wallet_modal_visible={is_wallet_modal_visible}
                                 setIsOnboardingVisited={setIsOnboardingVisited}
+                                setIsWalletModalVisible={setIsWalletModalVisible}
+                                switchAccount={switchAccount}
+                                toggleIsWalletTourOpen={toggleIsWalletTourOpen}
+                                is_landing_company_loaded={is_landing_company_loaded}
                             />
                         </div>
                         <div className='trading-hub-header__menu-right--items--notifications'>
@@ -339,7 +392,13 @@ TradingHubHeader.propTypes = {
     has_any_real_account: PropTypes.bool,
     toggleReadyToDepositModal: PropTypes.func,
     toggleNeedRealAccountForCashierModal: PropTypes.func,
+    is_wallet_modal_visible: PropTypes.bool,
+    setIsWalletModalVisible: PropTypes.func,
+    switchAccount: PropTypes.func,
+    toggleIsWalletTourOpen: PropTypes.func,
     setWalletsMigrationInProgressPopup: PropTypes.func,
+    is_switching: PropTypes.bool,
+    is_landing_company_loaded: PropTypes.bool,
 };
 
 export default connect(({ client, common, notifications, ui, traders_hub }) => ({
@@ -371,5 +430,11 @@ export default connect(({ client, common, notifications, ui, traders_hub }) => (
     toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
     toggleNeedRealAccountForCashierModal: ui.toggleNeedRealAccountForCashierModal,
     content_flag: traders_hub.content_flag,
+    is_wallet_modal_visible: ui.is_wallet_modal_visible,
+    setIsWalletModalVisible: ui.setIsWalletModalVisible,
+    switchAccount: client.switchAccount,
+    toggleIsWalletTourOpen: traders_hub.toggleIsWalletTourOpen,
     setWalletsMigrationInProgressPopup: client.setWalletsMigrationInProgressPopup,
+    is_switching: client.is_switching,
+    is_landing_company_loaded: client.is_landing_company_loaded,
 }))(withRouter(TradingHubHeader));

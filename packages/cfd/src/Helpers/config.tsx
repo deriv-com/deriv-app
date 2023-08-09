@@ -108,19 +108,18 @@ export const PlatformsDesktopDownload = ({
                 target='_blank'
                 rel='noopener noreferrer'
             >
-                {platform !== CFD_PLATFORMS.CTRADER && (
-                    <Icon
-                        className='cfd-trade-modal__platform-button-icon'
-                        icon={`IcBrand${platformsIcons(platform)}Wordmark`}
-                        size={36}
-                    />
-                )}
-                {platform === CFD_PLATFORMS.CTRADER && (
+                {platform === CFD_PLATFORMS.CTRADER ? (
                     <Icon
                         className='cfd-trade-modal__platform-button-icon'
                         icon={`IcBrand${platformsIcons(platform)}Wordmark`}
                         width={60}
                         height={30}
+                    />
+                ) : (
+                    <Icon
+                        className='cfd-trade-modal__platform-button-icon'
+                        icon={`IcBrand${platformsIcons(platform)}Wordmark`}
+                        size={36}
                     />
                 )}
                 <div className='cfd-trade-modal__platform-button-text'>

@@ -102,6 +102,10 @@ const DerivPassword = ({
                             {brand_website_name}
                         </Text>
                     </div>
+
+                    {
+                        //TODO reuse this piece of code in future by mapping through the platforms.
+                    }
                     <div className='passwords-platform__icons'>
                         <Popover alignment='bottom' message={platform_name_trader}>
                             <Icon

@@ -130,7 +130,7 @@ export interface AvailableAccount {
     description?: string;
     is_visible?: boolean;
     is_disabled?: boolean;
-    platform?: string;
+    platform?: TPlatform;
     market_type?: 'all' | 'financial' | 'synthetic';
     icon: keyof typeof PlatformIcons;
     availability: RegionAvailability;

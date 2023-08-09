@@ -252,7 +252,7 @@ const CFDsListing = () => {
                 <PlatformLoader />
             )}
 
-            {!is_eu_user && (
+            {!is_eu_user && !is_real && (
                 <div className='cfd-full-row'>
                     <hr className='divider' />
                 </div>

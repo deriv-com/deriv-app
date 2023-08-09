@@ -20,6 +20,7 @@ const BuySellModalTitle = () => {
                 <React.Fragment>
                     <Icon
                         icon='IcArrowLeftBold'
+                        data_testid='dt-buy-sell-modal-back-icon'
                         onClick={() => {
                             if (general_store.is_form_modified) {
                                 showModal({

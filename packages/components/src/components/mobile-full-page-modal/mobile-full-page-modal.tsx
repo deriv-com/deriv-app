@@ -14,7 +14,7 @@ type TMobileFullPageModal = {
     height_offset?: string;
     is_flex?: boolean;
     is_modal_open: boolean;
-    onClickClose: (event: MouseEvent) => void;
+    onClickClose?: (event: MouseEvent) => void;
     pageHeaderReturnFn?: () => void;
     renderPageFooterChildren?: () => React.ReactNode;
     page_footer_className?: string;
@@ -40,7 +40,9 @@ const MobileFullPageModal = ({
     is_flex,
     is_popup,
     is_modal_open,
-    onClickClose,
+    onClickClose = () => {
+        // do nothing
+    },
     renderPageFooterChildren,
     page_footer_className,
     page_footer_parent,

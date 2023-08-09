@@ -11,6 +11,7 @@ type TBuySellModalFooterProps = {
 
 const BuySellModalFooter = ({ is_submit_disabled, onCancel, onSubmit }: TBuySellModalFooterProps) => {
     const { my_profile_store } = useStores();
+
     return (
         <div
             className={

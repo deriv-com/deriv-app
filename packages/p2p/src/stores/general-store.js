@@ -28,6 +28,7 @@ export default class GeneralStore extends BaseStore {
     external_stores = {};
     feature_level = null;
     formik_ref = null;
+    history = null;
     inactive_notification_count = 0;
     is_advertiser = false;
     is_advertiser_blocked = null;
@@ -41,6 +42,7 @@ export default class GeneralStore extends BaseStore {
     is_modal_open = false;
     is_p2p_blocked_for_pa = false;
     is_restricted = false;
+    location = null;
     nickname = null;
     nickname_error = '';
     order_table_type = order_list.ACTIVE;
@@ -91,6 +93,7 @@ export default class GeneralStore extends BaseStore {
             feature_level: observable,
             formik_ref: observable,
             error_code: observable,
+            history: observable,
             inactive_notification_count: observable,
             is_advertiser: observable,
             is_advertiser_blocked: observable,
@@ -103,6 +106,7 @@ export default class GeneralStore extends BaseStore {
             is_loading: observable,
             is_p2p_blocked_for_pa: observable,
             is_restricted: observable,
+            location: observable,
             nickname: observable,
             nickname_error: observable,
             order_table_type: observable,
@@ -147,6 +151,7 @@ export default class GeneralStore extends BaseStore {
             setExternalStores: action.bound,
             setFeatureLevel: action.bound,
             setFormikRef: action.bound,
+            setHistory: action.bound,
             setSavedFormState: action.bound,
             saveFormState: action.bound,
             setInactiveNotificationCount: action.bound,
@@ -159,6 +164,7 @@ export default class GeneralStore extends BaseStore {
             setIsP2pBlockedForPa: action.bound,
             setIsRestricted: action.bound,
             setIsModalOpen: action.bound,
+            setLocation: action.bound,
             setNickname: action.bound,
             setNicknameError: action.bound,
             setOrderTableType: action.bound,
@@ -664,6 +670,10 @@ export default class GeneralStore extends BaseStore {
         this.formik_ref = formik_ref;
     }
 
+    setHistory(history) {
+        this.history = history;
+    }
+
     setSavedFormState(saved_form_state) {
         this.saved_form_state = saved_form_state;
     }
@@ -718,6 +728,10 @@ export default class GeneralStore extends BaseStore {
 
     setIsModalOpen(is_modal_open) {
         this.is_modal_open = is_modal_open;
+    }
+
+    setLocation(location) {
+        this.location = location;
     }
 
     setNickname(nickname) {

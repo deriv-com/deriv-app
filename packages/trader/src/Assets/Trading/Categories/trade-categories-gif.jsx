@@ -57,7 +57,7 @@ const TradeCategoriesGIF = ({ category, selected_contract_type }) => {
             return (
                 <ContractTypeDescriptionVideo
                     selected_contract_type={selected_contract_type}
-                    data_testid='description_video'
+                    data_testid='dt-description_video'
                 />
             );
         case 'tick_high_low':
@@ -71,7 +71,7 @@ const TradeCategoriesGIF = ({ category, selected_contract_type }) => {
             return (
                 <ContractTypeDescriptionVideo
                     selected_contract_type={selected_contract_type}
-                    data_testid='description_video'
+                    data_testid='dt-description_video'
                 />
             );
         default:

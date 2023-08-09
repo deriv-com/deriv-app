@@ -8,7 +8,7 @@ import { isMobile } from '@deriv/shared';
 
 const default_mocked_props = {
     selected_contract_type: 'vanilla',
-    data_testid: 'description_video',
+    data_testid: 'dt-description_video',
 };
 
 jest.mock('@deriv/shared', () => ({

@@ -1,37 +1,29 @@
 import React from 'react';
 import classNames from 'classnames';
+import { observer, useStore } from '@deriv/stores';
 import { DBOT_TABS } from 'Constants/bot-contents';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
-
-interface TBotNotificationMessagesProps {
-    is_drawer_open: boolean;
-    active_tab: number;
-    is_info_panel_visible: boolean;
-    Notifications: React.ComponentType;
-}
+import { useDBotStore } from 'Stores/useDBotStore';
 
 const { BOT_BUILDER, CHART } = DBOT_TABS;
 
-const BotNotificationMessages = ({
-    is_drawer_open,
-    Notifications,
-    is_info_panel_visible,
-    active_tab,
-}: TBotNotificationMessagesProps) => (
-    <div
-        className={classNames('notifications-container', {
-            'notifications-container__dashboard': active_tab === 0 && is_info_panel_visible,
-            'notifications-container--panel-open': [BOT_BUILDER, CHART].includes(active_tab) && is_drawer_open,
-        })}
-    >
-        <Notifications />
-    </div>
-);
+const BotNotificationMessages = observer(() => {
+    const { ui } = useStore();
+    const { run_panel, dashboard } = useDBotStore();
 
-export default connect(({ core, run_panel, dashboard }: RootStore) => ({
-    is_drawer_open: run_panel.is_drawer_open,
-    Notifications: core.ui.notification_messages_ui,
-    active_tab: dashboard.active_tab,
-    is_info_panel_visible: dashboard.is_info_panel_visible,
-}))(BotNotificationMessages);
+    const { is_drawer_open } = run_panel;
+    const Notifications = ui.notification_messages_ui;
+    const { active_tab, is_info_panel_visible } = dashboard;
+
+    return (
+        <div
+            className={classNames('notifications-container', {
+                'notifications-container__dashboard': active_tab === 0 && is_info_panel_visible,
+                'notifications-container--panel-open': [BOT_BUILDER, CHART].includes(active_tab) && is_drawer_open,
+            })}
+        >
+            <Notifications />
+        </div>
+    );
+});
+
+export default BotNotificationMessages;

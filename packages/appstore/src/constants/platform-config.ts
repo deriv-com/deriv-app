@@ -84,9 +84,31 @@ export const openStaticPage = (
     availability: RegionAvailability,
     platform: string | undefined,
     icon: BrandConfig['icon'],
-    is_eu_user: boolean
+    is_eu_user: boolean,
+    name: string,
+    is_deriv_platform: boolean
 ) => {
     return () => {
+        if (is_deriv_platform) {
+            switch (name) {
+                case DERIV_PLATFORM_NAMES.TRADER:
+                    window.open(getStaticUrl(`/dtrader`));
+                    break;
+                case DERIV_PLATFORM_NAMES.DBOT:
+                    window.open(getStaticUrl(`/dbot`));
+                    break;
+                case DERIV_PLATFORM_NAMES.SMARTTRADER:
+                    window.open(getUrlSmartTrader());
+                    break;
+                case DERIV_PLATFORM_NAMES.BBOT:
+                    window.open(getUrlBinaryBot());
+                    break;
+                case DERIV_PLATFORM_NAMES.GO:
+                    window.open(getStaticUrl('/deriv-go'));
+                    break;
+                default:
+            }
+        }
         if (platform === CFD_PLATFORMS.MT5 && availability === 'EU')
             window.open(getStaticUrl(`/dmt5`, {}, false, true));
         else if (platform === CFD_PLATFORMS.MT5 && availability !== 'EU') window.open(getStaticUrl(`/dmt5`));
@@ -96,3 +118,12 @@ export const openStaticPage = (
         else;
     };
 };
+
+// The platform names were taken from packages/shared/brand.config.json
+export const DERIV_PLATFORM_NAMES = {
+    TRADER: 'Deriv Trader',
+    DBOT: 'Deriv Bot',
+    SMARTTRADER: 'SmartTrader',
+    BBOT: 'Binary Bot',
+    GO: 'Deriv GO',
+} as const;

@@ -62,17 +62,14 @@ const runCommonFormfieldsTests = () => {
     expect(screen.queryByTestId('tax_residence')).toBeInTheDocument();
     expect(screen.queryByTestId('tax_residence_mobile')).not.toBeInTheDocument();
 
-    expect(screen.getByPlaceholderText(/john/i)).toBeInTheDocument();
     expect(
         screen.getByText(/Please enter your first name as in your official identity documents./i)
     ).toBeInTheDocument();
 
-    expect(screen.getByPlaceholderText('Doe')).toBeInTheDocument();
     expect(
         screen.getByText(/Please enter your last name as in your official identity documents./i)
     ).toBeInTheDocument();
 
-    expect(screen.getByPlaceholderText(/01-07-1999/i)).toBeInTheDocument();
     expect(
         screen.getByText(/Please enter your date of birth as in your official identity documents./i)
     ).toBeInTheDocument();
@@ -88,7 +85,7 @@ const runCommonFormfieldsTests = () => {
 
     expect(screen.getByText(tax_residence_pop_over_text)).toBeInTheDocument();
 
-    expect(screen.getByPlaceholderText(/tax identification number/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/tax identification number/i)).toBeInTheDocument();
     const tax_identification_number_pop_over = screen.queryByTestId('tax_identification_number_pop_over');
     expect(tax_identification_number_pop_over).toBeInTheDocument();
 
@@ -337,7 +334,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText(/family name\*/i)).toBeInTheDocument();
         expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
         expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/phone number\*/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/phone number\*/i)).toBeInTheDocument();
 
         runCommonFormfieldsTests();
     });
@@ -355,7 +352,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText(/last name\*/i)).toBeInTheDocument();
         expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
         expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/phone number\*/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/phone number\*/i)).toBeInTheDocument();
 
         runCommonFormfieldsTests();
     });
@@ -374,7 +371,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText('Last name')).toBeInTheDocument();
         expect(screen.getByText('Date of birth')).toBeInTheDocument();
         expect(screen.getByText('Phone number')).toBeInTheDocument();
-        expect(screen.getByPlaceholderText('Phone number')).toBeInTheDocument();
+        expect(screen.getByLabelText('Phone number')).toBeInTheDocument();
 
         runCommonFormfieldsTests();
     });
@@ -443,7 +440,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.queryByTestId('tax_residence_mobile')).toBeInTheDocument();
         expect(screen.queryByTestId('tax_residence')).not.toBeInTheDocument();
         expect(screen.getByText(/tax identification number/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/tax identification number/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/tax identification number/i)).toBeInTheDocument();
         expect(screen.getByRole('heading', { name: /account opening reason/i })).toBeInTheDocument();
         expect(screen.queryByTestId('dti_dropdown_display')).not.toBeInTheDocument();
         expect(screen.queryByTestId('account_opening_reason_mobile')).toBeInTheDocument();
@@ -743,5 +740,21 @@ describe('<PersonalDetails/>', () => {
         renderwithRouter(<PersonalDetails {...new_props} />);
         const el_tax_residence = screen.getByTestId('selected_value');
         expect(el_tax_residence).toHaveTextContent('Malta');
+    });
+
+    it('should disable tax_residence field if it is immutable from BE', () => {
+        isMobile.mockReturnValue(false);
+        isDesktop.mockReturnValue(true);
+        const new_props = {
+            ...props,
+            is_mf: true,
+            value: {
+                ...props.value,
+                tax_residence: 'France',
+            },
+            disabled_items: ['salutation', 'first_name', 'last_name', 'date_of_birth', 'tax_residence'],
+        };
+        renderwithRouter(<PersonalDetails {...new_props} />);
+        expect(screen.getByTestId('tax_residence')).toBeDisabled();
     });
 });

@@ -17,6 +17,7 @@ export default class TradersHubStore extends BaseStore {
     is_onboarding_visited = false;
     is_failed_verification_modal_visible = false;
     is_regulators_compare_modal_visible = false;
+    is_mt5_notification_modal_visible = false;
     is_tour_open = false;
     is_account_type_modal_visible = false;
     account_type_card = '';
@@ -43,6 +44,7 @@ export default class TradersHubStore extends BaseStore {
             is_account_transfer_modal_open: observable,
             is_account_type_modal_visible: observable,
             is_regulators_compare_modal_visible: observable,
+            is_mt5_notification_modal_visible: observable,
             is_failed_verification_modal_visible: observable,
             is_tour_open: observable,
             modal_data: observable,
@@ -86,8 +88,10 @@ export default class TradersHubStore extends BaseStore {
             show_eu_related_content: computed,
             startTrade: action.bound,
             toggleAccountTransferModal: action.bound,
+            closeAccountTransferModal: action.bound,
             toggleAccountTypeModalVisibility: action.bound,
             setIsOnboardingVisited: action.bound,
+            setMT5NotificationModal: action.bound,
             toggleFailedVerificationModalVisibility: action.bound,
             openFailedVerificationModal: action.bound,
             toggleIsTourOpen: action.bound,
@@ -330,6 +334,10 @@ export default class TradersHubStore extends BaseStore {
         this.is_regulators_compare_modal_visible = !this.is_regulators_compare_modal_visible;
     }
 
+    setMT5NotificationModal(is_visible) {
+        this.is_mt5_notification_modal_visible = is_visible;
+    }
+
     get has_any_real_account() {
         return this.selected_account_type === 'real' && this.root_store.client.has_active_real_account;
     }
@@ -356,7 +364,7 @@ export default class TradersHubStore extends BaseStore {
         };
         const getSwapFreeAccountDesc = () => {
             return localize(
-                'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs.'
+                'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies, and ETFs.'
             );
         };
 
@@ -725,6 +733,10 @@ export default class TradersHubStore extends BaseStore {
                 ];
             }
         });
+    }
+
+    closeAccountTransferModal() {
+        this.is_account_transfer_modal_open = false;
     }
 
     toggleAccountTransferModal() {

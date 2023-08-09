@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { getStatusBadgeConfig } from '@deriv/account';
 import { Text, StatusBadge } from '@deriv/components';
-import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
+import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import { getAppstorePlatforms, getMFAppstorePlatforms, BrandConfig, openStaticPage } from 'Constants/platform-config';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
@@ -61,9 +61,13 @@ const TradingAppCard = observer(
                         'trading-app-card__icon--container__clickable': clickable_icon,
                     })}
                 >
-                    <TradigPlatformIconProps
+                    <TradingPlatformIconProps
                         icon={icon}
-                        onClick={clickable_icon ? openStaticPage(availability, platform, icon, is_eu_user) : undefined}
+                        onClick={
+                            clickable_icon
+                                ? openStaticPage(availability, platform, icon, is_eu_user, name, is_deriv_platform)
+                                : undefined
+                        }
                         size={48}
                     />
                 </div>

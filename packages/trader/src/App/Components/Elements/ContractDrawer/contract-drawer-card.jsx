@@ -44,7 +44,7 @@ const ContractDrawerCard = observer(
         const { getContractById } = contract_trade;
         const [hover_ref, should_hide_closed_overlay] = useHover();
 
-        const { profit, underlying: symbol } = contract_info;
+        const { profit, validation_error } = contract_info;
         const is_sold = !!getEndTime(contract_info);
         const display_name = getSymbolDisplayName(
             active_symbols,
@@ -123,8 +123,8 @@ const ContractDrawerCard = observer(
             >
                 <div
                     className={classNames('dc-contract-card', {
-                        'dc-contract-card--green': is_mobile && !is_multiplier && profit > 0 && !result,
-                        'dc-contract-card--red': is_mobile && !is_multiplier && profit < 0 && !result,
+                        'dc-contract-card--green': profit > 0 && !result,
+                        'dc-contract-card--red': profit < 0 && !result,
                         'contract-card__market-closed--disabled': is_market_closed && should_hide_closed_overlay,
                     })}
                     ref={hover_ref}
@@ -135,7 +135,7 @@ const ContractDrawerCard = observer(
                                 'contract-card__market-closed--hidden': isDesktop() && should_hide_closed_overlay,
                             })}
                         >
-                            <MarketClosedContractOverlay symbol={symbol} />
+                            <MarketClosedContractOverlay validation_error={validation_error} />
                         </div>
                     )}
                     {contract_el}

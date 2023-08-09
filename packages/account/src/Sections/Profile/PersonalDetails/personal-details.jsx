@@ -435,7 +435,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
     const showForm = show_form => setRestState({ show_form });
 
     const isChangeableField = name => {
-        return rest_state.changeable_fields.some(field => field === name);
+        return rest_state.changeable_fields?.some(field => field === name);
     };
 
     const initializeFormValues = () => {
@@ -570,6 +570,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                 'account-form account-form__personal-details--dashboard': is_appstore,
                             })}
                             onSubmit={handleSubmit}
+                            data-testid='dt_account_personal_details_section'
                         >
                             <FormBody scroll_offset={isMobile() ? '199px' : '80px'}>
                                 <FormSubHeader title={localize('Details')} />
@@ -638,6 +639,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                         disabled={!isChangeableField('first_name')}
                                                         error={errors.first_name}
                                                         id='first_name'
+                                                        data-testid='dt_first_name'
                                                     />
                                                     <Input
                                                         id='last_name'
@@ -651,6 +653,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                         required
                                                         disabled={!isChangeableField('last_name')}
                                                         error={errors.last_name}
+                                                        data-testid='dt_last_name'
                                                     />
                                                 </InputGroup>
                                             </DesktopWrapper>
@@ -668,6 +671,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                         required
                                                         disabled={!isChangeableField('first_name')}
                                                         error={errors.first_name}
+                                                        data-testid='dt_first_name'
                                                     />
                                                 </fieldset>
                                                 <fieldset className='account-form__fieldset'>
@@ -683,6 +687,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                         required
                                                         disabled={!isChangeableField('last_name')}
                                                         error={errors.last_name}
+                                                        data-testid='dt_last_name'
                                                     />
                                                 </fieldset>
                                             </MobileWrapper>
@@ -858,6 +863,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                     onBlur={handleBlur}
                                                     required
                                                     error={errors.phone}
+                                                    data-testid='dt_phone'
                                                 />
                                             </fieldset>
                                         </FormBodySection>
@@ -993,6 +999,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                             error={errors.address_line_1}
                                                             required
                                                             disabled={!isChangeableField('address_line_1')}
+                                                            data-testid='dt_address_line_1'
                                                         />
                                                     </fieldset>
                                                     <fieldset className='account-form__fieldset'>
@@ -1026,6 +1033,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                             onBlur={handleBlur}
                                                             required
                                                             disabled={!isChangeableField('address_city')}
+                                                            data-testid='dt_address_city'
                                                         />
                                                     </fieldset>
                                                     <fieldset className='account-form__fieldset'>

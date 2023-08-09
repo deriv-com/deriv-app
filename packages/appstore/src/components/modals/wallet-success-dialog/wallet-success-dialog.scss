@@ -1,0 +1,44 @@
+.wallet-success-dialog {
+    &__icon,
+    &__title,
+    &__description {
+        text-align: center;
+    }
+
+    &__icon {
+        margin: auto;
+        width: fit-content;
+    }
+    &__title {
+        padding-top: 2.5rem;
+    }
+
+    &__description {
+        padding-top: 1.5rem;
+    }
+
+    &__footer {
+        width: 100%;
+        flex-direction: row;
+        justify-content: center;
+        padding: 0;
+        margin-top: 0;
+        padding-bottom: 1rem;
+
+        & .dc-btn {
+            margin: 0.4rem;
+            height: 4rem;
+            border-width: 2px;
+            text-align: center;
+
+            @include mobile {
+                &:first-child {
+                    margin: 0.4rem 1.4rem;
+                }
+                &:last-child {
+                    margin: 0.4rem 1.4rem 0.4rem 0;
+                }
+            }
+        }
+    }
+}

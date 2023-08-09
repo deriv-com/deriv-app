@@ -11,14 +11,11 @@ type TAddWalletCard = {
 };
 
 const AddWalletCard = observer(({ wallet_info }: TAddWalletCard) => {
-    const {
-        ui: { is_dark_mode_on },
-    } = useStore();
-
+    const { ui } = useStore();
+    const { is_dark_mode_on } = ui;
     const { currency, landing_company_name, is_added, gradient_card_class } = wallet_info;
     const { getConfig } = useCurrencyConfig();
     const currency_config = getConfig(currency);
-
     const { mutate: createWallet } = useNewWalletCreation();
 
     const wallet_details = {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import useTransferBetweenAccounts from '../useTransferBetweenAccounts';
-import { StoreProvider, mockStore } from '@deriv/stores';
 import { APIProvider } from '@deriv/api';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -220,26 +220,14 @@ jest.mock('@deriv/api', () => ({
 }));
 
 describe('useTransferBetweenAccounts', () => {
-    let mock_store: ReturnType<typeof mockStore>, wrapper: ({ children }: { children: JSX.Element }) => JSX.Element;
+    const store = mockStore({});
+    const wrapper = ({ children }: { children: JSX.Element }) => (
+        <APIProvider>
+            <StoreProvider store={store}>{children}</StoreProvider>
+        </APIProvider>
+    );
 
-    beforeEach(() => {
-        mock_store = mockStore({
-            client: {
-                loginid: 'CRW1030',
-                accounts: {
-                    CRW1030: {
-                        token: 'token',
-                    },
-                },
-            },
-        });
-
-        wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock_store}>{children}</StoreProvider>
-            </APIProvider>
-        );
-    });
+    // const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
     it('should be correct amount of transfer accounts', () => {
         const {

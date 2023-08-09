@@ -1,0 +1,122 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build_and_deploy:
+    # runs-on: [self-hosted] # Specify the label of your self-hosted runner machine
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        cache-dependency-path: package-lock.json
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Setup Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: List the state of node modules
+        continue-on-error: true
+        run: npm list
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build:all
+
+      - name: "Check TypeScript for @deriv/api"
+        run: npx tsc --project packages/api/tsconfig.json -noEmit
+
+      - name: "Check TypeScript for @deriv/hooks"
+        run: npx tsc --project packages/hooks/tsconfig.json -noEmit
+
+      - name: "Check TypeScript for @deriv/utils"
+        run: npx tsc --project packages/utils/tsconfig.json -noEmit
+
+      - name: "Check TypeScript for @deriv/analytics"
+        run: npx tsc --project packages/analytics/tsconfig.json -noEmit
+
+      - name: "Check TypeScript for @deriv/stores"
+        run: npx tsc --project packages/stores/tsconfig.json -noEmit
+
+      - name: "Check tests for @deriv/hooks"
+        run: bash ./scripts/check-tests.sh packages/hooks/src
+
+      - name: "Check tests for @deriv/utils"
+        run: bash ./scripts/check-tests.sh packages/utils/src
+
+      - name: "Check tests for @deriv/analytics"
+        run: bash ./scripts/check-tests.sh packages/analytics/src
+
+      - name: "Run tests"
+        run: npm run test
+
+      - name: Tag and Version
+        run: |
+          echo "${{ github.event_name }}"
+          if [ "${{ github.event_name }}" == "release" ]; then
+            echo "::set-output name=version_name::production-${{ github.ref }}"
+          else
+            echo "::set-output name=version_name::staging-${{ github.sha }}"
+          fi
+
+      - name: Build and Push image to docker hub
+        env:
+          DOCKHUB_ORGANISATION: binary-com # Set your Docker Hub organization
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+        run: |
+          TAG=${{ github.event.outputs.version_name }}
+          docker build -t $DOCKHUB_ORGANISATION/deriv-app:${TAG} -t $DOCKHUB_ORGANISATION/deriv-app:latest-staging -f Dockerfile .
+          echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
+          docker push $DOCKHUB_ORGANISATION/deriv-app:${TAG}
+          docker push $DOCKHUB_ORGANISATION/deriv-app:latest-staging
+
+      - name: Deploy to k8s cluster
+        env:
+          CA_CRT: ${{ secrets.CA_CRT }} # Add your Kubernetes CA_CRT secret here
+        run: |
+          TAG=${{ github.event.outputs.version_name }}
+          git clone https://github.com/binary-com/devops-ci-scripts
+          cd devops-ci-scripts/k8s-build_tools
+          echo $CA_CRT | base64 --decode > ca.crt
+          ./release.sh deriv-app ${TAG} "deriv-app-staging" # Adjust parameters as needed
+
+      - name: Notify slack
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }} # Add your Slack Webhook secret here
+        run: |
+          TAG=${{ github.event.outputs.version_name }}
+          if [ "${{ github.event_name }}" == "release" ]; then
+            slack/status \
+              --failure-message "Release failed for app.deriv.com with version *${TAG}*" \
+              --success-message "Release succeeded for app.deriv.com with version *${TAG}*" \
+              --webhook "${SLACK_WEBHOOK}"
+          fi
+
+      # Add the steps for publishing to Cloudflare Pages here if needed.
+

@@ -12,6 +12,7 @@ import {
     isMultiplierContract,
     isSmartTraderContract,
     isAsiansContract,
+    isTurbosContract,
     isUserSold,
     isEndedBeforeCancellationExpired,
     isUserCancelled,
@@ -48,7 +49,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
     const cancellation_price = getCancellationPrice(contract_info);
     const show_barrier = !is_vanilla && !isAccumulatorContract(contract_type) && !isSmartTraderContract(contract_type);
     const show_duration = !isAccumulatorContract(contract_type) || !isNaN(contract_end_time);
-    const show_payout_per_point = is_vanilla;
+    const show_payout_per_point = isTurbosContract(contract_type) || is_vanilla;
     const show_strike_barrier = is_vanilla || isAsiansContract(contract_type);
     const ticks_duration_text = isAccumulatorContract(contract_type)
         ? `${tick_passed}/${tick_count} ${localize('ticks')}`

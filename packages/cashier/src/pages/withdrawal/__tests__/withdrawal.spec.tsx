@@ -345,6 +345,7 @@ describe('<Withdrawal />', () => {
             client: {
                 balance: '1000',
                 currency: 'BTC',
+                verification_code: { payment_withdraw: 'verification_code' },
             },
             modules: {
                 cashier: {

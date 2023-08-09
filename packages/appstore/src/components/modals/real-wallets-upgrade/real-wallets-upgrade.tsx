@@ -1,5 +1,6 @@
 import React from 'react';
 import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, Button } from '@deriv/components';
+import { useWalletMigration } from '@deriv/hooks';
 import { ContentFlag } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
@@ -7,8 +8,7 @@ import { WalletsIntro } from './components/wallets-intro/wallets-intro';
 import ReadyToUpgradeWallets from './components/ready-to-upgrade-wallets';
 import './real-wallets-upgrade.scss';
 import WalletLinkingStep from './wallet-linking-step/wallet-linking-step';
-import mock_wallet_migration_response from '../../../constants/mock_wallet_migration_response';
-import { useWalletMigration } from '@deriv/hooks';
+import getMockWalletMigrationResponse from '../../../constants/mock_wallet_migration_response';
 
 const RealWalletsUpgrade = observer(() => {
     const { traders_hub } = useStore();
@@ -107,13 +107,13 @@ const RealWalletsUpgrade = observer(() => {
                 component: <WalletsIntro is_eu={is_eu} current_step={2} />,
             },
             {
-                component: <WalletLinkingStep data={mock_wallet_migration_response[0]} />,
+                component: <WalletLinkingStep data={getMockWalletMigrationResponse()[0]} />,
             },
             {
-                component: <WalletLinkingStep data={mock_wallet_migration_response[1]} />,
+                component: <WalletLinkingStep data={getMockWalletMigrationResponse()[1]} />,
             },
             {
-                component: <WalletLinkingStep data={mock_wallet_migration_response[2]} />,
+                component: <WalletLinkingStep data={getMockWalletMigrationResponse()[2]} />,
             },
             {
                 name: 'ready_to_upgrade',

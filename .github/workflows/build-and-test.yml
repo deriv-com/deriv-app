@@ -8,7 +8,6 @@ on:
 jobs:
   build_and_deploy:
     # runs-on: [self-hosted] # Specify the label of your self-hosted runner machine
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3

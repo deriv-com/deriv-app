@@ -58,11 +58,11 @@ const WalletTourGuide = observer(() => {
             continuous
             disableCloseOnEsc
             disableOverlayClose
+            disableScrollParentFix
             floaterProps={{ disableAnimation: true }}
             locale={wallet_tour_step_locale}
             run={is_wallet_tour_open}
-            scrollDuration={800}
-            scrollOffset={200}
+            scrollOffset={150}
             stepIndex={joyride_index}
             steps={getWalletStepConfig(has_mt5_account, is_all_wallets_added)}
             styles={wallet_tour_styles}

@@ -360,7 +360,6 @@ export const wallet_tour_styles: Styles = {
     },
     overlay: {
         height: '100%',
-        position: 'fixed',
     },
 };
 

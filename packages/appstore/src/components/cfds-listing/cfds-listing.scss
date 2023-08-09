@@ -26,6 +26,7 @@
     &__scrollable-content {
         @include desktop {
             overflow: auto;
+            height: 69rem;
         }
     }
     &__footer-content {
@@ -185,6 +186,7 @@
     &__footnotes-container {
         display: flex;
         flex-direction: column;
+        justify-content: center;
         gap: 1rem;
         margin: 1rem;
         @include desktop {
@@ -768,8 +770,18 @@
             padding-bottom: 1rem;
 
             &-header {
-                display: flex;
-                flex-direction: column;
+                &-cell {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                &-row {
+                    grid-template-columns: 1fr 0.5fr 1.25fr;
+                    justify-items: center;
+                    border-bottom: 0;
+                    padding: 0.4rem 0;
+                    background-color: var(--general-hover);
+                }
             }
 
             &-row {
@@ -777,14 +789,6 @@
                 justify-items: center;
                 border-bottom: 0;
                 padding: 0.4rem 0;
-            }
-
-            &-header-row {
-                grid-template-columns: 1fr 0.5fr 1.25fr;
-                justify-items: center;
-                border-bottom: 0;
-                padding: 0.4rem 0;
-                background-color: var(--general-hover);
             }
 
             &-row:nth-child(even) {

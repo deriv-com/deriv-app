@@ -4,7 +4,7 @@ import { TDynamicLeverageTableColumnHeader } from 'Containers/props.types';
 
 export const DynamicLeverageTableColumnHeader = ({ title, subtitle }: TDynamicLeverageTableColumnHeader) => (
     <Table.Head>
-        <div className='dynamic-leverage-modal__market-table-header'>
+        <div className='dynamic-leverage-modal__market-table-header-cell'>
             <Text size='xs' align='center' weight='bold'>
                 {title}
             </Text>

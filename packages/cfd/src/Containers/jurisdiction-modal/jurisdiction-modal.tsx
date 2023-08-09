@@ -24,6 +24,11 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
         setIsDynamicLeverageVisible(!is_dynamic_leverage_visible);
     };
 
+    const onJurisdictionModalToggle = () => {
+        setIsDynamicLeverageVisible(false);
+        toggleJurisdictionModal();
+    };
+
     const modal_content = (
         <div
             data-testid='modal_content'
@@ -47,7 +52,7 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
                             enableApp={enableApp}
                             exit_classname='cfd-modal--custom-exit'
                             is_open={is_jurisdiction_modal_visible}
-                            toggleModal={toggleJurisdictionModal}
+                            toggleModal={onJurisdictionModalToggle}
                             type='button'
                             width={account_type.type === 'financial' ? '1200px' : '1040px'}
                             has_close_icon={!is_dynamic_leverage_visible}
@@ -65,7 +70,7 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
                         <MobileDialog
                             portal_element_id='deriv_app'
                             visible={is_jurisdiction_modal_visible}
-                            onClose={toggleJurisdictionModal}
+                            onClose={onJurisdictionModalToggle}
                             has_close_icon={!is_dynamic_leverage_visible}
                             title={
                                 <JurisdictionModalTitle

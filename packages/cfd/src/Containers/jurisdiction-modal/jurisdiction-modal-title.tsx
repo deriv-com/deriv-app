@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { getMT5Title, isMobile } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { useDynamicLeverage } from '../dynamic-leverage/dynamic-leverage-context';
 import { TJurisdictionModalTitleProps } from '../props.types';
 
@@ -23,15 +23,14 @@ export const JurisdictionModalTitle = ({ show_eu_related_content, account_type }
             </div>
         );
     } else if (show_eu_related_content) {
-        return <>{localize('Choose a jurisdiction for your Deriv MT5 CFDs account')}</>;
+        return <Localize i18n_default_text='Choose a jurisdiction for your Deriv MT5 CFDs account' />;
     }
 
     return (
-        <>
-            {localize('Choose a jurisdiction for your Deriv MT5 {{account_type}} account', {
-                account_type: localize(getMT5Title(account_type)),
-            })}
-        </>
+        <Localize
+            i18n_default_text='Choose a jurisdiction for your Deriv MT5 {{account_type}} account'
+            values={{ account_type: getMT5Title(account_type) }}
+        />
     );
 };
 

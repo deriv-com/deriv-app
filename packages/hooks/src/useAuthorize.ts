@@ -8,7 +8,10 @@ const useAuthorize = (token?: string) => {
     const { accounts, loginid = '' } = client;
     const current_token = accounts[loginid || '']?.token;
 
-    const { data, ...rest } = useFetch('authorize', { payload: { authorize: token || current_token } });
+    const { data, ...rest } = useFetch('authorize', {
+        payload: { authorize: token || current_token },
+        options: { keepPreviousData: true, staleTime: 10000 },
+    });
 
     // Add additional information to the authorize response.
     const modified_authorize = useMemo(() => ({ ...data?.authorize }), [data?.authorize]);

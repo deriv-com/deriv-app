@@ -348,10 +348,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             setResetTradingPasswordModalOpen: jest.fn(),
         },
         traders_hub: {
+            CFDs_restricted_countries: false,
             closeModal: jest.fn(),
             combined_cfd_mt5_accounts: [],
             content_flag: '',
-            CFDs_restricted_countries: false,
             openModal: jest.fn(),
             selected_account: {
                 login: '',
@@ -404,6 +404,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             selected_region: 'All',
             getExistingAccounts: jest.fn(),
             available_dxtrade_accounts: [],
+            is_wallet_tour_open: false,
+            toggleIsWalletTourOpen: jest.fn(),
             can_get_more_cfd_mt5_accounts: false,
             toggleAccountTypeModalVisibility: jest.fn(),
             active_modal_tab: 'Deposit',

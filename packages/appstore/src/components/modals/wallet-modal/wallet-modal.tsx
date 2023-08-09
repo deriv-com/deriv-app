@@ -15,6 +15,7 @@ const WalletModal = observer(() => {
             active_modal_wallet_id,
             setWalletModalActiveTab,
             setWalletModalActiveWalletID,
+            is_wallet_tour_open,
         },
     } = useStore();
 
@@ -51,7 +52,7 @@ const WalletModal = observer(() => {
         }
 
         return () => clearTimeout(timeout_id);
-    }, [active_modal_wallet_id, active_wallet?.loginid, is_wallet_modal_visible, switchAccount]);
+    }, [active_modal_wallet_id, active_wallet?.loginid, is_wallet_modal_visible, switchAccount, is_wallet_tour_open]);
 
     const [is_wallet_name_visible, setIsWalletNameVisible] = React.useState<boolean>(true);
 

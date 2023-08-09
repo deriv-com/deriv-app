@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { getStatusBadgeConfig } from '@deriv/account';
 import { Text, StatusBadge } from '@deriv/components';
-import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
+import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import {
     getAppstorePlatforms,
     getMFAppstorePlatforms,
@@ -107,81 +107,91 @@ const TradingAppCard = ({
 
     return (
         <div className='trading-app-card' key={`trading-app-card__${current_language}`}>
-            <div
-                className={classNames('trading-app-card__icon--container', {
-                    'trading-app-card__icon--container__clickable': clickable_icon,
-                })}
-            >
-                <TradingPlatformIconProps icon={icon} onClick={clickable_icon ? openStaticPage : undefined} size={48} />
-            </div>
-            <div className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}>
-                <div className='trading-app-card__details'>
-                    <div>
+            <div className='trading-app-card__content' id={`trading-app-card__${icon.toLowerCase()}`}>
+                <div
+                    className={classNames('trading-app-card__icon--container', {
+                        'trading-app-card__icon--container__clickable': clickable_icon,
+                    })}
+                >
+                    <TradigPlatformIconProps
+                        icon={icon}
+                        onClick={clickable_icon ? openStaticPage : undefined}
+                        size={48}
+                    />
+                </div>
+                <div
+                    className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}
+                >
+                    <div className='trading-app-card__details'>
+                        <React.Fragment>
+                            {is_wallet ? (
+                                <Text className='title' size='xs' line_height='s' color='prominent'>
+                                    {is_wallet_demo && sub_title ? `${sub_title} ${localize('Demo')}` : sub_title}
+                                </Text>
+                            ) : (
+                                <Text className='title' size='xs' line_height='s' color='prominent'>
+                                    {!is_real && sub_title ? `${sub_title} ${localize('Demo')}` : sub_title}
+                                </Text>
+                            )}
+                            {!is_wallet && short_code_and_region && (
+                                <Text
+                                    weight='bolder'
+                                    size='xxxs'
+                                    line_height='s'
+                                    className='trading-app-card__details__short-code'
+                                >
+                                    {short_code_and_region}
+                                </Text>
+                            )}
+                        </React.Fragment>
                         {is_wallet ? (
-                            <Text className='title' size='xs' line_height='s' color='prominent'>
-                                {is_wallet_demo && sub_title ? `${sub_title} ${localize('Demo')}` : sub_title}
+                            <Text
+                                className='title'
+                                size='xs'
+                                line_height='s'
+                                weight='bold'
+                                color={action_type === 'trade' ? 'prominent' : 'general'}
+                            >
+                                {is_wallet_demo && !sub_title && !is_deriv_platform
+                                    ? `${name} ${localize('Demo')}`
+                                    : name}
                             </Text>
                         ) : (
-                            <Text className='title' size='xs' line_height='s' color='prominent'>
-                                {!is_real && sub_title ? `${sub_title} ${localize('Demo')}` : sub_title}
+                            <Text
+                                className='title'
+                                size='xs'
+                                line_height='s'
+                                weight='bold'
+                                color={action_type === 'trade' ? 'prominent' : 'general'}
+                            >
+                                {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
                             </Text>
                         )}
-                        {!is_wallet && short_code_and_region && (
-                            <Text
-                                weight='bolder'
-                                size='xxxs'
-                                line_height='s'
-                                className='trading-app-card__details__short-code'
-                            >
-                                {short_code_and_region}
-                            </Text>
+                        <Text className='description' color={'general'} size='xxs' line_height='m'>
+                            {app_desc}
+                        </Text>
+                        {mt5_acc_auth_status && (
+                            <StatusBadge
+                                className='trading-app-card__acc_status_badge'
+                                account_status={mt5_acc_auth_status}
+                                icon={badge_icon}
+                                text={badge_text}
+                            />
                         )}
                     </div>
-                    {is_wallet ? (
-                        <Text
-                            className='title'
-                            size='xs'
-                            line_height='s'
-                            weight='bold'
-                            color={action_type === 'trade' ? 'prominent' : 'general'}
-                        >
-                            {is_wallet_demo && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
-                        </Text>
-                    ) : (
-                        <Text
-                            className='title'
-                            size='xs'
-                            line_height='s'
-                            weight='bold'
-                            color={action_type === 'trade' ? 'prominent' : 'general'}
-                        >
-                            {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
-                        </Text>
-                    )}
-                    <Text className='description' color={'general'} size='xxs' line_height='m'>
-                        {app_desc}
-                    </Text>
-                    {mt5_acc_auth_status && (
-                        <StatusBadge
-                            className='trading-app-card__acc_status_badge'
-                            account_status={mt5_acc_auth_status}
-                            icon={badge_icon}
-                            text={badge_text}
+                    <div className='trading-app-card__actions'>
+                        <TradingAppCardActions
+                            action_type={action_type}
+                            link_to={link_to}
+                            onAction={onAction}
+                            is_external={is_external}
+                            new_tab={new_tab}
+                            is_buttons_disabled={!!mt5_acc_auth_status}
+                            is_account_being_created={!!is_account_being_created}
+                            is_real={is_real}
+                            as_disabled={is_in_progress}
                         />
-                    )}
-                </div>
-                <div className='trading-app-card__actions'>
-                    <TradingAppCardActions
-                        action_type={action_type}
-                        link_to={link_to}
-                        onAction={onButtonAction}
-                        is_external={is_external}
-                        new_tab={new_tab}
-                        is_buttons_disabled={!!mt5_acc_auth_status}
-                        is_account_being_created={!!is_account_being_created}
-                        is_real={is_real}
-                        as_disabled={is_in_progress}
-                    />
+                    </div>
                 </div>
             </div>
         </div>

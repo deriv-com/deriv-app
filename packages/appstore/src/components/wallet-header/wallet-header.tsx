@@ -25,7 +25,9 @@ const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
 
     const onArrowClickHandler = async () => {
         // setIsLoading(true);
-        if (loginid !== wallet_account.loginid) await switchAccount(wallet_account.loginid);
+        if (loginid !== wallet_account.loginid) {
+            await switchAccount(wallet_account.loginid);
+        }
         // setIsLoading(false);
     };
 

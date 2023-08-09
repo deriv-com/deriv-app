@@ -240,7 +240,7 @@ describe('<PersonalDetails/>', () => {
     const renderwithRouter = component => {
         render(<BrowserRouter>{component}</BrowserRouter>);
     };
-    
+
     it('should autopopulate tax_residence for MF clients', () => {
         const new_props = {
             ...props,
@@ -745,5 +745,21 @@ describe('<PersonalDetails/>', () => {
 
         expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
         expect(screen.queryByRole('link', { name: 'here' })).not.toBeInTheDocument();
+    });
+
+    it('should disable tax_residence field if it is immutable from BE', () => {
+        isMobile.mockReturnValue(false);
+        isDesktop.mockReturnValue(true);
+        const new_props = {
+            ...props,
+            is_mf: true,
+            value: {
+                ...props.value,
+                tax_residence: 'France',
+            },
+            disabled_items: ['salutation', 'first_name', 'last_name', 'date_of_birth', 'tax_residence'],
+        };
+        renderwithRouter(<PersonalDetails {...new_props} />);
+        expect(screen.getByTestId('tax_residence')).toBeDisabled();
     });
 });

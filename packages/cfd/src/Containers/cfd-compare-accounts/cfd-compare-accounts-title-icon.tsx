@@ -31,9 +31,9 @@ const CFDCompareAccountsTitleIcon = ({ trading_platforms, is_eu_user, is_demo }:
                     </Text>
                     {market_type_shortcode === 'financial_labuan' && (
                         <Popover
-                            alignment={isMobile ? 'top' : 'right'}
-                            className='cfd-compare-account-labuan-tooltip'
-                            classNameBubble='cfd-compare-accounts-tooltip--msg'
+                            alignment='bottom'
+                            className='compare-cfd-account-labuan-tooltip'
+                            classNameBubble='compare-cfd-account-labuan-tooltip--msg'
                             icon='info'
                             disable_message_icon
                             is_bubble_hover_enabled

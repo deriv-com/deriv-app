@@ -159,7 +159,7 @@
                 width: 100%;
                 height: calc(100% - 20rem);
                 @include mobile {
-                    height: 40rem;
+                    height: calc(100vh - 85%);
                 }
             }
         }

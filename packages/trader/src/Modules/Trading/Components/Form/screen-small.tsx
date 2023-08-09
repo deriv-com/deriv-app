@@ -38,6 +38,7 @@ type TCollapsibleTradeParams = Pick<
     | 'is_trade_params_expanded'
     | 'is_multiplier'
     | 'is_vanilla'
+    | 'is_turbos'
     | 'onChange'
     | 'take_profit'
     | 'setIsTradeParamsExpanded'

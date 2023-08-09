@@ -45,6 +45,7 @@ type TCFDDemoAccountDisplayProps = {
     landing_companies?: LandingCompany;
 };
 
+//simti_note
 const CFDDemoAccountDisplay = ({
     is_eu,
     is_eu_country,

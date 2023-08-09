@@ -9,7 +9,7 @@ import { TModalContent, TAccountCard, TTradingPlatformAvailableAccount } from '.
 import { TIconTypes } from 'Types';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import { getDerivedAccount, getFinancialAccount, getSwapFreeAccount } from '../../../helpers/account-helper';
-import { useHasSwapFreeAccount } from '@deriv/hooks';
+import { useHasSwapFreeAccount, useLandingCompany, useStandPoint } from '@deriv/hooks';
 
 const AccountCard = ({ selectAccountTypeCard, account_type_card, title_and_type, description, icon }: TAccountCard) => {
     const cardSelection = (cardType: string) => {
@@ -81,6 +81,8 @@ const ModalContent = ({
 
 const MT5AccountTypeModal = () => {
     const { traders_hub, ui, client, modules, common } = useStores();
+    const { data: new_lc } = useLandingCompany();
+    const { standpoint } = useStandPoint(new_lc);
     const {
         is_account_type_modal_visible,
         toggleAccountTypeModalVisibility,
@@ -155,7 +157,7 @@ const MT5AccountTypeModal = () => {
                                     set_account_type();
                                     toggleAccountTypeModalVisibility();
                                     setAppstorePlatform(CFD_PLATFORMS.MT5);
-                                    getAccount();
+                                    getAccount(standpoint);
                                 }}
                             >
                                 {localize('Next')}
@@ -186,7 +188,7 @@ const MT5AccountTypeModal = () => {
                                     set_account_type();
                                     toggleAccountTypeModalVisibility();
                                     setAppstorePlatform(CFD_PLATFORMS.MT5);
-                                    getAccount();
+                                    getAccount(standpoint);
                                 }}
                             >
                                 {localize('Next')}

@@ -13,6 +13,7 @@ import { getHasDivider } from 'Constants/utils';
 import { useStores } from 'Stores/index';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import './cfds-listing.scss';
+import { useLandingCompany, useStandPoint } from '@deriv/hooks';
 
 type TDetailedExistingAccount = AvailableAccount &
     TDetailsOfEachMT5Loginid &
@@ -21,6 +22,8 @@ type TDetailedExistingAccount = AvailableAccount &
     };
 
 const CFDsListing = () => {
+    const { data: new_lc } = useLandingCompany();
+    const { standpoint } = useStandPoint(new_lc);
     const {
         client,
         modules: { cfd },
@@ -212,7 +215,7 @@ const CFDsListing = () => {
                                                 type: existing_account.market_type,
                                             });
                                             setAppstorePlatform(existing_account.platform);
-                                            getAccount();
+                                            getAccount(standpoint);
                                         }
                                     } else if (existing_account.action_type === 'multi-action') {
                                         const button_name = e?.currentTarget?.name;
@@ -315,7 +318,7 @@ const CFDsListing = () => {
                                         type: account.market_type,
                                     });
                                     setAppstorePlatform(account.platform);
-                                    getAccount();
+                                    getAccount(standpoint);
                                 }
                             }}
                             key={`trading_app_card_${account.name}`}

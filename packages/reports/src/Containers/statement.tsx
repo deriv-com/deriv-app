@@ -18,6 +18,7 @@ import FilterComponent from '../Components/filter-component';
 import { ReportsMeta } from '../Components/reports-meta';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
 import { TRootStore } from 'Stores/index';
+import { useLandingCompany, useStandPoint } from '@deriv/hooks';
 
 type TGetStatementTableColumnsTemplate = ReturnType<typeof getStatementTableColumnsTemplate>;
 type TColIndex = 'icon' | 'refid' | 'currency' | 'date' | 'action_type' | 'amount' | 'balance';
@@ -64,7 +65,6 @@ type TStatement = {
     has_selected_date: boolean;
     is_empty: boolean;
     is_loading: boolean;
-    is_mx_mlt: boolean;
     is_switching: boolean;
     is_virtual: boolean;
     onMount: () => void;
@@ -172,14 +172,15 @@ const Statement = ({
     has_selected_date,
     is_empty,
     is_loading,
-    is_mx_mlt,
     is_switching,
     is_virtual,
     onMount,
     onUnmount,
 }: TStatement) => {
+    const { data: new_lc } = useLandingCompany();
+    const { is_mx_mlt } = useStandPoint(new_lc);
     React.useEffect(() => {
-        onMount();
+        onMount(is_mx_mlt);
         return () => {
             onUnmount();
         };
@@ -309,7 +310,6 @@ export default withRouter(
         has_selected_date: modules.statement.has_selected_date,
         is_empty: modules.statement.is_empty,
         is_loading: modules.statement.is_loading,
-        is_mx_mlt: client.standpoint.iom || client.standpoint.malta,
         is_switching: client.is_switching,
         is_virtual: client.is_virtual,
         onMount: modules.statement.onMount,

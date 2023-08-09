@@ -89,16 +89,6 @@ export default class ClientStore extends BaseStore {
     // mt_gaming_company: {}
     landing_companies = {};
 
-    // All possible landing companies of user between all
-    standpoint = {
-        iom: false,
-        svg: false,
-        malta: false,
-        maltainvest: false,
-        gaming_company: false,
-        financial_company: false,
-    };
-
     upgradeable_landing_companies = [];
     mt5_disabled_signup_types = { real: false, demo: false };
     mt5_login_list = [];
@@ -200,7 +190,6 @@ export default class ClientStore extends BaseStore {
             has_enabled_two_fa: observable,
             has_changed_two_fa: observable,
             landing_companies: observable,
-            standpoint: observable,
             upgradeable_landing_companies: observable,
             mt5_disabled_signup_types: observable,
             mt5_login_list: observable,
@@ -342,7 +331,6 @@ export default class ClientStore extends BaseStore {
             resetMt5AccountListPopulation: action.bound,
             responseWebsiteStatus: action.bound,
             responseLandingCompany: action.bound,
-            setStandpoint: action.bound,
             setRealityCheck: action.bound,
             setLoginId: action.bound,
             setAccounts: action.bound,
@@ -1789,31 +1777,11 @@ export default class ClientStore extends BaseStore {
     responseLandingCompany(response) {
         this.landing_companies = response.landing_company;
         this.is_landing_company_loaded = true;
-        this.setStandpoint(this.landing_companies);
         this.setRealityCheck();
     }
 
     setP2pAdvertiserInfo(response) {
         this.p2p_advertiser_info = response.p2p_advertiser_info;
-    }
-
-    setStandpoint(landing_companies) {
-        if (!landing_companies) return;
-        const { gaming_company, financial_company } = landing_companies;
-        if (gaming_company?.shortcode) {
-            this.standpoint = {
-                ...this.standpoint,
-                [gaming_company.shortcode]: !!gaming_company?.shortcode,
-                gaming_company: gaming_company?.shortcode ?? false,
-            };
-        }
-        if (financial_company?.shortcode) {
-            this.standpoint = {
-                ...this.standpoint,
-                [financial_company.shortcode]: !!financial_company?.shortcode,
-                financial_company: financial_company?.shortcode ?? false,
-            };
-        }
     }
 
     setRealityCheck() {

@@ -20,6 +20,7 @@ import SelfExclusionWrapper from './self-exclusion-wrapper';
 import SelfExclusionForm from './self-exclusion-form';
 import { FormikHelpers, FormikValues } from 'formik';
 import { observer, useStore } from '@deriv/stores';
+import { useLandingCompany, useStandPoint } from '@deriv/hooks';
 
 type TSelfExclusion = {
     footer_ref?: React.RefObject<HTMLElement>;
@@ -79,8 +80,10 @@ const SelfExclusion = ({
     overlay_ref,
     setIsOverlayShown,
 }: TSelfExclusion) => {
+    const { data: new_lc } = useLandingCompany();
+    const { standpoint } = useStandPoint(new_lc);
     const { client, ui } = useStore();
-    const { currency, is_virtual, is_switching, standpoint, is_eu, is_uk, logout, landing_company_shortcode } = client;
+    const { currency, is_virtual, is_switching, is_eu, is_uk, logout, landing_company_shortcode } = client;
     const { is_tablet } = ui;
     const is_wrapper_bypassed = false;
     const is_mlt = landing_company_shortcode === 'malta';

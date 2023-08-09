@@ -6,6 +6,7 @@ import { routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import CashierLocked from '../../../components/cashier-locked';
 import { useCashierStore } from '../../../stores/useCashierStores';
+import { useLandingCompany, useStandPoint } from '@deriv/hooks';
 
 type TItems = {
     button_text?: string;
@@ -16,6 +17,8 @@ type TItems = {
 };
 
 const DepositLocked = observer(() => {
+    const { data: new_lc } = useLandingCompany();
+    const { standpoint } = useStandPoint(new_lc);
     const { client } = useStore();
     const {
         account_status,
@@ -23,7 +26,6 @@ const DepositLocked = observer(() => {
         is_financial_information_incomplete,
         is_tnc_needed,
         is_trading_experience_incomplete,
-        standpoint,
     } = client;
     const { deposit } = useCashierStore();
     const { onMountDeposit: onMount } = deposit;

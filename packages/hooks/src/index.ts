@@ -44,3 +44,4 @@ export { default as useTotalAccountBalance } from './useTotalAccountBalance';
 export { default as useVerifyEmail } from './useVerifyEmail';
 export { useIsAccountStatusPresent } from './useIsAccountStatusPresent';
 export { default as useLandingCompany } from './useLandingCompany';
+export { default as useStandPoint } from './useStandPoint';

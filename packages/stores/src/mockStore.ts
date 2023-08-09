@@ -138,14 +138,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             responseMt5LoginList: jest.fn(),
             responseTradingPlatformAccountsList: jest.fn(),
             setFinancialAndTradingAssessment: jest.fn(),
-            standpoint: {
-                financial_company: '',
-                gaming_company: '',
-                maltainvest: false,
-                svg: false,
-                iom: false,
-                malta: false,
-            },
             switchAccount: jest.fn(),
             verification_code: {
                 payment_agent_withdraw: '',

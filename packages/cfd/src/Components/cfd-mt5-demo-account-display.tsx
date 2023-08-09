@@ -54,6 +54,7 @@ type TCFDDemoAccountDisplayProps = {
     show_eu_related_content: boolean;
 };
 
+//simti_note
 const CFDMT5DemoAccountDisplay = ({
     is_eu,
     is_eu_country,

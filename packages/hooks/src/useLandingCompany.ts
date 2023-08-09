@@ -2,16 +2,13 @@ import React from 'react';
 import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 
-/** A custom hook to get the list of active symbols. */
+/** A custom hook to get the list of landing companies. */
 const useLandingCompany = () => {
     const { client } = useStore();
     const { residence } = client;
 
     const { data, ...rest } = useFetch('landing_company', {
         payload: { landing_company: residence },
-        // options: {
-        //     refetchOnWindowFocus: false,
-        // },
     });
 
     return {
@@ -34,3 +31,10 @@ export default useLandingCompany;
 // }
 
 // const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
+
+// get landing_company_shortcode() {
+//     if (this.accounts[this.loginid]) {
+//         return this.accounts[this.loginid].landing_company_shortcode;
+//     }
+//     return undefined;
+// }

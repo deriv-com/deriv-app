@@ -555,9 +555,10 @@ export default class TradersHubStore extends BaseStore {
         }
     }
 
-    async openDemoCFDAccount(account_type, platform) {
+    // simti_note
+    async openDemoCFDAccount(account_type, platform, standpoint) {
         const { client, modules, ui } = this.root_store;
-        const { standpoint, createCFDAccount, enableCFDPasswordModal, has_maltainvest_account } = modules.cfd;
+        const { createCFDAccount, enableCFDPasswordModal, has_maltainvest_account } = modules.cfd;
 
         const { openAccountNeededModal } = ui;
         const { is_eu } = client;
@@ -606,12 +607,12 @@ export default class TradersHubStore extends BaseStore {
         }
     }
 
-    getAccount() {
+    getAccount(standpoint) {
         const { modules, common } = this.root_store;
         const { account_type } = modules.cfd;
         const { platform } = common;
         if (this.is_demo) {
-            this.openDemoCFDAccount(account_type, platform);
+            this.openDemoCFDAccount(account_type, platform, standpoint);
         } else {
             this.openRealAccount(account_type, platform);
         }

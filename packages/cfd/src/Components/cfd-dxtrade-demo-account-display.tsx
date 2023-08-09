@@ -49,6 +49,7 @@ type TCFDDemoAccountDisplayProps = {
     landing_companies?: LandingCompany;
 };
 
+//simti_note
 const CFDDxtradeDemoAccountDisplay = ({
     has_cfd_account_error,
     standpoint,

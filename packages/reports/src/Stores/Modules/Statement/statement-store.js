@@ -169,10 +169,10 @@ export default class StatementStore extends BaseStore {
         this.fetchOnScroll(left_to_scroll);
     }
 
-    async loadAccountStatistics() {
+    //the target func
+    async loadAccountStatistics(is_mx_mlt) {
         this.account_statistics = {};
-        const { client } = this.root_store;
-        const is_mx_mlt = client.standpoint.iom || client.standpoint.malta;
+
         if (is_mx_mlt) {
             const response_account_statistics = await WS.accountStatistics();
             runInAction(() => {
@@ -199,7 +199,7 @@ export default class StatementStore extends BaseStore {
         this.is_loading = !is_online;
     }
 
-    async onMount() {
+    async onMount(is_mx_mlt) {
         this.assertHasValidCache(
             this.client_loginid,
             this.clearDateFilter,
@@ -211,7 +211,7 @@ export default class StatementStore extends BaseStore {
         this.onNetworkStatusChange(this.networkStatusChangeListener);
         await WS.wait('authorize');
         this.fetchNextBatch(true);
-        this.loadAccountStatistics();
+        this.loadAccountStatistics(is_mx_mlt);
     }
 
     /* DO NOT call clearDateFilter() upon unmounting the component, date filters should stay

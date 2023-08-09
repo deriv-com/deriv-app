@@ -72,6 +72,7 @@ type TCFDRealAccountDisplayProps = {
     show_eu_related_content: boolean;
 };
 
+//simti_note
 const CFDRealAccountDisplay = ({
     has_real_account,
     is_accounts_switcher_on,

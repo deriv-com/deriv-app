@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Dialog, PageErrorContainer } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { TErrorComponent } from '../../types/cfd-store.types';
 
-const ErrorComponent = ({
+const ErrorComponent: React.FC<TErrorComponent> = ({
     header,
     message,
     is_dialog,
@@ -22,7 +22,7 @@ const ErrorComponent = ({
                 confirm_button_text={redirect_label || localize('Ok')}
                 onConfirm={redirectOnClick || (() => location.reload())}
             >
-                {message || localize('Sorry, an error occured while processing your request.')}
+                {message || localize('Sorry, an error occurred while processing your request.')}
             </Dialog>
         );
     }
@@ -35,16 +35,6 @@ const ErrorComponent = ({
             buttonOnClick={redirectOnClick || (() => location.reload())}
         />
     );
-};
-
-ErrorComponent.propTypes = {
-    header: PropTypes.string,
-    is_dialog: PropTypes.bool,
-    message: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
-    redirect_label: PropTypes.string,
-    redirectOnClick: PropTypes.func,
-    should_show_refresh: PropTypes.bool,
-    type: PropTypes.string,
 };
 
 export default ErrorComponent;

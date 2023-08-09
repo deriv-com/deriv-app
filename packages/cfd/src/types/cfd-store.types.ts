@@ -1,4 +1,5 @@
 import { DetailsOfEachMT5Loginid, Mt5NewAccount, VerifyEmailResponse } from '@deriv/api-types';
+import { Jurisdiction } from '@deriv/shared';
 import { TTradingPlatformAvailableAccount } from 'Components/props.types';
 import { TCFDPasswordFormValues } from 'Containers/cfd-password-modal';
 import { TDerivezCompanies, TDxCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
@@ -9,6 +10,18 @@ type TStoreProofOfAddressArgs = {
     values: {
         [key: string]: string;
     };
+};
+
+export type TJurisdiction = typeof Jurisdiction[keyof typeof Jurisdiction];
+
+export type TErrorComponent = {
+    header?: string;
+    message?: React.ReactNode | string | object;
+    is_dialog?: boolean;
+    redirect_label?: string;
+    redirectOnClick?: () => void;
+    should_show_refresh?: boolean;
+    type?: string;
 };
 
 export type TCFDStore = {

@@ -106,7 +106,7 @@ const AddressDetails = ({
         promise.then(() => {
             setHasFetchedStatesList(true);
             if (props.value.address_state) {
-                setAddressStateToDisplay(getLocation(states_list, props.value.address_state, 'text') ?? '');
+                setAddressStateToDisplay(getLocation(states_list, props.value.address_state, 'text'));
             }
         });
         return () => {

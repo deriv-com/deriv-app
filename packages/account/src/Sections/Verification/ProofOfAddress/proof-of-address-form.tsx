@@ -302,7 +302,7 @@ const ProofOfAddressForm = observer(
             form_initial_values.address_state = '';
         }
         const offsetCalc = (status: { msg: string }) => {
-            const mobile_scroll_offset = status && status.msg ? '200px' : '154px';
+            const mobile_scroll_offset = status?.msg ? '200px' : '154px';
             return isMobile() && !is_qualified_for_cfd_modal ? mobile_scroll_offset : '80px';
         };
         return (
@@ -385,7 +385,7 @@ const ProofOfAddressForm = observer(
                                     </Modal.Footer>
                                 ) : (
                                     <FormFooter className='account-form__footer-poa'>
-                                        {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
+                                        {status?.msg && <FormSubmitErrorMessage message={status.msg} />}
                                         <Button
                                             className='account-form__footer-btn'
                                             type='submit'

@@ -16,6 +16,12 @@ type TCommonMistakeExamplePartialsProps = {
     image: React.ReactElement;
 };
 
+/**
+ * Wrapper for displaying the image and description of the mistake
+ * @param {string} description - description of the mistake
+ * @param {React.ReactElement} image - Sample image
+ * @returns  {React.ReactElement} - React element
+ */
 const CommonMistakeExamplePartials = ({ description, image }: TCommonMistakeExamplePartialsProps) => (
     <div className='layout'>
         {image}
@@ -28,36 +34,56 @@ const CommonMistakeExamplePartials = ({ description, image }: TCommonMistakeExam
     </div>
 );
 
+/**
+ * Returns a configuration containing image and description
+ * @returns {Array} - Array of objects containing image and description
+ */
+const getExampleImageConfig = () => [
+    {
+        image: <IcDocumentNameMismatch />,
+        description: localize('Name in document doesn’t match your Deriv profile.'),
+        ref: 'name_mismatch',
+    },
+    {
+        image: <IcDocumentAddressMismatch />,
+        description: localize('Address in document doesn’t match address you entered above.'),
+        ref: 'address_mismatch',
+    },
+    {
+        image: <IcOldIssuedDocument />,
+        description: localize('Document issued more than 6-months ago.'),
+        ref: 'old_issued_document',
+    },
+    {
+        image: <IcBlurryDocument />,
+        description: localize('Blurry document. All information must be clear and visible.'),
+        ref: 'blurry_document',
+    },
+    {
+        image: <IcCroppedDocument />,
+        description: localize('Cropped document. All information must be clear and visible.'),
+        ref: 'cropped_document',
+    },
+    {
+        image: <IcEnvelope />,
+        description: localize('An envelope with your name and address.'),
+        ref: 'envelope',
+    },
+];
+
+/**
+ * Displays the image and description of the mistake
+ * @returns {React.ReactElement} - React element
+ */
 const CommonMistakeExamples = () => (
     <React.Fragment>
         <Text as='div' weight='bold' size={isMobile() ? 'xxs' : 'xs'} className='common-mistake-examples__title'>
             {localize('Common mistakes')}
         </Text>
         <div className='common-mistake-examples'>
-            <CommonMistakeExamplePartials
-                description={localize('Name in document doesn’t match your Deriv profile.')}
-                image={<IcDocumentNameMismatch />}
-            />
-            <CommonMistakeExamplePartials
-                description={localize('Address in document doesn’t match address you entered above.')}
-                image={<IcDocumentAddressMismatch />}
-            />
-            <CommonMistakeExamplePartials
-                description={localize('Document issued more than 6-months ago.')}
-                image={<IcOldIssuedDocument />}
-            />
-            <CommonMistakeExamplePartials
-                description={localize('Blurry document. All information must be clear and visible.')}
-                image={<IcBlurryDocument />}
-            />
-            <CommonMistakeExamplePartials
-                description={localize('Cropped document. All information must be clear and visible.')}
-                image={<IcCroppedDocument />}
-            />
-            <CommonMistakeExamplePartials
-                description={localize('An envelope with your name and address.')}
-                image={<IcEnvelope />}
-            />
+            {getExampleImageConfig().map(config => (
+                <CommonMistakeExamplePartials key={config.ref} description={config.description} image={config.image} />
+            ))}
         </div>
     </React.Fragment>
 );

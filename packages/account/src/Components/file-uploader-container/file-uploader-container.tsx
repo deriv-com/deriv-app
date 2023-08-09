@@ -44,7 +44,7 @@ const FileUploaderContainer = ({
                 <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} settings={settings} />
             </div>
             <div className='file-uploader__file-supported-formats'>
-                <Text size={isMobile() ? 'xxxs' : 'xxs'} className=''>
+                <Text size={isMobile() ? 'xxxs' : 'xxs'}>
                     {localize('Supported formats: JPEG, JPG, PNG and PDF only')}
                 </Text>
                 <Text size={isMobile() ? 'xxxs' : 'xxs'}>{localize('Maximum size: 8MB')}</Text>

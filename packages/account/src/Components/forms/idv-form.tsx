@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Field, FormikProps, FormikHandlers, FieldProps } from 'formik';
+import { Field, FormikProps, FormikHandlers, FieldProps, FormikHelpers } from 'formik';
 import { ResidenceList } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
 import { formatInput, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
@@ -28,8 +28,9 @@ type TIDVForm = {
     hide_hint?: boolean;
     class_name?: string;
     can_skip_document_verification?: boolean;
-} & Partial<FormikHandlers> &
-    Partial<FormikProps<TFormProps>>;
+} & FormikHandlers &
+    FormikHelpers<TFormProps> &
+    FormikProps<TFormProps>;
 
 const IDVForm = ({
     errors,
@@ -112,7 +113,7 @@ const IDVForm = ({
 
     const onKeyUp = (e: { target: HTMLInputElement }, document_name: string) => {
         const { example_format } =
-            document_name === 'document_number' ? values?.document_type : values?.document_type.additional;
+            document_name === 'document_number' ? values.document_type : values.document_type.additional;
         let current_input: string | null = null;
         current_input = example_format.includes('-')
             ? formatInput(example_format, current_input ?? e.target.value, '-')

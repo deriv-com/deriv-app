@@ -7,12 +7,15 @@ import TradersHub from 'Modules/traders-hub';
 import { WalletsModule } from 'Modules/wallets';
 import { Switch } from 'react-router-dom';
 import RouteWithSubroutes from './route-with-sub-routes.jsx';
+import { Loading } from '@deriv/components';
 
 const Routes: React.FC = observer(() => {
     const { is_wallet_enabled } = useFeatureFlags();
-    const { has_wallet } = useWalletsList();
+    const { has_wallet, isLoading } = useWalletsList();
 
     const should_show_wallets = is_wallet_enabled && has_wallet;
+
+    if (isLoading) return <Loading />;
 
     return (
         <React.Suspense

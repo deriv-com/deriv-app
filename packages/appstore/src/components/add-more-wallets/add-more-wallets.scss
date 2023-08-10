@@ -9,6 +9,7 @@
     &__title {
         @include mobile {
             font-size: var(--text-size-m);
+            padding-left: 1.6rem;
         }
     }
     &__content {

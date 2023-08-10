@@ -1,13 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
-import { useHistory, useLocation } from 'react-router-dom';
 import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal, ThemedScrollbars } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AddPaymentMethodForm from 'Pages/my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
 import BuySellForm from 'Pages/buy-sell/buy-sell-form.jsx';
 import BuySellFormReceiveAmount from 'Pages/buy-sell/buy-sell-form-receive-amount.jsx';
-import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import BuySellModalFooter from './buy-sell-modal-footer';
 import BuySellModalTitle from './buy-sell-modal-title';
@@ -16,28 +14,20 @@ import BuySellModalError from './buy-sell-modal-error';
 const BuySellModal = () => {
     const { is_modal_open } = useModalManagerContext();
     const { buy_sell_store, general_store, my_profile_store } = useStores();
-    const { selected_ad_state, table_type, onCancelBuySellOrder, onConfirmBuySellOrder } = buy_sell_store;
+    const { is_buy, selected_ad_state, onCancelBuySellOrder, onConfirmBuySellOrder } = buy_sell_store;
     const { balance } = general_store;
     const { should_show_add_payment_method_form } = my_profile_store;
 
     const [error_message, setErrorMessage] = React.useState('');
     const [is_submit_disabled, setIsSubmitDisabled] = React.useState(true);
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
-    const history = useHistory();
-    const location = useLocation();
     const submitForm = React.useRef(() => {
         // do nothing
     });
 
-    const is_buy_table = table_type === buy_sell.BUY;
-    const show_low_balance_message = !is_buy_table && is_account_balance_low;
+    const show_low_balance_message = !is_buy && is_account_balance_low;
 
     const setSubmitForm = (submitFormFn: () => void) => (submitForm.current = submitFormFn);
-
-    React.useEffect(() => {
-        general_store.setHistory(history);
-        general_store.setLocation(location);
-    }, [general_store, history, location]);
 
     React.useEffect(() => {
         const balance_check =
@@ -95,7 +85,7 @@ const BuySellModal = () => {
                     className={classNames('buy-sell-modal', {
                         'buy-sell-modal__form': should_show_add_payment_method_form,
                     })}
-                    height={is_buy_table ? 'auto' : '649px'}
+                    height={is_buy ? 'auto' : '649px'}
                     is_open={is_modal_open}
                     portalId='modal_root'
                     title={<BuySellModalTitle />}
@@ -103,7 +93,7 @@ const BuySellModal = () => {
                     width='456px'
                 >
                     {/* Parent height - Modal.Header height - Modal.Footer height */}
-                    <ThemedScrollbars height={is_buy_table ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
+                    <ThemedScrollbars height={is_buy ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
                         <Modal.Body className='buy-sell-modal__layout'>
                             <BuySellModalError
                                 error_message={error_message}

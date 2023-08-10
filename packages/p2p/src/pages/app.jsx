@@ -37,6 +37,9 @@ const App = () => {
         general_store.setExternalStores({ client, common, modules, notifications, ui });
         general_store.setWebsocketInit(WS);
         general_store.getWebsiteStatus();
+        // this will help enable us to route within stores.
+        general_store.setHistory(history);
+        general_store.setLocation(location);
 
         setP2PRedirectTo({
             routeToMyProfile: () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Loading, ThemedScrollbars, Text, ButtonLink } from '@deriv/components';
+import { Loading, ThemedScrollbars } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile, useIsMounted, PlatformContext } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';

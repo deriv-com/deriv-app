@@ -425,6 +425,7 @@ type TCommonStore = {
     setAppstorePlatform: (value: string) => void;
     app_routing_history: TAppRoutingHistory[];
     getExchangeRate: (from_currency: string, to_currency: string) => Promise<number>;
+    network_status: Record<string, never> | { [key: string]: string };
 };
 
 type TUiStore = {

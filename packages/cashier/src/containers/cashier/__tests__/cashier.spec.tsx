@@ -266,7 +266,7 @@ describe('<Cashier />', () => {
         expect(history.location.pathname).toBe('/cashier/withdrawal');
     });
 
-    it('should not render the side note if on crypto transactions page', () => {
+    it('should not render the side note if on deposit page', () => {
         const mock_root_store = mockStore({
             common: {
                 routeBackInApp: jest.fn(),
@@ -309,6 +309,8 @@ describe('<Cashier />', () => {
                 },
             },
         });
+
+        history.replace('/cashier/deposit');
 
         renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
 

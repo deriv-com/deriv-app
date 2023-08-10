@@ -10,12 +10,14 @@ import {
     getMinPayout,
     getPlatformSettings,
     getPropertyValue,
+    getContractSubtype,
     isBarrierSupported,
     isCryptocurrency,
     isDesktop,
     isEmptyObject,
     isMarketClosed,
     isMobile,
+    isTurbosContract,
     pickDefaultSymbol,
     removeBarrier,
     resetEndTimeOnVolatilityIndices,
@@ -25,6 +27,8 @@ import {
     formatMoney,
     getCurrencyDisplayCode,
     unsupported_contract_types_list,
+    BARRIER_COLORS,
+    BARRIER_LINE_STYLES,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
@@ -37,7 +41,7 @@ import { getUpdatedTicksHistoryStats } from './Helpers/accumulator';
 import { processTradeParams } from './Helpers/process';
 import { action, computed, makeObservable, observable, override, reaction, runInAction, toJS, when } from 'mobx';
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
-import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
+import { getHoveredColor } from './Helpers/barrier-utils';
 import BaseStore from '../../base-store';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import debounce from 'lodash.debounce';
@@ -74,7 +78,7 @@ export default class TradeStore extends BaseStore {
     basis = '';
     basis_list = [];
     currency = '';
-    stake_boundary = { VANILLALONGCALL: {}, VANILLALONGPUT: {} };
+    stake_boundary = {};
 
     // Duration
     duration = 5;
@@ -90,9 +94,10 @@ export default class TradeStore extends BaseStore {
     barrier_1 = '';
     barrier_2 = '';
     barrier_count = 0;
-    main_barrier = null;
     barriers = [];
-    strike_price_choices = [];
+    hovered_barrier = '';
+    main_barrier = null;
+    barrier_choices = [];
 
     // Start Time
     start_date = Number(0); // Number(0) refers to 'now'
@@ -146,6 +151,10 @@ export default class TradeStore extends BaseStore {
     cancellation_duration = '60m';
     cancellation_range_list = [];
 
+    // Turbos trade params
+    long_barriers = {};
+    short_barriers = {};
+
     // Vanilla trade params
     vanilla_trade_type = 'VANILLALONGCALL';
 
@@ -182,6 +191,9 @@ export default class TradeStore extends BaseStore {
             'has_take_profit',
             'has_stop_loss',
             'has_cancellation',
+            'hovered_barrier',
+            'short_barriers',
+            'long_barriers',
             'is_equal',
             'last_digit',
             'multiplier',
@@ -206,6 +218,7 @@ export default class TradeStore extends BaseStore {
             barrier_1: observable,
             barrier_2: observable,
             barrier_count: observable,
+            barrier_choices: observable,
             barriers: observable,
             basis_list: observable,
             basis: observable,
@@ -233,6 +246,7 @@ export default class TradeStore extends BaseStore {
             has_equals_only: observable,
             has_stop_loss: observable,
             has_take_profit: observable,
+            hovered_barrier: observable,
             hovered_contract_type: observable,
             is_accumulator: computed,
             is_chart_loading: observable,
@@ -243,7 +257,9 @@ export default class TradeStore extends BaseStore {
             is_trade_component_mounted: observable,
             is_trade_enabled: observable,
             is_trade_params_expanded: observable,
+            is_turbos: computed,
             last_digit: observable,
+            long_barriers: observable,
             main_barrier: observable,
             market_close_times: observable,
             market_open_times: observable,
@@ -254,8 +270,10 @@ export default class TradeStore extends BaseStore {
             previous_symbol: observable,
             proposal_info: observable.ref,
             purchase_info: observable.ref,
+            setHoveredBarrier: action.bound,
             sessions: observable,
             setDefaultGrowthRate: action.bound,
+            short_barriers: observable,
             should_show_active_symbols_loading: observable,
             should_skip_prepost_lifecycle: observable,
             stake_boundary: observable,
@@ -264,7 +282,6 @@ export default class TradeStore extends BaseStore {
             start_time: observable,
             stop_loss: observable,
             stop_out: observable,
-            strike_price_choices: observable,
             symbol: observable,
             take_profit: observable,
             tick_size_barrier: observable,
@@ -275,10 +292,12 @@ export default class TradeStore extends BaseStore {
             barriers_flattened: computed,
             changeDurationValidationRules: action.bound,
             chartStateChange: action.bound,
+            clearContractPurchaseToastBox: action.bound,
             clearContracts: action.bound,
             clearLimitOrderBarriers: action.bound,
             clearPurchaseInfo: action.bound,
             clientInitListener: action.bound,
+            contract_purchase_toast_box: observable,
             enablePurchase: action.bound,
             exportLayout: action.bound,
             forgetAllProposal: action.bound,
@@ -314,7 +333,9 @@ export default class TradeStore extends BaseStore {
             resetPreviousSymbol: action.bound,
             setActiveSymbols: action.bound,
             setAllowEqual: action.bound,
+            setBarrierChoices: action.bound,
             setChartStatus: action.bound,
+            setContractPurchaseToastbox: action.bound,
             setContractTypes: action.bound,
             setDefaultSymbol: action.bound,
             setIsTradeParamsExpanded: action.bound,
@@ -324,7 +345,6 @@ export default class TradeStore extends BaseStore {
             setPurchaseSpotBarrier: action.bound,
             setSkipPrePostLifecycle: action.bound,
             setStakeBoundary: action.bound,
-            setStrikeChoices: action.bound,
             setTradeStatus: action.bound,
             show_digits_stats: computed,
             themeChangeListener: action.bound,
@@ -332,9 +352,7 @@ export default class TradeStore extends BaseStore {
             updateLimitOrderBarriers: action.bound,
             updateStore: action.bound,
             updateSymbol: action.bound,
-            contract_purchase_toast_box: observable,
-            clearContractPurchaseToastBox: action.bound,
-            setContractPurchaseToastbox: action.bound,
+            vanilla_trade_type: observable,
         });
 
         // Adds intercept to change min_max value of duration validation
@@ -382,7 +400,7 @@ export default class TradeStore extends BaseStore {
             () => [this.contract_type],
             () => {
                 this.root_store.portfolio.setContractType(this.contract_type);
-                if (this.is_multiplier || this.is_accumulator) {
+                if (this.is_accumulator || this.is_multiplier || this.is_turbos) {
                     // when switching back to Multiplier contract, re-apply Stop loss / Take profit validation rules
                     Object.assign(this.validation_rules, getMultiplierValidationRules());
                 } else {
@@ -633,6 +651,10 @@ export default class TradeStore extends BaseStore {
         this.root_store.common.setSelectedContractType(this.contract_type);
     }
 
+    setHoveredBarrier(hovered_value) {
+        this.hovered_barrier = hovered_value;
+    }
+
     setPreviousSymbol(symbol) {
         if (this.previous_symbol !== symbol) this.previous_symbol = symbol;
     }
@@ -743,15 +765,22 @@ export default class TradeStore extends BaseStore {
         if (!proposal_info) {
             return;
         }
-        const { contract_type, barrier, high_barrier, low_barrier } = proposal_info;
+        const { barrier, contract_type, high_barrier, low_barrier } = proposal_info;
 
         if (isBarrierSupported(contract_type)) {
             const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
+
             // create barrier only when it's available in response
-            this.main_barrier = new ChartBarrierStore(barrier || high_barrier, low_barrier, this.onChartBarrierChange, {
-                color,
-                not_draggable: this.is_vanilla,
-            });
+            this.main_barrier = new ChartBarrierStore(
+                this.hovered_barrier || barrier || high_barrier,
+                low_barrier,
+                this.onChartBarrierChange,
+                {
+                    color: this.hovered_barrier ? getHoveredColor(contract_type) : color,
+                    line_style: this.hovered_barrier && BARRIER_LINE_STYLES.DASHED,
+                    not_draggable: this.is_turbos || this.is_vanilla,
+                }
+            );
             // this.main_barrier.updateBarrierShade(true, contract_type);
         } else {
             this.main_barrier = null;
@@ -1178,17 +1207,7 @@ export default class TradeStore extends BaseStore {
         if (response.error) {
             const error_id = getProposalErrorField(response);
             if (error_id) {
-                if (this.is_vanilla) {
-                    /**
-                     * This if-block ensures only the particular trade type's error message is selected
-                     * even though 2 proposal calls are made
-                     */
-                    if (this.vanilla_trade_type === contract_type) {
-                        this.setValidationErrorMessages(error_id, [response.error.message]);
-                    }
-                } else {
-                    this.setValidationErrorMessages(error_id, [response.error.message]);
-                }
+                this.setValidationErrorMessages(error_id, [response.error.message]);
             }
             // Commission for multipliers is normally set from proposal response.
             // But when we change the multiplier and if it is invalid, we don't get the proposal response to set the commission. We only get error message.
@@ -1202,26 +1221,6 @@ export default class TradeStore extends BaseStore {
             }
             if (this.is_accumulator) this.resetAccumulatorData();
 
-            // Sometimes the initial barrier doesn't match with current barrier choices received from API.
-            // When this happens we want to populate the list of barrier choices to choose from since the value cannot be specified manually
-            if (this.is_vanilla) {
-                const { barrier_choices, max_stake, min_stake } = response.error.details;
-                this.setStakeBoundary(contract_type, min_stake, max_stake);
-                this.setStrikeChoices(barrier_choices);
-                if (!this.strike_price_choices.includes(this.barrier_1)) {
-                    // Since on change of duration `proposal` API call is made which returns a new set of barrier values.
-                    // The new list is set and the mid value is assigned
-                    const index = Math.floor(this.strike_price_choices.length / 2);
-                    this.barrier_1 = this.strike_price_choices[index];
-                    this.onChange({
-                        target: {
-                            name: 'barrier_1',
-                            value: this.barrier_1,
-                        },
-                    });
-                }
-            }
-
             // Sometimes when we navigate fast, `forget_all` proposal is called immediately after proposal subscription calls.
             // But, in the BE, `forget_all` proposal call is processed before the proposal subscriptions are registered. In this case, `forget_all` proposal doesn't forget the new subscriptions.
             // So when we send new proposal subscription requests, we get `AlreadySubscribed` error.
@@ -1234,11 +1233,31 @@ export default class TradeStore extends BaseStore {
                 }
                 return;
             }
+
+            // Sometimes the initial barrier doesn't match with current barrier choices received from API.
+            // When this happens we want to populate the list of barrier choices to choose from since the value cannot be specified manually
+            if ((this.is_turbos || this.is_vanilla) && response.error.details?.barrier_choices) {
+                const { barrier_choices, max_stake, min_stake } = response.error.details;
+                this.setStakeBoundary(contract_type, min_stake, max_stake);
+                this.setBarrierChoices(barrier_choices);
+                if (!this.barrier_choices.includes(this.barrier_1)) {
+                    // Since on change of duration `proposal` API call is made which returns a new set of barrier values.
+                    // The new list is set and the mid value is assigned
+                    const index = Math.floor(this.barrier_choices.length / 2);
+                    this.barrier_1 = this.is_vanilla ? this.barrier_choices[index] : this.barrier_choices[0];
+                    this.onChange({
+                        target: {
+                            name: 'barrier_1',
+                            value: this.barrier_1,
+                        },
+                    });
+                }
+            }
         } else {
             this.validateAllProperties();
-            if (this.is_vanilla) {
+            if (this.is_turbos || this.is_vanilla) {
                 const { max_stake, min_stake, barrier_choices } = response.proposal;
-                this.setStrikeChoices(barrier_choices);
+                this.setBarrierChoices(barrier_choices);
                 this.setStakeBoundary(contract_type, min_stake, max_stake);
             }
         }
@@ -1550,6 +1569,10 @@ export default class TradeStore extends BaseStore {
         return this.contract_type === 'multiplier';
     }
 
+    get is_turbos() {
+        return isTurbosContract(this.contract_type);
+    }
+
     get is_vanilla() {
         return this.contract_type === 'vanilla';
     }
@@ -1582,11 +1605,19 @@ export default class TradeStore extends BaseStore {
         return findFirstOpenMarket(active_symbols, markets_to_search);
     }
 
-    setStrikeChoices(strike_prices) {
-        this.strike_price_choices = strike_prices ?? [];
+    setBarrierChoices(barrier_choices) {
+        this.barrier_choices = barrier_choices ?? [];
+        if (this.is_turbos) {
+            const stored_barriers_data = { barrier: this.barrier_1, barrier_choices };
+            if (getContractSubtype(this.contract_type) === 'Long') {
+                this.long_barriers = stored_barriers_data;
+            } else {
+                this.short_barriers = stored_barriers_data;
+            }
+        }
     }
 
     setStakeBoundary(type, min_stake, max_stake) {
-        this.stake_boundary[type] = { min_stake, max_stake };
+        if (min_stake && max_stake) this.stake_boundary[type] = { min_stake, max_stake };
     }
 }

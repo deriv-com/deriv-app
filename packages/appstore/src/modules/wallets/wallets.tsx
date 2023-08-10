@@ -7,6 +7,7 @@ import DesktopWalletsList from './desktop-wallets-list';
 import MobileWalletsCarousel from './mobile-wallets-carousel';
 import WalletTourGuide from 'Modules/tour-guide/wallet-tour-guide';
 import './wallets.scss';
+import { ThemedScrollbars } from '@deriv/components';
 
 const Wallets = observer(() => {
     const { client, ui } = useStore();
@@ -22,14 +23,14 @@ const Wallets = observer(() => {
     }, [active_wallet, data, switchAccount]);
 
     return (
-        <div className='wallets-module'>
+        <ThemedScrollbars className='wallets-module' is_scrollbar_hidden>
             <div className='wallets-module__content'>
                 {is_mobile ? <MobileWalletsCarousel /> : <DesktopWalletsList />}
                 <AddMoreWallets />
             </div>
             <ModalManager />
             <WalletTourGuide />
-        </div>
+        </ThemedScrollbars>
     );
 });
 

@@ -39,7 +39,7 @@ const WalletSuccessDialog = observer(() => {
                 <div className='wallet-success-dialog__icon'>
                     <WalletCard wallet={wallet_details} size='medium' />
                 </div>
-                <Text as='h2' weight='bold' size='s' className='wallet-success-dialog__title'>
+                <Text as='h2' weight='bold' className='wallet-success-dialog__title'>
                     <Localize
                         i18n_default_text='Your {{currency}} Wallet is ready'
                         values={{ currency: active_wallet?.currency_config?.display_code }}
@@ -51,13 +51,13 @@ const WalletSuccessDialog = observer(() => {
             </Modal.Body>
             <Modal.Footer className='wallet-success-dialog__footer'>
                 <Button.Group>
-                    <Button secondary onClick={toggleIsWalletCreationSuccessModalOpen}>
+                    <Button secondary onClick={() => toggleIsWalletCreationSuccessModalOpen(false)}>
                         {localize('Maybe later')}
                     </Button>
                     <Button
                         primary
                         onClick={() => {
-                            toggleIsWalletCreationSuccessModalOpen(true);
+                            toggleIsWalletCreationSuccessModalOpen(false);
                             setWalletModalActiveTab('Deposit');
                             setIsWalletModalVisible(true);
                             setWalletModalActiveWalletID(active_wallet?.loginid);

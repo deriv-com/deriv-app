@@ -2,7 +2,9 @@ import { useInvalidateQuery, useRequest } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 import { useMemo } from 'react';
 
-/** A custom hook to create more wallets */
+/** A custom hook that creates a new wallet account.
+ * @description This hook is to create a new wallet account and switch to it.
+ */
 const useCreateWallet = () => {
     const { client, ui } = useStore();
     const { accountRealReaction, switchAccount } = client;

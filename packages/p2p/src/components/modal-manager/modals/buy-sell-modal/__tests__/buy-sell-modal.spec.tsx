@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, render, waitFor } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
@@ -8,7 +8,9 @@ import BuySellModal from '../buy-sell-modal';
 let mock_store: DeepPartial<ReturnType<typeof useStores>>;
 
 const mock_modal_manager: DeepPartial<ReturnType<typeof useModalManagerContext>> = {
+    hideModal: jest.fn(),
     is_modal_open: true,
+    showModal: jest.fn(),
 };
 
 const el_modal = document.createElement('div');
@@ -30,7 +32,6 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
     useModalManagerContext: jest.fn(() => mock_modal_manager),
 }));
 
-jest.mock('Pages/buy-sell/buy-sell-form.jsx', () => jest.fn(() => <div>BuySellForm</div>));
 jest.mock('Pages/buy-sell/buy-sell-form-receive-amount.jsx', () => jest.fn(() => <div>BuySellFormReceiveAmount</div>));
 jest.mock('../buy-sell-modal-error', () => jest.fn(() => <div>BuySellModalError</div>));
 
@@ -41,21 +42,53 @@ describe('<BuySellModal />', () => {
                 setFormErrorMessage: jest.fn(),
             },
             buy_sell_store: {
+                advert: {
+                    advertiser_details: {
+                        name: 'test',
+                    },
+                    description: 'test description',
+                    effective_rate: 1,
+                    local_currency: 'IDR',
+                    max_order_amount_limit_display: '10.00',
+                    min_order_amount_limit: 5,
+                    min_order_amount_limit_display: '5.00',
+                    payment_method_names: ['Alipay'],
+                    price: 1,
+                    rate: 1,
+                    rate_type: 'fixed',
+                },
+                form_props: {
+                    setIsSubmitDisabled: jest.fn(),
+                    setSubmitForm: jest.fn(),
+                },
                 selected_ad_state: {
                     account_currency: 'USD',
                 },
                 table_type: 'buy',
-                onCancelBuySellOrder: jest.fn(),
+                fetchAdvertiserAdverts: jest.fn(),
+                setFormProps: jest.fn(),
+                setHasPaymentMethods: jest.fn(),
+                setInitialReceiveAmount: jest.fn(),
+                setReceiveAmount: jest.fn(),
+            },
+            floating_rate_store: {
+                setIsMarketRateChanged: jest.fn(),
             },
             general_store: {
                 balance: 10000,
                 is_form_modified: false,
-                hideModal: jest.fn(),
                 setHistory: jest.fn(),
                 setLocation: jest.fn(),
             },
             my_profile_store: {
                 should_show_add_payment_method_form: false,
+                hideAddPaymentMethodForm: jest.fn(),
+                getPaymentMethodsList: jest.fn(),
+                getSelectedPaymentMethodDetails: jest.fn(),
+                setAddPaymentMethodErrorMessage: jest.fn(),
+                setSelectedPaymentMethod: jest.fn(),
+                setSelectedPaymentMethodDisplayName: jest.fn(),
+                setShouldShowAddPaymentMethodForm: jest.fn(),
             },
         };
     });
@@ -77,15 +110,38 @@ describe('<BuySellModal />', () => {
         expect(screen.getByRole('button', { name: 'Confirm' })).toBeInTheDocument();
     });
 
-    it('should set is_modal_open to false when clicking cancel', async () => {
+    it('should call setIsMarketRateChanged, hideModal, fetchAdvertiserAdverts when clicking cross icon if should_show_add_payment_method_form is false', () => {
         render(<BuySellModal />);
 
-        const cancel_button = screen.getByRole('button', { name: 'Cancel' });
-        userEvent.click(cancel_button);
+        const cross_icon = screen.getByTestId('dt_modal_close_icon');
+        userEvent.click(cross_icon);
 
-        await waitFor(() => {
-            expect(mock_store.buy_sell_store.onCancelBuySellOrder).toHaveBeenCalled();
-        });
+        expect(mock_modal_manager.hideModal).toHaveBeenCalled();
+        expect(mock_store.buy_sell_store.fetchAdvertiserAdverts).toHaveBeenCalled();
+        expect(mock_store.floating_rate_store.setIsMarketRateChanged).toHaveBeenCalledWith(false);
+    });
+
+    it('should call hideAddPaymentMethodForm when clicking cross icon if should_show_add_payment_method_form is true and is_form_modified is false', () => {
+        mock_store.my_profile_store.should_show_add_payment_method_form = true;
+
+        render(<BuySellModal />);
+
+        const cross_icon = screen.getByTestId('dt_modal_close_icon');
+        userEvent.click(cross_icon);
+
+        expect(mock_store.my_profile_store.hideAddPaymentMethodForm).toHaveBeenCalled();
+    });
+
+    it('should call showModal when clicking cross icon if should_show_add_payment_method_form and is_form_modified is true', () => {
+        mock_store.my_profile_store.should_show_add_payment_method_form = true;
+        mock_store.general_store.is_form_modified = true;
+
+        render(<BuySellModal />);
+
+        const cross_icon = screen.getByTestId('dt_modal_close_icon');
+        userEvent.click(cross_icon);
+
+        expect(mock_modal_manager.showModal).toHaveBeenCalledWith({ key: 'CancelAddPaymentMethodModal' });
     });
 
     it('should setErrorMessage to empty string if is_modal_open is false', () => {

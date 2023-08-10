@@ -1,6 +1,6 @@
 import React from 'react';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
-import { formatMoney, getDecimalPlaces, isMobile, routes } from '@deriv/shared';
+import { formatMoney, getDecimalPlaces, isMobile } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
@@ -101,12 +101,10 @@ export default class BuySellStore extends BaseStore {
             hideAdvertiserPage: action.bound,
             hideVerification: action.bound,
             loadMoreItems: action.bound,
-            onCancelBuySellOrder: action.bound,
             onChangeTableType: action.bound,
             onClickApply: action.bound,
             onClickReset: action.bound,
             onConfirmClick: action.bound,
-            onConfirmBuySellOrder: action.bound,
             onLocalCurrencySelect: action.bound,
             setApiErrorMessage: action.bound,
             setCreateSellAdFromNoAds: action.bound,
@@ -407,21 +405,6 @@ export default class BuySellStore extends BaseStore {
         });
     }
 
-    onCancelBuySellOrder() {
-        const { general_store, buy_sell_store, floating_rate_store, my_profile_store } = this.root_store;
-        if (my_profile_store.should_show_add_payment_method_form) {
-            if (general_store.is_form_modified) {
-                general_store.showModal({ key: 'CancelAddPaymentMethodModal' });
-            } else {
-                my_profile_store.hideAddPaymentMethodForm();
-            }
-        } else {
-            general_store.hideModal();
-            buy_sell_store.fetchAdvertiserAdverts();
-        }
-        floating_rate_store.setIsMarketRateChanged(false);
-    }
-
     onChangeTableType(event) {
         this.setTableType(event.target.value);
     }
@@ -437,22 +420,6 @@ export default class BuySellStore extends BaseStore {
     onClickReset() {
         this.setShouldUseClientLimits(false);
     }
-
-    onConfirmBuySellOrder = order_info => {
-        const { general_store, order_store, buy_sell_store } = this.root_store;
-        const current_query_params = new URLSearchParams(general_store.location.search);
-        current_query_params.append('order', order_info.id);
-        general_store.redirectTo('orders', { nav: { location: 'buy_sell' } });
-        general_store.history.replace({
-            pathname: routes.p2p_orders,
-            search: current_query_params.toString(),
-            hash: general_store.location.hash,
-        });
-        order_store.setOrderId(order_info.id);
-        general_store.hideModal();
-        buy_sell_store.fetchAdvertiserAdverts();
-        buy_sell_store.setShowAdvertiserPage(false);
-    };
 
     onConfirmClick(order_info) {
         const { general_store, order_store } = this.root_store;

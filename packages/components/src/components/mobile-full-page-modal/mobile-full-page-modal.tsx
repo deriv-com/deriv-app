@@ -40,9 +40,7 @@ const MobileFullPageModal = ({
     is_flex,
     is_popup,
     is_modal_open,
-    onClickClose = () => {
-        // do nothing
-    },
+    onClickClose,
     renderPageFooterChildren,
     page_footer_className,
     page_footer_parent,

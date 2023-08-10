@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { useHistory, useLocation } from 'react-router-dom';
 import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal, ThemedScrollbars } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -10,14 +11,17 @@ import { useStores } from 'Stores';
 import BuySellModalFooter from './buy-sell-modal-footer';
 import BuySellModalTitle from './buy-sell-modal-title';
 import BuySellModalError from './buy-sell-modal-error';
+import { routes } from '@deriv/shared';
 
 const BuySellModal = () => {
-    const { is_modal_open } = useModalManagerContext();
-    const { buy_sell_store, general_store, my_profile_store } = useStores();
-    const { is_buy, selected_ad_state, onCancelBuySellOrder, onConfirmBuySellOrder } = buy_sell_store;
+    const { hideModal, is_modal_open, showModal } = useModalManagerContext();
+    const { buy_sell_store, floating_rate_store, general_store, my_profile_store, order_store } = useStores();
+    const { is_buy, selected_ad_state } = buy_sell_store;
     const { balance } = general_store;
     const { should_show_add_payment_method_form } = my_profile_store;
 
+    const history = useHistory();
+    const location = useLocation();
     const [error_message, setErrorMessage] = React.useState('');
     const [is_submit_disabled, setIsSubmitDisabled] = React.useState(true);
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
@@ -28,6 +32,37 @@ const BuySellModal = () => {
     const show_low_balance_message = !is_buy && is_account_balance_low;
 
     const setSubmitForm = (submitFormFn: () => void) => (submitForm.current = submitFormFn);
+
+    const onCancel = () => {
+        if (my_profile_store.should_show_add_payment_method_form) {
+            if (general_store.is_form_modified) {
+                showModal({
+                    key: 'CancelAddPaymentMethodModal',
+                });
+            } else {
+                my_profile_store.hideAddPaymentMethodForm();
+            }
+        } else {
+            hideModal();
+            buy_sell_store.fetchAdvertiserAdverts();
+        }
+        floating_rate_store.setIsMarketRateChanged(false);
+    };
+
+    const onConfirmClick = (order_info: { id: string }) => {
+        const current_query_params = new URLSearchParams(location.search);
+        current_query_params.append('order', order_info.id);
+        general_store.redirectTo('orders', { nav: { location: 'buy_sell' } });
+        history.replace({
+            pathname: routes.p2p_orders,
+            search: current_query_params.toString(),
+            hash: location.hash,
+        });
+        order_store.setOrderId(order_info.id);
+        hideModal();
+        buy_sell_store.fetchAdvertiserAdverts();
+        buy_sell_store.setShowAdvertiserPage(false);
+    };
 
     React.useEffect(() => {
         const balance_check =
@@ -52,7 +87,7 @@ const BuySellModal = () => {
                     is_modal_open={is_modal_open}
                     page_header_className='buy-sell-modal__header'
                     page_header_text={<BuySellModalTitle />}
-                    pageHeaderReturnFn={onCancelBuySellOrder}
+                    pageHeaderReturnFn={onCancel}
                 >
                     <BuySellModalError
                         error_message={error_message}
@@ -64,8 +99,8 @@ const BuySellModal = () => {
                         <React.Fragment>
                             <BuySellForm
                                 advert={selected_ad_state}
-                                handleClose={onCancelBuySellOrder}
-                                handleConfirm={onConfirmBuySellOrder}
+                                handleClose={onCancel}
+                                handleConfirm={onConfirmClick}
                                 setIsSubmitDisabled={setIsSubmitDisabled}
                                 setErrorMessage={setErrorMessage}
                                 setSubmitForm={setSubmitForm}
@@ -73,7 +108,7 @@ const BuySellModal = () => {
                             <BuySellFormReceiveAmount />
                             <BuySellModalFooter
                                 is_submit_disabled={!!is_submit_disabled}
-                                onCancel={onCancelBuySellOrder}
+                                onCancel={onCancel}
                                 onSubmit={submitForm.current}
                             />
                         </React.Fragment>
@@ -89,7 +124,7 @@ const BuySellModal = () => {
                     is_open={is_modal_open}
                     portalId='modal_root'
                     title={<BuySellModalTitle />}
-                    toggleModal={onCancelBuySellOrder}
+                    toggleModal={onCancel}
                     width='456px'
                 >
                     {/* Parent height - Modal.Header height - Modal.Footer height */}
@@ -104,8 +139,8 @@ const BuySellModal = () => {
                             ) : (
                                 <BuySellForm
                                     advert={selected_ad_state}
-                                    handleClose={onCancelBuySellOrder}
-                                    handleConfirm={onConfirmBuySellOrder}
+                                    handleClose={onCancel}
+                                    handleConfirm={onConfirmClick}
                                     setIsSubmitDisabled={setIsSubmitDisabled}
                                     setErrorMessage={setErrorMessage}
                                     setSubmitForm={setSubmitForm}
@@ -117,7 +152,7 @@ const BuySellModal = () => {
                         <Modal.Footer has_separator>
                             <BuySellModalFooter
                                 is_submit_disabled={!!is_submit_disabled}
-                                onCancel={onCancelBuySellOrder}
+                                onCancel={onCancel}
                                 onSubmit={submitForm.current}
                             />
                         </Modal.Footer>

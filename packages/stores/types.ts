@@ -424,16 +424,17 @@ type TUiStore = {
     enableApp: () => void;
     has_only_forward_starting_contracts: boolean;
     has_real_account_signup_ended: boolean;
+    is_loading: boolean;
     is_cashier_visible: boolean;
     is_closing_create_real_account_modal: boolean;
     is_dark_mode_on: boolean;
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
+    is_link_expired_modal_visible: boolean;
     is_mobile: boolean;
     is_positions_drawer_on: boolean;
     is_services_error_visible: boolean;
     is_unsupported_contract_modal_visible: boolean;
-    toggleShouldShowRealAccountsList: (value: boolean) => void;
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;
@@ -456,6 +457,7 @@ type TUiStore = {
     toggleReadyToDepositModal: () => void;
     toggleServicesErrorModal: (is_visible: boolean) => void;
     toggleSetCurrencyModal: () => void;
+    toggleShouldShowRealAccountsList: (value: boolean) => void;
     is_tablet: boolean;
     removeToast: (key: string) => void;
     is_ready_to_deposit_modal_visible: boolean;

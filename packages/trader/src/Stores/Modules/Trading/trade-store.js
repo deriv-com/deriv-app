@@ -534,6 +534,8 @@ export default class TradeStore extends BaseStore {
                     }),
                 });
                 return;
+            } else if (!is_on_mf_account) {
+                showUnavailableLocationError(showError, is_logged_in);
             }
             showUnavailableLocationError(showError, is_logged_in);
         }

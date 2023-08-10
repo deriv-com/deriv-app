@@ -34,7 +34,7 @@ jest.mock('../my-profile-stats/my-profile-details-container', () =>
 );
 jest.mock('../my-profile-header', () => jest.fn(() => <div>MyProfileHeader</div>));
 
-describe('<my-profile.spec />', () => {
+describe('<MyProfile />', () => {
     it('should show the verification page if is_advertiser is false', () => {
         render(<MyProfile />);
 

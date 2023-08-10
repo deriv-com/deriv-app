@@ -82,9 +82,7 @@ const AppContent = ({ order_id }) => {
             <div label={localize('My ads')}>
                 <TemporarilyBarredHint />
             </div>
-            <div label={localize('My profile')}>
-                <MyProfile />
-            </div>
+            <div label={localize('My profile')} />
         </Tabs>
     );
 };

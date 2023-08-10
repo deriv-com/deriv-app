@@ -29,7 +29,7 @@ const AccumulatorsProfitLossText = ({
     const fading_in_timeout_id = React.useRef();
     const sliding_timeout_id = React.useRef();
     const profit_portions_array = formatted_profit.split('.');
-    const profit_whole_number = +profit_portions_array[0];
+    const profit_whole_number = profit_portions_array[0];
     const profit_tenth = +profit_portions_array[1][0];
     const profit_hundredths = +profit_portions_array[1].slice(1);
     const won = profit >= 0;

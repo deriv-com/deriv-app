@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Loading } from '@deriv/components';
-import { useFeatureFlags, useWalletsList } from '@deriv/hooks';
+import { useFeatureFlags, useWalletsList, useWalletMigration } from '@deriv/hooks';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import Onboarding from 'Modules/onboarding';
@@ -12,10 +12,11 @@ import RouteWithSubroutes from './route-with-sub-routes.jsx';
 const Routes: React.FC = observer(() => {
     const { is_wallet_enabled } = useFeatureFlags();
     const { has_wallet, isLoading } = useWalletsList();
+    const { state } = useWalletMigration();
 
     const should_show_wallets = is_wallet_enabled && has_wallet;
 
-    if (isLoading) return <Loading />;
+    if (isLoading || !state) return <Loading />;
 
     return (
         <React.Suspense

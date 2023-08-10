@@ -1,9 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Modal, Text, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
-const UnlinkAccountModal = ({ onClose, is_open, identifier_title, onClickSendEmail }) => {
+type TUnlinkAccountModalProps = {
+    onClose: () => void;
+    is_open: boolean;
+    identifier_title: string;
+    onClickSendEmail: () => void;
+};
+
+/**
+ * Modal displayed when user clicks on the 'Change email' button in the account settings page.
+ * @name UnlinkAccountModal
+ * @param {Function} onClose - function to close the modal
+ * @param {boolean} is_open - state to toggle the modal
+ * @param {string} identifier_title - title of the identifier (e.g. Google, Facebook)
+ * @param {Function} onClickSendEmail - function to send email to user
+ * @returns {React.ReactNode} - returns jsx component
+ */
+const UnlinkAccountModal = ({ onClose, is_open, identifier_title, onClickSendEmail }: TUnlinkAccountModalProps) => {
     const onClickUnlinkButton = () => {
         onClose();
         onClickSendEmail();
@@ -38,13 +53,6 @@ const UnlinkAccountModal = ({ onClose, is_open, identifier_title, onClickSendEma
             </Modal.Footer>
         </Modal>
     );
-};
-
-UnlinkAccountModal.prototypes = {
-    onClose: PropTypes.func,
-    is_open: PropTypes.bool,
-    identifier_title: PropTypes.string,
-    onClickSendEmail: PropTypes.func,
 };
 
 export default UnlinkAccountModal;

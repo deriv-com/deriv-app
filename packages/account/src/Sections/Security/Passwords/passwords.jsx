@@ -2,7 +2,7 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import DerivPassword from './deriv-password.jsx';
-import DerivEmail from './deriv-email.jsx';
+import DerivEmail from './deriv-email';
 import PasswordsPlatform from './passwords-platform.jsx';
 
 const Passwords = observer(() => {

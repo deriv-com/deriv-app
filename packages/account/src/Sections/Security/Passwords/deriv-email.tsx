@@ -1,18 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Formik } from 'formik';
-import { withRouter } from 'react-router';
-import { WS, toTitleCase } from '@deriv/shared';
+import { toTitleCase } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { Button, Text, Input } from '@deriv/components';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
 import UnlinkAccountModal from 'Components/unlink-account-modal';
 import { observer, useStore } from '@deriv/stores';
+import { useVerifyEmail } from '@deriv/hooks';
 
-const DerivEmail = observer(({ email, social_identity_provider, is_social_signup }) => {
-    const { common } = useStore();
-    const { is_from_derivgo } = common;
+type TDerivEmailProps = {
+    email: string;
+    social_identity_provider: string;
+    is_social_signup: boolean;
+};
+
+const DerivEmail = observer(({ email, social_identity_provider, is_social_signup }: TDerivEmailProps) => {
+    const {
+        common: { is_from_derivgo },
+    } = useStore();
+    const { send } = useVerifyEmail('request_email');
     const [is_unlink_account_modal_open, setIsUnlinkAccountModalOpen] = React.useState(false);
     const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
 
@@ -20,45 +26,39 @@ const DerivEmail = observer(({ email, social_identity_provider, is_social_signup
         if (is_social_signup) {
             setIsUnlinkAccountModalOpen(true);
         } else {
-            WS.verifyEmail(email, 'request_email');
+            send(email);
             setIsSendEmailModalOpen(true);
         }
     };
 
     const onClickSendEmail = () => {
-        WS.verifyEmail(email, 'request_email');
+        send(email);
         setIsUnlinkAccountModalOpen(false);
         setIsSendEmailModalOpen(true);
-    };
-
-    const onClickResendEmail = () => {
-        WS.verifyEmail(email, 'request_email');
     };
 
     return (
         <React.Fragment>
             <FormSubHeader title={localize('Email address')} />
             <div className='account__email-wrapper'>
-                <React.Fragment>
-                    <Text as='p' className='email-platform__desc' color='prominent' size='xs' weight='lighter'>
-                        <Localize i18n_default_text='This is the email address associated with your Deriv account.' />
-                    </Text>
-                </React.Fragment>
+                <Text as='p' className='email-platform__desc' color='prominent' size='xs' weight='lighter'>
+                    <Localize i18n_default_text='This is the email address associated with your Deriv account.' />
+                </Text>
                 <div className='email-platform__content'>
-                    <Formik>
+                    <form>
                         <fieldset className='email-platform__content__fieldset'>
                             <Input
                                 className='email-input'
                                 data-lpignore='true'
                                 type='text'
                                 name='email'
-                                id={'email'}
+                                id='email'
                                 label={localize('Email address*')}
                                 value={email}
                                 disabled={true}
                             />
                         </fieldset>
-                    </Formik>
+                    </form>
                     {!is_from_derivgo && (
                         <Button
                             className='email-change_button'
@@ -83,7 +83,7 @@ const DerivEmail = observer(({ email, social_identity_provider, is_social_signup
                     is_open={is_send_email_modal_open}
                     onClose={() => setIsSendEmailModalOpen(false)}
                     identifier_title={'Change_Email'}
-                    onClickSendEmail={onClickResendEmail}
+                    onClickSendEmail={() => send(email)}
                     has_live_chat={true}
                     is_modal_when_mobile={true}
                 />
@@ -92,11 +92,4 @@ const DerivEmail = observer(({ email, social_identity_provider, is_social_signup
     );
 });
 
-DerivEmail.propTypes = {
-    email: PropTypes.string,
-    is_dark_mode_on: PropTypes.bool,
-    is_social_signup: PropTypes.bool,
-    social_identity_provider: PropTypes.string,
-};
-
-export default withRouter(DerivEmail);
+export default DerivEmail;

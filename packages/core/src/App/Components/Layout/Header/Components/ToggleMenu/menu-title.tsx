@@ -4,9 +4,9 @@ import { Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
 const MenuTitle = observer(() => {
-    const {
-        common: { current_language, is_mobile_language_menu_open, setMobileLanguageMenuOpen },
-    } = useStore();
+    const { common, ui } = useStore();
+    const { current_language } = common;
+    const { is_mobile_language_menu_open, setMobileLanguageMenuOpen } = ui;
     return (
         <React.Fragment>
             <div>{localize('Menu')}</div>
@@ -24,7 +24,6 @@ const MenuTitle = observer(() => {
                             icon={`IcFlag${current_language.replace('_', '-')}`}
                             data_testid='dt_icon'
                             className='ic-settings-language__icon'
-                            type={current_language.replace(/(\s|_)/, '-').toLowerCase()}
                             size={22}
                         />
                         <Text weight='bold' size='xxs'>

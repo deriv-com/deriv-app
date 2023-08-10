@@ -53,9 +53,8 @@ const LanguageLink = observer(({ icon_classname, is_clickable = false, lang, tog
                     data-testid='dt_settings_language_button'
                     id={`dt_settings_${lang}_button`}
                     key={lang}
-                    onClick={async () => {
-                        await changeSelectedLanguage(lang);
-                        await i18n.changeLanguage?.(lang);
+                    onClick={() => {
+                        changeSelectedLanguage(lang);
                         toggleModal?.();
                     }}
                     className={classNames('settings-language__language-link', {

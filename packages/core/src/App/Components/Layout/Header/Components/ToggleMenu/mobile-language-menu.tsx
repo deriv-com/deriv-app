@@ -11,9 +11,9 @@ type TMobileLanguageMenu = {
 };
 
 const MobileLanguageMenu = observer(({ expandSubMenu, toggleDrawer }: TMobileLanguageMenu) => {
-    const {
-        common: { is_language_changing, is_mobile_language_menu_open, setMobileLanguageMenuOpen },
-    } = useStore();
+    const { common, ui } = useStore();
+    const { is_language_changing } = common;
+    const { is_mobile_language_menu_open, setMobileLanguageMenuOpen } = ui;
     return (
         <MobileDrawer.SubMenu
             is_expanded={is_mobile_language_menu_open}

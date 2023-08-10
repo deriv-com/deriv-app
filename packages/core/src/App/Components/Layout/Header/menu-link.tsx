@@ -32,10 +32,9 @@ const MenuLink = observer(
         suffix_icon = '',
         text,
     }: Partial<TMenuLink>) => {
-        const { common, ui, client } = useStore();
+        const { ui, client } = useStore();
         const { has_any_real_account, is_virtual } = client;
-        const { setMobileLanguageMenuOpen } = common;
-        const { toggleReadyToDepositModal, toggleNeedRealAccountForCashierModal } = ui;
+        const { setMobileLanguageMenuOpen, toggleReadyToDepositModal, toggleNeedRealAccountForCashierModal } = ui;
         const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
         const is_trade_text = text === localize('Trade');
         const deriv_static_url = getStaticUrl(link_to);

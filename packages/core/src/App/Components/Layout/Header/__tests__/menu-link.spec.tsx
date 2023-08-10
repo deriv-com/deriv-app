@@ -112,11 +112,11 @@ describe('MenuLink', () => {
         renderComponent();
 
         const icons = screen.getAllByText('Mock Link Icon');
-        expect(icons.length).toBe(2);
+        expect(icons).toHaveLength(2);
         const link = screen.getByTestId('dt_menu_link');
         expect(link).toBeInTheDocument();
         userEvent.click(link);
-        expect(mockRootStore.common.setMobileLanguageMenuOpen).toHaveBeenCalled();
+        expect(mockRootStore.ui.setMobileLanguageMenuOpen).toHaveBeenCalled();
     });
 
     it('should render menu link for cashier for real account on traders hub', () => {

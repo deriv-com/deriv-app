@@ -13,56 +13,53 @@ export default class CommonStore extends BaseStore {
         super({ root_store });
 
         makeObservable(this, {
-            server_time: observable,
-            current_language: observable,
-            is_language_changing: observable,
-            is_mobile_language_menu_open: observable,
+            addRouteHistoryItem: action.bound,
             allowed_languages: observable,
-            has_error: observable,
+            app_id: observable,
+            app_router: observable,
+            app_routing_history: observable,
+            changeCurrentLanguage: action.bound,
+            changeSelectedLanguage: action.bound,
+            changing_language_timer_id: observable,
+            checkAppId: action.bound,
+            current_language: observable,
+            deposit_url: observable,
             error: observable,
-            network_status: observable,
+            has_error: observable,
+            init: action.bound,
+            is_from_derivgo: computed,
+            is_language_changing: observable,
             is_network_online: observable,
             is_socket_opened: observable,
-            was_socket_opened: observable,
-            services_error: observable,
-            deposit_url: observable,
-            withdraw_url: observable,
-            app_routing_history: observable,
-            app_router: observable,
-            app_id: observable,
+            network_status: observable,
             platform: observable,
+            routeBackInApp: action.bound,
+            routeTo: action.bound,
             selected_contract_type: observable,
-            changing_language_timer_id: observable,
-            setSelectedContractType: action.bound,
-            init: action.bound,
-            checkAppId: action.bound,
-            changeCurrentLanguage: action.bound,
+            server_time: observable,
+            services_error: observable,
+            setAppRouterHistory: action.bound,
             setAppstorePlatform: action.bound,
-            setPlatform: action.bound,
-            is_from_derivgo: computed,
+            setDepositURL: action.bound,
+            setError: action.bound,
             setInitialRouteHistoryItem: action.bound,
-            setServerTime: action.bound,
             setIsSocketOpened: action.bound,
             setNetworkStatus: action.bound,
-            setError: action.bound,
-            showError: action.bound,
-            setDepositURL: action.bound,
-            setWithdrawURL: action.bound,
+            setPlatform: action.bound,
+            setSelectedContractType: action.bound,
+            setServerTime: action.bound,
             setServicesError: action.bound,
-            setAppRouterHistory: action.bound,
-            routeTo: action.bound,
-            addRouteHistoryItem: action.bound,
-            changeSelectedLanguage: action.bound,
-            setMobileLanguageMenuOpen: action.bound,
-            routeBackInApp: action.bound,
+            setWithdrawURL: action.bound,
+            showError: action.bound,
+            was_socket_opened: observable,
+            withdraw_url: observable,
         });
     }
 
+    allowed_languages = Object.keys(getAllowedLanguages());
+    is_language_changing = false;
     server_time = ServerTime.get() || toMoment(); // fallback: get current time from moment.js
     current_language = currentLanguage;
-    is_language_changing = false;
-    is_mobile_language_menu_open = false;
-    allowed_languages = Object.keys(getAllowedLanguages());
     has_error = false;
 
     error = {
@@ -351,9 +348,5 @@ export default class CommonStore extends BaseStore {
         }
 
         history.push(routes.trade);
-    }
-
-    setMobileLanguageMenuOpen(is_mobile_language_menu_open) {
-        this.is_mobile_language_menu_open = is_mobile_language_menu_open;
     }
 }

@@ -426,7 +426,6 @@ type TCommonStore = {
     app_routing_history: TAppRoutingHistory[];
     getExchangeRate: (from_currency: string, to_currency: string) => Promise<number>;
     network_status: Record<string, never> | { [key: string]: string };
-    setMobileLanguageMenuOpen: (is_mobile_language_menu_open: boolean) => void;
 };
 
 type TUiStore = {
@@ -441,6 +440,7 @@ type TUiStore = {
     is_dark_mode_on: boolean;
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
+    is_mobile_language_menu_open: boolean;
     is_app_disabled: boolean;
     is_link_expired_modal_visible: boolean;
     is_mobile: boolean;
@@ -457,6 +457,7 @@ type TUiStore = {
     setRealAccountSignupEnd: (status: boolean) => void;
     setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: Omit<string, TRoutes> | TRoutes) => void;
+    setMobileLanguageMenuOpen: (is_mobile_language_menu_open: boolean) => void;
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
     toggleLanguageSettingsModal: () => void;

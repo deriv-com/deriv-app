@@ -29,9 +29,8 @@ const LanguageSettings = observer(() => {
                             language_code={language_key}
                             is_current_language={current_language === language_key}
                             name='language-radio-group'
-                            onChange={async () => {
-                                await changeSelectedLanguage(language_key);
-                                await i18n.changeLanguage?.(language_key);
+                            onChange={() => {
+                                changeSelectedLanguage(language_key);
                             }}
                         />
                     );

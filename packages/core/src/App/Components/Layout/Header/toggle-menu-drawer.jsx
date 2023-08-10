@@ -22,8 +22,15 @@ import { MobileLanguageMenu, MenuTitle } from './Components/ToggleMenu';
 
 const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { common, ui, client, traders_hub, modules } = useStore();
-    const { app_routing_history, current_language, is_mobile_language_menu_open, setMobileLanguageMenuOpen } = common;
-    const { disableApp, enableApp, is_dark_mode_on: is_dark_mode, setDarkMode: toggleTheme } = ui;
+    const { app_routing_history, current_language } = common;
+    const {
+        disableApp,
+        enableApp,
+        is_mobile_language_menu_open,
+        is_dark_mode_on: is_dark_mode,
+        setDarkMode: toggleTheme,
+        setMobileLanguageMenuOpen,
+    } = ui;
     const {
         account_status,
         is_logged_in,

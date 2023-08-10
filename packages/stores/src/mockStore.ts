@@ -271,7 +271,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             app_routing_history: [],
             getExchangeRate: jest.fn(),
             network_status: {},
-            setMobileLanguageMenuOpen: jest.fn(),
         },
         ui: {
             app_contents_scroll_ref: {
@@ -283,6 +282,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_closing_create_real_account_modal: false,
             is_dark_mode_on: false,
             is_language_settings_modal_on: false,
+            is_mobile_language_menu_open: false,
             is_link_expired_modal_visible: false,
             is_mobile: false,
             is_reports_visible: false,
@@ -299,6 +299,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setIsClosingCreateRealAccountModal: jest.fn(),
             setRealAccountSignupEnd: jest.fn(),
             shouldNavigateAfterChooseCrypto: jest.fn(),
+            setMobileLanguageMenuOpen: jest.fn(),
             toggleLanguageSettingsModal: jest.fn(),
             toggleLinkExpiredModal: jest.fn(),
             toggleSetCurrencyModal: jest.fn(),

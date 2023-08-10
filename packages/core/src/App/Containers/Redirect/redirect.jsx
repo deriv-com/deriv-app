@@ -33,14 +33,7 @@ const Redirect = ({
     switch (action_param) {
         case 'signup': {
             SessionStore.set('signup_query_param', url_query_string);
-            if (is_appstore) {
-                // TODO: redirect
-                // history.push({
-                //     pathname: routes.dashboard,
-                //     search: url_query_string,
-                // });
-                // redirected_to_route = true;
-            } else {
+            if (!is_appstore) {
                 history.push({
                     pathname: routes.onboarding,
                     search: url_query_string,

@@ -371,6 +371,7 @@ type TClientStore = {
     ) => Promise<SetFinancialAssessmentResponse>;
     is_mt5_password_not_set: boolean;
     is_dxtrade_password_not_set: boolean;
+    responseMT5TradingServers: () => Promise<void>;
 };
 
 type TCommonStoreError = {

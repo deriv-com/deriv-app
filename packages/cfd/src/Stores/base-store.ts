@@ -1,13 +1,14 @@
 import { action, when, makeObservable } from 'mobx';
 import { isProduction } from '@deriv/shared';
-import { TRootStore } from '../types';
+// import { TCoreStores } from '../types';
+import { TCoreStores } from '@deriv/stores/types';
 
 type TListenerResponse = {
     then: (func: VoidFunction) => void;
 };
 
 type TBaseStoreOptions = {
-    root_store: TRootStore;
+    root_store: TCoreStores;
 };
 
 /**
@@ -26,7 +27,7 @@ export default class BaseStore {
 
     client_init_listener: null | (() => TListenerResponse) = null;
     clientInitDisposer: null | (() => void) = null;
-    root_store: TRootStore;
+    root_store: TCoreStores;
     switch_account_listener: null | (() => TListenerResponse) = null;
     switchAccountDisposer: null | (() => void) = null;
 

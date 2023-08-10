@@ -11,11 +11,26 @@ export type TStoreProofOfAddressArgs = {
     };
 };
 
+type TAccountType = {
+    category: 'real' | 'demo' | '';
+    type?:
+        | 'all'
+        | 'all_svg'
+        | 'derivez'
+        | 'dxtrade'
+        | 'synthetic'
+        | 'synthetic_svg'
+        | 'financial'
+        | 'financial_svg'
+        | 'financial_stp'
+        | '';
+};
+
 export type TCFDStore = {
     setMT5TradeAccount: <T>(arg: T) => void;
     toggleCFDVerificationModal: () => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
-    setAccountType: (account_type: { category: string; type?: string }) => void;
+    setAccountType: (account_type: TAccountType) => void;
     dxtrade_tokens: {
         demo: string;
         real: string;

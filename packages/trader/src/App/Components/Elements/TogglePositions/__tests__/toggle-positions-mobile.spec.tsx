@@ -9,7 +9,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 const default_mocked_props = {
     active_positions_count: 0,
-    all_positions: [],
+    filtered_positions: [],
     currency: 'USD',
     disableApp: jest.fn(),
     enableApp: jest.fn(),
@@ -20,12 +20,6 @@ const default_mocked_props = {
     toggleUnsupportedContractModal: jest.fn(),
 };
 const default_mock_store = {
-    modules: {
-        trade: {
-            symbol: 'R_100',
-            contract_type: 'rise_fall',
-        },
-    },
     ui: {
         togglePositionsDrawer: jest.fn(),
         is_positions_drawer_on: false,
@@ -76,7 +70,7 @@ describe('TogglePositionsMobile component', () => {
     it('should display 2 positions when is_positions_drawer_on === true, is_empty === false, and has 2 active positions', () => {
         const new_mocked_props = {
             active_positions_count: 2,
-            all_positions: [
+            filtered_positions: [
                 {
                     contract_info: {
                         contract_id: '1',
@@ -109,7 +103,7 @@ describe('TogglePositionsMobile component', () => {
     it('should display 1 of 2 positions after closing the modal if one of the 2 positions is sold', async () => {
         const new_mocked_props = {
             active_positions_count: 1,
-            all_positions: [
+            filtered_positions: [
                 {
                     contract_info: {
                         contract_id: '1',
@@ -168,7 +162,7 @@ describe('TogglePositionsMobile component', () => {
         ];
         const new_mocked_props = {
             active_positions_count: 6,
-            all_positions: [...positions_pair, ...positions_pair, ...positions_pair],
+            filtered_positions: [...positions_pair, ...positions_pair, ...positions_pair],
             is_empty: false,
         };
         const mock_root_store = mockStore({

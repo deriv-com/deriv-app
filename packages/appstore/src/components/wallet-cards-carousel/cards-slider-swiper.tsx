@@ -32,11 +32,11 @@ const CardsSliderSwiper = observer(() => {
     }, [active_index, emblaApi]);
 
     useEffect(() => {
-        const timeoutId = setTimeout(() => {
+        const timeout_id = setTimeout(() => {
             if (!data[active_index - 1]?.is_selected) switchAccount(data[active_index - 1]?.loginid);
         }, 1000);
 
-        return () => clearTimeout(timeoutId);
+        return () => clearTimeout(timeout_id);
     }, [active_index, data, switchAccount]);
 
     useEffect(() => {

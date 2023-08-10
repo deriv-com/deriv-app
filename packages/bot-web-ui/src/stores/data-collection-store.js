@@ -44,7 +44,7 @@ export default class DataCollectionStore {
     IS_PENDING = false;
     IS_PROCESSED = true;
 
-    endpoint = 'https://dbot-conf-dot-deriv-bi-reporting.as.r.appspot.com/';
+    endpoint = 'https://dbot-conf-dot-deriv-bi-reporting.as.r.appspot.com';
     run_id = '';
     run_start = 0;
     should_post_xml = true;

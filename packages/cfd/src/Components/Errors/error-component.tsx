@@ -4,13 +4,13 @@ import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 type TErrorComponent = {
-    header?: string;
-    message?: React.ReactNode | string | object;
-    is_dialog?: boolean;
-    redirect_label?: string;
-    redirectOnClick?: () => void;
-    should_show_refresh?: boolean;
-    type?: string;
+    header: string;
+    message: string;
+    is_dialog: boolean;
+    redirect_label: string;
+    redirectOnClick: () => void;
+    should_show_refresh: boolean;
+    type: string;
 };
 
 const ErrorComponent: React.FC<TErrorComponent> = ({

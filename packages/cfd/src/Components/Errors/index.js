@@ -1,3 +1,3 @@
-import ErrorComponent from './error-component.tsx';
+import ErrorComponent from './error-component';
 
 export default ErrorComponent;

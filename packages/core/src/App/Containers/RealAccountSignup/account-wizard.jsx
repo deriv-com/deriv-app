@@ -410,7 +410,7 @@ AccountWizard.propTypes = {
     sub_section_index: PropTypes.number,
 };
 
-export default connect(({ client, notifications, ui, traders_hub }) => ({
+export default connect(({ client, notifications, ui, traders_hub, modules }) => ({
     account_settings: client.account_settings,
     account_status: client.account_status,
     closeRealAccountSignup: ui.closeRealAccountSignup,
@@ -437,4 +437,5 @@ export default connect(({ client, notifications, ui, traders_hub }) => ({
     upgrade_info: client.upgrade_info,
     setSubSectionIndex: ui.setSubSectionIndex,
     sub_section_index: ui.sub_section_index,
+    is_high_risk_client_for_mt5: modules.cfd.is_high_risk_client_for_mt5,
 }))(AccountWizard);

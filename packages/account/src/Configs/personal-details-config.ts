@@ -22,6 +22,7 @@ type TPersonalDetailsConfig = {
     is_appstore?: boolean;
     residence: string;
     account_status: GetAccountStatus;
+    is_high_risk_client_for_mt5?: boolean;
 };
 
 export const personal_details_config = ({
@@ -29,6 +30,7 @@ export const personal_details_config = ({
     account_settings,
     is_appstore,
     real_account_signup_target,
+    is_high_risk_client_for_mt5,
 }: TPersonalDetailsConfig) => {
     if (!residence_list || !account_settings) {
         return {};
@@ -42,7 +44,7 @@ export const personal_details_config = ({
 
     const config = {
         account_opening_reason: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: ['iom', 'malta', 'maltainvest'],
             default_value: account_settings.account_opening_reason ?? '',
             rules: [['req', localize('Account opening reason is required.')]],
         },
@@ -83,7 +85,7 @@ export const personal_details_config = ({
             ],
         },
         place_of_birth: {
-            supported_in: ['svg', 'maltainvest', 'iom', 'malta'],
+            supported_in: ['maltainvest', 'iom', 'malta'],
             default_value: account_settings.place_of_birth
                 ? residence_list.find(item => item.value === account_settings.place_of_birth)?.text
                 : '',
@@ -120,12 +122,12 @@ export const personal_details_config = ({
             default_value: account_settings?.tax_residence
                 ? residence_list.find(item => item.value === account_settings?.tax_residence)?.text ?? ''
                 : default_residence,
-            supported_in: ['svg', 'maltainvest'],
+            supported_in: ['maltainvest'],
             rules: [['req', localize('Tax residence is required.')]],
         },
         tax_identification_number: {
             default_value: account_settings.tax_identification_number ?? '',
-            supported_in: ['svg', 'maltainvest'],
+            supported_in: ['maltainvest'],
             rules: [
                 ['req', localize('Tax Identification Number is required.')],
                 [
@@ -185,6 +187,21 @@ export const personal_details_config = ({
     };
 
     const getConfig = () => {
+        // Need to check if client is high risk for MF, if so, remove all fields except first name, last name, date of birth and phone
+        // No need to get tax information when client is high risk for MF
+        if (!is_high_risk_client_for_mt5) {
+            const propertiesToUpdate: (keyof typeof config)[] = [
+                'place_of_birth',
+                'tax_residence',
+                'tax_identification_number',
+                'account_opening_reason',
+            ];
+
+            propertiesToUpdate.forEach(key => {
+                config[key].supported_in.push('svg');
+            });
+        }
+
         if (is_appstore) {
             const allowed_fields = ['first_name', 'last_name', 'date_of_birth', 'phone'];
             return Object.keys(config).reduce((new_config, key) => {
@@ -208,6 +225,7 @@ const personalDetailsConfig = <T>(
         account_settings,
         account_status,
         residence,
+        is_high_risk_client_for_mt5,
     }: TPersonalDetailsConfig,
     PersonalDetails: T,
     is_appstore = false
@@ -219,6 +237,7 @@ const personalDetailsConfig = <T>(
         real_account_signup_target,
         residence,
         account_status,
+        is_high_risk_client_for_mt5,
     });
     const disabled_items = account_settings.immutable_fields;
     return {
@@ -271,6 +290,7 @@ const personalDetailsConfig = <T>(
             residence,
             account_settings,
             real_account_signup_target,
+            is_high_risk_client_for_mt5,
         },
         passthrough: ['residence_list', 'is_fully_authenticated', 'has_real_account'],
         icon: 'IcDashboardPersonalDetails',

@@ -4,7 +4,6 @@ import { sellContract } from '../../images';
 Blockly.Blocks.during_purchase = {
     init() {
         this.jsonInit(this.definition());
-        this.setDeletable(false);
     },
     definition() {
         return {

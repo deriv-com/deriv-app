@@ -200,7 +200,7 @@ export const config = {
         [localize('1 day'), '86400'],
     ],
     mainBlocks: ['trade_definition', 'before_purchase', 'during_purchase', 'after_purchase'],
-    mandatoryMainBlocks: ['trade_definition', 'purchase', 'before_purchase'],
+    mandatoryMainBlocks: ['trade_definition', 'purchase', 'before_purchase', 'after_purchase'],
     procedureDefinitionBlocks: ['procedures_defnoreturn', 'procedures_defreturn'],
     single_instance_blocks: ['trade_definition', 'before_purchase', 'during_purchase', 'after_purchase'],
     TRADE_TYPE_TO_CONTRACT_CATEGORY_MAPPING: {

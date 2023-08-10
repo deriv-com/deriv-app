@@ -4,6 +4,7 @@ import { finishSign } from '../../images';
 Blockly.Blocks.after_purchase = {
     init() {
         this.jsonInit(this.definition());
+        this.setDeletable(false);
     },
     definition() {
         return {

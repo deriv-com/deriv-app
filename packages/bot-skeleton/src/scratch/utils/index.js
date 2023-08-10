@@ -9,8 +9,6 @@ import DBotStore from '../dbot-store';
 import { log_types } from '../../constants/messages';
 import { error_message_map } from '../../utils/error-config';
 
-export const mandatory_blocks = ['trade_definition', 'before_purchase', 'during_purchase'];
-
 export const matchTranslateAttribute = translateString => {
     const match = translateString.match(/translate\((-?\d*\.?\d+),(-?\d*\.?\d+)\)/);
     if (match && match.length > 2) {
@@ -43,14 +41,27 @@ export const validateErrorOnBlockDelete = () => {
     // Extract coordinates from the bounding rectangles
     const blockX = blockRect?.left || 0;
     const blockY = blockRect?.top || 0;
-    if (mandatory_blocks?.includes(Blockly?.selected?.type)) {
+    const required_block_types = [
+        'trade_definition_tradeoptions',
+        'trade_definition',
+        'purchase',
+        'before_purchase',
+        'after_purchase',
+    ];
+    if (required_block_types?.includes(Blockly?.selected?.type)) {
         if (
             blockY >= translate_Y - translate_offset &&
             blockY <= translate_Y + translate_offset &&
             blockX >= translate_X - translate_offset &&
             blockX <= translate_X + translate_offset
         ) {
-            globalObserver.emit('ui.log.error', localize(error_message_map[Blockly.selected.category_]));
+            globalObserver.emit(
+                'ui.log.error',
+                localize(
+                    error_message_map[Blockly.selected.category_]?.default ||
+                        error_message_map[Blockly.selected.category_]
+                )
+            );
         }
     }
 };
@@ -352,7 +363,7 @@ export const addDomAsBlock = (el_block, parent_block = null) => {
 
 export const isAllRequiredBlocksEnabled = workspace => {
     const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
-    const selected_trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
+    const selected_trade_type = trade_type_block?.getFieldValue('TRADETYPE_LIST');
     const mandatory_tradeoptions_block =
         selected_trade_type === 'multiplier' ? 'trade_definition_multiplier' : 'trade_definition_tradeoptions';
     const { mandatoryMainBlocks } = config;
@@ -362,17 +373,18 @@ export const isAllRequiredBlocksEnabled = workspace => {
         if (
             block.type === 'trade_definition' ||
             block.type === 'before_purchase' ||
+            block.type === 'after_purchase' ||
             required_block_types.includes(block.type)
         ) {
             return (
-                (block.childBlocks_.length === 0 && mandatory_blocks.includes(block.category_)) ||
+                (block.childBlocks_.length === 0 && required_block_types.includes(block.category_)) ||
                 block.parentBlock_ === null
             );
         }
     });
 
     const misplaced_blocks = required_blocks_check.filter(block => {
-        if (!mandatory_blocks.includes(block.type)) {
+        if (!required_block_types.includes(block.type)) {
             return block.parentBlock_ === null;
         }
     });
@@ -385,7 +397,11 @@ export const isAllRequiredBlocksEnabled = workspace => {
     });
 
     missing_blocks.forEach(blockType => {
-        if (blockType) globalObserver.emit('ui.log.error', localize(error_message_map[blockType]?.missing));
+        if (blockType)
+            globalObserver.emit(
+                'ui.log.error',
+                localize(error_message_map[blockType]?.missing || error_message_map[blockType])
+            );
     });
 
     const is_required_blocks_present = [...missing_blocks, ...misplaced_blocks];

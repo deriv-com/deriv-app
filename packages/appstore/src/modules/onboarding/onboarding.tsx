@@ -1,13 +1,12 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { isMobile, isDesktop, routes, ContentFlag } from '@deriv/shared';
+import { isDesktop, routes, ContentFlag } from '@deriv/shared';
 import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
-import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
+import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import { getTradingHubContents } from 'Constants/trading-hub-content';
 import { useHistory } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
 import EmptyOnboarding from './empty-onboarding';
+import { useStore, observer } from '@deriv/stores';
 
 type TOnboardingProps = {
     contents: Record<
@@ -24,12 +23,13 @@ type TOnboardingProps = {
     >;
 };
 
-const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) => {
+const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboardingProps) => {
     const history = useHistory();
     const number_of_steps = Object.keys(contents);
-    const { traders_hub, client } = useStores();
-    const { toggleIsTourOpen, selectAccountType, is_demo_low_risk, content_flag } = traders_hub;
-    const { is_eu_country, is_logged_in, is_landing_company_loaded, prev_account_type, setPrevAccountType } = client;
+    const { traders_hub, client, ui } = useStore();
+    const { is_eu_country, is_landing_company_loaded, is_logged_in, prev_account_type, setPrevAccountType } = client;
+    const { is_mobile } = ui;
+    const { content_flag, is_demo_low_risk, selectAccountType, toggleIsTourOpen } = traders_hub;
     const [step, setStep] = React.useState<number>(1);
 
     const prevStep = () => {
@@ -70,7 +70,7 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
 
     const footer_header_text = is_eu_user ? eu_footer_header : footer_header;
 
-    const footer_desctiption = is_eu_user ? eu_footer_text : footer_text;
+    const footer_description = is_eu_user ? eu_footer_text : footer_text;
 
     if (!is_logged_in || !is_landing_company_loaded) {
         return <EmptyOnboarding />;
@@ -80,7 +80,7 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
         <div className='onboarding-wrapper'>
             <div className='onboarding-header'>
                 <div className='onboarding-header--deriv-logo'>
-                    <TradigPlatformIconProps icon={'DerivLogo'} />
+                    <TradingPlatformIconProps icon='DerivLogo' />
                 </div>
                 <Icon
                     icon='IcCross'
@@ -94,12 +94,25 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
             </div>
             <div className='onboarding-footer'>
                 <div className='onboarding-footer-wrapper'>
-                    <Text as='h2' weight='bold' size='sm' align='center' className='onboarding-footer-header'>
-                        {footer_header_text}
-                    </Text>
-                    <Text as='p' size='xs' align='center' className='onboarding-footer-text'>
-                        {footer_desctiption}
-                    </Text>
+                    <div className='onboarding-footer-description'>
+                        <Text
+                            as='h2'
+                            weight='bold'
+                            size={is_mobile ? 's' : 'sm'}
+                            align='center'
+                            className='onboarding-footer-description__header'
+                        >
+                            {footer_header_text}
+                        </Text>
+                        <Text
+                            as='p'
+                            size={is_mobile ? 'xxs' : 'xs'}
+                            align='center'
+                            className='onboarding-footer-description__text'
+                        >
+                            {footer_description}
+                        </Text>
+                    </div>
                     {isDesktop() && (
                         <div className='onboarding-footer-buttons'>
                             <Button secondary onClick={prevStep} style={step === 1 ? { visibility: 'hidden' } : {}}>
@@ -113,7 +126,7 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
                             </Button>
                         </div>
                     )}
-                    {isMobile() && (
+                    {is_mobile && (
                         <React.Fragment>
                             <div className='onboarding-footer__progress-bar'>
                                 <ProgressBarOnboarding
@@ -154,6 +167,6 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
             </div>
         </div>
     );
-};
+});
 
-export default observer(Onboarding);
+export default Onboarding;

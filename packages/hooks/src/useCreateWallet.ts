@@ -3,7 +3,7 @@ import { useStore } from '@deriv/stores';
 import { useMemo } from 'react';
 
 /** A custom hook to create more wallets */
-const useNewWalletCreation = () => {
+const useCreateWallet = () => {
     const { client, ui } = useStore();
     const { accountRealReaction, switchAccount } = client;
     const { toggleIsWalletCreationSuccessModalOpen } = ui;
@@ -38,4 +38,4 @@ const useNewWalletCreation = () => {
     };
 };
 
-export default useNewWalletCreation;
+export default useCreateWallet;

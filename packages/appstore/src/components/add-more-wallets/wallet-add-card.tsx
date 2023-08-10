@@ -1,7 +1,7 @@
 import React from 'react';
 import { TWalletInfo } from 'Types';
 import { Text, WalletCard } from '@deriv/components';
-import { useCurrencyConfig, useNewWalletCreation } from '@deriv/hooks';
+import { useCurrencyConfig, useCreateWallet } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { getWalletCurrencyIcon } from '@deriv/utils';
 import wallet_description_mapper from 'Constants/wallet_description_mapper';
@@ -16,7 +16,7 @@ const AddWalletCard = observer(({ wallet_info }: TAddWalletCard) => {
     const { currency, landing_company_name, is_added, gradient_card_class } = wallet_info;
     const { getConfig } = useCurrencyConfig();
     const currency_config = getConfig(currency);
-    const { mutate: createWallet } = useNewWalletCreation();
+    const { mutate: createWallet } = useCreateWallet();
 
     const wallet_details = {
         currency,

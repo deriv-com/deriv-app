@@ -56,5 +56,5 @@ export { default as useAvailableMT5Accounts } from './useAvailableMT5Accounts';
 export { default as useFilteredCFDAccounts } from './useFilteredCFDAccounts';
 export { default as useWalletTransfer } from './useWalletTransfer';
 export { default as useWalletMigration } from './useWalletMigration';
-export { default as useNewWalletCreation } from './useNewWalletCreation';
+export { default as useCreateWallet } from './useCreateWallet';
 export { default as useTradingAccountsList } from './useTradingAccountsList';

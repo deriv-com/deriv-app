@@ -230,7 +230,6 @@ class GoogleDriveUtil {
                             }
                         })
                         .catch(err => {
-                            console.log('err', err);
                             if (err.status && err.status === 401) this.client.requestAccessToken({ prompt: '' });
 
                             const error = new TrackJSError(

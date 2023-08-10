@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import {
@@ -12,11 +12,12 @@ import {
     ThemedScrollbars,
     useOnClickOutside,
 } from '@deriv/components';
-import { BinaryLink } from 'App/Components/Routes';
-import { connect } from 'Stores/connect';
-import { localize, Localize } from '@deriv/translations';
 import { isEmptyObject, isMobile, LocalStore, toTitleCase, routes } from '@deriv/shared';
-import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
+import { localize, Localize } from '@deriv/translations';
+import { BinaryLink } from 'App/Components/Routes';
+import EmptyNotification from 'App/Components/Elements/Notifications/empty-notification.jsx';
+import { connect } from 'Stores/connect';
+import ClearAllFooter from './notifications-clear-all-footer';
 
 const NotificationsList = ({ notifications, toggleDialog }) => {
     const getNotificationitemIcon = item => {
@@ -93,30 +94,6 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
     );
 };
 
-const ClearAllFooter = ({ is_empty, clearNotifications }) => {
-    return (
-        <React.Fragment>
-            <div className='notifications-dialog__separator' />
-            <div
-                className={classNames('notifications-dialog__footer', {
-                    'notifications-dialog__content--empty': is_empty,
-                    'notifications-dialog__content--sticky': isMobile(),
-                })}
-            >
-                <Button
-                    className={classNames('dc-btn--secondary', 'notifications-dialog__clear')}
-                    disabled={is_empty}
-                    onClick={clearNotifications}
-                >
-                    <Text size='xxs' color='prominent' weight='bold'>
-                        {localize('Clear All')}
-                    </Text>
-                </Button>
-            </div>
-        </React.Fragment>
-    );
-};
-
 const NotificationListWrapper = React.forwardRef(({ notifications, toggleDialog, clearNotifications }, ref) => {
     const is_empty = !notifications?.length;
 
@@ -189,7 +166,7 @@ const NotificationsDialog = ({
         }
         LocalStore.setObject('p2p_settings', p2p_settings);
 
-        return notifications.map(item => {
+        notifications.forEach(item => {
             removeNotificationMessageByKey(item.key);
             removeNotificationMessage({
                 key: item.key,

@@ -1,6 +1,6 @@
 import React from 'react';
-import { EmptyNotification } from '../empty-notification';
 import { render, screen } from '@testing-library/react';
+import EmptyNotification from '../empty-notification';
 
 describe('EmptyNotification Component', () => {
     it('should render EmptyNotification component', () => {

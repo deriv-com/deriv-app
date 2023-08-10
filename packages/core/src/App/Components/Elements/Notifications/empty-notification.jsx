@@ -31,4 +31,4 @@ const EmptyNotification = () => (
     </div>
 );
 
-export { EmptyNotification };
+export default EmptyNotification;

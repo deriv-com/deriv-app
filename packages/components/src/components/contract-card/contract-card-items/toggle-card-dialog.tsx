@@ -9,27 +9,30 @@ import MobileWrapper from '../../mobile-wrapper';
 import Popover from '../../popover';
 import Div100vhContainer from '../../div100vh-container';
 import './sass/contract-card-dialog.scss';
-import { TGetCardLables, TToastConfig } from '../../types';
-import { TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
+import { TGeneralContractCardBodyProps } from './contract-card-body';
 
 let ContractUpdateFormWrapper: React.ElementType;
 
-export type TToggleCardDialogProps = {
-    addToast: (toast_config: TToastConfig) => void;
-    connectWithContractUpdate: (contract_update_form: React.ElementType) => React.ElementType;
+export type TToggleCardDialogProps = Pick<
+    TGeneralContractCardBodyProps,
+    | 'addToast'
+    | 'connectWithContractUpdate'
+    | 'current_focus'
+    | 'error_message_alignment'
+    | 'getCardLabels'
+    | 'getContractById'
+    | 'onMouseLeave'
+    | 'removeToast'
+    | 'setCurrentFocus'
+    | 'status'
+> & {
     contract_id?: number;
-    current_focus?: string;
-    error_message_alignment: string;
-    getCardLabels: TGetCardLables;
-    getContractById: (contract_id?: number) => TContractStore;
-    is_valid_to_cancel: boolean;
-    onMouseLeave: () => void;
-    removeToast: (toast_id: string) => void;
-    setCurrentFocus: (name: string) => void;
-    should_show_cancellation_warning: boolean;
-    status: string;
-    toggleCancellationWarning: () => void;
+    is_valid_to_cancel?: boolean;
+    should_show_cancellation_warning?: boolean;
+    status?: string;
+    toggleCancellationWarning?: () => void;
     is_accumulator?: boolean;
+    is_turbos?: boolean;
 };
 
 const ToggleCardDialog = ({
@@ -41,6 +44,7 @@ const ToggleCardDialog = ({
     getCardLabels,
     getContractById,
     is_accumulator,
+    is_turbos,
     is_valid_to_cancel,
     onMouseLeave,
     removeToast,
@@ -90,7 +94,7 @@ const ToggleCardDialog = ({
 
     const onPopoverClose = () => {
         if (is_do_not_show_selected) {
-            toggleCancellationWarning();
+            toggleCancellationWarning?.();
         }
     };
 
@@ -160,6 +164,7 @@ const ToggleCardDialog = ({
                                 getCardLabels={getCardLabels}
                                 getContractById={getContractById}
                                 is_accumulator={is_accumulator}
+                                is_turbos={is_turbos}
                                 onMouseLeave={onMouseLeave}
                                 removeToast={removeToast}
                                 setCurrentFocus={setCurrentFocus}
@@ -188,6 +193,7 @@ const ToggleCardDialog = ({
                             getCardLabels={getCardLabels}
                             getContractById={getContractById}
                             is_accumulator={is_accumulator}
+                            is_turbos={is_turbos}
                             onMouseLeave={onMouseLeave}
                             removeToast={removeToast}
                             setCurrentFocus={setCurrentFocus}

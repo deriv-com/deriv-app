@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { loginUrl, routes, PlatformContext, SessionStore } from '@deriv/shared';
+import { loginUrl, routes, SessionStore } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
@@ -23,7 +22,6 @@ const Redirect = ({
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
-    const { is_appstore } = React.useContext(PlatformContext);
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
 
@@ -33,12 +31,10 @@ const Redirect = ({
     switch (action_param) {
         case 'signup': {
             SessionStore.set('signup_query_param', url_query_string);
-            if (!is_appstore) {
-                history.push({
-                    pathname: routes.onboarding,
-                    search: url_query_string,
-                });
-            }
+            history.push({
+                pathname: routes.onboarding,
+                search: url_query_string,
+            });
             SessionStore.remove('redirect_url');
             redirected_to_route = true;
             toggleAccountSignupModal(true);

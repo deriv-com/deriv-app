@@ -741,4 +741,20 @@ describe('<PersonalDetails/>', () => {
         const el_tax_residence = screen.getByTestId('selected_value');
         expect(el_tax_residence).toHaveTextContent('Malta');
     });
+
+    it('should disable tax_residence field if it is immutable from BE', () => {
+        isMobile.mockReturnValue(false);
+        isDesktop.mockReturnValue(true);
+        const new_props = {
+            ...props,
+            is_mf: true,
+            value: {
+                ...props.value,
+                tax_residence: 'France',
+            },
+            disabled_items: ['salutation', 'first_name', 'last_name', 'date_of_birth', 'tax_residence'],
+        };
+        renderwithRouter(<PersonalDetails {...new_props} />);
+        expect(screen.getByTestId('tax_residence')).toBeDisabled();
+    });
 });

@@ -10,6 +10,7 @@ const useAuthorize = (token?: string) => {
 
     const { data, ...rest } = useFetch('authorize', {
         payload: { authorize: token || current_token },
+        options: { keepPreviousData: true, staleTime: 10000 },
     });
 
     // Add additional information to the authorize response.

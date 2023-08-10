@@ -1,6 +1,6 @@
 .wallets-module {
     display: flex;
-    min-height: 92.8vh;
+    min-height: calc(100vh - 84px);
     background-color: var(--general-section-1);
 
     @include mobile {

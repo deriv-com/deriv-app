@@ -202,12 +202,11 @@ export default class SendbirdStore extends BaseStore {
         }
     }
 
-    async getPreviousMessages(timestamp: number | null = null) {
+    async getPreviousMessages(timestamp: number | null = null, prev_result_size = 50, next_result_size = 50) {
         if (!this.active_chat_channel) return null;
         const chat_messages: Array<UserMessage | FileMessage> = [];
 
         const is_inclusive_of_timestamp = false;
-        const result_size = 50;
         const reverse_results = false;
         const custom_type = [''];
 
@@ -216,8 +215,8 @@ export default class SendbirdStore extends BaseStore {
 
         const retrieved_messages = await this.active_chat_channel?.getMessagesByTimestamp(messages_timestamp, {
             isInclusive: is_inclusive_of_timestamp,
-            prevResultSize: result_size,
-            nextResultSize: result_size,
+            prevResultSize: prev_result_size,
+            nextResultSize: next_result_size,
             reverse: reverse_results,
             messageTypeFilter: MessageTypeFilter.ALL,
             customTypesFilter: custom_type,
@@ -304,13 +303,12 @@ export default class SendbirdStore extends BaseStore {
             if (!this.messages_ref?.current) return;
 
             if (this.messages_ref.current.scrollTop === 0) {
-                this.setIsChatLoading(true);
                 const oldest_message_timestamp = this.chat_messages.reduce(
                     (prev_created_at, chat_message) =>
                         chat_message.created_at < prev_created_at ? chat_message.created_at : prev_created_at,
                     Infinity
                 );
-                this.getPreviousMessages(oldest_message_timestamp)
+                this.getPreviousMessages(oldest_message_timestamp, 50, 0)
                     .then(chat_messages => {
                         if (chat_messages && chat_messages.length > 0) {
                             const previous_messages = chat_messages.map(chat_message =>
@@ -319,7 +317,6 @@ export default class SendbirdStore extends BaseStore {
 
                             this.replaceChannelMessage(0, 0, previous_messages[0]);
                         }
-                        this.setIsChatLoading(false);
                     })
                     .catch(error => {
                         // eslint-disable-next-line no-console

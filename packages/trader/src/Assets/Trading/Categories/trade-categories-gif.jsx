@@ -14,13 +14,14 @@ import ImageReset from 'Assets/SvgComponents/trade_explanations/img-reset.svg';
 import ImageRiseFall from 'Assets/SvgComponents/trade_explanations/img-rise-fall.svg';
 import ImageRunHighLow from 'Assets/SvgComponents/trade_explanations/img-run-high-low.svg';
 import ImageSpread from 'Assets/SvgComponents/trade_explanations/img-spread.svg';
-import ImageAccumulator from 'Assets/SvgComponents/trade_explanations/img-accumulator.svg';
 import ImageTickHighLow from 'Assets/SvgComponents/trade_explanations/img-tick-high-low.svg';
 import ImageTouch from 'Assets/SvgComponents/trade_explanations/img-touch.svg';
+import ImageTurbos from 'Assets/SvgComponents/trade_explanations/img-turbos.svg';
 import ImageVanilla from 'Assets/SvgComponents/trade_explanations/img-vanilla.svg';
+import ContractTypeDescriptionVideo from './contract-type-description-video';
 
 // TODO: Replace static image svgs with themed GIFs or animated SVGs
-const TradeCategoriesGIF = ({ category }) => {
+const TradeCategoriesGIF = ({ category, selected_contract_type }) => {
     switch (category) {
         case 'asian':
             return <ImageAsianUpDown />;
@@ -53,11 +54,14 @@ const TradeCategoriesGIF = ({ category }) => {
         case 'run_high_low':
             return <ImageRunHighLow />;
         case 'accumulator':
-            return <ImageAccumulator />;
+            return <ContractTypeDescriptionVideo selected_contract_type={selected_contract_type} />;
         case 'tick_high_low':
             return <ImageTickHighLow />;
         case 'touch':
             return <ImageTouch />;
+        case 'turbosshort':
+        case 'turboslong':
+            return <ImageTurbos />;
         case 'vanilla':
             return <ImageVanilla />;
         default:
@@ -67,6 +71,7 @@ const TradeCategoriesGIF = ({ category }) => {
 
 TradeCategoriesGIF.propTypes = {
     category: PropTypes.string,
+    selected_contract_type: PropTypes.string,
 };
 
 export default TradeCategoriesGIF;

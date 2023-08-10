@@ -27,6 +27,7 @@ export const getAllowedLanguages = () => {
         ES: 'Español',
         RU: 'Русский',
         FR: 'Français',
+        IT: 'Italiano',
         TH: 'ไทย',
         VI: 'Tiếng Việt',
     };
@@ -135,7 +136,7 @@ export const changeLanguage = async (lang: string, cb: (arg0: string) => void) =
 // <Localize /> component wrapped with i18n
 export const Localize = withI18n(i18n);
 
-export const localize = <T extends object>(string: string, values?: T) => {
+export const localize = <T extends object>(string: string, values?: T): string => {
     if (!string) return '';
 
     return i18n.t(crc32(string).toString(), { defaultValue: string, ...values });

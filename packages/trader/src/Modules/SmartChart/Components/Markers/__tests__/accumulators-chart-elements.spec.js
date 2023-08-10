@@ -6,7 +6,7 @@ jest.mock('App/Components/Elements/PositionsDrawer/helpers/positions-helper.js',
     filterByContractType: jest.fn(() => true),
 }));
 jest.mock('../accumulators-profit-loss-tooltip.jsx', () => () => <div>AccumulatorsProfitLossTooltip</div>);
-jest.mock('../current-spot-emphasizer.jsx', () => () => <div>CurrentSpotEmphasizer</div>);
+jest.mock('../marker.jsx', () => () => <div>Spot-emphasizing ChartMarker</div>);
 
 describe('AccumulatorsChartElements', () => {
     const mock_props = {
@@ -21,26 +21,27 @@ describe('AccumulatorsChartElements', () => {
                 },
             },
         ],
-        current_symbol_spot: 9478.34,
-        current_symbol_spot_time: 1234567890,
-        should_highlight_current_spot: false,
+        current_spot: 9478.34,
+        current_spot_time: 1234567890,
+        has_crossed_accu_barriers: false,
+        should_show_profit_text: true,
         symbol: 'test symbol',
     };
 
-    it('should render AccumulatorsChartElements without CurrentSpotEmphasizer', () => {
+    it('should render AccumulatorsChartElements without Spot-emphasizing ChartMarker', () => {
         render(<AccumulatorsChartElements {...mock_props} />);
 
         const tooltip_arr = screen.getAllByText('AccumulatorsProfitLossTooltip');
         expect(tooltip_arr.length).toBe(2);
-        expect(screen.queryByText('CurrentSpotEmphasizer')).not.toBeInTheDocument();
+        expect(screen.queryByText('Spot-emphasizing ChartMarker')).not.toBeInTheDocument();
     });
 
-    it('should render AccumulatorsChartElements with CurrentSpotEmphasizer', () => {
-        mock_props.should_highlight_current_spot = true;
+    it('should render AccumulatorsChartElements with Spot-emphasizing ChartMarker when has_crossed_accu_barriers = true', () => {
+        mock_props.has_crossed_accu_barriers = true;
         render(<AccumulatorsChartElements {...mock_props} />);
 
         const tooltip_arr = screen.getAllByText('AccumulatorsProfitLossTooltip');
         expect(tooltip_arr.length).toBe(2);
-        expect(screen.getByText('CurrentSpotEmphasizer')).toBeInTheDocument();
+        expect(screen.getByText('Spot-emphasizing ChartMarker')).toBeInTheDocument();
     });
 });

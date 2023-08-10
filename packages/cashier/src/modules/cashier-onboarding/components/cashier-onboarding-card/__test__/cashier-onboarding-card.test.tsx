@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import CashierOnboardingCard from '../cashier-onboarding-card';
 
 describe('CashierOnboardingCard', () => {
-    test('should call the onClick callback when clicked', async () => {
+    test('should call the onClick callback when clicked', () => {
         const mock = mockStore({});
         const props: React.ComponentProps<typeof CashierOnboardingCard> = {
             title: 'foo',

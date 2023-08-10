@@ -54,12 +54,7 @@ const TradeCategoriesGIF = ({ category, selected_contract_type }) => {
         case 'run_high_low':
             return <ImageRunHighLow />;
         case 'accumulator':
-            return (
-                <ContractTypeDescriptionVideo
-                    selected_contract_type={selected_contract_type}
-                    data_testid='dt_description_video'
-                />
-            );
+            return <ContractTypeDescriptionVideo selected_contract_type={selected_contract_type} />;
         case 'tick_high_low':
             return <ImageTickHighLow />;
         case 'touch':
@@ -68,12 +63,7 @@ const TradeCategoriesGIF = ({ category, selected_contract_type }) => {
         case 'turboslong':
             return <ImageTurbos />;
         case 'vanilla':
-            return (
-                <ContractTypeDescriptionVideo
-                    selected_contract_type={selected_contract_type}
-                    data_testid='dt_description_video'
-                />
-            );
+            return <ContractTypeDescriptionVideo selected_contract_type={selected_contract_type} />;
         default:
             return null;
     }

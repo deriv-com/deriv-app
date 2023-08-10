@@ -879,8 +879,8 @@ export default class UIStore extends BaseStore {
         this.is_wallet_modal_visible = value;
     }
 
-    toggleIsWalletCreationSuccessModalOpen() {
-        this.is_wallet_creation_success_modal_open = !this.is_wallet_creation_success_modal_open;
+    toggleIsWalletCreationSuccessModalOpen(value) {
+        this.is_wallet_creation_success_modal_open = value;
     }
 
     setShouldShowRiskWarningModal(value) {

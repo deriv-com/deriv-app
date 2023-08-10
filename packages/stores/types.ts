@@ -600,7 +600,7 @@ type TUiStore = {
             | []
     ) => void;
     is_wallet_creation_success_modal_open: boolean;
-    toggleIsWalletCreationSuccessModalOpen: () => void;
+    toggleIsWalletCreationSuccessModalOpen: (value: boolean) => void;
 };
 
 type TPortfolioStore = {

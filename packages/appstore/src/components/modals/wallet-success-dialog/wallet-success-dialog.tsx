@@ -9,9 +9,23 @@ import './wallet-success-dialog.scss';
 
 const WalletSuccessDialog = observer(() => {
     const { ui, traders_hub } = useStore();
-    const { setWalletModalActiveTab } = traders_hub;
-    const { is_wallet_creation_success_modal_open, toggleIsWalletCreationSuccessModalOpen } = ui;
+    const { setWalletModalActiveTab, setWalletModalActiveWalletID } = traders_hub;
+    const { is_wallet_creation_success_modal_open, toggleIsWalletCreationSuccessModalOpen, setIsWalletModalVisible } =
+        ui;
     const active_wallet = useActiveWallet();
+
+    const wallet_details = {
+        currency: active_wallet?.currency_config?.display_code,
+        icon: active_wallet?.icon,
+        icon_type: active_wallet?.currency_config?.type,
+        name: getAccountName({
+            account_type: 'wallet',
+            display_currency_code: active_wallet?.currency_config?.display_code,
+        }),
+        balance: formatMoney(active_wallet?.currency, active_wallet?.balance, true),
+        jurisdiction_title: active_wallet?.landing_company_name,
+        gradient_class: active_wallet?.gradient_card_class,
+    };
 
     return (
         <Modal
@@ -23,21 +37,7 @@ const WalletSuccessDialog = observer(() => {
         >
             <Modal.Body>
                 <div className='wallet-success-dialog__icon'>
-                    <WalletCard
-                        wallet={{
-                            currency: active_wallet?.currency_config?.display_code,
-                            icon: active_wallet?.icon,
-                            icon_type: active_wallet?.currency_config?.type,
-                            name: getAccountName({
-                                account_type: 'wallet',
-                                display_currency_code: active_wallet?.currency_config?.display_code,
-                            }),
-                            balance: formatMoney(active_wallet?.currency, active_wallet?.balance, true),
-                            jurisdiction_title: active_wallet?.landing_company_name,
-                            gradient_class: active_wallet?.gradient_card_class,
-                        }}
-                        size='medium'
-                    />
+                    <WalletCard wallet={wallet_details} size='medium' />
                 </div>
                 <Text as='h2' weight='bold' size='s' className='wallet-success-dialog__title'>
                     <Localize
@@ -57,8 +57,10 @@ const WalletSuccessDialog = observer(() => {
                     <Button
                         primary
                         onClick={() => {
-                            toggleIsWalletCreationSuccessModalOpen();
+                            toggleIsWalletCreationSuccessModalOpen(true);
                             setWalletModalActiveTab('Deposit');
+                            setIsWalletModalVisible(true);
+                            setWalletModalActiveWalletID(active_wallet?.loginid);
                         }}
                     >
                         {localize('Deposit')}

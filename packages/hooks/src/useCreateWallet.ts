@@ -21,7 +21,7 @@ const useCreateWallet = () => {
             invalidate('balance');
 
             //This is here because we need to wait for the account to be switched before we can open the modal.
-            toggleIsWalletCreationSuccessModalOpen();
+            toggleIsWalletCreationSuccessModalOpen(true);
         },
     });
 

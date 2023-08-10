@@ -5,11 +5,11 @@ import { Localize } from 'Components/i18next';
 import classNames from 'classnames';
 
 type TShareMyAdsSocialsProps = {
+    advert_url: string;
     custom_message: string;
 };
 
-const ShareMyAdsSocials = ({ custom_message }: TShareMyAdsSocialsProps) => {
-    const advert_url = window.location.href;
+const ShareMyAdsSocials = ({ advert_url, custom_message }: TShareMyAdsSocialsProps) => {
     const share_buttons = [
         {
             ShareButton: WhatsappShareButton,

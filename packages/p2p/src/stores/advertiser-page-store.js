@@ -41,6 +41,7 @@ export default class AdvertiserPageStore extends BaseStore {
             advertiser_details: computed,
             advertiser_details_id: computed,
             advertiser_details_name: computed,
+            getAdvertInfo: action.bound,
             getCounterpartyAdvertiserList: action.bound,
             handleTabItemClick: action.bound,
             onAdvertiserIdUpdate: action.bound,
@@ -145,6 +146,17 @@ export default class AdvertiserPageStore extends BaseStore {
         }
 
         this.setIsLoading(false);
+    }
+
+    getAdvertInfo(advert_id) {
+        requestWS({ p2p_advert_info: 1, id: advert_id }).then(response => {
+            if (response) {
+                const { p2p_advert_info } = response;
+                this.setActiveIndex(p2p_advert_info.type === buy_sell.BUY ? 0 : 1);
+                this.root_store.buy_sell_store.setSelectedAdState(p2p_advert_info);
+                this.root_store.general_store.showModal({ key: 'BuySellModal' });
+            }
+        });
     }
 
     getCounterpartyAdvertiserList(advertiser_id) {

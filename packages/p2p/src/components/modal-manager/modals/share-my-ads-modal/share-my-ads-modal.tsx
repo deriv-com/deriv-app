@@ -21,11 +21,11 @@ import ShareMyAdsCard from './share-my-ads-card';
 
 const ShareMyAdsModal = ({ advert }: TAdvert) => {
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
-    const { account_currency, local_currency, rate_display, rate_type } = advert;
+    const { account_currency, advertiser_details, id, local_currency, rate_display, rate_type } = advert;
+    const { id: advertiser_id } = advertiser_details;
 
     const divRef = React.useRef(null);
-    // TODO: replace with proper url when available
-    const advert_url = window.location.href;
+    const advert_url = `${window.location.origin}/cashier/p2p/advertiser?id=${advertiser_id}&advert_id=${id}`;
     const custom_message =
         rate_type === ad_type.FLOAT
             ? `Hello! I'd like to exchange ${local_currency} for ${account_currency} at ${rate_display}% on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n${advert_url}\n\nThanks!`
@@ -130,7 +130,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                                 <Text weight='bold'>
                                     <Localize i18n_default_text='Share link to' />
                                 </Text>
-                                <ShareMyAdsSocials custom_message={custom_message} />
+                                <ShareMyAdsSocials advert_url={advert_url} custom_message={custom_message} />
                                 <MyProfileSeparatorContainer.Line
                                     className='share-my-ads-modal__line'
                                     is_invisible={false}

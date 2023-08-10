@@ -410,6 +410,7 @@ type TCommonStoreError = {
 type TCommonStore = {
     isCurrentLanguage(language_code: string): boolean;
     error: TCommonStoreError;
+    services_error: { code: string; message: string; type: string } | Record<string, never>;
     has_error: boolean;
     is_from_derivgo: boolean;
     is_network_online: boolean;
@@ -443,8 +444,7 @@ type TUiStore = {
     is_app_disabled: boolean;
     is_link_expired_modal_visible: boolean;
     is_mobile: boolean;
-    sub_section_index: number;
-    toggleShouldShowRealAccountsList: (value: boolean) => void;
+    is_services_error_visible: boolean;
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;
@@ -454,6 +454,8 @@ type TUiStore = {
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
+    setHasOnlyForwardingContracts: (has_only_forward_starting_contracts: boolean) => void;
+    sub_section_index: number;
     setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: Omit<string, TRoutes> | TRoutes) => void;
     toggleAccountsDialog: () => void;
@@ -462,6 +464,8 @@ type TUiStore = {
     toggleLinkExpiredModal: (state_change: boolean) => void;
     toggleReadyToDepositModal: () => void;
     toggleSetCurrencyModal: () => void;
+    toggleShouldShowRealAccountsList: (value: boolean) => void;
+    toggleServicesErrorModal: () => void;
     is_tablet: boolean;
     removeToast: (key: string) => void;
     is_ready_to_deposit_modal_visible: boolean;

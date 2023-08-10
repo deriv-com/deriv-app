@@ -14,7 +14,6 @@ const mock = (): TStores & { is_mock: boolean } => {
         redirectOnClick: jest.fn(),
         setError: jest.fn(),
     };
-    const services_error = { code: '', message: '', type: '' };
     return {
         is_mock: true,
         client: {
@@ -266,7 +265,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             changeCurrentLanguage: jest.fn(),
             changeSelectedLanguage: jest.fn(),
             is_network_online: false,
-            services_error,
+            services_error: {},
             server_time: undefined,
             is_language_changing: false,
             setAppstorePlatform: jest.fn(),
@@ -283,6 +282,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_dark_mode_on: false,
             is_language_settings_modal_on: false,
             is_mobile: false,
+            is_positions_drawer_on: false,
             is_reports_visible: false,
             is_services_error_visible: false,
             is_unsupported_contract_modal_visible: false,
@@ -303,7 +303,9 @@ const mock = (): TStores & { is_mock: boolean } => {
             setPurchaseState: jest.fn(),
             shouldNavigateAfterChooseCrypto: jest.fn(),
             toggleLanguageSettingsModal: jest.fn(),
+            togglePositionsDrawer: jest.fn(),
             toggleServicesErrorModal: jest.fn(),
+            toggleLinkExpiredModal: jest.fn(),
             toggleSetCurrencyModal: jest.fn(),
             addToast: jest.fn(),
             removeToast: jest.fn(),
@@ -407,6 +409,7 @@ const mock = (): TStores & { is_mock: boolean } => {
         },
         portfolio: {
             active_positions: [],
+            active_positions_count: 0,
             all_positions: [],
             error: '',
             getPositionById: jest.fn(),

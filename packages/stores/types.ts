@@ -390,8 +390,8 @@ type TCommonStoreError = {
 };
 
 type TCommonStoreServicesError = {
-    code: string;
-    message: string;
+    code?: string;
+    message?: string;
     type?: string;
 };
 
@@ -409,6 +409,7 @@ type TCommonStore = {
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
     is_language_changing: boolean;
+    is_socket_opened: boolean;
     services_error: TCommonStoreServicesError;
     setAppstorePlatform: (value: string) => void;
     app_routing_history: TAppRoutingHistory[];
@@ -429,6 +430,7 @@ type TUiStore = {
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
+    is_positions_drawer_on: boolean;
     is_services_error_visible: boolean;
     is_unsupported_contract_modal_visible: boolean;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
@@ -449,6 +451,8 @@ type TUiStore = {
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
     toggleLanguageSettingsModal: () => void;
+    togglePositionsDrawer: () => void;
+    toggleLinkExpiredModal: (state_change: boolean) => void;
     toggleReadyToDepositModal: () => void;
     toggleServicesErrorModal: (is_visible: boolean) => void;
     toggleSetCurrencyModal: () => void;
@@ -483,6 +487,18 @@ type TUiStore = {
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     purchase_states: boolean[];
     setShouldShowCooldownModal: (value: boolean) => void;
+    setAppContentsScrollRef: (ref: React.MutableRefObject<null | HTMLDivElement>) => void;
+    populateFooterExtensions: (
+        footer_extensions:
+            | [
+                  {
+                      position?: string;
+                      Component?: React.FunctionComponent;
+                      has_right_separator?: boolean;
+                  }
+              ]
+            | []
+    ) => void;
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
 };
 
@@ -507,6 +523,7 @@ type TPortfolioPosition = {
 
 type TPortfolioStore = {
     active_positions: TPortfolioPosition[];
+    active_positions_count: number;
     all_positions: TPortfolioPosition[];
     error: string;
     getPositionById: (id: number) => TPortfolioPosition;

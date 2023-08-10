@@ -55,10 +55,10 @@ describe('getContractTypeCategoryIcons', () => {
 
 describe('getAvailableContractTypes', () => {
     it('should return an object with specific availibale contracts if they are in the unsupported list', () => {
-        expect(getAvailableContractTypes(contract_types_test_list, unsupported_test_list).length).toEqual(2);
+        expect(getAvailableContractTypes(contract_types_test_list, unsupported_test_list)).toHaveLength(2);
     });
     it('should return an object with all availibale contracts if they are not in the unsupported list', () => {
-        expect(getAvailableContractTypes(contract_types_test_list, unsupported_short_test_list).length).toEqual(3);
+        expect(getAvailableContractTypes(contract_types_test_list, unsupported_short_test_list)).toHaveLength(3);
     });
     it('should return null for component field if it is not Accumulators', () => {
         expect(getAvailableContractTypes(contract_types_test_list, unsupported_test_list)[1]?.component).toEqual(null);

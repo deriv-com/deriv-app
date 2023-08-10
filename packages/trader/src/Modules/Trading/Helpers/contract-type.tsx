@@ -29,6 +29,7 @@ export const getContractTypeCategoryIcons = () =>
         Accumulators: 'IcCatAccumulator',
         Options: 'IcCatOptions',
         Multipliers: 'IcCatMultiplier',
+        Turbos: 'IcCatTurbos',
     } as const);
 
 /**

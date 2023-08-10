@@ -100,11 +100,16 @@
         &--multiplier {
             margin-bottom: 0.6rem;
         }
+        &--turbosshort,
+        &--turboslong {
+            top: 0.2rem;
+            margin-right: 0.7rem;
+        }
         &--vanilla {
             margin-right: 0.4rem;
         }
         .contract-type-widget__display {
-            padding: 0.8rem;
+            padding: 0.8rem 2rem 0.8rem 0.8rem;
         }
     }
 }

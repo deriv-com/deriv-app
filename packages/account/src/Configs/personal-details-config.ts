@@ -190,14 +190,14 @@ export const personal_details_config = ({
         // Need to check if client is high risk for MF, if so, remove all fields except first name, last name, date of birth and phone
         // No need to get tax information when client is high risk for MF
         if (!is_high_risk_client_for_mt5) {
-            const propertiesToUpdate: (keyof typeof config)[] = [
+            const properties_to_update: (keyof typeof config)[] = [
                 'place_of_birth',
                 'tax_residence',
                 'tax_identification_number',
                 'account_opening_reason',
             ];
 
-            propertiesToUpdate.forEach(key => {
+            properties_to_update.forEach(key => {
                 config[key].supported_in.push('svg');
             });
         }

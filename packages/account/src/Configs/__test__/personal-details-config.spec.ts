@@ -114,9 +114,14 @@ describe('personal-details-config', () => {
             is_high_risk_client_for_mt5: false,
         };
         const personal_details = personal_details_config(new_props);
-        expect(personal_details[0].tax_residence.supported_in).toContain('svg');
-        expect(personal_details[0].tax_identification_number.supported_in).toContain('svg');
-        expect(personal_details[0].place_of_birth.supported_in).toContain('svg');
-        expect(personal_details[0].account_opening_reason.supported_in).toContain('svg');
+        const additional_fields = [
+            'place_of_birth',
+            'tax_residence',
+            'tax_identification_number',
+            'account_opening_reason',
+        ];
+        additional_fields.forEach(field => {
+            expect(personal_details[0][field].supported_in).toContain('svg');
+        });
     });
 });

@@ -36,6 +36,10 @@ const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
         } else {
             setSideNotes([]);
         }
+
+        return () => {
+            setSideNotes([]);
+        };
     }, [setSideNotes, general_store.is_loading, payment_agent.is_try_withdraw_successful, current_language]);
 
     return (

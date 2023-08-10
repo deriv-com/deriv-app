@@ -50,11 +50,10 @@ type TCashierOptions = {
 
 const Cashier = observer(({ history, location, routes: routes_config }: TCashierProps) => {
     const { common, ui, client } = useStore();
-    const { withdraw, general_store, transaction_history, payment_agent } = useCashierStore();
+    const { withdraw, general_store, payment_agent } = useCashierStore();
     const { error } = withdraw;
     const {
         is_cashier_onboarding,
-        is_deposit,
         is_loading,
         onMountCommon: onMount,
         setAccountSwitchListener,
@@ -62,7 +61,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         cashier_route_tab_index: tab_index,
         setActiveTab,
     } = general_store;
-    const { is_crypto_transactions_visible } = transaction_history;
     const {
         data: is_payment_agent_transfer_visible,
         isLoading: is_payment_agent_checking,
@@ -130,9 +128,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                 (route.path !== routes.cashier_onramp || is_onramp_visible) &&
                 (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible)
             ) {
-                const manages_its_own_side_note = is_crypto_transactions_visible || is_cashier_onboarding || is_deposit;
-                const has_side_note = manages_its_own_side_note ? false : route.path !== routes.cashier_p2p;
-
                 options.push({
                     ...(route.path === routes.cashier_p2p && { count: p2p_notification_count }),
                     default: route.default,
@@ -141,7 +136,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                     value: route.component,
                     path: route.path,
                     // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
-                    has_side_note,
+                    has_side_note: route.path !== routes.cashier_deposit && route.path !== routes.cashier_p2p,
                 });
             }
         });

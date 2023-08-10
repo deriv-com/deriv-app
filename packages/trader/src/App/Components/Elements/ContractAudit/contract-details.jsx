@@ -13,6 +13,7 @@ import {
     isSmartTraderContract,
     isAsiansContract,
     isResetContract,
+    isTurbosContract,
     isUserSold,
     isEndedBeforeCancellationExpired,
     isUserCancelled,
@@ -50,16 +51,16 @@ const ContractDetails = ({
         tick_passed,
         transaction_ids: { buy, sell } = {},
         low_barrier,
-        number_of_contracts,
         longcode,
         reset_time,
+        display_number_of_contracts,
     } = contract_info;
 
     const is_profit = profit >= 0;
     const cancellation_price = getCancellationPrice(contract_info);
     const show_barrier = !is_vanilla && !isAccumulatorContract(contract_type) && !isSmartTraderContract(contract_type);
     const show_duration = !isAccumulatorContract(contract_type) || !isNaN(contract_end_time);
-    const show_payout_per_point = is_vanilla;
+    const show_payout_per_point = isTurbosContract(contract_type) || is_vanilla;
     const show_strike_barrier = is_vanilla || isAsiansContract(contract_type);
     const ticks_duration_text = isAccumulatorContract(contract_type)
         ? `${tick_passed}/${tick_count} ${localize('ticks')}`
@@ -185,7 +186,7 @@ const ContractDetails = ({
                                 id='dt_bt_label'
                                 icon={<Icon icon='IcContractPayout' size={24} />}
                                 label={localize('Payout per point')}
-                                value={`${number_of_contracts} ${getCurrencyDisplayCode(currency)}` || ' - '}
+                                value={`${display_number_of_contracts} ${getCurrencyDisplayCode(currency)}` || ' - '}
                                 should_format={!is_vanilla}
                             />
                         )}

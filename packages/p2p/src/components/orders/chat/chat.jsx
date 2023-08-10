@@ -32,7 +32,11 @@ const Chat = observer(() => {
                         <Button
                             has_effect
                             large
-                            onClick={() => sendbird_store.initialiseChatWsConnection()}
+                            onClick={() => {
+                                (async () => {
+                                    await sendbird_store.initialiseChatWsConnection();
+                                })();
+                            }}
                             primary
                             text={localize('Retry')}
                             type='button'

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Loading, Text } from '@deriv/components';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { useDBotStore } from 'Stores/useDBotStore';
 
 type TTourGuide = {
     content: string[];
@@ -12,7 +12,10 @@ type TTourGuide = {
     step_index: number;
 };
 
-const TourGuide = ({ content, img, label, onCloseTour, step_index }: TTourGuide) => {
+const TourGuide = observer(({ content, img, label, step_index }: TTourGuide) => {
+    const { dashboard } = useDBotStore();
+    const { onCloseTour } = dashboard;
+
     const [has_image_loaded, setImageLoaded] = React.useState(false);
 
     React.useEffect(() => {
@@ -62,9 +65,6 @@ const TourGuide = ({ content, img, label, onCloseTour, step_index }: TTourGuide)
             </div>
         </React.Fragment>
     );
-};
-export default connect(({ dashboard }: RootStore) => ({
-    setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
-    setTourActive: dashboard.setTourActive,
-    onCloseTour: dashboard.onCloseTour,
-}))(TourGuide);
+});
+
+export default TourGuide;

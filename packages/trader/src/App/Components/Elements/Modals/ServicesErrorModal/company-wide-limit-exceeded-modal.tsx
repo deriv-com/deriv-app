@@ -1,10 +1,14 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Modal, StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 
-const CompanyWideLimitExceededModal = ({ is_visible, onConfirm }) => {
+type TCompanyWideLimitExceededModal = {
+    is_visible: boolean;
+    onConfirm: () => void;
+};
+
+const CompanyWideLimitExceededModal = ({ is_visible, onConfirm }: TCompanyWideLimitExceededModal) => {
     return (
         <Modal
             is_open={is_visible}
@@ -24,11 +28,6 @@ const CompanyWideLimitExceededModal = ({ is_visible, onConfirm }) => {
             </Modal.Footer>
         </Modal>
     );
-};
-
-CompanyWideLimitExceededModal.propTypes = {
-    is_visible: PropTypes.bool,
-    onConfirm: PropTypes.func,
 };
 
 export default CompanyWideLimitExceededModal;

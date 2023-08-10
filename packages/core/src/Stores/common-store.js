@@ -57,33 +57,27 @@ export default class CommonStore extends BaseStore {
     }
 
     allowed_languages = Object.keys(getAllowedLanguages());
-    is_language_changing = false;
-    server_time = ServerTime.get() || toMoment(); // fallback: get current time from moment.js
+    app_id = undefined;
+    app_router = { history: null };
+    app_routing_history = [];
+    changing_language_timer_id = '';
     current_language = currentLanguage;
+    deposit_url = '';
     has_error = false;
-
+    is_language_changing = false;
+    is_network_online = false;
+    is_socket_opened = false;
     error = {
         type: 'info',
         message: '',
     };
-
     network_status = {};
-    is_network_online = false;
-    is_socket_opened = false;
-    was_socket_opened = false;
-
-    services_error = {};
-
-    deposit_url = '';
-    withdraw_url = '';
-
-    app_routing_history = [];
-    app_router = { history: null };
-    app_id = undefined;
     platform = '';
     selected_contract_type = '';
-
-    changing_language_timer_id = '';
+    server_time = ServerTime.get() || toMoment(); // fallback: get current time from moment.js
+    services_error = {};
+    was_socket_opened = false;
+    withdraw_url = '';
 
     setSelectedContractType(contract_type) {
         this.selected_contract_type = contract_type;

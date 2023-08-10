@@ -19,12 +19,14 @@ const SelfExclusionArticle = () => {
                     : [
                           is_eu ? (
                               <Localize
+                                  key={0}
                                   i18n_default_text='These trading limits and self-exclusion help you control the amount of money and time you spend on {{brand_website_name}} and exercise <0>responsible trading</0>.'
                                   components={[<StaticUrl key={0} className='link' href='/responsible' />]}
                                   values={{ brand_website_name: getBrandWebsiteName() }}
                               />
                           ) : (
                               <Localize
+                                  key={0}
                                   i18n_default_text='These self-exclusion limits help you control the amount of money and time you spend trading on {{platform_name_trader}}, {{platform_name_dbot}}, {{platform_name_smarttrader}} and {{platform_name_bbot}} on Deriv. The limits you set here will help you exercise <0>responsible trading</0>.'
                                   components={[<StaticUrl key={0} className='link' href='/responsible' />]}
                                   values={{

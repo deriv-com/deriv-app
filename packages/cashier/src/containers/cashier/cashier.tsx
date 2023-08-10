@@ -108,13 +108,10 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     }, [history, is_payment_agent_transfer_visible, is_payment_agent_transfer_visible_is_success]);
 
     React.useEffect(() => {
-        if (
-            (is_p2p_enabled_success && !is_p2p_enabled && history.location.pathname === routes.cashier_p2p) ||
-            (tab_index === 0 && !is_p2p_enabled)
-        ) {
+        if (is_p2p_enabled_success && !is_p2p_enabled && history.location.pathname.startsWith(routes.cashier_p2p)) {
             history.push(routes.cashier_deposit);
         }
-    }, [history, is_p2p_enabled, is_p2p_enabled_success, tab_index]);
+    }, [history, is_p2p_enabled, is_p2p_enabled_success]);
 
     const onClickClose = () => history.push(routes.traders_hub);
     const getMenuOptions = () => {

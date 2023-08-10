@@ -407,8 +407,8 @@ type TCommonStoreError = {
     type?: string;
 };
 type TCommonStoreServicesError = {
-    code: string;
-    message: string;
+    code?: string;
+    message?: string;
     type?: string;
 };
 
@@ -431,6 +431,7 @@ type TCommonStore = {
     setAppstorePlatform: (value: string) => void;
     app_routing_history: TAppRoutingHistory[];
     getExchangeRate: (from_currency: string, to_currency: string) => Promise<number>;
+    network_status: Record<string, never> | { [key: string]: string };
 };
 
 type TUiStore = {
@@ -441,6 +442,7 @@ type TUiStore = {
     enableApp: () => void;
     has_only_forward_starting_contracts: boolean;
     has_real_account_signup_ended: boolean;
+    is_loading: boolean;
     is_cashier_visible: boolean;
     is_closing_create_real_account_modal: boolean;
     is_dark_mode_on: boolean;
@@ -451,18 +453,17 @@ type TUiStore = {
     is_mobile: boolean;
     is_services_error_visible: boolean;
     is_unsupported_contract_modal_visible: boolean;
-    toggleShouldShowRealAccountsList: (value: boolean) => void;
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;
     notification_messages_ui: React.ElementType;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
-    setHasOnlyForwardingContracts: (has_only_forward_starting_contracts: boolean) => void;
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
     setPurchaseState: (index: number) => void;
+    setHasOnlyForwardingContracts: (has_only_forward_starting_contracts: boolean) => void;
     sub_section_index: number;
     setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: Omit<string, TRoutes> | TRoutes) => void;
@@ -473,6 +474,7 @@ type TUiStore = {
     toggleReadyToDepositModal: () => void;
     toggleServicesErrorModal: (is_visible: boolean) => void;
     toggleSetCurrencyModal: () => void;
+    toggleShouldShowRealAccountsList: (value: boolean) => void;
     is_tablet: boolean;
     removeToast: (key: string) => void;
     is_ready_to_deposit_modal_visible: boolean;

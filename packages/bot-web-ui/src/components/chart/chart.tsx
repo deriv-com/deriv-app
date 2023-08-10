@@ -68,6 +68,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 topWidgets={() => <ChartTitle onChange={onSymbolChange} />}
                 isConnectionOpened={is_socket_opened}
                 getMarketsOrder={getMarketsOrder}
+                isLive={true}
             />
         </div>
     );

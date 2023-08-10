@@ -100,7 +100,7 @@ const AccumulatorsProfitLossText = ({
     };
 
     return (
-        <FastMarker markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')}>
+        <FastMarker markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')} overlap_y_axis={false}>
             <Text
                 weight='bold'
                 size='m'

@@ -8,7 +8,6 @@ import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-over
 import Test from './test.jsx';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
 import FormLayout from '../Components/Form/form-layout.jsx';
-import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements.jsx';
 import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.jsx';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -68,6 +67,7 @@ const Trade = observer(() => {
     const [category, setCategory] = React.useState(null);
     const [subcategory, setSubcategory] = React.useState(null);
     const [is_digits_widget_active, setIsDigitsWidgetActive] = React.useState(false);
+    const [swipe_index, setSwipeIndex] = React.useState(0);
     const charts_ref = React.useRef();
 
     const open_market = React.useMemo(() => {
@@ -124,6 +124,7 @@ const Trade = observer(() => {
     const onChangeSwipeableIndex = index => {
         setMobileDigitView(index === 0);
         setIsDigitsWidgetActive(index === 0);
+        setSwipeIndex(index);
     };
 
     const onTryOtherMarkets = async () => {
@@ -200,6 +201,7 @@ const Trade = observer(() => {
                                 is_chart_loading ||
                                 should_show_active_symbols_loading
                             }
+                            is_swipe_disabled={swipe_index === 1}
                             className={classNames({ 'vanilla-trade-chart': is_vanilla })}
                         >
                             {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
@@ -247,27 +249,6 @@ import { SmartChart } from 'Modules/SmartChart';
 
 const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChart innerRef={ref} {...props} />);
 
-// ChartMarkers --------------------------
-const ChartMarkers = observer(config => {
-    const { ui, client, contract_trade } = useStore();
-    const { markers_array, granularity } = contract_trade;
-    const { is_dark_mode_on: is_dark_theme } = ui;
-    const { currency } = client;
-    return markers_array.map(marker => {
-        const Marker = AllMarkers[marker.type];
-        return (
-            <Marker
-                key={marker.key}
-                is_dark_theme={is_dark_theme}
-                granularity={granularity}
-                currency={currency}
-                config={config}
-                {...marker}
-            />
-        );
-    });
-});
-
 const ChartTrade = observer(props => {
     const { is_accumulator, end_epoch, topWidgets, charts_ref } = props;
     const { client, ui, common, contract_trade, portfolio } = useStore();
@@ -276,12 +257,13 @@ const ChartTrade = observer(props => {
         accumulator_contract_barriers_data,
         chart_type,
         granularity,
+        markers_array,
         has_crossed_accu_barriers,
         updateGranularity,
         updateChartType,
     } = contract_trade;
     const { all_positions } = portfolio;
-    const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on } = ui;
+    const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on, is_positions_drawer_on } = ui;
     const { is_socket_opened, current_language } = common;
     const { currency, should_show_eu_content } = client;
     const {
@@ -349,6 +331,7 @@ const ChartTrade = observer(props => {
         <SmartChartWithRef
             ref={charts_ref}
             barriers={barriers}
+            markers_array={markers_array}
             bottomWidgets={(is_accumulator || show_digits_stats) && isDesktop() ? bottomWidgets : props.bottomWidgets}
             crosshair={isMobile() ? 0 : undefined}
             crosshairTooltipLeftAllow={560}
@@ -395,8 +378,9 @@ const ChartTrade = observer(props => {
             yAxisMargin={{
                 top: isMobile() ? 76 : 106,
             }}
+            isLive={true}
+            leftMargin={isDesktop() && is_positions_drawer_on ? 328 : 80}
         >
-            <ChartMarkers />
             {is_accumulator && (
                 <AccumulatorsChartElements
                     all_positions={all_positions}

@@ -110,6 +110,11 @@ const PurchaseFieldset = ({
                                 onHoverPurchase(false);
                             }
                         }}
+                        onClick={() => {
+                            if (!is_disabled) {
+                                onHoverPurchase(false);
+                            }
+                        }}
                     >
                         <div className='btn-purchase__box-shadow' />
                         {is_proposal_error && !is_market_closed ? (

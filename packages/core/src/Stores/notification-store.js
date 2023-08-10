@@ -228,7 +228,7 @@ export default class NotificationStore extends BaseStore {
             this.notification_messages = this.notification_messages.filter(
                 notification => notification.platform === 'Account'
             );
-        } else if (window.location.pathname !== routes.cashier_p2p) {
+        } else if (!window.location.pathname.includes(routes.cashier_p2p)) {
             this.notification_messages = this.notification_messages.filter(notification => {
                 if (notification.platform === undefined || notification.platform.includes(getPathname())) {
                     return true;
@@ -572,6 +572,9 @@ export default class NotificationStore extends BaseStore {
                     this.addNotificationMessage(this.client_notifications.svg_poi_expired);
                 }
             }
+            if (client && this.root_store.client.mt5_login_list.length > 0) {
+                this.addNotificationMessage(this.client_notifications.mt5_notification);
+            }
         }
 
         if (!is_eu && isMultiplierContract(selected_contract_type) && current_language === 'EN' && is_logged_in) {
@@ -583,38 +586,28 @@ export default class NotificationStore extends BaseStore {
 
     showCompletedOrderNotification(advertiser_name, order_id) {
         const notification_key = `p2p_order_${order_id}`;
+        const { setP2POrderTab, navigateToOrderDetails } = this.p2p_order_props;
+        const is_p2p_route = window.location.pathname.includes(routes.cashier_p2p);
 
-        const notification_redirect_action =
-            routes.cashier_p2p === window.location.pathname
-                ? {
-                      onClick: () => {
-                          this.p2p_order_props.redirectToOrderDetails(order_id);
-                          this.setP2POrderProps({
-                              ...this.p2p_order_props,
-                              order_id,
-                          });
-                          if (this.is_notifications_visible) this.toggleNotificationsModal();
-                          this.refreshNotifications();
-                      },
-                      text: localize('Give feedback'),
-                  }
-                : {
-                      route: `${routes.cashier_p2p}?order=${order_id}`,
-                      text: localize('Give feedback'),
-                  };
+        const notification_redirect_action = is_p2p_route
+            ? {
+                  onClick: () => {
+                      setP2POrderTab(order_id);
+                      navigateToOrderDetails(order_id);
+                      this.setP2POrderProps({ ...this.p2p_order_props, order_id });
+
+                      if (this.is_notifications_visible) this.toggleNotificationsModal();
+                      this.refreshNotifications();
+                  },
+                  text: localize('Give feedback'),
+              }
+            : {
+                  route: `${routes.p2p_orders}?order=${order_id}`,
+                  text: localize('Give feedback'),
+              };
 
         this.addNotificationMessage({
-            action:
-                this.p2p_order_props?.order_id === order_id
-                    ? {
-                          onClick: () => {
-                              this.p2p_order_props.setIsRatingModalOpen(true);
-                              if (this.is_notifications_visible) this.toggleNotificationsModal();
-                              this.refreshNotifications();
-                          },
-                          text: localize('Give feedback'),
-                      }
-                    : notification_redirect_action,
+            action: notification_redirect_action,
             header: <Localize i18n_default_text='Your order {{order_id}} is complete' values={{ order_id }} />,
             key: notification_key,
             message: (
@@ -714,6 +707,7 @@ export default class NotificationStore extends BaseStore {
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
         const { has_enabled_two_fa, setTwoFAChangedStatus } = this.root_store.client;
+        const { setMT5NotificationModal } = this.root_store.traders_hub;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
         const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
         const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
@@ -882,7 +876,7 @@ export default class NotificationStore extends BaseStore {
                     action: window.location.pathname.includes(routes.cashier_p2p)
                         ? {
                               onClick: () => {
-                                  this.p2p_redirect_to.redirectTo('my_profile');
+                                  this.p2p_redirect_to.routeToMyProfile();
                                   if (this.is_notifications_visible) this.toggleNotificationsModal();
 
                                   this.removeNotificationMessage({
@@ -893,8 +887,7 @@ export default class NotificationStore extends BaseStore {
                               text: localize('Yes, increase my limits'),
                           }
                         : {
-                              // TODO: replace this with proper when fixing routes in p2p
-                              route: routes.cashier_p2p_profile,
+                              route: routes.p2p_my_profile,
                               text: localize('Yes, increase my limits'),
                           },
                     header: <Localize i18n_default_text='Enjoy higher daily limits' />,
@@ -916,6 +909,7 @@ export default class NotificationStore extends BaseStore {
             },
             deriv_go: {
                 key: 'deriv_go',
+                header: <Localize i18n_default_text='Trade on the go' />,
                 message: (
                     <Localize
                         i18n_default_text='Get a faster mobile trading experience with the <0>{{platform_name_go}}</0> app!'
@@ -1491,6 +1485,18 @@ export default class NotificationStore extends BaseStore {
                     route: routes.proof_of_identity,
                     text: localize('Submit proof of identity'),
                 },
+            },
+            mt5_notification: {
+                key: 'mt5_notification',
+                header: localize('Trouble accessing Deriv MT5 on your mobile?'),
+                message: localize('Follow these simple instructions to fix it.'),
+                action: {
+                    text: localize('Learn more'),
+                    onClick: () => {
+                        setMT5NotificationModal(true);
+                    },
+                },
+                type: 'warning',
             },
         };
 

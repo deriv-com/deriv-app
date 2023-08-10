@@ -14,20 +14,21 @@ const ALL_LANGUAGES = Object.freeze({
     ID: 'Indonesian',
     IT: 'Italiano',
     PL: 'Polish',
-    PT: 'Português',
     RU: 'Русский',
     VI: 'Tiếng Việt',
     ZH_CN: '简体中文',
     ZH_TW: '繁體中文',
+    TH: 'ไทย',
 });
 
 export const getAllowedLanguages = () => {
     const allowed_languages = {
         EN: 'English',
-        PT: 'Português',
         ES: 'Español',
         RU: 'Русский',
         FR: 'Français',
+        IT: 'Italiano',
+        TH: 'ไทย',
         VI: 'Tiếng Việt',
     };
     const exclude_languages = ['ACH'];
@@ -135,7 +136,7 @@ export const changeLanguage = async (lang: string, cb: (arg0: string) => void) =
 // <Localize /> component wrapped with i18n
 export const Localize = withI18n(i18n);
 
-export const localize = <T extends object>(string: string, values?: T) => {
+export const localize = <T extends object>(string: string, values?: T): string => {
     if (!string) return '';
 
     return i18n.t(crc32(string).toString(), { defaultValue: string, ...values });

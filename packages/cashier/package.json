@@ -12,7 +12,7 @@
         "test": "__tests__"
     },
     "engines": {
-        "node": "^16.16.0"
+        "node": "18.x"
     },
     "files": [
         "lib"

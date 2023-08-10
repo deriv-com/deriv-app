@@ -5,6 +5,7 @@ type TUILoader = {
     className?: string;
     classNameBlock?: string;
 };
+
 const UILoader = ({ className, classNameBlock }: TUILoader) => {
     const block_class = classNames(classNameBlock, 'block-ui');
     const loading_class = classNames('block-ui__loading', className);

@@ -1,3 +1,33 @@
+.jurisdiction-modal {
+    &__content-wrapper {
+        display: flex;
+        flex-direction: column;
+        @include desktop {
+            overflow: auto;
+        }
+    }
+    &__scrollable-content {
+        @include desktop {
+            overflow: auto;
+        }
+    }
+    &__footer-content {
+        background-color: var(--general-main-1);
+        @include mobile {
+            position: sticky;
+            bottom: 7.2rem;
+        }
+    }
+    &__footer-button {
+        background-color: var(--general-main-1);
+        @include mobile {
+            height: 7.2rem;
+            position: sticky;
+            bottom: 0;
+        }
+    }
+}
+
 .cfd-jurisdiction-card--synthetic,
 .cfd-jurisdiction-card--financial,
 .cfd-jurisdiction-card--all {
@@ -23,7 +53,7 @@
         margin: 4rem 6rem 2rem;
         display: flex;
         justify-content: center;
-        gap: 2rem;
+        gap: 1.6rem;
         @include mobile {
             margin: 0;
             padding: 4rem;
@@ -72,14 +102,14 @@
         }
         &-flipped-container {
             gap: 2rem;
-            padding: 4rem 2rem;
+            padding: 4rem 1.6rem;
         }
         &-section-container {
             display: flex;
             flex-direction: column;
             gap: 1.2rem;
             height: 100%;
-            margin: 0 2rem;
+            margin: 0 1.6rem;
         }
     }
 
@@ -98,12 +128,8 @@
         justify-content: space-between;
         @include mobile {
             min-height: auto;
-            background-color: var(--general-main-1);
             width: 100%;
             height: 100%;
-            position: sticky;
-            bottom: 0;
-            z-index: 12;
         }
     }
 
@@ -113,7 +139,7 @@
         gap: 1rem;
         margin: 1rem;
         @include desktop {
-            min-height: 6rem;
+            min-height: 7.6rem;
         }
         @include mobile {
             gap: 0;
@@ -173,7 +199,7 @@
         transform-style: preserve-3d;
         -webkit-transition: all 0.25s ease-in;
         transition: all 0.25s ease-in;
-        width: 29rem;
+        width: 28rem;
         &.synthetic,
         &.all {
             min-height: 48rem;
@@ -365,7 +391,6 @@
         background: var(--brand-dark-grey);
         align-items: center;
         text-decoration: none;
-        padding: 0.2rem;
         border-radius: $BORDER_RADIUS;
 
         &-text {
@@ -375,6 +400,9 @@
                 padding-right: 0.5rem;
                 white-space: nowrap;
             }
+        }
+        &-icon {
+            margin-left: 0.6rem;
         }
     }
     &__specs {
@@ -421,11 +449,20 @@
     &__spec-text {
         font-family: 'Courier', monospace;
         overflow: hidden;
+        &-broker {
+            text-align: right;
+        }
     }
     &__download-center {
         border-top: 2px solid var(--general-section-1);
         padding-top: 2rem;
         padding-bottom: 5.8rem;
+
+        &-description {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.4rem;
+        }
 
         &-app {
             display: flex;
@@ -498,7 +535,7 @@
                 display: flex;
                 flex-direction: column;
                 width: 13.6rem;
-                height: 14rem;
+                height: auto;
                 padding: 0.8rem;
                 align-items: center;
                 border: 1px solid var(--border-disabled);
@@ -1298,11 +1335,18 @@
 
     @for $column_count from 1 through 7 {
         .cfd-accounts-compare-modal__row-with-columns-count-#{$column_count} {
-            grid-template-columns: repeat($column_count, 1fr);
+            @if $column_count != 5 {
+                grid-template-columns: repeat($column_count, 1fr);
+            } @else if $column_count == 5 {
+                grid-template-columns: repeat($column_count - 1, 1fr);
+                @include mobile {
+                    grid-template-columns: repeat($column_count, 1fr);
+                }
+            }
         }
     }
     &__table-header {
-        grid-template-columns: 0.9fr 1.39fr 2.74fr;
+        grid-template-columns: 1fr 2fr;
         &__pre-appstore {
             grid-template-columns: 11rem 36rem 46rem 13.5rem;
         }
@@ -1354,10 +1398,24 @@
         &__pre-appstore {
             grid-template-columns: 11rem 13.4rem 12.6rem 10rem 13.4rem 12.6rem 10rem 10rem 13.5rem;
         }
+        // af, mg, pk
+        &--other-country {
+            grid-template-columns: 11rem 23.4rem 12.6rem 20rem 13.4rem 12.6rem 13.4rem 20rem 17.5rem;
+        }
+
         &--leverage {
             grid-template-columns: 11rem 38rem 36rem 10rem;
             &__pre-appstore {
                 grid-template-columns: 11rem 36rem 36rem 10rem 13.5rem;
+            }
+            &__af {
+                grid-template-columns: 11rem 36rem 33.4rem 12.6rem 13.5rem;
+            }
+            &__pk {
+                grid-template-columns: 11rem 36rem 46rem 13.4rem 17.5rem;
+            }
+            &__mg {
+                grid-template-columns: 11rem 36rem 33.4rem 12.6rem 13.4rem;
             }
         }
 
@@ -1376,6 +1434,15 @@
             &__pre-appstore {
                 grid-template-columns: 11rem 36rem 26rem 10rem 10rem 13.5rem;
             }
+            &__af {
+                grid-template-columns: 11rem 36rem 20rem 13.4rem 12.6rem 13.5rem;
+            }
+            &__pk {
+                grid-template-columns: 11rem 36rem 33rem 13rem 13.4rem;
+            }
+            &__mg {
+                grid-template-columns: 11rem 36rem 20rem 13.4rem 12.6rem 13.4rem;
+            }
         }
     }
 
@@ -1391,6 +1458,15 @@
         height: 4.8rem;
         &__pre-appstore {
             grid-template-columns: 11rem 13.4rem 12.6rem 10rem 13.4rem 12.6rem 10rem 10rem 13.5rem;
+        }
+        &__pk {
+            grid-template-columns: 11rem 23.2rem 12.8rem 17.62rem 15.4rem 13rem 13.4rem 20rem 17.5rem;
+        }
+        &__af {
+            grid-template-columns: 11rem 23.2rem 12.8rem 20rem 13.4rem 12.6rem 13.5rem 20rem 17.5rem;
+        }
+        &__mg {
+            grid-template-columns: 11rem 23.4rem 12.6rem 20rem 13.4rem 12.6rem 13.4rem 10rem 13.5rem;
         }
         &__item {
             height: 4.8rem;
@@ -1500,6 +1576,9 @@
             &-row-eu {
                 width: unset;
                 height: unset;
+            }
+            &__table-header {
+                width: calc(250vw / 7 * 3);
             }
         }
         @for $column_count from 1 through 7 {

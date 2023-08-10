@@ -20,7 +20,6 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
     const [selected_category, setSelectedCategory] = React.useState<TList['key'] | null>(null);
     const [search_query, setSearchQuery] = React.useState('');
     const [item, setItem] = React.useState<TContractType | null>(null);
-    const [selected_item, setSelectedItem] = React.useState<TContractType | null>(null);
 
     const handleClickOutside = React.useCallback(
         (event: MouseEvent) => {
@@ -59,12 +58,6 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
             onChange({ target: { name, value: clicked_item.value } });
         }
     };
-
-    React.useEffect(() => {
-        if (selected_item && selected_item.value !== value) {
-            onChange({ target: { name, value: selected_item.value } });
-        }
-    }, [selected_item, onChange, name, value]);
 
     const handleInfoClick = (clicked_item: TContractType) => {
         setInfoDialogVisibility(!is_info_dialog_open);

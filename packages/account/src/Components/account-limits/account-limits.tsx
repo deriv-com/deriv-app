@@ -16,6 +16,7 @@ import AccountLimitsTurnoverLimitRow from './account-limits-turnover-limit-row';
 import { observer, useStore } from '@deriv/stores';
 import { FormikValues } from 'formik';
 import { compareStrings } from '@deriv/utils';
+import WithdrawalLimitsTable from './withdrawal-limits-table';
 
 type TAccountLimits = {
     footer_ref?: React.RefObject<HTMLElement>;
@@ -37,20 +38,22 @@ const AccountLimits = observer(
         should_show_article = true,
     }: TAccountLimits) => {
         const { client, common } = useStore();
-        const { account_limits, currency, getLimits, is_fully_authenticated, is_virtual, is_switching } = client;
+        const { account_limits, currency, getLimits, is_virtual, is_switching } = client;
         const { is_from_derivgo } = common;
         const isMounted = useIsMounted();
         const [is_loading, setLoading] = React.useState(false);
         const [is_overlay_shown, setIsOverlayShown] = React.useState(false);
         const { is_appstore } = React.useContext(PlatformContext);
 
+        const handleGetLimitsResponse = () => {
+            if (isMounted()) setLoading(false);
+        };
+
         React.useEffect(() => {
             if (is_virtual) {
                 setLoading(false);
             } else {
-                getLimits().then(() => {
-                    if (isMounted()) setLoading(false);
-                });
+                getLimits().then(handleGetLimitsResponse);
             }
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
@@ -130,7 +133,7 @@ const AccountLimits = observer(
                             <AccountLimitsArticle is_from_derivgo={is_from_derivgo} />
                         )}
                         <div className='da-account-limits__table-wrapper'>
-                            <ThemedScrollbars is_bypassed={should_bypass_scrollbars || isMobile()}>
+                            <ThemedScrollbars is_bypassed={should_bypass_scrollbars ?? isMobile()}>
                                 <table className='da-account-limits__table' data-testid='trading_limit_item_table'>
                                     <thead>
                                         <tr>
@@ -231,116 +234,15 @@ const AccountLimits = observer(
                                     </tbody>
                                 </table>
                                 {/* We only show "Withdrawal Limits" on account-wide settings pages. */}
-                                {!is_app_settings && (
-                                    <React.Fragment>
-                                        <table
-                                            className='da-account-limits__table'
-                                            data-testid='withdrawal_limits_table'
-                                        >
-                                            <thead>
-                                                <tr>
-                                                    <AccountLimitsTableHeader>
-                                                        <Localize i18n_default_text='Withdrawal limits' />
-                                                    </AccountLimitsTableHeader>
-                                                    {is_fully_authenticated && (
-                                                        <AccountLimitsTableHeader align='right'>
-                                                            <Localize i18n_default_text='Limit' />
-                                                        </AccountLimitsTableHeader>
-                                                    )}
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {is_fully_authenticated ? (
-                                                    <tr>
-                                                        <AccountLimitsTableCell>
-                                                            <React.Fragment>
-                                                                <Text size='xxs' color='prominent'>
-                                                                    {localize(
-                                                                        'Your account is fully authenticated and your withdrawal limits have been lifted.'
-                                                                    )}
-                                                                </Text>
-                                                            </React.Fragment>
-                                                        </AccountLimitsTableCell>
-                                                        <AccountLimitsTableCell />
-                                                    </tr>
-                                                ) : (
-                                                    <React.Fragment>
-                                                        <tr>
-                                                            <AccountLimitsTableCell>
-                                                                {is_appstore ? (
-                                                                    <Localize i18n_default_text='Total withdrawal limit' />
-                                                                ) : (
-                                                                    <Localize i18n_default_text='Total withdrawal allowed' />
-                                                                )}
-                                                                {is_appstore && !is_fully_authenticated && (
-                                                                    <React.Fragment>
-                                                                        <Text
-                                                                            size={isMobile() ? 'xxxs' : 'xxs'}
-                                                                            className='account-management-table__verify'
-                                                                            color='less-prominent'
-                                                                            line_height='xs'
-                                                                        >
-                                                                            {localize(
-                                                                                'To increase limit please verify your identity'
-                                                                            )}
-                                                                        </Text>
-                                                                        <ButtonLink
-                                                                            to='/account/proof-of-identity'
-                                                                            size='small'
-                                                                            className='account-management-table__verify-button'
-                                                                        >
-                                                                            <Text
-                                                                                weight='bold'
-                                                                                color='colored-background'
-                                                                                size={isMobile() ? 'xxxs' : 'xxs'}
-                                                                            >
-                                                                                {localize('Verify')}
-                                                                            </Text>
-                                                                        </ButtonLink>
-                                                                    </React.Fragment>
-                                                                )}
-                                                            </AccountLimitsTableCell>
-                                                            <AccountLimitsTableCell align='right'>
-                                                                {formatMoney(currency, num_of_days_limit, true)}
-                                                            </AccountLimitsTableCell>
-                                                        </tr>
-                                                        <tr>
-                                                            <AccountLimitsTableCell>
-                                                                <Localize i18n_default_text='Total withdrawn' />
-                                                            </AccountLimitsTableCell>
-                                                            <AccountLimitsTableCell align='right'>
-                                                                {formatMoney(
-                                                                    currency,
-                                                                    withdrawal_since_inception_monetary,
-                                                                    true
-                                                                )}
-                                                            </AccountLimitsTableCell>
-                                                        </tr>
-                                                        <tr>
-                                                            <AccountLimitsTableCell>
-                                                                <Localize i18n_default_text='Maximum withdrawal remaining' />
-                                                            </AccountLimitsTableCell>
-                                                            <AccountLimitsTableCell align='right'>
-                                                                {formatMoney(currency, remainder, true)}
-                                                            </AccountLimitsTableCell>
-                                                        </tr>
-                                                    </React.Fragment>
-                                                )}
-                                            </tbody>
-                                        </table>
-                                        {(!is_appstore || isMobile()) && (
-                                            <div className='da-account-limits__text-container'>
-                                                <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
-                                                    {is_fully_authenticated ? (
-                                                        <Localize i18n_default_text='Your account is fully authenticated and your withdrawal limits have been lifted.' />
-                                                    ) : (
-                                                        <Localize i18n_default_text='Stated limits are subject to change without prior notice.' />
-                                                    )}
-                                                </Text>
-                                            </div>
-                                        )}
-                                    </React.Fragment>
-                                )}
+                                {
+                                    <WithdrawalLimitsTable
+                                        is_app_settings={is_app_settings}
+                                        is_appstore={is_appstore}
+                                        num_of_days_limit={num_of_days_limit}
+                                        remainder={remainder}
+                                        withdrawal_since_inception_monetary={withdrawal_since_inception_monetary}
+                                    />
+                                }
                             </ThemedScrollbars>
                         </div>
                         {should_show_article && isDesktop() && <AccountLimitsArticle />}

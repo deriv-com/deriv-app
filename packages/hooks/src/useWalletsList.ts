@@ -138,7 +138,6 @@ const useWalletsList = () => {
         /** List of wallets for current user. */
         data: sorted_wallets,
         /** Indicating whether the user has a wallet */
-        has_wallet: sorted_wallets && sorted_wallets.length > 0,
         ...rest,
     };
 };

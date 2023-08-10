@@ -35,7 +35,7 @@ describe('<FileUploaderContainer />', () => {
 
     const file_size_msg = /less than 8mb/i;
     const file_type_msg = /jpeg jpg png pdf gif/i;
-    const file_time_msg = /1 \- 6 months old/i;
+    const file_time_msg = /1 - 6 months old/i;
     const file_clear_msg = /a clear colour photo or scanned image/i;
     const file_address = /issued under your name with your current address/i;
 

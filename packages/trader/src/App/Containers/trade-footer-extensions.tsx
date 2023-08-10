@@ -1,10 +1,11 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import TogglePositions from '../Components/Elements/TogglePositions/toggle-positions';
 import { observer, useStore } from '@deriv/stores';
 
-const TradeFooterExtensions = observer(() => {
+const TradeFooterExtensions = observer((props: RouteComponentProps) => {
+    const { location } = props;
     const { client, portfolio, ui } = useStore();
     const { is_logged_in } = client;
     const { active_positions_count } = portfolio;

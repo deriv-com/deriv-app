@@ -210,7 +210,7 @@ export default class TradeStore extends BaseStore {
     basis = '';
     basis_list: Array<TTextValueStrings> = [];
     currency = '';
-    stake_boundary: TStakeBoundary = { VANILLALONGCALL: {}, VANILLALONGPUT: {} };
+    stake_boundary: Partial<TStakeBoundary> = {};
 
     // Duration
     duration = 5;
@@ -228,7 +228,6 @@ export default class TradeStore extends BaseStore {
     barrier_count = 0;
     main_barrier: ChartBarrierStore | null = null;
     barriers: TBarriers = [];
-    strike_price_choices: string[] = [];
     hovered_barrier = '';
     barrier_choices: string[] = [];
 
@@ -865,7 +864,7 @@ export default class TradeStore extends BaseStore {
 
             // create barrier only when it's available in response
             this.main_barrier = new ChartBarrierStore(
-                this.hovered_barrier || barrier || barrier,
+                this.hovered_barrier || barrier,
                 barrier2,
                 //@ts-expect-error need to typescript migrate chart-barrier-store.js first
                 this.onChartBarrierChange,
@@ -1317,26 +1316,6 @@ export default class TradeStore extends BaseStore {
             }
             if (this.is_accumulator) this.resetAccumulatorData();
 
-            // Sometimes the initial barrier doesn't match with current barrier choices received from API.
-            // When this happens we want to populate the list of barrier choices to choose from since the value cannot be specified manually
-            if (this.is_vanilla) {
-                const { barrier_choices, max_stake, min_stake } = response.error.details ?? {};
-                this.setStakeBoundary(contract_type, min_stake, max_stake);
-                this.setStrikeChoices(barrier_choices as string[]);
-                if (!this.strike_price_choices.includes(this.barrier_1)) {
-                    // Since on change of duration `proposal` API call is made which returns a new set of barrier values.
-                    // The new list is set and the mid value is assigned
-                    const index = Math.floor(this.strike_price_choices.length / 2);
-                    this.barrier_1 = this.strike_price_choices[index];
-                    this.onChange({
-                        target: {
-                            name: 'barrier_1',
-                            value: this.barrier_1,
-                        },
-                    });
-                }
-            }
-
             // Sometimes when we navigate fast, `forget_all` proposal is called immediately after proposal subscription calls.
             // But, in the BE, `forget_all` proposal call is processed before the proposal subscriptions are registered. In this case, `forget_all` proposal doesn't forget the new subscriptions.
             // So when we send new proposal subscription requests, we get `AlreadySubscribed` error.
@@ -1720,10 +1699,6 @@ export default class TradeStore extends BaseStore {
             return undefined;
         }
         return findFirstOpenMarket(active_symbols, markets_to_search);
-    }
-
-    setStrikeChoices(strike_prices: string[]) {
-        this.strike_price_choices = strike_prices ?? [];
     }
 
     setStakeBoundary(type: string, min_stake?: number, max_stake?: number) {

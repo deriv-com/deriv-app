@@ -139,7 +139,10 @@ const AccountLimits = observer(
                                                 <Localize i18n_default_text='Trading limits' />
                                             </AccountLimitsTableHeader>
                                             <AccountLimitsTableHeader align='right'>
-                                                <Localize i18n_default_text='Limit' />
+                                                <Localize
+                                                    i18n_default_text='Limit ({{currency}}) '
+                                                    values={{ currency }}
+                                                />
                                             </AccountLimitsTableHeader>
                                         </tr>
                                     </thead>
@@ -220,7 +223,10 @@ const AccountLimits = observer(
                                                 <Localize i18n_default_text='Maximum daily turnover' />
                                             </AccountLimitsTableHeader>
                                             <AccountLimitsTableHeader align='right'>
-                                                <Localize i18n_default_text='Limit' />
+                                                <Localize
+                                                    i18n_default_text='Limit ({{currency}}) '
+                                                    values={{ currency }}
+                                                />
                                             </AccountLimitsTableHeader>
                                         </tr>
                                     </thead>
@@ -243,11 +249,12 @@ const AccountLimits = observer(
                                                     <AccountLimitsTableHeader>
                                                         <Localize i18n_default_text='Withdrawal limits' />
                                                     </AccountLimitsTableHeader>
-                                                    {is_fully_authenticated && (
-                                                        <AccountLimitsTableHeader align='right'>
-                                                            <Localize i18n_default_text='Limit' />
-                                                        </AccountLimitsTableHeader>
-                                                    )}
+                                                    <AccountLimitsTableHeader align='right'>
+                                                        <Localize
+                                                            i18n_default_text='Limit ({{currency}}) '
+                                                            values={{ currency }}
+                                                        />
+                                                    </AccountLimitsTableHeader>
                                                 </tr>
                                             </thead>
                                             <tbody>

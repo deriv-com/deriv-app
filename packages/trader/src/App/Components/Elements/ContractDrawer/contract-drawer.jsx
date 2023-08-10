@@ -28,6 +28,7 @@ const ContractDrawer = observer(
         is_dark_theme,
         is_market_closed,
         is_multiplier,
+        is_turbos,
         is_vanilla,
         is_only_ups_downs,
         onClickCancel,
@@ -42,63 +43,10 @@ const ContractDrawer = observer(
         const contract_drawer_ref = React.useRef();
         const contract_drawer_card_ref = React.useRef();
         const [should_show_contract_audit, setShouldShowContractAudit] = React.useState(false);
-
-        const getBodyContent = () => {
-            const exit_spot =
-                isUserSold(contract_info) && !is_multiplier && !is_accumulator ? '-' : exit_tick_display_value;
-
-            const contract_audit = (
-                <ContractAudit
-                    contract_info={contract_info}
-                    contract_update_history={contract_update_history}
-                    contract_end_time={getEndTime(contract_info)}
-                    is_accumulator={is_accumulator}
-                    is_dark_theme={is_dark_theme}
-                    is_multiplier={is_multiplier}
-                    is_only_ups_downs={is_only_ups_downs}
-                    is_open
-                    duration={getDurationTime(contract_info)}
-                    duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
-                    exit_spot={exit_spot}
-                    has_result={!!is_sold || is_multiplier || is_vanilla || is_accumulator || is_only_ups_downs}
-                    toggleHistoryTab={toggleHistoryTab}
-                    is_vanilla={is_vanilla}
-                />
-            );
-
-            return (
-                <React.Fragment>
-                    <ContractDrawerCard
-                        contract_info={contract_info}
-                        contract_update={contract_update}
-                        currency={currency}
-                        is_accumulator={is_accumulator}
-                        is_mobile={is_mobile}
-                        is_market_closed={is_market_closed}
-                        is_multiplier={is_multiplier}
-                        is_vanilla={is_vanilla}
-                        is_sell_requested={is_sell_requested}
-                        is_collapsed={should_show_contract_audit}
-                        onClickCancel={onClickCancel}
-                        onClickSell={onClickSell}
-                        onSwipedUp={() => setShouldShowContractAudit(true)}
-                        onSwipedDown={() => setShouldShowContractAudit(false)}
-                        server_time={server_time}
-                        status={status}
-                        toggleContractAuditDrawer={() => setShouldShowContractAudit(!should_show_contract_audit)}
-                    />
-                    <DesktopWrapper>{contract_audit}</DesktopWrapper>
-                </React.Fragment>
-            );
-        };
-
-        if (!contract_info) return null;
-
-        // For non-binary contract, the status is always null, so we check for is_expired in contract_info
-        const fallback_result = contract_info.status || contract_info.is_expired;
-
         const exit_spot =
-            isUserSold(contract_info) && !is_multiplier && !is_accumulator ? '-' : exit_tick_display_value;
+            isUserSold(contract_info) && !is_accumulator && !is_multiplier && !is_turbos
+                ? '-'
+                : exit_tick_display_value;
 
         const contract_audit = (
             <ContractAudit
@@ -110,17 +58,47 @@ const ContractDrawer = observer(
                 is_multiplier={is_multiplier}
                 is_only_ups_downs={is_only_ups_downs}
                 is_open
+                is_turbos={is_turbos}
                 duration={getDurationTime(contract_info)}
                 duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                 exit_spot={exit_spot}
-                has_result={!!is_sold || is_multiplier || is_vanilla || is_accumulator || is_only_ups_downs}
+                has_result={
+                    !!is_sold || is_accumulator || is_only_ups_downs || is_multiplier || is_turbos || is_vanilla
+                }
                 toggleHistoryTab={toggleHistoryTab}
                 is_vanilla={is_vanilla}
             />
         );
 
+        if (!contract_info) return null;
+
+        // For non-binary contract, the status is always null, so we check for is_expired in contract_info
+        const fallback_result = contract_info.status || contract_info.is_expired;
+
         const body_content = fallback_result ? (
-            getBodyContent()
+            <React.Fragment>
+                <ContractDrawerCard
+                    contract_info={contract_info}
+                    contract_update={contract_update}
+                    currency={currency}
+                    is_accumulator={is_accumulator}
+                    is_mobile={is_mobile}
+                    is_market_closed={is_market_closed}
+                    is_multiplier={is_multiplier}
+                    is_turbos={is_turbos}
+                    is_vanilla={is_vanilla}
+                    is_sell_requested={is_sell_requested}
+                    is_collapsed={should_show_contract_audit}
+                    onClickCancel={onClickCancel}
+                    onClickSell={onClickSell}
+                    onSwipedUp={() => setShouldShowContractAudit(true)}
+                    onSwipedDown={() => setShouldShowContractAudit(false)}
+                    server_time={server_time}
+                    status={status}
+                    toggleContractAuditDrawer={() => setShouldShowContractAudit(!should_show_contract_audit)}
+                />
+                <DesktopWrapper>{contract_audit}</DesktopWrapper>
+            </React.Fragment>
         ) : (
             <div className='contract-card'>
                 <PositionsCardLoader is_dark_theme={is_dark_theme} speed={2} />
@@ -134,7 +112,7 @@ const ContractDrawer = observer(
                     className={classNames('contract-drawer', {
                         'contract-drawer--with-collapsible-btn':
                             !!getEndTime(contract_info) ||
-                            ((is_multiplier || is_vanilla || is_accumulator) && isMobile()),
+                            ((is_accumulator || is_multiplier || is_turbos || is_vanilla) && isMobile()),
                         'contract-drawer--is-multiplier': is_multiplier && isMobile(),
                         'contract-drawer--is-multiplier-sold': is_multiplier && isMobile() && getEndTime(contract_info),
                     })}
@@ -185,8 +163,9 @@ const ContractDrawer = observer(
 ContractDrawer.propTypes = {
     is_accumulator: PropTypes.bool,
     is_multiplier: PropTypes.bool,
-    is_vanilla: PropTypes.bool,
     is_only_ups_downs: PropTypes.bool,
+    is_turbos: PropTypes.bool,
+    is_vanilla: PropTypes.bool,
     toggleHistoryTab: PropTypes.func,
 };
 

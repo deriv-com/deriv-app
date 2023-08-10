@@ -34,7 +34,12 @@ const AddWalletCard = observer(({ wallet_info }: TAddWalletCard) => {
                     wallet={wallet_details}
                     size='medium'
                     state={is_added ? 'added' : 'add'}
-                    onClick={() => !is_added && createWallet({ payload: { currency, account_type: 'crypto' } })}
+                    onClick={() =>
+                        !is_added &&
+                        createWallet({
+                            payload: { currency, account_type: currency_config?.is_crypto ? 'crypto' : 'doughflow' },
+                        })
+                    }
                 />
                 <div className='add-wallets__card-description'>
                     <Text as='h3' weight='bold' color='prominent' className='add-wallets__card-description__header'>

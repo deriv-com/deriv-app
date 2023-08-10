@@ -231,7 +231,6 @@ class DBot {
         api_base.setIsRunning(false);
         if (this.interpreter) {
             this.interpreter.stop();
-            this.interpreter.terminateSession();
         }
     }
 

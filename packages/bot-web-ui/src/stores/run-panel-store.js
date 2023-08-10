@@ -219,11 +219,14 @@ export default class RunPanelStore {
 
     onStopButtonClick() {
         const { is_multiplier } = this.root_store.summary_card;
+        const { summary_card } = this.root_store;
 
         if (is_multiplier) {
             this.showStopMultiplierContractDialog();
         } else {
             this.stopBot();
+            this.dbot.terminateBot();
+            summary_card.clear();
         }
         this.setShowBotStopMessage(true);
     }

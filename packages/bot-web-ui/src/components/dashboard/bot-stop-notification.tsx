@@ -30,6 +30,7 @@ const BotStopNotification = observer(() => {
             onMouseLeave={e => {
                 resetTimer();
             }}
+            data-testid='bot-stop-notification'
         >
             <Toast>
                 <div>
@@ -46,7 +47,12 @@ const BotStopNotification = observer(() => {
                         ]}
                     />
                 </div>
-                <Icon icon='IcCross' className={'notification-close'} onClick={() => setShowBotStopMessage(false)} />
+                <Icon
+                    icon='IcCross'
+                    className={'notification-close'}
+                    data_testid={'notification-close'}
+                    onClick={() => setShowBotStopMessage(false)}
+                />
             </Toast>
         </div>
     );

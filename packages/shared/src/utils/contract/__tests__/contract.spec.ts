@@ -193,6 +193,15 @@ describe('isDigitContract', () => {
     });
 });
 
+describe('isTurbosContract', () => {
+    it('should return true if contract_type includes TURBOS', () => {
+        expect(ContractUtils.isTurbosContract('TURBOS')).toEqual(true);
+    });
+    it('should return false if contract_type does not include TURBOS', () => {
+        expect(ContractUtils.isTurbosContract('CALL')).toEqual(false);
+    });
+});
+
 describe('getDigitInfo', () => {
     it('should return an empty object when tick_stream is not in contract_info', () => {
         const contract_info: TContractInfo = {};

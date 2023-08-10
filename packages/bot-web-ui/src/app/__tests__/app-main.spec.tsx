@@ -4,6 +4,7 @@ import moment from 'moment';
 import { mockStore } from '@deriv/stores';
 import { render } from '@testing-library/react';
 import { TRootStore } from 'Types';
+import { mock_ws } from '../../utils/mock';
 import App from '../app-main';
 
 const root_store = {
@@ -17,22 +18,6 @@ const root_store = {
         is_landing_company_loaded: true,
         is_logged_in: false,
     },
-};
-const mock_ws = {
-    authorized: {
-        subscribeProposalOpenContract: jest.fn(),
-        send: jest.fn(),
-        activeSymbols: jest.fn(() => Promise.resolve({ active_symbols: [] })),
-    },
-    storage: {
-        send: jest.fn(),
-    },
-    contractUpdate: jest.fn(),
-    subscribeTicksHistory: jest.fn(),
-    forgetStream: jest.fn(),
-    activeSymbols: jest.fn(),
-    send: jest.fn(),
-    tradingTimes: jest.fn(() => Promise.resolve({ error: true })),
 };
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());

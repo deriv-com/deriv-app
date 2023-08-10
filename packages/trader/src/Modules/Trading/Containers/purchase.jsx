@@ -1,12 +1,11 @@
 import React from 'react';
-import { isAccumulatorContract, isEmptyObject, isMobile } from '@deriv/shared';
+import { isAccumulatorContract, isEmptyObject } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import PurchaseButtonsOverlay from 'Modules/Trading/Components/Elements/purchase-buttons-overlay.jsx';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
-import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 
 const Purchase = observer(({ is_market_closed }) => {
     const {
@@ -22,6 +21,7 @@ const Purchase = observer(({ is_market_closed }) => {
         growth_rate,
         has_cancellation,
         is_purchase_enabled,
+        is_turbos,
         is_vanilla,
         onPurchase: onClickPurchase,
         onHoverPurchase,
@@ -81,6 +81,7 @@ const Purchase = observer(({ is_market_closed }) => {
                     is_market_closed={is_market_closed}
                     is_mobile={is_mobile}
                     is_multiplier={is_multiplier}
+                    is_turbos={is_turbos}
                     is_vanilla={is_vanilla}
                     is_proposal_empty={is_proposal_empty}
                     is_proposal_error={is_proposal_error}

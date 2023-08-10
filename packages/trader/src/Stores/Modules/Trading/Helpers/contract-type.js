@@ -14,6 +14,7 @@ import {
     unsupported_contract_types_list,
     getContractCategoriesConfig,
     getContractTypesConfig,
+    getContractSubtype,
     getLocalizedBasis,
 } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
@@ -71,6 +72,7 @@ export const ContractType = (() => {
                 config.durations = !config.hide_duration && buildDurationConfig(contract, config.durations);
                 config.trade_types = buildTradeTypesConfig(contract, config.trade_types);
                 config.barriers = buildBarriersConfig(contract, config.barriers);
+                config.barrier_choices = contract.barrier_choices;
                 config.forward_starting_dates = buildForwardStartingConfig(contract, config.forward_starting_dates);
                 config.growth_rate_range = contract.growth_rate_range;
                 config.multiplier_range = contract.multiplier_range;
@@ -109,22 +111,31 @@ export const ContractType = (() => {
             start_date,
             cancellation_duration,
             symbol,
+            short_barriers,
+            long_barriers,
         } = store;
 
         if (!contract_type) return {};
+
+        let stored_barriers_data = {};
+        if (getContractSubtype(contract_type) === 'Short') {
+            stored_barriers_data = short_barriers;
+        } else if (getContractSubtype(contract_type) === 'Long') {
+            stored_barriers_data = long_barriers;
+        }
 
         const form_components = getComponents(contract_type);
         const obj_basis = getBasis(contract_type, basis);
         const obj_trade_types = getTradeTypes(contract_type);
         const obj_start_dates = getStartDates(contract_type, start_date);
         const obj_start_type = getStartType(obj_start_dates.start_date);
-        const obj_barrier = getBarriers(contract_type, contract_expiry_type);
+        const obj_barrier = getBarriers(contract_type, contract_expiry_type, stored_barriers_data.barrier);
         const obj_duration_unit = getDurationUnit(duration_unit, contract_type, obj_start_type.contract_start_type);
 
         const obj_duration_units_list = getDurationUnitsList(contract_type, obj_start_type.contract_start_type);
         const obj_duration_units_min_max = getDurationMinMax(contract_type, obj_start_type.contract_start_type);
-
         const obj_accumulator_range_list = getAccumulatorRange(contract_type);
+        const obj_barrier_choices = getBarrierChoices(contract_type, stored_barriers_data.barrier_choices);
         const obj_multiplier_range_list = getMultiplierRange(contract_type, multiplier);
         const obj_cancellation = getCancellation(contract_type, cancellation_duration, symbol);
         const obj_expiry_type = getExpiryType(obj_duration_units_list, expiry_type);
@@ -142,6 +153,7 @@ export const ContractType = (() => {
             ...obj_duration_units_min_max,
             ...obj_expiry_type,
             ...obj_accumulator_range_list,
+            ...obj_barrier_choices,
             ...obj_multiplier_range_list,
             ...obj_cancellation,
             ...obj_equal,
@@ -474,14 +486,14 @@ export const ContractType = (() => {
         trade_types: getPropertyValue(available_contract_types, [contract_type, 'config', 'trade_types']),
     });
 
-    const getBarriers = (contract_type, expiry_type) => {
+    const getBarriers = (contract_type, expiry_type, stored_barrier_value) => {
         const barriers = getPropertyValue(available_contract_types, [contract_type, 'config', 'barriers']) || {};
         const barrier_values = barriers[expiry_type] || {};
         const barrier_1 = barrier_values.barrier || barrier_values.high_barrier || '';
         const barrier_2 = barrier_values.low_barrier || '';
         return {
             barrier_count: barriers.count || 0,
-            barrier_1: barrier_1.toString(),
+            barrier_1: stored_barrier_value || barrier_1.toString(),
             barrier_2: barrier_2.toString(),
         };
     };
@@ -500,6 +512,12 @@ export const ContractType = (() => {
     const getAccumulatorRange = contract_type => ({
         accumulator_range_list:
             getPropertyValue(available_contract_types, [contract_type, 'config', 'growth_rate_range']) || [],
+    });
+
+    const getBarrierChoices = (contract_type, stored_barrier_choices = []) => ({
+        barrier_choices: stored_barrier_choices.length
+            ? stored_barrier_choices
+            : getPropertyValue(available_contract_types, [contract_type, 'config', 'barrier_choices']) || [],
     });
 
     const getMultiplierRange = (contract_type, multiplier) => {

@@ -2,7 +2,16 @@ import React from 'react';
 import { Dialog, PageErrorContainer } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { TErrorComponent } from '../../types/cfd-store.types';
+
+type TErrorComponent = {
+    header?: string;
+    message?: React.ReactNode | string | object;
+    is_dialog?: boolean;
+    redirect_label?: string;
+    redirectOnClick?: () => void;
+    should_show_refresh?: boolean;
+    type?: string;
+};
 
 const ErrorComponent: React.FC<TErrorComponent> = ({
     header,

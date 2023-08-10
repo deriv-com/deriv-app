@@ -273,12 +273,16 @@ const AccountWizard = props => {
                     props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 }
                 const country_code = props.account_settings.citizen || props.residence;
-                const idv_form_data = form_values();
-                const idv_submit_data = {
-                    identity_verification_document_add: 1,
-                    ...formatIDVFormValues(idv_form_data, country_code),
-                };
-                await WS.send(idv_submit_data);
+                /**
+                 * If IDV details are present, then submit IDV details
+                 */
+                if (form_data.document_type) {
+                    const idv_submit_data = {
+                        identity_verification_document_add: 1,
+                        ...formatIDVFormValues(form_data, country_code),
+                    };
+                    await WS.send(idv_submit_data);
+                }
             })
             .catch(error => {
                 if (error.code === 'show risk disclaimer') {

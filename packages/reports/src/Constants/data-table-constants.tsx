@@ -187,15 +187,14 @@ export const getOpenPositionsColumnsTemplate = (currency: string) => [
         key: 'icon',
         title: isMobile() ? '' : localize('Type'),
         col_index: 'type',
-        renderCellContent: ({ row_obj, is_footer, is_vanilla }: TCellContentProps) => {
+        renderCellContent: ({ row_obj, is_footer, is_vanilla, is_turbos }: TCellContentProps) => {
             if (is_footer) return localize('Total');
 
             return (
                 <MarketSymbolIconRow
                     key={row_obj.id}
                     payload={row_obj.contract_info}
-                    show_description={is_vanilla}
-                    is_vanilla={is_vanilla}
+                    has_full_contract_title={is_vanilla || is_turbos}
                 />
             );
         },

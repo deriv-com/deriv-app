@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { isVanillaContract } from '@deriv/shared';
+import { isTurbosContract, isVanillaContract } from '@deriv/shared';
 import { TPassThrough, TRow } from '../types/common.types';
 
 export type TColIndex =
@@ -19,11 +19,16 @@ export type TColIndex =
     | 'bid_price'
     | 'action';
 
-type TRenderCellContent = {
+export type TRenderCellContent = {
     cell_value: string;
     is_footer?: boolean;
     passthrough?: TPassThrough;
     row_obj: TRow;
+    is_turbos?: boolean;
+    is_vanilla?: boolean;
+};
+export type THeaderProps = {
+    title?: React.ReactNode;
     is_vanilla?: boolean;
 };
 
@@ -47,6 +52,7 @@ const DataListCell = ({ className, column, is_footer, passthrough, row }: TDataL
     if (!column) return null;
     const { col_index, title } = column;
     const cell_value = row?.[col_index as TColIndex];
+    const is_turbos = isTurbosContract(row?.contract_info?.contract_type);
     const is_vanilla = isVanillaContract(row?.contract_info?.contract_type);
 
     return (
@@ -58,7 +64,14 @@ const DataListCell = ({ className, column, is_footer, passthrough, row }: TDataL
             )}
             <div className='data-list__row-content'>
                 {column.renderCellContent
-                    ? column.renderCellContent({ cell_value, is_footer, passthrough, row_obj: row as TRow, is_vanilla })
+                    ? column.renderCellContent({
+                          cell_value,
+                          is_footer,
+                          passthrough,
+                          row_obj: row as TRow,
+                          is_vanilla,
+                          is_turbos,
+                      })
                     : cell_value}
             </div>
         </div>

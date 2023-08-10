@@ -18,11 +18,14 @@ import {
     isMobile,
     isMultiplierContract,
     isVanillaContract,
+    isTurbosContract,
     getTimePercentage,
     getUnsupportedContracts,
     getTotalProfit,
     getContractPath,
     getCurrentTick,
+    getDurationPeriod,
+    getDurationUnitText,
     getGrowthRatePercentage,
     getCardLabels,
     toMoment,
@@ -39,48 +42,19 @@ import {
 } from 'Constants/data-table-constants';
 import PlaceholderComponent from '../Components/placeholder-component';
 import { observer, useStore } from '@deriv/stores';
-import { TUnsupportedContractType } from 'Types';
+import { TColIndex, TUnsupportedContractType } from 'Types';
+import moment from 'moment';
 
 type TRangeFloatZeroToOne = React.ComponentProps<typeof ProgressBar>['value'];
 type TPortfolioStore = ReturnType<typeof useStore>['portfolio'];
 type TDataList = React.ComponentProps<typeof DataList>;
 type TDataListCell = React.ComponentProps<typeof DataList.Cell>;
 type TRowRenderer = TDataList['rowRenderer'];
-type TColIndex =
-    | 'type'
-    | 'reference'
-    | 'currency'
-    | 'purchase'
-    | 'payout'
-    | 'profit'
-    | 'indicative'
-    | 'id'
-    | 'multiplier'
-    | 'buy_price'
-    | 'cancellation'
-    | 'limit_order'
-    | 'bid_price'
-    | 'action';
 
 type TEmptyPlaceholderWrapper = React.PropsWithChildren<{
     is_empty: boolean;
     component_icon: string;
 }>;
-
-const EmptyPlaceholderWrapper = ({ is_empty, component_icon, children }: TEmptyPlaceholderWrapper) => (
-    <React.Fragment>
-        {is_empty ? (
-            <PlaceholderComponent
-                is_empty={is_empty}
-                empty_message_component={EmptyTradeHistoryMessage}
-                component_icon={component_icon}
-                localized_message={localize('You have no open positions yet.')}
-            />
-        ) : (
-            children
-        )}
-    </React.Fragment>
-);
 
 type TMobileRowRenderer = {
     row?: TDataList['data_source'][0];
@@ -131,6 +105,21 @@ type TOpenPositions = {
     component_icon: string;
 };
 
+const EmptyPlaceholderWrapper = ({ is_empty, component_icon, children }: TEmptyPlaceholderWrapper) => (
+    <React.Fragment>
+        {is_empty ? (
+            <PlaceholderComponent
+                is_empty={is_empty}
+                empty_message_component={EmptyTradeHistoryMessage}
+                component_icon={component_icon}
+                localized_message={localize('You have no open positions yet.')}
+            />
+        ) : (
+            children
+        )}
+    </React.Fragment>
+);
+
 const MobileRowRenderer = ({
     row,
     is_footer,
@@ -143,7 +132,7 @@ const MobileRowRenderer = ({
 }: TMobileRowRenderer) => {
     React.useEffect(() => {
         if (!is_footer) {
-            measure();
+            measure?.();
         }
     }, [row?.contract_info?.underlying, measure, is_footer]);
 
@@ -171,15 +160,17 @@ const MobileRowRenderer = ({
     const { contract_info, contract_update, type, is_sell_requested } = row as TPortfolioStore['active_positions'][0];
     const { currency, status, date_expiry, date_start, tick_count, purchase_time } = contract_info;
     const current_tick = tick_count ? getCurrentTick(contract_info) : null;
-    let duration_type;
-    if (contract_info.longcode) duration_type = getContractDurationType(contract_info.longcode, '');
+    const turbos_duration_unit = tick_count ? 'ticks' : getDurationUnitText(getDurationPeriod(contract_info), true);
+    const duration_type = getContractDurationType(
+        isTurbosContract(contract_info.contract_type) ? turbos_duration_unit : contract_info.longcode || ''
+    );
     const progress_value = (getTimePercentage(server_time, date_start ?? 0, date_expiry ?? 0) /
         100) as TRangeFloatZeroToOne;
 
-    if (isMultiplierContract(type ?? '') || isAccumulatorContract(type ?? '')) {
+    if (isMultiplierContract(type) || isAccumulatorContract(type)) {
         return (
+            // @ts-expect-error complains about missing props but we spread props here checked props and they are there
             <PositionsDrawerCard
-                //@ts-expect-error wrong type in PositionsDrawerCard
                 contract_info={contract_info}
                 contract_update={contract_update || {}}
                 currency={currency ?? ''}
@@ -188,7 +179,6 @@ const MobileRowRenderer = ({
                 onClickSell={onClickSell}
                 server_time={server_time}
                 status={status ?? ''}
-                measure={measure}
                 {...props}
             />
         );
@@ -198,10 +188,10 @@ const MobileRowRenderer = ({
         <>
             <div className='data-list__row'>
                 <DataList.Cell row={row} column={columns_map?.type} />
-                {isVanillaContract(type ?? '') ? (
+                {isVanillaContract(type) || (isTurbosContract(type) && !tick_count) ? (
                     <ProgressSliderMobile
                         current_tick={current_tick}
-                        className='data-list__row--vanilla'
+                        className='data-list__row--timer'
                         expiry_time={date_expiry}
                         getCardLabels={getCardLabels}
                         is_loading={false}
@@ -312,7 +302,7 @@ const getRowAction: TDataList['getRowAction'] = row_obj =>
                   />
               ),
           }
-        : getContractPath(row_obj.id);
+        : getContractPath(row_obj.id || 0);
 
 /*
  * After refactoring transactionHandler for creating positions,
@@ -482,7 +472,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     const accumulators_rates_list = accumulator_rates.map(value => ({ text: value, value }));
     const active_positions_filtered = active_positions?.filter(({ contract_info }) => {
         if (contract_info) {
-            if (is_multiplier_selected) return isMultiplierContract(contract_info.contract_type);
+            if (is_multiplier_selected) return isMultiplierContract(contract_info.contract_type || '');
             if (is_accumulator_selected)
                 return (
                     isAccumulatorContract(contract_info.contract_type) &&
@@ -490,7 +480,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                         !accumulator_rate.includes('%'))
                 );
             return (
-                !isMultiplierContract(contract_info.contract_type) &&
+                !isMultiplierContract(contract_info.contract_type || '') &&
                 !isAccumulatorContract(contract_info.contract_type)
             );
         }
@@ -527,7 +517,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         }
         if (!has_multiplier_contract) {
             setHasMultiplierContract(
-                active_positions.some(({ contract_info }) => isMultiplierContract(contract_info?.contract_type))
+                active_positions.some(({ contract_info }) => isMultiplierContract(contract_info?.contract_type || ''))
             );
         }
     };
@@ -655,7 +645,9 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                                 list_items={contract_types_list}
                                 value={contract_type_value}
                                 should_show_empty_option={false}
-                                onChange={e => setContractTypeValue(e.target.value)}
+                                onChange={(e: React.ChangeEvent<HTMLSelectElement> & { target: { value: string } }) =>
+                                    setContractTypeValue(e.target.value)
+                                }
                             />
                             {is_accumulator_selected && show_accu_in_dropdown && (
                                 <SelectNative
@@ -663,7 +655,9 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                                     list_items={accumulators_rates_list}
                                     value={accumulator_rate}
                                     should_show_empty_option={false}
-                                    onChange={e => setAccumulatorRate(e.target.value)}
+                                    onChange={(
+                                        e: React.ChangeEvent<HTMLSelectElement> & { target: { value: string } }
+                                    ) => setAccumulatorRate(e.target.value)}
                                 />
                             )}
                         </div>

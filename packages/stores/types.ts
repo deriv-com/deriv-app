@@ -5,10 +5,10 @@ import type {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
-    Portfolio1,
     GetSettings,
     LandingCompany,
     LogOutResponse,
+    Portfolio1,
     ProposalOpenContract,
     ResidenceList,
     SetFinancialAssessmentRequest,
@@ -416,6 +416,7 @@ type TCommonStore = {
     setAppstorePlatform: (value: string) => void;
     app_routing_history: TAppRoutingHistory[];
     getExchangeRate: (from_currency: string, to_currency: string) => Promise<number>;
+    network_status: Record<string, never> | { [key: string]: string };
 };
 
 type TUiStore = {
@@ -529,9 +530,10 @@ type TPortfolioStore = {
     all_positions: TPortfolioPosition[];
     error: string;
     getPositionById: (id: number) => TPortfolioPosition;
+    is_accumulator: boolean;
     is_loading: boolean;
     is_multiplier: boolean;
-    is_accumulator: boolean;
+    is_turbos: boolean;
     onClickCancel: (contract_id?: number) => void;
     onClickSell: (contract_id?: number) => void;
     onMount: () => void;

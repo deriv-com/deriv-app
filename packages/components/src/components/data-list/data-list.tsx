@@ -35,7 +35,7 @@ type TMobileRowRenderer = {
     passthrough?: TPassThrough;
 };
 
-type TDataList = {
+export type TDataList = {
     className?: string;
     data_source: TRow[];
     footer?: TRow;

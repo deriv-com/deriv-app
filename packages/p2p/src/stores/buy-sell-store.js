@@ -434,6 +434,10 @@ export default class BuySellStore extends BaseStore {
         this.loadMoreItems({ startIndex: 0 });
     }
 
+    onClickReset() {
+        this.setShouldUseClientLimits(false);
+    }
+
     onConfirmBuySellOrder = order_info => {
         const { general_store, order_store, buy_sell_store } = this.root_store;
         const current_query_params = new URLSearchParams(general_store.location.search);
@@ -455,10 +459,6 @@ export default class BuySellStore extends BaseStore {
 
         order_store.props.setOrderId(order_info.id);
         general_store.redirectTo('orders', { nav: { location: 'buy_sell' } });
-    }
-
-    onClickReset() {
-        this.setShouldUseClientLimits(false);
     }
 
     onLocalCurrencySelect(local_currency) {

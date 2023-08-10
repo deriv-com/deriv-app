@@ -1,3 +1,6 @@
+import React from 'react';
+import type { RouteComponentProps } from 'react-router';
+import type { Moment } from 'moment';
 import type {
     AccountLimitsResponse,
     Authorize,
@@ -15,9 +18,6 @@ import type {
     SetFinancialAssessmentResponse,
     StatesList,
 } from '@deriv/api-types';
-import type { Moment } from 'moment';
-import type { RouteComponentProps } from 'react-router';
-
 import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
 
 type TRoutes =

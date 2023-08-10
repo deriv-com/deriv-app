@@ -91,9 +91,9 @@ jobs:
 
             # Send a message to Slack (granted we have a webhook secret).
             # This check also allows a repo admin to disable the Slack message by removing the secret.
-            if [ -n "${{ secrets.TRANSLATIONS_SLACK_WEBHOOK }}" ]; then
+            if [ -n "${{ secrets.ANNOUNCE_TRANSLATION_WEBHOOK }}" ]; then
               echo "Sending message to Slack (#team_translations)"
-              curl -X POST -H 'Content-type: application/json' --data '{"text":"There are new or updated strings available for Deriv.app (https://crowdin.com/project/deriv-app)."}' ${{ secrets.TRANSLATIONS_SLACK_WEBHOOK }}
+              curl -X POST -H 'Content-type: application/json' --data '{"text":"There are new or updated strings available for Deriv.app (https://crowdin.com/project/deriv-app)."}' ${{ secrets.ANNOUNCE_TRANSLATION_WEBHOOK }}
             fi
           fi
 
@@ -111,9 +111,9 @@ jobs:
 
             # Send a message to Slack (granted we have a webhook secret).
             # This check also allows a repo admin to disable the Slack message by removing the secret.
-            if [ -n "${{ secrets.TRANSLATIONS_SLACK_WEBHOOK }}" ]; then
+            if [ -n "${{ secrets.ANNOUNCE_TRANSLATION_WEBHOOK }}" ]; then
               echo "Sending message to Slack (#team_translations)"
-              curl -X POST -H 'Content-type: application/json' --data '{"text":"There are new or updated strings available for DP2P (https://crowdin.com/project/deriv-app)."}' ${{ secrets.TRANSLATIONS_SLACK_WEBHOOK }}
+              curl -X POST -H 'Content-type: application/json' --data '{"text":"There are new or updated strings available for DP2P (https://crowdin.com/project/deriv-app)."}' ${{ secrets.ANNOUNCE_TRANSLATION_WEBHOOK }}
             fi
           fi
 

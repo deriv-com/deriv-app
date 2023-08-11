@@ -41,7 +41,7 @@ const AvailableMT5Card = observer(({ account }: { account: TFilteredWalletMT5Acc
             platform={account.platform}
             description={mapper_content?.description}
             is_wallet={true}
-            is_wallet_demo={wallet?.is_virtual}
+            is_wallet_demo={wallet?.is_demo}
             onAction={() => {
                 if (real_account_creation_unlock_date && no_real_mf_account_eu_regulator) {
                     setShouldShowCooldownModal(true);

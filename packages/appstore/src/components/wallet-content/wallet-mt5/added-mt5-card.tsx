@@ -74,8 +74,8 @@ const AddedMT5Card = observer(
                     jurisdiction: account.landing_company_short,
                 }}
                 openFailedVerificationModal={openFailedVerificationModal}
-                is_wallet={wallet?.is_active}
-                is_wallet_demo={!!wallet?.is_virtual}
+                is_wallet={wallet?.is_selected}
+                is_wallet_demo={!!wallet?.is_demo}
             />
         );
     }

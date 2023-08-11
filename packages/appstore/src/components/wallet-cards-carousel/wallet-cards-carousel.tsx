@@ -12,7 +12,7 @@ const WalletCardsCarousel = observer(() => {
     const { setWalletModalActiveWalletID, setWalletModalActiveTab } = traders_hub;
     const active_wallet = useActiveWallet();
 
-    const wallet_buttons = getWalletHeaderButtons(active_wallet?.is_virtual || false);
+    const wallet_buttons = getWalletHeaderButtons(active_wallet?.is_demo || false);
 
     return (
         <div className='wallet-cards-carousel traders-hub__wallets-bg'>

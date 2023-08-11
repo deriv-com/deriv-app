@@ -17,7 +17,7 @@
         display: flex;
         touch-action: pan-y;
         flex-direction: row;
-        height: auto;
+        max-height: auto;
         margin-left: calc(var(--slide-spacing) * -1);
         transition: transform 0s ease-in-out;
     }

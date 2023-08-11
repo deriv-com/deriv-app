@@ -3,7 +3,7 @@ import { Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Dialog, Loading, Text } from '@deriv/components';
-import { getLocation, PlatformContext } from '@deriv/shared';
+import { getLocation, isMobile, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
@@ -12,6 +12,7 @@ import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
 import 'Sass/app/modules/account-signup.scss';
 import validateSignupFields from './validate-signup-fields.jsx';
+import { RudderStack } from '@deriv/analytics';
 
 const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, residence_list }) => {
     const signupInitialValues = { citizenship: '', password: '', residence: '' };
@@ -37,6 +38,16 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
             }
             setIsLoading(false);
         });
+
+        RudderStack.track('ce_virtual_signup_form', {
+            action: 'country_selection_screen_opened',
+            form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+        });
+        console.log(`
+        'ce_virtual_signup_form', {
+            action: 'country_selection_screen_opened',
+            form_name: ${isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default'},
+        }`);
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const validateSignupPassthrough = values => validateSignupFields(values, residence_list);
@@ -60,9 +71,33 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
     const onSignupComplete = error => {
         if (error) {
             setApiError(error);
+
+            RudderStack.track('ce_virtual_signup_form', {
+                action: 'signup_flow_error',
+                form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                error_message: error,
+            });
+            console.log(`
+            'ce_virtual_signup_form', {
+                action: 'signup_flow_error',
+                form_name: ${isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default'},
+                error_message: ${error},
+            }
+            `);
         } else {
             isModalVisible(false);
             enableApp();
+
+            RudderStack.track('ce_virtual_signup_form', {
+                action: 'signup_done',
+                form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+            });
+
+            console.log(`
+            'ce_virtual_signup_form', {
+                action: 'signup_done',
+                form_name: ${isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default'},
+            }`);
         }
     };
     return (
@@ -120,6 +155,23 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                             onClick={() => {
                                                 history_value.current = values;
                                                 setIsPasswordModal(true);
+
+                                                RudderStack.track('ce_virtual_signup_form', {
+                                                    action: 'password_screen_opened',
+                                                    form_name: isMobile()
+                                                        ? 'virtual_signup_web_mobile_default'
+                                                        : 'virtual_signup_web_desktop_default',
+                                                });
+                                                console.log(`
+                                                'ce_virtual_signup_form', {
+                                                    action: 'password_screen_opened',
+                                                    form_name: ${
+                                                        isMobile()
+                                                            ? 'virtual_signup_web_mobile_default'
+                                                            : 'virtual_signup_web_desktop_default'
+                                                    },
+                                                }
+                                                `);
                                             }}
                                             primary
                                             large

@@ -1651,7 +1651,16 @@ export default class ClientStore extends BaseStore {
                 // Client comes back from oauth and logs in
                 RudderStack.identifyEvent(this.user_id, {
                     language: getLanguage().toLowerCase(),
+                    app_id: localStorage.getItem('config.app_id'),
                 });
+                console.log(`
+                ${this.user_id}, {
+                    language: ${getLanguage().toLowerCase()},
+                    app_id: ${localStorage.getItem('config.app_id')},
+                }
+                `);
+                //eslint-disable-next-line no-debugger
+                debugger;
                 const current_page = window.location.hostname + window.location.pathname;
                 RudderStack.pageView(current_page);
 

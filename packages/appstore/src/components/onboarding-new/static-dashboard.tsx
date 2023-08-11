@@ -2,6 +2,7 @@ import React from 'react';
 import { useStore } from '@deriv/stores';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
+import { RudderStack } from '@deriv/analytics';
 import { Text, ButtonToggle, ThemedScrollbars, Button } from '@deriv/components';
 import { isMobile, isDesktop, ContentFlag } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -65,7 +66,7 @@ const StaticDashboard = ({
 }: TStaticDashboard) => {
     const { client, traders_hub } = useStore();
     const { content_flag, CFDs_restricted_countries, financial_restricted_countries } = traders_hub;
-    const { is_eu_country, is_logged_in } = client;
+    const { is_eu_country, is_logged_in, email } = client;
 
     const [index, setIndex] = React.useState<number>(0);
 
@@ -93,6 +94,21 @@ const StaticDashboard = ({
                 }
             }
         }, 5000);
+
+        RudderStack.track('ce_virtual_signup_form', {
+            action: 'signup_confirmed',
+            form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+            email,
+        });
+
+        console.log(`
+        'ce_virtual_signup_form', {
+            action: 'signup_confirmed',
+            form_name: ${isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default'},
+            email: ${email},
+        }
+        `);
+
         return () => clearInterval(change_index_interval_id);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [index]);

@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { loginUrl, routes, PlatformContext } from '@deriv/shared';
+import { loginUrl, routes, PlatformContext, isMobile } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
+import { RudderStack } from '@deriv/analytics';
 
 const Redirect = ({
     history,
@@ -44,6 +45,20 @@ const Redirect = ({
                     pathname: routes.onboarding,
                     search: url_query_string,
                 });
+                RudderStack.track('ce_virtual_signup_form', {
+                    action: 'email_confirmed',
+                    form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                    email: url_params.get('email'),
+                });
+                console.log(`
+                'ce_virtual_signup_form', {
+                    action: 'email_confirmed',
+                    form_name: ${
+                        isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default'
+                    },
+                    email: ${url_params.get('email')},
+                }
+                `);
             }
             sessionStorage.removeItem('redirect_url');
             redirected_to_route = true;

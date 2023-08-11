@@ -48,6 +48,11 @@ const AppContents = ({
                 RudderStack.identifyEvent(user_id, {
                     language: getLanguage().toLowerCase() || 'en',
                 });
+                console.log(`
+                user_id, {
+                    language: ${getLanguage().toLowerCase() || 'en'},
+                }
+                `);
                 RudderStack.pageView(current_page);
             }
         });

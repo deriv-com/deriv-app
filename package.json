@@ -36,7 +36,6 @@
         "@types/react-virtualized": "^9.21.21",
         "babel-polyfill": "^6.26.0",
         "dotenv-webpack": "^8.0.1",
-        "husky": "^7.0.0",
         "jest": "^26.4.2",
         "jest-chain": "^1.1.5",
         "jest-extended": "^1.2.0",
@@ -60,7 +59,7 @@
         "test:eslint-all": "nx run-many --target=test:eslint",
         "test:eslint-one": "f () { nx test @deriv/$1 --target=test:eslint ;}; f",
         "test:eslint-since": "f () { nx affected --target=eslint ;}; f",
-        "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --hoist --strict && lerna link ;}; f",
+        "bootstrap": "f () { bash ./scripts/create-git-hooks.sh && npm ci && lerna link && lerna bootstrap --ci --hoist --strict && lerna link ;}; f",
         "bootstrap:dev": "f () { npm ci && lerna link && lerna bootstrap --hoist --strict && lerna link ;}; f",
         "build:publish": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run build:publish $2 ;}; f",
         "build:local": "f () { nx run-many --target=build --projects=@deriv/bot-web-ui,@deriv/trader --parallel=2 ;}; f",
@@ -85,8 +84,7 @@
         "test:performance": "cd e2e_tests &&  jest -c ./jest.config.js --maxWorkers=2 --detectOpenHandles performance",
         "stylelint:fix": "stylelint \"./packages/*/src/**/*.s(a|c)ss\" --fix",
         "translate": "f () { lerna exec --scope @deriv/translations -- npm run translate ;}; f",
-        "stylelint-check": "stylelint-config-prettier-check",
-        "prepare": "husky install"
+        "stylelint-check": "stylelint-config-prettier-check"
     },
     "dependencies": {
         "@babel/preset-typescript": "^7.16.5",

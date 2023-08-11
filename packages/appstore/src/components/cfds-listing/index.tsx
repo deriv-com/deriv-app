@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Text, StaticUrl } from '@deriv/components';
+import { Text, StaticUrl, StatusBadge } from '@deriv/components';
 import { isMobile, formatMoney, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
@@ -13,6 +13,7 @@ import { getHasDivider } from 'Constants/utils';
 import { useStores } from 'Stores/index';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import './cfds-listing.scss';
+import { useIsSystemMaintenance } from '@deriv/hooks';
 
 type TDetailedExistingAccount = AvailableAccount &
     TDetailsOfEachMT5Loginid &
@@ -64,6 +65,8 @@ const CFDsListing = () => {
 
     const { poi_pending_for_bvi_labuan, poi_resubmit_for_bvi_labuan, poa_resubmit_for_labuan, is_idv_revoked } =
         getAuthenticationStatusInfo(account_status);
+
+    const is_system_maintenance = useIsSystemMaintenance();
 
     const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
 
@@ -146,6 +149,9 @@ const CFDsListing = () => {
                                 <Localize i18n_default_text={accounts_sub_text} />
                             </Text>
                         </div>
+                        {is_system_maintenance && (
+                            <StatusBadge account_status='pending' icon='IcAlertWarning' text='Server maintenance' />
+                        )}
                     </div>
                 )
             }

@@ -167,12 +167,12 @@ type TButtonProps = {
     text: string;
 };
 
-type TNotificationMessage = {
-    action?: {
-        onClick: () => void;
-        route?: string;
-        text: string;
-    };
+export type TActionProps = TButtonProps & {
+    route?: string;
+};
+
+export type TNotificationMessage = {
+    action?: TActionProps;
     className?: string;
     cta_btn?: TButtonProps;
     header_popup?: string;

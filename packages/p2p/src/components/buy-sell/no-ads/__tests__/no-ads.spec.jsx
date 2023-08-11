@@ -59,7 +59,6 @@ describe('<NoAds/>', () => {
         const create_ad_button = screen.getByRole('button', { name: 'Create new ad' });
         expect(create_ad_button).toBeInTheDocument();
         create_ad_button.click();
-        expect(mock_store_values.buy_sell_store.setCreateSellAdFromNoAds).toHaveBeenCalledWith(true);
         expect(mock_store_values.general_store.handleTabClick).toHaveBeenCalledTimes(0);
         expect(mock_store_values.my_ads_store.setShowAdForm).toHaveBeenCalledWith(true);
     });

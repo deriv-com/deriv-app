@@ -77,17 +77,7 @@ describe('MainTitleBar', () => {
         expect(screen.queryByText('WalletsBanner')).not.toBeInTheDocument();
     });
 
-    it('should not render WalletsBanner component if wallet feature flag is enabled and client has at least one wallet', () => {
-        const mock_store = mockStore({
-            client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
-            feature_flags: { data: { wallet: true } },
-        });
-
-        render_container(mock_store);
-        expect(screen.queryByText('WalletsBanner')).not.toBeInTheDocument();
-    });
-
-    it("should render WalletsBanner component if wallet feature flag is enabled and client doesn't have any wallet", () => {
+    it('should render WalletsBanner component if wallet feature flag is enabled', () => {
         const mock_store = mockStore({
             client: { accounts: { CR123456: { token: '12345' } }, loginid: 'CR123456' },
             feature_flags: { data: { wallet: true } },

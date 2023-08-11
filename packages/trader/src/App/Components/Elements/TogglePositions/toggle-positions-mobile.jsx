@@ -6,30 +6,25 @@ import { localize } from '@deriv/translations';
 import { NavLink } from 'react-router-dom';
 import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import PositionsModalCard from 'App/Components/Elements/PositionsDrawer/positions-modal-card.jsx';
-import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import TogglePositions from './toggle-positions.jsx';
-import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
 
 const TogglePositionsMobile = observer(
     ({
         active_positions_count,
-        all_positions,
         currency,
         disableApp,
         enableApp,
         error,
+        filtered_positions,
         is_empty,
         onClickSell,
         onClickCancel,
         toggleUnsupportedContractModal,
     }) => {
         const { portfolio, ui } = useStore();
-        const { symbol, contract_type: trade_contract_type } = useTraderStore();
         const { removePositionById: onClickRemove } = portfolio;
         const { togglePositionsDrawer, is_positions_drawer_on } = ui;
-        let filtered_positions = [];
-
         const closeModal = () => {
             filtered_positions.slice(0, 5).map(position => {
                 const { contract_info } = position;
@@ -39,13 +34,6 @@ const TogglePositionsMobile = observer(
             });
             togglePositionsDrawer();
         };
-
-        filtered_positions = all_positions.filter(
-            p =>
-                p.contract_info &&
-                symbol === p.contract_info.underlying &&
-                filterByContractType(p.contract_info, trade_contract_type)
-        );
 
         // Show only 5 most recent open contracts
         const body_content = (

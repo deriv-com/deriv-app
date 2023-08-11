@@ -20,7 +20,9 @@ import {
     isEmptyObject,
     isMobile,
     isMultiplierContract,
+    isTurbosContract,
     isVanillaContract,
+    isOnlyUpsDownsContract,
     urlFor,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -79,7 +81,9 @@ const ContractReplay = observer(({ contract_id }) => {
 
     const is_accumulator = isAccumulatorContract(contract_info.contract_type);
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
+    const is_turbos = isTurbosContract(contract_info.contract_type);
     const is_vanilla = isVanillaContract(contract_info.contract_type);
+    const is_only_ups_downs = isOnlyUpsDownsContract(contract_info.contract_type);
 
     const contract_drawer_el = (
         <ContractDrawer
@@ -91,9 +95,11 @@ const ContractReplay = observer(({ contract_id }) => {
             is_dark_theme={is_dark_theme}
             is_market_closed={is_market_closed}
             is_multiplier={is_multiplier}
+            is_turbos={is_turbos}
             is_sell_requested={is_sell_requested}
             is_valid_to_cancel={is_valid_to_cancel}
             is_vanilla={is_vanilla}
+            is_only_ups_downs={is_only_ups_downs}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
             status={indicative_status}

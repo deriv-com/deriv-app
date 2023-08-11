@@ -24,7 +24,6 @@ const Contract = observer(() => {
     } = useStore();
 
     const list = getAvailableContractTypes(contract_types_list, unsupported_contract_types_list);
-
     const digits_message = localize('Last digit stats for latest 1000 ticks for {{ underlying_name }}', {
         underlying_name: getMarketNamesMap()[symbol.toUpperCase() as keyof ReturnType<typeof getMarketNamesMap>],
     });

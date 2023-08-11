@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 
 export const error_message_map = {
-    trade_definition: localize('Open'),
+    trade_definition: localize("'Define your trade contract' block should be added to the workspace."),
     trade_parameters: localize("'Define your trade contract' block should be added to the workspace."),
     before_purchase: localize("'Watch and purchase your contract' block should be added to the workspace."),
     purchase_conditions: localize("'Watch and purchase your contract' block should be added to the workspace."),

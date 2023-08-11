@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Div100vhContainer, Dropdown, Loading, Text, ThemedScrollbars } from '@deriv/components';
+import { Div100vhContainer, Dropdown, Loading, Text, ThemedScrollbars, ToggleSwitch } from '@deriv/components';
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
@@ -49,6 +49,7 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
     ] as const;
 
     const [filter, setFilter] = useState<typeof filter_options[number]['value']>('');
+    const [should_show_pending_crypto_transactions, setShouldShowPendingCryptoTransactions] = useState(false);
 
     const { transactions, isComplete, isLoading, loadMore, reset } = useWalletTransactions(filter || undefined);
 
@@ -118,6 +119,18 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
     return (
         <>
             <div className='transaction-list__filter__wrapper transaction-list__container'>
+                <div className='transaction-list__toggle__container'>
+                    <Text className='transaction-list__toggle__label'>{localize('Pending transactions')}</Text>
+                    <ToggleSwitch
+                        classNameLabel='transaction-list__toggle__label'
+                        id='toggle-pending-crypto-transactions'
+                        is_enabled={should_show_pending_crypto_transactions}
+                        handleToggle={() => {
+                            console.log('abobus');
+                            setShouldShowPendingCryptoTransactions(prev => !prev);
+                        }}
+                    />
+                </div>
                 <Dropdown
                     className='transaction-list__filter'
                     is_align_text_left

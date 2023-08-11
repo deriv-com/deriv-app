@@ -218,7 +218,7 @@ const getJuridisctionDescription = (shortcode: string) => {
                 'British Virgin Islands',
                 localize('British Virgin Islands Financial Services Commission'),
                 localize('(License no. SIBA/L/18/1114)'),
-                localize('Regulator/External dispute Resolution')
+                localize('Regulator/External dispute resolution')
             );
         case 'synthetic_vanuatu':
             return createDescription(
@@ -242,7 +242,7 @@ const getJuridisctionDescription = (shortcode: string) => {
                 'Vanuatu',
                 localize('Vanuatu Financial Services Commission'),
                 '',
-                localize('Regulator/External Dispute Resolution')
+                localize('Regulator/External dispute resolution')
             );
         case 'financial_labuan':
             return createDescription(
@@ -250,7 +250,7 @@ const getJuridisctionDescription = (shortcode: string) => {
                 'Labuan',
                 localize('Labuan Financial Services Authority'),
                 localize('(licence no. MB/18/0024)'),
-                localize('Regulator/External Dispute Resolution'),
+                localize('Regulator/External dispute resolution'),
                 '1:100'
             );
         case 'financial_maltainvest':

@@ -89,7 +89,7 @@ describe('<CFDCompareAccountsDescription />', () => {
         expect(screen.getByText('Deriv (V) Ltd')).toBeInTheDocument();
         expect(screen.getByText('Vanuatu')).toBeInTheDocument();
         expect(screen.getByText('Vanuatu Financial Services Commission')).toBeInTheDocument();
-        expect(screen.getByText('Regulator/External Dispute Resolution')).toBeInTheDocument();
+        expect(screen.getByText('Regulator/External dispute resolution')).toBeInTheDocument();
     });
 
     it('should render content for financial market type with labuan shortcode', () => {
@@ -103,7 +103,7 @@ describe('<CFDCompareAccountsDescription />', () => {
         expect(screen.getByText('Labuan')).toBeInTheDocument();
         expect(screen.getByText('Labuan Financial Services Authority')).toBeInTheDocument();
         expect(screen.getByText('(licence no. MB/18/0024)')).toBeInTheDocument();
-        expect(screen.getByText('Regulator/External Dispute Resolution')).toBeInTheDocument();
+        expect(screen.getByText('Regulator/External dispute resolution')).toBeInTheDocument();
     });
 
     it('should render content for financial market type with maltainvest shortcode ', () => {

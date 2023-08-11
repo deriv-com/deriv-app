@@ -21,7 +21,7 @@ const ChatWrapper = observer(({ children, is_modal_open }) => {
                 sendbird_store.setShouldShowChatOnOrders(false);
                 order_store.hideDetails(true);
             }}
-            renderPageHeaderText={() => <ChatHeader.Body />}
+            renderPageHeaderElement={<ChatHeader.Body />}
         >
             {children}
         </MobileFullPageModal>

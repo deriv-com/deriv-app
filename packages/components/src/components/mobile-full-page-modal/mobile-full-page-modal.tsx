@@ -22,7 +22,6 @@ type TMobileFullPageModal = {
     page_header_text?: string;
     renderPageHeaderElement?: JSX.Element;
     renderPageHeaderTrailingIcon?: () => React.ReactNode;
-    renderPageHeaderText?: () => string;
     should_header_stick_body?: boolean;
     body_className?: string;
     is_popup?: boolean;
@@ -52,7 +51,6 @@ const MobileFullPageModal = ({
     pageHeaderReturnFn,
     renderPageHeader,
     renderPageHeaderElement,
-    renderPageHeaderText,
     // opt-in for backward compatibility.
     children,
     container_children,
@@ -70,7 +68,7 @@ const MobileFullPageModal = ({
                 })}
                 height_offset={height_offset}
             >
-                {(renderPageHeader || page_header_text || renderPageHeaderText || renderPageHeaderElement) && (
+                {(renderPageHeader || page_header_text || renderPageHeaderElement) && (
                     <div
                         className={classNames('dc-mobile-full-page-modal__header', {
                             'dc-mobile-full-page-modal__header--border-bottom': !should_header_stick_body,
@@ -87,9 +85,7 @@ const MobileFullPageModal = ({
                         )}
                         {renderPageHeader && renderPageHeader()}
                         <div className='dc-mobile-full-page-modal__header-text'>
-                            {renderPageHeaderText ? (
-                                renderPageHeaderText()
-                            ) : (
+                            {renderPageHeaderElement ?? (
                                 <Text as='p' color='prominent' line_height='m' size='s' weight='bold'>
                                     {page_header_text}
                                 </Text>
@@ -100,7 +96,6 @@ const MobileFullPageModal = ({
                                 {renderPageHeaderTrailingIcon()}
                             </div>
                         )}
-                        {renderPageHeaderElement}
                     </div>
                 )}
                 <div className={classNames('dc-mobile-full-page-modal__body', body_className)}>{children}</div>

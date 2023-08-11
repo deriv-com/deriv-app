@@ -11,7 +11,6 @@ import PasswordsPlatform from './passwords-platform';
  * @returns {React.ReactNode}
  */
 const Passwords = observer(() => {
-    const [is_loading, setIsLoading] = React.useState(true);
     const { client, common } = useStore();
     const {
         is_populating_mt5_account_list,
@@ -24,6 +23,9 @@ const Passwords = observer(() => {
         is_dxtrade_password_not_set,
     } = client;
     const { is_from_derivgo } = common;
+
+    const [is_loading, setIsLoading] = React.useState(true);
+
     React.useEffect(() => {
         if (
             is_populating_mt5_account_list === false &&

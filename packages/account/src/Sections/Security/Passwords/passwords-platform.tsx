@@ -1,26 +1,33 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Icon, Popover, Text } from '@deriv/components';
-import { CFD_PLATFORMS, WS, getPlatformSettings } from '@deriv/shared';
+import { useVerifyEmail } from '@deriv/hooks';
+import { CFD_PLATFORMS, getPlatformSettings } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
 
 type TPasswordsPlatformProps = {
     email: string;
-    has_dxtrade_accounts: boolean;
-    has_mt5_accounts: boolean;
+    has_dxtrade_accounts?: boolean;
+    has_mt5_accounts?: boolean;
 };
 
 /**
  * Displays a change password instructions for MT5 and/or DXTrade.
  * @param {string} email - The user's email address.
- * @param {boolean} has_dxtrade_accounts - Whether the user has DXTrade accounts.
- * @param {boolean} has_mt5_accounts - Whether the user has MT5 accounts.
- * @returns
+ * @param {boolean} [has_dxtrade_accounts=false] - Whether the user has DXTrade accounts.
+ * @param {boolean} [has_mt5_accounts=false] - Whether the user has MT5 accounts.
+ * @returns {React.ReactNode}
  */
-const PasswordsPlatform = ({ email, has_dxtrade_accounts, has_mt5_accounts }: TPasswordsPlatformProps) => {
-    const [identifier, setIdenifier] = React.useState('');
+const PasswordsPlatform = ({
+    email,
+    has_dxtrade_accounts = false,
+    has_mt5_accounts = false,
+}: TPasswordsPlatformProps) => {
+    const { send: resetMT5Password } = useVerifyEmail('trading_platform_mt5_password_reset');
+    const { send: resetDXPassword } = useVerifyEmail('trading_platform_dxtrade_password_reset');
+
+    const [identifier, setIdentifier] = React.useState('');
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
     const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
@@ -35,18 +42,19 @@ const PasswordsPlatform = ({ email, has_dxtrade_accounts, has_mt5_accounts }: TP
         return title;
     };
 
-    const onClickSendEmail = cfd_platform => {
-        const password_reset_code =
-            cfd_platform === CFD_PLATFORMS.MT5
-                ? 'trading_platform_mt5_password_reset'
-                : 'trading_platform_dxtrade_password_reset';
-
-        WS.verifyEmail(email, password_reset_code, {
+    const onClickSendEmail = (cfd_platform?: string) => {
+        const payload = {
             url_parameters: {
                 redirect_to: 3,
             },
-        });
-        setIdenifier(cfd_platform);
+        };
+        if (cfd_platform === CFD_PLATFORMS.MT5) {
+            resetMT5Password(email, payload);
+        } else {
+            resetDXPassword(email, payload);
+        }
+
+        setIdentifier(cfd_platform ?? '');
         setIsSentEmailModalOpen(true);
     };
 

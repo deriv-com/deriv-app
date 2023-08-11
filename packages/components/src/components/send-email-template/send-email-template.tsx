@@ -11,7 +11,7 @@ type TSendEmailTemplate = {
     live_chat?: React.ReactNode;
     onClickSendEmail: () => void;
     resend_timeout?: number;
-    subtitle?: string;
+    subtitle: React.ReactNode;
     title: string;
     txt_resend_in: string;
     txt_resend: string;

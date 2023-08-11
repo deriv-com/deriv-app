@@ -14,7 +14,10 @@ const useVerifyEmail = (
     const [sent_count, setSentCount] = useState(0);
 
     const send = useCallback(
-        (email?: Parameters<ReturnType<typeof useRequest<'verify_email'>>['mutate']>[0]['payload']['verify_email']) => {
+        (
+            email?: Parameters<ReturnType<typeof useRequest<'verify_email'>>['mutate']>[0]['payload']['verify_email'],
+            url_parameters?: Record<string, any>
+        ) => {
             const request_email = email ?? client.email;
             if (!request_email) return;
             if (counter.is_running) return;
@@ -24,7 +27,7 @@ const useVerifyEmail = (
 
             setSentCount(count => count + 1);
 
-            WS.mutate({ payload: { verify_email: request_email, type } });
+            WS.mutate({ payload: { verify_email: request_email, type, url_parameters } });
         },
         [WS, client.email, counter, type]
     );

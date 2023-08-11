@@ -100,7 +100,6 @@ class DBot {
                 api_base.init();
                 // disable overflow
                 el_scratch_div.parentNode.style.overflow = 'hidden';
-
                 resolve();
             } catch (error) {
                 // TODO: Handle error.

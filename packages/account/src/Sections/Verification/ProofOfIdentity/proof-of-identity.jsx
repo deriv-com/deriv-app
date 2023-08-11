@@ -9,7 +9,6 @@ const ProofOfIdentity = observer(({ is_from_external, onStateChange }) => {
     const { client, common, notifications } = useStore();
     const {
         account_status,
-        account_settings,
         fetchResidenceList,
         getChangeableFields,
         is_switching,
@@ -42,7 +41,6 @@ const ProofOfIdentity = observer(({ is_from_external, onStateChange }) => {
                     <div className='proof-of-identity__main-container'>
                         <ProofOfIdentityContainer
                             height={height}
-                            account_settings={account_settings}
                             account_status={account_status}
                             app_routing_history={app_routing_history}
                             fetchResidenceList={fetchResidenceList}

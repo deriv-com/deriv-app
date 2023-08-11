@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Button } from '@deriv/components';
-import { Formik } from 'formik';
+import { useFormik } from 'formik';
 import { localize } from '@deriv/translations';
 import {
     WS,
@@ -18,15 +18,19 @@ import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import IDVForm from 'Components/forms/idv-form';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
 import FormSubHeader from 'Components/form-sub-header';
+import { useSettings } from '@deriv/hooks';
 
 const IdvDocumentSubmit = ({
     handleBack,
     handleViewComplete,
     selected_country,
     is_from_external,
-    account_settings,
+    // account_settings,
     getChangeableFields,
 }) => {
+    const { account_settings, setSettings, getSettings } = useSettings();
+    debugger;
+
     const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
     const form_initial_values = filterObjProperties(account_settings, visible_settings) || {};
 
@@ -109,24 +113,7 @@ const IdvDocumentSubmit = ({
         return removeEmptyPropertiesFromObject(errors);
     };
 
-    const submitHandler = async (values, { setSubmitting, setErrors }) => {
-        setSubmitting(true);
-
-        const request = makeSettingsRequest(values, changeable_fields);
-
-        const data = await WS.setSettings(request);
-
-        if (data.error) {
-            setErrors({ error_message: data.error.message });
-            setSubmitting(false);
-            return;
-        }
-        const get_settings = WS.authorized.storage.getSettings();
-        if (get_settings.error) {
-            setErrors({ error_message: data.error.message });
-            setSubmitting(false);
-            return;
-        }
+    const submitIdentityVerificationDocument = async () => {
         const submit_data = {
             identity_verification_document_add: 1,
             document_number: values.document_number,
@@ -148,85 +135,113 @@ const IdvDocumentSubmit = ({
         });
     };
 
+    const submitHandler = async () => {
+        setSubmitting(true);
+
+        const request = makeSettingsRequest(values, changeable_fields);
+
+        try {
+            await setSettings(request);
+        } catch (error) {
+            setErrors({ error_message: error?.message });
+            setSubmitting(false);
+
+            return;
+        }
+
+        const get_settings_res = await getSettings();
+
+        if (get_settings_res.error) {
+            setErrors({ error_message: get_settings_res.error?.message });
+            setSubmitting(false);
+            return;
+        }
+    };
+
+    const {
+        dirty,
+        errors,
+        handleBlur,
+        handleChange,
+        handleSubmit,
+        isSubmitting,
+        isValid,
+        setFieldValue,
+        setFieldTouched,
+        touched,
+        values,
+        setSubmitting,
+        setErrors,
+    } = useFormik({
+        initialValues: initial_values,
+        validate: validateFields,
+        onSubmit: submitHandler,
+    });
+
     return (
-        <Formik initialValues={{ ...initial_values }} validate={validateFields} onSubmit={submitHandler}>
-            {({
-                dirty,
-                errors,
-                handleBlur,
-                handleChange,
-                handleSubmit,
-                isSubmitting,
-                isValid,
-                setFieldValue,
-                setFieldTouched,
-                touched,
-                values,
-            }) => (
-                <div className='proof-of-identity__container proof-of-identity__container--reset'>
-                    <section className='form-body'>
-                        <FormSubHeader title={localize('Identity verification')} />
-                        <IDVForm
+        <form onSubmit={handleSubmit}>
+            <div className='proof-of-identity__container proof-of-identity__container--reset'>
+                <section className='form-body'>
+                    <FormSubHeader title={localize('Identity verification')} />
+                    <IDVForm
+                        errors={errors}
+                        touched={touched}
+                        values={values}
+                        handleChange={handleChange}
+                        handleBlur={handleBlur}
+                        setFieldValue={setFieldValue}
+                        hide_hint={false}
+                        selected_country={selected_country}
+                        is_from_external={is_from_external}
+                        class_name='idv-layout'
+                    />
+
+                    <FormSubHeader title={localize('Details')} />
+                    <div
+                        className={classNames({
+                            'account-form__poi-confirm-example_container': !shouldHideHelperImage(
+                                values?.document_type?.id
+                            ),
+                        })}
+                    >
+                        <PersonalDetailsForm
                             errors={errors}
                             touched={touched}
                             values={values}
                             handleChange={handleChange}
                             handleBlur={handleBlur}
                             setFieldValue={setFieldValue}
-                            hide_hint={false}
-                            selected_country={selected_country}
-                            is_from_external={is_from_external}
-                            class_name='idv-layout'
+                            setFieldTouched={setFieldTouched}
+                            is_qualified_for_idv={true}
+                            is_appstore
+                            should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
+                            editable_fields={changeable_fields}
                         />
-
-                        <FormSubHeader title={localize('Details')} />
-                        <div
-                            className={classNames({
-                                'account-form__poi-confirm-example_container': !shouldHideHelperImage(
-                                    values?.document_type?.id
-                                ),
-                            })}
-                        >
-                            <PersonalDetailsForm
-                                errors={errors}
-                                touched={touched}
-                                values={values}
-                                handleChange={handleChange}
-                                handleBlur={handleBlur}
-                                setFieldValue={setFieldValue}
-                                setFieldTouched={setFieldTouched}
-                                is_qualified_for_idv={true}
-                                is_appstore
-                                should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
-                                editable_fields={changeable_fields}
-                            />
-                        </div>
-                    </section>
-                    <FormFooter className='proof-of-identity__footer'>
-                        {isDesktop() && (
-                            <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
-                                <BackButtonIcon className='back-btn-icon' /> {localize('Go Back')}
-                            </Button>
-                        )}
-                        <Button
-                            className='proof-of-identity__submit-button'
-                            type='submit'
-                            onClick={handleSubmit}
-                            has_effect
-                            is_disabled={!dirty || isSubmitting || !isValid}
-                            text={localize('Verify')}
-                            large
-                            primary
-                        />
-                    </FormFooter>
-                </div>
-            )}
-        </Formik>
+                    </div>
+                </section>
+                <FormFooter className='proof-of-identity__footer'>
+                    {isDesktop() && (
+                        <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
+                            <BackButtonIcon className='back-btn-icon' /> {localize('Go Back')}
+                        </Button>
+                    )}
+                    <Button
+                        className='proof-of-identity__submit-button'
+                        type='submit'
+                        has_effect
+                        is_disabled={!dirty || isSubmitting || !isValid}
+                        text={localize('Verify')}
+                        large
+                        primary
+                    />
+                </FormFooter>
+            </div>
+        </form>
     );
 };
 
 IdvDocumentSubmit.propTypes = {
-    account_settings: PropTypes.object,
+    // account_settings: PropTypes.object,
     getChangeableFields: PropTypes.func,
     handleBack: PropTypes.func,
     handleViewComplete: PropTypes.func,

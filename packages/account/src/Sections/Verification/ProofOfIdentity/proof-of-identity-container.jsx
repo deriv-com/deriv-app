@@ -18,7 +18,6 @@ import { populateVerificationStatus } from '../Helpers/verification';
 import { useHistory } from 'react-router';
 
 const ProofOfIdentityContainer = ({
-    account_settings,
     account_status,
     app_routing_history,
     fetchResidenceList,

@@ -1,27 +1,15 @@
 import React from 'react';
 import { Button } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/root-store';
+import { useDBotStore } from 'Stores/useDBotStore';
 
-type TLocalFooterProps = {
-    is_open_button_loading: boolean;
-    loadFileFromLocal: () => void;
-    setLoadedLocalFile: (loaded_local_file: boolean | null) => void;
-    setOpenSettings: (toast_message: string, show_toast?: boolean) => void;
-    setPreviewOnPopup: (show: boolean) => void;
-    toggleLoadModal: () => void;
-};
+const LocalFooter = observer(() => {
+    const { load_modal, dashboard } = useDBotStore();
+    const { is_open_button_loading, loadFileFromLocal, setLoadedLocalFile, toggleLoadModal } = load_modal;
+    const { setOpenSettings, setPreviewOnPopup } = dashboard;
 
-const LocalFooter = ({
-    is_open_button_loading,
-    loadFileFromLocal,
-    setLoadedLocalFile,
-    setOpenSettings,
-    setPreviewOnPopup,
-    toggleLoadModal,
-}: TLocalFooterProps) => {
     const is_mobile = isMobile();
     const Wrapper = is_mobile ? Button.Group : React.Fragment;
 
@@ -45,13 +33,6 @@ const LocalFooter = ({
             />
         </Wrapper>
     );
-};
+});
 
-export default connect(({ load_modal, dashboard }: RootStore) => ({
-    is_open_button_loading: load_modal.is_open_button_loading,
-    loadFileFromLocal: load_modal.loadFileFromLocal,
-    setLoadedLocalFile: load_modal.setLoadedLocalFile,
-    setOpenSettings: dashboard.setOpenSettings,
-    setPreviewOnPopup: dashboard.setPreviewOnPopup,
-    toggleLoadModal: load_modal.toggleLoadModal,
-}))(LocalFooter);
+export default LocalFooter;

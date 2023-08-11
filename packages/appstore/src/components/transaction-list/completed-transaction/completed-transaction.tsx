@@ -5,11 +5,11 @@ import { useWalletTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 
-type TNonPendingTransaction = {
+type TCompletedTransaction = {
     transaction: ReturnType<typeof useWalletTransactions>['transactions'][number];
 };
 
-const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
+const CompletedTransaction = ({ transaction }: TCompletedTransaction) => {
     const {
         ui: { is_dark_mode_on, is_mobile },
     } = useStore();
@@ -137,4 +137,4 @@ const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
     );
 };
 
-export default NonPendingTransaction;
+export default CompletedTransaction;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
-import NonPendingTransaction from '../non-pending-transaction';
+import CompletedTransaction from '../completed-transaction';
 
 const TransactionsForADay = ({
     day,
@@ -37,7 +37,7 @@ const TransactionsForADay = ({
                 ) {
                     display_transaction = { ...transaction, amount: -transaction.amount };
                 }
-                return <NonPendingTransaction key={transaction.transaction_id} transaction={display_transaction} />;
+                return <CompletedTransaction key={transaction.transaction_id} transaction={display_transaction} />;
             })}
         </div>
     );

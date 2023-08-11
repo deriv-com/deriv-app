@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Text, StaticUrl, StatusBadge } from '@deriv/components';
+import { Text, StaticUrl, StatusBadge, Popover } from '@deriv/components';
 import { isMobile, formatMoney, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
@@ -150,7 +150,21 @@ const CFDsListing = () => {
                             </Text>
                         </div>
                         {is_system_maintenance && (
-                            <StatusBadge account_status='pending' icon='IcAlertWarning' text='Server maintenance' />
+                            <Popover
+                                data_testid='dt_cfds-listing_popover'
+                                alignment='right'
+                                className='da-account-limits__popover'
+                                is_bubble_hover_enabled
+                                message={
+                                    <Localize
+                                        i18n_default_text='Server maintenance starts at <0>01:00 GMT every Sunday</0>, and it may take up to 2 hours to complete. Services may be disrupted during this time..'
+                                        components={[<Text key={0} weight='bold' size='xxs' />]}
+                                    />
+                                }
+                                zIndex='9999'
+                            >
+                                <StatusBadge account_status='pending' icon='IcAlertWarning' text='Server maintenance' />
+                            </Popover>
                         )}
                     </div>
                 )

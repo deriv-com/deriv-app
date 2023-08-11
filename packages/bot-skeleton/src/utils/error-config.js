@@ -21,6 +21,10 @@ export const error_message_map = {
         missing: 'Trade options are missing from trade parameters block.',
         misplaced: 'Trade options are misplaced from trade parameters block.',
     },
+    trade_definition_multiplier: {
+        missing: 'Trade options multipliers are missing from trade parameters block.',
+        misplaced: 'Trade options multipliers options are misplaced from trade parameters block.',
+    },
     trade_again: {
         missing: 'Trade again is missing from trade parameters block.',
         misplaced: 'Trade again is misplaced from trade parameters block.',

@@ -9,6 +9,14 @@ import DBotStore from '../dbot-store';
 import { log_types } from '../../constants/messages';
 import { error_message_map } from '../../utils/error-config';
 
+export const getSelectedTradeType = (workspace = Blockly.derivWorkspace) => {
+    const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
+    const selected_trade_type = trade_type_block?.getFieldValue('TRADETYPE_LIST');
+    const mandatory_tradeoptions_block =
+        selected_trade_type === 'multiplier' ? 'trade_definition_multiplier' : 'trade_definition_tradeoptions';
+    return mandatory_tradeoptions_block;
+};
+
 export const matchTranslateAttribute = translateString => {
     const match = translateString.match(/translate\((-?\d*\.?\d+),(-?\d*\.?\d+)\)/);
     if (match && match.length > 2) {
@@ -41,8 +49,9 @@ export const validateErrorOnBlockDelete = () => {
     // Extract coordinates from the bounding rectangles
     const blockX = blockRect?.left || 0;
     const blockY = blockRect?.top || 0;
+    const mandatory_trade_option_block = getSelectedTradeType();
     const required_block_types = [
-        'trade_definition_tradeoptions',
+        mandatory_trade_option_block,
         'trade_definition',
         'purchase',
         'before_purchase',
@@ -362,20 +371,12 @@ export const addDomAsBlock = (el_block, parent_block = null) => {
 };
 
 export const isAllRequiredBlocksEnabled = workspace => {
-    const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
-    const selected_trade_type = trade_type_block?.getFieldValue('TRADETYPE_LIST');
-    const mandatory_tradeoptions_block =
-        selected_trade_type === 'multiplier' ? 'trade_definition_multiplier' : 'trade_definition_tradeoptions';
-    const { mandatoryMainBlocks } = config;
-    const required_block_types = [mandatory_tradeoptions_block, ...mandatoryMainBlocks];
+    const mandatory_trade_option_block = getSelectedTradeType();
+    const { mandatoryMainBlocks, mainBlocks } = config;
+    const required_block_types = [mandatory_trade_option_block, ...mandatoryMainBlocks];
 
     const required_blocks_check = workspace.getAllBlocks().filter(block => {
-        if (
-            block.type === 'trade_definition' ||
-            block.type === 'before_purchase' ||
-            block.type === 'after_purchase' ||
-            required_block_types.includes(block.type)
-        ) {
+        if (required_block_types.includes(block.type)) {
             return (
                 (block.childBlocks_.length === 0 && required_block_types.includes(block.category_)) ||
                 block.parentBlock_ === null
@@ -384,8 +385,8 @@ export const isAllRequiredBlocksEnabled = workspace => {
     });
 
     const misplaced_blocks = required_blocks_check.filter(block => {
-        if (!required_block_types.includes(block.type)) {
-            return block.parentBlock_ === null;
+        if (required_block_types.includes(block.type)) {
+            return block.parentBlock_ === null && !mainBlocks.includes(block.type);
         }
     });
     misplaced_blocks.forEach(block => {

@@ -3,6 +3,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import AccumulatorTradeDescription from './accumulator-trade-description';
+import { TurbosTradeDescription } from './turbos-trade-description';
 
 // Templates are from Binary 1.0, it should be checked if they need change or not and add all of trade types
 // TODO: refactor the rest of descriptions to use them as components like AccumulatorTradeDescription
@@ -429,6 +430,10 @@ const TradeCategories = ({ category, onClick }) => {
                         <Text as='p'>{localize('The exit spot is the market price when the contract is closed.')}</Text>
                     </React.Fragment>
                 );
+                break;
+            case 'turbosshort':
+            case 'turboslong':
+                TradeTypeTemplate = <TurbosTradeDescription />;
                 break;
             case 'vanilla':
                 TradeTypeTemplate = (

@@ -19,7 +19,8 @@ type TMobileFullPageModal = {
     renderPageFooterChildren?: () => React.ReactNode;
     page_footer_className?: string;
     page_header_className?: string;
-    page_header_text?: string | JSX.Element;
+    page_header_text?: string;
+    renderPageHeaderElement?: JSX.Element;
     renderPageHeaderTrailingIcon?: () => React.ReactNode;
     renderPageHeaderText?: () => string;
     should_header_stick_body?: boolean;
@@ -50,6 +51,7 @@ const MobileFullPageModal = ({
     renderPageHeaderTrailingIcon,
     pageHeaderReturnFn,
     renderPageHeader,
+    renderPageHeaderElement,
     renderPageHeaderText,
     // opt-in for backward compatibility.
     children,
@@ -68,7 +70,7 @@ const MobileFullPageModal = ({
                 })}
                 height_offset={height_offset}
             >
-                {(renderPageHeader || page_header_text || renderPageHeaderText) && (
+                {(renderPageHeader || page_header_text || renderPageHeaderText || renderPageHeaderElement) && (
                     <div
                         className={classNames('dc-mobile-full-page-modal__header', {
                             'dc-mobile-full-page-modal__header--border-bottom': !should_header_stick_body,
@@ -98,6 +100,7 @@ const MobileFullPageModal = ({
                                 {renderPageHeaderTrailingIcon()}
                             </div>
                         )}
+                        {renderPageHeaderElement}
                     </div>
                 )}
                 <div className={classNames('dc-mobile-full-page-modal__body', body_className)}>{children}</div>

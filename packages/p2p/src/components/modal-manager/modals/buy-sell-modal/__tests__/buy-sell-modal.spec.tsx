@@ -66,6 +66,7 @@ describe('<BuySellModal />', () => {
                 },
                 table_type: 'buy',
                 fetchAdvertiserAdverts: jest.fn(),
+                is_buy_advert: true,
                 setFormProps: jest.fn(),
                 setHasPaymentMethods: jest.fn(),
                 setInitialReceiveAmount: jest.fn(),
@@ -141,7 +142,7 @@ describe('<BuySellModal />', () => {
         const cross_icon = screen.getByTestId('dt_modal_close_icon');
         userEvent.click(cross_icon);
 
-        expect(mock_modal_manager.showModal).toHaveBeenCalledWith({ key: 'CancelAddPaymentMethodModal' });
+        expect(mock_modal_manager.showModal).toHaveBeenCalledWith({ key: 'CancelAddPaymentMethodModal', props: {} });
     });
 
     it('should setErrorMessage to empty string if is_modal_open is false', () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -14,37 +14,45 @@ const BuySellModalTitle = () => {
     const { account_currency } = selected_ad_state;
     const table_type = show_advertiser_page ? advertiser_page_store.counterparty_type : buy_sell_table_type;
 
-    if (my_profile_store.should_show_add_payment_method_form) {
-        if (isDesktop()) {
-            return (
-                <React.Fragment>
-                    <Icon
-                        icon='IcArrowLeftBold'
-                        data_testid='dt-buy-sell-modal-back-icon'
-                        onClick={() => {
-                            if (general_store.is_form_modified) {
-                                showModal({
-                                    key: 'CancelAddPaymentMethodModal',
-                                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                    // @ts-ignore TODO: fix typings in CancelAddPaymentMethodModal and make them optional and remove this comment
-                                    props: {},
-                                });
-                            } else {
-                                my_profile_store.setShouldShowAddPaymentMethodForm(false);
-                            }
-                        }}
-                        className='buy-sell-modal-title__icon'
-                    />
-                    <Localize i18n_default_text='Add payment method' />
-                </React.Fragment>
-            );
+    const getModalTitle = () => {
+        if (my_profile_store.should_show_add_payment_method_form) {
+            if (isDesktop()) {
+                return (
+                    <React.Fragment>
+                        <Icon
+                            icon='IcArrowLeftBold'
+                            data_testid='dt-buy-sell-modal-back-icon'
+                            onClick={() => {
+                                if (general_store.is_form_modified) {
+                                    showModal({
+                                        key: 'CancelAddPaymentMethodModal',
+                                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                        // @ts-ignore TODO: fix typings in CancelAddPaymentMethodModal and make them optional and remove this comment
+                                        props: {},
+                                    });
+                                } else {
+                                    my_profile_store.setShouldShowAddPaymentMethodForm(false);
+                                }
+                            }}
+                            className='buy-sell-modal-title__icon'
+                        />
+                        <Localize i18n_default_text='Add payment method' />
+                    </React.Fragment>
+                );
+            }
+            return <Localize i18n_default_text='Add payment method' />;
         }
-        return <Localize i18n_default_text='Add payment method' />;
-    }
-    if (table_type === buy_sell.BUY) {
-        return <Localize i18n_default_text='Buy {{ currency }}' values={{ currency: account_currency }} />;
-    }
-    return <Localize i18n_default_text='Sell {{ currency }}' values={{ currency: account_currency }} />;
+        if (table_type === buy_sell.BUY) {
+            return <Localize i18n_default_text='Buy {{ currency }}' values={{ currency: account_currency }} />;
+        }
+        return <Localize i18n_default_text='Sell {{ currency }}' values={{ currency: account_currency }} />;
+    };
+
+    return (
+        <Text as='p' color='prominent' line_height='m' size='s' weight='bold'>
+            {getModalTitle()}
+        </Text>
+    );
 };
 
 export default BuySellModalTitle;

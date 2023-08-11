@@ -23,7 +23,7 @@ const BuySellModal = () => {
     const history = useHistory();
     const location = useLocation();
     const [error_message, setErrorMessage] = React.useState('');
-    const [is_submit_disabled, setIsSubmitDisabled] = React.useState(true);
+    const [is_submit_disabled, setIsSubmitDisabled] = React.useState(false);
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
     const submitForm = React.useRef(() => {
         // do nothing
@@ -38,6 +38,7 @@ const BuySellModal = () => {
             if (general_store.is_form_modified) {
                 showModal({
                     key: 'CancelAddPaymentMethodModal',
+                    props: {},
                 });
             } else {
                 my_profile_store.hideAddPaymentMethodForm();
@@ -86,7 +87,7 @@ const BuySellModal = () => {
                     is_flex
                     is_modal_open={is_modal_open}
                     page_header_className='buy-sell-modal__header'
-                    page_header_text={<BuySellModalTitle />}
+                    renderPageHeaderElement={<BuySellModalTitle />}
                     pageHeaderReturnFn={onCancel}
                 >
                     <BuySellModalError

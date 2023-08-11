@@ -48,6 +48,6 @@ describe('AccumulatorsProfitLossTooltip', () => {
         expect(spot_el).toBeInTheDocument();
         expect(spot_el).toHaveClass('profit-loss-tooltip__spot-circle');
         expect(screen.getByText(profit_text)).toBeInTheDocument();
-        expect(screen.getByText('+0.15 USD')).toBeInTheDocument();
+        expect(screen.getByText('0.15 USD')).toBeInTheDocument();
     });
 });

@@ -162,7 +162,7 @@ type TMenuItem = {
 type TAddToastProps = {
     key: string;
     content: string | React.ReactNode;
-    is_bottom?: boolean | undefined;
+    is_bottom?: boolean;
     timeout?: number;
     type: string;
 };

@@ -52,4 +52,27 @@ describe('useFiatAccountList', () => {
 
         expect(result.current).toStrictEqual([{ title: 'USD', is_virtual: false, loginid: 'CR123' }]);
     });
+    test('should return list of fiat accounts if client has 1 CR fiat and 1 MF fiat account', async () => {
+        const mock = mockStore({
+            client: {
+                account_list: [
+                    { title: 'BTC', is_virtual: false, loginid: 'CR123' },
+                    { title: 'USD', is_virtual: false, loginid: 'CR123' },
+                    { title: 'USD', is_virtual: false, loginid: 'MF123' },
+                ],
+                is_crypto: (currency: string) => currency === 'BTC',
+            },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+
+        const { result } = renderHook(() => useFiatAccountList(), { wrapper });
+
+        expect(result.current).toStrictEqual([
+            { title: 'USD', is_virtual: false, loginid: 'CR123' },
+            { title: 'USD', is_virtual: false, loginid: 'MF123' },
+        ]);
+    });
 });

@@ -125,10 +125,7 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
                         classNameLabel='transaction-list__toggle__label'
                         id='toggle-pending-crypto-transactions'
                         is_enabled={should_show_pending_crypto_transactions}
-                        handleToggle={() => {
-                            console.log('abobus');
-                            setShouldShowPendingCryptoTransactions(prev => !prev);
-                        }}
+                        handleToggle={() => setShouldShowPendingCryptoTransactions(prev => !prev)}
                     />
                 </div>
                 <Dropdown

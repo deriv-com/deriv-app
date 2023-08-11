@@ -77,7 +77,7 @@ const InputField = (props: TInputField) => {
                     <Input
                         type='text'
                         autoComplete='off'
-                        maxLength={props.maxLength || 30}
+                        maxLength={props.maxLength ?? 30}
                         error={touched[field.name] && errors[field.name]}
                         {...field}
                         {...props}
@@ -141,7 +141,7 @@ const AddressDetails = ({
     };
 
     const handleCancel = (values: FormikValues) => {
-        const current_step = (getCurrentStep?.() || 1) - 1;
+        const current_step = (getCurrentStep?.() ?? 1) - 1;
         onSave(current_step, values);
         onCancel(current_step, goToPreviousStep);
     };
@@ -164,7 +164,7 @@ const AddressDetails = ({
                         ? getLocation(states_list, address_state_to_display, 'value')
                         : getLocation(states_list, values.address_state, 'value');
                 }
-                onSubmit((getCurrentStep?.() || 1) - 1, values, actions.setSubmitting, goToNextStep);
+                onSubmit((getCurrentStep?.() ?? 1) - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
             {({ handleSubmit, errors, values, setFieldValue, handleChange, setFieldTouched }: FormikValues) => (

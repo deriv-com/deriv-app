@@ -33,7 +33,7 @@ const AccountLimitsTableHeader = ({
                     {children}
                 </Text>
             )}
-            {renderExtraInfo && renderExtraInfo()}
+            {renderExtraInfo?.()}
         </th>
     );
 };

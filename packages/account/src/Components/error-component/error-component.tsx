@@ -29,8 +29,8 @@ const ErrorComponent = ({
                     : [localize('Sorry, an error occured while processing your request.'), refresh_message]
             }
             redirect_urls={[routes.trade]}
-            redirect_labels={[redirect_label || localize('Refresh')]}
-            buttonOnClick={redirectOnClick || (() => location.reload())}
+            redirect_labels={[redirect_label ?? localize('Refresh')]}
+            buttonOnClick={redirectOnClick ?? (() => location.reload())}
         />
     );
 };

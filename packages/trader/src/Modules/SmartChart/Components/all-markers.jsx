@@ -274,7 +274,6 @@ const TickContract = RawMarkerMaker(
         granularity,
         contract_info: {
             accu_barriers_difference,
-            barrier_spot_distance,
             contract_type,
             exit_tick_time,
             status,
@@ -496,7 +495,6 @@ const TickContract = RawMarkerMaker(
                 icon: ICONS.END.with_color(color, getColor({ status: 'bg', is_dark_theme })),
             });
             if (is_accu_contract_ended) {
-                const size = Math.floor(scale * 14);
                 draw_shaded_barriers({
                     bottom: barrier_2,
                     ctx,
@@ -508,11 +506,6 @@ const TickContract = RawMarkerMaker(
                                 : 'accu_contract_shade',
                         is_dark_theme,
                     }),
-                    labels: {
-                        font: `${size}px IBM Plex Sans`,
-                        top: `+${barrier_spot_distance}`,
-                        bottom: `-${barrier_spot_distance}`,
-                    },
                     previous_tick: {
                         draw_line_without_tick_marker: is_in_contract_details,
                         stroke_color: color + opacity,

@@ -1,6 +1,6 @@
 .wallet-cards-carousel {
-    margin: -1.6rem -1.6rem -1.4rem;
-    padding: 2.4rem 0 1.6rem;
+    max-height: 23rem;
+    height: 100%;
 
     &__viewport {
         overflow: hidden;
@@ -29,8 +29,26 @@
     flex-direction: column;
     align-items: center;
     background-color: var(--general-main-1);
+    width: 100%;
 
     &-demo {
         background-color: var(--wallet-demo-bg-color);
+    }
+
+    .listing-container {
+        padding: 1.6rem 0 0;
+        gap: 1.6rem;
+        &__top-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.6rem;
+        }
+        &__title {
+            padding-bottom: 0;
+        }
+        &__content {
+            gap: 0;
+            padding-top: 0;
+        }
     }
 }

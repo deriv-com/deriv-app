@@ -6,6 +6,10 @@
     gap: 1.6rem;
     width: 100%;
 
+    @include mobile {
+        padding-top: 0;
+    }
+
     &__title {
         @include mobile {
             font-size: var(--text-size-m);

@@ -1,10 +1,9 @@
-import React from 'react';
-import classNames from 'classnames';
-import { Loading, ThemedScrollbars } from '@deriv/components';
+import { compareStrings } from '@deriv/utils';
 import { formatMoney, isDesktop, isMobile, useIsMounted, PlatformContext } from '@deriv/shared';
+import { FormikValues } from 'formik';
+import { Loading, ThemedScrollbars } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import LoadErrorMessage from 'Components/load-error-message';
-import DemoMessage from 'Components/demo-message';
+import { observer, useStore } from '@deriv/stores';
 import AccountLimitsArticle from './account-limits-article';
 import AccountLimitsContext, { TAccountLimitsContext } from './account-limits-context';
 import AccountLimitsExtraInfo from './account-limits-extra-info';
@@ -13,9 +12,10 @@ import AccountLimitsOverlay from './account-limits-overlay';
 import AccountLimitsTableCell from './account-limits-table-cell';
 import AccountLimitsTableHeader from './account-limits-table-header';
 import AccountLimitsTurnoverLimitRow from './account-limits-turnover-limit-row';
-import { observer, useStore } from '@deriv/stores';
-import { FormikValues } from 'formik';
-import { compareStrings } from '@deriv/utils';
+import classNames from 'classnames';
+import DemoMessage from 'Components/demo-message';
+import LoadErrorMessage from 'Components/load-error-message';
+import React from 'react';
 import WithdrawalLimitsTable from './withdrawal-limits-table';
 
 type TAccountLimits = {
@@ -133,7 +133,7 @@ const AccountLimits = observer(
                             <AccountLimitsArticle is_from_derivgo={is_from_derivgo} />
                         )}
                         <div className='da-account-limits__table-wrapper'>
-                            <ThemedScrollbars is_bypassed={should_bypass_scrollbars ?? isMobile()}>
+                            <ThemedScrollbars is_bypassed={!!should_bypass_scrollbars || isMobile()}>
                                 <table className='da-account-limits__table' data-testid='trading_limit_item_table'>
                                     <thead>
                                         <tr>

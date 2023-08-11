@@ -6,6 +6,14 @@ import AccountLimitsTableHeader from './account-limits-table-header';
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 
+type TWithdrawalLimitsTable = {
+    is_app_settings?: boolean;
+    is_appstore: boolean;
+    num_of_days_limit?: string | number;
+    withdrawal_since_inception_monetary?: string | number;
+    remainder?: string | number;
+};
+
 const AccountLimitsWithdrawalContent = ({ is_appstore }: { is_appstore: boolean }) => {
     return is_appstore ? (
         <Localize i18n_default_text='Total withdrawal limit' />
@@ -52,13 +60,7 @@ const WithdrawalLimitsTable = observer(
         num_of_days_limit,
         withdrawal_since_inception_monetary,
         remainder,
-    }: {
-        is_app_settings?: boolean;
-        is_appstore: boolean;
-        num_of_days_limit?: string | number;
-        withdrawal_since_inception_monetary?: string | number;
-        remainder?: string | number;
-    }) => {
+    }: TWithdrawalLimitsTable) => {
         const { client } = useStore();
         const { currency, is_fully_authenticated } = client;
         if (!is_app_settings) {

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import IconTradeCategory from 'Assets/Trading/Categories/icon-trade-categories.jsx';
-import { TContractType } from './ContractTypeInfo/contract-type-info';
+import { TContractType } from './types';
 
 type TItem = {
     contract_types: TContractType[];
@@ -13,11 +13,11 @@ type TItem = {
 
 const Item = ({ contract_types, handleInfoClick, handleSelect, value }: TItem) => (
     <React.Fragment>
-        {contract_types.map((type, idx) => (
+        {contract_types.map(type => (
             <div
                 id={`dt_contract_${type.value}_item`}
                 data-testid='dt_contract_item'
-                key={idx}
+                key={type.value}
                 className={classNames('contract-type-item', {
                     'contract-type-item--selected': value === type.value || value?.includes(type.value),
                 })}

@@ -2,14 +2,14 @@ import React from 'react';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ContractType from './contract-type';
-import { getContractTypeCategoryIcons, findContractCategory } from '../../../Helpers/contract-type.js';
-import { TList, TContractType, TContractCategory } from './ContractTypeInfo/contract-type-info.js';
+import { getContractTypeCategoryIcons, findContractCategory } from '../../../Helpers/contract-type';
+import { TContractCategory, TContractType, TList } from './types';
 
 type TContractTypeWidget = {
     name?: string;
     value: TContractType['value'];
     list: TContractCategory[];
-    onChange?: (event: DeepPartial<React.ChangeEvent<HTMLInputElement>>) => void;
+    onChange: (event: DeepPartial<React.ChangeEvent<HTMLInputElement>>) => void;
     languageChanged?: boolean;
 };
 
@@ -44,7 +44,10 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
         if (key) setSelectedCategory(key);
     };
 
-    const handleSelect = (clicked_item: TContractType | undefined, e: React.MouseEvent) => {
+    const handleSelect = (
+        clicked_item: TContractType,
+        e: React.MouseEvent<HTMLDivElement | HTMLButtonElement | HTMLInputElement>
+    ) => {
         const categories = list_with_category();
         const { key } = findContractCategory(categories, clicked_item);
         if ('id' in e.target && e.target.id !== 'info-icon' && clicked_item) {
@@ -60,10 +63,6 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
         setInfoDialogVisibility(!is_info_dialog_open);
 
         setItem(clicked_item);
-    };
-
-    const handleNavigationClick = (nav_clicked_item: TContractType) => {
-        setItem(nav_clicked_item);
     };
 
     const handleVisibility = () => {
@@ -94,10 +93,10 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
             'Highs & Lows',
             'Digits',
         ];
-        const ordered_list = list.sort((a, b) => order_arr.indexOf(a.key) - order_arr.indexOf(b.key));
-        const accumulators_category = ordered_list.filter(({ label }) => label === localize('Accumulators'));
-        const multipliers_category = ordered_list.filter(({ label }) => label === localize('Multipliers'));
-        const options_category = ordered_list.filter(
+        const ordered_list = list?.sort((a, b) => order_arr.indexOf(a.key) - order_arr.indexOf(b.key));
+        const accumulators_category = ordered_list?.filter(({ label }) => label === localize('Accumulators'));
+        const multipliers_category = ordered_list?.filter(({ label }) => label === localize('Multipliers'));
+        const options_category = ordered_list?.filter(
             ({ label }) => label !== localize('Multipliers') && label !== localize('Accumulators')
         );
 
@@ -129,6 +128,7 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
                     <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>
                 ) : null,
                 key: 'Options',
+                icon: '',
             });
         }
 
@@ -136,14 +136,14 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
             categories.push({
                 label: localize('Accumulators'),
                 contract_categories: accumulators_category,
-                // @ts-expect-error The type of the component prop in VerticalTab.Headers is wrong and it should be JSX.Element
                 component: <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>,
                 key: 'Accumulators',
+                icon: '',
             });
         }
 
         return categories.map(contract_category => {
-            const contract_types = contract_category.contract_categories.reduce<TContractType[]>(
+            const contract_types = contract_category?.contract_categories?.reduce<TContractType[]>(
                 (prev, current) => [...prev, ...current.contract_types],
                 []
             );
@@ -155,8 +155,8 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
             let contract_categories = contract_category.contract_categories;
 
             if (search_query) {
-                contract_categories = contract_category.contract_categories
-                    .filter(category =>
+                contract_categories = contract_category?.contract_categories
+                    ?.filter(category =>
                         category.contract_types.find(type =>
                             type.text?.toLowerCase().includes(search_query.toLowerCase())
                         )
@@ -185,13 +185,6 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
         return (selected_list_category || list_with_category()[0]).contract_categories;
     };
 
-    const selected_contract_index = () => {
-        const contract_types_arr = list_with_category()?.flatMap(category => category.contract_types);
-        return contract_types_arr
-            .filter(type => type.value !== 'rise_fall_equal' && type.value !== 'turbosshort')
-            .findIndex(type => type.value === item?.value);
-    };
-
     return (
         <div
             data-testid='dt_contract_widget'
@@ -203,7 +196,7 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
             <ContractType.Display
                 is_open={is_dialog_open || is_info_dialog_open}
                 list={list}
-                name={name || ''}
+                name={name ?? ''}
                 onClick={onWidgetClick}
                 value={value}
             />
@@ -221,8 +214,6 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
             >
                 {is_info_dialog_open ? (
                     <ContractType.Info
-                        handleNavigationClick={handleNavigationClick}
-                        initial_index={selected_contract_index()}
                         handleSelect={handleSelect}
                         item={item || { value }}
                         list={list_with_category()}
@@ -231,7 +222,7 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
                     <ContractType.List
                         handleInfoClick={handleInfoClick}
                         handleSelect={handleSelect}
-                        list={selected_category_contracts()}
+                        list={selected_category_contracts() as TContractCategory[]}
                         value={value}
                     />
                 )}

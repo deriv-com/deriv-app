@@ -1,4 +1,3 @@
-import { localize } from '@deriv/translations';
 import { error_message_map } from './error-config';
 import { observer } from './observer';
 
@@ -24,9 +23,7 @@ export const handleError = (errorCode, observer) => {
             if (error_message_map[Blockly.selected.type]) {
                 observer.emit(
                     'ui.log.error',
-                    localize(
-                        error_message_map[Blockly.selected.type]?.default || error_message_map[Blockly.selected.type]
-                    )
+                    error_message_map[Blockly.selected.type]?.default || error_message_map[Blockly.selected.type]
                 );
             }
             break;

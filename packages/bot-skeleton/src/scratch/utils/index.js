@@ -66,10 +66,7 @@ export const validateErrorOnBlockDelete = () => {
         ) {
             globalObserver.emit(
                 'ui.log.error',
-                localize(
-                    error_message_map[Blockly.selected.category_]?.default ||
-                        error_message_map[Blockly.selected.category_]
-                )
+                error_message_map[Blockly.selected.category_]?.default || error_message_map[Blockly.selected.category_]
             );
         }
     }
@@ -390,7 +387,7 @@ export const isAllRequiredBlocksEnabled = workspace => {
         }
     });
     misplaced_blocks.forEach(block => {
-        if (block) globalObserver.emit('ui.log.error', localize(error_message_map[block?.type]?.misplaced));
+        if (block) globalObserver.emit('ui.log.error', error_message_map[block?.type]?.misplaced);
     });
 
     const missing_blocks = required_block_types.filter(blockType => {
@@ -399,10 +396,7 @@ export const isAllRequiredBlocksEnabled = workspace => {
 
     missing_blocks.forEach(blockType => {
         if (blockType)
-            globalObserver.emit(
-                'ui.log.error',
-                localize(error_message_map[blockType]?.missing || error_message_map[blockType])
-            );
+            globalObserver.emit('ui.log.error', error_message_map[blockType]?.missing || error_message_map[blockType]);
     });
 
     const is_required_blocks_present = [...missing_blocks, ...misplaced_blocks];

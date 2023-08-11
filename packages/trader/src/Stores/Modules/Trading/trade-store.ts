@@ -41,7 +41,7 @@ import { action, computed, makeObservable, observable, override, reaction, runIn
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
 import { getHoveredColor } from './Helpers/barrier-utils';
 import BaseStore from '../../base-store';
-import { TTextValueStrings } from '../../../Types/common-prop.type';
+import { TTextValueStrings } from 'Types';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import debounce from 'lodash.debounce';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
@@ -1702,7 +1702,7 @@ export default class TradeStore extends BaseStore {
     }
 
     setStakeBoundary(type: string, min_stake?: number, max_stake?: number) {
-        this.stake_boundary[type] = { min_stake, max_stake };
+        if (min_stake && max_stake) this.stake_boundary[type] = { min_stake, max_stake };
     }
 
     setBarrierChoices(barrier_choices: string[]) {

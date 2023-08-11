@@ -640,11 +640,6 @@ export type TCoreStores = {
     modules: Record<string, any>;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
-    gtm: Record<string, unknown>;
-    pushwoosh: Record<string, unknown>;
-    contract_replay: Record<string, unknown>;
-    chart_barrier_store: Record<string, unknown>;
-    active_symbols: Record<string, unknown>;
 };
 
 export type TStores = TCoreStores & {

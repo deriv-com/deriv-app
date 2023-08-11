@@ -1,7 +1,8 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
+import { TOnfidoPhrases } from 'src/Types/onfido-phrases.type';
 
-const getOnfidoPhrases = () => ({
+const getOnfidoPhrases = (): TOnfidoPhrases => ({
     country_select: {
         alert_dropdown: {
             country_not_found: <Localize i18n_default_text='Country not found' />,

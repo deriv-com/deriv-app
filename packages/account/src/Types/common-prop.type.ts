@@ -1,7 +1,7 @@
 /** Add types that are shared between components */
 import { FormikProps, FormikValues } from 'formik';
 import { Authorize, ResidenceList } from '@deriv/api-types';
-import { Redirect } from 'react-router-dom';
+import { Redirect, RouteProps } from 'react-router-dom';
 
 export type TToken = {
     display_name: string;
@@ -65,7 +65,7 @@ export type TRoute = {
     icon?: string;
     default?: boolean;
     to?: string;
-    component?: ((cashier_routes?: TRoute[]) => JSX.Element) | typeof Redirect;
+    component?: ((props?: RouteProps['component']) => JSX.Element) | Partial<typeof Redirect>;
     getTitle?: () => string;
     subroutes?: TRoute[];
 };

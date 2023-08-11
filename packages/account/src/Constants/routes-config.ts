@@ -20,13 +20,15 @@ import {
     AccountClosed,
     DeactivateAccount,
     LanguageSettings,
-} from 'Sections';
+} from '../Sections';
+
+import { TRoute, TRouteConfig } from 'Types';
 
 // Error Routes
 const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
 
 // Order matters
-const initRoutesConfig = ({ is_appstore }) => [
+const initRoutesConfig = (is_appstore: boolean): TRouteConfig[] => [
     {
         path: routes.account_closed,
         component: AccountClosed,
@@ -166,14 +168,14 @@ const initRoutesConfig = ({ is_appstore }) => [
     },
 ];
 
-let routesConfig;
+let routesConfig: undefined | TRouteConfig[];
 
 // For default page route if page/path is not found, must be kept at the end of routes_config array
-const route_default = { component: Page404, getTitle: () => localize('Error 404') };
+const route_default: TRoute = { component: Page404, getTitle: () => localize('Error 404') };
 
-const getRoutesConfig = ({ is_appstore }) => {
+const getRoutesConfig = (is_appstore: boolean): TRouteConfig[] => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig({ is_appstore });
+        routesConfig = initRoutesConfig(is_appstore);
         routesConfig.push(route_default);
     }
     return routesConfig;

@@ -38,6 +38,7 @@ type TModalElement = {
     title?: string | React.ReactNode;
     toggleModal?: (e?: React.MouseEvent<HTMLElement>) => void;
     width?: string;
+    shouldCloseOnEscape?: boolean;
 };
 
 const ModalElement = ({
@@ -67,6 +68,7 @@ const ModalElement = ({
     title,
     toggleModal,
     width,
+    shouldCloseOnEscape,
 }: React.PropsWithChildren<TModalElement>) => {
     const el_ref = React.useRef(document.createElement('div'));
     const el_portal_node = portalId && document.getElementById(portalId);
@@ -117,11 +119,11 @@ const ModalElement = ({
     }, []);
     const closeOnEscButton = React.useCallback(
         (e: KeyboardEvent) => {
-            if (e.key === 'Escape') {
+            if (shouldCloseOnEscape && e.key === 'Escape') {
                 toggleModal?.();
             }
         },
-        [toggleModal]
+        [toggleModal, shouldCloseOnEscape]
     );
     React.useEffect(() => {
         window.addEventListener('keydown', closeOnEscButton);
@@ -246,6 +248,7 @@ const Modal = ({
     transition_timeout,
     toggleModal,
     width,
+    shouldCloseOnEscape = true,
 }: React.PropsWithChildren<TModal>) => (
     <CSSTransition
         appear
@@ -287,6 +290,7 @@ const Modal = ({
             small={small}
             width={width}
             elements_to_ignore={elements_to_ignore}
+            shouldCloseOnEscape={shouldCloseOnEscape}
         >
             {children}
         </ModalElement>

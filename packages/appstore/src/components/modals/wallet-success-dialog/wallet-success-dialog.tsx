@@ -34,6 +34,7 @@ const WalletSuccessDialog = observer(() => {
             toggleModal={toggleIsWalletCreationSuccessModalOpen}
             has_close_icon={false}
             small
+            shouldCloseOnEscape={false}
         >
             <Modal.Body>
                 <div className='wallet-success-dialog__icon'>

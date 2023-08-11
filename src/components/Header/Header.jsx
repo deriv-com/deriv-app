@@ -4,14 +4,7 @@ import classNames from 'classnames';
 import { api_base } from '@api-base';
 import config from '@config';
 import { isMobile, isDesktop } from '@utils';
-import {
-    removeAllTokens,
-    syncWithDerivApp,
-    isLoggedIn,
-    getActiveLoginId,
-    setActiveLoginId,
-    getClientAccounts,
-} from '@storage';
+import { removeAllTokens, getActiveLoginId, setActiveLoginId, getClientAccounts } from '@storage';
 import {
     resetClient,
     updateActiveAccount,
@@ -52,7 +45,6 @@ const Header = () => {
     const platformDropdownRef = React.useRef();
     const { is_logged, active_token } = useSelector(state => state.client);
     const { is_bot_running } = useSelector(state => state.ui);
-    const is_logged_in = isLoggedIn();
     const dispatch = useDispatch();
     const hideDropdown = e => !platformDropdownRef?.current?.contains(e.target) && setIsPlatformSwitcherOpen(false);
 
@@ -60,7 +52,7 @@ const Header = () => {
     // it should happen in the main component which main.jsx
     // We need to move every check related to login or active account to main.jsx
     React.useEffect(() => {
-        console.log(is_logged_in, 'is_logged_in');
+        console.log(active_token, 'active_token active_token active_token');
         const active_account = { ...api_base.account_info };
         const { landing_company_name } = active_account;
         if (landing_company_name === 'maltainvest') {
@@ -121,7 +113,6 @@ const Header = () => {
                     dispatch(resetClient());
                     dispatch(setAccountSwitcherLoader(true));
                 });
-            syncWithDerivApp();
         }
     }, [active_token]);
 

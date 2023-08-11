@@ -28,9 +28,20 @@ const Main = () => {
     const query_object = useQuery();
 
     React.useEffect(() => {
+        window.addEventListener('storage', event => {
+            switch (event.key) {
+                case 'client.accounts':
+                case 'active_loginid':
+                    window.location.reload();
+                    break;
+                default:
+                    break;
+            }
+        });
+
         const new_blockly = new Blockly();
         setBlockly(new_blockly);
-        init(new_blockly);
+        init();
         loginCheck()
             .then(() => initializeBlockly(new_blockly))
             .then(() => setIsWorkspaceRendered(new_blockly?.is_workspace_rendered));

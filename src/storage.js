@@ -134,11 +134,7 @@ export const addToken = (token, loginInfo, hasRealityCheck, hasTradeLimitation) 
 };
 
 export const removeAllTokens = () => {
-    const is_logging_in = localStorage.getItem('is_logging_in');
-    if (!is_logging_in) {
-        setActiveLoginId('');
-    }
-    dropFromStorage('is_logging_in');
+    setActiveLoginId('');
     setClientAccounts({});
     syncWithDerivApp(); // To clear the session from app.deriv.com as well via localstoragesync
 };
@@ -146,6 +142,8 @@ export const removeAllTokens = () => {
 export const isDone = varName => varName in store;
 
 export const syncWithDerivApp = () => {
+    console.trace();
+    console.log('syncWithDerivApp is running');
     const iframe = document.getElementById('localstorage-sync');
     const { origin } = getRelatedDeriveOrigin();
 
@@ -153,7 +151,7 @@ export const syncWithDerivApp = () => {
         iframe.contentWindow.postMessage(
             {
                 key: CLIENT_ACCOUNT,
-                value: getClientAccounts(),
+                value: JSON.stringify(getClientAccounts()),
             },
             origin
         );

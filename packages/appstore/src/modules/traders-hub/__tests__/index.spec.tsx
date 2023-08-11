@@ -6,6 +6,7 @@ import { APIProvider } from '@deriv/api';
 import TradersHub from '..';
 
 jest.mock('Components/modals/modal-manager', () => jest.fn(() => 'mockedModalManager'));
+jest.mock('Components/main-title-bar', () => jest.fn(() => 'mockedMainTitleBar'));
 jest.mock('Components/cfds-listing', () => jest.fn(() => 'mockedCFDsListing'));
 jest.mock('Components/options-multipliers-listing', () => jest.fn(() => 'mocked<OptionsAndMultipliersListing>'));
 jest.mock('../../tour-guide/tour-guide', () => jest.fn(() => 'mocked<TourGuide>'));

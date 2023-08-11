@@ -4,23 +4,13 @@ name: Coveralls
 
 jobs:
 
-  build:
-    name: Reporter
+  Reporter:
+    name: Upload Coverage
     runs-on: ubuntu-latest
     steps:
 
-      - uses: actions/checkout@v3
-
-      - name: Use Node.js 18.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.x
-
-      - name: Bootstrap, Build, and make test-coverage
-        run: |
-          npm ci
-          npm run bootstrap
-          npm run build:all
-          JEST_MAX_WORKERS=3 npm run test:jest
+      - name: Build and Test
+        uses: ./.github/actions/build-and-test.yml
+      
       - name: Coveralls
         uses: coverallsapp/github-action@v2

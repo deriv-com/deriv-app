@@ -1,0 +1,88 @@
+name: Build and Deploy
+
+
+runs:
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+
+      - name: Setup Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: |
+            - "node_modules"
+            - "packages/account/node_modules"
+            - "packages/api/node_modules"
+            - "packages/appstore/node_modules"
+            - "packages/bot-skeleton/node_modules"
+            - "packages/bot-web-ui/node_modules"
+            - "packages/cashier/node_modules"
+            - "packages/components/node_modules"
+            - "packages/core/node_modules"
+            - "packages/hooks/node_modules"
+            - "packages/cfd/node_modules"
+            - "packages/indicators/node_modules"
+            - "packages/p2p/node_modules"
+            - "packages/reports/node_modules"
+            - "packages/shared/node_modules"
+            - "packages/stores/node_modules"
+            - "packages/trader/node_modules"
+            - "packages/translations/node_modules"
+            - "packages/utils/node_modules"
+            - "packages/analytics/node_modules"
+            
+          key: node_modules-${{ hashFiles('**/package-lock.json') }}
+          
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: List the state of node modules
+        continue-on-error: true
+        run: | 
+          npm ci
+          npm run bootstrap
+
+      - name: Build
+        run: npm run build:all
+
+      - name: "Check TypeScript for @deriv/api"
+        run: npx tsc --project packages/api/tsconfig.json -noEmit
+
+      - name: "Check TypeScript for @deriv/hooks"
+        run: npx tsc --project packages/hooks/tsconfig.json -noEmit
+
+      - name: "Check TypeScript for @deriv/utils"
+        run: npx tsc --project packages/utils/tsconfig.json -noEmit
+
+      - name: "Check TypeScript for @deriv/analytics"
+        run: npx tsc --project packages/analytics/tsconfig.json -noEmit
+
+      - name: "Check TypeScript for @deriv/stores"
+        run: npx tsc --project packages/stores/tsconfig.json -noEmit
+
+      - name: "Check tests for @deriv/hooks"
+        run: bash ./scripts/check-tests.sh packages/hooks/src
+
+      - name: "Check tests for @deriv/utils"
+        run: bash ./scripts/check-tests.sh packages/utils/src
+
+      - name: "Check tests for @deriv/analytics"
+        run: bash ./scripts/check-tests.sh packages/analytics/src
+
+      - name: "Run tests"
+        run: npm test
+
+        

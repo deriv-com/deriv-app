@@ -134,10 +134,10 @@ const EmptyPlaceholderWrapper = ({ is_empty, component_icon, children }: TEmptyP
 );
 
 const MobileRowRenderer = ({
-    row,
+    row = {},
     is_footer,
-    columns_map,
-    server_time,
+    columns_map = {},
+    server_time = toMoment(),
     onClickCancel,
     onClickSell,
     measure,

@@ -8,7 +8,6 @@ jest.mock('Assets/Trading/Categories/trade-categories.jsx', () => jest.fn(() => 
 jest.mock('../ContractTypeInfo/contract-type-glossary', () => jest.fn(() => 'TradeTypeGlossary'));
 
 const mocked_props: React.ComponentProps<typeof Info> = {
-    handleNavigationClick: jest.fn(),
     handleSelect: jest.fn(),
     item: {
         text: 'Multipliers',
@@ -265,11 +264,6 @@ describe('<Info />', () => {
         const trade_type_button = screen.queryByText('Choose Multipliers');
         expect(trade_type_button).toBeInTheDocument();
     });
-    it('Carousel should render 8 Gifs, and 8 trade descriptions', () => {
-        render(<Info {...mocked_props} />);
-        expect(screen.getAllByText(/tradecategoriesgif/i)).toHaveLength(8);
-        expect(screen.getAllByText('TradeDescription')).toHaveLength(8);
-    });
     it('Should call handleSelect when clicking on "Choose Multipliers" button', () => {
         render(<Info {...mocked_props} />);
         const trade_type_button = screen.queryByText('Choose Multipliers') as HTMLButtonElement;
@@ -278,16 +272,12 @@ describe('<Info />', () => {
         expect(mocked_props.handleSelect).toHaveBeenCalled();
     });
     it('Should render toggle buttons if vanilla info page is open', () => {
-        render(<Info {...mocked_props} initial_index={7} />);
+        mocked_props.item.text = 'Call/Put';
+        mocked_props.item.value = 'vanilla';
+        render(<Info {...mocked_props} />);
         const trade_type_button = screen.getByText('Choose Call/Put');
         expect(screen.getByText('Description')).toBeInTheDocument();
         expect(screen.getByText(/glossary/i)).toBeInTheDocument();
         expect(trade_type_button).toBeInTheDocument();
-    });
-    it('should render 8 glossary pages if glossary button is clicked', () => {
-        render(<Info {...mocked_props} initial_index={7} />);
-        const glossary_button = screen.getByText('Glossary');
-        userEvent.click(glossary_button);
-        expect(screen.getAllByText(/tradetypeglossary/i)).toHaveLength(8);
     });
 });

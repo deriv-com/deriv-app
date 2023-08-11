@@ -292,7 +292,7 @@ describe('ContractTypeMenu', () => {
     });
 
     it('should render <ContractTypeMenu /> component when click on ', () => {
-        render(<ContractTypeWidget list={list} value={item.value} />);
+        render(<ContractTypeWidget list={list} value={item.value} onChange={jest.fn()} />);
         const dt_contract_dropdown = screen.getByTestId('dt_contract_dropdown');
         fireEvent.click(dt_contract_dropdown);
 

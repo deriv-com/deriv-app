@@ -4,6 +4,6 @@ name: Coveralls
 
 jobs:
     Coveralls:
-      uses: ./build_and_test
+      uses:  ./.github/actions/build_and_test
       - name: Coveralls
         uses: coverallsapp/github-action@v2

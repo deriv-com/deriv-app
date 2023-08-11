@@ -1,2 +1,2 @@
 export { default as unFormatLocaleString } from './unFormatLocaleString';
-export { default as compareStrings } from './compareStrings';
+export { default as lexicographicalStringComparer } from './lexicographicalStringComparer';

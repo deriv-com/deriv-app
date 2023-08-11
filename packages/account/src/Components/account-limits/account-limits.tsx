@@ -1,6 +1,6 @@
-import { compareStrings } from '@deriv/utils';
 import { formatMoney, isDesktop, isMobile, useIsMounted, PlatformContext } from '@deriv/shared';
 import { FormikValues } from 'formik';
+import { lexicographicalStringComparer } from '@deriv/utils';
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
@@ -109,7 +109,9 @@ const AccountLimits = observer(
         }
 
         const { commodities, forex, indices, synthetic_index } = { ...market_specific };
-        const forex_ordered = forex?.slice().sort((a: FormikValues, b: FormikValues) => compareStrings(a.name, b.name));
+        const forex_ordered = forex
+            ?.slice()
+            .sort((a: FormikValues, b: FormikValues) => lexicographicalStringComparer(a.name, b.name));
         const derived_ordered = synthetic_index
             ?.slice()
             .sort((a: FormikValues, b: FormikValues) => (a.level > b.level ? 1 : -1));

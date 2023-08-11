@@ -21,7 +21,7 @@ const NoAds = ({ is_ads_page = false }) => {
 
     const onClickButton = () => {
         if (!is_ads_page) handleTabClick(2);
-        if (is_buy) setCreateSellAdFromNoAds(true);
+        if (is_buy && !is_ads_page) setCreateSellAdFromNoAds(true);
         setShowAdForm(true);
         history.push(routes.p2p_my_ads);
     };

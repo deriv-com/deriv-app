@@ -32,34 +32,18 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
     useModalManagerContext: jest.fn(() => mock_modal_manager),
 }));
 
+jest.mock('Pages/buy-sell/buy-sell-form', () => jest.fn(() => <div>BuySellForm</div>));
 jest.mock('Pages/buy-sell/buy-sell-form-receive-amount.jsx', () => jest.fn(() => <div>BuySellFormReceiveAmount</div>));
 jest.mock('../buy-sell-modal-error', () => jest.fn(() => <div>BuySellModalError</div>));
 
 describe('<BuySellModal />', () => {
     beforeEach(() => {
         mock_store = {
-            advertiser_page_store: {
-                setFormErrorMessage: jest.fn(),
-            },
             buy_sell_store: {
                 advert: {
                     advertiser_details: {
                         name: 'test',
                     },
-                    description: 'test description',
-                    effective_rate: 1,
-                    local_currency: 'IDR',
-                    max_order_amount_limit_display: '10.00',
-                    min_order_amount_limit: 5,
-                    min_order_amount_limit_display: '5.00',
-                    payment_method_names: ['Alipay'],
-                    price: 1,
-                    rate: 1,
-                    rate_type: 'fixed',
-                },
-                form_props: {
-                    setIsSubmitDisabled: jest.fn(),
-                    setSubmitForm: jest.fn(),
                 },
                 selected_ad_state: {
                     account_currency: 'USD',
@@ -67,10 +51,6 @@ describe('<BuySellModal />', () => {
                 table_type: 'buy',
                 fetchAdvertiserAdverts: jest.fn(),
                 is_buy_advert: true,
-                setFormProps: jest.fn(),
-                setHasPaymentMethods: jest.fn(),
-                setInitialReceiveAmount: jest.fn(),
-                setReceiveAmount: jest.fn(),
             },
             floating_rate_store: {
                 setIsMarketRateChanged: jest.fn(),
@@ -78,18 +58,15 @@ describe('<BuySellModal />', () => {
             general_store: {
                 balance: 10000,
                 is_form_modified: false,
-                setHistory: jest.fn(),
-                setLocation: jest.fn(),
             },
             my_profile_store: {
                 should_show_add_payment_method_form: false,
-                hideAddPaymentMethodForm: jest.fn(),
                 getPaymentMethodsList: jest.fn(),
                 getSelectedPaymentMethodDetails: jest.fn(),
+                hideAddPaymentMethodForm: jest.fn(),
                 setAddPaymentMethodErrorMessage: jest.fn(),
                 setSelectedPaymentMethod: jest.fn(),
                 setSelectedPaymentMethodDisplayName: jest.fn(),
-                setShouldShowAddPaymentMethodForm: jest.fn(),
             },
         };
     });
@@ -143,6 +120,17 @@ describe('<BuySellModal />', () => {
         userEvent.click(cross_icon);
 
         expect(mock_modal_manager.showModal).toHaveBeenCalledWith({ key: 'CancelAddPaymentMethodModal', props: {} });
+    });
+
+    it('should call submitForm when pressing Confirm', () => {
+        const submitFormSpy = jest.spyOn(React, 'useRef');
+
+        render(<BuySellModal />);
+
+        const confirm_button = screen.getByRole('button', { name: 'Confirm' });
+        userEvent.click(confirm_button);
+
+        expect(submitFormSpy).toHaveBeenCalled();
     });
 
     it('should setErrorMessage to empty string if is_modal_open is false', () => {

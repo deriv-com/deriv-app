@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
 import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal, ThemedScrollbars } from '@deriv/components';
+import { routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AddPaymentMethodForm from 'Pages/my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
@@ -11,7 +12,6 @@ import { useStores } from 'Stores';
 import BuySellModalFooter from './buy-sell-modal-footer';
 import BuySellModalTitle from './buy-sell-modal-title';
 import BuySellModalError from './buy-sell-modal-error';
-import { routes } from '@deriv/shared';
 
 const BuySellModal = () => {
     const { hideModal, is_modal_open, showModal } = useModalManagerContext();
@@ -34,7 +34,7 @@ const BuySellModal = () => {
     const setSubmitForm = (submitFormFn: () => void) => (submitForm.current = submitFormFn);
 
     const onCancel = () => {
-        if (my_profile_store.should_show_add_payment_method_form) {
+        if (should_show_add_payment_method_form) {
             if (general_store.is_form_modified) {
                 showModal({
                     key: 'CancelAddPaymentMethodModal',

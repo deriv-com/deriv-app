@@ -56,14 +56,27 @@ type TEmptyPlaceholderWrapper = React.PropsWithChildren<{
     component_icon: string;
 }>;
 
-type TMobileRowRenderer = {
+type TUiStore = Pick<
+    ReturnType<typeof useStore>['ui'],
+    | 'addToast'
+    | 'current_focus'
+    | 'removeToast'
+    | 'setCurrentFocus'
+    | 'should_show_cancellation_warning'
+    | 'toggleCancellationWarning'
+    | 'toggleUnsupportedContractModal'
+>;
+
+type TMobileRowRenderer = TUiStore & {
     row?: TDataList['data_source'][0];
     is_footer?: boolean;
-    columns_map?: Record<TColIndex, TDataListCell['column']>;
+    columns_map: Record<TColIndex, TDataListCell['column']>;
+    getContractById: ReturnType<typeof useStore>['contract_trade']['getContractById'];
     server_time: moment.Moment;
     onClickCancel: (contract_id?: number) => void;
+    onClickRemove: TPortfolioStore['removePositionById'];
     onClickSell: (contract_id?: number) => void;
-    measure: () => void;
+    measure?: () => void;
 };
 
 type TOpenPositionsTable = {
@@ -141,16 +154,16 @@ const MobileRowRenderer = ({
             <>
                 <div className='open-positions__data-list-footer--content'>
                     <div>
-                        <DataList.Cell row={row} column={columns_map?.purchase} />
-                        <DataList.Cell row={row} column={columns_map?.payout} />
+                        <DataList.Cell row={row} column={columns_map.purchase} />
+                        <DataList.Cell row={row} column={columns_map.payout} />
                     </div>
                     <div>
                         <DataList.Cell
                             className='data-list__row-cell--amount'
                             row={row}
-                            column={columns_map?.indicative}
+                            column={columns_map.indicative}
                         />
-                        <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map?.profit} />
+                        <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.profit} />
                     </div>
                 </div>
             </>
@@ -169,10 +182,9 @@ const MobileRowRenderer = ({
 
     if (isMultiplierContract(type) || isAccumulatorContract(type)) {
         return (
-            // @ts-expect-error complains about missing props but we spread props here checked props and they are there
             <PositionsDrawerCard
                 contract_info={contract_info}
-                contract_update={contract_update || {}}
+                contract_update={contract_update}
                 currency={currency ?? ''}
                 is_link_disabled
                 onClickCancel={onClickCancel}
@@ -187,7 +199,7 @@ const MobileRowRenderer = ({
     return (
         <>
             <div className='data-list__row'>
-                <DataList.Cell row={row} column={columns_map?.type} />
+                <DataList.Cell row={row} column={columns_map.type} />
                 {isVanillaContract(type) || (isTurbosContract(type) && !tick_count) ? (
                     <ProgressSliderMobile
                         current_tick={current_tick}
@@ -204,16 +216,16 @@ const MobileRowRenderer = ({
                 )}
             </div>
             <div className='data-list__row'>
-                <DataList.Cell row={row} column={columns_map?.reference} />
-                <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map?.currency} />
+                <DataList.Cell row={row} column={columns_map.reference} />
+                <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.currency} />
             </div>
             <div className='data-list__row'>
-                <DataList.Cell row={row} column={columns_map?.purchase} />
-                <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map?.indicative} />
+                <DataList.Cell row={row} column={columns_map.purchase} />
+                <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.indicative} />
             </div>
             <div className='data-list__row'>
-                <DataList.Cell row={row} column={columns_map?.payout} />
-                <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map?.profit} />
+                <DataList.Cell row={row} column={columns_map.payout} />
+                <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.profit} />
             </div>
             <div className='data-list__row-divider' />
             <div className='data-list__row'>
@@ -419,7 +431,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         onClickCancel,
         onClickSell,
         onMount,
-        removePositionById,
+        removePositionById: onClickRemove,
     } = portfolio;
     const { currency, is_eu, is_virtual } = client;
     const {
@@ -437,7 +449,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     const { getContractById } = contract_trade;
 
     const store_props = {
-        removePositionById,
+        onClickRemove,
         NotificationMessages,
         addToast,
         current_focus,

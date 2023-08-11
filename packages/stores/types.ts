@@ -18,6 +18,7 @@ import type {
 import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
 import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
+import { TContractStore as ContractStore } from '../shared/src/utils/contract';
 
 type TRoutes =
     | '/404'
@@ -161,6 +162,7 @@ type TMenuItem = {
 type TAddToastProps = {
     key: string;
     content: string | React.ReactNode;
+    is_bottom?: boolean | undefined;
     timeout?: number;
     type: string;
 };
@@ -476,7 +478,7 @@ type TUiStore = {
     is_ready_to_deposit_modal_visible: boolean;
     reports_route_tab_index: number;
     should_show_cancellation_warning: boolean;
-    toggleCancellationWarning: (state_change: boolean) => void;
+    toggleCancellationWarning: (state_change?: boolean) => void;
     toggleUnsupportedContractModal: (state_change: boolean) => void;
     toggleReports: (is_visible: boolean) => void;
     is_real_acc_signup_on: boolean;
@@ -542,7 +544,7 @@ type TPortfolioStore = {
 };
 
 type TContractStore = {
-    getContractById: (id: number) => ProposalOpenContract;
+    getContractById: (id: number) => ContractStore;
     contract_info: TPortfolioPosition['contract_info'];
     contract_update_stop_loss: string;
     contract_update_take_profit: string;

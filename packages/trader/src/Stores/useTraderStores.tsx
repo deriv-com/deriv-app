@@ -2,7 +2,23 @@ import React from 'react';
 import { useStore } from '@deriv/stores';
 import TradeStore from './Modules/Trading/trade-store';
 
-const TraderStoreContext = React.createContext<TradeStore | null>(null);
+export type TTextValueStrings = {
+    text: string;
+    value: string;
+};
+
+type TContractTypesList = {
+    [key: string]: {
+        name: string;
+        categories: TTextValueStrings[];
+    };
+};
+
+type TOverrideTradeStore = Omit<TradeStore, 'contract_types_list'> & {
+    contract_types_list: TContractTypesList;
+};
+
+const TraderStoreContext = React.createContext<TOverrideTradeStore | null>(null);
 
 export const TraderStoreProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     const { modules } = useStore();

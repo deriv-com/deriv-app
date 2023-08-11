@@ -68,7 +68,7 @@ export default class TicksService {
     }
 
     async request(options) {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             const { symbol, granularity } = options;
 
             const style = getType(granularity);
@@ -80,9 +80,13 @@ export default class TicksService {
             if (style === 'candles' && this.candles.hasIn([symbol, Number(granularity)])) {
                 resolve(this.candles.getIn([symbol, Number(granularity)]));
             }
-            this.requestStream({ ...options, style }).then(res => {
-                resolve(res);
-            });
+            this.requestStream({ ...options, style })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(e => {
+                    reject(e);
+                });
         });
     }
 
@@ -106,6 +110,8 @@ export default class TicksService {
                 })
                 .catch(e => {
                     globalObserver.emit('Error', e);
+                    this.ticks_history_promise = null;
+                    api_base.toggleRunButton(false);
                     reject(e);
                 });
         });
@@ -224,9 +230,7 @@ export default class TicksService {
         if (style === 'ticks') {
             if (!this.ticks_history_promise || this.ticks_history_promise.stringified_options !== stringified_options) {
                 this.ticks_history_promise = {
-                    promise: this.requestPipSizes().then(async () => {
-                        await this.requestTicks(options);
-                    }),
+                    promise: this.requestPipSizes().then(() => this.requestTicks(options)),
                     stringified_options,
                 };
             }

@@ -195,6 +195,9 @@ class DBot {
     runBot() {
         try {
             const code = this.generateCode();
+
+            if (!this.interpreter.bot.tradeEngine.checkTicksPromiseExists()) this.interpreter = Interpreter();
+
             this.is_bot_running = true;
 
             api_base.setIsRunning(true);

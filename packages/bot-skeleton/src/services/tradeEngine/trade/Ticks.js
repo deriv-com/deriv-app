@@ -30,6 +30,10 @@ export default Engine =>
             }
         }
 
+        checkTicksPromiseExists() {
+            return this.$scope.ticksService.ticks_history_promise;
+        }
+
         getTicks(toString = false) {
             return new Promise(resolve => {
                 this.$scope.ticksService.request({ symbol: this.symbol }).then(ticks => {

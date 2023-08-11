@@ -5,22 +5,21 @@
     background-color: var(--general-hover);
     height: inherit;
 
+    @include mobile {
+        gap: unset;
+    }
+
     .onboarding-header {
-        margin-left: 2.5rem;
-        margin-right: 2.5rem;
+        padding: 1.5rem 2.5rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
 
         @include mobile {
-            margin-left: 1rem;
-            margin-right: 1rem;
+            margin-inline: 5%;
+            width: 90%;
+            padding: 1.5rem 0;
         }
-
-        &--deriv-logo {
-            margin-top: 1rem;
-        }
-
         &__cross-icon {
             cursor: pointer;
         }
@@ -33,7 +32,9 @@
         height: 100%;
 
         @include mobile {
-            height: 60%;
+            height: calc(100% - 22rem);
+            overflow: auto;
+            overflow-x: hidden;
         }
     }
 
@@ -49,31 +50,38 @@
             margin-top: 1rem;
         }
 
+        &-description {
+            @include mobile {
+                height: 8rem;
+            }
+
+            &__header {
+                line-height: 3rem;
+
+                @include mobile {
+                    margin-bottom: 1rem;
+                }
+            }
+
+            &__text {
+                line-height: 2rem;
+                margin-top: 0.8rem;
+
+                @include mobile {
+                    margin: 0 1.5rem;
+                    padding: 0 2rem;
+                }
+            }
+        }
+
         &__progress-bar {
-            margin-top: 2rem;
-        }
-
-        &-header {
-            line-height: 3rem;
-
-            @include mobile {
-                margin-bottom: 1rem;
-            }
-        }
-
-        &-text {
-            line-height: 2rem;
-            margin-top: 0.8rem;
-            @include mobile {
-                margin-top: 0;
-                margin-bottom: 1.5rem;
-                padding: 0 2rem;
-            }
+            margin-top: 3rem;
         }
 
         &-buttons {
             display: flex;
             justify-content: space-around;
+            align-items: center;
             margin: 2.4rem 0;
 
             @include mobile {

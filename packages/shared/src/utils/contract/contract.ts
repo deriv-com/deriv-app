@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { unique } from '../object';
-import { TContractInfo, TLimitOrder, TDigitsInfo, TTickItem } from './contract-types';
+import { capitalizeFirstLetter } from '../string/string_util';
+import { TContractInfo, TDigitsInfo, TLimitOrder, TTickItem } from './contract-types';
 
 type TGetAccuBarriersDTraderTimeout = (params: {
     barriers_update_timestamp: number;
@@ -13,6 +14,10 @@ type TGetAccuBarriersDTraderTimeout = (params: {
 export const DELAY_TIME_1S_SYMBOL = 500;
 // generation_interval will be provided via API later to help us distinguish between 1-second and 2-second symbols
 export const symbols_2s = ['R_10', 'R_25', 'R_50', 'R_75', 'R_100'];
+export const TURBOS = {
+    LONG: 'turboslong',
+    SHORT: 'turbosshort',
+} as const;
 
 export const getContractStatus = ({ contract_type, exit_tick_time, profit, status }: TContractInfo) => {
     const closed_contract_status = profit && profit < 0 && exit_tick_time ? 'lost' : 'won';
@@ -47,7 +52,7 @@ export const isUserSold = (contract_info: TContractInfo) => contract_info.status
 export const isValidToCancel = (contract_info: TContractInfo) => !!contract_info.is_valid_to_cancel;
 
 export const isValidToSell = (contract_info: TContractInfo) =>
-    !isEnded(contract_info) && !isUserSold(contract_info) && Number(contract_info.is_valid_to_sell) === 1;
+    !isEnded(contract_info) && !isUserSold(contract_info) && !!contract_info.is_valid_to_sell;
 
 export const hasContractEntered = (contract_info: TContractInfo) => !!contract_info.entry_spot;
 
@@ -58,6 +63,8 @@ export const isAccumulatorContractOpen = (contract_info: TContractInfo = {}) => 
 };
 
 export const isMultiplierContract = (contract_type = '') => /MULT/i.test(contract_type);
+
+export const isTurbosContract = (contract_type = '') => /TURBOS/i.test(contract_type);
 
 export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contract_type);
 
@@ -197,3 +204,8 @@ export const getContractUpdateConfig = ({ contract_update, limit_order }: TContr
 export const shouldShowExpiration = (symbol = '') => symbol.startsWith('cry');
 
 export const shouldShowCancellation = (symbol = '') => !/^(cry|CRASH|BOOM|stpRNG|WLD|JD)/.test(symbol);
+
+export const getContractSubtype = (type: string) =>
+    /(VANILLALONG|TURBOS)/i.test(type)
+        ? capitalizeFirstLetter(type.replace(/(VANILLALONG|TURBOS)/i, '').toLowerCase())
+        : '';

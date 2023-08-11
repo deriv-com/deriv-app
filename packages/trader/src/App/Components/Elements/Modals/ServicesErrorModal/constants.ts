@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 
-export const getTitle = type => {
+export const getTitle = (type: string) => {
     switch (type) {
         case 'buy':
             return localize('Purchase Error');

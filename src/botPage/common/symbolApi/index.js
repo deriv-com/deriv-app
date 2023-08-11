@@ -1,5 +1,5 @@
 import { api_base } from '@api-base';
-import { getTokenList, removeAllTokens } from '@storage';
+import { removeAllTokens, getClientAccounts, getActiveLoginId } from '@storage';
 import { observer as globalObserver } from '@utilities/observer';
 import config from '@currency-config';
 import { getObjectValue } from '@utils';
@@ -62,11 +62,14 @@ export default class _Symbol {
                         globalObserver.emit('Error', error);
                     });
             };
+
             // Authorize the WS connection when possible for accurate offered Symbols & AssetIndex
-            const token_list = getTokenList();
-            if (token_list.length) {
+            const accounts = getClientAccounts();
+            const loginid = getActiveLoginId();
+
+            if (loginid && accounts && accounts?.[loginid]?.token) {
                 api_base.api
-                    .authorize(token_list[0].token)
+                    .authorize(accounts?.[loginid]?.token)
                     .then(() => getActiveSymbolsLogic())
                     .catch(e => {
                         globalObserver.emit('Error', e);

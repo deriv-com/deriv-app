@@ -6,7 +6,7 @@ const initial_states = {
     is_bot_running: false,
     account_switcher_loader: true,
     show_bot_unavailable_page: false,
-    account_switcher_token: '',
+    account_switcher_id: '',
     is_header_loaded: false,
     should_reload_workspace: true,
 };
@@ -30,8 +30,8 @@ export const uiSlice = createSlice({
         updateShowMessagePage: (state, action) => {
             state.show_bot_unavailable_page = action.payload;
         },
-        setAccountSwitcherToken: (state, action) => {
-            state.account_switcher_token = action.payload;
+        setAccountSwitcherId: (state, action) => {
+            state.account_switcher_id = action.payload;
         },
         setIsHeaderLoaded: (state, action) => {
             state.is_header_loaded = action.payload;
@@ -48,7 +48,7 @@ export const {
     setIsBotRunning,
     setAccountSwitcherLoader,
     updateShowMessagePage,
-    setAccountSwitcherToken,
+    setAccountSwitcherId,
     setIsHeaderLoaded,
     setShouldReloadWorkspace,
 } = uiSlice.actions;

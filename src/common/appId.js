@@ -2,14 +2,14 @@ import { api_base } from '@api-base';
 import {
     setClientAccounts,
     addToken,
-    getTokenList,
     removeAllTokens,
     syncWithDerivApp,
     getLanguage,
-    updateTokenList,
     getCustomEndpoint,
     getAppIdFallback,
     setActiveLoginId,
+    getClientAccounts,
+    getActiveLoginId,
 } from '@storage';
 import { getRelatedDeriveOrigin } from '@utils';
 import GTM from '@utilities/integrations/gtm';
@@ -104,27 +104,29 @@ export async function loginAndSetTokens(token_list) {
 
 export const logoutAllTokens = () =>
     new Promise(resolve => {
-        const tokenList = getTokenList();
+        const loginid = getActiveLoginId();
+        const account_list = getClientAccounts();
+
         const logout = () => {
             removeAllTokens();
             resolve();
         };
-        if (tokenList.length === 0) {
-            logout();
-        } else {
+
+        if (loginid && account_list[loginid]?.token) {
             api_base.api
-                .authorize(tokenList?.[0].token)
+                .authorize(account_list[loginid]?.token)
                 .then(() => {
                     api_base.api.send({ logout: 1 }).finally(logout);
                 })
                 .catch(logout);
+        } else {
+            logout();
         }
     });
 
 export const logoutAndReset = () =>
     new Promise(resolve => {
         logoutAllTokens().then(() => {
-            updateTokenList();
             setActiveLoginId('');
             syncWithDerivApp();
             resolve();

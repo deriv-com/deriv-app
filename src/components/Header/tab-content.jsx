@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import config from '@config';
-import { getTokenList, getClientCountry } from '@storage';
+import { getActiveLoginId, getClientCountry } from '@storage';
 import { translate } from '@i18n';
-import { setAccountSwitcherToken } from '@redux-store/ui-slice';
+import { setAccountSwitcherId } from '@redux-store/ui-slice';
 import { CRYPTO_CURRENCIES } from '@currency-config';
 
 const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, title = 'Deriv Accounts' }) => {
@@ -14,14 +14,15 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
     const { active_account_name } = useSelector(state => state.client);
     const item_ref = React.useRef([]);
     const isReal = tab === 'real';
-    const token_list = getTokenList();
-    const onChangeAccount = acc => {
-        const account_token = token_list.find(token => token.accountName === acc);
-        if (account_token?.token && acc !== active_account_name) {
-            dispatch(setAccountSwitcherToken(account_token?.token));
+
+    const onChangeAccount = login_id => {
+        const active_login_id = getActiveLoginId();
+        if (login_id && active_login_id && login_id !== active_login_id) {
+            dispatch(setAccountSwitcherId(login_id));
             setIsAccDropdownOpen(false);
         }
     };
+
     const low_risk_countries = ['za', 'ec', 'bw'];
     const is_country_low_risk = low_risk_countries.includes(getClientCountry());
     return (

@@ -1,5 +1,11 @@
 import { TrackJS } from 'trackjs';
-import { getContractsForStore, setContractsForStore, getTokenList, removeAllTokens } from '@storage';
+import {
+    getContractsForStore,
+    setContractsForStore,
+    removeAllTokens,
+    getActiveLoginId,
+    getClientAccounts,
+} from '@storage';
 import { isProduction } from '@utils';
 import { api_base } from '@api-base';
 import { translate } from '@i18n';
@@ -288,8 +294,10 @@ export const haveContractsForSymbol = underlyingSymbol => {
     if (!contractsForSymbol) {
         return false;
     }
-    const tokenList = getTokenList();
-    const isDifferentAccount = () => tokenList.length && contractsForSymbol.accountName !== tokenList[0].accountName;
+
+    const loginid = getActiveLoginId();
+
+    const isDifferentAccount = () => loginid && contractsForSymbol.accountName !== loginid;
     if (isDifferentAccount()) {
         return false;
     }
@@ -315,15 +323,18 @@ export const getContractsAvailableForSymbol = async underlyingSymbol => {
 };
 
 export const getContractsAvailableForSymbolFromApi = async underlyingSymbol => {
-    let tokenList = getTokenList();
-    if (tokenList.length) {
+    const loginid = getActiveLoginId();
+    const account_list = getClientAccounts();
+    const token = account_list?.[loginid]?.token || null;
+
+    if (token) {
         try {
-            await api_base.api.authorize(tokenList[0].token);
+            await api_base.api.authorize(token);
         } catch (e) {
             removeAllTokens();
-            tokenList = [];
         }
     }
+
     const contractsForSymbol = {};
     try {
         const response = await api_base.api.send({ contracts_for: underlyingSymbol });
@@ -333,9 +344,9 @@ export const getContractsAvailableForSymbolFromApi = async underlyingSymbol => {
                 available: response.contracts_for.available,
                 timestamp: Date.now(),
             });
-            if (tokenList.length) {
+            if (token) {
                 Object.assign(contractsForSymbol, {
-                    accountName: tokenList[0].accountName,
+                    accountName: loginid,
                 });
             }
             // Avoid duplicate symbols in contractsForStore

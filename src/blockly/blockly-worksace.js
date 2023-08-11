@@ -1,5 +1,5 @@
 import { api_base } from '@api-base';
-import { getTokenList, syncWithDerivApp, getToken, removeAllTokens, updateTokenList } from '@storage';
+import { getActiveLoginId, getClientAccounts, syncWithDerivApp, removeAllTokens } from '@storage';
 import { translate } from '@i18n';
 import { observer as globalObserver } from '@utilities/observer';
 import google_drive_util from '@utilities/integrations/GoogleDrive';
@@ -63,7 +63,9 @@ const checkForRequiredBlocks = () => {
 };
 
 export function applyToolboxPermissions() {
-    const fn = getTokenList().length ? 'show' : 'hide';
+    const login_id = getActiveLoginId();
+    const account_list = getClientAccounts();
+    const fn = login_id && account_list?.[login_id]?.token ? 'show' : 'hide';
     $('#runButton')[fn]().prevAll('.toolbox-separator:first')[fn]();
 }
 
@@ -182,7 +184,6 @@ const addBindings = blockly => {
 
     const removeTokens = () => {
         logoutAllTokens().then(() => {
-            updateTokenList();
             globalObserver.emit('ui.log.info', translate('Logged you out!'));
             syncWithDerivApp();
 
@@ -255,10 +256,10 @@ const addBindings = blockly => {
             return;
         }
 
-        const token = document.getElementById('active-token')?.value;
-        const tokenObj = token ? getToken(token) : false;
+        const login_id = getActiveLoginId();
+        const client_accounts = getClientAccounts();
 
-        if (tokenObj && tokenObj.hasTradeLimitation) {
+        if (login_id && client_accounts?.[login_id]?.hasTradeLimitation) {
             const limits = new Limits();
             limits
                 .getLimits()
@@ -315,7 +316,6 @@ const addEventHandlers = blockly => {
         });
         if (error?.error?.code === 'InvalidToken') {
             removeAllTokens();
-            updateTokenList();
             stopBlockly(blockly);
         }
     });
@@ -350,10 +350,11 @@ const addEventHandlers = blockly => {
 
     globalObserver.register('bot.info', info => {
         if ('profit' in info) {
-            const token = document.getElementById('active-token').value;
-            const user = getToken(token);
+            const login_id = getActiveLoginId();
+            const client_accounts = getClientAccounts();
+
             globalObserver.emit('log.revenue', {
-                user,
+                user: client_accounts?.[login_id] || {},
                 profit: info.profit,
                 contract: info.contract,
             });
@@ -364,7 +365,6 @@ const addEventHandlers = blockly => {
 const initialize = blockly =>
     new Promise(resolve => {
         updateConfigCurrencies().then(() => {
-            updateTokenList();
             logHandler();
             applyToolboxPermissions();
             setElementActions(blockly);

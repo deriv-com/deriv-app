@@ -9,7 +9,6 @@ const CONFIG_SERVER_URL = 'config.server_url';
 const CONFIG_APP_ID = 'config.app_id';
 const DEFAULT_APP_ID = 'config.default_app_id';
 const TOUR_STATE = 'tour_state';
-const TOKEN_LIST = 'tokenList';
 const ACTIVE_LOGIN_ID = 'active_loginid';
 const LANGUAGE = 'lang';
 const CONTRACTS_FOR_STORE = 'contractsForStore';
@@ -20,20 +19,6 @@ let hasReadystateListener = false;
 if (typeof localStorage !== 'undefined') {
     store = localStorage;
 }
-
-export const getTokenList = () => {
-    store[TOKEN_LIST] = !(TOKEN_LIST in store) ? '[]' : store[TOKEN_LIST];
-    try {
-        return JSON.parse(store[TOKEN_LIST]);
-    } catch (e) {
-        store[TOKEN_LIST] = '[]';
-        return [];
-    }
-};
-
-export const setTokenList = (tokenList = []) => {
-    store[TOKEN_LIST] = JSON.stringify(tokenList);
-};
 
 export const getActiveLoginId = () => {
     store[ACTIVE_LOGIN_ID] = !(ACTIVE_LOGIN_ID in store) ? '' : store[ACTIVE_LOGIN_ID];
@@ -134,10 +119,6 @@ export const getDefaultAppId = () => {
 
 export const dropFromStorage = varName => delete store[varName];
 
-// const findAccount = (accountName = '') => getTokenList().findIndex(tokenInfo => tokenInfo.accountName === accountName);
-
-export const findToken = (token = '') => getTokenList().findIndex(tokenInfo => tokenInfo.token === token);
-
 export const addToken = (token, loginInfo, hasRealityCheck, hasTradeLimitation) => {
     const { loginid: accountName } = loginInfo;
 
@@ -152,29 +133,11 @@ export const addToken = (token, loginInfo, hasRealityCheck, hasTradeLimitation) 
     return account;
 };
 
-export const getToken = token => {
-    const tokenList = getTokenList();
-    const index = findToken(token);
-    return index >= 0 ? tokenList[index] : {};
-};
-
-export const removeToken = token => {
-    const index = findToken(token);
-    if (index > -1) {
-        const tokenList = getTokenList();
-        tokenList.splice(index, 1);
-        setTokenList(tokenList);
-    }
-};
-
 export const removeAllTokens = () => {
     const is_logging_in = localStorage.getItem('is_logging_in');
-
     if (!is_logging_in) {
         setActiveLoginId('');
     }
-
-    setTokenList([]);
     dropFromStorage('is_logging_in');
     setClientAccounts({});
     syncWithDerivApp(); // To clear the session from app.deriv.com as well via localstoragesync
@@ -218,112 +181,12 @@ export const syncWithDerivApp = () => {
 };
 
 export const getActiveAccount = () => {
-    const token_list = getTokenList();
-    if (token_list?.length) {
-        const active_account = getActiveLoginId();
-        const client_accounts_info = token_list;
-        if (Array.isArray(client_accounts_info)) {
-            const active_account_info = client_accounts_info?.find(account => account.accountName === active_account);
-            if (active_account_info?.loginInfo) {
-                return active_account_info.loginInfo;
-            }
-            return {};
-        }
-        return {};
+    const active_login_id = getActiveLoginId();
+    const client_accounts = getClientAccounts();
+    if (active_login_id && client_accounts?.[active_login_id]?.token) {
+        return client_accounts?.[active_login_id];
     }
     return {};
-};
-
-export const convertForBinaryStore = clientAccounts => {
-    const tokenList = [];
-    const accountNames = Object.keys(clientAccounts);
-    const accountList = [];
-
-    accountNames.forEach(account => {
-        const accountListItem = {
-            account_type: clientAccounts[account].account_type,
-            currency: clientAccounts[account].currency,
-            is_disabled: clientAccounts[account].is_disabled,
-            is_virtual: clientAccounts[account].is_virtual,
-            landing_company_name: clientAccounts[account].landing_company_name,
-            loginid: account,
-            trading: clientAccounts[account].trading,
-        };
-
-        accountList.push(accountListItem);
-    });
-
-    accountNames.forEach((account, index) => {
-        let loginInfo = {};
-
-        if (index === 0) {
-            loginInfo = {
-                accountList,
-                balance: clientAccounts[account].balance,
-                email: clientAccounts[account].email,
-            };
-        } else {
-            loginInfo = {
-                account_type: clientAccounts[account].account_type,
-                is_disabled: clientAccounts[account].is_disabled,
-            };
-        }
-        loginInfo = {
-            ...loginInfo,
-            currency: clientAccounts[account].currency,
-            is_virtual: clientAccounts[account].is_virtual,
-            landing_company_name: clientAccounts[account].landing_company_name,
-            loginid: account,
-            trading: clientAccounts[account].trading,
-        };
-        const accountInfo = {
-            loginInfo,
-            accountName: account,
-            token: clientAccounts[account].token,
-            hasRealityCheck: false, // using false as default - needs clarificatio
-            hasTradeLimitation: false, // using false as default - needs clarificatio
-        };
-
-        tokenList.push(accountInfo);
-    });
-
-    return tokenList;
-};
-
-export const convertForDerivStore = tokenList => {
-    const clientAccounts = {};
-    const [acc] = tokenList;
-    const list_key = acc?.loginInfo.accountList ? 'accountList' : 'account_list';
-    const account_list = [...acc.loginInfo[list_key]];
-
-    tokenList.forEach((account, index) => {
-        const accId = account.accountName;
-        const match = account_list.find(_acc => _acc?.loginid === accId);
-        let client_account = {
-            account_type: match.account_type,
-            currency: account.loginInfo.currency,
-            is_disabled: match.is_disabled,
-            is_virtual: account.loginInfo.is_virtual,
-            landing_company_shortcode: account.loginInfo.landing_company_name, // how shortcode is different from name?
-            trading: account.loginInfo.trading,
-            token: account.token,
-            excluded_until: '', // self-exclusion wont work at this stage; needs to be copied form deriv-app
-            landing_company_name: account.landing_company_name,
-        };
-
-        if (index === 0) {
-            client_account = {
-                ...client_account,
-                email: account.loginInfo.email,
-                session_start: 0, // using zero as default, will be overwriten at deriv.app load
-                balance: account.loginInfo.balance,
-                accepted_bch: 0, // no clue what this is
-            };
-        }
-        clientAccounts[accId] = client_account;
-    });
-
-    return clientAccounts;
 };
 
 export const getLanguage = () => {
@@ -367,25 +230,6 @@ export const getActiveAccountFromAccountsList = (accounts = []) => {
     const active_loginid = getActiveLoginId();
     const active_account = accounts.find(acc => acc.accountName === active_loginid);
     return active_account || accounts[0];
-};
-
-export const updateTokenList = () => {
-    // eslint-disable-next-line no-console
-    console.log('updateTokenList updateTokenList updateTokenList');
-    const token_list = getTokenList();
-    if (token_list.length) {
-        const active_account = getActiveAccountFromAccountsList(token_list);
-        if ('loginInfo' in active_account) {
-            const current_login_id = getActiveLoginId();
-            token_list.forEach(token => {
-                if (current_login_id === token.loginInfo.loginid) {
-                    setActiveLoginId(token.loginInfo.loginid);
-                }
-            });
-            setClientAccounts(convertForDerivStore(token_list));
-            syncWithDerivApp();
-        }
-    }
 };
 
 const isRealAccount = () => {

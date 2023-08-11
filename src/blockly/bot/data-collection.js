@@ -1,6 +1,6 @@
 import crc32 from 'crc-32/crc32';
 import pako from 'pako';
-import { getTokenList, getActiveLoginId } from '@storage';
+import { getActiveLoginId } from '@storage';
 import { isProduction } from '@utils';
 import { observer } from '@utilities/observer';
 
@@ -19,20 +19,6 @@ export const cleanXmlDom = xmlDom => {
 
 export const getHash = string => btoa(crc32.str(string));
 
-export const getLoginId = () => {
-    const tokenList = getTokenList();
-    const current_login_id = getActiveLoginId();
-    let lognin_id = null;
-    if (tokenList.length) {
-        tokenList.forEach(token_list => {
-            if (current_login_id === token_list.loginInfo.loginid) {
-                lognin_id = token_list.loginInfo.loginid;
-            }
-        });
-    }
-    return lognin_id;
-};
-
 export const getUTCDate = () => {
     const date = new Date();
     const utcDate = Date.UTC(
@@ -50,7 +36,7 @@ export const getUTCDate = () => {
 export default class DataCollection {
     constructor(workspace) {
         this.workspace = workspace;
-        this.loginid = getLoginId();
+        this.loginid = getActiveLoginId();
         if (isProduction()) {
             observer.register('bot.contract', contract => this.trackTransaction(contract));
             observer.register('bot.running', () => this.trackRun());

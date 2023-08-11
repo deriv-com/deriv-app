@@ -9,7 +9,7 @@ import { getClientCountry } from '@storage';
 import Modal from '@components/common/modal';
 import { setShouldReloadWorkspace } from '@redux-store/ui-slice.js';
 import { observer as globalObserver } from '@utilities/observer';
-import useLogout from '../../../common/hooks/useLogout.js';
+import useLogout from '../../common/hooks/useLogout.js';
 import AccountSwitchModal from './account-switch-modal.jsx';
 import RiskComponent from './risk-component.jsx';
 import TabContent from './tab-content.jsx';

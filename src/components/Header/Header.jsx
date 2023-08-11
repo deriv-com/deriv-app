@@ -7,7 +7,6 @@ import { isMobile, isDesktop } from '@utils';
 import {
     removeAllTokens,
     syncWithDerivApp,
-    updateTokenList,
     isLoggedIn,
     getActiveLoginId,
     setActiveLoginId,
@@ -19,12 +18,16 @@ import {
     updateBalance,
     updateActiveToken,
     updateAccountType,
-} from '@redux-store/client-slice.js';
-import { setAccountSwitcherLoader, updateShowMessagePage } from '@redux-store/ui-slice.js';
+} from '@redux-store/client-slice';
+import { setAccountSwitcherLoader, updateShowMessagePage } from '@redux-store/ui-slice';
 import { observer as globalObserver } from '@utilities/observer';
-import PlatformDropdown from './components/platform-dropdown.jsx';
-import { DrawerMenu, AuthButtons, AccountActions, MenuLinks, AccountSwitcherLoader } from './components/index.js';
-import { checkSwitcherType, isEuByAccount } from '../../common/footer-checks.js';
+import PlatformDropdown from './platform-dropdown';
+import DrawerMenu from './drawer-menu';
+import AuthButtons from './auth-buttons';
+import AccountActions from './account-actions';
+import MenuLinks from './menu-links';
+import Loader from './loader';
+import { checkSwitcherType, isEuByAccount } from '../../common/footer-checks';
 import './header.scss';
 
 // [Todo] We will update this during the API improvement process
@@ -35,13 +38,11 @@ const AccountSwitcher = () => {
     if (account_switcher_loader) {
         return (
             <div className='header__menu-right-loader'>
-                <AccountSwitcherLoader />
+                <Loader />
             </div>
         );
     }
-
     if (is_logged) return <AccountActions />;
-
     return <AuthButtons />;
 };
 
@@ -85,7 +86,6 @@ const Header = () => {
                 .authorize(logged_in_token)
                 .then(account => {
                     const { account_list = [] } = account.authorize || {};
-
                     account_list.forEach(acc => {
                         if (current_login_id === acc.loginid) {
                             setActiveLoginId(current_login_id);
@@ -93,7 +93,6 @@ const Header = () => {
                             setActiveLoginId(account.authorize.loginid);
                         }
                     });
-                    updateTokenList();
                     if (account?.error?.code) return;
                     dispatch(updateActiveToken(logged_in_token));
                     dispatch(updateActiveAccount(account.authorize));

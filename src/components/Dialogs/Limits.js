@@ -2,7 +2,7 @@
 import { api_base } from '@api-base';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { getToken, getLanguage } from '@storage';
+import { getLanguage, getActiveLoginId, getClientAccounts } from '@storage';
 import { translate } from '@i18n';
 import { restrictInputCharacter, showSpinnerInButton, removeSpinnerInButton, isProduction, getExtension } from '@utils';
 import * as style from '../style';
@@ -132,9 +132,9 @@ class LimitsContent extends PureComponent {
 
     getDailyLossesLimit() {
         if (this.state.maxLosses) {
-            const token = document.getElementById('active-token')?.value;
-            const tokenObj = getToken(token);
-            const currency = tokenObj && tokenObj.loginInfo.currency;
+            const login_id = getActiveLoginId();
+            const client_accounts = getClientAccounts();
+            const { currency = '' } = client_accounts[login_id] || {};
             return currency ? `${this.state.maxLosses} ${currency}` : `${this.state.maxLosses}`;
         }
         return translate('Not set');

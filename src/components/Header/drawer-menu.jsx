@@ -22,9 +22,9 @@ const DrawerMenu = ({
             }
         }
         window.addEventListener('click', handleClickOutside);
-
         return () => window.removeEventListener('click', handleClickOutside);
     });
+
     return (
         <div className='header__drawer-wrapper'>
             <div className='header__drawer' ref={drawer_ref}>

@@ -4,8 +4,18 @@ import { Text } from '@deriv/components';
 import { PlatformContext, isMobile } from '@deriv/shared';
 
 export type TFormBodySection = {
+    /**
+     *  A boolean value indicating whether the section has a side note.
+     */
     has_side_note?: boolean;
+    /**
+     * The side note to display next to the main content.
+     */
     side_note?: string | React.ReactElement;
+    /**
+     * The position of the side note relative to the main content.
+     * @default 'left'
+     * */
     side_note_position?: 'left' | 'right';
 };
 
@@ -14,11 +24,6 @@ export type TFormBodySection = {
  *
  *  This component renders a section of a form body. It can optionally display a side note
  *  and allows reversing the order of the side note and the main content.
- *
- *  @param {TFormBodySection} props - The properties of the FormBodySection component.
- *  @param {boolean} props.has_side_note - Whether to display a side note.
- *  @param {string | React.ReactElement} props.side_note - The content of the side note.
- *  @param {'left' | 'right'} props.side_note_position - The position of the side note.
  *  @returns {JSX.Element} A React component that renders a form body section.
  */
 const FormBodySection = ({

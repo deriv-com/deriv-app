@@ -220,7 +220,7 @@ const PersonalDetailsForm = props => {
                             <PlaceOfBirthField
                                 handleChange={handleChange}
                                 setFieldValue={setFieldValue}
-                                editable_fields={editable_fields}
+                                disabled={isFieldImmutable('place_of_birth', editable_fields)}
                                 residence_list={residence_list}
                                 required
                             />
@@ -293,7 +293,10 @@ const PersonalDetailsForm = props => {
                                 {'tax_residence' in values && (
                                     <TaxResidenceField
                                         setFieldValue={setFieldValue}
-                                        editable_fields={editable_fields}
+                                        disabled={
+                                            isFieldImmutable('tax_residence', editable_fields) ||
+                                            (values?.tax_residence && has_real_account)
+                                        }
                                         residence_list={residence_list}
                                         required
                                         setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
@@ -306,7 +309,10 @@ const PersonalDetailsForm = props => {
                                         is_tin_popover_open={is_tin_popover_open}
                                         setIsTinPopoverOpen={setIsTinPopoverOpen}
                                         setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
-                                        editable_fields={editable_fields}
+                                        disabled={
+                                            isFieldImmutable('tax_identification_number', editable_fields) ||
+                                            (values?.tax_identification_number && has_real_account)
+                                        }
                                         required
                                     />
                                 )}
@@ -385,7 +391,10 @@ const PersonalDetailsForm = props => {
                                 required
                                 account_opening_reason_list={account_opening_reason_list}
                                 setFieldValue={setFieldValue}
-                                editable_fields={editable_fields}
+                                disabled={
+                                    isFieldImmutable('account_opening_reason', editable_fields) ||
+                                    (values?.account_opening_reason && has_real_account)
+                                }
                             />
                         )}
                     </fieldset>
@@ -408,7 +417,7 @@ const PersonalDetailsForm = props => {
                             <PlaceOfBirthField
                                 handleChange={handleChange}
                                 setFieldValue={setFieldValue}
-                                editable_fields={editable_fields}
+                                disabled={isFieldImmutable('place_of_birth', editable_fields)}
                                 residence_list={residence_list}
                                 required
                             />
@@ -416,12 +425,15 @@ const PersonalDetailsForm = props => {
                         {'tax_residence' in values && (
                             <TaxResidenceField
                                 setFieldValue={setFieldValue}
-                                editable_fields={editable_fields}
+                                disabled={
+                                    isFieldImmutable('tax_residence', editable_fields) ||
+                                    (values?.tax_residence && has_real_account)
+                                }
                                 residence_list={residence_list}
+                                required
                                 setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                                 setIsTinPopoverOpen={setIsTinPopoverOpen}
                                 is_tax_residence_popover_open={is_tax_residence_popover_open}
-                                required
                             />
                         )}
                         {'tax_identification_number' in values && (
@@ -429,16 +441,22 @@ const PersonalDetailsForm = props => {
                                 is_tin_popover_open={is_tin_popover_open}
                                 setIsTinPopoverOpen={setIsTinPopoverOpen}
                                 setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
-                                editable_fields={editable_fields}
+                                disabled={
+                                    isFieldImmutable('tax_identification_number', editable_fields) ||
+                                    (values?.tax_identification_number && has_real_account)
+                                }
                                 required
                             />
                         )}
                         {'account_opening_reason' in values && (
                             <AccountOpeningReasonField
-                                noHeader
+                                no_header
                                 account_opening_reason_list={account_opening_reason_list}
                                 setFieldValue={setFieldValue}
-                                editable_fields={editable_fields}
+                                disabled={
+                                    isFieldImmutable('account_opening_reason', editable_fields) ||
+                                    (values?.account_opening_reason && has_real_account)
+                                }
                                 required
                             />
                         )}
@@ -465,14 +483,14 @@ const PhoneField = ({ value, editable_fields, has_real_account, required }) => (
     />
 );
 
-const PlaceOfBirthField = ({ handleChange, setFieldValue, editable_fields, residence_list, required }) => (
+const PlaceOfBirthField = ({ handleChange, setFieldValue, disabled, residence_list, required }) => (
     <Field name='place_of_birth'>
         {({ field, meta }) => (
             <React.Fragment>
                 <DesktopWrapper>
                     <Autocomplete
                         {...field}
-                        disabled={isFieldImmutable('place_of_birth', editable_fields)}
+                        disabled={disabled}
                         data-lpignore='true'
                         autoComplete='none' // prevent chrome autocomplete
                         type='text'
@@ -488,7 +506,7 @@ const PlaceOfBirthField = ({ handleChange, setFieldValue, editable_fields, resid
                     <SelectNative
                         placeholder={required ? localize('Place of birth') : localize('Place of birth')}
                         name={field.name}
-                        disabled={isFieldImmutable('place_of_birth', editable_fields)}
+                        disabled={disabled}
                         label={required ? localize('Place of birth*') : localize('Place of birth')}
                         list_items={residence_list}
                         value={field.value}
@@ -512,12 +530,12 @@ const PlaceOfBirthField = ({ handleChange, setFieldValue, editable_fields, resid
 
 const TaxResidenceField = ({
     setFieldValue,
-    editable_fields,
     residence_list,
     required,
     setIsTaxResidencePopoverOpen,
     setIsTinPopoverOpen,
     is_tax_residence_popover_open,
+    disabled,
 }) => (
     <Field name='tax_residence'>
         {({ field, meta }) => (
@@ -534,7 +552,7 @@ const TaxResidenceField = ({
                         onItemSelection={({ value, text }) => setFieldValue('tax_residence', value ? text : '', true)}
                         list_portal_id='modal_root'
                         data-testid='tax_residence'
-                        disabled={isFieldImmutable('tax_residence', editable_fields)}
+                        disabled={disabled}
                     />
                 </DesktopWrapper>
                 <MobileWrapper>
@@ -553,7 +571,7 @@ const TaxResidenceField = ({
                         {...field}
                         required
                         data_testid='tax_residence_mobile'
-                        disabled={isFieldImmutable('tax_residence', editable_fields)}
+                        disabled={disabled}
                     />
                 </MobileWrapper>
                 <div
@@ -584,7 +602,7 @@ const TaxIdentificationNumberField = ({
     is_tin_popover_open,
     setIsTinPopoverOpen,
     setIsTaxResidencePopoverOpen,
-    editable_fields,
+    disabled,
     required,
 }) => (
     <div className='details-form__tax'>
@@ -593,7 +611,7 @@ const TaxIdentificationNumberField = ({
             label={required ? localize('Tax Identification Number*') : localize('Tax Identification Number')}
             placeholder={localize('Tax Identification Number')}
             data-testid='tax_identification_number'
-            disabled={isFieldImmutable('tax_identification_number', editable_fields)}
+            disabled={disabled}
         />
         <div
             data-testid='tax_identification_number_pop_over'
@@ -630,15 +648,9 @@ const TaxIdentificationNumberField = ({
     </div>
 );
 
-const AccountOpeningReasonField = ({
-    noHeader,
-    required,
-    account_opening_reason_list,
-    setFieldValue,
-    editable_fields,
-}) => (
+const AccountOpeningReasonField = ({ no_header, required, account_opening_reason_list, setFieldValue, disabled }) => (
     <React.Fragment>
-        {!noHeader && <FormSubHeader title={localize('Account opening reason')} />}
+        {!no_header && <FormSubHeader title={localize('Account opening reason')} />}
         <Field name='account_opening_reason'>
             {({ field, meta }) => (
                 <React.Fragment>
@@ -648,7 +660,7 @@ const AccountOpeningReasonField = ({
                                 required ? localize('Account opening reason*') : localize('Account opening reason')
                             }
                             name={field.name}
-                            disabled={isFieldImmutable('account_opening_reason', editable_fields)}
+                            disabled={disabled}
                             is_align_text_left
                             list={account_opening_reason_list}
                             {...field}
@@ -671,7 +683,7 @@ const AccountOpeningReasonField = ({
                             {...field}
                             required
                             data_testid='account_opening_reason_mobile'
-                            disabled={isFieldImmutable('account_opening_reason', editable_fields)}
+                            disabled={disabled}
                         />
                     </MobileWrapper>
                 </React.Fragment>

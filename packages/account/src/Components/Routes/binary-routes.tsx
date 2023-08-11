@@ -19,7 +19,7 @@ const BinaryRoutes = (props: TBinaryRoutes) => {
         >
             <Switch>
                 {getRoutesConfig({ is_appstore }).map((route: TRoute) => (
-                    <RouteWithSubRoutes key={route.route_key} {...route} {...props} />
+                    <RouteWithSubRoutes key={`${route.getTitle?.()}-${route.path}`} {...route} {...props} />
                 ))}
             </Switch>
         </React.Suspense>

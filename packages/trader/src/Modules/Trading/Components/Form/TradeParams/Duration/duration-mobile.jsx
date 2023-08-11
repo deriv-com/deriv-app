@@ -96,12 +96,12 @@ const Numbers = observer(
         duration_values,
         expiry_epoch,
         has_amount_error,
-        is_vanilla,
         payout_value,
         selected_duration,
         setDurationError,
         setSelectedDuration,
         stake_value,
+        show_expiry = false,
         toggleModal,
     }) => {
         const { ui } = useStore();
@@ -187,7 +187,7 @@ const Numbers = observer(
 
         return (
             <div className='trade-params__amount-keypad'>
-                {is_vanilla && (
+                {show_expiry && (
                     <Text as='div' size='xxxs' line_height='s' className='expiry-text-container--mobile'>
                         <Localize
                             i18n_default_text='Expiry: {{date}}'
@@ -225,7 +225,6 @@ const Duration = observer(
         expiry_epoch,
         h_duration,
         has_amount_error,
-        is_vanilla,
         m_duration,
         payout_value,
         s_duration,
@@ -348,9 +347,9 @@ const Duration = observer(
                                             setDurationError={setDurationError}
                                             setSelectedDuration={setSelectedDuration}
                                             stake_value={stake_value}
+                                            show_expiry
                                             payout_value={payout_value}
                                             expiry_epoch={expiry_epoch}
-                                            is_vanilla={is_vanilla}
                                             duration_values={duration_values}
                                         />
                                         <RelativeDatepicker

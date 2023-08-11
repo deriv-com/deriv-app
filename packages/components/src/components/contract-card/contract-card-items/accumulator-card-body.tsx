@@ -16,7 +16,7 @@ type TAccumulatorCardBody = {
     addToast: (toast_config: TToastConfig) => void;
     connectWithContractUpdate?: React.ComponentProps<typeof ToggleCardDialog>['connectWithContractUpdate'];
     contract_info: TContractInfo;
-    contract_update: ContractUpdate;
+    contract_update?: ContractUpdate;
     currency: Required<TContractInfo>['currency'];
     current_focus?: string;
     error_message_alignment?: string;
@@ -27,7 +27,7 @@ type TAccumulatorCardBody = {
     onMouseLeave: () => void;
     removeToast: (toast_id: string) => void;
     setCurrentFocus: (value: string) => void;
-    status: string;
+    status?: string;
     is_positions?: boolean;
 };
 

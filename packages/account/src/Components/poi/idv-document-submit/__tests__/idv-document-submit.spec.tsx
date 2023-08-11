@@ -61,7 +61,7 @@ describe('<IdvDocumentSubmit/>', () => {
                             document_1: { display_name: 'Test document 1 name', format: '5436454364243' },
                             document_2: { display_name: 'Test document 2 name', format: 'A54321' },
                         },
-                        has_visual_sample: true,
+                        has_visual_sample: 1,
                     },
                 },
             },
@@ -80,7 +80,7 @@ describe('<IdvDocumentSubmit/>', () => {
         expect(screen.queryByText('Please select a document type.')).not.toBeInTheDocument();
 
         const inputs = screen.getAllByRole<HTMLTextAreaElement>('textbox');
-        expect(inputs.length).toBe(5);
+        expect(inputs).toHaveLength(5);
         expect(inputs[0].name).toBe('document_type');
         expect(inputs[1].name).toBe('document_number');
     });

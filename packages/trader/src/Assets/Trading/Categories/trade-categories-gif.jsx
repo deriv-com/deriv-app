@@ -16,6 +16,7 @@ import ImageRunHighLow from 'Assets/SvgComponents/trade_explanations/img-run-hig
 import ImageSpread from 'Assets/SvgComponents/trade_explanations/img-spread.svg';
 import ImageTickHighLow from 'Assets/SvgComponents/trade_explanations/img-tick-high-low.svg';
 import ImageTouch from 'Assets/SvgComponents/trade_explanations/img-touch.svg';
+import ImageTurbos from 'Assets/SvgComponents/trade_explanations/img-turbos.svg';
 import ImageVanilla from 'Assets/SvgComponents/trade_explanations/img-vanilla.svg';
 import ContractTypeDescriptionVideo from './contract-type-description-video';
 
@@ -58,6 +59,9 @@ const TradeCategoriesGIF = ({ category, selected_contract_type }) => {
             return <ImageTickHighLow />;
         case 'touch':
             return <ImageTouch />;
+        case 'turbosshort':
+        case 'turboslong':
+            return <ImageTurbos />;
         case 'vanilla':
             return <ImageVanilla />;
         default:

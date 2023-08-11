@@ -47,7 +47,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
     const [carousel_index, setCarouselIndex] = React.useState('');
     const [selected_tab, setSelectedTab] = React.useState(TABS.DESCRIPTION);
     const contract_types: TContractType[] = getContractTypes(list, item).filter(
-        (i: { value: TContractType['value'] }) => i.value !== 'rise_fall_equal'
+        (i: { value: TContractType['value'] }) => i.value !== 'rise_fall_equal' && i.value !== 'turbosshort'
     );
     const has_toggle_buttons = /accumulator|vanilla/i.test(carousel_index);
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION;

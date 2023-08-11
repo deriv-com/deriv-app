@@ -11,6 +11,8 @@ const ContractAudit = ({
     has_result,
     is_accumulator,
     is_multiplier,
+    is_only_ups_downs,
+    is_turbos,
     toggleHistoryTab,
     ...props
 }) => {
@@ -35,7 +37,7 @@ const ContractAudit = ({
 
     if (!has_result) return null;
 
-    if (!is_multiplier && !is_accumulator) {
+    if (!is_multiplier && !is_accumulator && !is_turbos) {
         return (
             <div className='contract-audit__wrapper'>
                 <ContractDetails {...props} />
@@ -62,6 +64,8 @@ ContractAudit.propTypes = {
     has_result: PropTypes.bool,
     is_accumulator: PropTypes.bool,
     is_multiplier: PropTypes.bool,
+    is_only_ups_downs: PropTypes.bool,
+    is_turbos: PropTypes.bool,
     toggleHistoryTab: PropTypes.func,
 };
 

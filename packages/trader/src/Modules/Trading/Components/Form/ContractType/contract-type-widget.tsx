@@ -20,7 +20,6 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
     const [selected_category, setSelectedCategory] = React.useState<TList['key'] | null>(null);
     const [search_query, setSearchQuery] = React.useState('');
     const [item, setItem] = React.useState<TContractType | null>(null);
-    const [selected_item, setSelectedItem] = React.useState<TContractType | null>(null);
 
     const handleClickOutside = React.useCallback(
         (event: MouseEvent) => {
@@ -52,16 +51,10 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
             setDialogVisibility(false);
             setInfoDialogVisibility(false);
             setItem(clicked_item);
-            setSelectedItem(clicked_item);
             setSelectedCategory(key);
+            onChange({ target: { name, value: clicked_item.value } });
         }
     };
-
-    React.useEffect(() => {
-        if (selected_item && selected_item.value !== value) {
-            onChange?.({ target: { name, value: selected_item.value } });
-        }
-    }, [selected_item, onChange, name, value]);
 
     const handleInfoClick = (clicked_item: TContractType) => {
         setInfoDialogVisibility(!is_info_dialog_open);
@@ -92,11 +85,19 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
 
     const list_with_category = () => {
         const contract_type_category_icon: { [key: string]: string } = getContractTypeCategoryIcons();
-        const order_arr = ['Accumulators', 'Multipliers', 'Vanillas', 'Ups & Downs', 'Highs & Lows', 'Digits'];
-        list?.sort((a, b) => order_arr.indexOf(a.key) - order_arr.indexOf(b.key));
-        const accumulators_category = list?.filter(({ label }) => label === localize('Accumulators'));
-        const multipliers_category = list?.filter(({ label }) => label === localize('Multipliers'));
-        const options_category = list?.filter(
+        const order_arr = [
+            'Accumulators',
+            'Vanillas',
+            'Turbos',
+            'Multipliers',
+            'Ups & Downs',
+            'Highs & Lows',
+            'Digits',
+        ];
+        const ordered_list = list.sort((a, b) => order_arr.indexOf(a.key) - order_arr.indexOf(b.key));
+        const accumulators_category = ordered_list.filter(({ label }) => label === localize('Accumulators'));
+        const multipliers_category = ordered_list.filter(({ label }) => label === localize('Multipliers'));
+        const options_category = ordered_list.filter(
             ({ label }) => label !== localize('Multipliers') && label !== localize('Accumulators')
         );
 
@@ -124,10 +125,9 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
             categories.push({
                 label: localize('Options'),
                 contract_categories: options_category,
-                // @ts-expect-error The type of the component prop in VerticalTab.Headers is wrong and it should be JSX.Element
-                component: options_category.some(category => category.key === 'Vanillas') && (
+                component: options_category.some(category => /Vanillas|Turbos/i.test(category.key)) ? (
                     <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>
-                ),
+                ) : null,
                 key: 'Options',
             });
         }
@@ -188,8 +188,8 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
     const selected_contract_index = () => {
         const contract_types_arr = list_with_category()?.flatMap(category => category.contract_types);
         return contract_types_arr
-            .filter(type => type?.value !== 'rise_fall_equal')
-            .findIndex(type => type?.value === item?.value);
+            .filter(type => type.value !== 'rise_fall_equal' && type.value !== 'turbosshort')
+            .findIndex(type => type.value === item?.value);
     };
 
     return (

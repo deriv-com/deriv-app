@@ -11,8 +11,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Run Build
-        uses: ./.github/actions/build-and-test.yml@master
+      - name: Build and Test
+        uses: ./.github/workflows/build-and-test.yml
       
       - name: Coveralls
         uses: coverallsapp/github-action@v2

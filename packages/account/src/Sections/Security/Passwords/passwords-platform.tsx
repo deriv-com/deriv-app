@@ -6,7 +6,20 @@ import { localize, Localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
 
-const PasswordsPlatform = ({ email, has_dxtrade_accounts, has_mt5_accounts }) => {
+type TPasswordsPlatformProps = {
+    email: string;
+    has_dxtrade_accounts: boolean;
+    has_mt5_accounts: boolean;
+};
+
+/**
+ * Displays a change password instructions for MT5 and/or DXTrade.
+ * @param {string} email - The user's email address.
+ * @param {boolean} has_dxtrade_accounts - Whether the user has DXTrade accounts.
+ * @param {boolean} has_mt5_accounts - Whether the user has MT5 accounts.
+ * @returns
+ */
+const PasswordsPlatform = ({ email, has_dxtrade_accounts, has_mt5_accounts }: TPasswordsPlatformProps) => {
     const [identifier, setIdenifier] = React.useState('');
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
@@ -91,21 +104,8 @@ const PasswordsPlatform = ({ email, has_dxtrade_accounts, has_mt5_accounts }) =>
                     onClickSendEmail={onClickSendEmail}
                     is_modal_when_mobile
                 />
-                {/*
-                <SuccessDialog
-                    is_open={is_success_dialog_open}
-                    is_dxtrade_allowed={is_dxtrade_allowed}
-                    onClose={() => setIsSuccessDialogOpen(false)}
-                /> */}
             </div>
         </React.Fragment>
     );
 };
-
-PasswordsPlatform.propTypes = {
-    email: PropTypes.string,
-    has_dxtrade_accounts: PropTypes.bool,
-    has_mt5_accounts: PropTypes.bool,
-};
-
 export default PasswordsPlatform;

@@ -24,8 +24,6 @@ describe('DerivEmail', () => {
 
     const mock_props = {
         email: 'test@deriv.com',
-        social_identity_provider: 'Google',
-        is_social_signup: false,
     };
 
     const store = mockStore({});
@@ -76,11 +74,8 @@ describe('DerivEmail', () => {
     });
 
     it('should display unlink account modal when button is clicked', async () => {
-        const new_props = {
-            ...mock_props,
-            is_social_signup: true,
-        };
-        renderComponent({ props: new_props });
+        const store_config = mockStore({ client: { social_identity_provider: 'Google', is_social_signup: true } });
+        renderComponent({ store_config });
         const el_button = screen.getByRole('button', { name: /Change email/i });
         userEvent.click(el_button);
         let el_modal;

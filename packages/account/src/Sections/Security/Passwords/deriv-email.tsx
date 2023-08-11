@@ -1,22 +1,27 @@
 import React from 'react';
-import { toTitleCase } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
 import { Button, Text, Input } from '@deriv/components';
+import { useVerifyEmail } from '@deriv/hooks';
+import { toTitleCase } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
 import UnlinkAccountModal from 'Components/unlink-account-modal';
-import { observer, useStore } from '@deriv/stores';
-import { useVerifyEmail } from '@deriv/hooks';
 
 type TDerivEmailProps = {
     email: string;
-    social_identity_provider: string;
-    is_social_signup: boolean;
 };
 
-const DerivEmail = observer(({ email, social_identity_provider, is_social_signup }: TDerivEmailProps) => {
+/**
+ * Display the user's email address and a button to change it.
+ * @name DerivEmail
+ * @param {string} email - The user's email address.
+ * @returns {React.ReactNode}
+ */
+const DerivEmail = observer(({ email }: TDerivEmailProps) => {
     const {
         common: { is_from_derivgo },
+        client: { social_identity_provider, is_social_signup },
     } = useStore();
     const { send } = useVerifyEmail('request_email');
     const [is_unlink_account_modal_open, setIsUnlinkAccountModalOpen] = React.useState(false);
@@ -45,24 +50,22 @@ const DerivEmail = observer(({ email, social_identity_provider, is_social_signup
                     <Localize i18n_default_text='This is the email address associated with your Deriv account.' />
                 </Text>
                 <div className='email-platform__content'>
-                    <form>
-                        <fieldset className='email-platform__content__fieldset'>
-                            <Input
-                                className='email-input'
-                                data-lpignore='true'
-                                type='text'
-                                name='email'
-                                id='email'
-                                label={localize('Email address*')}
-                                value={email}
-                                disabled={true}
-                            />
-                        </fieldset>
-                    </form>
+                    <fieldset className='email-platform__content__fieldset'>
+                        <Input
+                            className='email-input'
+                            data-lpignore='true'
+                            type='text'
+                            name='email'
+                            id='email'
+                            label={localize('Email address*')}
+                            value={email}
+                            disabled={true}
+                        />
+                    </fieldset>
                     {!is_from_derivgo && (
                         <Button
                             className='email-change_button'
-                            type='submit'
+                            type='button'
                             onClick={onClickChangeEmail}
                             has_effect
                             is_disabled={false}

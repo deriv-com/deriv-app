@@ -124,7 +124,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                         {
                             variant: 'base',
                             key: ERROR_CODES.is_demo.between_min_max,
-                            message: `${message} ${from_account?.display_currency_code}` || '',
+                            message: `${message} ${from_account?.display_currency_code}`,
                             type: 'error',
                         },
                     ];

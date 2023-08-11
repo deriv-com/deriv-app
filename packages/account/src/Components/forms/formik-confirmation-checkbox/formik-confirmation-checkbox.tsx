@@ -27,14 +27,12 @@ type TConfirmationCheckboxProps = {
  * This component renders a checkbox that can be used to confirm an action, such as agreeing to terms
  * and conditions. It also allows displaying an optional description next to the checkbox.
  *
- * @name FormikConfirmationCheckbox
+ * **Note**: This component is meant to be used with Formik forms.
+ *
+ * @name ConfirmationCheckbox
  * @returns {JSX.Element} React component that renders a checkbox with a label
  */
-export const FormikConfirmationCheckbox = ({
-    confirmed,
-    setConfirmed,
-    label,
-}: TConfirmationCheckboxProps): JSX.Element => {
+export const ConfirmationCheckbox = ({ confirmed, setConfirmed, label }: TConfirmationCheckboxProps): JSX.Element => {
     /**
      * The formik context for the current form.
      *

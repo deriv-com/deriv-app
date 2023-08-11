@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { FormikConfirmationCheckbox } from '../formik-confirmation-checkbox';
+import { ConfirmationCheckbox } from '../formik-confirmation-checkbox';
 import { Formik, Form } from 'formik';
 
 describe('ConfirmationCheckbox', () => {
-    const props: React.ComponentProps<typeof FormikConfirmationCheckbox> = {
+    const props: React.ComponentProps<typeof ConfirmationCheckbox> = {
         confirmed: true,
         setConfirmed: jest.fn(),
         label: 'I confirm my details are correct.',
@@ -14,7 +14,7 @@ describe('ConfirmationCheckbox', () => {
         render(
             <Formik initialValues={{}} onSubmit={jest.fn()}>
                 <Form>
-                    <FormikConfirmationCheckbox {...props} />
+                    <ConfirmationCheckbox {...props} />
                 </Form>
             </Formik>
         );
@@ -27,7 +27,7 @@ describe('ConfirmationCheckbox', () => {
         render(
             <Formik initialValues={{}} onSubmit={jest.fn()}>
                 <Form>
-                    <FormikConfirmationCheckbox {...props} />
+                    <ConfirmationCheckbox {...props} />
                 </Form>
             </Formik>
         );

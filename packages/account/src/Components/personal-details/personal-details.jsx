@@ -28,7 +28,7 @@ import { splitValidationResultTypes } from '../real-account-signup/helpers/utils
 import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
 import FormSubHeader from '../form-sub-header';
-import FormikConfirmationCheckbox from '../formik-confirmation-checkbox';
+import ConfirmationCheckbox from '../forms/formik-confirmation-checkbox';
 
 const PersonalDetails = ({
     getCurrentStep,
@@ -229,7 +229,7 @@ const PersonalDetails = ({
                                                         values?.document_type?.id
                                                     )}
                                                 />
-                                                <FormikConfirmationCheckbox
+                                                <ConfirmationCheckbox
                                                     confirmed={is_confirmed}
                                                     setConfirmed={setIsConfirmed}
                                                     label={localize(

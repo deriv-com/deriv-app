@@ -18,7 +18,7 @@ import IDVForm from 'Components/forms/idv-form';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
 import FormSubHeader from 'Components/form-sub-header';
 import { observer, useStore } from '@deriv/stores';
-import FormikConfirmationCheckbox from 'Components/formik-confirmation-checkbox';
+import ConfirmationCheckbox from 'Components/forms/formik-confirmation-checkbox';
 
 type TIdvDocumentSubmit = {
     handleBack?: () => void;
@@ -206,7 +206,7 @@ const IdvDocumentSubmit = observer(
                                     should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
                                     editable_fields={changeable_fields}
                                 />
-                                <FormikConfirmationCheckbox
+                                <ConfirmationCheckbox
                                     confirmed={is_confirmed}
                                     setConfirmed={setIsConfirmed}
                                     label={localize(

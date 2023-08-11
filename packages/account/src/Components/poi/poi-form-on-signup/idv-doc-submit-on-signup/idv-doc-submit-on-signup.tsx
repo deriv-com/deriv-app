@@ -17,7 +17,7 @@ import IDVForm from 'Components/forms/idv-form';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
 import FormFooter from 'Components/form-footer';
 import { GetSettings } from '@deriv/api-types';
-import FormikConfirmationCheckbox from '../../../formik-confirmation-checkbox';
+import ConfirmationCheckbox from '../../../forms/formik-confirmation-checkbox';
 
 type TIdvDocSubmitOnSignup = {
     citizen_data: FormikValues;
@@ -144,7 +144,7 @@ export const IdvDocSubmitOnSignup = ({
                                 should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
                                 editable_fields={changeable_fields}
                             />
-                            <FormikConfirmationCheckbox
+                            <ConfirmationCheckbox
                                 confirmed={is_confirmed}
                                 setConfirmed={setIsConfirmed}
                                 label={localize(

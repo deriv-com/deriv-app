@@ -13,10 +13,22 @@ export type TRadioButtonGroup = {
     has_fiat?: boolean;
 };
 
+/**
+ * Wrapper component for RadioButton
+ * @name RadioButtonGroup
+ * @param {string} className - class name for styling
+ * @param {boolean} is_fiat - is fiat currency
+ * @param {boolean} is_title_enabled - is title enabled
+ * @param {number} item_count - number of items
+ * @param {string} label - label for the radio button
+ * @param {React.ReactNode} description - description for the radio button
+ * @param {boolean} has_fiat - has fiat currency
+ * @returns {React.ReactNode} - returns a React node
+ */
 const RadioButtonGroup = ({
+    children,
     label,
     className,
-    children,
     is_title_enabled = true,
     is_fiat,
     item_count,

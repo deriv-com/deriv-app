@@ -5,18 +5,18 @@ import { formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import useEmblaCarousel from 'embla-carousel-react';
 import { getAccountName } from 'Constants/utils';
-import './wallet-cards-carousel.scss';
 import { useWalletsList } from '@deriv/hooks';
+import './wallet-cards-carousel.scss';
 
 const CardsSliderSwiper = observer(() => {
     const { client } = useStore();
     const { switchAccount } = client;
     const { data } = useWalletsList();
 
-    const [active_index, setActiveIndex] = useState(1);
-    const [emblaRef, emblaApi] = useEmblaCarousel({ skipSnaps: true });
-
     const active_wallet_index = data.findIndex(item => item?.is_selected) || 0;
+
+    const [active_index, setActiveIndex] = useState(active_wallet_index);
+    const [emblaRef, emblaApi] = useEmblaCarousel({ skipSnaps: true, containScroll: false });
 
     const steps = data.map((_, idx) => idx.toString());
 
@@ -32,9 +32,11 @@ const CardsSliderSwiper = observer(() => {
     }, [active_index, emblaApi]);
 
     useEffect(() => {
-        setTimeout(() => {
+        const timeout_id = setTimeout(() => {
             if (!data[active_index - 1]?.is_selected) switchAccount(data[active_index - 1]?.loginid);
         }, 1000);
+
+        return () => clearTimeout(timeout_id);
     }, [active_index, data, switchAccount]);
 
     useEffect(() => {
@@ -62,7 +64,7 @@ const CardsSliderSwiper = observer(() => {
                     />
                 </div>
             )),
-        [data]
+        [data?.length]
     );
 
     return (

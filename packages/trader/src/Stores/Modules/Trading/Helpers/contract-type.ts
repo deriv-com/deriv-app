@@ -65,8 +65,6 @@ type TEvents =
       }[]
     | [];
 
-type TStoredBarriersData = Record<string, never> | { barrier: string; barrier_choices: string[] };
-
 export const ContractType = (() => {
     type TContractValues = ReturnType<typeof getComponents> &
         ReturnType<typeof getBasis> &
@@ -181,11 +179,11 @@ export const ContractType = (() => {
 
         if (!contract_type) return {};
 
-        let stored_barriers_data: TStoredBarriersData = {};
+        let stored_barriers_data: TTradeStore['short_barriers' | 'long_barriers'] = {};
         if (getContractSubtype(contract_type) === 'Short') {
-            stored_barriers_data = short_barriers as TStoredBarriersData;
+            stored_barriers_data = short_barriers;
         } else if (getContractSubtype(contract_type) === 'Long') {
-            stored_barriers_data = long_barriers as TStoredBarriersData;
+            stored_barriers_data = long_barriers;
         }
 
         const form_components = getComponents(contract_type);

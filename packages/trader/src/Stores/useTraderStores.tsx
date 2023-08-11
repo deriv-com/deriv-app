@@ -89,6 +89,7 @@ type TOverrideTradeStore = Omit<
     expiry_time: string | null;
     expiry_type: string | null;
     form_components: string[];
+    long_barriers: Record<string, never> | { barrier: string; barrier_choices: string[] };
     market_open_times: string[];
     market_close_times: string[];
     multiplier: number;
@@ -110,6 +111,7 @@ type TOverrideTradeStore = Omit<
     };
     sessions: Array<{ open: moment.Moment; close: moment.Moment }>;
     setIsTradeParamsExpanded: (value: boolean) => void;
+    short_barriers: Record<string, never> | { barrier: string; barrier_choices: string[] };
     start_dates_list: Array<{ text: string; value: number }>;
     start_time: string | null;
     symbol: string;

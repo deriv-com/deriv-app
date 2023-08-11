@@ -395,7 +395,8 @@ export const getUnsupportedContracts = () =>
     } as const);
 
 /**
- * // Config to display trade buttons and their positions
+ * // Config to display details such as trade buttons, their positions, and names of trade types
+ *
  * @param {Boolean} is_high_low
  * @returns { object }
  */

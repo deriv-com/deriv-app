@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Formik, FormikValues } from 'formik';
+import { Formik } from 'formik';
 import React from 'react';
 import {
     AutoHeightWrapper,
@@ -11,88 +11,50 @@ import {
 } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import {
-    AccountTurnover,
-    IncomeSource,
-    EducationLevel,
-    EmploymentIndustry,
-    EstimatedWorth,
-    NetIncome,
-    Occupation,
-    SourceOfWealth,
-} from './financial-details-partials';
+import FinancialInformation from './financial-details-partials';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
-export type TFinancialDetails = {
+type TFinancialDetailsFormValues = {
+    income_source: string;
+    employment_industry: string;
+    occupation: string;
+    source_of_wealth: string;
+    education_level: string;
+    net_income: string;
+    estimated_worth: string;
+    account_turnover: string;
+};
+
+type TFinancialDetails = {
     goToPreviousStep: () => void;
     goToNextStep: () => void;
     getCurrentStep: () => number;
-    onSave: (current_step: number, values: FormikValues) => void;
+    onSave: (current_step: number, values: TFinancialDetailsFormValues) => void;
     onSubmit: (
         current_step: number,
-        values: FormikValues,
+        values: TFinancialDetailsFormValues,
         actions: (isSubmitting: boolean) => void,
         props: () => void
     ) => void;
     onCancel: (current_step: number, props: () => void) => void;
-    validate: (values: FormikValues) => object;
-    value: object;
+    validate: (values: TFinancialDetailsFormValues) => object;
+    value: TFinancialDetailsFormValues;
 };
 
-export type TFinancialInformationAndTradingExperience = {
-    shared_props?: object;
-    income_source_enum: object[];
-    employment_status_enum: object[];
-    employment_industry_enum: object[];
-    occupation_enum: object[];
-    source_of_wealth_enum: object[];
-    education_level_enum: object[];
-    net_income_enum: object[];
-    estimated_worth_enum: object[];
-    account_turnover_enum: object[];
-    forex_trading_experience_enum?: object[];
-    forex_trading_frequency_enum?: object[];
-    binary_options_trading_experience_enum?: object[];
-    binary_options_trading_frequency_enum?: object[];
-    cfd_trading_experience_enum?: object[];
-    cfd_trading_frequency_enum?: object[];
-    other_instruments_trading_experience_enum?: object[];
-    other_instruments_trading_frequency_enum?: object[];
-};
-
-const FinancialInformation = ({
-    shared_props,
-    income_source_enum,
-    employment_industry_enum,
-    occupation_enum,
-    source_of_wealth_enum,
-    education_level_enum,
-    net_income_enum,
-    estimated_worth_enum,
-    account_turnover_enum,
-}: TFinancialInformationAndTradingExperience) => {
-    return (
-        <React.Fragment>
-            <IncomeSource {...shared_props} income_source_enum={income_source_enum} />
-            <EmploymentIndustry {...shared_props} employment_industry_enum={employment_industry_enum} />
-            <Occupation {...shared_props} occupation_enum={occupation_enum} />
-            <SourceOfWealth {...shared_props} source_of_wealth_enum={source_of_wealth_enum} />
-            <EducationLevel {...shared_props} education_level_enum={education_level_enum} />
-            <NetIncome {...shared_props} net_income_enum={net_income_enum} />
-            <EstimatedWorth {...shared_props} estimated_worth_enum={estimated_worth_enum} />
-            <AccountTurnover {...shared_props} account_turnover_enum={account_turnover_enum} />
-        </React.Fragment>
-    );
-};
-
-const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTradingExperience) => {
-    const handleCancel = (values: FormikValues) => {
+/**
+ * A wrapper for the financial details form.
+ * @name FinancialDetails
+ * @param {TFinancialDetails} props  - props of the component
+ * @returns {React.ReactNode} React component that renders FinancialDetails form.
+ */
+const FinancialDetails = (props: TFinancialDetails) => {
+    const handleCancel = (values: TFinancialDetailsFormValues) => {
         const current_step = props.getCurrentStep() - 1;
         props.onSave(current_step, values);
         props.onCancel(current_step, props.goToPreviousStep);
     };
 
-    const handleValidate = (values: FormikValues) => {
+    const handleValidate = (values: TFinancialDetailsFormValues) => {
         const { errors } = splitValidationResultTypes(props.validate(values));
         return errors;
     };
@@ -106,16 +68,7 @@ const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTra
             }}
             validateOnMount
         >
-            {({ handleSubmit, isSubmitting, errors, values, setFieldValue, handleChange, handleBlur, touched }) => {
-                const shared_props = {
-                    values,
-                    handleChange,
-                    handleBlur,
-                    touched,
-                    errors,
-                    setFieldValue,
-                };
-
+            {({ handleSubmit, isSubmitting, errors, values }) => {
                 return (
                     <AutoHeightWrapper default_height={200}>
                         {({
@@ -144,43 +97,13 @@ const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTra
                                                 'financial-assessment__form'
                                             )}
                                         >
-                                            <FinancialInformation
-                                                shared_props={shared_props}
-                                                forex_trading_experience_enum={props.forex_trading_experience_enum}
-                                                forex_trading_frequency_enum={props.forex_trading_frequency_enum}
-                                                binary_options_trading_experience_enum={
-                                                    props.binary_options_trading_experience_enum
-                                                }
-                                                binary_options_trading_frequency_enum={
-                                                    props.binary_options_trading_frequency_enum
-                                                }
-                                                cfd_trading_experience_enum={props.cfd_trading_experience_enum}
-                                                cfd_trading_frequency_enum={props.cfd_trading_frequency_enum}
-                                                other_instruments_trading_experience_enum={
-                                                    props.other_instruments_trading_experience_enum
-                                                }
-                                                other_instruments_trading_frequency_enum={
-                                                    props.other_instruments_trading_frequency_enum
-                                                }
-                                                income_source_enum={props.income_source_enum}
-                                                employment_status_enum={props.employment_status_enum}
-                                                employment_industry_enum={props.employment_industry_enum}
-                                                occupation_enum={props.occupation_enum}
-                                                source_of_wealth_enum={props.source_of_wealth_enum}
-                                                education_level_enum={props.education_level_enum}
-                                                net_income_enum={props.net_income_enum}
-                                                estimated_worth_enum={props.estimated_worth_enum}
-                                                account_turnover_enum={props.account_turnover_enum}
-                                            />
+                                            <FinancialInformation />
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
                                 <Modal.Footer has_separator is_bypassed={isMobile()}>
                                     <FormSubmitButton
-                                        is_disabled={
-                                            // eslint-disable-next-line no-unused-vars
-                                            isSubmitting || Object.keys(errors).length > 0
-                                        }
+                                        is_disabled={isSubmitting || Object.keys(errors).length > 0}
                                         is_absolute={isMobile()}
                                         label={localize('Next')}
                                         has_cancel

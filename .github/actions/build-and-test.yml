@@ -1,7 +1,11 @@
 name: Build and Deploy
 
-on: ["workflow_call"]
-
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  
 jobs:
   build_and_deploy:
     # runs-on: [self-hosted] # Specify the label of your self-hosted runner machine

@@ -10,7 +10,7 @@ jobs:
     steps:
 
       - name: Build and Test
-        uses: ./.github/workflows/build-and-test.yml
+        uses: ./.github/actions/build-and-test.yml
       
       - name: Coveralls
         uses: coverallsapp/github-action@v2

@@ -147,6 +147,7 @@ const draw_path = (ctx, { zoom, top, left, icon }) => {
 
 const draw_shaded_barriers = ({
     ctx,
+    left_end,
     labels,
     start_left,
     top,
@@ -158,7 +159,8 @@ const draw_shaded_barriers = ({
     scale,
 }) => {
     ctx.save();
-    const end_left = ctx.canvas.offsetWidth - ctx.canvas.parentElement.stx.panels.chart.yaxisTotalWidthRight;
+    const end_left =
+        left_end ?? ctx.canvas.offsetWidth - ctx.canvas.parentElement.stx.panels.chart.yaxisTotalWidthRight;
     const end_top = ctx.canvas.offsetHeight - ctx.canvas.parentElement.stx.xaxisHeight;
     const is_top_visible = top < end_top && (top >= 0 || !has_persistent_borders);
     const is_bottom_visible = bottom < end_top;
@@ -272,6 +274,7 @@ const TickContract = RawMarkerMaker(
         granularity,
         contract_info: {
             accu_barriers_difference,
+            barrier_spot_distance,
             contract_type,
             exit_tick_time,
             status,
@@ -492,6 +495,38 @@ const TickContract = RawMarkerMaker(
                 zoom: exit.zoom,
                 icon: ICONS.END.with_color(color, getColor({ status: 'bg', is_dark_theme })),
             });
+            if (is_accu_contract_ended) {
+                const size = Math.floor(scale * 14);
+                draw_shaded_barriers({
+                    bottom: barrier_2,
+                    ctx,
+                    left_end: exit.left,
+                    fill_color: getColor({
+                        status:
+                            has_crossed_accu_barriers || contract_status === 'lost'
+                                ? 'accu_shade_crossed'
+                                : 'accu_contract_shade',
+                        is_dark_theme,
+                    }),
+                    labels: {
+                        font: `${size}px IBM Plex Sans`,
+                        top: `+${barrier_spot_distance}`,
+                        bottom: `-${barrier_spot_distance}`,
+                    },
+                    previous_tick: {
+                        draw_line_without_tick_marker: is_in_contract_details,
+                        stroke_color: color + opacity,
+                        radius: 1.5 * scale,
+                    },
+                    scale,
+                    start_left: previous_tick?.left,
+                    stroke_color: getColor({
+                        status: has_crossed_accu_barriers || contract_status === 'lost' ? 'lost' : 'won',
+                        is_dark_theme,
+                    }),
+                    top: barrier,
+                });
+            }
         }
         ctx.restore();
     }

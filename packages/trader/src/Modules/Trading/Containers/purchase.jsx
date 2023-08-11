@@ -3,6 +3,7 @@ import { isAccumulatorContract, isEmptyObject } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import PurchaseButtonsOverlay from 'Modules/Trading/Components/Elements/purchase-buttons-overlay.jsx';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
+import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 import { getContractTypePosition } from 'Constants/contract';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
@@ -52,7 +53,7 @@ const Purchase = observer(({ is_market_closed }) => {
             is_multiplier || (is_accumulator && !is_mobile) ? info.has_error && !!info.message : info.has_error;
         const purchase_fieldset = (
             <div className='trade-params--mobile__payout-container'>
-                {is_vanilla && isMobile() && (
+                {is_vanilla && is_mobile && (
                     <ContractInfo
                         basis={basis}
                         currency={currency}

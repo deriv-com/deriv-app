@@ -89,13 +89,6 @@ const ContractInfo = ({
         }
     };
 
-    const setBasisText = () => {
-        if (is_vanilla) {
-            return vanilla_payout_text;
-        }
-        return proposal_info.obj_contract_basis?.text;
-    };
-
     const has_error_or_not_loaded = proposal_info.has_error || !proposal_info.id;
     const basis_text = has_error_or_not_loaded ? stakeOrPayout() : proposal_info.obj_contract_basis.text;
     const { message, obj_contract_basis, stake } = proposal_info;

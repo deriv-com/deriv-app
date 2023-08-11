@@ -8,8 +8,15 @@ import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const Accumulator = observer(() => {
-    const { accumulator_range_list, growth_rate, is_accumulator, onChange, tick_size_barrier, proposal_info } =
-        useTraderStore();
+    const {
+        accumulator_range_list,
+        growth_rate,
+        is_accumulator,
+        onChange,
+        tick_size_barrier,
+        proposal_info,
+        has_open_accu_contract,
+    } = useTraderStore();
 
     // splitting accumulator_range_list into rows containing 5 values each:
     const arr_arr_numbers = accumulator_range_list.reduce((acc, _el, index) => {
@@ -41,6 +48,7 @@ const Accumulator = observer(() => {
                 onChange={onChange}
                 selected_number={growth_rate}
                 should_show_in_percents
+                is_disabled={has_open_accu_contract}
             />
         </Fieldset>
     );

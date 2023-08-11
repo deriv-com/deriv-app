@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
 import { getStaticUrl, isMobile, routes } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { MenuLink } from 'App/Components/Layout/Header/menu-link';
+import MenuLink from 'App/Components/Layout/Header/menu-link';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,

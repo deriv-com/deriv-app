@@ -17,7 +17,7 @@ import getRoutesConfig from 'App/Constants/routes-config';
 import LiveChat from 'App/Components/Elements/LiveChat';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 import PlatformSwitcher from './platform-switcher';
-import { MenuLink } from './menu-link';
+import MenuLink from './menu-link';
 import { MobileLanguageMenu, MenuTitle } from './Components/ToggleMenu';
 
 const ToggleMenuDrawer = observer(({ platform_config }) => {

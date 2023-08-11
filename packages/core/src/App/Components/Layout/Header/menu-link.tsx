@@ -171,4 +171,4 @@ const MenuLink = observer(
     }
 );
 
-export { MenuLink };
+export default MenuLink;

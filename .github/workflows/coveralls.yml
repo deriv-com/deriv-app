@@ -8,7 +8,11 @@ jobs:
     name: Upload Coverage
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - uses: ./.github/actions/build-and-test.yml
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run Build
+        uses: ./.github/actions/build-and-test.yml@master
+      
       - name: Coveralls
         uses: coverallsapp/github-action@v2

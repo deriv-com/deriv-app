@@ -3,6 +3,7 @@ import { AppLinkedWithWalletIcon, Text, WalletIcon } from '@deriv/components';
 import { getTradingAccountName, getWalletCurrencyIcon } from '@deriv/utils';
 import { useWalletTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 
 type TNonPendingTransaction = {
     transaction: ReturnType<typeof useWalletTransactions>['transactions'][number];
@@ -99,7 +100,7 @@ const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
                         weight='lighter'
                         line_height={is_mobile ? 's' : 'm'}
                     >
-                        {formatActionType(action_type)}
+                        {localize(formatActionType(action_type))}
                     </Text>
                     <Text
                         size={is_mobile ? 'xxxs' : 'xxs'}
@@ -107,7 +108,7 @@ const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
                         weight='bold'
                         line_height={is_mobile ? 's' : 'm'}
                     >
-                        {getAccountName()}
+                        {localize(getAccountName())}
                     </Text>
                 </div>
             </div>
@@ -126,7 +127,10 @@ const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
                     weight='lighter'
                     line_height={is_mobile ? 'm' : 's'}
                 >
-                    Balance: {formatAmount(balance_after)} {account_currency_config?.code}
+                    {localize('Balance: {{amount}} {{currency_code}}', {
+                        amount: formatAmount(balance_after),
+                        currency_code: account_currency_config?.code,
+                    })}
                 </Text>
             </div>
         </div>

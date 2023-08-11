@@ -4,7 +4,7 @@ import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { groupTransactionsByDay } from '@deriv/utils';
-import NonPendingTransaction from './non-pending-transaction';
+import TransactionsForADay from './transactions-for-a-day';
 import './transaction-list.scss';
 
 type TTransactionList = {
@@ -14,11 +14,12 @@ type TTransactionList = {
 
 const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTransactionList) => {
     const {
-        client: { loginid },
         ui: { is_mobile },
     } = useStore();
 
     const wallet = useActiveWallet();
+
+    const [should_show_pending_crypto_transactions, setShouldShowPendingCryptoTransactions] = useState(false);
 
     const filter_options = [
         {
@@ -42,51 +43,21 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
                       value: 'withdrawal',
                   },
               ] as const)),
-        {
-            text: localize('Transfer'),
-            value: 'transfer',
-        },
+        ...(!should_show_pending_crypto_transactions
+            ? ([
+                  {
+                      text: localize('Transfer'),
+                      value: 'transfer',
+                  },
+              ] as const)
+            : []),
     ] as const;
 
     const [filter, setFilter] = useState<typeof filter_options[number]['value']>('');
-    const [should_show_pending_crypto_transactions, setShouldShowPendingCryptoTransactions] = useState(false);
 
     const { transactions, isComplete, isLoading, loadMore, reset } = useWalletTransactions(filter || undefined);
 
     const grouped_transactions = groupTransactionsByDay(transactions);
-
-    const TransactionsForADay = ({
-        day,
-        transaction_list,
-    }: {
-        day: string;
-        transaction_list: ReturnType<typeof useWalletTransactions>['transactions'];
-    }) => {
-        return (
-            <div className='transaction-list__day'>
-                <Text
-                    className='transaction-list__day-header'
-                    size={is_mobile ? 'xxxxs' : 'xxxs'}
-                    line_height={is_mobile ? 'm' : 's'}
-                    color='less-prominent'
-                    weight='lighter'
-                >
-                    {day}
-                </Text>
-                {transaction_list.map((transaction: typeof transaction_list[number]) => {
-                    let display_transaction = transaction;
-                    if (
-                        transaction?.action_type === 'transfer' &&
-                        transaction?.from?.loginid === loginid &&
-                        typeof transaction?.amount === 'number'
-                    ) {
-                        display_transaction = { ...transaction, amount: -transaction.amount };
-                    }
-                    return <NonPendingTransaction key={transaction.transaction_id} transaction={display_transaction} />;
-                })}
-            </div>
-        );
-    };
 
     const getHeightOffset = React.useCallback(() => {
         const header_height = is_mobile ? '16.2rem' : '(24.4rem + 7.8rem)';

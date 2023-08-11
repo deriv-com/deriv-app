@@ -20,18 +20,34 @@ import ShareMyAdsSocials from './share-my-ads-socials';
 import ShareMyAdsCard from './share-my-ads-card';
 
 const ShareMyAdsModal = ({ advert }: TAdvert) => {
+    const [has_qr_loaded, setHasQrLoaded] = React.useState(false);
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
     const { account_currency, advertiser_details, id, local_currency, rate_display, rate_type } = advert;
     const { id: advertiser_id } = advertiser_details;
+    const { hideModal, is_modal_open } = useModalManagerContext();
 
     const divRef = React.useRef(null);
     const advert_url = `${window.location.origin}/cashier/p2p/advertiser?id=${advertiser_id}&advert_id=${id}`;
     const custom_message =
         rate_type === ad_type.FLOAT
-            ? `Hello! I'd like to exchange ${local_currency} for ${account_currency} at ${rate_display}% on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n${advert_url}\n\nThanks!`
-            : `Hello! I'd like to exchange ${local_currency} for ${account_currency} at ${rate_display} ${local_currency} on Deriv P2P.\n\nIf you're interested, check out my ad 👉${advert_url}\n\nThanks!`;
-
-    const { hideModal, is_modal_open } = useModalManagerContext();
+            ? localize(
+                  "Hello! I'd like to exchange {{local_currency}} for {{account_currency}} at {{rate_display}}% on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n{{advert_url}}\n\nThanks!",
+                  {
+                      local_currency,
+                      account_currency,
+                      rate_display,
+                      advert_url,
+                  }
+              )
+            : localize(
+                  "Hello! I'd like to exchange {{local_currency}} for {{account_currency}} at {{rate_display}} {{local_currency}} on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n{{advert_url}}\n\nThanks!",
+                  {
+                      local_currency,
+                      account_currency,
+                      rate_display,
+                      advert_url,
+                  }
+              );
 
     const onCopy = (event: { stopPropagation: () => void }) => {
         copyToClipboard(advert_url);
@@ -46,7 +62,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
             const blob = await fetch(dataUrl).then(res => res.blob());
             const file = new File([blob], file_name, { type: 'image/png' });
 
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            if (navigator.canShare && navigator.canShare({ files: [file] }) && has_qr_loaded) {
                 navigator.share({
                     files: [file],
                 });
@@ -59,10 +75,9 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
         }
     };
 
-    // TODO: Replace with proper message and url when available
     const handleShareLink = () => {
         navigator.share({
-            text: custom_message,
+            text: custom_message as string,
         });
     };
 
@@ -96,7 +111,12 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                     </DesktopWrapper>
                     <div className='share-my-ads-modal__container'>
                         <div className='share-my-ads-modal__container__card'>
-                            <ShareMyAdsCard advert={advert} advert_url={advert_url} divRef={divRef} />
+                            <ShareMyAdsCard
+                                advert={advert}
+                                advert_url={advert_url}
+                                divRef={divRef}
+                                setHasQrLoaded={setHasQrLoaded}
+                            />
                             <Button
                                 className='share-my-ads-modal__container__card__download-button'
                                 secondary

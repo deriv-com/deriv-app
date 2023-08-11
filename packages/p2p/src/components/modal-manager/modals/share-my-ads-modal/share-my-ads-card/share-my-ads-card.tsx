@@ -10,9 +10,10 @@ type TShareMyAdsCardProps = {
     advert: Partial<TAdvertProps>;
     advert_url: string;
     divRef: React.MutableRefObject<HTMLDivElement> | React.MutableRefObject<null>;
+    setHasQrLoaded: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) => {
+const ShareMyAdsCard = ({ advert, advert_url, divRef, setHasQrLoaded }: TShareMyAdsCardProps) => {
     const { account_currency, id, max_order_amount_limit_display, min_order_amount_limit_display, rate_display, type } =
         advert;
 
@@ -58,7 +59,7 @@ const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) =>
             </div>
             <div className='share-my-ads-card__qr'>
                 <div className='share-my-ads-card__qr-container'>
-                    <QRCode value={advert_url} {...options} />
+                    <QRCode value={advert_url} {...options} logoOnLoad={() => setHasQrLoaded(true)} />
                 </div>
                 <Text className='share-my-ads-card__qr-text' color='less-prominent' size='xxs'>
                     <Localize i18n_default_text='Scan this code to order via Deriv P2P' />

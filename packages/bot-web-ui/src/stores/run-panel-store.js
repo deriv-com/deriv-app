@@ -227,8 +227,8 @@ export default class RunPanelStore {
             this.stopBot();
             this.dbot.terminateBot();
             summary_card.clear();
+            this.setShowBotStopMessage(true);
         }
-        this.setShowBotStopMessage(true);
     }
 
     stopBot() {
@@ -565,7 +565,7 @@ export default class RunPanelStore {
 
     onBotTradeAgain(is_trade_again) {
         if (!is_trade_again) {
-            this.onStopButtonClick();
+            this.stopBot();
         }
     }
 

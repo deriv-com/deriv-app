@@ -1,23 +1,14 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import JurisdictionModalCheckbox from '../jurisdiction-modal-checkbox';
-import RootStore from 'Stores/index';
 import { Jurisdiction } from '@deriv/shared';
 
 describe('JurisdictionModalCheckbox', () => {
-    const mock_store = {
-        client: {},
-        common: {},
-        ui: {},
-    };
-    const mockRootStore = new RootStore(mock_store);
-
     const mock_props = {
         class_name: '',
         is_checked: false,
         jurisdiction_selected_shortcode: '',
         onCheck: jest.fn(),
-        context: mockRootStore,
         should_restrict_bvi_account_creation: false,
         should_restrict_vanuatu_account_creation: false,
     };

@@ -7,9 +7,10 @@ import { TDxCompanies, TMtCompanies, TDerivezCompanies } from '../Stores/Modules
 import { getTopUpConfig } from '../Helpers/constants';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { TCFDPlatform } from 'Components/props.types.js';
 
 type TCFDTopUpDemoModalProps = {
-    platform: string;
+    platform: TCFDPlatform;
 };
 
 const CFDTopUpDemoModal = observer(({ platform }: TCFDTopUpDemoModalProps) => {

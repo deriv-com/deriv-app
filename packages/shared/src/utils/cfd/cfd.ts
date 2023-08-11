@@ -26,7 +26,7 @@ export const CFD_text: { [key: string]: string } = {
     all_svg: 'Swap-Free SVG',
 } as const;
 
-export const getMT5Title = (account_type: string) => {
+export const getMT5Title = (account_type?: string) => {
     if (account_type === 'synthetic') {
         return CFD_text.synthetic;
     }
@@ -116,7 +116,7 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
 
 type TGetAccountTypeFields = {
     category: 'real' | 'demo';
-    type: 'financial' | 'synthetic' | 'all';
+    type: 'financial' | 'synthetic' | 'all' | string;
 };
 
 type TAccountType = {

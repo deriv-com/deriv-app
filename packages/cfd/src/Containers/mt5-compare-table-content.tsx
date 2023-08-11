@@ -20,10 +20,14 @@ import {
     getPreappstoreEuDemoContent,
     getEuFooterButtons,
 } from '../Constants/cfd_compare_account_content';
-import { GetSettings, GetAccountSettingsResponse } from '@deriv/api-types';
+import { GetSettings, GetAccountSettingsResponse, DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
+type TTypeOfAccount = {
+    category: 'demo' | 'real';
+    type: DetailsOfEachMT5Loginid['market_type'];
+};
 const Row = ({
     id,
     attribute,
@@ -327,7 +331,7 @@ const DMT5CompareModalContent = observer(
                 return item.action.startsWith('financial') ? 'financial' : 'synthetic';
             };
 
-            const type_of_account = {
+            const type_of_account: TTypeOfAccount = {
                 category: is_demo_tab ? 'demo' : 'real',
                 type: selected_account_type(),
             };
@@ -574,7 +578,7 @@ const DMT5CompareModalContent = observer(
                                         >
                                             {!is_demo_tab && shouldShowPendingStatus(item) ? (
                                                 <div className='cfd-accounts-compare-modal__table-footer__item--verification-pending'>
-                                                    <Text size={isDesktop ? 'xxs' : 'xxxs'} align='center'>
+                                                    <Text size={isDesktop() ? 'xxs' : 'xxxs'} align='center'>
                                                         {localize('Pending verification')}
                                                     </Text>
                                                 </div>

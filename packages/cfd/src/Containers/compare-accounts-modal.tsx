@@ -8,9 +8,11 @@ import CfdDxtradeCompareContent from '../Components/cfd-dxtrade-compare-content'
 import { observer, useStore } from '@deriv/stores';
 import { LandingCompany } from '@deriv/api-types';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { TCFDPlatform } from 'Components/props.types';
+import { TAccountType } from 'src/types';
 
 type TCompareAccountsReusedProps = {
-    platform: string;
+    platform: TCFDPlatform;
 };
 
 type TOpenAccountTransferMeta = {
@@ -22,7 +24,7 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     is_real_enabled: boolean;
     is_demo_tab: boolean;
     has_unmerged_account: boolean;
-    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
+    openPasswordModal: (account_type: TAccountType) => void;
     real_account_creation_unlock_date: string;
     setShouldShowCooldownModal: (value: boolean) => void;
 };

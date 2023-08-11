@@ -148,7 +148,11 @@ const CFDRealAccountDisplay = ({
 
         if (is_eu) {
             const account = getAccountTypeFields({ category: 'real', type: sub_account_type });
-            return isAccountOfTypeDisabled(account?.account_type);
+            return isAccountOfTypeDisabled(
+                account?.account_type as unknown as DetailsOfEachMT5Loginid[] & {
+                    [key: string]: DetailsOfEachMT5Loginid;
+                }
+            );
         }
 
         switch (sub_account_type) {

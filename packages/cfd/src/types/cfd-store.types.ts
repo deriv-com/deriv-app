@@ -11,7 +11,7 @@ export type TStoreProofOfAddressArgs = {
     };
 };
 
-type TAccountType = {
+export type TAccountType = {
     category: 'real' | 'demo' | '';
     type?:
         | 'all'
@@ -23,7 +23,8 @@ type TAccountType = {
         | 'financial'
         | 'financial_svg'
         | 'financial_stp'
-        | '';
+        | ''
+        | string;
 };
 
 export type TCFDStore = {
@@ -45,11 +46,8 @@ export type TCFDStore = {
     real_synthetic_accounts_existing_data: DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
     real_swapfree_accounts_existing_data: DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
     real_financial_accounts_existing_data: DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
-    account_type: {
-        type: string;
-        category: string;
-    };
-    jurisdiction_selected_shortcode: string;
+    account_type: TAccountType;
+    jurisdiction_selected_shortcode: 'bvi' | 'maltainvest' | 'vanuatu' | 'svg' | 'labuan';
     toggleJurisdictionModal: () => void;
     has_submitted_cfd_personal_details: boolean;
     is_jurisdiction_modal_visible: boolean;

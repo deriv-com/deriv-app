@@ -16,8 +16,10 @@ import {
     TClickableDescription,
     TJurisdictionCardItems,
     TJurisdictionCardItemVerification,
+    TCFDPlatform,
 } from '../Components/props.types';
 import RootStore from '../Stores/index';
+import { TAccountType } from 'src/types';
 
 export type TCFDPersonalDetailsContainerProps = {
     onSubmit: (index: number, value: { [key: string]: string }) => void;
@@ -27,7 +29,7 @@ type CFD_Platform = 'dxtrade' | 'mt5';
 
 export type TCFDChangePasswordConfirmationProps = {
     confirm_label?: string;
-    platform: string;
+    platform: TCFDPlatform;
     className?: string;
     onConfirm: (values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) => void;
     onCancel: () => void;
@@ -61,7 +63,7 @@ export type TMissingRealAccount = {
 };
 
 export type TChangePassword = {
-    platform: string;
+    platform: CFD_Platform;
     onConfirm: () => void;
 };
 
@@ -155,7 +157,7 @@ export type TJurisdictionCardProps = {
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     account_status: GetAccountStatus;
-    account_type: string;
+    account_type?: string;
     disabled: boolean;
     is_non_idv_design: boolean;
     type_of_card: TJurisdictionCardType;
@@ -228,16 +230,16 @@ type TOpenAccountTransferMeta = {
 };
 
 export type TJurisdictionModalContentWrapperProps = {
-    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
+    openPasswordModal: (account_type: TAccountType) => void;
 };
 
 export type TJurisdictionModalProps = {
-    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
+    openPasswordModal: (account_type: TAccountType) => void;
 };
 
 export type TJurisdictionModalContentProps = {
     account_status: GetAccountStatus;
-    account_type: string;
+    account_type?: string;
     is_non_idv_design: boolean;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
@@ -250,11 +252,11 @@ export type TJurisdictionModalContentProps = {
     is_virtual: boolean;
 };
 
-type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
+export type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
 
 export type TJurisdictionModalFootNoteProps = {
-    account_status: TAccountStatus;
-    account_type: string;
+    account_status: GetAccountStatus;
+    account_type?: string;
     card_classname: string;
     jurisdiction_selected_shortcode: string;
     should_restrict_bvi_account_creation: boolean;
@@ -302,7 +304,7 @@ export type TDMT5CompareModalContentProps = {
     is_preappstore_restricted_cr_demo_account: boolean;
     is_real_enabled: boolean;
     openDerivRealAccountNeededModal: () => void;
-    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
+    openPasswordModal: (account_type: TAccountType) => void;
     real_account_creation_unlock_date: string;
     setShouldShowCooldownModal: (value: boolean) => void;
     should_show_derivx: boolean;

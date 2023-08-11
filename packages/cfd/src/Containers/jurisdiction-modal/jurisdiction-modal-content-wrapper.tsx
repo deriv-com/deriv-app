@@ -9,6 +9,7 @@ import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
 import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
 import { useStore, observer } from '@deriv/stores';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
+import { TAccountType } from 'src/types';
 
 const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisdictionModalContentWrapperProps) => {
     const { client, traders_hub } = useStore();
@@ -135,7 +136,7 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
     };
 
     const onSelectRealAccount = () => {
-        const type_of_account = {
+        const type_of_account: TAccountType = {
             category: account_type.category,
             type: account_type.type,
         };

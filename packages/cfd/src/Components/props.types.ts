@@ -1,7 +1,7 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TCFDPasswordReset } from '../Containers/props.types';
 
-export type TCFDPlatform = 'dxtrade' | 'mt5';
+export type TCFDPlatform = 'dxtrade' | 'mt5' | 'derivez';
 
 export type TCFDsPlatformType = 'dxtrade' | 'derivez' | 'mt5' | 'ctrader' | '';
 
@@ -23,7 +23,7 @@ export type TSpecBoxProps = {
 };
 
 export type TPasswordBoxProps = {
-    platform: string;
+    platform: TCFDPlatform;
     onClick: () => void;
 };
 
@@ -57,7 +57,7 @@ export type TCFDAccountCardActionProps = {
     is_virtual?: boolean;
     onSelectAccount: () => void;
     type: TType;
-    platform: string;
+    platform: TCFDPlatform;
     title: string;
     real_account_creation_unlock_date: string;
     setShouldShowCooldownModal: (value: boolean) => void;
@@ -168,7 +168,7 @@ export type TCFDAccountCard = {
     is_disabled: boolean;
     is_logged_in: boolean;
     is_virtual?: boolean;
-    platform: string;
+    platform: TCFDPlatform;
     specs?: { [key: string]: { key: () => string; value: () => string } };
     title: string;
     type: TType;

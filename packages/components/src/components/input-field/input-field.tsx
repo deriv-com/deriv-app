@@ -89,7 +89,7 @@ const InputField = ({
     id,
     inline_prefix,
     is_autocomplete_disabled,
-    is_disabled,
+    is_disabled = false,
     is_error_tooltip_hidden = false,
     is_float,
     is_hj_whitelisted = false,

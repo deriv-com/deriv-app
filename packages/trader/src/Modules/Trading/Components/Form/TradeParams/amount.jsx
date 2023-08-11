@@ -20,6 +20,7 @@ export const Input = ({
     error_messages,
     is_nativepicker,
     is_single_currency,
+    is_disabled,
     onChange,
     setCurrentFocus,
 }) => (
@@ -39,6 +40,7 @@ export const Input = ({
         is_incrementable
         is_nativepicker={is_nativepicker}
         is_negative_disabled
+        is_disabled={is_disabled}
         max_length={AMOUNT_MAX_LENGTH}
         name='amount'
         onChange={onChange}
@@ -69,6 +71,7 @@ const Amount = observer(({ is_minimized, is_nativepicker }) => {
         is_turbos,
         is_vanilla,
         has_equals_only,
+        has_open_accu_contract,
         onChange,
         validation_errors,
     } = useTraderStore();
@@ -159,6 +162,7 @@ const Amount = observer(({ is_minimized, is_nativepicker }) => {
                     error_messages={error_messages}
                     is_single_currency={is_single_currency}
                     is_nativepicker={is_nativepicker}
+                    is_disabled={has_open_accu_contract}
                     onChange={onChange}
                     setCurrentFocus={setCurrentFocus}
                 />

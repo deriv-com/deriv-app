@@ -16,7 +16,7 @@ export type TVanillaOptionsCardBodyProps = {
     getCardLabels: TGetCardLables;
     is_sold: boolean;
     progress_slider: React.ReactNode;
-    status: string;
+    status?: string;
 };
 
 const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({

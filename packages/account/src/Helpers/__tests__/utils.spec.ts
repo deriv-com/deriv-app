@@ -107,10 +107,8 @@ describe('shouldShowIdentityInformation', () => {
 
 describe('getDocumentData', () => {
     it('should return the empty document data', () => {
-        expect(getDocumentData('test', 'test')).toEqual({
-            new_display_name: '',
-            example_format: '',
-            sample_image: '',
+        expect(getDocumentData('pe', 'national_id')).toEqual({
+            example_format: '12345678',
         });
     });
 

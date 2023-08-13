@@ -67,10 +67,11 @@ export const MultiplierAmountWidget = observer(() => {
     return <AmountWidget {...amount_widget_props} />;
 });
 
-const RadioGroupOptionsWidget = ({ displayed_trade_param, modal_title }) => {
+const RadioGroupOptionsWidget = ({ displayed_trade_param, is_disabled = false, modal_title }) => {
     const [is_open, setIsOpen] = React.useState(false);
 
     const toggleModal = () => {
+        if (is_disabled) return;
         setIsOpen(!is_open);
     };
 
@@ -78,7 +79,7 @@ const RadioGroupOptionsWidget = ({ displayed_trade_param, modal_title }) => {
         <React.Fragment>
             <RadioGroupOptionsModal is_open={is_open} toggleModal={toggleModal} modal_title={modal_title} />
             <div className='mobile-widget mobile-widget__multiplier-options' onClick={toggleModal}>
-                <div className='mobile-widget__item'>
+                <div className={`mobile-widget__item ${is_disabled ? 'mobile-widget__item-disabled' : ''}`}>
                     <span className='mobile-widget__item-value'>{displayed_trade_param}</span>
                 </div>
             </div>
@@ -94,8 +95,14 @@ export const MultiplierOptionsWidget = observer(() => {
 });
 
 export const AccumulatorOptionsWidget = observer(() => {
-    const { growth_rate } = useTraderStore();
+    const { growth_rate, has_open_accu_contract } = useTraderStore();
     const displayed_trade_param = `${getGrowthRatePercentage(growth_rate)}%`;
     const modal_title = localize('Growth rate');
-    return <RadioGroupOptionsWidget displayed_trade_param={displayed_trade_param} modal_title={modal_title} />;
+    return (
+        <RadioGroupOptionsWidget
+            displayed_trade_param={displayed_trade_param}
+            is_disabled={has_open_accu_contract}
+            modal_title={modal_title}
+        />
+    );
 });

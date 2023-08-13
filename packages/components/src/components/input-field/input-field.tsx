@@ -62,6 +62,7 @@ type TInputField = {
     prefix?: string;
     required?: boolean;
     setCurrentFocus: (name: string | null) => void;
+    should_apply_disabled_style?: boolean;
     type: string;
     unit?: string;
     value: number | string;
@@ -115,6 +116,7 @@ const InputField = ({
     prefix,
     required,
     setCurrentFocus,
+    should_apply_disabled_style = false,
     type,
     unit,
     value,
@@ -347,6 +349,7 @@ const InputField = ({
             onLongPressEnd={onLongPressEnd}
             is_incrementable_on_long_press={is_incrementable_on_long_press}
             type={increment_button_type}
+            should_apply_disabled_style={should_apply_disabled_style}
         />
     );
 

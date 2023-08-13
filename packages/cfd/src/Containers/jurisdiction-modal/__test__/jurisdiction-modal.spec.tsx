@@ -1,5 +1,6 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { TStores } from '@deriv/stores/types';
 import { CFDStoreProvider } from 'Stores/Modules/CFD/Helpers/useCfdStores';
@@ -93,7 +94,7 @@ describe('JurisdictionModal', () => {
     it('should render JurisdictionModal with dynamic leverage modal', async () => {
         render(<JurisdictionModalComponent {...mock_props} />);
         const toggle_button = screen.getByText('Dynamic Leverage');
-        fireEvent.click(toggle_button);
+        userEvent.click(toggle_button);
 
         const title = screen.getByRole('heading');
         const back_button = screen.getByTestId('back_icon');
@@ -105,7 +106,7 @@ describe('JurisdictionModal', () => {
         expect(title).toHaveTextContent('Get more out of Deriv MT5 Financial');
         expect(back_button).toBeInTheDocument();
 
-        fireEvent.click(back_button);
+        userEvent.click(back_button);
         expect(modal_content).not.toHaveClass('jurisdiction-modal__flipped');
     });
 

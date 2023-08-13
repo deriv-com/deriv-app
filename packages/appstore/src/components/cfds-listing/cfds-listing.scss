@@ -789,14 +789,14 @@
                 justify-items: center;
                 border-bottom: 0;
                 padding: 0.4rem 0;
-            }
 
-            &-row:nth-child(even) {
-                background-color: var(--general-hover);
-            }
+                &:nth-child(even) {
+                    background-color: var(--general-hover);
+                }
 
-            &-row:nth-child(odd) {
-                background-color: var(--general-section-1);
+                &:nth-child(odd) {
+                    background-color: var(--general-section-1);
+                }
             }
         }
 

@@ -554,8 +554,6 @@ export default class TradersHubStore extends BaseStore {
             this.selected_region = 'EU';
         }
     }
-
-    // simti_note
     async openDemoCFDAccount(account_type, platform, standpoint) {
         const { client, modules, ui } = this.root_store;
         const { createCFDAccount, enableCFDPasswordModal, has_maltainvest_account } = modules.cfd;

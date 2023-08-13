@@ -67,7 +67,7 @@ type TStatement = {
     is_loading: boolean;
     is_switching: boolean;
     is_virtual: boolean;
-    onMount: () => void;
+    onMount: (is_mx_mlt: boolean) => void;
     onUnmount: () => void;
 };
 

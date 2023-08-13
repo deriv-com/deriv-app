@@ -20,7 +20,6 @@ const getSortedIndex = (type: string, index: number) => {
     }
 };
 
-// @ts-expect-error returned value should be wraped with React.Fragmant (it's an array with components), but we can't do this as it causes issues.
 const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) => {
     const {
         portfolio: { active_positions },
@@ -116,7 +115,7 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) 
         );
     }
 
-    return components;
+    return components as unknown as JSX.Element;
 });
 
 export default Purchase;

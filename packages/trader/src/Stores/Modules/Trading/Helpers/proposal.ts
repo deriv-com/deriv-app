@@ -66,10 +66,7 @@ export const getProposalInfo = (
 
     const contract_basis: TObjContractBasis | undefined =
         store.is_vanilla || store.is_turbos
-            ? {
-                  text: store.is_vanilla ? getLocalizedBasis().payout : getLocalizedBasis().payout_per_point,
-                  value: 'display_number_of_contracts',
-              }
+            ? { text: getLocalizedBasis().payout_per_point, value: 'display_number_of_contracts' }
             : basis_list.find(o => o.value !== store.basis) || ({} as TObjContractBasis);
 
     const is_stake = contract_basis?.value === 'stake';

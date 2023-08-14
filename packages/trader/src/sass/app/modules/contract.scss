@@ -63,7 +63,9 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
                     font-size: 1rem;
                     letter-spacing: normal;
                     line-height: 1.4;
-                    max-width: 23.3rem;
+                    max-width: 16rem;
+                    line-clamp: 2;
+                    -webkit-line-clamp: 2;
                     /* iPhone SE screen height fixes due to UI space restrictions */
                     @media only screen and (max-height: 480px) {
                         font-size: 0.8rem;

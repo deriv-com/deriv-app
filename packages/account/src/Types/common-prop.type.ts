@@ -179,6 +179,6 @@ export type TIDVForm = {
     selected_country: ResidenceList[0];
     hide_hint?: boolean;
     class_name?: string;
-    can_skip_document_verification: boolean;
+    can_skip_document_verification?: boolean;
 } & Partial<FormikHandlers> &
     FormikProps<TFormProps>;

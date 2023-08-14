@@ -2,7 +2,7 @@ import React from 'react';
 import { Formik, FormikValues, FormikHelpers, FormikErrors, Form } from 'formik';
 import { localize } from '@deriv/translations';
 import classNames from 'classnames';
-import { GetSettings } from '@deriv/api-types';
+import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button } from '@deriv/components';
 import { filterObjProperties, toMoment, removeEmptyPropertiesFromObject } from '@deriv/shared';
 import {
@@ -29,7 +29,7 @@ type TIdvDocSubmitOnSignup = {
     has_idv_error?: boolean;
     account_settings: GetSettings;
     getChangeableFields: () => string[];
-    residence_list: any;
+    residence_list: ResidenceList;
 };
 
 export const IdvDocSubmitOnSignup = ({

@@ -134,7 +134,7 @@ describe('useTradingAccountsList', () => {
 
         const { result } = renderHook(() => useActiveAccount(), { wrapper });
 
-        expect(result.current.data?.loginid).toEqual('CR1003');
+        expect(result.current?.loginid).toEqual('CR1003');
     });
 
     test('should return correct balance', () => {
@@ -142,6 +142,6 @@ describe('useTradingAccountsList', () => {
 
         const { result } = renderHook(() => useActiveAccount(), { wrapper });
 
-        expect(result.current.data?.balance).toEqual(179);
+        expect(result.current?.balance).toEqual(179);
     });
 });

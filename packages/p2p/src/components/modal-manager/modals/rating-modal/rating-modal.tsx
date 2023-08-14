@@ -1,29 +1,41 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Modal } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import StarRating from 'Components/star-rating';
 import RecommendUser from 'Components/recommend-user';
 import { useStores } from 'Stores';
-import { observer } from 'mobx-react-lite';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
-const RatingModal = ({ is_buy_order_for_user, is_user_recommended_previously, onClickDone, onClickSkip }) => {
+type TRatingModalProps = {
+    is_buy_order_for_user: boolean;
+    is_user_recommended_previously: number;
+    onClickDone: () => void;
+    onClickSkip: () => void;
+};
+
+const RatingModal = ({
+    is_buy_order_for_user,
+    is_user_recommended_previously,
+    onClickDone,
+    onClickSkip,
+}: TRatingModalProps) => {
     const { order_store } = useStores();
     const { is_modal_open } = useModalManagerContext();
+    const { handleRating, rating_value, setIsRecommended } = order_store;
 
-    const onClickClearRecommendation = () => order_store.setIsRecommended(null);
-    const onClickNotRecommended = () => order_store.setIsRecommended(0);
-    const onClickRecommended = () => order_store.setIsRecommended(1);
+    const onClickClearRecommendation = () => setIsRecommended(null);
+    const onClickNotRecommended = () => setIsRecommended(0);
+    const onClickRecommended = () => setIsRecommended(1);
 
     return (
         <Modal
-            has_close_icon={order_store.rating_value > 0}
+            has_close_icon={rating_value > 0}
             is_open={is_modal_open}
             title={localize('How would you rate this transaction?')}
             toggleModal={onClickSkip}
-            width={isMobile() && '90vw'}
+            width={isMobile() ? '90vw' : ''}
         >
             <Modal.Body className='rating-modal__body'>
                 <div className='rating-modal__body__star'>
@@ -34,13 +46,13 @@ const RatingModal = ({ is_buy_order_for_user, is_user_recommended_previously, on
                         full_star_icon='IcFullStar'
                         initial_value={0}
                         number_of_stars={5}
-                        onClick={order_store.handleRating}
-                        rating_value={order_store.rating_value}
+                        onClick={handleRating}
+                        rating_value={rating_value}
                         should_allow_half_icon={false}
                         star_size={isMobile() ? 25 : 20}
                     />
                 </div>
-                {order_store.rating_value > 0 && (
+                {rating_value > 0 && (
                     <RecommendUser
                         is_buy_order_for_user={is_buy_order_for_user}
                         is_user_recommended_previously={is_user_recommended_previously}
@@ -51,7 +63,7 @@ const RatingModal = ({ is_buy_order_for_user, is_user_recommended_previously, on
                 )}
             </Modal.Body>
             <Modal.Footer className='rating-modal__footer'>
-                {order_store.rating_value > 0 ? (
+                {rating_value > 0 ? (
                     <Button primary large onClick={onClickDone}>
                         <Localize i18n_default_text='Done' />
                     </Button>
@@ -63,14 +75,6 @@ const RatingModal = ({ is_buy_order_for_user, is_user_recommended_previously, on
             </Modal.Footer>
         </Modal>
     );
-};
-
-RatingModal.propTypes = {
-    is_buy_order_for_user: PropTypes.bool,
-    is_user_recommended_previously: PropTypes.number,
-    onClickDone: PropTypes.func,
-    onClickSkip: PropTypes.func,
-    onClickStar: PropTypes.func,
 };
 
 export default observer(RatingModal);

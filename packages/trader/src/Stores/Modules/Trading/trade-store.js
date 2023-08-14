@@ -1573,18 +1573,6 @@ export default class TradeStore extends BaseStore {
         return this.is_multiplier && !!this.hovered_contract_type;
     }
 
-    // get accumulator_was_bought() {
-    //     console.log('this.root_store.portfolio.active_positions', this.root_store.portfolio.active_positions);
-    //     console.log('this.is_accumulator', this.is_accumulator);
-    //     console.log('this.symbol', this.symbol);
-    //     return (
-    //         this.is_accumulator &&
-    //         !!this.root_store.portfolio.active_positions.find(
-    //             ({ contract_info, type }) => isAccumulatorContract(type) && contract_info.underlying === this.symbol
-    //         )
-    //     );
-    // }
-
     get is_accumulator() {
         return this.contract_type === 'accumulator';
     }

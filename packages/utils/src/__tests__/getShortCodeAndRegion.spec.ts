@@ -39,7 +39,7 @@ describe('getShortCodeAndRegion', () => {
     });
 
     it('should return shortcode and empty region for non-virtual, non-EU user with single SVG account', () => {
-        const result = getShortCodeAndRegion('VRW123', false, 'us', mockAccount, [mockAccount]);
+        const result = getShortCodeAndRegion('CRW123', false, 'us', mockAccount, [mockAccount]);
         expect(result).toBe('SVG');
     });
 

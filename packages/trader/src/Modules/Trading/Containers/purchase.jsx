@@ -17,7 +17,7 @@ import { observer, useStore } from '@deriv/stores';
 
 const Purchase = observer(({ is_market_closed }) => {
     const {
-        portfolio: { active_positions, onClickSell },
+        portfolio: { all_positions, onClickSell },
         ui: { purchase_states: purchased_states_arr, is_mobile, setPurchaseState },
     } = useStore();
     const {
@@ -50,8 +50,9 @@ const Purchase = observer(({ is_market_closed }) => {
     const is_proposal_empty = isEmptyObject(proposal_info);
     const active_accu_contract =
         is_accumulator &&
-        active_positions.find(
-            ({ contract_info, type }) => isAccumulatorContract(type) && contract_info.underlying === symbol
+        all_positions.find(
+            ({ contract_info, type }) =>
+                isAccumulatorContract(type) && contract_info.underlying === symbol && !contract_info.is_sold
         );
     const is_valid_to_sell = active_accu_contract?.contract_info
         ? hasContractEntered(active_accu_contract.contract_info) && isOpen(active_accu_contract.contract_info)

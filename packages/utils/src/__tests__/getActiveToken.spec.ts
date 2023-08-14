@@ -1,4 +1,4 @@
-import { getActiveToken } from '../getActiveToken';
+import getActiveToken from '../getActiveToken';
 
 describe('getActiveToken', () => {
     beforeEach(() => {

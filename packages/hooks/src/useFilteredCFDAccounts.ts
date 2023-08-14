@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
+import { getShortCodeAndRegion } from '@deriv/utils';
 import useAvailableMT5Accounts from './useAvailableMT5Accounts';
 import useExistingCFDAccounts from './useExistingCFDAccounts';
-import { useStore } from '@deriv/stores';
+import useAuthorize from './useAuthorize';
 
 /**
  *
@@ -11,9 +12,7 @@ import { useStore } from '@deriv/stores';
 const useFilteredCFDAccounts = () => {
     const { data: available_mt5_accounts, ...rest_available_mt5_accounts } = useAvailableMT5Accounts();
     const { data: existing_cfd_accounts, ...rest_existing_cfd_accounts } = useExistingCFDAccounts();
-    const { traders_hub } = useStore();
-    // TODO: move this to utils
-    const { getShortCodeAndRegion } = traders_hub;
+    const { data: authorize_data } = useAuthorize();
 
     const combined_mt5_accounts = useMemo(() => {
         if (!available_mt5_accounts) return undefined;
@@ -47,13 +46,25 @@ const useFilteredCFDAccounts = () => {
                             ...available,
                             ...existing_mt5_account,
                             market_type: modified_market_type,
-                            short_code_and_region: getShortCodeAndRegion(existing_mt5_account || available),
+                            short_code_and_region: getShortCodeAndRegion(
+                                authorize_data?.loginid || '',
+                                Boolean(authorize_data?.is_virtual),
+                                authorize_data?.country || '',
+                                existing_mt5_account || available,
+                                existing_cfd_accounts?.mt5_accounts
+                            ),
                             is_added,
                         };
                     });
                 })
         );
-    }, [available_mt5_accounts, existing_cfd_accounts?.mt5_accounts, getShortCodeAndRegion]);
+    }, [
+        authorize_data?.country,
+        authorize_data?.is_virtual,
+        authorize_data?.loginid,
+        available_mt5_accounts,
+        existing_cfd_accounts?.mt5_accounts,
+    ]);
 
     /** Categorizes the accounts into different market types and groups them together */
     const categorized_mt5_accounts = useMemo(() => {

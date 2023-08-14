@@ -6,7 +6,10 @@ import { useMemo } from 'react';
 const useAuthorize = (token?: string) => {
     const current_token = getActiveToken();
 
-    const { data, ...rest } = useFetch('authorize', { payload: { authorize: token || current_token } });
+    const { data, ...rest } = useFetch('authorize', {
+        payload: { authorize: token || current_token },
+        options: { refetchOnMount: false },
+    });
 
     // Add additional information to the authorize response.
     const modified_authorize = useMemo(() => ({ ...data?.authorize }), [data?.authorize]);

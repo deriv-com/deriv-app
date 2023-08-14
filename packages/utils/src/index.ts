@@ -4,3 +4,4 @@ export { default as getWalletCurrencyIcon } from './getWalletCurrencyIcon';
 export { default as unFormatLocaleString } from './unFormatLocaleString';
 export { getLocalStorage } from './getLocalStorage';
 export { default as getActiveToken } from './getActiveToken';
+export { default as getShortCodeAndRegion } from './getShortCodeAndRegion';

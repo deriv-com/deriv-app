@@ -1,6 +1,6 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { TOnfidoPhrases } from 'src/Types/onfido-phrases.type';
+import { TOnfidoPhrases } from '../Types/onfido-phrases.type';
 
 const getOnfidoPhrases = (): TOnfidoPhrases => ({
     country_select: {

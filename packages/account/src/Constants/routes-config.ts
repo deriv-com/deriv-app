@@ -22,13 +22,18 @@ import {
     LanguageSettings,
 } from '../Sections';
 
-import { TRoute, TRouteConfig } from 'Types';
+import { TRoute, TRouteConfig } from '../Types';
+
+type TInitRoutesConfig = {
+    is_appstore: boolean;
+};
 
 // Error Routes
 const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
+export type TPage404 = typeof Page404;
 
 // Order matters
-const initRoutesConfig = (is_appstore: boolean): TRouteConfig[] => [
+const initRoutesConfig = ({ is_appstore }: TInitRoutesConfig): TRouteConfig[] => [
     {
         path: routes.account_closed,
         component: AccountClosed,
@@ -168,14 +173,14 @@ const initRoutesConfig = (is_appstore: boolean): TRouteConfig[] => [
     },
 ];
 
-let routesConfig: undefined | TRouteConfig[];
+let routesConfig: TRouteConfig[] | undefined;
 
 // For default page route if page/path is not found, must be kept at the end of routes_config array
 const route_default: TRoute = { component: Page404, getTitle: () => localize('Error 404') };
 
-const getRoutesConfig = (is_appstore: boolean): TRouteConfig[] => {
+const getRoutesConfig = ({ is_appstore }: TInitRoutesConfig): TRouteConfig[] => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig(is_appstore);
+        routesConfig = initRoutesConfig({ is_appstore });
         routesConfig.push(route_default);
     }
     return routesConfig;

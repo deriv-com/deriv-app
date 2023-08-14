@@ -466,7 +466,7 @@
         }
         &__content {
             position: absolute;
-            width: 16.4rem;
+            min-width: 10.5rem;
             height: 5.8rem;
             border-radius: $BORDER_RADIUS;
             display: flex;
@@ -476,6 +476,10 @@
             opacity: 0.72;
             transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.1, 0.25);
 
+            @include mobile {
+                min-width: 7.5rem;
+                height: 4.6rem;
+            }
             &-enter,
             &-exit {
                 opacity: 0;

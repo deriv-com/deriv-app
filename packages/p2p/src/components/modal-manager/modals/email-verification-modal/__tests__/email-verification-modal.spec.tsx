@@ -1,11 +1,18 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import EmailVerificationModal from '../email-verification-modal';
 import userEvent from '@testing-library/user-event';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useStores } from 'Stores/index';
+import EmailVerificationModal from '../email-verification-modal';
 
-let mock_store;
+let mock_store: DeepPartial<ReturnType<typeof useStores>>;
 
 const el_modal = document.createElement('div');
+
+const mock_modal_manager: DeepPartial<ReturnType<typeof useModalManagerContext>> = {
+    hideModal: jest.fn(),
+    is_modal_open: true,
+};
 
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
@@ -14,10 +21,7 @@ jest.mock('Stores', () => ({
 
 jest.mock('Components/modal-manager/modal-manager-context', () => ({
     ...jest.requireActual('Components/modal-manager/modal-manager-context'),
-    useModalManagerContext: jest.fn(() => ({
-        hideModal: jest.fn(),
-        is_modal_open: true,
-    })),
+    useModalManagerContext: jest.fn(() => mock_modal_manager),
 }));
 
 describe('EmailVerificationModal />', () => {
@@ -51,7 +55,10 @@ describe('EmailVerificationModal />', () => {
 
     it('should be able to click on didn`t receive email and setShouldShowReasonsIfNoEmail should be passing true', () => {
         const setShouldShowReasonsIfNoEmailMock = jest.spyOn(React, 'useState');
-        setShouldShowReasonsIfNoEmailMock.mockImplementation(initialValue => [initialValue, jest.fn()]);
+        (setShouldShowReasonsIfNoEmailMock as jest.Mock).mockImplementation(initial_value => [
+            initial_value,
+            jest.fn(),
+        ]);
 
         render(<EmailVerificationModal />);
 
@@ -62,8 +69,7 @@ describe('EmailVerificationModal />', () => {
         expect(setShouldShowReasonsIfNoEmailMock).toHaveBeenCalled();
     });
 
-    // TODO: Add other checks for hideModal and setShouldShowReasonsIfNoEmail to be called when refactoring this component
-    it('should call confirmOrderRequest when clicking on Resend Email button', () => {
+    it('should call hideModal, confirmOrderRequest when clicking on Resend Email button', () => {
         jest.spyOn(React, 'useState').mockImplementationOnce(() => React.useState(true));
 
         render(<EmailVerificationModal />);
@@ -72,6 +78,7 @@ describe('EmailVerificationModal />', () => {
 
         userEvent.click(resendEmail);
 
+        expect(mock_modal_manager.hideModal).toHaveBeenCalled();
         expect(mock_store.order_store.confirmOrderRequest).toHaveBeenCalledWith(
             mock_store.order_store.order_information.id
         );

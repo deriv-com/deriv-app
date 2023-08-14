@@ -7,7 +7,7 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 
 const EmailVerificationModal = (
     {
-        // TODO: Uncomment when time is available in BE response
+        // TODO: Uncomment when time is available in BE response and add types
         //remaining_time,
         //verification_link_expiry_time,
     }
@@ -20,10 +20,9 @@ const EmailVerificationModal = (
     return (
         <Modal
             className='email-verification-modal'
-            has_close_icon
             is_open={is_modal_open}
             renderTitle={() => <></>}
-            toggleModal={hideModal}
+            toggleModal={() => hideModal()}
             width='440px'
         >
             <Modal.Body className='email-verification-modal__body'>
@@ -101,12 +100,6 @@ const EmailVerificationModal = (
             )}
         </Modal>
     );
-};
-
-EmailVerificationModal.propTypes = {
-    // TODO: Uncomment when time is available in BE response
-    // remaining_time: PropTypes.string,
-    // verification_link_expiry_time: PropTypes.number,
 };
 
 export default EmailVerificationModal;

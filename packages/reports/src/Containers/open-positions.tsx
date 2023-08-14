@@ -18,15 +18,18 @@ import {
     isMobile,
     isMultiplierContract,
     isVanillaContract,
+    isTurbosContract,
     getTimePercentage,
     getUnsupportedContracts,
     getTotalProfit,
     getContractPath,
-    formatPortfolioPosition,
-    TContractInfo,
     getCurrentTick,
+    getDurationPeriod,
+    getDurationUnitText,
     getGrowthRatePercentage,
     getCardLabels,
+    toMoment,
+    TContractStore,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
@@ -41,29 +44,23 @@ import {
 import PlaceholderComponent from '../Components/placeholder-component';
 import { connect } from 'Stores/connect';
 import type { TRootStore } from 'Stores/index';
+import { TColIndex } from 'Types';
+import moment from 'moment';
 
+type TPortfolioStore = TRootStore['portfolio'];
+type TDataList = React.ComponentProps<typeof DataList>;
+type TDataListCell = React.ComponentProps<typeof DataList.Cell>;
+type TRowRenderer = TDataList['rowRenderer'];
+type TMobileRowRenderer = {
+    row?: TDataList['data_source'][number];
+    is_footer?: boolean;
+    columns_map?: Record<TColIndex, TDataListCell['column']>;
+    server_time?: moment.Moment;
+    onClickCancel: (contract_id?: number) => void;
+    onClickSell: (contract_id?: number) => void;
+    measure?: () => void;
+};
 type TRangeFloatZeroToOne = React.ComponentProps<typeof ProgressBar>['value'];
-type TFormatPortfolioPosition = ReturnType<typeof formatPortfolioPosition>;
-type TGetMultiplierOpenPositionsColumnsTemplate = ReturnType<typeof getMultiplierOpenPositionsColumnsTemplate>;
-type TGetOpenPositionsColumnsTemplate = ReturnType<typeof getOpenPositionsColumnsTemplate>;
-type TColumnsMap = TGetMultiplierOpenPositionsColumnsTemplate | TGetOpenPositionsColumnsTemplate;
-type TColumnsMapElement = TColumnsMap[number];
-type TColIndex =
-    | 'type'
-    | 'reference'
-    | 'currency'
-    | 'purchase'
-    | 'payout'
-    | 'profit'
-    | 'indicative'
-    | 'id'
-    | 'multiplier'
-    | 'buy_price'
-    | 'cancellation'
-    | 'limit_order'
-    | 'bid_price'
-    | 'action';
-
 type TEmptyPlaceholderWrapper = React.PropsWithChildren<{
     is_empty: boolean;
     component_icon: string;
@@ -84,38 +81,18 @@ const EmptyPlaceholderWrapper = ({ is_empty, component_icon, children }: TEmptyP
     </React.Fragment>
 );
 
-type TMobileRowRenderer = {
-    row: TFormatPortfolioPosition & { is_sell_requested: boolean };
-    is_footer: boolean;
-    columns_map: Record<TColIndex, TColumnsMapElement>;
-    server_time: moment.Moment;
-    onClickCancel: () => void;
-    onClickSell: () => void;
-    measure: () => void;
-};
-
-type TOpenPositionsTable = {
+type TOpenPositionsTable = Pick<TDataList, 'getRowAction'> & {
     className: string;
-    columns: Record<string, any>[];
+    columns: Record<string, unknown>[];
     component_icon: string;
     currency: string;
-    active_positions: TFormatPortfolioPosition[];
+    active_positions: TPortfolioStore['active_positions'];
     is_loading: boolean;
-    getRowAction: (row_obj: TRowObj) =>
-        | string
-        | {
-              component: JSX.Element;
-          };
-    mobileRowRenderer: (args: TMobileRowRenderer) => JSX.Element;
-    preloaderCheck: (item: { purchase: number }) => boolean;
+    mobileRowRenderer: TRowRenderer;
+    preloaderCheck: (item: TTotals) => boolean;
     row_size: number;
     totals: TTotals;
     is_empty: boolean;
-};
-
-type TRowObj = {
-    is_unsupported: false;
-    id: number;
 };
 
 type TTotals = {
@@ -126,6 +103,11 @@ type TTotals = {
         cancellation?: {
             ask_price?: number;
         };
+        limit_order?: {
+            take_profit?: {
+                order_amount?: number | null;
+            };
+        };
     };
     indicative?: number;
     purchase?: number;
@@ -134,33 +116,35 @@ type TTotals = {
 };
 
 type TAddToastProps = {
-    key: string;
+    key?: string;
     content: string;
-    type: string;
+    timeout?: number;
+    is_bottom?: boolean;
+    type?: string;
 };
 
-type TOpenPositions = {
-    active_positions: TFormatPortfolioPosition[];
+type TOpenPositions = Pick<
+    TPortfolioStore,
+    | 'active_positions'
+    | 'error'
+    | 'getPositionById'
+    | 'is_loading'
+    | 'is_multiplier'
+    | 'onClickCancel'
+    | 'onClickSell'
+    | 'onMount'
+> & {
     component_icon: string;
     currency: string;
-    error: string;
-    getPositionById: (id: number) => TFormatPortfolioPosition;
-    is_eu: boolean;
-    is_loading: boolean;
-    is_multiplier: boolean;
     is_accumulator: boolean;
-    is_vanilla: boolean;
+    is_eu: boolean;
     is_virtual: boolean;
     NotificationMessages: () => JSX.Element;
-    onClickCancel: () => void;
-    onClickSell: () => void;
-    onMount: () => void;
     server_time: moment.Moment;
     addToast: (obj: TAddToastProps) => void;
     current_focus: string;
     onClickRemove: () => void;
-    getContractById: (id: number) => TContractInfo;
-    is_mobile: boolean;
+    getContractById: (contract_id?: number) => TContractStore;
     removeToast: () => void;
     setCurrentFocus: () => void;
     should_show_cancellation_warning: boolean;
@@ -168,19 +152,35 @@ type TOpenPositions = {
     toggleUnsupportedContractModal: () => void;
 };
 
+type TMobileRowRendererProps = Pick<
+    TOpenPositions,
+    | 'addToast'
+    | 'current_focus'
+    | 'getContractById'
+    | 'onClickRemove'
+    | 'removeToast'
+    | 'setCurrentFocus'
+    | 'should_show_cancellation_warning'
+    | 'toggleCancellationWarning'
+    | 'toggleUnsupportedContractModal'
+> &
+    Omit<TMobileRowRenderer, 'columns_map'> & {
+        columns_map: { [key: TColIndex]: undefined | TDataListCell['column'] };
+    };
+
 const MobileRowRenderer = ({
-    row,
+    row = {},
     is_footer,
-    columns_map,
-    server_time,
+    columns_map = {},
+    server_time = toMoment(),
     onClickCancel,
     onClickSell,
     measure,
     ...props
-}: TMobileRowRenderer) => {
+}: TMobileRowRendererProps) => {
     React.useEffect(() => {
         if (!is_footer) {
-            measure();
+            measure?.();
         }
     }, [row.contract_info?.underlying, measure, is_footer]);
 
@@ -205,25 +205,28 @@ const MobileRowRenderer = ({
         );
     }
 
-    const { contract_info, contract_update, type, is_sell_requested } = row;
+    const { contract_info, contract_update, type, is_sell_requested } =
+        row as TPortfolioStore['active_positions'][number];
     const { currency, status, date_expiry, date_start, tick_count, purchase_time } = contract_info;
     const current_tick = tick_count ? getCurrentTick(contract_info) : null;
-    const duration_type = getContractDurationType(contract_info.longcode);
+    const turbos_duration_unit = tick_count ? 'ticks' : getDurationUnitText(getDurationPeriod(contract_info), true);
+    const duration_type = getContractDurationType(
+        isTurbosContract(contract_info.contract_type) ? turbos_duration_unit : contract_info.longcode || ''
+    );
     const progress_value = (getTimePercentage(server_time, date_start ?? 0, date_expiry ?? 0) /
         100) as TRangeFloatZeroToOne;
 
-    if (isMultiplierContract(type ?? '') || isAccumulatorContract(type ?? '')) {
+    if (isMultiplierContract(type ?? '') || isAccumulatorContract(type)) {
         return (
             <PositionsDrawerCard
                 contract_info={contract_info}
                 contract_update={contract_update}
-                currency={currency}
+                currency={currency ?? ''}
                 is_link_disabled
                 onClickCancel={onClickCancel}
                 onClickSell={onClickSell}
                 server_time={server_time}
-                status={status}
-                measure={measure}
+                status={status ?? ''}
                 {...props}
             />
         );
@@ -233,10 +236,10 @@ const MobileRowRenderer = ({
         <>
             <div className='data-list__row'>
                 <DataList.Cell row={row} column={columns_map.type} />
-                {isVanillaContract(type ?? '') ? (
+                {isVanillaContract(type) || (isTurbosContract(type) && !tick_count) ? (
                     <ProgressSliderMobile
                         current_tick={current_tick}
-                        className='data-list__row--vanilla'
+                        className='data-list__row--timer'
                         expiry_time={date_expiry}
                         getCardLabels={getCardLabels}
                         is_loading={false}
@@ -335,29 +338,33 @@ export const OpenPositionsTable = ({
     </React.Fragment>
 );
 
-const getRowAction = (row_obj: TRowObj) =>
+const getRowAction: TDataList['getRowAction'] = row_obj =>
     row_obj.is_unsupported
         ? {
               component: (
                   <Localize
                       i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
                       values={{
-                          trade_type_name: getUnsupportedContracts()[row_obj.type]?.name,
+                          trade_type_name:
+                              getUnsupportedContracts()[
+                                  row_obj.type as keyof ReturnType<typeof getUnsupportedContracts>
+                              ]?.name,
                       }}
                   />
               ),
           }
-        : getContractPath(row_obj.id);
+        : getContractPath(row_obj.id || 0);
 
 /*
  * After refactoring transactionHandler for creating positions,
  * purchase property in contract positions object is somehow NaN or undefined in the first few responses.
  * So we set it to true in these cases to show a preloader for the data-table-row until the correct value is set.
  */
-const isPurchaseReceived = (item: { purchase: number }) => isNaN(item.purchase) || !item.purchase;
+const isPurchaseReceived: TOpenPositionsTable['preloaderCheck'] = (item: { purchase?: number }) =>
+    isNaN(Number(item.purchase)) || !item.purchase;
 
 const getOpenPositionsTotals = (
-    active_positions_filtered: TFormatPortfolioPosition[],
+    active_positions_filtered: TPortfolioStore['active_positions'],
     is_multiplier_selected: boolean,
     is_accumulator_selected: boolean
 ) => {
@@ -408,9 +415,9 @@ const getOpenPositionsTotals = (
         let profit = 0;
 
         active_positions_filtered?.forEach(({ contract_info }) => {
-            buy_price += +contract_info.buy_price;
-            bid_price += +contract_info.bid_price;
-            take_profit += contract_info.limit_order?.take_profit?.order_amount;
+            buy_price += +(contract_info.buy_price ?? 0);
+            bid_price += +(contract_info.bid_price ?? 0);
+            take_profit += contract_info.limit_order?.take_profit?.order_amount ?? 0;
             if (contract_info) {
                 profit += getTotalProfit(contract_info);
             }
@@ -460,7 +467,6 @@ const OpenPositions = ({
     is_eu,
     is_loading,
     is_multiplier,
-    is_vanilla,
     is_virtual,
     NotificationMessages,
     onClickCancel,
@@ -491,15 +497,15 @@ const OpenPositions = ({
     const accumulators_rates_list = accumulator_rates.map(value => ({ text: value, value }));
     const active_positions_filtered = active_positions?.filter(({ contract_info }) => {
         if (contract_info) {
-            if (is_multiplier_selected) return isMultiplierContract(contract_info.contract_type);
+            if (is_multiplier_selected) return isMultiplierContract(contract_info.contract_type || '');
             if (is_accumulator_selected)
                 return (
                     isAccumulatorContract(contract_info.contract_type) &&
-                    (`${getGrowthRatePercentage(contract_info.growth_rate)}%` === accumulator_rate ||
+                    (`${getGrowthRatePercentage(contract_info.growth_rate || 0)}%` === accumulator_rate ||
                         !accumulator_rate.includes('%'))
                 );
             return (
-                !isMultiplierContract(contract_info.contract_type) &&
+                !isMultiplierContract(contract_info.contract_type || '') &&
                 !isAccumulatorContract(contract_info.contract_type)
             );
         }
@@ -527,7 +533,7 @@ const OpenPositions = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [previous_active_positions]);
 
-    const checkForAccuAndMultContracts = (prev_active_positions: TFormatPortfolioPosition[] = []) => {
+    const checkForAccuAndMultContracts = (prev_active_positions: TPortfolioStore['active_positions'] = []) => {
         if (active_positions === prev_active_positions) return;
         if (!has_accumulator_contract) {
             setHasAccumulatorContract(
@@ -536,7 +542,7 @@ const OpenPositions = ({
         }
         if (!has_multiplier_contract) {
             setHasMultiplierContract(
-                active_positions.some(({ contract_info }) => isMultiplierContract(contract_info?.contract_type))
+                active_positions.some(({ contract_info }) => isMultiplierContract(contract_info?.contract_type || ''))
             );
         }
     };
@@ -565,12 +571,12 @@ const OpenPositions = ({
 
     const columns = getColumns();
 
-    const columns_map = {} as Record<string, TColumnsMapElement>;
+    const columns_map = {} as Record<TColIndex, TDataListCell['column']>;
     columns.forEach(e => {
-        columns_map[e.col_index] = e;
+        columns_map[e.col_index] = e as TDataListCell['column'];
     });
 
-    const mobileRowRenderer = (args: TMobileRowRenderer) => (
+    const mobileRowRenderer: TRowRenderer = args => (
         <MobileRowRenderer
             {...args}
             columns_map={columns_map}
@@ -663,7 +669,9 @@ const OpenPositions = ({
                                 list_items={contract_types_list}
                                 value={contract_type_value}
                                 should_show_empty_option={false}
-                                onChange={e => setContractTypeValue(e.target.value)}
+                                onChange={(e: React.ChangeEvent<HTMLSelectElement> & { target: { value: string } }) =>
+                                    setContractTypeValue(e.target.value)
+                                }
                             />
                             {is_accumulator_selected && show_accu_in_dropdown && (
                                 <SelectNative
@@ -671,7 +679,9 @@ const OpenPositions = ({
                                     list_items={accumulators_rates_list}
                                     value={accumulator_rate}
                                     should_show_empty_option={false}
-                                    onChange={e => setAccumulatorRate(e.target.value)}
+                                    onChange={(
+                                        e: React.ChangeEvent<HTMLSelectElement> & { target: { value: string } }
+                                    ) => setAccumulatorRate(e.target.value)}
                                 />
                             )}
                         </div>
@@ -703,7 +713,6 @@ export default withRouter(
         current_focus: ui.current_focus,
         onClickRemove: portfolio.removePositionById,
         getContractById: contract_trade.getContractById,
-        is_mobile: ui.is_mobile,
         removeToast: ui.removeToast,
         setCurrentFocus: ui.setCurrentFocus,
         should_show_cancellation_warning: ui.should_show_cancellation_warning,

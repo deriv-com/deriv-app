@@ -6,7 +6,6 @@ import {
     redirectToLogin,
     removeBranchName,
     routes as shared_routes,
-    isEmptyObject,
     default_title,
 } from '@deriv/shared';
 

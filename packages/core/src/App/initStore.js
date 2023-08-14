@@ -69,6 +69,7 @@ const initStore = notification_messages => {
     root_store.modules.attachModule('cashier', new CashierStore(root_store, WS));
     root_store.modules.cashier.general_store.init();
     root_store.modules.attachModule('cfd', new CFDStore({ root_store, WS }));
+    root_store.common.setPlatform();
 
     return root_store;
 };

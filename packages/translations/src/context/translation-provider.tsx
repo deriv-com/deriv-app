@@ -83,6 +83,7 @@ export const TranslationProvider = ({
     React.useEffect(() => {
         updateURLLanguage(current_language);
         setLanguageSettings(current_language);
+        document.documentElement.setAttribute('lang', current_language);
         first_load.current = false;
     }, [current_language, setLanguageSettings]);
 

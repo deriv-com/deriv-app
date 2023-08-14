@@ -5,7 +5,7 @@ type Handler = (event: MouseEvent) => void;
 export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
     ref: RefObject<T>,
     handler: Handler,
-    validationFn: (event: MouseEvent) => boolean,
+    validationFn?: (event: MouseEvent) => boolean,
     mouseEvent: 'mousedown' | 'mouseup' = 'mousedown'
 ): void {
     useEventListener(mouseEvent, event => {

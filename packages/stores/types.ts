@@ -167,12 +167,12 @@ type TButtonProps = {
     text: string;
 };
 
-type TNotificationMessage = {
-    action?: {
-        onClick: () => void;
-        route?: string;
-        text: string;
-    };
+export type TActionProps = TButtonProps & {
+    route?: string;
+};
+
+export type TNotificationMessage = {
+    action?: TActionProps;
     className?: string;
     cta_btn?: TButtonProps;
     header_popup?: string;
@@ -188,6 +188,7 @@ type TNotificationMessage = {
     primary_btn?: TButtonProps;
     secondary_btn?: TButtonProps;
     should_hide_close_btn?: boolean;
+    should_show_again?: boolean;
     timeout?: number;
     timeoutMessage?: (remaining: number | string) => string;
     type: string;
@@ -515,8 +516,10 @@ type TNotificationStore = {
     filterNotificationMessages: () => void;
     notifications: TNotificationMessage[];
     refreshNotifications: () => void;
-    removeNotificationByKey: (key: string) => void;
-    removeNotificationMessage: (key: string, should_show_again?: boolean) => void;
+    removeNotifications: (should_close_persistent: boolean) => void;
+    removeNotificationByKey: ({ key }: { key: string }) => void;
+    removeNotificationMessage: ({ key, should_show_again }: { key: string; should_show_again?: boolean }) => void;
+    removeNotificationMessageByKey: ({ key }: { key: string }) => void;
     setP2POrderProps: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setP2PRedirectTo: () => void;

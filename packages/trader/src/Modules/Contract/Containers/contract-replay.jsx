@@ -248,6 +248,10 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
 
         return chart_margin;
     };
+    const accumulator_yaxis_margin = isMobile() ? 128 : 250;
+    const yaxis_margin = is_accumulator_contract
+        ? { top: accumulator_yaxis_margin, bottom: accumulator_yaxis_margin }
+        : getChartYAxisMargin();
     const prev_start_epoch = usePrevious(start_epoch);
 
     return (
@@ -281,7 +285,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                 is_accumulator_contract && end_epoch && start_epoch < prev_start_epoch
             }
             shouldFetchTradingTimes={false}
-            yAxisMargin={getChartYAxisMargin()}
+            yAxisMargin={yaxis_margin}
             anchorChartToLeft={isMobile()}
             shouldFetchTickHistory={
                 getDurationUnitText(getDurationPeriod(contract_info)) !== 'seconds' || contract_info.status === 'open'

@@ -344,6 +344,10 @@ const ChartTrade = observer(props => {
     const accumulator_whitespace = isMobile() ? 160 : 190;
     const max_ticks_for_0_granularity = is_accumulator ? 24 : 8;
     const max_ticks = granularity === 0 ? max_ticks_for_0_granularity : 24;
+    const accumulator_yaxis_margin = isMobile() ? 150 : 250;
+    const yaxis_margin = is_accumulator
+        ? { top: accumulator_yaxis_margin, bottom: accumulator_yaxis_margin }
+        : { top: isMobile() ? 76 : 106 };
 
     if (!symbol || active_symbols.length === 0) return null;
 
@@ -394,9 +398,7 @@ const ChartTrade = observer(props => {
             hasAlternativeSource={has_alternative_source}
             refToAddTick={refToAddTick}
             getMarketsOrder={getMarketsOrder}
-            yAxisMargin={{
-                top: isMobile() ? 76 : 106,
-            }}
+            yAxisMargin={yaxis_margin}
             whitespace={is_accumulator ? accumulator_whitespace : undefined}
         >
             <ChartMarkers />

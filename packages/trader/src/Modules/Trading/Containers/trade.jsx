@@ -341,10 +341,10 @@ const ChartTrade = observer(props => {
     const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;
 
     // max ticks to display for mobile view for tick chart
-    const accumulator_whitespace = isMobile() ? 160 : 190;
+    const accumulator_whitespace = isMobile() ? 160 : 190; // when coming back from c.details, whitespace is not applied in responsive
     const max_ticks_for_0_granularity = is_accumulator ? 24 : 8;
     const max_ticks = granularity === 0 ? max_ticks_for_0_granularity : 24;
-    const accumulator_yaxis_margin = isMobile() ? 150 : 250;
+    const accumulator_yaxis_margin = isMobile() ? 150 : 220;
     const yaxis_margin = is_accumulator
         ? { top: accumulator_yaxis_margin, bottom: accumulator_yaxis_margin }
         : { top: isMobile() ? 76 : 106 };

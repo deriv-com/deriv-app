@@ -246,12 +246,16 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
             chart_margin.bottom = 48;
         }
 
+        if (is_accumulator_contract) {
+            const accumulator_yaxis_margin = isMobile() ? 128 : 280; // quantity of ticks affect zoom, zoom affects margin
+            const accumulator_yaxis_margin_2 = isMobile() ? 72 : 148; // 120 instead of 72 makes tooltip visible
+            const accumulator_yaxis_margin_3 =
+                all_ticks.length > 40 ? accumulator_yaxis_margin_2 : accumulator_yaxis_margin;
+            chart_margin.top = chart_margin.bottom = accumulator_yaxis_margin_3;
+            // 1 tick on the chart in desktop still causes barriers to go out of the chart
+        }
         return chart_margin;
     };
-    const accumulator_yaxis_margin = isMobile() ? 128 : 250;
-    const yaxis_margin = is_accumulator_contract
-        ? { top: accumulator_yaxis_margin, bottom: accumulator_yaxis_margin }
-        : getChartYAxisMargin();
     const prev_start_epoch = usePrevious(start_epoch);
 
     return (
@@ -285,7 +289,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                 is_accumulator_contract && end_epoch && start_epoch < prev_start_epoch
             }
             shouldFetchTradingTimes={false}
-            yAxisMargin={yaxis_margin}
+            yAxisMargin={getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
             shouldFetchTickHistory={
                 getDurationUnitText(getDurationPeriod(contract_info)) !== 'seconds' || contract_info.status === 'open'

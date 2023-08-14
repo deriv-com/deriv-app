@@ -1,68 +1,11 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import {
-    DesktopWrapper,
-    MobileDialog,
-    MobileWrapper,
-    Text,
-    ThemedScrollbars,
-    useOnClickOutside,
-} from '@deriv/components';
-import { isMobile, LocalStore, routes } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import EmptyNotification from 'App/Components/Elements/Notifications/empty-notification.jsx';
+import { DesktopWrapper, MobileDialog, MobileWrapper, useOnClickOutside } from '@deriv/components';
+import { LocalStore } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import ClearAllFooter from './notifications-clear-all-footer';
-import NotificationsList from './notifications-list';
-
-const NotificationListWrapper = React.forwardRef(({ notifications, toggleDialog, clearNotifications }, ref) => {
-    const is_empty = !notifications?.length;
-
-    const traders_hub = window.location.pathname === routes.traders_hub;
-
-    return (
-        <div
-            className={classNames('notifications-dialog', {
-                'notifications-dialog--pre-appstore':
-                    traders_hub || window.location.pathname.startsWith(routes.account),
-            })}
-            ref={ref}
-        >
-            <div className='notifications-dialog__header'>
-                <Text
-                    as='h2'
-                    className='notifications-dialog__header-text'
-                    size='s'
-                    weight='bold'
-                    color='prominent'
-                    styles={{
-                        lineHeight: '1.6rem',
-                    }}
-                >
-                    <Localize i18n_default_text='Notifications' />
-                </Text>
-            </div>
-            <div
-                className={classNames('notifications-dialog__content', {
-                    'notifications-dialog__content--empty': is_empty,
-                })}
-            >
-                <ThemedScrollbars is_bypassed={isMobile() || is_empty}>
-                    {is_empty ? (
-                        <EmptyNotification />
-                    ) : (
-                        <NotificationsList notifications={notifications} toggleDialog={toggleDialog} />
-                    )}
-                </ThemedScrollbars>
-            </div>
-            <ClearAllFooter clearNotifications={clearNotifications} is_empty={is_empty} />
-        </div>
-    );
-});
-
-NotificationListWrapper.displayName = 'NotificationListWrapper';
+import NotificationListWrapper from './notification-list-wrapper';
 
 const NotificationsDialog = ({
     is_visible,
@@ -111,12 +54,7 @@ const NotificationsDialog = ({
                     visible={is_visible}
                     onClose={toggleDialog}
                 >
-                    <NotificationListWrapper
-                        notifications={notifications}
-                        ref={wrapper_ref}
-                        toggleDialog={toggleDialog}
-                        clearNotifications={clearNotifications}
-                    />
+                    <NotificationListWrapper clearNotifications={clearNotifications} ref={wrapper_ref} />
                 </MobileDialog>
             </MobileWrapper>
             <DesktopWrapper>
@@ -130,15 +68,7 @@ const NotificationsDialog = ({
                     timeout={150}
                     unmountOnExit
                 >
-                    <NotificationListWrapper
-                        notifications={notifications}
-                        ref={wrapper_ref}
-                        toggleDialog={toggleDialog}
-                        removeNotificationMessage={removeNotificationMessage}
-                        removeNotifications={removeNotifications}
-                        removeNotificationMessageByKey={removeNotificationMessageByKey}
-                        clearNotifications={clearNotifications}
-                    />
+                    <NotificationListWrapper clearNotifications={clearNotifications} ref={wrapper_ref} />
                 </CSSTransition>
             </DesktopWrapper>
         </React.Fragment>

@@ -1,15 +1,6 @@
 import React from 'react';
-import classNames from 'classnames';
-import {
-    isAccumulatorContract,
-    isEmptyObject,
-    isOpen,
-    hasContractEntered,
-    getCardLabels,
-    getIndicativePrice,
-} from '@deriv/shared';
-import { Button, Money } from '@deriv/components';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import { isAccumulatorContract, isEmptyObject, isOpen, hasContractEntered, getIndicativePrice } from '@deriv/shared';
+import AccumulatorsSellButton from '../Components/Form/TradeParams/Accumulator/accumulators-sell-button';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -104,20 +95,6 @@ const Purchase = observer(({ is_market_closed }) => {
             />
         );
 
-        const sell_button = (
-            <Fieldset className={classNames('trade-container__fieldset', 'purchase-container__cell-button', {})}>
-                <Button
-                    className='dc-btn--sell dc-btn__large'
-                    is_disabled={!is_valid_to_sell}
-                    onClick={onClickSellButton}
-                    secondary
-                >
-                    <span className='purchase-container__cell-button__stake'>{getCardLabels().SELL}</span>
-                    {indicative && <Money amount={indicative} currency={currency} show_currency />}
-                </Button>
-            </Fieldset>
-        );
-
         if (!is_vanilla && (!is_accumulator || !has_open_accu_contract)) {
             switch (getContractTypePosition(type)) {
                 case 'top':
@@ -133,7 +110,14 @@ const Purchase = observer(({ is_market_closed }) => {
         } else if (vanilla_trade_type === type) {
             components.push(purchase_fieldset);
         } else if (is_accumulator && has_open_accu_contract) {
-            components.push(sell_button);
+            components.push(
+                <AccumulatorsSellButton
+                    is_disabled={!is_valid_to_sell}
+                    onClick={onClickSellButton}
+                    current_stake={indicative}
+                    currency={currency}
+                />
+            );
         }
     });
 

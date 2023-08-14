@@ -1,13 +1,36 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import useFilteredCFDAccounts from '../useFilteredCFDAccounts';
-import { StoreProvider, mockStore } from '@deriv/stores';
-import { useFetch } from '@deriv/api';
+import { APIProvider, useFetch } from '@deriv/api';
+
+jest.mock('@deriv/utils', () => ({
+    ...jest.requireActual('@deriv/utils'),
+    getShortCodeAndRegion: jest.fn(() => 'svg'),
+}));
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useFetch: jest.fn(name => {
-        if (name === 'trading_platform_available_accounts') {
+        if (name === 'authorize') {
+            return {
+                data: {
+                    authorize: {
+                        account_list: [
+                            {
+                                loginid: 'CRW000000',
+                                account_category: 'wallet',
+                                is_virtual: 0,
+                                landing_company_name: 'maltainvest',
+                                currency: 'USD',
+                            },
+                        ],
+                        loginid: 'CRW000000',
+                        country: 'es',
+                        is_virtual: 0,
+                    },
+                },
+            };
+        } else if (name === 'trading_platform_available_accounts') {
             return {
                 data: {
                     trading_platform_available_accounts: [
@@ -88,14 +111,7 @@ const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'trading_pl
 
 describe('useFilteredCFDAccounts', () => {
     it('should return filteredCFDAccounts', async () => {
-        const mock = mockStore({
-            client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
-            traders_hub: { getShortCodeAndRegion: () => 'svg' },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useFilteredCFDAccounts(), { wrapper });
 
@@ -140,14 +156,7 @@ describe('useFilteredCFDAccounts', () => {
     });
 
     it('should return gaming, financial then all in the correct order', () => {
-        const mock = mockStore({
-            client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
-            traders_hub: { getShortCodeAndRegion: () => 'svg' },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useFilteredCFDAccounts(), { wrapper });
 
@@ -192,13 +201,10 @@ describe('useFilteredCFDAccounts', () => {
     });
 
     it('should return undefined if there is no data', () => {
-        const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({});
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useFilteredCFDAccounts(), { wrapper });
 

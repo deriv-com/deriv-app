@@ -1,44 +1,26 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
-import { DesktopWrapper, Icon, MobileWrapper, Money, Popover, Text } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Money, Popover, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { getContractSubtype, getCurrencyDisplayCode, getLocalizedBasis, getGrowthRatePercentage } from '@deriv/shared';
-import CancelDealInfo from './cancel-deal-info.jsx';
+import CancelDealInfo from './cancel-deal-info';
+import ValueMovement from './value-movement';
+import { TProposalTypeInfo } from 'Types';
 
-export const ValueMovement = ({
-    has_error_or_not_loaded,
-    proposal_info,
-    currency,
-    has_increased,
-    is_turbos,
-    is_vanilla,
-    value,
-    show_currency = true,
-}) => (
-    <div className='price-info--value-container'>
-        <div className='trade-container__price-info-value'>
-            {!has_error_or_not_loaded && (
-                <Money
-                    amount={proposal_info?.obj_contract_basis?.value || value}
-                    className={classNames('trade-container__price-info-currency', {
-                        'trade-container__price-info-currency--payout-per-point': is_vanilla || is_turbos,
-                    })}
-                    currency={currency}
-                    should_format={!is_turbos && !is_vanilla}
-                    show_currency={show_currency}
-                />
-            )}
-        </div>
-        <div className='trade-container__price-info-movement'>
-            {!has_error_or_not_loaded && has_increased !== null && has_increased ? (
-                <Icon icon='IcProfit' />
-            ) : (
-                <Icon icon='IcLoss' />
-            )}
-        </div>
-    </div>
-);
+type TContractInfo = {
+    basis: string;
+    currency: string;
+    growth_rate: number;
+    has_increased: boolean;
+    is_accumulator: boolean;
+    is_multiplier: boolean;
+    is_turbos: boolean;
+    is_vanilla: boolean;
+    is_loading: boolean;
+    proposal_info: TProposalTypeInfo;
+    should_fade: boolean;
+    type: string;
+};
 
 const ContractInfo = ({
     basis,
@@ -53,7 +35,7 @@ const ContractInfo = ({
     should_fade,
     proposal_info,
     type,
-}) => {
+}: TContractInfo) => {
     const localized_basis = getLocalizedBasis();
     const stakeOrPayout = () => {
         switch (basis) {
@@ -72,7 +54,7 @@ const ContractInfo = ({
     };
 
     const has_error_or_not_loaded = proposal_info.has_error || !proposal_info.id;
-    const basis_text = has_error_or_not_loaded ? stakeOrPayout() : proposal_info.obj_contract_basis.text;
+    const basis_text = has_error_or_not_loaded ? stakeOrPayout() : proposal_info?.obj_contract_basis?.text || '';
     const { message, obj_contract_basis, stake } = proposal_info;
 
     const setHintMessage = () => {
@@ -180,21 +162,6 @@ const ContractInfo = ({
             )}
         </div>
     );
-};
-
-ContractInfo.propTypes = {
-    basis: PropTypes.string,
-    currency: PropTypes.string,
-    growth_rate: PropTypes.number,
-    has_increased: PropTypes.bool,
-    is_accumulator: PropTypes.bool,
-    is_multiplier: PropTypes.bool,
-    is_turbos: PropTypes.bool,
-    is_vanilla: PropTypes.bool,
-    is_loading: PropTypes.bool,
-    proposal_info: PropTypes.object,
-    should_fade: PropTypes.bool,
-    type: PropTypes.string,
 };
 
 export default ContractInfo;

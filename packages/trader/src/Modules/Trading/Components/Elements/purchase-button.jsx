@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes, Text } from '@deriv/components';
 import { getContractTypeDisplay } from 'Constants/contract';
-import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
+import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info';
 import { getGrowthRatePercentage } from '@deriv/shared';
 
 // TODO [lazy-loading-required] Responsive related components

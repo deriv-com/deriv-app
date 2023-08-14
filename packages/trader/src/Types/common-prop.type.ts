@@ -15,6 +15,7 @@ export type TProposalTypeInfo = {
         date_expiry: number;
     };
     growth_rate?: number;
+    obj_contract_basis?: Record<'text' | 'value', string>;
     returns?: string;
     stake: string;
 };

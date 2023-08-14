@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, Icon, InputField, MobileWrapper, Modal, Text, usePrevious } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import { ValueMovement } from '../Purchase/contract-info';
+import ValueMovement from '../Purchase/value-movement';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { localize } from '@deriv/translations';
@@ -136,7 +136,6 @@ const Barrier = observer(({ is_minimized, is_absolute_only }: TBarrier) => {
                             {localize('Current Price')}
                         </Text>
                         {current_spot && (
-                            //@ts-expect-error until this component is typescript migrated and some props optional
                             <ValueMovement
                                 has_error_or_not_loaded={has_error_or_not_loaded}
                                 value={current_spot}

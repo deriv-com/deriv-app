@@ -255,86 +255,123 @@ export const isLandingCompanyEnabled = ({ landing_companies, platform, type }: T
     return false;
 };
 
-export const getAuthenticationStatusInfo = (account_status: GetAccountStatus) => {
+// Define the AuthenticationStatusInfo type
+type TAuthenticationStatusInfo = {
+    poa_status?: string;
+    poi_status?: string;
+    idv_status?: string;
+    onfido_status?: string;
+    manual_status?: string;
+    acknowledged_status: string[];
+    poi_acknowledged_for_maltainvest: boolean;
+    poi_poa_verified_for_bvi_labuan_vanuatu: boolean;
+    poa_acknowledged: boolean;
+    poi_poa_verified_for_maltainvest: boolean;
+    need_poa_submission: boolean;
+    poi_verified_for_maltainvest: boolean;
+    poi_acknowledged_for_bvi_labuan_vanuatu: boolean;
+    poi_verified_for_bvi_labuan_vanuatu: boolean;
+    poa_verified: boolean;
+    poi_or_poa_not_submitted: boolean;
+    need_poa_resubmission: boolean;
+    poi_and_poa_not_submitted: boolean;
+    poa_not_submitted: boolean;
+    poi_not_submitted: boolean;
+    need_poi_for_maltainvest: boolean;
+    need_poi_for_bvi_labuan_vanuatu: boolean;
+    poi_not_submitted_for_maltainvest: boolean;
+    poi_pending_for_bvi_labuan_vanuatu: boolean;
+    poi_pending_for_maltainvest: boolean;
+    poi_resubmit_for_maltainvest: boolean;
+    poi_resubmit_for_bvi_labuan_vanuatu: boolean;
+    poa_pending: boolean;
+    poa_resubmit_for_labuan: boolean;
+    is_idv_revoked: boolean;
+};
+
+export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): TAuthenticationStatusInfo => {
     const risk_classification = account_status.risk_classification;
 
-    const poa_status = account_status?.authentication?.document?.status || '';
-    const poi_status = account_status?.authentication?.identity?.status || '';
+    const poa_status: string = account_status?.authentication?.document?.status || '';
+    const poi_status: string = account_status?.authentication?.identity?.status || '';
 
-    const idv_status = account_status?.authentication?.identity?.services?.idv?.status;
-    const onfido_status = account_status?.authentication?.identity?.services?.onfido?.status;
-    const manual_status = account_status?.authentication?.identity?.services?.manual?.status;
+    const services = account_status?.authentication?.identity?.services ?? {};
+    const {
+        idv: { status: idv_status } = {},
+        onfido: { status: onfido_status } = {},
+        manual: { status: manual_status } = {},
+    } = services;
 
     const is_authenticated_with_idv_photoid = account_status?.status?.includes('authenticated_with_idv_photoid');
     const is_idv_revoked = account_status?.status?.includes('idv_revoked');
 
-    const acknowledged_status = ['pending', 'verified'];
-    const failed_cases = ['rejected', 'expired', 'suspected'];
+    const acknowledged_status: string[] = ['pending', 'verified'];
+    const failed_cases: string[] = ['rejected', 'expired', 'suspected'];
 
-    const poa_not_submitted = poa_status === 'none';
-    const poa_acknowledged = acknowledged_status.includes(poa_status);
-    const need_poa_submission = !poa_acknowledged;
-    const need_poa_resubmission = failed_cases.includes(poa_status);
-    const poa_verified = poa_status === 'verified';
-    const poa_pending = poa_status === 'pending';
+    const poa_not_submitted: boolean = poa_status === 'none';
+    const need_poa_submission = !acknowledged_status.includes(poa_status);
+    const need_poa_resubmission: boolean = failed_cases.includes(poa_status);
+    const poa_verified: boolean = poa_status === 'verified';
+    const poa_pending: boolean = poa_status === 'pending';
+    const poa_acknowledged: boolean = acknowledged_status.includes(poa_status);
 
-    const poi_not_submitted = poi_status === 'none';
-    const poi_or_poa_not_submitted = poa_not_submitted || poi_not_submitted;
-    const poi_and_poa_not_submitted = poa_not_submitted && poi_not_submitted;
+    const poi_not_submitted: boolean = poi_status === 'none';
+    const poi_or_poa_not_submitted: boolean = poa_not_submitted || poi_not_submitted;
+    const poi_and_poa_not_submitted: boolean = poa_not_submitted && poi_not_submitted;
 
-    //vanuatu-maltainvest
+    //maltainvest
 
-    const poi_verified_for_vanuatu_maltainvest = [onfido_status, manual_status].includes('verified');
-    const poi_acknowledged_for_vanuatu_maltainvest =
-        (onfido_status && acknowledged_status.includes(onfido_status)) ||
-        (manual_status && acknowledged_status.includes(manual_status));
+    // mf = maltainvest: only require onfido and manual
+    const mf_jurisdiction_statuses: string[] = [onfido_status, manual_status].filter(
+        (status: string | undefined) => status
+    ) as string[];
+    // bvi_labuan_vanuatu jurisdictions: require idv, onfido and manual
+    const bvi_labuan_vanuatu_jurisdiction_statuses: string[] = [idv_status, onfido_status, manual_status].filter(
+        status => status
+    ) as string[];
 
-    const poi_pending_for_vanuatu_maltainvest =
-        onfido_status &&
-        manual_status &&
-        [onfido_status, manual_status].includes('pending') &&
-        !poi_verified_for_vanuatu_maltainvest;
+    const poi_verified_for_maltainvest: boolean = mf_jurisdiction_statuses.includes('verified');
+    const poi_acknowledged_for_maltainvest: boolean = mf_jurisdiction_statuses.some(status =>
+        acknowledged_status.includes(status)
+    );
+    const poi_pending_for_maltainvest: boolean =
+        mf_jurisdiction_statuses.some(status => status === 'pending') && !poi_verified_for_maltainvest;
 
-    const need_poi_for_vanuatu_maltainvest = !poi_acknowledged_for_vanuatu_maltainvest;
-    const poi_not_submitted_for_vanuatu_maltainvest =
-        onfido_status && manual_status && [onfido_status, manual_status].every(status => status === 'none');
-    const poi_resubmit_for_vanuatu_maltainvest =
-        !poi_pending_for_vanuatu_maltainvest &&
-        !poi_not_submitted_for_vanuatu_maltainvest &&
-        !poi_verified_for_vanuatu_maltainvest;
+    const need_poi_for_maltainvest = !poi_acknowledged_for_maltainvest;
+    const poi_not_submitted_for_maltainvest: boolean = mf_jurisdiction_statuses.every(status => status === 'none');
 
-    const poi_poa_verified_for_vanuatu_maltainvest = poi_verified_for_vanuatu_maltainvest && poa_verified;
+    const poi_resubmit_for_maltainvest: boolean =
+        !poi_pending_for_maltainvest && !poi_not_submitted_for_maltainvest && !poi_verified_for_maltainvest;
 
-    //bvi-labuan
-    let poi_acknowledged_for_bvi_labuan;
+    const poi_poa_verified_for_maltainvest = poi_verified_for_maltainvest && poa_verified;
+
+    //bvi-labuan-vanuatu
+    let poi_acknowledged_for_bvi_labuan_vanuatu: boolean = bvi_labuan_vanuatu_jurisdiction_statuses.some(status =>
+        acknowledged_status.includes(status)
+    );
     if (risk_classification === 'high') {
-        poi_acknowledged_for_bvi_labuan = onfido_status && acknowledged_status.includes(onfido_status);
+        poi_acknowledged_for_bvi_labuan_vanuatu = Boolean(onfido_status && acknowledged_status.includes(onfido_status));
     } else {
-        poi_acknowledged_for_bvi_labuan =
-            (idv_status && acknowledged_status.includes(idv_status)) ||
-            (onfido_status && acknowledged_status.includes(onfido_status)) ||
-            (manual_status && acknowledged_status.includes(manual_status));
+        poi_acknowledged_for_bvi_labuan_vanuatu = bvi_labuan_vanuatu_jurisdiction_statuses.some(status =>
+            acknowledged_status.includes(status)
+        );
     }
+    const need_poi_for_bvi_labuan_vanuatu = !poi_acknowledged_for_bvi_labuan_vanuatu;
+    const poi_not_submitted_for_bvi_labuan_vanuatu: boolean = bvi_labuan_vanuatu_jurisdiction_statuses.every(
+        status => status === 'none'
+    );
 
-    const need_poi_for_bvi_labuan = !poi_acknowledged_for_bvi_labuan;
-    const poi_not_submitted_for_bvi_labuan =
-        idv_status &&
-        onfido_status &&
-        manual_status &&
-        [idv_status, onfido_status, manual_status].every(status => status === 'none');
+    const poi_verified_for_bvi_labuan_vanuatu: boolean = bvi_labuan_vanuatu_jurisdiction_statuses.includes('verified');
 
-    const poi_verified_for_bvi_labuan = [idv_status, onfido_status, manual_status].includes('verified');
+    const poi_pending_for_bvi_labuan_vanuatu: boolean =
+        bvi_labuan_vanuatu_jurisdiction_statuses.includes('pending') && !poi_verified_for_bvi_labuan_vanuatu;
 
-    const poi_pending_for_bvi_labuan =
-        idv_status &&
-        onfido_status &&
-        manual_status &&
-        [idv_status, onfido_status, manual_status].includes('pending') &&
-        !poi_verified_for_bvi_labuan;
+    const poi_resubmit_for_bvi_labuan_vanuatu: boolean =
+        !poi_pending_for_bvi_labuan_vanuatu &&
+        !poi_not_submitted_for_bvi_labuan_vanuatu &&
+        !poi_verified_for_bvi_labuan_vanuatu;
 
-    const poi_resubmit_for_bvi_labuan =
-        !poi_pending_for_bvi_labuan && !poi_not_submitted_for_bvi_labuan && !poi_verified_for_bvi_labuan;
-    const poi_poa_verified_for_bvi_labuan = poi_verified_for_bvi_labuan && poa_verified;
+    const poi_poa_verified_for_bvi_labuan_vanuatu: boolean = poi_verified_for_bvi_labuan_vanuatu && poa_verified;
     const poa_resubmit_for_labuan = is_authenticated_with_idv_photoid;
 
     return {
@@ -344,27 +381,27 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus) =>
         onfido_status,
         manual_status,
         acknowledged_status,
-        poi_acknowledged_for_vanuatu_maltainvest,
-        poi_poa_verified_for_bvi_labuan,
+        poi_acknowledged_for_maltainvest,
+        poi_poa_verified_for_bvi_labuan_vanuatu,
         poa_acknowledged,
-        poi_poa_verified_for_vanuatu_maltainvest,
+        poi_poa_verified_for_maltainvest,
         need_poa_submission,
-        poi_verified_for_vanuatu_maltainvest,
-        poi_acknowledged_for_bvi_labuan,
-        poi_verified_for_bvi_labuan,
+        poi_verified_for_maltainvest,
+        poi_acknowledged_for_bvi_labuan_vanuatu,
+        poi_verified_for_bvi_labuan_vanuatu,
         poa_verified,
         poi_or_poa_not_submitted,
         need_poa_resubmission,
         poi_and_poa_not_submitted,
         poa_not_submitted,
         poi_not_submitted,
-        need_poi_for_vanuatu_maltainvest,
-        need_poi_for_bvi_labuan,
-        poi_not_submitted_for_vanuatu_maltainvest,
-        poi_pending_for_bvi_labuan,
-        poi_pending_for_vanuatu_maltainvest,
-        poi_resubmit_for_vanuatu_maltainvest,
-        poi_resubmit_for_bvi_labuan,
+        need_poi_for_maltainvest,
+        need_poi_for_bvi_labuan_vanuatu,
+        poi_not_submitted_for_maltainvest,
+        poi_pending_for_bvi_labuan_vanuatu,
+        poi_pending_for_maltainvest,
+        poi_resubmit_for_maltainvest,
+        poi_resubmit_for_bvi_labuan_vanuatu,
         poa_pending,
         poa_resubmit_for_labuan,
         is_idv_revoked,

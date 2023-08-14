@@ -1,13 +1,14 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { observer } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useStores } from 'Stores';
 
 const CancelEditPaymentMethodModal = () => {
-    const { my_profile_store } = useStores();
     const { hideModal, is_modal_open } = useModalManagerContext();
+    const { my_profile_store } = useStores();
+    const { setPaymentMethodToEdit, setShouldShowEditPaymentMethodForm } = my_profile_store;
 
     return (
         <Modal
@@ -29,15 +30,15 @@ const CancelEditPaymentMethodModal = () => {
                 <Button
                     large
                     onClick={() => {
-                        my_profile_store.setPaymentMethodToEdit(null);
-                        my_profile_store.setShouldShowEditPaymentMethodForm(false);
+                        setPaymentMethodToEdit(null);
+                        setShouldShowEditPaymentMethodForm(false);
                         hideModal();
                     }}
                     secondary
                 >
                     <Localize i18n_default_text='Cancel' />
                 </Button>
-                <Button large onClick={hideModal} primary>
+                <Button large onClick={() => hideModal()} primary>
                     <Localize i18n_default_text="Don't cancel" />
                 </Button>
             </Modal.Footer>

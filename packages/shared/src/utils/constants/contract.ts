@@ -506,8 +506,8 @@ the difference between these two functions is just the property they return. (na
 */
 export const getContractTypeDisplay = (type: string, is_high_low = false, show_button_name = false) => {
     const contract_config = getContractConfig(is_high_low)[type as TGetSupportedContracts];
-    if (show_button_name && 'button_name' in contract_config) return contract_config.button_name;
-    return contract_config.name || '';
+    if (show_button_name && contract_config && 'button_name' in contract_config) return contract_config.button_name;
+    return contract_config?.name || '';
 };
 
 export const getContractTypePosition = (type: TGetSupportedContracts, is_high_low = false) =>

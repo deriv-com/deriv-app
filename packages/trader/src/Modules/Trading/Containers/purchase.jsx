@@ -1,7 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
-import { isAccumulatorContract, isEmptyObject, isOpen, hasContractEntered, getCardLabels } from '@deriv/shared';
-import { Button } from '@deriv/components';
+import {
+    isAccumulatorContract,
+    isEmptyObject,
+    isOpen,
+    hasContractEntered,
+    getCardLabels,
+    getIndicativePrice,
+} from '@deriv/shared';
+import { Button, Money } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
@@ -41,17 +48,21 @@ const Purchase = observer(({ is_market_closed }) => {
         return !has_validation_error && !info.has_error && !info.id;
     };
     const is_proposal_empty = isEmptyObject(proposal_info);
-
     const active_accu_contract =
         is_accumulator &&
         active_positions.find(
             ({ contract_info, type }) => isAccumulatorContract(type) && contract_info.underlying === symbol
         );
+    const is_valid_to_sell = active_accu_contract?.contract_info
+        ? hasContractEntered(active_accu_contract.contract_info) && isOpen(active_accu_contract.contract_info)
+        : false;
+    const indicative = (is_valid_to_sell && getIndicativePrice(active_accu_contract?.contract_info)) || null;
     const onClickSellButton = e => {
         onClickSell?.(active_accu_contract.contract_info.contract_id);
         e.stopPropagation();
         e.preventDefault();
     };
+
     const components = [];
     Object.keys(trade_types).map((type, index) => {
         const getSortedIndex = () => {
@@ -91,24 +102,18 @@ const Purchase = observer(({ is_market_closed }) => {
                 type={type}
             />
         );
-        const is_valid_to_sell = active_accu_contract?.contract_info
-            ? hasContractEntered(active_accu_contract.contract_info) && isOpen(active_accu_contract.contract_info)
-            : false;
+
         const sell_button = (
             <Fieldset className={classNames('trade-container__fieldset', 'purchase-container__cell-button', {})}>
                 <Button
                     className='dc-btn--sell dc-btn__large'
                     is_disabled={!is_valid_to_sell}
-                    text={getCardLabels().SELL}
                     onClick={onClickSellButton}
                     secondary
-                />
-                {/* <ContractCardSell
-                    contract_info={active_accu_contract?.contract_info}
-                    getCardLabels={getCardLabels}
-                    is_sell_requested={!is_valid_to_sell}
-                    onClickSel={onClickSellButton}
-                /> */}
+                >
+                    <span className='purchase-container__cell-button__stake'>{getCardLabels().SELL}</span>
+                    {indicative && <Money amount={indicative} currency={currency} show_currency />}
+                </Button>
             </Fieldset>
         );
 

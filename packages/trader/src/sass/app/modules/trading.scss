@@ -827,6 +827,9 @@
     }
     &__cell-button {
         padding: 1.6rem 0.8rem;
+        &__stake {
+            padding-right: 0.5rem;
+        }
         @include mobile {
             padding: 0rem;
             margin-bottom: 0rem;

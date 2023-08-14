@@ -150,8 +150,6 @@ export type TPersonalDetailsForm = {
 
 export type TInputFieldValues = Record<string, string>;
 
-export type TBrokerCodes = 'iom' | 'malta' | 'maltainvest' | 'samoa' | 'svg';
-
 export type TVerificationStatus = Readonly<
     Record<'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected', string>
 >;

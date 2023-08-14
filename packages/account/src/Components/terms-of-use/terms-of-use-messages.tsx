@@ -1,8 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { getLegalEntityName } from '@deriv/shared';
+import { getLegalEntityName, TBrokerCodes } from '@deriv/shared';
 import { Text } from '@deriv/components';
-import { TBrokerCodes } from 'Types';
 
 /**
  * Renders a horizontal line

@@ -9,9 +9,8 @@ import {
     AutoHeightWrapper,
     StaticUrl,
 } from '@deriv/components';
-import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
+import { isDesktop, isMobile, PlatformContext, TBrokerCodes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { TBrokerCodes } from 'Types';
 import CheckboxField from './checkbox-field';
 import { SharedMessage, BrokerSpecificMessage, Hr } from './terms-of-use-messages';
 import './terms-of-use.scss';

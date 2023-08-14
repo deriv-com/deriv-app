@@ -825,6 +825,13 @@
             }
         }
     }
+    &__cell-button {
+        padding: 1.6rem 0.8rem;
+        @include mobile {
+            padding: 0rem;
+            margin-bottom: 0rem;
+        }
+    }
     &__loading {
         background: rgba(255, 255, 255, 0.6);
         border-radius: $BORDER_RADIUS;

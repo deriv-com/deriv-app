@@ -24,7 +24,7 @@ const TradeCategoriesGIF = ({
     selected_contract_type,
 }: {
     category?: string;
-    selected_contract_type: string;
+    selected_contract_type?: string;
 }) => {
     if (category !== selected_contract_type) return null;
     switch (category) {

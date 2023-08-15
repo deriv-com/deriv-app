@@ -4,7 +4,7 @@ import { getUrlBase, isMobile } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 
 type TContractTypeDescriptionVideo = {
-    selected_contract_type: string;
+    selected_contract_type?: string;
     data_testid?: string;
 };
 
@@ -23,7 +23,9 @@ const ContractTypeDescriptionVideo = ({ selected_contract_type, data_testid }: T
     // memoize file paths for videos and open the modal only after we get them
     const mp4_src = React.useMemo(() => getVideoSource('mp4'), [getVideoSource]);
     const webm_src = React.useMemo(() => getVideoSource('webm'), [getVideoSource]);
-
+    if (!selected_contract_type) {
+        return null;
+    }
     return (
         <video
             autoPlay

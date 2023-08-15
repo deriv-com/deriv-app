@@ -36,6 +36,7 @@ const AccumulatorsInfoDisplay = observer(() => {
                             alignment='left'
                             icon='info'
                             is_bubble_hover_enabled
+                            id={`dc_accu-info-display__tooltip`}
                             message={tooltip_text}
                             margin={isMobile() ? 0 : 216}
                             zIndex='9999'

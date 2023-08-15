@@ -63,9 +63,17 @@
         &--error {
             background-color: var(--status-danger);
         }
-        @include mobile {
-            max-width: calc(100vw - 6.7rem);
-        }
+    }
+}
+
+#dc_take_profit-checkbox__tooltip,
+#dt_accumulator-stake__tooltip,
+#dc_accu-info-display__tooltip,
+#dc_payout-per-point__tooltip,
+#dt_multiplier-stake__tooltip,
+#dc_stop_loss-checkbox__tooltip {
+    @include mobile {
+        max-width: calc(100vw - 6.7rem);
     }
 }
 

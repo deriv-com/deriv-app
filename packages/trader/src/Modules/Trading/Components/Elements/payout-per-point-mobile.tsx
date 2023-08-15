@@ -57,6 +57,7 @@ const PayoutPerPointMobile = observer(() => {
                 <Popover
                     alignment='top'
                     icon='info'
+                    id='dc_payout-per-point__tooltip'
                     is_bubble_hover_enabled
                     margin={0}
                     zIndex='9999'

@@ -409,7 +409,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             getAccount: jest.fn(),
             toggleAccountTypeModalVisibility: jest.fn(),
             can_get_more_cfd_mt5_accounts: false,
-            is_demo_low_risk: true,
             showTopUpModal: jest.fn(),
         },
         menu: {

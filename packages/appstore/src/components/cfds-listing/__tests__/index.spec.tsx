@@ -15,6 +15,7 @@ describe('CFDsListing', () => {
             is_real: true,
             can_get_more_cfd_mt5_accounts: true,
             no_MF_account: true,
+            is_demo_low_risk: true,
         },
         client: {
             is_landing_company_loaded: true,

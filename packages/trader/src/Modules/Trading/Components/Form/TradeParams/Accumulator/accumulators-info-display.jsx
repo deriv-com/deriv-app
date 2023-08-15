@@ -34,6 +34,7 @@ const AccumulatorsInfoDisplay = observer(() => {
                         {value}
                         <Popover
                             alignment='left'
+                            classNameBubble='dc-popover__trade-params'
                             icon='info'
                             is_bubble_hover_enabled
                             message={tooltip_text}

@@ -38,6 +38,7 @@ const TakeProfit = observer(props => {
             <InputWithCheckbox
                 addToast={addToast}
                 removeToast={removeToast}
+                classNameBubble='dc-popover__trade-params'
                 classNameInlinePrefix='trade-container__currency'
                 classNameInput={classNames('trade-container__input', {
                     'trade-container__input--accumulator': is_accumulator,

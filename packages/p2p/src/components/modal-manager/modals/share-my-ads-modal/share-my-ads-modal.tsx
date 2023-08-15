@@ -64,7 +64,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
             const blob = new Blob([dataUrlBlob], { type: 'image/png' });
             const file = new File([blob], file_name, { type: 'image/png' });
 
-            if (navigator.canShare && navigator.canShare({ files: [file] }) && has_qr_loaded) {
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 navigator.share({
                     files: [file],
                 });

@@ -28,7 +28,7 @@ const Info = ({ handleSelect, item, list }: TInfo) => {
     const contract_types: TContractType[] | undefined = getContractTypes(list, item)?.filter(
         (i: { value: TContractType['value'] }) => i.value !== 'rise_fall_equal' && i.value !== 'turbosshort'
     );
-    const has_toggle_buttons = /accumulator|vanilla/i.test(item.value);
+    const has_toggle_buttons = /accumulator|turboslong|vanilla/i.test(item.value);
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION;
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;
     const width = isMobile() ? '328' : '528';

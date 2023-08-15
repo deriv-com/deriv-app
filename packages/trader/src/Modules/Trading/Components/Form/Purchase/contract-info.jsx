@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, Icon, MobileWrapper, Money, Popover, Text } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
-import { getContractSubtype, getCurrencyDisplayCode, getLocalizedBasis, getGrowthRatePercentage } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
+import { getCurrencyDisplayCode, getLocalizedBasis, getGrowthRatePercentage } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
 
 export const ValueMovement = ({
@@ -79,10 +79,8 @@ const ContractInfo = ({
         if (is_turbos) {
             return (
                 <Localize
-                    i18n_default_text='<0>{{title}}</0> {{message}}'
-                    components={[<Text key={0} weight='bold' size='xxs' />]}
+                    i18n_default_text='{{message}}'
                     values={{
-                        title: getContractSubtype(type) === 'Long' ? localize('For Long:') : localize('For Short:'),
                         message,
                     }}
                 />

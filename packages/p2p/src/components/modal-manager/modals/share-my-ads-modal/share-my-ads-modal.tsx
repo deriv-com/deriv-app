@@ -1,5 +1,5 @@
 import React from 'react';
-import { toPng } from 'html-to-image';
+import { toBlob, toPng } from 'html-to-image';
 import {
     Button,
     Clipboard,
@@ -31,7 +31,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
     const custom_message =
         rate_type === ad_type.FLOAT
             ? localize(
-                  "Hello! I'd like to exchange {{local_currency}} for {{account_currency}} at {{rate_display}}% on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n{{advert_url}}\n\nThanks!",
+                  "Hello! I'd like to exchange {{local_currency}} for {{account_currency}} at {{rate_display}}% on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n{{- advert_url}}\n\nThanks!",
                   {
                       local_currency,
                       account_currency,
@@ -40,7 +40,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                   }
               )
             : localize(
-                  "Hello! I'd like to exchange {{local_currency}} for {{account_currency}} at {{rate_display}} {{local_currency}} on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n{{advert_url}}\n\nThanks!",
+                  "Hello! I'd like to exchange {{local_currency}} for {{account_currency}} at {{rate_display}} {{local_currency}} on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n{{- advert_url}}\n\nThanks!",
                   {
                       local_currency,
                       account_currency,
@@ -58,8 +58,10 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
     const handleGenerateImage = async () => {
         if (divRef.current) {
             const dataUrl = await toPng(divRef.current);
+            const dataUrlBlob = await toBlob(divRef.current);
             const file_name = `${advert.type}_${advert.id}.png`;
-            const blob = await fetch(dataUrl).then(res => res.blob());
+            // const blob = await fetch(dataUrl).then(res => res.blob());
+            const blob = new Blob([dataUrlBlob], { type: 'image/png' });
             const file = new File([blob], file_name, { type: 'image/png' });
 
             if (navigator.canShare && navigator.canShare({ files: [file] }) && has_qr_loaded) {

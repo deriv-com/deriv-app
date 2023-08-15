@@ -3,6 +3,7 @@ import { localize, Localize } from '@deriv/translations';
 
 export const getCardLabels = () => ({
     APPLY: localize('Apply'),
+    BARRIER: localize('Barrier:'),
     BUY_PRICE: localize('Buy price:'),
     CANCEL: localize('Cancel'),
     CLOSE: localize('Close'),
@@ -203,7 +204,7 @@ export const getUnsupportedContracts = () => ({
 export const getSupportedContracts = is_high_low => ({
     ACCU: {
         button_name: <Localize i18n_default_text='Buy' />,
-        name: <Localize i18n_default_text='Accumulator' />,
+        name: <Localize i18n_default_text='Accumulators' />,
         position: 'top',
     },
     CALL: {
@@ -260,6 +261,16 @@ export const getSupportedContracts = is_high_low => ({
     },
     MULTDOWN: {
         name: <Localize i18n_default_text='Down' />,
+        position: 'bottom',
+    },
+    TURBOSLONG: {
+        button_name: <Localize i18n_default_text='Long' />,
+        name: <Localize i18n_default_text='Turbos' />,
+        position: 'top',
+    },
+    TURBOSSHORT: {
+        button_name: <Localize i18n_default_text='Short' />,
+        name: <Localize i18n_default_text='Turbos' />,
         position: 'bottom',
     },
     VANILLALONGCALL: {

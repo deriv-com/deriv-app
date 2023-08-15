@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 import { getUrlBase, isMobile } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 
-const ContractTypeDescriptionVideo = ({ selected_contract_type }: { selected_contract_type: string }) => {
+const ContractTypeDescriptionVideo = ({ selected_contract_type }: { selected_contract_type?: string }) => {
     const { ui } = useStore();
     const { is_dark_mode_on: is_dark_theme } = ui;
     const getVideoSource = React.useCallback(

@@ -4,13 +4,12 @@ import { useStore } from '@deriv/stores';
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
 import CompletedTransaction from '../completed-transaction';
 
-const TransactionsForADay = ({
-    day,
-    transaction_list,
-}: {
+type TTransactionsForADay = {
     day: string;
     transaction_list: ReturnType<typeof useWalletTransactions>['transactions'];
-}) => {
+};
+
+const TransactionsForADay = ({ day, transaction_list }: TTransactionsForADay) => {
     const {
         ui: { is_mobile },
     } = useStore();

@@ -2,6 +2,11 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import RadioGroupWithInfoMobile from '../radio-group-with-info-mobile';
 
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    Popover: jest.fn(props => <div className={props.classNameBubble}>Popover</div>),
+}));
+
 describe('RadioGroupWithInfoMobile', () => {
     const props = {
         items_list: [
@@ -25,5 +30,12 @@ describe('RadioGroupWithInfoMobile', () => {
         expect(radio_options_arr_1[0].closest('label')).not.toHaveClass('dc-radio-group__item--selected');
         expect(radio_options_arr_1[2].closest('label')).not.toHaveClass('dc-radio-group__item--selected');
         expect(radio_options_arr_1[1].value).toBe('test value 2');
+    });
+    it('should render popover components as children with proper classname', () => {
+        render(<RadioGroupWithInfoMobile {...props} />);
+
+        const popover = screen.getByText(/popover/i);
+        expect(popover).toBeInTheDocument();
+        expect(popover).toHaveClass('dc-popover__trade-params');
     });
 });

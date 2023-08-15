@@ -1,5 +1,6 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { DynamicLeverageContext } from '../../dynamic-leverage/dynamic-leverage-context';
 import JurisdictionModalTitle from '../jurisdiction-modal-title';
 
@@ -57,7 +58,7 @@ describe('JurisdictionModalTitle', () => {
         expect(title).toHaveTextContent('Get more out of Deriv MT5 Financial');
         const back_button = screen.getByTestId('back_icon');
         expect(back_button).toBeInTheDocument();
-        fireEvent.click(back_button);
+        userEvent.click(back_button);
         expect(new_props.toggleDynamicLeverage).toHaveBeenCalled();
     });
 });

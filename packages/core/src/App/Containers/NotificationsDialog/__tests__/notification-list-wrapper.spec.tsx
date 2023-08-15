@@ -55,7 +55,7 @@ describe('NotificationListWrapper', () => {
         expect(screen.queryByText('You have yet to receive any notifications')).not.toBeInTheDocument();
     });
 
-    it('should render the "ClearAllFooter" component', () => {
+    it('should render the "NotificationsClearAllFooter" component', () => {
         renderComponent(mock_store_without_notifications);
         expect(screen.getByText('Clear All')).toBeInTheDocument();
     });

@@ -5,7 +5,7 @@ import { isMobile, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import EmptyNotification from 'App/Components/Elements/Notifications/empty-notification';
-import ClearAllFooter from './notifications-clear-all-footer';
+import NotificationsClearAllFooter from './notifications-clear-all-footer';
 import NotificationsList from './notifications-list';
 
 type TNotificationListWrapper = { clearNotifications: () => void };
@@ -50,7 +50,7 @@ const NotificationListWrapperForwardRef = React.forwardRef(
                         {is_empty ? <EmptyNotification /> : <NotificationsList />}
                     </ThemedScrollbars>
                 </div>
-                <ClearAllFooter clearNotifications={clearNotifications} />
+                <NotificationsClearAllFooter clearNotifications={clearNotifications} />
             </div>
         );
     }

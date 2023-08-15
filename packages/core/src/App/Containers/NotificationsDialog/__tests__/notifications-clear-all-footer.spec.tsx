@@ -1,9 +1,9 @@
 import React from 'react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { fireEvent, render, screen } from '@testing-library/react';
-import ClearAllFooter from '../notifications-clear-all-footer';
+import NotificationsClearAllFooter from '../notifications-clear-all-footer';
 
-describe('ClearAllFooter', () => {
+describe('NotificationsClearAllFooter', () => {
     const mock_store_without_notifications = mockStore({ notifications: { notifications: [] } });
     const mock_store_with_notifications = mockStore({
         notifications: {
@@ -22,12 +22,12 @@ describe('ClearAllFooter', () => {
             ],
         },
     });
-    const mock_props: React.ComponentProps<typeof ClearAllFooter> = { clearNotifications: jest.fn() };
+    const mock_props: React.ComponentProps<typeof NotificationsClearAllFooter> = { clearNotifications: jest.fn() };
 
     it('should render the component', () => {
         render(
             <StoreProvider store={mock_store_without_notifications}>
-                <ClearAllFooter {...mock_props} />
+                <NotificationsClearAllFooter {...mock_props} />
             </StoreProvider>
         );
         expect(screen.getByTestId('dt_clear_all_footer_button')).toBeInTheDocument();
@@ -36,7 +36,7 @@ describe('ClearAllFooter', () => {
     it('should render the button', () => {
         render(
             <StoreProvider store={mock_store_without_notifications}>
-                <ClearAllFooter {...mock_props} />
+                <NotificationsClearAllFooter {...mock_props} />
             </StoreProvider>
         );
         expect(screen.getByRole('button', { name: 'Clear All' })).toBeInTheDocument();
@@ -45,7 +45,7 @@ describe('ClearAllFooter', () => {
     it('should render the button in disabled state if there are no notifications', () => {
         render(
             <StoreProvider store={mock_store_without_notifications}>
-                <ClearAllFooter {...mock_props} />
+                <NotificationsClearAllFooter {...mock_props} />
             </StoreProvider>
         );
         expect(screen.getByRole('button', { name: 'Clear All' })).toBeDisabled();
@@ -54,7 +54,7 @@ describe('ClearAllFooter', () => {
     it('should render the button in enabled state if there are notifications available', () => {
         render(
             <StoreProvider store={mock_store_with_notifications}>
-                <ClearAllFooter {...mock_props} />
+                <NotificationsClearAllFooter {...mock_props} />
             </StoreProvider>
         );
         expect(screen.getByRole('button', { name: 'Clear All' })).toBeEnabled();
@@ -63,7 +63,7 @@ describe('ClearAllFooter', () => {
     it('should fire the "clearNotifications" method on clicking the button', () => {
         render(
             <StoreProvider store={mock_store_with_notifications}>
-                <ClearAllFooter {...mock_props} />
+                <NotificationsClearAllFooter {...mock_props} />
             </StoreProvider>
         );
         fireEvent.click(screen.getByRole('button', { name: 'Clear All' }));

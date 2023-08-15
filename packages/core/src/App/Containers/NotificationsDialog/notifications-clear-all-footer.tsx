@@ -5,11 +5,11 @@ import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 
-type TClearAllFooter = {
+type TNotificationsClearAllFooter = {
     clearNotifications: () => void;
 };
 
-const ClearAllFooter = observer(({ clearNotifications }: TClearAllFooter) => {
+const NotificationsClearAllFooter = observer(({ clearNotifications }: TNotificationsClearAllFooter) => {
     const { notifications } = useStore();
     const { notifications: notifications_array } = notifications;
     const is_empty = !notifications_array?.length;
@@ -38,4 +38,4 @@ const ClearAllFooter = observer(({ clearNotifications }: TClearAllFooter) => {
     );
 });
 
-export default ClearAllFooter;
+export default NotificationsClearAllFooter;

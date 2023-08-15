@@ -13,8 +13,7 @@ type TNotificationListWrapper = { clearNotifications: () => void };
 const NotificationListWrapperForwardRef = React.forwardRef(
     ({ clearNotifications }: TNotificationListWrapper, ref: LegacyRef<HTMLDivElement> | undefined) => {
         const { notifications } = useStore();
-        const { notifications: notifications_array } = notifications;
-        const is_empty = !notifications_array?.length;
+        const { is_notifications_empty } = notifications;
 
         const traders_hub = window.location.pathname === routes.traders_hub;
 
@@ -43,11 +42,11 @@ const NotificationListWrapperForwardRef = React.forwardRef(
                 </div>
                 <div
                     className={classNames('notifications-dialog__content', {
-                        'notifications-dialog__content--empty': is_empty,
+                        'notifications-dialog__content--empty': is_notifications_empty,
                     })}
                 >
-                    <ThemedScrollbars is_bypassed={isMobile() || is_empty}>
-                        {is_empty ? <EmptyNotification /> : <NotificationsList />}
+                    <ThemedScrollbars is_bypassed={isMobile() || is_notifications_empty}>
+                        {is_notifications_empty ? <EmptyNotification /> : <NotificationsList />}
                     </ThemedScrollbars>
                 </div>
                 <NotificationsClearAllFooter clearNotifications={clearNotifications} />

@@ -546,6 +546,7 @@ type TNotificationStore = {
     addNotificationMessage: (message: TNotification) => void;
     addNotificationMessageByKey: (key: string) => void;
     client_notifications: object;
+    is_notifications_empty: boolean;
     is_notifications_visible: boolean;
     filterNotificationMessages: () => void;
     notifications: TNotificationMessage[];

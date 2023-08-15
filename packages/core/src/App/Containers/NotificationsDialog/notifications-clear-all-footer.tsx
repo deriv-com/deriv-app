@@ -11,8 +11,7 @@ type TNotificationsClearAllFooter = {
 
 const NotificationsClearAllFooter = observer(({ clearNotifications }: TNotificationsClearAllFooter) => {
     const { notifications } = useStore();
-    const { notifications: notifications_array } = notifications;
-    const is_empty = !notifications_array?.length;
+    const { is_notifications_empty } = notifications;
 
     return (
         <React.Fragment>
@@ -20,13 +19,13 @@ const NotificationsClearAllFooter = observer(({ clearNotifications }: TNotificat
             <div
                 data-testid='dt_clear_all_footer_button'
                 className={classNames('notifications-dialog__footer', {
-                    'notifications-dialog__content--empty': is_empty,
+                    'notifications-dialog__content--empty': is_notifications_empty,
                     'notifications-dialog__content--sticky': isMobile(),
                 })}
             >
                 <Button
                     className={classNames('dc-btn--secondary', 'notifications-dialog__clear')}
-                    disabled={is_empty}
+                    disabled={is_notifications_empty}
                     onClick={clearNotifications}
                 >
                     <Text size='xxs' color='prominent' weight='bold'>

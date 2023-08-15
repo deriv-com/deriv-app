@@ -157,7 +157,7 @@ export default class NotificationStore extends BaseStore {
     }
 
     get is_notifications_empty() {
-        return !!this.notifications.length;
+        return !this.notifications.length;
     }
 
     addNotificationBar(message) {

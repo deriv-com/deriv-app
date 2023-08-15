@@ -1,9 +1,10 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { getLocalizedBasis } from '@deriv/shared'
 
 const ContractTypeGlossary = ({ category, is_vanilla_fx }: { category: string; is_vanilla_fx?: string }) => {
-    const vanilla_payout_text = is_vanilla_fx ? localize('Payout per pip') : localize('Payout per point');
+    const vanilla_payout_text = is_vanilla_fx ? getLocalizedBasis().payout_per_pip : getLocalizedBasis().payout_per_point;
     let content;
     if (category) {
         switch (category) {

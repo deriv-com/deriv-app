@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Text } from '@deriv/components';
+import { getLocalizedBasis } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import AccumulatorTradeDescription from './accumulator-trade-description';
 import { TurbosTradeDescription } from './turbos-trade-description';
@@ -9,8 +10,8 @@ import { TurbosTradeDescription } from './turbos-trade-description';
 // TODO: refactor the rest of descriptions to use them as components like AccumulatorTradeDescription
 const TradeCategories = ({ category, is_vanilla_fx, onClick }) => {
     const vanilla_payout_text = is_vanilla_fx
-        ? localize('Payout per pip')
-        : localize('Payout per point');
+        ? getLocalizedBasis().payout_per_pip
+        : getLocalizedBasis().payout_per_point;
     let TradeTypeTemplate;
     if (category) {
         switch (category) {

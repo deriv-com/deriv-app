@@ -57,8 +57,8 @@ const ContractInfo = ({
 }) => {
     const localized_basis = getLocalizedBasis();
     const vanilla_payout_text = is_vanilla_fx
-        ? localize('Payout per pip')
-        : localize('Payout per point');
+        ? localized_basis.payout_per_pip
+        : localized_basis.payout_per_point;
 
     const vanilla_payout_message =
         is_vanilla_fx ? (
@@ -88,7 +88,7 @@ const ContractInfo = ({
         }
     };
 
-    const setBasisText = () => {
+    const getBasisText = () => {
         if (is_vanilla) {
             return vanilla_payout_text;
         }
@@ -97,7 +97,7 @@ const ContractInfo = ({
     };
 
     const has_error_or_not_loaded = proposal_info.has_error || !proposal_info.id;
-    const basis_text = setBasisText();
+    const basis_text = getBasisText();
     const { message, obj_contract_basis, stake } = proposal_info;
 
     const setHintMessage = () => {

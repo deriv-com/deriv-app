@@ -6,6 +6,7 @@ import {
     epochToMoment,
     getCancellationPrice,
     getCurrencyDisplayCode,
+    getLocalizedBasis,
     isAccumulatorContract,
     isEndedBeforeCancellationExpired,
     isMobile,
@@ -60,8 +61,8 @@ const ContractDetails = ({
         : `${tick_count} ${tick_count < 2 ? localize('tick') : localize('ticks')}`;
 
     const vanilla_payout_text = isVanillaFxContract(contract_type, underlying)
-        ? localize('Payout per pip')
-        : localize('Payout per point');
+        ? getLocalizedBasis().payout_per_pip
+        : getLocalizedBasis().payout_per_point;
 
     const getLabel = () => {
         if (isUserSold(contract_info) && isEndedBeforeCancellationExpired(contract_info))

@@ -4,10 +4,11 @@ import { shouldShowCancellation, shouldShowExpiration, TURBOS } from '../contrac
 
 export const getLocalizedBasis = () => ({
     accumulator: localize('Accumulator'),
-    payout: localize('Payout'),
-    payout_per_point: localize('Payout per point'),
-    stake: localize('Stake'),
     multiplier: localize('Multiplier'),
+    payout_per_pip: localize('Payout per pip'),
+    payout_per_point: localize('Payout per point'),
+    payout: localize('Payout'),
+    stake: localize('Stake'),
     turbos: localize('Turbos'),
 });
 

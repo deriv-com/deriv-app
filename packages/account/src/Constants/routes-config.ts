@@ -24,16 +24,12 @@ import {
 
 import { TRoute, TRouteConfig } from '../Types';
 
-type TInitRoutesConfig = {
-    is_appstore: boolean;
-};
-
 // Error Routes
 const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
 export type TPage404 = typeof Page404;
 
 // Order matters
-const initRoutesConfig = ({ is_appstore }: TInitRoutesConfig): TRouteConfig[] => [
+const initRoutesConfig = (): TRouteConfig[] => [
     {
         path: routes.account_closed,
         component: AccountClosed,
@@ -119,27 +115,23 @@ const initRoutesConfig = ({ is_appstore }: TInitRoutesConfig): TRouteConfig[] =>
                     {
                         path: routes.self_exclusion,
                         component: SelfExclusion,
-                        getTitle: () => (is_appstore ? localize('Self-exclusion') : localize('Self exclusion')),
+                        getTitle: () => localize('Self exclusion'),
                     },
                     {
                         path: routes.account_limits,
                         component: AccountLimits,
-                        getTitle: () => (is_appstore ? localize('Withdrawal limits') : localize('Account limits')),
+                        getTitle: () => localize('Account limits'),
                     },
                     {
                         path: routes.login_history,
                         component: LoginHistory,
                         getTitle: () => localize('Login history'),
                     },
-                    ...(is_appstore
-                        ? []
-                        : [
-                              {
-                                  path: routes.api_token,
-                                  component: ApiToken,
-                                  getTitle: () => localize('API token'),
-                              },
-                          ]),
+                    {
+                        path: routes.api_token,
+                        component: ApiToken,
+                        getTitle: () => localize('API token'),
+                    },
                     {
                         path: routes.connected_apps,
                         component: ConnectedApps,
@@ -157,18 +149,6 @@ const initRoutesConfig = ({ is_appstore }: TInitRoutesConfig): TRouteConfig[] =>
                     },
                 ],
             },
-            // TO DO -- Please remove these comments after changing for dashboard routes
-            // It is possible to add a Deriv Dashboard only path.
-            // ...(is_appstore
-            //     ? [
-            //           {
-            //               component: Home,
-            //               getTitle: () => localize('Dashboard-only path'),
-            //               is_authenticated: false,
-            //               path: routes.resources,
-            //           },
-            //       ]
-            //     : []),
         ],
     },
 ];
@@ -178,9 +158,9 @@ let routesConfig: TRouteConfig[] | undefined;
 // For default page route if page/path is not found, must be kept at the end of routes_config array
 const route_default: TRoute = { component: Page404, getTitle: () => localize('Error 404') };
 
-const getRoutesConfig = ({ is_appstore }: TInitRoutesConfig): TRouteConfig[] => {
+const getRoutesConfig = (): TRouteConfig[] => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig({ is_appstore });
+        routesConfig = initRoutesConfig();
         routesConfig.push(route_default);
     }
     return routesConfig;

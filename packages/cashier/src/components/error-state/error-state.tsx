@@ -25,13 +25,7 @@ const ErrorState: React.FC<TProps> = ({ error }) => {
         <EmptyState
             icon='IcCashierError'
             title={localize('Oops, something went wrong!')}
-            description={
-                <>
-                    {message}
-                    <br />
-                    {localize('(error code: {{code}})', { code })}
-                </>
-            }
+            description={message}
             action={{
                 label: localize('Try again'),
                 onClick: () => window.location.reload(),

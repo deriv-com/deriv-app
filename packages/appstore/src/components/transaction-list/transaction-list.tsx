@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Div100vhContainer, Dropdown, Loading, Text, ThemedScrollbars, ToggleSwitch } from '@deriv/components';
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
@@ -21,37 +21,41 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
 
     const [should_show_pending_crypto_transactions, setShouldShowPendingCryptoTransactions] = useState(false);
 
-    const filter_options = [
-        {
-            text: localize('All'),
-            value: '',
-        },
-        ...(wallet?.is_virtual
-            ? ([
-                  {
-                      text: localize('Reset balance'),
-                      value: 'virtual_credit',
-                  },
-              ] as const)
-            : ([
-                  {
-                      text: localize('Deposit'),
-                      value: 'deposit',
-                  },
-                  {
-                      text: localize('Withdrawal'),
-                      value: 'withdrawal',
-                  },
-              ] as const)),
-        ...(!should_show_pending_crypto_transactions
-            ? ([
-                  {
-                      text: localize('Transfer'),
-                      value: 'transfer',
-                  },
-              ] as const)
-            : []),
-    ] as const;
+    const filter_options = useMemo(
+        () =>
+            [
+                {
+                    text: localize('All'),
+                    value: '',
+                },
+                ...(wallet?.is_virtual
+                    ? ([
+                          {
+                              text: localize('Reset balance'),
+                              value: 'virtual_credit',
+                          },
+                      ] as const)
+                    : ([
+                          {
+                              text: localize('Deposit'),
+                              value: 'deposit',
+                          },
+                          {
+                              text: localize('Withdrawal'),
+                              value: 'withdrawal',
+                          },
+                      ] as const)),
+                ...(!should_show_pending_crypto_transactions
+                    ? ([
+                          {
+                              text: localize('Transfer'),
+                              value: 'transfer',
+                          },
+                      ] as const)
+                    : []),
+            ] as const,
+        [wallet?.is_virtual, should_show_pending_crypto_transactions]
+    );
 
     const [filter, setFilter] = useState<typeof filter_options[number]['value']>('');
 
@@ -100,6 +104,7 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
                     />
                 </div>
                 <Dropdown
+                    key={should_show_pending_crypto_transactions}
                     className='transaction-list__filter'
                     is_align_text_left
                     list={filter_options}

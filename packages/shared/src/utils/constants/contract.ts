@@ -4,7 +4,7 @@ import { shouldShowCancellation, shouldShowExpiration, TURBOS } from '../contrac
 
 export const getLocalizedBasis = () =>
     ({
-        accumulator: localize('Accumulator'),
+        accumulator: localize('Accumulators'),
         payout: localize('Payout'),
         payout_per_point: localize('Payout per point'),
         stake: localize('Stake'),
@@ -128,7 +128,7 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         components: [],
     },
     accumulator: {
-        title: localize('Accumulator'),
+        title: localize('Accumulators'),
         trade_types: ['ACCU'],
         basis: ['stake'],
         components: ['take_profit', 'accumulator', 'accu_info_display'],
@@ -408,7 +408,7 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
     ({
         ACCU: {
             button_name: localize('Buy'),
-            name: localize('Accumulator'),
+            name: localize('Accumulators'),
             position: 'top',
         },
         CALL: {

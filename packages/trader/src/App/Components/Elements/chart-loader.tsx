@@ -9,7 +9,7 @@ type TChartLoader = {
 const ChartLoader = ({ is_dark, is_visible }: TChartLoader) =>
     is_visible ? (
         <div className='chart-container__loader'>
-            <Loading theme={is_dark ? 'dark' : 'light'} />
+            <Loading theme={is_dark ? 'dark' : 'light'} data_testid='dt_barspinner' />
         </div>
     ) : null;
 

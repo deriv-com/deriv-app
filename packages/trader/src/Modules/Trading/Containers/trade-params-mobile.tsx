@@ -113,7 +113,7 @@ const TradeParamsModal = observer(({ is_open, toggleModal }: TTradeParamsModal) 
 
     React.useEffect(() => {
         setSelectedDuration(duration_unit, duration);
-        setDurationTabIdx(undefined);
+        setDurationTabIdx();
         // duration and duration_unit can be changed in trade-store when contract type is changed
     }, [duration, duration_unit]);
 

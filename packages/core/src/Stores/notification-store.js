@@ -27,6 +27,7 @@ import {
     getCashierValidations,
     getStatusValidations,
     hasMissingRequiredField,
+    maintenance_notifications,
 } from './Helpers/client-notifications';
 import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
 import BaseStore from './base-store';
@@ -89,6 +90,7 @@ export default class NotificationStore extends BaseStore {
             () => root_store.common.app_routing_history.map(i => i.pathname),
             () => {
                 this.filterNotificationMessages();
+                this.marked_notifications = JSON.parse(LocalStore.get('marked_notifications') || '[]');
             }
         );
         reaction(
@@ -223,10 +225,10 @@ export default class NotificationStore extends BaseStore {
     filterNotificationMessages() {
         if (LocalStore.get('active_loginid') !== 'null')
             this.resetVirtualBalanceNotification(LocalStore.get('active_loginid'));
-
         if (window.location.pathname === routes.personal_details) {
             this.notification_messages = this.notification_messages.filter(
-                notification => notification.platform === 'Account'
+                notification =>
+                    notification.platform === 'Account' || maintenance_notifications.includes(notification.key)
             );
         } else if (!window.location.pathname.includes(routes.cashier_p2p)) {
             this.notification_messages = this.notification_messages.filter(notification => {
@@ -256,7 +258,6 @@ export default class NotificationStore extends BaseStore {
         const is_p2p_notifications_visible = p2p_settings[loginid]
             ? p2p_settings[loginid].is_notifications_visible
             : false;
-
         if (refined_list.length) {
             refined_list.map(refined => {
                 if (refined.includes('p2p')) {
@@ -314,6 +315,12 @@ export default class NotificationStore extends BaseStore {
         );
 
         let has_missing_required_field;
+
+        if (website_status?.message?.length) {
+            this.addNotificationMessage(this.client_notifications.site_maintenance);
+        } else {
+            this.removeNotificationByKey({ key: this.client_notifications.site_maintenance });
+        }
 
         if (is_logged_in) {
             if (isEmptyObject(account_status)) return;
@@ -622,7 +629,10 @@ export default class NotificationStore extends BaseStore {
     }
 
     markNotificationMessage({ key }) {
-        this.marked_notifications.push(key);
+        if (!this.marked_notifications.includes(key)) {
+            this.marked_notifications.push(key);
+            LocalStore.set('marked_notifications', JSON.stringify(this.marked_notifications));
+        }
     }
 
     refreshNotifications() {
@@ -1227,6 +1237,14 @@ export default class NotificationStore extends BaseStore {
                     type: 'danger',
                 };
             },
+            site_maintenance: {
+                key: 'site_maintenance',
+                header: localize('We’re updating our site'),
+                message: localize('Some services may be temporarily unavailable.'),
+                type: 'warning',
+                should_show_again: true,
+                closeOnClick: notification_obj => this.markNotificationMessage({ key: notification_obj.key }),
+            },
             system_maintenance: (withdrawal_locked, deposit_locked) => {
                 let message, header;
                 if (isCryptocurrency(client_data.currency)) {
@@ -1247,9 +1265,9 @@ export default class NotificationStore extends BaseStore {
                         );
                     }
                 } else {
-                    header = localize('Scheduled cashier system maintenance');
+                    header = localize('Scheduled cashier maintenance');
                     message = localize(
-                        'Our cashier is temporarily down due to system maintenance. You can access the cashier in a few minutes when the maintenance is complete.'
+                        'The cashier is temporarily down due to maintenance. It will be available as soon as the maintenance is complete.'
                     );
                 }
                 return {
@@ -1257,6 +1275,8 @@ export default class NotificationStore extends BaseStore {
                     header,
                     message,
                     type: 'warning',
+                    should_show_again: true,
+                    closeOnClick: notification_obj => this.markNotificationMessage({ key: notification_obj.key }),
                 };
             },
             tax: {

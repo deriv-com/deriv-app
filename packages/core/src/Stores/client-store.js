@@ -1771,19 +1771,6 @@ export default class ClientStore extends BaseStore {
 
     responseWebsiteStatus(response) {
         this.website_status = response.website_status;
-        if (this.website_status.message && this.website_status.message.length) {
-            this.root_store.notifications.addNotificationMessage({
-                key: 'maintenance',
-                header: localize('Site is being updated'),
-                message: localize(this.website_status.message),
-                type: 'warning',
-                is_persistent: true,
-            });
-        } else {
-            this.root_store.notifications.removeNotificationMessage({
-                key: 'maintenance',
-            });
-        }
     }
 
     responseLandingCompany(response) {
@@ -2115,6 +2102,7 @@ export default class ClientStore extends BaseStore {
         this.landing_companies = {};
         localStorage.removeItem('readScamMessage');
         localStorage.removeItem('isNewAccount');
+        LocalStore.set('marked_notifications', JSON.stringify([]));
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 

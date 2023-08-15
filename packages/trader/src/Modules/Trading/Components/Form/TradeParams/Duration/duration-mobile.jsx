@@ -235,7 +235,13 @@ const Duration = observer(
         t_duration,
         toggleModal,
     }) => {
-        const { duration_units_list, duration_min_max, duration_unit, basis: trade_basis } = useTraderStore();
+        const {
+            duration_units_list,
+            duration_min_max,
+            duration_unit,
+            basis: trade_basis,
+            onChangeMultiple,
+        } = useTraderStore();
         const duration_values = {
             t_duration,
             s_duration,
@@ -247,6 +253,13 @@ const Duration = observer(
         const active_index = has_selected_tab_idx
             ? duration_tab_idx
             : duration_units_list.findIndex(d => d.value === duration_unit);
+        // console.log('active_index', active_index);
+        // if (active_index !== 2) {
+        //     onChangeMultiple({
+        //         duration_unit: 'd',
+        //         duration: d_duration,
+        //     });
+        // }
         const [min, max] = getDurationMinMaxValues(duration_min_max, 'daily', 'd');
         const handleRelativeChange = date => {
             setSelectedDuration('d', date);
@@ -264,6 +277,19 @@ const Duration = observer(
             setDurationTabIdx(index);
             const { value: unit } = duration_units_list[index];
             setSelectedDuration(unit, duration_values[`${unit}_duration`]);
+
+            if (unit === 'd') {
+                onChangeMultiple({
+                    duration_unit: unit,
+                    duration: d_duration,
+                });
+
+                // const on_change_obj = {};
+                // on_change_obj.duration_unit = unit;
+                // on_change_obj.duration = d_duration;
+                // on_change_obj.expiry_type = 'duration';
+                // onChangeMultiple(on_change_obj);
+            }
         };
 
         return (

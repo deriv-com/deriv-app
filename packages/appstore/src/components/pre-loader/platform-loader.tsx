@@ -6,8 +6,7 @@ const PlatformLoader = () => (
     <ContentLoader
         backgroundColor={'var(--general-section-1)'}
         foregroundColor={'var(--general-hover)'}
-        width={600}
-        height={140}
+        viewBox='0 0 600 140'
     >
         <DesktopWrapper>
             <rect x='0' y='0' rx='5' ry='5' width='50' height='50' />

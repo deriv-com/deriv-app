@@ -12,7 +12,7 @@ const WalletMT5CardList = observer(() => {
 
     if (!isFetchedAfterMount)
         return (
-            <div className='wallet-content__loader--mt5'>
+            <div className='wallet-content__loader'>
                 <PlatformLoader />
             </div>
         );

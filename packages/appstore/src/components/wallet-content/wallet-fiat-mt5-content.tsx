@@ -15,7 +15,7 @@ const WalletFiatMT5Content = observer(() => {
     return (
         <React.Fragment>
             {!isFetchedAfterMount && is_authorize && (
-                <div className='wallet-content__loader--mt5'>
+                <div className='wallet-content__loader'>
                     <PlatformLoader />
                 </div>
             )}

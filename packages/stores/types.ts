@@ -302,6 +302,7 @@ type TClientStore = {
     is_eu: boolean;
     is_eu_country: boolean;
     is_financial_account: boolean;
+    is_financial_assessment_needed: boolean;
     is_financial_information_incomplete: boolean;
     is_fully_authenticated: boolean;
     is_high_risk: boolean;
@@ -453,6 +454,7 @@ type TUiStore = {
     is_mobile: boolean;
     is_mobile_language_menu_open: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
+    is_positions_drawer_on: boolean;
     is_reset_trading_password_modal_visible: boolean;
     is_services_error_visible: boolean;
     is_switch_to_deriv_account_modal_visible: boolean;
@@ -506,6 +508,7 @@ type TUiStore = {
     toggleCashier: () => void;
     toggleLanguageSettingsModal: () => void;
     toggleLinkExpiredModal: (state_change: boolean) => void;
+    togglePositionsDrawer: () => void;
     toggleReadyToDepositModal: () => void;
     toggleServicesErrorModal: () => void;
     toggleSetCurrencyModal: () => void;
@@ -560,6 +563,9 @@ type TBalance = {
 };
 
 type TTradersHubStore = {
+    available_dxtrade_accounts: DetailsOfEachMT5Loginid[];
+    available_derivez_accounts: DetailsOfEachMT5Loginid[];
+    can_get_more_cfd_mt5_accounts: boolean;
     CFDs_restricted_countries: boolean;
     cfd_demo_balance: TBalance;
     cfd_real_balance: TBalance;
@@ -574,7 +580,10 @@ type TTradersHubStore = {
         }[];
     content_flag: 'low_risk_cr_eu' | 'low_risk_cr_non_eu' | 'high_risk_cr' | 'cr_demo' | 'eu_demo' | 'eu_real' | '';
     financial_restricted_countries: boolean;
+    getAccount: () => void;
+    getExistingAccounts: () => void;
     handleTabItemClick: (idx: number) => void;
+    has_any_real_account: boolean;
     is_account_transfer_modal_open: boolean;
     is_demo: boolean;
     is_demo_low_risk: boolean;
@@ -605,7 +614,10 @@ type TTradersHubStore = {
     selected_platform_type: string;
     setMT5NotificationModal: (value: boolean) => void;
     setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
+    showTopUpModal: () => void;
+    startTrade: () => void;
     toggleAccountTransferModal: () => void;
+    toggleAccountTypeModalVisibility: () => void;
     toggleIsTourOpen: (is_tour_open: boolean) => void;
 };
 

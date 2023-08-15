@@ -2,21 +2,21 @@ import React from 'react';
 import { Button, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getTitle } from './constants';
-import AuthorizationRequiredModal from './authorization-required-modal.jsx';
-import InsufficientBalanceModal from './insufficient-balance-modal.jsx';
-import CompanyWideLimitExceededModal from './company-wide-limit-exceeded-modal.jsx';
+import AuthorizationRequiredModal from './authorization-required-modal';
+import InsufficientBalanceModal from './insufficient-balance-modal';
+import CompanyWideLimitExceededModal from './company-wide-limit-exceeded-modal';
 import AccountVerificationRequiredModal from './account-verification-required-modal';
 
 type TServicesError = {
     code: string;
     message: string;
-    type?: string;
+    type: string;
 };
 
 type TPropServicesErrorModel = {
     is_virtual?: boolean;
     is_visible: boolean;
-    is_logged_in?: boolean;
+    is_logged_in: boolean;
     onConfirm: () => void;
     services_error: TServicesError;
 };
@@ -44,9 +44,6 @@ const ServicesErrorModal = ({
         case 'InsufficientBalance':
             return (
                 <InsufficientBalanceModal
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    // TODO: This component needs to be TS migrated so error isn't there
                     is_virtual={is_virtual}
                     is_visible={is_visible}
                     message={message}

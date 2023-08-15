@@ -532,8 +532,8 @@ const SelfExclusionInputs = () => {
                 if (!version.condition) return null;
                 return (
                     <React.Fragment key={version_name}>
-                        {version.components.map(Component => (
-                            <Component key={`${version_name}component${Component.name}`} />
+                        {version.components.map((Component, component_idx) => (
+                            <Component key={`${version_name}component${component_idx}`} />
                         ))}
                     </React.Fragment>
                 );

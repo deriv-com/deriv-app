@@ -40,6 +40,69 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                     },
                 ];
                 break;
+            case 'turbosshort':
+            case 'turboslong':
+                content = [
+                    { type: 'heading', text: localize('Payout') },
+                    {
+                        type: 'paragraph',
+                        text: localize(
+                            'Your payout is equal to the payout per point multiplied by the difference between the final price and barrier'
+                        ),
+                    },
+                    { type: 'heading', text: localize('Expiry') },
+                    {
+                        type: 'paragraph',
+                        text: localize(
+                            'This is when your contract will expire based on the duration or end time you’ve selected. If the duration is more than 24 hours, the cut-off time and expiry date will apply instead.'
+                        ),
+                    },
+                    { type: 'heading', text: localize('Barrier') },
+                    {
+                        type: 'paragraph',
+                        text: localize(
+                            'This is a price level that you choose. If this barrier is ever crossed, your contract would be terminated.'
+                        ),
+                    },
+                    { type: 'heading', text: localize('Payout per point') },
+                    {
+                        type: 'paragraph',
+                        text: localize('We calculate this based on the barrier you’ve selected.'),
+                    },
+                    { type: 'heading', text: localize('Final price') },
+                    {
+                        type: 'paragraph',
+                        text: localize('This is the spot price of the last tick at expiry.'),
+                    },
+                    { type: 'heading', text: localize('Contract value') },
+                    {
+                        type: 'paragraph',
+                        text: localize(
+                            'We’ll offer to buy your contract at this price should you choose to sell it before its expiry. This is based on several factors, such as the current spot price'
+                        ),
+                    },
+                    {
+                        type: 'paragraph',
+                        text: localize(
+                            'We won’t offer a contract value if the remaining duration is below 15 seconds or if the contract duration is in ticks.'
+                        ),
+                    },
+                    { type: 'heading', text: localize('Cut-off time') },
+                    {
+                        type: 'paragraph',
+                        text: localize(
+                            'Contracts will expire at exactly 23:59:59 GMT +0 on your selected expiry date.'
+                        ),
+                    },
+                    { type: 'heading', text: localize('Expiry date') },
+                    {
+                        type: 'paragraph',
+                        text: localize(
+                            'Your contract will expire on this date (in GMT), based on the end time you’ve selected.'
+                        ),
+                    },
+                ];
+                break;
             case VANILLALONG.CALL:
             case VANILLALONG.PUT:
                 content = [

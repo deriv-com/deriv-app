@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import ImageAsianUpDown from 'Assets/SvgComponents/trade_explanations/img-asian.svg';
 import ImageCloseToLow from 'Assets/SvgComponents/trade_explanations/img-close-to-low.svg';
@@ -21,7 +20,13 @@ import ImageVanilla from 'Assets/SvgComponents/trade_explanations/img-vanilla.sv
 import ContractTypeDescriptionVideo from './contract-type-description-video';
 
 // TODO: Replace static image svgs with themed GIFs or animated SVGs
-const TradeCategoriesGIF = ({ category, selected_contract_type }) => {
+const TradeCategoriesGIF = ({
+    category,
+    selected_contract_type,
+}: {
+    category?: string;
+    selected_contract_type?: string;
+}) => {
     switch (category) {
         case 'asian':
             return <ImageAsianUpDown />;
@@ -67,11 +72,6 @@ const TradeCategoriesGIF = ({ category, selected_contract_type }) => {
         default:
             return null;
     }
-};
-
-TradeCategoriesGIF.propTypes = {
-    category: PropTypes.string,
-    selected_contract_type: PropTypes.string,
 };
 
 export default TradeCategoriesGIF;

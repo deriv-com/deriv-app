@@ -1725,7 +1725,7 @@ export default class ClientStore extends BaseStore {
                 this.setAccountSettings((await WS.authorized.cache.getSettings()).get_settings);
             }
 
-            if (this.account_settings) this.setPreferredLanguage(this.account_settings.preferred_language);
+            if (this.account_settings) this.setPreferredLanguage(this.account_settings?.preferred_language);
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
             if (this.account_settings && !this.account_settings.residence) {

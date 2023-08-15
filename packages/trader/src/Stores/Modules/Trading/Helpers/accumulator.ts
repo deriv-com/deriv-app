@@ -10,7 +10,7 @@ import { TTradeStore } from 'Types';
 
 type TGetUpdatedTicksHistoryStats = {
     previous_ticks_history_stats: TTradeStore['ticks_history_stats'];
-    new_ticks_history_stats: TTradeStore['ticks_history_stats']['ticks_stayed_in'];
+    new_ticks_history_stats?: TTradeStore['ticks_history_stats']['ticks_stayed_in'];
     last_tick_epoch: TTradeStore['ticks_history_stats']['last_tick_epoch'];
 };
 

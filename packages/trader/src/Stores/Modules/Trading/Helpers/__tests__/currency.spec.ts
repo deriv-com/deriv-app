@@ -1,4 +1,3 @@
-import React from 'react';
 import { buildCurrenciesList, getDefaultCurrency } from '../currency';
 
 describe('buildCurrenciesList', () => {

@@ -16,7 +16,7 @@ export const Documents = ({ toggleDetail, documents }: TDocument) => (
                     margin: '1.6rem 0',
                     height: '11.2rem',
                 }}
-                key={item.card.icon}
+                key={item.card?.icon}
                 renderContent={() => <CardWithArrow onClick={() => toggleDetail(index)} {...item.card} />}
             />
         ))}

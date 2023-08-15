@@ -41,7 +41,7 @@ import { action, computed, makeObservable, observable, override, reaction, runIn
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
 import { getHoveredColor } from './Helpers/barrier-utils';
 import BaseStore from '../../base-store';
-import { TTextValueStrings } from '../../../Types/common-prop.type';
+import { TTextValueStrings } from 'Types';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import debounce from 'lodash.debounce';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
@@ -166,6 +166,7 @@ type TToastBoxObject = {
     contract_type?: string;
     list?: Array<TToastBoxListItem | undefined>;
 };
+type TTurbosBarriersData = Record<string, never> | { barrier: string; barrier_choices: string[] };
 export type TValidationErrors = { [key: string]: string[] };
 export type TValidationRules = Omit<Partial<ReturnType<typeof getValidationRules>>, 'duration'> & {
     duration: {
@@ -287,8 +288,8 @@ export default class TradeStore extends BaseStore {
     cancellation_range_list: Array<TTextValueStrings> = [];
 
     // Turbos trade params
-    long_barriers = {};
-    short_barriers = {};
+    long_barriers: TTurbosBarriersData = {};
+    short_barriers: TTurbosBarriersData = {};
 
     // Vanilla trade params
     vanilla_trade_type = 'VANILLALONGCALL';
@@ -633,7 +634,7 @@ export default class TradeStore extends BaseStore {
     async setActiveSymbols() {
         const is_on_mf_account = this.root_store.client.landing_company_shortcode === 'maltainvest';
         const hide_close_mx_mlt_storage_flag = !!parseInt(
-            localStorage.getItem('hide_close_mx_mlt_account_notification') ?? ''
+            localStorage.getItem('hide_close_mx_mlt_account_notification') as string
         );
         const is_logged_in = this.root_store.client.is_logged_in;
         const clients_country = this.root_store.client.clients_country;
@@ -652,7 +653,7 @@ export default class TradeStore extends BaseStore {
             return;
         }
 
-        if (!active_symbols || !active_symbols.length) {
+        if (!active_symbols?.length) {
             await WS.wait('get_settings');
             /*
              * This logic is related to EU country checks
@@ -800,7 +801,7 @@ export default class TradeStore extends BaseStore {
         this.setMarketStatus(isMarketClosed(this.active_symbols, this.previous_symbol));
 
         await Symbol.onChangeSymbolAsync(this.previous_symbol);
-        await this.updateSymbol(this.symbol);
+        this.updateSymbol(this.symbol);
 
         this.setChartStatus(false);
         runInAction(() => {
@@ -1492,7 +1493,7 @@ export default class TradeStore extends BaseStore {
     manageMxMltRemovalNotification() {
         const { addNotificationMessage, client_notifications, notification_messages, unmarkNotificationMessage } =
             this.root_store.notifications;
-        const get_notification_messages = JSON.parse(localStorage.getItem('notification_messages') ?? '');
+        const get_notification_messages = JSON.parse(localStorage.getItem('notification_messages') as string);
         const { has_iom_account, has_malta_account, is_logged_in } = this.root_store.client;
         unmarkNotificationMessage({ key: 'close_mx_mlt_account' });
         if (get_notification_messages !== null && is_logged_in && (has_iom_account || has_malta_account)) {
@@ -1500,7 +1501,7 @@ export default class TradeStore extends BaseStore {
                 () => is_logged_in && notification_messages.length === 0,
                 () => {
                     const hidden_close_account_notification =
-                        parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification') ?? '') === 1;
+                        parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification') as string) === 1;
                     const should_retain_notification =
                         (has_iom_account || has_malta_account) && !hidden_close_account_notification;
                     if (should_retain_notification) {
@@ -1558,7 +1559,7 @@ export default class TradeStore extends BaseStore {
     }
 
     get is_crypto_multiplier() {
-        return this.contract_type === 'multiplier' && /^cry/.test(this.symbol);
+        return this.contract_type === 'multiplier' && this.symbol.startsWith('cry');
     }
 
     exportLayout(layout: TChartLayout) {
@@ -1676,13 +1677,13 @@ export default class TradeStore extends BaseStore {
     setContractPurchaseToastbox(response: Buy) {
         const list = getAvailableContractTypes(this.contract_types_list, unsupported_contract_types_list);
 
-        return (this.contract_purchase_toast_box = {
+        this.contract_purchase_toast_box = {
             key: true,
             buy_price: formatMoney(this.root_store.client.currency, response.buy_price, true, 0, 0),
             contract_type: this.contract_type,
             currency: getCurrencyDisplayCode(this.root_store.client.currency),
             list,
-        });
+        };
     }
 
     clearContractPurchaseToastBox() {
@@ -1702,7 +1703,7 @@ export default class TradeStore extends BaseStore {
     }
 
     setStakeBoundary(type: string, min_stake?: number, max_stake?: number) {
-        this.stake_boundary[type] = { min_stake, max_stake };
+        if (min_stake && max_stake) this.stake_boundary[type] = { min_stake, max_stake };
     }
 
     setBarrierChoices(barrier_choices: string[]) {

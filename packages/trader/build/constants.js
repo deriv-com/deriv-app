@@ -42,6 +42,7 @@ const ALIASES = {
     Services: path.resolve(__dirname, '../src/Services'),
     Stores: path.resolve(__dirname, '../src/Stores'),
     Translations: path.resolve(__dirname, '../src/public/translations'),
+    Types: path.resolve(__dirname, '../src/Types'),
     Utils: path.resolve(__dirname, '../src/Utils'),
 };
 

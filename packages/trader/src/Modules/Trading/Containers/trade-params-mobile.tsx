@@ -4,7 +4,7 @@ import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mob
 import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier';
 import DurationMobile from 'Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile.jsx';
 import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit';
-import { TTextValueStrings } from '../../../Types/common-prop.type';
+import { TTextValueStrings } from 'Types';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import React from 'react';
@@ -113,7 +113,7 @@ const TradeParamsModal = observer(({ is_open, toggleModal }: TTradeParamsModal) 
 
     React.useEffect(() => {
         setSelectedDuration(duration_unit, duration);
-        setDurationTabIdx(undefined);
+        setDurationTabIdx();
         // duration and duration_unit can be changed in trade-store when contract type is changed
     }, [duration, duration_unit]);
 

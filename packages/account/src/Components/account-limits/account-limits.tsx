@@ -1,9 +1,12 @@
-import { formatMoney, isDesktop, isMobile, useIsMounted, PlatformContext } from '@deriv/shared';
+import React from 'react';
 import { FormikValues } from 'formik';
-import { lexicographicalStringComparer } from '@deriv/utils';
+import classNames from 'classnames';
+import { formatMoney, isDesktop, isMobile, useIsMounted, PlatformContext } from '@deriv/shared';
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
+import DemoMessage from 'Components/demo-message';
+import LoadErrorMessage from 'Components/load-error-message';
 import AccountLimitsArticle from './account-limits-article';
 import AccountLimitsContext, { TAccountLimitsContext } from './account-limits-context';
 import AccountLimitsExtraInfo from './account-limits-extra-info';
@@ -12,10 +15,6 @@ import AccountLimitsOverlay from './account-limits-overlay';
 import AccountLimitsTableCell from './account-limits-table-cell';
 import AccountLimitsTableHeader from './account-limits-table-header';
 import AccountLimitsTurnoverLimitRow from './account-limits-turnover-limit-row';
-import classNames from 'classnames';
-import DemoMessage from 'Components/demo-message';
-import LoadErrorMessage from 'Components/load-error-message';
-import React from 'react';
 import WithdrawalLimitsTable from './withdrawal-limits-table';
 
 type TAccountLimits = {
@@ -109,9 +108,7 @@ const AccountLimits = observer(
         }
 
         const { commodities, forex, indices, synthetic_index } = { ...market_specific };
-        const forex_ordered = forex
-            ?.slice()
-            .sort((a: FormikValues, b: FormikValues) => lexicographicalStringComparer(a.name, b.name));
+        const forex_ordered = forex?.slice().sort((a: FormikValues, b: FormikValues) => a.name.localeCompare(b.name));
         const derived_ordered = synthetic_index
             ?.slice()
             .sort((a: FormikValues, b: FormikValues) => (a.level > b.level ? 1 : -1));
@@ -237,13 +234,14 @@ const AccountLimits = observer(
                                 </table>
                                 {/* We only show "Withdrawal Limits" on account-wide settings pages. */}
 
-                                <WithdrawalLimitsTable
-                                    is_app_settings={is_app_settings}
-                                    is_appstore={is_appstore}
-                                    num_of_days_limit={num_of_days_limit}
-                                    remainder={remainder}
-                                    withdrawal_since_inception_monetary={withdrawal_since_inception_monetary}
-                                />
+                                {!is_app_settings && (
+                                    <WithdrawalLimitsTable
+                                        is_appstore={is_appstore}
+                                        num_of_days_limit={num_of_days_limit}
+                                        remainder={remainder}
+                                        withdrawal_since_inception_monetary={withdrawal_since_inception_monetary}
+                                    />
+                                )}
                             </ThemedScrollbars>
                         </div>
                         {should_show_article && isDesktop() && <AccountLimitsArticle />}

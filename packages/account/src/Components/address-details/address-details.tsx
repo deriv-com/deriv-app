@@ -164,7 +164,7 @@ const AddressDetails = ({
                         ? getLocation(states_list, address_state_to_display, 'value')
                         : getLocation(states_list, values.address_state, 'value');
                 }
-                onSubmit((getCurrentStep?.() ?? 1) - 1, values, actions.setSubmitting, goToNextStep);
+                onSubmit((getCurrentStep?.() || 1) - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
             {({ handleSubmit, errors, values, setFieldValue, handleChange, setFieldTouched }: FormikValues) => (

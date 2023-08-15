@@ -97,6 +97,7 @@ describe('useFiatAccountList', () => {
         const { result } = renderHook(() => useFiatAccountList(), { wrapper });
 
         expect(result.current).toHaveLength(1);
+        expect(result.current).toMatchObject([{ currency: 'USD', is_virtual: false, loginid: 'CR456' }]);
     });
     test('should return list of fiat accounts if client has 1 CR fiat and 1 MF fiat account', async () => {
         mockUseFetch.mockReturnValue({
@@ -129,5 +130,9 @@ describe('useFiatAccountList', () => {
         const { result } = renderHook(() => useFiatAccountList(), { wrapper });
 
         expect(result.current).toHaveLength(2);
+        expect(result.current).toMatchObject([
+            { currency: 'USD', is_virtual: false, loginid: 'CR456' },
+            { currency: 'USD', is_virtual: false, loginid: 'MF789' },
+        ]);
     });
 });

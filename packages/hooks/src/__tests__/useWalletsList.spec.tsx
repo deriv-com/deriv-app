@@ -104,7 +104,7 @@ jest.mock('@deriv/api', () => ({
 }));
 
 describe('useWalletsList', () => {
-    test('should return wallets list for the current loginid', () => {
+    test('should return list of wallet accounts for the current account', () => {
         const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (

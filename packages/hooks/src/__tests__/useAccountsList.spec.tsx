@@ -128,7 +128,7 @@ jest.mock('@deriv/api', () => ({
 }));
 
 describe('useAccountsList', () => {
-    test('should return accounts list for the current loginid', () => {
+    test('should return list of 6 accounts for the current account', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useAccountsList(), { wrapper });

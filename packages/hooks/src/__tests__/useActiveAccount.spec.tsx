@@ -128,8 +128,8 @@ jest.mock('@deriv/api', () => ({
     }),
 }));
 
-describe('useTradingAccountsList', () => {
-    test('should return trading accounts list for the current loginid', () => {
+describe('useActiveAccount', () => {
+    test('should return active account', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useActiveAccount(), { wrapper });
@@ -137,7 +137,7 @@ describe('useTradingAccountsList', () => {
         expect(result.current?.loginid).toEqual('CR1003');
     });
 
-    test('should return correct balance', () => {
+    test('should return correct balance for active account', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useActiveAccount(), { wrapper });

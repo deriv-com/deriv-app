@@ -19,6 +19,7 @@ import { ad_type } from 'Constants/floating-rate';
 import { TAdvert } from 'Types';
 import ShareMyAdsSocials from './share-my-ads-socials';
 import ShareMyAdsCard from './share-my-ads-card';
+import { isMobile } from '@deriv/shared';
 
 const ShareMyAdsModal = ({ advert }: TAdvert) => {
     const [is_sharing, setIsSharing] = React.useState(false);
@@ -64,8 +65,9 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
             const blob = new Blob([dataUrlBlob], { type: 'image/png' });
             const file = new File([blob], file_name, { type: 'image/png' });
 
+            if (isMobile()) setIsSharing(true);
+
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                setIsSharing(true);
                 navigator
                     .share({
                         files: [file],

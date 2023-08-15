@@ -157,9 +157,9 @@
             &__list {
                 overflow: auto;
                 width: 100%;
-                height: calc(100% - 20rem);
+                height: calc(100vh - 57rem);
                 @include mobile {
-                    height: calc(100vh - 85%);
+                    min-height: calc(100vh - 46rem);
                 }
             }
         }

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import config from '@config';
 import { generateDerivLink } from '@utils';
-import { setActiveLoginId, isLoggedIn, getClientAccounts } from '@storage';
+import { setActiveLoginId, isLoggedIn, getClientAccounts, syncWithDerivApp } from '@storage';
 import { translate } from '@i18n';
 import Modal from '@components/common/modal';
 import Popover from '@components/common/popover';
@@ -54,6 +54,7 @@ const AccountActions = () => {
                 dispatch(updateActiveToken(next_account?.token));
                 dispatch(setShouldReloadWorkspace(true));
                 $('.barspinner').hide();
+                syncWithDerivApp();
             });
         }
     };

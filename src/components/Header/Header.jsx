@@ -52,7 +52,6 @@ const Header = () => {
     // it should happen in the main component which main.jsx
     // We need to move every check related to login or active account to main.jsx
     React.useEffect(() => {
-        console.log(active_token, 'active_token active_token active_token');
         const active_account = { ...api_base.account_info };
         const { landing_company_name } = active_account;
         if (landing_company_name === 'maltainvest') {

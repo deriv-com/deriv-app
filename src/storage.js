@@ -142,8 +142,6 @@ export const removeAllTokens = () => {
 export const isDone = varName => varName in store;
 
 export const syncWithDerivApp = () => {
-    console.trace();
-    console.log('syncWithDerivApp is running');
     const iframe = document.getElementById('localstorage-sync');
     const { origin } = getRelatedDeriveOrigin();
 
@@ -163,7 +161,6 @@ export const syncWithDerivApp = () => {
             origin
         );
     };
-
     if (iframe) {
         if (document.readyState === 'complete') {
             postMessages();

@@ -30,9 +30,11 @@ const Main = () => {
     React.useEffect(() => {
         window.addEventListener('storage', event => {
             switch (event.key) {
-                case 'client.accounts':
+                // case 'client.accounts':
                 case 'active_loginid':
-                    window.location.reload();
+                    if (event.newValue !== event.oldValue) {
+                        window.location.reload();
+                    }
                     break;
                 default:
                     break;

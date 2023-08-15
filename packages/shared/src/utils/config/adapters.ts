@@ -1,4 +1,4 @@
-import { IDV_NOT_APPLICABLE_OPTION } from '../constants/idv-options';
+import { getIDVNotApplicableOption } from '../constants/idv-options';
 import { FormikValues } from 'formik';
 
 type TDocumentList = Array<{
@@ -27,6 +27,7 @@ type TIDVFormValues = {
  * @returns IDV form values
  */
 export const formatIDVFormValues = (idv_form_value: FormikValues, country_code: string) => {
+    const IDV_NOT_APPLICABLE_OPTION = getIDVNotApplicableOption();
     const idv_submit_data = {
         document_number:
             idv_form_value.document_type.id === IDV_NOT_APPLICABLE_OPTION.id

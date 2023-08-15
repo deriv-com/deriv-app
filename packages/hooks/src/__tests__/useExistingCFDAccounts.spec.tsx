@@ -26,7 +26,6 @@ jest.mock('@deriv/api', () => ({
                 },
             };
         }
-
         if (name === 'mt5_login_list') {
             return {
                 data: {
@@ -44,7 +43,6 @@ jest.mock('@deriv/api', () => ({
                 },
             };
         }
-
         if (name === 'trading_platform_accounts') {
             return {
                 data: {
@@ -90,7 +88,6 @@ jest.mock('@deriv/api', () => ({
                 },
             };
         }
-
         return { data: undefined };
     }),
 }));
@@ -99,17 +96,6 @@ describe('useExistingCFDAccounts', () => {
     it('should return the existing cfd accounts', () => {
         const mock = mockStore({
             client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
-            traders_hub: {
-                combined_cfd_mt5_accounts: [
-                    {
-                        platform: 'mt5',
-                        description: 'Deriv-Server',
-                        icon: 'Derived',
-                        sub_title: 'sub_name',
-                        name: 'Derived',
-                    },
-                ],
-            },
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -119,24 +105,46 @@ describe('useExistingCFDAccounts', () => {
         );
         const { result } = renderHook(() => useExistingCFDAccounts(), { wrapper });
 
-        expect(result.current.data.dxtrade_accounts).toEqual(
-            expect.arrayContaining([
-                {
-                    account_id: 'DXR1646584',
-                    account_type: 'real',
-                    balance: 0,
-                    currency: 'USD',
-                    display_balance: '0.00',
-                    enabled: 1,
-                    landing_company_short: 'svg',
-                    login: '8807230',
-                    loginid: 'DXR1646584',
-                    market_type: 'all',
-                    platform: 'dxtrade',
-                    transfer_icon: 'IcRebrandingDerivX',
+        expect(result.current.data.dxtrade_accounts).toEqual([
+            {
+                account_id: 'DXR1646584',
+                account_type: 'real',
+                balance: 0,
+                currency: 'USD',
+                display_balance: '0.00',
+                enabled: 1,
+                is_added: true,
+                landing_company_short: 'svg',
+                login: '8807230',
+                loginid: 'DXR1646584',
+                market_type: 'all',
+                platform: 'dxtrade',
+                transfer_icon: 'IcRebrandingDerivX',
+            },
+            {
+                account_type: 'real',
+                balance: 0,
+                country: 'za',
+                currency: 'USD',
+                display_balance: '0.00',
+                email: 'mei+za1@binary.com',
+                group: 'real\\p02_ts01\\all\\svg_ez_usd',
+                is_added: true,
+                landing_company_short: 'svg',
+                leverage: 1000,
+                login: 'EZR80001086',
+                loginid: undefined,
+                market_type: 'all',
+                name: 'Baily Pan',
+                server: 'p02_ts01',
+                server_info: {
+                    environment: 'Deriv-Server-02',
+                    geolocation: { group: 'africa_derivez', location: 'South Africa', region: 'Africa', sequence: 2 },
+                    id: 'p02_ts01',
                 },
-            ])
-        );
+                transfer_icon: 'IcRebrandingDerivX',
+            },
+        ]);
 
         expect(result.current.data.derivez_accounts).toEqual(
             expect.arrayContaining([

@@ -57,3 +57,20 @@ export const getSwapFreeAccount = (): TAccountType => ({
         'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies, and ETFs.'
     ),
 });
+
+export const mt5_details_mapper = {
+    synthetic: {
+        name: localize('Derived'),
+        description: localize('This account offers CFDs on derived instruments.'),
+    },
+    financial: {
+        name: localize('Financial'),
+        description: localize('This account offers CFDs on financial instruments.'),
+    },
+    all: {
+        name: localize('Swap-Free'),
+        description: localize(
+            'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies, and ETFs.'
+        ),
+    },
+} as const;

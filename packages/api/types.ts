@@ -453,6 +453,20 @@ type TPrivateSocketEndpoints = {
             [k: string]: unknown;
         };
     };
+    trading_platform_available_accounts: {
+        request: {
+            platform: 'derivez' | 'dxtrade' | 'mt5';
+        };
+        response: {
+            trading_platform_available_accounts: {
+                name: string;
+                shortcode: string;
+                sub_account_type: 'standard' | 'swap_free';
+                login: string;
+                market_type: 'gaming' | 'financial' | 'all';
+            }[];
+        };
+    };
     cashier_payments: {
         request: {
             /**

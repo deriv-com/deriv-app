@@ -57,7 +57,7 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
                             ) : (
                                 <Badge
                                     custom_color='var(--text-prominent)'
-                                    label={wallet.jurisdiction_title.toUpperCase()}
+                                    label={wallet.jurisdiction_title?.toUpperCase()}
                                     type='bordered'
                                 />
                             )}

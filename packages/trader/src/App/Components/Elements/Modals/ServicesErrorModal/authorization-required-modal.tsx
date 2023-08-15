@@ -10,12 +10,7 @@ type TAuthorizationRequiredModal = {
     is_logged_in: boolean;
 };
 
-const AuthorizationRequiredModal = ({
-    is_visible,
-    toggleModal,
-    is_appstore,
-    is_logged_in,
-}: TAuthorizationRequiredModal) => (
+const AuthorizationRequiredModal = ({ is_visible, toggleModal, is_logged_in }: TAuthorizationRequiredModal) => (
     <Modal
         id='dt_authorization_required_modal'
         is_open={is_visible}
@@ -31,12 +26,7 @@ const AuthorizationRequiredModal = ({
                 onClick={() => redirectToLogin(is_logged_in, getLanguage())}
                 secondary
             />
-            <Button
-                has_effect
-                text={localize('Create free account')}
-                onClick={() => redirectToSignUp({ is_appstore })}
-                primary
-            />
+            <Button has_effect text={localize('Create free account')} onClick={() => redirectToSignUp()} primary />
         </Modal.Footer>
     </Modal>
 );

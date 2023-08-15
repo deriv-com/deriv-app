@@ -77,7 +77,7 @@ const InputField = (props: TInputField) => {
                     <Input
                         type='text'
                         autoComplete='off'
-                        maxLength={props.maxLength ?? 30}
+                        maxLength={props.maxLength || 30}
                         error={touched[field.name] && errors[field.name]}
                         {...field}
                         {...props}

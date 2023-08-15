@@ -20,7 +20,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
     const contract_types = getContractTypes(list, item).filter(
         i => i.value !== 'rise_fall_equal' && i.value !== 'turbosshort'
     );
-    const has_toggle_buttons = /accumulator|turboslong|vanilla/i.test(carousel_index);
+    const has_toggle_buttons = /accumulator|vanilla/i.test(carousel_index);
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION;
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;
     const width = isMobile() ? '328' : '528';

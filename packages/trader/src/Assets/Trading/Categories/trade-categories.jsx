@@ -433,7 +433,7 @@ const TradeCategories = ({ category, onClick }) => {
                 break;
             case 'turbosshort':
             case 'turboslong':
-                TradeTypeTemplate = <TurbosTradeDescription onClick={onClick} />;
+                TradeTypeTemplate = <TurbosTradeDescription />;
                 break;
             case 'vanilla':
                 TradeTypeTemplate = (

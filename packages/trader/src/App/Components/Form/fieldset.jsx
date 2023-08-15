@@ -58,7 +58,7 @@ Fieldset.propTypes = {
     children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     className: PropTypes.string,
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    header_tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    header_tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.node]),
     is_center: PropTypes.bool,
     is_tooltip_disabled: PropTypes.bool,
     onMouseEnter: PropTypes.func,

@@ -187,8 +187,8 @@ export const personal_details_config = ({
     };
 
     const getConfig = () => {
-        // Need to check if client is high risk for MF (only have SVG i.e. China & Russia)
-        // No need to get tax information when client is high risk for MF
+        // Need to check if client is high risk (only have SVG i.e. China & Russia)
+        // No need to get additinal details when client is high risk
         if (!is_high_risk_client_for_mt5) {
             const properties_to_update: (keyof typeof config)[] = [
                 'place_of_birth',

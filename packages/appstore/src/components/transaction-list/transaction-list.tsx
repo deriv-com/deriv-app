@@ -100,7 +100,10 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
                         classNameLabel='transaction-list__toggle__label'
                         id='toggle-pending-crypto-transactions'
                         is_enabled={should_show_pending_crypto_transactions}
-                        handleToggle={() => setShouldShowPendingCryptoTransactions(prev => !prev)}
+                        handleToggle={() => {
+                            if (filter === 'transfer') setFilter('');
+                            setShouldShowPendingCryptoTransactions(prev => !prev);
+                        }}
                     />
                 </div>
                 <Dropdown

@@ -100,7 +100,7 @@ const CompletedTransaction = ({ transaction }: TCompletedTransaction) => {
                         weight='lighter'
                         line_height={is_mobile ? 's' : 'm'}
                     >
-                        {localize(formatActionType(action_type))}
+                        {formatActionType(action_type)}
                     </Text>
                     <Text
                         size={is_mobile ? 'xxxs' : 'xxs'}
@@ -108,7 +108,7 @@ const CompletedTransaction = ({ transaction }: TCompletedTransaction) => {
                         weight='bold'
                         line_height={is_mobile ? 's' : 'm'}
                     >
-                        {localize(getAccountName())}
+                        {getAccountName()}
                     </Text>
                 </div>
             </div>

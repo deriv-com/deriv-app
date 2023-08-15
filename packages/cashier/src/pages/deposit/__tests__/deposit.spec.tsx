@@ -42,6 +42,7 @@ describe('<Deposit />', () => {
                 current_currency_type: 'fiat',
                 is_switching: false,
                 is_virtual: false,
+                is_authorize: true,
             },
             modules: {
                 cashier: {

@@ -141,7 +141,7 @@ const AddressDetails = ({
     };
 
     const handleCancel = (values: FormikValues) => {
-        const current_step = (getCurrentStep?.() ?? 1) - 1;
+        const current_step = (getCurrentStep?.() || 1) - 1;
         onSave(current_step, values);
         onCancel(current_step, goToPreviousStep);
     };

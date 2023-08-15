@@ -214,6 +214,16 @@ export const getSupportedContracts = is_high_low => ({
         name: localize('No Touch'),
         position: 'bottom',
     },
+    TURBOSLONG: {
+        button_name: localize('Long'),
+        name: 'Turbos',
+        position: 'top',
+    },
+    TURBOSSHORT: {
+        button_name: localize('Short'),
+        name: 'Turbos',
+        position: 'bottom',
+    },
     RUNHIGH: {
         name: localize('Only Ups'),
         position: 'top',

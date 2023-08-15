@@ -103,6 +103,7 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
                         {localize('Videos on Deriv Bot')}
                     </Text>
                 )}
+                <div style={{ display: 'none' }}> {localize('New string to trigger translation workflow')}</div>
                 <div className='tutorials-wrap__group'>
                     {guide_list &&
                         guide_list.map(({ id, content, url, type, src }) => {

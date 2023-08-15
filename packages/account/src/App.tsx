@@ -17,8 +17,11 @@ const App = ({ passthrough }: TAppProps) => {
     const { root_store, WS } = passthrough;
     setWebsocket(WS);
 
+    const { notification_messages_ui: Notifications } = root_store.ui;
+
     return (
         <StoreProvider store={root_store}>
+            {Notifications && <Notifications />}
             <Routes />
             <ResetTradingPassword />
         </StoreProvider>

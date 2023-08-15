@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import ContractTypeWidget from '../contract-type-widget';
 
 describe('<ContractTypeWidget />', () => {
@@ -13,6 +13,7 @@ describe('<ContractTypeWidget />', () => {
             ],
             icon: 'IcMultiplier',
             label: 'Multipliers',
+            key: 'Multipliers',
         },
         {
             contract_types: [
@@ -27,6 +28,7 @@ describe('<ContractTypeWidget />', () => {
             ],
             icon: 'IcUpsDowns',
             label: 'Ups & Downs',
+            key: 'Options',
         },
         {
             contract_types: [
@@ -41,6 +43,7 @@ describe('<ContractTypeWidget />', () => {
             ],
             icon: 'IcHighsLows',
             label: 'Highs & Lows',
+            key: 'Options',
         },
         {
             contract_types: [
@@ -59,6 +62,7 @@ describe('<ContractTypeWidget />', () => {
             ],
             icon: 'IcDigits',
             label: 'Digits',
+            key: 'Options',
         },
     ];
 
@@ -68,9 +72,7 @@ describe('<ContractTypeWidget />', () => {
     };
 
     it('should render <ContractTypeMenu /> component when click on ', () => {
-        const wrapper = render(<ContractTypeWidget list={list} value={item.value} />);
-        const dt_contract_widget = wrapper.getByTestId('dt_contract_widget');
-
-        expect(dt_contract_widget).toBeInTheDocument();
+        render(<ContractTypeWidget onChange={jest.fn()} list={list} value={item.value} />);
+        expect(screen.getByTestId('dt_contract_widget')).toBeInTheDocument();
     });
 });

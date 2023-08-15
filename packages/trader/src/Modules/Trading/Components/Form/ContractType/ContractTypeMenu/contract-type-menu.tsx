@@ -1,12 +1,26 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Loading, ThemedScrollbars, VerticalTab } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import SearchInput from './search-input.jsx';
-import NoResultsMessage from './no-results-message.jsx';
-import { Header } from '../ContractTypeInfo';
+import SearchInput from './search-input';
+import NoResultsMessage from './no-results-message';
+import { Header } from '../ContractTypeInfo/index.js';
 import { getContractCategoryKey } from '../../../../Helpers/contract-type';
+import { TList } from '../types';
+import ContractType from '../contract-type';
+
+type TDialog = {
+    categories: TList[];
+    item: React.ComponentProps<typeof ContractType.Info>['item'];
+    selected?: string;
+    children?: React.ReactNode;
+    is_info_dialog_open?: boolean;
+    is_open?: boolean;
+    onBackButtonClick?: () => void;
+    onCategoryClick?: (e: React.ComponentProps<typeof VerticalTab.Headers>['selected']) => void;
+    onChangeInput?: (e: string) => void;
+    show_loading?: boolean;
+};
 
 const Dialog = ({
     categories,
@@ -19,19 +33,16 @@ const Dialog = ({
     onCategoryClick,
     onChangeInput,
     show_loading,
-}) => {
-    const input_ref = React.useRef(null);
-
+}: React.PropsWithChildren<TDialog>) => {
+    const input_ref = React.useRef<(HTMLInputElement & HTMLTextAreaElement) | null>(null);
     const [input_value, setInputValue] = React.useState('');
-
     const contract_category = getContractCategoryKey(categories, item);
-    const selected_item = selected ? { key: selected } : contract_category;
+    const selected_item = selected ? { key: selected } : { key: contract_category };
     const selected_category_contract = !categories?.find(category => category.key === selected_item.key)
-        ?.contract_categories.length;
-
-    const onChange = e => {
+        ?.contract_categories?.length;
+    const onChange: React.ComponentProps<typeof VerticalTab.Headers>['onChange'] = e => {
         if (is_info_dialog_open) {
-            onBackButtonClick();
+            onBackButtonClick?.();
         }
         if (input_value) {
             onClickClearInput();
@@ -41,15 +52,15 @@ const Dialog = ({
         }
     };
 
-    const onChangeInputValue = e => {
+    const onChangeInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
-        onChangeInput(e.target.value);
+        onChangeInput?.(e.target.value);
     };
 
     const onClickClearInput = () => {
-        input_ref.current.focus();
+        input_ref?.current?.focus();
         setInputValue('');
-        onChangeInput('');
+        onChangeInput?.('');
     };
 
     const renderChildren = () => {
@@ -66,7 +77,6 @@ const Dialog = ({
             value={input_value}
         />
     );
-
     return (
         <CSSTransition
             in={is_open}
@@ -105,7 +115,7 @@ const Dialog = ({
                             ) : (
                                 <React.Fragment>
                                     <div className='dc-vertical-tab__action-bar dc-vertical-tab__action-bar--contract-type-info-header'>
-                                        <Header title={item.text} onClickGoBack={onBackButtonClick} />
+                                        <Header title={item.text || ''} onClickGoBack={onBackButtonClick} />
                                     </div>
                                     {renderChildren()}
                                 </React.Fragment>
@@ -116,20 +126,6 @@ const Dialog = ({
             </div>
         </CSSTransition>
     );
-};
-
-Dialog.propTypes = {
-    categories: PropTypes.array,
-    children: PropTypes.node,
-    is_info_dialog_open: PropTypes.bool,
-    is_open: PropTypes.bool,
-    selected: PropTypes.string,
-    show_loading: PropTypes.bool,
-    item: PropTypes.object,
-    list: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-    onBackButtonClick: PropTypes.func,
-    onCategoryClick: PropTypes.func,
-    onChangeInput: PropTypes.func,
 };
 
 export default Dialog;

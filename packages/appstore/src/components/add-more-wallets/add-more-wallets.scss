@@ -25,7 +25,7 @@
         border: 0.1rem solid var(--general-active);
         background-color: var(--general-main-1);
         box-shadow: $wallet-box-shadow;
-        cursor: pointer;
+        user-select: none;
         &-description,
         &-wrapper {
             display: flex;

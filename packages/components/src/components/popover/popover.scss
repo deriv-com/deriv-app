@@ -63,6 +63,9 @@
         &--error {
             background-color: var(--status-danger);
         }
+        @include mobile {
+            max-width: calc(100vw - 6.7rem);
+        }
     }
 }
 

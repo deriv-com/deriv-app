@@ -158,6 +158,19 @@
                 overflow: auto;
                 width: 100%;
                 height: calc(100vh - 57rem);
+                @include mobile {
+                    height: auto;
+                    overflow: auto;
+                    @media screen and (max-height: 900px) {
+                        max-height: 75%;
+                    }
+                    @media screen and (max-height: 800px) {
+                        max-height: 55%;
+                    }
+                    @media screen and (max-height: 700px) {
+                        max-height: 40%;
+                    }
+                }
             }
         }
 

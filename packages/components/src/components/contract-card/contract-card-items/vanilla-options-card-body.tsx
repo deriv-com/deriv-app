@@ -56,8 +56,8 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
                     className='dc-contract-card-item__total-profit-loss'
                     header={TOTAL_PROFIT_LOSS}
                     is_crypto={isCryptocurrency(currency)}
-                    is_loss={profit !== undefined && +profit < 0}
-                    is_won={profit !== undefined && +profit > 0}
+                    is_loss={profit !== undefined && profit < 0}
+                    is_won={profit !== undefined && profit > 0}
                 >
                     <Money amount={profit} currency={currency} />
                     <div

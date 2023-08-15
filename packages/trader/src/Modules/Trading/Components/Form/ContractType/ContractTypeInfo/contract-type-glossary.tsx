@@ -3,9 +3,7 @@ import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 const ContractTypeGlossary = ({ category, is_vanilla_fx }: { category: string; is_vanilla_fx?: string }) => {
-    const vanilla_payout_text = is_vanilla_fx
-        ? localize('Payout per pip')
-        : localize('Payout per point');
+    const vanilla_payout_text = is_vanilla_fx ? localize('Payout per pip') : localize('Payout per point');
     let content;
     if (category) {
         switch (category) {

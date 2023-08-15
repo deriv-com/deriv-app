@@ -32,14 +32,16 @@ describe('VanillaOptionsCardBody', () => {
         <VanillaOptionsCardBody {...mock_props}/>
     );
 
+    const indicative_movement = getByTestId('dc-contract-card__indicative--movement');
+
     // Test that the correct elements are present in the component
     expect(getByText('Contract Value')).toBeInTheDocument();
     expect(getByText('Entry Spot')).toBeInTheDocument();
     expect(getByText('Purchase Price')).toBeInTheDocument();
     expect(getByText('Strike')).toBeInTheDocument();
     expect(getByText('Total Profit/Loss')).toBeInTheDocument();
-    expect(getByTestId('dc-contract-card__indicative--movement')).toHaveClass('dc-contract-card__indicative--movement-complete');
-    expect(getByTestId('dc-contract-card__indicative--movement').firstChild).toHaveClass('dc-icon--red');
+    expect(indicative_movement).toHaveClass('dc-contract-card__indicative--movement-complete');
+    expect(indicative_movement.querySelector('.dc-icon.dc-icon--red')).toBeInTheDocument();
   });
 
   it('should render the correct content for an unsold contract', async () => {
@@ -56,13 +58,15 @@ describe('VanillaOptionsCardBody', () => {
         <VanillaOptionsCardBody {...mock_props}/>
     );
 
+    const indicative_movement = getByTestId('dc-contract-card__indicative--movement');
+
     // Test that the correct elements are present in the component
     expect(getByText('Contract Value')).toBeInTheDocument();
     expect(getByText('Entry Spot')).toBeInTheDocument();
     expect(getByText('Purchase Price')).toBeInTheDocument();
     expect(getByText('Strike')).toBeInTheDocument();
     expect(getByText('Total Profit/Loss')).toBeInTheDocument();
-    expect(getByTestId('dc-contract-card__indicative--movement')).not.toHaveClass('dc-contract-card__indicative--movement-complete');
-    expect(getByTestId('dc-contract-card__indicative--movement').firstChild).toHaveClass('dc-icon--green');
+    expect(indicative_movement).not.toHaveClass('dc-contract-card__indicative--movement-complete');
+    expect(indicative_movement.querySelector('.dc-icon.dc-icon--green')).toBeInTheDocument();
   });
 });

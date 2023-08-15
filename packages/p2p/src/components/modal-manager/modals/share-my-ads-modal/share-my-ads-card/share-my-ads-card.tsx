@@ -1,5 +1,6 @@
 import React from 'react';
-import { QRCode } from 'react-qrcode-logo';
+// import { QRCode } from 'react-qrcode-logo';
+import { QRCodeSVG } from 'qrcode.react';
 import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
@@ -59,7 +60,8 @@ const ShareMyAdsCard = ({ advert, advert_url, divRef, setHasQrLoaded }: TShareMy
             </div>
             <div className='share-my-ads-card__qr'>
                 <div className='share-my-ads-card__qr-container'>
-                    <QRCode value={advert_url} {...options} logoOnLoad={() => setHasQrLoaded(true)} />
+                    {/* <QRCode value={advert_url} {...options} logoOnLoad={() => setHasQrLoaded(true)} /> */}
+                    <QRCodeSVG value={advert_url} size={isMobile() ? 120 : 150} onLoad={() => setHasQrLoaded(true)} />
                 </div>
                 <Text className='share-my-ads-card__qr-text' color='less-prominent' size='xxs'>
                     <Localize i18n_default_text='Scan this code to order via Deriv P2P' />

@@ -113,6 +113,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_eu_country: false,
             has_residence: false,
             is_financial_account: false,
+            is_financial_assessment_needed: false,
             is_financial_information_incomplete: false,
             is_low_risk: false,
             is_identity_verification_needed: false,

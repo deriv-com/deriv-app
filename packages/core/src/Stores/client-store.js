@@ -260,6 +260,7 @@ export default class ClientStore extends BaseStore {
             default_currency: computed,
             should_allow_authentication: computed,
             is_financial_assessment_incomplete: computed,
+            is_financial_assessment_needed: computed,
             is_authentication_needed: computed,
             is_identity_verification_needed: computed,
             real_account_creation_unlock_date: computed,
@@ -714,6 +715,10 @@ export default class ClientStore extends BaseStore {
 
     get is_financial_assessment_incomplete() {
         return this.account_status?.status?.includes('financial_assessment_not_complete');
+    }
+
+    get is_financial_assessment_needed() {
+        return this.account_status?.status?.includes('financial_assessment_notification');
     }
 
     get is_authentication_needed() {

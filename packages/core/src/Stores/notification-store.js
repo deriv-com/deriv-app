@@ -292,6 +292,7 @@ export default class NotificationStore extends BaseStore {
             has_enabled_two_fa,
             has_changed_two_fa,
             is_poi_dob_mismatch,
+            is_financial_assessment_needed,
             is_financial_information_incomplete,
             has_restricted_mt5_account,
             has_mt5_account_with_rejected_poa,
@@ -374,6 +375,12 @@ export default class NotificationStore extends BaseStore {
                 !hidden_close_account_notification
             ) {
                 this.addNotificationMessage(this.client_notifications.close_mx_mlt_account);
+            }
+
+            if (is_financial_assessment_needed) {
+                this.addNotificationMessage(this.client_notifications.notify_financial_assessment);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.notify_financial_assessment.key });
             }
 
             // Acuity notification is available for both Demo and Real desktop clients
@@ -1079,6 +1086,17 @@ export default class NotificationStore extends BaseStore {
                     },
                     text: localize('Go to live chat'),
                 },
+                type: 'warning',
+            },
+            notify_financial_assessment: {
+                action: {
+                    route: routes.financial_assessment,
+                    text: localize('Start now'),
+                },
+                header: localize('Pending action required'),
+                key: 'notify_financial_assessment',
+                message: localize('Please complete your financial assessment.'),
+                should_show_again: true,
                 type: 'warning',
             },
             password_changed: {

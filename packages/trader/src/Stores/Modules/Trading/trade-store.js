@@ -124,6 +124,7 @@ export default class TradeStore extends BaseStore {
     purchase_info = {};
 
     // Chart loader observables
+    chart_yaxis_height;
     is_chart_loading;
     should_show_active_symbols_loading = false;
 
@@ -225,6 +226,7 @@ export default class TradeStore extends BaseStore {
             cancellation_duration: observable,
             cancellation_price: observable,
             cancellation_range_list: observable,
+            chart_yaxis_height: observable,
             commission: observable,
             contract_expiry_type: observable,
             contract_start_type: observable,
@@ -1541,6 +1543,7 @@ export default class TradeStore extends BaseStore {
     };
 
     chartStateChange(state, option) {
+        if (option && 'chart_yaxis_height' in option) this.chart_yaxis_height = option.chart_yaxis_height;
         const market_close_prop = 'isClosed';
         switch (state) {
             case 'MARKET_STATE_CHANGE':

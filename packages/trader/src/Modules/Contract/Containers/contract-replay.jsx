@@ -195,7 +195,7 @@ export default ContractReplay;
 const ReplayChart = observer(({ is_accumulator_contract }) => {
     const trade = useTraderStore();
     const { contract_replay, common, ui } = useStore();
-    const { contract_store, chart_state, chartStateChange, margin } = contract_replay;
+    const { chart_yaxis_height, contract_store, chart_state, chartStateChange, margin } = contract_replay;
     const {
         accumulator_previous_spot_time,
         contract_config,
@@ -246,13 +246,12 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
             chart_margin.bottom = 48;
         }
 
-        if (is_accumulator_contract) {
-            const accumulator_yaxis_margin = isMobile() ? 128 : 280; // quantity of ticks affect zoom, zoom affects margin
-            const accumulator_yaxis_margin_2 = isMobile() ? 72 : 148; // 120 instead of 72 makes tooltip visible
-            const accumulator_yaxis_margin_3 =
-                all_ticks.length > 40 ? accumulator_yaxis_margin_2 : accumulator_yaxis_margin;
-            chart_margin.top = chart_margin.bottom = accumulator_yaxis_margin_3;
-            // 1 tick on the chart in desktop still causes barriers to go out of the chart
+        if (is_accumulator_contract && chart_yaxis_height) {
+            const accumulator_yaxis_margin_2_top = isMobile() ? chart_yaxis_height / 3 : chart_yaxis_height / 3.5;
+            const accumulator_yaxis_margin_2_bottom = isMobile() ? chart_yaxis_height / 4 : chart_yaxis_height / 3.5;
+            chart_margin.top = accumulator_yaxis_margin_2_top;
+            chart_margin.bottom = accumulator_yaxis_margin_2_bottom;
+            chart_margin.heightFactor = all_ticks.length > 40 ? 0.9 : 0.7;
         }
         return chart_margin;
     };

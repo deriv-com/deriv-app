@@ -285,6 +285,7 @@ const ChartTrade = observer(props => {
     const { is_socket_opened, current_language } = common;
     const { currency, should_show_eu_content } = client;
     const {
+        chart_yaxis_height,
         chartStateChange,
         is_trade_enabled,
         main_barrier_flattened: main_barrier,
@@ -341,12 +342,16 @@ const ChartTrade = observer(props => {
     const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;
 
     // max ticks to display for mobile view for tick chart
-    const accumulator_whitespace = isMobile() ? 160 : 190; // when coming back from c.details, whitespace is not applied in responsive
     const max_ticks_for_0_granularity = is_accumulator ? 24 : 8;
     const max_ticks = granularity === 0 ? max_ticks_for_0_granularity : 24;
-    const accumulator_yaxis_margin = isMobile() ? 150 : 220;
+    const accumulator_yaxis_margin = isMobile() ? chart_yaxis_height / 3 : chart_yaxis_height / 3.5;
     const yaxis_margin = is_accumulator
-        ? { top: accumulator_yaxis_margin, bottom: accumulator_yaxis_margin }
+        ? {
+              top: accumulator_yaxis_margin,
+              bottom: accumulator_yaxis_margin,
+              heightFactor: 0.85,
+              whitespace: isMobile() ? 160 : 190,
+          }
         : { top: isMobile() ? 76 : 106 };
 
     if (!symbol || active_symbols.length === 0) return null;
@@ -399,7 +404,6 @@ const ChartTrade = observer(props => {
             refToAddTick={refToAddTick}
             getMarketsOrder={getMarketsOrder}
             yAxisMargin={yaxis_margin}
-            whitespace={is_accumulator ? accumulator_whitespace : undefined}
         >
             <ChartMarkers />
             {is_accumulator && (

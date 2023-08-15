@@ -28,7 +28,7 @@ const InfoBoxLongcode = ({ contract_info }) => {
                 </Text>
                 {` `}
                 {contract_info.longcode.length > max_longcode_length && (
-                    <Text as='a' href='#' size='xs' onClick={handleToggle}>
+                    <Text as='a' href='#' size='xs' onClick={handleToggle} className='info-box-longcode-text'>
                         {is_collapsed ? localize('View more') : localize('View less')}
                     </Text>
                 )}

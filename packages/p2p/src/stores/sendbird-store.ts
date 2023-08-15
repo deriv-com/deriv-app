@@ -202,21 +202,22 @@ export default class SendbirdStore extends BaseStore {
         }
     }
 
-    async getPreviousMessages(timestamp: number | null = null, prev_result_size = 50, next_result_size = 50) {
+    async getPreviousMessages(timestamp: number | null = null) {
         if (!this.active_chat_channel) return null;
         const chat_messages: Array<UserMessage | FileMessage> = [];
 
         const is_inclusive_of_timestamp = false;
         const reverse_results = false;
         const custom_type = [''];
+        const result_size = 50;
 
         const messages_timestamp =
             timestamp ?? toMoment(this.root_store.general_store.server_time.get()).utc().valueOf();
 
         const retrieved_messages = await this.active_chat_channel?.getMessagesByTimestamp(messages_timestamp, {
             isInclusive: is_inclusive_of_timestamp,
-            prevResultSize: prev_result_size,
-            nextResultSize: next_result_size,
+            prevResultSize: result_size,
+            nextResultSize: 0,
             reverse: reverse_results,
             messageTypeFilter: MessageTypeFilter.ALL,
             customTypesFilter: custom_type,
@@ -308,7 +309,7 @@ export default class SendbirdStore extends BaseStore {
                         chat_message.created_at < prev_created_at ? chat_message.created_at : prev_created_at,
                     Infinity
                 );
-                this.getPreviousMessages(oldest_message_timestamp, 50, 0)
+                this.getPreviousMessages(oldest_message_timestamp)
                     .then(chat_messages => {
                         if (chat_messages && chat_messages.length > 0) {
                             const previous_messages = chat_messages.map(chat_message =>

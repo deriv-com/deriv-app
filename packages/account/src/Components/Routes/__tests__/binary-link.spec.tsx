@@ -41,13 +41,12 @@ describe('<BinaryLink />', () => {
     });
     it('should thorw error if the path is not found', () => {
         findRouteByPath.mockReturnValue('');
-
-        expect(() =>
+        const renderBinaryLink = () =>
             render(
                 <Router history={history}>
                     <BinaryLink to='test-link'>Simple test link</BinaryLink>
                 </Router>
-            )
-        ).toThrowError(/route not found: test-link/i);
+            );
+        expect(renderBinaryLink).toThrowError(/route not found: test-link/i);
     });
 });

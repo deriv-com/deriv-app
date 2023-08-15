@@ -1,5 +1,4 @@
 import React from 'react';
-// import { QRCode } from 'react-qrcode-logo';
 import { QRCodeSVG } from 'qrcode.react';
 import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
@@ -11,10 +10,9 @@ type TShareMyAdsCardProps = {
     advert: Partial<TAdvertProps>;
     advert_url: string;
     divRef: React.MutableRefObject<HTMLDivElement> | React.MutableRefObject<null>;
-    setHasQrLoaded: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ShareMyAdsCard = ({ advert, advert_url, divRef, setHasQrLoaded }: TShareMyAdsCardProps) => {
+const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) => {
     const { account_currency, id, max_order_amount_limit_display, min_order_amount_limit_display, rate_display, type } =
         advert;
 
@@ -60,7 +58,6 @@ const ShareMyAdsCard = ({ advert, advert_url, divRef, setHasQrLoaded }: TShareMy
             </div>
             <div className='share-my-ads-card__qr'>
                 <div className='share-my-ads-card__qr-container'>
-                    {/* <QRCode value={advert_url} {...options} logoOnLoad={() => setHasQrLoaded(true)} /> */}
                     <div className='share-my-ads-card__qr-container__logo'>
                         <img className='share-my-ads-card__qr-container__logo-image' src={base64_images.dp2p_logo} />
                     </div>

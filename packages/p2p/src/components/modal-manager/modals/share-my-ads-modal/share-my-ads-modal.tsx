@@ -20,7 +20,6 @@ import ShareMyAdsSocials from './share-my-ads-socials';
 import ShareMyAdsCard from './share-my-ads-card';
 
 const ShareMyAdsModal = ({ advert }: TAdvert) => {
-    const [has_qr_loaded, setHasQrLoaded] = React.useState(false);
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
     const { account_currency, advertiser_details, id, local_currency, rate_display, rate_type } = advert;
     const { id: advertiser_id } = advertiser_details;
@@ -60,7 +59,6 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
             const dataUrl = await toPng(divRef.current);
             const dataUrlBlob = await toBlob(divRef.current);
             const file_name = `${advert.type}_${advert.id}.png`;
-            // const blob = await fetch(dataUrl).then(res => res.blob());
             const blob = new Blob([dataUrlBlob], { type: 'image/png' });
             const file = new File([blob], file_name, { type: 'image/png' });
 
@@ -113,12 +111,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                     </DesktopWrapper>
                     <div className='share-my-ads-modal__container'>
                         <div className='share-my-ads-modal__container__card'>
-                            <ShareMyAdsCard
-                                advert={advert}
-                                advert_url={advert_url}
-                                divRef={divRef}
-                                setHasQrLoaded={setHasQrLoaded}
-                            />
+                            <ShareMyAdsCard advert={advert} advert_url={advert_url} divRef={divRef} />
                             <Button
                                 className='share-my-ads-modal__container__card__download-button'
                                 secondary

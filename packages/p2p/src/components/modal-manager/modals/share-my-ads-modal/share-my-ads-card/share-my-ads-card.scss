@@ -65,16 +65,12 @@
             &__logo {
                 background: #fff;
                 display: flex;
-                padding: 0.5rem;
+                padding: 0.3rem;
                 position: absolute;
 
-                @include mobile {
-                    padding: 0.3rem;
-                }
-
                 &-image {
-                    height: 3.6rem;
-                    width: 3.6rem;
+                    height: 3.4rem;
+                    width: 3.4rem;
 
                     @include mobile {
                         height: 3rem;

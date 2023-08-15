@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import React from 'react';
 import classNames from 'classnames';
 import fromEntries from 'object.fromentries';
 import PropTypes from 'prop-types';
-import React from 'react';
-
 import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv/components';
-import { WS, getLocation, toMoment, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
+import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
+import { IDV_NOT_APPLICABLE_OPTION, WS, getLocation, toMoment } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AcceptRiskForm from './accept-risk-form.jsx';
-import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
+import LoadingModal from './real-account-signup-loader.jsx';
 import 'Sass/details-form.scss';
 
 const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, getTotalSteps, sub_section_index }) => {
@@ -58,6 +58,7 @@ const AccountWizard = props => {
     const [previous_data, setPreviousData] = React.useState([]);
     const [state_items, setStateItems] = React.useState([]);
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
+    const is_high_risk_client_for_mt5 = useIsClientHighRiskForMT5();
 
     const {
         setIsTradingAssessmentForNewUserEnabled,
@@ -78,12 +79,17 @@ const AccountWizard = props => {
         setLoading(false);
     };
 
+    const get_items_props = {
+        ...props,
+        is_high_risk_client_for_mt5,
+    };
+
     React.useEffect(() => {
         setIsTradingAssessmentForNewUserEnabled(true);
         getData();
         setStateItems(previous_state => {
             if (!previous_state.length) {
-                return getItems(props);
+                return getItems(get_items_props);
             }
             return previous_state;
         });
@@ -111,7 +117,7 @@ const AccountWizard = props => {
                 if (state_items.length) {
                     items = state_items;
                 } else {
-                    items = getItems(props);
+                    items = getItems(get_items_props);
                 }
 
                 if (items.length > 1 && 'phone' in items[1]?.form_value) {
@@ -410,7 +416,7 @@ AccountWizard.propTypes = {
     sub_section_index: PropTypes.number,
 };
 
-export default connect(({ client, notifications, ui, traders_hub, modules }) => ({
+export default connect(({ client, notifications, ui, traders_hub }) => ({
     account_settings: client.account_settings,
     account_status: client.account_status,
     closeRealAccountSignup: ui.closeRealAccountSignup,
@@ -437,5 +443,4 @@ export default connect(({ client, notifications, ui, traders_hub, modules }) => 
     upgrade_info: client.upgrade_info,
     setSubSectionIndex: ui.setSubSectionIndex,
     sub_section_index: ui.sub_section_index,
-    is_high_risk_client_for_mt5: modules.cfd.is_high_risk_client_for_mt5,
 }))(AccountWizard);

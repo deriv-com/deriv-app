@@ -187,7 +187,7 @@ export const personal_details_config = ({
     };
 
     const getConfig = () => {
-        // Need to check if client is high risk for MF, if so, remove all fields except first name, last name, date of birth and phone
+        // Need to check if client is high risk for MF (only have SVG i.e. China & Russia)
         // No need to get tax information when client is high risk for MF
         if (!is_high_risk_client_for_mt5) {
             const properties_to_update: (keyof typeof config)[] = [
@@ -290,7 +290,6 @@ const personalDetailsConfig = <T>(
             residence,
             account_settings,
             real_account_signup_target,
-            is_high_risk_client_for_mt5,
         },
         passthrough: ['residence_list', 'is_fully_authenticated', 'has_real_account'],
         icon: 'IcDashboardPersonalDetails',

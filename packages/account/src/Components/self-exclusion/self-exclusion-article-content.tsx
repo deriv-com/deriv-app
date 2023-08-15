@@ -100,7 +100,6 @@ export const selfExclusionArticleItems = ({
 
     const getNonEuItems = () => [
         {
-            key: 0,
             component: (
                 <Localize
                     i18n_default_text='These self-exclusion limits help you control the amount of money and time you spend trading on {{platform_name_trader}}, {{platform_name_dbot}}, {{platform_name_smarttrader}} and {{platform_name_bbot}} on Deriv. The limits you set here will help you exercise <0>responsible trading</0>.'
@@ -118,13 +117,11 @@ export const selfExclusionArticleItems = ({
             ),
         },
         {
-            key: 1,
             component: (
                 <Localize i18n_default_text='These limits are optional, and you can adjust them at any time. You decide how much and how long you’d like to trade. If you don’t wish to set a specific limit, leave the field blank.' />
             ),
         },
         {
-            key: 2,
             component: (
                 <Localize
                     i18n_default_text='When you set your limits, they will be aggregated across all your account types in {{platform_name_trader}}, {{platform_name_dbot}}, {{platform_name_smarttrader}} and {{platform_name_bbot}} on Deriv. For example, the losses made on all four platforms will add up and be counted towards the loss limit you set.'
@@ -135,7 +132,6 @@ export const selfExclusionArticleItems = ({
         ...(!is_app_settings
             ? [
                   {
-                      key: 3,
                       component: (
                           <Localize
                               i18n_default_text='You can also exclude yourself entirely for a specified duration. Once the self-exclusion period has ended, you can either extend it further or resume trading immediately. If you wish to reduce or remove the self-exclusion period, contact our <0>Customer Support</0>.'

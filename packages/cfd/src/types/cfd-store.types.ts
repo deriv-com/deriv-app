@@ -1,5 +1,5 @@
 import { DetailsOfEachMT5Loginid, Mt5NewAccount, VerifyEmailResponse } from '@deriv/api-types';
-import { TTradingPlatformAvailableAccount } from 'Components/props.types';
+import { TShortcode, TTradingPlatformAvailableAccount } from 'Components/props.types';
 import { TCFDPasswordFormValues } from 'Containers/cfd-password-modal';
 import { TDerivezCompanies, TDxCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 import { FormikHelpers } from 'formik';
@@ -46,7 +46,7 @@ export type TCFDStore = {
     real_swapfree_accounts_existing_data: DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
     real_financial_accounts_existing_data: DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
     account_type: TAccountType;
-    jurisdiction_selected_shortcode: 'bvi' | 'maltainvest' | 'vanuatu' | 'svg' | 'labuan';
+    jurisdiction_selected_shortcode: TShortcode;
     toggleJurisdictionModal: () => void;
     has_submitted_cfd_personal_details: boolean;
     is_jurisdiction_modal_visible: boolean;

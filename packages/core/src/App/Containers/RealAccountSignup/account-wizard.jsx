@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv/components';
-import { WS, getLocation, toMoment, getIDVNotApplicableOption } from '@deriv/shared';
+import { WS, getLocation, toMoment, formatIDVFormValues, getIDVNotApplicableOption } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AcceptRiskForm from './accept-risk-form.jsx';
@@ -260,22 +260,11 @@ const AccountWizard = props => {
         return properties;
     };
 
-    const submitIDVData = async (document_type, document_number, document_additional = '', country_code) => {
-        const idv_submit_data = {
-            identity_verification_document_add: 1,
-            document_number,
-            document_additional,
-            document_type: document_type.id,
-            issuing_country: country_code,
-        };
-        await WS.send(idv_submit_data);
-    };
-
     const createRealAccount = (payload = undefined) => {
         setLoading(true);
         const form_data = { ...form_values() };
         submitForm(payload)
-            .then(response => {
+            .then(async response => {
                 props.setIsRiskWarningVisible(false);
                 if (props.real_account_signup_target === 'maltainvest') {
                     props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
@@ -284,10 +273,16 @@ const AccountWizard = props => {
                 } else {
                     props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 }
-                const { document_type, document_number, document_additional } = { ...form_values() };
-                if (document_type && document_type.id !== IDV_NOT_APPLICABLE_OPTION.id && document_number) {
-                    const country_code = props.account_settings.citizen || props.residence;
-                    submitIDVData(document_type, document_number, document_additional, country_code);
+                const country_code = props.account_settings.citizen || props.residence;
+                /**
+                 * If IDV details are present, then submit IDV details
+                 */
+                if (form_data.document_type) {
+                    const idv_submit_data = {
+                        identity_verification_document_add: 1,
+                        ...formatIDVFormValues(form_data, country_code),
+                    };
+                    await WS.send(idv_submit_data);
                 }
             })
             .catch(error => {

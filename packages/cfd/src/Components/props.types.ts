@@ -1,9 +1,12 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TCFDPasswordReset } from '../Containers/props.types';
 
-export type TCFDPlatform = 'dxtrade' | 'mt5' | 'derivez';
+// TODO add the DerivEZ and Ctrader as they are released
+export type TCFDPlatform = 'dxtrade' | 'mt5';
 
 export type TCFDsPlatformType = 'dxtrade' | 'derivez' | 'mt5' | 'ctrader' | '';
+
+export type TShortcode = 'bvi' | 'labuan' | 'maltainvest' | 'svg' | 'vanuatu';
 
 export type TCFDAccountCopy = {
     text: string | undefined;

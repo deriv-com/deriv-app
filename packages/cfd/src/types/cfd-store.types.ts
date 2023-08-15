@@ -23,7 +23,6 @@ export type TAccountType = {
         | 'financial'
         | 'financial_svg'
         | 'financial_stp'
-        | ''
         | string;
 };
 

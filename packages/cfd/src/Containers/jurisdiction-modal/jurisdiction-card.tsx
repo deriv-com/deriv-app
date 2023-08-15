@@ -28,12 +28,7 @@ const JurisdictionCard = ({
     let verification_docs = is_synthetic
         ? card_values?.synthetic_verification_docs
         : card_values?.financial_verification_docs;
-    if (
-        type_of_card !== Jurisdiction.SVG &&
-        type_of_card !== Jurisdiction.MALTA_INVEST &&
-        [Jurisdiction.BVI, Jurisdiction.VANUATU, Jurisdiction.LABUAN].includes(type_of_card) &&
-        is_non_idv_design
-    ) {
+    if ([Jurisdiction.BVI, Jurisdiction.VANUATU, Jurisdiction.LABUAN].includes(type_of_card) && is_non_idv_design) {
         verification_docs = ['selfie', 'identity_document', 'name_and_address'];
     }
 

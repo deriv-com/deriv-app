@@ -42,7 +42,7 @@ import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
-import { TCFDPlatform } from 'Components/props.types';
+import { TCFDPlatform, TShortcode } from 'Components/props.types';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -85,7 +85,7 @@ type TMultiStepRefProps = {
 };
 type TReviewMsgForMT5 = {
     is_selected_mt5_verified: boolean;
-    jurisdiction_selected_shortcode: 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest' | string;
+    jurisdiction_selected_shortcode: TShortcode | string;
     manual_status?: string;
 };
 
@@ -102,7 +102,7 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     is_bvi: boolean;
     is_dxtrade_allowed: boolean;
     is_real_financial_stp: boolean;
-    jurisdiction_selected_shortcode: 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'maltainvest';
+    jurisdiction_selected_shortcode: TShortcode;
     onCancel: () => void;
     onForgotPassword: () => void;
     should_set_trading_password: boolean;
@@ -170,20 +170,12 @@ const ReviewMessageForMT5 = ({
         return (
             <Localize i18n_default_text='To start trading, top-up funds from your Deriv account into this account.' />
         );
-    } else if (
-        (jurisdiction_selected_shortcode === Jurisdiction.VANUATU ||
-            jurisdiction_selected_shortcode === Jurisdiction.BVI) &&
-        [Jurisdiction.BVI, Jurisdiction.VANUATU].includes(jurisdiction_selected_shortcode)
-    ) {
+    } else if ([Jurisdiction.BVI, Jurisdiction.VANUATU].includes(jurisdiction_selected_shortcode)) {
         if (manual_status === 'pending') {
             return <Localize i18n_default_text='We’re reviewing your documents. This should take about 1 to 3 days.' />;
         }
         return <Localize i18n_default_text='We’re reviewing your documents. This should take about 5 minutes.' />;
-    } else if (
-        (jurisdiction_selected_shortcode === Jurisdiction.LABUAN ||
-            jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST) &&
-        [Jurisdiction.LABUAN, Jurisdiction.MALTA_INVEST].includes(jurisdiction_selected_shortcode)
-    ) {
+    } else if ([Jurisdiction.LABUAN, Jurisdiction.MALTA_INVEST].includes(jurisdiction_selected_shortcode)) {
         return <Localize i18n_default_text='We’re reviewing your documents. This should take about 1 to 3 days.' />;
     }
     return null;

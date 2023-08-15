@@ -224,10 +224,6 @@ export type TJurisdictionCheckBoxProps = {
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
 };
-type TOpenAccountTransferMeta = {
-    category: string;
-    type?: string;
-};
 
 export type TJurisdictionModalContentWrapperProps = {
     openPasswordModal: (account_type: TAccountType) => void;

@@ -24,8 +24,8 @@ const IconComponentWrapper = ({ type }) => (
 );
 
 const PurchaseButton = ({
-    buy_info,
     basis, // mobile-only
+    buy_info,
     currency,
     growth_rate,
     has_deal_cancellation,
@@ -36,15 +36,15 @@ const PurchaseButton = ({
     is_high_low,
     is_loading,
     is_multiplier,
-    is_vanilla,
     is_proposal_empty,
     is_turbos,
+    is_vanilla_fx,
+    is_vanilla,
+    onClickPurchase,
     purchased_states_arr,
     setPurchaseState,
     should_fade,
-    onClickPurchase,
     type,
-    symbol,
 }) => {
     const getIconType = () => {
         if (!should_fade && is_loading) return '';
@@ -137,10 +137,10 @@ const PurchaseButton = ({
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}
                             is_turbos={is_turbos}
+                            is_vanilla_fx={is_vanilla_fx}
                             should_fade={should_fade}
                             proposal_info={info}
                             type={type}
-                            symbol={symbol}
                         />
                     </div>
                 )}

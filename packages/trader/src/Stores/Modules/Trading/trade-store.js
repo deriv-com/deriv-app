@@ -18,6 +18,7 @@ import {
     isMarketClosed,
     isMobile,
     isTurbosContract,
+    isVanillaFxContract,
     pickDefaultSymbol,
     removeBarrier,
     resetEndTimeOnVolatilityIndices,
@@ -308,6 +309,7 @@ export default class TradeStore extends BaseStore {
             is_symbol_in_active_symbols: computed,
             is_synthetics_available: computed,
             is_vanilla: computed,
+            is_vanilla_fx: computed,
             loadActiveSymbols: action.bound,
             logoutListener: action.bound,
             main_barrier_flattened: computed,
@@ -1576,6 +1578,10 @@ export default class TradeStore extends BaseStore {
 
     get is_vanilla() {
         return this.contract_type === 'vanilla';
+    }
+    
+    get is_vanilla_fx() {
+        return isVanillaFxContract(this.contract_type, this.symbol);
     }
 
     setContractPurchaseToastbox(response) {

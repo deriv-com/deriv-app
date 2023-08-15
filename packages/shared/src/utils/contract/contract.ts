@@ -11,6 +11,17 @@ type TGetAccuBarriersDTraderTimeout = (params: {
     underlying: string;
 }) => number;
 
+// Trade types that are considered as vanilla financials
+export const VANILLA_FX = [
+    'frxAUDUSD',
+    'frxEURUSD',
+    'frxGBPUSD',
+    'frxUSDCAD',
+    'frxUSDJPY',
+    'frxXAUUSD',
+    'frxXAGUSD',
+] as const;
+
 export const DELAY_TIME_1S_SYMBOL = 500;
 // generation_interval will be provided via API later to help us distinguish between 1-second and 2-second symbols
 export const symbols_2s = ['R_10', 'R_25', 'R_50', 'R_75', 'R_100'];
@@ -67,6 +78,8 @@ export const isMultiplierContract = (contract_type = '') => /MULT/i.test(contrac
 export const isTurbosContract = (contract_type = '') => /TURBOS/i.test(contract_type);
 
 export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contract_type);
+
+export const isVanillaFxContract = (contract_type = '', symbol = '') => isVanillaContract(contract_type) && VANILLA_FX.includes(symbol as typeof VANILLA_FX[number]);
 
 export const isOnlyUpsDownsContract = (contract_type = '') => /RUN/i.test(contract_type);
 

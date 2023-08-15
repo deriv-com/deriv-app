@@ -5,7 +5,6 @@ import { DesktopWrapper, Icon, MobileWrapper, Money, Popover, Text } from '@deri
 import { Localize, localize } from '@deriv/translations';
 import { getContractSubtype, getCurrencyDisplayCode, getLocalizedBasis, getGrowthRatePercentage } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
-import { vanilla_financials } from 'Constants/trade-categories';
 
 export const ValueMovement = ({
     has_error_or_not_loaded,
@@ -46,23 +45,23 @@ const ContractInfo = ({
     currency,
     growth_rate,
     has_increased,
-    is_loading,
     is_accumulator,
+    is_loading,
     is_multiplier,
     is_turbos,
+    is_vanilla_fx,
     is_vanilla,
-    should_fade,
     proposal_info,
+    should_fade,
     type,
-    symbol,
 }) => {
     const localized_basis = getLocalizedBasis();
-    const vanilla_payout_text = vanilla_financials.includes(symbol)
+    const vanilla_payout_text = is_vanilla_fx
         ? localize('Payout per pip')
         : localize('Payout per point');
 
     const vanilla_payout_message =
-        vanilla_financials.includes(symbol) ? (
+        is_vanilla_fx ? (
             <Localize
                 i18n_default_text='The payout at expiry is equal to the payout per pip multiplied by the difference, <0>in pips</0>, between the final price and the strike price.'
                 components={[<strong key={0} />]}
@@ -89,8 +88,16 @@ const ContractInfo = ({
         }
     };
 
+    const setBasisText = () => {
+        if (is_vanilla) {
+            return vanilla_payout_text;
+        }
+
+        return has_error_or_not_loaded ? stakeOrPayout() : proposal_info.obj_contract_basis.text;
+    };
+
     const has_error_or_not_loaded = proposal_info.has_error || !proposal_info.id;
-    const basis_text = has_error_or_not_loaded ? stakeOrPayout() : proposal_info.obj_contract_basis.text;
+    const basis_text = setBasisText();
     const { message, obj_contract_basis, stake } = proposal_info;
 
     const setHintMessage = () => {
@@ -204,10 +211,11 @@ ContractInfo.propTypes = {
     growth_rate: PropTypes.number,
     has_increased: PropTypes.bool,
     is_accumulator: PropTypes.bool,
+    is_loading: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_turbos: PropTypes.bool,
+    is_vanilla_fx: PropTypes.bool,
     is_vanilla: PropTypes.bool,
-    is_loading: PropTypes.bool,
     proposal_info: PropTypes.object,
     should_fade: PropTypes.bool,
     type: PropTypes.string,

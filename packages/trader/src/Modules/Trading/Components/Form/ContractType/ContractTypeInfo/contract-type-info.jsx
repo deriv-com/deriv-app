@@ -27,7 +27,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
     const width = isMobile() ? '328' : '528';
     const scroll_bar_height = has_toggle_buttons ? '464px' : '560px';
     const selected_contract_type = contract_types.find(type => type.value === carousel_index);
-    const { symbol } = useTraderStore();
+    const { is_vanilla_fx } = useTraderStore();
 
     const onClickGlossary = () => setSelectedTab(TABS.GLOSSARY);
     const handleItemSelect = active_index => {
@@ -66,12 +66,12 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                                 selected_contract_type={selected_contract_type?.value}
                             />
                         ) : (
-                            <ContractTypeGlossary category={type.value} symbol={symbol} />
+                            <ContractTypeGlossary category={type.value} is_vanilla_fx={is_vanilla_fx} />
                         )}
                     </div>
                     <div className='contract-type-info__content'>
                         {is_description_tab_selected && (
-                            <TradeCategories category={type.value} symbol={symbol} onClick={onClickGlossary} />
+                            <TradeCategories category={type.value} is_vanilla_fx={is_vanilla_fx} onClick={onClickGlossary} />
                         )}
                     </div>
                 </ThemedScrollbars>

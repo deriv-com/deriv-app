@@ -3,13 +3,12 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import AccumulatorTradeDescription from './accumulator-trade-description';
-import { vanilla_financials } from 'Constants/trade-categories';
 import { TurbosTradeDescription } from './turbos-trade-description';
 
 // Templates are from Binary 1.0, it should be checked if they need change or not and add all of trade types
 // TODO: refactor the rest of descriptions to use them as components like AccumulatorTradeDescription
-const TradeCategories = ({ category, symbol, onClick }) => {
-    const vanilla_payout_text = vanilla_financials.includes((symbol))
+const TradeCategories = ({ category, is_vanilla_fx, onClick }) => {
+    const vanilla_payout_text = is_vanilla_fx
         ? localize('Payout per pip')
         : localize('Payout per point');
     let TradeTypeTemplate;

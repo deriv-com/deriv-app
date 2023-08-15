@@ -7,13 +7,14 @@ import {
     getCancellationPrice,
     getCurrencyDisplayCode,
     isAccumulatorContract,
+    isEndedBeforeCancellationExpired,
     isMobile,
     isMultiplierContract,
     isOnlyUpsDownsContract,
     isTurbosContract,
-    isUserSold,
-    isEndedBeforeCancellationExpired,
     isUserCancelled,
+    isUserSold,
+    isVanillaFxContract,
     toGMTFormat,
 } from '@deriv/shared';
 import {
@@ -24,7 +25,6 @@ import {
 } from 'App/Components/Elements/PositionsDrawer/helpers';
 import ContractAuditItem from './contract-audit-item.jsx';
 import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';
-import { vanilla_financials } from 'Constants/trade-categories';
 
 const ContractDetails = ({
     contract_end_time,
@@ -33,21 +33,21 @@ const ContractDetails = ({
     duration_unit,
     exit_spot,
     is_vanilla,
-    symbol,
 }) => {
     const {
         commission,
         contract_type,
         currency,
+        date_start,
+        display_number_of_contracts,
         entry_spot_display_value,
         entry_tick_time,
         exit_tick_time,
         profit,
-        date_start,
         tick_count,
         tick_passed,
         transaction_ids: { buy, sell } = {},
-        display_number_of_contracts,
+        underlying,
     } = contract_info;
 
     const is_profit = profit >= 0;
@@ -59,7 +59,7 @@ const ContractDetails = ({
         ? `${tick_passed}/${tick_count} ${localize('ticks')}`
         : `${tick_count} ${tick_count < 2 ? localize('tick') : localize('ticks')}`;
 
-    const vanilla_payout_text = vanilla_financials.includes(symbol)
+    const vanilla_payout_text = isVanillaFxContract(contract_type, underlying)
         ? localize('Payout per pip')
         : localize('Payout per point');
 

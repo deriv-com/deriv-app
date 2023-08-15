@@ -1,10 +1,9 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { vanilla_financials } from 'Constants/trade-categories';
 
-const ContractTypeGlossary = ({ category, symbol }: { category: string; symbol?: string }) => {
-    const vanilla_payout_text = vanilla_financials.includes(symbol as typeof vanilla_financials[number])
+const ContractTypeGlossary = ({ category, is_vanilla_fx }: { category: string; is_vanilla_fx?: string }) => {
+    const vanilla_payout_text = is_vanilla_fx
         ? localize('Payout per pip')
         : localize('Payout per point');
     let content;

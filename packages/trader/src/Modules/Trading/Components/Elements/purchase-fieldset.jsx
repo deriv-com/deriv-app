@@ -13,24 +13,24 @@ const PurchaseFieldset = ({
     currency,
     growth_rate,
     has_cancellation,
-    info,
     index,
+    info,
     is_accumulator,
     is_disabled,
     is_high_low,
     is_loading,
     is_market_closed,
     is_multiplier,
-    is_vanilla,
     is_proposal_empty,
     is_proposal_error,
     is_turbos,
-    purchased_states_arr,
+    is_vanilla_fx,
+    is_vanilla,
     onClickPurchase,
     onHoverPurchase,
+    purchased_states_arr,
     setPurchaseState,
     type,
-    symbol,
 }) => {
     const [should_fade, setShouldFade] = React.useState(false);
 
@@ -53,6 +53,7 @@ const PurchaseFieldset = ({
                 is_loading={is_loading}
                 is_multiplier={is_multiplier}
                 is_vanilla={is_vanilla}
+                is_vanilla_fx={is_vanilla_fx}
                 is_proposal_empty={is_proposal_empty}
                 is_turbos={is_turbos}
                 purchased_states_arr={purchased_states_arr}
@@ -61,7 +62,6 @@ const PurchaseFieldset = ({
                 should_fade={should_fade}
                 type={type}
                 basis={basis} // mobile-only
-                symbol={symbol}
             />
             {is_multiplier && has_cancellation && (
                 <MobileWrapper>
@@ -93,9 +93,9 @@ const PurchaseFieldset = ({
                             is_multiplier={is_multiplier}
                             is_turbos={is_turbos}
                             is_vanilla={is_vanilla}
+                            is_vanilla_fx={is_vanilla_fx}
                             proposal_info={info}
                             should_fade={should_fade}
-                            symbol={symbol}
                             type={type}
                         />
                     )}

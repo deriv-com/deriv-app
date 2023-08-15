@@ -14,7 +14,7 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='asian' />);
+                    render(<moduleName.default category='asian' selected_contract_type='asian' />);
                     expect(screen.getByText(/imageasian/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -31,8 +31,8 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='callputspread' />);
-                    expect(screen.getByText(/imagespread/i)).toBeInTheDocument();
+                    render(<moduleName.default category='callputspread' selected_contract_type='callputspread' />);
+                    expect(screen.getByText('ImageSpread')).toBeInTheDocument();
                 })
                 .catch(error => {
                     throw new Error(error);
@@ -48,7 +48,7 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='end' />);
+                    render(<moduleName.default category='end' selected_contract_type='end' />);
                     expect(screen.getByText(/imageendsinout/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -65,7 +65,7 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='even_odd' />);
+                    render(<moduleName.default category='even_odd' selected_contract_type='even_odd' />);
                     expect(screen.getByText(/imageevenodd/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -82,7 +82,7 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='high_low' />);
+                    render(<moduleName.default category='high_low' selected_contract_type='high_low' />);
                     expect(screen.getByText(/imagehighlow/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -99,7 +99,7 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='lb_call' />);
+                    render(<moduleName.default category='lb_call' selected_contract_type='lb_call' />);
                     expect(screen.getByText(/imageclosetolow/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -116,7 +116,7 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='lb_put' />);
+                    render(<moduleName.default category='lb_put' selected_contract_type='lb_put' />);
                     expect(screen.getByText(/imagehightoclose/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -133,7 +133,7 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='lb_high_low' />);
+                    render(<moduleName.default category='lb_high_low' selected_contract_type='lb_high_low' />);
                     expect(screen.getByText(/imagehightolow/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -150,7 +150,7 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='rise_fall' />);
+                    render(<moduleName.default category='rise_fall' selected_contract_type='rise_fall' />);
                     expect(screen.getByText(/imagerisefall/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -167,7 +167,7 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='rise_fall_equal' />);
+                    render(<moduleName.default category='rise_fall_equal' selected_contract_type='rise_fall_equal' />);
                     expect(screen.getByText(/imagerisefall/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -184,7 +184,7 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='match_diff' />);
+                    render(<moduleName.default category='match_diff' selected_contract_type='match_diff' />);
                     expect(screen.getByText(/imagematchdiff/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -201,7 +201,7 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='multiplier' />);
+                    render(<moduleName.default category='multiplier' selected_contract_type='multiplier' />);
                     expect(screen.getByText(/imagemultiplier/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -218,7 +218,7 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='over_under' />);
+                    render(<moduleName.default category='over_under' selected_contract_type='over_under' />);
                     expect(screen.getByText(/imageoverunder/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -235,7 +235,7 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='reset' />);
+                    render(<moduleName.default category='reset' selected_contract_type='reset' />);
                     expect(screen.getByText(/imagereset/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -252,7 +252,7 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='run_high_low' />);
+                    render(<moduleName.default category='run_high_low' selected_contract_type='run_high_low' />);
                     expect(screen.getByText(/imagerunhighlow/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -269,7 +269,7 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='accumulator' />);
+                    render(<moduleName.default category='accumulator' selected_contract_type='accumulator' />);
                     expect(screen.getByText(/videoaccumulator/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -286,7 +286,7 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='tick_high_low' />);
+                    render(<moduleName.default category='tick_high_low' selected_contract_type='tick_high_low' />);
                     expect(screen.getByText(/imagetickhighlow/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -303,7 +303,7 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='touch' />);
+                    render(<moduleName.default category='touch' selected_contract_type='touch' />);
                     expect(screen.getByText(/imagetouch/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -313,15 +313,15 @@ describe('<TradeCategoriesGIF />', () => {
     });
     it('expect ImageVanilla to be rendered when trade category is vanilla', async () => {
         jest.isolateModules(() => {
-            jest.doMock('Assets/SvgComponents/trade_explanations/img-vanilla.svg', () => ({
+            jest.doMock('../contract-type-description-video', () => ({
                 __esModule: true,
-                default: jest.fn(() => 'ImageVanilla'),
+                default: jest.fn(() => 'VideoVanilla'),
             }));
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='vanilla' />);
-                    expect(screen.getByText(/imagevanilla/i)).toBeInTheDocument();
+                    render(<moduleName.default category='vanilla' selected_contract_type='vanilla' />);
+                    expect(screen.getByText(/videovanilla/i)).toBeInTheDocument();
                 })
                 .catch(error => {
                     throw new Error(error);

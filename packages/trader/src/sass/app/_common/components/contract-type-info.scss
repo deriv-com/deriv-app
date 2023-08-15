@@ -97,9 +97,6 @@
         margin-top: 1.6rem;
 
         @include mobile {
-            display: flex;
-            align-items: center;
-            justify-content: center;
             width: 32.8rem;
             height: 16.4rem;
             background-color: var(--general-section-1);

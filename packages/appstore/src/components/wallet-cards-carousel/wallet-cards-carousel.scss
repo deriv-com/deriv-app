@@ -35,6 +35,12 @@
         background-color: var(--wallet-demo-bg-color);
     }
 
+    &__button-toggle {
+        border-radius: $BORDER_RADIUS;
+        padding: 0.4rem;
+        background-color: var(--general-section-1);
+    }
+
     .listing-container {
         padding: 1.6rem 0 0;
         gap: 1.6rem;

@@ -2,6 +2,7 @@ import React from 'react';
 import { useDepositLocked } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
+import { PageContainer } from '../../components/page-container';
 import { CashierOnboardingModule, DepositCryptoModule, DepositFiatModule } from '../../modules';
 import { useCashierStore } from '../../stores/useCashierStores';
 import DepositLocked from './deposit-locked';
@@ -14,7 +15,12 @@ const Deposit = observer(() => {
     const { is_crypto, is_deposit } = general_store;
     const is_deposit_locked = useDepositLocked();
 
-    if (is_deposit_locked) return <DepositLocked />;
+    if (is_deposit_locked)
+        return (
+            <PageContainer hide_breadcrumb>
+                <DepositLocked />
+            </PageContainer>
+        );
 
     if (is_crypto_transactions_visible) return <CryptoTransactionsHistory />;
 

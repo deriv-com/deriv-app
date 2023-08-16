@@ -5,7 +5,7 @@ import fromEntries from 'object.fromentries';
 import PropTypes from 'prop-types';
 import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv/components';
 import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
-import { WS, getLocation, toMoment, formatIDVFormValues, getIDVNotApplicableOption } from '@deriv/shared';
+import { WS, getLocation, toMoment, formatIDVFormValues } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AcceptRiskForm from './accept-risk-form.jsx';
@@ -60,7 +60,6 @@ const AccountWizard = props => {
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
     const is_high_risk_client_for_mt5 = useIsClientHighRiskForMT5();
 
-    const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
     const {
         setIsTradingAssessmentForNewUserEnabled,
         residence_list,

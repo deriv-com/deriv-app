@@ -14,7 +14,7 @@ jest.mock('../withdrawal-locked', () => jest.fn(() => 'WithdrawalLocked'));
 jest.mock('Components/no-balance', () => jest.fn(() => 'NoBalance'));
 jest.mock('Components/error', () => jest.fn(() => 'Error'));
 jest.mock('../withdraw', () => jest.fn(() => 'Withdraw'));
-jest.mock('../crypto-withdraw-form', () => jest.fn(() => 'CryptoWithdrawForm'));
+jest.mock('../crypto-withdrawal', () => jest.fn(() => 'CryptoWithdrawal'));
 jest.mock('../crypto-withdraw-receipt', () => jest.fn(() => 'CryptoWithdrawReceipt'));
 jest.mock('Components/crypto-transactions-history', () => jest.fn(() => 'CryptoTransactionsHistory'));
 jest.mock('../withdrawal-verification-email', () => jest.fn(() => 'WithdrawalVerificationEmail'));
@@ -238,7 +238,7 @@ describe('<Withdrawal />', () => {
         expect(screen.getByText('Withdraw')).toBeInTheDocument();
     });
 
-    it('should render <CryptoWithdrawForm /> component', () => {
+    it('should render <CryptoWithdrawal /> component', () => {
         const mock_root_store = mockStore({
             client: {
                 balance: '1000',
@@ -257,49 +257,7 @@ describe('<Withdrawal />', () => {
         });
         render(mockWithdrawal(mock_root_store));
 
-        expect(screen.getByText('CryptoWithdrawForm')).toBeInTheDocument();
-    });
-
-    it('should render <CryptoWithdrawReceipt /> component', () => {
-        const mock_root_store = mockStore({
-            client: {
-                balance: '1000',
-                currency: 'USD',
-            },
-            modules: {
-                cashier: {
-                    ...cashier_mock,
-                    withdraw: {
-                        ...cashier_mock.withdraw,
-                        is_withdraw_confirmed: true,
-                    },
-                },
-            },
-        });
-        render(mockWithdrawal(mock_root_store));
-
-        expect(screen.getByText('CryptoWithdrawReceipt')).toBeInTheDocument();
-    });
-
-    it('should render <CryptoTransactionsHistory /> component', () => {
-        const mock_root_store = mockStore({
-            client: {
-                balance: '1000',
-                currency: 'USD',
-            },
-            modules: {
-                cashier: {
-                    ...cashier_mock,
-                    transaction_history: {
-                        is_crypto_transactions_visible: true,
-                        onMount: jest.fn(),
-                    },
-                },
-            },
-        });
-        render(mockWithdrawal(mock_root_store));
-
-        expect(screen.getByText('CryptoTransactionsHistory')).toBeInTheDocument();
+        expect(screen.getByText('CryptoWithdrawal')).toBeInTheDocument();
     });
 
     it('should render <WithdrawalVerificationEmail /> component', () => {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { APIProvider } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import CFDsListing from '../index';
 
@@ -10,7 +11,7 @@ jest.mock('Components/containers/listing-container', () =>
 describe('CFDsListing', () => {
     const mock = mockStore({
         traders_hub: {
-            selected_region: 'NON-EU',
+            selected_region: 'Non-EU',
             has_any_real_account: true,
             is_real: true,
             can_get_more_cfd_mt5_accounts: true,
@@ -31,7 +32,9 @@ describe('CFDsListing', () => {
 
     it('should render the component', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
         );
 
         render(<CFDsListing />, { wrapper });

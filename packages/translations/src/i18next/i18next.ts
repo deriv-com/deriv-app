@@ -13,6 +13,7 @@ const ALL_LANGUAGES = Object.freeze({
     FR: 'Français',
     ID: 'Indonesian',
     IT: 'Italiano',
+    KO: '한국어',
     PL: 'Polish',
     RU: 'Русский',
     VI: 'Tiếng Việt',
@@ -25,6 +26,7 @@ export const getAllowedLanguages = () => {
     const allowed_languages = {
         EN: 'English',
         ES: 'Español',
+        KO: '한국어',
         RU: 'Русский',
         FR: 'Français',
         IT: 'Italiano',

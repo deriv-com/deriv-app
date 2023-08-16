@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
-import { getDecimalPlaces, isDesktop, isMobile } from '@deriv/shared';
+import { getAccuChartScaleParams, getDecimalPlaces, isDesktop, isMobile } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
@@ -304,10 +304,14 @@ const ChartTrade = observer(props => {
         refToAddTick,
     } = useTraderStore();
 
-    const accumulator_scaling_settings = {
-        heightFactor: 0.85,
-        whitespace: isMobile() ? 160 : 190,
-    };
+    const {
+        max_ticks_mobile: accumulator_max_ticks_mobile,
+        scale_settings: accumulator_scale_settings,
+        yaxis_margin: accumulator_yaxis_margin,
+    } = getAccuChartScaleParams({
+        is_mobile: isMobile(),
+        yaxis_height: chart_yaxis_height,
+    });
     const settings = {
         assetInformation: false, // ui.is_chart_asset_info_visible,
         countdown: is_chart_countdown_visible,
@@ -315,7 +319,7 @@ const ChartTrade = observer(props => {
         language: current_language.toLowerCase(),
         position: is_chart_layout_default ? 'bottom' : 'left',
         theme: is_dark_mode_on ? 'dark' : 'light',
-        ...(is_accumulator ? accumulator_scaling_settings : {}),
+        ...(is_accumulator ? accumulator_scale_settings : {}),
     };
 
     const { current_spot, current_spot_time } = accumulator_barriers_data || {};
@@ -347,12 +351,10 @@ const ChartTrade = observer(props => {
     const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;
 
     // max ticks to display for mobile view for tick chart
-    const max_ticks_for_0_granularity = is_accumulator ? 24 : 8;
+    const max_ticks_for_0_granularity = is_accumulator ? accumulator_max_ticks_mobile : 8;
     const max_ticks = granularity === 0 ? max_ticks_for_0_granularity : 24;
-    const accumulator_yaxis_margin = isMobile() ? chart_yaxis_height / 3 : chart_yaxis_height / 3.5;
-    const yaxis_margin = is_accumulator
-        ? { top: accumulator_yaxis_margin, bottom: accumulator_yaxis_margin }
-        : { top: isMobile() ? 76 : 106 };
+    const yaxis_margin =
+        is_accumulator && accumulator_yaxis_margin ? accumulator_yaxis_margin : { top: isMobile() ? 76 : 106 };
 
     if (!symbol || active_symbols.length === 0) return null;
 

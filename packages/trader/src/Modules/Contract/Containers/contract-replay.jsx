@@ -12,6 +12,7 @@ import {
     usePrevious,
 } from '@deriv/components';
 import {
+    getAccuChartScaleParams,
     getDurationPeriod,
     getDurationUnitText,
     getPlatformRedirect,
@@ -218,10 +219,13 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
      */
     const from_platform = getPlatformRedirect(app_routing_history);
     const should_force_light_theme = from_platform.name === 'DBot';
-    const all_ticks = audit_details ? audit_details.all_ticks : [];
-    const accumulator_height_factor_desktop = all_ticks.length > 40 ? 0.9 : 0.7;
-    const accumulator_height_factor_mobile = all_ticks?.length < 10 ? 0.6 : 0.99;
-    const accumulator_height_factor = isMobile() ? accumulator_height_factor_mobile : accumulator_height_factor_desktop;
+    const { scale_settings: accumulator_scale_settings, yaxis_margin: accumulator_yaxis_margin } =
+        getAccuChartScaleParams({
+            is_mobile: isMobile(),
+            is_trading_page: false,
+            tick_passed: contract_info.tick_passed,
+            yaxis_height: chart_yaxis_height,
+        });
     const settings = {
         language: current_language.toLowerCase(),
         theme: is_dark_theme && !should_force_light_theme ? 'dark' : 'light',
@@ -229,9 +233,10 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
         countdown: is_chart_countdown_visible,
         assetInformation: false, // ui.is_chart_asset_info_visible,
         isHighestLowestMarkerEnabled: false, // TODO: Pending UI
-        heightFactor: is_accumulator_contract ? accumulator_height_factor : undefined,
+        ...(is_accumulator_contract ? accumulator_scale_settings : {}),
     };
     const scroll_to_epoch = allow_scroll_to_epoch ? contract_config.scroll_to_epoch : undefined;
+    const all_ticks = audit_details ? audit_details.all_ticks : [];
     const { wsForget, wsSubscribe, wsSendRequest, wsForgetStream } = trade;
 
     const accu_barriers_marker_component = allMarkers[accumulators_barriers_marker?.type];
@@ -250,13 +255,9 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
             chart_margin.bottom = 48;
         }
 
-        if (is_accumulator_contract && chart_yaxis_height) {
-            const coefficient = all_ticks?.length < 10 ? 1.5 : 1;
-            const mobile_top = chart_yaxis_height / (3 * coefficient);
-            const mobile_bottom = chart_yaxis_height / (4 * coefficient);
-            const accumulator_yaxis_margin_desktop = chart_yaxis_height / 3.5;
-            chart_margin.top = isMobile() ? mobile_top : accumulator_yaxis_margin_desktop;
-            chart_margin.bottom = isMobile() ? mobile_bottom : accumulator_yaxis_margin_desktop;
+        if (is_accumulator_contract && accumulator_yaxis_margin) {
+            chart_margin.top = accumulator_yaxis_margin.top;
+            chart_margin.bottom = accumulator_yaxis_margin.bottom;
         }
         return chart_margin;
     };

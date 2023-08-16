@@ -54,7 +54,6 @@ type TAddressDetails = {
     is_svg: boolean;
     is_mf?: boolean;
     is_gb_residence: boolean | string;
-    onSubmitEnabledChange: (is_submit_disabled: boolean) => void;
     selected_step_ref?: React.RefObject<FormikProps<TAddressDetailFormProps>>;
     value: TAddressDetailFormProps;
     disabled_items: string[];
@@ -79,7 +78,6 @@ type TAutoComplete = {
  * @param is_svg - is broker code SVG
  * @param is_mf - is broker code MF
  * @param is_gb_residence - is residence Great Britan
- * @param onSubmitEnabledChange - function to change submit button status
  * @param selected_step_ref - reference to selected step
  * @param fetchStatesList - function to fetch states list
  * @param value - form values
@@ -99,7 +97,6 @@ const AddressDetails = observer(
         is_svg,
         is_mf,
         is_gb_residence,
-        onSubmitEnabledChange,
         selected_step_ref,
         disabled_items,
         has_real_account,
@@ -107,24 +104,19 @@ const AddressDetails = observer(
     }: TAddressDetails) => {
         const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
 
-        const { ui } = useStore();
+        const {
+            ui,
+            client: { residence },
+        } = useStore();
 
         const { is_desktop, is_mobile } = ui;
-        const { data: states_list, isFetched } = useStatesList();
+        const { data: states_list, isFetched } = useStatesList(residence);
 
-        const is_submit_disabled_ref = React.useRef<boolean | undefined>(true);
+        const is_submit_disabled_ref = React.useRef<boolean>(true);
 
-        const isSubmitDisabled = (errors?: FormikErrors<TAddressDetailFormProps>) => {
-            return selected_step_ref?.current?.isSubmitting || (errors && Object.keys(errors).length > 0);
-        };
-
-        const checkSubmitStatus = (errors?: FormikErrors<TAddressDetailFormProps>) => {
-            const is_submit_disabled = isSubmitDisabled(errors);
-
-            if (is_submit_disabled_ref.current !== is_submit_disabled) {
-                is_submit_disabled_ref.current = is_submit_disabled;
-                onSubmitEnabledChange?.(!is_submit_disabled);
-            }
+        const isSubmitDisabled = (errors: FormikErrors<TAddressDetailFormProps> = {}): boolean => {
+            const is_submitting = selected_step_ref?.current?.isSubmitting ?? false;
+            return is_submitting || Object.keys(errors).length > 0;
         };
 
         const handleCancel = (values: TAddressDetailFormProps) => {
@@ -135,7 +127,6 @@ const AddressDetails = observer(
 
         const handleValidate = (values: TAddressDetailFormProps) => {
             const { errors } = splitValidationResultTypes(validate(values));
-            checkSubmitStatus(errors);
             return errors;
         };
 

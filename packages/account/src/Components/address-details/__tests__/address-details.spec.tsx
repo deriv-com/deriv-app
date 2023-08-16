@@ -51,7 +51,7 @@ describe('<AddressDetails/>', () => {
         onCancel: jest.fn(),
         onSave: jest.fn(),
         onSubmit: jest.fn(),
-        onSubmitEnabledChange: jest.fn(),
+        // onSubmitEnabledChange: jest.fn(),
         selected_step_ref: { current: { isSubmitting: false } } as React.RefObject<
             FormikProps<TAddressDetailFormProps>
         >,
@@ -70,7 +70,7 @@ describe('<AddressDetails/>', () => {
     const store = mockStore({});
 
     const svgCommonRenderCheck = () => {
-        expect(mock_props.onSubmitEnabledChange).toHaveBeenCalledTimes(1);
+        // expect(mock_props.onSubmitEnabledChange).toHaveBeenCalledTimes(1);
         expect(screen.getByLabelText(address_line_1_marked)).toBeInTheDocument();
         expect(screen.getByLabelText(address_line_2)).toBeInTheDocument();
         expect(screen.getByLabelText(address_postcode)).toBeInTheDocument();
@@ -195,7 +195,7 @@ describe('<AddressDetails/>', () => {
 
         renderComponent({ props: new_props });
 
-        expect(mock_props.onSubmitEnabledChange).toHaveBeenCalledTimes(1);
+        // expect(mock_props.onSubmitEnabledChange).toHaveBeenCalledTimes(1);
 
         const inputs: HTMLTextAreaElement[] = screen.getAllByRole('textbox');
         expect(inputs.length).toBe(5);

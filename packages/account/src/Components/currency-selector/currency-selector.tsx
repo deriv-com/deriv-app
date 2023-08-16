@@ -38,7 +38,6 @@ type TCurrencySelectorExtend = {
         action: (isSubmitting: boolean) => void,
         next_step: () => void
     ) => void;
-    onSubmitEnabledChange: (is_submit_disabled: boolean) => void;
     selected_step_ref?: RefObject<FormikProps<TCurrencySelectorFormProps>>;
     set_currency: boolean;
     validate: (values: TCurrencySelectorFormProps) => TCurrencySelectorFormProps;
@@ -50,22 +49,21 @@ type TCurrencySelector = HTMLAttributes<HTMLInputElement | HTMLLabelElement> & T
 /**
  * Currency selector component to select the Account currency
  * @name CurrencySelector
- * @param {Function} getCurrentStep - Get the current step
- * @param {Function} goToNextStep - Go to the next step
- * @param {Function} goToStep - Go to a specific step
- * @param {Function} goToPreviousStep - Go to the previous step
- * @param {boolean} has_cancel - Has cancel button
- * @param {boolean} has_wallet_account - Has wallet account
- * @param {boolean} is_virtual - Is virtual account
- * @param {Function} onCancel - To handle click on cancel button
- * @param {Function} onSave - To handle click on save button
- * @param {Function} onSubmit - To handle click on submit button
- * @param {Function} onSubmitEnabledChange - To handle if submit button is enabled or disabled
- * @param {RefObject} selected_step_ref - Ref of the selected step
- * @param {boolean} set_currency - Is current set
- * @param {Function} validate - To validate the form
- * @param {Object} value - Value of the form
- * @returns {React.ReactNode} React node
+ * @param getCurrentStep - Get the current step
+ * @param goToNextStep - Go to the next step
+ * @param goToStep - Go to a specific step
+ * @param goToPreviousStep - Go to the previous step
+ * @param has_cancel - Has cancel button
+ * @param has_wallet_account - Has wallet account
+ * @param is_virtual - Is virtual account
+ * @param onCancel - To handle click on cancel button
+ * @param onSave - To handle click on save button
+ * @param onSubmit - To handle click on submit button
+ * @param selected_step_ref - Ref of the selected step
+ * @param set_currency - Is current set
+ * @param alidate - To validate the form
+ * @param alue - Value of the form
+ * @returns React node
  */
 const CurrencySelector = observer(
     ({
@@ -80,7 +78,6 @@ const CurrencySelector = observer(
         validate,
         has_cancel = false,
         selected_step_ref,
-        onSubmitEnabledChange,
         has_wallet_account,
         value,
     }: TCurrencySelector) => {
@@ -109,7 +106,6 @@ const CurrencySelector = observer(
             selected_currency => selected_currency.type === CURRENCY_TYPE.FIAT
         );
         const [is_bypass_step, setIsBypassStep] = React.useState<boolean>(false);
-        const is_submit_disabled_ref = React.useRef<boolean>(true);
 
         const should_disable_fiat = !!Object.values(accounts).filter(
             item => item.landing_company_shortcode === real_account_signup_target
@@ -119,15 +115,6 @@ const CurrencySelector = observer(
             return selected_step_ref?.current?.isSubmitting || !values.currency;
         };
 
-        const checkSubmitStatus = (values: TCurrencySelectorFormProps) => {
-            const is_submit_disabled = isSubmitDisabled(values);
-
-            if (is_submit_disabled_ref.current !== is_submit_disabled) {
-                is_submit_disabled_ref.current = is_submit_disabled;
-                onSubmitEnabledChange?.(!is_submit_disabled);
-            }
-        };
-
         const handleCancel = (values: TCurrencySelectorFormProps) => {
             const current_step = getCurrentStep() - 1;
             onSave(current_step, values);
@@ -135,7 +122,6 @@ const CurrencySelector = observer(
         };
 
         const handleValidate = (values: TCurrencySelectorFormProps) => {
-            checkSubmitStatus(values);
             const { errors } = splitValidationResultTypes(validate(values));
             return errors;
         };

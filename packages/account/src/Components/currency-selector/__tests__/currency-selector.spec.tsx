@@ -27,7 +27,6 @@ describe('<CurrencySelector/>', () => {
         has_cancel: false,
         has_wallet_account: false,
         set_currency: false,
-        onSubmitEnabledChange: jest.fn(),
     };
 
     const fiat_msg =

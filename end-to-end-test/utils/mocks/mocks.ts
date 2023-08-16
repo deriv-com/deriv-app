@@ -14,6 +14,8 @@ interface Context {
 export interface MockServer extends EventEmitter {
     close: () => void;
     url: string;
+    add: (mock: (context: Context) => void) => void;
+    remove: (mock: (context: Context) => void) => void;
 }
 
 type Options = {
@@ -22,7 +24,10 @@ type Options = {
 
 const pems = generate();
 
-export async function createMockServer(mocks, options?: Options): Promise<MockServer> {
+export async function createMockServer(
+    mocks: Array<(context: Context) => void>,
+    options?: Options
+): Promise<MockServer> {
     const eventEmitter = new EventEmitter() as MockServer;
 
     const server = https.createServer({ key: pems.private, cert: pems.cert });
@@ -54,11 +59,22 @@ export async function createMockServer(mocks, options?: Options): Promise<MockSe
     const address = server.address() as { port: number };
     eventEmitter.url = `localhost:${address.port}`;
 
+    eventEmitter.add = mock => {
+        mocks.push(mock);
+    };
+
+    eventEmitter.remove = mockToRemove => {
+        const index = mocks.findIndex(mock => mock === mockToRemove);
+        if (index !== -1) {
+            mocks.splice(index, 1);
+        }
+    };
+
     return eventEmitter;
 }
 
 type SetupMocksOptions = {
-    baseURL?: string;
+    baseURL: string;
     page: Page;
     mocks: Array<(context: Context) => void>;
 };

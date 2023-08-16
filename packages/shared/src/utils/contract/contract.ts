@@ -11,23 +11,6 @@ type TGetAccuBarriersDTraderTimeout = (params: {
     underlying: string;
 }) => number;
 
-type TGetAccuChartScaleParams = (options: {
-    is_mobile?: boolean;
-    is_trading_page?: boolean;
-    tick_passed?: number;
-    yaxis_height?: number;
-}) => {
-    yaxis_margin?: {
-        top?: number;
-        bottom?: number;
-    };
-    scale_settings: {
-        heightFactor: number;
-        whitespace?: number;
-    };
-    max_ticks_mobile?: number;
-};
-
 export const DELAY_TIME_1S_SYMBOL = 500;
 // generation_interval will be provided via API later to help us distinguish between 1-second and 2-second symbols
 export const symbols_2s = ['R_10', 'R_25', 'R_50', 'R_75', 'R_100'];
@@ -120,36 +103,6 @@ export const getAccuBarriersForContractDetails = (contract_info: TContractInfo) 
     const accu_high_barrier = is_contract_open ? current_spot_high_barrier : high_barrier;
     const accu_low_barrier = is_contract_open ? current_spot_low_barrier : low_barrier;
     return { accu_high_barrier, accu_low_barrier };
-};
-
-export const getAccuChartScaleParams: TGetAccuChartScaleParams = ({
-    is_mobile,
-    is_trading_page = true,
-    tick_passed,
-    yaxis_height,
-}) => {
-    let top, bottom;
-    const whitespace = is_mobile ? 160 : 190;
-    const params = {
-        max_ticks_mobile: is_trading_page ? 20 : undefined,
-        scale_settings: {
-            heightFactor: 0.8, // passed directly to SmartCharts, must follow its naming convention
-            whitespace: is_trading_page ? whitespace : undefined,
-        },
-    };
-    if (!yaxis_height) return params;
-    if (is_trading_page) {
-        top = bottom = is_mobile ? yaxis_height * 0.33 : yaxis_height * 0.27;
-    } else if (tick_passed) {
-        const coefficient = tick_passed < 5 ? 0.3 : 0.25;
-        const yaxis_margin_mobile = yaxis_height * coefficient;
-        const yaxis_margin_desktop = yaxis_height * 0.27;
-        top = bottom = is_mobile ? yaxis_margin_mobile : yaxis_margin_desktop;
-    }
-    return {
-        ...params,
-        ...(yaxis_height ? { yaxis_margin: { top, bottom } } : {}),
-    };
 };
 
 export const getCurrentTick = (contract_info: TContractInfo) => {

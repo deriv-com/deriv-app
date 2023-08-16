@@ -6,7 +6,6 @@ import ContractStore from './contract-store';
 import BaseStore from './base-store';
 
 export default class ContractReplayStore extends BaseStore {
-    chart_yaxis_height;
     chart_state = '';
     contract_store = { contract_info: {} };
     // --- Observable properties ---
@@ -68,7 +67,6 @@ export default class ContractReplayStore extends BaseStore {
         super(root_store);
 
         makeObservable(this, {
-            chart_yaxis_height: observable,
             chart_state: observable,
             contract_store: observable,
             is_market_closed: observable,
@@ -199,7 +197,6 @@ export default class ContractReplayStore extends BaseStore {
     }
 
     chartStateChange(state, option) {
-        if (option && 'chart_yaxis_height' in option) this.chart_yaxis_height = option.chart_yaxis_height;
         this.chart_state = state;
         const market_close_prop = 'isClosed';
 

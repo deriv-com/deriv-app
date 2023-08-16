@@ -12,7 +12,6 @@ import {
     usePrevious,
 } from '@deriv/components';
 import {
-    getAccuChartScaleParams,
     getDurationPeriod,
     getDurationUnitText,
     getPlatformRedirect,
@@ -196,7 +195,7 @@ export default ContractReplay;
 const ReplayChart = observer(({ is_accumulator_contract }) => {
     const trade = useTraderStore();
     const { contract_replay, common, ui } = useStore();
-    const { chart_yaxis_height, contract_store, chart_state, chartStateChange, margin } = contract_replay;
+    const { contract_store, chart_state, chartStateChange, margin } = contract_replay;
     const {
         accumulator_previous_spot_time,
         contract_config,
@@ -219,13 +218,6 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
      */
     const from_platform = getPlatformRedirect(app_routing_history);
     const should_force_light_theme = from_platform.name === 'DBot';
-    const { scale_settings: accumulator_scale_settings, yaxis_margin: accumulator_yaxis_margin } =
-        getAccuChartScaleParams({
-            is_mobile: isMobile(),
-            is_trading_page: false,
-            tick_passed: contract_info.tick_passed,
-            yaxis_height: chart_yaxis_height,
-        });
     const settings = {
         language: current_language.toLowerCase(),
         theme: is_dark_theme && !should_force_light_theme ? 'dark' : 'light',
@@ -233,7 +225,6 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
         countdown: is_chart_countdown_visible,
         assetInformation: false, // ui.is_chart_asset_info_visible,
         isHighestLowestMarkerEnabled: false, // TODO: Pending UI
-        ...(is_accumulator_contract ? accumulator_scale_settings : {}),
     };
     const scroll_to_epoch = allow_scroll_to_epoch ? contract_config.scroll_to_epoch : undefined;
     const all_ticks = audit_details ? audit_details.all_ticks : [];
@@ -255,10 +246,6 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
             chart_margin.bottom = 48;
         }
 
-        if (is_accumulator_contract && accumulator_yaxis_margin) {
-            chart_margin.top = accumulator_yaxis_margin.top;
-            chart_margin.bottom = accumulator_yaxis_margin.bottom;
-        }
         return chart_margin;
     };
     const prev_start_epoch = usePrevious(start_epoch);
@@ -294,7 +281,8 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                 is_accumulator_contract && end_epoch && start_epoch < prev_start_epoch
             }
             shouldFetchTradingTimes={false}
-            yAxisMargin={getChartYAxisMargin()}
+            should_zoom_out_on_yaxis={is_accumulator_contract}
+            yAxisMargin={is_accumulator_contract ? undefined : getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
             shouldFetchTickHistory={
                 getDurationUnitText(getDurationPeriod(contract_info)) !== 'seconds' || contract_info.status === 'open'

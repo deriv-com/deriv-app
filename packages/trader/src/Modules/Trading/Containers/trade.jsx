@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
-import { getAccuChartScaleParams, getDecimalPlaces, isDesktop, isMobile } from '@deriv/shared';
+import { getDecimalPlaces, isDesktop, isMobile } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
@@ -285,7 +285,6 @@ const ChartTrade = observer(props => {
     const { is_socket_opened, current_language } = common;
     const { currency, should_show_eu_content } = client;
     const {
-        chart_yaxis_height,
         chartStateChange,
         is_trade_enabled,
         main_barrier_flattened: main_barrier,
@@ -304,14 +303,7 @@ const ChartTrade = observer(props => {
         refToAddTick,
     } = useTraderStore();
 
-    const {
-        max_ticks_mobile: accumulator_max_ticks_mobile,
-        scale_settings: accumulator_scale_settings,
-        yaxis_margin: accumulator_yaxis_margin,
-    } = getAccuChartScaleParams({
-        is_mobile: isMobile(),
-        yaxis_height: chart_yaxis_height,
-    });
+    const accumulator_whitespace = isMobile() ? 160 : 190;
     const settings = {
         assetInformation: false, // ui.is_chart_asset_info_visible,
         countdown: is_chart_countdown_visible,
@@ -319,7 +311,7 @@ const ChartTrade = observer(props => {
         language: current_language.toLowerCase(),
         position: is_chart_layout_default ? 'bottom' : 'left',
         theme: is_dark_mode_on ? 'dark' : 'light',
-        ...(is_accumulator ? accumulator_scale_settings : {}),
+        whitespace: is_accumulator ? accumulator_whitespace : undefined,
     };
 
     const { current_spot, current_spot_time } = accumulator_barriers_data || {};
@@ -351,10 +343,8 @@ const ChartTrade = observer(props => {
     const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;
 
     // max ticks to display for mobile view for tick chart
-    const max_ticks_for_0_granularity = is_accumulator ? accumulator_max_ticks_mobile : 8;
+    const max_ticks_for_0_granularity = is_accumulator ? 20 : 8;
     const max_ticks = granularity === 0 ? max_ticks_for_0_granularity : 24;
-    const yaxis_margin =
-        is_accumulator && accumulator_yaxis_margin ? accumulator_yaxis_margin : { top: isMobile() ? 76 : 106 };
 
     if (!symbol || active_symbols.length === 0) return null;
 
@@ -405,7 +395,8 @@ const ChartTrade = observer(props => {
             hasAlternativeSource={has_alternative_source}
             refToAddTick={refToAddTick}
             getMarketsOrder={getMarketsOrder}
-            yAxisMargin={yaxis_margin}
+            should_zoom_out_on_yaxis={is_accumulator}
+            yAxisMargin={is_accumulator ? undefined : { top: isMobile() ? 76 : 106 }}
         >
             <ChartMarkers />
             {is_accumulator && (

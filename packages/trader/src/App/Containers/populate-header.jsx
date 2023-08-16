@@ -30,7 +30,7 @@ const PopulateHeader = observer(() => {
     return (
         <TogglePositionsMobile
             active_positions_count={active_positions_count}
-            all_positions={filtered_positions}
+            filtered_positions={filtered_positions}
             currency={positions_currency}
             is_empty={!filtered_positions.length}
             error={positions_error}

@@ -61,11 +61,11 @@ describe('VanillaOptionsCardBody', () => {
     const indicative_movement = getByTestId('dc-contract-card__indicative--movement');
 
     // Test that the correct elements are present in the component
-    expect(getByText('Contract Value')).toBeInTheDocument();
-    expect(getByText('Entry Spot')).toBeInTheDocument();
-    expect(getByText('Purchase Price')).toBeInTheDocument();
-    expect(getByText('Strike')).toBeInTheDocument();
-    expect(getByText('Total Profit/Loss')).toBeInTheDocument();
+    expect(getByText(mock_props. getCardLabels().CONTRACT_VALUE)).toBeInTheDocument();
+    expect(getByText(mock_props. getCardLabels().ENTRY_SPOT)).toBeInTheDocument();
+    expect(getByText(mock_props. getCardLabels().PURCHASE_PRICE)).toBeInTheDocument();
+    expect(getByText(mock_props. getCardLabels().STRIKE)).toBeInTheDocument();
+    expect(getByText(mock_props. getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
     expect(indicative_movement).not.toHaveClass('dc-contract-card__indicative--movement-complete');
     expect(indicative_movement.querySelector('.dc-icon.dc-icon--green')).toBeInTheDocument();
   });

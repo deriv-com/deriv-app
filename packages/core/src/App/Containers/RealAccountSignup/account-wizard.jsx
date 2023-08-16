@@ -1,16 +1,16 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react';
 import classNames from 'classnames';
 import fromEntries from 'object.fromentries';
 import PropTypes from 'prop-types';
+import React from 'react';
+
 import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv/components';
-import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
 import { WS, getLocation, toMoment, formatIDVFormValues } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AcceptRiskForm from './accept-risk-form.jsx';
-import { getItems } from './account-wizard-form';
 import LoadingModal from './real-account-signup-loader.jsx';
+import { getItems } from './account-wizard-form';
+import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
 import 'Sass/details-form.scss';
 
 const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, getTotalSteps, sub_section_index }) => {

@@ -73,7 +73,7 @@ const CompletedTransaction = observer(({ transaction }: TCompletedTransaction) =
     };
 
     return (
-        <div className='transaction-list__item'>
+        <div className='transaction-list__item' data-testid='dt_completed_transaction'>
             <div className='transaction-list__item__left'>
                 {account_category === 'trading' ? (
                     <AppLinkedWithWalletIcon

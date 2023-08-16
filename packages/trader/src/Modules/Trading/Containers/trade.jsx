@@ -304,6 +304,10 @@ const ChartTrade = observer(props => {
         refToAddTick,
     } = useTraderStore();
 
+    const accumulator_scaling_settings = {
+        heightFactor: 0.85,
+        whitespace: isMobile() ? 160 : 190,
+    };
     const settings = {
         assetInformation: false, // ui.is_chart_asset_info_visible,
         countdown: is_chart_countdown_visible,
@@ -311,6 +315,7 @@ const ChartTrade = observer(props => {
         language: current_language.toLowerCase(),
         position: is_chart_layout_default ? 'bottom' : 'left',
         theme: is_dark_mode_on ? 'dark' : 'light',
+        ...(is_accumulator ? accumulator_scaling_settings : {}),
     };
 
     const { current_spot, current_spot_time } = accumulator_barriers_data || {};
@@ -346,12 +351,7 @@ const ChartTrade = observer(props => {
     const max_ticks = granularity === 0 ? max_ticks_for_0_granularity : 24;
     const accumulator_yaxis_margin = isMobile() ? chart_yaxis_height / 3 : chart_yaxis_height / 3.5;
     const yaxis_margin = is_accumulator
-        ? {
-              top: accumulator_yaxis_margin,
-              bottom: accumulator_yaxis_margin,
-              heightFactor: 0.85,
-              whitespace: isMobile() ? 160 : 190,
-          }
+        ? { top: accumulator_yaxis_margin, bottom: accumulator_yaxis_margin }
         : { top: isMobile() ? 76 : 106 };
 
     if (!symbol || active_symbols.length === 0) return null;

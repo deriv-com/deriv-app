@@ -218,6 +218,10 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
      */
     const from_platform = getPlatformRedirect(app_routing_history);
     const should_force_light_theme = from_platform.name === 'DBot';
+    const all_ticks = audit_details ? audit_details.all_ticks : [];
+    const accumulator_height_factor_desktop = all_ticks.length > 40 ? 0.9 : 0.7;
+    const accumulator_height_factor_mobile = all_ticks?.length < 10 ? 0.6 : 0.99;
+    const accumulator_height_factor = isMobile() ? accumulator_height_factor_mobile : accumulator_height_factor_desktop;
     const settings = {
         language: current_language.toLowerCase(),
         theme: is_dark_theme && !should_force_light_theme ? 'dark' : 'light',
@@ -225,9 +229,9 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
         countdown: is_chart_countdown_visible,
         assetInformation: false, // ui.is_chart_asset_info_visible,
         isHighestLowestMarkerEnabled: false, // TODO: Pending UI
+        heightFactor: is_accumulator_contract ? accumulator_height_factor : undefined,
     };
     const scroll_to_epoch = allow_scroll_to_epoch ? contract_config.scroll_to_epoch : undefined;
-    const all_ticks = audit_details ? audit_details.all_ticks : [];
     const { wsForget, wsSubscribe, wsSendRequest, wsForgetStream } = trade;
 
     const accu_barriers_marker_component = allMarkers[accumulators_barriers_marker?.type];
@@ -247,11 +251,12 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
         }
 
         if (is_accumulator_contract && chart_yaxis_height) {
-            const accumulator_yaxis_margin_2_top = isMobile() ? chart_yaxis_height / 3 : chart_yaxis_height / 3.5;
-            const accumulator_yaxis_margin_2_bottom = isMobile() ? chart_yaxis_height / 4 : chart_yaxis_height / 3.5;
-            chart_margin.top = accumulator_yaxis_margin_2_top;
-            chart_margin.bottom = accumulator_yaxis_margin_2_bottom;
-            chart_margin.heightFactor = all_ticks.length > 40 ? 0.9 : 0.7;
+            const coefficient = all_ticks?.length < 10 ? 1.5 : 1;
+            const mobile_top = chart_yaxis_height / (3 * coefficient);
+            const mobile_bottom = chart_yaxis_height / (4 * coefficient);
+            const accumulator_yaxis_margin_desktop = chart_yaxis_height / 3.5;
+            chart_margin.top = isMobile() ? mobile_top : accumulator_yaxis_margin_desktop;
+            chart_margin.bottom = isMobile() ? mobile_bottom : accumulator_yaxis_margin_desktop;
         }
         return chart_margin;
     };

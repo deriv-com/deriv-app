@@ -15,7 +15,6 @@ const PopulateHeader = observer(() => {
         all_positions: positions,
         error: positions_error,
         onClickSell: onPositionsSell,
-        removePositionById: onPositionsRemove,
         onClickCancel: onPositionsCancel,
     } = portfolio;
 
@@ -39,7 +38,6 @@ const PopulateHeader = observer(() => {
             enableApp={enableApp}
             error={positions_error}
             onClickSell={onPositionsSell}
-            onClickRemove={onPositionsRemove}
             onClickCancel={onPositionsCancel}
         />
     );

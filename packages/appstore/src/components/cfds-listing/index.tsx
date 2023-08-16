@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
+import { observer, useStore } from '@deriv/stores';
 import { Text, StaticUrl } from '@deriv/components';
 import { isMobile, formatMoney, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -10,7 +10,6 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 import GetMoreAccounts from 'Components/get-more-accounts';
 import { Actions } from 'Components/containers/trading-app-card-actions';
 import { getHasDivider } from 'Constants/utils';
-import { useStores } from 'Stores/index';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import './cfds-listing.scss';
 
@@ -20,14 +19,14 @@ type TDetailedExistingAccount = AvailableAccount &
         key: string;
     };
 
-const CFDsListing = () => {
+const CFDsListing = observer(() => {
     const {
         client,
         modules: { cfd },
         traders_hub,
         common,
         ui,
-    } = useStores();
+    } = useStore();
     const {
         available_dxtrade_accounts,
         available_derivez_accounts,
@@ -62,8 +61,12 @@ const CFDsListing = () => {
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
 
-    const { poi_pending_for_bvi_labuan, poi_resubmit_for_bvi_labuan, poa_resubmit_for_labuan, is_idv_revoked } =
-        getAuthenticationStatusInfo(account_status);
+    const {
+        poi_pending_for_bvi_labuan_vanuatu,
+        poi_resubmit_for_bvi_labuan_vanuatu,
+        poa_resubmit_for_labuan,
+        is_idv_revoked,
+    } = getAuthenticationStatusInfo(account_status);
 
     const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
 
@@ -74,13 +77,16 @@ const CFDsListing = () => {
                     if (
                         getAuthStatus([
                             is_idv_revoked,
-                            poi_resubmit_for_bvi_labuan,
+                            poi_resubmit_for_bvi_labuan_vanuatu,
                             current_acc_status === 'proof_failed',
                         ])
                     ) {
                         return 'failed';
                     } else if (
-                        getAuthStatus([poi_pending_for_bvi_labuan, current_acc_status === 'verification_pending'])
+                        getAuthStatus([
+                            poi_pending_for_bvi_labuan_vanuatu,
+                            current_acc_status === 'verification_pending',
+                        ])
                     ) {
                         return 'pending';
                     }
@@ -91,20 +97,27 @@ const CFDsListing = () => {
                         getAuthStatus([
                             poa_resubmit_for_labuan,
                             is_idv_revoked,
-                            poi_resubmit_for_bvi_labuan,
+                            poi_resubmit_for_bvi_labuan_vanuatu,
                             current_acc_status === 'proof_failed',
                         ])
                     ) {
                         return 'failed';
                     } else if (
-                        getAuthStatus([poi_pending_for_bvi_labuan, current_acc_status === 'verification_pending'])
+                        getAuthStatus([
+                            poi_pending_for_bvi_labuan_vanuatu,
+                            current_acc_status === 'verification_pending',
+                        ])
                     ) {
                         return 'pending';
                     }
                     return null;
                 }
                 default:
-                    return null;
+                    if (current_acc_status === 'proof_failed') {
+                        return 'failed';
+                    } else if (current_acc_status === 'verification_pending') {
+                        return 'pending';
+                    }
             }
         }
         return null;
@@ -183,7 +196,7 @@ const CFDsListing = () => {
                             existing_account.status || is_idv_revoked
                                 ? getMT5AccountAuthStatus(
                                       existing_account.status,
-                                      existing_account?.short_code_and_region?.toLowerCase()
+                                      existing_account?.landing_company_short
                                   )
                                 : null;
 
@@ -389,6 +402,6 @@ const CFDsListing = () => {
                 : !is_real && <PlatformLoader />} */}
         </ListingContainer>
     );
-};
+});
 
-export default observer(CFDsListing);
+export default CFDsListing;

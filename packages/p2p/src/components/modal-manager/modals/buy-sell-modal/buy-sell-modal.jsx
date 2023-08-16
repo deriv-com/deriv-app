@@ -163,6 +163,7 @@ const BuySellModal = () => {
         } else {
             showModal({ key: 'MarketRateChangeErrorModal' });
         }
+        setHasRateChangedRecently(false);
     };
 
     const BuySellFormError = () => {
@@ -278,7 +279,7 @@ const BuySellModal = () => {
                             <BuySellModalFooter
                                 is_submit_disabled={is_submit_disabled}
                                 onCancel={onCancel}
-                                onSubmit={submitForm.current}
+                                onSubmit={onSubmit}
                             />
                         </React.Fragment>
                     )}

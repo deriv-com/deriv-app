@@ -21,7 +21,7 @@ const contract_info = {
 };
 
 describe('<ProgressSliderStream />', () => {
-    const mockProgressSliderStream = (mocked_store, contract_info = null) => {
+    const mockProgressSliderStream = mocked_store => {
         return (
             <TraderProviders store={mocked_store}>
                 <ProgressSliderStream contract_info={contract_info} />
@@ -37,7 +37,7 @@ describe('<ProgressSliderStream />', () => {
     });
     it('should render <ProgressSliderStream /> if contract_info was passed in props', () => {
         const mock_root_store = mockStore({});
-        render(mockProgressSliderStream(mock_root_store, contract_info));
+        render(mockProgressSliderStream(mock_root_store));
 
         expect(screen.getByText('Mocked Progress Slider')).toBeInTheDocument();
     });

@@ -8,7 +8,7 @@ import { getMarketNamesMap } from '../../../Constants';
 import ContractTypeWidget from '../Components/Form/ContractType';
 import { getAvailableContractTypes } from '../Helpers/contract-type';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 
 const Contract = observer(() => {
     const { current_language } = useLanguageSettings();
@@ -16,13 +16,9 @@ const Contract = observer(() => {
         contract_type,
         contract_types_list,
         is_mobile_digit_view_selected: is_digit_view,
-        is_equal,
         onChange,
         symbol,
     } = useTraderStore();
-    const {
-        client: { is_virtual },
-    } = useStore();
 
     const list = getAvailableContractTypes(contract_types_list, unsupported_contract_types_list);
     const digits_message = localize('Last digit stats for latest 1000 ticks for {{ underlying_name }}', {
@@ -39,8 +35,6 @@ const Contract = observer(() => {
                 )}
             </MobileWrapper>
             <ContractTypeWidget
-                is_equal={is_equal}
-                is_virtual={is_virtual}
                 list={list}
                 name='contract_type'
                 onChange={onChange}

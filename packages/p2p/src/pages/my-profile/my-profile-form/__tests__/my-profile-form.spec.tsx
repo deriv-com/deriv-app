@@ -45,8 +45,8 @@ describe('<MyProfileForm />', () => {
     it('should render MyProfileForm component', () => {
         render(<MyProfileForm />);
 
-        expect(screen.getAllByText('Contact details').length).toBe(2);
-        expect(screen.getAllByText('Instructions').length).toBe(2);
+        expect(screen.getAllByText('Contact details')).toHaveLength(2);
+        expect(screen.getAllByText('Instructions')).toHaveLength(2);
     });
 
     it('should render the Loading component when my_profile_store.is_loading is set to true', () => {

@@ -76,7 +76,7 @@ describe('<MyProfileContent />', () => {
 
         render(<MyProfileContent />);
 
-        expect(screen.getAllByText('PaymentMethods').length).toBe(2);
+        expect(screen.getAllByText('PaymentMethods')).toHaveLength(2);
     });
 
     it('should call hideAddPaymentMethodForm and setShouldShowEditPaymentMethodForm when clicking return icon', () => {

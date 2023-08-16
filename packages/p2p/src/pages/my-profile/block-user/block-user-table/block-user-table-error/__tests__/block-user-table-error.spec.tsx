@@ -27,7 +27,7 @@ describe('<BlockUserTableError />', () => {
         render(<BlockUserTableError error_message='test error' />);
 
         expect(screen.getByText('Blocked advertisers')).toBeInTheDocument();
-        expect(screen.getAllByText('test error').length).toBe(2);
+        expect(screen.getAllByText('test error')).toHaveLength(2);
     });
 
     it('should call setActiveTab when clicking return icon', () => {

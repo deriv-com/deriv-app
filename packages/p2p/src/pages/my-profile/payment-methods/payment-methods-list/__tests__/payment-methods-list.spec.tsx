@@ -46,15 +46,15 @@ describe('<PaymentMethodsList /> Desktop', () => {
     it('should render PaymentMethodsList component', () => {
         render(<PaymentMethodsList />);
 
-        expect(screen.getAllByRole('button', { name: 'Add new' }).length).toBe(2);
-        expect(screen.getAllByText('Alipay').length).toBe(2);
-        expect(screen.getAllByText('test_account').length).toBe(2);
+        expect(screen.getAllByRole('button', { name: 'Add new' })).toHaveLength(2);
+        expect(screen.getAllByText('Alipay')).toHaveLength(2);
+        expect(screen.getAllByText('test_account')).toHaveLength(2);
 
-        expect(screen.getAllByText('Others').length).toBe(2);
-        expect(screen.getAllByText('test_other').length).toBe(2);
+        expect(screen.getAllByText('Others')).toHaveLength(2);
+        expect(screen.getAllByText('test_other')).toHaveLength(2);
 
-        expect(screen.getAllByText('Bank Transfers').length).toBe(2);
-        expect(screen.getAllByText('test_bank_name').length).toBe(2);
+        expect(screen.getAllByText('Bank Transfers')).toHaveLength(2);
+        expect(screen.getAllByText('test_bank_name')).toHaveLength(2);
     });
 
     it('should call setShouldShowAddPaymentMethodForm when clicking Add new button', () => {

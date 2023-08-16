@@ -42,8 +42,8 @@ describe('<MyProfileStatsTable />', () => {
         expect(screen.getByText('Sell completion')).toBeInTheDocument();
         expect(screen.getByText('Avg pay time')).toBeInTheDocument();
         expect(screen.getByText('Avg release time')).toBeInTheDocument();
-        expect(screen.getAllByText('30d').length).toBe(6);
-        expect(screen.getAllByText('lifetime').length).toBe(2);
+        expect(screen.getAllByText('30d')).toHaveLength(6);
+        expect(screen.getAllByText('lifetime')).toHaveLength(2);
         expect(screen.getByText('Trade partners')).toBeInTheDocument();
     });
 

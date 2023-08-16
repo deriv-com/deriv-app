@@ -25,9 +25,9 @@ describe('<PaymentMethodsEmpty/>', () => {
     it('should render PaymentMethodsEmpty component', () => {
         render(<PaymentMethodsEmpty />);
 
-        expect(screen.getAllByText('You haven’t added any payment methods yet').length).toBe(2);
-        expect(screen.getAllByText('Hit the button below to add payment methods.').length).toBe(2);
-        expect(screen.getAllByRole('button', { name: 'Add payment methods' }).length).toBe(2);
+        expect(screen.getAllByText('You haven’t added any payment methods yet')).toHaveLength(2);
+        expect(screen.getAllByText('Hit the button below to add payment methods.')).toHaveLength(2);
+        expect(screen.getAllByRole('button', { name: 'Add payment methods' })).toHaveLength(2);
     });
 
     it('should call setActiveTab when clicking on return icon', () => {

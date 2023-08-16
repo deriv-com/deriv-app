@@ -7,6 +7,8 @@ import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
 import BlockUser from '../block-user';
 
+const el_modal = document.createElement('div');
+
 const mock_trade_partners_list = [
     { id: '0', is_blocked: 0, name: 'testA' },
     { id: '1', is_blocked: 1, name: 'testB' },
@@ -79,10 +81,19 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
 jest.mock('../block-user-list', () => jest.fn(() => <div>BlockUserList</div>));
 
 describe('<BlockUser />', () => {
+    beforeAll(() => {
+        el_modal.setAttribute('id', 'modal_root');
+        document.body.appendChild(el_modal);
+    });
+
+    afterAll(() => {
+        document.body.removeChild(el_modal);
+    });
+
     it('should render the BlockUser component', () => {
         render(<BlockUser />);
 
-        expect(screen.getAllByText('BlockUserList').length).toBe(2);
+        expect(screen.getAllByText('BlockUserList')).toHaveLength(2);
     });
 
     it('should call setActiveTab when clicking on pageReturn', () => {
@@ -92,5 +103,14 @@ describe('<BlockUser />', () => {
         userEvent.click(pageReturnIcon);
 
         expect(mock_store.my_profile_store.setActiveTab).toBeCalledWith(my_profile_tabs.MY_STATS);
+    });
+
+    it('should call showModal and setBlockUnblockUserError when block_unblock_user_error changes', () => {
+        mock_store.general_store.block_unblock_user_error = 'test error';
+
+        render(<BlockUser />);
+
+        expect(mock_modal_manager.showModal).toHaveBeenCalled();
+        expect(mock_store.general_store.setBlockUnblockUserError).toHaveBeenCalledWith(null);
     });
 });

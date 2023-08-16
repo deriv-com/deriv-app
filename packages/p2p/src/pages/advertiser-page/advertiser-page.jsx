@@ -1,4 +1,5 @@
 import React from 'react';
+import { reaction } from 'mobx';
 import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
 import { daysSince, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
@@ -18,10 +19,12 @@ import BlockUserOverlay from './block-user/block-user-overlay';
 import classNames from 'classnames';
 import { OnlineStatusIcon, OnlineStatusLabel } from 'Components/online-status';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { api_error_codes } from 'Constants/api-error-codes';
+import { getErrorMessage, getErrorModalTitle, getWidth } from 'Utils/block-user';
 
 const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store, general_store, my_profile_store } = useStores();
-    const { showModal, useRegisterModalProps } = useModalManagerContext();
+    const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
     const { advertiser_details_name, advertiser_details_id, counterparty_advertiser_info } = advertiser_page_store;
 
     const is_my_advert = advertiser_details_id === general_store.advertiser_id;
@@ -47,6 +50,7 @@ const AdvertiserPage = () => {
         sell_orders_count,
     } = info;
 
+    const is_invalid_advertiser_id = general_store.error_code === api_error_codes.INVALID_ADVERTISER_ID;
     const joined_since = daysSince(created_time);
     const nickname = advertiser_details_name ?? name;
     // rating_average_decimal converts rating_average to 1 d.p number
@@ -74,48 +78,45 @@ const AdvertiserPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // React.useEffect(() => {
-    //     const disposeBlockUnblockUserErrorReaction = reaction(
-    //         () => [advertiser_page_store.active_index, general_store.block_unblock_user_error],
-    //         () => {
-    //             advertiser_page_store.onTabChange();
-    //             if (general_store.block_unblock_user_error) {
-    //                 showModal({
-    //                     key: 'ErrorModal',
-    //                     props: {
-    //                         error_message:
-    //                             general_store.error_code === api_error_codes.INVALID_ADVERTISER_ID
-    //                                 ? error_message()
-    //                                 : general_store.block_unblock_user_error,
-    //                         error_modal_button_text: localize('Got it'),
-    //                         error_modal_title:
-    //                             general_store.error_code === api_error_codes.INVALID_ADVERTISER_ID
-    //                                 ? localize('{{name}} is no longer on Deriv P2P', {
-    //                                       name: nickname,
-    //                                   })
-    //                                 : localize('Unable to block advertiser'),
-    //                         has_close_icon: false,
-    //                         onClose: () => {
-    //                             buy_sell_store.hideAdvertiserPage();
-    //                             history.push(general_store.active_tab_route);
-    //                             if (general_store.active_index !== 0)
-    //                                 my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
-    //                             advertiser_page_store.onCancel();
-    //                             general_store.setBlockUnblockUserError('');
-    //                             hideModal();
-    //                         },
-    //                         width: isMobile() ? '90rem' : '40rem',
-    //                     },
-    //                 });
-    //             }
-    //         },
-    //         { fireImmediately: true }
-    //     );
+    React.useEffect(() => {
+        const disposeBlockUnblockUserErrorReaction = reaction(
+            () => [advertiser_page_store.active_index, general_store.block_unblock_user_error],
+            () => {
+                advertiser_page_store.onTabChange();
+                if (general_store.block_unblock_user_error) {
+                    showModal({
+                        key: 'ErrorModal',
+                        props: {
+                            error_message: getErrorMessage(
+                                general_store.block_unblock_user_error,
+                                !!advertiser_page_store.is_counterparty_advertiser_blocked && !is_my_advert,
+                                is_invalid_advertiser_id,
+                                nickname
+                            ),
+                            error_modal_button_text: localize('Got it'),
+                            error_modal_title: getErrorModalTitle(is_invalid_advertiser_id, nickname),
+                            has_close_icon: false,
+                            onClose: () => {
+                                buy_sell_store.hideAdvertiserPage();
+                                history.push(general_store.active_tab_route);
+                                if (general_store.active_index !== 0)
+                                    my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
+                                advertiser_page_store.onCancel();
+                                general_store.setBlockUnblockUserError('');
+                                hideModal();
+                            },
+                            width: getWidth(),
+                        },
+                    });
+                }
+            },
+            { fireImmediately: true }
+        );
 
-    //     return () => {
-    //         disposeBlockUnblockUserErrorReaction();
-    //     };
-    // }, [advertiser_details_name, counterparty_advertiser_info]);
+        return () => {
+            disposeBlockUnblockUserErrorReaction();
+        };
+    }, [advertiser_details_name, counterparty_advertiser_info]);
 
     useRegisterModalProps({
         key: 'BlockUserModal',

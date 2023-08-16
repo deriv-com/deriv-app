@@ -72,7 +72,7 @@ describe('<MyProfileName />', () => {
         expect(screen.getByText('4.5')).toBeInTheDocument();
         expect(screen.getByText('(50 ratings)')).toBeInTheDocument();
         expect(screen.getByText('250+ trades')).toBeInTheDocument();
-        expect(screen.getAllByText('verified').length).toBe(2);
+        expect(screen.getAllByText('verified')).toHaveLength(2);
         expect(screen.getByText('test')).toBeInTheDocument();
     });
 });

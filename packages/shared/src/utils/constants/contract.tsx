@@ -3,7 +3,7 @@ import { localize, Localize } from '@deriv/translations';
 import { shouldShowCancellation, shouldShowExpiration, TURBOS } from '../contract';
 
 export const getLocalizedBasis = () => ({
-    accumulator: localize('Accumulator'),
+    accumulator: localize('Accumulators'),
     multiplier: localize('Multiplier'),
     payout_per_pip: localize('Payout per pip'),
     payout_per_point: localize('Payout per point'),

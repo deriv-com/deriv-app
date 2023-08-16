@@ -16,7 +16,7 @@ module.exports = {
         '**/*.{js,jsx,ts,tsx}',
         '!**/node_modules/**',
         '!**/*.spec.{js,jsx,ts,tsx}',
-        '!/**/*.type.ts',
+        '!/**/*.{type,types}.ts',
     ],
     globals: {
         __webpack_public_path__: '/',

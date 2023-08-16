@@ -10,7 +10,7 @@ import 'Sass/app/modules/settings.scss';
 const ToggleLanguageSettings = observer(() => {
     const { ui } = useStore();
     const { is_language_settings_modal_on, toggleLanguageSettingsModal } = ui;
-    const { current_language } = useLanguageSettings();
+    const { is_loading, current_language } = useLanguageSettings();
 
     return (
         <React.Fragment>
@@ -20,12 +20,15 @@ const ToggleLanguageSettings = observer(() => {
                 onClick={toggleLanguageSettingsModal}
                 className={classNames('ic-language', 'footer__link', {
                     'ic-settings--active': is_language_settings_modal_on,
-                    'ic-settings--disabled': false,
+                    'ic-settings--disabled': is_loading,
                 })}
             >
                 <Popover alignment='top' message={localize('Language')} zIndex='9999'>
                     <Icon
-                        icon={`IcFlag${current_language.replace('_', '-')}`}
+                        icon={`IcFlag${
+                            current_language.toLowerCase().charAt(0).toUpperCase() +
+                            current_language.slice(1).replace('_', '-')
+                        }`}
                         data_testid='dt_icon'
                         className='ic-settings-language__icon'
                         size={18}

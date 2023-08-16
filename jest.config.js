@@ -4,7 +4,7 @@ module.exports = {
         '**/*.{js,jsx,ts,tsx}',
         '!**/node_modules/**',
         '!**/*.spec.{js,jsx,ts,tsx}',
-        '!/**/*.type.ts',
+        '!/**/*.{type,types}.ts',
     ],
     coverageReporters: ['lcov'],
     coverageDirectory: './coverage/',

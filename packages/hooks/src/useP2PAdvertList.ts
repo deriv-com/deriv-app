@@ -1,14 +1,15 @@
 import React from 'react';
-import { useFetch } from '@deriv/api';
+import { usePaginatedFetch } from '@deriv/api';
 import useExchangeRate from './useExchangeRate';
 
 /**
  * This custom hook returns available adverts for use with 'p2p_order_create' by calling 'p2p_advert_list' endpoint
- * @return {object} p2p_advert_list
  */
-const useP2PAdvertList = () => {
+const useP2PAdvertList = (
+    payload?: NonNullable<Parameters<typeof usePaginatedFetch<'p2p_advert_list'>>[1]>['payload']
+) => {
     const { getRate } = useExchangeRate();
-    const { data, ...rest } = useFetch('p2p_advert_list');
+    const { data, ...rest } = usePaginatedFetch('p2p_advert_list', { payload });
 
     // Add additional information to the 'p2p_advert_list' data
     const modified_data = React.useMemo(() => {

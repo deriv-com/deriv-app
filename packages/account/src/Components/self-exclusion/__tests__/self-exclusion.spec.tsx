@@ -5,6 +5,7 @@ import SelfExclusion from '../self-exclusion';
 import { FormikValues } from 'formik';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { WS } from '@deriv/shared';
+import { APIProvider } from '@deriv/api';
 
 const portal_root = document.createElement('div');
 document.body.appendChild(portal_root);
@@ -109,9 +110,11 @@ describe('<SelfExclusion />', () => {
         });
 
         render(
-            <StoreProvider store={store}>
-                <SelfExclusion {...mock_props} />
-            </StoreProvider>
+            <APIProvider>
+                <StoreProvider store={store}>
+                    <SelfExclusion {...mock_props} />
+                </StoreProvider>
+            </APIProvider>
         );
 
         expect(screen.getByText('This feature is not available for demo accounts.')).toBeInTheDocument();
@@ -121,18 +124,20 @@ describe('<SelfExclusion />', () => {
         store = mockStore(mock);
         await act(async () => {
             render(
-                <StoreProvider store={store}>
-                    <SelfExclusion {...mock_props} />
-                </StoreProvider>
+                <APIProvider>
+                    <StoreProvider store={store}>
+                        <SelfExclusion {...mock_props} />
+                    </StoreProvider>
+                </APIProvider>
             );
         });
 
         expect(screen.getByText('SelfExclusionModal')).toBeInTheDocument();
         const currencies = screen.getAllByText(/Test currency/i);
         expect(currencies[0]).toBeInTheDocument();
-        expect(currencies.length).toBe(7);
+        expect(currencies).toHaveLength(7);
         const inputs = screen.getAllByRole('textbox');
-        expect(inputs.length).toBe(11);
+        expect(inputs).toHaveLength(11);
     });
 
     it('should render SelfExclusion component with error', async () => {
@@ -144,9 +149,11 @@ describe('<SelfExclusion />', () => {
 
         await act(async () => {
             render(
-                <StoreProvider store={store}>
-                    <SelfExclusion {...mock_props} />
-                </StoreProvider>
+                <APIProvider>
+                    <StoreProvider store={store}>
+                        <SelfExclusion {...mock_props} />
+                    </StoreProvider>
+                </APIProvider>
             );
         });
 
@@ -166,9 +173,11 @@ describe('<SelfExclusion />', () => {
         );
 
         render(
-            <StoreProvider store={store}>
-                <SelfExclusion {...mock_props} />
-            </StoreProvider>
+            <APIProvider>
+                <StoreProvider store={store}>
+                    <SelfExclusion {...mock_props} />
+                </StoreProvider>
+            </APIProvider>
         );
 
         const inputs = await screen.findAllByRole('textbox');
@@ -204,9 +213,11 @@ describe('<SelfExclusion />', () => {
         );
         store = mockStore(mock);
         render(
-            <StoreProvider store={store}>
-                <SelfExclusion {...mock_props} />
-            </StoreProvider>
+            <APIProvider>
+                <StoreProvider store={store}>
+                    <SelfExclusion {...mock_props} />
+                </StoreProvider>
+            </APIProvider>
         );
 
         const inputs = await screen.findAllByRole('textbox');
@@ -244,9 +255,11 @@ describe('<SelfExclusion />', () => {
 
         await act(async () => {
             render(
-                <StoreProvider store={store}>
-                    <SelfExclusion {...mock_props} />
-                </StoreProvider>
+                <APIProvider>
+                    <StoreProvider store={store}>
+                        <SelfExclusion {...mock_props} />
+                    </StoreProvider>
+                </APIProvider>
             );
         });
 
@@ -255,7 +268,7 @@ describe('<SelfExclusion />', () => {
         expect(next_btn_1).toHaveTextContent('Next');
 
         const inputs_1 = await screen.findAllByRole('textbox');
-        expect(inputs_1.length).toBe(11);
+        expect(inputs_1).toHaveLength(11);
         const max_turnover_input = inputs_1.find((input: FormikValues) => input.name === 'max_turnover');
         const max_open_bets_input = inputs_1.find((input: FormikValues) => input.name === 'max_open_bets');
 
@@ -286,7 +299,7 @@ describe('<SelfExclusion />', () => {
         const next_btn_2 = screen.getByRole('button');
         expect(next_btn_2).toHaveTextContent('Next');
         const inputs_2 = await screen.findAllByRole('textbox');
-        expect(inputs_2.length).toBe(11);
+        expect(inputs_2).toHaveLength(11);
         const max_balance_input = inputs_1.find((input: FormikValues) => input.name === 'max_balance');
 
         act(() => {
@@ -325,9 +338,11 @@ describe('<SelfExclusion />', () => {
 
         await act(async () => {
             render(
-                <StoreProvider store={store}>
-                    <SelfExclusion {...mock_props} />
-                </StoreProvider>
+                <APIProvider>
+                    <StoreProvider store={store}>
+                        <SelfExclusion {...mock_props} />
+                    </StoreProvider>
+                </APIProvider>
             );
         });
 
@@ -336,7 +351,7 @@ describe('<SelfExclusion />', () => {
         expect(next_btn_1).toHaveTextContent('Next');
 
         const inputs = await screen.findAllByRole('textbox');
-        expect(inputs.length).toBe(11);
+        expect(inputs).toHaveLength(11);
 
         const exclude_until_input = inputs.find((input: FormikValues) => input.name === 'exclude_until');
         const max_open_bets_input = inputs.find((input: FormikValues) => input.name === 'max_open_bets');

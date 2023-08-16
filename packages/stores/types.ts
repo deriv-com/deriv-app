@@ -334,6 +334,7 @@ type TClientStore = {
     is_populating_mt5_account_list: boolean;
     landing_companies: LandingCompany;
     getChangeableFields: () => string[];
+    //simti_check
     landing_company: LandingCompany;
     isAccountOfTypeDisabled: (account: Record<string, DetailsOfEachMT5Loginid>) => boolean;
     is_mt5_allowed: boolean;

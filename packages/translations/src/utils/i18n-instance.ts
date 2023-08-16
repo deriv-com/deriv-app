@@ -16,6 +16,7 @@ import pt from '../translations/pt.json';
 import ru from '../translations/ru.json';
 import si from '../translations/si.json';
 import th from '../translations/th.json';
+import tr from '../translations/tr.json';
 import vi from '../translations/vi.json';
 import zh_cn from '../translations/zh_cn.json';
 import zh_tw from '../translations/zh_tw.json';
@@ -38,6 +39,7 @@ i18n.use(LanguageDetector)
             RU: { translations: { ...ru } },
             SI: { translations: { ...si } },
             TH: { translations: { ...th } },
+            TR: { translations: { ...tr } },
             VI: { translations: { ...vi } },
             ZH_CN: { translations: { ...zh_cn } },
             ZH_TW: { translations: { ...zh_tw } },

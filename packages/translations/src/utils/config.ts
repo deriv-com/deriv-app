@@ -15,6 +15,7 @@ export const ALL_LANGUAGE = Object.freeze({
     FR: 'Français',
     ID: 'Indonesian',
     IT: 'Italiano',
+    KO: '조선말,',
     PL: 'Polish',
     PT: 'Portugese',
     RU: 'Русский',

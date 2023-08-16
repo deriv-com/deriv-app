@@ -7,7 +7,7 @@ jest.mock('@deriv/components', () => ({
     Icon: () => <div>MockedIcon</div>,
 }));
 
-jest.mock('Assets/Trading/Categories/icon-trade-categories.jsx', () => jest.fn(() => 'IconTradeCategories'));
+jest.mock('Assets/Trading/Categories/icon-trade-categories', () => jest.fn(() => 'IconTradeCategories'));
 
 const list = [
     {

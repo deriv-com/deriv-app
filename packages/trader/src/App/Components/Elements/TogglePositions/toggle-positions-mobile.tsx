@@ -15,7 +15,7 @@ type TTogglePositionsMobile = Pick<
 > & {
     currency: ReturnType<typeof useStore>['client']['currency'];
     filtered_positions: ReturnType<typeof useStore>['portfolio']['all_positions'];
-    is_empty: number;
+    is_empty: boolean;
 };
 
 type THiddenPositionsId = TTogglePositionsMobile['filtered_positions'][0]['id'];

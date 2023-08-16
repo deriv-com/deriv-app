@@ -105,6 +105,9 @@
         border-radius: $BORDER_RADIUS;
         border: solid 1px var(--border-normal);
         height: calc(100vh - 32.4rem);
+        @include mobile {
+            height: calc(100vh - 26.4rem);
+        }
         position: relative;
         overflow: hidden;
         margin: 0 1.6rem 1.6rem 0;
@@ -442,6 +445,9 @@
                 border-radius: $BORDER_RADIUS;
                 padding: 1.6rem;
                 height: calc(80vh - 17rem);
+                @include mobile {
+                    height: calc(100vh - 15rem);
+                }
             }
         }
 
@@ -604,7 +610,7 @@
 
                     .injectionDiv {
                         margin: 2.4rem;
-                        height: calc(100vh - 26.5rem);
+                        height: calc(100vh - 22.5rem);
                         border: 1px solid $color-grey-6;
                     }
 

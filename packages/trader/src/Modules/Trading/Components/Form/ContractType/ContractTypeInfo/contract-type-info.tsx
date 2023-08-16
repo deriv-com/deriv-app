@@ -2,8 +2,8 @@ import React from 'react';
 import { Button, ThemedScrollbars, ButtonToggle } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import TradeCategories from 'Assets/Trading/Categories/trade-categories.jsx';
-import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif.jsx';
+import TradeCategories from 'Assets/Trading/Categories/trade-categories';
+import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif';
 import { getContractTypes } from '../../../../Helpers/contract-type';
 import ContractTypeGlossary from './contract-type-glossary';
 import classNames from 'classnames';
@@ -29,6 +29,7 @@ const Info = ({ handleSelect, item, list }: TInfo) => {
         (i: { value: TContractType['value'] }) => i.value !== 'rise_fall_equal' && i.value !== 'turbosshort'
     );
     const has_toggle_buttons = /accumulator|vanilla/i.test(item.value);
+    const should_show_video = /accumulator|vanilla/i.test(item.value);
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION;
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;
     const width = isMobile() ? '328' : '528';
@@ -56,8 +57,7 @@ const Info = ({ handleSelect, item, list }: TInfo) => {
                         className={classNames('contract-type-info__content', {
                             'contract-type-info__gif': is_description_tab_selected,
                             'contract-type-info__gif--has-toggle-buttons': has_toggle_buttons,
-                            'contract-type-info__gif--has-video':
-                                item.value === 'accumulator' && is_description_tab_selected,
+                            'contract-type-info__gif--has-video': should_show_video && is_description_tab_selected,
                         })}
                     >
                         {is_description_tab_selected ? (

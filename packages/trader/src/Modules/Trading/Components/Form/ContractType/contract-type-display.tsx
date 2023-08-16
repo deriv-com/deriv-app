@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, DesktopWrapper } from '@deriv/components';
-import IconTradeCategory from 'Assets/Trading/Categories/icon-trade-categories.jsx';
+import IconTradeCategory from 'Assets/Trading/Categories/icon-trade-categories';
 import { findContractCategory } from '../../../Helpers/contract-type';
 import { TContractCategory, TContractType, TList } from './types';
 

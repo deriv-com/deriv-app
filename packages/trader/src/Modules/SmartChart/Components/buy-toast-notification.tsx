@@ -6,7 +6,7 @@ import { findContractCategory } from 'Modules/Trading/Helpers/contract-type';
 import { observer, useStore } from '@deriv/stores';
 
 type TContractType = {
-    text: string;
+    text?: string;
     value: string;
 };
 

@@ -68,7 +68,7 @@ describe('getContractTypeDisplay', () => {
         expect(getContractTypeDisplay('ACCU', false, true)).toEqual(localize('Buy'));
     });
     it('should return a specific contract name if show_button_name === false but contract_config has a button_name field', () => {
-        expect(getContractTypeDisplay('ACCU')).toEqual(localize('Accumulator'));
+        expect(getContractTypeDisplay('ACCU')).toEqual(localize('Accumulators'));
     });
     it('should return a specific contract name if show_button_name === true but contract_config has no button_name field', () => {
         expect(getContractTypeDisplay('MULTDOWN', true, true)).toEqual(localize('Down'));

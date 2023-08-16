@@ -122,7 +122,7 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         components: [],
     },
     accumulator: {
-        title: localize('Accumulator'),
+        title: localize('Accumulators'),
         trade_types: ['ACCU'],
         basis: ['stake'],
         components: ['take_profit', 'accumulator', 'accu_info_display'],
@@ -399,7 +399,7 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
     ({
         ACCU: {
             button_name: <Localize i18n_default_text='Buy' />,
-            name: <Localize i18n_default_text='Accumulator' />,
+            name: <Localize i18n_default_text='Accumulators' />,
             position: 'top',
         },
         CALL: {

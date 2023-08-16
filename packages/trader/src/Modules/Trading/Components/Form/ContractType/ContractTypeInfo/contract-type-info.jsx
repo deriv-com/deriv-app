@@ -22,6 +22,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
         i => i.value !== 'rise_fall_equal' && i.value !== 'turbosshort'
     );
     const has_toggle_buttons = /accumulator|vanilla/i.test(carousel_index);
+    const should_show_video = /accumulator|vanilla/i.test(carousel_index);
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION;
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;
     const width = isMobile() ? '328' : '528';
@@ -56,8 +57,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                             'contract-type-info__gif--has-toggle-buttons': has_toggle_buttons,
                             'contract-type-info__content': is_glossary_tab_selected,
                             'contract-type-info__gif': is_description_tab_selected,
-                            'contract-type-info__gif--has-video':
-                                carousel_index === 'accumulator' && is_description_tab_selected,
+                            'contract-type-info__gif--has-video': should_show_video && is_description_tab_selected,
                         })}
                     >
                         {is_description_tab_selected ? (

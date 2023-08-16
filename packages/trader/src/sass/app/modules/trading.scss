@@ -297,6 +297,12 @@
                     opacity: 0;
                 }
             }
+            &--turbos {
+                display: flex;
+                justify-self: left;
+                align-items: flex-start;
+                flex-direction: column;
+            }
             &-value {
                 font-size: 1.4rem;
                 font-weight: 700;
@@ -321,22 +327,16 @@
                     color: var(--text-colored-background);
                 }
             }
-            &-strike {
-                @include mobile {
-                    color: var(--text-less-prominent);
-                    font-size: var(--text-size-xxs);
-                    display: flex;
-                    gap: 0.8rem;
-                    justify-content: space-between;
-                    padding: 1rem 0;
-                }
-            }
             &-currency {
                 margin-left: 4px;
                 margin-right: 1px;
                 display: inline-block;
                 position: relative;
                 font-weight: bold;
+
+                &--payout-per-point {
+                    margin-left: 0;
+                }
             }
             &-movement {
                 margin-left: 4px;
@@ -346,6 +346,10 @@
                 position: relative;
             }
         }
+        &--turbos {
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
     }
     &__price-info {
         &-currency {
@@ -353,47 +357,159 @@
                 font-size: 0.9rem;
             }
         }
-        &-modal {
-            @include mobile {
-                &--vanilla {
-                    max-width: calc(min(33rem, 85vw));
-                }
-            }
-        }
     }
     &__barriers {
         display: flex;
         flex-direction: column;
+        position: relative;
+        bottom: 0.1rem;
 
+        .trade-container__fieldset-info--left {
+            transform: translateX(0.7rem);
+        }
+
+        &__wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
         &:first-child {
-            padding-right: 8px;
+            padding-right: 0.8rem;
+        }
+        &-value {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 0.4rem;
+            background: var(--fill-normal);
+            border-radius: 0.4rem;
+            width: 100%;
+            height: 3.2rem;
+            cursor: pointer;
+            position: relative;
+            &--arrow-right {
+                position: absolute;
+                right: 0.8rem;
+                transform: rotate(180deg);
+            }
         }
         &-input {
-            padding-left: 3px;
+            padding-left: 0.3rem;
         }
         &-single {
             width: 100%;
         }
+        &-tooltip:first-child {
+            margin-bottom: 0.8rem;
+        }
+        &-spot {
+            margin-top: 0.8rem;
+            padding: 0rem 0.8rem;
+        }
         &-multiple {
             &-input {
-                padding-left: 25px;
-                padding-right: 9px;
+                padding-left: 2.5rem;
+                padding-right: 0.9rem;
                 text-align: center;
             }
             &:first-of-type {
-                padding-right: 8px;
+                padding-right: 0.8rem;
             }
         }
         &--up,
         &--down {
             position: absolute;
-            margin-top: 15px;
+            margin-top: 1.5rem;
         }
         &--up {
             right: 86.5%;
         }
         &--down {
             right: 39%;
+        }
+    }
+    &__barriers-table {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        width: 100%;
+        height: calc(100vh - 4.8rem - 3.6rem - 1.6rem - 1.6rem);
+        display: flex;
+        flex-direction: column;
+        transition: opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+        &--enter,
+        &--exit {
+            opacity: 0;
+            pointer-events: none;
+        }
+        &--enter-done {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        &__header {
+            height: $header-height;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 0 1rem;
+            border-bottom: 0.1rem solid var(--general-hover);
+            @include mobile {
+                height: 4.5rem;
+                padding: 0 1.6rem;
+                border-bottom: 0.1rem solid var(--general-section-1);
+            }
+            &-wrapper {
+                display: flex;
+                gap: 0.8rem;
+            }
+        }
+        &__icon-close {
+            display: inline-block;
+            margin-left: auto;
+            cursor: pointer;
+            svg {
+                @extend %inline-icon;
+                height: 1.6em;
+                width: 1.6em;
+            }
+        }
+        &__text {
+            padding: 1.6rem 1.6rem 0;
+            @include mobile {
+                padding: 1.6rem 0 0.8rem 1.6rem;
+            }
+        }
+        &__list {
+            overflow-y: scroll;
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 0 0.6rem;
+        }
+        &__item {
+            padding: 1rem 1.4rem;
+            border-radius: 0.6rem;
+            height: 3.8rem;
+            cursor: pointer;
+
+            &:hover:not(&--selected) {
+                background-color: var(--general-hover);
+                font-weight: var(--text-weight-bold);
+            }
+            &--selected,
+            &:active,
+            &:focus {
+                background-color: var(--general-active);
+                font-weight: var(--text-weight-bold);
+            }
+            @include mobile {
+                display: flex;
+                align-items: center;
+                height: 4.8rem;
+                padding: 1.5rem 1.4rem;
+            }
         }
     }
     &__allow-equals {
@@ -506,6 +622,25 @@
             align-self: flex-end;
         }
     }
+    &__trade {
+        &-type-tabs {
+            border-radius: $BORDER_RADIUS;
+            padding: 0.8rem;
+            background-color: var(--general-section-1);
+            border-color: var(--general-section-1);
+            color: var(--text-general);
+            @include mobile {
+                width: 50%;
+                padding: 0;
+                margin-bottom: 0rem;
+                margin-top: 0.6rem;
+                &--button {
+                    height: 4rem;
+                    bottom: 0.5rem;
+                }
+            }
+        }
+    }
     &__deal-cancellation-popover {
         width: 28rem;
     }
@@ -610,6 +745,9 @@
         margin-top: 0.4rem;
         display: flex;
         justify-content: space-between;
+        @include desktop {
+            height: 2.8rem;
+        }
 
         &--min {
             display: flex;
@@ -652,11 +790,11 @@
 
 /** @define purchase-container; weak */
 .purchase-container,
-.purchase-container--accumulator {
+.purchase-container__accumulator {
     position: relative;
 
     &__option {
-        padding: 1.6rem 0.8rem;
+        padding: 0.8rem;
 
         &:not(:only-of-type) {
             &:nth-last-child(2) {
@@ -699,11 +837,14 @@
         grid-template-areas: 'a b';
         grid-column-gap: 0.5rem;
 
-        &--accumulator {
+        &__accumulator {
             grid-template-areas: 'a';
             .purchase-container__option {
                 margin-bottom: 0 !important;
             }
+        }
+        &__turbos {
+            display: block;
         }
     }
 
@@ -818,6 +959,30 @@
     }
 }
 
+.payout-per-point {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.6rem;
+    height: 4.15rem;
+
+    &__label {
+        position: relative;
+        bottom: 0.3rem;
+        &-wrapper {
+            display: flex;
+            gap: 0.8rem;
+        }
+    }
+    &__value {
+        position: relative;
+        bottom: 0.2rem;
+        .trade-container__price-info-movement {
+            top: 0.3rem;
+        }
+    }
+}
+
 /** @define market-unavailable-modal */
 @include mobile {
     .market-unavailable-modal {
@@ -852,17 +1017,7 @@
     }
 }
 
-.strike {
-    &--info {
-        color: var(--text-general);
-        &__value {
-            font-size: var(--text-size-xxs);
-            margin-left: unset;
-        }
-        &__wrapper {
-            padding-right: 1rem;
-        }
-    }
+.price-info {
     &--value-container {
         display: flex;
     }

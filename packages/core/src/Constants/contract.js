@@ -163,7 +163,7 @@ export const getUnsupportedContracts = () => ({
 export const getSupportedContracts = is_high_low => ({
     ACCU: {
         button_name: localize('Buy'),
-        name: localize('Accumulator'),
+        name: localize('Accumulators'),
         position: 'top',
     },
     CALL: {
@@ -212,6 +212,16 @@ export const getSupportedContracts = is_high_low => ({
     },
     NOTOUCH: {
         name: localize('No Touch'),
+        position: 'bottom',
+    },
+    TURBOSLONG: {
+        button_name: localize('Long'),
+        name: 'Turbos',
+        position: 'top',
+    },
+    TURBOSSHORT: {
+        button_name: localize('Short'),
+        name: 'Turbos',
         position: 'bottom',
     },
     RUNHIGH: {

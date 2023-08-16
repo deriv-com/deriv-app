@@ -1,6 +1,5 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { localize, getAllowedLanguages } from '@deriv/translations';
 import { isMobile, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -8,7 +7,6 @@ import FormSubHeader from 'Components/form-sub-header';
 import LanguageRadioButton from 'Components/language-settings';
 
 const LanguageSettings = observer(() => {
-    const { i18n } = useTranslation();
     const { common } = useStore();
     const { changeSelectedLanguage, current_language } = common;
 

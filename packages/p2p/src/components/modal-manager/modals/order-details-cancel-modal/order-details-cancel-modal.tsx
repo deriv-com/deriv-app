@@ -2,26 +2,34 @@ import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
-import { requestWS } from 'Utils/websocket';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import SectionError from 'Components/section-error';
 import { useStores } from 'Stores';
-import FormError from 'Components/section-error';
-import { useModalManagerContext } from '../../modal-manager-context';
+import { requestWS } from 'Utils/websocket';
 
 const OrderDetailsCancelModal = () => {
     const { general_store, order_store } = useStores();
-    const { cancels_remaining } = general_store.advertiser_info;
     const { hideModal, is_modal_open } = useModalManagerContext();
+    const { cancels_remaining } = general_store.advertiser_info;
+    const {
+        cancellation_block_duration,
+        cancellation_count_period,
+        cancellation_limit,
+        error_message,
+        order_information,
+        setErrorMessage,
+    } = order_store ?? {};
 
     const isMounted = useIsMounted();
 
     const cancelOrderRequest = () => {
         requestWS({
             p2p_order_cancel: 1,
-            id: order_store.order_information.id,
+            id: order_information?.id ?? '',
         }).then(response => {
             if (isMounted()) {
                 if (response.error) {
-                    order_store.setErrorMessage(response.error.message);
+                    setErrorMessage(response.error.message);
                 }
 
                 hideModal();
@@ -48,9 +56,9 @@ const OrderDetailsCancelModal = () => {
                         <Localize
                             i18n_default_text='If you cancel your order {{cancellation_limit}} times in {{cancellation_period}} hours, you will be blocked from using Deriv P2P for {{block_duration}} hours. <br /> ({{number_of_cancels_remaining}} cancellations remaining)'
                             values={{
-                                block_duration: order_store.cancellation_block_duration,
-                                cancellation_limit: order_store.cancellation_limit,
-                                cancellation_period: order_store.cancellation_count_period,
+                                block_duration: cancellation_block_duration,
+                                cancellation_limit,
+                                cancellation_period: cancellation_count_period,
                                 number_of_cancels_remaining: cancels_remaining,
                             }}
                         />
@@ -60,7 +68,7 @@ const OrderDetailsCancelModal = () => {
                         <Localize
                             i18n_default_text="If you cancel this order, you'll be blocked from using Deriv P2P for {{block_duration}} hours."
                             values={{
-                                block_duration: order_store.cancellation_block_duration,
+                                block_duration: cancellation_block_duration,
                             }}
                         />
                     </Text>
@@ -72,7 +80,7 @@ const OrderDetailsCancelModal = () => {
                 </div>
             </Modal.Body>
             <Modal.Footer className='order-details-cancel-modal__footer'>
-                {order_store.error_message && <FormError message={order_store.error_message} />}
+                {error_message && <SectionError message={error_message} />}
                 <Button.Group>
                     <Button secondary large onClick={cancelOrderRequest}>
                         <Localize i18n_default_text='Cancel this order' />

@@ -1,9 +1,8 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { DBotStoreProvider, mockDBotStore } from '../../../stores/useDBotStore';
-// import ReactJoyrideWrapper from 'Components/dashboard/react-joyride-wrapper';
 import ReactJoyrideWrapper from '../react-joyride-wrapper';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());

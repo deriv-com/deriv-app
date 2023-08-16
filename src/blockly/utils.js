@@ -389,21 +389,6 @@ export const addDomAsBlock = blockXml => {
     return Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
 };
 
-/* const replaceDeletedBlock = block => {
-    const procedureName = block.getFieldValue('NAME');
-    const oldProcedure = Blockly.Procedures.getDefinition(`${procedureName} (deleted)`, Blockly.mainWorkspace);
-    if (oldProcedure) {
-        const { recordUndo } = Blockly.Events;
-        Blockly.Events.recordUndo = false;
-        const f = block.getField('NAME');
-        // eslint-disable-next-line no-underscore-dangle
-        f.text_ = `${procedureName} (deleted)`;
-        oldProcedure.dispose();
-        block.setFieldValue(`${procedureName}`, 'NAME');
-        Blockly.Events.recordUndo = recordUndo;
-    }
-}; */
-
 export const recoverDeletedBlock = block => {
     const { recordUndo } = Blockly.Events;
     Blockly.Events.recordUndo = false;
@@ -413,17 +398,7 @@ export const recoverDeletedBlock = block => {
 };
 
 const addDomAsBlockFromHeader = (blockXml /* , header = null */) => {
-    // const oldVars = [...Blockly.mainWorkspace.variableList];
     const block = Blockly.Xml.domToBlock(blockXml, Blockly.mainWorkspace);
-    /* Blockly.mainWorkspace.variableList = Blockly.mainWorkspace.variableList.filter(v => {
-        if (oldVars.indexOf(v) >= 0) {
-            return true;
-        }
-        header.loadedVariables.push(v);
-        return false;
-    });
-    replaceDeletedBlock(block);
-    Blockly.Events.fire(new Hide(block, header)); */
     return block;
 };
 
@@ -434,7 +409,7 @@ const processLoaders = (xml, header = null) => {
             block.remove();
 
             const loader = header
-                ? addDomAsBlockFromHeader(block, header)
+                ? addDomAsBlockFromHeader(block)
                 : Blockly.Xml.domToBlock(block, Blockly.mainWorkspace);
 
             promises.push(loadRemote(loader)); // eslint-disable-line no-use-before-define
@@ -473,7 +448,7 @@ const loadBlocksFromHeader = (blockStr, header) =>
                                     block.getAttribute('type') === 'tick_analysis' ||
                                     isProcedure(block.getAttribute('type'))
                             )
-                            .forEach(block => addDomAsBlockFromHeader(block, header));
+                            .forEach(block => addDomAsBlockFromHeader(block));
 
                         Blockly.Events.recordUndo = recordUndo;
                         resolve();

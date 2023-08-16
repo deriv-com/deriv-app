@@ -93,7 +93,7 @@ const RadioGroup = ({
 };
 
 const Item = ({ children, hidden = false, ...props }: React.PropsWithChildren<TItem>) => (
-    <div {...props} hidden={hidden}>
+    <div hidden={hidden} {...props}>
         {children}
     </div>
 );

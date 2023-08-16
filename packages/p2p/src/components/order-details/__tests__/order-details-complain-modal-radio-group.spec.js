@@ -6,7 +6,7 @@ describe('<OrderDetailsComplainModalRadioGroup/>', () => {
     it('should render component with 4 radio buttons for sell order', () => {
         render(<OrderDetailsComplainModalRadioGroup />);
 
-        expect(screen.getAllByRole('radio').length).toBe(4);
+        expect(screen.getAllByRole('radio')).toHaveLength(4);
     });
 
     it('should call handler function when checkbox is selected', () => {
@@ -17,7 +17,7 @@ describe('<OrderDetailsComplainModalRadioGroup/>', () => {
         expect(mockFn).toHaveBeenCalledWith('buyer_underpaid');
     });
 
-    it('should render all the 4 the options for sell order', () => {
+    it('should render all of the 4 options for sell order', () => {
         render(<OrderDetailsComplainModalRadioGroup />);
 
         expect(screen.getByLabelText('I’ve not received any payment.')).toBeInTheDocument();
@@ -26,7 +26,7 @@ describe('<OrderDetailsComplainModalRadioGroup/>', () => {
         expect(screen.getByText('I’ve received payment from 3rd party.')).toBeInTheDocument();
     });
 
-    it('should render all the 3 options for buy order', () => {
+    it('should render all of the 3 options for buy order', () => {
         render(<OrderDetailsComplainModalRadioGroup is_buy_order_for_user />);
 
         expect(

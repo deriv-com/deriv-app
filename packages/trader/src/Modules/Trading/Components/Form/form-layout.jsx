@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Loadable from 'react-loadable';
 import { isMobile } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 
 const Screen = Loadable({
     loader: () =>
@@ -15,11 +16,15 @@ const Screen = Loadable({
     },
 });
 
-const FormLayout = ({ is_market_closed, is_trade_enabled }) => (
-    <React.Fragment>
-        <Screen is_trade_enabled={is_trade_enabled} is_market_closed={isMobile() ? undefined : is_market_closed} />
-    </React.Fragment>
-);
+const FormLayout = observer(({ is_market_closed, is_trade_enabled }) => {
+    const { common } = useStore();
+    const { current_language } = common;
+    return (
+        <React.Fragment key={current_language}>
+            <Screen is_trade_enabled={is_trade_enabled} is_market_closed={isMobile() ? undefined : is_market_closed} />
+        </React.Fragment>
+    );
+});
 
 FormLayout.propTypes = {
     is_market_closed: PropTypes.bool,

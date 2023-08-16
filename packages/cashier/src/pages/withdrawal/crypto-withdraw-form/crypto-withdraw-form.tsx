@@ -82,7 +82,7 @@ const CryptoWithdrawForm = observer(({ is_wallet }: { is_wallet?: boolean }) => 
 
         return () => {
             percentageSelectorSelectionStatus(false);
-            resetWithdrawForm();
+            if (!is_wallet) resetWithdrawForm();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

@@ -3,9 +3,7 @@ import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
 import CryptoWithdrawal from './crypto-withdrawal';
-import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
 import Withdraw from './withdraw';
 import WithdrawalLocked from './withdrawal-locked';
 import WithdrawalVerificationEmail from './withdrawal-verification-email';
@@ -156,16 +154,8 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         return <Withdraw />;
     }
 
-    if (verification_code && is_crypto && !is_withdraw_confirmed && !is_crypto_transactions_visible) {
+    if (is_crypto && (verification_code || is_withdraw_confirmed || is_crypto_transactions_visible)) {
         return <CryptoWithdrawal />;
-    }
-
-    if (is_withdraw_confirmed && !is_crypto_transactions_visible) {
-        return <CryptoWithdrawReceipt />;
-    }
-
-    if (is_crypto_transactions_visible) {
-        return <CryptoTransactionsHistory />;
     }
 
     return (

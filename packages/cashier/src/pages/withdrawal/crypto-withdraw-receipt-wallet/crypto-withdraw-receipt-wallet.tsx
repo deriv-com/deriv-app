@@ -4,6 +4,7 @@ import { Div100vhContainer, Icon, Text, WalletCard, Clipboard, Button } from '@d
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './crypto-withdraw-receipt-wallet.scss';
 import { Localize, localize } from '@deriv/translations';
+import { useActiveWallet } from '@deriv/hooks';
 
 // Demo
 type TWallet = {
@@ -17,33 +18,32 @@ type TWallet = {
 };
 
 const CryptoWithdrawReceiptWallet = observer(() => {
-    // TODO: Cleanup here after testing
+    const active_wallet = useActiveWallet();
     const { client, ui, traders_hub } = useStore();
     const { is_mobile } = ui;
     const { setWalletModalActiveTab } = traders_hub;
-    const { currency, is_switching, setVerificationCode } = client;
-    const { account_transfer, general_store, transaction_history, withdraw } = useCashierStore();
-    const { selected_from: account } = account_transfer;
-    const { onMount: recentTransactionOnMount, setIsCryptoTransactionsVisible } = transaction_history;
+    const { setVerificationCode } = client;
+    const { withdraw } = useCashierStore();
 
     const { blockchain_address, resetWithdrawForm, setIsWithdrawConfirmed, withdraw_amount } = withdraw;
 
     const closeWithdrawForm = () => {
         setVerificationCode('', 'payment_withdraw');
         setWalletModalActiveTab('Withdraw');
+        setIsWithdrawConfirmed(false);
+        resetWithdrawForm();
     };
 
     // Demo Purpose
     const wallet: TWallet = {
-        balance: '0.00003',
-        currency: 'BTC',
-        icon: 'IcWalletBitcoinLight',
+        balance: `-${withdraw_amount}`,
+        currency: active_wallet?.currency || '',
+        icon: active_wallet?.icon || '',
         icon_type: 'crypto',
-        jurisdiction_title: 'svg',
+        jurisdiction_title: active_wallet?.landing_company_name || '',
         name: 'BTC Wallet',
-        gradient_class: 'wallet-card__btc-bg',
+        gradient_class: active_wallet?.gradient_card_class || '',
     };
-    const blockChainAddress = '1FfmbHfnpaZjKFvyi1okTjJJusN455paPH';
 
     return (
         <Div100vhContainer height_offset='344px'>
@@ -68,11 +68,10 @@ const CryptoWithdrawReceiptWallet = observer(() => {
                         align='center'
                         className='crypto-withdraw-receipt-wallet__account-info-detail-text'
                     >
-                        {/* {blockchain_address} */}
-                        {blockChainAddress}
+                        {blockchain_address}
                     </Text>
                     <Clipboard
-                        text_copy={blockChainAddress}
+                        text_copy={blockchain_address}
                         info_message={is_mobile ? '' : localize('copy to clipboard')}
                         icon='IcCashierClipboard'
                         success_message={localize('copied!')}
@@ -82,7 +81,7 @@ const CryptoWithdrawReceiptWallet = observer(() => {
                 </div>
                 <div className='crypto-withdraw-receipt-wallet__amount-wrapper'>
                     <Text as='p' color='prominent' weight='bold' size={is_mobile ? 'xsm' : 'm'} align='center'>
-                        {wallet?.balance} {wallet?.currency?.toUpperCase()}
+                        {withdraw_amount} {active_wallet?.currency?.toUpperCase()}
                     </Text>
                     <Text as='p' color='prominent' size={is_mobile ? 'xs' : 's'} align='center'>
                         <Localize i18n_default_text='Your withdrawal is currently in review. It will be processed within 24 hours. We’ll send you an email once your transaction has been processed.' />

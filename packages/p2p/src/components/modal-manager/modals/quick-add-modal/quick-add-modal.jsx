@@ -13,11 +13,11 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 
 const QuickAddModal = ({ advert }) => {
     const { my_ads_store, my_profile_store } = useStores();
-    const { is_modal_open, showModal } = useModalManagerContext();
+    const { is_modal_open, showModal, useSavedState } = useModalManagerContext();
 
     const type = advert ? advert.type : null;
 
-    const [selected_methods, setSelectedMethods] = React.useState([]);
+    const [selected_methods, setSelectedMethods] = useSavedState('selected_methods', []);
 
     const is_buy_advert = type === buy_sell.BUY;
     const is_sell_ad_add_payment_methods_selected =
@@ -25,16 +25,6 @@ const QuickAddModal = ({ advert }) => {
     const is_buy_ad_add_payment_methods_selected = is_buy_advert && selected_methods.length > 0;
     const is_payment_methods_selected =
         is_sell_ad_add_payment_methods_selected || is_buy_ad_add_payment_methods_selected;
-
-    React.useEffect(() => {
-        const saved_selected_methods = localStorage.getItem('selected_methods');
-        if (saved_selected_methods) {
-            setSelectedMethods(JSON.parse(saved_selected_methods));
-            localStorage.removeItem('selected_methods');
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const onClickPaymentMethodCard = payment_method => {
         if (!my_ads_store.payment_method_ids.includes(payment_method.ID)) {
@@ -52,7 +42,6 @@ const QuickAddModal = ({ advert }) => {
 
     const setShouldCloseAllModals = should_close_all_modals => {
         if (is_payment_methods_selected) {
-            localStorage.setItem('selected_methods', JSON.stringify(selected_methods));
             showModal({
                 key: 'CancelAddPaymentMethodModal',
                 props: {
@@ -60,7 +49,6 @@ const QuickAddModal = ({ advert }) => {
                     onCancel: () => {
                         my_ads_store.payment_method_ids = [];
                         my_ads_store.payment_method_names = [];
-                        localStorage.removeItem('selected_methods');
                     },
                 },
             });

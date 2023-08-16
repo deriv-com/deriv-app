@@ -10,6 +10,7 @@ import es from 'Translations/es.json';
 import fr from 'Translations/fr.json';
 import id from 'Translations/id.json';
 import it from 'Translations/it.json';
+import ko from 'Translations/ko.json';
 import pl from 'Translations/pl.json';
 import pt from 'Translations/pt.json';
 import ru from 'Translations/ru.json';
@@ -38,6 +39,7 @@ const i18n_config = {
         FR: { translations: { ...fr } },
         ID: { translations: { ...id } },
         IT: { translations: { ...it } },
+        KO: { translations: { ...ko } },
         PL: { translations: { ...pl } },
         PT: { translations: { ...pt } },
         RU: { translations: { ...ru } },

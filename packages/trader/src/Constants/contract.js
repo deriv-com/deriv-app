@@ -204,7 +204,7 @@ export const getUnsupportedContracts = () => ({
 export const getSupportedContracts = is_high_low => ({
     ACCU: {
         button_name: <Localize i18n_default_text='Buy' />,
-        name: <Localize i18n_default_text='Accumulator' />,
+        name: <Localize i18n_default_text='Accumulators' />,
         position: 'top',
     },
     CALL: {

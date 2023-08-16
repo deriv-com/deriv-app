@@ -45,6 +45,7 @@
                 &--accumulator,
                 &--turbos {
                     display: flex;
+                    grid-gap: 1px;
                     &-sold {
                         padding-top: 1rem;
                     }

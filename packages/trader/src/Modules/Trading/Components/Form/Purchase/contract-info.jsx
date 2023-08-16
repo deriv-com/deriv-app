@@ -56,19 +56,16 @@ const ContractInfo = ({
     type,
 }) => {
     const localized_basis = getLocalizedBasis();
-    const vanilla_payout_text = is_vanilla_fx
-        ? localized_basis.payout_per_pip
-        : localized_basis.payout_per_point;
+    const vanilla_payout_text = is_vanilla_fx ? localized_basis.payout_per_pip : localized_basis.payout_per_point;
 
-    const vanilla_payout_message =
-        is_vanilla_fx ? (
-            <Localize
-                i18n_default_text='The payout at expiry is equal to the payout per pip multiplied by the difference, <0>in pips</0>, between the final price and the strike price.'
-                components={[<strong key={0} />]}
-            />
-        ) : (
-            <Localize i18n_default_text='The payout at expiry is equal to the payout per point multiplied by the difference between the final price and the strike price.' />
-        );
+    const vanilla_payout_message = is_vanilla_fx ? (
+        <Localize
+            i18n_default_text='The payout at expiry is equal to the payout per pip multiplied by the difference, <0>in pips</0>, between the final price and the strike price.'
+            components={[<strong key={0} />]}
+        />
+    ) : (
+        <Localize i18n_default_text='The payout at expiry is equal to the payout per point multiplied by the difference between the final price and the strike price.' />
+    );
 
     const stakeOrPayout = () => {
         switch (basis) {

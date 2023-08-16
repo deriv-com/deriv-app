@@ -12,7 +12,12 @@ module.exports = {
         '^Stores/(.*)$': '<rootDir>/src/stores/$1',
         '^Utils/(.*)$': '<rootDir>/src/utils/$1',
     },
-    collectCoverageFrom: ['**/*.{js,jsx,ts,tsx}', '!**/node_modules/**'],
+    collectCoverageFrom: [
+        '**/*.{js,jsx,ts,tsx}',
+        '!**/node_modules/**',
+        '!**/*.spec.{js,jsx,ts,tsx}',
+        '!/**/*.type.ts',
+    ],
     globals: {
         __webpack_public_path__: '/',
     },

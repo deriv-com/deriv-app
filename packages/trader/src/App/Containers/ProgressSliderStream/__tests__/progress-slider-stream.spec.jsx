@@ -9,19 +9,8 @@ jest.mock('@deriv/components', () => ({
     ProgressSlider: () => <div>Mocked Progress Slider</div>,
 }));
 
-const contract_info = {
-    contract_type: 'TEST',
-    date_expiry: 1222222224,
-    date_start: 1222222222,
-    tick_count: 2,
-    tick_stream: [
-        { epoch: 1, tick: 1, tick_display_value: '300' },
-        { epoch: 2, tick: 2, tick_display_value: '302' },
-    ],
-};
-
 describe('<ProgressSliderStream />', () => {
-    const mockProgressSliderStream = mocked_store => {
+    const mockProgressSliderStream = (mocked_store, contract_info) => {
         return (
             <TraderProviders store={mocked_store}>
                 <ProgressSliderStream contract_info={contract_info} />
@@ -35,9 +24,20 @@ describe('<ProgressSliderStream />', () => {
 
         expect(screen.queryByText('Mocked Progress Slider')).not.toBeInTheDocument();
     });
+
     it('should render <ProgressSliderStream /> if contract_info was passed in props', () => {
+        const contract_info = {
+            contract_type: 'TEST',
+            date_expiry: 1222222224,
+            date_start: 1222222222,
+            tick_count: 2,
+            tick_stream: [
+                { epoch: 1, tick: 1, tick_display_value: '300' },
+                { epoch: 2, tick: 2, tick_display_value: '302' },
+            ],
+        };
         const mock_root_store = mockStore({});
-        render(mockProgressSliderStream(mock_root_store));
+        render(mockProgressSliderStream(mock_root_store, contract_info));
 
         expect(screen.getByText('Mocked Progress Slider')).toBeInTheDocument();
     });

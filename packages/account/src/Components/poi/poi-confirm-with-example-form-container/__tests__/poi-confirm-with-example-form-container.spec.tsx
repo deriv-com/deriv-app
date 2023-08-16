@@ -73,13 +73,11 @@ describe('<PoiConfirmWithExampleFormContainer/>', () => {
     it('should change fields and trigger submit', async () => {
         render(<PoiConfirmWithExampleFormContainer {...mock_props} />);
 
-        const checkbox_el: HTMLInputElement = await screen.findByRole('checkbox');
-        expect(checkbox_el.checked).toBeFalsy();
+        const [checkbox_el] = await screen.findAllByRole('checkbox');
+        expect((checkbox_el as HTMLInputElement).checked).toBeFalsy();
 
         const input_fields: HTMLInputElement[] = screen.getAllByRole('textbox');
-        const first_name_input = input_fields[0];
-        const last_name_input = input_fields[1];
-        const dob_input = input_fields[2];
+        const [first_name_input, last_name_input, dob_input] = input_fields;
 
         expect(first_name_input.value).toBe('test first name');
         expect(last_name_input.value).toBe('test last name');

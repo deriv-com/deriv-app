@@ -1,10 +1,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import DeactivateAccount from '../deactivate-account'; // Adjust the import path based on your project structure
+import DeactivateAccount from '../deactivate-account';
 
 describe('<DeactivateAccount />', () => {
-    it('should run DeactivateAccount component', () => {
+    it('should render DeactivateAccount component', () => {
         const { container } = render(
             <MemoryRouter>
                 <DeactivateAccount />

@@ -26,7 +26,7 @@ describe('<OrderDetailsComplainModalRadioGroup/>', () => {
         expect(screen.getByText('I’ve received payment from 3rd party.')).toBeInTheDocument();
     });
 
-    it('should render all the 3 oprions for buy order', () => {
+    it('should render all the 3 options for buy order', () => {
         render(<OrderDetailsComplainModalRadioGroup is_buy_order_for_user />);
 
         expect(

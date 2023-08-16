@@ -7,7 +7,7 @@ type TItem = React.HTMLAttributes<HTMLDivElement> & {
     value: string;
     label: string;
     disabled: boolean;
-    is_hidden?: boolean;
+    hidden?: boolean;
 };
 type TItemWrapper = {
     should_wrap_items?: boolean;
@@ -52,7 +52,7 @@ const RadioGroup = ({
         <div className={classNames('dc-radio-group', className)}>
             {Array.isArray(children) &&
                 children
-                    .filter(item => !item.props.is_hidden)
+                    .filter(item => !item.props.hidden)
                     .map(item => (
                         <ItemWrapper key={item.props.value} should_wrap_items={should_wrap_items}>
                             <label
@@ -92,7 +92,11 @@ const RadioGroup = ({
     );
 };
 
-const Item = ({ children, ...props }: React.PropsWithChildren<TItem>) => <div {...props}>{children}</div>;
+const Item = ({ children, hidden = false, ...props }: React.PropsWithChildren<TItem>) => (
+    <div {...props} hidden={hidden}>
+        {children}
+    </div>
+);
 
 RadioGroup.Item = Item;
 

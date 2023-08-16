@@ -41,7 +41,7 @@ const OrderDetailsComplainModalRadioGroup = ({ dispute_reason, onCheckboxChange,
         <RadioGroup.Item
             value='buyer_third_party_payment_method'
             label={localize('I’ve received payment from 3rd party.')}
-            is_hidden={is_buy_order_for_user}
+            hidden={is_buy_order_for_user}
         />
     </RadioGroup>
 );

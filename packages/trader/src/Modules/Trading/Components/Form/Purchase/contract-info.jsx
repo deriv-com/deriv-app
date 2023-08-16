@@ -67,7 +67,7 @@ const ContractInfo = ({
                 components={[<strong key={0} />]}
             />
         ) : (
-            <Localize i18n_default_text='The payout at expiry is equal to the payout per point multiplied by the difference, between the final price and the strike price.' />
+            <Localize i18n_default_text='The payout at expiry is equal to the payout per point multiplied by the difference between the final price and the strike price.' />
         );
 
     const stakeOrPayout = () => {

@@ -154,5 +154,6 @@ export const getDebugServiceWorker = () => {
 export const getRuntimeEnvironment = () => {
     if (isStaging()) return 'staging';
     if (isLocal()) return 'local';
+    if (isTestLink()) return 'test_link';
     return 'production';
 };

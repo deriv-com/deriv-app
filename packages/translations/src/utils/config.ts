@@ -1,4 +1,4 @@
-export type Environment = 'local' | 'staging' | 'production';
+export type Environment = 'local' | 'test_link' | 'staging' | 'production';
 export type Language = keyof typeof ALL_LANGUAGE;
 export type LanguageKey = keyof typeof ALL_LANGUAGE;
 export type LanguageData = { [key in LanguageKey]: string };

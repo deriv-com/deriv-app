@@ -19,6 +19,7 @@ export const getAllowedLanguages = (environment: Environment): Partial<LanguageD
     switch (environment) {
         case 'production':
             return PRODUCTION_LANGUAGE;
+        case 'test_link':
         case 'local':
         case 'staging':
         default:

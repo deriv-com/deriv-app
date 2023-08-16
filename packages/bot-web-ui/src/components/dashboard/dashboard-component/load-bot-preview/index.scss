@@ -37,12 +37,6 @@
 
     &__container {
         @include desktop {
-            height: calc(80vh - 15rem);
-
-            &--has-footer {
-                height: calc(80vh - 15rem);
-            }
-
             > * {
                 height: 100%;
                 margin-top: 0.8rem;
@@ -50,12 +44,6 @@
         }
 
         @include tablet {
-            height: calc(80vh - 15rem);
-
-            &--has-footer {
-                height: calc(80vh - 15rem);
-            }
-
             > * {
                 height: 100%;
                 margin-top: 0.8rem;
@@ -157,7 +145,7 @@
             &__list {
                 overflow: auto;
                 width: 100%;
-                height: calc(100vh - 57rem);
+                height: calc(100vh - 55.5rem);
                 @include mobile {
                     height: calc(100vh - 46rem);
                 }

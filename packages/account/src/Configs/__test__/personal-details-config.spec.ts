@@ -107,7 +107,7 @@ describe('personal-details-config', () => {
         expect(personal_details[0].tax_residence.default_value).toEqual('');
     });
 
-    it('should include svg in supported jurisdictions for additional fields if client is not high risk for mf', () => {
+    it('should include svg in additional fields if client is not high risk for mt5', () => {
         const new_props = {
             ...mock_props,
             real_account_signup_target: 'svg',

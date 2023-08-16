@@ -137,7 +137,6 @@ const ContractDetails = ({
                                 icon={<Icon icon='IcContractPayout' size={24} />}
                                 label={vanilla_payout_text}
                                 value={`${display_number_of_contracts} ${getCurrencyDisplayCode(currency)}` || ' - '}
-                                should_format={!is_vanilla}
                             />
                         )}
                     </React.Fragment>
@@ -187,7 +186,6 @@ ContractDetails.propTypes = {
     duration_unit: PropTypes.string,
     exit_spot: PropTypes.string,
     is_vanilla: PropTypes.bool,
-    symbol: PropTypes.string,
 };
 
 export default ContractDetails;

@@ -59,11 +59,11 @@ export type TMT5AccountOpeningRealFinancialStpModal = {
 
 export type TMissingRealAccount = {
     onClickSignup: () => void;
-    platform: CFD_Platform;
+    platform: TCFDPlatform;
 };
 
 export type TChangePassword = {
-    platform: CFD_Platform;
+    platform: TCFDPlatform;
     onConfirm: () => void;
 };
 

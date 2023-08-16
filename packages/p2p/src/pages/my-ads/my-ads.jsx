@@ -26,6 +26,7 @@ const MyAds = () => {
 
         return () => {
             my_ads_store.setShowAdForm(false);
+            general_store.setShouldShowPopup(false);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

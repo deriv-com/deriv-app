@@ -314,6 +314,7 @@ export default class GeneralStore extends BaseStore {
                         );
                     }
                 } else {
+                    this.hideModal();
                     const { code, message } = response.error;
                     this.setErrorCode(code);
                     this.setBlockUnblockUserError(message);

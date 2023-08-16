@@ -3,7 +3,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { isAction, reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { Loading, MobileWrapper, Tabs } from '@deriv/components';
+import { Loading, Tabs } from '@deriv/components';
 import { useP2PNotificationCount } from '@deriv/hooks';
 import { isMobile } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
@@ -11,7 +11,6 @@ import TemporarilyBarredHint from 'Components/temporarily-barred-hint';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
 import { localize } from './i18next';
-import NicknameForm from './nickname-form';
 
 const AppContent = ({ order_id }) => {
     const { buy_sell_store, general_store } = useStores();
@@ -46,14 +45,6 @@ const AppContent = ({ order_id }) => {
 
     if (general_store.is_loading) {
         return <Loading is_fullscreen={false} />;
-    }
-
-    if (general_store.should_show_popup) {
-        return (
-            <MobileWrapper>
-                <NicknameForm />
-            </MobileWrapper>
-        );
     }
 
     // return empty or else the tabs will be shown above when displaying the advertiser page

@@ -11,16 +11,16 @@ import { ResultStatusIcon } from '../result-overlay/result-overlay';
 import ProgressSliderMobile from '../../progress-slider-mobile';
 import AccumulatorCardBody from './accumulator-card-body';
 import MultiplierCardBody from './multiplier-card-body';
+import TurbosCardBody from './turbos-card-body';
 import VanillaOptionsCardBody from './vanilla-options-card-body';
 import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
-import { ContractUpdate } from '@deriv/api-types';
 import { TToastConfig } from '../../types/contract.types';
 import { TGetCardLables } from '../../types/common.types';
 
 export type TGeneralContractCardBodyProps = {
     addToast: (toast_config: TToastConfig) => void;
     contract_info: TContractInfo;
-    contract_update: ContractUpdate;
+    contract_update: TContractInfo['contract_update'];
     connectWithContractUpdate?: (contract_update_form: React.ElementType) => React.ElementType;
     currency: string;
     current_focus?: string;
@@ -34,16 +34,17 @@ export type TGeneralContractCardBodyProps = {
     onMouseLeave: () => void;
     removeToast: (toast_id: string) => void;
     setCurrentFocus: (name: string) => void;
-    status: string;
+    status?: string;
     toggleCancellationWarning: () => void;
     progress_slider?: React.ReactNode;
-    is_accumulator?: boolean;
     is_positions?: boolean;
 };
 
 export type TContractCardBodyProps = {
+    is_accumulator?: boolean;
     is_multiplier: boolean;
     server_time: moment.Moment;
+    is_turbos?: boolean;
     is_vanilla?: boolean;
 } & TGeneralContractCardBodyProps;
 
@@ -63,6 +64,7 @@ const ContractCardBody = ({
     is_multiplier,
     is_positions,
     is_sold,
+    is_turbos,
     is_vanilla,
     onMouseLeave,
     removeToast,
@@ -90,51 +92,61 @@ const ContractCardBody = ({
         />
     );
 
+    const toggle_card_dialog_props = {
+        addToast,
+        connectWithContractUpdate,
+        current_focus,
+        error_message_alignment,
+        getContractById,
+        onMouseLeave,
+        removeToast,
+        setCurrentFocus,
+    };
+
     let card_body;
 
     if (is_multiplier) {
         card_body = (
             <MultiplierCardBody
-                addToast={addToast}
-                connectWithContractUpdate={connectWithContractUpdate}
                 contract_info={contract_info}
                 contract_update={contract_update}
                 currency={currency}
-                current_focus={current_focus}
-                error_message_alignment={error_message_alignment}
                 getCardLabels={getCardLabels}
-                getContractById={getContractById}
                 has_progress_slider={has_progress_slider}
                 progress_slider={progress_slider_mobile_el}
                 is_mobile={is_mobile}
                 is_sold={is_sold}
-                onMouseLeave={onMouseLeave}
                 status={status}
-                removeToast={removeToast}
-                setCurrentFocus={setCurrentFocus}
                 should_show_cancellation_warning={should_show_cancellation_warning}
                 toggleCancellationWarning={toggleCancellationWarning}
+                {...toggle_card_dialog_props}
             />
         );
     } else if (is_accumulator) {
         card_body = (
             <AccumulatorCardBody
-                addToast={addToast}
-                connectWithContractUpdate={connectWithContractUpdate}
                 contract_info={contract_info}
                 contract_update={contract_update}
                 currency={currency}
-                current_focus={current_focus}
-                error_message_alignment={error_message_alignment}
                 getCardLabels={getCardLabels}
-                getContractById={getContractById}
                 indicative={indicative}
                 is_sold={is_sold}
-                onMouseLeave={onMouseLeave}
                 status={status}
-                removeToast={removeToast}
-                setCurrentFocus={setCurrentFocus}
                 is_positions={is_positions}
+                {...toggle_card_dialog_props}
+            />
+        );
+    } else if (is_turbos) {
+        card_body = (
+            <TurbosCardBody
+                contract_info={contract_info}
+                contract_update={contract_update}
+                currency={currency}
+                getCardLabels={getCardLabels}
+                is_sold={is_sold}
+                status={status}
+                progress_slider_mobile_el={progress_slider_mobile_el}
+                {...toggle_card_dialog_props}
             />
         );
     } else if (is_vanilla) {
@@ -209,7 +221,7 @@ const ContractCardBody = ({
             <MobileWrapper>
                 <div
                     className={classNames('dc-contract-card__separatorclass', {
-                        'dc-contract-card__body-wrapper': !is_multiplier,
+                        'dc-contract-card__body-wrapper': !is_multiplier && !is_turbos,
                     })}
                 >
                     {card_body}

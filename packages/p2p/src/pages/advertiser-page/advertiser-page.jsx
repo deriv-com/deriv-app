@@ -22,10 +22,11 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store, general_store, my_profile_store } = useStores();
     const { showModal, useRegisterModalProps } = useModalManagerContext();
+    const { advertiser_details_name, advertiser_details_id, counterparty_advertiser_info } = advertiser_page_store;
 
-    const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
+    const is_my_advert = advertiser_details_id === general_store.advertiser_id;
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
-    const info = is_my_advert ? general_store.advertiser_info : advertiser_page_store.counterparty_advertiser_info;
+    const info = is_my_advert ? general_store.advertiser_info : counterparty_advertiser_info;
 
     const history = useHistory();
 
@@ -46,23 +47,75 @@ const AdvertiserPage = () => {
         sell_orders_count,
     } = info;
 
-    const nickname = advertiser_page_store.advertiser_details_name ?? name;
-
+    const joined_since = daysSince(created_time);
+    const nickname = advertiser_details_name ?? name;
     // rating_average_decimal converts rating_average to 1 d.p number
     const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
-    const joined_since = daysSince(created_time);
 
     React.useEffect(() => {
         advertiser_page_store.onMount();
         advertiser_page_store.setIsDropdownMenuVisible(false);
         advertiser_page_store.onTabChange();
 
+        const disposeCounterpartyAdvertiserIdReaction = reaction(
+            () => [general_store.counterparty_advertiser_id, general_store.is_advertiser_info_subscribed],
+            () => {
+                // DO NOT REMOVE. This fixes reload on advertiser page routing issue
+                advertiser_page_store.onAdvertiserIdUpdate();
+            },
+            { fireImmediately: true }
+        );
+
         return () => {
+            disposeCounterpartyAdvertiserIdReaction();
             advertiser_page_store.onUnmount();
         };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    // React.useEffect(() => {
+    //     const disposeBlockUnblockUserErrorReaction = reaction(
+    //         () => [advertiser_page_store.active_index, general_store.block_unblock_user_error],
+    //         () => {
+    //             advertiser_page_store.onTabChange();
+    //             if (general_store.block_unblock_user_error) {
+    //                 showModal({
+    //                     key: 'ErrorModal',
+    //                     props: {
+    //                         error_message:
+    //                             general_store.error_code === api_error_codes.INVALID_ADVERTISER_ID
+    //                                 ? error_message()
+    //                                 : general_store.block_unblock_user_error,
+    //                         error_modal_button_text: localize('Got it'),
+    //                         error_modal_title:
+    //                             general_store.error_code === api_error_codes.INVALID_ADVERTISER_ID
+    //                                 ? localize('{{name}} is no longer on Deriv P2P', {
+    //                                       name: nickname,
+    //                                   })
+    //                                 : localize('Unable to block advertiser'),
+    //                         has_close_icon: false,
+    //                         onClose: () => {
+    //                             buy_sell_store.hideAdvertiserPage();
+    //                             history.push(general_store.active_tab_route);
+    //                             if (general_store.active_index !== 0)
+    //                                 my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
+    //                             advertiser_page_store.onCancel();
+    //                             general_store.setBlockUnblockUserError('');
+    //                             hideModal();
+    //                         },
+    //                         width: isMobile() ? '90rem' : '40rem',
+    //                     },
+    //                 });
+    //             }
+    //         },
+    //         { fireImmediately: true }
+    //     );
+
+    //     return () => {
+    //         disposeBlockUnblockUserErrorReaction();
+    //     };
+    // }, [advertiser_details_name, counterparty_advertiser_info]);
 
     useRegisterModalProps({
         key: 'BlockUserModal',

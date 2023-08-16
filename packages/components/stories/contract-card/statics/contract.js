@@ -2,6 +2,7 @@ import { localize } from '@deriv/translations';
 
 export const getCardLabels = () => ({
     APPLY: 'Apply',
+    BARRIER: 'Barrier:',
     STAKE: 'Stake:',
     CLOSE: 'Close',
     CANCEL: 'Cancel',
@@ -171,14 +172,6 @@ export const getUnsupportedContracts = () => ({
         name: 'Spread Down',
         position: 'bottom',
     },
-    RUNHIGH: {
-        name: 'Only Ups',
-        position: 'top',
-    },
-    RUNLOW: {
-        name: 'Only Downs',
-        position: 'bottom',
-    },
 });
 
 export const getSupportedContracts = is_high_low => ({
@@ -241,6 +234,24 @@ export const getSupportedContracts = is_high_low => ({
     },
     MULTDOWN: {
         name: 'Down',
+        position: 'bottom',
+    },
+    TURBOSLONG: {
+        button_name: 'Long',
+        name: 'Turbos',
+        position: 'top',
+    },
+    TURBOSSHORT: {
+        button_name: 'Short',
+        name: 'Turbos',
+        position: 'bottom',
+    },
+    RUNHIGH: {
+        name: 'Only Ups',
+        position: 'top',
+    },
+    RUNLOW: {
+        name: 'Only Downs',
         position: 'bottom',
     },
 });

@@ -174,7 +174,7 @@ const CryptoWithdrawReceipt = observer(() => {
                     primary
                 />
             </div>
-            {isMobile() && isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
+            {isMobile() && isCryptocurrency(currency) ? <RecentTransaction /> : null}
         </div>
     );
 });

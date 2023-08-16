@@ -67,7 +67,7 @@ const App = () => {
         // Redirect back to /p2p, this was implemented for the mobile team. Do not remove.
         if (/\/verification$/.test(location.pathname)) {
             localStorage.setItem('is_verifying_p2p', true);
-            history.push(routes.cashier_p2p);
+            history.push(routes.p2p_my_ads);
         }
 
         ServerTime.init(general_store.server_time);

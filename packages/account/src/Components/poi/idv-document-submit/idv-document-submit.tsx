@@ -1,16 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Button } from '@deriv/components';
 import { Formik } from 'formik';
 import { localize } from '@deriv/translations';
 import {
     WS,
-    IDV_NOT_APPLICABLE_OPTION,
+    getIDVNotApplicableOption,
     toMoment,
     filterObjProperties,
     isDesktop,
     removeEmptyPropertiesFromObject,
+    formatIDVFormValues,
 } from '@deriv/shared';
 import { documentAdditionalError, getRegex, validate, makeSettingsRequest, validateName } from 'Helpers/utils';
 import FormFooter from 'Components/form-footer';
@@ -18,6 +18,17 @@ import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import IDVForm from 'Components/forms/idv-form';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
 import FormSubHeader from 'Components/form-sub-header';
+import { GetSettings, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
+import { TIDVFormValues, TInputFieldValues, TDocumentList } from 'Types';
+
+type TIDVDocumentSubmitProps = {
+    account_settings: GetSettings;
+    getChangeableFields: () => Array<string>;
+    handleBack: React.MouseEventHandler;
+    handleViewComplete: () => void;
+    is_from_external: boolean;
+    selected_country: ResidenceList[0];
+};
 
 const IdvDocumentSubmit = ({
     handleBack,
@@ -26,7 +37,7 @@ const IdvDocumentSubmit = ({
     is_from_external,
     account_settings,
     getChangeableFields,
-}) => {
+}: TIDVDocumentSubmitProps) => {
     const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
     const form_initial_values = filterObjProperties(account_settings, visible_settings) || {};
 
@@ -48,20 +59,21 @@ const IdvDocumentSubmit = ({
         ...form_initial_values,
     };
 
-    const getExampleFormat = example_format => {
+    const getExampleFormat = (example_format: string) => {
         return example_format ? localize('Example: ') + example_format : '';
     };
+    const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
 
-    const shouldHideHelperImage = document_id => document_id === IDV_NOT_APPLICABLE_OPTION.id;
+    const shouldHideHelperImage = (document_id: string) => document_id === IDV_NOT_APPLICABLE_OPTION.id;
 
-    const isDocumentTypeValid = document_type => {
+    const isDocumentTypeValid = (document_type: TDocumentList) => {
         if (!document_type?.text) {
             return localize('Please select a document type.');
         }
         return undefined;
     };
 
-    const isAdditionalDocumentValid = (document_type, document_additional) => {
+    const isAdditionalDocumentValid = (document_type: TDocumentList, document_additional: string) => {
         const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
         if (error_message) {
             return localize(error_message) + getExampleFormat(document_type.additional?.example_format);
@@ -69,7 +81,7 @@ const IdvDocumentSubmit = ({
         return undefined;
     };
 
-    const isDocumentNumberValid = (document_number, document_type) => {
+    const isDocumentNumberValid = (document_number: string, document_type: Required<TDocumentList>) => {
         const is_document_number_invalid = document_number === document_type.example_format;
         if (!document_number) {
             return localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
@@ -83,8 +95,8 @@ const IdvDocumentSubmit = ({
         return undefined;
     };
 
-    const validateFields = values => {
-        const errors = {};
+    const validateFields = (values: TIDVFormValues) => {
+        const errors: Partial<TInputFieldValues> = {};
         const { document_type, document_number, document_additional } = values;
         const needs_additional_document = !!document_type.additional;
 
@@ -127,25 +139,22 @@ const IdvDocumentSubmit = ({
             setSubmitting(false);
             return;
         }
+
         const submit_data = {
             identity_verification_document_add: 1,
-            document_number: values.document_number,
-            document_additional: values.document_additional || '',
-            document_type: values.document_type.id,
-            issuing_country: selected_country.value,
+            ...formatIDVFormValues(values, selected_country.value),
         };
 
-        if (submit_data.document_type === IDV_NOT_APPLICABLE_OPTION.id) {
-            return;
-        }
-        WS.send(submit_data).then(response => {
-            setSubmitting(false);
-            if (response.error) {
-                setErrors({ error_message: response.error.message });
-                return;
+        WS.send(submit_data).then(
+            (response: IdentityVerificationAddDocumentResponse & { error: { message: string } }) => {
+                setSubmitting(false);
+                if (response.error) {
+                    setErrors({ error_message: response.error.message });
+                    return;
+                }
+                handleViewComplete();
             }
-            handleViewComplete();
-        });
+        );
     };
 
     return (
@@ -223,15 +232,6 @@ const IdvDocumentSubmit = ({
             )}
         </Formik>
     );
-};
-
-IdvDocumentSubmit.propTypes = {
-    account_settings: PropTypes.object,
-    getChangeableFields: PropTypes.func,
-    handleBack: PropTypes.func,
-    handleViewComplete: PropTypes.func,
-    is_from_external: PropTypes.bool,
-    selected_country: PropTypes.object,
 };
 
 export default IdvDocumentSubmit;

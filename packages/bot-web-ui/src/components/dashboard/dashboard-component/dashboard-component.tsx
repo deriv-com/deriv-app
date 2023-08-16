@@ -70,12 +70,7 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                     'tab__dashboard--tour-active': has_started_onboarding_tour,
                 })}
             >
-                <div
-                    className={classNames('tab__dashboard__content', {
-                        'tab__dashboard__content--listed': !is_mobile && has_dashboard_strategies,
-                        'tab__dashboard__content--not-listed': !has_dashboard_strategies,
-                    })}
-                >
+                <div className='tab__dashboard__content'>
                     <div
                         className={classNames('tab__dashboard__centered', {
                             'tab__dashboard__centered--listed': !is_mobile && has_dashboard_strategies,

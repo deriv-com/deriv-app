@@ -2,9 +2,9 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ServicesErrorModal from '../services-error-modal';
 
-jest.mock('../authorization-required-modal.jsx', () => jest.fn(() => 'AuthorizationRequiredModal'));
-jest.mock('../insufficient-balance-modal.jsx', () => jest.fn(() => 'InsufficientBalanceModal'));
-jest.mock('../company-wide-limit-exceeded-modal.jsx', () => jest.fn(() => 'CompanyWideLimitExceededModal'));
+jest.mock('../authorization-required-modal', () => jest.fn(() => 'AuthorizationRequiredModal'));
+jest.mock('../insufficient-balance-modal', () => jest.fn(() => 'InsufficientBalanceModal'));
+jest.mock('../company-wide-limit-exceeded-modal', () => jest.fn(() => 'CompanyWideLimitExceededModal'));
 jest.mock('../account-verification-required-modal', () => jest.fn(() => 'AccountVerificationRequiredModal'));
 type TModal = {
     (): JSX.Element;
@@ -26,6 +26,7 @@ describe('<ServicesErrorModal />', () => {
     const modal_props = {
         is_visible: true,
         onConfirm: jest.fn(),
+        is_logged_in: true,
     };
     it('Should return null if code or message is missing', () => {
         const services_error_mock = {
@@ -43,6 +44,7 @@ describe('<ServicesErrorModal />', () => {
         const services_error_mock = {
             code: 'AuthorizationRequired',
             message: 'AuthorizationRequired',
+            type: '',
         };
         render(<ServicesErrorModal services_error={services_error_mock} {...modal_props} is_logged_in />);
         expect(screen.getByText('AuthorizationRequiredModal')).toBeInTheDocument();
@@ -52,6 +54,7 @@ describe('<ServicesErrorModal />', () => {
         const services_error_mock = {
             code: 'InsufficientBalance',
             message: 'InsufficientBalance',
+            type: '',
         };
         render(<ServicesErrorModal services_error={services_error_mock} {...modal_props} is_virtual />);
         expect(screen.getByText('InsufficientBalanceModal')).toBeInTheDocument();
@@ -61,6 +64,7 @@ describe('<ServicesErrorModal />', () => {
         const services_error_mock = {
             code: 'CompanyWideLimitExceeded',
             message: 'CompanyWideLimitExceeded',
+            type: '',
         };
         render(<ServicesErrorModal services_error={services_error_mock} {...modal_props} />);
         expect(screen.getByText('CompanyWideLimitExceededModal')).toBeInTheDocument();
@@ -70,6 +74,7 @@ describe('<ServicesErrorModal />', () => {
         const services_error_mock = {
             code: 'PleaseAuthenticate',
             message: 'PleaseAuthenticate',
+            type: '',
         };
         render(<ServicesErrorModal services_error={services_error_mock} {...modal_props} />);
         expect(screen.getByText('AccountVerificationRequiredModal')).toBeInTheDocument();
@@ -80,6 +85,7 @@ describe('<ServicesErrorModal />', () => {
             code: 'Default Error',
             message: 'Default Error',
             title: 'Default Error',
+            type: '',
         };
         render(<ServicesErrorModal services_error={services_error_mock} {...modal_props} />);
         expect(screen.getByText('Modal')).toBeInTheDocument();

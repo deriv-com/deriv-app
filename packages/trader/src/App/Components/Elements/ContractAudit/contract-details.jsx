@@ -149,7 +149,6 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                         )}
                     </React.Fragment>
                 )}
-
                 <ContractAuditItem
                     id='dt_start_time_label'
                     icon={<Icon icon='IcContractStartTime' size={24} />}

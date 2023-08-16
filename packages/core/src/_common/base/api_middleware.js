@@ -1,3 +1,4 @@
+/* eslint-disable */
 class APIMiddleware {
     constructor(config) {
         this.config = config;
@@ -16,7 +17,24 @@ class APIMiddleware {
         return undefined;
     }
 
+    requestDataTransformer(args) {
+        if (args?.is_subscription) {
+            console.log(`${Object.keys(args.parsed_request)[0]}(subscribed)`);
+        }
+        console.time(args.req_id);
+        return args.parsed_request;
+    }
+
+    onSubscriptionResponse({ response }) {
+        console.log(`${response.msg_type}(subscribed)`);
+        console.timeEnd(response.req_id);
+    }
+
     sendIsCalled({ response_promise, args: [request, options = {}] }) {
+        options.callback = res => {
+            console.log(res.msg_type);
+            console.timeEnd(request.req_id);
+        };
         const promise = promiseRejectToResolve(response_promise);
 
         const key = requestToKey(request);

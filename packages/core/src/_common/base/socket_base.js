@@ -1,4 +1,5 @@
-const DerivAPIBasic = require('@deriv/deriv-api/dist/DerivAPIBasic');
+/* eslint-disable */
+const DerivAPIBasic = require('mock-deriv-api-impl/dist/DerivAPIBasic');
 const getAppId = require('@deriv/shared').getAppId;
 const getSocketURL = require('@deriv/shared').getSocketURL;
 const cloneObject = require('@deriv/shared').cloneObject;
@@ -64,6 +65,7 @@ const BinarySocketBase = (() => {
         if (isClose()) {
             is_disconnect_called = false;
             binary_socket = new WebSocket(getSocketUrl(language));
+
             deriv_api = new DerivAPIBasic({
                 connection: binary_socket,
                 storage: SocketCache,

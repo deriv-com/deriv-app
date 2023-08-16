@@ -1,15 +1,15 @@
 import React, { useMemo } from 'react';
+import { observer, useStore } from '@deriv/stores';
 import { AppLinkedWithWalletIcon, Text, WalletIcon } from '@deriv/components';
 import { getTradingAccountName, getWalletCurrencyIcon } from '@deriv/utils';
 import { useWalletTransactions } from '@deriv/hooks';
-import { useStore } from '@deriv/stores';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 
 type TCompletedTransaction = {
     transaction: ReturnType<typeof useWalletTransactions>['transactions'][number];
 };
 
-const CompletedTransaction = ({ transaction }: TCompletedTransaction) => {
+const CompletedTransaction = observer(({ transaction }: TCompletedTransaction) => {
     const {
         ui: { is_dark_mode_on, is_mobile },
     } = useStore();
@@ -127,14 +127,14 @@ const CompletedTransaction = ({ transaction }: TCompletedTransaction) => {
                     weight='lighter'
                     line_height={is_mobile ? 'm' : 's'}
                 >
-                    {localize('Balance: {{amount}} {{currency_code}}', {
-                        amount: formatAmount(balance_after),
-                        currency_code: account_currency_config?.code,
-                    })}
+                    <Localize
+                        i18n_default_text='Balance: {{amount}} {{currency_code}}'
+                        values={{ amount: formatAmount(balance_after), currency_code: account_currency_config?.code }}
+                    />
                 </Text>
             </div>
         </div>
     );
-};
+});
 
 export default CompletedTransaction;

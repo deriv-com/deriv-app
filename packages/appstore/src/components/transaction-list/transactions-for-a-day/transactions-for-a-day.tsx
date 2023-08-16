@@ -1,6 +1,6 @@
 import React from 'react';
+import { observer, useStore } from '@deriv/stores';
 import { Text } from '@deriv/components';
-import { useStore } from '@deriv/stores';
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
 import CompletedTransaction from '../completed-transaction';
 
@@ -9,7 +9,7 @@ type TTransactionsForADay = {
     transaction_list: ReturnType<typeof useWalletTransactions>['transactions'];
 };
 
-const TransactionsForADay = ({ day, transaction_list }: TTransactionsForADay) => {
+const TransactionsForADay = observer(({ day, transaction_list }: TTransactionsForADay) => {
     const {
         ui: { is_mobile },
     } = useStore();
@@ -40,6 +40,6 @@ const TransactionsForADay = ({ day, transaction_list }: TTransactionsForADay) =>
             })}
         </div>
     );
-};
+});
 
 export default TransactionsForADay;

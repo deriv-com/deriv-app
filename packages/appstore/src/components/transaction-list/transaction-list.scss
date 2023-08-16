@@ -10,7 +10,11 @@
         padding-top: 7.8rem;
 
         @include mobile() {
-            padding-top: 10.72rem;
+            padding-top: 7rem;
+
+            .crypto-list-scroll {
+                padding-top: 10.72rem;
+            }
         }
     }
 

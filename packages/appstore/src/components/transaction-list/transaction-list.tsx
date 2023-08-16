@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import { Div100vhContainer, Dropdown, Loading, Text, ThemedScrollbars, ToggleSwitch } from '@deriv/components';
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
@@ -123,7 +124,9 @@ const TransactionList = observer(({ contentScrollHandler, is_wallet_name_visible
                 />
             </div>
             <ThemedScrollbars
-                className='transaction-list__scroll'
+                className={classNames('transaction-list__scroll', {
+                    'crypto-list-scroll': wallet?.currency_config?.is_crypto,
+                })}
                 is_scrollbar_hidden={is_mobile}
                 onScroll={onScrollHandler}
             >

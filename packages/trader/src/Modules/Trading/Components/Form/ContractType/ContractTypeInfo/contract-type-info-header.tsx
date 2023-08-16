@@ -1,8 +1,13 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 
-const Header = ({ onClickGoBack, text_size = 's', title }) => (
+type THeader = {
+    onClickGoBack?: () => void;
+    text_size?: string;
+    title: string;
+};
+
+const Header = ({ onClickGoBack, text_size = 's', title }: THeader) => (
     <div className='contract-type-info__action-bar'>
         <span className='contract-type-info__icon' id='dt_contract_info_back_nav' onClick={onClickGoBack}>
             <Icon icon='IcArrowLeftBold' />
@@ -12,11 +17,5 @@ const Header = ({ onClickGoBack, text_size = 's', title }) => (
         </Text>
     </div>
 );
-
-Header.propTypes = {
-    onClickGoBack: PropTypes.func,
-    text_size: PropTypes.string,
-    title: PropTypes.string,
-};
 
 export default Header;

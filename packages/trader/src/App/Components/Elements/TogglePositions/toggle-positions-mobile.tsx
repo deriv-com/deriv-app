@@ -36,7 +36,7 @@ const TogglePositionsMobile = observer(
         let filtered_positions: TTogglePositionsMobile['all_positions'] = [];
 
         const closeModal = () => {
-            filtered_positions.slice(0, 5).map(position => {
+            filtered_positions?.slice(0, 5).map(position => {
                 const { contract_info } = position;
                 if (contract_info?.is_sold) {
                     onClickRemove(contract_info.contract_id as number);
@@ -45,7 +45,7 @@ const TogglePositionsMobile = observer(
             togglePositionsDrawer();
         };
 
-        filtered_positions = all_positions.filter(
+        filtered_positions = all_positions?.filter(
             p =>
                 p.contract_info &&
                 symbol === p.contract_info.underlying &&
@@ -57,7 +57,7 @@ const TogglePositionsMobile = observer(
         const body_content = (
             <React.Fragment>
                 <TransitionGroup component='div'>
-                    {filtered_positions.slice(0, 5).map(portfolio_position => (
+                    {filtered_positions?.slice(0, 5).map(portfolio_position => (
                         <CSSTransition
                             appear
                             key={portfolio_position.id}

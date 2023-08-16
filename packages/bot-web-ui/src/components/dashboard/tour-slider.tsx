@@ -49,7 +49,7 @@ const Accordion = ({ content_data, expanded = false, ...props }: TAccordion) => 
                         'dbot-accordion__content--open': is_open,
                     })}
                 >
-                    <Text as='span' size='xxs' line_height='s' color='colored-background'>
+                    <Text as='span' size='xxs' line_height='s'>
                         {localize(content)}
                     </Text>
                 </div>

@@ -7,13 +7,11 @@ import { config as dotenvConf } from 'dotenv';
  * https://github.com/motdotla/dotenv
  */
 dotenvConf();
-// globalSetup: process.env.CI ? undefined : require.resolve('./global-setup'),
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 const config: PlaywrightTestConfig = {
-    globalSetup: process.env.CI ? undefined : require.resolve('./global-setup'),
     testDir: './tests',
     /* Maximum time one test can run for. */
     timeout: 100 * 1000,
@@ -33,7 +31,7 @@ const config: PlaywrightTestConfig = {
     /* Opt out of parallel tests on CI. */
     workers: process.env.CI ? 1 : undefined,
     /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-    reporter: 'html',
+    // reporter: 'html',
     /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
     use: {
         storageState: '/tmp/storage-state.json',

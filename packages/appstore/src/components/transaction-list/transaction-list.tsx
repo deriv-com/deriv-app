@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { observer, useStore } from '@deriv/stores';
 import { Div100vhContainer, Dropdown, Loading, Text, ThemedScrollbars, ToggleSwitch } from '@deriv/components';
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
-import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { groupTransactionsByDay } from '@deriv/utils';
 import TransactionsForADay from './transactions-for-a-day';
@@ -12,7 +12,7 @@ type TTransactionList = {
     is_wallet_name_visible?: boolean;
 };
 
-const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTransactionList) => {
+const TransactionList = observer(({ contentScrollHandler, is_wallet_name_visible }: TTransactionList) => {
     const {
         ui: { is_mobile },
     } = useStore();
@@ -155,6 +155,6 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
             </ThemedScrollbars>
         </>
     );
-};
+});
 
 export default TransactionList;

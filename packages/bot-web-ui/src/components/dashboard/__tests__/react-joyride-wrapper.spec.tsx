@@ -46,7 +46,7 @@ describe('ReactJoyrideWrapper', () => {
         run: true,
     };
 
-    it('should render ReactJoyrideWrapper', async () => {
+    it('should render ReactJoyrideWrapper', () => {
         render(
             <StoreProvider store={mock_store}>
                 <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>

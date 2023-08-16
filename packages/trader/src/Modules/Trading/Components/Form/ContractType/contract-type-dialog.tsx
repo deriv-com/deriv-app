@@ -1,9 +1,20 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { Header } from './ContractTypeInfo';
 import { localize } from '@deriv/translations';
 import ContractTypeMenu from './ContractTypeMenu';
+
+type TContractTypeDialog = {
+    is_info_dialog_open: boolean;
+    onClose: React.ComponentProps<typeof MobileDialog>['onClose'];
+    is_open: boolean;
+};
+
+type TContractTypeDialogProps = Pick<
+    React.ComponentProps<typeof ContractTypeMenu>,
+    'selected' | 'categories' | 'onBackButtonClick' | 'onChangeInput' | 'onCategoryClick' | 'show_loading' | 'item'
+> &
+    TContractTypeDialog;
 
 const ContractTypeDialog = ({
     children,
@@ -11,16 +22,15 @@ const ContractTypeDialog = ({
     onClose,
     is_open,
     item,
-    list,
     selected,
     categories,
     onBackButtonClick,
     onChangeInput,
     onCategoryClick,
     show_loading,
-}) => {
+}: React.PropsWithChildren<TContractTypeDialogProps>) => {
     const current_mobile_title = is_info_dialog_open ? (
-        <Header title={item.text} onClickGoBack={onBackButtonClick} text_size='xs' />
+        <Header title={item?.text || ''} onClickGoBack={onBackButtonClick} text_size='xs' />
     ) : (
         localize('Trade types')
     );
@@ -32,7 +42,7 @@ const ContractTypeDialog = ({
                     portal_element_id='modal_root'
                     title={current_mobile_title}
                     header_classname='contract-type-widget__header'
-                    wrapper_classname='contracts-modal-list'
+                    wrapper_classname={is_info_dialog_open ? 'contracts-modal-info' : 'contracts-modal-list'}
                     visible={is_open}
                     onClose={onClose}
                     has_content_scroll={!is_info_dialog_open}
@@ -45,7 +55,6 @@ const ContractTypeDialog = ({
                     is_info_dialog_open={is_info_dialog_open}
                     is_open={is_open}
                     item={item}
-                    list={list}
                     selected={selected}
                     categories={categories}
                     onBackButtonClick={onBackButtonClick}
@@ -58,21 +67,6 @@ const ContractTypeDialog = ({
             </DesktopWrapper>
         </React.Fragment>
     );
-};
-
-ContractTypeDialog.propTypes = {
-    categories: PropTypes.array,
-    children: PropTypes.element,
-    is_info_dialog_open: PropTypes.bool,
-    is_open: PropTypes.bool,
-    item: PropTypes.object,
-    list: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-    onBackButtonClick: PropTypes.func,
-    onCategoryClick: PropTypes.func,
-    onChangeInput: PropTypes.func,
-    onClose: PropTypes.func,
-    selected: PropTypes.string,
-    show_loading: PropTypes.bool,
 };
 
 export default ContractTypeDialog;

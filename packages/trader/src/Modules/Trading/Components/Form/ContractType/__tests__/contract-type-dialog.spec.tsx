@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import ContractTypeDialog from '../contract-type-dialog.jsx';
+import ContractTypeDialog from '../contract-type-dialog';
 import { isMobile, isDesktop } from '@deriv/shared';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
@@ -13,10 +13,12 @@ const MockContractTypeDialog = () => (
     <ContractTypeDialog
         is_open
         categories={[]}
-        list={[
-            { contract_types: [{ value: 'first-value' }], label: 'first-item' },
-            { contract_types: [{ value: 'second-value' }], label: 'second-item' },
-        ]}
+        onClose={jest.fn()}
+        is_info_dialog_open={false}
+        item={{
+            text: 'test',
+            value: 'test',
+        }}
     >
         <div data-testid='dt_child' />
     </ContractTypeDialog>

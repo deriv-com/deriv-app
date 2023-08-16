@@ -22,11 +22,12 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
+import { useStatesList } from '@deriv/hooks';
 import { localize, Localize } from '@deriv/translations';
-import { getLocation, makeCancellablePromise, PlatformContext } from '@deriv/shared';
+import { getLocation } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import classNames from 'classnames';
-import { observer, useStore } from '@deriv/stores';
 import { FormInputField } from '../forms/form-fields';
 
 export type TAddressDetailFormProps = {
@@ -55,7 +56,6 @@ type TAddressDetails = {
     is_gb_residence: boolean | string;
     onSubmitEnabledChange: (is_submit_disabled: boolean) => void;
     selected_step_ref?: React.RefObject<FormikProps<TAddressDetailFormProps>>;
-    fetchStatesList: () => Promise<unknown>;
     value: TAddressDetailFormProps;
     disabled_items: string[];
     has_real_account: boolean;
@@ -69,23 +69,23 @@ type TAutoComplete = {
 /**
  * Component to display address details form
  * @name AddressDetails
- * @param {Function} getCurrentStep - function to get current step
- * @param {Function} onSave - function to save form values
- * @param {Function} onCancel - function to cancel form values
- * @param {Function} goToNextStep - function to go to next step
- * @param {Function} goToPreviousStep - function to go to previous step
- * @param {Function} validate - function to validate form values
- * @param {Function} onSubmit - function to submit form values
- * @param {boolean} is_svg - is broker code SVG
- * @param {boolean} is_mf - is broker code MF
- * @param {boolean} is_gb_residence - is residence Great Britan
- * @param {Function} onSubmitEnabledChange - function to change submit button status
- * @param {React.RefObject} selected_step_ref - reference to selected step
- * @param {Function} fetchStatesList - function to fetch states list
- * @param {Object} value - form values
- * @param {Array} disabled_items - array of disabled fields
- * @param {boolean} has_real_account - has real account
- * @returns {React.ReactNode} - returns react node
+ * @param getCurrentStep - function to get current step
+ * @param onSave - function to save form values
+ * @param onCancel - function to cancel form values
+ * @param goToNextStep - function to go to next step
+ * @param goToPreviousStep - function to go to previous step
+ * @param validate - function to validate form values
+ * @param onSubmit - function to submit form values
+ * @param is_svg - is broker code SVG
+ * @param is_mf - is broker code MF
+ * @param is_gb_residence - is residence Great Britan
+ * @param onSubmitEnabledChange - function to change submit button status
+ * @param selected_step_ref - reference to selected step
+ * @param fetchStatesList - function to fetch states list
+ * @param value - form values
+ * @param disabled_items - array of disabled fields
+ * @param as_real_account - has real account
+ * @returns react node
  */
 const AddressDetails = observer(
     ({
@@ -105,27 +105,12 @@ const AddressDetails = observer(
         has_real_account,
         ...props
     }: TAddressDetails) => {
-        const [has_fetched_states_list, setHasFetchedStatesList] = React.useState(false);
         const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
 
-        const { client, ui } = useStore();
+        const { ui } = useStore();
 
-        const { states_list, fetchStatesList } = client;
         const { is_desktop, is_mobile } = ui;
-
-        React.useEffect(() => {
-            const { cancel, promise } = makeCancellablePromise(fetchStatesList());
-            promise.then(() => {
-                setHasFetchedStatesList(true);
-                if (props.value.address_state) {
-                    setAddressStateToDisplay(getLocation(states_list, props.value.address_state, 'text'));
-                }
-            });
-            return () => {
-                setHasFetchedStatesList(false);
-                cancel();
-            };
-        }, []);
+        const { data: states_list, isFetched } = useStatesList();
 
         const is_submit_disabled_ref = React.useRef<boolean | undefined>(true);
 
@@ -243,7 +228,7 @@ const AddressDetails = observer(
                                                     (props.value?.address_city && has_real_account)
                                                 }
                                             />
-                                            {!has_fetched_states_list && (
+                                            {!isFetched && (
                                                 <div className='details-form__loader'>
                                                     <Loading is_fullscreen={false} />
                                                 </div>

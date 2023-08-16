@@ -4,6 +4,7 @@ import AddressDetails, { TAddressDetailFormProps } from '../address-details';
 import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import { FormikProps } from 'formik';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { useStatesList } from '@deriv/hooks';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -18,6 +19,11 @@ jest.mock('../../real-account-signup/helpers/utils.ts', () => ({
         errors: {},
         warnings: {},
     })),
+}));
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useStatesList: jest.fn(() => ({ data: [], isFetched: true })),
 }));
 
 describe('<AddressDetails/>', () => {
@@ -37,7 +43,6 @@ describe('<AddressDetails/>', () => {
     let modal_root_el: HTMLDivElement;
 
     const mock_props: React.ComponentProps<typeof AddressDetails> = {
-        fetchStatesList: jest.fn(() => Promise.resolve([])),
         getCurrentStep: jest.fn(),
         goToNextStep: jest.fn(),
         goToPreviousStep: jest.fn(),
@@ -216,15 +221,15 @@ describe('<AddressDetails/>', () => {
     it('should render AddressDetails component with states_list for mobile', async () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
+        (useStatesList as jest.Mock).mockReturnValue({
+            data: [
+                { text: 'State 1', value: 'State 1' },
+                { text: 'State 2', value: 'State 2' },
+            ],
+            isFetched: true,
+        });
         const new_store_config = {
             ...store,
-            client: {
-                ...store.client,
-                states_list: [
-                    { text: 'State 1', value: 'State 1' },
-                    { text: 'State 2', value: 'State 2' },
-                ],
-            },
             ui: {
                 ...store.ui,
                 is_mobile: true,
@@ -242,17 +247,14 @@ describe('<AddressDetails/>', () => {
     });
 
     it('should render AddressDetails component with states_list for desktop', async () => {
-        const new_store_config = {
-            ...store,
-            client: {
-                ...store.client,
-                states_list: [
-                    { text: 'State 1', value: 'State 1' },
-                    { text: 'State 2', value: 'State 2' },
-                ],
-            },
-        };
-        renderComponent({ store_config: new_store_config });
+        (useStatesList as jest.Mock).mockReturnValue({
+            data: [
+                { text: 'State 1', value: 'State 1' },
+                { text: 'State 2', value: 'State 2' },
+            ],
+            isFetched: true,
+        });
+        renderComponent({});
 
         const address_state_input: HTMLTextAreaElement = screen.getByRole('textbox', { name: 'State/Province' });
         expect(address_state_input).toHaveValue('Default test state');

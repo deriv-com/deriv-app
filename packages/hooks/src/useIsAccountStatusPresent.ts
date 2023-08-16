@@ -48,7 +48,13 @@ const AccountStatusList = [
 
 type TAccountStatus = typeof AccountStatusList[number];
 
-export const useIsAccountStatusPresent = (status: TAccountStatus) => {
+/**
+ * Custom hook to check if a particular account status is present.
+ * @name useIsAccountStatusPresent
+ * @param status of the account to check
+ * @returns boolean
+ */
+const useIsAccountStatusPresent = (status: TAccountStatus) => {
     const {
         client: { account_status },
     } = useStore();
@@ -57,3 +63,5 @@ export const useIsAccountStatusPresent = (status: TAccountStatus) => {
 
     return React.useMemo(() => status_list?.includes(status) ?? false, [status_list, status]);
 };
+
+export default useIsAccountStatusPresent;

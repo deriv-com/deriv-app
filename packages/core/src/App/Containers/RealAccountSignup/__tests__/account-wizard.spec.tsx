@@ -3,6 +3,7 @@ import { WS } from '@deriv/shared';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AccountWizard from '../account-wizard';
+import { mockStore, StoreProvider } from '@deriv/stores';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -39,6 +40,12 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 const mock_form_data = { name: 'Test', document_number: 'none', document_type: { id: 'none' } };
+
+const mock = mockStore({
+    client: {
+        trading_platform_available_accounts: [],
+    },
+});
 
 const Test = ({ onSubmit }) => (
     <div>
@@ -188,26 +195,42 @@ describe('<AccountWizard />', () => {
     };
 
     it('should render AccountWizard component', () => {
-        render(<AccountWizard {...mock_props} />);
+        render(
+            <StoreProvider store={mock}>
+                <AccountWizard {...mock_props} />
+            </StoreProvider>
+        );
         expect(screen.getByTestId('dt_wizard')).toBeInTheDocument();
         expect(screen.getByText('TestComponent')).toBeInTheDocument();
     });
 
     it('should fetch ResidenceList if ResidenceList is empty ', () => {
-        render(<AccountWizard {...mock_props} residence_list={[]} />);
+        render(
+            <StoreProvider store={mock}>
+                <AccountWizard {...mock_props} residence_list={[]} />
+            </StoreProvider>
+        );
         expect(mock_props.fetchResidenceList).toBeCalledTimes(1);
         expect(screen.getByTestId('dt_wizard')).toBeInTheDocument();
         expect(screen.getByText('TestComponent')).toBeInTheDocument();
     });
 
     it('should fetch StatesList if StatesList is empty ', () => {
-        render(<AccountWizard {...mock_props} states_list={[]} />);
+        render(
+            <StoreProvider store={mock}>
+                <AccountWizard {...mock_props} states_list={[]} />
+            </StoreProvider>
+        );
         expect(mock_props.fetchStatesList).toBeCalledTimes(1);
         expect(screen.getByText('TestComponent')).toBeInTheDocument();
     });
 
     it('should invoke Create account and IDV data submission APIs on click of Submit button', async () => {
-        render(<AccountWizard {...mock_props} />);
+        render(
+            <StoreProvider store={mock}>
+                <AccountWizard {...mock_props} />
+            </StoreProvider>
+        );
         const ele_submit_btn = screen.getByRole('button', { name: 'Submit' });
         await waitFor(() => {
             userEvent.click(ele_submit_btn);

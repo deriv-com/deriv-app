@@ -299,7 +299,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             setCurrentFocus: jest.fn(),
             toggleAccountsDialog: jest.fn(),
             toggleCashier: jest.fn(),
-            togglePositionsDrawer: jest.fn(),
             setDarkMode: jest.fn(),
             setReportsTabIndex: jest.fn(),
             has_only_forward_starting_contracts: false,

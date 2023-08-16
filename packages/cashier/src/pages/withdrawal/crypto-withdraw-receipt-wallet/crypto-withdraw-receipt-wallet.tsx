@@ -6,17 +6,6 @@ import './crypto-withdraw-receipt-wallet.scss';
 import { Localize, localize } from '@deriv/translations';
 import { useActiveWallet } from '@deriv/hooks';
 
-// Demo
-type TWallet = {
-    balance: string;
-    currency: string;
-    icon: string;
-    icon_type: 'fiat' | 'crypto' | 'app' | 'demo';
-    jurisdiction_title: string;
-    name: string;
-    gradient_class: string;
-};
-
 const CryptoWithdrawReceiptWallet = observer(() => {
     const active_wallet = useActiveWallet();
     const { client, ui, traders_hub } = useStore();
@@ -34,8 +23,7 @@ const CryptoWithdrawReceiptWallet = observer(() => {
         resetWithdrawForm();
     };
 
-    // Demo Purpose
-    const wallet: TWallet = {
+    const wallet: React.ComponentProps<typeof WalletCard>['wallet'] = {
         balance: `-${withdraw_amount}`,
         currency: active_wallet?.currency || '',
         icon: active_wallet?.icon || '',

@@ -357,6 +357,7 @@ type TClientStore = {
     has_residence: boolean;
     is_authorize: boolean;
     is_financial_account: boolean;
+    is_financial_assessment_needed: boolean;
     is_financial_information_incomplete: boolean;
     is_identity_verification_needed: boolean;
     is_landing_company_loaded: boolean;
@@ -540,6 +541,7 @@ type TUiStore = {
     is_app_disabled: boolean;
     is_link_expired_modal_visible: boolean;
     is_mobile: boolean;
+    is_positions_drawer_on: boolean;
     is_services_error_visible: boolean;
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
@@ -559,6 +561,7 @@ type TUiStore = {
     toggleCashier: () => void;
     toggleLanguageSettingsModal: () => void;
     toggleLinkExpiredModal: (state_change: boolean) => void;
+    togglePositionsDrawer: () => void;
     toggleReadyToDepositModal: () => void;
     toggleSetCurrencyModal: () => void;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
@@ -725,6 +728,7 @@ type TTradersHubStore = {
     is_demo_low_risk: boolean;
     is_mt5_notification_modal_visible: boolean;
     setMT5NotificationModal: (value: boolean) => void;
+    available_derivez_accounts: DetailsOfEachMT5Loginid[];
 };
 
 /**

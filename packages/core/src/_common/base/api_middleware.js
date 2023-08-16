@@ -18,9 +18,6 @@ class APIMiddleware {
     }
 
     requestDataTransformer(args) {
-        if (args?.is_subscription) {
-            console.log(`${Object.keys(args.parsed_request)[0]}(subscribed)`);
-        }
         console.time(args.req_id);
         return args.parsed_request;
     }

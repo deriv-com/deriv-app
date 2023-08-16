@@ -104,7 +104,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
 
     const [is_submit_success, setIsSubmitSuccess] = useStateCallback(false);
-    const { client, notifications, ui, common } = useStore();
+    const { client, notifications, common } = useStore();
 
     const {
         authentication_status,
@@ -132,7 +132,6 @@ export const PersonalDetailsForm = observer(({ history }) => {
         showPOAAddressMismatchFailureNotification,
     } = notifications;
 
-    const { Notifications } = ui;
     const { is_language_changing } = common;
     const is_mf = landing_company_shortcode === 'maltainvest';
     const has_poa_address_mismatch = account_status.status?.includes('poa_address_mismatch');
@@ -561,7 +560,6 @@ export const PersonalDetailsForm = observer(({ history }) => {
                 dirty,
             }) => (
                 <React.Fragment>
-                    {Notifications && <Notifications />}
                     <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                     {show_form && (
                         <Form

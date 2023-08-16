@@ -37,6 +37,12 @@
 
     &__container {
         @include desktop {
+            height: calc(80vh - 15rem);
+
+            &--has-footer {
+                height: calc(80vh - 15rem);
+            }
+
             > * {
                 height: 100%;
                 margin-top: 0.8rem;
@@ -44,6 +50,12 @@
         }
 
         @include tablet {
+            height: calc(80vh - 15rem);
+
+            &--has-footer {
+                height: calc(80vh - 15rem);
+            }
+
             > * {
                 height: 100%;
                 margin-top: 0.8rem;
@@ -105,9 +117,6 @@
         border-radius: $BORDER_RADIUS;
         border: solid 1px var(--border-normal);
         height: calc(100vh - 32.4rem);
-        @include mobile {
-            height: calc(100vh - 26.4rem);
-        }
         position: relative;
         overflow: hidden;
         margin: 0 1.6rem 1.6rem 0;
@@ -148,9 +157,10 @@
             &__list {
                 overflow: auto;
                 width: 100%;
-                height: calc(100vh - 55.5rem);
+                height: calc(100vh - 56rem);
                 @include mobile {
                     height: calc(100vh - 46rem);
+                    padding-bottom: 5rem;
                 }
             }
         }
@@ -443,11 +453,8 @@
                 justify-content: center;
                 border: dashed 0.2rem var(--border-normal);
                 border-radius: $BORDER_RADIUS;
+                height: 100%;
                 padding: 1.6rem;
-                height: calc(80vh - 17rem);
-                @include mobile {
-                    height: calc(100vh - 15rem);
-                }
             }
         }
 
@@ -471,6 +478,7 @@
             position: relative;
 
             @include mobile {
+                padding: 1.6rem;
                 height: calc(100% - 7.4rem); // - footer height
                 &--active {
                     height: calc(70% - 7.4rem);
@@ -610,7 +618,7 @@
 
                     .injectionDiv {
                         margin: 2.4rem;
-                        height: calc(100vh - 22.5rem);
+                        height: calc(100vh - 26.5rem);
                         border: 1px solid $color-grey-6;
                     }
 

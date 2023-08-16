@@ -94,18 +94,20 @@ const TransactionList = observer(({ contentScrollHandler, is_wallet_name_visible
     return (
         <>
             <div className='transaction-list__filter__wrapper transaction-list__container'>
-                <div className='transaction-list__toggle__container'>
-                    <Text className='transaction-list__toggle__label'>{localize('Pending transactions')}</Text>
-                    <ToggleSwitch
-                        classNameLabel='transaction-list__toggle__label'
-                        id='toggle-pending-crypto-transactions'
-                        is_enabled={should_show_pending_crypto_transactions}
-                        handleToggle={() => {
-                            if (filter === 'transfer') setFilter('');
-                            setShouldShowPendingCryptoTransactions(prev => !prev);
-                        }}
-                    />
-                </div>
+                {wallet?.currency_config?.is_crypto && (
+                    <div className='transaction-list__toggle__container'>
+                        <Text className='transaction-list__toggle__label'>{localize('Pending transactions')}</Text>
+                        <ToggleSwitch
+                            classNameLabel='transaction-list__toggle__label'
+                            id='toggle-pending-crypto-transactions'
+                            is_enabled={should_show_pending_crypto_transactions}
+                            handleToggle={() => {
+                                if (filter === 'transfer') setFilter('');
+                                setShouldShowPendingCryptoTransactions(prev => !prev);
+                            }}
+                        />
+                    </div>
+                )}
                 <Dropdown
                     key={should_show_pending_crypto_transactions}
                     className='transaction-list__filter'

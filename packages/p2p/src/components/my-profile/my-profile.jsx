@@ -24,7 +24,11 @@ const MyProfile = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (isEmptyObject(general_store.advertiser_info) && !general_store.should_show_dp2p_blocked) {
+    if (
+        isEmptyObject(general_store.advertiser_info) &&
+        !general_store.poi_status &&
+        !general_store.should_show_dp2p_blocked
+    ) {
         return <Loading is_fullscreen={false} />;
     }
 

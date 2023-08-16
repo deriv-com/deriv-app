@@ -12,7 +12,7 @@ const useStatesList = (country: string) => {
         payload: { states_list: country },
     });
 
-    return { data: data?.states_list ?? [], ...rest };
+    return { ...rest, data: data?.states_list ?? [] };
 };
 
 export default useStatesList;

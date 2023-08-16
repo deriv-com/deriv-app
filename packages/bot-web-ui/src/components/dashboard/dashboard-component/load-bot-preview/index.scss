@@ -158,6 +158,9 @@
                 overflow: auto;
                 width: 100%;
                 height: calc(100vh - 57rem);
+                @include mobile {
+                    height: calc(100vh - 46rem);
+                }
             }
         }
 

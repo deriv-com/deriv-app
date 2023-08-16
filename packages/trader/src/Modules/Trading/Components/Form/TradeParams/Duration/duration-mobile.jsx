@@ -2,9 +2,9 @@ import React from 'react';
 import { Tabs, TickPicker, Numpad, RelativeDatepicker, Text } from '@deriv/components';
 import { isEmptyObject, addComma, getDurationMinMaxValues } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
+//import moment from 'moment';
 
 const submit_label = localize('OK');
 
@@ -167,10 +167,18 @@ const Numbers = observer(
         };
 
         const setExpiryDate = (epoch, duration) => {
-            let expiry_date = new Date((epoch - trade_duration * 24 * 60 * 60) * 1000);
-
-            if (duration) {
-                expiry_date = new Date(expiry_date.getTime() + duration * 24 * 60 * 60 * 1000);
+            let expiry_date;
+            if (trade_duration_unit !== 'd') {
+                const expiry_day = new Date().getUTCDate() + Number(duration);
+                const current_month = new Date().getUTCMonth();
+                const curent_year = new Date().getUTCFullYear();
+                expiry_date = new Date(curent_year, current_month, expiry_day, 23, 59, 59);
+                expiry_date.setUTCHours(23);
+            } else {
+                expiry_date = new Date((epoch - trade_duration * 24 * 60 * 60) * 1000);
+                if (duration) {
+                    expiry_date = new Date(expiry_date.getTime() + duration * 24 * 60 * 60 * 1000);
+                }
             }
 
             return expiry_date
@@ -235,13 +243,7 @@ const Duration = observer(
         t_duration,
         toggleModal,
     }) => {
-        const {
-            duration_units_list,
-            duration_min_max,
-            duration_unit,
-            basis: trade_basis,
-            onChangeMultiple,
-        } = useTraderStore();
+        const { duration_units_list, duration_min_max, duration_unit, basis: trade_basis } = useTraderStore();
         const duration_values = {
             t_duration,
             s_duration,
@@ -253,13 +255,7 @@ const Duration = observer(
         const active_index = has_selected_tab_idx
             ? duration_tab_idx
             : duration_units_list.findIndex(d => d.value === duration_unit);
-        // console.log('active_index', active_index);
-        // if (active_index !== 2) {
-        //     onChangeMultiple({
-        //         duration_unit: 'd',
-        //         duration: d_duration,
-        //     });
-        // }
+
         const [min, max] = getDurationMinMaxValues(duration_min_max, 'daily', 'd');
         const handleRelativeChange = date => {
             setSelectedDuration('d', date);
@@ -277,19 +273,6 @@ const Duration = observer(
             setDurationTabIdx(index);
             const { value: unit } = duration_units_list[index];
             setSelectedDuration(unit, duration_values[`${unit}_duration`]);
-
-            if (unit === 'd') {
-                onChangeMultiple({
-                    duration_unit: unit,
-                    duration: d_duration,
-                });
-
-                // const on_change_obj = {};
-                // on_change_obj.duration_unit = unit;
-                // on_change_obj.duration = d_duration;
-                // on_change_obj.expiry_type = 'duration';
-                // onChangeMultiple(on_change_obj);
-            }
         };
 
         return (

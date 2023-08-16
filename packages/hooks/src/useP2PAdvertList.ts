@@ -1,20 +1,21 @@
 import React from 'react';
-import { useFetch, useInvalidateQuery } from '@deriv/api';
+import { useFetch } from '@deriv/api';
 import useExchangeRate from './useExchangeRate';
 
 /**
  * This custom hook returns available adverts for use with 'p2p_order_create' by calling 'p2p_advert_list' endpoint
+ * @return {object} p2p_advert_list
  */
 const useP2PAdvertList = () => {
     const { getRate } = useExchangeRate();
-    const invalidate = useInvalidateQuery();
     const { data, ...rest } = useFetch('p2p_advert_list');
 
-    // Add additional information to the 'p2p_advert_list' data!
+    // Add additional information to the 'p2p_advert_list' data
     const modified_data = React.useMemo(() => {
         const advert_list = data?.p2p_advert_list?.list;
 
         if (!advert_list) return undefined;
+
         return advert_list.map(advert => ({
             ...advert,
             /** Conversion rate from account currency to local currency, using current market rate if applicable. */
@@ -25,10 +26,6 @@ const useP2PAdvertList = () => {
             created_time: new Date(advert.created_time),
         }));
     }, [data?.p2p_advert_list?.list, getRate]);
-
-    React.useEffect(() => {
-        invalidate('p2p_advert_list');
-    }, [invalidate]);
 
     return {
         /** The 'p2p_advert_list' response. */

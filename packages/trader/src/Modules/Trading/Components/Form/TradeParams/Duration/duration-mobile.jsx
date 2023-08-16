@@ -4,7 +4,7 @@ import { isEmptyObject, addComma, getDurationMinMaxValues } from '@deriv/shared'
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-//import moment from 'moment';
+import moment from 'moment';
 
 const submit_label = localize('OK');
 
@@ -167,18 +167,12 @@ const Numbers = observer(
         };
 
         const setExpiryDate = (epoch, duration) => {
-            let expiry_date;
             if (trade_duration_unit !== 'd') {
-                const expiry_day = new Date().getUTCDate() + Number(duration);
-                const current_month = new Date().getUTCMonth();
-                const curent_year = new Date().getUTCFullYear();
-                expiry_date = new Date(curent_year, current_month, expiry_day, 23, 59, 59);
-                expiry_date.setUTCHours(23);
-            } else {
-                expiry_date = new Date((epoch - trade_duration * 24 * 60 * 60) * 1000);
-                if (duration) {
-                    expiry_date = new Date(expiry_date.getTime() + duration * 24 * 60 * 60 * 1000);
-                }
+                return moment.utc().add(Number(duration), 'days').format('D MMM  YYYY, [23]:[59]:[59] [GMT +0]');
+            }
+            let expiry_date = new Date((epoch - trade_duration * 24 * 60 * 60) * 1000);
+            if (duration) {
+                expiry_date = new Date(expiry_date.getTime() + duration * 24 * 60 * 60 * 1000);
             }
 
             return expiry_date
@@ -255,7 +249,6 @@ const Duration = observer(
         const active_index = has_selected_tab_idx
             ? duration_tab_idx
             : duration_units_list.findIndex(d => d.value === duration_unit);
-
         const [min, max] = getDurationMinMaxValues(duration_min_max, 'daily', 'd');
         const handleRelativeChange = date => {
             setSelectedDuration('d', date);

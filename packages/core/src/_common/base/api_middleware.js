@@ -1,4 +1,7 @@
 /* eslint-disable */
+
+const checked_subs = new Set();
+
 class APIMiddleware {
     constructor(config) {
         this.config = config;
@@ -18,13 +21,23 @@ class APIMiddleware {
     }
 
     requestDataTransformer(args) {
+        const key = Object.keys(args.parsed_request)[0];
+        if (args?.is_subscription) {
+            if (!checked_subs.has(key)) {
+                checked_subs.add(`${key}:${args.req_id}`);
+            }
+        }
         console.time(args.req_id);
+
         return args.parsed_request;
     }
 
     onSubscriptionResponse({ response }) {
-        console.log(`${response.msg_type}(subscribed)`);
-        console.timeEnd(response.req_id);
+        if (response?.subscription && checked_subs.has(`${response.msg_type}:${response.req_id}`)) {
+            console.log(`${response.msg_type}(subscribed)`);
+            console.timeEnd(response.req_id);
+            checked_subs.delete(`${response.msg_type}:${response.req_id}`);
+        }
     }
 
     sendIsCalled({ response_promise, args: [request, options = {}] }) {

@@ -35,7 +35,6 @@ const Orders = observer(() => {
         return () => {
             disposeOrderIdReaction();
             disposeOrdersUpdateReaction();
-            order_store.onPageReturn();
             order_store.onUnmount();
         };
 

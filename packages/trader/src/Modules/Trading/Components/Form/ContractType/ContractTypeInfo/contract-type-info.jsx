@@ -71,7 +71,11 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                     </div>
                     <div className='contract-type-info__content'>
                         {is_description_tab_selected && (
-                            <TradeCategories category={type.value} is_vanilla_fx={is_vanilla_fx} onClick={onClickGlossary} />
+                            <TradeCategories
+                                category={type.value}
+                                is_vanilla_fx={is_vanilla_fx}
+                                onClick={onClickGlossary}
+                            />
                         )}
                     </div>
                 </ThemedScrollbars>

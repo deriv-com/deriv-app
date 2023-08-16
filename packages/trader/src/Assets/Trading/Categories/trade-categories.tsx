@@ -7,7 +7,15 @@ import { TurbosTradeDescription } from './turbos-trade-description';
 
 // Templates are from Binary 1.0, it should be checked if they need change or not and add all of trade types
 // TODO: refactor the rest of descriptions to use them as components like AccumulatorTradeDescription
-const TradeCategories = ({ category, is_vanilla_fx, onClick }: { category?: string; is_vanilla_fx?: boolean; onClick: () => void }) => {
+const TradeCategories = ({
+    category,
+    is_vanilla_fx,
+    onClick,
+}: {
+    category?: string;
+    is_vanilla_fx?: boolean;
+    onClick: () => void;
+}) => {
     const vanilla_payout_text = is_vanilla_fx
         ? getLocalizedBasis().payout_per_pip
         : getLocalizedBasis().payout_per_point;

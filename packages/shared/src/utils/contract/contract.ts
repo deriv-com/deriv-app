@@ -79,7 +79,8 @@ export const isTurbosContract = (contract_type = '') => /TURBOS/i.test(contract_
 
 export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contract_type);
 
-export const isVanillaFxContract = (contract_type = '', symbol = '') => isVanillaContract(contract_type) && VANILLA_FX.includes(symbol as typeof VANILLA_FX[number]);
+export const isVanillaFxContract = (contract_type = '', symbol = '') =>
+    isVanillaContract(contract_type) && VANILLA_FX.includes(symbol as typeof VANILLA_FX[number]);
 
 export const isOnlyUpsDownsContract = (contract_type = '') => /RUN/i.test(contract_type);
 

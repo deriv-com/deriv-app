@@ -23,9 +23,9 @@ type THiddenPositionsId = TTogglePositionsMobile['filtered_positions'][0]['id'];
 const TogglePositionsMobile = observer(
     ({
         active_positions_count,
-        filtered_positions,
         currency,
         error,
+        filtered_positions,
         is_empty,
         onClickSell,
         onClickCancel,

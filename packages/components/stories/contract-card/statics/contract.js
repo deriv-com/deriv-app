@@ -177,7 +177,7 @@ export const getUnsupportedContracts = () => ({
 export const getSupportedContracts = is_high_low => ({
     ACCU: {
         button_name: 'Buy',
-        name: 'Accumulator',
+        name: 'Accumulators',
         position: 'top',
     },
     CALL: {

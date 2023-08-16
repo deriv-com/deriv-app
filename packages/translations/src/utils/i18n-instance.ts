@@ -48,9 +48,12 @@ i18n.use(LanguageDetector)
         ns: ['translations'],
         defaultNS: 'translations',
         react: {
+            bindI18n: 'loaded languageChanged',
+            bindI18nStore: 'added removed',
             hashTransKey(defaultValue: string) {
                 return crc32(defaultValue);
             },
+            useSuspense: true,
         },
     });
 

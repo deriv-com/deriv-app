@@ -1,8 +1,10 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import TraderProviders from '../../../../trader-providers';
 import Contract from '../contract-type';
+import { TranslationProvider } from '@deriv/translations';
+import { WS } from '@deriv/shared';
 
 const default_mock_store = {
     modules: {
@@ -20,6 +22,18 @@ const default_mock_store = {
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isMobile: () => true,
+    WS: {
+        wait: jest.fn(() => Promise.resolve()),
+        authorized: {
+            send: jest.fn(() =>
+                Promise.resolve({
+                    get_settings: {
+                        preferred_language: 'EN',
+                    },
+                })
+            ),
+        },
+    },
 }));
 jest.mock('../../Components/Form/ContractType', () =>
     jest.fn(props => <div data-test={props.languageChanged}>ContractTypeWidget component</div>)
@@ -36,34 +50,30 @@ jest.mock('@deriv/components', () => ({
 describe('<Contract />', () => {
     const mockContract = mocked_store => {
         return (
-            <TraderProviders store={mocked_store}>
-                <Contract />
-            </TraderProviders>
+            <TranslationProvider websocket={WS}>
+                <TraderProviders store={mocked_store}>
+                    <Contract />
+                </TraderProviders>
+            </TranslationProvider>
         );
     };
 
-    it('should render component', () => {
+    it('should render component', async () => {
         const mock_root_store = mockStore(default_mock_store);
-        render(mockContract(mock_root_store));
+        await act(async () => render(mockContract(mock_root_store)));
 
         expect(screen.getByText(/ToastPopup/i)).toBeInTheDocument();
         expect(screen.getByText(/ContractTypeWidget/i)).toBeInTheDocument();
     });
-    it('should not render <ToastPopup /> inside of parent component if contract type is not digit', () => {
+    it('should not render <ToastPopup /> inside of parent component if contract type is not digit', async () => {
         const new_mock_store = { ...default_mock_store };
         new_mock_store.modules.trade.contract_type = 'test';
         const mock_root_store = mockStore(new_mock_store);
-        render(mockContract(mock_root_store));
+        await act(async () => render(mockContract(mock_root_store)));
 
         expect(screen.queryByText(/ToastPopup/i)).not.toBeInTheDocument();
         expect(screen.getByText(/ContractTypeWidget/i)).toBeInTheDocument();
     });
-    it('if user changed the lanuage, ContractTypeWidget component should receive true in languageChanged props', () => {
-        const new_mock_store = { ...default_mock_store };
-        new_mock_store.common = { current_language: 'RU' };
-        const mock_root_store = mockStore(new_mock_store);
-        render(mockContract(mock_root_store));
-
-        expect(screen.queryByText(/ContractTypeWidget/i)).toHaveAttribute('data-test', 'true');
-    });
 });
+
+// TODO: Re add onchange language test

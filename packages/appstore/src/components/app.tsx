@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { setWebsocket, routes } from '@deriv/shared';
-import { StoreProvider, observer } from '@deriv/stores';
+import { StoreProvider } from '@deriv/stores';
 import CashierStoreProvider from '@deriv/cashier/src/cashier-providers';
 import CFDStoreProvider from '@deriv/cfd/src/cfd-providers';
 import Routes from 'Components/routes/routes';
-import { useStores, initContext } from 'Stores';
+import { initContext } from 'Stores';
 import { TRootStore } from 'Types';
 import './app.scss';
 
@@ -19,7 +19,6 @@ type TAppProps = {
 const App = ({ passthrough: { WS, root_store } }: TAppProps) => {
     initContext(root_store, WS);
     setWebsocket(WS);
-    const { ui }: TRootStore = useStores();
 
     return (
         <CashierStoreProvider store={root_store as any}>
@@ -27,8 +26,8 @@ const App = ({ passthrough: { WS, root_store } }: TAppProps) => {
                 <StoreProvider store={root_store as any}>
                     <main
                         className={classNames('dashboard', {
-                            'theme--light': !ui.is_dark_mode_on,
-                            'theme--dark': ui.is_dark_mode_on,
+                            'theme--light': !root_store.client.is_dark_mode_on,
+                            'theme--dark': root_store.client.is_dark_mode_on,
                             'dashboard-onboarding': window.location.pathname === routes.onboarding,
                         })}
                     >
@@ -42,4 +41,4 @@ const App = ({ passthrough: { WS, root_store } }: TAppProps) => {
     );
 };
 
-export default observer(App);
+export default App;

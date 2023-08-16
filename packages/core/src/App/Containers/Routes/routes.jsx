@@ -1,5 +1,4 @@
-import { PropTypes as MobxPropTypes } from 'mobx-react';
-import PropTypes from 'prop-types';
+import { observer } from 'mobx-react';
 import React from 'react';
 import { withRouter } from 'react-router';
 import Loadable from 'react-loadable';
@@ -7,7 +6,7 @@ import { UILoader } from '@deriv/components';
 import { urlForLanguage } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BinaryRoutes from 'App/Components/Routes';
-import { connect } from 'Stores/connect';
+import { useStore } from '@deriv/stores';
 
 const Error = Loadable({
     loader: () => import(/* webpackChunkName: "error-component" */ 'App/Components/Elements/Errors'),
@@ -18,18 +17,11 @@ const Error = Loadable({
     },
 });
 
-const Routes = ({
-    addRouteHistoryItem,
-    error,
-    has_error,
-    history,
-    is_logged_in,
-    is_logging_in,
-    location,
-    passthrough,
-    setAppRouterHistory,
-    setInitialRouteHistoryItem,
-}) => {
+const Routes = observer(({ history, passthrough }) => {
+    const { client, common } = useStore();
+    const { is_logged_in, is_logging_in } = client;
+    const { error, has_error, setAppRouterHistory, addRouteHistoryItem, setInitialRouteHistoryItem } = common;
+
     const initial_route = React.useRef(null);
     const unlisten_to_change = React.useRef(null);
 
@@ -76,32 +68,8 @@ const Routes = ({
     }
 
     return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;
-};
-
-Routes.propTypes = {
-    addRouteHistoryItem: PropTypes.func,
-    error: MobxPropTypes.objectOrObservableObject,
-    has_error: PropTypes.bool,
-    history: PropTypes.object,
-    is_logged_in: PropTypes.bool,
-    is_logging_in: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    location: PropTypes.object,
-    passthrough: PropTypes.object,
-    setAppRouterHistory: PropTypes.func,
-    setInitialRouteHistoryItem: PropTypes.func,
-};
+});
 
 // need to wrap withRouter around connect
 // to prevent updates on <BinaryRoutes /> from being blocked
-export default withRouter(
-    connect(({ client, common }) => ({
-        is_logged_in: client.is_logged_in,
-        is_logging_in: client.is_logging_in,
-        error: common.error,
-        has_error: common.has_error,
-        setAppRouterHistory: common.setAppRouterHistory,
-        addRouteHistoryItem: common.addRouteHistoryItem,
-        setInitialRouteHistoryItem: common.setInitialRouteHistoryItem,
-    }))(Routes)
-);
+export default withRouter(Routes);

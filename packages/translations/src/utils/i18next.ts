@@ -1,7 +1,7 @@
 import i18n from './i18n-instance';
 import {
-    ALL_LANGUAGES,
-    ALLOWED_LANGUAGES,
+    ALL_LANGUAGE,
+    PRODUCTION_LANGUAGE,
     DEFAULT_LANGUAGE,
     Language,
     STORE_LANGUAGE_KEY,
@@ -18,11 +18,11 @@ export const getLanguage = () => i18n.language || getInitialLanguage(temp_enviro
 export const getAllowedLanguages = (environment: Environment): Partial<LanguageData> => {
     switch (environment) {
         case 'production':
-            return ALLOWED_LANGUAGES;
+            return PRODUCTION_LANGUAGE;
         case 'local':
         case 'staging':
         default:
-            return ALL_LANGUAGES;
+            return ALL_LANGUAGE;
     }
 };
 

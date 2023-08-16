@@ -71,7 +71,7 @@ export default class ClientStore extends BaseStore {
     account_status = {};
     device_data = {};
     is_authorize = false;
-    is_logging_in = false;
+    is_logging_in = true;
     has_logged_out = false;
     is_landing_company_loaded = false;
     is_account_setting_loaded = false;
@@ -2207,7 +2207,7 @@ export default class ClientStore extends BaseStore {
                 (redirect_url?.endsWith('/') || redirect_url?.endsWith(routes.bot)) &&
                 (isTestLink() || isProduction() || isLocal() || isStaging())
             ) {
-                window.history.replaceState({}, document.title, '/appstore/traders-hub');
+                window.history.replaceState({}, document.title, routes.traders_hub);
             } else {
                 window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
             }

@@ -25,9 +25,7 @@ const BuySellModal = () => {
     const [error_message, setErrorMessage] = React.useState('');
     const [is_submit_disabled, setIsSubmitDisabled] = React.useState(false);
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
-    const submitForm = React.useRef(() => {
-        // do nothing
-    });
+    const submitForm = React.useRef<(() => void) | null>(null);
 
     const show_low_balance_message = !is_buy && is_account_balance_low;
 

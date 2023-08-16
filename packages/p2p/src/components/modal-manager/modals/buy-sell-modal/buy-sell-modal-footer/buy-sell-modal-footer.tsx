@@ -6,7 +6,7 @@ import { useStores } from 'Stores';
 type TBuySellModalFooterProps = {
     is_submit_disabled: boolean;
     onCancel: () => void;
-    onSubmit: void | (() => void);
+    onSubmit: null | void | (() => void);
 };
 
 const BuySellModalFooter = ({ is_submit_disabled, onCancel, onSubmit }: TBuySellModalFooterProps) => {

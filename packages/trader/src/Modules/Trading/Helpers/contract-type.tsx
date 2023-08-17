@@ -55,7 +55,7 @@ export const getAvailableContractTypes = (contract_types_list: TcontractTypesLis
     return Object.keys(contract_types_list)
         .map(key => {
             const contract_types = contract_types_list[key].categories;
-            const contract_name = contract_types_list[key].name;
+            const contract_name = contract_types_list[key].name || '';
             const available_contract_types = contract_types.filter(type =>
                 type.value &&
                 // TODO: remove this check once all contract types are supported

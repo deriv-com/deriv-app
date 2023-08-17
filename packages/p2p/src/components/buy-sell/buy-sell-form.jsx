@@ -37,6 +37,7 @@ const BuySellForm = props => {
         rate,
         rate_type,
     } = buy_sell_store?.advert || {};
+
     const [input_amount, setInputAmount] = React.useState(min_order_amount_limit);
 
     const { advertiser_buy_limit, advertiser_sell_limit, balance } = general_store;
@@ -213,7 +214,7 @@ const BuySellForm = props => {
                                         </Text>
                                     )}
                                     {payment_method_names &&
-                                        payment_method_names.map((payment_method, key) => {
+                                        payment_method_names.map((payment_method, key) => (
                                             <div className='buy-sell__modal-payment-method--row' key={key}>
                                                 <PaymentMethodIcon
                                                     className='buy-sell__modal-payment-method--icon'
@@ -222,8 +223,8 @@ const BuySellForm = props => {
                                                 <Text as='p' color='general' line_height='m' size='xs'>
                                                     {payment_method}
                                                 </Text>
-                                            </div>;
-                                        })}
+                                            </div>
+                                        ))}
                                 </div>
                                 <div className='buy-sell__modal-field-wrapper'>
                                     <div className='buy-sell__modal-field'>

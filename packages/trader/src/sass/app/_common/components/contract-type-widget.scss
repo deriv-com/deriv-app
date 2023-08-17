@@ -17,7 +17,7 @@
         padding: 1.6rem;
 
         /* postcss-bem-linter: ignore */
-        span[name='contract_type'] {
+        span[data-name='contract_type'] {
             @include typeface(--paragraph-left-normal-black);
             color: var(--text-prominent);
             font-weight: bold;

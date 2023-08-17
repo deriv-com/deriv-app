@@ -84,8 +84,6 @@ export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contrac
 export const isVanillaFxContract = (contract_type = '', symbol = '') =>
     isVanillaContract(contract_type) && VANILLA_FX.includes(symbol as typeof VANILLA_FX[number]);
 
-export const isOnlyUpsDownsContract = (contract_type = '') => /RUN/i.test(contract_type);
-
 export const isSmartTraderContract = (contract_type = '') => /RUN|EXPIRY|RANGE|UPORDOWN/i.test(contract_type);
 
 export const isCryptoContract = (underlying = '') => underlying.startsWith('cry');

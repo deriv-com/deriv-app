@@ -1,18 +1,17 @@
 import React from 'react';
+import { observer, useStore } from '@deriv/stores';
 import { Text, StaticUrl } from '@deriv/components';
+import { isMobile, formatMoney, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
-import './cfds-listing.scss';
-import { useStores } from 'Stores/index';
-import { observer } from 'mobx-react-lite';
 import AddOptionsAccount from 'Components/add-options-account';
-import { isMobile, formatMoney } from '@deriv/shared';
 import TradingAppCard from 'Components/containers/trading-app-card';
-import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import GetMoreAccounts from 'Components/get-more-accounts';
 import { Actions } from 'Components/containers/trading-app-card-actions';
 import { getHasDivider } from 'Constants/utils';
+import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
+import './cfds-listing.scss';
 
 type TDetailedExistingAccount = AvailableAccount &
     TDetailsOfEachMT5Loginid &
@@ -20,14 +19,14 @@ type TDetailedExistingAccount = AvailableAccount &
         key: string;
     };
 
-const CFDsListing = () => {
+const CFDsListing = observer(() => {
     const {
         client,
         modules: { cfd },
         traders_hub,
         common,
         ui,
-    } = useStores();
+    } = useStore();
     const {
         available_dxtrade_accounts,
         available_derivez_accounts,
@@ -55,18 +54,71 @@ const CFDsListing = () => {
     } = traders_hub;
 
     const { toggleCompareAccountsModal, setAccountType } = cfd;
-    const { is_landing_company_loaded, real_account_creation_unlock_date } = client;
+    const { is_landing_company_loaded, real_account_creation_unlock_date, account_status } = client;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal, setShouldShowCooldownModal } = ui;
     const has_no_real_account = !has_any_real_account;
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
 
-    const getMT5AccountAuthStatus = (current_acc_status: string) => {
-        if (current_acc_status === 'proof_failed') {
-            return 'failed';
-        } else if (current_acc_status === 'verification_pending') {
-            return 'pending';
+    const {
+        poi_pending_for_bvi_labuan_vanuatu,
+        poi_resubmit_for_bvi_labuan_vanuatu,
+        poa_resubmit_for_labuan,
+        is_idv_revoked,
+    } = getAuthenticationStatusInfo(account_status);
+
+    const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
+
+    const getMT5AccountAuthStatus = (current_acc_status: string, jurisdiction?: string) => {
+        if (jurisdiction) {
+            switch (jurisdiction) {
+                case Jurisdiction.BVI: {
+                    if (
+                        getAuthStatus([
+                            is_idv_revoked,
+                            poi_resubmit_for_bvi_labuan_vanuatu,
+                            current_acc_status === 'proof_failed',
+                        ])
+                    ) {
+                        return 'failed';
+                    } else if (
+                        getAuthStatus([
+                            poi_pending_for_bvi_labuan_vanuatu,
+                            current_acc_status === 'verification_pending',
+                        ])
+                    ) {
+                        return 'pending';
+                    }
+                    return null;
+                }
+                case Jurisdiction.LABUAN: {
+                    if (
+                        getAuthStatus([
+                            poa_resubmit_for_labuan,
+                            is_idv_revoked,
+                            poi_resubmit_for_bvi_labuan_vanuatu,
+                            current_acc_status === 'proof_failed',
+                        ])
+                    ) {
+                        return 'failed';
+                    } else if (
+                        getAuthStatus([
+                            poi_pending_for_bvi_labuan_vanuatu,
+                            current_acc_status === 'verification_pending',
+                        ])
+                    ) {
+                        return 'pending';
+                    }
+                    return null;
+                }
+                default:
+                    if (current_acc_status === 'proof_failed') {
+                        return 'failed';
+                    } else if (current_acc_status === 'verification_pending') {
+                        return 'pending';
+                    }
+            }
         }
         return null;
     };
@@ -137,12 +189,17 @@ const CFDsListing = () => {
                 </Text>
             </div>
             {is_landing_company_loaded ? (
-                <>
+                <React.Fragment>
                     {combined_cfd_mt5_accounts.map((existing_account: TDetailedExistingAccount, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;
-                        const has_mt5_account_status = existing_account.status
-                            ? getMT5AccountAuthStatus(existing_account.status)
-                            : null;
+                        const has_mt5_account_status =
+                            existing_account.status || is_idv_revoked
+                                ? getMT5AccountAuthStatus(
+                                      existing_account.status,
+                                      existing_account?.landing_company_short
+                                  )
+                                : null;
+
                         return (
                             <TradingAppCard
                                 action_type={existing_account.action_type}
@@ -202,7 +259,7 @@ const CFDsListing = () => {
                             description={localize('Get more Deriv MT5 account with different type and jurisdiction.')}
                         />
                     )}
-                </>
+                </React.Fragment>
             ) : (
                 <PlatformLoader />
             )}
@@ -283,7 +340,7 @@ const CFDsListing = () => {
             )}
 
             {/* TODO: remove is_real flag to unblock the flow for derivez real account creation */}
-            {is_landing_company_loaded && !is_real
+            {/* {is_landing_company_loaded && !is_real
                 ? available_derivez_accounts?.map((account: AvailableAccount) => {
                       const existing_accounts = getExistingAccounts(account.platform, account.market_type);
                       const has_existing_accounts = existing_accounts.length > 0;
@@ -342,9 +399,9 @@ const CFDsListing = () => {
                           />
                       );
                   })
-                : !is_real && <PlatformLoader />}
+                : !is_real && <PlatformLoader />} */}
         </ListingContainer>
     );
-};
+});
 
-export default observer(CFDsListing);
+export default CFDsListing;

@@ -1,7 +1,7 @@
 import React from 'react';
-import { useStore, observer } from '@deriv/stores';
+import { EmptyState } from '@deriv/components';
 import { useCashierLocked, useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
-import EmptyState from 'Components/empty-state';
+import { observer, useStore } from '@deriv/stores';
 import getMessage from './cashier-locked-provider';
 
 const CashierLocked = observer(() => {

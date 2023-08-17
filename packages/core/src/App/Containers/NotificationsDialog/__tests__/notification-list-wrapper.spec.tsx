@@ -9,6 +9,7 @@ describe('NotificationListWrapper', () => {
     const mock_store_without_notifications = mockStore({ notifications: { notifications: [] } });
     const mock_store_with_notifications = mockStore({
         notifications: {
+            is_notifications_empty: false,
             notifications: [
                 {
                     key: 'mock_notification_key',

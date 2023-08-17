@@ -38,7 +38,7 @@ const ContractTypeGlossary = ({ category, is_vanilla_fx }: { category: string; i
                     {
                         type: 'paragraph',
                         text: localize(
-                            'The spot price may change by the time your order reaches our servers. When this happens, your payout maybe affected.'
+                            'The spot price may change by the time your order reaches our servers. When this happens, your payout may be affected.'
                         ),
                     },
                 ];

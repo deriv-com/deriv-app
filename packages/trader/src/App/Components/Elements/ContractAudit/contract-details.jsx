@@ -11,7 +11,8 @@ import {
     isEndedBeforeCancellationExpired,
     isMobile,
     isMultiplierContract,
-    isOnlyUpsDownsContract,
+    isSmartTraderContract,
+    hasTwoBarriers,
     isTurbosContract,
     isUserCancelled,
     isUserSold,
@@ -44,6 +45,8 @@ const ContractDetails = ({
         entry_spot_display_value,
         entry_tick_time,
         exit_tick_time,
+        high_barrier,
+        low_barrier,
         profit,
         tick_count,
         tick_passed,
@@ -53,7 +56,7 @@ const ContractDetails = ({
 
     const is_profit = profit >= 0;
     const cancellation_price = getCancellationPrice(contract_info);
-    const show_barrier = !is_vanilla && !isAccumulatorContract(contract_type) && !isOnlyUpsDownsContract(contract_type);
+    const show_barrier = !is_vanilla && !isAccumulatorContract(contract_type) && !isSmartTraderContract(contract_type);
     const show_duration = !isAccumulatorContract(contract_type) || !isNaN(contract_end_time);
     const show_payout_per_point = isTurbosContract(contract_type) || is_vanilla;
     const ticks_duration_text = isAccumulatorContract(contract_type)
@@ -139,6 +142,19 @@ const ContractDetails = ({
                                 value={`${display_number_of_contracts} ${getCurrencyDisplayCode(currency)}` || ' - '}
                             />
                         )}
+                    </React.Fragment>
+                )}
+                {hasTwoBarriers(contract_type) && (
+                    <React.Fragment>
+                        {[high_barrier, low_barrier].map((barrier, index) => (
+                            <ContractAuditItem
+                                id={`dt_bt_label_${index + 1}`}
+                                icon={<Icon icon='IcContractStrike' size={24} />}
+                                key={barrier}
+                                label={high_barrier === barrier ? localize('High barrier') : localize('Low barrier')}
+                                value={barrier}
+                            />
+                        ))}
                     </React.Fragment>
                 )}
                 <ContractAuditItem

@@ -1,6 +1,7 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context.ts';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { requestWS } from 'Utils/websocket';
 import OrderDetailsCancelModal from '../order-details-cancel-modal';
 
@@ -76,7 +77,7 @@ describe('<OrderDetailsCancelModal/>', () => {
         const { hideModal } = useModalManagerContext();
 
         render(<OrderDetailsCancelModal />);
-        fireEvent.click(screen.getByRole('button', { name: 'Do not cancel' }));
+        userEvent.click(screen.getByRole('button', { name: 'Do not cancel' }));
 
         expect(hideModal).toHaveBeenCalled();
     });
@@ -84,7 +85,7 @@ describe('<OrderDetailsCancelModal/>', () => {
     it('should cancel the order when Cancel this order button is clicked', () => {
         (requestWS as jest.Mock).mockResolvedValue({ message: 'Success' });
         render(<OrderDetailsCancelModal />);
-        fireEvent.click(screen.getByRole('button', { name: 'Cancel this order' }));
+        userEvent.click(screen.getByRole('button', { name: 'Cancel this order' }));
 
         expect(requestWS).toHaveBeenCalled();
     });
@@ -95,7 +96,7 @@ describe('<OrderDetailsCancelModal/>', () => {
         (requestWS as jest.Mock).mockResolvedValue({ error: { message: error_msg } });
 
         render(<OrderDetailsCancelModal />);
-        fireEvent.click(screen.getByRole('button', { name: 'Cancel this order' }));
+        userEvent.click(screen.getByRole('button', { name: 'Cancel this order' }));
 
         await waitFor(() => {
             expect(mock_store_values.order_store.setErrorMessage).toHaveBeenCalledWith(error_msg);

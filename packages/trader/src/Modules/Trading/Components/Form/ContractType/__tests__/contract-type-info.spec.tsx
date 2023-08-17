@@ -2,6 +2,8 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import Info from '../ContractTypeInfo/contract-type-info';
 import userEvent from '@testing-library/user-event';
+import { mockStore } from '@deriv/stores';
+import TraderProviders from '../../../../../../trader-providers';
 
 jest.mock('Assets/Trading/Categories/trade-categories-gif', () => jest.fn(() => 'TradeCategoriesGif'));
 jest.mock('Assets/Trading/Categories/trade-categories', () => jest.fn(() => 'TradeDescription'));
@@ -259,13 +261,27 @@ const mocked_props: React.ComponentProps<typeof Info> = {
 };
 
 describe('<Info />', () => {
+    const mock_root_store = {
+        modules: {
+            trade: {
+                is_vanilla_fx: false,
+            },
+        },
+    };
+    const mockInfo = (mocked_store: typeof mock_root_store) => {
+        return (
+            <TraderProviders store={mockStore(mocked_store)}>
+                <Info {...mocked_props} />
+            </TraderProviders>
+        );
+    };
     it('Should render only one "Choose Multipliers" button', () => {
-        render(<Info {...mocked_props} />);
+        render(mockInfo(mock_root_store));
         const trade_type_button = screen.queryByText('Choose Multipliers');
         expect(trade_type_button).toBeInTheDocument();
     });
     it('Should call handleSelect when clicking on "Choose Multipliers" button', () => {
-        render(<Info {...mocked_props} />);
+        render(mockInfo(mock_root_store));
         const trade_type_button = screen.queryByText('Choose Multipliers') as HTMLButtonElement;
         userEvent.click(trade_type_button);
         expect(trade_type_button).toBeInTheDocument();
@@ -274,7 +290,7 @@ describe('<Info />', () => {
     it('Should render toggle buttons if vanilla info page is open', () => {
         mocked_props.item.text = 'Call/Put';
         mocked_props.item.value = 'vanilla';
-        render(<Info {...mocked_props} />);
+        render(mockInfo(mock_root_store));
         const trade_type_button = screen.getByText('Choose Call/Put');
         expect(screen.getByText('Description')).toBeInTheDocument();
         expect(screen.getByText(/glossary/i)).toBeInTheDocument();

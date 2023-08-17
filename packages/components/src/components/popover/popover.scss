@@ -65,6 +65,12 @@
         }
     }
 }
+.accu-info-display__popover {
+    max-width: 28rem;
+    @include mobile {
+        max-width: 30rem;
+    }
+}
 
 .react-tiny-popover-container {
     &--disabled-pointer-event {

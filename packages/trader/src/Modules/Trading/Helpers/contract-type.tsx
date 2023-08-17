@@ -75,7 +75,7 @@ export const getAvailableContractTypes = (contract_types_list: TContractTypesLis
             label: string;
             contract_types: TContractType[];
             icon: "IcUpsDowns" | "IcHighsLows" | "IcInsOuts" | "IcLookbacks" | "IcDigits" | "IcMultiplier" | "IcCatAccumulator";
-            component: React.JSX.Element | null;
+            component: JSX.Element | null;
         }[];
 };
 

@@ -5,14 +5,13 @@ import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 
-type TClearAllFooter = {
+type TNotificationsClearAllFooter = {
     clearNotifications: () => void;
 };
 
-const ClearAllFooter = observer(({ clearNotifications }: TClearAllFooter) => {
+const NotificationsClearAllFooter = observer(({ clearNotifications }: TNotificationsClearAllFooter) => {
     const { notifications } = useStore();
-    const { notifications: notifications_array } = notifications;
-    const is_empty = !notifications_array?.length;
+    const { is_notifications_empty } = notifications;
 
     return (
         <React.Fragment>
@@ -20,13 +19,13 @@ const ClearAllFooter = observer(({ clearNotifications }: TClearAllFooter) => {
             <div
                 data-testid='dt_clear_all_footer_button'
                 className={classNames('notifications-dialog__footer', {
-                    'notifications-dialog__content--empty': is_empty,
+                    'notifications-dialog__content--empty': is_notifications_empty,
                     'notifications-dialog__content--sticky': isMobile(),
                 })}
             >
                 <Button
                     className={classNames('dc-btn--secondary', 'notifications-dialog__clear')}
-                    disabled={is_empty}
+                    disabled={is_notifications_empty}
                     onClick={clearNotifications}
                 >
                     <Text size='xxs' color='prominent' weight='bold'>
@@ -38,4 +37,4 @@ const ClearAllFooter = observer(({ clearNotifications }: TClearAllFooter) => {
     );
 });
 
-export default ClearAllFooter;
+export default NotificationsClearAllFooter;

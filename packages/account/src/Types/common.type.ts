@@ -196,6 +196,3 @@ export type TServerError = {
     details?: { [key: string]: string };
     fields?: string[];
 };
-
-export const isServerError = (error: unknown): error is TServerError =>
-    typeof error === 'object' && error !== null && 'code' in error;

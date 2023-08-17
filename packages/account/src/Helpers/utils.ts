@@ -4,6 +4,7 @@ import { localize } from '@deriv/translations';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
 import { FormikValues } from 'formik';
 import { getIDVDocumentConfig } from '../Constants/idv-document-config';
+import { TServerError } from '../Types/common.type';
 
 export const documentAdditionalError = (document_additional: string, document_additional_format: string) => {
     let error_message = null;
@@ -167,3 +168,6 @@ export const isDocumentNumberValid = (document_number: string, document_type: Fo
 };
 
 export const shouldHideHelperImage = (document_id: string) => document_id === IDV_NOT_APPLICABLE_OPTION.id;
+
+export const isServerError = (error: unknown): error is TServerError =>
+    typeof error === 'object' && error !== null && 'code' in error;

@@ -25,8 +25,7 @@ import LeaveConfirm from '../../../Components/leave-confirm';
 import FileUploaderContainer from '../../../Components/file-uploader-container';
 import CommonMistakeExamples from '../../../Components/poa/common-mistakes/common-mistake-examples';
 import PersonalDetailsForm from '../../../Components/forms/personal-details-form.jsx';
-import { validate } from '../../../Helpers/utils';
-import { isServerError } from '../../../Types/common.type';
+import { isServerError, validate } from '../../../Helpers/utils';
 
 const FilesDescription = () => (
     <div className='files-description'>
@@ -63,7 +62,7 @@ let file_uploader_ref: TFileRef;
 
 type TProofOfAddressForm = {
     is_resubmit: boolean;
-    is_qualified_for_cfd_modal?: boolean;
+    is_qualified_for_cfd_modal: boolean;
     onCancel: () => void;
     onSubmit: (needs_poi: boolean) => void;
     onSubmitForCFDModal: (index: number, values: FormikValues) => void;
@@ -87,8 +86,7 @@ const ProofOfAddressForm = observer(
         step_index,
     }: Partial<TProofOfAddressForm>) => {
         const { client, notifications } = useStore();
-        const { account_settings, fetchResidenceList, fetchStatesList, getChangeableFields, is_eu, states_list } =
-            client;
+        const { account_settings, fetchResidenceList, fetchStatesList, getChangeableFields, states_list } = client;
         const {
             addNotificationMessageByKey: addNotificationByKey,
             removeNotificationMessage,
@@ -124,7 +122,7 @@ const ProofOfAddressForm = observer(
                     setIsLoading(false);
                 });
             });
-        }, [account_settings, fetchResidenceList, fetchStatesList, is_eu]);
+        }, [account_settings, fetchResidenceList, fetchStatesList]);
 
         const changeable_fields = [...getChangeableFields()];
 
@@ -183,7 +181,7 @@ const ProofOfAddressForm = observer(
             setFormState({ ...form_state, ...{ should_show_form } });
         };
 
-        const isFieldsIssue = (errors: FormikErrors<TFormInitialValues>, values: TFormInitialValues) =>
+        const hasFieldsErrors = (errors: FormikErrors<TFormInitialValues>, values: TFormInitialValues) =>
             errors.address_line_1 ||
             !values.address_line_1 ||
             errors.address_line_2 ||
@@ -228,7 +226,6 @@ const ProofOfAddressForm = observer(
                 address_state,
                 address_postcode,
             });
-            setIsLoading(false);
 
             // upload files
             try {
@@ -370,7 +367,7 @@ const ProofOfAddressForm = observer(
                                         <FormSubmitButton
                                             is_disabled={
                                                 isSubmitting ||
-                                                !!isFieldsIssue(errors, values) ||
+                                                !!hasFieldsErrors(errors, values) ||
                                                 (document_file.files && document_file.files.length < 1) ||
                                                 !!document_file.error_message
                                             }
@@ -391,7 +388,7 @@ const ProofOfAddressForm = observer(
                                             type='submit'
                                             is_disabled={
                                                 isSubmitting ||
-                                                !!isFieldsIssue(errors, values) ||
+                                                !!hasFieldsErrors(errors, values) ||
                                                 (document_file.files && document_file.files.length < 1) ||
                                                 !!document_file.error_message
                                             }

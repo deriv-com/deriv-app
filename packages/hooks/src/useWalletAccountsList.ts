@@ -82,7 +82,7 @@ const useWalletAccountsList = () => {
                     dark: `wallet-card__${wallet_currency_type.toLowerCase()}-bg--dark`,
                     light: `wallet-card__${wallet_currency_type.toLowerCase()}-bg`,
                 },
-            };
+            } as const;
 
             return {
                 ...wallet,

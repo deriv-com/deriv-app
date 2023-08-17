@@ -30,7 +30,7 @@ class APIMiddleware {
                 key = `${key}:${args.req_id}`;
             }
         }
-        requests.set(key, args.timestamp);
+        requests.set(key, new Date(Date.now()).toISOString());
         console.time(args.req_id);
 
         return args.parsed_request;

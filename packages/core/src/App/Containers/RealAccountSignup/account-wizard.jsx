@@ -261,6 +261,9 @@ const AccountWizard = props => {
     const createRealAccount = (payload = undefined) => {
         setLoading(true);
         const form_data = { ...form_values() };
+        /**
+         * Remove document_type from payload if it is not present (For Non IDV supporting countries)
+         */
         if (!form_data?.document_type?.id) {
             delete form_data.document_type;
         }

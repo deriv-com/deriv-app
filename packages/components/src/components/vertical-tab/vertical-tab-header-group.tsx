@@ -62,7 +62,7 @@ const VerticalTabHeaderGroup = ({
             })}
             onClick={handleClick}
         >
-            <HeaderIcon icon={group.icon} is_active={selected} />
+            <HeaderIcon icon={group.icon ?? ''} is_active={selected} />
             <Header text={label} />
             {is_collapsible && (
                 <Icon
@@ -83,7 +83,7 @@ const VerticalTabHeaderGroup = ({
                 })}
                 onClick={handleClick}
             >
-                <HeaderIcon icon={group.icon} is_active={selected} />
+                <HeaderIcon icon={group.icon ?? ''} is_active={selected} />
                 <Header text={label} />
                 {is_collapsible && (
                     <Icon

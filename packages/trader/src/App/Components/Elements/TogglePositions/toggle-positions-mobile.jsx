@@ -6,52 +6,43 @@ import { localize } from '@deriv/translations';
 import { NavLink } from 'react-router-dom';
 import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import PositionsModalCard from 'App/Components/Elements/PositionsDrawer/positions-modal-card.jsx';
-import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import TogglePositions from './toggle-positions.jsx';
-import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
 
 const TogglePositionsMobile = observer(
     ({
         active_positions_count,
-        all_positions,
         currency,
         disableApp,
         enableApp,
         error,
+        filtered_positions,
         is_empty,
         onClickSell,
         onClickCancel,
         toggleUnsupportedContractModal,
     }) => {
-        const { portfolio, ui } = useStore();
-        const { symbol, contract_type: trade_contract_type } = useTraderStore();
-        const { removePositionById: onClickRemove } = portfolio;
-        const { togglePositionsDrawer, is_positions_drawer_on } = ui;
-        let filtered_positions = [];
+        const { togglePositionsDrawer, is_positions_drawer_on } = useStore().ui;
+        const [hidden_positions_ids, setHiddenPositionsIds] = React.useState([]);
+        const displayed_positions = filtered_positions
+            .filter(p =>
+                hidden_positions_ids.every(hidden_position_id => hidden_position_id !== p.contract_info.contract_id)
+            )
+            .slice(0, 5);
+        const closed_positions_ids = displayed_positions
+            .filter(position => position.contract_info?.is_sold)
+            .map(p => p.contract_info.contract_id);
 
         const closeModal = () => {
-            filtered_positions.slice(0, 5).map(position => {
-                const { contract_info } = position;
-                if (contract_info?.is_sold) {
-                    onClickRemove(contract_info.contract_id);
-                }
-            });
+            setHiddenPositionsIds([...new Set([...hidden_positions_ids, ...closed_positions_ids])]);
             togglePositionsDrawer();
         };
-
-        filtered_positions = all_positions.filter(
-            p =>
-                p.contract_info &&
-                symbol === p.contract_info.underlying &&
-                filterByContractType(p.contract_info, trade_contract_type)
-        );
 
         // Show only 5 most recent open contracts
         const body_content = (
             <React.Fragment>
                 <TransitionGroup component='div'>
-                    {filtered_positions.slice(0, 5).map(portfolio_position => (
+                    {displayed_positions.map(portfolio_position => (
                         <CSSTransition
                             appear
                             key={portfolio_position.id}
@@ -68,7 +59,6 @@ const TogglePositionsMobile = observer(
                             <PositionsModalCard
                                 onClickSell={onClickSell}
                                 onClickCancel={onClickCancel}
-                                onClickRemove={onClickRemove}
                                 key={portfolio_position.id}
                                 currency={currency}
                                 toggleUnsupportedContractModal={toggleUnsupportedContractModal}
@@ -105,11 +95,15 @@ const TogglePositionsMobile = observer(
                                 {localize('Recent positions')}
                             </Text>
                             <div className='positions-modal__close-btn' onClick={closeModal}>
-                                <Icon icon='IcMinusBold' />
+                                <Icon data_testid='dt_modal_header_close' icon='IcMinusBold' />
                             </div>
                         </div>
                         <div className='positions-modal__body'>
-                            {is_empty || error ? <EmptyPortfolioMessage error={error} /> : body_content}
+                            {is_empty || !displayed_positions.length || error ? (
+                                <EmptyPortfolioMessage error={error} />
+                            ) : (
+                                body_content
+                            )}
                         </div>
                         <div className='positions-modal__footer'>
                             <NavLink

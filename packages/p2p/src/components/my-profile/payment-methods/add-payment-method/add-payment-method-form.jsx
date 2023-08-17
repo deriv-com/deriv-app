@@ -12,18 +12,11 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
 
 const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
-    const { hideModal, modal, showModal } = useModalManagerContext();
+    const { hideModal, isCurrentModal, modal, showModal } = useModalManagerContext();
+    const { create, mutation } = useP2PAdvertiserPaymentMethods();
     const { general_store, my_ads_store, my_profile_store } = useStores();
     const { payment_method_value, selected_payment_method } = my_profile_store;
-
-    const handleCreateError = error => {
-        my_profile_store.setAddPaymentMethodErrorMessage(error.message);
-        general_store.showModal({
-            key: 'AddPaymentMethodErrorModal',
-        });
-    };
-
-    const { create } = useP2PAdvertiserPaymentMethods(handleCreateError);
+    const { error: mutation_error, status: mutation_status } = mutation;
 
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
@@ -33,25 +26,31 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    React.useEffect(() => {
+        if (mutation_status === 'success') {
+            if (isCurrentModal('BlockUserModal')) {
+                hideModal();
+            }
+
+            my_profile_store.setShouldShowAddPaymentMethodForm(false);
+
+            if (isCurrentModal('CreateAdAddPaymentMethodModal')) {
+                hideModal();
+            }
+
+            if (my_ads_store.should_show_add_payment_method) {
+                my_ads_store.setShouldShowAddPaymentMethod(false);
+            }
+        } else if (mutation_status === 'error') {
+            my_profile_store.setAddPaymentMethodErrorMessage(mutation_error.message);
+            showModal({
+                key: 'AddPaymentMethodErrorModal',
+            });
+        }
+    }, [mutation_error, mutation_status]);
+
     const createPaymentMethod = async (values, { setSubmitting }) => {
         await create({ ...values, method: payment_method_value || selected_payment_method });
-
-        if (general_store.isCurrentModal('BlockUserModal')) {
-            general_store.hideModal();
-        }
-        my_profile_store.setSelectedPaymentMethod('');
-        general_store.setSavedFormState(null);
-        general_store.setFormikRef(null);
-
-        my_profile_store.setShouldShowAddPaymentMethodForm(false);
-
-        if (general_store.isCurrentModal('CreateAdAddPaymentMethodModal')) {
-            general_store.hideModal();
-        }
-
-        if (my_ads_store.should_show_add_payment_method) {
-            my_ads_store.setShouldShowAddPaymentMethod(false);
-        }
 
         setSubmitting(false);
     };

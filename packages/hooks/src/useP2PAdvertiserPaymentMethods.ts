@@ -9,22 +9,15 @@ const type_to_icon_mapper = {
 };
 
 /** A custom hook to fetch, create, update, and delete p2p advertiser payment methods */
-const useP2PAdvertiserPaymentMethods = (handleMutationError?: (error?: unknown) => void) => {
+const useP2PAdvertiserPaymentMethods = () => {
     const invalidate = useInvalidateQuery();
     const { client } = useStore();
     const { is_authorize } = client;
 
-    /** Make a request to p2p_advertiser_payment_methods from API and onSuccess it will invalidate the cached data  */
-    const { mutate } = useRequest('p2p_advertiser_payment_methods', {
-        onSuccess: () => {
-            invalidate('p2p_advertiser_payment_methods');
-        },
-        onError: error => {
-            if (error && handleMutationError) handleMutationError(error);
-        },
+    const { mutate, ...mutate_rest } = useRequest('p2p_advertiser_payment_methods', {
+        onSuccess: () => invalidate('p2p_advertiser_payment_methods'),
     });
 
-    /** Fetch p2p_advertiser_payment_methods from API  */
     const { data, ...rest } = useFetch('p2p_advertiser_payment_methods', {
         options: { enabled: is_authorize },
     });
@@ -42,19 +35,23 @@ const useP2PAdvertiserPaymentMethods = (handleMutationError?: (error?: unknown) 
                 ...advertiser_payment_method,
                 /** Icon for each payment method based on the type */
                 icon: type_to_icon_mapper[advertiser_payment_method.type],
-                /** The ID of payment method */
-                ID: key,
+                /** The id of payment method */
+                id: key,
             };
         });
     }, [data]);
 
     const create = useCallback(
-        (values: { method: string; [k: string]: string }) => mutate({ payload: { create: [{ ...values }] } }),
+        (values: NonNullable<NonNullable<NonNullable<Parameters<typeof mutate>[0]>['payload']>['create']>[0]) =>
+            mutate({ payload: { create: [{ ...values }] } }),
         [mutate]
     );
 
     const update = useCallback(
-        (id: string, values: { [k: string]: string }) => mutate({ payload: { update: { [id]: { ...values } } } }),
+        (
+            id: string,
+            values: NonNullable<NonNullable<NonNullable<Parameters<typeof mutate>[0]>['payload']>['update']>[0]
+        ) => mutate({ payload: { update: { [id]: { ...values } } } }),
         [mutate]
     );
 
@@ -68,9 +65,9 @@ const useP2PAdvertiserPaymentMethods = (handleMutationError?: (error?: unknown) 
         /** Sends a request to update existing p2p advertiser payment method */
         update,
         /** Sends a request to delete existing p2p advertiser payment method */
-        delete_payment_method,
-        /** The rest of useFetch payloads */
+        delete: delete_payment_method,
         ...rest,
+        mutation: mutate_rest,
     };
 };
 

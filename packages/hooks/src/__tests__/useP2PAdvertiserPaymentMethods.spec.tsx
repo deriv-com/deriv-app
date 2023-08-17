@@ -79,7 +79,7 @@ describe('useP2PAdvertiserPaymentMethods', () => {
         expect(result.current.data?.[0]).toHaveProperty('is_enabled', 1);
         expect(result.current.data?.[0]).toHaveProperty('type', 'ewallet');
         expect(result.current.data?.[0]).toHaveProperty('icon', 'IcCashierEwallet');
-        expect(result.current.data?.[0]).toHaveProperty('ID', '1');
+        expect(result.current.data?.[0]).toHaveProperty('id', '1');
     });
 
     test('should create a new p2p_advertiser_payment_methods', () => {
@@ -220,7 +220,7 @@ describe('useP2PAdvertiserPaymentMethods', () => {
 
         const { result } = renderHook(() => useP2PAdvertiserPaymentMethods(), { wrapper });
 
-        result.current.delete_payment_method(1);
+        result.current.delete(1);
 
         expect(mockUseRequest('p2p_advertiser_payment_methods').mutate).toBeCalledWith({
             payload: {

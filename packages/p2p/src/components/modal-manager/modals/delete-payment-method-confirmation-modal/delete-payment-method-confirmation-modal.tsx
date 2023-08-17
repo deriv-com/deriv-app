@@ -14,22 +14,25 @@ const DeletePaymentMethodConfirmationModal = ({
     payment_method_name,
 }: TDeletePaymentMethodConfirmationModalProps) => {
     const { hideModal, showModal } = useModalManagerContext();
-
-    const handleDeleteError = (error: unknown) => {
-        showModal({
-            key: 'DeletePaymentMethodErrorModal',
-            props: {
-                error_message: error.message,
-            },
-        });
-    };
-
-    const { delete_payment_method } = useP2PAdvertiserPaymentMethods(handleDeleteError);
+    const { delete: delete_payment_method, mutation } = useP2PAdvertiserPaymentMethods();
+    const { error: mutation_error, status: mutation_status } = mutation;
 
     const handleDelete = async () => {
-        await delete_payment_method(payment_method_id);
-        hideModal();
+        delete_payment_method(payment_method_id);
     };
+
+    React.useEffect(() => {
+        if (mutation_status === 'success') {
+            hideModal();
+        } else if (mutation_status === 'error') {
+            showModal({
+                key: 'DeletePaymentMethodErrorModal',
+                props: {
+                    error_message: mutation_error.message,
+                },
+            });
+        }
+    }, [mutation_status, mutation_status]);
 
     return (
         <Modal

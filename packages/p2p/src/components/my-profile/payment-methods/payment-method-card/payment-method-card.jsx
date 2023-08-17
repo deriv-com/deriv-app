@@ -25,7 +25,7 @@ const PaymentMethodCard = ({
 }) => {
     const { general_store, my_ads_store, my_profile_store } = useStores();
     const { showModal } = useModalManagerContext();
-    const { display_name, fields, icon, ID } = payment_method || {};
+    const { display_name, fields, icon, id } = payment_method || {};
     const method = !is_add && display_name.replace(/\s|-/gm, '');
     const payment_account = fields?.account?.value;
     const payment_account_name = display_name;
@@ -37,7 +37,7 @@ const PaymentMethodCard = ({
             showModal({
                 key: 'DeletePaymentMethodConfirmationModal',
                 props: {
-                    payment_method_id: ID,
+                    payment_method_id: id,
                     payment_method_name: fields?.bank_name?.value || fields?.name?.value || display_name,
                 },
             });
@@ -115,7 +115,7 @@ const PaymentMethodCard = ({
                         className='payment-method-card__checkbox'
                         disabled={
                             my_ads_store.payment_method_ids.length === 3 &&
-                            !my_ads_store.payment_method_ids.includes(payment_method.ID)
+                            !my_ads_store.payment_method_ids.includes(payment_method.id)
                         }
                         onChange={onClick}
                         value={!isEmptyObject(style)}

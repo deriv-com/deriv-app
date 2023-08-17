@@ -657,7 +657,7 @@ export default class MyProfileStore extends BaseStore {
         requestWS({
             p2p_advertiser_payment_methods: 1,
             update: {
-                [this.payment_method_to_edit.ID]: {
+                [this.payment_method_to_edit.id]: {
                     ...values,
                 },
             },

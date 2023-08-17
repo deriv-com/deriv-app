@@ -14,16 +14,16 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
     const { showModal } = useModalManagerContext();
 
     const onClickPaymentMethodCard = payment_method => {
-        if (!my_ads_store.payment_method_ids.includes(payment_method.ID)) {
+        if (!my_ads_store.payment_method_ids.includes(payment_method.id)) {
             if (my_ads_store.payment_method_ids.length < 3) {
-                my_ads_store.payment_method_ids.push(payment_method.ID);
-                setSelectedSellMethods([...selected_sell_methods, payment_method.ID]);
+                my_ads_store.payment_method_ids.push(payment_method.id);
+                setSelectedSellMethods([...selected_sell_methods, payment_method.id]);
             }
         } else {
             my_ads_store.payment_method_ids = my_ads_store.payment_method_ids.filter(
-                payment_method_id => payment_method_id !== payment_method.ID
+                payment_method_id => payment_method_id !== payment_method.id
             );
-            setSelectedSellMethods(selected_sell_methods.filter(i => i !== payment_method.ID));
+            setSelectedSellMethods(selected_sell_methods.filter(i => i !== payment_method.id));
         }
     };
 

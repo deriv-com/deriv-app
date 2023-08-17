@@ -47,7 +47,7 @@ const SellAdPaymentMethodsList = ({
                         medium
                         onClick={() => onClickPaymentMethodCard(payment_method)}
                         payment_method={payment_method}
-                        style={selected_methods.includes(payment_method.ID) ? style : {}}
+                        style={selected_methods.includes(payment_method.id) ? style : {}}
                     />
                 ))}
             <PaymentMethodCard is_add label={localize('Payment method')} medium onClickAdd={onClickAdd} />

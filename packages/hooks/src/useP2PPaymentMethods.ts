@@ -13,7 +13,6 @@ const useP2PPaymentMethods = () => {
     const { client } = useStore();
     const { is_authorize } = client;
 
-    /** Fetch p2p_payment_methods from API  */
     const { data, ...rest } = useFetch('p2p_payment_methods', { options: { enabled: is_authorize } });
 
     // Modify the data to add additional information.
@@ -36,7 +35,6 @@ const useP2PPaymentMethods = () => {
         });
     }, [data]);
 
-    /** Return the modified p2p_payment_methods data along with all additional information from useFetch */
     return {
         data: modified_data,
         ...rest,

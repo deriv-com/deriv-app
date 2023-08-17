@@ -1,7 +1,7 @@
 import { getImageLocation } from '../../../public-path';
 import { localize } from '@deriv/translations';
 
-export type TDescription = Pick<TContent, 'type' | 'content' | 'src'>;
+export type TDescription = Pick<TContent, 'type' | 'content' | 'src' | 'imageclass'>;
 
 export type TFaqContent = Pick<TContent, 'title' | 'description' | 'src'>;
 
@@ -18,6 +18,7 @@ export type TContent = {
     title: string;
     type: string;
     url?: string;
+    imageclass?: string;
 };
 export const user_guide_content: TUserGuideContent[] = [
     {
@@ -25,14 +26,14 @@ export const user_guide_content: TUserGuideContent[] = [
         type: 'Tour',
         subtype: 'OnBoard',
         content: localize('Get started on Deriv Bot'),
-        src: getImageLocation('onboard-tour.png'),
+        src: getImageLocation('dbot-onboard-tour.png'),
     },
     {
         id: 2,
         type: 'Tour',
         subtype: 'BotBuilder',
         content: localize('Let’s build a bot!'),
-        src: getImageLocation('builder-tour.png'),
+        src: getImageLocation('bot-builder-tour.png'),
     },
 ];
 
@@ -281,6 +282,7 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'image',
                 src: getImageLocation('loss_control.png'),
+                imageclass: 'loss-control',
             },
             {
                 type: 'text',
@@ -289,25 +291,25 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'text',
                 content: localize(
-                    '- <strong>currentPL</strong>: Use this variable to store the cumulative profit or loss while your bot is running. Set the initial value to <strong>0</strong>.'
+                    '- <strong>current profit/loss</strong>: Use this variable to store the cumulative profit or loss while your bot is running. Set the initial value to <strong>0</strong>.'
                 ),
             },
             {
                 type: 'text',
                 content: localize(
-                    '- <strong>currentStake</strong>: Use this variable to store the stake amount used in the last contract. You can assign any amount you want, but it must be a positive number.'
+                    '- <strong>current stake</strong>: Use this variable to store the stake amount used in the last contract. You can assign any amount you want, but it must be a positive number.'
                 ),
             },
             {
                 type: 'text',
                 content: localize(
-                    '- <strong>maximumLoss</strong>: Use this variable to store your maximum loss limit. You can assign any amount you want, but it must be a positive number.'
+                    '- <strong>maximum loss</strong>: Use this variable to store your maximum loss limit. You can assign any amount you want, but it must be a positive number.'
                 ),
             },
             {
                 type: 'text',
                 content: localize(
-                    '- <strong>tradeAgain</strong>: Use this variable to stop trading when your loss limit is reached. Set the initial value to <strong>true</strong>.'
+                    '- <strong>trade again</strong>: Use this variable to stop trading when your loss limit is reached. Set the initial value to <strong>true</strong>.'
                 ),
             },
             {
@@ -317,7 +319,7 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'text',
                 content: localize(
-                    '2. Use a logic block to check if <strong>currentPL</strong> exceeds <strong>maximumLoss</strong>. If it does, set <strong>tradeAgain</strong> to false to prevent the bot from running another cycle.'
+                    '2. Use a logic block to check if <strong>current profit/loss</strong> exceeds <strong>maximum loss</strong>. If it does, set <strong>trade again</strong> to false to prevent the bot from running another cycle.'
                 ),
             },
             {
@@ -327,7 +329,7 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'text',
                 content: localize(
-                    '3. Update <strong>currentPL</strong> with the profit from the last contract. If the last contract was lost, the value of <strong>currentPL</strong> will be negative.'
+                    '3. Update <strong>current profit/loss</strong> with the profit from the last contract. If the last contract was lost, the value of <strong>current profit/loss</strong> will be negative.'
                 ),
             },
             {

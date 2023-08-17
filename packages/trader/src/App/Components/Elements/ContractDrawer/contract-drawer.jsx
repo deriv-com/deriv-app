@@ -16,7 +16,6 @@ import ContractAudit from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractDrawerCard from './contract-drawer-card.jsx';
 import { SwipeableContractAudit } from './swipeable-components.jsx';
-import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
 
 const ContractDrawer = observer(
@@ -38,7 +37,6 @@ const ContractDrawer = observer(
         toggleHistoryTab,
     }) => {
         const { common, ui } = useStore();
-        const { symbol } = useTraderStore();
         const { server_time } = common;
         const { is_mobile } = ui;
         const { currency, exit_tick_display_value, is_sold } = contract_info;
@@ -68,7 +66,6 @@ const ContractDrawer = observer(
                 is_open
                 is_turbos={is_turbos}
                 is_vanilla={is_vanilla}
-                symbol={symbol}
                 toggleHistoryTab={toggleHistoryTab}
             />
         );

@@ -1,5 +1,6 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TCFDPasswordReset } from '../Containers/props.types';
+import { ReactElement } from 'react';
 
 // TODO add the DerivEZ and Ctrader as they are released
 export type TCFDPlatform = 'dxtrade' | 'mt5';
@@ -233,21 +234,21 @@ export type TTradingPlatformAccounts = {
 };
 
 export type TSuccessDialog = {
-    classNameMessage: string;
+    classNameMessage?: string;
     has_cancel: boolean;
     has_submit: boolean;
-    icon: string;
-    message: string;
-    onCancel: () => void;
-    onSubmit: () => void;
-    heading: string;
+    icon: ReactElement;
+    message: ReactElement | string;
+    onCancel?: () => void;
+    onSubmit?: () => void;
+    heading?: ReactElement | string;
     icon_size: string;
-    text_submit: string;
-    text_cancel: string;
+    text_submit?: string;
+    text_cancel?: string;
     is_open: boolean;
     toggleModal: () => void;
-    title: string;
-    has_close_icon: string;
+    title?: string;
+    has_close_icon: boolean;
     width: string;
-    is_medium_button: boolean;
+    is_medium_button?: boolean;
 };

@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 
 type TErrorComponent = {
     header: string;
-    message: string;
+    message: Array<{ message: string; has_html?: boolean } | React.ReactNode> | string;
     is_dialog: boolean;
     redirect_label: string;
     redirectOnClick: () => void;
@@ -37,7 +37,7 @@ const ErrorComponent = ({
     return (
         <PageErrorContainer
             error_header={header ?? ''}
-            error_messages={message ? message[(message, refresh_message)] : []}
+            error_messages={message && Array.isArray(message) ? [{ message, refresh_message }] : []}
             redirect_urls={[routes.trade]}
             redirect_labels={[redirect_label || localize('Refresh')]}
             buttonOnClick={redirectOnClick || (() => location.reload())}

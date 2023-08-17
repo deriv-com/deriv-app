@@ -36,7 +36,7 @@ import {
     WS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import SuccessDialog from '../Components/success-dialog.jsx';
+import SuccessDialog from '../Components/success-dialog';
 import '../sass/cfd.scss';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';

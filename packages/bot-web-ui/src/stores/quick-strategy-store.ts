@@ -355,11 +355,13 @@ export default class QuickStrategyStore {
         const { active_symbols } = ApiHelpers.instance;
         const symbols = active_symbols.getAllSymbols(/* should_be_open */ true);
 
-        const symbol_options = symbols.map((symbol: TSymbol) => ({
-            group: symbol.submarket_display,
-            text: symbol.symbol_display,
-            value: symbol.symbol,
-        }));
+        const symbol_options = symbols
+            .filter((symbol: TSymbol) => symbol.submarket_display !== 'Crash/Boom Indices')
+            .map((symbol: TSymbol) => ({
+                group: symbol.submarket_display,
+                text: symbol.symbol_display,
+                value: symbol.symbol,
+            }));
 
         this.setSymbolDropdown(symbol_options);
 

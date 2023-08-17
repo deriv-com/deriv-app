@@ -65,7 +65,7 @@ const Info = ({ handleSelect, item, list }: TInfo) => {
                         {is_description_tab_selected ? (
                             <React.Fragment>
                                 <TradeCategoriesGIF category={type.value} selected_contract_type={item?.value} />
-                                <TradeCategories category={type.value} onClick={onClickGlossary} />
+                                <TradeCategories category={type.value} is_vanilla_fx={is_vanilla_fx} onClick={onClickGlossary} />
                             </React.Fragment>
                         ) : (
                             <ContractTypeGlossary category={type.value} is_vanilla_fx={is_vanilla_fx} />

@@ -15,8 +15,8 @@ type TTradeCategoriesProps = {
 
 const TradeCategories = ({ category, is_vanilla_fx, onClick }: TTradeCategoriesProps) => {
     const vanilla_payout_text = is_vanilla_fx
-        ? getLocalizedBasis().payout_per_pip
-        : getLocalizedBasis().payout_per_point;
+        ? getLocalizedBasis().payout_per_pip.toLowerCase()
+        : getLocalizedBasis().payout_per_point.toLowerCase();
 
     let TradeTypeTemplate;
     if (category) {

@@ -180,6 +180,7 @@ export default class NotificationStore extends BaseStore {
 
                 if (is_existing_message) {
                     this.markNotificationMessage({ key: notification.key });
+                    return;
                 }
 
                 const sortFn = isMobile() ? sortNotificationsMobile : sortNotifications;

@@ -24,7 +24,10 @@ const EmailLinkVerifiedModal = () => {
                             <Localize i18n_default_text="We've verified your order" />
                         </Text>
                         <Text align='center' color='prominent'>
-                            <Localize i18n_default_text='Please ensure yo.' values={{ amount, local_currency }} />
+                            <Localize
+                                i18n_default_text="Please ensure you've received {{amount}} {{local_currency}} in your account and hit Confirm to complete the transaction."
+                                values={{ amount, local_currency }}
+                            />
                         </Text>
                     </Modal.Body>
                     <Modal.Footer className='email-link-verified-modal__footer'>

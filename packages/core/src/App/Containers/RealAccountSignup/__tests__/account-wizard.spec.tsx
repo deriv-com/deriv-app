@@ -3,7 +3,16 @@ import { WS } from '@deriv/shared';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AccountWizard from '../account-wizard';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useIsClientHighRiskForMT5: jest.fn(),
+}));
+
+const mockUseIsClientHighRiskForMT5 = useIsClientHighRiskForMT5 as jest.MockedFunction<
+    typeof useIsClientHighRiskForMT5
+>;
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -41,12 +50,6 @@ jest.mock('@deriv/shared', () => ({
 
 const mock_form_data = { name: 'Test', document_number: 'none', document_type: { id: 'none' } };
 
-const mock = mockStore({
-    client: {
-        trading_platform_available_accounts: [],
-    },
-});
-
 const Test = ({ onSubmit }) => (
     <div>
         TestComponent
@@ -71,6 +74,10 @@ jest.mock('../account-wizard-form', () => ({
 }));
 
 describe('<AccountWizard />', () => {
+    beforeEach(() => {
+        mockUseIsClientHighRiskForMT5.mockReturnValue(false);
+    });
+
     const mock_props = {
         account_status: {
             currency_config: { usd: {} },
@@ -195,42 +202,26 @@ describe('<AccountWizard />', () => {
     };
 
     it('should render AccountWizard component', () => {
-        render(
-            <StoreProvider store={mock}>
-                <AccountWizard {...mock_props} />
-            </StoreProvider>
-        );
+        render(<AccountWizard {...mock_props} />);
         expect(screen.getByTestId('dt_wizard')).toBeInTheDocument();
         expect(screen.getByText('TestComponent')).toBeInTheDocument();
     });
 
     it('should fetch ResidenceList if ResidenceList is empty ', () => {
-        render(
-            <StoreProvider store={mock}>
-                <AccountWizard {...mock_props} residence_list={[]} />
-            </StoreProvider>
-        );
+        render(<AccountWizard {...mock_props} residence_list={[]} />);
         expect(mock_props.fetchResidenceList).toBeCalledTimes(1);
         expect(screen.getByTestId('dt_wizard')).toBeInTheDocument();
         expect(screen.getByText('TestComponent')).toBeInTheDocument();
     });
 
     it('should fetch StatesList if StatesList is empty ', () => {
-        render(
-            <StoreProvider store={mock}>
-                <AccountWizard {...mock_props} states_list={[]} />
-            </StoreProvider>
-        );
+        render(<AccountWizard {...mock_props} states_list={[]} />);
         expect(mock_props.fetchStatesList).toBeCalledTimes(1);
         expect(screen.getByText('TestComponent')).toBeInTheDocument();
     });
 
     it('should invoke Create account and IDV data submission APIs on click of Submit button', async () => {
-        render(
-            <StoreProvider store={mock}>
-                <AccountWizard {...mock_props} />
-            </StoreProvider>
-        );
+        render(<AccountWizard {...mock_props} />);
         const ele_submit_btn = screen.getByRole('button', { name: 'Submit' });
         await waitFor(() => {
             userEvent.click(ele_submit_btn);

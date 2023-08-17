@@ -5,12 +5,12 @@ import useWalletAccountsList from './useWalletAccountsList';
 import useCurrencyConfig from './useCurrencyConfig';
 
 const useAvailableWallets = () => {
-    const { data, isSuccess, isLoading } = useAuthorize();
+    const { data } = useAuthorize();
 
     // @ts-expect-error Need to update @deriv/api-types to fix the TS error
     const { data: account_type_data, ...rest } = useFetch('get_account_types', {
         payload: { company: data?.landing_company_name === 'virtual' ? 'svg' : data?.landing_company_name },
-        options: { enabled: Boolean(data?.landing_company_name) && isSuccess && !isLoading },
+        options: { enabled: Boolean(data?.landing_company_name) },
     });
 
     const { data: added_wallets } = useWalletAccountsList();

@@ -61,3 +61,5 @@ export { default as useActiveAccount } from './useActiveAccount';
 export { default as useBalance } from './useBalance';
 export { default as useTradingAccountsList } from './useTradingAccountsList';
 export { default as useWalletAccountsList } from './useWalletAccountsList';
+export { default as useActiveWalletAccount } from './useActiveWalletAccount';
+export { default as useActiveTradingAccount } from './useActiveTradingAccount';

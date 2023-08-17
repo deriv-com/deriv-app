@@ -33,7 +33,7 @@ describe('useCurrencyConfig', () => {
 
         const { result } = renderHook(() => useCurrencyConfig(), { wrapper });
 
-        expect(result.current.getConfig('XXX')).toBe(undefined);
+        expect(result.current.getConfig('EUR')).toBe(undefined);
     });
 
     test('should return currency config object for the given currency', () => {

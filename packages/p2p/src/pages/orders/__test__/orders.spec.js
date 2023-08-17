@@ -4,19 +4,25 @@ import { useStores } from 'Stores';
 import { useSafeState } from '@deriv/components';
 import Orders from '../orders.jsx';
 
+const mock_store = {
+    general_store: {
+        active_index: 2,
+        setActiveIndex: jest.fn(),
+    },
+    order_store: {
+        order_id: null,
+        order_information: '',
+        orders: [],
+        onOrderIdUpdate: jest.fn(),
+        onOrdersUpdate: jest.fn(),
+        onUnmount: jest.fn(),
+        setForceRerenderOrders: jest.fn(),
+    },
+};
+
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
-
-    useStores: jest.fn().mockReturnValue({
-        order_store: {
-            order_id: null,
-            onOrderIdUpdate: jest.fn(),
-            orders: [],
-            onOrdersUpdate: jest.fn(),
-            onUnmount: jest.fn(),
-            setForceRerenderOrders: jest.fn(),
-        },
-    }),
+    useStores: jest.fn(() => mock_store),
 }));
 
 jest.mock('@deriv/components', () => ({
@@ -46,17 +52,8 @@ describe('<Orders/>', () => {
     });
 
     it('should display the order details for a particular ', () => {
-        useStores.mockImplementation(() => ({
-            order_store: {
-                order_id: null,
-                onOrderIdUpdate: jest.fn(),
-                orders: [],
-                onOrdersUpdate: jest.fn(),
-                onUnmount: jest.fn(),
-                setForceRerenderOrders: jest.fn(),
-                order_information: 'test',
-            },
-        }));
+        mock_store.order_store.order_information = 'test';
+
         render(<Orders />);
 
         expect(screen.getByText('Order Details')).toBeInTheDocument();

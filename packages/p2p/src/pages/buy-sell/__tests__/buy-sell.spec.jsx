@@ -7,6 +7,8 @@ const mock_store = {
     general_store: {
         should_show_popup: false,
         setShouldShowPopup: jest.fn(),
+        setActiveIndex: jest.fn(),
+        active_index: 1,
     },
     buy_sell_store: {
         registerIsListedReaction: jest.fn(() => jest.fn()),
@@ -26,6 +28,10 @@ jest.mock('Stores', () => ({
 }));
 
 describe('<BuySellPage/>', () => {
+    it('should render the buy/sell page', () => {
+        render(<BuySell />);
+        expect(mock_store.general_store.setActiveIndex).toHaveBeenCalledWith(0);
+    });
     it('should render Verification Section when user is not verified', () => {
         render(<BuySell />);
 

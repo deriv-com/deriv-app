@@ -653,6 +653,7 @@ export default class MyProfileStore extends BaseStore {
     }
 
     updatePaymentMethod(values, { setSubmitting }) {
+        this.setIsLoading(true);
         requestWS({
             p2p_advertiser_payment_methods: 1,
             update: {
@@ -668,9 +669,8 @@ export default class MyProfileStore extends BaseStore {
                 });
             } else {
                 this.setShouldShowEditPaymentMethodForm(false);
-                this.getAdvertiserPaymentMethods();
             }
-
+            this.setIsLoading(false);
             setSubmitting(false);
         });
     }
@@ -725,7 +725,7 @@ export default class MyProfileStore extends BaseStore {
 
         Object.keys(values).forEach(key => {
             const value = values[key];
-            const payment_method_field_set = this.payment_method_field_set[key];
+            const payment_method_field_set = this.payment_method_field_set[key] || this.payment_method_to_edit;
             const { display_name, required } = payment_method_field_set;
 
             if (required && !value) {

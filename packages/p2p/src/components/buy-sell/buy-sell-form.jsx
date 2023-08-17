@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
-import { HintBox, Icon, Input, Text } from '@deriv/components';
+import { HintBox, Input, Text } from '@deriv/components';
 import { getDecimalPlaces, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer, Observer } from 'mobx-react-lite';
@@ -15,6 +15,7 @@ import { floatingPointValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
 import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import PaymentMethodIcon from 'Components/payment-method-icon';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
@@ -22,7 +23,6 @@ const BuySellForm = props => {
     const [selected_methods, setSelectedMethods] = React.useState([]);
     buy_sell_store.setFormProps(props);
     const { showModal } = useModalManagerContext();
-
     const { setPageFooterParent } = props;
     const {
         advertiser_details,
@@ -214,35 +214,15 @@ const BuySellForm = props => {
                                     )}
                                     {payment_method_names &&
                                         payment_method_names.map((payment_method, key) => {
-                                            const method = payment_method.replace(/\s|-/gm, '');
-
-                                            if (method === 'BankTransfer' || method === 'Other') {
-                                                return (
-                                                    <div className='buy-sell__modal-payment-method--row' key={key}>
-                                                        <Icon
-                                                            className='buy-sell__modal-payment-method--icon'
-                                                            icon={`IcCashier${method}`}
-                                                            size={16}
-                                                        />
-                                                        <Text as='p' color='general' line_height='m' size='xs'>
-                                                            {payment_method}
-                                                        </Text>
-                                                    </div>
-                                                );
-                                            }
-
-                                            return (
-                                                <div className='buy-sell__modal-payment-method--row' key={key}>
-                                                    <Icon
-                                                        className='buy-sell__modal-payment-method--icon'
-                                                        icon='IcCashierEwallet'
-                                                        size={16}
-                                                    />
-                                                    <Text as='p' color='general' line_height='m' size='xs'>
-                                                        {payment_method}
-                                                    </Text>
-                                                </div>
-                                            );
+                                            <div className='buy-sell__modal-payment-method--row' key={key}>
+                                                <PaymentMethodIcon
+                                                    className='buy-sell__modal-payment-method--icon'
+                                                    display_name={payment_method}
+                                                />
+                                                <Text as='p' color='general' line_height='m' size='xs'>
+                                                    {payment_method}
+                                                </Text>
+                                            </div>;
                                         })}
                                 </div>
                                 <div className='buy-sell__modal-field-wrapper'>

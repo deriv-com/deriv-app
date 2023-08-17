@@ -9,10 +9,21 @@ import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import ModalForm from 'Components/modal-manager/modal-form';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
 
 const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
-    const { general_store, my_profile_store } = useStores();
     const { hideModal, modal, showModal } = useModalManagerContext();
+    const { general_store, my_ads_store, my_profile_store } = useStores();
+    const { payment_method_value, selected_payment_method } = my_profile_store;
+
+    const handleCreateError = error => {
+        my_profile_store.setAddPaymentMethodErrorMessage(error.message);
+        general_store.showModal({
+            key: 'AddPaymentMethodErrorModal',
+        });
+    };
+
+    const { create } = useP2PAdvertiserPaymentMethods(handleCreateError);
 
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
@@ -21,6 +32,29 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const createPaymentMethod = async (values, { setSubmitting }) => {
+        await create({ ...values, method: payment_method_value || selected_payment_method });
+
+        if (general_store.isCurrentModal('BlockUserModal')) {
+            general_store.hideModal();
+        }
+        my_profile_store.setSelectedPaymentMethod('');
+        general_store.setSavedFormState(null);
+        general_store.setFormikRef(null);
+
+        my_profile_store.setShouldShowAddPaymentMethodForm(false);
+
+        if (general_store.isCurrentModal('CreateAdAddPaymentMethodModal')) {
+            general_store.hideModal();
+        }
+
+        if (my_ads_store.should_show_add_payment_method) {
+            my_ads_store.setShouldShowAddPaymentMethod(false);
+        }
+
+        setSubmitting(false);
+    };
 
     if (!my_profile_store.selected_payment_method_display_name && !my_profile_store.selected_payment_method_fields) {
         return <Loading is_fullscreen={false} />;
@@ -31,7 +65,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
             <ModalForm
                 enableReinitialize
                 initialValues={my_profile_store.initial_values}
-                onSubmit={my_profile_store.createPaymentMethod}
+                onSubmit={createPaymentMethod}
                 validate={my_profile_store.validatePaymentMethodFields}
             >
                 {({ dirty, handleChange, isSubmitting, errors, touched }) => {

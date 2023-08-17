@@ -16,6 +16,7 @@ describe('AccumulatorsSellButton', () => {
         expect(screen.getByRole('button')).toBeEnabled();
         expect(screen.getByText(/Sell/i)).toBeInTheDocument();
         expect(screen.getByText(/10.00/i)).toBeInTheDocument();
+        expect(screen.getByText(/Note:/i)).toBeInTheDocument();
     });
     it('should render component with disabled button and without current stake', () => {
         const new_mock_props = { ...mock_default_props, is_disabled: true, current_stake: null };

@@ -830,9 +830,20 @@
         &__stake {
             padding-right: 0.5rem;
         }
+        .dc-btn--sell {
+            margin-bottom: 0.5rem;
+            @include mobile {
+                margin-bottom: 1rem;
+            }
+        }
         @include mobile {
             padding: 0rem;
             margin-bottom: 0rem;
+        }
+    }
+    &__notification {
+        @include mobile {
+            margin-bottom: 0.6rem;
         }
     }
     &__loading {

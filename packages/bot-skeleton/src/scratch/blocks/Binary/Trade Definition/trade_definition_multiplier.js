@@ -80,6 +80,20 @@ Blockly.Blocks.trade_definition_multiplier = {
             const block_types_in_multiplier = [];
             blocks_in_multiplier.forEach(block => {
                 block_types_in_multiplier.push(block.type);
+                const block_multiplier_take_profit = block.childValueToCode('multiplier_take_profit', 'AMOUNT');
+                const block_multiplier_stop_loss = block.childValueToCode('multiplier_stop_loss', 'AMOUNT');
+                if (block_multiplier_take_profit <= 0 || block_multiplier_stop_loss <= 0) {
+                    block.setDisabled(true);
+                }
+
+                if (block.type === 'multiplier_stop_loss' && block_multiplier_stop_loss > 0) {
+                    block.setDisabled(false);
+                }
+
+                if (block.type === 'multiplier_take_profit' && block_multiplier_take_profit > 0) {
+                    block.setDisabled(false);
+                }
+
                 if (
                     !/^multiplier_.+$/.test(block.type) ||
                     new Set(block_types_in_multiplier).size !== block_types_in_multiplier.length

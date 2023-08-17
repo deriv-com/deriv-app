@@ -1,5 +1,5 @@
 import React from 'react';
-import TransactionsForADay from '../transactions-for-a-day';
+import DailyTransactions from '../daily-transactions';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 
@@ -10,8 +10,8 @@ jest.mock('@deriv/hooks', () => ({
     })),
 }));
 
-describe('TransactionsForADay', () => {
-    let mocked_props: Required<React.ComponentProps<typeof TransactionsForADay>>;
+describe('DailyTransactions', () => {
+    let mocked_props: Required<React.ComponentProps<typeof DailyTransactions>>;
 
     beforeEach(() => {
         mocked_props = {
@@ -62,7 +62,7 @@ describe('TransactionsForADay', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>{children}</StoreProvider>
         );
-        return render(<TransactionsForADay {...mocked_props} />, {
+        return render(<DailyTransactions {...mocked_props} />, {
             wrapper,
         });
     };

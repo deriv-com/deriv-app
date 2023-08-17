@@ -4,12 +4,12 @@ import { Text } from '@deriv/components';
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
 import CompletedTransaction from '../completed-transaction';
 
-type TTransactionsForADay = {
+type TDailyTransactions = {
     day: string;
     transaction_list: ReturnType<typeof useWalletTransactions>['transactions'];
 };
 
-const TransactionsForADay = observer(({ day, transaction_list }: TTransactionsForADay) => {
+const DailyTransactions = observer(({ day, transaction_list }: TDailyTransactions) => {
     const {
         ui: { is_mobile },
     } = useStore();
@@ -42,4 +42,4 @@ const TransactionsForADay = observer(({ day, transaction_list }: TTransactionsFo
     );
 });
 
-export default TransactionsForADay;
+export default DailyTransactions;

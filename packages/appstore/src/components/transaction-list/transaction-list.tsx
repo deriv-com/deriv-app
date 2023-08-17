@@ -5,7 +5,7 @@ import { Div100vhContainer, Dropdown, Loading, Text, ThemedScrollbars, ToggleSwi
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import { groupTransactionsByDay } from '@deriv/utils';
-import TransactionsForADay from './transactions-for-a-day';
+import DailyTransactions from './transactions-for-a-day';
 import './transaction-list.scss';
 
 type TTransactionList = {
@@ -135,7 +135,7 @@ const TransactionList = observer(({ contentScrollHandler, is_wallet_name_visible
                         {!isLoading ? (
                             <React.Fragment>
                                 {Object.entries(grouped_transactions).map(([day, transaction_list]) => (
-                                    <TransactionsForADay
+                                    <DailyTransactions
                                         key={
                                             // eslint-disable-next-line react/prop-types
                                             day + transaction_list.length.toString()
@@ -143,7 +143,7 @@ const TransactionList = observer(({ contentScrollHandler, is_wallet_name_visible
                                         day={day}
                                         transaction_list={
                                             transaction_list as React.ComponentProps<
-                                                typeof TransactionsForADay
+                                                typeof DailyTransactions
                                             >['transaction_list']
                                         }
                                     />

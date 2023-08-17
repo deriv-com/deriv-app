@@ -25,7 +25,7 @@ const AccumulatorsStatsManualModal = ({
     const getVideoSource = React.useCallback(
         (extension: string) => {
             return getUrlBase(
-                `/public/images/common/accumulators_manual_${is_mobile ? 'mobile' : 'desktop'}${
+                `/public/videos/accumulators_manual_${is_mobile ? 'mobile' : 'desktop'}${
                     is_dark_theme ? '_dark' : ''
                 }.${extension}`
             );

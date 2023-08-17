@@ -14,10 +14,12 @@ const useDepositFiatAddress = () => {
     useEffect(() => {
         send();
     }, [send]);
+
     return {
         ...rest,
         resend: send,
         data: deposit_iframe_url,
     };
 };
+
 export default useDepositFiatAddress;

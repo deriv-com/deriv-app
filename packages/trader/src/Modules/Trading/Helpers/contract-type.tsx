@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 
 type TCategory = { value: string; text: string };
 type TContractType = {
-    name: string;
+    name?: string;
     categories: TCategory[];
 };
 type TcontractTypesList = {

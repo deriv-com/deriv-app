@@ -64,10 +64,7 @@ export const validateErrorOnBlockDelete = () => {
             blockX >= translate_X - translate_offset &&
             blockX <= translate_X + translate_offset
         ) {
-            globalObserver.emit(
-                'ui.log.error',
-                error_message_map[Blockly.selected.category_]?.default || error_message_map[Blockly.selected.category_]
-            );
+            globalObserver.emit('ui.log.error', error_message_map[Blockly.selected.category_]?.default);
         }
     }
 };
@@ -395,8 +392,7 @@ export const isAllRequiredBlocksEnabled = workspace => {
     });
 
     missing_blocks.forEach(blockType => {
-        if (blockType)
-            globalObserver.emit('ui.log.error', error_message_map[blockType]?.missing || error_message_map[blockType]);
+        if (blockType) globalObserver.emit('ui.log.error', error_message_map[blockType]?.missing);
     });
 
     const is_required_blocks_present = [...missing_blocks, ...misplaced_blocks];

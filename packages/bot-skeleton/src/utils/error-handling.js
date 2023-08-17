@@ -21,10 +21,7 @@ export const handleError = (errorCode, observer) => {
     switch (errorCode) {
         case 'BLOCK_DELETION':
             if (error_message_map[Blockly.selected.type]) {
-                observer.emit(
-                    'ui.log.error',
-                    error_message_map[Blockly.selected.type]?.default || error_message_map[Blockly.selected.type]
-                );
+                observer.emit('ui.log.error', error_message_map[Blockly.selected.type]?.default);
             }
             break;
         default:

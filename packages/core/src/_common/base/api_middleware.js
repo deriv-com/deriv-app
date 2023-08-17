@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 const checked_subs = new Set();
+const requests = new Map();
 
 class APIMiddleware {
     constructor(config) {
@@ -21,12 +22,15 @@ class APIMiddleware {
     }
 
     requestDataTransformer(args) {
-        const key = Object.keys(args.parsed_request)[0];
+        const keys = Object.keys(args.parsed_request)[0];
+        let key = keys;
         if (args?.is_subscription) {
             if (!checked_subs.has(key)) {
                 checked_subs.add(`${key}:${args.req_id}`);
+                key = `${key}:${args.req_id}`;
             }
         }
+        requests.set(key, args.timestamp);
         console.time(args.req_id);
 
         return args.parsed_request;
@@ -34,7 +38,11 @@ class APIMiddleware {
 
     onSubscriptionResponse({ response }) {
         if (response?.subscription && checked_subs.has(`${response.msg_type}:${response.req_id}`)) {
-            console.log(`${response.msg_type}(subscribed)`);
+            console.log(
+                `${response.msg_type}(subscribed) ${requests.get(
+                    `${response.msg_type}:${response.req_id}`
+                )} ${Date.now()}`
+            );
             console.timeEnd(response.req_id);
             checked_subs.delete(`${response.msg_type}:${response.req_id}`);
         }
@@ -42,7 +50,7 @@ class APIMiddleware {
 
     sendIsCalled({ response_promise, args: [request, options = {}] }) {
         options.callback = res => {
-            console.log(res.msg_type);
+            console.log(`${res.msg_type} ${requests.get(res.msg_type)} ${Date.now()}`);
             console.timeEnd(request.req_id);
         };
         const promise = promiseRejectToResolve(response_promise);

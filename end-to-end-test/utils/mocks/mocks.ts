@@ -3,7 +3,6 @@ import { EventEmitter } from 'events';
 import { Server as WsServer } from 'ws';
 import { generate } from 'selfsigned';
 import { Page } from '@playwright/test';
-import { TSocketRequestPayload } from '../../../packages/api/types';
 
 import type {
     APITokenRequest,
@@ -534,12 +533,16 @@ export async function createMockServer(
 }
 
 type SetupMocksOptions = {
-    baseURL: string;
+    baseURL?: string;
     page: Page;
     mocks: Array<(context: Context) => void>;
 };
 
 async function setupMocks({ baseURL, page, mocks }: SetupMocksOptions) {
+    if (!baseURL) {
+        throw new Error('baseURL is required');
+    }
+
     const mockServer = await createMockServer(mocks);
     page.addListener('close', () => {
         mockServer.close();

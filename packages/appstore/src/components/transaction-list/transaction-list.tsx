@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { observer, useStore } from '@deriv/stores';
 import { Div100vhContainer, Dropdown, Loading, Text, ThemedScrollbars, ToggleSwitch } from '@deriv/components';
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { groupTransactionsByDay } from '@deriv/utils';
 import DailyTransactions from './daily-transactions';

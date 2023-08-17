@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
-import { observer, useStore } from '@deriv/stores';
 import { AppLinkedWithWalletIcon, Text, WalletIcon } from '@deriv/components';
-import { getTradingAccountName, getWalletCurrencyIcon } from '@deriv/utils';
 import { useWalletTransactions } from '@deriv/hooks';
+import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import { getTradingAccountName, getWalletCurrencyIcon } from '@deriv/utils';
 
 type TCompletedTransaction = {
     transaction: ReturnType<typeof useWalletTransactions>['transactions'][number];

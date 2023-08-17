@@ -1,7 +1,7 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
 import { Text } from '@deriv/components';
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
+import { observer, useStore } from '@deriv/stores';
 import CompletedTransaction from '../completed-transaction';
 
 type TDailyTransactions = {

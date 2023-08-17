@@ -1,4 +1,4 @@
-import useRealTotalAssetCurrency from './useTotalAssetCurrency';
+import useRealAccountCurrency from './useRealAccountCurrency';
 import useExchangeRate from './useExchangeRate';
 /**
  * we can use this hook to get the total balance of the given accounts list.
@@ -13,7 +13,7 @@ type TUseTotalAccountBalance = {
 };
 
 const useTotalAccountBalance = (accounts: TUseTotalAccountBalance[]) => {
-    const total_assets_real_currency = useRealTotalAssetCurrency();
+    const total_assets_real_currency = useRealAccountCurrency();
     const { getRate } = useExchangeRate();
 
     if (!accounts.length) return { balance: 0, currency: total_assets_real_currency };

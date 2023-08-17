@@ -1,7 +1,7 @@
 import { useStore } from '@deriv/stores';
 import usePlatformAccounts from './usePlatformAccounts';
 
-const useRealTotalAssetCurrency = () => {
+const useRealAccountCurrency = () => {
     const { client, traders_hub } = useStore();
     const { current_fiat_currency, is_crypto, currency, default_currency } = client;
     const { is_eu_user } = traders_hub;
@@ -20,4 +20,4 @@ const useRealTotalAssetCurrency = () => {
     return is_crypto() ? currency_if_is_crypto : currency;
 };
 
-export default useRealTotalAssetCurrency;
+export default useRealAccountCurrency;

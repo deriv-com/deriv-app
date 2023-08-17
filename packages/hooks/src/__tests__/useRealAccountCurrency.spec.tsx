@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
-import useRealTotalAssetCurrency from '../useTotalAssetCurrency';
+import useRealAccountCurrency from '../useRealAccountCurrency';
 
-describe('useRealTotalAssetCurrency', () => {
+describe('useRealAccountCurrency', () => {
     test('should return default currency when user has no account', async () => {
         const mock = mockStore({
             client: {
@@ -14,7 +14,7 @@ describe('useRealTotalAssetCurrency', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useRealTotalAssetCurrency(), { wrapper });
+        const { result } = renderHook(() => useRealAccountCurrency(), { wrapper });
         expect(result.current).toBe(mock.client.default_currency);
     });
 
@@ -34,7 +34,7 @@ describe('useRealTotalAssetCurrency', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useRealTotalAssetCurrency(), { wrapper });
+        const { result } = renderHook(() => useRealAccountCurrency(), { wrapper });
         expect(result.current).toBe(mock.client.default_currency);
     });
 
@@ -58,7 +58,7 @@ describe('useRealTotalAssetCurrency', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useRealTotalAssetCurrency(), { wrapper });
+        const { result } = renderHook(() => useRealAccountCurrency(), { wrapper });
 
         expect(result.current).toBe(mock.client.accounts.non_crypto_acc.currency);
     });
@@ -82,7 +82,7 @@ describe('useRealTotalAssetCurrency', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useRealTotalAssetCurrency(), { wrapper });
+        const { result } = renderHook(() => useRealAccountCurrency(), { wrapper });
 
         expect(result.current).toBe('');
     });
@@ -107,7 +107,7 @@ describe('useRealTotalAssetCurrency', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useRealTotalAssetCurrency(), { wrapper });
+        const { result } = renderHook(() => useRealAccountCurrency(), { wrapper });
 
         const first_account_currency = mock.client.accounts[Object.keys(mock.client.accounts)[0]].currency;
         expect(result.current).toBe(first_account_currency);
@@ -138,7 +138,7 @@ describe('useRealTotalAssetCurrency', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useRealTotalAssetCurrency(), { wrapper });
+        const { result } = renderHook(() => useRealAccountCurrency(), { wrapper });
 
         expect(result.current).toBe(mock.client.currency);
     });
@@ -158,7 +158,7 @@ describe('useRealTotalAssetCurrency', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useRealTotalAssetCurrency(), { wrapper });
+        const { result } = renderHook(() => useRealAccountCurrency(), { wrapper });
 
         expect(result.current).toBe(undefined);
     });
@@ -194,7 +194,7 @@ describe('useRealTotalAssetCurrency', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useRealTotalAssetCurrency(), { wrapper });
+        const { result } = renderHook(() => useRealAccountCurrency(), { wrapper });
 
         expect(result.current).toBe(mock.client.accounts.MF1234.currency);
     });
@@ -230,7 +230,7 @@ describe('useRealTotalAssetCurrency', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useRealTotalAssetCurrency(), { wrapper });
+        const { result } = renderHook(() => useRealAccountCurrency(), { wrapper });
 
         expect(result.current).toBe(mock.client.default_currency);
     });

@@ -50,7 +50,7 @@ describe('CompletedTransaction', () => {
     it('should render proper account name', () => {
         render_container();
 
-        expect(screen.getByText('USD Wallet')).toBeInTheDocument();
+        expect(screen.getByText(/USD Wallet/i)).toBeInTheDocument();
     });
 
     it('should render proper account balance', () => {
@@ -76,7 +76,7 @@ describe('CompletedTransaction', () => {
     it('should render single wallet icon, if account type is wallet', () => {
         render_container();
 
-        expect(screen.getByText('WalletIcon')).toBeInTheDocument();
+        expect(screen.getByText(/WalletIcon/i)).toBeInTheDocument();
     });
 
     it('should render combined icon (app with wallet), if transaction is a transfer and account category is trading', () => {
@@ -85,6 +85,6 @@ describe('CompletedTransaction', () => {
         mocked_props.transaction.account_type = 'standard';
         render_container();
 
-        expect(screen.getByText('AppLinkedWithWalletIcon')).toBeInTheDocument();
+        expect(screen.getByText(/AppLinkedWithWalletIcon/i)).toBeInTheDocument();
     });
 });

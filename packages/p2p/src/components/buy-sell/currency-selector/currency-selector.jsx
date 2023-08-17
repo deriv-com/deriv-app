@@ -19,7 +19,11 @@ const CurrencySelector = ({ className, default_value, list, onSelect }) => {
         return sorted_list;
     };
     const [filtered_currency_list, setFilteredCurrencyList] = React.useState(getSortedList(list));
-
+    const test = 'testing';
+    const testing = t => {
+        return t;
+    };
+    testing(test);
     return (
         <Formik enableReinitialize initialValues={{ currency: '' }}>
             {({ setFieldValue }) => (

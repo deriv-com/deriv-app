@@ -401,7 +401,7 @@ describe('getAccuBarriersDefaultTimeout', () => {
 
 describe('getAccuBarriersDTraderTimeout', () => {
     const time_difference = 250; // diff between receivals of tick data and barriers data
-    const reduced_time_difference = 50; // reduced diff between receivals of tick data and barriers data
+    const shorter_time_difference = 50; // shorter diff between receivals of tick data and barriers data
     const has_default_timeout = false;
     const tick_update_timestamp = 1234567890800;
     const barriers_update_timestamp = tick_update_timestamp + time_difference;
@@ -417,8 +417,8 @@ describe('getAccuBarriersDTraderTimeout', () => {
     };
 
     it(`should return a timeout equal to a difference between current barriers receival time for 2-second symbol
-        and the sum of the target time + 200ms`, () => {
-        const reduced_diff_barriers_timestamp = tick_update_timestamp + reduced_time_difference;
+        and the sum of the target time + ANIMATION_CORRECTION_TIME`, () => {
+        const sooner_barriers_receival_timestamp = tick_update_timestamp + shorter_time_difference;
         expect(
             ContractUtils.getAccuBarriersDTraderTimeout({
                 barriers_update_timestamp,
@@ -429,16 +429,16 @@ describe('getAccuBarriersDTraderTimeout', () => {
         ).toEqual(getTargetTime(underlying_2_seconds) - barriers_update_timestamp);
         expect(
             ContractUtils.getAccuBarriersDTraderTimeout({
-                barriers_update_timestamp: reduced_diff_barriers_timestamp,
+                barriers_update_timestamp: sooner_barriers_receival_timestamp,
                 has_default_timeout,
                 tick_update_timestamp,
                 underlying: underlying_2_seconds,
             })
-        ).toEqual(getTargetTime(underlying_2_seconds) - reduced_diff_barriers_timestamp);
+        ).toEqual(getTargetTime(underlying_2_seconds) - sooner_barriers_receival_timestamp);
     });
     it(`should return a timeout equal to a difference between current barriers receival time for 1-second symbol
-        and the sum of the target time + 200ms`, () => {
-        const reduced_diff_barriers_timestamp = tick_update_timestamp + reduced_time_difference;
+        and the sum of the target time + ANIMATION_CORRECTION_TIME`, () => {
+        const sooner_barriers_receival_timestamp = tick_update_timestamp + shorter_time_difference;
         expect(
             ContractUtils.getAccuBarriersDTraderTimeout({
                 barriers_update_timestamp,
@@ -449,12 +449,12 @@ describe('getAccuBarriersDTraderTimeout', () => {
         ).toEqual(getTargetTime(underlying_1_second) - barriers_update_timestamp);
         expect(
             ContractUtils.getAccuBarriersDTraderTimeout({
-                barriers_update_timestamp: reduced_diff_barriers_timestamp,
+                barriers_update_timestamp: sooner_barriers_receival_timestamp,
                 has_default_timeout,
                 tick_update_timestamp,
                 underlying: underlying_1_second,
             })
-        ).toEqual(getTargetTime(underlying_1_second) - reduced_diff_barriers_timestamp);
+        ).toEqual(getTargetTime(underlying_1_second) - sooner_barriers_receival_timestamp);
     });
     it('should return a default timeout when has_default_timeout is true, or when tick_update_timestamp is null', () => {
         expect(

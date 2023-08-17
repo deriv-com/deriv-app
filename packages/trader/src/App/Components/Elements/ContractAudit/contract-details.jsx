@@ -9,7 +9,9 @@ import {
     isAccumulatorContract,
     isMobile,
     isMultiplierContract,
-    isOnlyUpsDownsContract,
+    isSmartTraderContract,
+    hasTwoBarriers,
+    isTurbosContract,
     isUserSold,
     isEndedBeforeCancellationExpired,
     isUserCancelled,
@@ -32,16 +34,21 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
         entry_spot_display_value,
         entry_tick_time,
         exit_tick_time,
+        high_barrier,
         profit,
         date_start,
         tick_count,
         tick_passed,
         transaction_ids: { buy, sell } = {},
+        low_barrier,
         display_number_of_contracts,
     } = contract_info;
 
     const is_profit = profit >= 0;
     const cancellation_price = getCancellationPrice(contract_info);
+    const show_barrier = !is_vanilla && !isAccumulatorContract(contract_type) && !isSmartTraderContract(contract_type);
+    const show_duration = !isAccumulatorContract(contract_type) || !isNaN(contract_end_time);
+    const show_payout_per_point = isTurbosContract(contract_type) || is_vanilla;
     const ticks_duration_text = isAccumulatorContract(contract_type)
         ? `${tick_passed}/${tick_count} ${localize('ticks')}`
         : `${tick_count} ${tick_count < 2 ? localize('tick') : localize('ticks')}`;
@@ -83,7 +90,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                     </React.Fragment>
                 ) : (
                     <React.Fragment>
-                        {(!isAccumulatorContract(contract_type) || !isNaN(contract_end_time)) && (
+                        {show_duration && (
                             <ContractAuditItem
                                 id='dt_duration_label'
                                 icon={<Icon icon='IcContractDuration' size={24} />}
@@ -92,40 +99,48 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                             />
                         )}
                         {is_vanilla && (
-                            <React.Fragment>
-                                <ContractAuditItem
-                                    id='dt_bt_label'
-                                    icon={<Icon icon='IcContractStrike' size={24} />}
-                                    label={getBarrierLabel(contract_info)}
-                                    value={getBarrierValue(contract_info) || ' - '}
-                                />
-                                <ContractAuditItem
-                                    id='dt_bt_label'
-                                    icon={<Icon icon='IcContractPayout' size={24} />}
-                                    label={localize('Payout per point')}
-                                    value={
-                                        `${display_number_of_contracts} ${getCurrencyDisplayCode(currency)}` || ' - '
-                                    }
-                                    should_format={!is_vanilla}
-                                />
-                            </React.Fragment>
+                            <ContractAuditItem
+                                id='dt_bt_label'
+                                icon={<Icon icon='IcContractStrike' size={24} />}
+                                label={getBarrierLabel(contract_info)}
+                                value={getBarrierValue(contract_info) || ' - '}
+                            />
                         )}
-                        {!isAccumulatorContract(contract_type) &&
-                            !is_vanilla &&
-                            !isOnlyUpsDownsContract(contract_type) && (
-                                <ContractAuditItem
-                                    id='dt_bt_label'
-                                    icon={
-                                        isDigitType(contract_type) ? (
-                                            <Icon icon='IcContractTarget' size={24} />
-                                        ) : (
-                                            <Icon icon='IcContractBarrier' size={24} />
-                                        )
-                                    }
-                                    label={getBarrierLabel(contract_info)}
-                                    value={getBarrierValue(contract_info) || ' - '}
-                                />
-                            )}
+                        {show_barrier && (
+                            <ContractAuditItem
+                                id='dt_bt_label'
+                                icon={
+                                    isDigitType(contract_type) ? (
+                                        <Icon icon='IcContractTarget' size={24} />
+                                    ) : (
+                                        <Icon icon='IcContractBarrier' size={24} />
+                                    )
+                                }
+                                label={getBarrierLabel(contract_info)}
+                                value={getBarrierValue(contract_info) || ' - '}
+                            />
+                        )}
+                        {show_payout_per_point && (
+                            <ContractAuditItem
+                                id='dt_bt_label'
+                                icon={<Icon icon='IcContractPayout' size={24} />}
+                                label={localize('Payout per point')}
+                                value={`${display_number_of_contracts} ${getCurrencyDisplayCode(currency)}` || ' - '}
+                            />
+                        )}
+                    </React.Fragment>
+                )}
+                {hasTwoBarriers(contract_type) && (
+                    <React.Fragment>
+                        {[high_barrier, low_barrier].map((barrier, index) => (
+                            <ContractAuditItem
+                                id={`dt_bt_label_${index + 1}`}
+                                icon={<Icon icon='IcContractStrike' size={24} />}
+                                key={barrier}
+                                label={high_barrier === barrier ? localize('High barrier') : localize('Low barrier')}
+                                value={barrier}
+                            />
+                        ))}
                     </React.Fragment>
                 )}
                 <ContractAuditItem

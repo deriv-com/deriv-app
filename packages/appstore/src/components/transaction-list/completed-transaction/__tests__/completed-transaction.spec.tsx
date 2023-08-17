@@ -50,7 +50,7 @@ describe('CompletedTransaction', () => {
     it('should render proper account name', () => {
         render_container();
 
-        expect(screen.getByText('USD Wallet')).toBeInTheDocument();
+        expect(screen.getByText(/USD Wallet/i)).toBeInTheDocument();
     });
 
     it('should render proper account balance', () => {

@@ -9,7 +9,7 @@ type TSearchIcon = {
 
 const SearchIcon = ({ search, is_search_loading, onClick }: TSearchIcon) => {
     if (!search) return <Icon icon='IcSearch' />;
-    if (is_search_loading) return <div className='loader' />;
+    if (is_search_loading) return <div className='loader' data-testid='loader' />;
     return <Icon icon='IcCloseCircle' onClick={onClick} color='secondary' />;
 };
 

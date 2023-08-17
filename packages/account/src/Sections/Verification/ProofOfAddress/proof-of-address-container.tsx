@@ -2,7 +2,7 @@ import React from 'react';
 import { AccountStatusResponse, GetAccountStatus } from '@deriv/api-types';
 import { Button, Loading } from '@deriv/components';
 import { WS, getPlatformRedirect, platforms } from '@deriv/shared';
-import { TCoreStores } from '@deriv/stores/types';
+import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import Expired from '../../../Components/poa/status/expired';
 import NeedsReview from '../../../Components/poa/status/needs-review';
@@ -13,14 +13,6 @@ import Submitted from '../../../Components/poa/status/submitted';
 import Unverified from '../../../Components/poa/status/unverified';
 import Verified from '../../../Components/poa/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification.js';
-
-type TProofOfAddressContainer = {
-    is_mx_mlt?: boolean;
-    is_switching?: boolean;
-    has_restricted_mt5_account?: boolean;
-    refreshNotifications: TCoreStores['notifications']['refreshNotifications'];
-    app_routing_history: TCoreStores['portfolio']['error']['app_routing_history'];
-};
 
 type TAuthenticationStatus = Record<
     | 'allow_document_upload'
@@ -36,13 +28,7 @@ type TAuthenticationStatus = Record<
     boolean
 > & { document_status?: DeepRequired<GetAccountStatus>['authentication']['document']['status'] };
 
-const ProofOfAddressContainer = ({
-    is_mx_mlt,
-    is_switching,
-    has_restricted_mt5_account,
-    refreshNotifications,
-    app_routing_history,
-}: TProofOfAddressContainer) => {
+const ProofOfAddressContainer = observer(() => {
     const [is_loading, setIsLoading] = React.useState(true);
     const [authentication_status, setAuthenticationStatus] = React.useState<TAuthenticationStatus>({
         allow_document_upload: false,
@@ -57,6 +43,13 @@ const ProofOfAddressContainer = ({
         is_age_verified: false,
         poa_address_mismatch: false,
     });
+
+    const { client, notifications, common } = useStore();
+    const { app_routing_history } = common;
+    const { landing_company_shortcode, has_restricted_mt5_account, is_switching } = client;
+    const { refreshNotifications } = notifications;
+
+    const is_mx_mlt = landing_company_shortcode === 'iom' || landing_company_shortcode === 'malta';
 
     React.useEffect(() => {
         if (!is_switching) {
@@ -167,6 +160,6 @@ const ProofOfAddressContainer = ({
         default:
             return null;
     }
-};
+});
 
 export default ProofOfAddressContainer;

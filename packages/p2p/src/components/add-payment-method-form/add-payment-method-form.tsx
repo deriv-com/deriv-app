@@ -16,6 +16,7 @@ type TAddPaymentMethodFormProps = {
 
 const AddPaymentMethodForm = ({ should_show_separated_footer = false }: TAddPaymentMethodFormProps) => {
     const { general_store, my_profile_store } = useStores();
+    const { selected_payment_method_display_name, selected_payment_method_fields } = my_profile_store;
     const { hideModal, modal, showModal } = useModalManagerContext();
 
     React.useEffect(() => {
@@ -26,10 +27,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }: TAddPaym
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (
-        !my_profile_store.selected_payment_method_display_name &&
-        my_profile_store.selected_payment_method_fields.length === 0
-    ) {
+    if (!selected_payment_method_display_name && selected_payment_method_fields.length === 0) {
         return <Loading is_fullscreen={false} />;
     }
 
@@ -67,11 +65,11 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }: TAddPaym
                                                 />
                                             }
                                             type='field'
-                                            value={my_profile_store.selected_payment_method_display_name}
+                                            value={selected_payment_method_display_name}
                                         />
                                     )}
                                 </Field>
-                                {my_profile_store.selected_payment_method_fields?.map(
+                                {selected_payment_method_fields?.map(
                                     (payment_method_field: TPaymentMethodFieldMapProps, key: number) => (
                                         <Field name={payment_method_field[0]} id={payment_method_field[0]} key={key}>
                                             {({ field }: FormikValues) => (

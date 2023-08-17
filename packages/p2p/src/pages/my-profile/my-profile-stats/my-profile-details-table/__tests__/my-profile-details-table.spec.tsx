@@ -8,15 +8,17 @@ import MyProfileDetailsTable from '../my-profile-details-table';
 
 let mock_store: DeepPartial<ReturnType<typeof useStores>>;
 
+const mock_modal_manager: DeepPartial<ReturnType<typeof useModalManagerContext>> = {
+    showModal: jest.fn(),
+};
+
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
     useStores: jest.fn(() => mock_store),
 }));
 
 jest.mock('Components/modal-manager/modal-manager-context', () => ({
-    useModalManagerContext: jest.fn(() => ({
-        showModal: jest.fn(),
-    })),
+    useModalManagerContext: jest.fn(() => mock_modal_manager),
 }));
 
 describe('<MyProfileDetailsTable />', () => {
@@ -43,12 +45,6 @@ describe('<MyProfileDetailsTable />', () => {
     });
 
     it('should render MyProfileDetailsTable component', () => {
-        const showModalMock = jest.fn();
-
-        (useModalManagerContext as jest.Mock).mockImplementation(() => ({
-            showModal: showModalMock,
-        }));
-
         render(<MyProfileDetailsTable />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
         });
@@ -57,7 +53,7 @@ describe('<MyProfileDetailsTable />', () => {
 
         userEvent.click(increaseLimitsButton);
 
-        expect(showModalMock).toHaveBeenCalledTimes(1);
-        expect(showModalMock).toHaveBeenCalledWith({ key: 'DailyLimitModal' });
+        expect(mock_modal_manager.showModal).toHaveBeenCalledTimes(1);
+        expect(mock_modal_manager.showModal).toHaveBeenCalledWith({ key: 'DailyLimitModal' });
     });
 });

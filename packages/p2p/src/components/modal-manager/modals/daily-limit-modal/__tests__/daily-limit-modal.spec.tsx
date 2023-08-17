@@ -89,12 +89,6 @@ describe('<DailyLimitModal />', () => {
     });
 
     it('should call setIsDailyLimitUpgrading and upgradeDailyLimit functions when clicking on Yes button', () => {
-        const mockSetIsDailyLimitUpgrading = jest.fn();
-        const mockUpgradeDailyLimit = jest.fn();
-
-        mock_store.my_profile_store.setIsDailyLimitUpgrading = mockSetIsDailyLimitUpgrading;
-        mock_store.my_profile_store.upgradeDailyLimit = mockUpgradeDailyLimit;
-
         render(<DailyLimitModal />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
         });
@@ -103,8 +97,8 @@ describe('<DailyLimitModal />', () => {
 
         userEvent.click(yesButton);
 
-        expect(mockSetIsDailyLimitUpgrading).toHaveBeenCalledTimes(1);
-        expect(mockSetIsDailyLimitUpgrading).toHaveBeenCalledWith(true);
-        expect(mockUpgradeDailyLimit).toHaveBeenCalledTimes(1);
+        expect(mock_store.my_profile_store.setIsDailyLimitUpgrading).toHaveBeenCalledTimes(1);
+        expect(mock_store.my_profile_store.setIsDailyLimitUpgrading).toHaveBeenCalledWith(true);
+        expect(mock_store.my_profile_store.upgradeDailyLimit).toHaveBeenCalledTimes(1);
     });
 });

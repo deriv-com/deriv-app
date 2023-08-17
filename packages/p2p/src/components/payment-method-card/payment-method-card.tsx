@@ -30,18 +30,17 @@ const PaymentMethodCard = ({
     label = undefined,
     large,
     medium,
-    onClick = () => {
-        // do nothing
-    },
-    onClickAdd = () => {
-        // do nothing
-    },
+    onClick,
+    onClickAdd,
     payment_method,
     show_payment_method_name = true,
     small,
     style,
 }: TPaymentMethodCardProps) => {
     const { general_store, my_ads_store, my_profile_store } = useStores();
+    const { active_index } = general_store;
+    const { payment_method_ids } = my_ads_store;
+
     const method = !is_add && payment_method?.display_name ? payment_method?.display_name.replace(/\s|-/gm, '') : '';
     const payment_account = payment_method?.fields?.account?.value;
     const payment_account_name = payment_method?.display_name;
@@ -107,13 +106,10 @@ const PaymentMethodCard = ({
                         suffix_icon='IcCashierVerticalEllipsis'
                     />
                 )}
-                {(general_store.active_index === 2 || general_store.active_index === 0) && (
+                {(active_index === 2 || active_index === 0) && (
                     <Checkbox
                         className='payment-method-card__checkbox'
-                        disabled={
-                            my_ads_store.payment_method_ids.length === 3 &&
-                            !my_ads_store.payment_method_ids.includes(payment_method.ID)
-                        }
+                        disabled={payment_method_ids.length === 3 && !payment_method_ids.includes(payment_method.ID)}
                         label=''
                         onChange={onClick}
                         value={!isEmptyObject(style)}

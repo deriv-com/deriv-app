@@ -4,16 +4,16 @@ import DataList, { TRow, TRowRenderer } from '../data-list/data-list';
 
 const InfiniteLoader = _InfiniteLoader as unknown as React.FC<InfiniteLoaderProps>;
 type TInfiniteDatalist = {
-    className: string;
+    className?: string;
     data_list_className: string;
     has_more_items_to_load: boolean;
     items: TRow[];
     keyMapperFn?: (row: TRow) => number | string;
     loadMoreRowsFn: <T>(params: IndexRange) => Promise<T>;
-    onScroll: () => void;
+    onScroll?: () => void;
     rowRenderer: TRowRenderer;
     has_filler: boolean;
-    overscanRowCount: number;
+    overscanRowCount?: number;
     getRowSize?: (params: { index: number }) => number;
 };
 

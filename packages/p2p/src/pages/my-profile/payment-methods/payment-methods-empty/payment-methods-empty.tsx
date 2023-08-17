@@ -39,6 +39,9 @@ const PaymentMethodsEmpty = () => {
                     height_offset='80px'
                     is_flex
                     is_modal_open={true}
+                    onClickClose={() => {
+                        // do nothing
+                    }}
                     page_header_text={localize('Payment methods')}
                     pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
                 >

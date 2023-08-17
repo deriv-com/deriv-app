@@ -6,12 +6,14 @@ import MyProfileBalanceModal from '../my-profile-balance-modal';
 
 const el_modal = document.createElement('div');
 
+const mock_modal_manager: DeepPartial<ReturnType<typeof useModalManagerContext>> = {
+    hideModal: jest.fn(),
+    is_modal_open: true,
+};
+
 jest.mock('Components/modal-manager/modal-manager-context', () => ({
     ...jest.requireActual('Components/modal-manager/modal-manager-context'),
-    useModalManagerContext: jest.fn(() => ({
-        hideModal: jest.fn(),
-        is_modal_open: true,
-    })),
+    useModalManagerContext: jest.fn(() => mock_modal_manager),
 }));
 
 describe('<MyProfileBalanceModal />', () => {
@@ -31,19 +33,12 @@ describe('<MyProfileBalanceModal />', () => {
     });
 
     it('should call hideModal when clicking on the OK button', () => {
-        const hideModalMock = jest.fn();
-
-        (useModalManagerContext as jest.Mock).mockImplementation(() => ({
-            hideModal: hideModalMock,
-            is_modal_open: true,
-        }));
-
         render(<MyProfileBalanceModal />);
 
         const okButton = screen.getByRole('button', { name: 'OK' });
 
         userEvent.click(okButton);
 
-        expect(hideModalMock).toHaveBeenCalledTimes(1);
+        expect(mock_modal_manager.hideModal).toHaveBeenCalledTimes(1);
     });
 });

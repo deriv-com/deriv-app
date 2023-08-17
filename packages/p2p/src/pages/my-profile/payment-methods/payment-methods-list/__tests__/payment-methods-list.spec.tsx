@@ -14,6 +14,9 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     general_store: {
         active_index: 4,
     },
+    my_ads_store: {
+        payment_method_ids: ['1'],
+    },
     my_profile_store: {
         advertiser_payment_methods_list: [
             payment_method_info_alipay,

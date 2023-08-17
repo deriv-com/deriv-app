@@ -5,10 +5,12 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import MyProfileBalance from '../my-profile-balance';
 
+const mock_modal_manager: DeepPartial<ReturnType<typeof useModalManagerContext>> = {
+    showModal: jest.fn(),
+};
+
 jest.mock('Components/modal-manager/modal-manager-context', () => ({
-    useModalManagerContext: jest.fn(() => ({
-        showModal: jest.fn(),
-    })),
+    useModalManagerContext: jest.fn(() => mock_modal_manager),
 }));
 
 describe('<MyProfileBalance />', () => {
@@ -20,13 +22,7 @@ describe('<MyProfileBalance />', () => {
         expect(screen.getByText('Available Deriv P2P balance')).toBeInTheDocument();
     });
 
-    it('should render MyProfileBalanceModal when icon is clicked on', () => {
-        const showModalMock = jest.fn();
-
-        (useModalManagerContext as jest.Mock).mockImplementation(() => ({
-            showModal: showModalMock,
-        }));
-
+    it('should render MyProfileBalanceModal when icon is clicked on and call showModal', () => {
         render(<MyProfileBalance />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
         });
@@ -35,7 +31,7 @@ describe('<MyProfileBalance />', () => {
 
         userEvent.click(infoIcon);
 
-        expect(showModalMock).toHaveBeenCalledTimes(1);
-        expect(showModalMock).toHaveBeenCalledWith({ key: 'MyProfileBalanceModal' });
+        expect(mock_modal_manager.showModal).toHaveBeenCalledTimes(1);
+        expect(mock_modal_manager.showModal).toHaveBeenCalledWith({ key: 'MyProfileBalanceModal' });
     });
 });

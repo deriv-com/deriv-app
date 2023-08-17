@@ -60,16 +60,13 @@ describe('<PaymentMethodCard />', () => {
     });
 
     it('should call onEditDeletePaymentMethodCard when clicking on dropdown', async () => {
-        let deleteOption;
-
         render(<PaymentMethodCard payment_method={payment_method_card_props} />);
 
         const dropdown = screen.getByTestId('dti_dropdown_display');
         userEvent.click(dropdown);
 
         await waitFor(() => {
-            deleteOption = screen.getByText('Delete');
-            userEvent.click(deleteOption);
+            userEvent.click(screen.getByText('Delete'));
         });
 
         expect(mock_store.my_profile_store.onEditDeletePaymentMethodCard).toHaveBeenCalled();

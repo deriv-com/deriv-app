@@ -18,6 +18,7 @@ type TBlockUserRowProps = {
 
 const BlockUserRow = ({ row: advertiser }: TBlockUserRowProps) => {
     const { buy_sell_store, general_store, my_profile_store } = useStores();
+    const { onClickUnblock } = my_profile_store;
     const { id, is_blocked, name } = advertiser;
     const history = useHistory();
 
@@ -53,7 +54,7 @@ const BlockUserRow = ({ row: advertiser }: TBlockUserRowProps) => {
                         className='block-user-row__button-group__unblock-button'
                         secondary
                         medium
-                        onClick={() => my_profile_store.onClickUnblock(advertiser)}
+                        onClick={() => onClickUnblock(advertiser)}
                     >
                         <Localize i18n_default_text='Unblock' />
                     </Button>
@@ -62,7 +63,7 @@ const BlockUserRow = ({ row: advertiser }: TBlockUserRowProps) => {
                         className='block-user-row__button-group__block-button'
                         alternate
                         medium
-                        onClick={() => my_profile_store.onClickUnblock(advertiser)}
+                        onClick={() => onClickUnblock(advertiser)}
                     >
                         <Localize i18n_default_text='Block' />
                     </Button>

@@ -39,9 +39,9 @@ class APIMiddleware {
     onSubscriptionResponse({ response }) {
         if (response?.subscription && checked_subs.has(`${response.msg_type}:${response.req_id}`)) {
             console.log(
-                `${response.msg_type}(subscribed) ${requests.get(
-                    `${response.msg_type}:${response.req_id}`
-                )} ${Date.now()}`
+                `${response.msg_type}(subscribed) ${requests.get(`${response.msg_type}:${response.req_id}`)} ${new Date(
+                    Date.now()
+                ).toISOString()}`
             );
             console.timeEnd(response.req_id);
             checked_subs.delete(`${response.msg_type}:${response.req_id}`);
@@ -50,7 +50,7 @@ class APIMiddleware {
 
     sendIsCalled({ response_promise, args: [request, options = {}] }) {
         options.callback = res => {
-            console.log(`${res.msg_type} ${requests.get(res.msg_type)} ${Date.now()}`);
+            console.log(`${res.msg_type} ${requests.get(res.msg_type)} ${new Date(Date.now()).toISOString()}`);
             console.timeEnd(request.req_id);
         };
         const promise = promiseRejectToResolve(response_promise);

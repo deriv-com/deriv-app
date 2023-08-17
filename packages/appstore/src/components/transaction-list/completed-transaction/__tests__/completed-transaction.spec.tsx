@@ -85,6 +85,6 @@ describe('CompletedTransaction', () => {
         mocked_props.transaction.account_type = 'standard';
         render_container();
 
-        expect(screen.getByText('AppLinkedWithWalletIcon')).toBeInTheDocument();
+        expect(screen.getByText(/AppLinkedWithWalletIcon/i)).toBeInTheDocument();
     });
 });

@@ -15,10 +15,12 @@ const AddOptions = observer(() => {
     const add_deriv_account_btn = localize('Get a Deriv account');
 
     const eu_user = content_flag === ContentFlag.LOW_RISK_CR_EU || content_flag === ContentFlag.EU_REAL;
+    const test = 'test';
 
     return (
         <React.Fragment>
             <div className='add-options-account__title'>
+                {test}
                 <Text size={isMobile() ? 'xxs' : 's'} weight='bold'>
                     <Localize i18n_default_text={add_deriv_account_text} />
                 </Text>

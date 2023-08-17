@@ -55,7 +55,8 @@ const TransactionDetailsDesktop = observer(() => {
     const modalWidth = 1034;
     const modalHeight = 800;
     const xaxis = (screenDimensions.width - modalWidth) / 2;
-    const yaxis = (screenDimensions.height - modalHeight) / 2;
+    const yAxisValue = (screenDimensions.height - modalHeight) / 2;
+    const yaxis = yAxisValue >= 0 ? yAxisValue : 0;
 
     return (
         <Draggable

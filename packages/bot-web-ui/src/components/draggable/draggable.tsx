@@ -48,6 +48,14 @@ export default function Draggable({
             enableResizing={enableResizing}
             minHeight={height}
             minWidth={minWidth}
+            onDragStart={e => {
+                // on responsive devices touch event is not triggering the close button action
+                // need to handle it manually
+                const parentElement = (e?.target as HTMLDivElement)?.parentElement;
+                if (parentElement?.role === 'button' || parentElement?.tagName === 'svg') {
+                    onCloseDraggable();
+                }
+            }}
         >
             <CSSTransition
                 appear

@@ -1,6 +1,6 @@
 import React from 'react';
 import DailyTransactions from '../daily-transactions';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 
 jest.mock('@deriv/hooks', () => ({

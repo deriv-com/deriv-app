@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import countries from 'i18n-iso-countries';
-import * as Cookies from 'js-cookie';
 import { init, SdkHandle, SdkResponse, SupportedLanguages } from 'onfido-sdk-ui';
 import { CSSTransition } from 'react-transition-group';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
@@ -149,33 +148,20 @@ const OnfidoSdkViewContainer = ({
     const getOnfidoServiceToken = React.useCallback(
         (): Promise<string | { error: TAPIError }> =>
             new Promise(resolve => {
-                const onfido_cookie_name = 'onfido_token';
-                const onfido_cookie = Cookies.get(onfido_cookie_name);
-
-                if (!onfido_cookie) {
-                    WS.serviceToken({
-                        service_token: 1,
-                        service: 'onfido',
-                        country: token_country_code,
-                    }).then((response: TServiceToken) => {
-                        if (response.error) {
-                            resolve({ error: response.error });
-                            return;
-                        }
-                        if (response.service_token?.onfido) {
-                            const { token } = response.service_token.onfido;
-                            const in_90_minutes = 1 / 16;
-                            Cookies.set(onfido_cookie_name, token, {
-                                expires: in_90_minutes,
-                                secure: true,
-                                sameSite: 'strict',
-                            });
-                            resolve(token);
-                        }
-                    });
-                } else {
-                    resolve(onfido_cookie);
-                }
+                WS.serviceToken({
+                    service_token: 1,
+                    service: 'onfido',
+                    country: token_country_code,
+                }).then((response: TServiceToken) => {
+                    if (response.error) {
+                        resolve({ error: response.error });
+                        return;
+                    }
+                    if (response.service_token?.onfido) {
+                        const { token } = response.service_token.onfido;
+                        resolve(token);
+                    }
+                });
             }),
         [token_country_code]
     );

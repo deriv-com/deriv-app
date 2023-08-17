@@ -168,7 +168,7 @@ const Numbers = observer(
 
         const setExpiryDate = (epoch, duration) => {
             if (trade_duration_unit !== 'd') {
-                return moment.utc().add(Number(duration), 'days').format('D MMM  YYYY, [23]:[59]:[59] [GMT +0]');
+                return moment.utc().add(Number(duration), 'days').format('D MMM YYYY, [23]:[59]:[59] [GMT +0]');
             }
             let expiry_date = new Date((epoch - trade_duration * 24 * 60 * 60) * 1000);
             if (duration) {

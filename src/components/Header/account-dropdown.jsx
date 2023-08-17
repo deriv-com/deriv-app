@@ -50,8 +50,10 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
         if (account.startsWith('CR')) non_eu_accounts.push({ ...accounts[account], account });
     });
     const real_account = [...non_eu_accounts, ...eu_accounts];
-
+    const is_eu_country = globalObserver.getState('is_eu_country');
+    const is_demo = activeTab === 'demo';
     const is_real = activeTab === 'real';
+    const has_no_account = low_risk_without_account || high_risk_without_account;
 
     React.useEffect(() => {
         function handleClickOutside(event) {
@@ -83,27 +85,26 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
     const shouldShowRealAcc = ({ title = 'Deriv accounts', acc = real_account }) => (
         <TabContent
             tab='real'
-            isActive={activeTab === 'real'}
+            isActive={is_real}
             setIsAccDropdownOpen={setIsAccDropdownOpen}
             accounts={acc}
             title={title}
         />
     );
 
-    const is_eu_country = globalObserver.getState('is_eu_country');
     return (
         <div className='account__switcher-dropdown-wrapper show' ref={dropdownRef}>
             <div id='account__switcher-dropdown' className='account__switcher-dropdown' ref={container_ref}>
                 <div className='account__switcher-container'>
                     <ul className='account__switcher-tabs'>
                         <li
-                            className={`account__switcher-tab ${activeTab === 'real' ? 'ui-tabs-active' : ''}`}
+                            className={`account__switcher-tab ${is_real ? 'ui-tabs-active' : ''}`}
                             onClick={() => setActiveTab('real')}
                         >
                             <a>{translate('Real')}</a>
                         </li>
                         <li
-                            className={`account__switcher-tab ${activeTab === 'real' ? '' : 'ui-tabs-active'}`}
+                            className={`account__switcher-tab ${is_real ? '' : 'ui-tabs-active'}`}
                             onClick={() => setActiveTab('demo')}
                         >
                             <a>{translate('Demo')}</a>
@@ -148,7 +149,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                     {is_real && !is_country_low_risk ? shouldShowRealAcc({ title: 'Deriv Accounts' }) : null}
                     <TabContent
                         tab='demo'
-                        isActive={activeTab === 'demo'}
+                        isActive={is_demo}
                         setIsAccDropdownOpen={setIsAccDropdownOpen}
                         accounts={virtual_accounts}
                     />
@@ -158,19 +159,15 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                     <div className='account__switcher-total-balance'>
                         <span className='account__switcher-total-balance-text'>{translate('Total assets')}</span>
                         <span className='account__switcher-total-balance-amount account__switcher-balance'>
-                            {
-                                // eslint-disable-next-line no-nested-ternary
-                                activeTab === 'demo'
-                                    ? getTotalDemo(accounts)
-                                    : low_risk_without_account || high_risk_without_account
-                                        ? 0
-                                        : balance.toLocaleString(undefined, {
-                                            // eslint-disable-next-line max-len
-                                            minimumFractionDigits:
+                            {(is_demo && getTotalDemo(accounts)) ||
+                                (has_no_account
+                                    ? 0
+                                    : balance.toLocaleString(undefined, {
+                                        // eslint-disable-next-line max-len
+                                        minimumFractionDigits:
                                               config.currency_name_map[currency]?.fractional_digits ?? 2,
-                                        })
-                            }
-                            <span className='symbols'>&nbsp;{activeTab === 'demo' ? 'USD' : currency}</span>
+                                    }))}
+                            <span className='symbols'>&nbsp;{is_demo ? 'USD' : currency}</span>
                         </span>
                     </div>
                     <div className='account__switcher-total-label'>
@@ -179,21 +176,19 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                     <Separator />
                     {/* only if we have real account */}
 
-                    {(eu_accounts && eu_accounts.length) ||
-                    (non_eu_accounts && non_eu_accounts.length) ||
-                    activeTab === 'demo' ? (
-                            <a href={config.tradershub.url} className={'account__switcher-total--link'}>
-                                <span>{translate('Looking for CFD accounts? Go to Trader\'s hub')}</span>
-                            </a>
-                        ) : null}
+                    {eu_accounts?.length || non_eu_accounts?.length || is_demo ? (
+                        <a href={config.tradershub.url} className={'account__switcher-total--link'}>
+                            <span>{translate('Looking for CFD accounts? Go to Trader\'s hub')}</span>
+                        </a>
+                    ) : null}
                     <Separator />
                     <div
                         className={classNames('account__switcher-footer', {
-                            'account__switcher-footer--demo': activeTab === 'demo',
+                            'account__switcher-footer--demo': is_demo,
                             'account__switcher-footer--real': Object.keys(accounts).length === 1,
                         })}
                     >
-                        {activeTab === 'real' && Object.keys(accounts).length > 1 && (
+                        {is_real && Object.keys(accounts).length > 1 && (
                             <a href={url} rel='noopener noreferrer'>
                                 <div>
                                     <button className='account__switcher-footer__manage'>

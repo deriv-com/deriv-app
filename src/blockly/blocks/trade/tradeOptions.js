@@ -49,7 +49,7 @@ export default () => {
                         if (!symbol) return;
 
                         const getNestedTradeOptions = block => {
-                            if (/^tradeOptions/.test(block.type)) {
+                            if (block.type?.startsWith('tradeOptions')) {
                                 this.pollForContracts(symbol).then(contracts => {
                                     this.updateBarrierOffsetBlocks(contracts, false, false, [block.id]);
                                     this.applyBarrierHandlebars('BARRIEROFFSETTYPE_LIST', [ev.blockId], true);

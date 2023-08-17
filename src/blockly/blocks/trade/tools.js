@@ -4,7 +4,7 @@ import { findTopParentBlock } from '../../utils';
 
 export const getParentValue = (block, fieldName) => {
     const parentBlock = findTopParentBlock(block);
-    return parentBlock && parentBlock.getFieldValue(fieldName);
+    return parentBlock?.getFieldValue(fieldName);
 };
 
 export const updateInputList = block => {
@@ -58,7 +58,7 @@ export const ignoreAndGroupEvents = f => {
 export const cloneTradeOptions = (clone, block) => {
     extendParentFields(clone, block, tradeOptionFields);
     block.inputList.forEach(input => {
-        if (input.connection && input.connection.targetConnection) {
+        if (input?.connection?.targetConnection) {
             clone.getInput(input.name).connection.connect(input.connection.targetConnection);
         }
     });

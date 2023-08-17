@@ -39,7 +39,7 @@ const unrecoverable_errors = [
     'PriceMoved',
 ];
 
-const botInitialized = bot => bot && bot.tradeEngine.options;
+const botInitialized = bot => bot?.tradeEngine?.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
 const shouldRestartOnError = (bot, error_name = '') =>
     !unrecoverable_errors.includes(error_name) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
@@ -52,10 +52,7 @@ const shouldStopOnError = (bot, error_name = '') => {
         'OfferingsValidationError',
         'InputValidationFailed',
     ];
-    if (stop_errors.includes(error_name) && botInitialized(bot)) {
-        return true;
-    }
-    return false;
+    return stop_errors.includes(error_name) && botInitialized(bot);
 };
 
 const timeMachineEnabled = bot => botInitialized(bot) && bot.tradeEngine.options.timeMachineEnabled;

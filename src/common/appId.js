@@ -58,7 +58,7 @@ export async function loginAndSetTokens(token_list) {
         if (!token1.token) throw new Error('Token not found');
         const { authorize: account_info } = await api_base.authorize(token1.token);
         const { landing_company_name, account_list = [] } = account_info;
-        // const { has_reality_check } = api_base.landing_company_details;
+        const { has_reality_check } = api_base.landing_company_details;
         const has_trade_limitation = ['iom', 'malta'].includes(landing_company_name) && account_info.country === 'gb';
 
         const accounts_list = {};
@@ -87,7 +87,7 @@ export async function loginAndSetTokens(token_list) {
                     session_start: 0, // it will be synced from the app.deriv.com
                     accepted_bch: 0,
                     balance: account_info.balance,
-                    // hasRealityCheck: !!has_reality_check,
+                    hasRealityCheck: !!has_reality_check,
                     hasTradeLimitation: has_trade_limitation,
                 };
             }

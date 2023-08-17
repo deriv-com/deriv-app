@@ -28,7 +28,7 @@ describe('Candle Blocks in tools', () => {
     it('is candle black', () => {
         const { ohlc } = result;
 
-        expect(ohlc).satisfy(o => o && o.length && Number.isFinite(o[0]));
+        expect(ohlc).satisfy(o => o?.length && Number.isFinite(o[0]));
     });
 
     it('candle field', () => {

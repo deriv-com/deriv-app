@@ -143,8 +143,10 @@ class LimitsContent extends PureComponent {
     render() {
         return (
             <form
-                action='javascript:;' // eslint-disable-line no-script-url
-                onSubmit={() => this.submit()}
+                onSubmit={e => {
+                    e.preventDefault();
+                    this.submit();
+                }}
                 className='dialog-content'
                 style={style.content}
             >

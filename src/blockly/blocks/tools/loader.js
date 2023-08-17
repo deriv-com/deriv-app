@@ -21,7 +21,7 @@ Blockly.Blocks.loader = {
                 deleteBlocksLoadedBy(this.id);
             } else {
                 const loader = Blockly.mainWorkspace.getBlockById(ev.blockId);
-                if (loader && loader.loadedByMe) {
+                if (loader?.loadedByMe) {
                     loader.loadedByMe.forEach(blockId =>
                         recoverDeletedBlock(Blockly.mainWorkspace.getBlockById(blockId))
                     );

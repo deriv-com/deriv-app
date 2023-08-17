@@ -121,6 +121,7 @@ Blockly.BlockSvg.prototype.renderCompute_ = function (iconWidth) {
     let hasDummy = false;
     let lastType;
     const isInline = this.getInputsInline() && !this.isCollapsed();
+
     for (let i = 0, input; (input = inputList[i]); i++) {
         if (!input.isVisible()) {
             continue;
@@ -151,24 +152,25 @@ Blockly.BlockSvg.prototype.renderCompute_ = function (iconWidth) {
             input.renderWidth = 0;
         }
         // Expand input size if there is a connection.
-        if (input.connection && input.connection.isConnected()) {
+        if (input?.connection?.isConnected()) {
             const linkedBlock = input.connection.targetBlock();
             const bBox = linkedBlock.getHeightWidth();
             input.renderHeight = Math.max(input.renderHeight, bBox.height);
             input.renderWidth = Math.max(input.renderWidth, bBox.width);
         }
         // Blocks have a one pixel shadow that should sometimes overhang.
-        if (!isInline && i == inputList.length - 1) {
-            // Last value input should overhang.
-            input.renderHeight--;
-        } else if (
+        const is_inline = !isInline && i == inputList.length - 1;
+        const has_input_and_next_statement =
             !isInline &&
             input.type == Blockly.INPUT_VALUE &&
             inputList[i + 1] &&
-            inputList[i + 1].type == Blockly.NEXT_STATEMENT
-        ) {
-            // Value input above statement input should overhang.
+            inputList[i + 1].type == Blockly.NEXT_STATEMENT;
+
+        if (is_inline || has_input_and_next_statement) {
+            // Last value input should overhang.
             input.renderHeight--;
+            // Value input above statement input should overhang.
+            // input.renderHeight--;
         }
 
         row.height = Math.max(row.height, input.renderHeight);
@@ -313,7 +315,7 @@ Blockly.ContextMenu.show = (e, menuOptions, rtl) => {
         menuOptions.some((option, i) => {
             if (
                 option.text === Blockly.Msg.DELETE_BLOCK ||
-                option.text.replace(/[0-9]+/, '%1') === Blockly.Msg.DELETE_X_BLOCKS
+                option.text.replace(/\d+/, '%1') === Blockly.Msg.DELETE_X_BLOCKS
             ) {
                 menuOptions.splice(i, 1);
                 return true;
@@ -418,10 +420,10 @@ Blockly.Block.prototype.getRootInputTargetBlock = function () {
 
     while (currentBlock) {
         const rootBlock = this.getRootBlock();
-        const currentInput = rootBlock.getInputWithBlock(currentBlock);
+        const { name } = rootBlock.getInputWithBlock(currentBlock);
 
-        if (currentInput && currentInput.name) {
-            inputName = currentInput.name;
+        if (name) {
+            inputName = name;
         }
         currentBlock = currentBlock.getParent();
     }

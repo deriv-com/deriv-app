@@ -117,21 +117,15 @@ const Header = () => {
 
     React.useEffect(() => {
         const mountSwitcher = () => {
-            try {
-                const res = checkSwitcherType();
-
+            const res = checkSwitcherType();
+            if (res) {
                 dispatch(updateAccountType(res));
                 const current_login_id = getActiveLoginId();
-                if (current_login_id.startsWith('MF')) {
+                if (current_login_id?.startsWith('MF')) {
                     dispatch(updateShowMessagePage(true));
                 }
-                return res;
-            } catch (error) {
-                globalObserver.emit('Error', error);
-                return error;
             }
         };
-
         mountSwitcher();
     }, []);
 

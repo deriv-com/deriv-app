@@ -56,11 +56,6 @@ export default () => {
     Object.keys(config.opposites).forEach(oppositesName => {
         Blockly.Blocks[oppositesName.toLowerCase()] = {
             init: function init() {
-                const optionNames = [];
-                config.opposites[oppositesName].forEach(options => {
-                    const optionName = options[Object.keys(options)[0]];
-                    optionNames.push(optionName);
-                });
                 duration(this);
                 payout(this);
                 prediction(this);

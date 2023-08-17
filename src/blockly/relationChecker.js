@@ -22,10 +22,7 @@ const insideHolder = blockObj => {
     if (blockObj.isInFlyout) {
         return true;
     }
-    if (parent !== null && ['block_holder', 'loader'].indexOf(parent.type) >= 0) {
-        return true;
-    }
-    return false;
+    return parent !== null && ['block_holder', 'loader'].indexOf(parent.type) >= 0;
 };
 
 const getListField = (block, fieldName) => block.getFieldValue(fieldName);

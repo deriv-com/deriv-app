@@ -70,7 +70,7 @@ const RiskComponent = ({ non_eu_accounts = [], eu_accounts = [], is_country_low_
                 const is_end = accordion_array.length === index + 1;
                 if (should_show) {
                     return (
-                        <React.Fragment key={title + index}>
+                        <React.Fragment key={title + id}>
                             <div onClick={() => toggleAccordion(id)} className='account__switcher-container__title'>
                                 {title}
                                 <img

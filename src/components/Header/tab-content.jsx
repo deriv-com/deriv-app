@@ -25,6 +25,8 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
 
     const low_risk_countries = ['za', 'ec', 'bw'];
     const is_country_low_risk = low_risk_countries.includes(getClientCountry());
+    const is_active_account_mf = active_account_name?.includes('MF');
+
     return (
         <div className={`account__switcher-tabs-content ${isActive ? '' : 'hide'}`}>
             <div className='account__switcher-accordion'>
@@ -74,6 +76,8 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
                                         minimumFractionDigits:
                                             config.currency_name_map[currency]?.fractional_digits ?? 2,
                                     });
+                                const is_MF = account.account?.includes('MF');
+
                                 return (
                                     isReal !== Boolean(demo_account) && (
                                         <div
@@ -91,25 +95,24 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
                                             <input type='hidden' name='account_name' value={account.account} />
                                             <img src={`/public/images/currency/ic-currency-${currency_icon}.svg`} />
                                             <span>
-                                                {!currency && !active_account_name?.includes('MF') && (
+                                                {!currency && !is_active_account_mf && (
                                                     <span className='symbols'>{translate('No currency assigned')}</span>
                                                 )}
                                                 {
                                                     // eslint-disable-next-line no-nested-ternary
                                                     demo_account
                                                         ? translate('Demo')
-                                                        : account.account?.includes('MF') &&
-                                                          active_account_name?.includes('MF')
+                                                        : is_MF && is_active_account_mf
                                                             ? translate('Multiplers')
                                                             : config.currency_name_map[currency]?.name || currency
                                                 }
                                                 <div className='account__switcher-loginid'>{account.account}</div>
                                             </span>
                                             <span className='account__switcher-balance'>
-                                                {account?.currency && getBalance()}
+                                                {currency && getBalance()}
                                                 <span className='symbols'>
                                                     &nbsp;
-                                                    {account?.currency === 'UST' ? 'USDT' : account?.currency}
+                                                    {currency && currency === 'UST' ? 'USDT' : account?.currency}
                                                 </span>
                                             </span>
                                         </div>

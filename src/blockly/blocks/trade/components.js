@@ -78,7 +78,7 @@ export const payout = block => {
 export const barrierOffsetGenerator = (inputName, block) => {
     if (!block.getInput(inputName)) {
         // Determine amount of barrierOffset-blocks on workspace
-        const barrierNumber = block.inputList.filter(input => /BARRIEROFFSET$/.test(input.name)).length;
+        const barrierNumber = block.inputList.filter(input => input?.name.endsWith('BARRIEROFFSET')).length;
 
         // Set barrier options according to barrierNumber (i.e. Offset + and Offset -)
         const barrierOffsetList = new Blockly.FieldDropdown(config.barrierTypes);

@@ -80,7 +80,7 @@ export const isMultiplier = landing_company_list => {
 export const checkSwitcherType = () => {
     if (!isLoggedIn()) return null;
     const account_info = { ...api_base.account_info };
-    if (!account_info) return false;
+    if (!account_info) return null;
     const client_accounts = getClientAccounts();
     const landing_company = { ...api_base.landing_company };
     const account_status = { ...api_base.account_status };
@@ -89,9 +89,7 @@ export const checkSwitcherType = () => {
     const { is_multiplier, country_code } = isMultiplier(landing_company);
     const { financial_company, gaming_company } = landing_company;
 
-    const {
-        get_account_status: { risk_classification },
-    } = account_status;
+    const { risk_classification } = account_status || {};
 
     let is_low_risk = isLowRisk(financial_company, gaming_company, upgradeable_landing_companies);
     let is_high_risk = isHighRisk(financial_company, gaming_company, risk_classification);

@@ -71,7 +71,7 @@ Blockly.Blocks.webhook = {
         const connections = [];
         while (itemBlock) {
             connections.push(itemBlock.valueConnection_);
-            itemBlock = itemBlock.nextConnection && itemBlock.nextConnection.targetBlock();
+            itemBlock = itemBlock?.nextConnection?.targetBlock?.();
         }
         this.itemCount_ = connections.length;
         this.updateShape_(true);
@@ -144,7 +144,7 @@ Blockly.JavaScript.webhook = block => {
         .filter(item => item !== null)
         .map(item => {
             const regExp = /^{(.*?)}$/;
-            return item && item.match(regExp)[1];
+            return item?.match(regExp)[1];
         });
 
     return `Bot.sendWebhook(${url}, {${params}});\n`;

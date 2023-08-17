@@ -305,7 +305,7 @@ const addEventHandlers = blockly => {
     window.addEventListener('storage', e => {
         window.onbeforeunload = null;
         if (['active_loginid'].includes(e.key) && e.newValue !== e.oldValue) {
-            // window.location.reload();
+            window.location.reload();
         }
     });
 

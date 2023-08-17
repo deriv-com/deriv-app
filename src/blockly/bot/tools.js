@@ -2,8 +2,6 @@ import { translate } from '@i18n';
 import { roundBalance, getUTCTime } from './helpers';
 import { notify } from './broadcast';
 
-export const noop = () => {};
-
 export const tradeOptionToProposal = (trade_option, purchase_reference) =>
     trade_option.contractTypes.map(type => {
         const proposal = {
@@ -80,7 +78,7 @@ const getBackoffDelay = (error, delay_index) => {
     const offset = 0.5; // 500ms
     const delay = 1000;
 
-    const error_code = error && error.error.code;
+    const error_code = error?.error?.code;
 
     if (error_code === 'DisconnectError') {
         return offset * delay;
@@ -105,24 +103,20 @@ export const shouldThrowError = (error, types = [], delay_index = 0) => {
     const default_errors = ['CallError', 'WrongResponse', 'GetProposalFailure', 'RateLimit', 'DisconnectError'];
     const auth_errors = ['InvalidToken', 'AuthorizationRequired'];
     const errors = types.concat(default_errors);
+    const { code = undefined } = error?.error || {};
 
-    if (error?.error?.code && auth_errors.includes(error.error.code)) {
+    if (code && auth_errors.includes(code)) {
         // If auth error, reload page.
         window.location.reload();
         return true;
     }
 
-    if (error?.error?.code && !errors.includes(error.error.code)) {
+    if (code && !errors.includes(code)) {
         // If error is unrecoverable, throw error.
         return true;
     }
 
-    if (error?.error?.code && error.error.code !== 'DisconnectError' && delay_index > MAX_RETRIES) {
-        // If exceeded MAX_RETRIES, throw error.
-        return true;
-    }
-
-    return false;
+    return code && code !== 'DisconnectError' && delay_index > MAX_RETRIES;
 };
 
 export const recoverFromError = (f, r, types, delay_index) =>
@@ -139,8 +133,6 @@ export const recoverFromError = (f, r, types, delay_index) =>
                 reject(e);
                 return;
             }
-
-            // r(e.name, () => new Promise(delayPromise => setTimeout(delayPromise, getBackoffDelay(e, delay_index))));
             r(
                 e.name,
                 () =>

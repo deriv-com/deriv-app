@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import TradeEngine from '../TradeEngine';
-import { noop, createDetails } from '../tools';
+import { createDetails } from '../tools';
 import TicksInterface from './TicksInterface';
 import ToolsInterface from './ToolsInterface';
 
@@ -62,7 +62,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
                     r();
                     setTimeout(() => this.observer.emit('CONTINUE'), 0);
                 }, arg * 1000),
-            noop
+            () => {}
         );
     }
     getProposal(contract_type) {

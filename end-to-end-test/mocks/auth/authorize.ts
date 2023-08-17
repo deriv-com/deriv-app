@@ -1,5 +1,7 @@
-export default function mock_authorize(context) {
-    if (context.request.authorize) {
+import { Context } from '../../utils/mocks/mocks';
+
+export default function mock_authorize(context: Context) {
+    if ('authorize' in context.request) {
         context.response = {
             authorize: {
                 account_list: [

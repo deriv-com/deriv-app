@@ -1,5 +1,11 @@
-export default function mock_paymentagent_list(context) {
-    if (context.request.paymentagent_list === 'th' && context.request.currency === 'USD') {
+import { Context } from '../../utils/mocks/mocks';
+
+export default function mock_paymentagent_list(context: Context) {
+    if (
+        'paymentagent_list' in context.request &&
+        context.request.paymentagent_list === 'th' &&
+        context.request.currency === 'USD'
+    ) {
         context.response = {
             echo_req: {
                 currency: 'USD',

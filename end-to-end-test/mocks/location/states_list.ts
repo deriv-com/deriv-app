@@ -1,4 +1,6 @@
-function mock_states_list(context) {
+import { Context } from '../../utils/mocks/mocks';
+
+function mock_states_list(context: Context) {
     if (context.request.states_list === 'th') {
         context.response = {
             echo_req: {

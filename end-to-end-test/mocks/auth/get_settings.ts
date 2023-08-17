@@ -1,5 +1,7 @@
-export default function mock_get_settings(context) {
-    if (context.request.get_settings === 1) {
+import { Context } from '../../utils/mocks/mocks';
+
+export default function mock_get_settings(context: Context) {
+    if ('get_settings' in context.request && context.request.get_settings === 1) {
         context.response = {
             echo_req: {
                 get_settings: 1,

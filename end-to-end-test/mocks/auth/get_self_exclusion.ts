@@ -1,5 +1,7 @@
-export default function mock_get_self_exclusion(context) {
-    if (context.request.get_self_exclusion === 1) {
+import { Context } from '../../utils/mocks/mocks';
+
+export default function mock_get_self_exclusion(context: Context) {
+    if ('get_self_exclusion' in context.request && context.request.get_self_exclusion === 1) {
         context.response = {
             echo_req: {
                 get_self_exclusion: 1,

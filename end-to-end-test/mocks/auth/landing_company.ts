@@ -1,5 +1,7 @@
-export default function mock_landing_company(context) {
-    if (context.request.landing_company === 'th') {
+import { Context } from '../../utils/mocks/mocks';
+
+export default function mock_landing_company(context: Context) {
+    if ('landing_company' in context.request && context.request.landing_company === 'th') {
         context.response = {
             echo_req: {
                 landing_company: 'th',

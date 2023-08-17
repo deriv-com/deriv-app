@@ -1,5 +1,7 @@
-export default function blalance_one(context) {
-    if (context.request.balance === 1 && context.request.account === 'CR5712715') {
+import { Context } from '../../utils/mocks/mocks';
+
+export default function blalance_one(context: Context) {
+    if ('balance' in context.request && context.request.balance === 1 && context.request.account === 'CR5712715') {
         context.response = {
             balance: {
                 balance: 0,

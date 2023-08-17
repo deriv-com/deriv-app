@@ -1,5 +1,7 @@
-export default function get_account_status(context) {
-    if (context.request.get_account_status === 1) {
+import { Context } from '../../utils/mocks/mocks';
+
+export default function get_account_status(context: Context) {
+    if ('get_account_status' in context.request && context.request.get_account_status === 1) {
         context.response = {
             echo_req: {
                 get_account_status: 1,

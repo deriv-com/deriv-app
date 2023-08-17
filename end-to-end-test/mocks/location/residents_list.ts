@@ -1,4 +1,6 @@
-function mock_residents_list(context) {
+import { Context } from '../../utils/mocks/mocks';
+
+function mock_residents_list(context: Context) {
     if (context.request.residence_list === 1) {
         context.response = {
             echo_req: {

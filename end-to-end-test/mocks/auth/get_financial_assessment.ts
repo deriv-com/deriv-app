@@ -1,5 +1,7 @@
-export default function mock_get_financial_assessment(context) {
-    if (context.request.get_financial_assessment === 1) {
+import { Context } from '../../utils/mocks/mocks';
+
+export default function mock_get_financial_assessment(context: Context) {
+    if ('get_financial_assessment' in context.request && context.request.get_financial_assessment === 1) {
         context.response = {
             echo_req: {
                 get_financial_assessment: 1,

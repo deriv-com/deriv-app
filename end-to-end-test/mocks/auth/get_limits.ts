@@ -1,5 +1,7 @@
-export default function mock_get_limits(context) {
-    if (context.request.get_limits === 1) {
+import { Context } from '../../utils/mocks/mocks';
+
+export default function mock_get_limits(context: Context) {
+    if ('get_limits' in context.request && context.request.get_limits === 1) {
         context.response = {
             echo_req: {
                 get_limits: 1,

@@ -1,10 +1,15 @@
-export default function mock_exchange_rates(context) {
-    if (context.request.exchange_rates === 1) {
+import { Context } from '../../utils/mocks/mocks';
+
+export default function mock_exchange_rates(context: Context) {
+    if ('exchange_rates' in context.request && context.request.exchange_rates === 1) {
         context.response = {
-            echo_req: context.request,
+            echo_req: {
+                req_id: context.req_id,
+                exchange_rates: 1,
+            },
             exchange_rates: {
                 base_currency: 'USD',
-                date: (Date.now() / 1000).toFixed(0),
+                date: parseInt((Date.now() / 1000).toFixed(0)),
                 rates: {
                     AED: 3.6735,
                     AFN: 89.0052,

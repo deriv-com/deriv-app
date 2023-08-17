@@ -76,7 +76,7 @@ describe('CompletedTransaction', () => {
     it('should render single wallet icon, if account type is wallet', () => {
         render_container();
 
-        expect(screen.getByText('WalletIcon')).toBeInTheDocument();
+        expect(screen.getByText(/WalletIcon/i)).toBeInTheDocument();
     });
 
     it('should render combined icon (app with wallet), if transaction is a transfer and account category is trading', () => {

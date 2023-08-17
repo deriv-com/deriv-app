@@ -429,7 +429,7 @@ const StaticDashboard = observer(
                             </div>
 
                             <div className='static-dashboard-wrapper__body'>
-                                {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
+                                {!is_eu_user && !financial_restricted_countries && (
                                     <StaticCFDAccountManager
                                         type='synthetic'
                                         platform='mt5'

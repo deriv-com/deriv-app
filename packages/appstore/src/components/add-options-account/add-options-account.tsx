@@ -13,6 +13,7 @@ const AddOptions = observer(() => {
 
     const add_deriv_account_text = localize('You need a Deriv account to create a CFD account.');
     const add_deriv_account_btn = localize('Get a Deriv account');
+
     const eu_user = content_flag === ContentFlag.LOW_RISK_CR_EU || content_flag === ContentFlag.EU_REAL;
 
     return (

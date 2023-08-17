@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useFetch, useInvalidateQuery, useRequest } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 

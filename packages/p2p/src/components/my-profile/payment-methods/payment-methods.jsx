@@ -26,11 +26,7 @@ const PaymentMethods = ({ formik_ref }) => {
         return <Loading is_fullscreen={isMobile()} />;
     } else if (my_profile_store.should_show_add_payment_method_form) {
         return <AddPaymentMethod formik_ref={formik_ref} should_show_separated_footer={true} />;
-        /** TODO: Refactor this after we no longer rely on store to add new advertiser payment method */
-    } else if (
-        !my_profile_store.advertiser_has_payment_methods ||
-        (!p2p_advertiser_payment_methods?.length && !isRefetching)
-    ) {
+    } else if (!p2p_advertiser_payment_methods?.length && !isRefetching) {
         return <PaymentMethodsEmpty />;
     } else if (my_profile_store.should_show_edit_payment_method_form) {
         return <EditPaymentMethodForm formik_ref={formik_ref} />;

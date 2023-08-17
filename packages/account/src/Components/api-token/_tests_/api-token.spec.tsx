@@ -341,10 +341,11 @@ describe('<ApiToken/>', () => {
                 <ApiToken />
             </StoreProvider>
         );
-        const api_token_titles = ['Name', 'Last Used', 'Token', 'Scopes'];
-        api_token_titles.forEach(async title => {
-            expect(await screen.findAllByText(title)).toHaveLength(3);
-        });
+
+        expect(await screen.findAllByText('Name')).toHaveLength(3);
+        expect(await screen.findAllByText('Last Used')).toHaveLength(3);
+        expect(await screen.findAllByText('Token')).toHaveLength(3);
+        expect(await screen.findAllByText('Scopes')).toHaveLength(3);
         expect(await screen.findByText('First test token')).toBeInTheDocument();
         expect(await screen.findByText('Second test token')).toBeInTheDocument();
         expect(screen.queryByText('Action')).not.toBeInTheDocument();

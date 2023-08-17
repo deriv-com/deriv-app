@@ -15,7 +15,6 @@ const Contract = observer(() => {
         contract_type,
         contract_types_list,
         is_mobile_digit_view_selected: is_digit_view,
-        is_equal,
         onChange,
         symbol,
     } = useTraderStore();
@@ -38,7 +37,6 @@ const Contract = observer(() => {
                 )}
             </MobileWrapper>
             <ContractTypeWidget
-                is_equal={is_equal}
                 list={list}
                 name='contract_type'
                 onChange={onChange}

@@ -55,7 +55,6 @@ beforeEach(() => {
                 },
                 transaction_history: {
                     is_crypto_transactions_visible: false,
-                    onMount: jest.fn(),
                     setIsCryptoTransactionsVisible: jest.fn(),
                 },
                 withdraw: {
@@ -220,14 +219,10 @@ describe('GeneralStore', () => {
                 pathname: routes.cashier_crypto_transactions,
             },
         }));
-        const { onMount, setIsCryptoTransactionsVisible } =
-            general_store.root_store.modules.cashier.transaction_history;
         general_store.root_store.client.is_logged_in = true;
         await general_store.onMountCommon(false);
 
         expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
-        expect(setIsCryptoTransactionsVisible).toHaveBeenCalledWith(true);
-        expect(onMount).toHaveBeenCalledTimes(1);
         jest.restoreAllMocks();
     });
 

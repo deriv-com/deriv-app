@@ -1,10 +1,10 @@
-import { getActiveToken } from '@deriv/utils';
+import { getActiveAuthTokenIDFromLocalStorage } from '@deriv/utils';
 import { useFetch } from '@deriv/api';
 import { useMemo } from 'react';
 
 /** A custom hook that authorize the user with the given token. If no token is given, it will use the current token. */
 const useAuthorize = (token?: string) => {
-    const current_token = getActiveToken();
+    const current_token = getActiveAuthTokenIDFromLocalStorage();
 
     const { data, ...rest } = useFetch('authorize', {
         payload: { authorize: token || current_token },

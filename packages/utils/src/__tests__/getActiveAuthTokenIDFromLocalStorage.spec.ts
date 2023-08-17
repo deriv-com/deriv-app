@@ -1,6 +1,6 @@
-import getActiveToken from '../getActiveToken';
+import getActiveAuthTokenIDFromLocalStorage from '../getActiveAuthTokenIDFromLocalStorage';
 
-describe('getActiveToken', () => {
+describe('getActiveAuthTokenIDFromLocalStorage', () => {
     beforeEach(() => {
         localStorage.clear();
 
@@ -16,7 +16,7 @@ describe('getActiveToken', () => {
     });
 
     test('should return active account token', () => {
-        const result = getActiveToken();
+        const result = getActiveAuthTokenIDFromLocalStorage();
 
         expect(result).toBe('12345');
     });
@@ -24,7 +24,7 @@ describe('getActiveToken', () => {
     test('should return empty string', () => {
         localStorage.setItem('active_loginid', 'CR1111');
 
-        const result = getActiveToken();
+        const result = getActiveAuthTokenIDFromLocalStorage();
 
         expect(result).toBe('');
     });

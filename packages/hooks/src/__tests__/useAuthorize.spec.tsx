@@ -22,8 +22,8 @@ jest.mock('@deriv/api', () => ({
 }));
 
 jest.mock('@deriv/utils', () => ({
-    ...jest.requireActual('@deriv/api'),
-    getActiveToken: jest.fn(() => '12345'),
+    ...jest.requireActual('@deriv/utils'),
+    getActiveAuthTokenIDFromLocalStorage: jest.fn(() => '12345'),
 }));
 
 describe('useAuthorize', () => {

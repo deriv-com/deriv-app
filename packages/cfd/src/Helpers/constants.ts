@@ -139,7 +139,25 @@ const getMT5WebTerminalLink = ({
     const server = is_demo ? 'Deriv-Demo' : server_name;
     const login = loginid ?? '';
 
-    return `https://metatraderweb.app/trade?servers=${server}&trade_server=${server}${login && `&login=${login}`}`;
+    const getBaseUrl = () => {
+        if (is_demo) return 'https://mt5-demo-web.deriv.com/terminal';
+
+        const cfd_reset_password_intent = localStorage.getItem('cfd_reset_password_intent');
+        if (cfd_reset_password_intent) {
+            const cluster = cfd_reset_password_intent.split('.')[0];
+            switch (cluster) {
+                case 'p02_ts02':
+                    return 'https://mt5-real02-web.deriv.com/terminal';
+                case 'p01_ts01':
+                default:
+                    return 'https://mt5-real01-web.deriv.com/terminal';
+            }
+        }
+    };
+
+    const base_url = getBaseUrl();
+
+    return `${base_url}?servers=${server}&trade_server=${server}${login && `&login=${login}`}`;
 };
 
 export {

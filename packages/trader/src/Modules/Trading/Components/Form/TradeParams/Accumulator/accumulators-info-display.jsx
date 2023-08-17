@@ -36,6 +36,7 @@ const AccumulatorsInfoDisplay = observer(() => {
                         <Popover
                             alignment={isMobile() ? 'top' : 'left'}
                             classNameBubble='accu-info-display__popover'
+                            is_bubble_hover_enabled
                             message={tooltip_text}
                             margin={isMobile() ? -5 : margin}
                             zIndex='9999'

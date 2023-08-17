@@ -65,7 +65,8 @@
         }
     }
 }
-.accu-info-display__popover {
+.accu-info-display__popover,
+.mobile-widget__item-popover {
     max-width: 28rem;
     @include mobile {
         max-width: 30rem;

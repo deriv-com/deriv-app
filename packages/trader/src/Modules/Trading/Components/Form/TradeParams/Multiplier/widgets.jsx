@@ -1,5 +1,5 @@
 import React from 'react';
-import { Money, Text } from '@deriv/components';
+import { Money, Text, Popover } from '@deriv/components';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer } from '@deriv/stores';
 import MultiplierAmountModal from 'Modules/Trading/Containers/Multiplier/multiplier-amount-modal.jsx';
@@ -7,8 +7,8 @@ import RadioGroupOptionsModal from 'Modules/Trading/Containers/radio-group-optio
 import MultipliersExpiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration.jsx';
 import MultipliersExpirationModal from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration-modal.jsx';
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info.jsx';
-import { localize } from '@deriv/translations';
-import { getGrowthRatePercentage } from '@deriv/shared';
+import { localize, Localize } from '@deriv/translations';
+import { getGrowthRatePercentage, getTickSizeBarrierPercentage } from '@deriv/shared';
 
 const AmountWidget = ({ amount, currency, expiration, is_crypto_multiplier }) => {
     const [is_open, setIsOpen] = React.useState(false);
@@ -67,7 +67,13 @@ export const MultiplierAmountWidget = observer(() => {
     return <AmountWidget {...amount_widget_props} />;
 });
 
-const RadioGroupOptionsWidget = ({ displayed_trade_param, is_disabled = false, modal_title }) => {
+const RadioGroupOptionsWidget = ({
+    displayed_trade_param,
+    extra_tooltip_message = '',
+    is_disabled = false,
+    should_show_extra_tooltip = false,
+    modal_title,
+}) => {
     const [is_open, setIsOpen] = React.useState(false);
 
     const toggleModal = () => {
@@ -82,6 +88,18 @@ const RadioGroupOptionsWidget = ({ displayed_trade_param, is_disabled = false, m
                 <div className={`mobile-widget__item ${is_disabled ? 'mobile-widget__item-disabled' : ''}`}>
                     <span className='mobile-widget__item-value'>{displayed_trade_param}</span>
                 </div>
+                {should_show_extra_tooltip && (
+                    <span className='mobile-widget__item-tooltip' onClick={e => e.stopPropagation()}>
+                        <Popover
+                            alignment='left'
+                            classNameBubble='mobile-widget__item-popover'
+                            icon='info'
+                            is_bubble_hover_enabled
+                            zIndex={9999}
+                            message={extra_tooltip_message}
+                        />
+                    </span>
+                )}
             </div>
         </React.Fragment>
     );
@@ -95,14 +113,25 @@ export const MultiplierOptionsWidget = observer(() => {
 });
 
 export const AccumulatorOptionsWidget = observer(() => {
-    const { growth_rate, has_open_accu_contract } = useTraderStore();
+    const { growth_rate, has_open_accu_contract, tick_size_barrier } = useTraderStore();
     const displayed_trade_param = `${getGrowthRatePercentage(growth_rate)}%`;
     const modal_title = localize('Growth rate');
+    const extra_tooltip_message = (
+        <Localize
+            i18n_default_text='Your stake will grow at {{growth_rate}}% per tick as long as the current spot price remains within ±{{tick_size_barrier}} from the previous spot price.'
+            values={{
+                growth_rate: getGrowthRatePercentage(growth_rate),
+                tick_size_barrier: getTickSizeBarrierPercentage(tick_size_barrier),
+            }}
+        />
+    );
     return (
         <RadioGroupOptionsWidget
             displayed_trade_param={displayed_trade_param}
             is_disabled={has_open_accu_contract}
             modal_title={modal_title}
+            should_show_extra_tooltip
+            extra_tooltip_message={extra_tooltip_message}
         />
     );
 });

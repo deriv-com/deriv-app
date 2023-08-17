@@ -1,34 +1,25 @@
 import { localize } from '@deriv/translations';
 
+const generateErrorMessage = (blockType, missing_space = 'workspace') => {
+    return {
+        missing: localize(`The ${blockType} block is missing from ${missing_space}.`),
+        misplaced: localize(`The ${blockType} block is misplaced from ${missing_space}.`),
+        default: localize(`The ${blockType} block is mandatory and cannot be deleted.`),
+    };
+};
+
 export const error_message_map = {
-    trade_definition: localize("'Define your trade contract' block should be added to the workspace."),
-    trade_parameters: localize("'Define your trade contract' block should be added to the workspace."),
-    before_purchase: localize("'Watch and purchase your contract' block should be added to the workspace."),
-    purchase_conditions: localize("'Watch and purchase your contract' block should be added to the workspace."),
-    after_purchase: {
-        missing: localize('Restart trading conditions block is missing from workspace.'),
-        misplaced: localize('Restart trading conditions block is misplaced from workspace.'),
-        default: localize("'After purchase your contract' block should be added to the workspace."),
-    },
-    trade_results: {
-        missing: localize('Restart trading conditions block is missing from workspace.'),
-        misplaced: localize('Restart trading conditions block is misplaced from workspace.'),
-        default: localize('Restart trading conditions block cannot be deleted.'),
-    },
-    purchase: {
-        missing: localize('Purchase block is missing from purchase conditions.'),
-        misplaced: localize('Purchase block is misplaced from purchase conditions.'),
-    },
-    trade_definition_tradeoptions: {
-        missing: localize('Trade options are missing from trade parameters block.'),
-        misplaced: localize('Trade options are misplaced from trade parameters block.'),
-    },
-    trade_definition_multiplier: {
-        missing: localize('Trade options multipliers are missing from trade parameters block.'),
-        misplaced: localize('Trade options multipliers options are misplaced from trade parameters block.'),
-    },
-    trade_again: {
-        missing: localize('Trade again is missing from trade parameters block.'),
-        misplaced: localize('Trade again is misplaced from trade parameters block.'),
-    },
+    trade_definition: generateErrorMessage(localize('Trade parameters')),
+    trade_parameters: generateErrorMessage(localize('Trade parameters')),
+    before_purchase: generateErrorMessage(localize('Purchase conditions')),
+    purchase_conditions: generateErrorMessage(localize('Purchase conditions')),
+    after_purchase: generateErrorMessage(localize('Restart trading conditions')),
+    trade_results: generateErrorMessage(localize('Restart trading conditions')),
+    purchase: generateErrorMessage(localize('Purchase'), localize('purchase conditions')),
+    trade_definition_tradeoptions: generateErrorMessage(localize('Trade options'), localize('trade parameters')),
+    trade_definition_multiplier: generateErrorMessage(
+        localize('Trade options multipliers'),
+        localize('trade parameters')
+    ),
+    trade_again: generateErrorMessage(localize('Trade again'), localize('restart trading conditions')),
 };

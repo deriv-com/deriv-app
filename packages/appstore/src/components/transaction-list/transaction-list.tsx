@@ -5,7 +5,7 @@ import { Div100vhContainer, Dropdown, Loading, Text, ThemedScrollbars, ToggleSwi
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import { groupTransactionsByDay } from '@deriv/utils';
-import DailyTransactions from './transactions-for-a-day';
+import DailyTransactions from './daily-transactions';
 import './transaction-list.scss';
 
 type TTransactionList = {

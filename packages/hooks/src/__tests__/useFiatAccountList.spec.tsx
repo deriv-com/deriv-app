@@ -8,10 +8,11 @@ jest.mock('@deriv/api', () => ({
     useFetch: jest.fn(),
 }));
 
-const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
+const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize' | 'website_status'>>;
 
 describe('useFiatAccountList', () => {
     test('should return an empty list if client has no account', async () => {
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
@@ -29,7 +30,7 @@ describe('useFiatAccountList', () => {
             },
             isLoading: false,
             isSuccess: true,
-        } as unknown as ReturnType<typeof mockUseFetch>);
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
@@ -39,6 +40,7 @@ describe('useFiatAccountList', () => {
     });
 
     test('should return an empty list if client has no fiat account', async () => {
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
@@ -58,7 +60,7 @@ describe('useFiatAccountList', () => {
             },
             isLoading: false,
             isSuccess: true,
-        } as unknown as ReturnType<typeof mockUseFetch>);
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
@@ -68,6 +70,7 @@ describe('useFiatAccountList', () => {
     });
 
     test('should return list of fiat accounts if client any fiat account', async () => {
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
@@ -90,7 +93,7 @@ describe('useFiatAccountList', () => {
             },
             isLoading: false,
             isSuccess: true,
-        } as unknown as ReturnType<typeof mockUseFetch>);
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
@@ -100,6 +103,7 @@ describe('useFiatAccountList', () => {
         expect(result.current).toMatchObject([{ currency: 'USD', is_virtual: false, loginid: 'CR456' }]);
     });
     test('should return list of fiat accounts if client has 1 CR fiat and 1 MF fiat account', async () => {
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
@@ -123,7 +127,7 @@ describe('useFiatAccountList', () => {
             },
             isLoading: false,
             isSuccess: true,
-        } as unknown as ReturnType<typeof mockUseFetch>);
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 

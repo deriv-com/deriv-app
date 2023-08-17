@@ -137,6 +137,7 @@ describe('<WalletCardsCarousel />', () => {
 
         const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
 
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
@@ -152,7 +153,7 @@ describe('<WalletCardsCarousel />', () => {
                     loginid: 'CRW909900',
                 },
             },
-        } as unknown as ReturnType<typeof mockUseFetch>);
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
@@ -178,6 +179,7 @@ describe('<WalletCardsCarousel />', () => {
 
         const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
 
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
@@ -193,7 +195,7 @@ describe('<WalletCardsCarousel />', () => {
                     loginid: 'VRW10001',
                 },
             },
-        } as unknown as ReturnType<typeof mockUseFetch>);
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>

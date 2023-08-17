@@ -14,11 +14,12 @@ describe('useCashierLocked', () => {
     test('should be false if there is no cashier_locked status', () => {
         mockUseFetch.mockReturnValue({
             data: {
+                // @ts-expect-error need to come up with a way to mock the return type of useFetch
                 get_account_status: {
                     status: [''],
                 },
             },
-        } as unknown as ReturnType<typeof mockUseFetch>);
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
@@ -30,11 +31,12 @@ describe('useCashierLocked', () => {
     test('should be true if there is cashier_locked status', () => {
         mockUseFetch.mockReturnValue({
             data: {
+                // @ts-expect-error need to come up with a way to mock the return type of useFetch
                 get_account_status: {
                     status: ['cashier_locked'],
                 },
             },
-        } as unknown as ReturnType<typeof mockUseFetch>);
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 

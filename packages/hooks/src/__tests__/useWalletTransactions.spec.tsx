@@ -9,11 +9,12 @@ jest.mock('@deriv/api', () => ({
     usePaginatedFetch: jest.fn(),
 }));
 
-const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
+const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize' | 'website_status'>>;
 const mockUsePaginatedFetch = usePaginatedFetch as jest.MockedFunction<typeof usePaginatedFetch<'statement'>>;
 
 describe('useWalletTransactions', () => {
     test('should return a list of transactions for a real wallet', () => {
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
@@ -36,8 +37,9 @@ describe('useWalletTransactions', () => {
             },
             isLoading: false,
             isSuccess: true,
-        } as unknown as ReturnType<typeof mockUseFetch>);
+        });
 
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUsePaginatedFetch.mockReturnValue({
             data: {
                 statement: {
@@ -65,23 +67,10 @@ describe('useWalletTransactions', () => {
                         },
                     ],
                 },
-                website_status: {
-                    currencies_config: {
-                        USD: {
-                            fractional_digits: 2,
-                            is_deposit_suspended: 0,
-                            is_suspended: 0,
-                            is_withdrawal_suspended: 0,
-                            name: 'US Dollar',
-                            stake_default: 10,
-                            type: 'fiat',
-                        },
-                    },
-                },
             },
             isLoading: false,
             isSuccess: true,
-        } as unknown as ReturnType<typeof mockUsePaginatedFetch>);
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
@@ -133,6 +122,7 @@ describe('useWalletTransactions', () => {
     });
 
     test('should return a list of transactions for a demo wallet', () => {
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
@@ -155,9 +145,10 @@ describe('useWalletTransactions', () => {
             },
             isLoading: false,
             isSuccess: true,
-        } as unknown as ReturnType<typeof mockUseFetch>);
+        });
 
         // TODO: revisit action_type once BE clarifies its values for demo wallets
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUsePaginatedFetch.mockReturnValue({
             data: {
                 statement: {
@@ -188,7 +179,7 @@ describe('useWalletTransactions', () => {
             },
             isLoading: false,
             isSuccess: true,
-        } as unknown as ReturnType<typeof mockUsePaginatedFetch>);
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 

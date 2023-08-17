@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import { Rnd } from 'react-rnd';
 import { CSSTransition } from 'react-transition-group';
 import { Icon } from '@deriv/components';
+import { localize } from '@deriv/translations';
 
 type DraggableProps = {
     bounds?: string | Element;
@@ -45,7 +46,6 @@ export default function Draggable({
             }}
             dragHandleClassName={dragHandleClassName}
             enableResizing={enableResizing}
-            header_title={header_title}
             minHeight={height}
             minWidth={minWidth}
         >
@@ -63,7 +63,7 @@ export default function Draggable({
             >
                 <>
                     <div className={`${PARENT_CLASS}-header`}>
-                        <div className={`${PARENT_CLASS}-header__title`}>{header_title}</div>
+                        <div className={`${PARENT_CLASS}-header__title`}>{localize(header_title)}</div>
                         <div
                             role='button'
                             className={`${PARENT_CLASS}-header__close`}

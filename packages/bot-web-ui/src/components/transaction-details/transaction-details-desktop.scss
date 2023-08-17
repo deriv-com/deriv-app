@@ -51,9 +51,11 @@
     }
 
     &__table-cell {
-        flex-basis: 0;
-        flex-grow: 1;
+        flex: 1;
+        overflow: auto;
         padding: 16px 18px;
+        white-space: normal;
+        word-wrap: break-word;
         &--grow-big {
             flex-grow: 3;
         }

@@ -23,7 +23,7 @@ const result_columns: TColumn[] = [
     // { key: 'account', label: localize('Account') },
     { key: 'no_of_runs', label: localize('No. of runs') },
     { key: 'total_stake', label: localize('Total stake') },
-    { key: 'total_payout    ', label: localize('Total payout') },
+    { key: 'total_payout', label: localize('Total payout') },
     { key: 'win', label: localize('Win') },
     { key: 'loss', label: localize('Loss') },
     { key: 'total_profit', label: localize('Total profit/loss') },
@@ -52,7 +52,7 @@ const TransactionDetailsDesktop = observer(() => {
     }, []);
 
     // Calculate xaxis and yaxis to center the modal on open
-    const modalWidth = 1000;
+    const modalWidth = 1034;
     const modalHeight = 800;
     const xaxis = (screenDimensions.width - modalWidth) / 2;
     const yaxis = (screenDimensions.height - modalHeight) / 2;
@@ -67,7 +67,7 @@ const TransactionDetailsDesktop = observer(() => {
             width={modalWidth}
             xaxis={xaxis}
             yaxis={yaxis}
-            header_title='Transactions detailed summary'
+            header_title={'Transactions detailed summary'}
         >
             <DesktopTransactionTable
                 transaction_columns={transaction_columns}

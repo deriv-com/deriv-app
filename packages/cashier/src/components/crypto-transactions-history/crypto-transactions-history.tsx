@@ -3,21 +3,18 @@ import { DataList, Icon, Loading, MobileWrapper, Modal, Table, Text } from '@der
 import { isDesktop, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
-import { TCryptoTransactionDetails } from '../../types';
 import CryptoTransactionsCancelModal from './crypto-transactions-cancel-modal';
 import CryptoTransactionsStatusModal from './crypto-transactions-status-modal';
 import CryptoTransactionsRenderer from './crypto-transactions-renderer';
 import { useCashierStore } from '../../stores/useCashierStores';
-
-type TCryptoTransactionDetailsRow = {
-    row: TCryptoTransactionDetails;
-};
+import { useCryptoTransactions } from '@deriv/hooks';
 
 const getHeaders = () => [
     { text: localize('Transaction') },
     { text: localize('Amount') },
     { text: localize('Address') },
     { text: localize('Transaction hash') },
+    { text: localize('Confirmations') },
     { text: localize('Time') },
     { text: localize('Status') },
     { text: localize('Action') },
@@ -26,7 +23,8 @@ const getHeaders = () => [
 const CryptoTransactionsHistory = observer(() => {
     const { client } = useStore();
     const { transaction_history, general_store } = useCashierStore();
-    const { crypto_transactions, is_loading, setIsCryptoTransactionsVisible } = transaction_history;
+    const { setIsCryptoTransactionsVisible } = transaction_history;
+    const { data, is_loading } = useCryptoTransactions();
     const { setIsDeposit } = general_store;
     const { currency } = client;
     const [is_modal_visible, setIsModalVisible] = React.useState(false);
@@ -61,7 +59,7 @@ const CryptoTransactionsHistory = observer(() => {
                     <CryptoTransactionsCancelModal />
                     <CryptoTransactionsStatusModal />
                 </MobileWrapper>
-                {crypto_transactions.length > 0 ? (
+                {(data?.length || 0) > 0 ? (
                     <Table className='crypto-transactions-history__table'>
                         {isDesktop() && (
                             <Table.Header className='crypto-transactions-history__table-header'>
@@ -78,14 +76,14 @@ const CryptoTransactionsHistory = observer(() => {
                             ) : (
                                 <DataList
                                     // TODO: CHECK THIS TYPE ERROR
-                                    data_source={crypto_transactions}
-                                    rowRenderer={(row_props: TCryptoTransactionDetailsRow) => (
+                                    data_source={data}
+                                    rowRenderer={row_props => (
                                         <CryptoTransactionsRenderer
                                             {...row_props}
                                             onTooltipClick={() => setIsModalVisible(true)}
                                         />
                                     )}
-                                    keyMapper={(row: TCryptoTransactionDetails) => row.id}
+                                    keyMapper={row => row.id}
                                     row_gap={isMobile() ? 8 : 0}
                                 />
                             )}

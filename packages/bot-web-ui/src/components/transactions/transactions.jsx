@@ -2,13 +2,13 @@ import React from 'react';
 import classnames from 'classnames';
 import { PropTypes } from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
-import { Button, DataList, Icon, Text, ThemedScrollbars } from '@deriv/components';
+import { Button, DataList, DesktopWrapper, Icon, Text, ThemedScrollbars } from '@deriv/components';
 import { isMobile, useNewRowTransition } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import Download from 'Components/download';
 import { contract_stages } from 'Constants/contract-stage';
 import { transaction_elements } from 'Constants/transactions';
-import { connect } from 'Stores/connect';
 import { useDBotStore } from 'Stores/useDBotStore';
 import Transaction from './transaction.jsx';
 
@@ -37,9 +37,10 @@ const TransactionItem = ({ row, is_new_row }) => {
     }
 };
 
-const Transactions = ({ contract_stage, elements, is_drawer_open, onMount, onUnmount }) => {
-    const { transactions } = useDBotStore();
-    const { toggleTransactionDetailsModal } = transactions;
+const Transactions = observer(({ is_drawer_open }) => {
+    const { run_panel, transactions } = useDBotStore();
+    const { contract_stage } = run_panel;
+    const { elements, onMount, onUnmount, toggleTransactionDetailsModal } = transactions;
 
     React.useEffect(() => {
         onMount();
@@ -56,7 +57,9 @@ const Transactions = ({ contract_stage, elements, is_drawer_open, onMount, onUnm
             })}
         >
             <div className='download__container transaction-details__button-container'>
-                <Download tab='transactions' />
+                <DesktopWrapper>
+                    <Download tab='transactions' />
+                </DesktopWrapper>
                 <Button
                     id='download__container-view-detail-button'
                     className='download__container-view-detail-button'
@@ -163,19 +166,10 @@ const Transactions = ({ contract_stage, elements, is_drawer_open, onMount, onUnm
             </div>
         </div>
     );
-};
+});
 
 Transactions.propTypes = {
-    contract_stage: PropTypes.number,
-    elements: PropTypes.array,
     is_drawer_open: PropTypes.bool,
-    onMount: PropTypes.func,
-    onUnmount: PropTypes.func,
 };
 
-export default connect(({ transactions, run_panel }) => ({
-    contract_stage: run_panel.contract_stage,
-    elements: transactions.elements,
-    onMount: transactions.onMount,
-    onUnmount: transactions.onUnmount,
-}))(Transactions);
+export default Transactions;

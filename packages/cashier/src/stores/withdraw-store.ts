@@ -11,7 +11,6 @@ export default class WithdrawStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
         makeObservable(this, {
             blockchain_address: observable,
-            container: observable,
             error: observable,
             is_10k_withdrawal_limit_reached: observable,
             is_withdraw_confirmed: observable,
@@ -34,7 +33,6 @@ export default class WithdrawStore {
             setWithdrawPercentageSelectorResult: action.bound,
             validateWithdrawFromAmount: action.bound,
             validateWithdrawToAmount: action.bound,
-            account_platform_icon: computed,
         });
 
         this.root_store = root_store;
@@ -42,7 +40,6 @@ export default class WithdrawStore {
     }
 
     blockchain_address = '';
-    container: string = Constants.containers.withdraw;
     error = new ErrorStore();
     is_10k_withdrawal_limit_reached?: boolean = undefined;
     is_withdraw_confirmed = false;
@@ -384,12 +381,5 @@ export default class WithdrawStore {
         }
 
         setConverterToError(error_message);
-    }
-
-    get account_platform_icon() {
-        const { account_list, loginid } = this.root_store.client;
-        const platform_icon = account_list.find(acc => loginid === acc.loginid)?.icon;
-
-        return platform_icon;
     }
 }

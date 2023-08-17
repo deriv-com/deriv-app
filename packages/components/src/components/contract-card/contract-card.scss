@@ -45,6 +45,7 @@
                 &--accumulator,
                 &--turbos {
                     display: flex;
+                    grid-gap: 1px;
                     &-sold {
                         padding-top: 1rem;
                     }
@@ -230,7 +231,7 @@
     }
     &__symbol {
         margin-left: 0.4rem;
-        &--ups-downs {
+        &--smarttrader-contract {
             width: 7rem;
             @include mobile {
                 width: initial;
@@ -619,8 +620,11 @@
         line-height: 1.5;
         text-align: left;
 
-        &--ups-downs {
+        &--smarttrader-contract {
             width: 7rem;
+            @include mobile {
+                width: 9rem;
+            }
         }
 
         &-trade-param {

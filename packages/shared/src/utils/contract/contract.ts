@@ -10,7 +10,7 @@ type TGetAccuBarriersDTraderTimeout = (params: {
     underlying: string;
 }) => number;
 
-// animation correction time is a time difference in ms between ticks receival from API and their actual visual update on the chart
+// animation correction time is an interval in ms between ticks receival from API and their actual visual update on the chart
 export const ANIMATION_CORRECTION_TIME = 200;
 export const DELAY_TIME_1S_SYMBOL = 500;
 // generation_interval will be provided via API later to help us distinguish between 1-second and 2-second symbols

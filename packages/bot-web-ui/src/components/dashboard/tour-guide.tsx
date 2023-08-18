@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loading, Text } from '@deriv/components';
+import { Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';

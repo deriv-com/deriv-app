@@ -341,7 +341,7 @@ const Step4 = ({ show_label = false }) => (
             </div>
         </div>
         <div>
-            <video autoPlay loop playsInline preload='auto' controls style={{ width: '-webkit-fill-available' }}>
+            <video autoPlay loop playsInline preload='auto' controls>
                 <source src={getUrlBase('/public/videos/bot-builder-tour-step-4.mp4')} type='video/mp4' />
             </video>
         </div>
@@ -391,7 +391,7 @@ const Step5 = ({ show_label = false }) => (
             </ul>
         </div>
         <div>
-            <video autoPlay loop playsInline preload='auto' controls style={{ width: '-webkit-fill-available' }}>
+            <video autoPlay loop playsInline preload='auto' controls>
                 <source src={getUrlBase('/public/videos/bot-builder-tour-step-5.mp4')} type='video/mp4' />
             </video>
         </div>

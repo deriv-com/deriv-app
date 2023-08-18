@@ -65,9 +65,9 @@ const TourSlider = observer(() => {
     const { toggleTourLoadModal } = load_modal;
     const [step, setStep] = React.useState<number>(1);
     const [slider_content, setContent] = React.useState<string | string[]>('');
-    const [slider_header, setheader] = React.useState<string>('');
-    const [slider_image, setimg] = React.useState<string>('');
-    const [slider_media, setmedia] = React.useState<string>('');
+    const [slider_header, setHeader] = React.useState<string>('');
+    const [slider_image, setImg] = React.useState<string>('');
+    const [slider_media, setMedia] = React.useState<string>('');
     const [step_key, setStepKey] = React.useState<number>(0);
 
     React.useEffect(() => {
@@ -75,9 +75,9 @@ const TourSlider = observer(() => {
         Object.values(!has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE).forEach(data => {
             if (data.key === step) {
                 setContent(data?.content);
-                setheader(data?.header);
-                setimg(data?.img);
-                setmedia(data?.media);
+                setHeader(data?.header);
+                setImg(data?.img);
+                setMedia(data?.media);
                 setStepKey(data?.step_key);
             }
         });
@@ -170,7 +170,6 @@ const TourSlider = observer(() => {
                                 playsInline
                                 disablePictureInPicture
                                 controlsList='nodownload'
-                                style={{ height: '100%' }}
                                 src={slider_media}
                             />
                         </div>

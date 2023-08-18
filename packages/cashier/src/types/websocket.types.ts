@@ -15,7 +15,7 @@ import type {
     PaymentAgentDetailsResponse,
     PaymentAgentListResponse,
 } from '@deriv/api-types';
-import type { TSocketEndpointNames, TSocketResponse, TSocketRequestPayload } from '@deriv/api/types';
+import type { TSocketEndpointNames, TSocketResponse } from '@deriv/api/types';
 
 export type TAuthorizedSend = {
     error?: TServerError;
@@ -67,9 +67,6 @@ type TWebSocketCall = {
         action: string,
         parameters: Omit<CashierInformationRequest, 'cashier'>
     ) => Promise<CashierInformationResponse & { error: TServerError }>;
-    cashierPayments?: (
-        request?: TSocketRequestPayload<'cashier_payments'>['payload']
-    ) => Promise<TSocketResponse<'cashier_payments'>>;
     getAccountStatus: () => Promise<AccountStatusResponse>;
     paymentAgentTransfer: (
         request: TPaymentAgentTransferRequest
@@ -100,7 +97,6 @@ export type TWebSocket = {
     }>;
     send: (obj: unknown) => Promise<{ error: TServerError; exchange_rates: { rates: { [k: string]: string } } }>;
     serviceToken: (req: TServiceTokenRequest) => Promise<TServiceTokenResponse>;
-    subscribeCashierPayments?: (callback: (response: TSocketResponse<'cashier_payments'>) => void) => Promise<void>;
     storage: {
         mt5LoginList: () => Promise<{
             mt5_login_list: DetailsOfEachMT5Loginid[];

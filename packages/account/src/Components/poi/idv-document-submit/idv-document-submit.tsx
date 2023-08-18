@@ -6,11 +6,12 @@ import { Button, HintBox, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import {
     WS,
-    IDV_NOT_APPLICABLE_OPTION,
+    getIDVNotApplicableOption,
     toMoment,
     filterObjProperties,
     isDesktop,
     removeEmptyPropertiesFromObject,
+    formatIDVFormValues,
 } from '@deriv/shared';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
@@ -29,7 +30,7 @@ import {
 } from 'Helpers/utils';
 import { TIDVForm, TPersonalDetailsForm } from 'Types';
 
-type TIdvDocumentSubmit = {
+type TIDVDocumentSubmitProps = {
     handleBack: () => void;
     handleViewComplete: () => void;
     selected_country: ResidenceList[0];
@@ -45,7 +46,7 @@ const IdvDocumentSubmit = ({
     selected_country,
     account_settings,
     getChangeableFields,
-}: TIdvDocumentSubmit) => {
+}: TIDVDocumentSubmitProps) => {
     const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
     const side_note_image = <PoiNameDobExample />;
 
@@ -120,17 +121,12 @@ const IdvDocumentSubmit = ({
             setSubmitting(false);
             return;
         }
+
         const submit_data = {
             identity_verification_document_add: 1,
-            document_number: values.document_number,
-            document_additional: values.document_additional ?? '',
-            document_type: values.document_type.id,
-            issuing_country: selected_country.value,
+            ...formatIDVFormValues(values, selected_country.value),
         };
 
-        if (submit_data.document_type === IDV_NOT_APPLICABLE_OPTION.id) {
-            return;
-        }
         WS.send(submit_data).then(
             (response: IdentityVerificationAddDocumentResponse & { error: { message: string } }) => {
                 setSubmitting(false);

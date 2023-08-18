@@ -1,5 +1,6 @@
 /** Add types that are shared between components */
-import { Authorize } from '@deriv/api-types';
+import { FormikHandlers, FormikProps } from 'formik';
+import { Authorize, ResidenceList } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
 
 export type TToken = {
@@ -129,25 +130,46 @@ export type TPOIStatus = {
 
 export type TInputFieldValues = Record<string, string>;
 
-export type TIDVForm = {
-    document_type: {
-        id: string;
-        text: string;
-        value: string;
-        example_format: string;
-        sample_image: string;
-        additional?: string;
-    };
-    document_number: string;
-    document_additional?: string;
-};
-
 export type TPersonalDetailsForm = {
     first_name: string;
     last_name: string;
     date_of_birth: string;
 };
 
+export type TDocument = {
+    id: string;
+    text: string;
+    value?: string;
+    sample_image?: string;
+    example_format?: string;
+    additional?: {
+        display_name?: string;
+        example_format?: string;
+    };
+};
+
+export type TFormProps = {
+    document_type: TDocument;
+    document_number: string;
+    document_additional?: string;
+    error_message?: string;
+};
+
+export type TIDVForm = {
+    selected_country: ResidenceList[0];
+    hide_hint?: boolean;
+    class_name?: string;
+    can_skip_document_verification: boolean;
+} & Partial<FormikHandlers> &
+    FormikProps<TFormProps>;
+
 export type TVerificationStatus = Readonly<
     Record<'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected', string>
 >;
+
+export type TIDVFormValues = {
+    document_type: TDocument;
+    document_number: string;
+    document_additional?: string;
+    error_message?: string;
+};

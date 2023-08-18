@@ -3,7 +3,6 @@ import React from 'react';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
-import { TSideNotesProps } from '../../types';
 import './side-note.scss';
 
 type TSideNoteTitle = {
@@ -21,7 +20,7 @@ type TSideNoteProps = React.PropsWithChildren<{
     has_bullets?: boolean;
     has_title?: boolean;
     is_mobile?: boolean;
-    side_notes?: TSideNotesProps;
+    side_notes?: React.ReactNode[];
     title?: string | JSX.Element;
 }>;
 

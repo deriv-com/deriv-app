@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';

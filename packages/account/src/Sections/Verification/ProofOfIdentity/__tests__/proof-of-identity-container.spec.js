@@ -199,11 +199,13 @@ describe('ProofOfIdentityContainer', () => {
         populateVerificationStatus.mockReturnValue({
             identity_status: identity_status_codes.none,
             is_age_verified: true,
+            idv: { submissions_left: 3 },
         });
 
         render(<ProofOfIdentityContainer {...mock_props} />);
+
         await waitFor(() => {});
-        expect(screen.getByText('mockedProofOfIdentitySubmission')).toBeInTheDocument();
+        expect(await screen.findByText('mockedProofOfIdentitySubmission')).toBeInTheDocument();
     });
 
     it('should render POI submission section when allow_poi_resubmission is set', async () => {
@@ -211,6 +213,7 @@ describe('ProofOfIdentityContainer', () => {
             allow_poi_resubmission: true,
             is_age_verified: true,
             identity_status: identity_status_codes.verified,
+            idv: { submissions_left: 3 },
         });
 
         render(<ProofOfIdentityContainer {...mock_props} />);
@@ -223,6 +226,7 @@ describe('ProofOfIdentityContainer', () => {
             identity_last_attempt: null,
             is_age_verified: true,
             identity_status: identity_status_codes.pending,
+            idv: { submissions_left: 3 },
         });
 
         render(<ProofOfIdentityContainer {...mock_props} />);
@@ -235,6 +239,7 @@ describe('ProofOfIdentityContainer', () => {
             identity_last_attempt: null,
             is_age_verified: true,
             identity_status: identity_status_codes.verified,
+            idv: { submissions_left: 3 },
         });
 
         render(<ProofOfIdentityContainer {...mock_props} />);
@@ -247,6 +252,7 @@ describe('ProofOfIdentityContainer', () => {
             identity_last_attempt: null,
             is_age_verified: true,
             identity_status: identity_status_codes.expired,
+            idv: { submissions_left: 3 },
         });
 
         render(<ProofOfIdentityContainer {...mock_props} />);
@@ -259,6 +265,7 @@ describe('ProofOfIdentityContainer', () => {
             identity_last_attempt: null,
             is_age_verified: true,
             identity_status: identity_status_codes.rejected,
+            idv: { submissions_left: 3 },
         });
 
         render(<ProofOfIdentityContainer {...mock_props} />);
@@ -271,6 +278,7 @@ describe('ProofOfIdentityContainer', () => {
             identity_last_attempt: { service: service_code.onfido },
             is_age_verified: true,
             identity_status: identity_status_codes.rejected,
+            idv: { submissions_left: 3 },
         });
 
         render(<ProofOfIdentityContainer {...mock_props} />);
@@ -283,6 +291,7 @@ describe('ProofOfIdentityContainer', () => {
             identity_last_attempt: { service: service_code.idv },
             is_age_verified: true,
             identity_status: identity_status_codes.rejected,
+            idv: { submissions_left: 3 },
         });
 
         render(<ProofOfIdentityContainer {...mock_props} />);
@@ -295,6 +304,7 @@ describe('ProofOfIdentityContainer', () => {
             identity_last_attempt: { service: service_code.manual },
             is_age_verified: true,
             identity_status: identity_status_codes.rejected,
+            idv: { submissions_left: 3 },
         });
 
         render(<ProofOfIdentityContainer {...mock_props} />);

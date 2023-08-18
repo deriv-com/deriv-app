@@ -101,7 +101,6 @@ export default class MyProfileStore extends BaseStore {
             initial_values: computed,
             payment_method_info: computed,
             payment_methods_list_items: computed,
-            payment_methods_list_methods: computed,
             payment_methods_list_values: computed,
             rendered_trade_partners_list: computed,
             trade_partner_dropdown_list: computed,
@@ -260,22 +259,6 @@ export default class MyProfileStore extends BaseStore {
         });
 
         return list_items;
-    }
-
-    get payment_methods_list_methods() {
-        const methods = [];
-
-        Object.entries(this.advertiser_payment_methods).forEach(key => {
-            if (methods.every(e => e.method !== key[1].method)) {
-                if (key[1].method === 'other' || key[1].method === 'bank_transfer') {
-                    methods.push({ method: key[1].method, display_name: key[1].display_name });
-                } else if (methods.every(e => e.method !== 'e_wallet')) {
-                    methods.push({ method: 'e_wallet', display_name: localize('E-wallet') });
-                }
-            }
-        });
-
-        return methods;
     }
 
     get payment_methods_list_values() {

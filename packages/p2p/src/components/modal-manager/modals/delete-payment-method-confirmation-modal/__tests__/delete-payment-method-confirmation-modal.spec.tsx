@@ -10,7 +10,11 @@ const mock_modal_manager_context = {
 };
 
 const mock_p2p_advertiser_payment_methods_hooks = {
-    delete_payment_method: jest.fn(),
+    delete: jest.fn(),
+    mutation: {
+        error: undefined,
+        status: 'idle',
+    },
 };
 
 jest.mock('Components/modal-manager/modal-manager-context', () => ({
@@ -39,23 +43,23 @@ describe('<DeletePaymentMethodConfirmationModal />', () => {
 
         expect(screen.getByText('Delete Skrill?')).toBeInTheDocument();
         expect(screen.getByText('Are you sure you want to remove this payment method?')).toBeInTheDocument();
-        expect(screen.getByText('Yes, remove')).toBeInTheDocument();
-        expect(screen.getByText('No')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Yes, remove' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'No' })).toBeInTheDocument();
     });
 
     it('should call delete_payment_method when Yes, remove button is clicked', () => {
         render(<DeletePaymentMethodConfirmationModal payment_method_id={1} payment_method_name='Skrill' />);
 
-        const yes_remove_button = screen.getByText('Yes, remove');
+        const yes_remove_button = screen.getByRole('button', { name: 'Yes, remove' });
         userEvent.click(yes_remove_button);
 
-        expect(mock_p2p_advertiser_payment_methods_hooks.delete_payment_method).toHaveBeenCalled();
+        expect(mock_p2p_advertiser_payment_methods_hooks.delete).toHaveBeenCalled();
     });
 
     it('should close modal when No button is clicked', () => {
         render(<DeletePaymentMethodConfirmationModal payment_method_id={1} payment_method_name='Skrill' />);
 
-        const no_button = screen.getByText('No');
+        const no_button = screen.getByRole('button', { name: 'No' });
         userEvent.click(no_button);
 
         expect(mock_modal_manager_context.hideModal).toHaveBeenCalled();

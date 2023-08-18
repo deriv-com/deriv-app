@@ -31,6 +31,8 @@ const useP2PPaymentMethods = () => {
                 fields,
                 /** Icon for each payment method based on the type */
                 icon: type_to_icon_mapper[payment_method.type],
+                /** Payment method id */
+                id: key,
             };
         });
     }, [data]);

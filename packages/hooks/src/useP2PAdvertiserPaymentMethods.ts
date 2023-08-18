@@ -13,14 +13,19 @@ const useP2PAdvertiserPaymentMethods = () => {
     const invalidate = useInvalidateQuery();
     const { client } = useStore();
     const { is_authorize } = client;
-
     const { mutate, ...mutate_rest } = useRequest('p2p_advertiser_payment_methods', {
         onSuccess: () => invalidate('p2p_advertiser_payment_methods'),
     });
-
     const { data, ...rest } = useFetch('p2p_advertiser_payment_methods', {
         options: { enabled: is_authorize },
     });
+
+    type TCreateRequestValues = NonNullable<
+        NonNullable<NonNullable<Parameters<typeof mutate>[0]>['payload']>['create']
+    >[0];
+    type TUpdateRequestValues = NonNullable<
+        NonNullable<NonNullable<Parameters<typeof mutate>[0]>['payload']>['update']
+    >[0];
 
     // Modify the response to add additional informations
     const modified_data = useMemo(() => {
@@ -42,16 +47,12 @@ const useP2PAdvertiserPaymentMethods = () => {
     }, [data]);
 
     const create = useCallback(
-        (values: NonNullable<NonNullable<NonNullable<Parameters<typeof mutate>[0]>['payload']>['create']>[0]) =>
-            mutate({ payload: { create: [{ ...values }] } }),
+        (values: TCreateRequestValues) => mutate({ payload: { create: [{ ...values }] } }),
         [mutate]
     );
 
     const update = useCallback(
-        (
-            id: string,
-            values: NonNullable<NonNullable<NonNullable<Parameters<typeof mutate>[0]>['payload']>['update']>[0]
-        ) => mutate({ payload: { update: { [id]: { ...values } } } }),
+        (id: string, values: TUpdateRequestValues) => mutate({ payload: { update: { [id]: { ...values } } } }),
         [mutate]
     );
 

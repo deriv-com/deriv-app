@@ -1,0 +1,17 @@
+name: Build and Test
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build_and_deploy:
+    # runs-on: [self-hosted] # Specify the label of your self-hosted runner machine
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Build and Test
+        uses: ./.github/actions/build-and-test

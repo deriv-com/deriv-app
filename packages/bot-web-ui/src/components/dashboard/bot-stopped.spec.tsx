@@ -21,6 +21,7 @@ describe('<BotStopped />', () => {
     beforeAll(() => {
         const mock_store = mockStore({});
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
+        mock_DBot_store?.dashboard?.setWebSocketState(false);
 
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
@@ -40,8 +41,6 @@ describe('<BotStopped />', () => {
     };
 
     it('renders the BotStopped component', () => {
-        mock_DBot_store?.dashboard?.setWebSocketState(false);
-
         render(<BotStopped />, {
             wrapper,
         });
@@ -49,8 +48,6 @@ describe('<BotStopped />', () => {
         expect(screen.getByText('You’re back online')).toBeInTheDocument();
     });
     it('should go to reports page on click of go to reports button', async () => {
-        mock_DBot_store?.dashboard?.setWebSocketState(false);
-
         render(<BotStopped />, {
             wrapper,
         });
@@ -63,8 +60,6 @@ describe('<BotStopped />', () => {
     });
 
     it('should reload page on click of Back to Bot', async () => {
-        mock_DBot_store?.dashboard?.setWebSocketState(false);
-
         render(<BotStopped />, {
             wrapper,
         });
@@ -77,8 +72,6 @@ describe('<BotStopped />', () => {
     });
 
     it('should reload page on click of x button', async () => {
-        mock_DBot_store?.dashboard?.setWebSocketState(false);
-
         render(<BotStopped />, {
             wrapper,
         });

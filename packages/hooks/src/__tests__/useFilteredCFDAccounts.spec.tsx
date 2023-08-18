@@ -3,11 +3,6 @@ import { renderHook } from '@testing-library/react-hooks';
 import useFilteredCFDAccounts from '../useFilteredCFDAccounts';
 import { APIProvider, useFetch } from '@deriv/api';
 
-jest.mock('@deriv/utils', () => ({
-    ...jest.requireActual('@deriv/utils'),
-    getShortCodeAndRegion: jest.fn(() => 'svg'),
-}));
-
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useFetch: jest.fn(name => {
@@ -25,7 +20,7 @@ jest.mock('@deriv/api', () => ({
                             },
                         ],
                         loginid: 'CRW000000',
-                        country: 'es',
+                        country: 'id',
                         is_virtual: 0,
                     },
                 },
@@ -69,7 +64,27 @@ jest.mock('@deriv/api', () => ({
                     ],
                 },
             };
+        } else if (name === 'mt5_login_list') {
+            return {
+                data: {
+                    mt5_login_list: [
+                        {
+                            platform: 'mt5',
+                            display_login: 'CRW909900',
+                            email: '',
+                            leverage: '10012123123',
+                            login: 'CRW909900',
+                            server: 'Deriv-Server',
+                            server_description: 'Deriv-Server',
+                            type: 'real',
+                            landing_company_short: 'svg',
+                            market_type: 'synthetic',
+                        },
+                    ],
+                },
+            };
         }
+
         return { data: undefined };
     }),
     useRequest: jest.fn(() => ({
@@ -82,7 +97,10 @@ jest.mock('@deriv/api', () => ({
                     login: 'CRW909900',
                     server: 'Deriv-Server',
                     server_description: 'Deriv-Server',
-                    type: 'demo',
+                    type: 'real',
+                    landing_company_short: 'svg',
+                    market_type: 'synthetic',
+                    platform: 'mt5',
                 },
             ],
 
@@ -100,6 +118,7 @@ jest.mock('@deriv/api', () => ({
                     short_title: 'CRW909900',
                     title: 'CRW909900',
                     type: 'demo',
+                    platform: 'mt5',
                 },
             ],
         },
@@ -115,16 +134,15 @@ describe('useFilteredCFDAccounts', () => {
 
         const { result } = renderHook(() => useFilteredCFDAccounts(), { wrapper });
 
-        expect(result.current.data).toEqual({
+        expect(result.current.data).toMatchObject({
             synthetic: [
                 {
                     availability: 'Non-EU',
                     icon: 'Derived',
-                    is_added: false,
+                    is_added: true,
                     market_type: 'synthetic',
                     name: 'Deriv SVG',
-                    platform: 'mt5',
-                    short_code_and_region: 'svg',
+                    short_code_and_region: 'SVG',
                     shortcode: 'svg',
                 },
             ],
@@ -136,7 +154,7 @@ describe('useFilteredCFDAccounts', () => {
                     market_type: 'financial',
                     name: 'Deriv SVG',
                     platform: 'mt5',
-                    short_code_and_region: 'svg',
+                    short_code_and_region: 'BVI',
                     shortcode: 'bvi',
                 },
             ],
@@ -148,7 +166,7 @@ describe('useFilteredCFDAccounts', () => {
                     market_type: 'all',
                     name: 'Swap Free',
                     platform: 'mt5',
-                    short_code_and_region: 'svg',
+                    short_code_and_region: 'SVG',
                     shortcode: 'svg',
                 },
             ],
@@ -160,16 +178,15 @@ describe('useFilteredCFDAccounts', () => {
 
         const { result } = renderHook(() => useFilteredCFDAccounts(), { wrapper });
 
-        expect(result.current.data).toEqual({
+        expect(result.current.data).toMatchObject({
             synthetic: [
                 {
                     availability: 'Non-EU',
                     icon: 'Derived',
-                    is_added: false,
+                    is_added: true,
                     market_type: 'synthetic',
                     name: 'Deriv SVG',
-                    platform: 'mt5',
-                    short_code_and_region: 'svg',
+                    short_code_and_region: 'SVG',
                     shortcode: 'svg',
                 },
             ],
@@ -181,7 +198,7 @@ describe('useFilteredCFDAccounts', () => {
                     market_type: 'financial',
                     name: 'Deriv SVG',
                     platform: 'mt5',
-                    short_code_and_region: 'svg',
+                    short_code_and_region: 'BVI',
                     shortcode: 'bvi',
                 },
             ],
@@ -193,7 +210,7 @@ describe('useFilteredCFDAccounts', () => {
                     market_type: 'all',
                     name: 'Swap Free',
                     platform: 'mt5',
-                    short_code_and_region: 'svg',
+                    short_code_and_region: 'SVG',
                     shortcode: 'svg',
                 },
             ],

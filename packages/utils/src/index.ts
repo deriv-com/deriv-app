@@ -6,4 +6,3 @@ export { getLocalStorage } from './getLocalStorage';
 export { default as getAccountsFromLocalStorage } from './getAccountsFromLocalStorage';
 export { default as getActiveLoginIDFromLocalStorage } from './getActiveLoginIDFromLocalStorage';
 export { default as getActiveAuthTokenIDFromLocalStorage } from './getActiveAuthTokenIDFromLocalStorage';
-export { default as getShortCodeAndRegion } from './getShortCodeAndRegion';

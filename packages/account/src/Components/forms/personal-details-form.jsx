@@ -438,8 +438,8 @@ const PersonalDetailsForm = ({
                     {'phone' in values && (
                         <FormInputField
                             name='phone'
-                            label={is_svg || is_mf ? localize('Phone number*') : localize('Phone number')}
-                            placeholder={is_svg || is_mf ? localize('Phone number*') : localize('Phone number')}
+                            label={localize('Phone number*')}
+                            placeholder={localize('Phone number*')}
                             disabled={
                                 isFieldImmutable('phone', editable_fields) ||
                                 (values?.phone &&

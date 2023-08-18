@@ -1,19 +1,19 @@
 import React from 'react';
-import RootStore from 'Stores/index';
 import { render, screen } from '@testing-library/react';
 import { Jurisdiction } from '@deriv/shared';
 import JurisdictionModalContent from '../jurisdiction-modal-content';
+import { TJurisdictionModalContentProps } from 'Containers/props.types';
 
 describe('JurisdictionModalContent', () => {
-    const mock_store = {
-        common: {},
-        client: {},
-        ui: {},
-    };
-    const mock_context = new RootStore(mock_store);
-    const mock_props = {
-        account_status: mock_context.client,
-        account_type: '',
+    const mock_props: TJurisdictionModalContentProps = {
+        account_type: 'synthetic',
+        account_status: {
+            currency_config: {},
+            p2p_status: 'active',
+            prompt_client_to_authenticate: 0,
+            risk_classification: 'high',
+            status: ['authenticated', 'trading_experience', 'trading_experience'],
+        },
         is_non_idv_design: false,
         is_virtual: false,
         jurisdiction_selected_shortcode: '',
@@ -134,10 +134,6 @@ describe('JurisdictionModalContent', () => {
                 sub_account_type: '',
             },
         ],
-        context: mock_context,
-        real_synthetic_accounts_existing_data: [],
-        real_financial_accounts_existing_data: [],
-        real_swapfree_accounts_existing_data: [],
         swapfree_available_accounts: [
             {
                 market_type: 'gaming' as const,
@@ -156,14 +152,9 @@ describe('JurisdictionModalContent', () => {
                 sub_account_type: '',
             },
         ],
-        card_flip_status: {
-            svg: false,
-            bvi: false,
-            vanuatu: false,
-            labuan: false,
-            maltainvest: false,
-        },
-        flipCard: jest.fn(),
+        real_synthetic_accounts_existing_data: [],
+        real_financial_accounts_existing_data: [],
+        real_swapfree_accounts_existing_data: [],
     };
 
     it('should display cfd-jurisdiction-card--synthetic__wrapper in class name', () => {

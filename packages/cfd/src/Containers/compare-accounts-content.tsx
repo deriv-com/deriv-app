@@ -3,6 +3,7 @@ import { Table, Text, ThemedScrollbars, Div100vhContainer } from '@deriv/compone
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, CFD_PLATFORMS, isLandingCompanyEnabled } from '@deriv/shared';
 import { LandingCompany } from '@deriv/api-types';
+import { TCFDPlatform } from 'Components/props.types';
 
 type TCFDAttributeDescriberProps = {
     name: string;
@@ -35,7 +36,7 @@ type TDxTradeAccountsDescription = {
 
 type TCompareAccountsReusedProps = {
     landing_companies: LandingCompany;
-    platform: string;
+    platform: TCFDPlatform;
     is_logged_in: boolean;
     is_uk: boolean;
 };

@@ -26,7 +26,7 @@ export const CFD_text: { [key: string]: string } = {
     all_svg: 'Swap-Free SVG',
 } as const;
 
-export const getMT5Title = (account_type: string) => {
+export const getMT5Title = (account_type?: string) => {
     if (account_type === 'synthetic') {
         return CFD_text.synthetic;
     }
@@ -38,7 +38,7 @@ export const getMT5Title = (account_type: string) => {
 
 type TPlatform = 'dxtrade' | 'mt5' | 'derivez';
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
-type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu';
+type TShortcode = DetailsOfEachMT5Loginid['landing_company_short'];
 type TGetAccount = {
     market_type: TMarketType;
     sub_account_type?: TAccount['sub_account_type'];
@@ -116,7 +116,7 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
 
 type TGetAccountTypeFields = {
     category: 'real' | 'demo';
-    type: 'financial' | 'synthetic' | 'all';
+    type: 'financial' | 'synthetic' | 'all' | string;
 };
 
 type TAccountType = {
@@ -211,9 +211,9 @@ export const setSharedCFDText = (all_shared_CFD_text: { [key: string]: () => voi
     CFD_text_translated = all_shared_CFD_text;
 };
 
-type TAccount = DetailsOfEachMT5Loginid & { platform: string };
+type TAccount = DetailsOfEachMT5Loginid & { platform?: string };
 export const getAccountListKey = (account: TAccount, platform: TPlatform, shortcode?: TShortcode) => {
-    return `${account.platform || platform}.${account.account_type}.${getCFDAccountKey({
+    return `${account?.platform || platform}.${account.account_type}.${getCFDAccountKey({
         market_type: account.market_type,
         sub_account_type: account.sub_account_type,
         platform,

@@ -238,6 +238,9 @@ const mock = (): TStores & { is_mock: boolean } => {
             real_account_creation_unlock_date: '',
             has_any_real_account: false,
             setPrevAccountType: jest.fn(),
+            responseMT5TradingServers: jest.fn(),
+            is_mt5_password_not_set: false,
+            is_dxtrade_password_not_set: false,
         },
         common: {
             error: {
@@ -332,6 +335,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleShouldShowRealAccountsList: jest.fn(),
             is_reset_trading_password_modal_visible: false,
             setResetTradingPasswordModalOpen: jest.fn(),
+            setTopUpInProgress: jest.fn(),
+            is_cfd_page: false,
         },
         traders_hub: {
             closeModal: jest.fn(),

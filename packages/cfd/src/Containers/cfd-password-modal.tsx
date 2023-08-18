@@ -36,12 +36,13 @@ import {
     WS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import SuccessDialog from '../Components/success-dialog.jsx';
+import SuccessDialog from '../Components/success-dialog';
 import '../sass/cfd.scss';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { TCFDPlatform, TShortcode } from 'Components/props.types';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -50,7 +51,7 @@ type TOnSubmitPassword = (values: TCFDPasswordFormValues, actions: FormikHelpers
 type TPasswordModalHeaderProps = {
     should_set_trading_password: boolean;
     is_password_reset_error: boolean;
-    platform: string;
+    platform: TCFDPlatform;
     has_mt5_account?: boolean;
 };
 
@@ -61,7 +62,7 @@ type TIconTypeProps = {
 };
 
 type TCFDPasswordFormReusedProps = {
-    platform: string;
+    platform: TCFDPlatform;
     error_message: string;
     validatePassword: (values: TCFDPasswordFormValues) => FormikErrors<TCFDPasswordFormValues>;
 };
@@ -84,8 +85,8 @@ type TMultiStepRefProps = {
 };
 type TReviewMsgForMT5 = {
     is_selected_mt5_verified: boolean;
-    jurisdiction_selected_shortcode: string;
-    manual_status: string;
+    jurisdiction_selected_shortcode: TShortcode | string;
+    manual_status?: string;
 };
 
 type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
@@ -101,7 +102,7 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     is_bvi: boolean;
     is_dxtrade_allowed: boolean;
     is_real_financial_stp: boolean;
-    jurisdiction_selected_shortcode: string;
+    jurisdiction_selected_shortcode: TShortcode;
     onCancel: () => void;
     onForgotPassword: () => void;
     should_set_trading_password: boolean;
@@ -112,7 +113,7 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
 type TCFDPasswordModalProps = {
     error_type?: string;
     form_error?: string;
-    platform: string;
+    platform: TCFDPlatform;
 };
 
 const getAccountTitle = (

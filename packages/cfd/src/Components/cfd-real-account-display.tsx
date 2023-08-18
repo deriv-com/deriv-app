@@ -146,9 +146,14 @@ const CFDRealAccountDisplay = ({
 
         if (sub_account_type === 'synthetic' && standpoint.malta) return true;
 
+        //TODO: Need to update the type after the refactoring of components using account_type
         if (is_eu) {
             const account = getAccountTypeFields({ category: 'real', type: sub_account_type });
-            return isAccountOfTypeDisabled(account?.account_type);
+            return isAccountOfTypeDisabled(
+                account?.account_type as unknown as DetailsOfEachMT5Loginid[] & {
+                    [key: string]: DetailsOfEachMT5Loginid;
+                }
+            );
         }
 
         switch (sub_account_type) {

@@ -369,6 +369,9 @@ type TClientStore = {
     setFinancialAndTradingAssessment: (
         payload: SetFinancialAssessmentRequest
     ) => Promise<SetFinancialAssessmentResponse>;
+    is_mt5_password_not_set: boolean;
+    is_dxtrade_password_not_set: boolean;
+    responseMT5TradingServers: () => Promise<void>;
 };
 
 type TCommonStoreError = {
@@ -477,6 +480,8 @@ type TUiStore = {
               ]
             | []
     ) => void;
+    setTopUpInProgress: (value: boolean) => void;
+    is_cfd_page: boolean;
 };
 
 type TPortfolioStore = {

@@ -37,6 +37,7 @@ import { observer, useStore } from '@deriv/stores';
 import { TCFDPasswordReset } from './props.types';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { TTradingPlatformAccounts } from 'Components/props.types';
+import { TAccountType } from 'src/types';
 
 declare module 'react' {
     interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
@@ -330,7 +331,7 @@ const CFDDashboard = observer((props: TCFDDashboardProps) => {
         }));
     };
 
-    const openRealPasswordModal = (account_type: TOpenAccountTransferMeta) => {
+    const openRealPasswordModal = (account_type: TAccountType) => {
         setAccountType(account_type);
         enableCFDPasswordModal();
     };

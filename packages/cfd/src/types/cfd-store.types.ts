@@ -1,21 +1,37 @@
 import { DetailsOfEachMT5Loginid, Mt5NewAccount, VerifyEmailResponse } from '@deriv/api-types';
-import { TTradingPlatformAvailableAccount } from 'Components/props.types';
+import { TShortcode, TTradingPlatformAvailableAccount } from 'Components/props.types';
 import { TCFDPasswordFormValues } from 'Containers/cfd-password-modal';
 import { TDerivezCompanies, TDxCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 import { FormikHelpers } from 'formik';
 
-type TStoreProofOfAddressArgs = {
+export type TStoreProofOfAddressArgs = {
     file_uploader_ref: HTMLDivElement | null;
     values: {
         [key: string]: string;
     };
 };
 
+// TODO: Need to update the type after the refactoring of components using account_type
+export type TAccountType = {
+    category: 'real' | 'demo' | '';
+    type?:
+        | 'all'
+        | 'all_svg'
+        | 'derivez'
+        | 'dxtrade'
+        | 'synthetic'
+        | 'synthetic_svg'
+        | 'financial'
+        | 'financial_svg'
+        | 'financial_stp'
+        | string;
+};
+
 export type TCFDStore = {
     setMT5TradeAccount: <T>(arg: T) => void;
     toggleCFDVerificationModal: () => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
-    setAccountType: (account_type: { category: string; type?: string }) => void;
+    setAccountType: (account_type: TAccountType) => void;
     dxtrade_tokens: {
         demo: string;
         real: string;
@@ -30,11 +46,8 @@ export type TCFDStore = {
     real_synthetic_accounts_existing_data: DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
     real_swapfree_accounts_existing_data: DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
     real_financial_accounts_existing_data: DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
-    account_type: {
-        type: string;
-        category: string;
-    };
-    jurisdiction_selected_shortcode: string;
+    account_type: TAccountType;
+    jurisdiction_selected_shortcode: TShortcode;
     toggleJurisdictionModal: () => void;
     has_submitted_cfd_personal_details: boolean;
     is_jurisdiction_modal_visible: boolean;

@@ -1,9 +1,13 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TCFDPasswordReset } from '../Containers/props.types';
+import { ReactElement } from 'react';
 
+// TODO add the DerivEZ and Ctrader as they are released
 export type TCFDPlatform = 'dxtrade' | 'mt5';
 
 export type TCFDsPlatformType = 'dxtrade' | 'derivez' | 'mt5' | 'ctrader' | '';
+
+export type TShortcode = 'bvi' | 'labuan' | 'maltainvest' | 'svg' | 'vanuatu';
 
 export type TCFDAccountCopy = {
     text: string | undefined;
@@ -23,7 +27,7 @@ export type TSpecBoxProps = {
 };
 
 export type TPasswordBoxProps = {
-    platform: string;
+    platform: TCFDPlatform;
     onClick: () => void;
 };
 
@@ -57,7 +61,7 @@ export type TCFDAccountCardActionProps = {
     is_virtual?: boolean;
     onSelectAccount: () => void;
     type: TType;
-    platform: string;
+    platform: TCFDPlatform;
     title: string;
     real_account_creation_unlock_date: string;
     setShouldShowCooldownModal: (value: boolean) => void;
@@ -168,7 +172,7 @@ export type TCFDAccountCard = {
     is_disabled: boolean;
     is_logged_in: boolean;
     is_virtual?: boolean;
-    platform: string;
+    platform: TCFDPlatform;
     specs?: { [key: string]: { key: () => string; value: () => string } };
     title: string;
     type: TType;
@@ -230,21 +234,21 @@ export type TTradingPlatformAccounts = {
 };
 
 export type TSuccessDialog = {
-    classNameMessage: string;
+    classNameMessage?: string;
     has_cancel: boolean;
     has_submit: boolean;
-    icon: string;
-    message: string;
-    onCancel: () => void;
-    onSubmit: () => void;
-    heading: string;
+    icon: ReactElement;
+    message: ReactElement | string;
+    onCancel?: () => void;
+    onSubmit?: () => void;
+    heading?: ReactElement | string;
     icon_size: string;
-    text_submit: string;
-    text_cancel: string;
+    text_submit?: string;
+    text_cancel?: string;
     is_open: boolean;
     toggleModal: () => void;
-    title: string;
-    has_close_icon: string;
+    title?: string;
+    has_close_icon: boolean;
     width: string;
-    is_medium_button: boolean;
+    is_medium_button?: boolean;
 };

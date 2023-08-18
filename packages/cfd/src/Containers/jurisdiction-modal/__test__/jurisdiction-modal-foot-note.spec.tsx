@@ -1,16 +1,9 @@
 import React from 'react';
 import JurisdictionModalFootNote from '../jurisdiction-modal-foot-note';
 import { render, screen } from '@testing-library/react';
-import RootStore from 'Stores/index';
 import { Jurisdiction } from '@deriv/shared';
 
 describe('JurisdictionModalFootNote', () => {
-    const mock_store = {
-        common: {},
-        client: {},
-        ui: {},
-    };
-    const mock_context = new RootStore(mock_store);
     const mock_props = {
         account_status: {
             authentication: {
@@ -26,7 +19,6 @@ describe('JurisdictionModalFootNote', () => {
             status: [''],
         },
         account_type: '',
-        context: mock_context,
         card_classname: '',
         jurisdiction_selected_shortcode: Jurisdiction.SVG,
         should_restrict_bvi_account_creation: false,

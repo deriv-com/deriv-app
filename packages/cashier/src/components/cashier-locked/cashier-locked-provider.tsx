@@ -1,7 +1,6 @@
 import React from 'react';
 import { Localize, localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared';
-import { TEmptyStateProps } from '../empty-state/empty-state';
 
 type TProps = {
     cashier_validation: string[] | undefined;
@@ -23,7 +22,7 @@ const getMessage = ({
     is_withdrawal_locked,
     is_identity_verification_needed,
     excluded_until,
-}: TProps): TEmptyStateProps => {
+}: TProps) => {
     const no_residence = cashier_validation?.includes('no_residence');
     const unwelcome_status = cashier_validation?.includes('unwelcome_status');
     const self_exclusion = cashier_validation?.includes('SelfExclusion');

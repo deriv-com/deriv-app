@@ -1,22 +1,21 @@
 import React from 'react';
-import classNames from 'classnames';
 import { ButtonLink, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { useCryptoTransactions } from '@deriv/hooks';
 import { epochToMoment } from '@deriv/shared';
-import { useStore, observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
+import classNames from 'classnames';
 import { getStatus } from '../../constants/transaction-status';
 import { useCashierStore } from '../../stores/useCashierStores';
 import './recent-transaction.scss';
 
+/** @deprecated Use `CryptoTransactionsSideNoteRecentTransaction` instead. */
 const RecentTransaction = observer(() => {
     const { client } = useStore();
     const { currency } = client;
     const { transaction_history } = useCashierStore();
-    const { crypto_transactions, onMount, setIsCryptoTransactionsVisible } = transaction_history;
-
-    React.useEffect(() => {
-        onMount();
-    }, [onMount]);
+    const { setIsCryptoTransactionsVisible } = transaction_history;
+    const { last_transaction } = useCryptoTransactions();
 
     const onClickViewAll = () => {
         setIsCryptoTransactionsVisible(true);
@@ -28,9 +27,7 @@ const RecentTransaction = observer(() => {
                 <Text weight='bold' as='p' line_height='s' size='xs'>
                     <Localize i18n_default_text='Recent transactions' />
                 </Text>
-                <div className='cashier-recent-transaction__data-wrapper'>
-                    <div>{children}</div>
-                </div>
+                <div className='cashier-recent-transaction__data-wrapper'>{children}</div>
                 <ButtonLink
                     to='#'
                     className='dc-btn--secondary cashier-recent-transaction__view-all-button'
@@ -44,7 +41,7 @@ const RecentTransaction = observer(() => {
         </div>
     );
 
-    if (!crypto_transactions.length) {
+    if (!last_transaction) {
         return (
             <SideNoteContainer>
                 <Text as='p' line_height='s' size='xs'>
@@ -54,16 +51,14 @@ const RecentTransaction = observer(() => {
         );
     }
 
-    const { address_hash, transaction_hash, transaction_type, status_code, submit_date, confirmations } =
-        crypto_transactions[0];
+    const { address_hash, transaction_hash, transaction_type, status_code, submit_date, confirmations, amount } =
+        last_transaction;
     const status = getStatus(transaction_hash, transaction_type, status_code, confirmations);
     const submit_date_moment = epochToMoment(submit_date).format('MMM D, YYYY');
     const transaction_type_display_text = transaction_type[0].toUpperCase() + transaction_type.slice(1);
     const address_hash_display_value = `${address_hash.substring(0, 4)}....${address_hash.substring(
         address_hash.length - 4
     )}`;
-
-    const amount = crypto_transactions[0].amount;
 
     return (
         <SideNoteContainer>

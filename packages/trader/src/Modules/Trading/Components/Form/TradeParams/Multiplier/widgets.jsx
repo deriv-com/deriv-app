@@ -68,12 +68,7 @@ export const MultiplierAmountWidget = observer(() => {
     return <AmountWidget {...amount_widget_props} />;
 });
 
-const RadioGroupOptionsWidget = ({
-    displayed_trade_param,
-    extra_tooltip_message,
-    is_disabled = false,
-    modal_title,
-}) => {
+const RadioGroupOptionsWidget = ({ displayed_trade_param, extra_tooltip_message, is_disabled, modal_title }) => {
     const [is_open, setIsOpen] = React.useState(false);
 
     const toggleModal = () => {

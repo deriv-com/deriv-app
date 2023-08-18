@@ -69,7 +69,8 @@
 .mobile-widget__item-popover {
     max-width: 28rem;
     @include mobile {
-        max-width: 30rem;
+        max-width: 33rem;
+        margin-right: 1rem;
     }
 }
 

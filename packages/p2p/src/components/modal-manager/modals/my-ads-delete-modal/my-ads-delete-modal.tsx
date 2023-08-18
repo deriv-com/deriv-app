@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
+import { observer } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
-import { requestWS } from 'Utils/websocket';
-import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useStores } from 'Stores';
+import { requestWS } from 'Utils/websocket';
 
 const MyAdsDeleteModal = () => {
     const { my_ads_store } = useStores();
@@ -19,13 +19,15 @@ const MyAdsDeleteModal = () => {
 
     const onClickConfirm = () => {
         hideModal();
+        // TODO: Move this API call out of the modal and update the test file
         requestWS({ p2p_advert_update: 1, id: my_ads_store.selected_ad_id, delete: 1 }).then(response => {
             if (response.error) {
                 my_ads_store.setDeleteErrorMessage(response.error.message);
                 showModal({ key: 'MyAdsDeleteErrorModal', props: {} });
             } else {
+                // TODO: Fix typings for adverts in store or move it out from store
                 // remove the deleted ad from the list of items
-                const updated_items = my_ads_store.adverts.filter(ad => ad.id !== response.p2p_advert_update.id);
+                const updated_items = my_ads_store.adverts.filter(ad => ad.id !== response.p2p_advert_update?.id);
                 my_ads_store.setAdverts(updated_items);
             }
         });
@@ -34,7 +36,7 @@ const MyAdsDeleteModal = () => {
     return (
         <React.Fragment>
             <Modal
-                className='delete-modal'
+                className='my-ads-delete-modal'
                 is_open={is_modal_open}
                 toggleModal={onClickCancel}
                 has_close_icon

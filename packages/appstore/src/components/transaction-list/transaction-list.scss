@@ -12,7 +12,7 @@
         @include mobile() {
             padding-top: 7rem;
 
-            .crypto-list-scroll {
+            &__crypto {
                 padding-top: 10.72rem;
             }
         }

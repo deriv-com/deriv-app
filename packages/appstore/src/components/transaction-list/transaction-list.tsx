@@ -125,7 +125,7 @@ const TransactionList = observer(({ contentScrollHandler, is_wallet_name_visible
             </div>
             <ThemedScrollbars
                 className={classNames('transaction-list__scroll', {
-                    'crypto-list-scroll': wallet?.currency_config?.is_crypto,
+                    'transaction-list__scroll__crypto': wallet?.currency_config?.is_crypto,
                 })}
                 is_scrollbar_hidden={is_mobile}
                 onScroll={onScrollHandler}

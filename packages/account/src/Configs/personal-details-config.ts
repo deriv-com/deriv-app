@@ -150,9 +150,10 @@ export const personal_details_config = ({
                 ],
                 [
                     (value: string, options: Record<string, unknown>, { tax_residence }: { tax_residence: string }) => {
-                        const from_list = residence_list.filter(res => res.text === tax_residence && res.tin_format);
-                        const tax_regex = from_list[0]?.tin_format?.[0];
-                        return tax_regex ? new RegExp(tax_regex).test(value) : true;
+                        const tin_format = residence_list.find(
+                            res => res.text === tax_residence && res.tin_format
+                        )?.tin_format;
+                        return tin_format ? tin_format.some(regex => new RegExp(regex).test(value)) : true;
                     },
                     localize('Tax Identification Number is not properly formatted.'),
                 ],

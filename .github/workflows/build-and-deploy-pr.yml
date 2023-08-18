@@ -1,0 +1,63 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build_and_deploy:
+    # runs-on: [self-hosted] # Specify the label of your self-hosted runner machine
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Build and Test
+        uses: ./.github/actions/build-and-test
+
+      - name: Tag and Version
+        run: |
+          echo "${{ github.event_name }}"
+          if [ "${{ github.event_name }}" == "release" ]; then
+            echo "::set-output name=version_name::production-${{ github.ref }}"
+          else
+            echo "::set-output name=version_name::staging-${{ github.sha }}"
+          fi
+
+      - name: Build and Push image to docker hub
+        env:
+          DOCKHUB_ORGANISATION: binary-com # Set your Docker Hub organization
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+        run: |
+          TAG=${{ github.event.outputs.version_name }}
+          docker build -t $DOCKHUB_ORGANISATION/deriv-app:${TAG} -t $DOCKHUB_ORGANISATION/deriv-app:latest-staging -f Dockerfile .
+          echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
+          docker push $DOCKHUB_ORGANISATION/deriv-app:${TAG}
+          docker push $DOCKHUB_ORGANISATION/deriv-app:latest-staging
+
+      - name: Deploy to k8s cluster
+        env:
+          CA_CRT: ${{ secrets.CA_CRT }} # Add your Kubernetes CA_CRT secret here
+        run: |
+          TAG=${{ github.event.outputs.version_name }}
+          git clone https://github.com/binary-com/devops-ci-scripts
+          cd devops-ci-scripts/k8s-build_tools
+          echo $CA_CRT | base64 --decode > ca.crt
+          ./release.sh deriv-app ${TAG} "deriv-app-staging" # Adjust parameters as needed
+
+      - name: Notify slack
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }} # Add your Slack Webhook secret here
+        run: |
+          TAG=${{ github.event.outputs.version_name }}
+          if [ "${{ github.event_name }}" == "release" ]; then
+            slack/status \
+              --failure-message "Release failed for app.deriv.com with version *${TAG}*" \
+              --success-message "Release succeeded for app.deriv.com with version *${TAG}*" \
+              --webhook "${SLACK_WEBHOOK}"
+          fi
+
+      # Add the steps for publishing to Cloudflare Pages here if needed.
+

@@ -3,9 +3,6 @@ name: Build and Test
 
 runs:
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:

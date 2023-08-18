@@ -59,19 +59,12 @@ const DemoResetBalance = observer(({ setActiveTabIndex }: TDemoResetBalanceProps
                 </Text>
 
                 {isResetBalanceSuccess ? (
-                    <Button
-                        className='reset-balance__button'
-                        data-testid='dt_transfer_fund_button'
-                        large
-                        secondary
-                        onClick={() => redirectToTransferTab()}
-                    >
+                    <Button className='reset-balance__button' large secondary onClick={() => redirectToTransferTab()}>
                         <Localize i18n_default_text='Transfer funds' />
                     </Button>
                 ) : (
                     <Button
                         className='reset-balance__button'
-                        data-testid='dt_reset_balance_button'
                         disabled={!can_reset_balance}
                         large={!is_mobile}
                         medium={is_mobile}

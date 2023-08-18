@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import ReadyToUpgradeWallets from '../ready-to-upgrade-wallets';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
-let mock = mockStore({});
+const mock = mockStore({});
 
 const checkContainerReadyToUpgradeWallets = () => {
     const toggleCheckbox = jest.fn();
@@ -16,9 +16,6 @@ const checkContainerReadyToUpgradeWallets = () => {
 };
 
 describe('ReadyToUpgradeWallets', () => {
-    beforeEach(() => {
-        mock = mockStore({});
-    });
     it('should render', () => {
         checkContainerReadyToUpgradeWallets();
     });

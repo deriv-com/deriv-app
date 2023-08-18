@@ -14,7 +14,7 @@ describe('<EUDisclaimer />', () => {
             </StoreProvider>
         );
 
-        const eu_statutory_disclaimer = screen.queryByText('EU statutory disclaimer');
+        const eu_statutory_disclaimer = screen.getByText('EU statutory disclaimer');
 
         expect(eu_statutory_disclaimer).toBeInTheDocument();
     });
@@ -38,8 +38,8 @@ describe('<EUDisclaimer />', () => {
             </StoreProvider>
         );
 
-        const wrapper = screen.queryByTestId('dt_disclaimer_wrapper');
-        const text = screen.queryByTestId('dt_disclaimer_text');
+        const wrapper = screen.getByTestId('dt_disclaimer_wrapper');
+        const text = screen.getByTestId('dt_disclaimer_text');
 
         expect(wrapper).toHaveClass('disclaimer');
         expect(text).toHaveClass('disclaimer-text');
@@ -52,8 +52,8 @@ describe('<EUDisclaimer />', () => {
             </StoreProvider>
         );
 
-        const wrapper = screen.queryByTestId('dt_disclaimer_wrapper');
-        const text = screen.queryByTestId('dt_disclaimer_text');
+        const wrapper = screen.getByTestId('dt_disclaimer_wrapper');
+        const text = screen.getByTestId('dt_disclaimer_text');
 
         expect(wrapper).not.toHaveClass('disclaimer');
         expect(text).not.toHaveClass('disclaimer-text');

@@ -130,7 +130,7 @@ const TradeModal = ({
         } else if (platform_type === 'derivez') {
             app_title = localize('Run Deriv EZ on your browser');
         } else if (platform_type === 'ctrader') {
-            app_title = localize('Run Deriv cTrader on your browser');
+            app_title = localize('Run cTrader on your browser');
         } else {
             return null;
         }

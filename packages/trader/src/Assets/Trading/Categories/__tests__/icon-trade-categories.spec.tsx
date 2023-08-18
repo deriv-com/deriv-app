@@ -19,7 +19,7 @@ describe('<IconTradeCatgory />', () => {
     it('Expect MockedIcon to be rendered when category is rise_fall', () => {
         render(<IconTradeCategory category='rise_fall' />);
         const mocked_icons = screen.getAllByText(mocked_icon);
-        expect(mocked_icons.length).toBe(2);
+        expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
             expect(icon).toBeInTheDocument();
             expect(icon).toHaveClass('category-wrapper');
@@ -28,7 +28,7 @@ describe('<IconTradeCatgory />', () => {
     it('Expect two MockedIcons to be rendered when category is rise_fall_equal', () => {
         render(<IconTradeCategory category='rise_fall_equal' />);
         const mocked_icons = screen.getAllByText(mocked_icon);
-        expect(mocked_icons.length).toBe(2);
+        expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
             expect(icon).toBeInTheDocument();
             expect(icon).toHaveClass('category-wrapper');
@@ -37,7 +37,7 @@ describe('<IconTradeCatgory />', () => {
     it('Expect two MockedIcons to be rendered when category is high_low', () => {
         render(<IconTradeCategory category='high_low' />);
         const mocked_icons = screen.getAllByText(mocked_icon);
-        expect(mocked_icons.length).toBe(2);
+        expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
             expect(icon).toBeInTheDocument();
             expect(icon).toHaveClass('category-wrapper');
@@ -46,7 +46,7 @@ describe('<IconTradeCatgory />', () => {
     it('Expect two MockedIcons to be rendered when category is end', () => {
         render(<IconTradeCategory category='end' />);
         const mocked_icons = screen.getAllByText(mocked_icon);
-        expect(mocked_icons.length).toBe(2);
+        expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
             expect(icon).toBeInTheDocument();
             expect(icon).toHaveClass('category-wrapper');
@@ -55,7 +55,7 @@ describe('<IconTradeCatgory />', () => {
     it('Expect two MockedIcons to be rendered when category is stay', () => {
         render(<IconTradeCategory category='stay' />);
         const mocked_icons = screen.getAllByText(mocked_icon);
-        expect(mocked_icons.length).toBe(2);
+        expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
             expect(icon).toBeInTheDocument();
             expect(icon).toHaveClass('category-wrapper');
@@ -64,7 +64,7 @@ describe('<IconTradeCatgory />', () => {
     it('Expect two MockedIcons to be rendered when category is match_diff', () => {
         render(<IconTradeCategory category='match_diff' />);
         const mocked_icons = screen.getAllByText(mocked_icon);
-        expect(mocked_icons.length).toBe(2);
+        expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
             expect(icon).toBeInTheDocument();
             expect(icon).toHaveClass('category-wrapper');
@@ -73,7 +73,7 @@ describe('<IconTradeCatgory />', () => {
     it('Expect two MockedIcons to be rendered when category is even_odd', () => {
         render(<IconTradeCategory category='even_odd' />);
         const mocked_icons = screen.getAllByText(mocked_icon);
-        expect(mocked_icons.length).toBe(2);
+        expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
             expect(icon).toBeInTheDocument();
             expect(icon).toHaveClass('category-wrapper');
@@ -82,7 +82,7 @@ describe('<IconTradeCatgory />', () => {
     it('Expect two MockedIcons to be rendered when category is over_under', () => {
         render(<IconTradeCategory category='over_under' />);
         const mocked_icons = screen.getAllByText(mocked_icon);
-        expect(mocked_icons.length).toBe(2);
+        expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
             expect(icon).toBeInTheDocument();
             expect(icon).toHaveClass('category-wrapper');
@@ -91,7 +91,7 @@ describe('<IconTradeCatgory />', () => {
     it('Expect two MockedIcons to be rendered when category is touch', () => {
         render(<IconTradeCategory category='touch' />);
         const mocked_icons = screen.getAllByText(mocked_icon);
-        expect(mocked_icons.length).toBe(2);
+        expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
             expect(icon).toBeInTheDocument();
             expect(icon).toHaveClass('category-wrapper');
@@ -100,7 +100,7 @@ describe('<IconTradeCatgory />', () => {
     it('Expect two MockedIcons to be rendered when category is asian', () => {
         render(<IconTradeCategory category='asian' />);
         const mocked_icons = screen.getAllByText(mocked_icon);
-        expect(mocked_icons.length).toBe(2);
+        expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
             expect(icon).toBeInTheDocument();
             expect(icon).toHaveClass('category-wrapper');
@@ -127,7 +127,7 @@ describe('<IconTradeCatgory />', () => {
     it('Expect two MockedIcons to be rendered when category is run_high_low', () => {
         render(<IconTradeCategory category='run_high_low' />);
         const mocked_icons = screen.getAllByText(mocked_icon);
-        expect(mocked_icons.length).toBe(2);
+        expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
             expect(icon).toBeInTheDocument();
             expect(icon).toHaveClass('category-wrapper');
@@ -136,7 +136,7 @@ describe('<IconTradeCatgory />', () => {
     it('Expect two MockedIcons to be rendered when category is reset', () => {
         render(<IconTradeCategory category='reset' />);
         const mocked_icons = screen.getAllByText(mocked_icon);
-        expect(mocked_icons.length).toBe(2);
+        expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
             expect(icon).toBeInTheDocument();
             expect(icon).toHaveClass('category-wrapper');
@@ -145,7 +145,7 @@ describe('<IconTradeCatgory />', () => {
     it('Expect two MockedIcons to be rendered when category is tick_high_low', () => {
         render(<IconTradeCategory category='tick_high_low' />);
         const mocked_icons = screen.getAllByText(mocked_icon);
-        expect(mocked_icons.length).toBe(2);
+        expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
             expect(icon).toBeInTheDocument();
             expect(icon).toHaveClass('category-wrapper');
@@ -154,7 +154,7 @@ describe('<IconTradeCatgory />', () => {
     it('Expect two MockedIcons to be rendered when category is callputspread', () => {
         render(<IconTradeCategory category='callputspread' />);
         const mocked_icons = screen.getAllByText(mocked_icon);
-        expect(mocked_icons.length).toBe(2);
+        expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
             expect(icon).toBeInTheDocument();
             expect(icon).toHaveClass('category-wrapper');
@@ -163,7 +163,7 @@ describe('<IconTradeCatgory />', () => {
     it('Expect two MockedIcons to be rendered when category is multiplier', () => {
         render(<IconTradeCategory category='multiplier' />);
         const mocked_icons = screen.getAllByText(mocked_icon);
-        expect(mocked_icons.length).toBe(2);
+        expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
             expect(icon).toBeInTheDocument();
             expect(icon).toHaveClass('category-wrapper');
@@ -178,7 +178,7 @@ describe('<IconTradeCatgory />', () => {
     it('Expect two MockedIcons to be rendered when category is vanilla', () => {
         render(<IconTradeCategory category='vanilla' />);
         const mocked_icons = screen.getAllByText(mocked_icon);
-        expect(mocked_icons.length).toBe(2);
+        expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
             expect(icon).toBeInTheDocument();
             expect(icon).toHaveClass('category-wrapper');

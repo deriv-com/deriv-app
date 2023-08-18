@@ -38,6 +38,15 @@ const useWalletTransactions = (action_type?: 'deposit' | 'withdrawal' | 'virtual
         Required<Required<NonNullable<typeof data>>['statement']>['transactions']
     >([]);
 
+    // Remove duplicates to ensure transactions are unique by id.
+    useEffect(() => {
+        setTransactions(prev =>
+            prev
+                .sort((a, b) => ((a.transaction_id || 0) < (b.transaction_id || 0) ? 1 : 0))
+                .filter((item, pos, arr) => !pos || item.transaction_id != arr[pos - 1].transaction_id)
+        );
+    }, [transactions]);
+
     // Maintain a flag to indicate if the list of transactions is complete.
     const [is_end_of_transaction_list, setIsEndOfTransactionList] = useState(false);
 

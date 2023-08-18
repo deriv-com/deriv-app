@@ -32,7 +32,7 @@ const DeletePaymentMethodConfirmationModal = ({
                 },
             });
         }
-    }, [mutation_status, mutation_status]);
+    }, [mutation_error, mutation_status]);
 
     return (
         <Modal

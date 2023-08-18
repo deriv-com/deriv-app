@@ -22,7 +22,6 @@ describe('<PaymentMethodIcon />', () => {
         render(<PaymentMethodIcon display_name='Skrill' size={32} />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
         });
-
-        expect(screen.getByTestId('dt_IcCashierEwallet')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_ic_cashier_ewallet')).toBeInTheDocument();
     });
 });

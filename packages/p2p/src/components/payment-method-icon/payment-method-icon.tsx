@@ -1,4 +1,5 @@
 import { Icon } from '@deriv/components';
+import { getSnakeCase } from '@deriv/components/utils/helper';
 import { useP2PPaymentMethods } from '@deriv/hooks';
 import classNames from 'classnames';
 import React from 'react';
@@ -22,7 +23,7 @@ const PaymentMethodIcon = ({ className, display_name, size }: TPaymentMethodIcon
     return (
         <Icon
             className={classNames(className)}
-            data_testid={`dt_${payment_method_icon}`}
+            data_testid={`dt_${getSnakeCase(payment_method_icon)}`}
             icon={payment_method_icon}
             size={size}
         />

@@ -70,7 +70,7 @@ const PaymentMethodsList = () => {
                                             {payment_methods.map((each_payment_method, each_payment_method_key) => (
                                                 <PaymentMethodCard
                                                     key={each_payment_method_key}
-                                                    large={true}
+                                                    large
                                                     payment_method={each_payment_method}
                                                     show_payment_method_name={false}
                                                 />

@@ -49,14 +49,6 @@ const PaymentAgentContainer = observer(({ is_deposit }: TPaymentAgentContainer) 
 
     React.useEffect(() => {
         return () => {
-            if (!is_deposit) {
-                resetPaymentAgent();
-            }
-        };
-    }, [is_deposit, resetPaymentAgent]);
-
-    React.useEffect(() => {
-        return () => {
             onChangePaymentMethod({ target: { value: '0' } });
         };
     }, [onChangePaymentMethod]);

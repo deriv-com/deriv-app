@@ -5,9 +5,10 @@
     &__view {
         display: flex;
         flex-direction: row;
-        transition: transform 0.1s linear;
+        transition: left 0.1s linear;
         width: max-content;
         height: inherit;
+        position: relative;
     }
     &__item {
         position: relative;
@@ -16,7 +17,7 @@
 
         &--is-disabled {
             & .dc-swipeable__view {
-                transform: translateX(-100vw);
+                left: -100vw;
                 transition: none;
             }
         }

@@ -1,4 +1,4 @@
-import { WalletsImagesList } from './index';
+import { WalletsImagesList } from './wallets-image';
 
 export type TWalletsImagesListKeys = keyof typeof WalletsImagesList;
 export type TImageTestID = `dt_${TWalletsImagesListKeys}`;

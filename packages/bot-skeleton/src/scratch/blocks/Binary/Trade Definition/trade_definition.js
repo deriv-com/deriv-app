@@ -105,8 +105,7 @@ Blockly.Blocks.trade_definition = {
         if (event.type === 'ui' && !this.isInit) {
             this.isInit = true;
             initErrorHandlingListener('keydown');
-        }
-        if (Blockly.selected === null && this.isInit) {
+        } else if (Blockly.selected === null && this.isInit) {
             this.isInit = false;
             removeErrorHandlingEventListener('keydown');
         }

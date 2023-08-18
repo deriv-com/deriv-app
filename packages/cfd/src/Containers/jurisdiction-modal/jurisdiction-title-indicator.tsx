@@ -26,29 +26,24 @@ const JurisdictionTitleIndicator = ({
 
     const getVerificationIconVariant = (verification_document: TJurisdictionCardItemVerificationItem): string => {
         let icon_variant: TJurisdictionCardVerificationStatus = 'Default';
-        if (type_of_card !== Jurisdiction.SVG) {
-            if (
-                type_of_card !== Jurisdiction.MALTA_INVEST &&
-                [Jurisdiction.BVI, Jurisdiction.LABUAN, Jurisdiction.VANUATU].includes(type_of_card)
-            ) {
-                if (['document_number', 'selfie', 'identity_document'].includes(verification_document)) {
-                    if (poi_pending_for_bvi_labuan_vanuatu) {
-                        icon_variant = 'Pending';
-                    } else if (poi_resubmit_for_bvi_labuan_vanuatu) {
-                        icon_variant = 'Failed';
-                    } else if (poi_verified_for_bvi_labuan_vanuatu) {
-                        icon_variant = 'Verified';
-                    }
+        if ([Jurisdiction.BVI, Jurisdiction.LABUAN, Jurisdiction.VANUATU].includes(type_of_card)) {
+            if (['document_number', 'selfie', 'identity_document'].includes(verification_document)) {
+                if (poi_pending_for_bvi_labuan_vanuatu) {
+                    icon_variant = 'Pending';
+                } else if (poi_resubmit_for_bvi_labuan_vanuatu) {
+                    icon_variant = 'Failed';
+                } else if (poi_verified_for_bvi_labuan_vanuatu) {
+                    icon_variant = 'Verified';
                 }
-            } else if (Jurisdiction.MALTA_INVEST === type_of_card) {
-                if (['document_number', 'selfie', 'identity_document'].includes(verification_document)) {
-                    if (poi_pending_for_maltainvest) {
-                        icon_variant = 'Pending';
-                    } else if (poi_resubmit_for_maltainvest) {
-                        icon_variant = 'Failed';
-                    } else if (poi_verified_for_maltainvest) {
-                        icon_variant = 'Verified';
-                    }
+            }
+        } else if (Jurisdiction.MALTA_INVEST === type_of_card) {
+            if (['document_number', 'selfie', 'identity_document'].includes(verification_document)) {
+                if (poi_pending_for_maltainvest) {
+                    icon_variant = 'Pending';
+                } else if (poi_resubmit_for_maltainvest) {
+                    icon_variant = 'Failed';
+                } else if (poi_verified_for_maltainvest) {
+                    icon_variant = 'Verified';
                 }
             }
         }

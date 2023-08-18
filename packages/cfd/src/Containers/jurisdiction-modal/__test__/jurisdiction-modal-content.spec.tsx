@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Jurisdiction } from '@deriv/shared';
 import JurisdictionModalContent from '../jurisdiction-modal-content';
-import { TJurisdictionModalContentProps } from '../../props.types';
+import { TJurisdictionModalContentProps } from 'Containers/props.types';
 
 describe('JurisdictionModalContent', () => {
     const mock_props: TJurisdictionModalContentProps = {

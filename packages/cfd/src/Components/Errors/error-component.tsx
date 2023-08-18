@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 
 type TErrorComponent = {
     header: string;
-    message: Array<{ message: string; has_html?: boolean } | React.ReactNode> | string;
+    message: Array<{ message: string; has_html?: boolean }> | string;
     is_dialog: boolean;
     redirect_label: string;
     redirectOnClick: () => void;

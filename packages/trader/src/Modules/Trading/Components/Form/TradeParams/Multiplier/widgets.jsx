@@ -68,7 +68,7 @@ export const MultiplierAmountWidget = observer(() => {
     return <AmountWidget {...amount_widget_props} />;
 });
 
-const RadioGroupOptionsWidget = ({ displayed_trade_param, extra_tooltip_message, is_disabled, modal_title }) => {
+const RadioGroupOptionsWidget = ({ displayed_trade_param, tooltip_message, is_disabled, modal_title }) => {
     const [is_open, setIsOpen] = React.useState(false);
 
     const toggleModal = () => {
@@ -87,7 +87,7 @@ const RadioGroupOptionsWidget = ({ displayed_trade_param, extra_tooltip_message,
                 >
                     <span className='mobile-widget__item-value'>{displayed_trade_param}</span>
                 </div>
-                {!!extra_tooltip_message && (
+                {!!tooltip_message && (
                     <span className='mobile-widget__item-tooltip' onClick={e => e.stopPropagation()}>
                         <Popover
                             alignment='left'
@@ -95,7 +95,7 @@ const RadioGroupOptionsWidget = ({ displayed_trade_param, extra_tooltip_message,
                             icon='info'
                             is_bubble_hover_enabled
                             zIndex={9999}
-                            message={extra_tooltip_message}
+                            message={tooltip_message}
                         />
                     </span>
                 )}
@@ -115,7 +115,7 @@ export const AccumulatorOptionsWidget = observer(() => {
     const { growth_rate, has_open_accu_contract, tick_size_barrier } = useTraderStore();
     const displayed_trade_param = `${getGrowthRatePercentage(growth_rate)}%`;
     const modal_title = localize('Growth rate');
-    const extra_tooltip_message = (
+    const tooltip_message = (
         <Localize
             i18n_default_text='Your stake will grow at {{growth_rate}}% per tick as long as the current spot price remains within ±{{tick_size_barrier}} from the previous spot price.'
             values={{
@@ -129,7 +129,7 @@ export const AccumulatorOptionsWidget = observer(() => {
             displayed_trade_param={displayed_trade_param}
             is_disabled={has_open_accu_contract}
             modal_title={modal_title}
-            extra_tooltip_message={extra_tooltip_message}
+            tooltip_message={tooltip_message}
         />
     );
 });

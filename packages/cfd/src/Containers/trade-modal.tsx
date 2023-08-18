@@ -206,7 +206,7 @@ const TradeModal = ({
                 <div className='cfd-trade-modal__maintenance'>
                     <Icon
                         icon='IcAlertWarning'
-                        size={isMobile() ? 28 : 20}
+                        size={isMobile() ? 28 : 24}
                         className='cfd-trade-modal__maintenance-icon'
                     />
                     <div className='cfd-trade-modal__maintenance-text'>

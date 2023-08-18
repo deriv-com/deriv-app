@@ -18,6 +18,7 @@ describe('CompletedTransaction', () => {
                 account_category: 'wallet',
                 // @ts-expect-error we don't really need a full config here
                 account_currency_config: {
+                    fractional_digits: 2,
                     code: 'USD',
                     type: 'fiat',
                 },

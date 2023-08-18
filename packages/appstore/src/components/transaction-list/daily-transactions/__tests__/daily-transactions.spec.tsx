@@ -23,6 +23,7 @@ describe('DailyTransactions', () => {
                     account_currency_config: {
                         code: 'USD',
                         type: 'fiat',
+                        fractional_digits: 2,
                     },
                     account_type: 'doughflow',
                     action_type: 'deposit',
@@ -38,6 +39,7 @@ describe('DailyTransactions', () => {
                     account_currency_config: {
                         code: 'USD',
                         type: 'fiat',
+                        fractional_digits: 2,
                     },
                     account_type: 'doughflow',
                     action_type: 'transfer',

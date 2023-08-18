@@ -70,9 +70,8 @@ export const MultiplierAmountWidget = observer(() => {
 
 const RadioGroupOptionsWidget = ({
     displayed_trade_param,
-    extra_tooltip_message = '',
+    extra_tooltip_message,
     is_disabled = false,
-    should_show_extra_tooltip = false,
     modal_title,
 }) => {
     const [is_open, setIsOpen] = React.useState(false);
@@ -87,14 +86,13 @@ const RadioGroupOptionsWidget = ({
             <RadioGroupOptionsModal is_open={is_open} toggleModal={toggleModal} modal_title={modal_title} />
             <div className='mobile-widget mobile-widget__multiplier-options' onClick={toggleModal}>
                 <div
-                    // className={`mobile-widget__item ${is_disabled ? 'mobile-widget__item-disabled' : ''}`}
                     className={classNames('mobile-widget__item', {
                         'mobile-widget__item-disabled': is_disabled,
                     })}
                 >
                     <span className='mobile-widget__item-value'>{displayed_trade_param}</span>
                 </div>
-                {should_show_extra_tooltip && (
+                {!!extra_tooltip_message && (
                     <span className='mobile-widget__item-tooltip' onClick={e => e.stopPropagation()}>
                         <Popover
                             alignment='left'
@@ -136,7 +134,6 @@ export const AccumulatorOptionsWidget = observer(() => {
             displayed_trade_param={displayed_trade_param}
             is_disabled={has_open_accu_contract}
             modal_title={modal_title}
-            should_show_extra_tooltip
             extra_tooltip_message={extra_tooltip_message}
         />
     );

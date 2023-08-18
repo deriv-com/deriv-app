@@ -6,14 +6,7 @@ import React from 'react';
 // for example [[1, 2, 3]] will be a single row of these three numbers
 // but [[1, 2, 3], [4, 5, 6]] will be two rows:
 // first row with the first three numbers and second row with the last three numbers
-const NumberSelector = ({
-    arr_arr_numbers,
-    name,
-    onChange,
-    selected_number,
-    should_show_in_percents,
-    is_disabled = false,
-}) => {
+const NumberSelector = ({ arr_arr_numbers, name, onChange, selected_number, should_show_in_percents, is_disabled }) => {
     const handleSelect = item => {
         if (+item.target.getAttribute('data-value') !== selected_number && !is_disabled) {
             onChange({ target: { name, value: +item.target.getAttribute('data-value') } });

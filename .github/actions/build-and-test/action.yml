@@ -1,7 +1,10 @@
+
 name: Build and Test
+description: Install, bootstrap, Build and Test
 
 
 runs:
+    using: composite
     steps:
       - name: Setup Node.js
         uses: actions/setup-node@v3

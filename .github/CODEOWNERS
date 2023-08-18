@@ -73,7 +73,7 @@
 #  deriv-app/account
 # ==============================================================
 
-/packages/account/**/*                                          @matin-deriv @amina-deriv
+/packages/account/**/*                                          @matin-deriv @amina-deriv @maryia-deriv
 
 
 # ==============================================================
@@ -118,13 +118,13 @@
 # ==============================================================
 
 /packages/api/**/*                                              @ali-hosseini-deriv @matin-deriv
-/packages/core/**/*                                             @ali-hosseini-deriv @matin-deriv
-/packages/shared/**/*                                           @ali-hosseini-deriv @matin-deriv
-/packages/components/**/*                                       @ali-hosseini-deriv @matin-deriv
-/packages/translations/**/*                                     @ali-hosseini-deriv @matin-deriv
-/packages/utils/**/*                                            @ali-hosseini-deriv @matin-deriv
+/packages/core/**/*                                             @ali-hosseini-deriv @matin-deriv @maryia-deriv
+/packages/shared/**/*                                           @ali-hosseini-deriv @matin-deriv @maryia-deriv
+/packages/components/**/*                                       @ali-hosseini-deriv @matin-deriv @maryia-deriv
+/packages/translations/**/*                                     @ali-hosseini-deriv @matin-deriv @maryia-deriv
+/packages/utils/**/*                                            @ali-hosseini-deriv @matin-deriv @maryia-deriv
 /packages/hooks/**/*                                            @ali-hosseini-deriv @matin-deriv
-/packages/stores/**/*                                           @ali-hosseini-deriv @matin-deriv
+/packages/stores/**/*                                           @ali-hosseini-deriv @matin-deriv @maryia-deriv
 
 
 # ==============================================================

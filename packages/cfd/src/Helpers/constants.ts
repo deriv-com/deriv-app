@@ -43,6 +43,10 @@ const getTitle = (market_type: string, is_eu_user: boolean) => {
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
+const DEMO_MT5_URL = 'https://mt5-demo-web.deriv.com/terminal'; // Access Server - Ireland
+const REAL_MT5_URL_01 = 'https://mt5-real01-web.deriv.com/terminal'; // Access Server - Ireland 02
+const REAL_MT5_URL_02 = 'https://mt5-real02-web.deriv.com/terminal'; // Access Server - South Africa 01
+
 const DERIVEZ_URL = 'https://dqwsqxuu0r6t9.cloudfront.net/';
 const DERIVEZ_IOS_APP_URL = 'https://apps.apple.com/my/app/deriv-go/id1550561298';
 const DERIVEZ_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.app&pli=1';
@@ -140,24 +144,26 @@ const getMT5WebTerminalLink = ({
     const login = loginid ?? '';
 
     const getBaseUrl = () => {
-        if (is_demo) return 'https://mt5-demo-web.deriv.com/terminal';
+        if (is_demo) return DEMO_MT5_URL;
 
         const cfd_reset_password_intent = localStorage.getItem('cfd_reset_password_intent');
         if (cfd_reset_password_intent) {
             const cluster = cfd_reset_password_intent.split('.')[0];
             switch (cluster) {
                 case 'p02_ts02':
-                    return 'https://mt5-real02-web.deriv.com/terminal';
+                    return REAL_MT5_URL_02;
                 case 'p01_ts01':
                 default:
-                    return 'https://mt5-real01-web.deriv.com/terminal';
+                    return REAL_MT5_URL_01;
             }
         }
     };
 
     const base_url = getBaseUrl();
+    const loginParam = login ? `&login=${login}` : '';
+    const queryParams = `?servers=${server}&trade_server=${server}${loginParam}`;
 
-    return `${base_url}?servers=${server}&trade_server=${server}${login && `&login=${login}`}`;
+    return `${base_url}${queryParams}`;
 };
 
 export {

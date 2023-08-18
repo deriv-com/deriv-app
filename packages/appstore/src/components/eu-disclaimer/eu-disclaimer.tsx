@@ -4,18 +4,17 @@ import { Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import './eu-disclaimer.scss';
 
-type TProps = {
+type TEUDisclaimerProps = {
     is_wallet?: boolean;
     wrapperClassName?: string;
     textClassName?: string;
 };
+type TDisclaimerLocalizedText = {
+    is_wallet?: boolean;
+};
 
-const EUDisclaimer = observer(({ is_wallet, wrapperClassName, textClassName }: TProps) => {
-    const {
-        ui: { is_mobile },
-    } = useStore();
-
-    const disclaimer_text = is_wallet ? (
+const DisclaimerLocalizedText = ({ is_wallet }: TDisclaimerLocalizedText) =>
+    is_wallet ? (
         <Localize
             i18n_default_text={
                 'CFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. <0>73% of retail investor accounts lose money when trading CFDs with this provider</0>. You should consider whether you understand how CFDs work and whether you can afford to take the high risk of losing your money.'
@@ -31,6 +30,11 @@ const EUDisclaimer = observer(({ is_wallet, wrapperClassName, textClassName }: T
         />
     );
 
+const EUDisclaimer = observer(({ is_wallet, wrapperClassName, textClassName }: TEUDisclaimerProps) => {
+    const {
+        ui: { is_mobile },
+    } = useStore();
+
     return (
         <div className={wrapperClassName ?? 'disclaimer'} data-testid='dt_disclaimer_wrapper'>
             <Text
@@ -39,7 +43,7 @@ const EUDisclaimer = observer(({ is_wallet, wrapperClassName, textClassName }: T
                 size={is_mobile ? 'xxxs' : 'xs'}
                 data-testid='dt_disclaimer_text'
             >
-                {disclaimer_text}
+                <DisclaimerLocalizedText is_wallet={is_wallet} />
             </Text>
         </div>
     );

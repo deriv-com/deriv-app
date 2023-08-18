@@ -24,11 +24,7 @@
             opacity: 1;
         }
 
-        &-enter-done {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
+        &-enter-done,
         &-exit {
             transform: translateY(0);
             opacity: 1;

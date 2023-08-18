@@ -125,8 +125,7 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
                             type: existing_account.market_type,
                             jurisdiction: existing_account.landing_company_short,
                         }}
-                        is_wallet={true}
-                        is_wallet_demo={!!wallet_account.is_virtual}
+                        wallet_account={wallet_account}
                     />
                 );
             })}
@@ -162,8 +161,7 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
                             description={existing_account.login}
                             platform={account.platform}
                             key={`trading_app_card_${existing_account.login}`}
-                            is_wallet={true}
-                            is_wallet_demo={!!wallet_account.is_virtual}
+                            wallet_account={wallet_account}
                         />
                     ))
                 ) : (
@@ -176,8 +174,7 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
                         platform={account.platform}
                         description={account.description}
                         key={`trading_app_card_${account.name}`}
-                        is_wallet={true}
-                        is_wallet_demo={!!wallet_account.is_virtual}
+                        wallet_account={wallet_account}
                     />
                 );
             })}

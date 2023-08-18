@@ -4,29 +4,45 @@ import ReadyToUpgradeWallets from '../ready-to-upgrade-wallets';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
 const mock = mockStore({});
-
-const checkContainerReadyToUpgradeWallets = () => {
-    const toggleCheckbox = jest.fn();
-    const wrapper = ({ children }: { children: JSX.Element }) => <StoreProvider store={mock}>{children}</StoreProvider>;
-
-    const { container } = render(<ReadyToUpgradeWallets is_eu={false} toggleCheckbox={toggleCheckbox} />, {
-        wrapper,
-    });
-    expect(container).toBeInTheDocument();
-};
+const toggleCheckbox = jest.fn();
 
 describe('ReadyToUpgradeWallets', () => {
     it('should render', () => {
-        checkContainerReadyToUpgradeWallets();
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+
+        const { container } = render(
+            <ReadyToUpgradeWallets is_eu={false} toggleCheckbox={toggleCheckbox} value={false} />,
+            {
+                wrapper,
+            }
+        );
+
+        expect(container).toBeInTheDocument();
     });
 
     it('should render checkbox', () => {
-        checkContainerReadyToUpgradeWallets();
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+
+        render(<ReadyToUpgradeWallets is_eu={false} toggleCheckbox={toggleCheckbox} value={false} />, {
+            wrapper,
+        });
+
         expect(screen.getByRole('checkbox')).toBeInTheDocument();
     });
 
     it('should render info section based on region', () => {
-        checkContainerReadyToUpgradeWallets();
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+
+        render(<ReadyToUpgradeWallets is_eu={false} toggleCheckbox={toggleCheckbox} value={false} />, {
+            wrapper,
+        });
+
         expect(
             screen.getByText(
                 'During the upgrade, deposits, withdrawals, transfers, and adding new accounts will be unavailable.'

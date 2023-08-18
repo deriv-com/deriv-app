@@ -77,15 +77,14 @@ const WalletsIntroComponent = observer(({ image, title, description, bullets }: 
     );
 });
 
-const WalletsIntro = ({ is_eu, current_step }: TWalletsIntroComponent) => (
-    <div className='wallet-steps__content'>
-        {getWalletsIntroContent(is_eu).map((step, index) => {
-            if (index === current_step) {
-                return <WalletsIntroComponent key={index} {...step} bullets={step?.bullets || []} />;
-            }
-            return null;
-        })}
-    </div>
-);
+const WalletsIntro = ({ is_eu, current_step }: TWalletsIntroComponent) => {
+    const step = getWalletsIntroContent(is_eu)?.[current_step];
+
+    return (
+        <div className='wallet-steps__content'>
+            <WalletsIntroComponent {...step} bullets={step?.bullets || []} />
+        </div>
+    );
+};
 
 export { WalletsIntro, WalletsIntroComponent };

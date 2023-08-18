@@ -9,8 +9,6 @@ const WalletsMigrationFailed = observer(() => {
     const { is_wallet_migration_failed, setWalletsMigrationFailedPopup } = traders_hub;
     const { is_mobile } = ui;
 
-    const mobile_add_class = is_mobile ? '--mobile' : '';
-
     const wallets_migration_failed_ref = React.useRef<HTMLDivElement>(null);
 
     const handleClose = () => {
@@ -37,13 +35,13 @@ const WalletsMigrationFailed = observer(() => {
             has_close_icon={false}
         >
             <div ref={wallets_migration_failed_ref}>
-                <Modal.Body className={`wallets-migration-failed${mobile_add_class}`}>
+                <Modal.Body className='wallets-migration-failed'>
                     <Text
                         as='h1'
                         size={is_mobile ? 'xs' : 's'}
                         color='prominent'
                         weight='bold'
-                        className={`wallets-migration-failed__title${mobile_add_class}`}
+                        className='wallets-migration-failed__title'
                     >
                         {localize('Sorry for the interruption')}
                     </Text>
@@ -53,16 +51,11 @@ const WalletsMigrationFailed = observer(() => {
                         )}
                     </Text>
                 </Modal.Body>
-                <Modal.Footer className={`wallets-migration-failed__footer${mobile_add_class}`}>
+                <Modal.Footer className='wallets-migration-failed__footer'>
                     <Button secondary large onClick={handLiveChatButtonClick}>
                         {localize('Go to live chat')}
                     </Button>
-                    <Button
-                        primary
-                        large
-                        onClick={handleClose}
-                        classNameSpan={`wallets-migration-failed__text${mobile_add_class}`}
-                    >
+                    <Button primary large onClick={handleClose} classNameSpan='wallets-migration-failed__text'>
                         {localize('Back to Trader’s Hub')}
                     </Button>
                 </Modal.Footer>

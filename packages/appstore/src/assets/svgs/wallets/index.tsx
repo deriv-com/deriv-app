@@ -1,1 +1,3 @@
-export { default as WalletsImage } from './wallets-image';
+import WalletsImage from './wallets-image';
+
+export default WalletsImage;

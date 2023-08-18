@@ -32,9 +32,7 @@ export const getCFDAvailableAccount = () => [
     },
     {
         name: 'Deriv cTrader',
-        description: localize(
-            'Trade CFDs on forex, commodities, cryptocurrencies, stocks, stock indices, and derived indices.'
-        ),
+        description: localize('This account offers CFDs on a feature-rich trading platform.'),
         platform: CFD_PLATFORMS.CTRADER,
         market_type: 'all',
         icon: 'CTrader',

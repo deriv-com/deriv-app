@@ -48,7 +48,7 @@ const AccountStatusList = [
 
 type TAccountStatus = typeof AccountStatusList[number];
 
-export const useIsAccountStatusPresent = (status: TAccountStatus) => {
+const useIsAccountStatusPresent = (status: TAccountStatus) => {
     const {
         client: { account_status },
     } = useStore();
@@ -57,3 +57,5 @@ export const useIsAccountStatusPresent = (status: TAccountStatus) => {
 
     return React.useMemo(() => status_list?.includes(status) ?? false, [status_list, status]);
 };
+
+export default useIsAccountStatusPresent;

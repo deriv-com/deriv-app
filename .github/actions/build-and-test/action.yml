@@ -5,7 +5,10 @@ description: Install, bootstrap, Build and Test
 
 runs:
     using: composite
+
+
     steps:
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -51,38 +54,50 @@ runs:
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         name: List the state of node modules
         continue-on-error: true
+        shell: bash -le {0}
+
         run: | 
           npm ci
           npm run bootstrap
 
       - name: Build
+        shell: bash -le {0}
         run: npm run build:all
 
       - name: "Check TypeScript for @deriv/api"
+        shell: bash -le {0}
         run: npx tsc --project packages/api/tsconfig.json -noEmit
 
       - name: "Check TypeScript for @deriv/hooks"
+        shell: bash -le {0}
         run: npx tsc --project packages/hooks/tsconfig.json -noEmit
 
       - name: "Check TypeScript for @deriv/utils"
+        shell: bash -le {0}
         run: npx tsc --project packages/utils/tsconfig.json -noEmit
 
       - name: "Check TypeScript for @deriv/analytics"
+        shell: bash -le {0}
         run: npx tsc --project packages/analytics/tsconfig.json -noEmit
 
       - name: "Check TypeScript for @deriv/stores"
+        shell: bash -le {0}
         run: npx tsc --project packages/stores/tsconfig.json -noEmit
 
       - name: "Check tests for @deriv/hooks"
+        shell: bash -le {0}
         run: bash ./scripts/check-tests.sh packages/hooks/src
 
       - name: "Check tests for @deriv/utils"
+        shell: bash -le {0}
         run: bash ./scripts/check-tests.sh packages/utils/src
 
       - name: "Check tests for @deriv/analytics"
+        shell: bash -le {0}
         run: bash ./scripts/check-tests.sh packages/analytics/src
 
       - name: "Run tests"
+        shell: bash -le {0}
         run: npm test
 
         

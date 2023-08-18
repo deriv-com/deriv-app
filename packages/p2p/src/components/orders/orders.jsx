@@ -17,7 +17,7 @@ const Orders = observer(() => {
     order_store.setForceRerenderOrders(forceRerender);
 
     React.useEffect(() => {
-        if (general_store?.active_index !== 1) general_store?.setActiveIndex(1);
+        if (general_store.active_index !== 1) general_store.setActiveIndex(1);
         const disposeOrderIdReaction = reaction(
             () => order_store.order_id,
             () => {

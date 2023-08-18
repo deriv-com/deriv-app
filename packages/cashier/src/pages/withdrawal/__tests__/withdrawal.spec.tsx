@@ -43,7 +43,6 @@ const cashier_mock = {
     },
     transaction_history: {
         is_crypto_transactions_visible: false,
-        onMount: jest.fn(),
     },
     withdraw: {
         check10kLimit: jest.fn(),
@@ -292,7 +291,6 @@ describe('<Withdrawal />', () => {
                     ...cashier_mock,
                     transaction_history: {
                         is_crypto_transactions_visible: true,
-                        onMount: jest.fn(),
                     },
                 },
             },
@@ -351,7 +349,6 @@ describe('<Withdrawal />', () => {
                     ...cashier_mock,
                     transaction_history: {
                         ...cashier_mock.transaction_history,
-                        crypto_transactions: [{}],
                     },
                 },
             },

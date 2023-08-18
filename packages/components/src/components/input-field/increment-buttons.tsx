@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import Button from '../button';
 import Icon from '../icon';
 import { TButtonType } from './input-field';
@@ -15,7 +16,6 @@ type IncrementButtonsProps = {
     ) => void;
     onLongPressEnd: () => void;
     is_incrementable_on_long_press?: boolean;
-    should_apply_disabled_style?: boolean;
     max_is_disabled: number | boolean;
     min_is_disabled: number | boolean;
     type?: TButtonType;
@@ -25,7 +25,6 @@ const IncrementButtons = ({
     decrementValue,
     id,
     incrementValue,
-    should_apply_disabled_style = false,
     max_is_disabled,
     min_is_disabled,
     is_incrementable_on_long_press,
@@ -81,9 +80,9 @@ const IncrementButtons = ({
         <React.Fragment>
             <Button
                 id={`${id}_add`}
-                className={`dc-input-wrapper__button dc-input-wrapper__button--increment ${
-                    should_apply_disabled_style ? 'dc-input-wrapper__button--disabled' : ''
-                }`}
+                className={classNames('dc-input-wrapper__button dc-input-wrapper__button--increment', {
+                    'dc-input-wrapper__button--disabled': !!max_is_disabled,
+                })}
                 is_disabled={!!max_is_disabled}
                 onClick={incrementValue}
                 tabIndex={-1}
@@ -99,9 +98,9 @@ const IncrementButtons = ({
             </Button>
             <Button
                 id={`${id}_sub`}
-                className={`dc-input-wrapper__button dc-input-wrapper__button--decrement ${
-                    should_apply_disabled_style ? 'dc-input-wrapper__button--disabled' : ''
-                }`}
+                className={classNames('dc-input-wrapper__button dc-input-wrapper__button--decrement', {
+                    'dc-input-wrapper__button--disabled': !!min_is_disabled,
+                })}
                 is_disabled={!!min_is_disabled}
                 onClick={decrementValue}
                 tabIndex={-1}

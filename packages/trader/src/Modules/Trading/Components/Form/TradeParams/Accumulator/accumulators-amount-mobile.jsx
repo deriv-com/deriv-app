@@ -40,7 +40,6 @@ const AccumulatorsAmountMobile = observer(({ is_nativepicker }) => {
                     ariaLabel={localize('Amount')}
                     setCurrentFocus={setCurrentFocus}
                     is_disabled={has_open_accu_contract}
-                    should_apply_disabled_style={has_open_accu_contract}
                 />
             </MobileWrapper>
         </>

@@ -838,8 +838,8 @@
             }
         }
         @include mobile {
-            padding: 0rem;
-            margin-bottom: 0rem;
+            padding: 0;
+            margin-bottom: 0;
         }
     }
     &__notification {

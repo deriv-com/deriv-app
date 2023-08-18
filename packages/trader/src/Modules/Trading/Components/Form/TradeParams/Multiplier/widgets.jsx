@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Money, Text, Popover } from '@deriv/components';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer } from '@deriv/stores';
@@ -85,7 +86,12 @@ const RadioGroupOptionsWidget = ({
         <React.Fragment>
             <RadioGroupOptionsModal is_open={is_open} toggleModal={toggleModal} modal_title={modal_title} />
             <div className='mobile-widget mobile-widget__multiplier-options' onClick={toggleModal}>
-                <div className={`mobile-widget__item ${is_disabled ? 'mobile-widget__item-disabled' : ''}`}>
+                <div
+                    // className={`mobile-widget__item ${is_disabled ? 'mobile-widget__item-disabled' : ''}`}
+                    className={classNames('mobile-widget__item', {
+                        'mobile-widget__item-disabled': is_disabled,
+                    })}
+                >
                     <span className='mobile-widget__item-value'>{displayed_trade_param}</span>
                 </div>
                 {should_show_extra_tooltip && (

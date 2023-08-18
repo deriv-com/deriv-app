@@ -26,6 +26,6 @@ describe('getActiveAuthTokenIDFromLocalStorage', () => {
 
         const result = getActiveAuthTokenIDFromLocalStorage();
 
-        expect(result).toBe('');
+        expect(result).toBeUndefined();
     });
 });

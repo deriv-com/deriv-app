@@ -12,11 +12,11 @@ describe('getActiveLoginIDFromLocalStorage', () => {
         expect(result).toBe('CR1001');
     });
 
-    test('should return empty string', () => {
+    test('should return null', () => {
         localStorage.clear();
 
         const result = getActiveLoginIDFromLocalStorage();
 
-        expect(result).toBe('');
+        expect(result).toBeNull();
     });
 });

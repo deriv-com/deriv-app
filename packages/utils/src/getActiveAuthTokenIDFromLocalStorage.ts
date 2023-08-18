@@ -2,13 +2,16 @@ import getAccountsFromLocalStorage from './getAccountsFromLocalStorage';
 import getActiveLoginIDFromLocalStorage from './getActiveLoginIDFromLocalStorage';
 
 /**
- * Get active auth token
- * @returns {string} - Active auth token or empty string
+ * Gets the current user's auth `token` for the active `loginid` from the `localStorage`.
  */
-const getActiveAuthTokenIDFromLocalStorage = (): string => {
+const getActiveAuthTokenIDFromLocalStorage = () => {
     const accounts = getAccountsFromLocalStorage();
     const active_loginid = getActiveLoginIDFromLocalStorage();
-    const active_auth_token = accounts?.[active_loginid]?.token || '';
+
+    // If there is no active loginid, then there is no active auth token.
+    if (!active_loginid) return;
+
+    const active_auth_token = accounts?.[active_loginid]?.token;
 
     return active_auth_token;
 };

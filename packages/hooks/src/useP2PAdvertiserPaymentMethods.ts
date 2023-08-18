@@ -2,6 +2,12 @@ import { useCallback, useMemo } from 'react';
 import { useFetch, useInvalidateQuery, useRequest } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 
+type TPayloads = NonNullable<
+    NonNullable<Parameters<ReturnType<typeof useRequest<'p2p_advertiser_payment_methods'>>['mutate']>[0]>['payload']
+>;
+type TCreatePayload = NonNullable<TPayloads['create']>[0];
+type TUpdatePayload = NonNullable<TPayloads['update']>[0];
+
 const type_to_icon_mapper = {
     bank: 'IcCashierBankTransfer',
     other: 'IcCashierOther',
@@ -19,13 +25,6 @@ const useP2PAdvertiserPaymentMethods = () => {
     const { data, ...rest } = useFetch('p2p_advertiser_payment_methods', {
         options: { enabled: is_authorize },
     });
-
-    type TCreateRequestValues = NonNullable<
-        NonNullable<NonNullable<Parameters<typeof mutate>[0]>['payload']>['create']
-    >[0];
-    type TUpdateRequestValues = NonNullable<
-        NonNullable<NonNullable<Parameters<typeof mutate>[0]>['payload']>['update']
-    >[0];
 
     // Modify the response to add additional informations
     const modified_data = useMemo(() => {
@@ -46,13 +45,10 @@ const useP2PAdvertiserPaymentMethods = () => {
         });
     }, [data]);
 
-    const create = useCallback(
-        (values: TCreateRequestValues) => mutate({ payload: { create: [{ ...values }] } }),
-        [mutate]
-    );
+    const create = useCallback((values: TCreatePayload) => mutate({ payload: { create: [{ ...values }] } }), [mutate]);
 
     const update = useCallback(
-        (id: string, values: TUpdateRequestValues) => mutate({ payload: { update: { [id]: { ...values } } } }),
+        (id: string, values: TUpdatePayload) => mutate({ payload: { update: { [id]: { ...values } } } }),
         [mutate]
     );
 

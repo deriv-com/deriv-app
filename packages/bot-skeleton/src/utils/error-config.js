@@ -13,13 +13,10 @@ export const error_message_map = {
     trade_parameters: generateErrorMessage(localize('Trade parameters')),
     before_purchase: generateErrorMessage(localize('Purchase conditions')),
     purchase_conditions: generateErrorMessage(localize('Purchase conditions')),
-    after_purchase: generateErrorMessage(localize('Restart trading conditions')),
-    trade_results: generateErrorMessage(localize('Restart trading conditions')),
     purchase: generateErrorMessage(localize('Purchase'), localize('purchase conditions')),
     trade_definition_tradeoptions: generateErrorMessage(localize('Trade options'), localize('trade parameters')),
     trade_definition_multiplier: generateErrorMessage(
         localize('Trade options multipliers'),
         localize('trade parameters')
     ),
-    trade_again: generateErrorMessage(localize('Trade again'), localize('restart trading conditions')),
 };

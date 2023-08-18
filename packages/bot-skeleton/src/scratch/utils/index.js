@@ -50,13 +50,7 @@ export const validateErrorOnBlockDelete = () => {
     const blockX = blockRect?.left || 0;
     const blockY = blockRect?.top || 0;
     const mandatory_trade_option_block = getSelectedTradeType();
-    const required_block_types = [
-        mandatory_trade_option_block,
-        'trade_definition',
-        'purchase',
-        'before_purchase',
-        'after_purchase',
-    ];
+    const required_block_types = [mandatory_trade_option_block, 'trade_definition', 'purchase', 'before_purchase'];
     if (required_block_types?.includes(Blockly?.selected?.type)) {
         if (
             blockY >= translate_Y - translate_offset &&

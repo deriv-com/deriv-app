@@ -2,7 +2,7 @@ import React from 'react';
 import { AutoHeightWrapper } from '@deriv/components';
 import { WS, isVerificationServiceSupported, formatIDVFormValues } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import Unsupported from 'Components/poi/status/unsupported';
+import Unsupported from '../../../Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view-container';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
 import { IdvDocSubmitOnSignup } from '../../../Components/poi/poi-form-on-signup/idv-doc-submit-on-signup/idv-doc-submit-on-signup';

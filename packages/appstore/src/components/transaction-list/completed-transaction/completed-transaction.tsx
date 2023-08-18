@@ -53,7 +53,8 @@ const CompletedTransaction = observer(({ transaction }: TCompletedTransaction) =
               );
     };
 
-    const formatAmount = (value: number) => value.toLocaleString(undefined, { minimumFractionDigits: 2 });
+    const formatAmount = (value: number) =>
+        value.toLocaleString(undefined, { minimumFractionDigits: account_currency_config?.fractional_digits });
 
     const formatActionType = (value: string) => value[0].toUpperCase() + value.substring(1).replace(/_/, ' ');
 

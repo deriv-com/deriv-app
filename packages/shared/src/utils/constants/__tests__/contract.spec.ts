@@ -13,7 +13,7 @@ type TGetSupportedContractsKey = keyof ReturnType<typeof getSupportedContracts>;
 const card_label = localize('Apply');
 const markets_name = localize('AUD/CAD');
 const unsupported_contract = {
-    name: localize('Ends Outside'),
+    name: localize('Spread Up'),
     position: 'top',
 };
 const supported_high_low = {
@@ -38,8 +38,8 @@ describe('getMarketNamesMap', () => {
 });
 
 describe('getUnsupportedContracts', () => {
-    it('should return an object with unsupported contracts, e.g. such as Ends Outside', () => {
-        expect(getUnsupportedContracts().EXPIRYMISS).toEqual(unsupported_contract);
+    it('should return an object with unsupported contracts, e.g. such as Spread Up', () => {
+        expect(getUnsupportedContracts().CALLSPREAD).toEqual(unsupported_contract);
     });
 });
 

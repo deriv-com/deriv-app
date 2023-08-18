@@ -1,21 +1,16 @@
 import React from 'react';
+import { EmptyState } from '@deriv/components';
 import { useVerifyEmail } from '@deriv/hooks';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import EmailVerificationEmptyState from '../../../components/email-verification-empty-state';
-import EmptyState from '../../../components/empty-state';
 import Error from '../../../components/error';
-import { useCashierStore } from '../../../stores/useCashierStores';
 import ErrorStore from '../../../stores/error-store';
 
 const WithdrawalVerificationEmail = observer(() => {
     const verify = useVerifyEmail('payment_withdraw');
-    const { transaction_history } = useCashierStore();
-    const { is_mobile } = useStore().ui;
-
-    React.useEffect(() => {
-        transaction_history.onMount();
-    }, [transaction_history]);
+    const { ui } = useStore();
+    const { is_mobile } = ui;
 
     if (verify.error) return <Error error={verify.error as ErrorStore} />;
 

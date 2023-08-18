@@ -303,7 +303,6 @@ const ChartTrade = observer(props => {
         refToAddTick,
     } = useTraderStore();
 
-    const accumulator_whitespace = isMobile() ? 160 : 190;
     const settings = {
         assetInformation: false, // ui.is_chart_asset_info_visible,
         countdown: is_chart_countdown_visible,
@@ -311,7 +310,7 @@ const ChartTrade = observer(props => {
         language: current_language.toLowerCase(),
         position: is_chart_layout_default ? 'bottom' : 'left',
         theme: is_dark_mode_on ? 'dark' : 'light',
-        whitespace: is_accumulator ? accumulator_whitespace : undefined,
+        ...(is_accumulator ? { whitespace: isMobile() ? 160 : 190 } : {}),
     };
 
     const { current_spot, current_spot_time } = accumulator_barriers_data || {};
@@ -396,7 +395,9 @@ const ChartTrade = observer(props => {
             refToAddTick={refToAddTick}
             getMarketsOrder={getMarketsOrder}
             should_zoom_out_on_yaxis={is_accumulator}
-            yAxisMargin={is_accumulator ? undefined : { top: isMobile() ? 76 : 106 }}
+            yAxisMargin={{
+                top: isMobile() ? 76 : 106,
+            }}
         >
             <ChartMarkers />
             {is_accumulator && (

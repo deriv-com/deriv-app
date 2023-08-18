@@ -282,7 +282,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
             }
             shouldFetchTradingTimes={false}
             should_zoom_out_on_yaxis={is_accumulator_contract}
-            yAxisMargin={is_accumulator_contract ? undefined : getChartYAxisMargin()}
+            yAxisMargin={getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
             shouldFetchTickHistory={
                 getDurationUnitText(getDurationPeriod(contract_info)) !== 'seconds' || contract_info.status === 'open'

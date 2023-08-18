@@ -11,6 +11,7 @@ export type TStoreProofOfAddressArgs = {
     };
 };
 
+// TODO: Need to update the type after the refactoring of components using account_type
 export type TAccountType = {
     category: 'real' | 'demo' | '';
     type?:

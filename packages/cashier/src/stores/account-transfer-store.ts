@@ -16,7 +16,6 @@ import {
 import type { TransferBetweenAccountsResponse } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
 import AccountTransferGetSelectedError from '../pages/account-transfer/account-transfer-get-selected-error';
-import Constants from '../constants/constants';
 import ErrorStore from './error-store';
 import type { TRootStore, TWebSocket, TAccount, TTransferAccount, TPlatformIcon } from '../types';
 
@@ -26,7 +25,6 @@ export default class AccountTransferStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
         makeObservable(this, {
             accounts_list: observable,
-            container: observable,
             error: observable,
             has_no_account: observable,
             has_no_accounts_balance: observable,
@@ -71,7 +69,6 @@ export default class AccountTransferStore {
     }
 
     accounts_list: TAccount[] = [];
-    container: string = Constants.containers.account_transfer;
     error = new ErrorStore();
     has_no_account = false;
     has_no_accounts_balance = false;

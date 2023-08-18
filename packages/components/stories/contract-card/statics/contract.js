@@ -112,22 +112,6 @@ export const getMarketNamesMap = () => ({
 });
 
 export const getUnsupportedContracts = () => ({
-    EXPIRYMISS: {
-        name: 'Ends Outside',
-        position: 'top',
-    },
-    EXPIRYRANGE: {
-        name: 'Ends Between',
-        position: 'bottom',
-    },
-    RANGE: {
-        name: 'Stays Between',
-        position: 'top',
-    },
-    UPORDOWN: {
-        name: 'Goes Outside',
-        position: 'bottom',
-    },
     RESETCALL: {
         name: 'Reset Call',
         position: 'top',
@@ -252,6 +236,22 @@ export const getSupportedContracts = is_high_low => ({
     },
     RUNLOW: {
         name: 'Only Downs',
+        position: 'bottom',
+    },
+    EXPIRYMISS: {
+        name: 'Ends Outside',
+        position: 'top',
+    },
+    EXPIRYRANGE: {
+        name: 'Ends Between',
+        position: 'bottom',
+    },
+    RANGE: {
+        name: 'Stays Between',
+        position: 'top',
+    },
+    UPORDOWN: {
+        name: 'Goes Outside',
         position: 'bottom',
     },
 });

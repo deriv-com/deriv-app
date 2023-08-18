@@ -1,0 +1,18 @@
+on: ["push", "pull_request"]
+
+name: Coveralls
+
+jobs:
+
+  Reporter:
+    name: Upload Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Build and Test
+        uses: ./.github/actions/build-and-test
+      
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2

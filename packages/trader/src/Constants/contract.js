@@ -138,22 +138,6 @@ export const getMarketNamesMap = () => ({
 });
 
 export const getUnsupportedContracts = () => ({
-    EXPIRYMISS: {
-        name: <Localize i18n_default_text='Ends Outside' />,
-        position: 'top',
-    },
-    EXPIRYRANGE: {
-        name: <Localize i18n_default_text='Ends Between' />,
-        position: 'bottom',
-    },
-    RANGE: {
-        name: <Localize i18n_default_text='Stays Between' />,
-        position: 'top',
-    },
-    UPORDOWN: {
-        name: <Localize i18n_default_text='Goes Outside' />,
-        position: 'bottom',
-    },
     RESETCALL: {
         name: <Localize i18n_default_text='Reset Call' />,
         position: 'top',
@@ -204,7 +188,7 @@ export const getUnsupportedContracts = () => ({
 export const getSupportedContracts = is_high_low => ({
     ACCU: {
         button_name: <Localize i18n_default_text='Buy' />,
-        name: <Localize i18n_default_text='Accumulator' />,
+        name: <Localize i18n_default_text='Accumulators' />,
         position: 'top',
     },
     CALL: {
@@ -287,6 +271,22 @@ export const getSupportedContracts = is_high_low => ({
     },
     RUNLOW: {
         name: <Localize i18n_default_text='Only Downs' />,
+        position: 'bottom',
+    },
+    EXPIRYMISS: {
+        name: <Localize i18n_default_text='Ends Outside' />,
+        position: 'top',
+    },
+    EXPIRYRANGE: {
+        name: <Localize i18n_default_text='Ends Between' />,
+        position: 'bottom',
+    },
+    RANGE: {
+        name: <Localize i18n_default_text='Stays Between' />,
+        position: 'top',
+    },
+    UPORDOWN: {
+        name: <Localize i18n_default_text='Goes Outside' />,
         position: 'bottom',
     },
 });

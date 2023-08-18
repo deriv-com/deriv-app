@@ -8,12 +8,10 @@ const Withdraw = observer(() => {
     const {
         verification_code: { payment_withdraw: verification_code },
     } = client;
-    const { general_store, withdraw } = useCashierStore();
-    const { setActiveTab } = general_store;
-    const { container, onMountWithdraw: onMount } = withdraw;
+    const { withdraw } = useCashierStore();
+    const { onMountWithdraw: onMount } = withdraw;
 
     React.useEffect(() => {
-        setActiveTab(container);
         onMount(verification_code);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

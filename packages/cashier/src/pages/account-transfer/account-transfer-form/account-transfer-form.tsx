@@ -28,7 +28,7 @@ type TAccountTransferFormProps = {
     onClickDeposit?: () => void;
     onClickNotes?: () => void;
     onClose?: () => void;
-    setSideNotes: (notes: React.ReactNode[]) => void;
+    setSideNotes?: (notes: React.ReactNode[]) => void;
 };
 
 const AccountOption = ({ account, idx }: TAccountsList) => {
@@ -270,7 +270,7 @@ const AccountTransferForm = observer(
                         is_derivez_transfer={is_derivez_transfer}
                     />
                 );
-                setSideNotes([
+                setSideNotes?.([
                     <SideNote title={<Localize i18n_default_text='Notes' />} key={0}>
                         {side_notes}
                     </SideNote>,
@@ -278,7 +278,7 @@ const AccountTransferForm = observer(
             }
 
             return () => {
-                setSideNotes([]);
+                setSideNotes?.([]);
             };
         }, [
             transfer_fee,

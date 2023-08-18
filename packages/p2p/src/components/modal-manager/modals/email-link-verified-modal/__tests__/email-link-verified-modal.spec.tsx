@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
 import EmailLinkVerifiedModal from '../email-link-verified-modal';
@@ -57,7 +58,7 @@ describe('<EmailLinkVerifiedModal />', () => {
         render(<EmailLinkVerifiedModal />);
 
         const confirm_button = screen.getByRole('button', { name: 'Confirm' });
-        confirm_button.click();
+        userEvent.click(confirm_button);
         expect(mock_modal_manager.hideModal).toHaveBeenCalledWith({ should_hide_all_modals: true });
         expect(mock_store.order_store.confirmOrder).toHaveBeenCalledWith(true);
     });

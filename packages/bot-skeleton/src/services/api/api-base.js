@@ -25,6 +25,8 @@ class APIBase {
             if (this.time_interval) clearInterval(this.time_interval);
             this.time_interval = null;
             this.getTime();
+            const { setWebSocketState } = DBotStore.instance.dashboard;
+            setWebSocketState(true);
         }
     }
 
@@ -36,9 +38,13 @@ class APIBase {
 
     // eslint-disable-next-line class-methods-use-this
     stopBotIfSocketDisconnected() {
-        const { stopBot, clearStat } = DBotStore.instance.run_panel;
-        stopBot();
-        clearStat(true);
+        const { stopBot, clearStat, is_running } = DBotStore.instance.run_panel;
+        const { setWebSocketState } = DBotStore.instance.dashboard;
+        if (is_running) {
+            stopBot();
+            clearStat(true);
+            setWebSocketState(false);
+        }
     }
 
     initEventListeners() {

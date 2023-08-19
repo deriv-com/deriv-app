@@ -98,6 +98,6 @@ runs:
 
       - name: "Run tests"
         shell: bash -le {0}
-        run: npm test
+        run: JEST_MAX_WORKERS = 4 npm test
 
         

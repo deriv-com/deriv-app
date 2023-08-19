@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ClosingAccountSteps from './closing-account-steps.jsx';
-import ClosingAccountReason from './closing-account-reason.jsx';
+import ClosingAccountSteps from './closing-account-steps';
+import ClosingAccountReason from './closing-account-reason';
 
 const ClosingAccount = () => {
     const [render_close_account_reason, setRenderCloseAccountReason] = useState(false);

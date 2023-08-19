@@ -1,10 +1,24 @@
 import React from 'react';
-import { Formik, Field } from 'formik';
+import { Formik, Field, FormikValues, FormikErrors } from 'formik';
 import { Checkbox, Input, FormSubmitButton, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { PlatformContext } from '@deriv/shared';
 
-const initial_form = {
+type TFormValues = {
+    // Define the checkbox values
+    'financial-priorities': boolean;
+    'stop-trading': boolean;
+    'not-interested': boolean;
+    'another-website': boolean;
+    'not-user-friendly': boolean;
+    'difficult-transactions': boolean;
+    'lack-of-features': boolean;
+    'unsatisfactory-service': boolean;
+    'other-reasons': boolean;
+    other_trading_platforms: string;
+    do_to_improve: string;
+};
+const initial_form: TFormValues = {
     'financial-priorities': false,
     'stop-trading': false,
     'not-interested': false,
@@ -17,8 +31,26 @@ const initial_form = {
     other_trading_platforms: '',
     do_to_improve: '',
 };
-
-const ClosingAccountReasonFrom = ({
+type TClosingAccountReasonFormProps = {
+    validateFields: (values: FormikValues) => FormikErrors<FormikValues>;
+    onSubmit: (values: FormikValues) => void;
+    is_checkbox_disabled: boolean;
+    onChangeCheckbox: (
+        values: FormikValues,
+        field_name: keyof TFormValues,
+        setFieldValue: (name: string, values: string | boolean) => void
+    ) => void;
+    character_limit_no: number;
+    onInputChange: (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        old_value: string,
+        onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+    ) => void;
+    onInputPaste: (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    remaining_characters: number;
+    onBackClick: () => void;
+};
+const ClosingAccountReasonForm = ({
     validateFields,
     onSubmit,
     is_checkbox_disabled,
@@ -28,7 +60,7 @@ const ClosingAccountReasonFrom = ({
     onInputPaste,
     remaining_characters,
     onBackClick,
-}) => {
+}: TClosingAccountReasonFormProps) => {
     const { is_appstore } = React.useContext(PlatformContext);
 
     return (
@@ -36,9 +68,9 @@ const ClosingAccountReasonFrom = ({
             {({ values, setFieldValue, errors, handleChange, handleSubmit, dirty }) => (
                 <form onSubmit={handleSubmit}>
                     <Field name='financial-priorities'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Checkbox
-                                disabled={is_checkbox_disabled && !values[field.name]}
+                                disabled={is_checkbox_disabled && !values[field.name as keyof TFormValues]}
                                 className='closing-account-reasons__checkbox'
                                 {...field}
                                 label={localize('I have other financial priorities.')}
@@ -49,9 +81,9 @@ const ClosingAccountReasonFrom = ({
                         )}
                     </Field>
                     <Field name='stop-trading'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Checkbox
-                                disabled={is_checkbox_disabled && !values[field.name]}
+                                disabled={is_checkbox_disabled && !values[field.name as keyof TFormValues]}
                                 className='closing-account-reasons__checkbox'
                                 {...field}
                                 label={localize('I want to stop myself from trading.')}
@@ -62,9 +94,9 @@ const ClosingAccountReasonFrom = ({
                         )}
                     </Field>
                     <Field name='not-interested'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Checkbox
-                                disabled={is_checkbox_disabled && !values[field.name]}
+                                disabled={is_checkbox_disabled && !values[field.name as keyof TFormValues]}
                                 className='closing-account-reasons__checkbox'
                                 {...field}
                                 label={localize('I’m no longer interested in trading.')}
@@ -75,9 +107,9 @@ const ClosingAccountReasonFrom = ({
                         )}
                     </Field>
                     <Field name='another-website'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Checkbox
-                                disabled={is_checkbox_disabled && !values[field.name]}
+                                disabled={is_checkbox_disabled && !values[field.name as keyof TFormValues]}
                                 className='closing-account-reasons__checkbox'
                                 {...field}
                                 label={localize('I prefer another trading website.')}
@@ -88,9 +120,9 @@ const ClosingAccountReasonFrom = ({
                         )}
                     </Field>
                     <Field name='not-user-friendly'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Checkbox
-                                disabled={is_checkbox_disabled && !values[field.name]}
+                                disabled={is_checkbox_disabled && !values[field.name as keyof TFormValues]}
                                 className='closing-account-reasons__checkbox'
                                 {...field}
                                 label={localize('The platforms aren’t user-friendly.')}
@@ -101,9 +133,9 @@ const ClosingAccountReasonFrom = ({
                         )}
                     </Field>
                     <Field name='difficult-transactions'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Checkbox
-                                disabled={is_checkbox_disabled && !values[field.name]}
+                                disabled={is_checkbox_disabled && !values[field.name as keyof TFormValues]}
                                 className='closing-account-reasons__checkbox'
                                 {...field}
                                 label={localize('Making deposits and withdrawals is difficult.')}
@@ -114,9 +146,9 @@ const ClosingAccountReasonFrom = ({
                         )}
                     </Field>
                     <Field name='lack-of-features'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Checkbox
-                                disabled={is_checkbox_disabled && !values[field.name]}
+                                disabled={is_checkbox_disabled && !values[field.name as keyof TFormValues]}
                                 className='closing-account-reasons__checkbox'
                                 {...field}
                                 label={localize('The platforms lack key features or functionality.')}
@@ -127,9 +159,9 @@ const ClosingAccountReasonFrom = ({
                         )}
                     </Field>
                     <Field name='unsatisfactory-service'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Checkbox
-                                disabled={is_checkbox_disabled && !values[field.name]}
+                                disabled={is_checkbox_disabled && !values[field.name as keyof TFormValues]}
                                 className='closing-account-reasons__checkbox'
                                 {...field}
                                 label={localize('Customer service was unsatisfactory.')}
@@ -140,9 +172,9 @@ const ClosingAccountReasonFrom = ({
                         )}
                     </Field>
                     <Field name='other-reasons'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Checkbox
-                                disabled={is_checkbox_disabled && !values[field.name]}
+                                disabled={is_checkbox_disabled && !values[field.name as keyof TFormValues]}
                                 className='closing-account-reasons__checkbox'
                                 {...field}
                                 label={localize('I’m closing my account for other reasons.')}
@@ -153,7 +185,7 @@ const ClosingAccountReasonFrom = ({
                         )}
                     </Field>
                     <Field name='other_trading_platforms'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Input
                                 {...field}
                                 className='closing-account-reasons__input'
@@ -172,7 +204,7 @@ const ClosingAccountReasonFrom = ({
                         )}
                     </Field>
                     <Field name='do_to_improve'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Input
                                 {...field}
                                 className='closing-account-reasons__input'
@@ -226,4 +258,4 @@ const ClosingAccountReasonFrom = ({
     );
 };
 
-export default ClosingAccountReasonFrom;
+export default ClosingAccountReasonForm;

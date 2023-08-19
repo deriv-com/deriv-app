@@ -6,7 +6,11 @@ import { Link } from 'react-router-dom';
 import { Button, Text, StaticUrl } from '@deriv/components';
 import { PlatformContext } from '@deriv/shared';
 
-const ClosingAccountSteps = observer(({ redirectToReasons }) => {
+type TClosingAccountStepsProps = {
+    redirectToReasons: () => void;
+};
+
+const ClosingAccountSteps = observer(({ redirectToReasons }: TClosingAccountStepsProps) => {
     const { common } = useStore();
     const { is_from_derivgo } = common;
     const { is_appstore } = React.useContext(PlatformContext);

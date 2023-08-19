@@ -1,18 +1,58 @@
 import React from 'react';
 import { Button, Icon, Money, ThemedScrollbars, Text } from '@deriv/components';
 import { formatMoney, getCFDAccount, getCFDAccountDisplay, CFD_PLATFORMS } from '@deriv/shared';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { localize, Localize } from '@deriv/translations';
+import { observer, useStore } from '@deriv/stores';
 
-const getDerivAccount = (client_accounts, login_id) =>
+const getDerivAccount = (client_accounts: TAccounts[], login_id: string) =>
     client_accounts.find(client_account => client_account.loginid === login_id);
 
-const getCurrMT5Account = (mt5_login_list, login_id) =>
+const getCurrMT5Account = (mt5_login_list: DetailsOfEachMT5Loginid[], login_id: string) =>
     mt5_login_list.find(account_obj => account_obj.login === login_id);
 
-const getCurrDxtradeAccount = (dxtrade_accounts_list, login_id) =>
+const getCurrDxtradeAccount = (dxtrade_accounts_list: TDxtradeAccount[], login_id: string) =>
     dxtrade_accounts_list.find(account_obj => account_obj.account_id === login_id);
 
-const Wrapper = ({ children, title, desc }) => (
+type TWrapperProps = {
+    children: React.ReactNode;
+    title: string;
+    desc?: React.ReactNode;
+};
+
+type TDxtradeAccount = DetailsOfEachMT5Loginid & { account_id?: string };
+
+type TPendingProps = TAccounts & { positions?: number };
+type TAccounts = {
+    account?: {
+        balance?: string | number;
+        currency?: string;
+        disabled?: boolean;
+        error?: JSX.Element | string;
+        is_crypto?: boolean;
+        is_dxtrade?: boolean;
+        is_mt?: boolean;
+        market_type?: string;
+        nativepicker_text?: string;
+        platform_icon?: {
+            Derived: React.SVGAttributes<SVGElement>;
+            Financial: React.SVGAttributes<SVGElement>;
+            Options: React.SVGAttributes<SVGElement>;
+            CFDs: React.SVGAttributes<SVGAElement>;
+        };
+        text?: JSX.Element | string;
+        value?: string;
+    };
+    icon?: string;
+    idx?: string | number;
+    is_dark_mode_on?: boolean;
+    is_virtual?: boolean | number;
+    loginid?: string;
+    mt5_login_list?: DetailsOfEachMT5Loginid[];
+    title?: string;
+};
+
+const Wrapper = ({ children, title, desc }: TWrapperProps) => (
     <div className='closing-account-error'>
         <Text as='p' line_height='s' size='xs' weight='bold' color='prominent' className='closing-account-error__title'>
             {title}
@@ -25,8 +65,14 @@ const Wrapper = ({ children, title, desc }) => (
         <div className='closing-account-error__wrapper'>{children}</div>
     </div>
 );
+type TContentProps = {
+    currency_icon: string;
+    loginid?: string;
+    title?: string;
+    value: React.ReactNode;
+};
 
-const Content = ({ currency_icon, loginid, title, value }) => (
+const Content = ({ currency_icon, loginid, title, value }: TContentProps) => (
     <div className='closing-account-error__container'>
         <div className='closing-account-error__account-details'>
             <Icon icon={currency_icon} size={24} />
@@ -45,39 +91,45 @@ const Content = ({ currency_icon, loginid, title, value }) => (
     </div>
 );
 
-const AccountHasPendingConditions = ({
-    details,
-    mt5_login_list,
-    dxtrade_accounts_list,
-    client_accounts,
-    onBackClick,
-    is_eu,
-}) => {
-    const deriv_open_positions = [];
-    const deriv_balance = [];
-    const mt5_open_positions = [];
-    const mt5_balance = [];
-    const account_pending_withdrawals = [];
-    const dxtrade_open_positions = [];
-    const dxtrade_balance = [];
+type TBalance = { balance?: number; currency?: string };
 
-    if (details.pending_withdrawals) {
+type TAccountHasPendingConditionsProps = {
+    details?: {
+        pending_withdrawals?: Record<string, number>;
+        open_positions?: Record<string, number>;
+        balance?: Record<string, { balance: number; currency: string }>;
+    };
+    onBackClick: () => void;
+};
+
+const AccountHasPendingConditions = observer(({ details, onBackClick }: TAccountHasPendingConditionsProps) => {
+    const { client } = useStore();
+    const { dxtrade_accounts_list, mt5_login_list, account_list, is_eu } = client;
+    const deriv_open_positions: TPendingProps[] = [];
+    const deriv_balance: (TAccounts & TBalance)[] = [];
+    const mt5_open_positions: (DetailsOfEachMT5Loginid & { display_login?: string } & { positions?: number })[] = [];
+    const mt5_balance: (DetailsOfEachMT5Loginid & TBalance & { display_login?: string })[] = [];
+    const account_pending_withdrawals: (TAccounts & { withdrawals?: number })[] = [];
+    const dxtrade_open_positions: (TDxtradeAccount & { display_login?: string } & { positions?: number })[] = [];
+    const dxtrade_balance: (TDxtradeAccount & TBalance & { display_login?: string })[] = [];
+
+    if (details?.pending_withdrawals) {
         Object.keys(details.pending_withdrawals).forEach(login_id => {
             const info = {
-                withdrawals: details.pending_withdrawals[login_id],
+                withdrawals: details.pending_withdrawals?.[login_id],
             };
-            const deriv_account = getDerivAccount(client_accounts, login_id);
+            const deriv_account = getDerivAccount(account_list, login_id);
             if (deriv_account) {
                 account_pending_withdrawals.push({ ...deriv_account, ...info });
             }
         });
     }
-    if (details.open_positions) {
-        Object.keys(details.open_positions).forEach(login_id => {
+    if (details?.open_positions) {
+        Object.keys(details?.open_positions).forEach(login_id => {
             const info = {
-                positions: details.open_positions[login_id],
+                positions: details.open_positions?.[login_id],
             };
-            const deriv_account = getDerivAccount(client_accounts, login_id);
+            const deriv_account = getDerivAccount(account_list, login_id);
             if (deriv_account) {
                 deriv_open_positions.push({ ...deriv_account, ...info });
             } else {
@@ -93,13 +145,13 @@ const AccountHasPendingConditions = ({
             }
         });
     }
-    if (details.balance) {
+    if (details?.balance) {
         Object.keys(details.balance).forEach(login_id => {
             const info = {
-                balance: details.balance[login_id].balance,
-                currency: details.balance[login_id].currency,
+                balance: details.balance?.[login_id].balance,
+                currency: details.balance?.[login_id].currency,
             };
-            const deriv_account = getDerivAccount(client_accounts, login_id);
+            const deriv_account = getDerivAccount(account_list, login_id);
             if (deriv_account) {
                 deriv_balance.push({ ...deriv_account, ...info });
             } else {
@@ -115,7 +167,6 @@ const AccountHasPendingConditions = ({
             }
         });
     }
-
     return (
         <React.Fragment>
             <ThemedScrollbars autohide={false} width='43rem'>
@@ -148,7 +199,7 @@ const AccountHasPendingConditions = ({
                                 value={
                                     <Money
                                         currency={account.currency}
-                                        amount={formatMoney(account.currency, account.balance, true)}
+                                        amount={formatMoney((account.currency = ''), (account.balance = 0), true)}
                                         should_format={false}
                                     />
                                 }
@@ -168,12 +219,14 @@ const AccountHasPendingConditions = ({
                                     is_eu,
                                 })}`}
                                 loginid={account.display_login}
-                                title={getCFDAccountDisplay({
-                                    market_type: account.market_type,
-                                    sub_account_type: account.sub_account_type,
-                                    platform: CFD_PLATFORMS.MT5,
-                                    is_eu,
-                                })}
+                                title={
+                                    getCFDAccountDisplay({
+                                        market_type: account.market_type,
+                                        sub_account_type: account.sub_account_type,
+                                        platform: CFD_PLATFORMS.MT5,
+                                        is_eu,
+                                    }) ?? ''
+                                }
                                 value={
                                     <Localize
                                         i18n_default_text='{{number_of_positions}} position(s)'
@@ -196,16 +249,18 @@ const AccountHasPendingConditions = ({
                                     is_eu,
                                 })}`}
                                 loginid={account.display_login}
-                                title={getCFDAccountDisplay({
-                                    market_type: account.market_type,
-                                    sub_account_type: account.sub_account_type,
-                                    platform: CFD_PLATFORMS.MT5,
-                                    is_eu,
-                                })}
+                                title={
+                                    getCFDAccountDisplay({
+                                        market_type: account.market_type,
+                                        sub_account_type: account.sub_account_type,
+                                        platform: CFD_PLATFORMS.MT5,
+                                        is_eu,
+                                    }) ?? ''
+                                }
                                 value={
                                     <Money
                                         currency={account.currency}
-                                        amount={formatMoney(account.currency, account.balance, true)}
+                                        amount={formatMoney((account.currency = ''), (account.balance = 0), true)}
                                         should_format={false}
                                     />
                                 }
@@ -225,12 +280,14 @@ const AccountHasPendingConditions = ({
                                     is_eu,
                                 })}`}
                                 loginid={account.display_login}
-                                title={getCFDAccountDisplay({
-                                    market_type: account.market_type,
-                                    sub_account_type: account.sub_account_type,
-                                    platform: CFD_PLATFORMS.DXTRADE,
-                                    is_eu,
-                                })}
+                                title={
+                                    getCFDAccountDisplay({
+                                        market_type: account.market_type,
+                                        sub_account_type: account.sub_account_type,
+                                        platform: CFD_PLATFORMS.DXTRADE,
+                                        is_eu,
+                                    }) ?? ''
+                                }
                                 value={
                                     <Localize
                                         i18n_default_text='{{number_of_positions}} position(s)'
@@ -253,16 +310,18 @@ const AccountHasPendingConditions = ({
                                     is_eu,
                                 })}`}
                                 loginid={account.display_login}
-                                title={getCFDAccountDisplay({
-                                    market_type: account.market_type,
-                                    sub_account_type: account.sub_account_type,
-                                    platform: CFD_PLATFORMS.DXTRADE,
-                                    is_eu,
-                                })}
+                                title={
+                                    getCFDAccountDisplay({
+                                        market_type: account.market_type,
+                                        sub_account_type: account.sub_account_type,
+                                        platform: CFD_PLATFORMS.DXTRADE,
+                                        is_eu,
+                                    }) ?? ''
+                                }
                                 value={
                                     <Money
                                         currency={account.currency}
-                                        amount={formatMoney(account.currency, account.balance, true)}
+                                        amount={formatMoney((account.currency = ''), (account.balance = 0), true)}
                                         should_format={false}
                                     />
                                 }
@@ -304,6 +363,6 @@ const AccountHasPendingConditions = ({
             </div>
         </React.Fragment>
     );
-};
+});
 
 export default AccountHasPendingConditions;

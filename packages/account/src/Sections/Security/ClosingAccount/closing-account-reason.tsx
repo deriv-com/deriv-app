@@ -1,14 +1,17 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import classNames from 'classnames';
-import { routes, PlatformContext, WS } from '@deriv/shared';
+import { routes, WS } from '@deriv/shared';
+import { FormikValues } from 'formik';
 import { localize } from '@deriv/translations';
 import { FormSubmitButton, Modal, Icon, Loading, Text, Button } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
-import AccountHasPendingConditions from './account-has-balance.jsx';
-import ClosingAccountReasonFrom from './closing-account-reason-form.jsx';
+import AccountHasPendingConditions from './account-has-pending-conditions';
+import ClosingAccountReasonForm from './closing-account-reason-form';
 
-const preparingReason = values => {
+type TClosingAccountReasonProps = {
+    onBackClick: () => void;
+};
+
+const preparingReason = (values: FormikValues) => {
     let selected_reasons = selectedReasons(values)
         .map(val => val[0])
         .toString();
@@ -24,13 +27,17 @@ const preparingReason = values => {
     return selected_reasons.replace(/(\r\n|\n|\r)/gm, ' ');
 };
 
-const selectedReasons = values => {
+const selectedReasons = (values: FormikValues) => {
     return Object.entries(values).filter(
         ([key, value]) => !['other_trading_platforms', 'do_to_improve'].includes(key) && value
     );
 };
 
-const WarningModal = props => {
+type TWarningModalProps = {
+    closeModal: () => void;
+    startDeactivating: () => void;
+};
+const WarningModal = ({ closeModal, startDeactivating }: TWarningModalProps) => {
     return (
         <div className='account-closure-warning-modal'>
             <Icon icon='IcRedWarning' size={96} />
@@ -50,15 +57,19 @@ const WarningModal = props => {
                 className='account-closure-warning-modal__close-account-button'
                 has_cancel
                 cancel_label={localize('Go Back')}
-                onClick={() => props.startDeactivating()}
-                onCancel={() => props.closeModal()}
+                onClick={() => startDeactivating()}
+                onCancel={() => closeModal()}
             />
         </div>
     );
 };
+type TGeneralErrorContentProps = {
+    message: string;
+    onClick: () => void;
+};
 
-const GeneralErrorContent = ({ message, onClick }) => (
-    <>
+const GeneralErrorContent = ({ message, onClick }: TGeneralErrorContentProps) => (
+    <React.Fragment>
         <div className='closing-account-error__container closing-account-error__container-message'>
             <div className='closing-account-error__details closing-account-error__details-message'>{message}</div>
         </div>
@@ -67,21 +78,18 @@ const GeneralErrorContent = ({ message, onClick }) => (
                 {localize('OK')}
             </Button>
         </div>
-    </>
+    </React.Fragment>
 );
 
 const character_limit_no = 110;
 const max_allowed_reasons = 3;
 
-const ClosingAccountReason = observer(({ onBackClick }) => {
-    const { client } = useStore();
-    const { dxtrade_accounts_list, mt5_login_list, account_list } = client;
-    const { is_appstore } = React.useContext(PlatformContext);
+const ClosingAccountReason = ({ onBackClick }: TClosingAccountReasonProps) => {
     const [is_account_closed, setIsAccountClosed] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
     const [is_modal_open, setIsModalOpen] = React.useState(false);
-    const [which_modal_should_render, setWhichModalShouldRender] = React.useState();
-    const [reason, setReason] = React.useState(null);
+    const [which_modal_should_render, setWhichModalShouldRender] = React.useState<string>('');
+    const [reason, setReason] = React.useState<string>('');
     const [is_checkbox_disabled, setIsCheckboxDisabled] = React.useState(false);
     const [total_checkbox_checked, setTotalCheckboxChecked] = React.useState(0);
     const [remaining_characters, setRemainingCharacters] = React.useState(character_limit_no);
@@ -89,8 +97,13 @@ const ClosingAccountReason = observer(({ onBackClick }) => {
     const [api_error_message, setApiErrorMessage] = React.useState('');
     const [details, setDetails] = React.useState();
 
-    const validateFields = values => {
-        const error = {};
+    type Error = {
+        characters_limits?: string;
+        empty_reason?: string;
+        // Add other potential error properties
+    };
+    const validateFields = (values: FormikValues) => {
+        const error: Error = {};
         const selected_reason_count = selectedReasons(values).length;
         const text_inputs_length = (values.other_trading_platforms + values.do_to_improve).length;
         let remaining_chars = character_limit_no - text_inputs_length;
@@ -112,7 +125,7 @@ const ClosingAccountReason = observer(({ onBackClick }) => {
         return error;
     };
 
-    const handleSubmitForm = values => {
+    const handleSubmitForm = (values: FormikValues) => {
         const final_reason = preparingReason(values);
 
         setIsModalOpen(true);
@@ -126,7 +139,11 @@ const ClosingAccountReason = observer(({ onBackClick }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [total_checkbox_checked]);
 
-    const handleChangeCheckbox = (values, name, setFieldValue) => {
+    const handleChangeCheckbox = (
+        values: FormikValues,
+        name: string,
+        setFieldValue: (name: string, values: string | boolean) => void
+    ) => {
         if (!values[name]) {
             setTotalCheckboxChecked(total_checkbox_checked + 1);
             setFieldValue(name, !values[name]);
@@ -136,7 +153,11 @@ const ClosingAccountReason = observer(({ onBackClick }) => {
         }
     };
 
-    const handleInputChange = (e, old_value, onChange) => {
+    const handleInputChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        old_value: string,
+        onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+    ) => {
         const value = e.target.value;
         const is_delete_action = old_value.length > value.length;
 
@@ -147,8 +168,8 @@ const ClosingAccountReason = observer(({ onBackClick }) => {
         }
     };
 
-    const handleInputPaste = e => {
-        const clipboardData = (e.clipboardData || window.clipboardData).getData('text');
+    const handleInputPaste = async (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>): Promise<void> => {
+        const clipboardData = e.clipboardData.getData('text') || (await navigator.clipboard.readText());
 
         if (remaining_characters <= 0 || clipboardData.length > remaining_characters) {
             e.preventDefault();
@@ -196,17 +217,13 @@ const ClosingAccountReason = observer(({ onBackClick }) => {
     if (is_loading) return <Loading is_fullscreen={false} />;
 
     return (
-        <div
-            className={classNames('closing-account-reasons', {
-                'closing-account-reasons--dashboard': is_appstore,
-            })}
-        >
+        <div className='closing-account-reasons'>
             <Text weight='bold' size='xs' className='closing-account-reasons__title' as='p'>
                 {localize('Please tell us why you’re leaving. (Select up to {{ allowed_reasons }} reasons.)', {
                     allowed_reasons: max_allowed_reasons,
                 })}
             </Text>
-            <ClosingAccountReasonFrom
+            <ClosingAccountReasonForm
                 validateFields={validateFields}
                 onSubmit={handleSubmitForm}
                 is_checkbox_disabled={is_checkbox_disabled}
@@ -227,13 +244,7 @@ const ClosingAccountReason = observer(({ onBackClick }) => {
                     <WarningModal closeModal={() => setIsModalOpen(false)} startDeactivating={startDeactivating} />
                 )}
                 {which_modal_should_render === 'AccountHasPendingConditions' && (
-                    <AccountHasPendingConditions
-                        details={details}
-                        mt5_login_list={mt5_login_list}
-                        client_accounts={account_list}
-                        dxtrade_accounts_list={dxtrade_accounts_list}
-                        onBackClick={onBackClick}
-                    />
+                    <AccountHasPendingConditions details={details} onBackClick={onBackClick} />
                 )}
                 {which_modal_should_render === 'inaccessible_modal' && (
                     <GeneralErrorContent message={api_error_message} onClick={() => setIsModalOpen(false)} />
@@ -241,6 +252,6 @@ const ClosingAccountReason = observer(({ onBackClick }) => {
             </Modal>
         </div>
     );
-});
+};
 
 export default ClosingAccountReason;

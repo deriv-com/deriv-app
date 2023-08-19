@@ -9,14 +9,14 @@ import {
 import { Button, DesktopWrapper, HintBox, Loading, Text } from '@deriv/components';
 import {
     filterObjProperties,
+    getIDVNotApplicableOption,
+    idv_error_statuses,
     isEmptyObject,
+    isMobile,
     removeEmptyPropertiesFromObject,
+    TIDVErrorStatus,
     toMoment,
     WS,
-    idv_error_statuses,
-    TIDVErrorStatus,
-    IDV_NOT_APPLICABLE_OPTION,
-    isMobile,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import PoiNameExample from 'Assets/ic-poi-name-example.svg';
@@ -99,6 +99,8 @@ const IdvFailed = ({
         () => residence_list.find(residence_data => residence_data.value === latest_status?.country_code) ?? {},
         [latest_status, residence_list]
     );
+
+    const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
 
     const generateIDVError = React.useCallback(() => {
         const document_name = getIDVDocumentType(latest_status, selected_country);

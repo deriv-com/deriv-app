@@ -4,7 +4,6 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import IdvDocumentSubmit from '../idv-document-submit';
 import { isDocumentNumberValid } from 'Helpers/utils';
 
-jest.mock('react-router');
 jest.mock('Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
 jest.mock('Helpers/utils', () => ({
     ...jest.requireActual('Helpers/utils'),
@@ -23,9 +22,11 @@ jest.mock('Helpers/utils', () => ({
                 },
             },
         };
-        return data[country_code][key];
+
+        const document = data[country_code as keyof typeof data];
+        return document[key as keyof typeof document];
     }),
-    isDocumentNumberValid: jest.fn(() => undefined),
+    isDocumentNumberValid: jest.fn(),
 }));
 
 jest.mock('@deriv/shared', () => ({
@@ -50,7 +51,7 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<IdvDocumentSubmit/>', () => {
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof IdvDocumentSubmit> = {
         handleBack: jest.fn(),
         handleViewComplete: jest.fn(),
         selected_country: {
@@ -73,7 +74,6 @@ describe('<IdvDocumentSubmit/>', () => {
                 },
             },
         },
-        is_from_external: false,
         account_settings: {},
         getChangeableFields: jest.fn(() => []),
     };

@@ -155,13 +155,15 @@ export type TFormProps = {
     error_message?: string;
 };
 
-export type TIDVForm = {
-    selected_country: ResidenceList[0];
-    hide_hint?: boolean;
-    class_name?: string;
-    can_skip_document_verification: boolean;
-} & Partial<FormikHandlers> &
-    FormikProps<TFormProps>;
+export type TIDVForm =
+    | {
+          selected_country: ResidenceList[0];
+          hide_hint?: boolean;
+          class_name?: string;
+          can_skip_document_verification?: boolean;
+      }
+    | Partial<FormikHandlers>
+    | FormikProps<TFormProps>;
 
 export type TVerificationStatus = Readonly<
     Record<'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected', string>

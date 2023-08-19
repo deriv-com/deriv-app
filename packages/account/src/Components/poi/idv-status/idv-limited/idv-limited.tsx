@@ -10,7 +10,7 @@ type TIdvLimited = {
 const IdvLimited = ({ handleRequireSubmission }: TIdvLimited) => {
     return (
         <div className='proof-of-identity__container'>
-            <IdvDocumentRejected className='icon' size={128} />
+            <IdvDocumentRejected className='icon' />
             <Text className='proof-of-identity__text btm-spacer' align='center' weight='bold'>
                 {localize('ID verification failed')}
             </Text>

@@ -6,7 +6,6 @@ import { Button, HintBox, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import {
     WS,
-    getIDVNotApplicableOption,
     toMoment,
     filterObjProperties,
     isDesktop,

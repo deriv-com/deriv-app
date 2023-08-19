@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { render, screen, waitFor } from '@testing-library/react';
 import IdvFailed from '../idv-failed';
 import { idv_error_statuses } from '@deriv/shared';
@@ -31,7 +30,7 @@ jest.mock('Assets/ic-poi-dob-example.svg', () => jest.fn(() => 'PoiDobExample'))
 jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExample'));
 
 describe('<IdvFailed/>', () => {
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof IdvFailed> = {
         getChangeableFields: jest.fn(() => []),
         is_from_external: false,
         residence_list: [],
@@ -40,6 +39,7 @@ describe('<IdvFailed/>', () => {
             citizen: 'gh',
         },
         mismatch_status: idv_error_statuses.poi_name_mismatch,
+        latest_status: {},
     };
 
     it('should render IDVfailed component with name mismatch message', async () => {

@@ -1,7 +1,7 @@
+import React from 'react';
+import classNames from 'classnames';
 import { ButtonLink, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import classNames from 'classnames';
-import React from 'react';
 
 export const ContinueTradingButton = ({ className }: { className?: string }) => (
     <ButtonLink className={classNames('account-management__button', className)} to='/'>

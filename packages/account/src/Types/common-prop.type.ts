@@ -1,6 +1,11 @@
 /** Add types that are shared between components */
 import { FormikHandlers, FormikProps, FormikValues } from 'formik';
-import { Authorize, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
+import {
+    Authorize,
+    IdentityVerificationAddDocumentResponse,
+    ResidenceList,
+    DetailsOfEachMT5Loginid,
+} from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
 
 export type TToken = {
@@ -200,4 +205,33 @@ export type TIDVFormValues = {
     document_number: string;
     document_additional?: string;
     error_message?: string;
+};
+
+export type TAccounts = {
+    account?: {
+        balance?: string | number;
+        currency?: string;
+        disabled?: boolean;
+        error?: JSX.Element | string;
+        is_crypto?: boolean;
+        is_dxtrade?: boolean;
+        is_mt?: boolean;
+        market_type?: string;
+        nativepicker_text?: string;
+        platform_icon?: {
+            Derived: React.SVGAttributes<SVGElement>;
+            Financial: React.SVGAttributes<SVGElement>;
+            Options: React.SVGAttributes<SVGElement>;
+            CFDs: React.SVGAttributes<SVGAElement>;
+        };
+        text?: JSX.Element | string;
+        value?: string;
+    };
+    icon?: string;
+    idx?: string | number;
+    is_dark_mode_on?: boolean;
+    is_virtual?: boolean | number;
+    loginid?: string;
+    mt5_login_list?: DetailsOfEachMT5Loginid[];
+    title?: string;
 };

@@ -4,15 +4,19 @@ import { formatMoney, getCFDAccount, getCFDAccountDisplay, CFD_PLATFORMS } from 
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
+import { TAccounts } from 'Types';
 
-const getDerivAccount = (client_accounts: TAccounts[], login_id: string) =>
-    client_accounts.find(client_account => client_account.loginid === login_id);
+type TPendingAccountDetails = {
+    balance?: number;
+    currency?: string;
+    display_login?: string;
+    positions?: number;
+    withdrawals?: number;
+};
 
-const getCurrMT5Account = (mt5_login_list: DetailsOfEachMT5Loginid[], login_id: string) =>
-    mt5_login_list.find(account_obj => account_obj.login === login_id);
-
-const getCurrDxtradeAccount = (dxtrade_accounts_list: TDxtradeAccount[], login_id: string) =>
-    dxtrade_accounts_list.find(account_obj => account_obj.account_id === login_id);
+type TDetailsOfDerivAccount = TAccounts & TPendingAccountDetails;
+type TDetailsOfMT5Account = DetailsOfEachMT5Loginid & TPendingAccountDetails;
+type TDetailsOfDerivXAccount = TDetailsOfMT5Account & { account_id?: string };
 
 type TWrapperProps = {
     children: React.ReactNode;
@@ -20,37 +24,30 @@ type TWrapperProps = {
     desc?: React.ReactNode;
 };
 
-type TDxtradeAccount = DetailsOfEachMT5Loginid & { account_id?: string };
-
-type TPendingProps = TAccounts & { positions?: number };
-type TAccounts = {
-    account?: {
-        balance?: string | number;
-        currency?: string;
-        disabled?: boolean;
-        error?: JSX.Element | string;
-        is_crypto?: boolean;
-        is_dxtrade?: boolean;
-        is_mt?: boolean;
-        market_type?: string;
-        nativepicker_text?: string;
-        platform_icon?: {
-            Derived: React.SVGAttributes<SVGElement>;
-            Financial: React.SVGAttributes<SVGElement>;
-            Options: React.SVGAttributes<SVGElement>;
-            CFDs: React.SVGAttributes<SVGAElement>;
-        };
-        text?: JSX.Element | string;
-        value?: string;
-    };
-    icon?: string;
-    idx?: string | number;
-    is_dark_mode_on?: boolean;
-    is_virtual?: boolean | number;
+type TContentProps = {
+    currency_icon: string;
     loginid?: string;
-    mt5_login_list?: DetailsOfEachMT5Loginid[];
     title?: string;
+    value: React.ReactNode;
 };
+
+type TAccountHasPendingConditionsProps = {
+    details?: {
+        pending_withdrawals?: Record<string, number>;
+        open_positions?: Record<string, number>;
+        balance?: Record<string, { balance: number; currency: string }>;
+    };
+    onBackClick: () => void;
+};
+
+const getDerivAccount = (client_accounts: TAccounts[], login_id: string) =>
+    client_accounts.find(client_account => client_account.loginid === login_id);
+
+const getCurrMT5Account = (mt5_login_list: DetailsOfEachMT5Loginid[], login_id: string) =>
+    mt5_login_list.find(account_obj => account_obj.login === login_id);
+
+const getCurrDxtradeAccount = (dxtrade_accounts_list: TDetailsOfDerivXAccount[], login_id: string) =>
+    dxtrade_accounts_list.find(account_obj => account_obj.account_id === login_id);
 
 const Wrapper = ({ children, title, desc }: TWrapperProps) => (
     <div className='closing-account-error'>
@@ -65,12 +62,6 @@ const Wrapper = ({ children, title, desc }: TWrapperProps) => (
         <div className='closing-account-error__wrapper'>{children}</div>
     </div>
 );
-type TContentProps = {
-    currency_icon: string;
-    loginid?: string;
-    title?: string;
-    value: React.ReactNode;
-};
 
 const Content = ({ currency_icon, loginid, title, value }: TContentProps) => (
     <div className='closing-account-error__container'>
@@ -91,27 +82,19 @@ const Content = ({ currency_icon, loginid, title, value }: TContentProps) => (
     </div>
 );
 
-type TBalance = { balance?: number; currency?: string };
-
-type TAccountHasPendingConditionsProps = {
-    details?: {
-        pending_withdrawals?: Record<string, number>;
-        open_positions?: Record<string, number>;
-        balance?: Record<string, { balance: number; currency: string }>;
-    };
-    onBackClick: () => void;
-};
-
 const AccountHasPendingConditions = observer(({ details, onBackClick }: TAccountHasPendingConditionsProps) => {
     const { client } = useStore();
     const { dxtrade_accounts_list, mt5_login_list, account_list, is_eu } = client;
-    const deriv_open_positions: TPendingProps[] = [];
-    const deriv_balance: (TAccounts & TBalance)[] = [];
-    const mt5_open_positions: (DetailsOfEachMT5Loginid & { display_login?: string } & { positions?: number })[] = [];
-    const mt5_balance: (DetailsOfEachMT5Loginid & TBalance & { display_login?: string })[] = [];
-    const account_pending_withdrawals: (TAccounts & { withdrawals?: number })[] = [];
-    const dxtrade_open_positions: (TDxtradeAccount & { display_login?: string } & { positions?: number })[] = [];
-    const dxtrade_balance: (TDxtradeAccount & TBalance & { display_login?: string })[] = [];
+
+    const deriv_open_positions: TDetailsOfDerivAccount[] = [];
+    const deriv_balance: TDetailsOfDerivAccount[] = [];
+    const account_pending_withdrawals: TDetailsOfDerivAccount[] = [];
+
+    const mt5_open_positions: TDetailsOfMT5Account[] = [];
+    const mt5_balance: TDetailsOfMT5Account[] = [];
+
+    const dxtrade_open_positions: TDetailsOfDerivXAccount[] = [];
+    const dxtrade_balance: TDetailsOfDerivXAccount[] = [];
 
     if (details?.pending_withdrawals) {
         Object.keys(details.pending_withdrawals).forEach(login_id => {
@@ -197,11 +180,13 @@ const AccountHasPendingConditions = observer(({ details, onBackClick }: TAccount
                                 loginid={account.loginid}
                                 title={account.title}
                                 value={
-                                    <Money
-                                        currency={account.currency}
-                                        amount={formatMoney((account.currency = ''), (account.balance = 0), true)}
-                                        should_format={false}
-                                    />
+                                    account.currency && (
+                                        <Money
+                                            currency={account.currency}
+                                            amount={formatMoney(account.currency, account.balance ?? 0, true)}
+                                            should_format={false}
+                                        />
+                                    )
                                 }
                             />
                         ))}
@@ -258,11 +243,13 @@ const AccountHasPendingConditions = observer(({ details, onBackClick }: TAccount
                                     }) ?? ''
                                 }
                                 value={
-                                    <Money
-                                        currency={account.currency}
-                                        amount={formatMoney((account.currency = ''), (account.balance = 0), true)}
-                                        should_format={false}
-                                    />
+                                    account.currency && (
+                                        <Money
+                                            currency={account.currency}
+                                            amount={formatMoney(account.currency, account.balance ?? 0, true)}
+                                            should_format={false}
+                                        />
+                                    )
                                 }
                             />
                         ))}
@@ -319,11 +306,13 @@ const AccountHasPendingConditions = observer(({ details, onBackClick }: TAccount
                                     }) ?? ''
                                 }
                                 value={
-                                    <Money
-                                        currency={account.currency}
-                                        amount={formatMoney((account.currency = ''), (account.balance = 0), true)}
-                                        should_format={false}
-                                    />
+                                    account.currency && (
+                                        <Money
+                                            currency={account.currency}
+                                            amount={formatMoney(account.currency, account.balance ?? 0, true)}
+                                            should_format={false}
+                                        />
+                                    )
                                 }
                             />
                         ))}

@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
 import { useFetch } from '@deriv/api';
-import useActiveWallet from './useActiveWallet';
+import useActiveWalletAccount from './useActiveWalletAccount';
 import useCurrencyConfig from './useCurrencyConfig';
 import useExistingCFDAccounts from './useExistingCFDAccounts';
 import useWalletAccountsList from './useWalletAccountsList';
 
 const useTransferBetweenAccounts = () => {
     const { data: wallets } = useWalletAccountsList();
-    const active_wallet = useActiveWallet();
+    const active_wallet = useActiveWalletAccount();
     const { getConfig } = useCurrencyConfig();
 
     const trading_apps_icon = 'IcWalletOptionsLight';

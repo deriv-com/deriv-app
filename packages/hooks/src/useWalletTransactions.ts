@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { usePaginatedFetch } from '@deriv/api';
 import useCurrencyConfig from './useCurrencyConfig';
-import useActiveWallet from './useActiveWallet';
+import useActiveWalletAccount from './useActiveWalletAccount';
 import useWalletAccountsList from './useWalletAccountsList';
 import useAccountsList from './useAccountsList';
 
@@ -9,7 +9,7 @@ import useAccountsList from './useAccountsList';
 const useWalletTransactions = (action_type?: 'deposit' | 'withdrawal' | 'virtual_credit' | 'transfer') => {
     const { data: accounts } = useAccountsList();
     const { data: wallets } = useWalletAccountsList();
-    const current_wallet = useActiveWallet();
+    const current_wallet = useActiveWalletAccount();
     const { getConfig } = useCurrencyConfig();
     const loginid = current_wallet?.loginid;
 

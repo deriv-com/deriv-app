@@ -175,7 +175,7 @@ describe('<WalletCardsCarousel />', () => {
     });
 
     it('Should render buttons for DEMO', () => {
-        const mock = mockStore({});
+        const mock = mockStore({ client: { accounts: { VRW10001: { token: '12345' } }, loginid: 'VRW10001' } });
 
         const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
 

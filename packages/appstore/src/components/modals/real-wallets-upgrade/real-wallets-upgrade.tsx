@@ -180,22 +180,22 @@ const RealWalletsUpgrade = observer(() => {
         }
     }, [is_real_wallets_upgrade_on]);
 
-    const handleNext = React.useCallback(() => setCurrentStep(prev_step => prev_step + 1), []);
+    const handleNext = () => setCurrentStep(prev_step => prev_step + 1);
 
-    const handleBack = React.useCallback(() => setCurrentStep(prev_step => prev_step - 1), []);
+    const handleBack = () => setCurrentStep(prev_step => prev_step - 1);
 
-    const handleClose = React.useCallback(() => toggleWalletsUpgrade(false), [toggleWalletsUpgrade]);
+    const handleClose = () => toggleWalletsUpgrade(false);
 
     const { start_migration } = useWalletMigration();
 
-    const upgradeToWallets = React.useCallback(() => {
+    const upgradeToWallets = () => {
         start_migration();
         toggleWalletsUpgrade(false);
-    }, [start_migration, toggleWalletsUpgrade]);
+    };
 
-    const toggleCheckbox = React.useCallback(() => {
+    const toggleCheckbox = () => {
         setIsDisabled(prevDisabled => !prevDisabled);
-    }, []);
+    };
 
     return (
         <React.Fragment>

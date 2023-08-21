@@ -6,6 +6,12 @@ import { FormikValues } from 'formik';
 import { getIDVDocumentConfig } from '../Constants/idv-document-config';
 import { TServerError } from '../Types/common.type';
 
+declare global {
+    interface Window {
+        clipboardData: DataTransfer;
+    }
+}
+
 export const documentAdditionalError = (document_additional: string, document_additional_format: string) => {
     let error_message = null;
     if (!document_additional) {
@@ -68,7 +74,7 @@ export const getDocumentData = (country_code: string, document_type: string) => 
 };
 
 export const preventEmptyClipboardPaste = (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const clipboardData = (e.clipboardData ?? (window as any).clipboardData).getData('text');
+    const clipboardData = (e.clipboardData ?? window.clipboardData).getData('text');
     if (clipboardData.length === 0) {
         e.preventDefault();
     }

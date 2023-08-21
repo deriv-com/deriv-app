@@ -139,9 +139,8 @@ const ProofOfAddressContainer = observer(() => {
         resubmit_poa ||
         allow_poa_resubmission ||
         (has_restricted_mt5_account &&
-            (['expired', 'rejected', 'suspected'] as TAuthenticationStatus['document_status'][]).includes(
-                document_status
-            )) ||
+            document_status &&
+            ['expired', 'rejected', 'suspected'].includes(document_status)) ||
         poa_address_mismatch
     ) {
         return <ProofOfAddressForm is_resubmit onSubmit={onSubmit} />;

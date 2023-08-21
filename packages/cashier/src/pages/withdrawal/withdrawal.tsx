@@ -118,7 +118,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
             setSideNotes?.([]);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, tab_index, is_crypto_transactions_visible]);
+    }, [currency, tab_index, is_crypto_transactions_visible, is_switching]);
 
     // TODO: Fix if conditions, use else if and combine conditions when possible
     if (is_system_maintenance) {

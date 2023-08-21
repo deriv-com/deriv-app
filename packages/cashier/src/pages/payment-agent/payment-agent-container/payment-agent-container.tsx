@@ -42,18 +42,9 @@ const PaymentAgentContainer = observer(({ is_deposit }: TPaymentAgentContainer) 
         is_withdraw_successful,
         onChangePaymentMethod,
         filtered_list: payment_agent_list,
-        resetPaymentAgent,
         selected_bank,
         supported_banks,
     } = payment_agent_store;
-
-    React.useEffect(() => {
-        return () => {
-            if (!is_deposit) {
-                resetPaymentAgent();
-            }
-        };
-    }, [is_deposit, resetPaymentAgent]);
 
     React.useEffect(() => {
         return () => {

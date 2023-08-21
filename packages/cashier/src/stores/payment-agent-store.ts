@@ -95,6 +95,10 @@ export default class PaymentAgentStore {
     }
 
     setActiveTab(index: number) {
+        if (this.active_tab_index === 1 && index === 0) {
+            this.resetPaymentAgent();
+        }
+
         this.setActiveTabIndex(index);
     }
 
@@ -362,11 +366,8 @@ export default class PaymentAgentStore {
     }
 
     resetPaymentAgent = () => {
-        const { client, modules } = this.root_store;
-        const { active_container } = modules.cashier.general_store;
-        const container = Constants.map_action[active_container as 'withdraw' | 'payment_agent'];
-
-        client.setVerificationCode('', container);
+        const { client } = this.root_store;
+        client.setVerificationCode('', 'payment_agent_withdraw');
         this.error.setErrorMessage({ code: '', message: '' });
         this.setIsWithdraw(false);
         this.setIsWithdrawSuccessful(false);

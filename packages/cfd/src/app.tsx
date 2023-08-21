@@ -3,11 +3,12 @@ import Routes from './Containers/routes.jsx';
 import initStore from './init-store';
 import CFDProviders from './cfd-providers';
 import type { TCoreStores } from '@deriv/stores/types';
+import { TWebSocket } from '../types';
 
 type TAppProps = {
     passthrough: {
         root_store: TCoreStores;
-        WS: unknown;
+        WS: TWebSocket;
     };
 };
 

@@ -255,19 +255,36 @@
 }
 
 .account-form_poa {
-    .account-form__section {
-        align-items: unset;
+    .account {
+        &-form {
+            &__section {
+                align-items: unset;
 
-        &-side-note {
-            width: 26rem;
+                &-side-note {
+                    width: 26rem;
+                }
+
+                &-content {
+                    width: 40rem;
+
+                    @include mobile {
+                        width: 100%;
+                    }
+                }
+            }
+
+            &__fieldset {
+                max-width: unset;
+                margin-top: 1.6rem;
+                display: flex;
+                flex-direction: column;
+                gap: 3.2rem;
+            }
         }
 
-        &-content {
-            width: 40rem;
-
-            @include mobile {
-                width: 100%;
-            }
+        &__scrollbars_container {
+            padding-top: 0;
+            padding-left: 0;
         }
     }
 
@@ -280,19 +297,6 @@
             list-style-type: initial;
             margin-left: 1.6rem;
         }
-    }
-
-    .account-form__fieldset {
-        max-width: unset;
-        margin-top: 1.6rem;
-        display: flex;
-        flex-direction: column;
-        gap: 3.2rem;
-    }
-
-    .account__scrollbars_container {
-        padding-top: 0;
-        padding-left: 0;
     }
 }
 

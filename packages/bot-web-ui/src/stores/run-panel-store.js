@@ -259,17 +259,14 @@ export default class RunPanelStore {
         this.showClearStatDialog();
     }
 
-    clearStat(is_websocket_disconnected = false) {
+    clearStat() {
         const { summary_card, journal, transactions } = this.root_store;
-
         this.setIsRunning(false);
         this.setHasOpenContract(false);
         this.clear();
-        if (!is_websocket_disconnected) {
-            journal.clear();
-            summary_card.clear();
-        }
-        transactions.clear(is_websocket_disconnected);
+        journal.clear();
+        summary_card.clear();
+        transactions.clear();
         this.setContractStage(contract_stages.NOT_RUNNING);
     }
 
@@ -388,7 +385,7 @@ export default class RunPanelStore {
 
     showClearStatDialog() {
         this.onOkButtonClick = () => {
-            this.clearStat(false);
+            this.clearStat();
             this.onCloseDialog();
         };
         this.onCancelButtonClick = this.onCloseDialog;

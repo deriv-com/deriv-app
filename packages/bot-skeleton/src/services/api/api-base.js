@@ -1,8 +1,7 @@
-// eslint-disable-next-line import/no-cycle
-import DBotStore from '../../scratch/dbot-store';
 import { observer as globalObserver } from '../../utils/observer';
 import { doUntilDone } from '../tradeEngine/utils/helpers';
 import { generateDerivApiInstance, getLoginId, getToken } from './appId';
+import DBotStore from 'src/scratch/dbot-store';
 
 class APIBase {
     api;
@@ -25,26 +24,37 @@ class APIBase {
             if (this.time_interval) clearInterval(this.time_interval);
             this.time_interval = null;
             this.getTime();
+            this.getConnectionStatus();
+        }
+    }
+
+    getConnectionStatus() {
+        if (this.api?.connection) {
             const { setWebSocketState } = DBotStore.instance.dashboard;
-            setWebSocketState(true);
+            switch (this.api.connection.readyState) {
+                case WebSocket.CONNECTING:
+                    return 'Connecting';
+                case WebSocket.OPEN:
+                    return 'Connected';
+                case WebSocket.CLOSING:
+                    setWebSocketState(false);
+                    return 'Closing';
+                case WebSocket.CLOSED:
+                    setWebSocketState(false);
+                    return 'Closed';
+                default:
+                    return 'Unknown';
+            }
+        } else {
+            return 'Socket not initialized';
         }
     }
 
     terminate() {
         // eslint-disable-next-line no-console
         console.log('connection terminated');
+        this.getConnectionStatus();
         if (this.api) this.api.disconnect();
-    }
-
-    // eslint-disable-next-line class-methods-use-this
-    stopBotIfSocketDisconnected() {
-        const { stopBot, clearStat, is_running } = DBotStore.instance.run_panel;
-        const { setWebSocketState } = DBotStore.instance.dashboard;
-        if (is_running) {
-            stopBot();
-            clearStat(true);
-            setWebSocketState(false);
-        }
     }
 
     initEventListeners() {
@@ -52,8 +62,6 @@ class APIBase {
             window.addEventListener('online', this.reconnectIfNotConnected);
             window.addEventListener('focus', this.reconnectIfNotConnected);
         }
-        if (this.api?.connection)
-            this.api.connection.addEventListener('close', () => this.stopBotIfSocketDisconnected());
     }
 
     createNewInstance(account_id) {
@@ -65,6 +73,7 @@ class APIBase {
     reconnectIfNotConnected = () => {
         // eslint-disable-next-line no-console
         console.log('connection state: ', this.api.connection.readyState);
+        this.getConnectionStatus();
         if (this.api.connection.readyState !== 1) {
             // eslint-disable-next-line no-console
             console.log('Info: Connection to the server was closed, trying to reconnect.');

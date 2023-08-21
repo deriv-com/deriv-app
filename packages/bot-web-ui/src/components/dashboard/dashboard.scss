@@ -6,6 +6,17 @@
     justify-content: center;
 }
 
+.bot-stopped-dialog {
+    .dc-dialog {
+        &__header-wrapper {
+            margin: 0 0 2.4rem;
+        }
+        &__content {
+            margin: 0 0 2.4rem;
+        }
+    }
+}
+
 .dashboard {
     &__main {
         width: 100%;

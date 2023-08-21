@@ -148,12 +148,8 @@ export default class TransactionsStore {
         window.removeEventListener('click', this.onClickOutsideTransaction);
     }
 
-    clear(is_websocket_disconnected = false) {
-        if (is_websocket_disconnected) {
-            this.elements = this.elements.filter(account => account.data && account.data.is_completed);
-        } else {
-            this.elements = this.elements.slice(0, 0);
-        }
+    clear() {
+        this.elements = this.elements.slice(0, 0);
         this.recovered_completed_transactions = this.recovered_completed_transactions.slice(0, 0);
         this.recovered_transactions = this.recovered_transactions.slice(0, 0);
         this.is_transaction_details_modal_open = false;

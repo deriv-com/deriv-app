@@ -42,10 +42,20 @@ const Dashboard = observer(() => {
         setActiveTab,
         setBotBuilderTokenCheck,
         setOnBoardingTokenCheck,
+        setWebSocketState,
+        is_web_socket_intialised,
     } = dashboard;
     const { onEntered } = load_modal;
-    const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
-        run_panel;
+    const {
+        is_dialog_open,
+        is_drawer_open,
+        dialog_options,
+        onCancelButtonClick,
+        onCloseDialog,
+        onOkButtonClick,
+        stopBot,
+        is_running,
+    } = run_panel;
     const { is_strategy_modal_open } = quick_strategy;
 
     const { DASHBOARD, BOT_BUILDER, CHART, TUTORIAL } = DBOT_TABS;
@@ -71,6 +81,10 @@ const Dashboard = observer(() => {
         return tab_value;
     };
     const active_hash_tab = GetHashedValue(active_tab);
+
+    React.useEffect(() => {
+        if (!is_web_socket_intialised && is_running) stopBot();
+    }, [is_web_socket_intialised]);
 
     React.useEffect(() => {
         if (init_render.current) {

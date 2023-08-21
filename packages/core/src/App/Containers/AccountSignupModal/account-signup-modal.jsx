@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -98,7 +97,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                     }) => (
                         <Form>
                             {!is_password_modal ? (
-                                <div className='account-signup__main'>
+                                <div className='account-signup__location-selection'>
                                     <Text as='h1' weight='bold' className='account-signup__heading'>
                                         {localize('Select your country and citizenship:')}
                                     </Text>
@@ -134,9 +133,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                     )}
                                     <div className='account-signup__footer'>
                                         <Button
-                                            className={classNames('account-signup__btn', {
-                                                'account-signup__btn--disabled': disableButton(values, errors),
-                                            })}
+                                            className='account-signup__btn'
                                             is_disabled={disableButton(values, errors)}
                                             type='button'
                                             onClick={() => {

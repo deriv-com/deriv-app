@@ -22,9 +22,8 @@ const getAccountsFromLocalStorage = () => {
     // If there is no accounts list, return undefined.
     if (!data) return;
 
-    const accounts: TLocalStorageAccountsList = JSON.parse(data);
-
-    return accounts;
+    // Cast parsed JSON data to infer return type
+    return JSON.parse(data) as TLocalStorageAccountsList;
 };
 
 export default getAccountsFromLocalStorage;

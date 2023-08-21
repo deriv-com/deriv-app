@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { PropTypes } from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
-import { Button, DataList, DesktopWrapper, Icon, Text, ThemedScrollbars } from '@deriv/components';
+import { Button, DataList, Icon, Text, ThemedScrollbars } from '@deriv/components';
 import { isMobile, useNewRowTransition } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
@@ -57,9 +57,7 @@ const Transactions = observer(({ is_drawer_open }) => {
             })}
         >
             <div className='download__container transaction-details__button-container'>
-                <DesktopWrapper>
-                    <Download tab='transactions' />
-                </DesktopWrapper>
+                <Download tab='transactions' />
                 <Button
                     id='download__container-view-detail-button'
                     className='download__container-view-detail-button'
@@ -69,6 +67,7 @@ const Transactions = observer(({ is_drawer_open }) => {
                         toggleTransactionDetailsModal(true);
                     }}
                     secondary
+                    icon={<Icon icon='IcDbotViewDetail' size={18} />}
                 />
             </div>
             <div className='transactions__header'>

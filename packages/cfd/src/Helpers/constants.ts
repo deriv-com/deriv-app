@@ -148,11 +148,11 @@ const getMT5WebTerminalLink = ({
 
         const cfd_reset_password_intent = localStorage.getItem('cfd_reset_password_intent');
         if (cfd_reset_password_intent) {
-            const server_cluster = cfd_reset_password_intent.split('.')[0];
+            const server_cluster = cfd_reset_password_intent.split('.')[0].split('_')[0];
             switch (server_cluster) {
-                case 'p02_ts02':
+                case 'p02':
                     return REAL_MT5_URL_02;
-                case 'p01_ts01':
+                case 'p01':
                 default:
                     return REAL_MT5_URL_01;
             }

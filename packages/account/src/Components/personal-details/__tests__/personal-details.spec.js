@@ -354,8 +354,8 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText('First name')).toBeInTheDocument();
         expect(screen.getByText('Last name')).toBeInTheDocument();
         expect(screen.getByText('Date of birth')).toBeInTheDocument();
-        expect(screen.getByText('Phone number')).toBeInTheDocument();
-        expect(screen.getByLabelText('Phone number')).toBeInTheDocument();
+        expect(screen.getByText('Phone number*')).toBeInTheDocument();
+        expect(screen.getByLabelText('Phone number*')).toBeInTheDocument();
 
         runCommonFormfieldsTests();
     });

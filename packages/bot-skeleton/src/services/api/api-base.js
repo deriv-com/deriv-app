@@ -1,5 +1,5 @@
 import { observer as globalObserver } from '../../utils/observer';
-import { doUntilDone } from '../tradeEngine/utils/helpers';
+import { doUntilDone, socket_state } from '../tradeEngine/utils/helpers';
 import { generateDerivApiInstance, getLoginId, getToken } from './appId';
 
 class APIBase {
@@ -28,17 +28,10 @@ class APIBase {
 
     getConnectionStatus() {
         if (this.api?.connection) {
-            const socket_state = {
-                [WebSocket.CONNECTING]: 'Connecting',
-                [WebSocket.OPEN]: 'Connected',
-                [WebSocket.CLOSING]: 'Closing',
-                [WebSocket.CLOSED]: 'Closed',
-            };
             const ready_state = this.api.connection.readyState;
             return socket_state[ready_state] || 'Unknown';
-        } 
-            return 'Socket not initialized';
-        
+        }
+        return 'Socket not initialized';
     }
 
     terminate() {

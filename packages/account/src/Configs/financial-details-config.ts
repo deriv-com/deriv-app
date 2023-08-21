@@ -1,6 +1,7 @@
+import React from 'react';
+import type { GetFinancialAssessment } from '@deriv/api-types';
+import { generateValidationFunction, getDefaultFields, TSchema } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { TSchema, generateValidationFunction, getDefaultFields } from '@deriv/shared';
-import { GetFinancialAssessment } from '@deriv/api-types';
 
 type TFinancialDetailsConfig = {
     real_account_signup_target: string;

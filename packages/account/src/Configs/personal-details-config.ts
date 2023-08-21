@@ -1,3 +1,4 @@
+import type { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
 import {
     TSchema,
     generateValidationFunction,
@@ -8,18 +9,16 @@ import {
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { shouldShowIdentityInformation } from 'Helpers/utils';
-import { TResidenseList, TUpgradeInfo } from 'Types';
-import { GetAccountStatus, GetSettings } from '@deriv/api-types';
+import { TUpgradeInfo } from 'Types';
 
 type TPersonalDetailsConfig = {
     upgrade_info?: TUpgradeInfo;
     real_account_signup_target: string;
-    residence_list: TResidenseList[];
+    residence_list: ResidenceList;
     account_settings: GetSettings & {
         document_type: string;
         document_number: string;
     };
-    is_appstore?: boolean;
     residence: string;
     account_status: GetAccountStatus;
 };
@@ -27,7 +26,6 @@ type TPersonalDetailsConfig = {
 export const personal_details_config = ({
     residence_list,
     account_settings,
-    is_appstore,
     real_account_signup_target,
 }: TPersonalDetailsConfig) => {
     if (!residence_list || !account_settings) {
@@ -38,9 +36,9 @@ export const personal_details_config = ({
     const min_phone_number = 9;
     const max_phone_number = 35;
 
-    const default_residence = real_account_signup_target === 'maltainvest' ? account_settings?.residence : '';
+    const default_residence = (real_account_signup_target === 'maltainvest' && account_settings?.residence) || '';
 
-    const config = {
+    const config: TSchema = {
         account_opening_reason: {
             supported_in: ['iom', 'malta', 'maltainvest'],
             default_value: account_settings.account_opening_reason ?? '',
@@ -84,16 +82,18 @@ export const personal_details_config = ({
         },
         place_of_birth: {
             supported_in: ['maltainvest', 'iom', 'malta'],
-            default_value: account_settings.place_of_birth
-                ? residence_list.find(item => item.value === account_settings.place_of_birth)?.text
-                : '',
+            default_value:
+                (account_settings.place_of_birth &&
+                    residence_list.find(item => item.value === account_settings.place_of_birth)?.text) ||
+                '',
             rules: [['req', localize('Place of birth is required.')]],
         },
         citizen: {
             supported_in: ['iom', 'malta', 'maltainvest'],
-            default_value: account_settings.citizen
-                ? residence_list.find(item => item.value === account_settings.citizen)?.text
-                : '',
+            default_value:
+                (account_settings.citizen &&
+                    residence_list.find(item => item.value === account_settings.citizen)?.text) ||
+                '',
             rules: [['req', localize('Citizenship is required')]],
         },
         phone: {
@@ -117,9 +117,10 @@ export const personal_details_config = ({
         },
         tax_residence: {
             //if tax_residence is already set, we will use it as default value else for mf clients we will use residence as default value
-            default_value: account_settings?.tax_residence
-                ? residence_list.find(item => item.value === account_settings?.tax_residence)?.text ?? ''
-                : default_residence,
+            default_value:
+                (account_settings?.tax_residence &&
+                    residence_list.find(item => item.value === account_settings?.tax_residence)?.text) ||
+                default_residence,
             supported_in: ['maltainvest'],
             rules: [['req', localize('Tax residence is required.')]],
         },
@@ -189,20 +190,7 @@ export const personal_details_config = ({
         },
     };
 
-    const getConfig = () => {
-        if (is_appstore) {
-            const allowed_fields = ['first_name', 'last_name', 'date_of_birth', 'phone'];
-            return Object.keys(config).reduce((new_config, key) => {
-                if (allowed_fields.includes(key)) {
-                    new_config[key] = config[key];
-                }
-                return new_config;
-            }, {});
-        }
-        return config;
-    };
-
-    return [getConfig()];
+    return config;
 };
 
 const personalDetailsConfig = <T>(
@@ -214,13 +202,11 @@ const personalDetailsConfig = <T>(
         account_status,
         residence,
     }: TPersonalDetailsConfig,
-    PersonalDetails: T,
-    is_appstore = false
+    PersonalDetails: T
 ) => {
-    const [config] = personal_details_config({
+    const config = personal_details_config({
         residence_list,
         account_settings,
-        is_appstore,
         real_account_signup_target,
         residence,
         account_status,
@@ -228,8 +214,8 @@ const personalDetailsConfig = <T>(
     const disabled_items = account_settings.immutable_fields;
     return {
         header: {
-            active_title: is_appstore ? localize('A few personal details') : localize('Complete your personal details'),
-            title: is_appstore ? localize('PERSONAL') : localize('Personal details'),
+            active_title: localize('Complete your personal details'),
+            title: localize('Personal details'),
         },
         body: PersonalDetails,
         form_value: getDefaultFields(real_account_signup_target, config),
@@ -290,7 +276,7 @@ const transformConfig = (
     if (['malta', 'iom'].includes(real_account_signup_target) && config.tax_residence) {
         config?.tax_residence?.rules?.shift();
     }
-    // Remove IDV for non supporting SVG countries
+    // Remove IDV for non-supporting SVG countries
     if (
         !shouldShowIdentityInformation({
             account_status,

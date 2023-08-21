@@ -1,5 +1,5 @@
-import { getDefaultFields } from '@deriv/shared';
-import { TSchema } from 'Types';
+import React from 'react';
+import { getDefaultFields, TSchema } from '@deriv/shared';
 
 const accept_risk_config: TSchema = {
     accept_risk: {

@@ -13,7 +13,7 @@ import {
 } from 'Constants/tour-steps-config-new';
 import { useStores } from 'Stores/index';
 import { routes, ContentFlag } from '@deriv/shared';
-import { SpanButton } from '@deriv/components';
+import { Button } from '@deriv/components';
 
 const TourGuide = () => {
     const { traders_hub, ui, client } = useStores();
@@ -72,11 +72,12 @@ const TourGuide = () => {
 
     if (getTourStepConfig().length === joyride_index + 1) {
         tour_step_locale.back = (
-            <SpanButton
+            <Button
                 has_effect
                 text={localize('Repeat tour')}
                 secondary
                 medium
+                as='span'
                 onClick={() => {
                     history.push(routes.onboarding);
                     toggleIsTourOpen(true);
@@ -86,11 +87,12 @@ const TourGuide = () => {
     }
 
     high_risk_tour_step_locale.back = (
-        <SpanButton
+        <Button
             has_effect
             text={localize('Repeat tour')}
             secondary
             medium
+            as='span'
             onClick={() => {
                 history.push(routes.onboarding);
                 toggleIsTourOpen(true);

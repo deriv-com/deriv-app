@@ -1,6 +1,6 @@
 import { Step, Styles, Locale } from 'react-joyride';
 import React from 'react';
-import { Text, SpanButton } from '@deriv/components';
+import { Text, Button } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import 'Components/toggle-account-type/toggle-account-type.scss';
 
@@ -125,7 +125,7 @@ export const tour_styles_dark_mode: Styles = {
 };
 
 export const tour_step_locale: Locale = {
-    back: <SpanButton has_effect text={localize('Repeat tour')} secondary medium />,
+    back: <Button has_effect text={localize('Repeat tour')} secondary medium as='span' />,
     close: localize('Close'),
     last: localize('OK'),
     next: localize('Next'),

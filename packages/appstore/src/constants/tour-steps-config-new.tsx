@@ -1,6 +1,6 @@
 import { Step, Styles, Locale } from 'react-joyride';
 import React from 'react';
-import { Text, SpanButton, Icon } from '@deriv/components';
+import { Text, Button, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import 'Components/toggle-account-type/toggle-account-type.scss';
 import { isMobile } from '@deriv/shared';
@@ -139,7 +139,7 @@ export const tour_styles_dark_mode: Styles = {
     },
 };
 export const getTourStepLocale = (): Locale => ({
-    back: <SpanButton has_effect text={localize('Back')} secondary medium />,
+    back: <Button has_effect text={localize('Back')} secondary medium as='span' />,
     close: localize('Close'),
     last: localize('OK'),
     next: localize('Next'),
@@ -147,7 +147,7 @@ export const getTourStepLocale = (): Locale => ({
 });
 
 export const getHighRiskTourStepLocale = (): Locale => ({
-    back: <SpanButton has_effect text={localize('Back')} secondary medium />,
+    back: <Button has_effect text={localize('Back')} secondary medium as='span' />,
     close: localize('Close'),
     last: localize('OK'),
     next: localize('Next'),

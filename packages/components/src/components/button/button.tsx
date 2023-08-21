@@ -76,8 +76,9 @@ const Button = ({
     small,
     tertiary,
     renderText,
+    as,
     ...props
-}: Partial<TButtonProps>) => {
+}: Partial<TButtonProps> & { as?: string }) => {
     const classes = classNames(
         'dc-btn',
         {
@@ -103,8 +104,12 @@ const Button = ({
         },
         className
     );
+
+    // TODO: add correct type
+    const Component: any = as ?? 'button';
+
     const button = (
-        <button
+        <Component
             id={id}
             className={classes}
             onClick={onClick}
@@ -129,7 +134,7 @@ const Button = ({
                     {children}
                 </Text>
             )}
-        </button>
+        </Component>
     );
     const wrapper = <div className={wrapperClassName}>{button}</div>;
 

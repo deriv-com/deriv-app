@@ -7,6 +7,7 @@ import { toMoment, hasIntradayDurationUnit } from '@deriv/shared';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import TradingDatePicker from '../../DatePicker';
 import TradingTimePicker from '../../TimePicker';
+import ExpiryText from './expiry-text.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
@@ -14,13 +15,14 @@ const AdvancedDuration = observer(
     ({
         advanced_duration_unit,
         advanced_expiry_type,
-        duration_units_list,
-        duration_t,
         changeDurationUnit,
-        getDurationFromUnit,
+        duration_t,
+        duration_units_list,
         expiry_date,
+        expiry_epoch,
         expiry_list,
         expiry_type,
+        getDurationFromUnit,
         number_input_props,
         onChange,
         onChangeUiStore,
@@ -51,6 +53,8 @@ const AdvancedDuration = observer(
             onChange({ target: { name: 'expiry_type', value } });
             onChangeUiStore({ name, value });
         };
+
+        const has_error = !!validation_errors?.duration?.length;
 
         return (
             <>
@@ -92,6 +96,9 @@ const AdvancedDuration = observer(
                                     is_24_hours_contract={is_24_hours_contract}
                                 />
                             )}
+                            {advanced_duration_unit === 'd' && (
+                                <ExpiryText expiry_epoch={expiry_epoch} has_error={has_error} />
+                            )}
                             {advanced_duration_unit !== 't' && advanced_duration_unit !== 'd' && (
                                 <InputField
                                     id='dt_advanced_duration_input'
@@ -121,6 +128,7 @@ const AdvancedDuration = observer(
                                 is_24_hours_contract && <TradingTimePicker />
                                 // validation_errors={validation_errors.end_time} TODO: add validation_errors for end time
                             }
+                            {!is_24_hours_contract && <ExpiryText expiry_epoch={expiry_epoch} />}
                         </div>
                     </>
                 )}

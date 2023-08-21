@@ -103,17 +103,9 @@ const CryptoWithdrawReceipt = observer(() => {
     const { account_transfer, general_store, transaction_history, withdraw } = useCashierStore();
     const { selected_from: account } = account_transfer;
     const { cashier_route_tab_index: tab_index } = general_store;
-    const {
-        crypto_transactions,
-        onMount: recentTransactionOnMount,
-        setIsCryptoTransactionsVisible,
-    } = transaction_history;
+    const { setIsCryptoTransactionsVisible } = transaction_history;
 
     const { blockchain_address, resetWithdrawForm, setIsWithdrawConfirmed, withdraw_amount } = withdraw;
-
-    React.useEffect(() => {
-        recentTransactionOnMount();
-    }, [recentTransactionOnMount]);
 
     React.useEffect(() => {
         return () => {
@@ -174,7 +166,7 @@ const CryptoWithdrawReceipt = observer(() => {
                     primary
                 />
             </div>
-            {isMobile() && isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
+            {isMobile() && isCryptocurrency(currency) ? <RecentTransaction /> : null}
         </div>
     );
 });

@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { usePrevious } from '../../hooks';
 import Icon from '../icon/icon';
 import { TItem } from './vertical-tab-header';
 
@@ -60,24 +59,12 @@ const ContentWrapper = ({ children, has_side_note }: React.PropsWithChildren<TCo
 
 const Content = ({ is_routed, items, selected }: TContent) => {
     const selected_item = items.find(item => item.label === selected.label);
-    const previous_selected_item = usePrevious(selected_item);
     const TabContent = selected_item?.value as React.ElementType;
     const [side_notes, setSideNotes] = React.useState<React.ReactNode[] | null>(null);
 
-    const notes_array: React.ReactNode[][] = [];
-
     const addToNotesQueue = React.useCallback((notes: React.ReactNode[]) => {
-        notes_array.unshift(notes);
         setSideNotes(notes);
     }, []);
-
-    React.useEffect(() => {
-        if (selected_item?.label !== previous_selected_item?.label) {
-            setSideNotes(notes_array[0] ?? null);
-            notes_array.splice(0, notes_array.length);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selected_item]);
 
     return (
         <React.Fragment>

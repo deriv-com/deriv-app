@@ -1,14 +1,14 @@
 import React from 'react';
 import { useSafeState } from '@deriv/components';
 import { reaction } from 'mobx';
-import { observer } from 'mobx-react-lite';
+import { observer } from '@deriv/stores';
 import OrderDetails from 'Components/order-details/order-details.jsx';
 import { useStores } from 'Stores';
 import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
 const Orders = observer(() => {
-    const { order_store } = useStores();
+    const { order_store, general_store } = useStores();
 
     // This is a bit hacky, but it allows us to force re-render this
     // component when the timer expired. This is created due to BE
@@ -17,6 +17,7 @@ const Orders = observer(() => {
     order_store.setForceRerenderOrders(forceRerender);
 
     React.useEffect(() => {
+        if (general_store.active_index !== 1) general_store.setActiveIndex(1);
         const disposeOrderIdReaction = reaction(
             () => order_store.order_id,
             () => {

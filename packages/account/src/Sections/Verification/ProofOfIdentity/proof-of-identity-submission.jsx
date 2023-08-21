@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { WS } from '@deriv/shared';
 import CountrySelector from 'Components/poi/poi-country-selector';
@@ -159,6 +158,8 @@ const POISubmission = ({
                             is_from_external={is_from_external}
                             setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                             allow_poi_resubmission={allow_poi_resubmission}
+                            handleViewComplete={handleViewComplete}
+                            onfido={onfido}
                         />
                     );
                 default:

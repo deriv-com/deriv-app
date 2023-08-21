@@ -19,7 +19,7 @@ type TAccountTransferProps = {
     onClickNotes?: VoidFunction;
     onClose: VoidFunction;
     openAccountSwitcherModal?: VoidFunction;
-    setSideNotes: (notes: React.ReactNode[]) => void;
+    setSideNotes?: (notes: React.ReactNode[]) => void;
 };
 
 const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSideNotes }: TAccountTransferProps) => {
@@ -60,7 +60,7 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
 
     React.useEffect(() => {
         if (has_no_accounts_balance || is_switching) {
-            setSideNotes([]);
+            setSideNotes?.([]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setSideNotes, has_no_accounts_balance]);

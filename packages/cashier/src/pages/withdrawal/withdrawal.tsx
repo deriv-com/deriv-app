@@ -100,18 +100,18 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
                     ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
                 ];
 
-                setSideNotes([
+                setSideNotes?.([
                     ...side_notes.map((side_note, index) => (
                         <SideNote has_title={false} key={index}>
                             {side_note}
                         </SideNote>
                     )),
                 ]);
-            } else setSideNotes([]);
+            } else setSideNotes?.([]);
         }
 
         return () => {
-            setSideNotes([]);
+            setSideNotes?.([]);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, tab_index]);

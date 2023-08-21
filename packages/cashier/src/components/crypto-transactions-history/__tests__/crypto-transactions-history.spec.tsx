@@ -3,6 +3,14 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoTransactionsHistory from '../crypto-transactions-history';
 import CashierProviders from '../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
+import { useSubscription } from '@deriv/api';
+
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useSubscription: jest.fn(),
+}));
+
+const mockUseSubscription = useSubscription as jest.MockedFunction<typeof useSubscription<'cashier_payments'>>;
 
 describe('<CryptoTransactionsHistory />', () => {
     let mockRootStore: ReturnType<typeof mockStore>;
@@ -12,8 +20,6 @@ describe('<CryptoTransactionsHistory />', () => {
             modules: {
                 cashier: {
                     transaction_history: {
-                        crypto_transactions: [],
-                        is_loading: false,
                         setIsCryptoTransactionsVisible: jest.fn(),
                     },
                     general_store: {
@@ -33,6 +39,9 @@ describe('<CryptoTransactionsHistory />', () => {
         });
 
     it('should show "USD recent transactions" and "No current transactions available" messages', () => {
+        // @ts-expect-error need to come up with a way to mock the return type of useSubscription
+        mockUseSubscription.mockReturnValue({ subscribe: jest.fn() });
+
         renderCryptoTransactionsHistory();
 
         expect(screen.getByText('BTC recent transactions')).toBeInTheDocument();
@@ -40,6 +49,9 @@ describe('<CryptoTransactionsHistory />', () => {
     });
 
     it('should trigger onClick callback when the back arrow is clicked', () => {
+        // @ts-expect-error need to come up with a way to mock the return type of useSubscription
+        mockUseSubscription.mockReturnValue({ subscribe: jest.fn() });
+
         renderCryptoTransactionsHistory();
 
         const back_arrow = screen.getByTestId('dt_crypto_transactions_history_back');
@@ -51,22 +63,30 @@ describe('<CryptoTransactionsHistory />', () => {
     });
 
     it('should show the loader when is_loading is equal "true"', () => {
-        mockRootStore.modules.cashier.transaction_history.crypto_transactions = [
-            {
-                address_hash: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
-                address_url:
-                    'https://www.blockchain.com/btc-testnet/address/tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
-                amount: 0.005,
-                id: '3',
-                is_valid_to_cancel: 1,
-                status_code: 'LOCKED',
-                status_message:
-                    "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.",
-                submit_date: 1640603927,
-                transaction_type: 'withdrawal',
+        // @ts-expect-error need to come up with a way to mock the return type of useSubscription
+        mockUseSubscription.mockReturnValue({
+            data: {
+                cashier_payments: {
+                    crypto: [
+                        {
+                            address_hash: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
+                            address_url:
+                                'https://www.blockchain.com/btc-testnet/address/tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
+                            amount: 0.005,
+                            id: '3',
+                            is_valid_to_cancel: 1,
+                            status_code: 'LOCKED',
+                            status_message:
+                                "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.",
+                            submit_date: 1640603927,
+                            transaction_type: 'withdrawal',
+                        },
+                    ],
+                },
             },
-        ];
-        mockRootStore.modules.cashier.transaction_history.is_loading = true;
+            is_loading: true,
+            subscribe: jest.fn(),
+        });
 
         renderCryptoTransactionsHistory();
 
@@ -75,21 +95,30 @@ describe('<CryptoTransactionsHistory />', () => {
     });
 
     it('should show table headers: "Transaction", "Amount", "Address", "Transaction hash", "Time", "Status", "Action"', () => {
-        mockRootStore.modules.cashier.transaction_history.crypto_transactions = [
-            {
-                address_hash: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
-                address_url:
-                    'https://www.blockchain.com/btc-testnet/address/tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
-                amount: 0.005,
-                id: '3',
-                is_valid_to_cancel: 1,
-                status_code: 'LOCKED',
-                status_message:
-                    "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.",
-                submit_date: 1640603927,
-                transaction_type: 'withdrawal',
+        // @ts-expect-error need to come up with a way to mock the return type of useSubscription
+        mockUseSubscription.mockReturnValue({
+            data: {
+                cashier_payments: {
+                    crypto: [
+                        {
+                            address_hash: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
+                            address_url:
+                                'https://www.blockchain.com/btc-testnet/address/tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
+                            amount: 0.005,
+                            id: '3',
+                            is_valid_to_cancel: 1,
+                            status_code: 'LOCKED',
+                            status_message:
+                                "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.",
+                            submit_date: 1640603927,
+                            transaction_type: 'withdrawal',
+                        },
+                    ],
+                },
             },
-        ];
+            subscribe: jest.fn(),
+        });
+
         const headers = ['Transaction', 'Amount', 'Address', 'Transaction hash', 'Time', 'Status', 'Action'];
 
         renderCryptoTransactionsHistory();

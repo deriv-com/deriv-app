@@ -1,6 +1,7 @@
 import React from 'react';
 import Routes from './Containers/routes';
 import ResetTradingPassword from './Containers/reset-trading-password';
+import { APIProvider } from '@deriv/api';
 import { setWebsocket } from '@deriv/shared';
 import { StoreProvider } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
@@ -14,14 +15,15 @@ type TAppProps = {
 };
 
 const App = ({ passthrough }: TAppProps) => {
-    const { root_store, WS } = passthrough;
-    setWebsocket(WS);
+    const { root_store } = passthrough;
 
     return (
-        <StoreProvider store={root_store}>
-            <Routes />
-            <ResetTradingPassword />
-        </StoreProvider>
+        <APIProvider>
+            <StoreProvider store={root_store}>
+                <Routes />
+                <ResetTradingPassword />
+            </StoreProvider>
+        </APIProvider>
     );
 };
 

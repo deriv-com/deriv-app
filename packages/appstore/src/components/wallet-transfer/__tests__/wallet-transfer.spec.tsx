@@ -41,7 +41,7 @@ describe('WalletTransfer', () => {
             </APIProvider>
         );
 
-        expect(screen.getAllByText('AmountInput').length).toBe(2);
-        expect(screen.getAllByText('TransferAccountSelector').length).toBe(2);
+        expect(screen.getAllByText('AmountInput')).toHaveLength(2);
+        expect(screen.getAllByText('TransferAccountSelector')).toHaveLength(2);
     });
 });

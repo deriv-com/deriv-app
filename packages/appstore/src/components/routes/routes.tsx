@@ -29,7 +29,7 @@ const Routes: React.FC = observer(() => {
                 <RouteWithSubroutes
                     path={'/appstore/traders-hub'}
                     component={should_show_wallets ? WalletsModule : TradersHub}
-                    getTitle={() => localize('TradersHub')}
+                    getTitle={() => localize("Trader's Hub")}
                 />
                 <RouteWithSubroutes
                     path={'/appstore/onboarding'}

@@ -9,9 +9,56 @@ import { useStore, observer } from '@deriv/stores';
 import { useActiveWallet } from '@deriv/hooks';
 import './wallet-content.scss';
 
+type TProps = {
+    landing_company_name: string | undefined;
+};
+
+const OptionsTitle = observer(({ landing_company_name }: TProps) => {
+    const {
+        ui: { is_mobile },
+    } = useStore();
+
+    const is_svg_wallet = landing_company_name === 'svg';
+
+    if (is_svg_wallet && !is_mobile) {
+        return (
+            <Text size='sm' weight='bold' color='prominent'>
+                {localize('Options & multipliers')}
+            </Text>
+        );
+    } else if (!is_svg_wallet && !is_mobile) {
+        return (
+            <Text size='sm' weight='bold' color='prominent'>
+                {localize('Multipliers')}
+            </Text>
+        );
+    }
+    return null;
+});
+
+const ListingContainerDescription = ({ landing_company_name }: TProps) =>
+    landing_company_name === 'svg' ? (
+        <Text size='xs' line_height='s'>
+            <Localize
+                i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
+                components={[
+                    <StaticUrl key={0} className='options' href='trade-types/options/' />,
+                    <StaticUrl key={1} className='options' href='trade-types/multiplier/' />,
+                ]}
+            />
+        </Text>
+    ) : (
+        <Text size='xs' line_height='s'>
+            <Localize
+                i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>multipliers</0>.'
+                components={[<StaticUrl key={0} className='options' href='trade-types/multiplier/' />]}
+            />
+        </Text>
+    );
+
 const WalletOptionsAndMultipliersListing = observer(() => {
     const { traders_hub, client, ui } = useStore();
-    const { is_mobile, setShouldShowCooldownModal, openRealAccountSignup } = ui;
+    const { setShouldShowCooldownModal, openRealAccountSignup } = ui;
     const {
         is_landing_company_loaded,
         has_maltainvest_account,
@@ -30,49 +77,12 @@ const WalletOptionsAndMultipliersListing = observer(() => {
             </div>
         );
 
-    const OptionsTitle = () => {
-        if (wallet_account.landing_company_name === 'svg' && !is_mobile) {
-            return (
-                <Text size='sm' line_height='m' weight='bold' color='prominent'>
-                    {localize('Options & multipliers')}
-                </Text>
-            );
-        } else if (wallet_account.landing_company_name !== 'svg' && !is_mobile) {
-            return (
-                <Text size='sm' line_height='m' weight='bold' color='prominent'>
-                    {localize('Multipliers')}
-                </Text>
-            );
-        }
-        return null;
-    };
-
-    const listing_container_description =
-        wallet_account.landing_company_name === 'svg' ? (
-            <Text size='xs' line_height='s'>
-                <Localize
-                    i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
-                    components={[
-                        <StaticUrl key={0} className='options' href='trade-types/options/' />,
-                        <StaticUrl key={1} className='options' href='trade-types/multiplier/' />,
-                    ]}
-                />
-            </Text>
-        ) : (
-            <Text size='xs' line_height='s'>
-                <Localize
-                    i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>multipliers</0>.'
-                    components={[<StaticUrl key={0} className='options' href='trade-types/multiplier/' />]}
-                />
-            </Text>
-        );
-
     return (
         <ListingContainer
             wallet_account={wallet_account}
             className='wallet-content__border-reset'
-            title={<OptionsTitle />}
-            description={listing_container_description}
+            title={<OptionsTitle landing_company_name={wallet_account.landing_company_name} />}
+            description={<ListingContainerDescription landing_company_name={wallet_account.landing_company_name} />}
             is_deriv_platform
         >
             {is_real && (no_CR_account || no_MF_account) && (

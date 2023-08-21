@@ -16,56 +16,16 @@ type TProps = {
     fiat_wallet_currency?: string;
 };
 
-const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) => {
-    const {
-        client,
-        modules: { cfd },
-        traders_hub,
-        ui,
-    } = useStore();
-    const {
-        selected_region,
-        getExistingAccounts,
-        selected_account_type,
-        available_dxtrade_accounts,
-        combined_cfd_mt5_accounts,
-        can_get_more_cfd_mt5_accounts,
-        toggleAccountTypeModalVisibility,
-        setWalletModalActiveWalletID,
-        setWalletModalActiveTab,
-    } = traders_hub;
+const CryptoCFDs = observer(({ fiat_wallet_currency }: TProps) => {
+    const { traders_hub, ui } = useStore();
+    const { setWalletModalActiveWalletID, setWalletModalActiveTab } = traders_hub;
 
-    const { toggleCompareAccountsModal } = cfd;
-    const { is_landing_company_loaded, is_logging_in, is_switching } = client;
     const { is_mobile, setIsWalletModalVisible } = ui;
 
     const wallet_account = useActiveWallet();
+    if (!wallet_account) return null;
 
-    if (!wallet_account || !is_landing_company_loaded || is_switching || is_logging_in)
-        return (
-            <div className='wallet-content__loader'>
-                <PlatformLoader />
-            </div>
-        );
-
-    const { currency } = wallet_account;
-    const accounts_sub_text =
-        wallet_account.landing_company_name === 'svg' || wallet_account.is_virtual
-            ? localize('Compare accounts')
-            : localize('Account information');
-
-    const getMT5AccountAuthStatus = (current_acc_status: string) => {
-        if (current_acc_status === 'proof_failed') {
-            return 'failed';
-        } else if (current_acc_status === 'verification_pending') {
-            return 'pending';
-        }
-        return null;
-    };
-
-    const is_fiat = !isCryptocurrency(currency) && currency !== 'USDT';
-
-    const CryptoCFDs = () => (
+    return (
         <div className='wallet-content__cfd-crypto'>
             <Text
                 size={is_mobile ? 'xs' : 's'}
@@ -76,7 +36,7 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
             >
                 <Localize
                     i18n_default_text='To trade CFDs, you’ll need to use your {{fiat_wallet_currency}} Wallet. Click Transfer to move your {{currency}} to your {{fiat_wallet_currency}} Wallet.'
-                    values={{ fiat_wallet_currency, currency }}
+                    values={{ fiat_wallet_currency, currency: wallet_account.currency }}
                 />
             </Text>
             <Button
@@ -92,11 +52,36 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
             </Button>
         </div>
     );
+});
 
-    const FiatCFDs = () => (
+const FiatCFDs = observer(() => {
+    const { traders_hub } = useStore();
+    const {
+        selected_region,
+        getExistingAccounts,
+        selected_account_type,
+        available_dxtrade_accounts,
+        combined_cfd_mt5_accounts,
+        can_get_more_cfd_mt5_accounts,
+        toggleAccountTypeModalVisibility,
+    } = traders_hub;
+
+    const wallet_account = useActiveWallet();
+    if (!wallet_account) return null;
+
+    const getMT5AccountAuthStatus = (current_acc_status: string) => {
+        if (current_acc_status === 'proof_failed') {
+            return 'failed';
+        } else if (current_acc_status === 'verification_pending') {
+            return 'pending';
+        }
+        return null;
+    };
+
+    return (
         <React.Fragment>
             <div className='cfd-full-row'>
-                <Text line_height='m' weight='bold' color='prominent'>
+                <Text weight='bold' color='prominent'>
                     {localize('Deriv MT5')}
                 </Text>
             </div>
@@ -139,7 +124,7 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
             )}
             {available_dxtrade_accounts?.length > 0 && (
                 <div className='cfd-full-row'>
-                    <Text line_height='m' weight='bold' color='prominent'>
+                    <Text weight='bold' color='prominent'>
                         {localize('Other CFDs')}
                     </Text>
                 </div>
@@ -180,6 +165,35 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
             })}
         </React.Fragment>
     );
+});
+
+const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) => {
+    const {
+        client,
+        modules: { cfd },
+        ui,
+    } = useStore();
+
+    const { toggleCompareAccountsModal } = cfd;
+    const { is_landing_company_loaded, is_logging_in, is_switching } = client;
+    const { is_mobile } = ui;
+
+    const wallet_account = useActiveWallet();
+
+    if (!wallet_account || !is_landing_company_loaded || is_switching || is_logging_in)
+        return (
+            <div className='wallet-content__loader'>
+                <PlatformLoader />
+            </div>
+        );
+
+    const { currency } = wallet_account;
+    const accounts_sub_text =
+        wallet_account.landing_company_name === 'svg' || wallet_account.is_virtual
+            ? localize('Compare accounts')
+            : localize('Account information');
+
+    const is_fiat = !isCryptocurrency(currency) && currency !== 'USDT';
 
     return (
         <ListingContainer
@@ -187,7 +201,7 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
             title={
                 !is_mobile && (
                     <div className='cfd-accounts__title'>
-                        <Text size='sm' line_height='m' weight='bold' color='prominent'>
+                        <Text size='sm' weight='bold' color='prominent'>
                             {localize('CFDs')}
                         </Text>
                         <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
@@ -217,7 +231,7 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
                     </Text>
                 </div>
             )}
-            {is_fiat ? <FiatCFDs /> : <CryptoCFDs />}
+            {is_fiat ? <FiatCFDs /> : <CryptoCFDs fiat_wallet_currency={fiat_wallet_currency} />}
         </ListingContainer>
     );
 });

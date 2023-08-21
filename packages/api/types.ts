@@ -302,6 +302,8 @@ type TPrivateSocketEndpoints = {
                         | 'PERFORMING_BLOCKCHAIN_TXN'
                         | 'PROCESSING'
                         | 'REJECTED'
+                        | 'REVERTED'
+                        | 'REVERTING'
                         | 'SENT'
                         | 'VERIFIED';
                     /**

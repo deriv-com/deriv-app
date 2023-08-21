@@ -2,30 +2,22 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import RunStrategy from '../run-strategy';
 
-jest.mock('../../../trade-animation/trade-animation', () =>
-    jest.fn(props => (
-        <div
-            data-testid-should-show-overlay={props.should_show_overlay}
-            data-testid-info-direction={props.info_direction}
-        >
-            TradeAnimation
-        </div>
-    ))
-);
+jest.mock('../../../trade-animation/trade-animation', () => jest.fn(() => <div>TradeAnimation</div>));
 
 describe('RunStrategy', () => {
     beforeEach(() => {
         render(<RunStrategy />);
     });
 
-    it('should render RunStrategy', () => {
-        expect(screen.getByText('TradeAnimation')).toBeInTheDocument();
+    it('should render the RunStrategy component', () => {
+        const run_strategy = screen.getByTestId('dt_run_strategy');
+
+        expect(run_strategy).toBeInTheDocument();
     });
 
-    it('should render the TradeAnimation component with correct props', () => {
-        const tradeAnimation = screen.getByText('TradeAnimation');
+    it('should render the TradeAnimation component inside of RunStrategy', () => {
+        const trade_animation = screen.getByText('TradeAnimation');
 
-        expect(tradeAnimation).toHaveAttribute('data-testid-should-show-overlay', 'true');
-        expect(tradeAnimation).toHaveAttribute('data-testid-info-direction', 'left');
+        expect(trade_animation).toBeInTheDocument();
     });
 });

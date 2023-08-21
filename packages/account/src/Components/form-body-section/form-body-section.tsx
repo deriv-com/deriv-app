@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { PlatformContext, isMobile } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 
 export type TFormBodySection = {
     /**
@@ -43,13 +44,22 @@ const FormBodySection = ({
                     'account-form__section--reversed': side_note_position === 'right',
                 })}
             >
-                <div className='account-form__section-side-note'>
+                <div
+                    className={classNames('account-form__section-side-note', {
+                        'account-form__section-side-note__example': typeof side_note !== 'string',
+                    })}
+                >
                     {typeof side_note === 'string' ? (
                         <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'} data-testid='side-note-text'>
                             {side_note}
                         </Text>
                     ) : (
-                        side_note
+                        <React.Fragment>
+                            <Text as='p' size={isMobile() ? 'xxs' : 'xs'} weight='bold'>
+                                {localize('Example:')}
+                            </Text>
+                            {side_note}
+                        </React.Fragment>
                     )}
                 </div>
                 <div className='account-form__section-content'>{children}</div>

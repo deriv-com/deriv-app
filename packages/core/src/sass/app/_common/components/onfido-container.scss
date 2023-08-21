@@ -216,6 +216,14 @@
                 width: 100%;
                 margin-bottom: 0.8rem;
             }
+
+            &__example {
+                height: 100%;
+
+                @include mobile {
+                    flex-direction: column;
+                }
+            }
         }
 
         &-content {

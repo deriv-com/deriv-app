@@ -17,7 +17,7 @@ import IDVForm from 'Components/forms/idv-form';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
 import FormFooter from 'Components/form-footer';
 import { GetSettings } from '@deriv/api-types';
-import ConfirmationCheckbox from '../../../forms/formik-confirmation-checkbox';
+import ConfirmationCheckbox from '../../../forms/confirmation-checkbox';
 
 type TIdvDocSubmitOnSignup = {
     citizen_data: FormikValues;
@@ -72,7 +72,7 @@ export const IdvDocSubmitOnSignup = ({
         form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format('YYYY-MM-DD');
     }
 
-    const changeable_fields = [...getChangeableFields()];
+    const changeable_fields = is_confirmed ? [] : getChangeableFields();
 
     const initial_values = {
         document_type: {

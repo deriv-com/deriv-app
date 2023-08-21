@@ -21,7 +21,7 @@ import FormSubHeader from 'Components/form-sub-header';
 import { IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
 import { TIDVFormValues, TInputFieldValues, TDocumentList } from 'Types';
 import { observer, useStore } from '@deriv/stores';
-import ConfirmationCheckbox from 'Components/forms/formik-confirmation-checkbox';
+import ConfirmationCheckbox from 'Components/forms/confirmation-checkbox';
 
 type TIDVDocumentSubmitProps = {
     handleBack: React.MouseEventHandler;
@@ -45,7 +45,7 @@ const IdvDocumentSubmit = observer(
             form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format('YYYY-MM-DD');
         }
 
-        const changeable_fields = [...getChangeableFields()];
+        const changeable_fields = is_confirmed ? [] : getChangeableFields();
 
         const initial_values = {
             document_type: {

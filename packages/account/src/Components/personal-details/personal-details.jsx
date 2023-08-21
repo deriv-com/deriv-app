@@ -28,7 +28,7 @@ import { splitValidationResultTypes } from '../real-account-signup/helpers/utils
 import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
 import FormSubHeader from '../form-sub-header';
-import ConfirmationCheckbox from '../forms/formik-confirmation-checkbox';
+import ConfirmationCheckbox from '../forms/confirmation-checkbox';
 
 const PersonalDetails = ({
     getCurrentStep,
@@ -127,7 +127,9 @@ const PersonalDetails = ({
     const citizen = account_settings?.citizen || residence;
     const selected_country = residence_list.find(residence_data => residence_data.value === citizen) || {};
 
-    const editable_fields = Object.keys(props.value).filter(field => !disabled_items.includes(field)) || [];
+    const editable_fields = is_confirmed
+        ? []
+        : Object.keys(props.value).filter(field => !disabled_items.includes(field)) || [];
 
     return (
         <Formik

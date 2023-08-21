@@ -1,6 +1,6 @@
 import React from 'react';
 import { Checkbox, Text } from '@deriv/components';
-import { isEmptyObject, isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv/shared';
 import { useFormikContext } from 'formik';
 
 /**
@@ -19,6 +19,10 @@ type TConfirmationCheckboxProps = {
      * The label of the checkbox.
      */
     label: string;
+    /**
+     * The size of the checkbox label.
+     */
+    label_size?: 'xxxxs' | 'xxxs' | 'xxs' | 'xs' | 's' | 'sm' | 'm' | 'l' | 'xl' | 'xxl';
 };
 
 /**
@@ -32,26 +36,25 @@ type TConfirmationCheckboxProps = {
  * @name ConfirmationCheckbox
  * @returns {JSX.Element} React component that renders a checkbox with a label
  */
-export const ConfirmationCheckbox = ({ confirmed, setConfirmed, label }: TConfirmationCheckboxProps): JSX.Element => {
+export const ConfirmationCheckbox = ({
+    confirmed,
+    setConfirmed,
+    label,
+    label_size,
+}: TConfirmationCheckboxProps): JSX.Element => {
     /**
      * The formik context for the current form.
      *
      * This context provides information about the form's state and helps in managing form behavior.
      */
-    const { dirty, isSubmitting, isValid, errors } = useFormikContext();
-
-    React.useEffect(() => {
-        if (!isValid) {
-            setConfirmed(false);
-        }
-    }, [isValid, setConfirmed]);
+    const { isSubmitting, isValid } = useFormikContext();
 
     return (
         <Checkbox
             className='formik__confirmation-checkbox'
             value={confirmed}
-            label={<Text size={isMobile() ? 'xxs' : 'xs'}>{label}</Text>}
-            disabled={!dirty || isSubmitting || !isValid || !isEmptyObject(errors)}
+            label={<Text size={label_size ?? (isMobile() ? 'xxs' : 'xs')}>{label}</Text>}
+            disabled={isSubmitting || !isValid}
             onChange={() => setConfirmed(prev_is_confirmed => !prev_is_confirmed)}
         />
     );

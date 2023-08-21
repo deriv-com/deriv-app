@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { ConfirmationCheckbox } from '../formik-confirmation-checkbox';
+import { ConfirmationCheckbox } from '../confirmation-checkbox';
 import { Formik, Form } from 'formik';
 
 describe('ConfirmationCheckbox', () => {

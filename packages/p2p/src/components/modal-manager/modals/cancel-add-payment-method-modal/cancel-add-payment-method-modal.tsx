@@ -1,13 +1,23 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { observer } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useStores } from 'Stores';
 
-const CancelAddPaymentMethodModal = ({ onCancel, should_hide_all_modals_on_cancel }) => {
-    const { my_ads_store, my_profile_store } = useStores();
+type TCancelAddPaymentMethodModalProps = {
+    onCancel?: () => void;
+    should_hide_all_modals_on_cancel?: boolean;
+};
+
+const CancelAddPaymentMethodModal = ({
+    onCancel,
+    should_hide_all_modals_on_cancel,
+}: TCancelAddPaymentMethodModalProps) => {
     const { hideModal, is_modal_open } = useModalManagerContext();
+    const { my_ads_store, my_profile_store } = useStores();
+    const { setShouldShowAddPaymentMethod } = my_ads_store;
+    const { hideAddPaymentMethodForm, setSelectedPaymentMethod } = my_profile_store;
 
     return (
         <Modal
@@ -29,9 +39,9 @@ const CancelAddPaymentMethodModal = ({ onCancel, should_hide_all_modals_on_cance
                 <Button
                     large
                     onClick={() => {
-                        my_profile_store.hideAddPaymentMethodForm();
-                        my_profile_store.setSelectedPaymentMethod('');
-                        my_ads_store.setShouldShowAddPaymentMethod(false);
+                        hideAddPaymentMethodForm();
+                        setSelectedPaymentMethod('');
+                        setShouldShowAddPaymentMethod(false);
                         onCancel?.();
                         hideModal({
                             should_save_form_history: false,
@@ -42,15 +52,7 @@ const CancelAddPaymentMethodModal = ({ onCancel, should_hide_all_modals_on_cance
                 >
                     <Localize i18n_default_text='Cancel' />
                 </Button>
-                <Button
-                    large
-                    onClick={() => {
-                        hideModal({
-                            should_save_form_history: true,
-                        });
-                    }}
-                    primary
-                >
+                <Button large onClick={() => hideModal({ should_save_form_history: true })} primary>
                     <Localize i18n_default_text='Go back' />
                 </Button>
             </Modal.Footer>

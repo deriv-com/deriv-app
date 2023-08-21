@@ -12,7 +12,7 @@ type TAddWalletCard = {
 
 const AddWalletCard = observer(({ wallet_info }: TAddWalletCard) => {
     const {
-        ui: { is_dark_mode_on },
+        ui: { is_dark_mode_on, is_mobile },
     } = useStore();
 
     const { currency, landing_company_name, is_added, gradient_card_class } = wallet_info;
@@ -33,10 +33,10 @@ const AddWalletCard = observer(({ wallet_info }: TAddWalletCard) => {
             <div className='add-wallets__card-wrapper'>
                 <WalletCard wallet={wallet_details} size='medium' state={is_added ? 'added' : 'add'} />
                 <div className='add-wallets__card-description'>
-                    <Text as='h3' weight='bold' color='prominent' className='add-wallets__card-description__header'>
+                    <Text as='h3' color='prominent' size={is_mobile ? 'xs' : 's'} weight='bold'>
                         {`${currency_config?.display_code} Wallet`}
                     </Text>
-                    <Text as='p' size='xs' className='add-wallets__card-description__text'>
+                    <Text as='p' size='xs' line_height={is_mobile ? 's' : 'm'}>
                         {wallet_description_mapper[currency]}
                     </Text>
                 </div>

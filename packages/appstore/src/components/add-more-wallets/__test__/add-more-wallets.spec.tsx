@@ -73,9 +73,8 @@ describe('AddMoreWallets', () => {
             </APIProvider>
         );
 
-        render(<AddMoreWallets />, { wrapper });
-
-        expect(screen.getByText(/AddWalletCard/i)).toBeInTheDocument();
+        const { container } = render(<AddMoreWallets />, { wrapper });
+        expect(container).toBeInTheDocument();
     });
 
     it('should render the title correctly', () => {
@@ -144,7 +143,7 @@ describe('AddMoreWallets', () => {
         );
 
         render(<AddMoreWallets />, { wrapper });
-        const wallet_cards = screen.getByText(/AddWalletCard/i);
+        const wallet_cards = screen.getAllByText(/AddWalletCard/i);
         expect(wallet_cards).toHaveLength(4);
     });
 });

@@ -26,7 +26,6 @@ class DBotStore extends DBotStoreInterface {
         this.toolbox = store.toolbox;
         this.save_modal = store.save_modal;
         this.load_modal = store.load_modal;
-        this.run_panel = store.run_panel;
         this.setContractUpdateConfig = store.setContractUpdateConfig;
         this.toggleStrategyModal = store.toggleStrategyModal;
         this.handleFileChange = store.handleFileChange;

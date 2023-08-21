@@ -261,6 +261,7 @@ export default class RunPanelStore {
 
     clearStat() {
         const { summary_card, journal, transactions } = this.root_store;
+
         this.setIsRunning(false);
         this.setHasOpenContract(false);
         this.clear();

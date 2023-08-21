@@ -1,4 +1,4 @@
-//TODO all file upload process needed to be checked and refactored with TS. skipping checks for passing CFD build
+//TODO all file upload process has to be checked and refactored with TS. skipping checks for passing CFD build
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import React from 'react';
@@ -27,34 +27,31 @@ import CommonMistakeExamples from '../../../Components/poa/common-mistakes/commo
 import PersonalDetailsForm from '../../../Components/forms/personal-details-form.jsx';
 import { isServerError, validate } from '../../../Helpers/utils';
 
-const FilesDescription = () => (
-    <div className='files-description'>
-        <Text size={isMobile() ? 'xxs' : 'xs'} as='div' className='files-description__title' weight='bold'>
-            {localize(
-                'We accept only these types of documents as proof of your address. The document must be recent (issued within last 6 months) and include your name and address:'
-            )}
-        </Text>
-        <ul>
-            <li>
-                <Text size={isMobile() ? 'xxs' : 'xs'}>
-                    {localize('Utility bill: electricity, water, gas, or landline phone bill.')}
-                </Text>
-            </li>
-            <li>
-                <Text size={isMobile() ? 'xxs' : 'xs'}>
-                    {localize(
-                        'Financial, legal, or government document: recent bank statement, affidavit, or government-issued letter.'
-                    )}
-                </Text>
-            </li>
-            <li>
-                <Text size={isMobile() ? 'xxs' : 'xs'}>
-                    {localize('Home rental agreement: valid and current agreement.')}
-                </Text>
-            </li>
-        </ul>
-    </div>
-);
+const FilesDescription = () => {
+    const descriptions = [
+        localize('Utility bill: electricity, water, gas, or landline phone bill.'),
+        localize(
+            'Financial, legal, or government document: recent bank statement, affidavit, or government-issued letter.'
+        ),
+        localize('Home rental agreement: valid and current agreement.'),
+    ];
+    return (
+        <div className='files-description'>
+            <Text size={isMobile() ? 'xxs' : 'xs'} as='div' className='files-description__title' weight='bold'>
+                {localize(
+                    'We accept only these types of documents as proof of your address. The document must be recent (issued within last 6 months) and include your name and address:'
+                )}
+            </Text>
+            <ul>
+                {descriptions.map(item => (
+                    <li key={item}>
+                        <Text size={isMobile() ? 'xxs' : 'xs'}>{item}</Text>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+};
 
 export type TFileRef = React.RefObject<null | { upload: () => Promise<DocumentUploadResponse> }> | undefined;
 

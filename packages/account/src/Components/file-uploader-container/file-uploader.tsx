@@ -1,4 +1,4 @@
-//TODO all file upload process needed to be checked and refactored with TS. skipping checks for passing CFD build
+//TODO all file upload process has to be checked and refactored with TS. skipping checks for passing CFD build
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import React from 'react';

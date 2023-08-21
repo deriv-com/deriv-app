@@ -21,7 +21,7 @@ describe('DynamicLeverageModalContent', () => {
         render(<DynamicLeverageModalContent />);
 
         const cards = screen.getAllByTestId('leverage-market-card');
-        expect(cards.length).toBe(4);
+        expect(cards).toHaveLength(4);
         cards.forEach(card => {
             expect(card).toBeInTheDocument();
         });

@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 export const dynamic_leverages = [
     {
         key: 'forex',
-        title: localize('Forex Majors'),
+        title: localize('Forex majors'),
         description: '',
         leverage: localize('Up to 1:1500'),
         data: [
@@ -87,7 +87,7 @@ export const dynamic_leverages = [
     },
     {
         key: 'stock_indices',
-        title: localize('Stock Indices'),
+        title: localize('Stock indices'),
         description: localize('(US_30, US_100, US_500)'),
         leverage: localize('Up to 1:300'),
         data: [
@@ -99,7 +99,7 @@ export const dynamic_leverages = [
             {
                 from: 5.1,
                 to: 50,
-                leverage: 300,
+                leverage: 200,
             },
             {
                 from: 50.1,

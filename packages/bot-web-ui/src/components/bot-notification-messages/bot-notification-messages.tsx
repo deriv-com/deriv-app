@@ -20,6 +20,7 @@ const BotNotificationMessages = observer(() => {
                 'notifications-container__dashboard': active_tab === 0 && is_info_panel_visible,
                 'notifications-container--panel-open': [BOT_BUILDER, CHART].includes(active_tab) && is_drawer_open,
             })}
+            data-testid='dt_notifications_container'
         >
             <Notifications />
         </div>

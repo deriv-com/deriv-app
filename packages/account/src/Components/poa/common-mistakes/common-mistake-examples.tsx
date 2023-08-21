@@ -13,6 +13,7 @@ type TCommonMistakeExamplePartialsProps = {
 
 /**
  * Wrapper for displaying the image and description of the mistake
+ * @name CommonMistakeExamplePartials
  * @param description - description of the mistake
  * @param image - Sample image
  * @returns  {React.ReactElement}
@@ -34,14 +35,14 @@ const CommonMistakeExamplePartials = ({ description, image }: TCommonMistakeExam
  * @returns {React.ReactElement}
  */
 const CommonMistakeExamples = () => {
-    const EXAMPLE_IMAGES = getExampleImagesConfig();
+    const example_images = getExampleImagesConfig();
     return (
         <React.Fragment>
             <Text as='div' weight='bold' size={isMobile() ? 'xxs' : 'xs'} className='common-mistake-examples__title'>
                 {localize('Common mistakes')}
             </Text>
             <div className='common-mistake-examples__content'>
-                {EXAMPLE_IMAGES.map(config => (
+                {example_images.map(config => (
                     <CommonMistakeExamplePartials
                         key={config.ref}
                         description={config.description}

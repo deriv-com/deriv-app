@@ -83,8 +83,7 @@ const ProofOfAddressContainer = observer(() => {
                 }
             });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_switching]);
+    }, [is_switching, refreshNotifications]);
 
     const handleResubmit = () => {
         setAuthenticationStatus(authentication_status => ({ ...authentication_status, ...{ resubmit_poa: true } }));
@@ -112,7 +111,7 @@ const ProofOfAddressContainer = observer(() => {
 
     const should_show_redirect_btn = Object.keys(platforms).includes(from_platform?.ref ?? '');
 
-    const redirect_button = should_show_redirect_btn ? (
+    const redirect_button = should_show_redirect_btn && (
         <Button
             primary
             className='proof-of-identity__redirect'
@@ -126,7 +125,7 @@ const ProofOfAddressContainer = observer(() => {
         >
             <Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name: from_platform.name }} />
         </Button>
-    ) : null;
+    );
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (

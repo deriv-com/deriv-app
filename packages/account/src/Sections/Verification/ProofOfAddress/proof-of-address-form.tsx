@@ -124,7 +124,7 @@ const ProofOfAddressForm = observer(
             });
         }, [account_settings, fetchResidenceList, fetchStatesList]);
 
-        const changeable_fields = [...getChangeableFields()];
+        const changeable_fields = getChangeableFields();
 
         const validateFields = (values: TFormInitialValues) => {
             (Object.entries(values) as ObjectEntries<TFormInitialValues>).forEach(
@@ -181,15 +181,6 @@ const ProofOfAddressForm = observer(
             setFormState({ ...form_state, ...{ should_show_form } });
         };
 
-        const hasFieldsErrors = (errors: FormikErrors<TFormInitialValues>, values: TFormInitialValues) =>
-            errors.address_line_1 ||
-            !values.address_line_1 ||
-            errors.address_line_2 ||
-            errors.address_city ||
-            !values.address_city ||
-            errors.address_state ||
-            errors.address_postcode;
-
         const onSubmitValues = async (
             values: TFormInitialValues,
             { setStatus, setSubmitting }: FormikHelpers<TFormInitialValues>
@@ -210,7 +201,7 @@ const ProofOfAddressForm = observer(
                 return;
             }
 
-            const get_settings = WS.authorized.storage.getSettings();
+            const get_settings = await WS.authorized.storage.getSettings();
 
             if (get_settings.error) {
                 setAPIInitialLoadError(get_settings.error.message);
@@ -315,6 +306,7 @@ const ProofOfAddressForm = observer(
                     isSubmitting,
                     setFieldValue,
                     setFieldTouched,
+                    isValid,
                 }) => (
                     <>
                         <LeaveConfirm onDirty={isMobile() ? showForm : undefined} />
@@ -367,7 +359,7 @@ const ProofOfAddressForm = observer(
                                         <FormSubmitButton
                                             is_disabled={
                                                 isSubmitting ||
-                                                !!hasFieldsErrors(errors, values) ||
+                                                !isValid ||
                                                 (document_file.files && document_file.files.length < 1) ||
                                                 !!document_file.error_message
                                             }
@@ -388,7 +380,7 @@ const ProofOfAddressForm = observer(
                                             type='submit'
                                             is_disabled={
                                                 isSubmitting ||
-                                                !!hasFieldsErrors(errors, values) ||
+                                                !isValid ||
                                                 (document_file.files && document_file.files.length < 1) ||
                                                 !!document_file.error_message
                                             }

@@ -1,0 +1,444 @@
+From f368989cd42163fe4210339ef7c91ffb7bf13649 Mon Sep 17 00:00:00 2001
+From: adrienne-rio <adrienne@deriv.com>
+Date: Mon, 21 Aug 2023 15:41:09 +0800
+Subject: [PATCH 1/5] feat: added use-authorize hook taken from sergei pr
+
+Co-authored-by: Sergei Baranovski <120570511+sergei-deriv@users.noreply.github.com>
+---
+ package-lock.json                             |  2 +-
+ packages/api/package.json                     |  1 +
+ packages/api/src/useAuthorize.ts              | 27 +++++++++++++++
+ packages/utils/package.json                   |  3 +-
+ .../getAccountsFromLocalStorage.spec.ts       | 34 +++++++++++++++++++
+ ...tActiveAuthTokenIDFromLocalStorage.spec.ts | 31 +++++++++++++++++
+ .../getActiveLoginIDFromLocalStorage.spec.ts  | 22 ++++++++++++
+ .../utils/src/getAccountsFromLocalStorage.ts  | 30 ++++++++++++++++
+ .../getActiveAuthTokenIDFromLocalStorage.ts   | 19 +++++++++++
+ .../src/getActiveLoginIDFromLocalStorage.ts   | 13 +++++++
+ packages/utils/src/index.ts                   |  3 ++
+ 11 files changed, 183 insertions(+), 2 deletions(-)
+ create mode 100644 packages/api/src/useAuthorize.ts
+ create mode 100644 packages/utils/src/__tests__/getAccountsFromLocalStorage.spec.ts
+ create mode 100644 packages/utils/src/__tests__/getActiveAuthTokenIDFromLocalStorage.spec.ts
+ create mode 100644 packages/utils/src/__tests__/getActiveLoginIDFromLocalStorage.spec.ts
+ create mode 100644 packages/utils/src/getAccountsFromLocalStorage.ts
+ create mode 100644 packages/utils/src/getActiveAuthTokenIDFromLocalStorage.ts
+ create mode 100644 packages/utils/src/getActiveLoginIDFromLocalStorage.ts
+
+diff --git a/package-lock.json b/package-lock.json
+index aef2a19e6b5..e8c275447a0 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -13,7 +13,7 @@
+                 "@contentpass/zxcvbn": "^4.4.3",
+                 "@datadog/browser-logs": "^4.36.0",
+                 "@datadog/browser-rum": "^4.37.0",
+-                "@deriv/api-types": "^1.0.94",
++                "@deriv/api-types": "^1.0.116",
+                 "@deriv/deriv-api": "^1.0.11",
+                 "@deriv/deriv-charts": "1.3.2",
+                 "@deriv/js-interpreter": "^3.0.0",
+diff --git a/packages/api/package.json b/packages/api/package.json
+index 3e0a17020cf..81d49126c23 100644
+--- a/packages/api/package.json
++++ b/packages/api/package.json
+@@ -4,6 +4,7 @@
+     "version": "1.0.0",
+     "main": "src/index.ts",
+     "dependencies": {
++        "@deriv/utils": "^1.0.0",
+         "@deriv/shared": "^1.0.0",
+         "react": "^17.0.2",
+         "@tanstack/react-query": "^4.28.0",
+diff --git a/packages/api/src/useAuthorize.ts b/packages/api/src/useAuthorize.ts
+new file mode 100644
+index 00000000000..68489b8731b
+--- /dev/null
++++ b/packages/api/src/useAuthorize.ts
+@@ -0,0 +1,27 @@
++import { useMemo } from 'react';
++import useFetch from './useFetch';
++import { getActiveAuthTokenIDFromLocalStorage } from '@deriv/utils';
++
++/** A custom hook that authorize the user with the given token. If no token is given, it will use the current token.
++ *
++ * @param token {string} - The authentication token. If this is not provided, it will use the current token instead.
++ */
++const useAuthorize = (token?: string) => {
++    const current_token = getActiveAuthTokenIDFromLocalStorage() || '';
++
++    const { data, ...rest } = useFetch('authorize', {
++        payload: { authorize: token || current_token },
++        options: { enabled: Boolean(current_token) },
++    });
++
++    // Add additional information to the authorize response.
++    const modified_authorize = useMemo(() => ({ ...data?.authorize }), [data?.authorize]);
++
++    return {
++        /** The authorize response. */
++        data: modified_authorize,
++        ...rest,
++    };
++};
++
++export default useAuthorize;
+diff --git a/packages/utils/package.json b/packages/utils/package.json
+index 31de5471d9c..1416c26f540 100644
+--- a/packages/utils/package.json
++++ b/packages/utils/package.json
+@@ -5,6 +5,7 @@
+     "main": "src/index.ts",
+     "dependencies": {},
+     "devDependencies": {
+-        "typescript": "^4.6.3"
++        "typescript": "^4.6.3",
++        "@deriv/api-types": "^1.0.116"
+     }
+ }
+diff --git a/packages/utils/src/__tests__/getAccountsFromLocalStorage.spec.ts b/packages/utils/src/__tests__/getAccountsFromLocalStorage.spec.ts
+new file mode 100644
+index 00000000000..e07c6a72784
+--- /dev/null
++++ b/packages/utils/src/__tests__/getAccountsFromLocalStorage.spec.ts
+@@ -0,0 +1,34 @@
++import getAccountsFromLocalStorage from '../getAccountsFromLocalStorage';
++
++describe('getAccountsFromLocalStorage', () => {
++    beforeEach(() => {
++        localStorage.clear();
++
++        localStorage.setItem(
++            'client.accounts',
++            JSON.stringify({
++                CR1001: {
++                    token: '12345',
++                },
++            })
++        );
++    });
++
++    test('should return object with one account', () => {
++        const result = getAccountsFromLocalStorage();
++
++        expect(result).toMatchObject({
++            CR1001: {
++                token: '12345',
++            },
++        });
++    });
++
++    test('should return empty object', () => {
++        localStorage.clear();
++
++        const result = getAccountsFromLocalStorage();
++
++        expect(result).toBeUndefined();
++    });
++});
+diff --git a/packages/utils/src/__tests__/getActiveAuthTokenIDFromLocalStorage.spec.ts b/packages/utils/src/__tests__/getActiveAuthTokenIDFromLocalStorage.spec.ts
+new file mode 100644
+index 00000000000..09c7ae1fc56
+--- /dev/null
++++ b/packages/utils/src/__tests__/getActiveAuthTokenIDFromLocalStorage.spec.ts
+@@ -0,0 +1,31 @@
++import getActiveAuthTokenIDFromLocalStorage from '../getActiveAuthTokenIDFromLocalStorage';
++
++describe('getActiveAuthTokenIDFromLocalStorage', () => {
++    beforeEach(() => {
++        localStorage.clear();
++
++        localStorage.setItem(
++            'client.accounts',
++            JSON.stringify({
++                CR1001: {
++                    token: '12345',
++                },
++            })
++        );
++        localStorage.setItem('active_loginid', 'CR1001');
++    });
++
++    test('should return active account token', () => {
++        const result = getActiveAuthTokenIDFromLocalStorage();
++
++        expect(result).toBe('12345');
++    });
++
++    test('should return empty string', () => {
++        localStorage.setItem('active_loginid', 'CR1111');
++
++        const result = getActiveAuthTokenIDFromLocalStorage();
++
++        expect(result).toBeUndefined();
++    });
++});
+diff --git a/packages/utils/src/__tests__/getActiveLoginIDFromLocalStorage.spec.ts b/packages/utils/src/__tests__/getActiveLoginIDFromLocalStorage.spec.ts
+new file mode 100644
+index 00000000000..e1152cb70e7
+--- /dev/null
++++ b/packages/utils/src/__tests__/getActiveLoginIDFromLocalStorage.spec.ts
+@@ -0,0 +1,22 @@
++import getActiveLoginIDFromLocalStorage from '../getActiveLoginIDFromLocalStorage';
++
++describe('getActiveLoginIDFromLocalStorage', () => {
++    beforeEach(() => {
++        localStorage.clear();
++        localStorage.setItem('active_loginid', 'CR1001');
++    });
++
++    test('should return active account token', () => {
++        const result = getActiveLoginIDFromLocalStorage();
++
++        expect(result).toBe('CR1001');
++    });
++
++    test('should return null', () => {
++        localStorage.clear();
++
++        const result = getActiveLoginIDFromLocalStorage();
++
++        expect(result).toBeUndefined();
++    });
++});
+diff --git a/packages/utils/src/getAccountsFromLocalStorage.ts b/packages/utils/src/getAccountsFromLocalStorage.ts
+new file mode 100644
+index 00000000000..afef9d01f4c
+--- /dev/null
++++ b/packages/utils/src/getAccountsFromLocalStorage.ts
+@@ -0,0 +1,30 @@
++import type { AuthorizeResponse } from '@deriv/api-types';
++
++type TLocalStorageAccount = {
++    token: string;
++    accepted_bch: number;
++    landing_company_shortcode: string;
++    residence: string;
++    session_start: number;
++};
++
++type TLocalStorageAccountsList = {
++    [k: string]: TLocalStorageAccount &
++        NonNullable<NonNullable<NonNullable<AuthorizeResponse['authorize']>['account_list']>>[number];
++};
++
++/**
++ * Gets the current user `accounts` list from the `localStorage`.
++ */
++const getAccountsFromLocalStorage = () => {
++    const data = localStorage.getItem('client.accounts');
++
++    // If there is no accounts list, return undefined.
++    if (!data) return;
++
++    const accounts: TLocalStorageAccountsList = JSON.parse(data);
++
++    return accounts;
++};
++
++export default getAccountsFromLocalStorage;
+diff --git a/packages/utils/src/getActiveAuthTokenIDFromLocalStorage.ts b/packages/utils/src/getActiveAuthTokenIDFromLocalStorage.ts
+new file mode 100644
+index 00000000000..36827abd6c5
+--- /dev/null
++++ b/packages/utils/src/getActiveAuthTokenIDFromLocalStorage.ts
+@@ -0,0 +1,19 @@
++import getAccountsFromLocalStorage from './getAccountsFromLocalStorage';
++import getActiveLoginIDFromLocalStorage from './getActiveLoginIDFromLocalStorage';
++
++/**
++ * Gets the current user's auth `token` for the active `loginid` from the `localStorage`.
++ */
++const getActiveAuthTokenIDFromLocalStorage = () => {
++    const accounts = getAccountsFromLocalStorage();
++    const active_loginid = getActiveLoginIDFromLocalStorage();
++
++    // If there is no active loginid or no accounts list, return undefined.
++    if (!active_loginid || !accounts) return;
++
++    const active_auth_token = accounts?.[active_loginid]?.token;
++
++    return active_auth_token;
++};
++
++export default getActiveAuthTokenIDFromLocalStorage;
+diff --git a/packages/utils/src/getActiveLoginIDFromLocalStorage.ts b/packages/utils/src/getActiveLoginIDFromLocalStorage.ts
+new file mode 100644
+index 00000000000..4f166a3345b
+--- /dev/null
++++ b/packages/utils/src/getActiveLoginIDFromLocalStorage.ts
+@@ -0,0 +1,13 @@
++/**
++ * Gets the active `loginid` for the current user from the `localStorage`.
++ */
++const getActiveLoginIDFromLocalStorage = () => {
++    const active_loginid = localStorage.getItem('active_loginid');
++
++    // If there is no active loginid, return undefined.
++    if (!active_loginid) return;
++
++    return active_loginid;
++};
++
++export default getActiveLoginIDFromLocalStorage;
+diff --git a/packages/utils/src/index.ts b/packages/utils/src/index.ts
+index 607e6f4da10..56e20cf19c1 100644
+--- a/packages/utils/src/index.ts
++++ b/packages/utils/src/index.ts
+@@ -1 +1,4 @@
+ export { default as unFormatLocaleString } from './unFormatLocaleString';
++export { default as getAccountsFromLocalStorage } from './getAccountsFromLocalStorage';
++export { default as getActiveLoginIDFromLocalStorage } from './getActiveLoginIDFromLocalStorage';
++export { default as getActiveAuthTokenIDFromLocalStorage } from './getActiveAuthTokenIDFromLocalStorage';
+
+From bc67484bda9ccce8dee048be60726d877ae7b00d Mon Sep 17 00:00:00 2001
+From: adrienne-rio <adrienne@deriv.com>
+Date: Mon, 21 Aug 2023 15:45:22 +0800
+Subject: [PATCH 2/5] chore: sorted imports for use-authorize
+
+Co-authored-by: Sergei Baranovski <120570511+sergei-deriv@users.noreply.github.com>
+---
+ packages/api/src/useAuthorize.ts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/packages/api/src/useAuthorize.ts b/packages/api/src/useAuthorize.ts
+index 68489b8731b..93b4d13a6e3 100644
+--- a/packages/api/src/useAuthorize.ts
++++ b/packages/api/src/useAuthorize.ts
+@@ -1,6 +1,6 @@
++import { getActiveAuthTokenIDFromLocalStorage } from '@deriv/utils';
+ import { useMemo } from 'react';
+ import useFetch from './useFetch';
+-import { getActiveAuthTokenIDFromLocalStorage } from '@deriv/utils';
+ 
+ /** A custom hook that authorize the user with the given token. If no token is given, it will use the current token.
+  *
+
+From 8856b9e1c5d4c8f752b969035b76b20f9d13f5be Mon Sep 17 00:00:00 2001
+From: adrienne-rio <adrienne@deriv.com>
+Date: Mon, 21 Aug 2023 15:47:11 +0800
+Subject: [PATCH 3/5] chore: moved default empty string in use-authorize
+
+---
+ packages/api/src/useAuthorize.ts                           | 4 ++--
+ packages/utils/src/getActiveAuthTokenIDFromLocalStorage.ts | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/packages/api/src/useAuthorize.ts b/packages/api/src/useAuthorize.ts
+index 93b4d13a6e3..d04236c9cbb 100644
+--- a/packages/api/src/useAuthorize.ts
++++ b/packages/api/src/useAuthorize.ts
+@@ -7,10 +7,10 @@ import useFetch from './useFetch';
+  * @param token {string} - The authentication token. If this is not provided, it will use the current token instead.
+  */
+ const useAuthorize = (token?: string) => {
+-    const current_token = getActiveAuthTokenIDFromLocalStorage() || '';
++    const current_token = getActiveAuthTokenIDFromLocalStorage();
+ 
+     const { data, ...rest } = useFetch('authorize', {
+-        payload: { authorize: token || current_token },
++        payload: { authorize: token || current_token || '' },
+         options: { enabled: Boolean(current_token) },
+     });
+ 
+diff --git a/packages/utils/src/getActiveAuthTokenIDFromLocalStorage.ts b/packages/utils/src/getActiveAuthTokenIDFromLocalStorage.ts
+index 36827abd6c5..583a1470ba9 100644
+--- a/packages/utils/src/getActiveAuthTokenIDFromLocalStorage.ts
++++ b/packages/utils/src/getActiveAuthTokenIDFromLocalStorage.ts
+@@ -11,7 +11,7 @@ const getActiveAuthTokenIDFromLocalStorage = () => {
+     // If there is no active loginid or no accounts list, return undefined.
+     if (!active_loginid || !accounts) return;
+ 
+-    const active_auth_token = accounts?.[active_loginid]?.token;
++    const active_auth_token = accounts[active_loginid]?.token;
+ 
+     return active_auth_token;
+ };
+
+From f72994ddfca86b6b1ee18cf507bfd7305d463599 Mon Sep 17 00:00:00 2001
+From: adrienne-rio <adrienne@deriv.com>
+Date: Mon, 21 Aug 2023 16:28:42 +0800
+Subject: [PATCH 4/5] chore: incorporated code reviews
+
+---
+ packages/utils/src/getAccountsFromLocalStorage.ts          | 5 ++---
+ packages/utils/src/getActiveAuthTokenIDFromLocalStorage.ts | 4 +---
+ 2 files changed, 3 insertions(+), 6 deletions(-)
+
+diff --git a/packages/utils/src/getAccountsFromLocalStorage.ts b/packages/utils/src/getAccountsFromLocalStorage.ts
+index afef9d01f4c..45f841dcf98 100644
+--- a/packages/utils/src/getAccountsFromLocalStorage.ts
++++ b/packages/utils/src/getAccountsFromLocalStorage.ts
+@@ -22,9 +22,8 @@ const getAccountsFromLocalStorage = () => {
+     // If there is no accounts list, return undefined.
+     if (!data) return;
+ 
+-    const accounts: TLocalStorageAccountsList = JSON.parse(data);
+-
+-    return accounts;
++    // Cast parsed JSON data to infer return type
++    return JSON.parse(data) as TLocalStorageAccountsList;
+ };
+ 
+ export default getAccountsFromLocalStorage;
+diff --git a/packages/utils/src/getActiveAuthTokenIDFromLocalStorage.ts b/packages/utils/src/getActiveAuthTokenIDFromLocalStorage.ts
+index 583a1470ba9..2399cddee51 100644
+--- a/packages/utils/src/getActiveAuthTokenIDFromLocalStorage.ts
++++ b/packages/utils/src/getActiveAuthTokenIDFromLocalStorage.ts
+@@ -11,9 +11,7 @@ const getActiveAuthTokenIDFromLocalStorage = () => {
+     // If there is no active loginid or no accounts list, return undefined.
+     if (!active_loginid || !accounts) return;
+ 
+-    const active_auth_token = accounts[active_loginid]?.token;
+-
+-    return active_auth_token;
++    return accounts[active_loginid]?.token;
+ };
+ 
+ export default getActiveAuthTokenIDFromLocalStorage;
+
+From 727feca30f246296cd252d9afc33f906f3504630 Mon Sep 17 00:00:00 2001
+From: adrienne-rio <adrienne@deriv.com>
+Date: Mon, 21 Aug 2023 17:21:43 +0800
+Subject: [PATCH 5/5] chore: added use-balance hook in api package
+
+Co-authored-by: Sergei Baranovski <120570511+sergei-deriv@users.noreply.github.com>
+---
+ packages/api/src/hooks/useBalance.tsx | 28 +++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+ create mode 100644 packages/api/src/hooks/useBalance.tsx
+
+diff --git a/packages/api/src/hooks/useBalance.tsx b/packages/api/src/hooks/useBalance.tsx
+new file mode 100644
+index 00000000000..cab51aec1db
+--- /dev/null
++++ b/packages/api/src/hooks/useBalance.tsx
+@@ -0,0 +1,28 @@
++import { useFetch } from '@deriv/api';
++import { useMemo } from 'react';
++
++/** A custom hook that gets the balance for user accounts.
++ * If no account argument is provided, by default the hook will return the balance of all accounts.
++ *
++ * @param account {string} - If set to 'all', return the balances of all accounts one by one.
++ *                           If set to 'current', return the balance of current account.
++ *                           If set as an account id, return the balance of that account.
++ *                           Default is set to 'all'.
++ */
++const useBalance = (account?: string) => {
++    const { data: balance_data, ...rest } = useFetch('balance', {
++        payload: { account: account ?? 'all' },
++        // TODO: Add a subscription when we have `BalanceProvider`.
++    });
++
++    // Add additional information to the balance data.
++    const modified_balance = useMemo(() => ({ ...balance_data?.balance }), [balance_data?.balance]);
++
++    return {
++        /** The balance response. */
++        data: modified_balance,
++        ...rest,
++    };
++};
++
++export default useBalance;

@@ -25,6 +25,7 @@ jest.mock('../../Components/cfd-poa', () =>
         </div>
     ))
 );
+
 jest.mock('../../Components/cfd-poi', () =>
     jest.fn(({ onCancel, onSubmit }) => (
         <div>
@@ -33,6 +34,7 @@ jest.mock('../../Components/cfd-poi', () =>
         </div>
     ))
 );
+
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     getAuthenticationStatusInfo: jest.fn().mockReturnValue({}),

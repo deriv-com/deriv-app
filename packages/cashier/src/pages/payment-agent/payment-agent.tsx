@@ -8,7 +8,7 @@ import { useCashierStore } from '../../stores/useCashierStores';
 import { useCashierLocked } from '@deriv/hooks';
 
 type TPaymentAgent = {
-    setSideNotes: (notes: React.ReactNode[]) => void;
+    setSideNotes?: (notes: React.ReactNode[]) => void;
 };
 
 const PaymentAgent = observer(({ setSideNotes }: TPaymentAgent) => {

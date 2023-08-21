@@ -16,7 +16,7 @@ const DepositCryptoWalletAddress: React.FC = observer(() => {
 
     if (error) {
         return (
-            <div className='deposit-crypto-wallet-address__inline-message'>
+            <div className='deposit-crypto-wallet-address__error'>
                 <InlineMessage
                     type='warning'
                     message={localize(

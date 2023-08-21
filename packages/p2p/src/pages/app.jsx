@@ -51,7 +51,7 @@ const App = () => {
         // Check if advertiser info has been subscribed to before the user navigates to
         // /advertiser?=id{counterparty_advertiser_id} from the url
         const disposeAdvertiserInfoSubscribedReaction = reaction(
-            () => general_store.is_advertiser_info_subscribed,
+            () => general_store.is_advertiser_info_subscribed && general_store.counterparty_advertiser_id,
             () => {
                 if (
                     /\/advertiser$/.test(location.pathname) &&

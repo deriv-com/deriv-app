@@ -56,7 +56,7 @@ const CryptoWithdrawForm = observer(() => {
         current_fiat_currency,
         verification_code: { payment_withdraw: verification_code },
     } = client;
-    const { crypto_fiat_converter, general_store, transaction_history, withdraw } = useCashierStore();
+    const { crypto_fiat_converter, general_store, withdraw } = useCashierStore();
     const crypto_currency = currency;
     const {
         blockchain_address,
@@ -76,12 +76,7 @@ const CryptoWithdrawForm = observer(() => {
         resetConverter,
     } = crypto_fiat_converter;
     const { is_loading, percentage, percentageSelectorSelectionStatus, should_percentage_reset } = general_store;
-    const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
     const account_details = useCurrentAccountDetails();
-
-    React.useEffect(() => {
-        recentTransactionOnMount();
-    }, [recentTransactionOnMount]);
 
     React.useEffect(() => {
         onMountWithdraw(verification_code);

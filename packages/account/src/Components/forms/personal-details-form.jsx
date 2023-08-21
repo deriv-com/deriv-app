@@ -101,6 +101,9 @@ const PersonalDetailsForm = props => {
         />
     );
 
+    // need to put this check related to DIEL clients
+    const is_svg_only = is_svg && !is_mf;
+
     return (
         <React.Fragment>
             <div
@@ -216,7 +219,7 @@ const PersonalDetailsForm = props => {
                                 data_testid='date_of_birth'
                             />
                         )}
-                        {!is_svg && 'place_of_birth' in values && (
+                        {!is_svg_only && 'place_of_birth' in values && (
                             <PlaceOfBirthField
                                 handleChange={handleChange}
                                 setFieldValue={setFieldValue}
@@ -279,7 +282,7 @@ const PersonalDetailsForm = props => {
                                 )}
                             </Field>
                         )}
-                        {!is_svg && 'phone' in values && (
+                        {!is_svg_only && 'phone' in values && (
                             <PhoneField
                                 value={values.phone}
                                 editable_fields={editable_fields}
@@ -287,7 +290,7 @@ const PersonalDetailsForm = props => {
                                 required
                             />
                         )}
-                        {!is_svg && ('tax_residence' in values || 'tax_identification_number' in values) && (
+                        {!is_svg_only && ('tax_residence' in values || 'tax_identification_number' in values) && (
                             <React.Fragment>
                                 <FormSubHeader title={localize('Tax information')} />
                                 {'tax_residence' in values && (
@@ -386,7 +389,7 @@ const PersonalDetailsForm = props => {
                                 )}
                             </React.Fragment>
                         )}
-                        {!is_svg && 'account_opening_reason' in values && (
+                        {!is_svg_only && 'account_opening_reason' in values && (
                             <AccountOpeningReasonField
                                 required
                                 account_opening_reason_list={account_opening_reason_list}
@@ -401,7 +404,7 @@ const PersonalDetailsForm = props => {
                 </FormBodySection>
             </div>
 
-            {is_svg && (
+            {is_svg_only && (
                 <div className='account-form__poi-additional-information'>
                     <FormSubHeader title={localize('Additional information')} />
                     {'phone' in values && (

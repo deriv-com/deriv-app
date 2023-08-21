@@ -28,21 +28,17 @@ class APIBase {
 
     getConnectionStatus() {
         if (this.api?.connection) {
-            switch (this.api.connection.readyState) {
-                case WebSocket.CONNECTING:
-                    return 'Connecting';
-                case WebSocket.OPEN:
-                    return 'Connected';
-                case WebSocket.CLOSING:
-                    return 'Closing';
-                case WebSocket.CLOSED:
-                    return 'Closed';
-                default:
-                    return 'Unknown';
-            }
-        } else {
+            const socket_state = {
+                [WebSocket.CONNECTING]: 'Connecting',
+                [WebSocket.OPEN]: 'Connected',
+                [WebSocket.CLOSING]: 'Closing',
+                [WebSocket.CLOSED]: 'Closed',
+            };
+            const ready_state = this.api.connection.readyState;
+            return socket_state[ready_state] || 'Unknown';
+        } 
             return 'Socket not initialized';
-        }
+        
     }
 
     terminate() {

@@ -4,6 +4,13 @@ import { screen, render } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import AddWalletCard from '../wallet-add-card';
 
+const wallet_info = {
+    currency: 'BTC',
+    gradient_card_class: '',
+    landing_company_name: 'svg',
+    is_added: false,
+};
+
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useFetch: jest.fn((name: string) => {
@@ -62,14 +69,7 @@ describe('AddWalletCard', () => {
         render(
             <StoreProvider store={mock}>
                 <APIProvider>
-                    <AddWalletCard
-                        wallet_info={{
-                            currency: 'BTC',
-                            gradient_card_class: '',
-                            is_added: false,
-                            landing_company_name: 'svg',
-                        }}
-                    />
+                    <AddWalletCard wallet_info={{ ...wallet_info }} />
                 </APIProvider>
             </StoreProvider>
         );
@@ -92,14 +92,7 @@ describe('AddWalletCard', () => {
         render(
             <StoreProvider store={mock}>
                 <APIProvider>
-                    <AddWalletCard
-                        wallet_info={{
-                            currency: 'BTC',
-                            gradient_card_class: '',
-                            is_added: true,
-                            landing_company_name: 'svg',
-                        }}
-                    />
+                    <AddWalletCard wallet_info={{ ...wallet_info, is_added: true }} />
                 </APIProvider>
             </StoreProvider>
         );
@@ -115,14 +108,7 @@ describe('AddWalletCard', () => {
         render(
             <StoreProvider store={mock}>
                 <APIProvider>
-                    <AddWalletCard
-                        wallet_info={{
-                            currency: 'UST',
-                            gradient_card_class: '',
-                            is_added: false,
-                            landing_company_name: 'svg',
-                        }}
-                    />
+                    <AddWalletCard wallet_info={{ ...wallet_info, currency: 'UST' }} />
                 </APIProvider>
             </StoreProvider>
         );

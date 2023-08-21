@@ -2,8 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import MyAdsFloatingRateSwitchModal from '../my-ads-floating-rate-switch-modal';
 import { useStores } from 'Stores/index';
+import MyAdsFloatingRateSwitchModal from '../my-ads-floating-rate-switch-modal';
 
 const mock_modal_manager: Partial<ReturnType<typeof useModalManagerContext>> = {
     is_modal_open: true,
@@ -71,7 +71,7 @@ describe('<MyAdsFloatingRateSwitchModal />', () => {
             },
         });
         render(<MyAdsFloatingRateSwitchModal />);
-        expect(screen.getByText('Cancel')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
     });
     it('should handle onClick for set button', () => {
         render(<MyAdsFloatingRateSwitchModal />);

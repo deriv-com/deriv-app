@@ -126,6 +126,7 @@ export default class MyAdsStore extends BaseStore {
             onToggleSwitchModal: action.bound,
             setRequiredAdType: action.bound,
             setUpdatePaymentMethodsErrorMessage: action.bound,
+            toggleMyAdsRateSwitchModal: action.bound,
             validateCreateAdForm: action.bound,
             validateEditAdForm: action.bound,
         });

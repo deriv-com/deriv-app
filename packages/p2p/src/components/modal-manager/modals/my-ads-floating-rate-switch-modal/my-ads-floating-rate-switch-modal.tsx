@@ -10,7 +10,7 @@ const MyAdsFloatingRateSwitchModal = () => {
     const { floating_rate_store, my_ads_store } = useStores();
     const { hideModal, is_modal_open } = useModalManagerContext();
     const { rate_type, reached_target_date } = floating_rate_store;
-    const { selected_ad_type } = my_ads_store;
+    const { selected_ad_type, toggleMyAdsRateSwitchModal } = my_ads_store;
 
     return (
         <React.Fragment>
@@ -27,14 +27,16 @@ const MyAdsFloatingRateSwitchModal = () => {
                         <Button
                             secondary
                             type='button'
-                            onClick={() =>
-                                my_ads_store.toggleMyAdsRateSwitchModal(selected_ad_type, !reached_target_date)
-                            }
+                            onClick={() => toggleMyAdsRateSwitchModal(selected_ad_type, !reached_target_date)}
                             large
                         >
-                            <Localize i18n_default_text={reached_target_date ? 'Cancel' : "I'll do this later"} />
+                            {reached_target_date ? (
+                                <Localize i18n_default_text='Cancel' />
+                            ) : (
+                                <Localize i18n_default_text="I'll do this later" />
+                            )}
                         </Button>
-                        <Button primary large onClick={() => my_ads_store.toggleMyAdsRateSwitchModal(rate_type, true)}>
+                        <Button primary large onClick={() => toggleMyAdsRateSwitchModal(rate_type, true)}>
                             {rate_type === ad_type.FLOAT ? (
                                 <Localize i18n_default_text='Set floating rate' />
                             ) : (

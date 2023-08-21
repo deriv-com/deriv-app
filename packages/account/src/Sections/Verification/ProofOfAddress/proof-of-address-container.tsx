@@ -59,23 +59,23 @@ const ProofOfAddressContainer = observer(() => {
                     const {
                         allow_document_upload,
                         allow_poa_resubmission,
-                        needs_poi,
-                        needs_poa,
                         document_status,
+                        has_submitted_poa,
                         is_age_verified,
+                        needs_poa,
+                        needs_poi,
                         poa_address_mismatch,
                     } = populateVerificationStatus(get_account_status);
-                    const has_submitted_poa = document_status === PoaStatusCodes.pending && !allow_poa_resubmission;
 
                     setAuthenticationStatus(authentication_status => ({
                         ...authentication_status,
                         allow_document_upload,
                         allow_poa_resubmission,
-                        needs_poi,
-                        needs_poa,
                         document_status,
                         has_submitted_poa,
                         is_age_verified,
+                        needs_poa,
+                        needs_poi,
                         poa_address_mismatch,
                     }));
                     setIsLoading(false);

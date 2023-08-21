@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Form, Formik, FormikHelpers } from 'formik';
-import type { GetSettings } from '@deriv/api-types';
+import { GetSettings } from '@deriv/api-types';
 import { Checkbox, HintBox, Loading, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import {

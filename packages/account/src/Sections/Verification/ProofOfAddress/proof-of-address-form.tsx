@@ -244,12 +244,12 @@ const ProofOfAddressForm = observer(
                 const has_poi = !(identity && identity.status === 'none');
                 const needs_poi = needs_verification.length && needs_verification.includes('identity');
                 onSubmit?.(has_poi);
-                removeNotificationMessage({ key: 'authenticate' });
-                removeNotificationByKey({ key: 'authenticate' });
-                removeNotificationMessage({ key: 'needs_poa' });
-                removeNotificationByKey({ key: 'needs_poa' });
-                removeNotificationMessage({ key: 'poa_expired' });
-                removeNotificationByKey({ key: 'poa_expired' });
+
+                ['authenticate', 'needs_poa', 'poa_expired'].forEach(key => {
+                    removeNotificationMessage({ key });
+                    removeNotificationByKey({ key });
+                });
+
                 if (needs_poi) {
                     addNotificationByKey('needs_poi');
                 }
@@ -289,7 +289,7 @@ const ProofOfAddressForm = observer(
         } else {
             form_initial_values.address_state = '';
         }
-        const offsetCalc = (status: { msg: string }) => {
+        const setOffset = (status: { msg: string }) => {
             const mobile_scroll_offset = status?.msg ? '200px' : '154px';
             return isMobile() && !is_qualified_for_cfd_modal ? mobile_scroll_offset : '80px';
         };
@@ -316,7 +316,7 @@ const ProofOfAddressForm = observer(
                                     height={`572px`}
                                     is_bypassed={!is_qualified_for_cfd_modal || isMobile()}
                                 >
-                                    <FormBody scroll_offset={offsetCalc(status)}>
+                                    <FormBody scroll_offset={setOffset(status)}>
                                         {is_resubmit && (
                                             <Text size='xs' align='left' color='loss-danger'>
                                                 {localize(

@@ -16,7 +16,7 @@ import FormSubHeader from 'Components/form-sub-header';
 import IDVForm from 'Components/forms/idv-form';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
 import FormFooter from 'Components/form-footer';
-import type { GetSettings } from '@deriv/api-types';
+import { GetSettings } from '@deriv/api-types';
 
 type TIdvDocSubmitOnSignup = {
     citizen_data: FormikValues;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { getExampleImagesConfig } from 'Configs/poa-common-mistake-examples-config';
+import { getExampleImagesConfig } from '../../../Configs/poa-common-mistake-examples-config';
 import IcErrorBadge from '../../../Assets/ic-error-badge.svg';
 import './common-mistake-examples.scss';
 

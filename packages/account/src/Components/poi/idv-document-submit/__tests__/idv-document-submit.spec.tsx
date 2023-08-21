@@ -138,7 +138,6 @@ describe('<IdvDocumentSubmit/>', () => {
         expect(verifyBtn).toBeDisabled();
 
         const confirmation_checkbox = screen.getByLabelText(/i confirm that the name and date of birth/i);
-        expect(confirmation_checkbox).toBeDisabled();
 
         const document_type_input = screen.getByRole<HTMLTextAreaElement>('combobox');
         expect(document_type_input.name).toBe('document_type');
@@ -156,6 +155,8 @@ describe('<IdvDocumentSubmit/>', () => {
         fireEvent.keyUp(document_number_input);
         fireEvent.change(document_number_input, { target: { value: 'A-32523' } });
         expect(await screen.findByText(/please enter the correct format/i)).toBeInTheDocument();
+
+        expect(confirmation_checkbox).toBeDisabled();
 
         fireEvent.change(document_number_input, { target: { value: '5436454364243' } });
 

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { loginUrl, routes, PlatformContext } from '@deriv/shared';
+import { loginUrl, routes, redirectToLogin, PlatformContext } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
@@ -12,6 +12,8 @@ const Redirect = ({
     setVerificationCode,
     verification_code,
     hasAnyRealAccount,
+    is_logged_in,
+    is_logging_in,
     openRealAccountSignup,
     setResetTradingPasswordModalOpen,
     toggleAccountSignupModal,
@@ -68,6 +70,11 @@ const Redirect = ({
         }
         case 'trading_platform_mt5_password_reset':
         case 'trading_platform_dxtrade_password_reset': {
+            if (!is_logging_in && !is_logged_in) {
+                redirectToLogin(is_logged_in, getLanguage());
+                redirected_to_route = true;
+                break;
+            }
             const redirect_to = url_params.get('redirect_to');
 
             if (redirect_to) {
@@ -195,6 +202,8 @@ Redirect.propTypes = {
     loginid: PropTypes.string,
     getServerTime: PropTypes.object,
     hasAnyRealAccount: PropTypes.bool,
+    is_logged_in: PropTypes.bool,
+    is_logging_in: PropTypes.bool,
     history: PropTypes.object,
     openRealAccountSignup: PropTypes.func,
     setResetTradingPasswordModalOpen: PropTypes.func,
@@ -215,6 +224,8 @@ export default withRouter(
         verification_code: client.verification_code,
         fetchResidenceList: client.fetchResidenceList,
         hasAnyRealAccount: client.hasAnyRealAccount,
+        is_logged_in: client.is_logged_in,
+        is_logging_in: client.is_logging_in,
         openRealAccountSignup: ui.openRealAccountSignup,
         setResetTradingPasswordModalOpen: ui.setResetTradingPasswordModalOpen,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,

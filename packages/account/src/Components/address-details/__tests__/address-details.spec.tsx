@@ -1,10 +1,10 @@
+import { FormikProps } from 'formik';
 import React from 'react';
+import { useStatesList } from '@deriv/hooks';
+import { isDesktop, isMobile } from '@deriv/shared';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import AddressDetails, { TAddressDetailFormProps } from '../address-details';
-import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
-import { FormikProps } from 'formik';
-import { StoreProvider, mockStore } from '@deriv/stores';
-import { useStatesList } from '@deriv/hooks';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -51,7 +51,6 @@ describe('<AddressDetails/>', () => {
         onCancel: jest.fn(),
         onSave: jest.fn(),
         onSubmit: jest.fn(),
-        // onSubmitEnabledChange: jest.fn(),
         selected_step_ref: { current: { isSubmitting: false } } as React.RefObject<
             FormikProps<TAddressDetailFormProps>
         >,
@@ -70,7 +69,6 @@ describe('<AddressDetails/>', () => {
     const store = mockStore({});
 
     const svgCommonRenderCheck = () => {
-        // expect(mock_props.onSubmitEnabledChange).toHaveBeenCalledTimes(1);
         expect(screen.getByLabelText(address_line_1_marked)).toBeInTheDocument();
         expect(screen.getByLabelText(address_line_2)).toBeInTheDocument();
         expect(screen.getByLabelText(address_postcode)).toBeInTheDocument();
@@ -194,8 +192,6 @@ describe('<AddressDetails/>', () => {
         const new_props = { ...mock_props, is_svg: false };
 
         renderComponent({ props: new_props });
-
-        // expect(mock_props.onSubmitEnabledChange).toHaveBeenCalledTimes(1);
 
         const inputs: HTMLTextAreaElement[] = screen.getAllByRole('textbox');
         expect(inputs.length).toBe(5);

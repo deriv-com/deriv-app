@@ -7,7 +7,7 @@ export type TUSTPopover = {
 };
 
 const USTPopover = ({ id }: TUSTPopover) => {
-    let popover_message: ReactElement | undefined;
+    let popover_message: ReactElement;
     if (/^UST$/i.test(id)) {
         popover_message = (
             <Localize

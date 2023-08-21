@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import {
     Formik,
     Field,
@@ -23,12 +24,11 @@ import {
     Text,
 } from '@deriv/components';
 import { useStatesList } from '@deriv/hooks';
-import { localize, Localize } from '@deriv/translations';
 import { getLocation } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
-import classNames from 'classnames';
+import { localize, Localize } from '@deriv/translations';
 import { FormInputField } from '../forms/form-fields';
+import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
 export type TAddressDetailFormProps = {
     address_line_1: string;

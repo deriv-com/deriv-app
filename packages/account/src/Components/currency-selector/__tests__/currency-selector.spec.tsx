@@ -1,7 +1,7 @@
 import React from 'react';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import { fireEvent, screen, render, waitFor } from '@testing-library/react';
 import CurrencySelector from '../currency-selector';
-import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('../../real-account-signup/helpers/utils.ts', () => ({
     splitValidationResultTypes: jest.fn(() => ({

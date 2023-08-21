@@ -1,15 +1,15 @@
 import classNames from 'classnames';
 import React, { HTMLAttributes, RefObject } from 'react';
 import { Field, Formik, FormikHandlers, FormikProps, FormikState } from 'formik';
+import { WebsiteStatus } from '@deriv/api-types';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
 import { getPlatformSettings, reorderCurrencies, getAddressDetailsFields } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import RadioButtonGroup from './radio-button-group';
-import RadioButton from './radio-button';
-import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
-import { TCurrencyConfig } from 'Types';
 import { observer, useStore } from '@deriv/stores';
-import { WebsiteStatus } from '@deriv/api-types';
+import { localize, Localize } from '@deriv/translations';
+import { TCurrencyConfig } from 'Types';
+import RadioButton from './radio-button';
+import RadioButtonGroup from './radio-button-group';
+import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
 export const Hr = () => <div className='currency-hr' />;
 
@@ -139,8 +139,9 @@ const CurrencySelector = observer(
                 const route_to_address_details = Object.keys(getAddressDetailsFields()).filter(item =>
                     keys.includes(item)
                 );
-                if (route_to_address_details?.length > 0) goToStep(3);
-                else {
+                if (route_to_address_details?.length > 0) {
+                    goToStep(3);
+                } else {
                     goToNextStep();
                 }
                 resetRealAccountSignupParams();

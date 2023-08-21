@@ -1,12 +1,11 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { routes, WS } from '@deriv/shared';
+import { WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import Error from '../../components/error';
 import NoBalance from '../../components/no-balance';
 import { Virtual } from '../../components/cashier-container';
 import CashierLocked from '../../components/cashier-locked';
-import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
 import AccountTransferReceipt from './account-transfer-receipt';
 import AccountTransferForm from './account-transfer-form';
 import AccountTransferNoAccount from './account-transfer-no-account';
@@ -24,8 +23,7 @@ type TAccountTransferProps = {
 
 const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSideNotes }: TAccountTransferProps) => {
     const { client } = useStore();
-    const { account_transfer, general_store, transaction_history } = useCashierStore();
-
+    const { account_transfer, general_store } = useCashierStore();
     const {
         accounts_list,
         error,
@@ -39,10 +37,8 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
     } = account_transfer;
     const { is_loading } = general_store;
     const is_cashier_locked = useCashierLocked();
-    const { is_crypto_transactions_visible } = transaction_history;
     const { is_switching, is_virtual } = client;
     const [is_loading_status, setIsLoadingStatus] = React.useState(true);
-    const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
 
     React.useEffect(() => {
         onMount();
@@ -90,9 +86,6 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
     }
     if (is_transfer_confirm) {
         return <AccountTransferReceipt onClose={onClose} />;
-    }
-    if (!is_from_outside_cashier && is_crypto_transactions_visible) {
-        return <CryptoTransactionsHistory />;
     }
 
     return (

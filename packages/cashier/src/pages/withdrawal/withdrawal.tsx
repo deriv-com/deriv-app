@@ -100,13 +100,17 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
                     ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
                 ];
 
-                setSideNotes?.([
-                    ...side_notes.map((side_note, index) => (
-                        <SideNote has_title={false} key={index}>
-                            {side_note}
-                        </SideNote>
-                    )),
-                ]);
+                if (is_crypto_transactions_visible) {
+                    setSideNotes?.([]);
+                } else {
+                    setSideNotes?.([
+                        ...side_notes.map((side_note, index) => (
+                            <SideNote has_title={false} key={index}>
+                                {side_note}
+                            </SideNote>
+                        )),
+                    ]);
+                }
             } else setSideNotes?.([]);
         }
 
@@ -114,7 +118,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
             setSideNotes?.([]);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, tab_index]);
+    }, [currency, tab_index, is_crypto_transactions_visible]);
 
     // TODO: Fix if conditions, use else if and combine conditions when possible
     if (is_system_maintenance) {
@@ -138,6 +142,8 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
     if (is_withdrawal_locked || is_10k_withdrawal_limit_reached) {
         return <WithdrawalLocked />;
     }
+
+    if (is_crypto_transactions_visible) return <CryptoTransactionsHistory />;
 
     if (!Number(balance)) {
         return (
@@ -167,10 +173,6 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
 
     if (is_withdraw_confirmed && !is_crypto_transactions_visible) {
         return <CryptoWithdrawReceipt />;
-    }
-
-    if (is_crypto_transactions_visible) {
-        return <CryptoTransactionsHistory />;
     }
 
     return (

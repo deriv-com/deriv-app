@@ -124,7 +124,7 @@ const TradingAppCard = observer(
                         })}
                     >
                         <div className='trading-app-card__details'>
-                            <React.Fragment>
+                            <div className='trading-app-card__details-title'>
                                 <Text className='title' size='xs' line_height='s' color='prominent'>
                                     {!is_wallet && !is_real && sub_title
                                         ? `${sub_title} ${localize('Demo')}`
@@ -136,12 +136,12 @@ const TradingAppCard = observer(
                                         weight='bolder'
                                         size='xxxs'
                                         line_height='s'
-                                        className='trading-app-card__details__short-code'
+                                        className='trading-app-card__details-short-code'
                                     >
                                         {short_code_and_region}
                                     </Text>
                                 )}
-                            </React.Fragment>
+                            </div>
                             {is_wallet ? (
                                 <Text
                                     className='title'
@@ -165,7 +165,7 @@ const TradingAppCard = observer(
                                         : name}
                                 </Text>
                             )}
-                            <Text className='description' color='general' size='xxs'>
+                            <Text className='description' size='xxs'>
                                 {app_desc}
                             </Text>
                             {mt5_acc_auth_status && (

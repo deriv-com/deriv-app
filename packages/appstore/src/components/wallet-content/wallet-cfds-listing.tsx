@@ -68,6 +68,13 @@ const WalletCFDsListing = observer(() => {
             description={cfd_description}
             is_outside_grid_container={!is_fiat}
         >
+            {is_mobile && (
+                <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
+                    <Text size='xs' color='red' weight='bold' line_height='s'>
+                        {accounts_sub_text}
+                    </Text>
+                </div>
+            )}
             {is_fiat ? <WalletFiatCFD wallet_account={wallet_account} /> : <WalletCryptoCFD />}
         </ListingContainer>
     );

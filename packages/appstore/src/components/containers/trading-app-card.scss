@@ -1,6 +1,4 @@
 .trading-app-card {
-    padding-bottom: 2rem;
-
     &__content {
         display: flex;
         align-items: center;
@@ -36,11 +34,16 @@
         min-height: 8rem;
         height: 100%;
         width: 100%;
-        &__short-code {
+        padding-bottom: 1.3rem;
+        &-title {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        &-short-code {
             padding: 0.4rem;
             height: fit-content;
             width: fit-content;
-            margin-left: 1rem;
             background-color: var(--icon-grey-background);
             border-radius: $BORDER_RADIUS;
         }
@@ -68,5 +71,9 @@
 
     &__title {
         user-select: none;
+    }
+
+    @include mobile {
+        margin-bottom: 2rem;
     }
 }

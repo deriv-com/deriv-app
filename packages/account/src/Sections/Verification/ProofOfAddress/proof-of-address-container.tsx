@@ -67,7 +67,7 @@ const ProofOfAddressContainer = observer(() => {
                     } = populateVerificationStatus(get_account_status);
                     const has_submitted_poa = document_status === PoaStatusCodes.pending && !allow_poa_resubmission;
 
-                    setAuthenticationStatus({
+                    setAuthenticationStatus(authentication_status => ({
                         ...authentication_status,
                         allow_document_upload,
                         allow_poa_resubmission,
@@ -77,7 +77,7 @@ const ProofOfAddressContainer = observer(() => {
                         has_submitted_poa,
                         is_age_verified,
                         poa_address_mismatch,
-                    });
+                    }));
                     setIsLoading(false);
                     refreshNotifications();
                 }
@@ -87,11 +87,14 @@ const ProofOfAddressContainer = observer(() => {
     }, [is_switching]);
 
     const handleResubmit = () => {
-        setAuthenticationStatus({ ...authentication_status, ...{ resubmit_poa: true } });
+        setAuthenticationStatus(authentication_status => ({ ...authentication_status, ...{ resubmit_poa: true } }));
     };
 
     const onSubmit = (needs_poi: boolean) => {
-        setAuthenticationStatus({ ...authentication_status, ...{ has_submitted_poa: true, needs_poi } });
+        setAuthenticationStatus(authentication_status => ({
+            ...authentication_status,
+            ...{ has_submitted_poa: true, needs_poi },
+        }));
     };
 
     const {

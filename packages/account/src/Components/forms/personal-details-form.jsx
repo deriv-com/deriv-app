@@ -69,8 +69,7 @@ const PersonalDetailsForm = ({
     const getNameAndDobLabels = () => {
         const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_qualified_for_idv;
         const first_name_label = is_asterisk_needed ? localize('First name*') : localize('First name');
-        const last_name_text = is_asterisk_needed ? localize('Last name*') : localize('Last name');
-        const last_name_label = last_name_text;
+        const last_name_label = is_asterisk_needed ? localize('Last name*') : localize('Last name');
         const dob_label = is_asterisk_needed ? localize('Date of birth*') : localize('Date of birth');
 
         return {

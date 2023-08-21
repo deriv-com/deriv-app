@@ -63,12 +63,12 @@ describe('<FileUploaderContainer />', () => {
     });
 
     it('files description and examples should be shown when passed', () => {
-        mock_props.files_description = <div>Files descriptions</div>;
-        mock_props.examples = <div>Files failures examples</div>;
+        mock_props.files_description = <div>Files description</div>;
+        mock_props.examples = <div>Files failure examples</div>;
 
         render(<FileUploaderContainer {...mock_props} />);
-        expect(screen.getByText('Files descriptions')).toBeInTheDocument();
-        expect(screen.getByText('Files failures examples')).toBeInTheDocument();
+        expect(screen.getByText('Files description')).toBeInTheDocument();
+        expect(screen.getByText('Files failure examples')).toBeInTheDocument();
     });
 
     it('should show hint message for desktop', () => {

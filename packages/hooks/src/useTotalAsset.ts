@@ -2,7 +2,6 @@ import { useStore } from '@deriv/stores';
 import useCFDAccounts from './useCFDAccounts';
 import usePlatformAccounts from './usePlatformAccounts';
 import useTotalAccountBalance from './useTotalAccountBalance';
-import useExchangeRate from './useExchangeRate';
 /**
  * we can use this hook to get the total asset of the client
  */
@@ -16,7 +15,6 @@ const useTotalAsset = () => {
     const { real: platform_real_accounts, demo: platform_demo_account } = usePlatformAccounts();
     const { real: cfd_real_accounts, demo: cfd_demo_accounts } = useCFDAccounts();
 
-    const { last_update } = useExchangeRate();
     const platform_real_balance = useTotalAccountBalance(platform_real_accounts);
     const cfd_real_balance = useTotalAccountBalance(cfd_real_accounts);
     const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
@@ -29,10 +27,12 @@ const useTotalAsset = () => {
         ? platform_real_balance.currency || ''
         : platform_demo_account?.currency || default_currency;
 
+    const current_timestamp = new Date().getTime() / 1000;
+
     return {
         total_asset_balance,
         total_asset_currency,
-        exchange_rate_last_updated: last_update,
+        last_updated: current_timestamp,
     };
 };
 

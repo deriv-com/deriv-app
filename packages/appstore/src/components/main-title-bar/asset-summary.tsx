@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
@@ -17,7 +17,22 @@ const AssetSummary = observer(() => {
     const eu_account = is_eu_user && !no_MF_account;
     const cr_account = !is_eu_user && !no_CR_account;
 
-    const { total_asset_balance, total_asset_currency } = useTotalAsset();
+    const total_asset = useTotalAsset();
+
+    const [delayed_total_Asset, setDelayedTotalAsset] = React.useState(total_asset);
+    useEffect(() => {
+        setDelayedTotalAsset(old => {
+            if (!old) return total_asset;
+
+            if (Math.abs(total_asset.last_updated - old.last_updated) > 60) return total_asset;
+
+            return old;
+        });
+    }, [total_asset]);
+
+    console.log('total_asset', total_asset);
+    console.log('total', delayed_total_Asset);
+    console.log('==============================');
 
     //dont show loader if user has no respective regional account
     if ((is_switching || is_logging_in) && (eu_account || cr_account)) {
@@ -46,8 +61,8 @@ const AssetSummary = observer(() => {
                         is_bubble_hover_enabled
                     >
                         <BalanceText
-                            currency={total_asset_currency}
-                            balance={total_asset_balance}
+                            currency={delayed_total_Asset.total_asset_currency}
+                            balance={delayed_total_Asset.total_asset_balance}
                             underline_style='dotted'
                         />
                     </Popover>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { DocumentUploadResponse } from '@deriv/api-types';
 import { compressImageFiles, isMobile, isDesktop, readFiles } from '@deriv/shared';
 import FileUploader from '../file-uploader';
-import { DocumentUploadResponse } from '@deriv/api-types';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),

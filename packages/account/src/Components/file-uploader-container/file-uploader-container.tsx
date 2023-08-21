@@ -40,7 +40,7 @@ const FileUploaderContainer = ({
             <Text size={isMobile() ? 'xxs' : 'xs'} as='div' className='file-uploader__file-title' weight='bold'>
                 {localize('Upload file')}
             </Text>
-            <div className='file-uploader__file'>
+            <div className='file-uploader__file-dropzone-wrapper'>
                 <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} settings={settings} />
             </div>
             <div className='file-uploader__file-supported-formats'>

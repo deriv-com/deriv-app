@@ -1,6 +1,5 @@
 import { toJS } from 'mobx';
-import { isEmptyObject } from '@deriv/shared';
-import { CONTRACT_SHADES } from '../Constants/barriers';
+import { isEmptyObject, CONTRACT_SHADES } from '@deriv/shared';
 
 export const isBarrierSupported = contract_type => contract_type in CONTRACT_SHADES;
 

@@ -15,7 +15,7 @@ const ChartSettingContainer = Loadable({
         import(
             /* webpackChunkName: "settings-chart", webpackPrefetch: true */ 'App/Containers/SettingsModal/settings-chart.jsx'
         ),
-    loading: UILoader,
+    loading: () => <UILoader />,
 });
 
 // const PurchaseSettings = Loadable({

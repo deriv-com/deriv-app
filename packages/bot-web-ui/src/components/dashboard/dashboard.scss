@@ -7,12 +7,30 @@
 }
 
 .bot-stopped-dialog {
+    @include mobile {
+        padding: 2rem;
+    }
     .dc-dialog {
         &__header-wrapper {
             margin: 0 0 2.4rem;
         }
         &__content {
             margin: 0 0 2.4rem;
+        }
+
+        @include mobile {
+            &__footer {
+                flex-wrap: unset;
+                .dc-dialog__button {
+                    &:first-child {
+                        margin-right: 1rem;
+                    }
+                    padding: 0;
+                    width: 40%;
+                    min-width: unset;
+                    flex-basis: unset;
+                }
+            }
         }
     }
 }

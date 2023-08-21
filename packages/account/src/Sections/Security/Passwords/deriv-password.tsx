@@ -1,26 +1,33 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Icon, Popover, Text } from '@deriv/components';
-import { getBrandWebsiteName, getPlatformSettings, toTitleCase, WS } from '@deriv/shared';
+import { useVerifyEmail } from '@deriv/hooks';
+import { getBrandWebsiteName, getPlatformSettings, toTitleCase } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
 import DerivComLogo from 'Assets/ic-brand-deriv-red.svg';
 
-const DerivPassword = ({
-    email,
-    is_eu_user,
-    is_social_signup,
-    social_identity_provider,
-    financial_restricted_countries,
-}) => {
+/**
+ * Displays a change password button and with instructions on how to change the password.
+ * @name DerivPassword
+ * @returns {React.ReactNode}
+ */
+const DerivPassword = observer(() => {
+    const {
+        traders_hub: { is_eu_user, financial_restricted_countries },
+        client: { social_identity_provider, is_social_signup, email },
+    } = useStore();
+    const { send: requestEmail } = useVerifyEmail('request_email');
+    const { send: resetPassword } = useVerifyEmail('reset_password');
+
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
     const onClickSendEmail = () => {
         if (social_identity_provider === 'apple') {
-            WS.verifyEmail(email, 'request_email');
+            requestEmail(email);
         } else {
-            WS.verifyEmail(email, 'reset_password');
+            resetPassword(email);
         }
         setIsSentEmailModalOpen(true);
     };
@@ -178,15 +185,6 @@ const DerivPassword = ({
             </div>
         </React.Fragment>
     );
-};
-
-DerivPassword.propTypes = {
-    email: PropTypes.string,
-    is_dark_mode_on: PropTypes.bool,
-    is_eu_user: PropTypes.bool,
-    financial_restricted_countries: PropTypes.bool,
-    is_social_signup: PropTypes.bool,
-    social_identity_provider: PropTypes.string,
-};
+});
 
 export default DerivPassword;

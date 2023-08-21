@@ -283,9 +283,9 @@ type TClientStore = {
     is_eu_country: boolean;
     is_eu: boolean;
     is_uk: boolean;
-    is_social_signup: boolean;
     has_residence: boolean;
     is_authorize: boolean;
+    is_dxtrade_password_not_set: boolean;
     is_financial_account: boolean;
     is_financial_information_incomplete: boolean;
     is_identity_verification_needed: boolean;
@@ -293,7 +293,10 @@ type TClientStore = {
     is_logged_in: boolean;
     is_logging_in: boolean;
     is_low_risk: boolean;
+    is_mt5_password_not_set: boolean;
     is_pending_proof_of_ownership: boolean;
+    is_populating_dxtrade_account_list: boolean;
+    is_social_signup: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
     is_trading_experience_incomplete: boolean;
@@ -328,6 +331,7 @@ type TClientStore = {
     setP2pAdvertiserInfo: () => void;
     setPreSwitchAccount: (status?: boolean) => void;
     switchAccount: (value?: string) => Promise<void>;
+    social_identity_provider: string;
     switched: boolean;
     switch_broadcast: boolean;
     switchEndSignal: () => void;

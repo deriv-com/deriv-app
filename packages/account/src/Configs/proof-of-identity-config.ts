@@ -1,4 +1,5 @@
-import { GetSettings } from '@deriv/api-types';
+import React from 'react';
+import type { GetSettings } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
 
 const proofOfIdentityConfig = (

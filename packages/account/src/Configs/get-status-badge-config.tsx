@@ -3,7 +3,11 @@ import { Link } from 'react-router-dom';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
-const getStatusBadgeConfig = (account_status, openFailedVerificationModal, selected_account_type) => {
+const getStatusBadgeConfig = (
+    account_status: string,
+    openFailedVerificationModal: (selected_account_type: string) => void,
+    selected_account_type: string
+) => {
     switch (account_status) {
         case 'pending':
             return {

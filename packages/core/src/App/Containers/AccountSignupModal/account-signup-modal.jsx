@@ -2,7 +2,7 @@ import { Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Checkbox, Dialog, Loading, Text } from '@deriv/components';
-import { getLocation, PlatformContext } from '@deriv/shared';
+import { getLocation } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
@@ -14,7 +14,6 @@ import validateSignupFields from './validate-signup-fields.jsx';
 
 const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, residence_list }) => {
     const signupInitialValues = { citizenship: '', password: '', residence: '' };
-    const { is_appstore } = React.useContext(PlatformContext);
     const [api_error, setApiError] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
     const [country, setCountry] = React.useState('');
@@ -152,7 +151,6 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                     errors={errors}
                                     handleBlur={handleBlur}
                                     handleChange={handleChange}
-                                    is_appstore={is_appstore}
                                     isModalVisible={isModalVisible}
                                     isSubmitting={isSubmitting}
                                     touched={touched}

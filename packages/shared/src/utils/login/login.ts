@@ -21,7 +21,7 @@ type TRedirectToSignUp = {
     is_deriv_crypto?: boolean;
 };
 
-export const redirectToSignUp = ({ is_appstore }: TRedirectToSignUp) => {
+export const redirectToSignUp = ({ is_appstore }: TRedirectToSignUp = {}) => {
     window.open(getStaticUrl('/signup/', { is_appstore }));
 };
 

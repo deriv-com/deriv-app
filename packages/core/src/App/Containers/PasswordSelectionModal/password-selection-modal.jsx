@@ -12,7 +12,6 @@ const PasswordSelectionModal = ({
     errors,
     handleBlur,
     handleChange,
-    is_appstore,
     isModalVisible,
     isSubmitting,
     touched,
@@ -81,7 +80,7 @@ const PasswordSelectionModal = ({
                         primary
                         text={localize('Create new account')}
                         type='button'
-                        onClick={() => redirectToSignUp({ is_appstore })}
+                        onClick={() => redirectToSignUp()}
                     />
                 </div>
             </React.Fragment>

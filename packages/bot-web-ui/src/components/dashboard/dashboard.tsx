@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
+import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -82,9 +83,17 @@ const Dashboard = observer(() => {
     };
     const active_hash_tab = GetHashedValue(active_tab);
 
+    const connectionDistrupted = () => {
+        const api_status = api_base.getConnectionStatus();
+        if (api_status === 'Closed' || api_status === 'Closing') {
+            stopBot();
+            setWebSocketState(false);
+        }
+    };
+
     React.useEffect(() => {
-        if (!is_web_socket_intialised && is_running) stopBot();
-    }, [is_web_socket_intialised]);
+        window.addEventListener('focus', connectionDistrupted);
+    }, []);
 
     React.useEffect(() => {
         if (init_render.current) {

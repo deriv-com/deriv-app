@@ -1,7 +1,6 @@
 import { observer as globalObserver } from '../../utils/observer';
 import { doUntilDone } from '../tradeEngine/utils/helpers';
 import { generateDerivApiInstance, getLoginId, getToken } from './appId';
-import DBotStore from 'src/scratch/dbot-store';
 
 class APIBase {
     api;
@@ -30,17 +29,14 @@ class APIBase {
 
     getConnectionStatus() {
         if (this.api?.connection) {
-            const { setWebSocketState } = DBotStore.instance.dashboard;
             switch (this.api.connection.readyState) {
                 case WebSocket.CONNECTING:
                     return 'Connecting';
                 case WebSocket.OPEN:
                     return 'Connected';
                 case WebSocket.CLOSING:
-                    setWebSocketState(false);
                     return 'Closing';
                 case WebSocket.CLOSED:
-                    setWebSocketState(false);
                     return 'Closed';
                 default:
                     return 'Unknown';

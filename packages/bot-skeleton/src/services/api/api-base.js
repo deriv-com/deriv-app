@@ -23,7 +23,6 @@ class APIBase {
             if (this.time_interval) clearInterval(this.time_interval);
             this.time_interval = null;
             this.getTime();
-            this.getConnectionStatus();
         }
     }
 
@@ -49,7 +48,6 @@ class APIBase {
     terminate() {
         // eslint-disable-next-line no-console
         console.log('connection terminated');
-        this.getConnectionStatus();
         if (this.api) this.api.disconnect();
     }
 
@@ -69,7 +67,6 @@ class APIBase {
     reconnectIfNotConnected = () => {
         // eslint-disable-next-line no-console
         console.log('connection state: ', this.api.connection.readyState);
-        this.getConnectionStatus();
         if (this.api.connection.readyState !== 1) {
             // eslint-disable-next-line no-console
             console.log('Info: Connection to the server was closed, trying to reconnect.');

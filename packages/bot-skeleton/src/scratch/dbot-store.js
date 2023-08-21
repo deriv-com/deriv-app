@@ -1,5 +1,4 @@
 import { reaction } from 'mobx';
-// eslint-disable-next-line import/no-cycle
 import { api_base } from '../services/api/api-base';
 
 class DBotStoreInterface {

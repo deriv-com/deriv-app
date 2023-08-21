@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StaticUrl, StatusBadge, Popover } from '@deriv/components';
+import { Text, StaticUrl, StatusBadge } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { isMobile, formatMoney, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -54,7 +54,7 @@ const CFDsListing = observer(() => {
         financial_restricted_countries,
     } = traders_hub;
 
-    const { toggleCompareAccountsModal, setAccountType } = cfd;
+    const { toggleCompareAccountsModal, setAccountType, toggle_system_maintenance_dialog } = cfd;
     const { is_landing_company_loaded, real_account_creation_unlock_date, account_status } = client;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal, setShouldShowCooldownModal } = ui;
@@ -162,23 +162,42 @@ const CFDsListing = observer(() => {
                                 <Localize i18n_default_text={accounts_sub_text} />
                             </Text>
                         </div>
-                        {is_system_maintenance && (
-                            <Popover
-                                data_testid='dt_cfds-listing_popover'
-                                alignment='right'
-                                className='da-account-limits__popover'
-                                is_bubble_hover_enabled
-                                message={
+
+                        {!is_system_maintenance && (
+                            <span onClick={() => toggle_system_maintenance_dialog()}>
+                                <StatusBadge account_status='pending' icon='IcAlertWarning' text='Server maintenance' />
+                            </span>
+                        )}
+                        {/* {!is_system_maintenance && (
+                            <React.Fragment>
+                                <span onClick={() => setVisibility(true)}>
+                                    <StatusBadge
+                                        account_status='pending'
+                                        icon='IcAlertWarning'
+                                        text='Server maintenance'
+                                    />
+                                </span>
+                                <Dialog
+                                    is_visible={visibility}
+                                    title={'Server maintenance'}
+                                    cancel_button_text={'Cancel'}
+                                    // confirm_button_text={'Confirm'}
+                                    onCancel={() => {
+                                        setVisibility(false);
+                                        console.log('Canceled');
+                                    }}
+                                    // onConfirm={() => {
+                                    //     setVisibility(false);
+                                    //     console.log('Confirmed');
+                                    // }}
+                                >
                                     <Localize
                                         i18n_default_text='Server maintenance starts at <0>01:00 GMT every Sunday</0>, and it may take up to 2 hours to complete. Services may be disrupted during this time..'
                                         components={[<Text key={0} weight='bold' size='xxs' />]}
                                     />
-                                }
-                                zIndex='9999'
-                            >
-                                <StatusBadge account_status='pending' icon='IcAlertWarning' text='Server maintenance' />
-                            </Popover>
-                        )}
+                                </Dialog>
+                            </React.Fragment>
+                        )} */}
                     </div>
                 )
             }

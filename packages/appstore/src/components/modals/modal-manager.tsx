@@ -6,6 +6,7 @@ import MT5AccountTypeModal from './account-type-modal';
 import RegulatorsCompareModal from './regulators-compare-modal';
 import { useStores } from 'Stores';
 import CFDServerErrorDialog from '@deriv/cfd/src/Containers/cfd-server-error-dialog';
+import CFDServerMaintenanceDialog from '@deriv/cfd/src/Containers/cfd-server-maintenance-dialog';
 import JurisdictionModal from '@deriv/cfd/src/Containers/jurisdiction-modal/jurisdiction-modal';
 import CFDPasswordModal from '@deriv/cfd/src/Containers/cfd-password-modal';
 import CFDDbviOnBoarding from '@deriv/cfd/src/Containers/cfd-dbvi-onboarding';
@@ -123,6 +124,7 @@ const ModalManager = () => {
             <CFDDbviOnBoarding />
             <CFDResetPasswordModal platform={platform} />
             <CFDServerErrorDialog />
+            <CFDServerMaintenanceDialog />
             <CFDTopUpDemoModal platform={platform} />
             <MT5TradeModal
                 is_open={is_mt5_trade_modal_visible}

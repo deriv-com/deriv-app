@@ -442,9 +442,12 @@
         height: 50%;
     }
 
-    img,
+    img {
+        height: 100%;
+    }
+
     video {
-        width: 100%;
+        width: 66%;
         height: 100%;
     }
 

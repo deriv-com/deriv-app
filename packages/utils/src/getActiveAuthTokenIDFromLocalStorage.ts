@@ -11,7 +11,7 @@ const getActiveAuthTokenIDFromLocalStorage = () => {
     // If there is no active loginid or no accounts list, return undefined.
     if (!active_loginid || !accounts) return;
 
-    const active_auth_token = accounts?.[active_loginid]?.token;
+    const active_auth_token = accounts[active_loginid]?.token;
 
     return active_auth_token;
 };

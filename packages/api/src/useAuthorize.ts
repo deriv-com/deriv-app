@@ -7,10 +7,10 @@ import useFetch from './useFetch';
  * @param token {string} - The authentication token. If this is not provided, it will use the current token instead.
  */
 const useAuthorize = (token?: string) => {
-    const current_token = getActiveAuthTokenIDFromLocalStorage() || '';
+    const current_token = getActiveAuthTokenIDFromLocalStorage();
 
     const { data, ...rest } = useFetch('authorize', {
-        payload: { authorize: token || current_token },
+        payload: { authorize: token || current_token || '' },
         options: { enabled: Boolean(current_token) },
     });
 

@@ -122,9 +122,9 @@ describe('<AddressDetails/>', () => {
         expect(screen.queryByText(verification_info)).not.toBeInTheDocument();
 
         const inputs: HTMLTextAreaElement[] = screen.getAllByRole('textbox');
-        expect(inputs.length).toBe(5);
+        expect(inputs).toHaveLength(5);
         const required_fields = inputs.filter(input => input.required === true);
-        expect(required_fields.length).toBe(2);
+        expect(required_fields).toHaveLength(2);
     });
 
     it('should render AddressDetails component and trigger buttons', async () => {
@@ -136,10 +136,10 @@ describe('<AddressDetails/>', () => {
         expect(screen.queryByText(verification_info)).not.toBeInTheDocument();
 
         const inputs: HTMLTextAreaElement[] = screen.getAllByRole('textbox');
-        expect(inputs.length).toBe(5);
+        expect(inputs).toHaveLength(5);
 
         const required_fields = inputs.filter(input => input.required === true);
-        expect(required_fields.length).toBe(2);
+        expect(required_fields).toHaveLength(2);
 
         const previous_btn = screen.getByRole('button', { name: /previous/i });
         fireEvent.click(previous_btn);

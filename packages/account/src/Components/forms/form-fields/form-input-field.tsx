@@ -22,14 +22,13 @@ type TFormInputFieldHelpers = {
  * @param [props] - Other props to pass to Input
  * @returns {React.ReactNode}
  */
-const FormInputField = ({ name, optional = false, warn, ...rest }: FormInputFieldProps) => (
+const FormInputField = ({ name, warn, ...rest }: FormInputFieldProps) => (
     <Field name={name}>
         {({ field, form: { errors, touched } }: TFormInputFieldHelpers) => (
             <Input
                 {...field}
                 {...rest}
                 type='text'
-                required={!optional}
                 autoComplete='off'
                 error={touched[field.name] && errors[field.name] ? errors[field.name] : undefined}
                 warn={warn}

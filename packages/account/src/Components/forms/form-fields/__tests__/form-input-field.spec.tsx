@@ -7,7 +7,7 @@ describe('Tesing <FormInputField/> component', () => {
     it('should render properties', () => {
         const props = {
             name: 'test-name',
-            optional: true,
+            required: true,
         };
         render(
             <Formik initialValues={{}} onSubmit={jest.fn()}>
@@ -21,7 +21,6 @@ describe('Tesing <FormInputField/> component', () => {
     it('should render Input field with optional status', () => {
         const props = {
             name: 'test-name',
-            optional: true,
         };
         render(
             <Formik initialValues={{}} onSubmit={jest.fn()}>

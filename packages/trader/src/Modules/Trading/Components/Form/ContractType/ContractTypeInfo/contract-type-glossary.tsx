@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import { Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
@@ -191,40 +191,46 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
     }
     return (
         <React.Fragment>
-            {content?.map(({ type, text }: { type: string; text: string | string[] }) => {
-                if (type === 'heading' && typeof text === 'string') {
-                    return (
-                        <Text
-                            as='h2'
-                            key={text.substring(0, 10)}
-                            weight='bold'
-                            className='contract-type-info__content-glossary--heading'
-                        >
-                            {text}
-                        </Text>
-                    );
+            {content?.map(
+                ({ type, text }: { type: string; text: string | string[] | ComponentProps<typeof Localize> }) => {
+                    if (type === 'heading' && typeof text === 'string') {
+                        return (
+                            <Text
+                                as='h2'
+                                key={text.substring(0, 10)}
+                                weight='bold'
+                                className='contract-type-info__content-glossary--heading'
+                            >
+                                {text}
+                            </Text>
+                        );
+                    }
+                    if (type === 'paragraph' && typeof text === 'string') {
+                        return (
+                            <Text as='p' key={text.substring(0, 10)}>
+                                {text}
+                            </Text>
+                        );
+                    }
+                    if (type === 'paragraph' && typeof text === 'object') {
+                        return (
+                            <Text as='p' key={text.props.i18n_default_text.substring(0, 10)}>
+                                {text}
+                            </Text>
+                        );
+                    }
+                    if (type === 'list' && typeof text !== 'string') {
+                        return (
+                            <ul key={text[0].substring(0, 15)}>
+                                {text.map((list_item_text: string) => (
+                                    <li key={list_item_text.substring(0, 20)}>{list_item_text}</li>
+                                ))}
+                            </ul>
+                        );
+                    }
+                    return null;
                 }
-                if (type === 'paragraph' && typeof text === 'string') {
-                    return (
-                        <Text as='p' key={text.substring(0, 10)}>
-                            {text}
-                        </Text>
-                    );
-                }
-                if (type === 'paragraph' && typeof text === 'object') {
-                    return <Text as='p' key={0}>{text}</Text>;
-                }
-                if (type === 'list' && typeof text !== 'string') {
-                    return (
-                        <ul key={text[0].substring(0, 15)}>
-                            {text.map(list_item_text => (
-                                <li key={list_item_text.substring(0, 20)}>{list_item_text}</li>
-                            ))}
-                        </ul>
-                    );
-                }
-                return null;
-            })}
+            )}
         </React.Fragment>
     );
 };

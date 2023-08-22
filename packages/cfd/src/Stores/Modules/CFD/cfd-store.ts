@@ -27,9 +27,7 @@ type TAccountType = {
 };
 
 type TCurrentList = {
-    [key: string]: DetailsOfEachMT5Loginid & {
-        platform?: string;
-    };
+    [key: string]: DetailsOfEachMT5Loginid;
 };
 
 type TGetAccountTypeFields2 = {

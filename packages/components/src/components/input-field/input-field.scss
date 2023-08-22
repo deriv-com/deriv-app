@@ -177,6 +177,7 @@ button.dc-input-wrapper {
         border: 1px solid $COLOR_RED !important;
     }
     &:disabled {
+        opacity: 1;
         color: var(--text-disabled);
     }
 }

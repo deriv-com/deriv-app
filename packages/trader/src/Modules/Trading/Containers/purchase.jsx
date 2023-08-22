@@ -114,6 +114,8 @@ const Purchase = observer(({ is_market_closed }) => {
                 <AccumulatorsSellButton
                     is_disabled={!is_valid_to_sell}
                     onClick={onClickSellButton}
+                    contract_info={active_accu_contract?.contract_info}
+                    is_sell_requested={active_accu_contract?.is_sell_requested}
                     current_stake={indicative}
                     currency={currency}
                 />

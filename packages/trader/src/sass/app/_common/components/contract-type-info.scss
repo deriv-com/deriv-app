@@ -4,6 +4,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    margin: 0 auto;
 
     @include mobile {
         height: calc(100% - 7.4rem);
@@ -12,52 +13,19 @@
         }
     }
 
-    & .dc-carousel {
-        width: 100%;
-
-        &__wrapper {
-            padding: 0;
-        }
-        &__card {
-            padding-bottom: 0;
-        }
-        &__icon {
-            &--disabled {
-                pointer-events: none;
-            }
-        }
-        &__nav {
-            padding: 0 1.2rem;
-        }
-
-        @include mobile {
-            &__wrapper {
-                padding: 0;
-            }
-            &__nav {
-                margin: 1.6rem auto;
-                padding: 0 2rem;
-            }
-            &__container {
-                height: 100%;
-            }
-            &__box {
-                height: 100%;
-            }
-        }
-    }
     &__card {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        height: 100%;
 
         @include mobile {
             height: 100%;
             padding: 0;
+            margin-bottom: 1.6rem;
         }
     }
     &__content {
-        overflow: hidden;
         /* postcss-bem-linter: ignore */
         &-glossary {
             &--heading {
@@ -94,6 +62,10 @@
                 margin-bottom: 0.8rem;
             }
         }
+        svg,
+        video {
+            margin-bottom: 1.6rem;
+        }
         @include mobile {
             /* postcss-bem-linter: ignore */
             h2 {
@@ -123,12 +95,8 @@
         border-radius: 4px;
         text-align: center;
         margin-top: 1.6rem;
-        margin-bottom: 1.6rem;
 
         @include mobile {
-            display: flex;
-            align-items: center;
-            justify-content: center;
             width: 32.8rem;
             height: 16.4rem;
             background-color: var(--general-section-1);
@@ -162,45 +130,13 @@
     &__title {
         cursor: default;
     }
-    &__nav {
-        display: flex;
-        align-items: center;
-        width: 320px;
-        padding: 0 2.4rem;
-        overflow: hidden;
-        margin-bottom: 2.4rem;
-
-        &-list {
-            display: inline-block;
-            text-align: center;
-            margin: 0 auto;
-            position: relative;
-        }
-        &-item {
-            width: 0.8rem;
-            height: 0.8rem;
-            border-radius: 50%;
-            display: inline-block;
-            margin: 0 0.8rem;
-            cursor: pointer;
-            background-color: var(--text-disabled);
-
-            &--active {
-                position: absolute;
-                top: 0;
-                left: 0;
-                cursor: initial;
-                transition: transform 0.3s linear;
-                background-color: var(--brand-red-coral);
-            }
-        }
-    }
     &__icon {
         cursor: pointer;
         padding-right: 2.4rem;
     }
     &__scrollbars {
         position: relative;
+        height: 100%;
         &-description--active {
             transition: transform 0.3s linear;
         }

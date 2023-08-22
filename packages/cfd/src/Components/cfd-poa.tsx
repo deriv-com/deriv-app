@@ -27,7 +27,7 @@ const CFDPOA = observer(({ index, onSave, onSubmit }: TCFDPOA) => {
         <div className='cfd-proof-of-address'>
             <ProofOfAddressForm
                 step_index={index}
-                is_qualified_for_cfd_modal
+                is_for_cfd_modal
                 onCancel={onBack}
                 onSubmitForCFDModal={onSubmitForCFDModal}
             />

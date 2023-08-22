@@ -1,5 +1,5 @@
-import { useFetch } from '@deriv/api';
 import { useMemo } from 'react';
+import useFetch from '../useFetch';
 
 /** A custom hook that gets the balance for all the user accounts. */
 const useBalance = () => {

@@ -26,7 +26,7 @@ type TAccountType = {
     type?: 'all' | 'synthetic' | 'financial' | 'financial_stp' | 'derivez' | 'dxtrade';
 };
 
-type TCurrentAccountList = {
+type TCurrentList = {
     [key: string]: DetailsOfEachMT5Loginid & {
         platform?: string;
     };
@@ -193,7 +193,7 @@ export default class CFDStore extends BaseStore {
     }
 
     get current_list() {
-        const list: TCurrentAccountList = {};
+        const list: TCurrentList = {};
         const show_eu_related_content = this?.root_store?.traders_hub.show_eu_related_content;
         this.root_store.client.mt5_login_list
             .filter(acc =>

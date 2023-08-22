@@ -358,12 +358,8 @@ export const addDomAsBlock = (el_block, parent_block = null) => {
     return block;
 };
 
-export const isAllRequiredBlocksEnabled = workspace => {
-    const mandatory_trade_option_block = getSelectedTradeType(workspace);
-    const { mandatoryMainBlocks, mainBlocks } = config;
-    const required_block_types = [mandatory_trade_option_block, ...mandatoryMainBlocks];
-
-    const required_blocks_check = workspace.getAllBlocks().filter(block => {
+const getAllRequiredBlocks = (workspace, required_block_types) => {
+    return workspace.getAllBlocks().filter(block => {
         if (required_block_types.includes(block.type)) {
             return (
                 (block.childBlocks_.length === 0 && required_block_types.includes(block.category_)) ||
@@ -371,28 +367,69 @@ export const isAllRequiredBlocksEnabled = workspace => {
             );
         }
     });
-
-    const misplaced_blocks = required_blocks_check.filter(block => {
+};
+const getMisplacedBlocks = (required_blocks_check, mainBlocks, required_block_types) => {
+    return required_blocks_check.filter(block => {
         if (required_block_types.includes(block.type)) {
             return block.parentBlock_ === null && !mainBlocks.includes(block.type);
         }
     });
-    misplaced_blocks.forEach(block => {
-        if (block) globalObserver.emit('ui.log.error', error_message_map[block?.type]?.misplaced);
-    });
+};
 
-    const missing_blocks = required_block_types.filter(blockType => {
+const getMissingBlocks = (workspace, required_block_types) => {
+    return required_block_types.filter(blockType => {
         return !workspace.getAllBlocks().some(block => block.type === blockType);
     });
+};
 
-    missing_blocks.forEach(blockType => {
-        if (blockType) globalObserver.emit('ui.log.error', error_message_map[blockType]?.missing);
+const getDisabledBlocks = required_blocks_check => {
+    return required_blocks_check.filter(block => {
+        const hasDisabledChild =
+            block.childBlocks_ && block.childBlocks_.some(childBlock => childBlock.disabled === true);
+        return block.disabled === true || hasDisabledChild;
     });
+};
 
-    const is_required_blocks_present = [...missing_blocks, ...misplaced_blocks];
-    const required_blocks_present = is_required_blocks_present.length === 0;
+const throwNewErrorMessage = (error_blocks, key) => {
+    return error_blocks.forEach(block => {
+        if (key === 'misplaced' && block) globalObserver.emit('ui.log.error', error_message_map[block?.type]?.[key]);
+        else if (key === 'missing' && block) globalObserver.emit('ui.log.error', error_message_map[block]?.[key]);
+        else if (key === 'disabled' && block) {
+            let parent_block_error = false;
+            const errorMessage = error_message_map[block.type]?.disabled;
+            if (block.disabled && errorMessage) {
+                globalObserver.emit('ui.log.error', errorMessage);
+                parent_block_error = true;
+            } else if (!parent_block_error && block.childBlocks_) {
+                block.childBlocks_.forEach(childBlock => {
+                    const childErrorMessage = error_message_map[childBlock.type]?.disabled;
+                    if (childErrorMessage) {
+                        globalObserver.emit('ui.log.error', childErrorMessage);
+                    }
+                });
+            }
+        }
+    });
+};
 
-    return required_blocks_present;
+export const isAllRequiredBlocksEnabled = workspace => {
+    const mandatory_trade_option_block = getSelectedTradeType(workspace);
+    const { mandatoryMainBlocks, mainBlocks } = config;
+    const required_block_types = [mandatory_trade_option_block, ...mandatoryMainBlocks];
+
+    const required_blocks_check = getAllRequiredBlocks(workspace, required_block_types);
+    const misplaced_blocks = getMisplacedBlocks(required_blocks_check, mainBlocks, required_block_types);
+    const missing_blocks = getMissingBlocks(workspace, required_block_types);
+    const disabled_blocks = getDisabledBlocks(required_blocks_check);
+
+    if (misplaced_blocks) throwNewErrorMessage(misplaced_blocks, 'misplaced');
+    if (missing_blocks) throwNewErrorMessage(missing_blocks, 'missing');
+    if (disabled_blocks) throwNewErrorMessage(disabled_blocks, 'disabled');
+
+    const error_blocks = [...missing_blocks, ...misplaced_blocks, ...disabled_blocks];
+    const blocks_required = error_blocks.length === 0;
+
+    return blocks_required;
 };
 
 export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chronological) => {

@@ -4,6 +4,7 @@ const generateErrorMessage = (blockType, missing_space = 'workspace') => {
     return {
         missing: localize(`The ${blockType} block is missing from ${missing_space}.`),
         misplaced: localize(`The ${blockType} block is misplaced from ${missing_space}.`),
+        disabled: localize(`The ${blockType} block is disabled`),
         default: localize(`The ${blockType} block is mandatory and cannot be deleted.`),
     };
 };

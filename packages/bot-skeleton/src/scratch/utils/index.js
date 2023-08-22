@@ -396,16 +396,14 @@ const throwNewErrorMessage = (error_blocks, key) => {
         else if (key === 'missing' && block) globalObserver.emit('ui.log.error', error_message_map[block]?.[key]);
         else if (key === 'disabled' && block) {
             let parent_block_error = false;
-            const errorMessage = error_message_map[block.type]?.[key];
-            if (block.disabled && errorMessage) {
-                globalObserver.emit('ui.log.error', errorMessage);
+            const parent_error_message = error_message_map[block.type]?.[key];
+            if (block.disabled && parent_error_message) {
+                globalObserver.emit('ui.log.error', parent_error_message);
                 parent_block_error = true;
             } else if (!parent_block_error && block.childBlocks_) {
                 block.childBlocks_.forEach(childBlock => {
-                    const childErrorMessage = error_message_map[childBlock.type]?.[key];
-                    if (childErrorMessage) {
-                        globalObserver.emit('ui.log.error', childErrorMessage);
-                    }
+                    const child_error_message = error_message_map[childBlock.type]?.[key];
+                    if (child_error_message) globalObserver.emit('ui.log.error', child_error_message);
                 });
             }
         }

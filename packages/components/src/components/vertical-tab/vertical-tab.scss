@@ -36,6 +36,8 @@ $MIN_HEIGHT_FLOATING: calc(
         height: 100%;
         width: 100%;
         display: flex;
+        flex-flow: column nowrap;
+        flex-grow: 1;
     }
     &__content-inner {
         position: absolute;
@@ -224,10 +226,6 @@ $MIN_HEIGHT_FLOATING: calc(
         background-color: var(--general-main-1);
 
         grid-area: form-content;
-        &-container {
-            flex-flow: column nowrap;
-            flex-grow: 1;
-        }
 
         &-side-note {
             min-width: 25.6rem;

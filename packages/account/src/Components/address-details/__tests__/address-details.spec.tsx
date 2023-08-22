@@ -1,5 +1,5 @@
-import { FormikProps } from 'formik';
 import React from 'react';
+import { FormikProps } from 'formik';
 import { useStatesList } from '@deriv/hooks';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';

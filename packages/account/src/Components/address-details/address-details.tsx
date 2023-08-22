@@ -1,3 +1,4 @@
+import React from 'react';
 import classNames from 'classnames';
 import {
     Formik,
@@ -9,7 +10,6 @@ import {
     FormikHandlers,
     FormikState,
 } from 'formik';
-import React from 'react';
 import {
     Modal,
     Autocomplete,
@@ -51,8 +51,6 @@ type TAddressDetails = {
         action: (isSubmitting: boolean) => void,
         next_step: () => void
     ) => void;
-    is_svg: boolean;
-    is_mf?: boolean;
     is_gb_residence: boolean | string;
     selected_step_ref?: React.RefObject<FormikProps<TAddressDetailFormProps>>;
     value: TAddressDetailFormProps;
@@ -75,8 +73,6 @@ type TAutoComplete = {
  * @param goToPreviousStep - function to go to previous step
  * @param validate - function to validate form values
  * @param onSubmit - function to submit form values
- * @param is_svg - is broker code SVG
- * @param is_mf - is broker code MF
  * @param is_gb_residence - is residence Great Britan
  * @param selected_step_ref - reference to selected step
  * @param fetchStatesList - function to fetch states list
@@ -94,8 +90,6 @@ const AddressDetails = observer(
         goToPreviousStep,
         validate,
         onSubmit,
-        is_svg,
-        is_mf,
         is_gb_residence,
         selected_step_ref,
         disabled_items,
@@ -111,8 +105,6 @@ const AddressDetails = observer(
 
         const { is_desktop, is_mobile } = ui;
         const { data: states_list, isFetched } = useStatesList(residence);
-
-        const is_submit_disabled_ref = React.useRef<boolean>(true);
 
         const isSubmitDisabled = (errors: FormikErrors<TAddressDetailFormProps> = {}): boolean => {
             const is_submitting = selected_step_ref?.current?.isSubmitting ?? false;
@@ -186,12 +178,8 @@ const AddressDetails = observer(
                                         <div className={classNames('details-form__elements', 'address-details-form ')}>
                                             <FormInputField
                                                 name='address_line_1'
-                                                required={is_svg || is_mf}
-                                                label={
-                                                    is_svg || is_mf
-                                                        ? localize('First line of address*')
-                                                        : localize('First line of address')
-                                                }
+                                                required
+                                                label={localize('First line of address*')}
                                                 maxLength={255}
                                                 placeholder={localize('First line of address')}
                                                 disabled={
@@ -211,8 +199,8 @@ const AddressDetails = observer(
                                             />
                                             <FormInputField
                                                 name='address_city'
-                                                required={is_svg || is_mf}
-                                                label={is_svg || is_mf ? localize('Town/City*') : localize('Town/City')}
+                                                required
+                                                label={localize('Town/City*')}
                                                 placeholder={localize('Town/City')}
                                                 disabled={
                                                     disabled_items.includes('address_city') ||

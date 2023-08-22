@@ -1,5 +1,5 @@
+import React from 'react';
 import classNames from 'classnames';
-import React, { HTMLAttributes, RefObject } from 'react';
 import { Field, Formik, FormikHandlers, FormikProps, FormikState } from 'formik';
 import { WebsiteStatus } from '@deriv/api-types';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
@@ -38,13 +38,13 @@ type TCurrencySelectorExtend = {
         action: (isSubmitting: boolean) => void,
         next_step: () => void
     ) => void;
-    selected_step_ref?: RefObject<FormikProps<TCurrencySelectorFormProps>>;
+    selected_step_ref?: React.RefObject<FormikProps<TCurrencySelectorFormProps>>;
     set_currency: boolean;
     validate: (values: TCurrencySelectorFormProps) => TCurrencySelectorFormProps;
     value: TCurrencySelectorFormProps;
 };
 
-type TCurrencySelector = HTMLAttributes<HTMLInputElement | HTMLLabelElement> & TCurrencySelectorExtend;
+type TCurrencySelector = React.HTMLAttributes<HTMLInputElement | HTMLLabelElement> & TCurrencySelectorExtend;
 
 /**
  * Currency selector component to select the Account currency

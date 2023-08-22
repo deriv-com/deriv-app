@@ -1,13 +1,13 @@
+import React from 'react';
 import { Popover } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import React, { ReactElement } from 'react';
 
 export type TUSTPopover = {
     id: string;
 };
 
 const USTPopover = ({ id }: TUSTPopover) => {
-    let popover_message: ReactElement;
+    let popover_message: React.ReactElement;
     if (/^UST$/i.test(id)) {
         popover_message = (
             <Localize

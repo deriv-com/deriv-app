@@ -342,8 +342,8 @@ const ChartTrade = observer(props => {
     const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;
 
     // max ticks to display for mobile view for tick chart
-    const max_ticks_for_0_granularity = is_accumulator ? 20 : 8;
-    const max_ticks = granularity === 0 ? max_ticks_for_0_granularity : 24;
+    const zero_granularity_max_ticks = is_accumulator ? 20 : 8;
+    const max_ticks = granularity === 0 ? zero_granularity_max_ticks : 24;
 
     if (!symbol || active_symbols.length === 0) return null;
 

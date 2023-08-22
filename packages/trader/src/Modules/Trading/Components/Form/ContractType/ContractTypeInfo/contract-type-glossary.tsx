@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactComponentElement, ReactElement } from 'react';
 import { Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
@@ -212,7 +212,7 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                     );
                 }
                 if (type === 'paragraph' && typeof text === 'object') {
-                    return <Text as='p'>{text}</Text>;
+                    return <Text as='p' key={0}>{text}</Text>;
                 }
                 if (type === 'list' && typeof text !== 'string') {
                     return (

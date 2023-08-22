@@ -25,6 +25,7 @@ const useIsP2PEnabled = () => {
     return {
         ...rest,
         data: is_p2p_enabled,
+        is_p2p_supported_currency,
     };
 };
 

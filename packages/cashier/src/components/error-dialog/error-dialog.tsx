@@ -107,6 +107,15 @@ const ErrorDialog = observer(({ className, error = {} }: TErrorDialogProps) => {
                     onConfirm: undefined,
                     message: error_message,
                 });
+            } else if (error_code === 'ShareMyAdsError') {
+                setDetails({
+                    title: localize('Deriv P2P unavailable'),
+                    cancel_button_text: undefined,
+                    confirm_button_text: localize('OK'),
+                    onConfirm: undefined,
+                    message: error_message,
+                    has_close_icon: true,
+                });
             } else {
                 setDetails({
                     title: localize('Cashier Error'),

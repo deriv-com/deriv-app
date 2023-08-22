@@ -1,6 +1,6 @@
 import React from 'react';
 import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
-import { daysSince, isMobile } from '@deriv/shared';
+import { daysSince, isMobile, routes } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useHistory } from 'react-router-dom';
@@ -72,8 +72,26 @@ const AdvertiserPage = () => {
         const disposeCounterpartyAdvertiserIdReaction = reaction(
             () => [general_store.counterparty_advertiser_id, general_store.is_advertiser_info_subscribed],
             () => {
-                // DO NOT REMOVE. This fixes reload on advertiser page routing issue
-                advertiser_page_store.onAdvertiserIdUpdate();
+                if (general_store.counterparty_advertiser_id) {
+                    // DO NOT REMOVE. This fixes reloading issue when user navigates to advertiser page via URL
+                    advertiser_page_store.onAdvertiserIdUpdate();
+
+                    if (
+                        general_store.counterparty_advert_id &&
+                        !general_store.is_barred &&
+                        general_store.is_advertiser
+                    ) {
+                        advertiser_page_store.getAdvertInfo();
+                    } else if (general_store.is_barred) {
+                        history.push(routes.p2p_buy_sell);
+                    } else if (!general_store.is_advertiser) {
+                        history.push(routes.p2p_my_ads);
+                    }
+
+                    // Need to set active index to 0 when users navigate to advertiser page via url,
+                    // and when user clicks the back button, it will navigate back to the buy/sell tab
+                    general_store.setActiveIndex(0);
+                }
             },
             { fireImmediately: true }
         );
@@ -158,6 +176,7 @@ const AdvertiserPage = () => {
                         if (general_store.active_index === general_store.path.my_profile)
                             my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
                         history.push(general_store.active_tab_route);
+                        general_store.setCounterpartyAdvertiserId(null);
                     }}
                     page_title={localize("Advertiser's page")}
                 />

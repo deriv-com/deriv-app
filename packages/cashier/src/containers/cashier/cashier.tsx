@@ -49,7 +49,7 @@ type TCashierOptions = {
 };
 
 const Cashier = observer(({ history, location, routes: routes_config }: TCashierProps) => {
-    const { common, ui, client } = useStore();
+    const { common, ui, client, traders_hub } = useStore();
     const { withdraw, general_store, payment_agent } = useCashierStore();
     const { error } = withdraw;
     const {
@@ -68,8 +68,9 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     } = usePaymentAgentTransferVisible();
     const { is_payment_agent_visible } = payment_agent;
     const { is_from_derivgo } = common;
-    const { is_cashier_visible: is_visible, toggleCashier } = ui;
-    const { is_account_setting_loaded, is_logged_in, is_logging_in } = client;
+    const { is_demo } = traders_hub;
+    const { is_cashier_visible: is_visible, toggleCashier, toggleReadyToDepositModal } = ui;
+    const { is_account_setting_loaded, is_logged_in, is_logging_in, is_svg } = client;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
     const p2p_notification_count = useP2PNotificationCount();
@@ -77,6 +78,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         data: is_p2p_enabled,
         isSuccess: is_p2p_enabled_success,
         isLoading: is_p2p_enabled_loading,
+        is_p2p_supported_currency,
     } = useIsP2PEnabled();
 
     React.useEffect(() => {
@@ -109,8 +111,26 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
 
     React.useEffect(() => {
         if (is_p2p_enabled_success && !is_p2p_enabled && history.location.pathname.startsWith(routes.cashier_p2p)) {
+            const url_params = new URLSearchParams(history.location.search);
+            const advert_id = url_params.get('advert_id');
+
             history.push(routes.cashier_deposit);
+
+            if (advert_id) {
+                if (is_demo) {
+                    toggleReadyToDepositModal();
+                } else {
+                    error.setErrorMessage({
+                        code: 'ShareMyAdsError',
+                        message:
+                            !is_p2p_supported_currency && is_svg
+                                ? localize('Deriv P2P is currently unavailable in this currency.')
+                                : localize('Deriv P2P is currently unavailable in your country.'),
+                    });
+                }
+            }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [history, is_p2p_enabled, is_p2p_enabled_success]);
 
     const onClickClose = () => history.push(routes.traders_hub);

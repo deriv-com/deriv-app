@@ -109,7 +109,8 @@ const BuySellModalTitle = () => {
 };
 
 const BuySellModal = () => {
-    const { buy_sell_store, floating_rate_store, general_store, my_profile_store, order_store } = useStores();
+    const { advertiser_page_store, buy_sell_store, floating_rate_store, general_store, my_profile_store, order_store } =
+        useStores();
     const submitForm = React.useRef(() => {});
     const [error_message, setErrorMessage] = useSafeState(null);
     const [is_submit_disabled, setIsSubmitDisabled] = useSafeState(true);
@@ -119,6 +120,10 @@ const BuySellModal = () => {
     const { hideModal, is_modal_open, showModal } = useModalManagerContext();
     const history = useHistory();
     const location = useLocation();
+
+    const table_type = buy_sell_store.show_advertiser_page
+        ? advertiser_page_store.counterparty_type
+        : buy_sell_store.table_type;
 
     React.useEffect(() => {
         const disposeHasRateChangedReaction = reaction(
@@ -207,6 +212,7 @@ const BuySellModal = () => {
             buy_sell_store.fetchAdvertiserAdverts();
         }
         floating_rate_store.setIsMarketRateChanged(false);
+        general_store.setCounterpartyAdvertId(null);
     };
 
     const onConfirmClick = order_info => {
@@ -259,7 +265,7 @@ const BuySellModal = () => {
                     page_header_text={<BuySellModalTitle />}
                     pageHeaderReturnFn={onCancel}
                 >
-                    {buy_sell_store.table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
+                    {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
                     {!!error_message && <BuySellFormError />}
                     {my_profile_store.should_show_add_payment_method_form ? (
                         <AddPaymentMethodForm should_show_separated_footer />
@@ -304,9 +310,7 @@ const BuySellModal = () => {
                         height={buy_sell_store.table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}
                     >
                         <Modal.Body className='buy-sell__modal--layout'>
-                            {buy_sell_store.table_type === buy_sell.SELL && is_account_balance_low && (
-                                <LowBalanceMessage />
-                            )}
+                            {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
                             <BuySellFormError />
                             {my_profile_store.should_show_add_payment_method_form ? (
                                 <AddPaymentMethodForm should_show_separated_footer />

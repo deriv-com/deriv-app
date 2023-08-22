@@ -21,6 +21,7 @@ const ErrorModal = ({
             has_close_icon={has_close_icon}
             is_open={is_modal_open}
             title={error_modal_title}
+            toggleModal={onClose ?? hideModal}
             width={width}
         >
             <Modal.Body className='error-modal__body'>{error_message}</Modal.Body>

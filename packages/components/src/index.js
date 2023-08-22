@@ -113,3 +113,4 @@ export { default as UnhandledErrorModal } from './components/unhandled-error-mod
 export { default as VerticalTab } from './components/vertical-tab';
 export { default as Wizard } from './components/wizard';
 export * from './hooks';
+export * from './components/types';

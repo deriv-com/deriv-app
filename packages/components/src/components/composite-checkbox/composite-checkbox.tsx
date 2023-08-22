@@ -24,7 +24,7 @@ const CompositeCheckbox = ({
     description,
     children,
     ...props
-}: React.PropsWithChildren<TCompositeCheckbox>) => {
+}: React.PropsWithChildren<TCompositeCheckbox & React.ComponentProps<typeof Checkbox>>) => {
     const onClickContainer = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
         e.preventDefault();

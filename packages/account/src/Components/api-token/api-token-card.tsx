@@ -20,6 +20,7 @@ const ApiTokenCard = ({ name, value, display_name, description, children }: Reac
                         onChange={() => setFieldValue(name, !value)}
                         value={value}
                         className='api-token__checkbox'
+                        defaultChecked={value}
                         label={display_name}
                         description={description}
                     >

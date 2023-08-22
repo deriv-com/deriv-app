@@ -141,6 +141,8 @@
                 }
             }
             &-footer {
+                position: absolute;
+                bottom: 0;
                 width: 100%;
                 &-text {
                     background: var(--brand-secondary);
@@ -256,7 +258,7 @@
             min-height: 48rem;
         }
         &.financial {
-            min-height: 54rem;
+            min-height: 55rem;
         }
         @include mobile {
             height: 48rem;

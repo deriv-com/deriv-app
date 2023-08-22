@@ -17,7 +17,11 @@ describe('BotNotificationMessages', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
     beforeAll(() => {
         const mock_store = mockStore({
-            ui: { notification_messages_ui: jest.fn().mockReturnValue(<p>Mocked Notification Message</p>) as any },
+            ui: {
+                notification_messages_ui: jest
+                    .fn()
+                    .mockReturnValue(<p>Mocked Notification Message</p>) as React.ElementType,
+            },
         });
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
 

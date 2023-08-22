@@ -32,6 +32,8 @@ const cryptoTransactionMapper = (
         PERFORMING_BLOCKCHAIN_TXN: 'warning',
         PROCESSING: 'warning',
         REJECTED: 'unsuccessful',
+        REVERTED: 'unsuccessful',
+        REVERTING: 'warning',
         SENT: 'successful',
         VERIFIED: 'warning',
     } as const;
@@ -57,6 +59,8 @@ const cryptoTransactionMapper = (
         PERFORMING_BLOCKCHAIN_TXN: localize('In process'),
         PROCESSING: localize('In process'),
         REJECTED: localize('Unsuccessful'),
+        REVERTED: localize('Unsuccessful'),
+        REVERTING: localize('In process'),
         SENT: localize('Successful'),
         VERIFIED: localize('In process'),
     } as const;
@@ -79,6 +83,8 @@ const cryptoTransactionMapper = (
         PERFORMING_BLOCKCHAIN_TXN: localize('We’re sending your request to the blockchain.'),
         PROCESSING: localize('We’re awaiting confirmation from the blockchain.'),
         REJECTED: localize("Your withdrawal is unsuccessful. We've sent you an email with more information."),
+        REVERTED: localize("Your withdrawal is unsuccessful. We've sent you an email with more information."),
+        REVERTING: localize("We're processing your withdrawal."),
         SENT: localize('Your withdrawal is successful.'),
         VERIFIED: localize('We’re processing your withdrawal.'),
     } as const;
@@ -96,6 +102,8 @@ const cryptoTransactionMapper = (
         PERFORMING_BLOCKCHAIN_TXN: transaction_hash_obscure,
         PROCESSING: transaction_hash_obscure,
         REJECTED: localize('NA'),
+        REVERTED: localize('NA'),
+        REVERTING: transaction_hash_obscure,
         SENT: transaction_hash_obscure,
         VERIFIED: transaction_hash_obscure,
     } as const;
@@ -113,6 +121,8 @@ const cryptoTransactionMapper = (
         PERFORMING_BLOCKCHAIN_TXN: '-',
         PROCESSING: '-',
         REJECTED: '-',
+        REVERTED: '-',
+        REVERTING: '-',
         SENT: '-',
         VERIFIED: '-',
     } as const;

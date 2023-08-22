@@ -1,13 +1,10 @@
-import { useMemo } from 'react';
-import { useFetch } from '@deriv/api';
+import { useStore } from '@deriv/stores';
 
 const useCashierLocked = () => {
-    const { data } = useFetch('get_account_status');
+    const { client } = useStore();
+    const { account_status } = client;
 
-    const is_cashier_locked = useMemo(
-        () => data?.get_account_status?.status?.some(status => status === 'cashier_locked') || false,
-        [data]
-    );
+    const is_cashier_locked = account_status.status?.some(status => status === 'cashier_locked') || false;
 
     return is_cashier_locked;
 };

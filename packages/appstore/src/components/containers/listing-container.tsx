@@ -1,11 +1,11 @@
 import React, { HTMLAttributes, ReactNode } from 'react';
+import classNames from 'classnames';
+import { observer, useStore } from '@deriv/stores';
+import { TWalletAccount } from 'Types';
 import CurrencySwitcherCard from 'Components/currency-switcher-card';
 import GridContainer from 'Components/containers/grid-container';
 import TitleCardLoader from 'Components/pre-loader/title-card-loader';
-import classNames from 'classnames';
-import { observer, useStore } from '@deriv/stores';
 import WalletTransferBlock from 'Components/wallet-content/wallet-transfer-block';
-import { TWalletAccount } from 'Types';
 import './listing-container.scss';
 
 type ListingContainerProps = {

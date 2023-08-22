@@ -11,7 +11,7 @@ const useAccountsList = () => {
             return {
                 ...account,
                 /** Creation time of the account. */
-                created_at: account.created_at && new Date(account.created_at),
+                created_at: account.created_at ? new Date(account.created_at) : 0,
                 /** Date till client has excluded him/herself from the website, only present if client is self excluded. */
                 excluded_until: account.excluded_until ? new Date(account.excluded_until) : 0,
                 /** Indicating whether the wallet is the currently active account. */

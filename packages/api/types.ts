@@ -497,7 +497,10 @@ type TSocketEndpoints = {
         response: LandingCompanyDetailsResponse;
     };
     landing_company: {
-        request: LandingCompanyRequest;
+        // TODO: Fix typings of this endpoint, because LandingCompany payload should be a string instead of LandingCompany interface
+        request: {
+            landing_company: string;
+        };
         response: LandingCompanyResponse;
     };
     login_history: {

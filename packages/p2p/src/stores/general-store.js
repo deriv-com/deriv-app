@@ -23,6 +23,7 @@ export default class GeneralStore extends BaseStore {
     balance;
     cancels_remaining = null;
     contact_info = '';
+    counterparty_advert_id = null;
     counterparty_advertiser_id = null;
     error_code = '';
     external_stores = {};
@@ -86,6 +87,7 @@ export default class GeneralStore extends BaseStore {
             advertiser_relations_response: observable, //TODO: Remove this when backend has fixed is_blocked flag issue
             block_unblock_user_error: observable,
             balance: observable,
+            counterparty_advert_id: observable,
             counterparty_advertiser_id: observable,
             external_stores: observable,
             feature_level: observable,
@@ -143,6 +145,7 @@ export default class GeneralStore extends BaseStore {
             setAdvertiserBuyLimit: action.bound,
             setAdvertiserSellLimit: action.bound,
             setAdvertiserRelationsResponse: action.bound, //TODO: Remove this when backend has fixed is_blocked flag issue
+            setCounterpartyAdvertId: action.bound,
             setErrorCode: action.bound,
             setExternalStores: action.bound,
             setFeatureLevel: action.bound,
@@ -636,6 +639,10 @@ export default class GeneralStore extends BaseStore {
 
     setContactInfo(contact_info) {
         this.contact_info = contact_info;
+    }
+
+    setCounterpartyAdvertId(counterparty_advert_id) {
+        this.counterparty_advert_id = counterparty_advert_id;
     }
 
     setCounterpartyAdvertiserId(counterparty_advertiser_id) {

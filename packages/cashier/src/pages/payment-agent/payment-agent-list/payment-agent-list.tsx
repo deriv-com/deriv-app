@@ -13,7 +13,7 @@ import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-list.scss';
 
 type TProps = {
-    setSideNotes: (notes: React.ReactNode[]) => void;
+    setSideNotes?: (notes: React.ReactNode[]) => void;
 };
 
 const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
@@ -21,7 +21,7 @@ const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
 
     React.useEffect(() => {
         if (!general_store.is_loading && !payment_agent.is_try_withdraw_successful) {
-            setSideNotes([
+            setSideNotes?.([
                 <SideNote has_title={false} key={0}>
                     <PaymentAgentDisclaimer />
                 </SideNote>,
@@ -30,7 +30,7 @@ const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
                 </SideNote>,
             ]);
         } else {
-            setSideNotes([]);
+            setSideNotes?.([]);
         }
     }, [setSideNotes, general_store.is_loading, payment_agent.is_try_withdraw_successful]);
 

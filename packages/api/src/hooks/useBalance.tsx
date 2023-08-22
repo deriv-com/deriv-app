@@ -4,7 +4,7 @@ import useFetch from '../useFetch';
 /** A custom hook that gets the balance for all the user accounts. */
 const useBalance = () => {
     const { data: balance_data, ...rest } = useFetch('balance', {
-        payload: { account: 'all' },
+        payload: { account: 'all' }, // For 'all' account payload, balance is not subscribe-able, but when passed loginid, it is subscribe-able
         options: {
             refetchInterval: 30000,
         },

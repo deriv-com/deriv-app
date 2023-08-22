@@ -1,4 +1,4 @@
-import React, { ReactComponentElement, ReactElement } from 'react';
+import React from 'react';
 import { Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 

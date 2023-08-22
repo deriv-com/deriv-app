@@ -9,7 +9,7 @@ const DynamicLeverageModalContent = () => (
         <Text as='h4' size='s'>
             <Localize
                 i18n_default_text='Enjoy dynamic leverage of  <0>up to 1:1500</0> when trading selected instruments in the forex, commodities, cryptocurrencies, and stock indices markets. Our dynamic leverage adjusts automatically to your trading position, based on asset type and trading volume.'
-                components={[<Text key={0} as='span' size='s' weight='bold' />]}
+                components={[<strong key={0} />]}
             />
         </Text>
         <div className='dynamic-leverage-modal__content'>

@@ -47,7 +47,6 @@ describe('<AddressDetails/>', () => {
         goToNextStep: jest.fn(),
         goToPreviousStep: jest.fn(),
         is_gb_residence: '',
-        is_svg: true,
         onCancel: jest.fn(),
         onSave: jest.fn(),
         onSubmit: jest.fn(),
@@ -186,32 +185,6 @@ describe('<AddressDetails/>', () => {
             expect(mock_props.getCurrentStep).toHaveBeenCalledTimes(2);
             expect(mock_props.onSubmit).toHaveBeenCalledTimes(1);
         });
-    });
-
-    it('should render AddressDetails component not svg', async () => {
-        const new_props = { ...mock_props, is_svg: false };
-
-        renderComponent({ props: new_props });
-
-        const inputs: HTMLTextAreaElement[] = screen.getAllByRole('textbox');
-        expect(inputs.length).toBe(5);
-        const required_fields = inputs.filter(input => input.required === true);
-        expect(required_fields.length).toBe(0);
-
-        await waitFor(() => {
-            expect(screen.getByLabelText(address_line_1)).toBeInTheDocument();
-            expect(screen.getByLabelText(address_line_2)).toBeInTheDocument();
-            expect(screen.getByLabelText(address_postcode)).toBeInTheDocument();
-            expect(screen.getByLabelText(address_state)).toBeInTheDocument();
-            expect(screen.getByLabelText(address_town)).toBeInTheDocument();
-            expect(screen.getByText(use_address_info)).toBeInTheDocument();
-        });
-
-        expect(screen.queryByText(address_line_1_marked)).not.toBeInTheDocument();
-        expect(screen.queryByText(address_line_2_marked)).not.toBeInTheDocument();
-        expect(screen.queryByText(address_postcode_marked)).not.toBeInTheDocument();
-        expect(screen.queryByText(address_town_marked)).not.toBeInTheDocument();
-        expect(screen.queryByText(verification_info)).not.toBeInTheDocument();
     });
 
     it('should render AddressDetails component with states_list for mobile', async () => {

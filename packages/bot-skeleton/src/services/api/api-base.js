@@ -48,7 +48,8 @@ class APIBase {
     reconnectIfNotConnected = () => {
         // eslint-disable-next-line no-console
         console.log('connection state: ', this.api.connection.readyState);
-        if (this.api.connection.readyState !== 1 || this.api.connection.readyState !== 0) {
+
+        if (this.api.connection.readyState !== 1 && this.api.connection.readyState !== 0) {
             // eslint-disable-next-line no-console
             console.log('Info: Connection to the server was closed, trying to reconnect.');
             this.init();

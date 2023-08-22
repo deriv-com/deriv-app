@@ -15,9 +15,9 @@ const useLandingCompany = () => {
         const { financial_company, gaming_company, virtual_company } = data.landing_company;
         return {
             /** Short code of financial landing company */
-            ffinancial_company: financial_company?.shortcode,
+            financial_company: financial_company?.shortcode,
             /** Short code of gaming landing company */
-            ggaming_company: gaming_company?.shortcode,
+            gaming_company: gaming_company?.shortcode,
             /** Short code of virtual landing company */
             virtual_company,
         };

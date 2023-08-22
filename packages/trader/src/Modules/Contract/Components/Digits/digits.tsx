@@ -127,7 +127,6 @@ const Digits = React.memo((props: TDigits) => {
     const [current_tick, setCurrentTick] = React.useState<number | null>();
     const [spot, setSpot] = React.useState<string>();
     const [is_selected_winning, setIsSelectedWinning] = React.useState<boolean>();
-    const [is_latest, setIsLatest] = React.useState<boolean>();
     const [is_won, setIsWon] = React.useState<boolean>();
     const [is_lost, setIsLost] = React.useState<boolean>();
     const isMounted = useIsMounted();
@@ -143,7 +142,6 @@ const Digits = React.memo((props: TDigits) => {
         setSpot(params.spot);
         setIsLost(params.is_lost);
         setIsSelectedWinning(params.is_selected_winning);
-        setIsLatest(params.is_latest);
         setIsWon(params.is_won);
     };
 

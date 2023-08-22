@@ -1,12 +1,8 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { getLocalizedBasis } from '@deriv/shared';
+import { localize, Localize } from '@deriv/translations';
 
-const ContractTypeGlossary = ({ category, is_vanilla_fx }: { category: string; is_vanilla_fx?: boolean }) => {
-    const vanilla_payout_text = is_vanilla_fx
-        ? getLocalizedBasis().payout_per_pip
-        : getLocalizedBasis().payout_per_point;
+const ContractTypeGlossary = ({ category }: { category: string; }) => {
     let content;
     if (category) {
         switch (category) {
@@ -49,8 +45,7 @@ const ContractTypeGlossary = ({ category, is_vanilla_fx }: { category: string; i
                     {
                         type: 'paragraph',
                         text: localize(
-                            'Your payout is equal to the {{vanilla_payout_text}} multiplied by the difference between the final price and the strike price.',
-                            { vanilla_payout_text: vanilla_payout_text.toLowerCase() }
+                            'Your payout is equal to the payout per point multiplied by the difference between the final price and the strike price.'
                         ),
                     },
                     { type: 'heading', text: localize('Final price') },
@@ -89,7 +84,7 @@ const ContractTypeGlossary = ({ category, is_vanilla_fx }: { category: string; i
                             ),
                         ],
                     },
-                    { type: 'heading', text: vanilla_payout_text },
+                    { type: 'heading', text: localize('Payout per point') },
                     {
                         type: 'paragraph',
                         text: localize('We calculate this based on the strike price and duration you’ve selected.'),
@@ -113,6 +108,79 @@ const ContractTypeGlossary = ({ category, is_vanilla_fx }: { category: string; i
                             'Your contract will expire on this date (in GMT), based on the End time you’ve selected.'
                         ),
                     },
+                ];
+                break;
+            case 'vanilla_fx':
+                content = [
+                    { type: 'heading', text: localize('Strike price') },
+                    {
+                        type: 'paragraph',
+                        text: localize('You must select the strike price before entering the contract.'),
+                    },
+                    {
+                        type: 'list',
+                        text: [
+                            localize(
+                                'If you select "Call", you’ll earn a payout if the final price is above the strike price at expiry. Otherwise, you won’t receive a payout.'
+                            ),
+                            localize(
+                                'If you select "Put", you’ll earn a payout if the final price is below the strike price at expiry. Otherwise, you won’t receive a payout.'
+                            ),
+                        ],
+                    },
+                    { type: 'heading', text: localize('Payout') },
+                    {
+                        type: 'paragraph',
+                        text: <Localize
+                                  i18n_default_text='Your payout is equal to the payout per pip multiplied by the difference, <0>in pips</0>, between the final price and the strike price.'
+                                  components={[<strong key={0} />]}
+                              />
+                    },
+                    { type: 'heading', text: localize('Payout per pip') },
+                    {
+                        type: 'paragraph',
+                        text: localize('We calculate this based on the strike price and duration you’ve selected.'),
+                    },
+                    { type: 'heading', text: localize('Final price') },
+                    {
+                        type: 'paragraph',
+                        text: localize('Spot price of the last tick upon reaching expiry.'),
+                    },
+                    { type: 'heading', text: localize('Expiry') },
+                    {
+                        type: 'paragraph',
+                        text: localize(
+                            'This is when your contract will expire based on the Duration or End time you’ve selected.'
+                        ),
+                    },
+                    {
+                        type: 'list',
+                        text: [
+                            localize(
+                                'If the duration is more than 24 hours, the Cut-off time and Expiry date will apply instead.'
+                            ),
+                        ],
+                    },
+                    { type: 'heading', text: localize('Cut-off time') },
+                    {
+                        type: 'paragraph',
+                        text: localize('Contracts will expire at exactly 14:00:00 GMT on your selected expiry date.'),
+                    },
+                    { type: 'heading', text: localize('Expiry date') },
+                    {
+                        type: 'paragraph',
+                        text: localize(
+                            'Your contract will expire on this date (in GMT), based on the End time you’ve selected.'
+                        ),
+                    },
+                    { type: 'heading', text: localize('Contract value') },
+                    {
+                        type: 'paragraph',
+                        text: localize(
+                            'We’ll offer to buy your contract at this price should you choose to sell it before its expiry. This is based on several factors, such as the current spot price, duration, etc. However, we won’t offer a contract value if the remaining duration is below 24 hours.'
+                        ),
+                    },
+                    
                 ];
                 break;
             default:
@@ -141,6 +209,9 @@ const ContractTypeGlossary = ({ category, is_vanilla_fx }: { category: string; i
                             {text}
                         </Text>
                     );
+                }
+                if (type === 'paragraph' && typeof text === 'object') {
+                    return <Text as='p'>{text}</Text>;
                 }
                 if (type === 'list' && typeof text !== 'string') {
                     return (

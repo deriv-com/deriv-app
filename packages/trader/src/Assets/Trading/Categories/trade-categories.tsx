@@ -446,6 +446,7 @@ const TradeCategories = ({ category, is_vanilla_fx, onClick }: TTradeCategoriesP
                 TradeTypeTemplate = <TurbosTradeDescription />;
                 break;
             case 'vanilla':
+            case 'vanilla_fx':
                 TradeTypeTemplate = (
                     <React.Fragment>
                         <Text as='p'>
@@ -473,17 +474,30 @@ const TradeCategories = ({ category, is_vanilla_fx, onClick }: TTradeCategoriesP
                             />
                         </Text>
                         <Text as='p'>
-                            <Localize
-                                i18n_default_text='Your payout is equal to the <0>{{payout_label}}</0> multiplied by the difference between the final price and the strike price. You will only earn a profit if your payout is higher than your initial stake.'
-                                components={[
-                                    <span
-                                        className='contract-type-info__content-definition'
-                                        onClick={onClick}
-                                        key={0}
-                                    />,
-                                ]}
-                                values={{ payout_label: vanilla_payout_text }}
-                            />
+                            {is_vanilla_fx ? (
+                                <Localize
+                                    i18n_default_text='Your payout is equal to the <0>payout per pip</0> multiplied by the difference, <1>in pips</1>, between the final price and the strike price. You will only earn a profit if your payout is higher than your initial stake.'
+                                    components={[
+                                        <span
+                                            className='contract-type-info__content-definition'
+                                            onClick={onClick}
+                                            key={0}
+                                        />,
+                                        <strong key={0} />,
+                                    ]}
+                                />
+                            ) : (
+                                <Localize
+                                    i18n_default_text='Your payout is equal to the <0>payout per point</0> multiplied by the difference between the final price and the strike price. You will only earn a profit if your payout is higher than your initial stake.'
+                                    components={[
+                                        <span
+                                            className='contract-type-info__content-definition'
+                                            onClick={onClick}
+                                            key={0}
+                                        />,
+                                    ]}
+                                />
+                            )}
                         </Text>
                         <Text as='p'>
                             <Localize

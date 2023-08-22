@@ -39,7 +39,8 @@ const Info = ({ handleSelect, item, list }: TInfo) => {
     const onClickGlossary = () => setSelectedTab(TABS.GLOSSARY);
 
     const cards = contract_types?.map((type: TContractType) => {
-        if (type.value !== item.value) return null;
+        if(type.value !== item.value) return null;
+        if(type.value === 'vanilla' && is_vanilla_fx) type.value = 'vanilla_fx';
         return (
             <div key={type.value} className='contract-type-info__card'>
                 <ThemedScrollbars
@@ -72,7 +73,7 @@ const Info = ({ handleSelect, item, list }: TInfo) => {
                                 />
                             </React.Fragment>
                         ) : (
-                            <ContractTypeGlossary category={type.value} is_vanilla_fx={is_vanilla_fx} />
+                            <ContractTypeGlossary category={type.value} />
                         )}
                     </div>
                 </ThemedScrollbars>

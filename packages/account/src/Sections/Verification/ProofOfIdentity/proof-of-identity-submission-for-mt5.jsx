@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import { WS, isVerificationServiceSupported, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
+import { WS, isVerificationServiceSupported, formatIDVFormValues } from '@deriv/shared';
 import Unsupported from 'Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view-container';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
@@ -51,7 +50,6 @@ const POISubmissionForMT5 = ({
 
     const handleIdvSubmit = async (values, { setSubmitting, setErrors }) => {
         setSubmitting(true);
-        const { document_number, document_type } = values;
 
         const request = makeSettingsRequest(values, [...getChangeableFields()]);
 
@@ -72,15 +70,8 @@ const POISubmissionForMT5 = ({
 
         const submit_data = {
             identity_verification_document_add: 1,
-            document_number,
-            document_type: document_type.id,
-            issuing_country: citizen_data.value,
+            ...formatIDVFormValues(values, citizen_data.value),
         };
-
-        if (submit_data.document_type === IDV_NOT_APPLICABLE_OPTION.id) {
-            handlePOIComplete();
-            return;
-        }
 
         WS.send(submit_data).then(response => {
             setSubmitting(false);

@@ -18,6 +18,7 @@ const SummaryCard = observer(({ contract_info, is_contract_loading }: TSummaryCa
     const { server_time } = common;
 
     const is_mobile = isMobile();
+
     const card_header = (
         <ContractCard.Header
             contract_info={contract_info}

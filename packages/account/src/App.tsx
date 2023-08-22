@@ -2,7 +2,6 @@ import React from 'react';
 import Routes from './Containers/routes';
 import ResetTradingPassword from './Containers/reset-trading-password';
 import { APIProvider } from '@deriv/api';
-import { setWebsocket } from '@deriv/shared';
 import { StoreProvider } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 
@@ -17,9 +16,12 @@ type TAppProps = {
 const App = ({ passthrough }: TAppProps) => {
     const { root_store } = passthrough;
 
+    const { notification_messages_ui: Notifications } = root_store.ui;
+
     return (
         <APIProvider>
             <StoreProvider store={root_store}>
+                {Notifications && <Notifications />}
                 <Routes />
                 <ResetTradingPassword />
             </StoreProvider>

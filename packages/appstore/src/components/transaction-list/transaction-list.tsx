@@ -64,6 +64,14 @@ const TransactionList = observer(({ contentScrollHandler, is_wallet_name_visible
 
     const grouped_transactions = groupTransactionsByDay(transactions);
 
+    const scrollContainerRef = useRef(null);
+
+    useEffect(() => {
+        if (scrollContainerRef.current) {
+            (scrollContainerRef.current as HTMLDivElement).scrollTop = 0;
+        }
+    }, [filter]);
+
     const getHeightOffset = React.useCallback(() => {
         const header_height = is_mobile ? '16.2rem' : '(24.4rem + 7.8rem)';
         const collapsed_header_height = '12.2rem';

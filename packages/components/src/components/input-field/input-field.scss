@@ -180,6 +180,7 @@ button.dc-input-wrapper {
         color: var(--text-disabled);
     }
     &:disabled.trade-container__input--accumulator {
-        color: var(--text-less-prominent);
+        color: var(--text-general);
+        opacity: 0.5;
     }
 }

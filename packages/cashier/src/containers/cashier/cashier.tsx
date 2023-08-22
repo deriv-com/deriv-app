@@ -137,6 +137,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                     has_side_note:
                         !is_crypto_transactions_visible &&
                         route.path !== routes.cashier_deposit &&
+                        route.path !== routes.cashier_withdrawal &&
                         route.path !== routes.cashier_p2p,
                 });
             }

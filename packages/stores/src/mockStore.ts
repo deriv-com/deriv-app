@@ -449,6 +449,13 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_contract_update_stop_loss: false,
             has_contract_update_take_profit: false,
             getContractById: jest.fn(),
+            last_contract: {
+                contract_info: {},
+                digits_info: {},
+                display_status: '',
+                is_digit_contract: false,
+                is_ended: false,
+            },
         },
         modules: {},
         exchange_rates: {
@@ -463,7 +470,15 @@ const mock = (): TStores & { is_mock: boolean } => {
         },
         gtm: {},
         pushwoosh: {},
-        contract_replay: {},
+        contract_replay: {
+            contract_store: {
+                contract_info: {},
+                digits_info: {},
+                display_status: '',
+                is_digit_contract: false,
+                is_ended: false,
+            },
+        },
         chart_barrier_store: {},
         active_symbols: {},
     };

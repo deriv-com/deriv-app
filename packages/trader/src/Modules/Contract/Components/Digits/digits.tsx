@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { toJS } from 'mobx';
 import { DesktopWrapper, MobileWrapper, Popover, Text } from '@deriv/components';
@@ -9,6 +8,52 @@ import { Bounce, SlideIn } from 'App/Components/Animations';
 import { getMarketNamesMap } from '../../../../Constants';
 import { DigitSpot, LastDigitPrediction } from '../LastDigitPrediction';
 import 'Sass/app/modules/contract/digits.scss';
+import { useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
+
+type TTraderStore = ReturnType<typeof useTraderStore>;
+type TOnChangeStatus = { status: string | null; current_tick: number | null };
+type TOnLastDigitSpot = {
+    spot: string;
+    is_lost: boolean;
+    is_selected_winning: boolean;
+    is_latest: boolean;
+    is_won: boolean;
+};
+type TContractStores =
+    | ReturnType<typeof useStore>['contract_trade']['last_contract']
+    | ReturnType<typeof useStore>['contract_replay']['contract_store'];
+
+type TDigitsWrapper = TContractStores & {
+    digits_array?: string[];
+    is_trade_page?: boolean;
+    onDigitChange?: TTraderStore['onChange'];
+    selected_digit?: TTraderStore['last_digit'];
+    trade_type?: TTraderStore['contract_type'];
+    onChangeStatus?: (params: TOnChangeStatus) => void;
+    onLastDigitSpot?: (params: TOnLastDigitSpot) => void;
+    tick?:
+        | (Parameters<typeof isContractElapsed>[1] & {
+              current_tick: number;
+          })
+        | null;
+};
+
+type TDigits = Pick<
+    TDigitsWrapper,
+    | 'contract_info'
+    | 'digits_array'
+    | 'digits_info'
+    | 'display_status'
+    | 'is_digit_contract'
+    | 'is_ended'
+    | 'is_trade_page'
+    | 'trade_type'
+    | 'onDigitChange'
+    | 'selected_digit'
+> & {
+    underlying: ReturnType<typeof useTraderStore>['symbol'];
+};
 
 const DigitsWrapper = ({
     contract_info,
@@ -23,7 +68,7 @@ const DigitsWrapper = ({
     trade_type,
     onChangeStatus,
     ...props
-}) => {
+}: TDigitsWrapper) => {
     const has_contract = contract_info.date_start;
     let tick = props.tick;
 
@@ -42,7 +87,7 @@ const DigitsWrapper = ({
                 ask: t.tick,
                 bid: t.tick,
                 epoch: t.epoch,
-                pip_size: t.tick_display_value.split('.')[1].length,
+                pip_size: t.tick_display_value?.split('.')[1].length,
                 current_tick: tick_stream.length,
             };
         }
@@ -60,7 +105,7 @@ const DigitsWrapper = ({
             // i.e - 40px + 6px left and 6px right padding/margin = 52
             dimension={isMobile() ? 64 : 52}
             has_entry_spot={!!contract_info.entry_tick}
-            barrier={!is_contract_elapsed && is_tick_ready ? +contract_info.barrier : null}
+            barrier={!is_contract_elapsed && is_tick_ready ? Number(contract_info.barrier) : null}
             contract_type={!is_contract_elapsed && is_tick_ready ? contract_info.contract_type : null}
             digits={digits_array}
             digits_info={!is_contract_elapsed && is_tick_ready ? digits_info : {}}
@@ -77,24 +122,24 @@ const DigitsWrapper = ({
     );
 };
 
-const Digits = React.memo(props => {
-    const [status, setStatus] = React.useState();
-    const [current_tick, setCurrentTick] = React.useState();
-    const [spot, setSpot] = React.useState();
-    const [is_selected_winning, setIsSelectedWinning] = React.useState();
-    const [is_latest, setIsLatest] = React.useState();
-    const [is_won, setIsWon] = React.useState();
-    const [is_lost, setIsLost] = React.useState();
+const Digits = React.memo((props: TDigits) => {
+    const [status, setStatus] = React.useState<string | null>();
+    const [current_tick, setCurrentTick] = React.useState<number | null>();
+    const [spot, setSpot] = React.useState<string>();
+    const [is_selected_winning, setIsSelectedWinning] = React.useState<boolean>();
+    const [is_latest, setIsLatest] = React.useState<boolean>();
+    const [is_won, setIsWon] = React.useState<boolean>();
+    const [is_lost, setIsLost] = React.useState<boolean>();
     const isMounted = useIsMounted();
 
     const { contract_info, digits_array, is_digit_contract, is_trade_page, underlying } = props;
 
-    const onChangeStatus = params => {
+    const onChangeStatus = (params: TOnChangeStatus) => {
         setStatus(params.status);
         setCurrentTick(params.current_tick);
     };
 
-    const onLastDigitSpot = params => {
+    const onLastDigitSpot = (params: TOnLastDigitSpot) => {
         setSpot(params.spot);
         setIsLost(params.is_lost);
         setIsSelectedWinning(params.is_selected_winning);
@@ -106,7 +151,8 @@ const Digits = React.memo(props => {
         const underlying_name = is_trade_page ? underlying : contract_info.underlying;
 
         return localize('Last digit stats for latest 1000 ticks for {{underlying_name}}', {
-            underlying_name: getMarketNamesMap()[underlying_name.toUpperCase()],
+            underlying_name:
+                getMarketNamesMap()[underlying_name?.toUpperCase() as keyof ReturnType<typeof getMarketNamesMap>],
         });
     };
 
@@ -152,7 +198,6 @@ const Digits = React.memo(props => {
                             current_spot={spot}
                             is_lost={is_lost}
                             is_selected_winning={is_selected_winning}
-                            is_visible={!!(is_latest && spot)}
                             is_won={is_won}
                         />
                     </Bounce>
@@ -164,19 +209,5 @@ const Digits = React.memo(props => {
 });
 
 Digits.displayName = 'Digits';
-
-Digits.propTypes = {
-    contract_info: PropTypes.object,
-    digits_array: PropTypes.array,
-    digits_info: PropTypes.object,
-    display_status: PropTypes.string,
-    is_digit_contract: PropTypes.bool,
-    is_ended: PropTypes.bool,
-    is_trade_page: PropTypes.bool,
-    trade_type: PropTypes.string,
-    onDigitChange: PropTypes.func,
-    selected_digit: PropTypes.number,
-    underlying: PropTypes.string,
-};
 
 export default Digits;

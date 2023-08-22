@@ -17,7 +17,7 @@ import SideNote from '../../components/side-note';
 import USDTSideNote from '../../components/usdt-side-note';
 import { Virtual } from '../../components/cashier-container';
 import { useCashierStore } from '../../stores/useCashierStores';
-import { useCashierLocked, useIsSystemMaintenance } from '@deriv/hooks';
+import { useCashierLocked, useCryptoTransactions, useIsSystemMaintenance } from '@deriv/hooks';
 
 type TWithdrawalSideNoteProps = {
     currency: string;
@@ -74,6 +74,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         error: { setErrorMessage },
         willMountWithdraw,
     } = withdraw;
+    const { data, last_transaction } = useCryptoTransactions();
 
     React.useEffect(() => {
         return () => {
@@ -94,7 +95,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         if (isDesktop()) {
             if (isCryptocurrency(currency) && !is_switching) {
                 const side_notes = [
-                    <RecentTransaction key={2} />,
+                    <RecentTransaction override_data={last_transaction} key={2} />,
                     <WithdrawalSideNote currency={currency} key={0} />,
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
                     ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
@@ -118,7 +119,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
             setSideNotes?.([]);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, tab_index, is_crypto_transactions_visible]);
+    }, [currency, tab_index, is_crypto_transactions_visible, is_switching, last_transaction]);
 
     // TODO: Fix if conditions, use else if and combine conditions when possible
     if (is_system_maintenance) {
@@ -143,7 +144,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         return <WithdrawalLocked />;
     }
 
-    if (is_crypto_transactions_visible) return <CryptoTransactionsHistory />;
+    if (is_crypto_transactions_visible) return <CryptoTransactionsHistory override_data={data} />;
 
     if (!Number(balance)) {
         return (

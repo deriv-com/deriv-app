@@ -1,16 +1,14 @@
-// eslint-disable-next-line simple-import-sort/imports
 import React from 'react';
 import { ApiHelpers, ServerTime, setColors } from '@deriv/bot-skeleton';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Audio, BotNotificationMessages, Dashboard, NetworkToastPopup, RoutePromptDialog } from 'Components';
 import BotBuilder from 'Components/dashboard/bot-builder';
+import TransactionDetailsModal from 'Components/transaction-details';
 import GTM from 'Utils/gtm';
 import { useDBotStore } from 'Stores/useDBotStore';
 import BlocklyLoading from '../components/blockly-loading';
 import './app.scss';
-
-import TransactionDetailsModal from 'Components/transaction-details';
 
 const AppContent = observer(() => {
     const [is_loading, setIsLoading] = React.useState(true);

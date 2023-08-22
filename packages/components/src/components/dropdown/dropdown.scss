@@ -30,7 +30,6 @@
         &:active,
         &:focus {
             outline: 0;
-            border-color: var(--border-active);
         }
         &-text {
             padding-left: 1em;
@@ -69,7 +68,6 @@
             }
         }
         &--duration {
-            border: none !important;
             margin-top: 1rem;
             .dc-dropdown__display-text {
                 color: var(--text-general) !important;

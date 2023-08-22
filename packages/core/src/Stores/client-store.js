@@ -260,6 +260,7 @@ export default class ClientStore extends BaseStore {
             default_currency: computed,
             should_allow_authentication: computed,
             is_financial_assessment_incomplete: computed,
+            is_financial_assessment_needed: computed,
             is_authentication_needed: computed,
             is_identity_verification_needed: computed,
             real_account_creation_unlock_date: computed,
@@ -714,6 +715,10 @@ export default class ClientStore extends BaseStore {
 
     get is_financial_assessment_incomplete() {
         return this.account_status?.status?.includes('financial_assessment_not_complete');
+    }
+
+    get is_financial_assessment_needed() {
+        return this.account_status?.status?.includes('financial_assessment_notification');
     }
 
     get is_authentication_needed() {
@@ -1732,6 +1737,7 @@ export default class ClientStore extends BaseStore {
             }
             if (this.residence) {
                 await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
+                await this.fetchStatesList();
             }
             if (!this.is_virtual) await this.getLimits();
 
@@ -1770,19 +1776,6 @@ export default class ClientStore extends BaseStore {
 
     responseWebsiteStatus(response) {
         this.website_status = response.website_status;
-        if (this.website_status.message && this.website_status.message.length) {
-            this.root_store.notifications.addNotificationMessage({
-                key: 'maintenance',
-                header: localize('Site is being updated'),
-                message: localize(this.website_status.message),
-                type: 'warning',
-                is_persistent: true,
-            });
-        } else {
-            this.root_store.notifications.removeNotificationMessage({
-                key: 'maintenance',
-            });
-        }
     }
 
     responseLandingCompany(response) {
@@ -2114,6 +2107,7 @@ export default class ClientStore extends BaseStore {
         this.landing_companies = {};
         localStorage.removeItem('readScamMessage');
         localStorage.removeItem('isNewAccount');
+        LocalStore.set('marked_notifications', JSON.stringify([]));
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 

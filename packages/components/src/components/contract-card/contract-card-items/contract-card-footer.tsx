@@ -15,7 +15,7 @@ export type TCardFooterPropTypes = {
     is_sell_requested: boolean;
     onClickCancel: (contract_id?: number) => void;
     onClickSell: (contract_id?: number) => void;
-    onFooterEntered: () => void;
+    onFooterEntered?: () => void;
     server_time: moment.Moment;
     should_show_transition: boolean;
 };

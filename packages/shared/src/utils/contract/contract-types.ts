@@ -1,7 +1,7 @@
-import { ContractUpdate, ProposalOpenContract } from '@deriv/api-types';
+import { ContractUpdate, Portfolio1, ProposalOpenContract } from '@deriv/api-types';
 
 export type TContractStore = {
-    contract_info: ProposalOpenContract;
+    contract_info: TContractInfo;
     contract_update_take_profit: number | string;
     contract_update_stop_loss: number | string;
     clearContractUpdateConfigValues: () => void;
@@ -12,9 +12,10 @@ export type TContractStore = {
     onChange: (param: { name: string; value: string | number | boolean }) => void;
 };
 
-export type TContractInfo = ProposalOpenContract & {
-    contract_update?: ContractUpdate;
-};
+export type TContractInfo = ProposalOpenContract &
+    Portfolio1 & {
+        contract_update?: ContractUpdate;
+    };
 
 export type TTickItem = {
     epoch?: number;

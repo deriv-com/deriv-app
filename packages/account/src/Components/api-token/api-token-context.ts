@@ -6,9 +6,7 @@ const ApiTokenContext = React.createContext<TApiContext>({
     overlay_ref: document.createElement('div'),
     footer_ref: document.createElement('div'),
     toggleOverlay: () => null,
-    deleteToken: async (): Promise<void> => {
-        return Promise.resolve();
-    },
+    deleteToken: async () => Promise.resolve(),
 });
 
 export default ApiTokenContext;

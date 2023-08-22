@@ -21,7 +21,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const { active_tab, setActiveTab, setPreviewOnDialog } = dashboard;
     const { toggleSaveModal } = save_modal;
     const {
-        dashboard_strategies,
+        dashboard_strategies = [],
         getRecentFileIcon,
         getSaveType,
         getSelectedStrategyID,
@@ -39,7 +39,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const is_desktop = isDesktop();
 
     React.useEffect(() => {
-        if (dashboard_strategies && dashboard_strategies.length && index === 0) {
+        if (dashboard_strategies.length && index === 0) {
             setTimeout(() => {
                 trigger_div_ref?.current?.click();
             }, 50);

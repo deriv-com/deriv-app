@@ -79,7 +79,6 @@ const Dashboard = observer(() => {
             init_render.current = false;
         } else {
             let active_tab_name = 'dashboard';
-            if (active_tab === 0) active_tab_name = 'dashboard';
             if (active_tab === 1) active_tab_name = 'bot_builder';
             if (active_tab === 2) active_tab_name = 'chart';
             if (active_tab === 3) active_tab_name = 'tutorial';

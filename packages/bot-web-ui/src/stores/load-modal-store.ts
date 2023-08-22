@@ -356,7 +356,7 @@ export default class LoadModalStore implements ILoadModalStore {
             this.recent_workspace.dispose();
             this.recent_workspace = null;
         }
-        if (!this.recent_workspace || !this.recent_workspace.rendered) {
+        if (!this.recent_workspace?.rendered) {
             const ref = document.getElementById('load-strategy__blockly-container');
             if (!ref) {
                 // eslint-disable-next-line no-console
@@ -453,7 +453,7 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     readFile = (is_preview: boolean, drop_event: DragEvent, file: File): void => {
-        const file_name = file && file.name.replace(/\.[^/.]+$/, '');
+        const file_name = file?.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();
         reader.onload = action(e => {
             const load_options = { block_string: e.target.result, drop_event, from: save_types.LOCAL };

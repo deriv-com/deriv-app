@@ -67,7 +67,7 @@ const CFDsListing = () => {
 
     const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
 
-    const getMT5AccountAuthStatus = (current_acc_status: string, jurisdiction?: string) => {
+    const getMT5AccountAuthStatus = (current_acc_status?: string | null, jurisdiction?: string) => {
         if (jurisdiction) {
             switch (jurisdiction) {
                 case Jurisdiction.BVI: {

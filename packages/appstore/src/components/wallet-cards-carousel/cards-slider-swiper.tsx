@@ -64,7 +64,7 @@ const CardsSliderSwiper = observer(() => {
                     />
                 </div>
             )),
-        [data?.length]
+        [data]
     );
 
     return (

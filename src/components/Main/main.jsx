@@ -5,11 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import { TrackJS } from 'trackjs';
 import { getRelatedDeriveOrigin, queryToObjectArray } from '@utils';
 import { translate } from '@i18n';
-import { getClientAccounts, isDone, getLanguage, getTourState } from '@storage';
+import { getClientAccounts, isDone, getLanguage, getTourState, getActiveLoginId } from '@storage';
 import SidebarToggle from '@components/common/SidebarToggle';
 import ToolBox from '@components/ToolBox';
 import useQuery from '@components/hooks/useQuery';
-import { updateActiveAccount, updateIsLogged } from '@redux-store/client-slice';
+import { updateActiveAccount, updateIsLogged, setLoginId } from '@redux-store/client-slice';
 import { setAccountSwitcherLoader, setShouldReloadWorkspace, updateShowTour } from '@redux-store/ui-slice';
 import { observer as globalObserver } from '@utilities/observer';
 import { loginAndSetTokens } from '../../common/appId';
@@ -43,7 +43,6 @@ const Main = () => {
             .then(() => initializeBlockly(new_blockly))
             .then(() => setIsWorkspaceRendered(new_blockly?.is_workspace_rendered));
         dispatch(setShouldReloadWorkspace(false));
-        // eslint-disable-next-line
     }, []);
 
     React.useEffect(() => {
@@ -52,7 +51,6 @@ const Main = () => {
             dispatch(setShouldReloadWorkspace(false));
             applyToolboxPermissions();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [should_reload_workspace]);
 
     const init = () => {
@@ -85,6 +83,7 @@ const Main = () => {
             loginAndSetTokens(token_list)
                 .then(({ account_info = {} }) => {
                     if (account_info?.loginid) {
+                        dispatch(setLoginId(account_info?.loginid));
                         dispatch(updateIsLogged(true));
                         dispatch(updateActiveAccount(account_info));
                         applyToolboxPermissions();
@@ -107,7 +106,7 @@ const Main = () => {
             $('.show-on-load').show();
             $('.barspinner').hide();
             window.dispatchEvent(new Event('resize'));
-            const userId = document.getElementById('active-account-name')?.value;
+            const userId = getActiveLoginId();
             if (userId) {
                 TrackJS.configure({ userId });
             }

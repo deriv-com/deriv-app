@@ -1,6 +1,7 @@
 import { translate } from '@i18n';
 import { observer as globalObserver } from '@utilities/observer';
 import config from '@currency-config';
+import { getActiveToken } from '@storage';
 import { setBlockTextColor, findTopParentBlock, deleteBlockIfExists } from '../../utils';
 import { defineContract } from '../images';
 import { updatePurchaseChoices, fieldGeneratorMapping, dependentFieldMapping } from '../shared';
@@ -120,7 +121,8 @@ Blockly.Blocks.trade = {
 };
 
 Blockly.JavaScript.trade = block => {
-    const account = document.getElementById('active-token')?.value;
+    // couldn't understand why we were getting the active token from a hidden input field when we can get it from localstorage variables :confused:
+    const account = getActiveToken();
     if (!account) {
         throw Error('Please login');
     }

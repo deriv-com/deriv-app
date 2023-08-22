@@ -4,14 +4,8 @@ import classNames from 'classnames';
 import { api_base } from '@api-base';
 import config from '@config';
 import { isMobile, isDesktop } from '@utils';
-import { removeAllTokens, getActiveLoginId, setActiveLoginId, getClientAccounts } from '@storage';
-import {
-    resetClient,
-    updateActiveAccount,
-    updateBalance,
-    updateActiveToken,
-    updateAccountType,
-} from '@redux-store/client-slice';
+import { removeAllTokens, getActiveLoginId, getClientAccounts } from '@storage';
+import * as client_slice from '@redux-store/client-slice';
 import { setAccountSwitcherLoader, updateShowMessagePage } from '@redux-store/ui-slice';
 import { observer as globalObserver } from '@utilities/observer';
 import PlatformDropdown from './platform-dropdown';
@@ -23,11 +17,10 @@ import Loader from './loader';
 import { checkSwitcherType, isEuByAccount } from '../../common/footer-checks';
 import './header.scss';
 
-// [Todo] We will update this during the API improvement process
-let is_subscribed = false;
 const AccountSwitcher = () => {
     const { account_switcher_loader } = useSelector(state => state.ui);
     const { is_logged } = useSelector(state => state.client);
+
     if (account_switcher_loader) {
         return (
             <div className='header__menu-right-loader'>
@@ -43,7 +36,7 @@ const Header = () => {
     const [isPlatformSwitcherOpen, setIsPlatformSwitcherOpen] = React.useState(false);
     const [showDrawerMenu, updateShowDrawerMenu] = React.useState(false);
     const platformDropdownRef = React.useRef();
-    const { is_logged, active_token } = useSelector(state => state.client);
+    const { is_logged, login_id } = useSelector(state => state.client);
     const { is_bot_running } = useSelector(state => state.ui);
     const dispatch = useDispatch();
     const hideDropdown = e => !platformDropdownRef?.current?.contains(e.target) && setIsPlatformSwitcherOpen(false);
@@ -64,7 +57,7 @@ const Header = () => {
 
         if (!active_account) {
             removeAllTokens();
-            dispatch(resetClient());
+            dispatch(client_slice.resetClient());
             dispatch(setAccountSwitcherLoader(false));
         }
 
@@ -73,53 +66,24 @@ const Header = () => {
         const logged_in_token = client_accounts[current_login_id]?.token || active_account?.token || '';
 
         if (logged_in_token) {
-            api_base.api
-                .authorize(logged_in_token)
-                .then(account => {
-                    const { account_list = [] } = account.authorize || {};
-                    account_list.forEach(acc => {
-                        if (current_login_id === acc.loginid) {
-                            setActiveLoginId(current_login_id);
-                        } else {
-                            setActiveLoginId(account.authorize.loginid);
-                        }
-                    });
-                    if (account?.error?.code) return;
-                    dispatch(updateActiveToken(logged_in_token));
-                    dispatch(updateActiveAccount(account.authorize));
-                    dispatch(setAccountSwitcherLoader(false));
-                    if (!is_subscribed) {
-                        is_subscribed = true;
-                        api_base.api
-                            .send({
-                                balance: 1,
-                                account: 'all',
-                                subscribe: 1,
-                            })
-                            .then(({ balance }) => {
-                                globalObserver.setState({
-                                    balance: Number(balance.balance),
-                                    currency: balance.currency,
-                                });
-                            })
-                            .catch(e => {
-                                globalObserver.emit('Error', e);
-                            });
-                    }
-                })
-                .catch(() => {
-                    removeAllTokens();
-                    dispatch(resetClient());
-                    dispatch(setAccountSwitcherLoader(true));
-                });
+            dispatch(setAccountSwitcherLoader(false));
         }
-    }, [active_token]);
+    }, [login_id]);
 
     React.useEffect(() => {
+        api_base.api.expectResponse('balance').then(({ balance }) => {
+            // this is required to updated the accounts in the account switcher
+            dispatch(client_slice.updateBalance(balance));
+            globalObserver.setState({
+                balance: Number(balance.balance),
+                currency: balance.currency,
+            });
+        });
+
         const mountSwitcher = () => {
             const res = checkSwitcherType();
             if (res) {
-                dispatch(updateAccountType(res));
+                dispatch(client_slice.updateAccountType(res));
                 const current_login_id = getActiveLoginId();
                 if (current_login_id?.startsWith('MF')) {
                     dispatch(updateShowMessagePage(true));
@@ -127,15 +91,6 @@ const Header = () => {
             }
         };
         mountSwitcher();
-    }, []);
-
-    React.useEffect(() => {
-        api_base.api.onMessage().subscribe(({ data }) => {
-            if (data?.error?.code) return;
-            if (data?.msg_type === 'balance') {
-                dispatch(updateBalance(data.balance));
-            }
-        });
     }, []);
 
     React.useEffect(() => {

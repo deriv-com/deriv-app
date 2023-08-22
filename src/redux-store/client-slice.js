@@ -1,9 +1,7 @@
 import { createSlice, current } from '@reduxjs/toolkit';
 
 const initial_state = {
-    active_token: '',
     account_list: [],
-    active_account_name: '',
     account_balance: {},
     token_list: [],
     balance: 0,
@@ -40,20 +38,23 @@ export const clientSlice = createSlice({
         },
         resetClient: () => initial_state,
         updateActiveAccount: (state, action) => {
-            state.active_account_name = action.payload.loginid;
             state.account_list = [...action.payload.account_list];
             state.is_virtual = !!action.payload.is_virtual;
             state.currency = action.payload.currency;
             state.balance = action.payload.balance;
         },
-        updateActiveToken: (state, action) => {
-            state.active_token = action.payload;
+        /**
+         * @setLoginId sets the login id in the redux store as well in the local storage
+         * @param {*} login id
+         */
+        setLoginId: (state, action) => {
+            state.login_id = action.payload;
         },
         setGdLoggedIn: (state, action) => {
             state.is_gd_logged_in = action.payload;
         },
         updateBalance: (state, action) => {
-            if (action.payload.loginid === state.active_account_name) {
+            if (action.payload.loginid === state.login_id) {
                 state.balance = action.payload.balance;
                 state.currency = action.payload.currency;
             }
@@ -79,11 +80,11 @@ export const clientSlice = createSlice({
 export const {
     updateIsLogged,
     resetClient,
-    updateActiveToken,
     updateActiveAccount,
     updateBalance,
     updateAccountType,
     setGdLoggedIn,
+    setLoginId,
 } = clientSlice.actions;
 
 export default clientSlice.reducer;

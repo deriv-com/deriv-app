@@ -121,16 +121,22 @@ export const dropFromStorage = varName => delete store[varName];
 
 export const addToken = (token, loginInfo, hasRealityCheck, hasTradeLimitation) => {
     const { loginid: accountName } = loginInfo;
-
     const account = {
         accountName,
         token,
-        loginInfo,
+        loginInfo: { ...loginInfo },
         hasRealityCheck,
         hasTradeLimitation,
     };
 
     return account;
+};
+
+export const getActiveToken = (client_login_id = '') => {
+    const login_id = client_login_id || getActiveLoginId();
+    const client_accounts = getClientAccounts();
+    const account = client_accounts[login_id];
+    return account?.token;
 };
 
 export const removeAllTokens = () => {

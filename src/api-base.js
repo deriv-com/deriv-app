@@ -38,8 +38,9 @@ class APIBase {
     async authorize(token) {
         if (this.token === token) return { authorize: this.account_info };
         this.token = token;
-        this.api.authorize(token);
+        await this.api.authorize(token);
         const { authorize, error } = await this.api.expectResponse('authorize');
+
         this.active_login_id = authorize.loginid;
         this.account_info = authorize;
         this.getLandingCompanyDetails();

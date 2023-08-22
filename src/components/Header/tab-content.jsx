@@ -11,21 +11,22 @@ import { CRYPTO_CURRENCIES } from '@currency-config';
 const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, title = 'Deriv Accounts' }) => {
     const [isAccordionOpen, setIsAccordionOpen] = React.useState(true);
     const dispatch = useDispatch();
-    const { active_account_name } = useSelector(state => state.client);
+    const { login_id } = useSelector(state => state.client);
     const item_ref = React.useRef([]);
     const isReal = tab === 'real';
 
-    const onChangeAccount = login_id => {
+    const onChangeAccount = id => {
         const active_login_id = getActiveLoginId();
-        if (login_id && active_login_id && login_id !== active_login_id) {
-            dispatch(setAccountSwitcherId(login_id));
+        console.log(id, active_login_id, 'login_id, active_login_id');
+        if (id && active_login_id && id !== active_login_id) {
+            dispatch(setAccountSwitcherId(id));
             setIsAccDropdownOpen(false);
         }
     };
 
     const low_risk_countries = ['za', 'ec', 'bw'];
     const is_country_low_risk = low_risk_countries.includes(getClientCountry());
-    const is_active_account_mf = active_account_name?.includes('MF');
+    const is_active_account_mf = login_id?.includes('MF');
 
     return (
         <div className={`account__switcher-tabs-content ${isActive ? '' : 'hide'}`}>
@@ -82,8 +83,7 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
                                     isReal !== Boolean(demo_account) && (
                                         <div
                                             className={classNames('account__switcher-acc', {
-                                                'account__switcher-acc--active':
-                                                    active_account_name === account.account,
+                                                'account__switcher-acc--active': login_id === account.account,
                                             })}
                                             key={account.account}
                                             onClick={e => {

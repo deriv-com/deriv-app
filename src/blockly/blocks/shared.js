@@ -1,11 +1,5 @@
 import { TrackJS } from 'trackjs';
-import {
-    getContractsForStore,
-    setContractsForStore,
-    removeAllTokens,
-    getActiveLoginId,
-    getClientAccounts,
-} from '@storage';
+import { getContractsForStore, setContractsForStore, getActiveLoginId, getClientAccounts } from '@storage';
 import { isProduction } from '@utils';
 import { api_base } from '@api-base';
 import { translate } from '@i18n';
@@ -326,14 +320,6 @@ export const getContractsAvailableForSymbolFromApi = async underlyingSymbol => {
     const loginid = getActiveLoginId();
     const account_list = getClientAccounts();
     const token = account_list?.[loginid]?.token || null;
-
-    if (token) {
-        try {
-            await api_base.api.authorize(token);
-        } catch (e) {
-            removeAllTokens();
-        }
-    }
 
     const contractsForSymbol = {};
     try {

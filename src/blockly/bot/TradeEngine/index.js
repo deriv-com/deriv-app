@@ -6,7 +6,6 @@ import { translate } from '@i18n';
 import { observer as globalObserver } from '@utilities/observer';
 import { durationToSecond } from '@utils';
 import { createError } from '../../../botPage/common/error';
-import { doUntilDone } from '../tools';
 import { expectInitArg, expectTradeOptions } from '../sanitize';
 import Proposal from './Proposal';
 import Total from './Total';
@@ -105,15 +104,13 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
     loginAndGetBalance(token) {
         if (this.token === token) return Promise.resolve();
-        doUntilDone(() => api_base.api.authorize(token)).catch(e => this.$scope.observer.emit('Error', e));
-        return new Promise(resolve =>
-            // eslint-disable-next-line no-promise-executor-return
+        return new Promise(resolve => {
             api_base.api.expectResponse('authorize').then(({ authorize }) => {
                 this.accountInfo = authorize;
                 this.token = token;
                 resolve();
-            })
-        ).catch(error => {
+            });
+        }).catch(error => {
             globalObserver.emit('Error', error);
         });
     }

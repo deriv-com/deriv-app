@@ -1,5 +1,6 @@
 import { TrackJS } from 'trackjs';
 import { isMobile } from '@utils';
+import { getActiveLoginId } from '@storage';
 import { observer as globalObserver } from '@utilities/observer';
 import { trackJSTrack } from '@utilities/integrations/trackJSTrack';
 import { isIOS } from './osDetect';
@@ -60,11 +61,10 @@ const waitForNotifications = () => {
 };
 
 const logHandler = () => {
-    const userId = document.getElementById('active-account-name')?.value;
+    const userId = getActiveLoginId();
     if (userId) {
         TrackJS.configure({ userId });
     }
-
     waitForNotifications();
 };
 

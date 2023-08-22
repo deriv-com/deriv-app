@@ -52,11 +52,18 @@ export async function addTokenIfValid(token) {
     }
 }
 
-export async function loginAndSetTokens(token_list) {
+export async function loginAndSetTokens(token_list = []) {
     try {
-        const [token1 = {}] = token_list;
-        if (!token1.token) throw new Error('Token not found');
-        const { authorize: account_info } = await api_base.authorize(token1.token);
+        let account;
+        const login_id = getActiveLoginId();
+        if (login_id) {
+            account = token_list.find(t => t.accountName === login_id);
+        } else {
+            [account] = token_list; // pick up first account from the account list
+        }
+
+        if (!account.token) throw new Error('Token not found');
+        const { authorize: account_info } = await api_base.authorize(account.token);
         const { landing_company_name, account_list = [] } = account_info;
         const { has_reality_check } = api_base.landing_company_details;
         const has_trade_limitation = ['iom', 'malta'].includes(landing_company_name) && account_info.country === 'gb';
@@ -93,7 +100,7 @@ export async function loginAndSetTokens(token_list) {
             }
             accounts_list[token.accountName] = temp_account;
         });
-        setActiveLoginId(token1.accountName);
+        setActiveLoginId(account.accountName);
         setClientAccounts(accounts_list);
         return { account_info, accounts_list };
     } catch (e) {

@@ -6,7 +6,7 @@ import Popover from '@components/common/popover';
 import { observer as globalObserver } from '@utilities/observer';
 
 const NetworkStatus = () => {
-    const [status, setStatus] = React.useState('offline');
+    const [status, setStatus] = React.useState(translate('offline'));
 
     React.useEffect(() => {
         api_base.api.send({ website_status: '1', subscribe: 1 }).catch(e => {
@@ -50,11 +50,11 @@ const NetworkStatus = () => {
     const updateStatus = () => {
         if (navigator.onLine) {
             if (api_base.api.connection.readyState !== 1) {
-                setStatus('blinker');
+                setStatus(translate('connecting'));
             } else {
                 api_base.api
                     .send({ ping: '1' })
-                    .then(() => setStatus('online'))
+                    .then(() => setStatus(translate('online')))
                     .catch(e => {
                         globalObserver.emit('Error', e);
                     });
@@ -66,12 +66,12 @@ const NetworkStatus = () => {
 
     return (
         <div id='network-status' className='network-status__wrapper'>
-            <Popover content={translate('Network status: {$0}', [status])}>
+            <Popover content={`${translate('Network status')}: ${status}`}>
                 <div
                     className={classNames('network-status__circle', {
                         'network-status__circle--offline': status === 'offline',
                         'network-status__circle--online': status === 'online',
-                        'network-status__circle--blinker': status === 'blinker',
+                        'network-status__circle--blinker': status === 'connecting',
                     })}
                 />
             </Popover>

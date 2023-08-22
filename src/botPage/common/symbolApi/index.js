@@ -68,7 +68,7 @@ export default class _Symbol {
             const loginid = getActiveLoginId();
 
             if (loginid && accounts && accounts?.[loginid]?.token) {
-                api_base.api
+                api_base
                     .authorize(accounts?.[loginid]?.token)
                     .then(() => getActiveSymbolsLogic())
                     .catch(e => {

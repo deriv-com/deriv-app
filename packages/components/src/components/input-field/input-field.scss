@@ -177,7 +177,9 @@ button.dc-input-wrapper {
         border: 1px solid $COLOR_RED !important;
     }
     &:disabled {
-        opacity: 1;
         color: var(--text-disabled);
+    }
+    &:disabled.trade-container__input--accumulator {
+        color: var(--text-less-prominent);
     }
 }

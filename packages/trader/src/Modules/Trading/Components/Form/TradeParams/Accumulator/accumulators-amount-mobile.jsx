@@ -27,6 +27,7 @@ const AccumulatorsAmountMobile = observer(({ is_nativepicker }) => {
                     id='dt_amount_input'
                     inline_prefix={is_single_currency ? currency : null}
                     is_autocomplete_disabled
+                    is_disabled={has_open_accu_contract}
                     is_float
                     is_hj_whitelisted
                     is_incrementable
@@ -39,7 +40,6 @@ const AccumulatorsAmountMobile = observer(({ is_nativepicker }) => {
                     value={amount}
                     ariaLabel={localize('Amount')}
                     setCurrentFocus={setCurrentFocus}
-                    is_disabled={has_open_accu_contract}
                 />
             </MobileWrapper>
         </>

@@ -49,7 +49,7 @@ describe('AccumulatorOptionsWidget', () => {
         expect(screen.getByText(/Your stake will grow/i)).toBeInTheDocument();
         expect(screen.getByText(/RadioGroupOptionsModal/i)).toHaveAttribute('data-open', 'false');
     });
-    it('if Accum contract is not open, user is able to opne RadioGroupOptionsModal', () => {
+    it('if Accum contract is not open, user is able to open RadioGroupOptionsModal', () => {
         const new_mock_store = { ...default_mock_store };
         new_mock_store.modules.trade = {
             growth_rate: 0.01,

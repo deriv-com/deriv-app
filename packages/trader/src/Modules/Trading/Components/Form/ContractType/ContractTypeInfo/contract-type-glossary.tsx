@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
-const ContractTypeGlossary = ({ category }: { category: string; }) => {
+const ContractTypeGlossary = ({ category }: { category: string }) => {
     let content;
     if (category) {
         switch (category) {
@@ -131,10 +131,12 @@ const ContractTypeGlossary = ({ category }: { category: string; }) => {
                     { type: 'heading', text: localize('Payout') },
                     {
                         type: 'paragraph',
-                        text: <Localize
-                                  i18n_default_text='Your payout is equal to the payout per pip multiplied by the difference, <0>in pips</0>, between the final price and the strike price.'
-                                  components={[<strong key={0} />]}
-                              />
+                        text: (
+                            <Localize
+                                i18n_default_text='Your payout is equal to the payout per pip multiplied by the difference, <0>in pips</0>, between the final price and the strike price.'
+                                components={[<strong key={0} />]}
+                            />
+                        ),
                     },
                     { type: 'heading', text: localize('Payout per pip') },
                     {
@@ -180,7 +182,6 @@ const ContractTypeGlossary = ({ category }: { category: string; }) => {
                             'We’ll offer to buy your contract at this price should you choose to sell it before its expiry. This is based on several factors, such as the current spot price, duration, etc. However, we won’t offer a contract value if the remaining duration is below 24 hours.'
                         ),
                     },
-                    
                 ];
                 break;
             default:

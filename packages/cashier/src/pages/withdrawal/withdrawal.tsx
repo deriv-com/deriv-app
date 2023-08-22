@@ -24,7 +24,7 @@ type TWithdrawalSideNoteProps = {
 };
 
 type TWithdrawalProps = {
-    setSideNotes: (notes: (JSX.Element | JSX.Element[])[] | null) => void;
+    setSideNotes: (notes: React.ReactNode[]) => void;
 };
 
 const WithdrawalSideNote = ({ is_mobile }: TWithdrawalSideNoteProps) => {
@@ -46,18 +46,13 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         verification_code: { payment_withdraw: verification_code },
     } = client;
     const { iframe, general_store, transaction_history, withdraw } = useCashierStore();
-    const { is_crypto, setActiveTab, cashier_route_tab_index: tab_index } = general_store;
+    const { is_crypto, cashier_route_tab_index: tab_index } = general_store;
     const is_cashier_locked = useCashierLocked();
     const is_system_maintenance = useIsSystemMaintenance();
     const { iframe_url } = iframe;
-    const {
-        crypto_transactions,
-        is_crypto_transactions_visible,
-        onMount: recentTransactionOnMount,
-    } = transaction_history;
+    const { is_crypto_transactions_visible } = transaction_history;
     const {
         check10kLimit,
-        container,
         error,
         is_10k_withdrawal_limit_reached,
         is_withdraw_confirmed,
@@ -67,17 +62,10 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
     } = withdraw;
 
     React.useEffect(() => {
-        if (!is_crypto_transactions_visible) {
-            recentTransactionOnMount();
-        }
-    }, [is_crypto_transactions_visible, is_switching, recentTransactionOnMount]);
-
-    React.useEffect(() => {
-        setActiveTab(container);
         return () => {
             setErrorMessage({ code: '', message: '' });
         };
-    }, [container, setActiveTab, setErrorMessage]);
+    }, [setErrorMessage]);
 
     React.useEffect(() => {
         check10kLimit();
@@ -90,7 +78,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
 
     React.useEffect(() => {
         if (isDesktop()) {
-            if (isCryptocurrency(currency) && typeof setSideNotes === 'function' && !is_switching) {
+            if (isCryptocurrency(currency) && !is_switching) {
                 const side_notes = [];
                 if (verification_code || is_withdraw_confirmed) {
                     side_notes.push(<RecentTransaction key={2} />);
@@ -98,23 +86,21 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
                 side_notes.push(...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []));
                 side_notes.push(...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []));
 
-                if (side_notes.length) {
-                    setSideNotes([
-                        ...side_notes.map((side_note, index) => (
-                            <SideNote has_title={false} key={index}>
-                                {side_note}
-                            </SideNote>
-                        )),
-                    ]);
-                }
-            } else setSideNotes(null);
+                setSideNotes?.([
+                    ...side_notes.map((side_note, index) => (
+                        <SideNote has_title={false} key={index}>
+                            {side_note}
+                        </SideNote>
+                    )),
+                ]);
+            } else setSideNotes?.([]);
         }
 
         return () => {
             setSideNotes?.([]);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, tab_index, crypto_transactions]);
+    }, [currency, tab_index]);
 
     // TODO: Fix if conditions, use else if and combine conditions when possible
     if (is_system_maintenance) {

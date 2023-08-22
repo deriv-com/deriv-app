@@ -62,7 +62,6 @@
     }
     &__heading {
         @include mobile {
-            font-size: var(--text-size-xs);
             margin-bottom: 0.8rem;
         }
     }

@@ -1,27 +1,33 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useHistory } from 'react-router-dom';
 import { loginUrl, routes, redirectToLogin, PlatformContext } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import { WS } from 'Services';
 
-const Redirect = ({
-    history,
-    currency,
-    setVerificationCode,
-    verification_code,
-    hasAnyRealAccount,
-    is_logged_in,
-    is_logging_in,
-    openRealAccountSignup,
-    setResetTradingPasswordModalOpen,
-    toggleAccountSignupModal,
-    toggleResetPasswordModal,
-    setNewEmail,
-    toggleResetEmailModal,
-    toggleUpdateEmailModal,
-}) => {
+const Redirect = observer(() => {
+    const history = useHistory();
+    const { client, ui } = useStore();
+
+    const {
+        currency,
+        hasAnyRealAccount,
+        is_logged_in,
+        is_logging_in,
+        setNewEmail,
+        setVerificationCode,
+        verification_code,
+    } = client;
+
+    const {
+        openRealAccountSignup,
+        setResetTradingPasswordModalOpen,
+        toggleAccountSignupModal,
+        toggleResetPasswordModal,
+        toggleResetEmailModal,
+        toggleUpdateEmailModal,
+    } = ui;
+
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
@@ -195,43 +201,6 @@ const Redirect = ({
     }
 
     return null;
-};
+});
 
-Redirect.propTypes = {
-    currency: PropTypes.string,
-    loginid: PropTypes.string,
-    getServerTime: PropTypes.object,
-    hasAnyRealAccount: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_logging_in: PropTypes.bool,
-    history: PropTypes.object,
-    openRealAccountSignup: PropTypes.func,
-    setResetTradingPasswordModalOpen: PropTypes.func,
-    setVerificationCode: PropTypes.func,
-    setNewEmail: PropTypes.func,
-    toggleAccountSignupModal: PropTypes.func,
-    toggleResetPasswordModal: PropTypes.func,
-    toggleResetEmailModal: PropTypes.func,
-    toggleUpdateEmailModal: PropTypes.func,
-    verification_code: PropTypes.object,
-};
-
-export default withRouter(
-    connect(({ client, ui }) => ({
-        currency: client.currency,
-        is_eu: client.is_eu,
-        setVerificationCode: client.setVerificationCode,
-        verification_code: client.verification_code,
-        fetchResidenceList: client.fetchResidenceList,
-        hasAnyRealAccount: client.hasAnyRealAccount,
-        is_logged_in: client.is_logged_in,
-        is_logging_in: client.is_logging_in,
-        openRealAccountSignup: ui.openRealAccountSignup,
-        setResetTradingPasswordModalOpen: ui.setResetTradingPasswordModalOpen,
-        toggleAccountSignupModal: ui.toggleAccountSignupModal,
-        toggleResetPasswordModal: ui.toggleResetPasswordModal,
-        setNewEmail: client.setNewEmail,
-        toggleResetEmailModal: ui.toggleResetEmailModal,
-        toggleUpdateEmailModal: ui.toggleUpdateEmailModal,
-    }))(Redirect)
-);
+export default withRouter(Redirect);

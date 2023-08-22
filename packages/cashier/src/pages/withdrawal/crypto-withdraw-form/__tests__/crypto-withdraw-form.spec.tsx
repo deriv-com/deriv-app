@@ -32,9 +32,6 @@ describe('<CryptoWithdrawForm />', () => {
                         onChangeConverterToAmount: jest.fn(),
                         resetConverter: jest.fn(),
                     },
-                    transaction_history: {
-                        onMount: jest.fn(),
-                    },
                     withdraw: {
                         blockchain_address: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
                         onMountCryptoWithdraw: jest.fn(),

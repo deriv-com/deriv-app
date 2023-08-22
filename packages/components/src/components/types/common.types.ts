@@ -14,3 +14,9 @@ export type TItem = {
 };
 
 export type TTableRowItem = { component: React.ReactNode };
+
+export type TDatePickerOnChangeEvent = {
+    date?: string;
+    duration?: number | null | string;
+    target?: { name?: string; value?: number | string | moment.Moment | null };
+};

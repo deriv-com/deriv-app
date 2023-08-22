@@ -40,7 +40,6 @@ describe('<DepositLocked />', () => {
                 is_trading_experience_incomplete: false,
                 is_financial_account: false,
             },
-            modules: { cashier: { deposit: { onMountDeposit: jest.fn() } } },
         });
 
         render(<DepositLocked />, {
@@ -72,7 +71,6 @@ describe('<DepositLocked />', () => {
                 is_trading_experience_incomplete: false,
                 is_financial_account: false,
             },
-            modules: { cashier: { deposit: { onMountDeposit: jest.fn() } } },
         });
 
         render(<DepositLocked />, {
@@ -96,7 +94,6 @@ describe('<DepositLocked />', () => {
                 is_trading_experience_incomplete: false,
                 is_financial_account: false,
             },
-            modules: { cashier: { deposit: { onMountDeposit: jest.fn() } } },
         });
 
         render(<DepositLocked />, {
@@ -124,7 +121,6 @@ describe('<DepositLocked />', () => {
                 is_trading_experience_incomplete: false,
                 is_financial_account: false,
             },
-            modules: { cashier: { deposit: { onMountDeposit: jest.fn() } } },
         });
 
         render(<DepositLocked />, {

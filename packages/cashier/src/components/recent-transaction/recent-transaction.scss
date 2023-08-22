@@ -17,6 +17,7 @@
 
             &__data-wrapper {
                 display: flex;
+                flex-direction: column;
                 margin: 0.8rem 0 1.1rem;
                 padding: 0.8rem 0 1.2rem;
                 border-top: 1px solid var(--general-active);

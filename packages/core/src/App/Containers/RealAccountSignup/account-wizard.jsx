@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import classNames from 'classnames';
 import fromEntries from 'object.fromentries';
 import PropTypes from 'prop-types';

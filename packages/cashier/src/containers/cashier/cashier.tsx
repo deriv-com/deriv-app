@@ -50,7 +50,7 @@ type TCashierOptions = {
 
 const Cashier = observer(({ history, location, routes: routes_config }: TCashierProps) => {
     const { common, ui, client } = useStore();
-    const { withdraw, general_store, transaction_history, payment_agent } = useCashierStore();
+    const { withdraw, general_store, payment_agent } = useCashierStore();
     const { error } = withdraw;
     const {
         is_cashier_onboarding,
@@ -59,8 +59,8 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         setAccountSwitchListener,
         setCashierTabIndex: setTabIndex,
         cashier_route_tab_index: tab_index,
+        setActiveTab,
     } = general_store;
-    const { is_crypto_transactions_visible } = transaction_history;
     const {
         data: is_payment_agent_transfer_visible,
         isLoading: is_payment_agent_checking,
@@ -132,7 +132,8 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                     label: route.getTitle(),
                     value: route.component,
                     path: route.path,
-                    has_side_note: is_crypto_transactions_visible ? false : route.path !== routes.cashier_p2p, // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
+                    // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
+                    has_side_note: route.path !== routes.cashier_deposit && route.path !== routes.cashier_p2p,
                 });
             }
         });
@@ -164,6 +165,33 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         return selected_route.getTitle?.();
     };
 
+    const onTabChange = (index: number) => {
+        const options = getMenuOptions();
+        const path = options[index].path;
+        switch (path) {
+            case routes.cashier_deposit:
+                setActiveTab('deposit');
+                break;
+            case routes.cashier_withdrawal:
+                setActiveTab('withdraw');
+                break;
+            case routes.cashier_pa:
+                setActiveTab('payment_agent');
+                break;
+            case routes.cashier_pa_transfer:
+                setActiveTab('payment_agent_transfer');
+                break;
+            case routes.cashier_acc_transfer:
+                setActiveTab('account_transfer');
+                break;
+            default:
+                setActiveTab('deposit');
+                break;
+        }
+
+        setTabIndex(index);
+    };
+
     return (
         <FadeWrapper is_visible={is_visible} className='cashier__page-wrapper' keyname='cashier__page-wrapper'>
             <ErrorDialog error={error} />
@@ -173,7 +201,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                         <VerticalTab
                             current_path={location.pathname}
                             is_floating
-                            setVerticalTabIndex={setTabIndex}
+                            setVerticalTabIndex={onTabChange}
                             vertical_tab_index={is_default_route ? 0 : tab_index}
                             is_full_width
                             is_routed

@@ -208,14 +208,14 @@ export default class CFDStore extends BaseStore {
                 };
             });
 
-        this?.root_store?.client.dxtrade_accounts_list.forEach(account => {
+        this.root_store.client.dxtrade_accounts_list.forEach(account => {
             // e.g. dxtrade.real.financial_stp
             list[getAccountListKey(account, CFD_PLATFORMS.DXTRADE)] = {
                 ...account,
             };
         });
 
-        this?.root_store?.client.derivez_accounts_list.forEach(account => {
+        this.root_store.client.derivez_accounts_list.forEach(account => {
             // e.g. derivez.real.financial_stp
             list[getAccountListKey(account, CFD_PLATFORMS.DERIVEZ)] = {
                 ...account,

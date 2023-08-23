@@ -549,6 +549,10 @@
         }
     }
     &__amount {
+        .trade-container__input:disabled {
+            color: var(--text-general);
+            opacity: 0.5;
+        }
         &--multipliers {
             & .trade-container__input {
                 left: 3.6rem;

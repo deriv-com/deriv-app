@@ -18,7 +18,6 @@ export const Input = ({
     currency,
     current_focus,
     error_messages,
-    is_accumulator,
     is_nativepicker,
     is_single_currency,
     is_disabled,
@@ -28,9 +27,7 @@ export const Input = ({
     <InputField
         className='trade-container__amount'
         classNameInlinePrefix='trade-container__currency'
-        classNameInput={classNames('trade-container__input', {
-            'trade-container__input--accumulator': is_accumulator,
-        })}
+        classNameInput='trade-container__input'
         currency={currency}
         current_focus={current_focus}
         error_messages={error_messages}
@@ -163,7 +160,6 @@ const Amount = observer(({ is_minimized, is_nativepicker }) => {
                     currency={currency}
                     current_focus={current_focus}
                     error_messages={error_messages}
-                    is_accumulator={is_accumulator}
                     is_single_currency={is_single_currency}
                     is_nativepicker={is_nativepicker}
                     is_disabled={has_open_accu_contract}

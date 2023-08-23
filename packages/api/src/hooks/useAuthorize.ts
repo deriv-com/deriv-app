@@ -1,6 +1,6 @@
-import { getActiveAuthTokenIDFromLocalStorage } from '@deriv/utils';
 import { useMemo } from 'react';
-import useFetch from './useFetch';
+import { getActiveAuthTokenIDFromLocalStorage } from '@deriv/utils';
+import useFetch from '../useFetch';
 
 /** A custom hook that authorize the user with the given token. If no token is given, it will use the current token.
  *

@@ -8,9 +8,9 @@ type FormInputFieldProps = {
     warn?: string;
 } & React.ComponentProps<typeof Input>;
 
-type TFormInputFieldHelpers = {
+type TFormInputFieldHelpers<T> = {
     field: FieldInputProps<string>;
-    form: FormikHelpers<Record<string, string>> & FormikState<Record<string, string>>;
+    form: FormikHelpers<T> & FormikState<T>;
 };
 
 /**
@@ -20,16 +20,15 @@ type TFormInputFieldHelpers = {
  * @param [optional] - Whether the field is optional
  * @param [warn] - Display a warning message
  * @param [props] - Other props to pass to Input
- * @returns {React.ReactNode}
+ * @returns ReactNode
  */
-const FormInputField = ({ name, optional = false, warn, ...rest }: FormInputFieldProps) => (
+const FormInputField = ({ name, warn, ...rest }: FormInputFieldProps) => (
     <Field name={name}>
-        {({ field, form: { errors, touched } }: TFormInputFieldHelpers) => (
+        {({ field, form: { errors, touched } }: TFormInputFieldHelpers<Record<string, string>>) => (
             <Input
                 {...field}
                 {...rest}
                 type='text'
-                required={!optional}
                 autoComplete='off'
                 error={touched[field.name] && errors[field.name] ? errors[field.name] : undefined}
                 warn={warn}

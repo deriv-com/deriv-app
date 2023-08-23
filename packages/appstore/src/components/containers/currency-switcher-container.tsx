@@ -39,16 +39,14 @@ const Dropdown = observer(({ ...props }: DropdownProps) => {
         .map(key => current_list[key])
         .some(account => account.landing_company_short === 'maltainvest');
 
-    const icon_dropdown = (
+    if ((is_eu_user && has_mf_mt5_account) || is_demo) {
+        return null;
+    }
+    return (
         <div data-testid='dt_currency-switcher__arrow' className='currency-switcher-container__arrow' {...props}>
             <Icon icon='IcChevronDownBold' />
         </div>
     );
-
-    if ((is_eu_user && has_mf_mt5_account) || is_demo) {
-        return null;
-    }
-    return icon_dropdown;
 });
 
 const CurrentSwitcherContainer = observer(

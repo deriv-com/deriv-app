@@ -9,7 +9,7 @@ let mock = mockStore({});
 const mocked_props = {
     image: <WalletsImage image='how_it_works' />,
     title: 'Upgrade To Wallets',
-    description: 'Dont be broke',
+    description: 'A better way to manage your funds',
     bullets: ['Bullet 1', 'Bullet 2', 'Bullet 3'],
 };
 

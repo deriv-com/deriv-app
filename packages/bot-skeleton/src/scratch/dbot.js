@@ -337,13 +337,7 @@ class DBot {
      * Checks whether the workspace contains all required blocks before running the strategy.
      */
     checkForRequiredBlocks() {
-        const has_all_required_blocks = isAllRequiredBlocksEnabled(this.workspace);
-
-        if (!has_all_required_blocks) {
-            return false;
-        }
-
-        return true;
+        return isAllRequiredBlocksEnabled(this.workspace);
     }
 
     /**

@@ -1,11 +1,20 @@
 import { localize } from '@deriv/translations';
 
-const generateErrorMessage = (blockType, missing_space = 'workspace') => {
+const generateErrorMessage = (blockType, missing_space = localize('workspace')) => {
     return {
-        missing: localize(`The ${blockType} block is mandatory and cannot be deleted/disabled.`),
-        misplaced: localize(`The ${blockType} block is misplaced from ${missing_space}.`),
-        disabled: localize(`The ${blockType} block is mandatory and cannot be deleted/disabled.`),
-        default: localize(`The ${blockType} block is mandatory and cannot be deleted/disabled.`),
+        missing: localize('The {{block_type}} block is mandatory and cannot be deleted/disabled.', {
+            block_type: blockType,
+        }),
+        misplaced: localize('The {{block_type}} block is misplaced from {{missing_space}}.', {
+            block_type: blockType,
+            missing_space,
+        }),
+        disabled: localize('The {{block_type}} block is mandatory and cannot be deleted/disabled.', {
+            block_type: blockType,
+        }),
+        default: localize('The {{block_type}} block is mandatory and cannot be deleted/disabled.', {
+            block_type: blockType,
+        }),
     };
 };
 

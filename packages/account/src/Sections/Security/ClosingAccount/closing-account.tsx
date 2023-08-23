@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ClosingAccountSteps from './closing-account-steps';
 import ClosingAccountReason from './closing-account-reason';
 
 const ClosingAccount = () => {
-    const [render_close_account_reason, setRenderCloseAccountReason] = useState(false);
+    const [render_close_account_reason, setRenderCloseAccountReason] = React.useState<boolean>(false);
     const redirectToReasons = () => {
         setRenderCloseAccountReason(true);
     };
@@ -12,7 +12,7 @@ const ClosingAccount = () => {
     };
 
     return (
-        <div className='closing-account'>
+        <div className='closing-account' data-testid='dt_closing_account'>
             {render_close_account_reason ? (
                 <ClosingAccountReason onBackClick={() => redirectToSteps()} />
             ) : (

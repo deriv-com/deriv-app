@@ -378,7 +378,7 @@ type TClientStore = {
     states_list: StatesList;
     /** @deprecated Use `useCurrencyConfig` or `useCurrentCurrencyConfig` from `@deriv/hooks` package instead. */
     is_crypto: (currency?: string) => boolean;
-    dxtrade_accounts_list: DetailsOfEachMT5Loginid & { account_id?: string }[];
+    dxtrade_accounts_list: (DetailsOfEachMT5Loginid & { account_id?: string })[];
     derivez_accounts_list: DetailsOfEachMT5Loginid[];
     default_currency: string;
     resetVirtualBalance: () => Promise<void>;

@@ -1,19 +1,17 @@
 import React from 'react';
-import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { Link } from 'react-router-dom';
-import { Button, Text, StaticUrl } from '@deriv/components';
-import { PlatformContext } from '@deriv/shared';
+import { Button, StaticUrl, Text } from '@deriv/components';
 
 type TClosingAccountStepsProps = {
     redirectToReasons: () => void;
 };
 
 const ClosingAccountSteps = observer(({ redirectToReasons }: TClosingAccountStepsProps) => {
-    const { common } = useStore();
-    const { is_from_derivgo } = common;
-    const { is_appstore } = React.useContext(PlatformContext);
+    const {
+        common: { is_from_derivgo },
+    } = useStore();
 
     return (
         <div>
@@ -53,9 +51,7 @@ const ClosingAccountSteps = observer(({ redirectToReasons }: TClosingAccountStep
             {is_from_derivgo ? (
                 <div className='closing-account__buttons-container'>
                     <Button
-                        className={classNames('closing-account__button--close-account', {
-                            'closing-account__button--dashboard': is_appstore,
-                        })}
+                        className='closing-account__button--close-account'
                         large
                         onClick={() => redirectToReasons()}
                         primary
@@ -66,20 +62,12 @@ const ClosingAccountSteps = observer(({ redirectToReasons }: TClosingAccountStep
             ) : (
                 <div className='closing-account__buttons-container'>
                     <Link to='/'>
-                        <Button
-                            className={classNames('closing-account__button--cancel', {
-                                'closing-account__button--dashboard': is_appstore,
-                            })}
-                            large
-                            secondary
-                        >
+                        <Button className='closing-account__button--cancel' large secondary>
                             <Localize i18n_default_text='Cancel' />
                         </Button>
                     </Link>
                     <Button
-                        className={classNames('closing-account__button--close-account', {
-                            'closing-account__button--dashboard': is_appstore,
-                        })}
+                        className='closing-account__button--close-account'
                         large
                         onClick={() => redirectToReasons()}
                         primary

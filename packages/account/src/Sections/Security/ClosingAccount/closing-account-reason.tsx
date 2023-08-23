@@ -3,13 +3,23 @@ import { Redirect } from 'react-router-dom';
 import { routes, WS } from '@deriv/shared';
 import { FormikValues } from 'formik';
 import { localize } from '@deriv/translations';
-import { FormSubmitButton, Modal, Icon, Loading, Text, Button } from '@deriv/components';
-import AccountHasPendingConditions from './account-has-pending-conditions';
+import { Loading, Modal, Text } from '@deriv/components';
+import ClosingAccountHasPendingConditions from './closing-account-has-pending-conditions';
 import ClosingAccountReasonForm from './closing-account-reason-form';
+import ClosingAccountWarningModal from './closing-account-warning-modal';
+import ClosingAccountGeneralErrorContent from './closing-account-general-error-content';
 
 type TClosingAccountReasonProps = {
     onBackClick: () => void;
 };
+
+type Error = {
+    characters_limits?: string;
+    empty_reason?: string;
+};
+
+const character_limit_no = 110;
+const max_allowed_reasons = 3;
 
 const preparingReason = (values: FormikValues) => {
     let selected_reasons = selectedReasons(values)
@@ -33,57 +43,6 @@ const selectedReasons = (values: FormikValues) => {
     );
 };
 
-type TWarningModalProps = {
-    closeModal: () => void;
-    startDeactivating: () => void;
-};
-const WarningModal = ({ closeModal, startDeactivating }: TWarningModalProps) => {
-    return (
-        <div className='account-closure-warning-modal'>
-            <Icon icon='IcRedWarning' size={96} />
-            <Text size='xs' line_height='x' weight='bold' className='account-closure-warning-modal__warning-message'>
-                {localize('Close your account?')}
-            </Text>
-            <div className='account-closure-warning-modal__content-wrapper'>
-                <Text as='p' align='center' className='account-closure-warning-modal__content'>
-                    {localize(
-                        'Closing your account will automatically log you out. We shall delete your personal information as soon as our legal obligations are met.'
-                    )}
-                </Text>
-            </div>
-            <FormSubmitButton
-                is_disabled={false}
-                label={localize('Close account')}
-                className='account-closure-warning-modal__close-account-button'
-                has_cancel
-                cancel_label={localize('Go Back')}
-                onClick={() => startDeactivating()}
-                onCancel={() => closeModal()}
-            />
-        </div>
-    );
-};
-type TGeneralErrorContentProps = {
-    message: string;
-    onClick: () => void;
-};
-
-const GeneralErrorContent = ({ message, onClick }: TGeneralErrorContentProps) => (
-    <React.Fragment>
-        <div className='closing-account-error__container closing-account-error__container-message'>
-            <div className='closing-account-error__details closing-account-error__details-message'>{message}</div>
-        </div>
-        <div>
-            <Button className='closing-account-error__button' primary onClick={onClick}>
-                {localize('OK')}
-            </Button>
-        </div>
-    </React.Fragment>
-);
-
-const character_limit_no = 110;
-const max_allowed_reasons = 3;
-
 const ClosingAccountReason = ({ onBackClick }: TClosingAccountReasonProps) => {
     const [is_account_closed, setIsAccountClosed] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -97,11 +56,12 @@ const ClosingAccountReason = ({ onBackClick }: TClosingAccountReasonProps) => {
     const [api_error_message, setApiErrorMessage] = React.useState('');
     const [details, setDetails] = React.useState();
 
-    type Error = {
-        characters_limits?: string;
-        empty_reason?: string;
-        // Add other potential error properties
-    };
+    React.useEffect(() => {
+        if (total_checkbox_checked === max_allowed_reasons) setIsCheckboxDisabled(true);
+        else if (is_checkbox_disabled) setIsCheckboxDisabled(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [total_checkbox_checked]);
+
     const validateFields = (values: FormikValues) => {
         const error: Error = {};
         const selected_reason_count = selectedReasons(values).length;
@@ -132,12 +92,6 @@ const ClosingAccountReason = ({ onBackClick }: TClosingAccountReasonProps) => {
         setWhichModalShouldRender('warning_modal');
         setReason(final_reason);
     };
-
-    React.useEffect(() => {
-        if (total_checkbox_checked === max_allowed_reasons) setIsCheckboxDisabled(true);
-        else if (is_checkbox_disabled) setIsCheckboxDisabled(false);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [total_checkbox_checked]);
 
     const handleChangeCheckbox = (
         values: FormikValues,
@@ -178,8 +132,9 @@ const ClosingAccountReason = ({ onBackClick }: TClosingAccountReasonProps) => {
 
     const getModalTitle = () => {
         if (which_modal_should_render === 'error_modal') return localize('An error occurred');
-        if (which_modal_should_render === 'inaccessible_modal') return localize('Inaccessible MT5 account(s)');
-        return which_modal_should_render !== 'warning_modal' ? localize('Action required') : undefined;
+        else if (which_modal_should_render === 'inaccessible_modal') return localize('Inaccessible MT5 account(s)');
+        else if (which_modal_should_render !== 'warning_modal') return localize('Action required');
+        return '';
     };
 
     const startDeactivating = async () => {
@@ -241,13 +196,19 @@ const ClosingAccountReason = ({ onBackClick }: TClosingAccountReasonProps) => {
                 title={getModalTitle()}
             >
                 {which_modal_should_render === 'warning_modal' && (
-                    <WarningModal closeModal={() => setIsModalOpen(false)} startDeactivating={startDeactivating} />
+                    <ClosingAccountWarningModal
+                        closeModal={() => setIsModalOpen(false)}
+                        startDeactivating={startDeactivating}
+                    />
                 )}
                 {which_modal_should_render === 'AccountHasPendingConditions' && (
-                    <AccountHasPendingConditions details={details} onBackClick={onBackClick} />
+                    <ClosingAccountHasPendingConditions details={details} onBackClick={onBackClick} />
                 )}
                 {which_modal_should_render === 'inaccessible_modal' && (
-                    <GeneralErrorContent message={api_error_message} onClick={() => setIsModalOpen(false)} />
+                    <ClosingAccountGeneralErrorContent
+                        message={api_error_message}
+                        onClick={() => setIsModalOpen(false)}
+                    />
                 )}
             </Modal>
         </div>

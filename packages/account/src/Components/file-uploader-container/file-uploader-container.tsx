@@ -4,7 +4,7 @@ import { isMobile, WS } from '@deriv/shared';
 import type { TSettings } from '@deriv/shared/src/utils/files/file-uploader-utils';
 import { localize } from '@deriv/translations';
 import FileUploader from './file-uploader';
-import { TFile } from '../../Types/common.type';
+import { TFile } from '../../Types';
 
 type TFileUploaderContainer = {
     getSocket?: () => WebSocket;

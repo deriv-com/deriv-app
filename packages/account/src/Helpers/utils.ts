@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
 import { FormikValues } from 'formik';
 import { getIDVDocumentConfig } from '../Constants/idv-document-config';
-import { TServerError } from '../Types/common.type';
+import { TServerError } from '../Types';
 
 declare global {
     interface Window {

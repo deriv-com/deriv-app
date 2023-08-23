@@ -202,7 +202,7 @@ const IdvDocumentSubmit = ({
                                 handleBlur={handleBlur}
                                 setFieldValue={setFieldValue}
                                 setFieldTouched={setFieldTouched}
-                                is_qualified_for_idv={true}
+                                is_qualified_for_idv
                                 should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
                                 editable_fields={changeable_fields}
                             />

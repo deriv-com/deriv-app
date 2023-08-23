@@ -5,7 +5,7 @@ import { isNavigationFromP2P, isNavigationFromDerivGO } from '@deriv/shared';
 import ContinueTradingButton from '../../continue-trading-button';
 import IconMessageContent from '../../../icon-message-content';
 import PoiButton from '../../../poi/poi-button';
-import { TPoaStatusProps } from '../../../../Types/common.type';
+import { TPoaStatusProps } from '../../../../Types';
 
 export const Submitted = ({ needs_poi, redirect_button }: TPoaStatusProps) => {
     const message = localize('Your documents were submitted successfully');

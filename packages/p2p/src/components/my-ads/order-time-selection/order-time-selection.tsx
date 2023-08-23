@@ -1,10 +1,10 @@
 import React from 'react';
-import { Dropdown, Icon, Popover, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
 import { FormikHandlers, FormikValues, useFormikContext } from 'formik';
+import { Dropdown, Icon, Popover, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { order_time_info_message, time_list } from 'Constants/order-list';
+import { Localize } from '@deriv/translations';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { order_time_info_message, time_list } from 'Constants/order-list';
 
 type TFormikContext = {
     handleChange: FormikHandlers['handleChange'];

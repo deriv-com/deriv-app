@@ -59,7 +59,7 @@ let file_uploader_ref: TFileRef;
 
 type TProofOfAddressForm = {
     is_resubmit: boolean;
-    is_for_cfd_modal: boolean;
+    is_for_cfd_modal_poa?: { is_for_compare_accounts?: boolean; is_for_account_signup?: boolean };
     onCancel: () => void;
     onSubmit: (needs_poi: boolean) => void;
     onSubmitForCFDModal: (index: number, values: FormikValues) => void;
@@ -76,7 +76,7 @@ type TFormState = Record<'is_btn_loading' | 'is_submit_success' | 'should_allow_
 const ProofOfAddressForm = observer(
     ({
         is_resubmit,
-        is_for_cfd_modal,
+        is_for_cfd_modal_poa,
         onCancel,
         onSubmit,
         onSubmitForCFDModal,
@@ -122,6 +122,8 @@ const ProofOfAddressForm = observer(
         }, [account_settings, fetchResidenceList, fetchStatesList]);
 
         const changeable_fields = getChangeableFields();
+
+        const is_for_any_CFD_modal = is_for_cfd_modal_poa && Object.values(is_for_cfd_modal_poa).some(value => value);
 
         const validateFields = (values: TFormInitialValues) => {
             (Object.entries(values) as ObjectEntries<TFormInitialValues>).forEach(
@@ -259,7 +261,7 @@ const ProofOfAddressForm = observer(
                 setSubmitting(false);
                 setFormState({ ...form_state, ...{ is_btn_loading: false } });
             }
-            if (is_for_cfd_modal && typeof step_index !== 'undefined') {
+            if (is_for_any_CFD_modal && typeof step_index !== 'undefined') {
                 onSubmitForCFDModal?.(step_index, values);
             }
         };
@@ -288,7 +290,7 @@ const ProofOfAddressForm = observer(
         }
         const setOffset = (status: { msg: string }) => {
             const mobile_scroll_offset = status?.msg ? '200px' : '154px';
-            return isMobile() && !is_for_cfd_modal ? mobile_scroll_offset : '80px';
+            return isMobile() && !is_for_any_CFD_modal ? mobile_scroll_offset : '80px';
         };
         return (
             <Formik initialValues={form_initial_values} onSubmit={onSubmitValues} validate={validateFields}>
@@ -309,7 +311,7 @@ const ProofOfAddressForm = observer(
                         <LeaveConfirm onDirty={isMobile() ? showForm : undefined} />
                         {form_state.should_show_form && (
                             <form noValidate className='account-form account-form_poa' onSubmit={handleSubmit}>
-                                <ThemedScrollbars height='572px' is_bypassed={!is_for_cfd_modal || isMobile()}>
+                                <ThemedScrollbars height='572px' is_bypassed={!is_for_any_CFD_modal || isMobile()}>
                                     <FormBody scroll_offset={setOffset(status)}>
                                         {is_resubmit && (
                                             <Text size='xs' align='left' color='loss-danger'>
@@ -348,7 +350,7 @@ const ProofOfAddressForm = observer(
                                         </FormBodySection>
                                     </FormBody>
                                 </ThemedScrollbars>
-                                {is_for_cfd_modal ? (
+                                {is_for_any_CFD_modal ? (
                                     <Modal.Footer has_separator>
                                         <FormSubmitButton
                                             is_disabled={

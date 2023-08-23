@@ -179,6 +179,7 @@ const DMT5CompareModalContent = observer(
         should_show_derivx,
         show_eu_related_content,
         toggleCompareAccounts,
+        setIsForCFDModalPOA,
     }: TDMT5CompareModalContentProps) => {
         const { client, ui, common, traders_hub } = useStore();
 
@@ -442,6 +443,7 @@ const DMT5CompareModalContent = observer(
                 openSwitchToRealAccountModal();
             } else {
                 onSelectRealAccount(item);
+                setIsForCFDModalPOA({ is_for_compare_accounts: true });
             }
         };
 

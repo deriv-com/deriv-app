@@ -1,5 +1,5 @@
 import { DetailsOfEachMT5Loginid, Mt5NewAccount, VerifyEmailResponse } from '@deriv/api-types';
-import { TTradingPlatformAvailableAccount } from 'Components/props.types';
+import { TIsForCFDModalPOA, TTradingPlatformAvailableAccount } from 'Components/props.types';
 import { TCFDPasswordFormValues } from 'Containers/cfd-password-modal';
 import { TDerivezCompanies, TDxCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 import { FormikHelpers } from 'formik';
@@ -31,6 +31,7 @@ export type TCFDStore = {
     toggleJurisdictionModal: () => void;
     has_submitted_cfd_personal_details: boolean;
     is_jurisdiction_modal_visible: boolean;
+    is_for_cfd_modal_poa: TIsForCFDModalPOA;
     clearCFDError: () => void;
     current_list: Record<string, DetailsOfEachMT5Loginid & { enabled: number } & DetailsOfEachMT5Loginid[]>;
     is_compare_accounts_visible: boolean;
@@ -86,4 +87,5 @@ export type TCFDStore = {
         set_password?: number;
         platform?: string;
     }) => void;
+    setIsForCFDModalPOA: (is_for_cfd_modal_poa: TIsForCFDModalPOA) => void;
 };

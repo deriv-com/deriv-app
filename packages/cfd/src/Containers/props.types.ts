@@ -16,6 +16,7 @@ import {
     TClickableDescription,
     TJurisdictionCardItems,
     TJurisdictionCardItemVerification,
+    TIsForCFDModalPOA,
 } from '../Components/props.types';
 import RootStore from '../Stores/index';
 
@@ -308,6 +309,7 @@ export type TDMT5CompareModalContentProps = {
     should_show_derivx: boolean;
     show_eu_related_content: boolean;
     toggleCompareAccounts: () => void;
+    setIsForCFDModalPOA: (is_for_cfd_modal_poa: TIsForCFDModalPOA) => void;
 };
 
 export type TCFDDbviOnboardingProps = {

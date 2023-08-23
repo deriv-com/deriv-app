@@ -16,7 +16,7 @@ type TCommonMistakeExamplePartialsProps = {
  * @name CommonMistakeExamplePartials
  * @param description - description of the mistake
  * @param image - Sample image
- * @returns  {React.ReactElement}
+ * @returns  React.ReactElement
  */
 const CommonMistakeExamplePartials = ({ description, image }: TCommonMistakeExamplePartialsProps) => (
     <div className='common-mistake-examples__content-layout'>
@@ -32,7 +32,7 @@ const CommonMistakeExamplePartials = ({ description, image }: TCommonMistakeExam
 
 /**
  * Displays the image and description of the mistake
- * @returns {React.ReactElement}
+ * @returns React.ReactElement
  */
 const CommonMistakeExamples = () => {
     const example_images = getExampleImagesConfig();

@@ -37,6 +37,7 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
         real_financial_accounts_existing_data,
         real_swapfree_accounts_existing_data,
         real_synthetic_accounts_existing_data,
+        setIsForCFDModalPOA,
         setJurisdictionSelectedShortcode,
     } = useCfdStore();
 
@@ -235,6 +236,7 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
                     primary
                     style={{ width: isMobile() ? '100%' : 'unset' }}
                     onClick={() => {
+                        setIsForCFDModalPOA({ is_for_account_signup: true });
                         toggleJurisdictionModal();
                         onSelectRealAccount();
                     }}

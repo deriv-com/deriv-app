@@ -9,6 +9,10 @@ export default class CFDStore extends BaseStore {
     is_jurisdiction_modal_visible = false;
     is_mt5_trade_modal_visible = false;
     jurisdiction_selected_shortcode = '';
+    is_for_cfd_modal_poa = {
+        is_for_compare_accounts: false,
+        is_for_account_signup: false,
+    };
 
     account_type = {
         category: '',
@@ -50,6 +54,7 @@ export default class CFDStore extends BaseStore {
         makeObservable(this, {
             is_compare_accounts_visible: observable,
             is_cfd_personal_details_modal_visible: observable,
+            is_for_cfd_modal_poa: observable,
             is_jurisdiction_modal_visible: observable,
             is_mt5_trade_modal_visible: observable,
             jurisdiction_selected_shortcode: observable,
@@ -114,6 +119,7 @@ export default class CFDStore extends BaseStore {
             setDerivezToken: action.bound,
             loadDxtradeTokens: action.bound,
             loadDerivezTokens: action.bound,
+            setIsForCFDModalPOA: action.bound,
         });
 
         // reaction(
@@ -731,5 +737,9 @@ export default class CFDStore extends BaseStore {
             synthetic_available_accounts.length === 1 &&
             synthetic_available_accounts.every(acc => acc.shortcode === 'svg')
         );
+    }
+
+    setIsForCFDModalPOA(is_for_cfd_modal_poa) {
+        this.is_for_cfd_modal_poa = is_for_cfd_modal_poa;
     }
 }

@@ -3,8 +3,8 @@ import { screen, render } from '@testing-library/react';
 import Info from '../ContractTypeInfo/contract-type-info';
 import userEvent from '@testing-library/user-event';
 
-jest.mock('Assets/Trading/Categories/trade-categories-gif.jsx', () => jest.fn(() => 'TradeCategoriesGif'));
-jest.mock('Assets/Trading/Categories/trade-categories.jsx', () => jest.fn(() => 'TradeDescription'));
+jest.mock('Assets/Trading/Categories/trade-categories-gif', () => jest.fn(() => 'TradeCategoriesGif'));
+jest.mock('Assets/Trading/Categories/trade-categories', () => jest.fn(() => 'TradeDescription'));
 jest.mock('../ContractTypeInfo/contract-type-glossary', () => jest.fn(() => 'TradeTypeGlossary'));
 
 const mocked_props: React.ComponentProps<typeof Info> = {

@@ -11,7 +11,11 @@ import Notification, {
     max_display_notifications_mobile,
 } from '../Components/Elements/NotificationMessage';
 import { useLocation } from 'react-router-dom';
-import { excluded_notifications, priority_toast_messages } from '../../Stores/Helpers/client-notifications';
+import {
+    excluded_notifications,
+    priority_toast_messages,
+    maintenance_notifications,
+} from '../../Stores/Helpers/client-notifications';
 
 const Portal = ({ children }) =>
     isMobile() ? ReactDOM.createPortal(children, document.getElementById('deriv_app')) : children;
@@ -107,6 +111,7 @@ const AppNotificationMessages = ({
         const is_not_marked_notification = !marked_notifications.includes(message.key);
         const is_non_hidden_notification = isMobile()
             ? [
+                  ...maintenance_notifications,
                   'authenticate',
                   'deriv_go',
                   'document_needs_action',
@@ -118,6 +123,7 @@ const AppNotificationMessages = ({
                   'identity',
                   'install_pwa',
                   'need_fa',
+                  'notify_financial_assessment',
                   'poi_name_mismatch',
                   'poa_address_mismatch_failure',
                   'poa_address_mismatch_success',
@@ -146,7 +152,14 @@ const AppNotificationMessages = ({
 
         const is_only_for_p2p_notification =
             window.location.pathname !== routes.cashier_p2p || message?.platform === 'P2P';
-        return is_not_marked_notification && is_non_hidden_notification && is_only_for_p2p_notification;
+
+        const is_maintenance_notifications = maintenance_notifications.includes(message.key);
+
+        return (
+            is_not_marked_notification &&
+            is_non_hidden_notification &&
+            (is_only_for_p2p_notification || is_maintenance_notifications)
+        );
     });
 
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
@@ -160,7 +173,9 @@ const AppNotificationMessages = ({
 
     const notifications_sublist =
         window.location.pathname === routes.cashier_deposit
-            ? filtered_excluded_notifications.filter(message => message.key.includes('switched_to_real'))
+            ? filtered_excluded_notifications.filter(message =>
+                  ['switched_to_real', ...maintenance_notifications].includes(message.key)
+              )
             : filtered_excluded_notifications.slice(0, notifications_limit);
 
     if (!should_show_popups) return null;

@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, RenderResult } from '@testing-library/react';
-import VanillaOptionsCardBody from '../vanilla-options-card-body';
-import { TVanillaOptionsCardBodyProps } from '../vanilla-options-card-body';
+import VanillaOptionsCardBody, { TVanillaOptionsCardBodyProps } from '../vanilla-options-card-body';
 
 describe('VanillaOptionsCardBody', () => {
   const mock_props: TVanillaOptionsCardBodyProps = {

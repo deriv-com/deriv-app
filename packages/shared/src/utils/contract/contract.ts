@@ -12,7 +12,7 @@ type TGetAccuBarriersDTraderTimeout = (params: {
 }) => number;
 
 // Trade types that are considered as vanilla financials
-export const VANILLA_FX = [
+export const VANILLA_FX_SYMBOLS = [
     'frxAUDUSD',
     'frxEURUSD',
     'frxGBPUSD',
@@ -82,7 +82,7 @@ export const isTurbosContract = (contract_type = '') => /TURBOS/i.test(contract_
 export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contract_type);
 
 export const isVanillaFxContract = (contract_type = '', symbol = '') =>
-    isVanillaContract(contract_type) && VANILLA_FX.includes(symbol as typeof VANILLA_FX[number]);
+    isVanillaContract(contract_type) && VANILLA_FX_SYMBOLS.includes(symbol as typeof VANILLA_FX_SYMBOLS[number]);
 
 export const isSmartTraderContract = (contract_type = '') => /RUN|EXPIRY|RANGE|UPORDOWN/i.test(contract_type);
 

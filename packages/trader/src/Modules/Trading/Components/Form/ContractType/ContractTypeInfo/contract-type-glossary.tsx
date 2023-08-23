@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react';
+import React from 'react';
 import { Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
@@ -192,7 +192,7 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
     return (
         <React.Fragment>
             {content?.map(
-                ({ type, text }: { type: string; text: string | string[] | ComponentProps<typeof Localize> }) => {
+                ({ type, text }: { type: string; text: string | string[] | React.ComponentProps<typeof Localize> }) => {
                     if (type === 'heading' && typeof text === 'string') {
                         return (
                             <Text

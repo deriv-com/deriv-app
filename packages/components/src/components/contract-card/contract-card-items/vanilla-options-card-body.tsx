@@ -115,7 +115,7 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
                             className={classNames('dc-contract-card__indicative--movement', {
                                 'dc-contract-card__indicative--movement-complete': is_sold,
                             })}
-                            data-testid='dc-contract-card__indicative--movement'
+                            data-testid='dc-contract-card__indicative--movement-mobile'
                         >
                             {status === 'profit' && <Icon icon='IcProfit' />}
                             {status === 'loss' && <Icon icon='IcLoss' />}

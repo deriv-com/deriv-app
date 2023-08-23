@@ -129,7 +129,6 @@ const App = () => {
         return () => {
             general_store.onUnmount();
             disposeAdvertiserInfoSubscribedReaction();
-            // disposeHandleShareAdsErrorReaction();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

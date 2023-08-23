@@ -139,9 +139,8 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
         !has_submitted_cfd_personal_details && jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST;
 
     const verification_configs = [
-        // ...(should_show_poi() ? [poi_config] : []),
-        // ...(shouldShowPOA() ? [poa_config] : []),
-        ...[poa_config],
+        ...(should_show_poi() ? [poi_config] : []),
+        ...(shouldShowPOA() ? [poa_config] : []),
         ...(should_show_personal_details ? [personal_details_config] : []),
     ];
 

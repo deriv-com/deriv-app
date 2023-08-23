@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { isMobile, WS } from '@deriv/shared';
 import type { TSettings } from '@deriv/shared/src/utils/files/file-uploader-utils';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import FileUploader from './file-uploader';
 import { TFile } from '../../Types';
 
@@ -38,16 +38,18 @@ const FileUploaderContainer = ({
         <div className='file-uploader__container' data-testid='dt_file_uploader_container'>
             {files_description}
             <Text size={isMobile() ? 'xxs' : 'xs'} as='div' className='file-uploader__file-title' weight='bold'>
-                {localize('Upload file')}
+                <Localize i18n_default_text='Upload file' />
             </Text>
             <div className='file-uploader__file-dropzone-wrapper'>
                 <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} settings={settings} />
             </div>
             <div className='file-uploader__file-supported-formats'>
                 <Text size={isMobile() ? 'xxxs' : 'xxs'}>
-                    {localize('Supported formats: JPEG, JPG, PNG and PDF only')}
+                    <Localize i18n_default_text='Supported formats: JPEG, JPG, PNG and PDF only' />
                 </Text>
-                <Text size={isMobile() ? 'xxxs' : 'xxs'}>{localize('Maximum size: 8MB')}</Text>
+                <Text size={isMobile() ? 'xxxs' : 'xxs'}>
+                    <Localize i18n_default_text='Maximum size: 8MB' />
+                </Text>
             </div>
             {examples}
         </div>

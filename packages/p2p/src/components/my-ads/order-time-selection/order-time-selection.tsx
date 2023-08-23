@@ -2,7 +2,7 @@ import React from 'react';
 import { FormikHandlers, FormikValues, useFormikContext } from 'formik';
 import { Dropdown, Icon, Popover, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
+import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { order_time_info_message, time_list } from 'Constants/order-list';
 

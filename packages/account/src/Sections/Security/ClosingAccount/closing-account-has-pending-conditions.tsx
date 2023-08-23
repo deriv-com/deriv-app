@@ -126,7 +126,7 @@ const ShowAccountBalance = ({ platform, account_balance, is_eu }: TShowAccountBa
         title={
             platform === CFD_PLATFORMS.MT5
                 ? localize('Please withdraw your funds from the following Deriv MT5 account(s):')
-                : localize('Please withdraw your funds from the following Deriv MT5 account(s):')
+                : localize('Please withdraw your funds from the following Deriv X account(s):')
         }
     >
         {account_balance.map(account => (

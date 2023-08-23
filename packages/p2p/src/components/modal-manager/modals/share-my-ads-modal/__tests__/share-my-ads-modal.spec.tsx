@@ -9,9 +9,13 @@ const el_modal = document.createElement('div');
 
 const mock_advert = {
     account_currency: 'USD',
-    id: '128812781',
+    advertiser_details: {
+        id: '123',
+    },
+    id: '1234',
     max_order_amount_limit_display: '2.00',
     min_order_amount_limit_display: '1.00',
+    local_currency: 'IDR',
     rate_display: '+0.16',
     type: 'buy',
 };
@@ -25,7 +29,7 @@ jest.mock('html-to-image', () => ({
     toPng: jest.fn(),
 }));
 
-jest.mock('react-qrcode-logo', () => ({ QRCode: () => <div>QR code</div> }));
+jest.mock('qrcode.react', () => ({ QRCodeSVG: () => <div>QR code</div> }));
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -100,7 +104,9 @@ describe('<ShareMyAdsModal />', () => {
             await Promise.resolve();
         });
 
-        expect(navigator.clipboard.writeText).toHaveBeenCalledWith(window.location.href);
+        expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+            `${window.location.href}cashier/p2p/advertiser?id=${mock_advert.advertiser_details.id}&advert_id=${mock_advert.id}`
+        );
     });
 
     it('should call handleGenerateImage function when clicking on Download this QR code button', async () => {

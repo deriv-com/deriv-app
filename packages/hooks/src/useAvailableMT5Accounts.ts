@@ -33,7 +33,7 @@ const useAvailableMT5Accounts = () => {
             mt5_available_accounts?.trading_platform_available_accounts?.map(account => {
                 return {
                     ...account,
-                    ...market_type_to_account_map[account.market_type],
+                    ...market_type_to_account_map[account.market_type as keyof typeof market_type_to_account_map],
                 };
             }),
         [mt5_available_accounts?.trading_platform_available_accounts]
@@ -42,10 +42,10 @@ const useAvailableMT5Accounts = () => {
     const grouped_mt5_available_accounts = useMemo(() => {
         return modified_mt5_available_accounts?.reduce((acc, account) => {
             const { market_type } = account;
-            if (!acc[market_type]) {
-                acc[market_type] = [];
+            if (!acc[market_type as keyof typeof acc]) {
+                acc[market_type || 'gaming'] = [];
             }
-            acc[market_type].push(account);
+            acc[market_type || 'gaming'].push(account);
             return acc;
         }, {} as Record<string, typeof modified_mt5_available_accounts>);
     }, [modified_mt5_available_accounts]);

@@ -64,12 +64,12 @@ const CardsSliderSwiper = observer(() => {
                     />
                 </div>
             )),
-        [data?.length]
+        [data]
     );
 
     return (
         <React.Fragment>
-            <div className='wallet-cards-carousel__viewport' ref={emblaRef}>
+            <div ref={emblaRef}>
                 <div className='wallet-cards-carousel__container'>{slider}</div>
             </div>
             <div className='wallet-cards-carousel__pagination'>

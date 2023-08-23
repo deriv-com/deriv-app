@@ -36,7 +36,7 @@ const MobileWalletsCarousel = observer(() => {
                 {is_landing_company_loaded ? (
                     <ButtonToggle
                         buttons_arr={platform_toggle_options}
-                        className='traders-hub__button-toggle'
+                        className='wallet-carousel-content-container__button-toggle'
                         has_rounded_button
                         is_traders_hub={true}
                         name='platform_type'

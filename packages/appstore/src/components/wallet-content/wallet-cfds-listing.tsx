@@ -37,35 +37,44 @@ const WalletCFDsListing = observer(() => {
 
     const is_fiat = !isCryptocurrency(currency) && currency !== 'USDT';
 
+    const cfd_title = !is_mobile && (
+        <div className='cfd-accounts__title'>
+            <Text size='sm' weight='bold' color='prominent'>
+                {localize('CFDs')}
+            </Text>
+            <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
+                <Text key={0} color='red' size='xxs' weight='bold' styles={{ marginLeft: '1rem' }}>
+                    {accounts_sub_text}
+                </Text>
+            </div>
+        </div>
+    );
+
+    const cfd_description = (
+        <Text size='xs' line_height='s'>
+            <Localize
+                i18n_default_text={
+                    'Trade with leverage and tight spreads for better returns on trades. <0>Learn more</0>'
+                }
+                components={[<StaticUrl key={0} className='options' href='/trade-types/cfds' />]}
+            />
+        </Text>
+    );
+
     return (
         <ListingContainer
             className='wallet-content__border-reset wallet-content__cfd'
-            title={
-                !is_mobile && (
-                    <div className='cfd-accounts__title'>
-                        <Text size='sm' line_height='m' weight='bold' color='prominent'>
-                            {localize('CFDs')}
-                        </Text>
-                        <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
-                            <Text key={0} color='red' size='xxs' weight='bold' styles={{ marginLeft: '1rem' }}>
-                                {accounts_sub_text}
-                            </Text>
-                        </div>
-                    </div>
-                )
-            }
-            description={
-                <Text size='xs' line_height='s'>
-                    <Localize
-                        i18n_default_text={
-                            'Trade with leverage and tight spreads for better returns on trades. <0>Learn more</0>'
-                        }
-                        components={[<StaticUrl key={0} className='options' href='/trade-types/cfds' />]}
-                    />
-                </Text>
-            }
+            title={cfd_title}
+            description={cfd_description}
             is_outside_grid_container={!is_fiat}
         >
+            {is_mobile && (
+                <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
+                    <Text size='xs' color='red' weight='bold' line_height='s'>
+                        {accounts_sub_text}
+                    </Text>
+                </div>
+            )}
             {is_fiat ? <WalletFiatCFD wallet_account={wallet_account} /> : <WalletCryptoCFD />}
         </ListingContainer>
     );

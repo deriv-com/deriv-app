@@ -247,6 +247,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             init: jest.fn(),
             setLoginId: jest.fn(),
             resetLocalStorageValues: jest.fn(),
+            accountRealReaction: jest.fn(),
         },
         common: {
             error: {
@@ -357,6 +358,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleShouldShowRealAccountsList: jest.fn(),
             is_reset_trading_password_modal_visible: false,
             setResetTradingPasswordModalOpen: jest.fn(),
+            is_wallet_creation_success_modal_open: false,
+            toggleIsWalletCreationSuccessModalOpen: jest.fn(),
         },
         traders_hub: {
             CFDs_restricted_countries: false,

@@ -1,0 +1,71 @@
+.wallet-success-dialog {
+    width: 100%;
+    height: 100%;
+    &__icon,
+    &__title,
+    &__description {
+        text-align: center;
+    }
+
+    &__icon {
+        margin: auto;
+        width: fit-content;
+    }
+
+    &__title {
+        padding-top: 2.5rem;
+    }
+
+    &__description {
+        padding-top: 1.5rem;
+    }
+
+    &__footer {
+        justify-content: center;
+        padding: 0;
+        margin-top: 0;
+        padding-bottom: 1rem;
+
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        & .dc-btn {
+            margin: 0.4rem;
+            height: 4rem;
+            border-width: 2px;
+            text-align: center;
+
+            @include mobile {
+                &:first-child,
+                &:last-child {
+                    width: 100%;
+                    margin: 0.4rem 1.4rem 0.4rem 0;
+                }
+            }
+        }
+    }
+}
+
+// Had to resolve to this because wrapper_classname on MobileDialog doesn't work
+.dc-mobile-dialog__content {
+    display: grid;
+    place-content: center;
+
+    & > div {
+        height: 100%;
+        width: 100vw;
+        padding: 1.6rem;
+    }
+}
+
+.dc-btn__group {
+    @include mobile {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        padding-top: 1.6rem;
+    }
+}

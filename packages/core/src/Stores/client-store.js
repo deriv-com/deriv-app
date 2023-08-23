@@ -1358,7 +1358,8 @@ export default class ClientStore extends BaseStore {
                 console.error('JSON parse failed, invalid value (client.accounts): ', error);
             }
 
-            const { oauth_token, client_id } = response.new_account_real ?? response.new_account_maltainvest;
+            const { oauth_token, client_id } =
+                response.new_account_real ?? response.new_account_maltainvest ?? response.new_account_wallet;
             BinarySocket.authorize(oauth_token)
                 .then(authorize_response => {
                     const new_data = {};

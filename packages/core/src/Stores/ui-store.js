@@ -173,6 +173,7 @@ export default class UIStore extends BaseStore {
     is_switch_to_deriv_account_modal_visible = false;
     is_cfd_reset_password_modal_enabled = false;
     sub_section_index = 0;
+    is_wallet_creation_success_modal_open = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -258,6 +259,7 @@ export default class UIStore extends BaseStore {
             is_dark_mode_on: observable,
             is_deriv_account_needed_modal_visible: observable,
             is_wallet_modal_visible: observable,
+            is_wallet_creation_success_modal_open: observable,
 
             is_history_tab_active: observable,
             is_landscape: observable,
@@ -356,6 +358,7 @@ export default class UIStore extends BaseStore {
             shouldNavigateAfterChooseCrypto: action.bound,
             setShouldShowRiskWarningModal: action.bound,
             setIsWalletModalVisible: action.bound,
+            toggleIsWalletCreationSuccessModalOpen: action.bound,
             setIsNewAccount: action.bound,
             setIsRealTabEnabled: action.bound,
             setIsTradingAssessmentForExistingUserEnabled: action.bound,
@@ -874,6 +877,10 @@ export default class UIStore extends BaseStore {
 
     setIsWalletModalVisible(value) {
         this.is_wallet_modal_visible = value;
+    }
+
+    toggleIsWalletCreationSuccessModalOpen(value) {
+        this.is_wallet_creation_success_modal_open = value;
     }
 
     setShouldShowRiskWarningModal(value) {

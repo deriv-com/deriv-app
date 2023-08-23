@@ -1,5 +1,5 @@
 import React from 'react';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { Button } from '@deriv/components';
 
 type TClosingAccountGeneralErrorContentProps = {
@@ -14,7 +14,7 @@ const ClosingAccountGeneralErrorContent = ({ message, onClick }: TClosingAccount
         </div>
         <div>
             <Button className='closing-account-error__button' primary onClick={onClick}>
-                {localize('OK')}
+                <Localize i18n_default_text='OK' />
             </Button>
         </div>
     </React.Fragment>

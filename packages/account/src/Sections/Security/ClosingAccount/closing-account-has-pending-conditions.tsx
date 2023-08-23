@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Icon, Money, Text, ThemedScrollbars } from '@deriv/components';
 import { CFD_PLATFORMS, formatMoney, getCFDAccount, getCFDAccountDisplay } from '@deriv/shared';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { TAccounts } from 'Types';
 
@@ -20,14 +20,14 @@ type TDetailsOfDerivXAccount = TDetailsOfMT5Account & { account_id?: string };
 
 type TWrapperProps = {
     children: React.ReactNode;
-    title: string;
+    title: React.ReactNode;
     description?: React.ReactNode;
 };
 
 type TContentProps = {
     currency_icon: string;
     loginid?: string;
-    title?: string;
+    title?: React.ReactNode;
     value: React.ReactNode;
 };
 
@@ -50,6 +50,21 @@ type TClosingAccountHasPendingConditionsProps = {
     };
     onBackClick: () => void;
 };
+
+const getPlatformName = (platform: 'mt5' | 'dxtrade') => {
+    if (platform === 'mt5') {
+        return <Localize i18n_default_text='Deriv MT5' />;
+    }
+    return <Localize i18n_default_text='Deriv X' />;
+};
+const getDerivAccount = (client_accounts: TAccounts[], login_id: string) =>
+    client_accounts.find(client_account => client_account.loginid === login_id);
+
+const getCurrMT5Account = (mt5_login_list: DetailsOfEachMT5Loginid[], login_id: string) =>
+    mt5_login_list.find(account_obj => account_obj.login === login_id);
+
+const getCurrDxtradeAccount = (dxtrade_accounts_list: TDetailsOfDerivXAccount[], login_id: string) =>
+    dxtrade_accounts_list.find(account_obj => account_obj.account_id === login_id);
 
 const Wrapper = ({ children, title, description }: TWrapperProps) => (
     <div className='closing-account-error'>
@@ -87,9 +102,10 @@ const Content = ({ currency_icon, loginid, title, value }: TContentProps) => (
 const ShowOpenPostions = ({ platform, open_positions, is_eu }: TShowOpenPostionsProps) => (
     <Wrapper
         title={
-            platform === CFD_PLATFORMS.MT5
-                ? localize('Please close your positions in the following Deriv MT5 account(s)')
-                : localize('Please close your positions in the following Deriv X account(s):')
+            <Localize
+                i18n_default_text='Please close your positions in the following {{platform_name}} account(s):'
+                values={{ platform_name: getPlatformName(platform) }}
+            />
         }
     >
         {open_positions.map(account => (
@@ -124,9 +140,10 @@ const ShowOpenPostions = ({ platform, open_positions, is_eu }: TShowOpenPostions
 const ShowAccountBalance = ({ platform, account_balance, is_eu }: TShowAccountBalanceProps) => (
     <Wrapper
         title={
-            platform === CFD_PLATFORMS.MT5
-                ? localize('Please withdraw your funds from the following Deriv MT5 account(s):')
-                : localize('Please withdraw your funds from the following Deriv X account(s):')
+            <Localize
+                i18n_default_text='Please withdraw your funds from the following {{platform_name}} account(s):'
+                values={{ platform_name: getPlatformName(platform) }}
+            />
         }
     >
         {account_balance.map(account => (
@@ -160,15 +177,6 @@ const ShowAccountBalance = ({ platform, account_balance, is_eu }: TShowAccountBa
         ))}
     </Wrapper>
 );
-
-const getDerivAccount = (client_accounts: TAccounts[], login_id: string) =>
-    client_accounts.find(client_account => client_account.loginid === login_id);
-
-const getCurrMT5Account = (mt5_login_list: DetailsOfEachMT5Loginid[], login_id: string) =>
-    mt5_login_list.find(account_obj => account_obj.login === login_id);
-
-const getCurrDxtradeAccount = (dxtrade_accounts_list: TDetailsOfDerivXAccount[], login_id: string) =>
-    dxtrade_accounts_list.find(account_obj => account_obj.account_id === login_id);
 
 const ClosingAccountHasPendingConditions = observer(
     ({ details, onBackClick }: TClosingAccountHasPendingConditionsProps) => {
@@ -243,7 +251,11 @@ const ClosingAccountHasPendingConditions = observer(
             <React.Fragment>
                 <ThemedScrollbars autohide={false} width='43rem'>
                     {!!deriv_open_positions.length && (
-                        <Wrapper title={localize('Please close your positions in the following Deriv account(s):')}>
+                        <Wrapper
+                            title={
+                                <Localize i18n_default_text='Please close your positions in the following Deriv account(s):' />
+                            }
+                        >
                             {deriv_open_positions.map(account => (
                                 <Content
                                     key={account.loginid}
@@ -261,7 +273,11 @@ const ClosingAccountHasPendingConditions = observer(
                         </Wrapper>
                     )}
                     {!!deriv_balance.length && (
-                        <Wrapper title={localize('Please withdraw your funds from the following Deriv account(s):')}>
+                        <Wrapper
+                            title={
+                                <Localize i18n_default_text='Please withdraw your funds from the following Deriv account(s):' />
+                            }
+                        >
                             {deriv_balance.map(account => (
                                 <Content
                                     key={account.loginid}
@@ -308,7 +324,7 @@ const ClosingAccountHasPendingConditions = observer(
                     )}
                     {!!account_pending_withdrawals.length && (
                         <Wrapper
-                            title={localize('Pending withdrawal request:')}
+                            title={<Localize i18n_default_text='Pending withdrawal request:' />}
                             description={
                                 <Localize
                                     i18n_default_text='We are still processing your withdrawal request.<0 />Please wait for the transaction to be completed before deactivating your account.'
@@ -335,7 +351,7 @@ const ClosingAccountHasPendingConditions = observer(
                 </ThemedScrollbars>
                 <div>
                     <Button className='closing-account-error__button' primary onClick={onBackClick}>
-                        {localize('OK')}
+                        <Localize i18n_default_text='OK' />
                     </Button>
                 </div>
             </React.Fragment>

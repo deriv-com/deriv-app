@@ -72,7 +72,7 @@ const ClosingAccountReason = ({ onBackClick }: TClosingAccountReasonProps) => {
             const final_value = preparingReason(values);
             remaining_chars = remaining_chars >= 0 ? remaining_chars : 0;
 
-            if (!/^[ a-zA-Z0-9.,'-\s]*$/.test(final_value)) {
+            if (!/^[ a-zA-Z0-9.,'\-\s]*$/.test(final_value)) {
                 error.characters_limits = localize("Must be numbers, letters, and special characters . , ' -");
             }
         } else {

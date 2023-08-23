@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
@@ -44,7 +45,6 @@ const Dashboard = observer(() => {
         setBotBuilderTokenCheck,
         setOnBoardingTokenCheck,
         setWebSocketState,
-        is_web_socket_intialised,
     } = dashboard;
     const { onEntered } = load_modal;
     const {
@@ -85,8 +85,10 @@ const Dashboard = observer(() => {
 
     const connectionDistrupted = () => {
         const api_status = api_base.getConnectionStatus();
-        if (api_status === 'Closed' || api_status === 'Closing') {
-            stopBot();
+        //added this check because after sleep mode all the store values refresh and is_running is false.
+        const is_bot_running = document.getElementById('db-animation__stop-button') !== null;
+        if (is_bot_running && (api_status === 'Closed' || api_status === 'Closing')) {
+            dbot.terminateBot();
             setWebSocketState(false);
         }
     };

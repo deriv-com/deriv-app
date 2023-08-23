@@ -1,7 +1,8 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
+import { LocaleConfig } from 'onfido-sdk-ui';
 
-const getOnfidoPhrases = () => ({
+const getOnfidoPhrases = (): LocaleConfig['phrases'] => ({
     country_select: {
         alert_dropdown: {
             country_not_found: <Localize i18n_default_text='Country not found' />,

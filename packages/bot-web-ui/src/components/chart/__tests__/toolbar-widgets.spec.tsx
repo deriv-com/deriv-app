@@ -2,7 +2,7 @@ import React from 'react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { act, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import ToolbarWidgets from '../toolbar-widgets';
@@ -52,10 +52,8 @@ describe('ToolbarWidgets', () => {
     });
 
     it('should render ToolbarWidgets in desktop', () => {
-        act(() => {
-            (isMobile as jest.Mock).mockReturnValueOnce(false);
-            (isDesktop as jest.Mock).mockReturnValueOnce(true);
-        });
+        (isMobile as jest.Mock).mockReturnValueOnce(false);
+        (isDesktop as jest.Mock).mockReturnValueOnce(true);
         render(<ToolbarWidgets updateChartType={mockUpdateChartType} updateGranularity={mockUpdateGranularity} />, {
             wrapper,
         });
@@ -63,10 +61,8 @@ describe('ToolbarWidgets', () => {
     });
 
     it('should render ToolbarWidgets in mobile', () => {
-        act(() => {
-            (isMobile as jest.Mock).mockReturnValueOnce(true);
-            (isDesktop as jest.Mock).mockReturnValueOnce(false);
-        });
+        (isMobile as jest.Mock).mockReturnValueOnce(true);
+        (isDesktop as jest.Mock).mockReturnValueOnce(false);
         render(<ToolbarWidgets updateChartType={mockUpdateChartType} updateGranularity={mockUpdateGranularity} />, {
             wrapper,
         });

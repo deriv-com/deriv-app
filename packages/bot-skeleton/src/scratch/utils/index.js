@@ -368,13 +368,14 @@ const getAllRequiredBlocks = (workspace, required_block_types) => {
         }
     });
 };
-const getMisplacedBlocks = (required_blocks_check, mainBlocks, required_block_types) => {
-    return required_blocks_check.filter(block => {
-        if (required_block_types.includes(block.type)) {
-            return block.parentBlock_ === null && !mainBlocks.includes(block.type);
-        }
-    });
-};
+//kept this code commented will use in next sprint
+// const getMisplacedBlocks = (required_blocks_check, mainBlocks, required_block_types) => {
+//     return required_blocks_check.filter(block => {
+//         if (required_block_types.includes(block.type)) {
+//             return block.parentBlock_ === null && !mainBlocks.includes(block.type);
+//         }
+//     });
+// };
 
 const getMissingBlocks = (workspace, required_block_types) => {
     return required_block_types.filter(blockType => {
@@ -412,19 +413,23 @@ const throwNewErrorMessage = (error_blocks, key) => {
 
 export const isAllRequiredBlocksEnabled = workspace => {
     const mandatory_trade_option_block = getSelectedTradeType(workspace);
-    const { mandatoryMainBlocks, mainBlocks } = config;
+    const { mandatoryMainBlocks } = config;
+    //kept this code commented will be implemented in the next sprint
+    //const { mandatoryMainBlocks, mainBlocks } = config;
     const required_block_types = [mandatory_trade_option_block, ...mandatoryMainBlocks];
 
     const required_blocks_check = getAllRequiredBlocks(workspace, required_block_types);
-    const misplaced_blocks = getMisplacedBlocks(required_blocks_check, mainBlocks, required_block_types);
+    //kept this code commented will be implemented in the next sprint
+    //const misplaced_blocks = getMisplacedBlocks(required_blocks_check, mainBlocks, required_block_types);
     const missing_blocks = getMissingBlocks(workspace, required_block_types);
     const disabled_blocks = getDisabledBlocks(required_blocks_check);
-
-    if (misplaced_blocks) throwNewErrorMessage(misplaced_blocks, 'misplaced');
+    //kept this code commented will be implemented in the next sprint
+    // if (misplaced_blocks) throwNewErrorMessage(misplaced_blocks, 'misplaced');
     if (missing_blocks) throwNewErrorMessage(missing_blocks, 'missing');
     if (disabled_blocks) throwNewErrorMessage(disabled_blocks, 'disabled');
-
-    const error_blocks = [...missing_blocks, ...misplaced_blocks, ...disabled_blocks];
+    //kept this code commented will be implemented in the next sprint
+    //const error_blocks = [...missing_blocks, ...misplaced_blocks, ...disabled_blocks];
+    const error_blocks = [...missing_blocks, ...disabled_blocks];
     const blocks_required = error_blocks.length === 0;
 
     return blocks_required;

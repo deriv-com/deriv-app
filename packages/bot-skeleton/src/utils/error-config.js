@@ -1,11 +1,17 @@
 import { localize } from '@deriv/translations';
-
+//kept this code commented will be implemented in the next sprint
+// return {
+//     missing: localize(`The ${blockType} block is missing from ${missing_space}.`),
+//     misplaced: localize(`The ${blockType} block is misplaced from ${missing_space}.`),
+//     disabled: localize(`The ${blockType} block has been disabled. Enable this block to run the bot.`),
+//     default: localize(`The ${blockType} block is mandatory and cannot be deleted.`),
+// };
 const generateErrorMessage = (blockType, missing_space = 'workspace') => {
     return {
-        missing: localize(`The ${blockType} block is missing from ${missing_space}.`),
+        missing: localize(`The ${blockType} block is mandatory and cannot be deleted/disabled.`),
         misplaced: localize(`The ${blockType} block is misplaced from ${missing_space}.`),
-        disabled: localize(`The ${blockType} block has been disabled. Enable this block to run the bot.`),
-        default: localize(`The ${blockType} block is mandatory and cannot be deleted.`),
+        disabled: localize(`The ${blockType} block is mandatory and cannot be deleted/disabled.`),
+        default: localize(`The ${blockType} block is mandatory and cannot be deleted/disabled.`),
     };
 };
 

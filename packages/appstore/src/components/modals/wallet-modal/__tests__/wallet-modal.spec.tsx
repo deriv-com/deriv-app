@@ -30,7 +30,7 @@ describe('WalletModal', () => {
             traders_hub: { active_modal_wallet_id: 'CRW000000' },
         });
 
-        // @ts-expect-error blah blah
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseActiveWallet.mockReturnValue({ loginid: 'CRW000000', is_demo: false });
 
         render(

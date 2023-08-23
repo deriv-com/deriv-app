@@ -8,6 +8,7 @@
 
     &__title {
         @include mobile {
+            padding-left: 1.5rem;
             font-size: var(--text-size-m);
         }
     }
@@ -25,7 +26,7 @@
         border: 0.1rem solid var(--general-active);
         background-color: var(--general-main-1);
         box-shadow: $wallet-box-shadow;
-        cursor: pointer;
+        user-select: none;
         &-description,
         &-wrapper {
             display: flex;

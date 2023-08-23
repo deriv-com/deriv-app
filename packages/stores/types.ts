@@ -480,6 +480,11 @@ type TClientStore = {
         payload: SetFinancialAssessmentRequest
     ) => Promise<SetFinancialAssessmentResponse>;
     prev_account_type: string;
+    accountRealReaction: (response: {
+        new_account_real?: { oauth_token: string; client_id: string };
+        new_account_maltainvest?: { oauth_token: string; client_id: string };
+        new_account_wallet?: { oauth_token: string; client_id: string };
+    }) => Promise<void>;
 };
 
 type TCommonStoreError = {
@@ -604,6 +609,8 @@ type TUiStore = {
               ]
             | []
     ) => void;
+    is_wallet_creation_success_modal_open: boolean;
+    toggleIsWalletCreationSuccessModalOpen: (value: boolean) => void;
 };
 
 type TPortfolioStore = {

@@ -195,6 +195,10 @@ export default class GeneralStore extends BaseStore {
     }
 
     setActiveTab(container: typeof this.active_container): void {
+        if (this.active_container === 'payment_agent' && container !== 'payment_agent') {
+            this.root_store.modules.cashier.payment_agent.resetPaymentAgent();
+        }
+
         this.active_container = container;
     }
 

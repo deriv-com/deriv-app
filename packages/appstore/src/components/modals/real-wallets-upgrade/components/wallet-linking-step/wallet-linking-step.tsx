@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import WalletLinkWrapper, { TWalletLinkWrapper } from '../components/wallet-link/wallet-link-wrapper';
+import WalletLinkWrapper, { TWalletLinkWrapper } from '../wallet-link/wallet-link-wrapper';
 import './wallet-linking-step.scss';
 
 type TWalletLinkingStep = {

@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, Icon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import getWalletsIntroContent from 'Constants/wallets-intro-content-config';
+import { useContentFlag } from '@deriv/hooks';
 import './wallets-intro.scss';
 
 type TWalletsIntro = {
@@ -13,7 +14,6 @@ type TWalletsIntro = {
 };
 
 type TWalletsIntroComponent = {
-    is_eu: boolean;
     current_step: number;
 };
 
@@ -77,8 +77,10 @@ const WalletsIntroComponent = observer(({ image, title, description, bullets }: 
     );
 });
 
-const WalletsIntro = ({ is_eu, current_step }: TWalletsIntroComponent) => {
-    const step = getWalletsIntroContent(is_eu)?.[current_step];
+const WalletsIntro = ({ current_step }: TWalletsIntroComponent) => {
+    const { is_eu_demo, is_eu_real, is_low_risk_cr_eu } = useContentFlag();
+    const is_eu = is_eu_demo || is_eu_real || is_low_risk_cr_eu;
+    const step = getWalletsIntroContent(is_eu)?.[current_step] || [];
 
     return (
         <div className='wallet-steps__content'>

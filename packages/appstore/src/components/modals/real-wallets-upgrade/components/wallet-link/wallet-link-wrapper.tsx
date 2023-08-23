@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text, WalletCard } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import WalletAccount from '../wallet-account/wallet-account';
+import { observer, useStore } from '@deriv/stores';
 import './wallet-link-wrapper.scss';
 
 export type TWalletLinkWrapper = {
@@ -16,11 +16,13 @@ export type TWalletLinkWrapper = {
     }[];
 };
 
-const WalletLinkWrapper = ({ wallet_details, account_list }: TWalletLinkWrapper) => {
+const WalletLinkWrapper = observer(({ wallet_details, account_list }: TWalletLinkWrapper) => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     return (
         <div className='wallet-link-wrapper'>
             <div className='wallet-link-wrapper__accounts'>
-                {isMobile() && (
+                {is_mobile && (
                     <Text
                         as='div'
                         className='wallet-link-wrapper__title-text wallet-link-wrapper__accounts-title'
@@ -54,7 +56,7 @@ const WalletLinkWrapper = ({ wallet_details, account_list }: TWalletLinkWrapper)
             </div>
             <div className='wallet-link-wrapper__card-wrapper'>
                 <WalletCard wallet={wallet_details} size='large' state='default' />
-                {isMobile() && (
+                {is_mobile && (
                     <Text
                         className='wallet-link-wrapper__title-text wallet-link-wrapper__card-wrapper-title'
                         color='prominent'
@@ -66,6 +68,6 @@ const WalletLinkWrapper = ({ wallet_details, account_list }: TWalletLinkWrapper)
             </div>
         </div>
     );
-};
+});
 
 export default WalletLinkWrapper;

@@ -8,7 +8,6 @@ import DesktopWalletsList from './desktop-wallets-list';
 import MobileWalletsCarousel from './mobile-wallets-carousel';
 import WalletTourGuide from 'Modules/tour-guide/wallet-tour-guide';
 import './wallets.scss';
-import { ThemedScrollbars } from '@deriv/components';
 
 const Wallets = observer(() => {
     const { client, ui } = useStore();

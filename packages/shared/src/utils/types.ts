@@ -1,1 +1,1 @@
-export type TBrokerCodes = 'iom' | 'malta' | 'maltainvest' | 'samoa' | 'svg';
+export type TBrokerCodes = 'maltainvest' | 'svg';

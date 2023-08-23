@@ -1,5 +1,4 @@
 import { getIDVNotApplicableOption } from '../constants/idv-options';
-import { FormikValues } from 'formik';
 
 type TDocumentList = Array<{
     id: string;
@@ -22,11 +21,12 @@ type TIDVFormValues = {
 
 /**
  * Formats the IDV form values to be sent to the API
+ * @name formatIDVFormValues
  * @param idv_form_value - Formik values of the IDV form
  * @param country_code - Country code of the user
  * @returns IDV form values
  */
-export const formatIDVFormValues = (idv_form_value: FormikValues, country_code: string) => {
+export const formatIDVFormValues = (idv_form_value: TIDVFormValues, country_code: string) => {
     const IDV_NOT_APPLICABLE_OPTION = getIDVNotApplicableOption();
     const idv_submit_data = {
         document_number:

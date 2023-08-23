@@ -19,20 +19,20 @@ const AssetSummary = observer(() => {
 
     const total_asset = useTotalAsset();
 
-    const [delayed_total_Asset, setDelayedTotalAsset] = React.useState(total_asset);
+    const [delayed_total_asset, setDelayedTotalAsset] = React.useState(total_asset);
+
     useEffect(() => {
         setDelayedTotalAsset(old => {
             if (!old) return total_asset;
 
-            if (Math.abs(total_asset.last_updated - old.last_updated) > 60) return total_asset;
+            const delay = Math.abs(total_asset.last_updated - old.last_updated);
+            if (delay >= 20) {
+                return total_asset;
+            }
 
             return old;
         });
     }, [total_asset]);
-
-    console.log('total_asset', total_asset);
-    console.log('total', delayed_total_Asset);
-    console.log('==============================');
 
     //dont show loader if user has no respective regional account
     if ((is_switching || is_logging_in) && (eu_account || cr_account)) {
@@ -61,8 +61,8 @@ const AssetSummary = observer(() => {
                         is_bubble_hover_enabled
                     >
                         <BalanceText
-                            currency={delayed_total_Asset.total_asset_currency}
-                            balance={delayed_total_Asset.total_asset_balance}
+                            currency={delayed_total_asset.total_asset_currency}
+                            balance={delayed_total_asset.total_asset_balance}
                             underline_style='dotted'
                         />
                     </Popover>

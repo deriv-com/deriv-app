@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { AppLinkedWithWalletIcon, Text, WalletIcon } from '@deriv/components';
 import { useWalletTransactions } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
@@ -25,7 +25,7 @@ const CompletedTransaction = observer(({ transaction }: TCompletedTransaction) =
         landing_company_shortcode,
     } = transaction;
 
-    const gradient_card_class = useMemo(
+    const gradient_card_class = React.useMemo(
         () =>
             `wallet-card__${is_virtual === 1 ? 'demo' : account_currency_config?.code?.toLowerCase()}-bg${
                 is_dark_mode_on ? '--dark' : ''
@@ -33,12 +33,12 @@ const CompletedTransaction = observer(({ transaction }: TCompletedTransaction) =
         [is_virtual, account_currency_config, is_dark_mode_on]
     );
 
-    const icon = useMemo(
+    const icon = React.useMemo(
         () => getWalletCurrencyIcon(is_virtual ? 'demo' : account_currency_config?.code || '', is_dark_mode_on, false),
         [is_virtual, account_currency_config, is_dark_mode_on]
     );
 
-    const icon_type = useMemo(
+    const icon_type = React.useMemo(
         () => (is_virtual ? 'demo' : account_currency_config?.type),
         [is_virtual, account_currency_config]
     );

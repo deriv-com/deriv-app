@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { Div100vhContainer, Dropdown, Loading, Text, ThemedScrollbars, ToggleSwitch } from '@deriv/components';
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
@@ -20,9 +20,9 @@ const TransactionList = observer(({ contentScrollHandler, is_wallet_name_visible
 
     const wallet = useActiveWallet();
 
-    const [should_show_pending_crypto_transactions, setShouldShowPendingCryptoTransactions] = useState(false);
+    const [should_show_pending_crypto_transactions, setShouldShowPendingCryptoTransactions] = React.useState(false);
 
-    const filter_options = useMemo(
+    const filter_options = React.useMemo(
         () =>
             [
                 {
@@ -58,15 +58,15 @@ const TransactionList = observer(({ contentScrollHandler, is_wallet_name_visible
         [wallet?.is_virtual, should_show_pending_crypto_transactions]
     );
 
-    const [filter, setFilter] = useState<typeof filter_options[number]['value']>('');
+    const [filter, setFilter] = React.useState<typeof filter_options[number]['value']>('');
 
     const { transactions, isComplete, isLoading, loadMore, reset } = useWalletTransactions(filter || undefined);
 
     const grouped_transactions = groupTransactionsByDay(transactions);
 
-    const scrollContainerRef = useRef(null);
+    const scrollContainerRef = React.useRef(null);
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (scrollContainerRef.current) {
             (scrollContainerRef.current as HTMLDivElement).scrollTop = 0;
         }
@@ -78,7 +78,7 @@ const TransactionList = observer(({ contentScrollHandler, is_wallet_name_visible
         return !is_mobile || is_wallet_name_visible ? header_height : collapsed_header_height;
     }, [is_mobile, is_wallet_name_visible]);
 
-    const [should_load_more, setShouldLoadMore] = useState(false);
+    const [should_load_more, setShouldLoadMore] = React.useState(false);
 
     const onScrollHandler: React.UIEventHandler<HTMLDivElement> = e => {
         if (is_mobile) contentScrollHandler?.(e);
@@ -92,11 +92,11 @@ const TransactionList = observer(({ contentScrollHandler, is_wallet_name_visible
         }
     };
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (should_load_more) loadMore();
     }, [should_load_more, loadMore]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         setShouldLoadMore(false);
     }, [transactions.length]);
 

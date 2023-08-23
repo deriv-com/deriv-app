@@ -2,11 +2,12 @@
 import { FormikHandlers, FormikProps, FormikValues } from 'formik';
 import {
     Authorize,
+    DetailsOfEachMT5Loginid,
     IdentityVerificationAddDocumentResponse,
     ResidenceList,
-    DetailsOfEachMT5Loginid,
 } from '@deriv/api-types';
-import { Redirect } from 'react-router-dom';
+import { Redirect, RouteProps } from 'react-router-dom';
+import { TPage404 } from '../Constants/routes-config';
 
 export type TToken = {
     display_name: string;
@@ -70,7 +71,7 @@ export type TRoute = {
     icon?: string;
     default?: boolean;
     to?: string;
-    component?: ((cashier_routes?: TRoute[]) => JSX.Element) | typeof Redirect;
+    component?: ((props?: RouteProps['component']) => JSX.Element) | Partial<typeof Redirect> | TPage404;
     getTitle?: () => string;
     subroutes?: TRoute[];
 };
@@ -187,18 +188,6 @@ export type TIDVForm = {
 export type TVerificationStatus = Readonly<
     Record<'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected', string>
 >;
-
-type TDocumentList = Array<{
-    id: string;
-    text: string;
-    value?: string;
-    sample_image?: string;
-    example_format?: string;
-    additional?: {
-        display_name: string;
-        format: string;
-    };
-}>;
 
 export type TIDVFormValues = {
     document_type: TDocumentList[0];

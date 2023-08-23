@@ -1,9 +1,9 @@
 import React from 'react';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Button, Icon, Money, Text, ThemedScrollbars } from '@deriv/components';
 import { CFD_PLATFORMS, formatMoney, getCFDAccount, getCFDAccountDisplay } from '@deriv/shared';
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
 import { TAccounts } from 'Types';
 
 type TPendingAccountDetails = {
@@ -53,9 +53,9 @@ type TClosingAccountHasPendingConditionsProps = {
 
 const getPlatformName = (platform: 'mt5' | 'dxtrade') => {
     if (platform === 'mt5') {
-        return <Localize i18n_default_text='Deriv MT5' />;
+        return 'Deriv MT5';
     }
-    return <Localize i18n_default_text='Deriv X' />;
+    return 'Deriv X';
 };
 const getDerivAccount = (client_accounts: TAccounts[], login_id: string) =>
     client_accounts.find(client_account => client_account.loginid === login_id);

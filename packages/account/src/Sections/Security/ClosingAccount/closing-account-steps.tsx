@@ -1,7 +1,7 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
-import { localize, Localize } from '@deriv/translations';
 import { Link } from 'react-router-dom';
+import { observer, useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
 import { Button, StaticUrl, Text } from '@deriv/components';
 
 type TClosingAccountStepsProps = {
@@ -25,8 +25,12 @@ const ClosingAccountSteps = observer(({ redirectToReasons }: TClosingAccountStep
                     <Localize i18n_default_text='If you close your account:' />
                 </Text>
                 <ul>
-                    <li>{localize("You can't trade on Deriv.")}</li>
-                    <li>{localize("You can't make transactions.")}</li>
+                    <li>
+                        <Localize i18n_default_text="You can't trade on Deriv." />
+                    </li>
+                    <li>
+                        <Localize i18n_default_text="You can't make transactions." />
+                    </li>
                 </ul>
             </div>
             <div className='closing-account__steps'>
@@ -34,8 +38,12 @@ const ClosingAccountSteps = observer(({ redirectToReasons }: TClosingAccountStep
                     <Localize i18n_default_text='Before closing your account:' />
                 </Text>
                 <ul>
-                    <li>{localize('Close all your positions.')}</li>
-                    <li>{localize('Withdraw your funds.')}</li>
+                    <li>
+                        <Localize i18n_default_text='Close all your positions.' />
+                    </li>
+                    <li>
+                        <Localize i18n_default_text='Withdraw your funds.' />
+                    </li>
                 </ul>
             </div>
             <div className='closing-account__steps'>

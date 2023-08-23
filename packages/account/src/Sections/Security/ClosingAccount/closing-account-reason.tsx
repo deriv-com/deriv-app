@@ -1,9 +1,9 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { routes, WS } from '@deriv/shared';
 import { FormikValues } from 'formik';
-import { localize } from '@deriv/translations';
 import { Loading, Modal, Text } from '@deriv/components';
+import { routes, WS } from '@deriv/shared';
+import { localize, Localize } from '@deriv/translations';
 import ClosingAccountHasPendingConditions from './closing-account-has-pending-conditions';
 import ClosingAccountReasonForm from './closing-account-reason-form';
 import ClosingAccountWarningModal from './closing-account-warning-modal';
@@ -131,9 +131,10 @@ const ClosingAccountReason = ({ onBackClick }: TClosingAccountReasonProps) => {
     };
 
     const getModalTitle = () => {
-        if (which_modal_should_render === 'error_modal') return localize('An error occurred');
-        else if (which_modal_should_render === 'inaccessible_modal') return localize('Inaccessible MT5 account(s)');
-        else if (which_modal_should_render !== 'warning_modal') return localize('Action required');
+        if (which_modal_should_render === 'error_modal') return <Localize i18n_default_text='An error occurred' />;
+        else if (which_modal_should_render === 'inaccessible_modal')
+            return <Localize i18n_default_text='Inaccessible MT5 account(s)' />;
+        else if (which_modal_should_render !== 'warning_modal') return <Localize i18n_default_text='Action required' />;
         return '';
     };
 
@@ -174,9 +175,10 @@ const ClosingAccountReason = ({ onBackClick }: TClosingAccountReasonProps) => {
     return (
         <div className='closing-account-reasons'>
             <Text weight='bold' size='xs' className='closing-account-reasons__title' as='p'>
-                {localize('Please tell us why you’re leaving. (Select up to {{ allowed_reasons }} reasons.)', {
-                    allowed_reasons: max_allowed_reasons,
-                })}
+                <Localize
+                    i18n_default_text='Please tell us why you’re leaving. (Select up to {{ allowed_reasons }} reasons.'
+                    values={{ allowed_reasons: max_allowed_reasons }}
+                />
             </Text>
             <ClosingAccountReasonForm
                 validateFields={validateFields}

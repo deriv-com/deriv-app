@@ -1,6 +1,6 @@
 import React from 'react';
-import { Localize } from '@deriv/translations';
 import { Button } from '@deriv/components';
+import { Localize } from '@deriv/translations';
 
 type TClosingAccountGeneralErrorContentProps = {
     message: string;

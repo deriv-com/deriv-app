@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, Formik, FormikErrors, FormikValues } from 'formik';
 import { Checkbox, FormSubmitButton, Input, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 
 type TFormValues = {
     'financial-priorities': boolean;
@@ -218,9 +218,10 @@ const ClosingAccountReasonForm = ({
                 <div className='closing-account-reasons__footer'>
                     <div className='closing-account-reasons__hint-wrapper'>
                         <Text size='xxs' as='p' color='less-prominent' className='closing-account-reasons__hint'>
-                            {localize('Remaining characters: {{remaining_characters}}', {
-                                remaining_characters,
-                            })}
+                            <Localize
+                                i18n_default_text='Remaining characters: {{remaining_characters}}'
+                                values={{ remaining_characters }}
+                            />
                         </Text>
                         {Object.keys(errors).length > 0 &&
                             Object.entries(errors).map(([key, value]) => (

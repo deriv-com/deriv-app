@@ -2,7 +2,7 @@ import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
-// eslint-disable-next-line import/no-extraneous-dependencies
+import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/index';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import ContractResultOverlay from './contract-result-overlay';
@@ -14,20 +14,6 @@ jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
 }));
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
-const mock_ws = {
-    authorized: {
-        subscribeProposalOpenContract: jest.fn(),
-        send: jest.fn(),
-    },
-    storage: {
-        send: jest.fn(),
-    },
-    contractUpdate: jest.fn(),
-    subscribeTicksHistory: jest.fn(),
-    forgetStream: jest.fn(),
-    activeSymbols: jest.fn(),
-    send: jest.fn(),
-};
 describe('ContractResultOverlay', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
 

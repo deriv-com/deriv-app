@@ -1,9 +1,11 @@
 class Errors {
+    private errors: { [key: string]: string[] } = {};
+
     constructor() {
         this.errors = {};
     }
 
-    add(attribute, message) {
+    add(attribute: string, message: string): void {
         if (!this.has(attribute)) {
             this.errors[attribute] = [];
         }
@@ -13,18 +15,18 @@ class Errors {
         }
     }
 
-    all() {
+    all(): { [key: string]: string[] } {
         return this.errors;
     }
 
-    first(attribute) {
+    first(attribute: string): string | null {
         if (this.has(attribute)) {
             return this.errors[attribute][0];
         }
         return null;
     }
 
-    get(attribute) {
+    get(attribute: string): string[] {
         if (this.has(attribute)) {
             return this.errors[attribute];
         }
@@ -32,7 +34,7 @@ class Errors {
         return [];
     }
 
-    has(attribute) {
+    has(attribute: string): boolean {
         return Object.prototype.hasOwnProperty.call(this.errors, attribute);
     }
 }

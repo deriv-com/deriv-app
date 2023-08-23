@@ -10,12 +10,12 @@ describe('Errors', () => {
 
     it('should add a new error to the errors', () => {
         errors.add('Error', 101);
-        expect(errors.errors['Error']).toHaveLength(2);
+        expect(errors.errors.Error).toHaveLength(2);
     });
 
     it('should not add an error if already existed', () => {
         errors.add('Error', 100);
-        expect(errors.errors['Error']).toHaveLength(1);
+        expect(errors.errors.Error).toHaveLength(1);
     });
 
     it('should return all errors', () => {

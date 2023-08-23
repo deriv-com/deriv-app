@@ -32,7 +32,7 @@ src
     ├── Utils
     │   ├── Validator
     |   |   ├──...
-    |   |   ├── validator.js
+    |   |   ├── validator.ts
 
 
 ```

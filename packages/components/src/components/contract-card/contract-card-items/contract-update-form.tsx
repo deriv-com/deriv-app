@@ -34,7 +34,7 @@ export type TContractUpdateFormProps = Pick<
     current_focus?: string;
     error_message_alignment: string;
     getCardLabels: TGetCardLables;
-    onMouseLeave: () => void;
+    onMouseLeave?: () => void;
     removeToast: (toast_id: string) => void;
     setCurrentFocus: (name: string | null) => void;
     status: string;

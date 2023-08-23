@@ -117,7 +117,7 @@ type TTotals = {
 
 type TAddToastProps = {
     key?: string;
-    content: string;
+    content: React.ReactNode;
     timeout?: number;
     is_bottom?: boolean;
     type?: string;

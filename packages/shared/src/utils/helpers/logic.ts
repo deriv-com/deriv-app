@@ -4,14 +4,6 @@ import { isAccumulatorContract, isOpen, isUserSold } from '../contract';
 import { TContractInfo, TContractStore } from '../contract/contract-types';
 import { TickSpotData } from '@deriv/api-types';
 
-type TTick =
-    | (Omit<TickSpotData, 'ask' | 'bid' | 'pip_size'> & {
-          ask: TickSpotData['ask'] | null;
-          bid: TickSpotData['bid'] | null;
-          pip_size?: TickSpotData['pip_size'];
-      })
-    | null;
-
 type TIsEndedBeforeCancellationExpired = TGetEndTime & {
     cancellation: {
         ask_price: number;
@@ -37,7 +29,7 @@ type TGetEndTime = Pick<
 > &
     Required<Pick<TContractInfo, 'contract_type' | 'date_expiry' | 'exit_tick_time' | 'is_path_dependent'>>;
 
-export const isContractElapsed = (contract_info: TContractInfo, tick?: TTick) => {
+export const isContractElapsed = (contract_info: TContractInfo, tick?: TickSpotData) => {
     if (isEmptyObject(tick) || isEmptyObject(contract_info)) return false;
     const end_time = getEndTime(contract_info) || 0;
     if (end_time && tick && tick.epoch) {

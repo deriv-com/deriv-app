@@ -2,17 +2,16 @@ import classNames from 'classnames';
 import React from 'react';
 import { toJS } from 'mobx';
 import { DesktopWrapper, MobileWrapper, Popover, Text } from '@deriv/components';
-import { isMobile, useIsMounted, isContractElapsed } from '@deriv/shared';
+import { isMobile, useIsMounted, isContractElapsed, TContractStore, TTickSpotData } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Bounce, SlideIn } from 'App/Components/Animations';
 import { getMarketNamesMap } from '../../../../Constants';
 import { DigitSpot, LastDigitPrediction } from '../LastDigitPrediction';
 import 'Sass/app/modules/contract/digits.scss';
-import { useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 type TTraderStore = ReturnType<typeof useTraderStore>;
-type TOnChangeStatus = { status: string | null; current_tick: number | null };
+type TOnChangeStatus = { status: string | null | undefined; current_tick: number | null };
 type TOnLastDigitSpot = {
     spot: string;
     is_lost: boolean;
@@ -20,40 +19,34 @@ type TOnLastDigitSpot = {
     is_latest: boolean;
     is_won: boolean;
 };
-type TContractStores =
-    | ReturnType<typeof useStore>['contract_trade']['last_contract']
-    | ReturnType<typeof useStore>['contract_replay']['contract_store'];
-
-type TDigitsWrapper = TContractStores & {
-    digits_array?: string[];
+type TDigitsWrapper = TDigits & {
+    onChangeStatus?: (params: TOnChangeStatus) => void;
+    onLastDigitSpot?: (params: TOnLastDigitSpot) => void;
+};
+type TDigits = Pick<TContractStore, 'contract_info' | 'digits_info'> & {
+    digits_array?: number[];
+    display_status?: TContractStore['display_status'];
+    is_digit_contract?: TContractStore['is_digit_contract'];
+    is_ended?: TContractStore['is_ended'];
     is_trade_page?: boolean;
     onDigitChange?: TTraderStore['onChange'];
     selected_digit?: TTraderStore['last_digit'];
     trade_type?: TTraderStore['contract_type'];
-    onChangeStatus?: (params: TOnChangeStatus) => void;
-    onLastDigitSpot?: (params: TOnLastDigitSpot) => void;
-    tick?:
-        | (Parameters<typeof isContractElapsed>[1] & {
-              current_tick: number;
-          })
-        | null;
+    tick?: TTickSpotData;
+    underlying: TTraderStore['symbol'];
 };
-
-type TDigits = Pick<
-    TDigitsWrapper,
-    | 'contract_info'
-    | 'digits_array'
-    | 'digits_info'
-    | 'display_status'
-    | 'is_digit_contract'
-    | 'is_ended'
-    | 'is_trade_page'
-    | 'trade_type'
-    | 'onDigitChange'
-    | 'selected_digit'
-> & {
-    underlying: ReturnType<typeof useTraderStore>['symbol'];
-};
+type TTickStream = NonNullable<TContractStore['contract_info']['tick_stream']>[number];
+type TTickData =
+    | TTickSpotData
+    | null
+    | undefined
+    | {
+          ask: TTickStream['tick'];
+          bid: TTickStream['tick'];
+          current_tick: number;
+          epoch: TTickStream['epoch'];
+          pip_size?: number;
+      };
 
 const DigitsWrapper = ({
     contract_info,
@@ -70,7 +63,7 @@ const DigitsWrapper = ({
     ...props
 }: TDigitsWrapper) => {
     const has_contract = contract_info.date_start;
-    let tick = props.tick;
+    let tick: TTickData = props.tick;
 
     const is_tick_ready = is_trade_page ? !!tick : true;
     const is_contract_elapsed = is_trade_page ? isContractElapsed(contract_info, tick) : false;
@@ -95,7 +88,7 @@ const DigitsWrapper = ({
 
     React.useEffect(() => {
         if (onChangeStatus) {
-            onChangeStatus({ status, current_tick: tick ? tick.current_tick : null });
+            onChangeStatus({ status, current_tick: tick && 'current_tick' in tick ? tick.current_tick : null });
         }
     }, [tick, is_trade_page, display_status, onChangeStatus, status]);
 

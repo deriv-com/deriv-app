@@ -21,7 +21,7 @@ const CFDPOA = observer(({ index, onSave, onSubmit }: TCFDPOA) => {
         toggleCompareAccountsModal,
     } = useCfdStore();
 
-    const setDefaultIs_for_cfd_modal = () => {
+    const setDefaultIsForCFDModal = () => {
         setIsForCFDModalPOA({ is_for_compare_accounts: false, is_for_account_signup: false });
     };
 
@@ -32,13 +32,13 @@ const CFDPOA = observer(({ index, onSave, onSubmit }: TCFDPOA) => {
         } else if (is_for_cfd_modal_poa?.is_for_compare_accounts) {
             toggleCompareAccountsModal();
         }
-        setDefaultIs_for_cfd_modal();
+        setDefaultIsForCFDModal();
     };
 
     const onSubmitForCFDModal = (index: number, values: FormikValues) => {
         onSave(index, values);
         onSubmit(index, values);
-        setDefaultIs_for_cfd_modal();
+        setDefaultIsForCFDModal();
     };
 
     return (

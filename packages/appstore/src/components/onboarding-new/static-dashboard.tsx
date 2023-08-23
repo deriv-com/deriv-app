@@ -108,7 +108,6 @@ const StaticDashboard = observer(
                     className={classNames('static-dashboard', {
                         'static-dashboard--eu': eu_user,
                     })}
-                    style={isMobile() && eu_user ? { height: '100%' } : {}}
                 >
                     {(isDesktop() || (isMobile() && index === 0)) && (
                         <div className='static-dashboard-wrapper__bordered--with-margin'>
@@ -259,30 +258,21 @@ const StaticDashboard = observer(
                                     'static-dashboard-wrapper__body--apps--with-gap': has_account,
                                 })}
                             >
-                                {eu_user ? (
-                                    <div className='static-dashboard-wrapper__body--apps-item'>
-                                        <StaticTradingAppCard
-                                            icon='DTrader'
-                                            name='Deriv Trader'
-                                            description={localize('Multipliers trading platform.')}
-                                            availability='All'
-                                            has_applauncher_account={has_applauncher_account}
-                                            is_item_blurry={is_blurry.platformlauncher}
-                                        />
-                                    </div>
-                                ) : (
-                                    <div className='static-dashboard-wrapper__body--apps-item'>
-                                        <StaticTradingAppCard
-                                            icon='DTrader'
-                                            name='Deriv Trader'
-                                            description={localize('Options and multipliers trading platform.')}
-                                            availability='All'
-                                            has_applauncher_account={has_applauncher_account}
-                                            is_item_blurry={is_blurry.platformlauncher}
-                                            has_divider
-                                        />
-                                    </div>
-                                )}
+                                <div className='static-dashboard-wrapper__body--apps-item'>
+                                    <StaticTradingAppCard
+                                        icon='DTrader'
+                                        name='Deriv Trader'
+                                        description={
+                                            eu_user
+                                                ? localize('Multipliers trading platform.')
+                                                : localize('Options and multipliers trading platform.')
+                                        }
+                                        availability='All'
+                                        has_applauncher_account={has_applauncher_account}
+                                        is_item_blurry={is_blurry.platformlauncher}
+                                        has_divider={!eu_user}
+                                    />
+                                </div>
 
                                 {!eu_user && (
                                     <React.Fragment>

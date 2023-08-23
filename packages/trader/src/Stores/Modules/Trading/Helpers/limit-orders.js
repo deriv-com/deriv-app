@@ -1,5 +1,4 @@
-import { isMultiplierContract } from '@deriv/shared';
-import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../../SmartChart/Constants/barriers';
+import { isMultiplierContract, BARRIER_COLORS, BARRIER_LINE_STYLES } from '@deriv/shared';
 import { ChartBarrierStore } from '../../SmartChart/chart-barrier-store';
 import { removeBarrier } from '../../SmartChart/Helpers/barriers';
 

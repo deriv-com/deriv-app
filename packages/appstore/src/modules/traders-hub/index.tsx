@@ -11,6 +11,7 @@ import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import classNames from 'classnames';
 import TourGuide from '../tour-guide/tour-guide';
 import './traders-hub.scss';
+import { useAvailableAccounts } from '@deriv/api';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStore();
@@ -19,6 +20,7 @@ const TradersHub = () => {
     const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
 
+    useAvailableAccounts();
     const can_show_notify = !is_switching && !is_logging_in && is_account_setting_loaded && is_landing_company_loaded;
 
     const [scrolled, setScrolled] = React.useState(false);

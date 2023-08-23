@@ -60,3 +60,4 @@ export { default as useCreateWallet } from './useCreateWallet';
 export { default as useWalletTransactions } from './useWalletTransactions';
 export { default as useWalletTransfer } from './useWalletTransfer';
 export { default as useWalletsList } from './useWalletsList';
+export { default as useLinkedWalletsAccounts } from './useLinkedWalletTradingAccounts';

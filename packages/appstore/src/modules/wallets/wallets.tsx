@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { useActiveWallet, useWalletsList } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
+import { ThemedScrollbars } from '@deriv/components';
+import { useActiveWallet, useWalletsList } from '@deriv/hooks';
 import AddMoreWallets from 'Components/add-more-wallets';
 import ModalManager from 'Components/modals/modal-manager';
 import DesktopWalletsList from './desktop-wallets-list';
@@ -22,14 +23,14 @@ const Wallets = observer(() => {
     }, [active_wallet, data, switchAccount]);
 
     return (
-        <div className='wallets-module'>
+        <ThemedScrollbars className='wallets-module' is_scrollbar_hidden>
             <div className='wallets-module__content'>
                 {is_mobile ? <MobileWalletsCarousel /> : <DesktopWalletsList />}
                 <AddMoreWallets />
             </div>
             <ModalManager />
             <WalletTourGuide />
-        </div>
+        </ThemedScrollbars>
     );
 });
 

@@ -10,7 +10,12 @@ const market_types = ['gaming', 'synthetic', 'financial', 'all'];
 const WalletMT5CardList = observer(() => {
     const { data: filtered_cfd_accounts, isFetchedAfterMount } = useFilteredCFDAccounts();
 
-    if (!isFetchedAfterMount) return <PlatformLoader />;
+    if (!isFetchedAfterMount)
+        return (
+            <div className='wallet-content__loader'>
+                <PlatformLoader />
+            </div>
+        );
     return (
         <React.Fragment>
             {filtered_cfd_accounts &&

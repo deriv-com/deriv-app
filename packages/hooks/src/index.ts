@@ -56,6 +56,7 @@ export { default as useTradingAccountsList } from './useTradingAccountsList';
 export { default as useTransferBetweenAccounts } from './useTransferBetweenAccounts';
 export { default as useVerifyEmail } from './useVerifyEmail';
 export { default as useWalletMigration } from './useWalletMigration';
+export { default as useCreateWallet } from './useCreateWallet';
 export { default as useWalletTransactions } from './useWalletTransactions';
 export { default as useWalletTransfer } from './useWalletTransfer';
 export { default as useWalletsList } from './useWalletsList';

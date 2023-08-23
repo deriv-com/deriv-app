@@ -21,7 +21,7 @@ type TDetailsOfDerivXAccount = TDetailsOfMT5Account & { account_id?: string };
 type TWrapperProps = {
     children: React.ReactNode;
     title: string;
-    desc?: React.ReactNode;
+    description?: React.ReactNode;
 };
 
 type TContentProps = {
@@ -29,6 +29,17 @@ type TContentProps = {
     loginid?: string;
     title?: string;
     value: React.ReactNode;
+};
+
+type TShowOpenPostionsProps = {
+    platform: 'dxtrade' | 'mt5';
+    open_positions: TDetailsOfMT5Account[] | TDetailsOfDerivXAccount[];
+    is_eu: boolean;
+};
+type TShowAccountBalanceProps = {
+    platform: 'dxtrade' | 'mt5';
+    account_balance: TDetailsOfMT5Account[] | TDetailsOfDerivXAccount[];
+    is_eu: boolean;
 };
 
 type TClosingAccountHasPendingConditionsProps = {
@@ -40,14 +51,14 @@ type TClosingAccountHasPendingConditionsProps = {
     onBackClick: () => void;
 };
 
-const Wrapper = ({ children, title, desc }: TWrapperProps) => (
+const Wrapper = ({ children, title, description }: TWrapperProps) => (
     <div className='closing-account-error'>
         <Text as='p' line_height='s' size='xs' weight='bold' color='prominent' className='closing-account-error__title'>
             {title}
         </Text>
-        {desc && (
+        {description && (
             <Text as='p' size='xxs' className='closing-account-error__description'>
-                {desc}
+                {description}
             </Text>
         )}
         <div className='closing-account-error__wrapper'>{children}</div>
@@ -71,6 +82,83 @@ const Content = ({ currency_icon, loginid, title, value }: TContentProps) => (
             {value}
         </Text>
     </div>
+);
+
+const ShowOpenPostions = ({ platform, open_positions, is_eu }: TShowOpenPostionsProps) => (
+    <Wrapper
+        title={
+            platform === CFD_PLATFORMS.MT5
+                ? localize('Please close your positions in the following Deriv MT5 account(s)')
+                : localize('Please close your positions in the following Deriv X account(s):')
+        }
+    >
+        {open_positions.map(account => (
+            <Content
+                key={account.login}
+                currency_icon={`${platform === CFD_PLATFORMS.MT5 ? 'IcMt5' : 'IcDxtrade'}-${getCFDAccount({
+                    market_type: account.market_type,
+                    sub_account_type: account.sub_account_type,
+                    platform,
+                    is_eu,
+                })}`}
+                loginid={account.display_login}
+                title={
+                    getCFDAccountDisplay({
+                        market_type: account.market_type,
+                        sub_account_type: account.sub_account_type,
+                        platform,
+                        is_eu,
+                    }) ?? ''
+                }
+                value={
+                    <Localize
+                        i18n_default_text='{{number_of_positions}} position(s)'
+                        values={{ number_of_positions: account.positions }}
+                    />
+                }
+            />
+        ))}
+    </Wrapper>
+);
+
+const ShowAccountBalance = ({ platform, account_balance, is_eu }: TShowAccountBalanceProps) => (
+    <Wrapper
+        title={
+            platform === CFD_PLATFORMS.MT5
+                ? localize('Please withdraw your funds from the following Deriv MT5 account(s):')
+                : localize('Please withdraw your funds from the following Deriv MT5 account(s):')
+        }
+    >
+        {account_balance.map(account => (
+            <Content
+                key={account.login}
+                currency_icon={`${platform === CFD_PLATFORMS.MT5 ? 'IcMt5' : 'IcDxtrade'}-${getCFDAccount({
+                    market_type: account.market_type,
+                    sub_account_type: account.sub_account_type,
+                    platform,
+                    is_eu,
+                })}`}
+                loginid={account.display_login}
+                title={
+                    getCFDAccountDisplay({
+                        market_type: account.market_type,
+                        sub_account_type: account.sub_account_type,
+                        platform,
+                        is_eu,
+                    }) ?? ''
+                }
+                value={
+                    account.currency && (
+                        <Money
+                            currency={account.currency}
+                            amount={formatMoney(account.currency, account.balance ?? 0, true)}
+                            should_format={false}
+                        />
+                    )
+                }
+            />
+        ))}
+    </Wrapper>
 );
 
 const getDerivAccount = (client_accounts: TAccounts[], login_id: string) =>
@@ -194,137 +282,34 @@ const ClosingAccountHasPendingConditions = observer(
                         </Wrapper>
                     )}
                     {!!mt5_open_positions.length && (
-                        <Wrapper title={localize('Please close your positions in the following Deriv MT5 account(s):')}>
-                            {mt5_open_positions.map(account => (
-                                <Content
-                                    key={account.login}
-                                    currency_icon={`IcMt5-${getCFDAccount({
-                                        market_type: account.market_type,
-                                        sub_account_type: account.sub_account_type,
-                                        platform: CFD_PLATFORMS.MT5,
-                                        is_eu,
-                                    })}`}
-                                    loginid={account.display_login}
-                                    title={
-                                        getCFDAccountDisplay({
-                                            market_type: account.market_type,
-                                            sub_account_type: account.sub_account_type,
-                                            platform: CFD_PLATFORMS.MT5,
-                                            is_eu,
-                                        }) ?? ''
-                                    }
-                                    value={
-                                        <Localize
-                                            i18n_default_text='{{number_of_positions}} position(s)'
-                                            values={{ number_of_positions: account.positions }}
-                                        />
-                                    }
-                                />
-                            ))}
-                        </Wrapper>
+                        <ShowOpenPostions
+                            platform={CFD_PLATFORMS.MT5}
+                            open_positions={mt5_open_positions}
+                            is_eu={is_eu}
+                        />
                     )}
+
                     {!!mt5_balance.length && (
-                        <Wrapper
-                            title={localize('Please withdraw your funds from the following Deriv MT5 account(s):')}
-                        >
-                            {mt5_balance.map(account => (
-                                <Content
-                                    key={account.login}
-                                    currency_icon={`IcMt5-${getCFDAccount({
-                                        market_type: account.market_type,
-                                        sub_account_type: account.sub_account_type,
-                                        platform: CFD_PLATFORMS.MT5,
-                                        is_eu,
-                                    })}`}
-                                    loginid={account.display_login}
-                                    title={
-                                        getCFDAccountDisplay({
-                                            market_type: account.market_type,
-                                            sub_account_type: account.sub_account_type,
-                                            platform: CFD_PLATFORMS.MT5,
-                                            is_eu,
-                                        }) ?? ''
-                                    }
-                                    value={
-                                        account.currency && (
-                                            <Money
-                                                currency={account.currency}
-                                                amount={formatMoney(account.currency, account.balance ?? 0, true)}
-                                                should_format={false}
-                                            />
-                                        )
-                                    }
-                                />
-                            ))}
-                        </Wrapper>
+                        <ShowAccountBalance platform={CFD_PLATFORMS.MT5} account_balance={mt5_balance} is_eu={is_eu} />
                     )}
                     {!!dxtrade_open_positions.length && (
-                        <Wrapper title={localize('Please close your positions in the following Deriv X account(s):')}>
-                            {dxtrade_open_positions.map(account => (
-                                <Content
-                                    key={account.login}
-                                    currency_icon={`IcDxtrade-${getCFDAccount({
-                                        market_type: account.market_type,
-                                        sub_account_type: account.sub_account_type,
-                                        platform: CFD_PLATFORMS.DXTRADE,
-                                        is_eu,
-                                    })}`}
-                                    loginid={account.display_login}
-                                    title={
-                                        getCFDAccountDisplay({
-                                            market_type: account.market_type,
-                                            sub_account_type: account.sub_account_type,
-                                            platform: CFD_PLATFORMS.DXTRADE,
-                                            is_eu,
-                                        }) ?? ''
-                                    }
-                                    value={
-                                        <Localize
-                                            i18n_default_text='{{number_of_positions}} position(s)'
-                                            values={{ number_of_positions: account.positions }}
-                                        />
-                                    }
-                                />
-                            ))}
-                        </Wrapper>
+                        <ShowOpenPostions
+                            platform={CFD_PLATFORMS.DXTRADE}
+                            open_positions={dxtrade_open_positions}
+                            is_eu={is_eu}
+                        />
                     )}
                     {!!dxtrade_balance.length && (
-                        <Wrapper title={localize('Please withdraw your funds from the following Deriv X account(s):')}>
-                            {dxtrade_balance.map(account => (
-                                <Content
-                                    key={account.login}
-                                    currency_icon={`IcDxtrade-${getCFDAccount({
-                                        market_type: account.market_type,
-                                        sub_account_type: account.sub_account_type,
-                                        platform: CFD_PLATFORMS.DXTRADE,
-                                        is_eu,
-                                    })}`}
-                                    loginid={account.display_login}
-                                    title={
-                                        getCFDAccountDisplay({
-                                            market_type: account.market_type,
-                                            sub_account_type: account.sub_account_type,
-                                            platform: CFD_PLATFORMS.DXTRADE,
-                                            is_eu,
-                                        }) ?? ''
-                                    }
-                                    value={
-                                        account.currency && (
-                                            <Money
-                                                currency={account.currency}
-                                                amount={formatMoney(account.currency, account.balance ?? 0, true)}
-                                                should_format={false}
-                                            />
-                                        )
-                                    }
-                                />
-                            ))}
-                        </Wrapper>
+                        <ShowAccountBalance
+                            platform={CFD_PLATFORMS.DXTRADE}
+                            account_balance={dxtrade_balance}
+                            is_eu={is_eu}
+                        />
                     )}
                     {!!account_pending_withdrawals.length && (
                         <Wrapper
                             title={localize('Pending withdrawal request:')}
-                            desc={
+                            description={
                                 <Localize
                                     i18n_default_text='We are still processing your withdrawal request.<0 />Please wait for the transaction to be completed before deactivating your account.'
                                     components={[<br key={0} />]}

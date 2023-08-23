@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { APIProvider } from '@deriv/api';
 import { renderHook } from '@testing-library/react-hooks';
-import useTradingAccountsList from '../useTradingAccountsList';
+import useActiveAccount from '../useActiveAccount';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -49,6 +49,7 @@ jest.mock('@deriv/api', () => ({
                                 loginid: 'CRW1002',
                             },
                         ],
+                        loginid: 'CR1003',
                     },
                 },
             };
@@ -127,21 +128,20 @@ jest.mock('@deriv/api', () => ({
     }),
 }));
 
-describe('useTradingAccountsList', () => {
-    test('should return list of 4 accounts for the current account', () => {
+describe('useActiveAccount', () => {
+    test('should return active account', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
-        const { result } = renderHook(() => useTradingAccountsList(), { wrapper });
+        const { result } = renderHook(() => useActiveAccount(), { wrapper });
 
-        expect(result.current.data?.every(account => account.account_category === 'trading')).toEqual(true);
-        expect(result.current.data?.length).toEqual(4);
+        expect(result.current?.loginid).toEqual('CR1003');
     });
 
-    test('should return correct balance', () => {
+    test('should return correct balance for active account', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
-        const { result } = renderHook(() => useTradingAccountsList(), { wrapper });
+        const { result } = renderHook(() => useActiveAccount(), { wrapper });
 
-        expect(result.current.data?.find(account => account.loginid === 'CR1003')?.balance).toEqual(179);
+        expect(result.current?.balance).toEqual(179);
     });
 });

@@ -1,5 +1,5 @@
-import { useCallback, useMemo } from 'react';
 import { useFetch } from '@deriv/api';
+import { useCallback, useMemo } from 'react';
 
 /** A custom hook to get the currency config information from `website_status` endpoint */
 const useCurrencyConfig = () => {

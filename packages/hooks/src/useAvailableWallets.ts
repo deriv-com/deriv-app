@@ -1,13 +1,10 @@
 import React from 'react';
 import { useFetch } from '@deriv/api';
-import { useStore } from '@deriv/stores';
-import useWalletsList from './useWalletsList';
 import useAuthorize from './useAuthorize';
+import useWalletAccountsList from './useWalletAccountsList';
+import useCurrencyConfig from './useCurrencyConfig';
 
 const useAvailableWallets = () => {
-    const { client, ui } = useStore();
-    const { is_dark_mode_on } = ui;
-    const { is_crypto } = client;
     const { data } = useAuthorize();
 
     // @ts-expect-error Need to update @deriv/api-types to fix the TS error
@@ -16,7 +13,8 @@ const useAvailableWallets = () => {
         options: { enabled: Boolean(data?.landing_company_name) },
     });
 
-    const { data: added_wallets } = useWalletsList();
+    const { data: added_wallets } = useWalletAccountsList();
+    const { getConfig } = useCurrencyConfig();
 
     const sortedWallets = React.useMemo(() => {
         if (!account_type_data) return null;
@@ -30,7 +28,7 @@ const useAvailableWallets = () => {
         const non_virtual_wallets = added_wallets?.filter(wallet => !wallet.is_virtual);
 
         const modified_wallets = non_virtual_wallets?.map(wallet => ({
-            currency: wallet.currency,
+            currency: wallet.currency ?? 'USD',
             landing_company_name: wallet.landing_company_name,
             is_added: true,
             gradient_card_class: wallet.gradient_card_class,
@@ -42,32 +40,32 @@ const useAvailableWallets = () => {
                 currency,
                 landing_company_name: data?.landing_company_name === 'virtual' ? 'svg' : data?.landing_company_name,
                 is_added: false,
-                gradient_card_class: `wallet-card__${currency.toLowerCase()}-bg${is_dark_mode_on ? '--dark' : ''}`,
+                gradient_card_class: `wallet-card__${currency.toLowerCase()}-bg`,
             }));
 
         // Sort the unadded wallets alphabetically by fiat, crypto, then virtual
         available_wallets?.sort((a, b) => {
-            if (is_crypto(a.currency) !== is_crypto(b.currency)) {
-                return is_crypto(a.currency) ? 1 : -1;
+            if (getConfig(a.currency)?.is_crypto !== getConfig(b.currency)?.is_crypto) {
+                return getConfig(a.currency)?.is_crypto ? 1 : -1;
             }
 
-            return (a.currency || 'USD').localeCompare(b.currency || 'USD');
+            return a.currency.localeCompare(b.currency);
         });
 
         // Sort the added wallets alphabetically by fiat, crypto, then virtual (if any)
         if (Array.isArray(modified_wallets)) {
             modified_wallets?.sort((a, b) => {
-                if (is_crypto(a.currency) !== is_crypto(b.currency)) {
-                    return is_crypto(a.currency) ? 1 : -1;
+                if (getConfig(a.currency)?.is_crypto !== getConfig(b.currency)?.is_crypto) {
+                    return getConfig(a.currency)?.is_crypto ? 1 : -1;
                 }
 
-                return (a.currency || 'USD').localeCompare(b.currency || 'USD');
+                return a.currency.localeCompare(b.currency);
             });
             return [...available_wallets, ...modified_wallets];
         }
 
         return [...available_wallets];
-    }, [added_wallets, account_type_data, is_dark_mode_on, is_crypto]);
+    }, [account_type_data, added_wallets, data?.landing_company_name, getConfig]);
 
     return {
         ...rest,

@@ -108,8 +108,8 @@ const PersonalDetailsForm = ({
         />
     );
 
-    const poa_clarification_message = localize(
-        'For faster verification, input the same address here as in your proof of address document (see section below)'
+    const poa_clarification_message = (
+        <Localize i18n_default_text='For faster verification, input the same address here as in your proof of address document (see section below)' />
     );
 
     return (
@@ -300,7 +300,7 @@ const PersonalDetailsForm = ({
                                         value={values.address_state}
                                         list_items={states_list}
                                         error={touched.address_state && errors.address_state}
-                                        use_text={true}
+                                        use_text
                                         onChange={e => setFieldValue('address_state', e.target.value, true)}
                                     />
                                 </MobileWrapper>
@@ -363,7 +363,7 @@ const PersonalDetailsForm = ({
                                             label={is_mf ? localize('Place of birth*') : localize('Place of birth')}
                                             list_items={residence_list}
                                             value={values.place_of_birth}
-                                            use_text={true}
+                                            use_text
                                             error={touched.place_of_birth && errors.place_of_birth}
                                             onChange={e => {
                                                 handleChange(e);
@@ -418,7 +418,7 @@ const PersonalDetailsForm = ({
                                             label={is_mf ? localize('Citizenship*') : localize('Citizenship')}
                                             list_items={residence_list}
                                             value={values.citizen}
-                                            use_text={true}
+                                            use_text
                                             error={touched.citizen && errors.citizen}
                                             onChange={e => {
                                                 handleChange(e);
@@ -486,7 +486,7 @@ const PersonalDetailsForm = ({
                                                     }
                                                     list_items={residence_list}
                                                     value={values.tax_residence}
-                                                    use_text={true}
+                                                    use_text
                                                     error={touched.tax_residence && errors.tax_residence}
                                                     onChange={e => {
                                                         handleChange(e);

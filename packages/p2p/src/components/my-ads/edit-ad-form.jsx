@@ -15,6 +15,7 @@ import { generateErrorDialogTitle, generateErrorDialogBody } from 'Utils/adverts
 import EditAdFormPaymentMethods from './edit-ad-form-payment-methods.jsx';
 import EditAdSummary from './edit-ad-summary.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import OrderTimeSelection from './order-time-selection';
 
 const EditAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -149,6 +150,7 @@ const EditAdForm = () => {
                             max_transaction: max_order_amount_display,
                             min_transaction: min_order_amount_display,
                             offer_amount: amount_display,
+                            //order_completion_time: order_completion_time,
                             rate_type: setInitialAdRate(),
                             type,
                             is_active:
@@ -426,6 +428,9 @@ const EditAdForm = () => {
                                                                 max_characters={300}
                                                             />
                                                         )}
+                                                    </Field>
+                                                    <Field name='order_completion_time'>
+                                                        {({ field }) => <OrderTimeSelection {...field} />}
                                                     </Field>
                                                     <div className='p2p-my-ads__form-payment-methods--text'>
                                                         <Text color='prominent'>

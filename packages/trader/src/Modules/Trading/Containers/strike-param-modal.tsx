@@ -5,21 +5,21 @@ import classNames from 'classnames';
 
 type TStrikeParamModalProps = {
     is_open: boolean;
-    toggleModal: () => void;
-    strike: string;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     name: string;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    strike: string;
     strike_price_list: { text: string; value: string }[];
+    toggleModal: () => void;
     vanilla_trade_type: string;
 };
 
 const StrikeParamModal = ({
     is_open,
-    toggleModal,
-    strike,
-    onChange,
     name,
+    onChange,
+    strike,
     strike_price_list,
+    toggleModal,
     vanilla_trade_type,
 }: TStrikeParamModalProps) => {
     const [is_popover_open, setIsPopoverOpen] = React.useState(false);

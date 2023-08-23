@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { useActiveWallet, useWalletsList } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
+import { ThemedScrollbars } from '@deriv/components';
+import { useActiveWallet, useWalletsList } from '@deriv/hooks';
 import AddMoreWallets from 'Components/add-more-wallets';
 import ModalManager from 'Components/modals/modal-manager';
 import DesktopWalletsList from './desktop-wallets-list';

@@ -4,8 +4,8 @@ import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import { base64_images } from 'Constants/base64-images';
-import { TAdvertProps } from 'Types';
 import { ad_type } from 'Constants/floating-rate';
+import { TAdvertProps } from 'Types';
 
 type TShareMyAdsCardProps = {
     advert: Partial<TAdvertProps>;
@@ -63,9 +63,9 @@ const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) =>
                         size={isMobile() ? 120 : 140}
                         imageSettings={{
                             src: base64_images.dp2p_logo,
-                            height: isMobile() ? 30 : 34,
-                            width: isMobile() ? 30 : 34,
-                            excavate: false,
+                            height: 25,
+                            width: 25,
+                            excavate: true,
                         }}
                     />
                 </div>

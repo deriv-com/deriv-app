@@ -152,22 +152,22 @@ export default class AdvertiserPageStore extends BaseStore {
         this.setIsLoading(false);
     }
 
+    /** This function is used to get the advert info from the counterparty when user wants to view a shared advert */
     async getAdvertInfo() {
         const { buy_sell_store, general_store } = this.root_store;
+        const { counterparty_advert_id, counterparty_advertiser_id } = general_store;
         let advert_list;
 
-        // Need to get the list of all adverts first to check if the shared advert is still active
-        await requestWS({ p2p_advert_list: 1 }).then(response => {
+        // Need to get the list of all adverts from counterparty to check if the shared advert is still active
+        await requestWS({ p2p_advert_list: 1, advertiser_id: counterparty_advertiser_id }).then(response => {
             if (response) advert_list = response.p2p_advert_list.list;
         });
 
-        await requestWS({ p2p_advert_info: 1, id: general_store.counterparty_advert_id }).then(response => {
+        await requestWS({ p2p_advert_info: 1, id: counterparty_advert_id }).then(response => {
             if (response) {
                 const { p2p_advert_info } = response;
                 const advert_type = p2p_advert_info?.type === buy_sell.BUY ? 1 : 0;
-                const contains_advert_id = advert_list.some(
-                    advert => advert.id === general_store.counterparty_advert_id
-                );
+                const contains_advert_id = advert_list.some(advert => advert.id === counterparty_advert_id);
 
                 if (contains_advert_id) {
                     this.setActiveIndex(advert_type);

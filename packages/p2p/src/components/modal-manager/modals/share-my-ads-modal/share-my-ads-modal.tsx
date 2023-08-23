@@ -14,39 +14,62 @@ import { observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import MyProfileSeparatorContainer from 'Components/my-profile/my-profile-separator-container';
+import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import { TAdvert } from 'Types';
-import ShareMyAdsSocials from './share-my-ads-socials';
 import ShareMyAdsCard from './share-my-ads-card';
+import ShareMyAdsSocials from './share-my-ads-socials';
 
 const ShareMyAdsModal = ({ advert }: TAdvert) => {
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
-    const { account_currency, advertiser_details, id, local_currency, rate_display, rate_type } = advert;
+    const { account_currency, advertiser_details, id, local_currency, rate_display, rate_type, type } = advert;
     const { id: advertiser_id } = advertiser_details;
     const { hideModal, is_modal_open } = useModalManagerContext();
 
     const divRef = React.useRef(null);
     const advert_url = `${window.location.origin}/cashier/p2p/advertiser?id=${advertiser_id}&advert_id=${id}`;
-    const custom_message =
-        rate_type === ad_type.FLOAT
+    const getCustomMessage = () => {
+        if (rate_type === ad_type.FLOAT) {
+            return type === buy_sell.BUY
+                ? localize(
+                      "Hi! I'd like to exchange {{account_currency}} for {{local_currency}} at {{rate_display}}% on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n\n{{- advert_url}}\n\nThanks!",
+                      {
+                          account_currency,
+                          advert_url,
+                          local_currency,
+                          rate_display,
+                      }
+                  )
+                : localize(
+                      "Hi! I'd like to exchange {{local_currency}} for {{account_currency}} at {{rate_display}}% on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n\n{{- advert_url}}\n\nThanks!",
+                      {
+                          account_currency,
+                          advert_url,
+                          local_currency,
+                          rate_display,
+                      }
+                  );
+        }
+        return type === buy_sell.BUY
             ? localize(
-                  "Hi! I'd like to exchange {{local_currency}} for {{account_currency}} at {{rate_display}}% on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n\n{{- advert_url}}\n\nThanks!",
+                  "Hi! I'd like to exchange {{account_currency}} for {{local_currency}} at {{rate_display}} {{local_currency}} on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n\n{{- advert_url}}\n\nThanks!",
                   {
-                      local_currency,
                       account_currency,
-                      rate_display,
                       advert_url,
+                      local_currency,
+                      rate_display,
                   }
               )
             : localize(
                   "Hi! I'd like to exchange {{local_currency}} for {{account_currency}} at {{rate_display}} {{local_currency}} on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n\n{{- advert_url}}\n\nThanks!",
                   {
-                      local_currency,
                       account_currency,
-                      rate_display,
                       advert_url,
+                      local_currency,
+                      rate_display,
                   }
               );
+    };
 
     const onCopy = (event: { stopPropagation: () => void }) => {
         copyToClipboard(advert_url);
@@ -78,7 +101,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
 
     const handleShareLink = () => {
         navigator.share({
-            text: custom_message as string,
+            text: getCustomMessage() as string,
         });
     };
 
@@ -101,7 +124,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
             is_open={is_modal_open}
             title={localize('Share this ad')}
             toggleModal={hideModal}
-            width='71rem'
+            width='74rem'
         >
             <Modal.Body className='share-my-ads-modal__body'>
                 <React.Fragment>
@@ -146,7 +169,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                                 <Text weight='bold'>
                                     <Localize i18n_default_text='Share link to' />
                                 </Text>
-                                <ShareMyAdsSocials advert_url={advert_url} custom_message={custom_message} />
+                                <ShareMyAdsSocials advert_url={advert_url} custom_message={getCustomMessage()} />
                                 <MyProfileSeparatorContainer.Line
                                     className='share-my-ads-modal__line'
                                     is_invisible={false}
@@ -156,7 +179,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                                 </Text>
                                 <div className='share-my-ads-modal__copy'>
                                     <Text className='share-my-ads-modal__copy-link' color='less-prominent'>
-                                        <Localize i18n_default_text='Click {{- link}}' values={{ link: advert_url }} />
+                                        <Localize i18n_default_text='{{- link}}' values={{ link: advert_url }} />
                                     </Text>
                                     <div className='share-my-ads-modal__copy-clipboard'>
                                         <Clipboard

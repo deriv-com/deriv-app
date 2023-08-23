@@ -20,14 +20,14 @@ const AccumulatorsSellButton = observer(
         const { is_dark_mode_on } = ui;
         const is_valid_to_sell = contract_info && isValidToSell(contract_info);
         return (
-            <Fieldset className='trade-container__fieldset purchase-container__cell-button'>
+            <Fieldset className='trade-container__fieldset purchase-container__sell-button'>
                 <Button
                     className='dc-btn--sell dc-btn__large'
                     is_disabled={is_disabled || !is_valid_to_sell || is_sell_requested}
                     onClick={onClick}
                     secondary
                 >
-                    <span className='purchase-container__cell-button__stake'>{getCardLabels().SELL}</span>
+                    <span className='purchase-container__sell-button__stake'>{getCardLabels().SELL}</span>
                     {current_stake && <Money amount={current_stake} currency={currency} show_currency />}
                 </Button>
                 <Text

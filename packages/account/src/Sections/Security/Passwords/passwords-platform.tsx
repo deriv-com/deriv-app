@@ -2,7 +2,7 @@ import React from 'react';
 import { useRequest } from '@deriv/api';
 import { CFD_PLATFORMS, getPlatformSettings } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
 import PlatformPartials from './platform-partials';
@@ -17,7 +17,7 @@ type TPasswordsPlatformProps = {
  * @name PasswordsPlatform
  * @param [has_dxtrade_accounts=false] - Whether the user has DXTrade accounts.
  * @param [has_mt5_accounts=false] - Whether the user has MT5 accounts.
- * @returns {React.ReactNode}
+ * @returns React.ReactNode
  */
 const PasswordsPlatform = observer(
     ({ has_dxtrade_accounts = false, has_mt5_accounts = false }: TPasswordsPlatformProps) => {
@@ -71,18 +71,18 @@ const PasswordsPlatform = observer(
                         <PlatformPartials
                             type={CFD_PLATFORMS.MT5}
                             handleClick={onClickSendEmail}
-                            description={localize(
-                                'Your Deriv MT5 password is for logging in to your Deriv MT5 accounts on the desktop, web, and mobile apps.'
-                            )}
+                            description={
+                                <Localize i18n_default_text='Your Deriv MT5 password is for logging in to your Deriv MT5 accounts on the desktop, web, and mobile apps.' />
+                            }
                         />
                     )}
                     {has_dxtrade_accounts && (
                         <PlatformPartials
                             type={CFD_PLATFORMS.DXTRADE}
                             handleClick={onClickSendEmail}
-                            description={localize(
-                                'Use the Deriv X password to log in to your Deriv X accounts on the web and mobile apps.'
-                            )}
+                            description={
+                                <Localize i18n_default_text='Your Deriv X password is for logging in to your Deriv X accounts on the web and mobile apps.' />
+                            }
                         />
                     )}
                     <SentEmailModal

@@ -4,7 +4,7 @@ import { getPlatformSettings, CFD_PLATFORMS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 type TPlatformPartialsProps = {
-    description: React.ReactNode;
+    description: JSX.Element;
     type: typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS];
     handleClick: (type: typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS]) => void;
 };
@@ -15,7 +15,7 @@ type TPlatformPartialsProps = {
  * @param description - The description of the platform
  * @param type - The type of the platform
  * @param handleClick - The function to call when the button is clicked
- * @returns
+ * @returns React.ReactNode
  */
 const PlatformPartials = ({ description, type, handleClick }: TPlatformPartialsProps) => {
     const platform_config = getPlatformSettings(type);

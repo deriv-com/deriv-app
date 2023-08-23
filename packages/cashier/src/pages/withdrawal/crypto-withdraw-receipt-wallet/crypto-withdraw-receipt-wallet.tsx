@@ -67,7 +67,7 @@ const CryptoWithdrawReceiptWallet = observer(() => {
                     <Clipboard
                         text_copy={blockchain_address}
                         info_message={is_mobile ? '' : localize('copy to clipboard')}
-                        icon='IcCashierClipboard'
+                        icon='IcWalletClipboard'
                         success_message={localize('copied!')}
                         className='crypto-withdraw-receipt-wallet__account-info-clipboard'
                         popoverAlignment={is_mobile ? 'left' : 'bottom'}

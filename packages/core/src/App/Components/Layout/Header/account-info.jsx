@@ -1,47 +1,17 @@
-import { DesktopWrapper, Icon, MobileWrapper, Popover, Text } from '@deriv/components';
-
-import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
-import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile.jsx';
-import { CSSTransition } from 'react-transition-group';
-import { Localize } from '@deriv/translations';
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { CSSTransition } from 'react-transition-group';
+import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
+import { Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode } from '@deriv/shared';
-
-const AccountInfoWrapper = ({ is_disabled, disabled_message, children }) =>
-    is_disabled && disabled_message ? (
-        <Popover alignment='left' message={disabled_message} zIndex={99999}>
-            {children}
-        </Popover>
-    ) : (
-        <React.Fragment>{children}</React.Fragment>
-    );
-
-const AccountInfoIcon = ({ is_virtual, currency }) => (
-    <Icon
-        data_testid='dt_icon'
-        icon={`IcCurrency-${is_virtual ? 'virtual' : currency || 'Unknown'}`}
-        className={`acc-info__id-icon acc-info__id-icon--${is_virtual ? 'virtual' : currency}`}
-        size={24}
-    />
-);
-
-const DisplayAccountType = ({ account_type, country_standpoint, is_eu }) => {
-    if (account_type === 'financial') {
-        return <Localize i18n_default_text='Multipliers' />;
-    } else if (account_type === 'gaming') {
-        if (country_standpoint.is_isle_of_man) return null;
-        if (country_standpoint.is_united_kingdom) {
-            return <Localize i18n_default_text='Gaming' />;
-        }
-        if (is_eu || country_standpoint.is_belgium) {
-            return <Localize i18n_default_text='Options' />;
-        }
-        return <Localize i18n_default_text='Derived' />;
-    }
-    return null;
-};
+import { useFeatureFlags, useWalletAccountsList } from '@deriv/hooks';
+import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
+import AccountInfoWallets from './account-info-wallets';
+import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile';
+import AccountInfoWrapper from './account-info-wrapper';
+import AccountInfoIcon from './account-info-icon';
+import DisplayAccountType from './display-account-type';
 
 const AccountInfo = ({
     acc_switcher_disabled_message,
@@ -57,6 +27,41 @@ const AccountInfo = ({
     toggleDialog,
     is_disabled,
 }) => {
+    const { is_wallet_enabled } = useFeatureFlags();
+    const { has_wallet } = useWalletAccountsList();
+
+    const should_show_wallets = is_wallet_enabled && has_wallet;
+
+    // console.log('is_wallet_enabled = ', is_wallet_enabled, ', has_wallet = ', has_wallet);
+
+    // const should_show_wallets = false;
+
+    /*
+    const { data: trading_accounts } = useTradingAccountsList();
+
+    const trading_account_loginid =
+        wallet_account.linked_to?.find(account => account.platform === 'dtrade')?.loginid ?? '';
+    const linked_trading_account = trading_accounts?.find(account => account.loginid === trading_account_loginid);
+    */
+
+    if (should_show_wallets)
+        return (
+            <AccountInfoWallets
+                acc_switcher_disabled_message={acc_switcher_disabled_message}
+                account_type={account_type}
+                // balance={balance}
+                // currency={currency}
+                country_standpoint={country_standpoint}
+                disableApp={disableApp}
+                enableApp={enableApp}
+                is_dialog_on={is_dialog_on}
+                is_eu={is_eu}
+                // is_virtual={is_virtual}
+                toggleDialog={toggleDialog}
+                // is_disabled={is_disabled}
+            />
+        );
+
     const currency_lower = currency?.toLowerCase();
 
     return (
@@ -75,6 +80,7 @@ const AccountInfo = ({
                 >
                     <span className='acc-info__id'>
                         <DesktopWrapper>
+                            USUAL
                             <AccountInfoIcon is_virtual={is_virtual} currency={currency_lower} />
                         </DesktopWrapper>
                         <MobileWrapper>

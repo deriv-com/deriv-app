@@ -2,7 +2,7 @@ import React, { ChangeEvent } from 'react';
 import classNames from 'classnames';
 import Text from '../text';
 
-type TItem = React.HTMLAttributes<HTMLDivElement> & { id?: string; value: string; label: string; disabled: boolean };
+type TItem = React.HTMLAttributes<HTMLDivElement> & { id?: string; value: string; label: string; disabled?: boolean };
 type TItemWrapper = {
     should_wrap_items?: boolean;
 };

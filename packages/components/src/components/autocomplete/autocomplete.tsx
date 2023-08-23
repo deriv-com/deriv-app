@@ -1,6 +1,7 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import { matchStringByChar, getPosition } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import Icon from '../icon';
 import Input from '../input';
 import DropdownList, { TItem } from '../dropdown-list';
@@ -22,7 +23,7 @@ type TAutocompleteProps = {
     list_height: string;
     list_items: TItem[];
     list_portal_id: string;
-    not_found_text?: string;
+    not_found_text: string;
     onBlur?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     onHideDropdownList: () => void;
     onItemSelection: (item: TItem) => void;
@@ -59,6 +60,10 @@ const getFilteredItems = (val: string, list: TItem[], should_filter_by_char = fa
     );
 };
 const Autocomplete = React.memo((props: TAutocompleteProps) => {
+    /**
+     * Default value for the text to render when there are no matching results.
+     */
+    const DEFAULT_NOT_FOUND_TEXT = localize('No results found');
     const {
         autoComplete,
         className,
@@ -73,7 +78,7 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
         is_list_visible = false,
         list_items,
         list_portal_id,
-        not_found_text = 'No results found',
+        not_found_text = DEFAULT_NOT_FOUND_TEXT,
         onHideDropdownList,
         onItemSelection,
         onScrollStop,

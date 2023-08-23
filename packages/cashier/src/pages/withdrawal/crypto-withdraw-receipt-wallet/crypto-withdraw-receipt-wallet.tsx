@@ -16,6 +16,12 @@ const CryptoWithdrawReceiptWallet = observer(() => {
 
     const { blockchain_address, resetWithdrawForm, setIsWithdrawConfirmed, withdraw_amount } = withdraw;
 
+    const openTransactionsTab = () => {
+        setVerificationCode('', 'payment_withdraw');
+        setWalletModalActiveTab('Transactions');
+        resetWithdrawForm();
+    };
+
     const closeWithdrawForm = () => {
         setVerificationCode('', 'payment_withdraw');
         setWalletModalActiveTab('Withdraw');
@@ -27,9 +33,9 @@ const CryptoWithdrawReceiptWallet = observer(() => {
         balance: `-${withdraw_amount}`,
         currency: active_wallet?.currency || '',
         icon: active_wallet?.icon || '',
-        icon_type: 'crypto',
+        icon_type: active_wallet?.is_fiat_currency ? 'fiat' : 'crypto',
         jurisdiction_title: active_wallet?.landing_company_name || '',
-        name: 'BTC Wallet',
+        name: `${active_wallet?.wallet_currency_type} ${localize('wallet')}}`,
         gradient_class: active_wallet?.gradient_card_class || '',
     };
 
@@ -72,14 +78,17 @@ const CryptoWithdrawReceiptWallet = observer(() => {
                         {withdraw_amount} {active_wallet?.currency?.toUpperCase()}
                     </Text>
                     <Text as='p' color='prominent' size={is_mobile ? 'xs' : 's'} align='center'>
-                        <Localize i18n_default_text='Your withdrawal is currently in review. It will be processed within 24 hours. We’ll send you an email once your transaction has been processed.' />
+                        <Localize i18n_default_text='Your withdrawal is currently in review. It will be processed within 24 hours.' />
+                    </Text>
+                    <Text as='p' color='prominent' size={is_mobile ? 'xs' : 's'} align='center'>
+                        <Localize i18n_default_text='We’ll send you an email once your transaction has been processed.' />
                     </Text>
                 </div>
                 <div className='crypto-withdraw-receipt-wallet__button-wrapper'>
                     <Button
                         id='crypto-withdraw-receipt-transaction'
                         text={localize('View transactions')}
-                        onClick={() => setWalletModalActiveTab('Transactions')}
+                        onClick={() => openTransactionsTab()}
                         secondary
                         medium
                     />

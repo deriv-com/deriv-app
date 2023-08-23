@@ -404,6 +404,8 @@ const throwNewErrorMessage = (error_blocks, key) => {
 };
 
 export const isAllRequiredBlocksEnabled = workspace => {
+    if (!workspace) return false;
+
     const mandatory_trade_option_block = getSelectedTradeType(workspace);
     const { mandatoryMainBlocks } = config;
     const required_block_types = [mandatory_trade_option_block, ...mandatoryMainBlocks];

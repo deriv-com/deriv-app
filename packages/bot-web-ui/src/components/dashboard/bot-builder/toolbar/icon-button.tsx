@@ -17,6 +17,7 @@ const IconButton = ({ popover_message, icon, icon_id, icon_color, iconOnClick }:
             message={popover_message}
             zIndex={popover_zindex.TOOLBAR}
             should_disable_pointer_events
+            data_testid='popover_message'
         >
             <Icon
                 icon={icon}
@@ -24,6 +25,7 @@ const IconButton = ({ popover_message, icon, icon_id, icon_color, iconOnClick }:
                 className='toolbar__icon'
                 onClick={iconOnClick}
                 {...(icon_color ? { color: icon_color } : null)}
+                data_testid='icon_button'
             />
         </Popover>
     );

@@ -105,7 +105,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
             is_open={is_modal_open}
             title={localize('Share this ad')}
             toggleModal={hideModal}
-            width='74rem'
+            width='71rem'
         >
             <Modal.Body className='share-my-ads-modal__body'>
                 <React.Fragment>

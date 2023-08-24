@@ -43,3 +43,5 @@ export { default as useRealSTPAccount } from './useRealSTPAccount';
 export { default as useTotalAccountBalance } from './useTotalAccountBalance';
 export { default as useVerifyEmail } from './useVerifyEmail';
 export { useIsAccountStatusPresent } from './useIsAccountStatusPresent';
+export { default as useDelayedTotalAccountBalance } from './useDelayedTotalAccountBalance';
+export { default as useThrottle } from './useThrottle';

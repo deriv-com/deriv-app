@@ -32,8 +32,9 @@ const AccountInfoWallets = observer(
         toggleDialog,
     }: // is_disabled,
     TAccountInfoWallets & any) => {
-        const { client } = useStore();
+        const { client, ui } = useStore();
         const { switchAccount } = client;
+        const { is_mobile } = ui;
 
         // TODO: switch to dtrade account if CRW/MFW/VRW account is active
         const active_account = useActiveAccount();
@@ -63,48 +64,33 @@ const AccountInfoWallets = observer(
                     <div
                         data-testid='dt_acc_info'
                         id='dt_core_account-info_acc-info'
-                        className={classNames('acc-info', {
+                        className={classNames('acc-info acc-info__wallets', {
                             'acc-info--show': is_dialog_on,
                             'acc-info--is-virtual': active_account?.is_virtual,
                             'acc-info--is-disabled': active_account?.is_disabled,
                         })}
                         onClick={active_account?.is_disabled ? undefined : () => toggleDialog()}
                     >
-                        <span className='acc-info__id'>
-                            <DesktopWrapper>
-                                {/* Wallet
-                                <AccountInfoIcon is_virtual={active_account?.is_virtual} currency={currency_lower} /> */}
-
-                                {/* <TradingPlatformIcon icon={'Options'} size={32} /> */}
-                                <Icon icon={'IcWalletOptionsLight'} size={32} />
-                                {/* <Icon icon={wallets_list?.[0]?.icon} size={32} /> */}
-
-                                {/* 
-                                gradient_class?: string;
-                                icon: string;
-                                size?: TWalletIconSizes;
-                                type?: 'demo' | 'fiat' | 'crypto' | 'app';
-                                has_bg?: boolean;
-                                hide_watermark?: boolean; 
-                                */}
-
+                        {/* <span className='acc-info__id'> */}
+                        {is_mobile ? (
+                            <span className='acc-info__id'>
+                                (active_account?.is_virtual || active_account?.currency) && (
+                                <AccountInfoIcon is_virtual={active_account?.is_virtual} currency={currency_lower} />)
+                            </span>
+                        ) : (
+                            <div className='acc-info__wallets-container'>
+                                <Icon icon={'IcWalletOptionsLight'} size={24} />
                                 <WalletIcon
                                     icon={wallets_list?.[0]?.icons.light}
-                                    type={'fiat'}
-                                    has_bg={true}
-                                    // size='large'
+                                    type={wallets_list?.[0]?.currency_config?.type}
+                                    size={'small'}
+                                    has_bg
+                                    hide_watermark
                                 />
                                 <Badge type='bordered' label='SVG' />
-                            </DesktopWrapper>
-                            <MobileWrapper>
-                                {(active_account?.is_virtual || active_account?.currency) && (
-                                    <AccountInfoIcon
-                                        is_virtual={active_account?.is_virtual}
-                                        currency={currency_lower}
-                                    />
-                                )}
-                            </MobileWrapper>
-                        </span>
+                            </div>
+                        )}
+                        {/* </span> */}
                         {(typeof active_account?.balance !== 'undefined' || !active_account?.currency) && (
                             <div className='acc-info__account-type-and-balance'>
                                 <p
@@ -120,13 +106,6 @@ const AccountInfoWallets = observer(
                                         `${active_account?.balance} ${getCurrencyDisplayCode(active_account?.currency)}`
                                     )}
                                 </p>
-                                {/* <Text size='xxxs' line_height='s'>
-                                    <DisplayAccountType
-                                        account_type={account_type}
-                                        country_standpoint={country_standpoint}
-                                        is_eu={is_eu}
-                                    />
-                                </Text> */}
                             </div>
                         )}
                         {active_account?.is_disabled ? (
@@ -140,15 +119,14 @@ const AccountInfoWallets = observer(
                         )}
                     </div>
                 </AccountInfoWrapper>
-                <MobileWrapper>
+                {is_mobile ? (
                     <AccountSwitcherMobile
                         is_visible={is_dialog_on}
                         disableApp={disableApp}
                         enableApp={enableApp}
                         toggle={toggleDialog}
                     />
-                </MobileWrapper>
-                <DesktopWrapper>
+                ) : (
                     <CSSTransition
                         in={is_dialog_on}
                         timeout={200}
@@ -163,7 +141,7 @@ const AccountInfoWallets = observer(
                             <AccountSwitcher is_visible={is_dialog_on} toggle={toggleDialog} />
                         </div>
                     </CSSTransition>
-                </DesktopWrapper>
+                )}
             </div>
         );
     }

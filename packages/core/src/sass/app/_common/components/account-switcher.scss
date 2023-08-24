@@ -183,6 +183,18 @@
             height: 2.8rem !important;
         }
     }
+
+    &__wallets {
+        padding: 1.2rem 1.6rem;
+
+        &-container {
+            align-items: center;
+            -webkit-box-align: center;
+            display: flex;
+            gap: 0.8rem;
+            margin-right: 0.8rem;
+        }
+    }
 }
 
 /* @define acc-switcher; weak */

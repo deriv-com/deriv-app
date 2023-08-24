@@ -149,6 +149,9 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                 case routes.cashier_acc_transfer:
                     setActiveTab('account_transfer');
                     break;
+                case routes.cashier_onramp:
+                    setActiveTab('onramp');
+                    break;
                 default:
                     setActiveTab('deposit');
                     break;
@@ -188,6 +191,12 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
             history.push(routes.cashier_deposit);
         }
     }, [history, is_payment_agent_transfer_visible, is_payment_agent_transfer_visible_is_success]);
+
+    useEffect(() => {
+        if (!is_onramp_visible && history.location.pathname === routes.cashier_onramp) {
+            history.push(routes.cashier_deposit);
+        }
+    }, [history, is_onramp_visible]);
 
     useEffect(() => {
         if (is_p2p_enabled_success && !is_p2p_enabled && history.location.pathname.startsWith(routes.cashier_p2p)) {

@@ -1,19 +1,18 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Money } from '@deriv/components';
-import { TProposalTypeInfo } from 'Types';
+import ContractInfo from './contract-info';
 
-type TValueMovement = {
+type TValueMovement = Partial<
+    Pick<
+        React.ComponentProps<typeof ContractInfo>,
+        'is_turbos' | 'is_vanilla' | 'currency' | 'has_increased' | 'proposal_info'
+    >
+> & {
     has_error_or_not_loaded: boolean;
-    proposal_info?: TProposalTypeInfo;
-    currency?: string;
-    has_increased?: boolean;
-    is_turbos?: boolean;
-    is_vanilla?: boolean;
     value?: number | string;
     show_currency?: boolean;
 };
-
 const ValueMovement = ({
     has_error_or_not_loaded,
     proposal_info,

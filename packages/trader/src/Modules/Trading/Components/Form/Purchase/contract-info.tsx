@@ -3,19 +3,16 @@ import React from 'react';
 import { DesktopWrapper, MobileWrapper, Money, Popover, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { getContractSubtype, getCurrencyDisplayCode, getLocalizedBasis, getGrowthRatePercentage } from '@deriv/shared';
+import { useTraderStore } from 'Stores/useTraderStores';
 import CancelDealInfo from './cancel-deal-info';
 import ValueMovement from './value-movement';
 import { TProposalTypeInfo } from 'Types';
 
-type TContractInfo = {
-    basis: string;
-    currency: string;
-    growth_rate: number;
-    has_increased: boolean;
-    is_accumulator: boolean;
-    is_multiplier: boolean;
-    is_turbos: boolean;
-    is_vanilla: boolean;
+type TContractInfo = Pick<
+    ReturnType<typeof useTraderStore>,
+    'basis' | 'growth_rate' | 'is_accumulator' | 'is_turbos' | 'is_vanilla' | 'is_multiplier' | 'currency'
+> & {
+    has_increased?: boolean | null;
     is_loading: boolean;
     proposal_info: TProposalTypeInfo;
     should_fade: boolean;

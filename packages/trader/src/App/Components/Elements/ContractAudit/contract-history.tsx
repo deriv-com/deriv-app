@@ -1,12 +1,14 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Money, ThemedScrollbars, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-
+import { isMobile, TContractStore } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import ContractAuditItem from './contract-audit-item.jsx';
+import ContractAuditItem from './contract-audit-item';
 
-const ContractHistory = ({ currency, history = [] }) => {
+type TContractHistory = {
+    currency?: string;
+    history: [] | TContractStore['contract_update_history'];
+};
+const ContractHistory = ({ currency, history = [] }: TContractHistory) => {
     if (!history.length) {
         return (
             <div className='contract-audit__empty'>
@@ -26,11 +28,11 @@ const ContractHistory = ({ currency, history = [] }) => {
                         key={key}
                         id={`dt_history_label_${key}`}
                         label={item.display_name}
-                        timestamp={+item.order_date}
+                        timestamp={Number(item?.order_date)}
                         value={
-                            Math.abs(+item.order_amount) !== 0 ? (
+                            Math.abs(Number(item.order_amount)) !== 0 ? (
                                 <React.Fragment>
-                                    {+item.order_amount < 0 && <strong>-</strong>}
+                                    {Number(item.order_amount) < 0 && <strong>-</strong>}
                                     <Money amount={item.order_amount} currency={currency} />
                                     {item.value && (
                                         <React.Fragment>
@@ -48,11 +50,6 @@ const ContractHistory = ({ currency, history = [] }) => {
             </div>
         </ThemedScrollbars>
     );
-};
-
-ContractHistory.propTypes = {
-    currency: PropTypes.string,
-    history: PropTypes.array,
 };
 
 export default ContractHistory;

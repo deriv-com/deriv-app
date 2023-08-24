@@ -77,7 +77,6 @@ const ContractDrawer = observer(
                 is_accumulator={is_accumulator}
                 is_dark_theme={is_dark_theme}
                 is_multiplier={is_multiplier}
-                is_smarttrader_contract={is_smarttrader_contract}
                 is_open
                 is_turbos={is_turbos}
                 duration={getDurationTime(contract_info)}

@@ -76,7 +76,7 @@ const Dashboard = observer(() => {
     };
     const active_hash_tab = GetHashedValue(active_tab);
 
-    const connectionDistrupted = () => {
+    const checkAndHandleConnection = () => {
         const api_status = api_base.getConnectionStatus();
         //added this check because after sleep mode all the store values refresh and is_running is false.
         const is_bot_running = document.getElementById('db-animation__stop-button') !== null;
@@ -88,7 +88,7 @@ const Dashboard = observer(() => {
     };
 
     React.useEffect(() => {
-        window.addEventListener('focus', connectionDistrupted);
+        window.addEventListener('focus', checkAndHandleConnection);
     }, []);
 
     React.useEffect(() => {

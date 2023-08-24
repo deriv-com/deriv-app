@@ -39,11 +39,12 @@ const PlatformIconsAndDescriptions = (
             <div className='cfd-trade-modal__desc'>
                 <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
                     <Localize
-                        i18n_default_text='Deriv {{platform}} {{is_demo}}'
+                        i18n_default_text='Deriv {{platform}} <0>{{is_demo}}</0>'
                         values={{
                             platform: platformsText(platform),
                             is_demo: is_demo ? 'Demo' : '',
                         }}
+                        components={[<span key={0} className={CFD_PLATFORMS.CTRADER ? 'cfd-trade-modal--tag' : ''} />]}
                     />
                 </Text>
                 {platform !== CFD_PLATFORMS.CTRADER

@@ -497,8 +497,9 @@ type TSocketEndpoints = {
         response: LandingCompanyDetailsResponse;
     };
     landing_company: {
-        // TODO: Fix typings of this endpoint, because LandingCompany payload should be a string instead of LandingCompany interface
-        request: {
+        // TODO: Fix typings of this endpoint, because landing_company payload should be a string instead of LandingCompany interface
+        request: Omit<LandingCompanyRequest, 'landing_company'> & {
+            /** Client's 2-letter country code (obtained from `residence_list` call). */
             landing_company: string;
         };
         response: LandingCompanyResponse;

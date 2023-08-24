@@ -4,23 +4,21 @@ import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 type TErrorComponent = {
-    header: string;
-    message: string;
-    is_dialog: boolean;
+    header: string | JSX.Element;
+    message: string | JSX.Element;
+    is_dialog?: boolean;
     redirect_label: string;
-    redirectOnClick: () => void;
+    redirectOnClick: (() => void) | null;
     should_show_refresh: boolean;
-    type: string;
 };
-
-const ErrorComponent: React.FC<TErrorComponent> = ({
+const ErrorComponent = ({
     header,
     message,
     is_dialog,
     redirect_label,
     redirectOnClick,
     should_show_refresh = true,
-}) => {
+}: TErrorComponent) => {
     const refresh_message = should_show_refresh ? localize('Please refresh this page to continue.') : '';
 
     if (is_dialog) {
@@ -30,8 +28,9 @@ const ErrorComponent: React.FC<TErrorComponent> = ({
                 is_visible
                 confirm_button_text={redirect_label || localize('Ok')}
                 onConfirm={redirectOnClick || (() => location.reload())}
+                has_close_icon={false}
             >
-                {message || localize('Sorry, an error occurred while processing your request.')}
+                {message || localize('Sorry, an error occured while processing your request.')}
             </Dialog>
         );
     }

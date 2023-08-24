@@ -3,11 +3,9 @@
     $grid-template-columns: 0.8fr 1fr 1.1fr;
     flex-direction: column;
 
-    .download {
-        &__container {
-            &-view-detail-button {
-                margin-left: 12px;
-            }
+    .download__container {
+        .view-detail-button {
+            margin-left: 12px;
         }
     }
 

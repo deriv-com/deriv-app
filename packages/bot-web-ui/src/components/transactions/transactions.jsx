@@ -59,8 +59,8 @@ const Transactions = observer(({ is_drawer_open }) => {
             <div className='download__container transaction-details__button-container'>
                 <Download tab='transactions' />
                 <Button
-                    id='download__container-view-detail-button'
-                    className='download__container-view-detail-button'
+                    id='view-detail-button'
+                    className='view-detail-button'
                     is_disabled={!elements.length}
                     text={localize('View Detail')}
                     onClick={() => {

@@ -24,14 +24,7 @@ const Options = observer(({ title, description, is_deriv_platform }: OptionsProp
         client: { is_landing_company_loaded },
     } = useStore();
 
-    if (is_landing_company_loaded) {
-        return (
-            <div className='listing-container__title'>
-                {title}
-                {description}
-            </div>
-        );
-    } else if (!is_deriv_platform) {
+    if (is_landing_company_loaded || !is_deriv_platform) {
         return (
             <div className='listing-container__title'>
                 {title}
@@ -39,6 +32,7 @@ const Options = observer(({ title, description, is_deriv_platform }: OptionsProp
             </div>
         );
     }
+
     return <TitleCardLoader />;
 });
 

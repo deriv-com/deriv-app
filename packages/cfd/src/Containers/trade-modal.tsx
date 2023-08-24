@@ -46,11 +46,13 @@ const PlatformIconsAndDescriptions = (
                         }}
                     />
                 </Text>
-                {(mt5_trade_account as TTradingPlatformAccounts)?.display_login && (
-                    <Text color='less-prominent' size='xxxs' line_height='xxxs'>
-                        {(mt5_trade_account as TTradingPlatformAccounts)?.display_login}
-                    </Text>
-                )}
+                {platform !== CFD_PLATFORMS.CTRADER
+                    ? (mt5_trade_account as TTradingPlatformAccounts)?.display_login && (
+                          <Text color='less-prominent' size='xxxs' line_height='xxxs'>
+                              {(mt5_trade_account as TTradingPlatformAccounts)?.display_login}
+                          </Text>
+                      )
+                    : ''}
             </div>
         </React.Fragment>
     );
@@ -158,7 +160,12 @@ const TradeModal = ({
             <div className='cfd-trade-modal'>
                 {PlatformIconsAndDescriptions(platform, is_demo, mt5_trade_account)}
                 {mt5_trade_account?.display_balance && (
-                    <Text size='xs' color='profit-success' className='cfd-trade-modal__desc-balance' weight='bold'>
+                    <Text
+                        size='xs'
+                        color={platform !== CFD_PLATFORMS.CTRADER ? 'profit-success' : 'prominent'}
+                        className='cfd-trade-modal__desc-balance'
+                        weight='bold'
+                    >
                         <Money
                             amount={mt5_trade_account.display_balance}
                             currency={mt5_trade_account.currency}

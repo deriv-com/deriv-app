@@ -125,7 +125,7 @@ const TradingAppCard = ({
                         {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
                     </Text>
                     <Text className='description' color={'general'} size='xxs' line_height='m'>
-                        {app_desc}
+                        {platform !== CFD_PLATFORMS.CTRADER ? app_desc : ''}
                     </Text>
                     {mt5_acc_auth_status && (
                         <StatusBadge

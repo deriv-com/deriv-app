@@ -33,7 +33,7 @@ describe('NotificationListWrapper', () => {
         );
     };
 
-    it('should render the component', () => {
+    it('should render and display the "NotificationListWrapper" component on screen', () => {
         renderComponent(mock_store_without_notifications);
         expect(screen.getByTestId('dt_notifications_list_wrapper')).toBeInTheDocument();
     });

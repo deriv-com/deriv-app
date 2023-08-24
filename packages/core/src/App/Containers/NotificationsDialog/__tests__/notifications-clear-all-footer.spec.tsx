@@ -1,6 +1,7 @@
 import React from 'react';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import NotificationsClearAllFooter from '../notifications-clear-all-footer';
 
 describe('NotificationsClearAllFooter', () => {
@@ -25,7 +26,7 @@ describe('NotificationsClearAllFooter', () => {
     });
     const mock_props: React.ComponentProps<typeof NotificationsClearAllFooter> = { clearNotifications: jest.fn() };
 
-    it('should render the component', () => {
+    it('should render and display the "NotificationsClearAllFooter" component on screen', () => {
         render(
             <StoreProvider store={mock_store_without_notifications}>
                 <NotificationsClearAllFooter {...mock_props} />
@@ -34,7 +35,7 @@ describe('NotificationsClearAllFooter', () => {
         expect(screen.getByTestId('dt_clear_all_footer_button')).toBeInTheDocument();
     });
 
-    it('should render the button', () => {
+    it('should render the "Clear All" button', () => {
         render(
             <StoreProvider store={mock_store_without_notifications}>
                 <NotificationsClearAllFooter {...mock_props} />
@@ -67,7 +68,7 @@ describe('NotificationsClearAllFooter', () => {
                 <NotificationsClearAllFooter {...mock_props} />
             </StoreProvider>
         );
-        fireEvent.click(screen.getByRole('button', { name: 'Clear All' }));
+        userEvent.click(screen.getByRole('button', { name: 'Clear All' }));
         expect(mock_props.clearNotifications).toBeCalledTimes(1);
     });
 });

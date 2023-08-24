@@ -18,7 +18,7 @@ describe('ShowNotifications', () => {
         store = mockStore({});
     });
 
-    it('should render the component', () => {
+    it('should render and display the "ShowNotifications" component on screen', () => {
         render(
             <StoreProvider store={store}>
                 <ShowNotifications />

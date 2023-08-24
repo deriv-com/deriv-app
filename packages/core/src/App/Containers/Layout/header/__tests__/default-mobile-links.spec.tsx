@@ -1,5 +1,6 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import DefaultMobileLinks from '../default-mobile-links';
 
 jest.mock('@deriv/components', () => {
@@ -18,19 +19,19 @@ describe('DefaultMobileLinks', () => {
         handleClickCashier: jest.fn(),
     };
 
-    it('should render the component', () => {
+    it('should render and display the "DefaultMobileLinks" component on screen', () => {
         render(<DefaultMobileLinks {...mock_props} />);
         expect(screen.getByText('mockedTradersHubOnboarding')).toBeInTheDocument();
     });
 
     it('should display the cashier button', () => {
         render(<DefaultMobileLinks {...mock_props} />);
-        expect(screen.getByText('Cashier')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Cashier' })).toBeInTheDocument();
     });
 
     it('should fire the "handleClickCashier" event on clicking the button', () => {
         render(<DefaultMobileLinks {...mock_props} />);
-        fireEvent.click(screen.getByRole('button', { name: 'Cashier' }));
+        userEvent.click(screen.getByRole('button', { name: 'Cashier' }));
         expect(mock_props.handleClickCashier).toHaveBeenCalledTimes(1);
     });
 });

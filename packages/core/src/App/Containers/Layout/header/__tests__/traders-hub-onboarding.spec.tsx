@@ -10,7 +10,7 @@ describe('TradersHubOnboarding', () => {
         store = mockStore({});
     });
 
-    it('should render the component', () => {
+    it('should render and display the "TradersHubOnboarding" component on screen', () => {
         render(
             <StoreProvider store={store}>
                 <TradersHubOnboarding />
@@ -18,7 +18,7 @@ describe('TradersHubOnboarding', () => {
         );
         expect(screen.getByTestId('dt_trading_hub_onboarding')).toBeInTheDocument();
         expect(screen.getByTestId('dt_trading_hub_onboarding')).toHaveClass(
-            'trading-hub-header__tradinghub--onboarding'
+            'trading-hub-header__tradershub--onboarding'
         );
     });
 

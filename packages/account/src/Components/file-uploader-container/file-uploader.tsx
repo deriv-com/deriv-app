@@ -26,12 +26,12 @@ const UploadMessage = () => {
         <React.Fragment>
             <Icon icon='IcUpload' className='dc-file-dropzone__message-icon' size={30} />
             <div className='dc-file-dropzone__message-subtitle'>
-                <Text size='xxs' align='center' weight='bold'>
+                <Text size='xxs' align='center' weight='bold' color='less-prominent'>
                     {isMobile()
                         ? localize('Click here to upload.')
                         : localize('Drag and drop a file or click to browse your files.')}
                 </Text>
-                <Text size={isMobile() ? 'xxxxs' : 'xxxs'} align='center'>
+                <Text size={isMobile() ? 'xxxxs' : 'xxxs'} align='center' color='less-prominent'>
                     {localize('Remember, selfies, pictures of houses, or non-related images will be rejected.')}
                 </Text>
             </div>

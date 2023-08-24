@@ -316,6 +316,27 @@
             flex: 1;
             height: 13.2rem;
             position: relative;
+
+            .dc-file-dropzone {
+                border-radius: $BORDER_RADIUS * 2;
+
+                &__message {
+                    max-width: unset;
+
+                    &-subtitle {
+                        font-size: 1.4rem;
+                        font-weight: bold;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 0.8rem;
+                        margin-top: 1.6rem;
+                    }
+                }
+
+                @include mobile {
+                    border: 1px dashed var(--icon-grey-background);
+                }
+            }
         }
 
         &-title {
@@ -335,27 +356,6 @@
                 @include mobile {
                     max-width: 14rem;
                 }
-            }
-        }
-
-        .dc-file-dropzone {
-            border-radius: $BORDER_RADIUS * 2;
-
-            &__message {
-                max-width: unset;
-
-                &-subtitle {
-                    font-size: 1.4rem;
-                    font-weight: bold;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.8rem;
-                    margin-top: 1.6rem;
-                }
-            }
-
-            @include mobile {
-                border: 1px dashed var(--icon-grey-background);
             }
         }
 

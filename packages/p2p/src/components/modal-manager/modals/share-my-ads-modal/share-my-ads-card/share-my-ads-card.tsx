@@ -13,7 +13,7 @@ type TShareMyAdsCardProps = {
     divRef: React.MutableRefObject<HTMLDivElement> | React.MutableRefObject<null>;
 };
 
-const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) => 
+const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) => {
     const {
         account_currency,
         id,

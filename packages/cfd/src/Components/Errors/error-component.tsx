@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 type TErrorComponent = {
     header: string | JSX.Element;
     message: string | JSX.Element;
-    is_dialog: boolean;
+    is_dialog?: boolean;
     redirect_label: string;
     redirectOnClick: (() => void) | null;
     should_show_refresh: boolean;
@@ -18,7 +18,7 @@ const ErrorComponent = ({
     redirect_label,
     redirectOnClick,
     should_show_refresh = true,
-}: Partial<TErrorComponent>) => {
+}: TErrorComponent) => {
     const refresh_message = should_show_refresh ? localize('Please refresh this page to continue.') : '';
 
     if (is_dialog) {

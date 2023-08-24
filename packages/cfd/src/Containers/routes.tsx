@@ -12,7 +12,7 @@ type TPassThrough = {
 
 type RoutesProps = TPassThrough & RouteComponentProps<any>;
 
-const Routes: React.FC<RoutesProps> = observer(({ passthrough }) => {
+const Routes = observer(({ passthrough }: RoutesProps) => {
     const { client, common } = useStore();
     const { is_logged_in, is_logging_in } = client;
     const { error, has_error } = common;

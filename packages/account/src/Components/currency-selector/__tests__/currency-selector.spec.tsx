@@ -1,6 +1,6 @@
 import React from 'react';
-import { StoreProvider, mockStore } from '@deriv/stores';
 import { fireEvent, screen, render, waitFor } from '@testing-library/react';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import CurrencySelector from '../currency-selector';
 
 jest.mock('../../real-account-signup/helpers/utils.ts', () => ({

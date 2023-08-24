@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import PasswordsPlatform from '../passwords-platform';
+import userEvent from '@testing-library/user-event';
 import { APIProvider } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import userEvent from '@testing-library/user-event';
+import PasswordsPlatform from '../passwords-platform';
 
 describe('<PasswordsPlatform />', () => {
     const mock_props = {

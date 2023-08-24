@@ -1,5 +1,5 @@
 import React from 'react';
-import type { GetFinancialAssessment, GetSettings } from '@deriv/api-types';
+import { GetFinancialAssessment, GetSettings } from '@deriv/api-types';
 import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 

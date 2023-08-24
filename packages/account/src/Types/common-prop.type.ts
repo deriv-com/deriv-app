@@ -1,8 +1,8 @@
 /** Add types that are shared between components */
 import React from 'react';
 import { FormikHandlers, FormikProps, FormikValues } from 'formik';
-import { Authorize, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
+import { Authorize, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
 
 export type TToken = {
     display_name: string;

@@ -1,9 +1,9 @@
 import React from 'react';
 import { FormikProps } from 'formik';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useStatesList } from '@deriv/hooks';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import AddressDetails, { TAddressDetailFormProps } from '../address-details';
 
 jest.mock('@deriv/shared', () => ({

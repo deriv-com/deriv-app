@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Passwords from '../passwords';
 import { APIProvider } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
+import Passwords from '../passwords';
 
 jest.mock('Assets/ic-brand-deriv-red.svg', () => jest.fn(() => 'mockedSVGIcon'));
 

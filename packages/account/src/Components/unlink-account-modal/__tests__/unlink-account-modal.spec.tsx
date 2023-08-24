@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import UnlinkAccountModal from '../unlink-account-modal';
 import userEvent from '@testing-library/user-event';
+import UnlinkAccountModal from '../unlink-account-modal';
 
 describe('UnlinkAccountModal', () => {
     let modal_root_el: HTMLDivElement;

@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import PlatformPartials from '../platform-partials';
-import { CFD_PLATFORMS } from '@deriv/shared';
 import userEvent from '@testing-library/user-event';
+import { CFD_PLATFORMS } from '@deriv/shared';
+import PlatformPartials from '../platform-partials';
 
 describe('<PlatformPartials />', () => {
     const mock_props = {
         type: CFD_PLATFORMS.DXTRADE,
-        description: 'Test description',
+        description: <div>Test description</div>,
         handleClick: jest.fn(),
     };
 

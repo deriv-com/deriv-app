@@ -22,7 +22,7 @@ const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateCh
     const history = useHistory();
     const [api_error, setAPIError] = React.useState();
     const [has_require_submission, setHasRequireSubmission] = React.useState(false);
-    const [residence_list, setResidenceList] = React.useState();
+    const [residence_list, setResidenceList] = React.useState([]);
     const [is_status_loading, setStatusLoading] = React.useState(true);
 
     const { client, common, notifications } = useStore();
@@ -86,12 +86,16 @@ const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateCh
         }
     }, [is_switching, loadResidenceList]);
 
-    if (is_status_loading || is_switching || isEmptyObject(account_status)) {
+    if (api_error) {
+        return <ErrorMessage error_message={api_error?.message || api_error} />;
+    }
+    /**
+     * Display loader while waiting for the account status and residence list to be populated
+     */
+    if (is_status_loading || is_switching || isEmptyObject(account_status) || residence_list.length === 0) {
         return <Loading is_fullscreen={false} />;
     } else if (is_virtual) {
         return <DemoMessage />;
-    } else if (api_error) {
-        return <ErrorMessage error_message={api_error?.message || api_error} />;
     }
 
     const verification_status = populateVerificationStatus(account_status);

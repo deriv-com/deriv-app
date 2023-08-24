@@ -10,7 +10,7 @@ type TCountry = Record<string, string>;
 type TPoiCountrySelector = {
     handleSelectionNext: () => void;
     is_from_external: boolean;
-    residence_list: TCountry[];
+    residence_list: Array<TCountry>;
     selected_country: string;
     setSelectedCountry: (value: TCountry) => void;
 };
@@ -22,7 +22,7 @@ const PoiCountrySelector = ({
     selected_country,
     setSelectedCountry,
 }: TPoiCountrySelector) => {
-    const [country_list, setCountryList] = React.useState<TCountry[]>([]);
+    // const [residence_list, setCountryList] = React.useState<TCountry[]>([]);
 
     const initial_form_values: FormikValues = {
         country_input: '',
@@ -34,7 +34,7 @@ const PoiCountrySelector = ({
 
         if (!country_input) {
             errors.country_input = localize('Please select the country of document issuance.');
-        } else if (!country_list.find((c: FormikValues) => c.text === country_input)) {
+        } else if (!residence_list.find((c: FormikValues) => c.text === country_input)) {
             errors.country_input = localize('Please select a valid country of document issuance.');
         }
 
@@ -42,7 +42,9 @@ const PoiCountrySelector = ({
     };
 
     const updateSelectedCountry = (country_name: string) => {
-        const matching_country: TCountry | undefined = country_list.find((c: FormikValues) => c.text === country_name);
+        const matching_country: TCountry | undefined = residence_list.find(
+            (c: FormikValues) => c.text === country_name
+        );
         if (matching_country) {
             setSelectedCountry?.(matching_country);
         }
@@ -53,10 +55,6 @@ const PoiCountrySelector = ({
         setSubmitting(false);
         handleSelectionNext?.();
     };
-
-    React.useEffect(() => {
-        setCountryList(residence_list);
-    }, [residence_list]);
 
     return (
         <Formik initialValues={initial_form_values} validate={validateFields} onSubmit={submitHandler}>
@@ -99,13 +97,13 @@ const PoiCountrySelector = ({
                                                 autoComplete='off'
                                                 type='text'
                                                 label={localize('Country')}
-                                                list_items={country_list}
+                                                list_items={residence_list}
                                                 value={values.country_input}
                                                 onBlur={(e: FormikValues) => {
                                                     handleBlur(e);
                                                     const current_input = e.target.value;
                                                     if (
-                                                        !country_list.find(
+                                                        !residence_list.find(
                                                             (c: FormikValues) => c.text === current_input
                                                         )
                                                     ) {
@@ -131,7 +129,7 @@ const PoiCountrySelector = ({
                                                     error={touched.country_input && errors.country_input}
                                                     label={localize('Country')}
                                                     placeholder={localize('Please select')}
-                                                    list_items={country_list}
+                                                    list_items={residence_list}
                                                     value={values.country_input}
                                                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                                         handleChange(e);

@@ -140,7 +140,30 @@ describe('ProofOfIdentityContainer', () => {
                 ],
             },
             fetchResidenceList: jest.fn().mockResolvedValue({
-                residence_list: [],
+                residence_list: [
+                    {
+                        identity: {
+                            services: {
+                                idv: {
+                                    documents_supported: {},
+                                    has_visual_sample: 0,
+                                    is_country_supported: 0,
+                                },
+                                onfido: {
+                                    documents_supported: {
+                                        passport: {
+                                            display_name: 'Passport',
+                                        },
+                                    },
+                                    is_country_supported: 1,
+                                },
+                            },
+                        },
+                        phone_idd: '93',
+                        text: 'Afghanistan',
+                        value: 'af',
+                    },
+                ],
             }),
         },
         common: {

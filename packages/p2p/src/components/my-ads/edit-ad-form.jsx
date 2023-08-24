@@ -150,6 +150,7 @@ const EditAdForm = () => {
                             max_transaction: max_order_amount_display,
                             min_transaction: min_order_amount_display,
                             offer_amount: amount_display,
+                            //TODO: Uncomment when order completion time is implemented
                             //order_completion_time: order_completion_time,
                             rate_type: setInitialAdRate(),
                             type,

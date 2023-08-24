@@ -3,7 +3,7 @@ import { Button, Modal, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
-const BlockUserModal = () => {
+const OrderTimeTooltipModal = () => {
     const { hideModal, is_modal_open } = useModalManagerContext();
 
     return (
@@ -22,4 +22,4 @@ const BlockUserModal = () => {
     );
 };
 
-export default BlockUserModal;
+export default OrderTimeTooltipModal;

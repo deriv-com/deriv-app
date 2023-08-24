@@ -5,8 +5,6 @@ export const order_list = {
     INACTIVE: 'inactive',
 };
 
-export const order_time_info_message = localize('Orders will expire if they aren’t completed within this time.');
-
 //TODO: to be finalized.
 export const time_list = [
     {

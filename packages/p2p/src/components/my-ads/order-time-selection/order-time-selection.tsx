@@ -2,14 +2,16 @@ import React from 'react';
 import { FormikHandlers, FormikValues, useFormikContext } from 'formik';
 import { Dropdown, Icon, Popover, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { Localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import { order_time_info_message, time_list } from 'Constants/order-list';
+import { time_list } from 'Constants/order-list';
 
 type TFormikContext = {
     handleChange: FormikHandlers['handleChange'];
     values: FormikValues;
 };
+
+const order_time_info_message = localize('Orders will expire if they aren’t completed within this time.');
 
 const OrderTimeSelection = ({ ...field }: FormikValues) => {
     const { values, handleChange }: TFormikContext = useFormikContext<TFormikContext>();
@@ -24,7 +26,10 @@ const OrderTimeSelection = ({ ...field }: FormikValues) => {
                     <Icon
                         data_testid='dt_order_time_selection_info_icon'
                         icon='IcInfoOutline'
-                        onClick={() => isMobile() && showModal({ key: 'OrderTimeTooltipModal' })}
+                        onClick={() =>
+                            isMobile() &&
+                            showModal({ key: 'OrderTimeTooltipModal', props: { order_time_info_message } })
+                        }
                     />
                 </Popover>
             </div>

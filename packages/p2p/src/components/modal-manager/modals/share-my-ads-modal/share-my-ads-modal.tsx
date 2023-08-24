@@ -178,7 +178,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                     </div>
                 </React.Fragment>
             </Modal.Body>
-        </Modal>
+        </Modal
     );
 };
 

@@ -55,6 +55,9 @@ describe('<OrderTimeSelection/>', () => {
         const info_icon = screen.getByTestId('dt_order_time_selection_info_icon');
 
         userEvent.click(info_icon);
-        expect(mock_modal_manager.showModal).toHaveBeenCalledWith({ key: 'OrderTimeTooltipModal' });
+        expect(mock_modal_manager.showModal).toHaveBeenCalledWith({
+            key: 'OrderTimeTooltipModal',
+            props: { order_time_info_message: 'Orders will expire if they aren’t completed within this time.' },
+        });
     });
 });

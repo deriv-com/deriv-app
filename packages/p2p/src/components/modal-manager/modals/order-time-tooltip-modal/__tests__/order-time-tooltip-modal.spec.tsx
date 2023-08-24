@@ -14,6 +14,10 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
     useModalManagerContext: jest.fn(() => mock_modal_manager),
 }));
 
+const props = {
+    order_time_info_message: 'Orders will expire if they aren’t completed within this time.',
+};
+
 const el_modal = document.createElement('div');
 
 describe('<OrderTimeTooltipModal />', () => {
@@ -27,12 +31,12 @@ describe('<OrderTimeTooltipModal />', () => {
     });
 
     it('should render OrderTimeTooltipModal', () => {
-        render(<OrderTimeTooltipModal />);
+        render(<OrderTimeTooltipModal {...props} />);
 
         expect(screen.getByText('Orders will expire if they aren’t completed within this time.')).toBeInTheDocument();
     });
     it('should handle ok button click', () => {
-        render(<OrderTimeTooltipModal />);
+        render(<OrderTimeTooltipModal {...props} />);
 
         const ok_button = screen.getByRole('button', { name: 'Ok' });
         userEvent.click(ok_button);

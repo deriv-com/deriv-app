@@ -8,7 +8,8 @@ const SVGMigrationBanner = observer(() => {
     const {
         ui: { is_mobile },
     } = useStore();
-    const is_deriv_mt5 = false;
+    //TODO: Will add condition check for svg deriv mt5 and svg financial mt5 when API is ready
+    const is_deriv_mt5 = true;
     const is_financial_mt5 = true;
     const is_deriv_financial_mt5 = is_deriv_mt5 && is_financial_mt5;
     const image = is_mobile ? 'svg_migrate_mobile' : 'svg_migrate_desktop';

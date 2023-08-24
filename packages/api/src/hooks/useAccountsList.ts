@@ -1,11 +1,13 @@
 import { useMemo } from 'react';
 import useAuthorize from './useAuthorize';
 import useBalance from './useBalance';
+import useGetAccountStatus from './useGetAccountStatus';
 
 /** A custom hook that returns the list of accounts of the logged in user. */
 const useAccountsList = () => {
     const { data: authorize_data, ...rest } = useAuthorize();
     const { data: balance_data } = useBalance();
+    const { data: get_account_status_data } = useGetAccountStatus();
 
     // Add additional information to the authorize response.
     const modified_accounts = useMemo(() => {
@@ -28,6 +30,10 @@ const useAccountsList = () => {
                 is_wallet: account.account_category === 'wallet',
                 /** The account ID of specified account. */
                 loginid: `${account.loginid}`,
+                /** This represents the current status of the proof of address document submitted for authentication. */
+                poa_status: get_account_status_data?.authentication?.document?.status,
+                /** This represent the current status for proof of identity document submitted for authentication. */
+                poi_status: get_account_status_data?.authentication?.identity?.status,
             } as const;
         });
     }, [authorize_data.account_list, authorize_data.loginid]);

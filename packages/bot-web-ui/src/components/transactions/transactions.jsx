@@ -60,7 +60,7 @@ const Transactions = observer(({ is_drawer_open }) => {
                 <Download tab='transactions' />
                 <Button
                     id='view-detail-button'
-                    className='view-detail-button'
+                    className='download__container__view-detail-button'
                     is_disabled={!elements.length}
                     text={localize('View Detail')}
                     onClick={() => {

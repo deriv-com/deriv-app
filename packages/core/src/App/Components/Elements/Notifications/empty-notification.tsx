@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 
 const EmptyNotification = () => (
     <div className='notifications-empty__container'>
@@ -21,10 +21,10 @@ const EmptyNotification = () => (
                     color='less-prominent'
                     className='notifications-empty__header'
                 >
-                    {localize('No notifications')}
+                    <Localize i18n_default_text='No notifications' />
                 </Text>
                 <Text size='xxs' color='less-prominent'>
-                    {localize('You have yet to receive any notifications')}
+                    <Localize i18n_default_text='You have yet to receive any notifications' />
                 </Text>
             </div>
         </div>

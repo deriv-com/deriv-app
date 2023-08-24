@@ -36,7 +36,12 @@ const useAccountsList = () => {
                 poi_status: get_account_status_data?.authentication?.identity?.status,
             } as const;
         });
-    }, [authorize_data.account_list, authorize_data.loginid]);
+    }, [
+        authorize_data.account_list,
+        authorize_data.loginid,
+        get_account_status_data?.authentication?.document?.status,
+        get_account_status_data?.authentication?.identity?.status,
+    ]);
 
     // Add balance to each account
     const modified_accounts_with_balance = useMemo(

@@ -1,7 +1,6 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter } from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { CSSTransition } from 'react-transition-group';
 import { DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
 import {
@@ -11,12 +10,34 @@ import {
     getDurationTime,
     getDurationUnitText,
     getEndTime,
+    TContractStore,
 } from '@deriv/shared';
 import ContractAudit from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractDrawerCard from './contract-drawer-card';
-import { SwipeableContractAudit } from './swipeable-components.jsx';
+import { SwipeableContractAudit } from './swipeable-components';
 import { observer, useStore } from '@deriv/stores';
+
+type TContractDrawerCardProps = React.ComponentProps<typeof ContractDrawerCard>;
+type TContractDrawerProps = RouteComponentProps & {
+    contract_update_history: TContractStore['contract_update_history'];
+    is_dark_theme: boolean;
+    toggleHistoryTab: (state_change?: boolean) => void;
+} & Pick<
+        TContractDrawerCardProps,
+        | 'contract_info'
+        | 'contract_update'
+        | 'is_accumulator'
+        | 'is_market_closed'
+        | 'is_multiplier'
+        | 'is_sell_requested'
+        | 'is_smarttrader_contract'
+        | 'is_turbos'
+        | 'is_vanilla'
+        | 'onClickCancel'
+        | 'onClickSell'
+        | 'status'
+    >;
 
 const ContractDrawer = observer(
     ({
@@ -35,13 +56,13 @@ const ContractDrawer = observer(
         onClickSell,
         status,
         toggleHistoryTab,
-    }) => {
+    }: TContractDrawerProps) => {
         const { common, ui } = useStore();
         const { server_time } = common;
         const { is_mobile } = ui;
         const { currency, exit_tick_display_value, is_sold } = contract_info;
-        const contract_drawer_ref = React.useRef();
-        const contract_drawer_card_ref = React.useRef();
+        const contract_drawer_ref = React.useRef<HTMLDivElement>(null);
+        const contract_drawer_card_ref = React.useRef<HTMLDivElement>(null);
         const [should_show_contract_audit, setShouldShowContractAudit] = React.useState(false);
         const exit_spot =
             isUserSold(contract_info) && !is_accumulator && !is_multiplier && !is_turbos
@@ -56,7 +77,6 @@ const ContractDrawer = observer(
                 is_accumulator={is_accumulator}
                 is_dark_theme={is_dark_theme}
                 is_multiplier={is_multiplier}
-                is_smarttrader_contract={is_smarttrader_contract}
                 is_open
                 is_turbos={is_turbos}
                 duration={getDurationTime(contract_info)}
@@ -102,7 +122,7 @@ const ContractDrawer = observer(
             </React.Fragment>
         ) : (
             <div className='contract-card'>
-                <PositionsCardLoader is_dark_theme={is_dark_theme} speed={2} />
+                <PositionsCardLoader speed={2} />
             </div>
         );
 
@@ -119,11 +139,10 @@ const ContractDrawer = observer(
                         'contract-drawer--is-multiplier-sold': is_multiplier && isMobile() && getEndTime(contract_info),
                     })}
                     style={{
-                        transform:
-                            should_show_contract_audit &&
+                        transform: (should_show_contract_audit &&
                             contract_drawer_ref.current &&
                             contract_drawer_card_ref.current &&
-                            `translateY(calc(${contract_drawer_card_ref.current.clientHeight}px - ${contract_drawer_ref.current.clientHeight}px))`,
+                            `translateY(calc(${contract_drawer_card_ref.current.clientHeight}px - ${contract_drawer_ref.current.clientHeight}px))`) as React.CSSProperties['transform'],
                     }}
                     ref={contract_drawer_ref}
                 >
@@ -161,14 +180,5 @@ const ContractDrawer = observer(
         );
     }
 );
-
-ContractDrawer.propTypes = {
-    is_accumulator: PropTypes.bool,
-    is_multiplier: PropTypes.bool,
-    is_vanilla: PropTypes.bool,
-    is_smarttrader_contract: PropTypes.bool,
-    is_turbos: PropTypes.bool,
-    toggleHistoryTab: PropTypes.func,
-};
 
 export default withRouter(ContractDrawer);

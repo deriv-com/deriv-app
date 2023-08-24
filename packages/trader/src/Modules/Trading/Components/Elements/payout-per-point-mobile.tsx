@@ -5,22 +5,10 @@ import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { observer } from '@deriv/stores';
 import { getContractSubtype, isVanillaContract } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { TProposalTypeInfo } from 'Types';
 
 type TProposalInfo = {
-    [key: string]: {
-        has_error?: boolean;
-        id: string;
-        has_increased?: boolean;
-        message?: string;
-        cancellation?: {
-            ask_price: number;
-            date_expiry: number;
-        };
-        growth_rate?: number;
-        obj_contract_basis?: Record<'text' | 'value', string>;
-        returns?: string;
-        stake: string;
-    };
+    [key: string]: TProposalTypeInfo;
 };
 
 const PayoutPerPointMobile = observer(() => {

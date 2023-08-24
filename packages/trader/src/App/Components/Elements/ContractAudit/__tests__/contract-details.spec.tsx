@@ -1,5 +1,6 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
+import { TContractInfo } from '@deriv/shared';
 import ContractDetails from '../contract-details';
 
 describe('ContractDetails', () => {
@@ -46,27 +47,27 @@ describe('ContractDetails', () => {
     };
 
     it('renders the ContractAuditItems specific to Vanilla component when is_vanilla is true', () => {
-        const wrapper = render(
+        render(
             <ContractDetails
                 contract_end_time={123456789}
-                contract_info={contract_info}
-                duration_unit={'day'}
+                contract_info={contract_info as TContractInfo}
+                duration_unit='day'
                 duration={1}
-                exit_spot={123}
+                exit_spot='123'
                 is_vanilla={true}
             />
         );
-        expect(wrapper.queryAllByTestId('dt_bt_label')).toHaveLength(2);
+        expect(screen.queryAllByTestId('dt_bt_label')).toHaveLength(2);
     });
 
     it('renders the Payout per point label when is_vanilla is true', () => {
         render(
             <ContractDetails
                 contract_end_time={123456789}
-                contract_info={contract_info}
-                duration_unit={'day'}
+                contract_info={contract_info as TContractInfo}
+                duration_unit='day'
                 duration={1}
-                exit_spot={123}
+                exit_spot='123'
                 is_vanilla={true}
             />
         );

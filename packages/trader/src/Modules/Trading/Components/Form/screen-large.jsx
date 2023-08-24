@@ -5,7 +5,7 @@ import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import ContractType from '../../Containers/contract-type.jsx';
 import Purchase from '../../Containers/purchase.jsx';
-import TradeParams from '../../Containers/trade-params.jsx';
+import TradeParams from '../../Containers/trade-params';
 
 const ScreenLarge = ({ is_market_closed, is_trade_enabled }) => (
     <div

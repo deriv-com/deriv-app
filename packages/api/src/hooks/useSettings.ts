@@ -15,7 +15,7 @@ const useSettings = () => {
         onSuccess: () => invalidate('get_settings'),
     });
 
-    const set_settings = useCallback(
+    const setSettings = useCallback(
         (values: NonNullable<TSetSettingsPayload>) => mutate({ payload: { ...values } }),
         [mutate]
     );
@@ -26,7 +26,7 @@ const useSettings = () => {
         /** User information and settings */
         data: modified_data,
         /** Function to update user settings */
-        set_settings,
+        setSettings,
         ...rest,
     };
 };

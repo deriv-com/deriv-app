@@ -38,6 +38,7 @@ export default class UIStore extends BaseStore {
     is_unsupported_contract_modal_visible = false;
     is_new_account = localStorage.getItem('isNewAccount') || false;
     is_account_signup_modal_visible = false;
+    is_link_expired_modal_visible = false;
     is_set_residence_modal_visible = false;
     is_reset_password_modal_visible = false;
     is_reset_email_modal_visible = false;
@@ -67,9 +68,6 @@ export default class UIStore extends BaseStore {
     duration_m = 3;
     duration_h = 1;
     duration_d = 1;
-
-    // vanilla trade type selection
-    vanilla_trade_type = 'VANILLALONGCALL';
 
     // purchase button states
     purchase_states = [false, false];
@@ -214,6 +212,7 @@ export default class UIStore extends BaseStore {
             is_unsupported_contract_modal_visible: observable,
             is_new_account: observable,
             is_account_signup_modal_visible: observable,
+            is_link_expired_modal_visible: observable,
             is_set_residence_modal_visible: observable,
             is_reset_password_modal_visible: observable,
             is_reset_email_modal_visible: observable,
@@ -301,7 +300,6 @@ export default class UIStore extends BaseStore {
             show_positions_toggle: observable,
             simple_duration_unit: observable,
             toasts: observable.shallow,
-            vanilla_trade_type: observable,
             addToast: action.bound,
             closeAccountNeededModal: action.bound,
             closeRealAccountSignup: action.bound,
@@ -386,6 +384,7 @@ export default class UIStore extends BaseStore {
             toggleCancellationWarning: action.bound,
             toggleCashier: action.bound,
             toggleHistoryTab: action.bound,
+            toggleLinkExpiredModal: action.bound,
             toggleOnScreenKeyboard: action.bound,
             togglePositionsDrawer: action.bound,
             toggleReports: action.bound,
@@ -735,6 +734,10 @@ export default class UIStore extends BaseStore {
 
     toggleResetPasswordModal(state_change = !this.is_reset_password_modal_visible) {
         this.is_reset_password_modal_visible = state_change;
+    }
+
+    toggleLinkExpiredModal(state_change = !this.is_link_expired_modal_visible) {
+        this.is_link_expired_modal_visible = state_change;
     }
 
     toggleResetEmailModal(state_change = !this.is_reset_email_modal_visible) {

@@ -3,24 +3,42 @@ import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import PageReturn from 'Components/page-return/page-return.jsx';
+import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
+import PropTypes from 'prop-types';
 
-const FilterModalHeader = () => {
-    const { buy_sell_store, my_profile_store } = useStores();
+const FilterModalHeader = ({ pageHeaderReturnFn }) => {
+    const { buy_sell_store } = useStores();
 
     if (buy_sell_store.show_filter_payment_methods) {
         return (
-            <PageReturn
-                onClick={() => {
-                    buy_sell_store.setShowFilterPaymentMethods(false);
-                    my_profile_store.setSearchTerm('');
-                    my_profile_store.setSearchResults([]);
-                }}
-                page_title={localize('Payment methods')}
-            />
+            <React.Fragment>
+                <DesktopWrapper>
+                    <PageReturn
+                        className='filter-modal__header'
+                        onClick={pageHeaderReturnFn}
+                        page_title={localize('Payment methods')}
+                    />
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <Text align='center' weight='bold'>
+                        <Icon
+                            className='filter-modal__header-return-button'
+                            icon='IcArrowLeftBold'
+                            onClick={pageHeaderReturnFn}
+                            size={16}
+                        />
+                        <Localize i18n_default_text='Payment methods' />
+                    </Text>
+                </MobileWrapper>
+            </React.Fragment>
         );
     }
 
     return <Localize i18n_default_text='Filter' />;
+};
+
+FilterModalHeader.propTypes = {
+    pageHeaderReturnFn: PropTypes.func,
 };
 
 export default observer(FilterModalHeader);

@@ -33,6 +33,18 @@ jest.mock('Components/orders/orders', () => jest.fn(() => 'Orders'));
 jest.mock('Components/buy-sell/buy-sell', () => jest.fn(() => 'BuySell'));
 jest.mock('Components/my-profile', () => jest.fn(() => 'MyProfile'));
 
+jest.mock('@sendbird/chat', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/groupChannel', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/message', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
 describe('<AppContent/>', () => {
     const mocked_store_values = {
         is_loading: false,

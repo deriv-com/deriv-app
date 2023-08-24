@@ -119,7 +119,6 @@ export default class RunPanelStore {
                 won_contracts: 0,
             }
         );
-
         statistics.number_of_runs = total_runs;
         return statistics;
     }

@@ -10,8 +10,9 @@ describe('ApiTokenTableRowCell', () => {
     const children = 'Api Table Row Cell';
     it('should render ApiTokenTableRowCell', () => {
         render(<ApiTokenTableRowCell {...mock_props}>{children}</ApiTokenTableRowCell>);
-        expect(screen.getByText('Api Table Row Cell')).toBeInTheDocument();
-        expect(screen.getByText('Api Table Row Cell')).toHaveClass('dc-text');
+        const text_message = screen.getByText(children);
+        expect(text_message).toBeInTheDocument();
+        expect(text_message).toHaveClass('dc-text');
     });
 
     it('should render ApiTokenTableRowCell with table data if should_bypass_text is true', () => {
@@ -20,8 +21,9 @@ describe('ApiTokenTableRowCell', () => {
                 {children}
             </ApiTokenTableRowCell>
         );
-        expect(screen.getByText('Api Table Row Cell')).toBeInTheDocument();
-        expect(screen.getByText('Api Table Row Cell')).not.toHaveClass('dc-text');
-        expect(screen.getByText('Api Table Row Cell')).toHaveClass('da-api-token__table-cell api_token_table_row_cell');
+        const text_message = screen.getByText(children);
+        expect(text_message).toBeInTheDocument();
+        expect(text_message).not.toHaveClass('dc-text');
+        expect(text_message).toHaveClass('da-api-token__table-cell api_token_table_row_cell');
     });
 });

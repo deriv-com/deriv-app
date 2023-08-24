@@ -1,14 +1,12 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { screen, render } from '@testing-library/react';
 import ApiTokenContext from '../api-token-context';
 import ApiTokenOverlay from '../api-token-overlay';
-import ReactDOM from 'react-dom';
 
 describe('ApiTokenOverlay', () => {
     beforeAll(() => {
-        (ReactDOM.createPortal as jest.Mock) = jest.fn(component => {
-            return component;
-        });
+        (ReactDOM.createPortal as jest.Mock) = jest.fn(component => component);
     });
 
     afterAll(() => {

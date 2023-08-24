@@ -1,9 +1,9 @@
 import React from 'react';
+import { FormikValues } from 'formik';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { getPropertyValue, isDesktop, isMobile, useIsMounted, WS } from '@deriv/shared';
-import ApiToken from '../api-token';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { FormikValues } from 'formik';
+import ApiToken from '../api-token';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),

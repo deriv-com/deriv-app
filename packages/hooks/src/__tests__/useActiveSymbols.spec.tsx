@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { APIProvider, useFetch } from '@deriv/api';
 import { renderHook } from '@testing-library/react-hooks';
 import useActiveSymbols from '../useActiveSymbols';

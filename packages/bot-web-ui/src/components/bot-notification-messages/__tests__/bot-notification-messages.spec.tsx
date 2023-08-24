@@ -12,6 +12,10 @@ jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
     unHighlightAllBlocks: jest.fn(),
 }));
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
+jest.mock('@deriv/bot-skeleton', () => ({
+    ...jest.requireActual('@deriv/bot-skeleton'),
+    blocksCoordinate: jest.fn(),
+}));
 
 describe('BotNotificationMessages', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
@@ -43,7 +47,7 @@ describe('BotNotificationMessages', () => {
     });
 
     it('should apply notifications-container__dashboard class when active tab is 0 and is_info_panel_visible is true', () => {
-        mock_DBot_store!.dashboard.is_info_panel_visible = true;
+        mock_DBot_store!.dashboard.setInfoPanelVisibility(true);
 
         render(<BotNotificationMessages />, {
             wrapper,
@@ -55,8 +59,8 @@ describe('BotNotificationMessages', () => {
     });
 
     it('should apply notifications-container--panel-open class when is_drawer_open is true and active tab has a value of 1 or 2', () => {
-        mock_DBot_store!.dashboard.active_tab = 1;
-        mock_DBot_store!.run_panel.is_drawer_open = true;
+        mock_DBot_store!.dashboard.setActiveTab(1);
+        mock_DBot_store!.run_panel.toggleDrawer(true);
 
         render(<BotNotificationMessages />, {
             wrapper,

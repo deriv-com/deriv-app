@@ -58,25 +58,14 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
         event.stopPropagation();
     };
 
-    // TODO: uncomment share image functionality during the second phase of share my ads
     const handleGenerateImage = async () => {
         if (divRef.current) {
             const file_name = `${advert.type}_${advert.id}.png`;
             const dataUrl = await toPng(divRef.current);
-            // const dataUrlBlob = await toBlob(divRef.current);
-            // const blob = new Blob([dataUrlBlob as Blob], { type: 'image/png' });
-            // const file = new File([blob], file_name, { type: 'image/png' });
-
-            // if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            //      navigator.share({
-            //          files: [file],
-            //      });
-            // } else {
             const link = document.createElement('a');
             link.download = file_name;
             link.href = dataUrl;
             link.click();
-            // }
         }
     };
 
@@ -178,7 +167,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                     </div>
                 </React.Fragment>
             </Modal.Body>
-        </Modal
+        </Modal>
     );
 };
 

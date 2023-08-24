@@ -25,7 +25,10 @@ type TAccountType = {
     category?: 'real' | 'demo';
     type?: 'all' | 'synthetic' | 'financial' | 'financial_stp' | 'derivez' | 'dxtrade';
 };
-type TAccount = DetailsOfEachMT5Loginid & { platform: string };
+
+type TCurrentList = {
+    [key: string]: DetailsOfEachMT5Loginid;
+};
 
 type TGetAccountTypeFields2 = {
     category: 'real' | 'demo';
@@ -188,7 +191,7 @@ export default class CFDStore extends BaseStore {
     }
 
     get current_list() {
-        const list: { [key: string]: TAccount } = {};
+        const list: TCurrentList = {};
         const show_eu_related_content = this?.root_store?.traders_hub.show_eu_related_content;
         this.root_store.client.mt5_login_list
             .filter(acc =>
@@ -198,19 +201,15 @@ export default class CFDStore extends BaseStore {
             )
             .forEach(account => {
                 // e.g. mt5.real.financial_stp
-                const accountWithPlatform: TAccount = {
+                list[getAccountListKey(account, CFD_PLATFORMS.MT5, account.landing_company_short)] = {
                     ...account,
-                    platform: CFD_PLATFORMS.MT5,
                 };
-                list[getAccountListKey(account, CFD_PLATFORMS.MT5, account.landing_company_short)] =
-                    accountWithPlatform;
             });
 
         this.root_store.client.dxtrade_accounts_list.forEach(account => {
             // e.g. dxtrade.real.financial_stp
             list[getAccountListKey(account, CFD_PLATFORMS.DXTRADE)] = {
                 ...account,
-                platform: CFD_PLATFORMS.DXTRADE,
             };
         });
 
@@ -218,11 +217,10 @@ export default class CFDStore extends BaseStore {
             // e.g. derivez.real.financial_stp
             list[getAccountListKey(account, CFD_PLATFORMS.DERIVEZ)] = {
                 ...account,
-                platform: CFD_PLATFORMS.DERIVEZ,
             };
         });
 
-        return Object.values(list);
+        return list;
     }
 
     // eslint-disable-next-line class-methods-use-this

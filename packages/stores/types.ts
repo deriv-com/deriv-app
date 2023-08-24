@@ -108,7 +108,7 @@ type TAccountsList = {
             Derived: React.SVGAttributes<SVGElement>;
             Financial: React.SVGAttributes<SVGElement>;
             Options: React.SVGAttributes<SVGElement>;
-            CFDs: React.SVGAttributes<SVGAElement>;
+            CFDs: React.SVGAttributes<SVGElement>;
         };
         text?: JSX.Element | string;
         value?: string;

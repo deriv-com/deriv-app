@@ -1,11 +1,12 @@
+import { TCoreStores } from '@deriv/stores/types';
 import { PromiseClass } from '../utility';
 
 const ServerTime = (() => {
     let clock_started = false;
     const pending = new PromiseClass();
-    let common_store;
+    let common_store: TCoreStores['common'];
 
-    const init = store => {
+    const init = (store: TCoreStores['common']) => {
         if (!clock_started) {
             common_store = store;
             pending.resolve(common_store.server_time);

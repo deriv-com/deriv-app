@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router'; // Import withRouter and RouteComponentProps
+import { withRouter, RouteComponentProps } from 'react-router';
 import BinaryRoutes from '../Components/Routes';
 import ErrorComponent from '../Components/Errors/error-component';
 import { observer, useStore } from '@deriv/stores';

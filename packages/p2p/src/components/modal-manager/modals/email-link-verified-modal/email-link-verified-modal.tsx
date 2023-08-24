@@ -2,31 +2,25 @@ import React from 'react';
 import { Button, Icon, Modal, Text } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
-import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value';
+import { useStores } from 'Stores';
+import { removeTrailingZeros, roundOffDecimal, setDecimalPlaces } from 'Utils/format-value';
 
 const EmailLinkVerifiedModal = () => {
     const { hideModal, is_modal_open } = useModalManagerContext();
     const { order_store } = useStores();
     const { amount_display, is_buy_order_for_user, local_currency, rate } = order_store.order_information || {};
     const amount = removeTrailingZeros(
-        formatMoney(local_currency, amount_display * roundOffDecimal(rate, setDecimalPlaces(rate, 6)), true)
+        formatMoney(local_currency, amount_display * Number(roundOffDecimal(rate, setDecimalPlaces(rate, 6))), true)
     );
 
     return (
         <React.Fragment>
             {order_store.order_information && (
-                <Modal
-                    has_close_icon={order_store.order_information}
-                    is_open={is_modal_open}
-                    renderTitle={() => <></>}
-                    toggleModal={hideModal}
-                    width='440px'
-                >
-                    <Modal.Body className='email-verified-modal'>
+                <Modal is_open={is_modal_open} renderTitle={() => <></>} toggleModal={hideModal} width='440px'>
+                    <Modal.Body className='email-link-verified-modal'>
                         <Icon icon='IcEmailVerificationLinkValid' size='128' />
-                        <Text className='email-verified-modal__text' color='prominent' weight='bold'>
+                        <Text className='email-link-verified-modal__text' color='prominent' weight='bold'>
                             <Localize i18n_default_text="We've verified your order" />
                         </Text>
                         <Text align='center' color='prominent'>
@@ -36,7 +30,7 @@ const EmailLinkVerifiedModal = () => {
                             />
                         </Text>
                     </Modal.Body>
-                    <Modal.Footer className='email-verified-modal__footer'>
+                    <Modal.Footer className='email-link-verified-modal__footer'>
                         <Button
                             large
                             primary

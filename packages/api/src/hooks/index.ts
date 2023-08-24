@@ -4,3 +4,4 @@ export { default as useAuthorize } from './useAuthorize';
 export { default as useBalance } from './useBalance';
 export { default as useCurrencyConfig } from './useCurrencyConfig';
 export { default as useWalletAccountsList } from './useWalletAccountsList';
+export { default as useMT5LoginList } from './useMT5LoginList';

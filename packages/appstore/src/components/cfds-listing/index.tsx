@@ -54,10 +54,10 @@ const CFDsListing = observer(() => {
         financial_restricted_countries,
     } = traders_hub;
 
-    const { toggleCompareAccountsModal, setAccountType, toggle_system_maintenance_dialog } = cfd;
+    const { toggleCompareAccountsModal, setAccountType } = cfd;
     const { is_landing_company_loaded, real_account_creation_unlock_date, account_status } = client;
     const { setAppstorePlatform } = common;
-    const { openDerivRealAccountNeededModal, setShouldShowCooldownModal } = ui;
+    const { openDerivRealAccountNeededModal, setShouldShowCooldownModal, toggleSystemMaintenanceModal } = ui;
     const has_no_real_account = !has_any_real_account;
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
@@ -163,11 +163,6 @@ const CFDsListing = observer(() => {
                             </Text>
                         </div>
 
-                        {!is_system_maintenance && (
-                            <span onClick={() => toggle_system_maintenance_dialog()}>
-                                <StatusBadge account_status='pending' icon='IcAlertWarning' text='Server maintenance' />
-                            </span>
-                        )}
                         {/* {!is_system_maintenance && (
                             <React.Fragment>
                                 <span onClick={() => setVisibility(true)}>
@@ -226,6 +221,11 @@ const CFDsListing = observer(() => {
                 <Text line_height='m' weight='bold' color='prominent'>
                     {localize('Deriv MT5')}
                 </Text>
+                {!is_system_maintenance && (
+                    <span onClick={() => toggleSystemMaintenanceModal()}>
+                        <StatusBadge account_status='pending' icon='IcAlertWarning' text='Server maintenance' />
+                    </span>
+                )}
             </div>
             {is_landing_company_loaded ? (
                 <React.Fragment>

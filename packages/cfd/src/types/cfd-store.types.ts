@@ -13,7 +13,7 @@ type TStoreProofOfAddressArgs = {
 
 export type TCFDStore = {
     is_system_maintenance_dialog_visible: boolean;
-    toggle_system_maintenance_dialog: () => void;
+    toggleSystemMaintenanceModal: () => void;
     setMT5TradeAccount: <T>(arg: T) => void;
     toggleCFDVerificationModal: () => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;

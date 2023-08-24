@@ -6,6 +6,7 @@ import BaseStore from './base-store';
 const store_name = 'ui_store';
 
 export default class UIStore extends BaseStore {
+    is_system_maintenance_dialog_visible = false;
     url_hashed_values = '';
     is_account_settings_visible = false;
     is_positions_drawer_on = false;
@@ -202,6 +203,8 @@ export default class UIStore extends BaseStore {
         super({ root_store, local_storage_properties, store_name });
 
         makeObservable(this, {
+            is_system_maintenance_dialog_visible: observable,
+            toggleSystemMaintenanceModal: action.bound,
             account_needed_modal_props: observable,
             account_switcher_disabled_message: observable,
             has_only_forward_starting_contracts: observable,
@@ -421,6 +424,9 @@ export default class UIStore extends BaseStore {
             !this.has_read_scam_message &&
             !this.is_new_account
         );
+    }
+    toggleSystemMaintenanceModal() {
+        this.is_system_maintenance_dialog_visible = !this.is_system_maintenance_dialog_visible;
     }
 
     setIsClosingCreateRealAccountModal(is_closing_create_real_account_modal) {

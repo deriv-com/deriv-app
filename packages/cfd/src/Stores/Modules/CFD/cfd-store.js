@@ -4,7 +4,6 @@ import BaseStore from 'Stores/base-store';
 import { getDxCompanies, getMtCompanies, getDerivezCompanies } from './Helpers/cfd-config';
 
 export default class CFDStore extends BaseStore {
-    is_system_maintenance_dialog_visible = false;
     is_compare_accounts_visible = false;
     is_cfd_personal_details_modal_visible = false;
     is_jurisdiction_modal_visible = false;
@@ -49,8 +48,6 @@ export default class CFDStore extends BaseStore {
         super({ root_store });
 
         makeObservable(this, {
-            is_system_maintenance_dialog_visible: observable,
-            toggle_system_maintenance_dialog: action.bound,
             is_compare_accounts_visible: observable,
             is_cfd_personal_details_modal_visible: observable,
             is_jurisdiction_modal_visible: observable,
@@ -137,10 +134,6 @@ export default class CFDStore extends BaseStore {
                 }
             }
         );
-    }
-
-    toggle_system_maintenance_dialog() {
-        this.is_system_maintenance_dialog_visible = !this.is_system_maintenance_dialog_visible;
     }
 
     get account_title() {

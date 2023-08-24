@@ -5,8 +5,8 @@ import { Text, Dialog } from '@deriv/components';
 import { useCashierLocked, useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
 
 const CFDServerMaintenanceDialog = observer(() => {
-    const { modules } = useStore();
-    const { is_system_maintenance_dialog_visible, toggle_system_maintenance_dialog } = modules.cfd;
+    const { ui } = useStore();
+    const { is_system_maintenance_dialog_visible, toggleSystemMaintenanceModal } = ui;
     const is_system_maintenance = useIsSystemMaintenance();
     const is_account_disabled = useDepositLocked() || useCashierLocked();
 
@@ -38,7 +38,7 @@ const CFDServerMaintenanceDialog = observer(() => {
             onConfirm={true}
             cancel_button_text={localize('Close')}
             onCancel={() => {
-                toggle_system_maintenance_dialog();
+                toggleSystemMaintenanceModal();
             }}
         >
             {dialog_message}

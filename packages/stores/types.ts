@@ -431,6 +431,8 @@ type TCommonStore = {
 };
 
 type TUiStore = {
+    is_system_maintenance_dialog_visible: boolean;
+    toggleSystemMaintenanceModal: () => void;
     addToast: (toast_config: TAddToastProps) => void;
     app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;
     current_focus: string | null;

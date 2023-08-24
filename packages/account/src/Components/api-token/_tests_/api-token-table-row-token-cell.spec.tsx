@@ -1,5 +1,6 @@
 import React from 'react';
-import { screen, render, fireEvent } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import ApiTokenTableRowTokenCell from '../api-token-table-row-token-cell';
 
 describe('ApiTokenTableRowTokenCell', () => {
@@ -18,7 +19,7 @@ describe('ApiTokenTableRowTokenCell', () => {
     it('should show token after clicking on dt_toggle_visibility_icon', () => {
         render(<ApiTokenTableRowTokenCell {...mock_props} />);
         const toggle_token_button = screen.getByTestId('dt_toggle_visibility_icon');
-        fireEvent.click(toggle_token_button);
+        userEvent.click(toggle_token_button);
         expect(screen.getByText('1234567')).toBeInTheDocument();
         expect(screen.getByTestId('dt_toggle_visibility_icon')).toBeInTheDocument();
     });

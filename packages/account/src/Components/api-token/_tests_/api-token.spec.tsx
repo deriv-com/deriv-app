@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormikValues } from 'formik';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { getPropertyValue, isDesktop, isMobile, useIsMounted, WS } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import ApiToken from '../api-token';
@@ -204,10 +205,10 @@ describe('<ApiToken/>', () => {
         expect(await screen.findByText(learn_more_title)).toBeInTheDocument();
         expect(screen.queryByText(our_access_description)).not.toBeInTheDocument();
 
-        fireEvent.click(await screen.findByText(learn_more_title));
+        userEvent.click(await screen.findByText(learn_more_title));
         expect(await screen.findByText(our_access_description)).toBeInTheDocument();
 
-        fireEvent.click(await screen.findByRole('button', { name: /done/i }));
+        userEvent.click(await screen.findByRole('button', { name: /done/i }));
         expect(screen.queryByText(our_access_description)).not.toBeInTheDocument();
 
         document.body.removeChild(footer_portal_root_el);
@@ -233,25 +234,28 @@ describe('<ApiToken/>', () => {
         expect(read_checkbox?.checked).toBeFalsy();
         expect(token_name_input?.value).toBe('');
 
-        fireEvent.click(read_checkbox);
+        userEvent.click(read_checkbox);
         expect(read_checkbox?.checked).toBeTruthy();
 
-        fireEvent.change(token_name_input, { target: { value: '@#$' } });
+        userEvent.type(token_name_input, '@#$');
         expect(await screen.findByText('Only letters, numbers, and underscores are allowed.')).toBeInTheDocument();
+        userEvent.clear(token_name_input);
 
-        fireEvent.change(token_name_input, { target: { value: 'N' } });
+        userEvent.type(token_name_input, 'N');
         expect(await screen.findByText(/length of token name must be between/i)).toBeInTheDocument();
+        userEvent.clear(token_name_input);
 
-        fireEvent.change(token_name_input, { target: { value: 'New test extra long name for erorr' } });
+        userEvent.type(token_name_input, 'New test extra long name for erorr');
         expect(await screen.findByText(/maximum/i)).toBeInTheDocument();
+        userEvent.clear(token_name_input);
 
-        fireEvent.change(token_name_input, { target: { value: 'New token name' } });
+        userEvent.type(token_name_input, 'New token name');
         await waitFor(() => {
             expect(token_name_input.value).toBe('New token name');
         });
         expect(create_btn).toBeEnabled();
 
-        fireEvent.click(create_btn);
+        userEvent.click(create_btn);
         const updated_token_name_input = (await screen.findByLabelText('Token name')) as HTMLInputElement;
         expect(updated_token_name_input.value).toBe('');
 
@@ -295,11 +299,11 @@ describe('<ApiToken/>', () => {
         const delete_btns_1 = screen.getAllByTestId('dt_token_delete_icon');
         expect(delete_btns_1).toHaveLength(2);
 
-        fireEvent.click(delete_btns_1[0]);
+        userEvent.click(delete_btns_1[0]);
         const no_btn_1 = screen.getByRole('button', { name: /cancel/i });
         expect(no_btn_1).toBeInTheDocument();
 
-        fireEvent.click(no_btn_1);
+        userEvent.click(no_btn_1);
         await waitFor(() => {
             expect(no_btn_1).not.toBeInTheDocument();
         });
@@ -307,11 +311,11 @@ describe('<ApiToken/>', () => {
         const delete_btns_2 = await screen.findAllByTestId('dt_token_delete_icon');
         expect(delete_btns_2).toHaveLength(2);
 
-        fireEvent.click(delete_btns_2[0]);
+        userEvent.click(delete_btns_2[0]);
         const yes_btn_1 = screen.getByRole('button', { name: /yes, delete/i });
         expect(yes_btn_1).toBeInTheDocument();
 
-        fireEvent.click(yes_btn_1);
+        userEvent.click(yes_btn_1);
         const deleteToken = WS.authorized.apiToken;
         expect(deleteToken).toHaveBeenCalled();
         await waitFor(() => {
@@ -354,16 +358,16 @@ describe('<ApiToken/>', () => {
         const toggle_visibility_btns = await screen.findAllByTestId('dt_toggle_visibility_icon');
         expect(toggle_visibility_btns).toHaveLength(2);
 
-        fireEvent.click(toggle_visibility_btns[0]);
+        userEvent.click(toggle_visibility_btns[0]);
         expect(screen.getByText('FirstTokenID')).toBeInTheDocument();
 
-        fireEvent.click(toggle_visibility_btns[1]);
+        userEvent.click(toggle_visibility_btns[1]);
         expect(screen.getByText('SecondTokenID')).toBeInTheDocument();
 
         const copy_btns_1 = await screen.findAllByTestId('dt_copy_token_icon');
         expect(copy_btns_1).toHaveLength(2);
 
-        fireEvent.click(copy_btns_1[0]);
+        userEvent.click(copy_btns_1[0]);
         expect(screen.queryByText(warning_msg)).not.toBeInTheDocument();
 
         act(() => {
@@ -371,13 +375,13 @@ describe('<ApiToken/>', () => {
         });
         expect(screen.queryByTestId('dt_token_copied_icon')).not.toBeInTheDocument();
 
-        fireEvent.click(copy_btns_1[1]);
+        userEvent.click(copy_btns_1[1]);
         expect(await screen.findByText(warning_msg)).toBeInTheDocument();
 
         const ok_btn = screen.getByRole('button', { name: /ok/i });
         expect(ok_btn).toBeInTheDocument();
 
-        fireEvent.click(ok_btn);
+        userEvent.click(ok_btn);
 
         jest.clearAllMocks();
     });

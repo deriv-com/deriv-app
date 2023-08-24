@@ -1,5 +1,6 @@
 import React from 'react';
-import { screen, render, fireEvent, waitFor } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import ApiTokenClipboard from '../api-token-clipboard';
 
 const modal_root_el = document.createElement('div');
@@ -22,23 +23,23 @@ describe('ApiTokenClipboard', () => {
     it('should display "Copy this token" message when mouse enters', () => {
         render(<ApiTokenClipboard {...mock_props} />);
         const copy_icon = screen.getByTestId('dt_copy_token_icon');
-        fireEvent.mouseEnter(copy_icon);
+        userEvent.hover(copy_icon);
         expect(screen.getByText('Info Message')).toBeInTheDocument();
     });
 
     it('should remove "Copy this token" message when mouse leaves', () => {
         render(<ApiTokenClipboard {...mock_props} />);
         const copy_icon = screen.getByTestId('dt_copy_token_icon');
-        fireEvent.mouseEnter(copy_icon);
+        userEvent.hover(copy_icon);
         expect(screen.getByText('Info Message')).toBeInTheDocument();
-        fireEvent.mouseLeave(copy_icon);
+        userEvent.unhover(copy_icon);
         expect(screen.queryByText('Info Message')).not.toBeInTheDocument();
     });
 
     it('should display Popup Modal when user clicks on copy_icon', () => {
         render(<ApiTokenClipboard {...mock_props} />);
         const copy_icon = screen.getByTestId('dt_copy_token_icon');
-        fireEvent.click(copy_icon);
+        userEvent.click(copy_icon);
         expect(
             screen.getByText(
                 'Be careful who you share this token with. Anyone with this token can perform the following actions on your account behalf'
@@ -53,10 +54,10 @@ describe('ApiTokenClipboard', () => {
     it('should display Info Message when user clicks on OK', async () => {
         render(<ApiTokenClipboard {...mock_props} />);
         const copy_icon = screen.getByTestId('dt_copy_token_icon');
-        fireEvent.click(copy_icon);
+        userEvent.click(copy_icon);
         expect(screen.getByRole('button', { name: 'OK' })).toBeInTheDocument();
         const ok_button = screen.getByRole('button', { name: 'OK' });
-        fireEvent.click(ok_button);
+        userEvent.click(ok_button);
         await waitFor(() => {
             expect(screen.queryByText('Add accounts')).not.toBeInTheDocument();
         });
@@ -67,7 +68,7 @@ describe('ApiTokenClipboard', () => {
         mock_props.scopes = ['read', 'trade'];
         render(<ApiTokenClipboard {...mock_props} />);
         const copy_icon = screen.getByTestId('dt_copy_token_icon');
-        fireEvent.click(copy_icon);
+        userEvent.click(copy_icon);
         expect(
             screen.queryByText(
                 'Be careful who you share this token with. Anyone with this token can perform the following actions on your account behalf'

@@ -1,5 +1,6 @@
 import React from 'react';
-import { screen, render, fireEvent, waitFor, act } from '@testing-library/react';
+import { screen, render, waitFor, act } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import ApiTokenContext from '../api-token-context';
 import ApiTokenDeleteButton from '../api-token-delete-button';
 
@@ -41,23 +42,23 @@ describe('ApiTokenDeleteButton', () => {
     it('should display Delete this token when mouse enter', () => {
         renderAPiDeleteButton();
         const delete_icon = screen.getByTestId('dt_token_delete_icon');
-        fireEvent.mouseEnter(delete_icon);
+        userEvent.hover(delete_icon);
         expect(screen.getByText('Delete this token')).toBeInTheDocument();
     });
 
     it('should not Delete this token when mouse leave', () => {
         renderAPiDeleteButton();
         const delete_icon = screen.getByTestId('dt_token_delete_icon');
-        fireEvent.mouseEnter(delete_icon);
+        userEvent.hover(delete_icon);
         expect(screen.getByText('Delete this token')).toBeInTheDocument();
-        fireEvent.mouseLeave(delete_icon);
+        userEvent.unhover(delete_icon);
         expect(screen.queryByText('Delete this token')).not.toBeInTheDocument();
     });
 
     it('should display Popup when delete icon is clicked', () => {
         renderAPiDeleteButton();
         const delete_icon = screen.getByTestId('dt_token_delete_icon');
-        fireEvent.click(delete_icon);
+        userEvent.click(delete_icon);
         expect(screen.getByText('Delete token')).toBeInTheDocument();
         expect(screen.getByText('Are you sure you want to delete this token?')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
@@ -67,10 +68,10 @@ describe('ApiTokenDeleteButton', () => {
     it('should close the modal when clicked on Cancel', async () => {
         renderAPiDeleteButton();
         const delete_icon = screen.getByTestId('dt_token_delete_icon');
-        fireEvent.click(delete_icon);
+        userEvent.click(delete_icon);
         expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
         const cancel_button = screen.getByRole('button', { name: 'Cancel' });
-        fireEvent.click(cancel_button);
+        userEvent.click(cancel_button);
         await waitFor(() => expect(screen.queryByText('Delete token')).not.toBeInTheDocument());
         expect(screen.queryByText('Are you sure you want to delete this token?')).not.toBeInTheDocument();
         expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
@@ -80,11 +81,11 @@ describe('ApiTokenDeleteButton', () => {
     it('should should trigger deleteToken when clicked on Yes, delete', async () => {
         renderAPiDeleteButton();
         const delete_icon = screen.getByTestId('dt_token_delete_icon');
-        fireEvent.click(delete_icon);
+        userEvent.click(delete_icon);
         expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
         const delete_token_button = screen.getByRole('button', { name: 'Yes, delete' });
         act(() => {
-            fireEvent.click(delete_token_button);
+            userEvent.click(delete_token_button);
         });
         expect(mock_props.deleteToken).toBeCalled();
     });

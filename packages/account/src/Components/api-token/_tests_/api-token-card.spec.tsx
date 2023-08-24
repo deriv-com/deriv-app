@@ -1,5 +1,6 @@
 import React from 'react';
-import { screen, render, fireEvent } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import ApiTokenCard from '../api-token-card';
 import { Formik, Form } from 'formik';
 
@@ -46,7 +47,7 @@ describe('<ApiTokenCard />', () => {
             </Formik>
         );
         const message = screen.getByText('API Token Card');
-        fireEvent.click(message);
+        userEvent.click(message);
         expect(mock_props.setFieldValue).toBeCalled();
     });
 });

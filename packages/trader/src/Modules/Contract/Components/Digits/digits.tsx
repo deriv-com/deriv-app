@@ -74,7 +74,7 @@ const DigitsWrapper = ({
     if (has_contract && !is_contract_elapsed) {
         tick = null;
         const tick_stream = contract_info.tick_stream;
-        if (tick_stream && tick_stream.length) {
+        if (tick_stream?.length) {
             const t = toJS(tick_stream.slice(-1)[0]);
             tick = {
                 ask: t.tick,

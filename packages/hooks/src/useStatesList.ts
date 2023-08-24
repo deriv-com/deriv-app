@@ -1,6 +1,4 @@
 import { useFetch } from '@deriv/api';
-import { useStore } from '@deriv/stores';
-
 /**
  * Custom hook to get states list for a particular country.
  * @returns an object with the states list and the options to manage API response.

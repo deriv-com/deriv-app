@@ -1,6 +1,6 @@
-import { Field, Formik } from 'formik';
 import React from 'react';
-import cn from 'classnames';
+import { Field, Formik } from 'formik';
+import className from 'classnames';
 import {
     Div100vhContainer,
     Modal,
@@ -38,16 +38,17 @@ type TTermsOfUseProps = {
 
 /**
  * Terms of use component for account signup
- * @param {Function} getCurrentStep - function to get current step
- * @param {Function} onCancel - function to cancel account signup
- * @param {Function} goToPreviousStep - function to go to previous step
- * @param {Function} goToNextStep - function to go to next step
- * @param {Function} onSubmit - function to submit form
- * @param {object} value - form values
- * @param {string} real_account_signup_target - broker code
- * @param {string} form_error - form error
- * @param {object} props - other props
- * @returns {React.ReactNode} - React node
+ * @name TermsOfUse
+ * @param getCurrentStep - function to get current step
+ * @param onCancel - function to cancel account signup
+ * @param goToPreviousStep - function to go to previous step
+ * @param goToNextStep - function to go to next step
+ * @param onSubmit - function to submit form
+ * @param value - form values
+ * @param real_account_signup_target - broker code
+ * @param form_error - form error
+ * @param props - other props
+ * @returns React node
  */
 const TermsOfUse = ({
     getCurrentStep,
@@ -90,7 +91,7 @@ const TermsOfUse = ({
                                 is_disabled={isDesktop()}
                             >
                                 <ThemedScrollbars>
-                                    <div className={cn('details-form__elements', 'terms-of-use')}>
+                                    <div className={className('details-form__elements', 'terms-of-use')}>
                                         <BrokerSpecificMessage target={real_account_signup_target} />
                                         <Hr />
                                         <SharedMessage />

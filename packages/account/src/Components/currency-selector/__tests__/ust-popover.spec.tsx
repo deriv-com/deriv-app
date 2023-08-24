@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import USTPopover, { TUSTPopover } from '../ust-popover';
+import USTPopover from '../ust-popover';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),

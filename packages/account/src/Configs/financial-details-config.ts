@@ -262,28 +262,7 @@ export const getEducationLevelList = () => [
     },
 ];
 
-export const getNetIncomeList = () => [
-    {
-        text: localize('Less than $25,000'),
-        value: 'Less than $25,000',
-    },
-    {
-        text: localize('$25,000 - $50,000'),
-        value: '$25,000 - $50,000',
-    },
-    {
-        text: localize('$50,001 - $100,000'),
-        value: '$50,001 - $100,000',
-    },
-    {
-        text: localize('$100,001 - $500,000'),
-        value: '$100,001 - $500,000',
-    },
-    {
-        text: localize('Over $500,000'),
-        value: 'Over $500,000',
-    },
-];
+export const getNetIncomeList = () => [...getAccountTurnoverList()];
 
 export const getEstimatedWorthList = () => [
     {

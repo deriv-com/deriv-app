@@ -50,7 +50,7 @@ type TCashierOptions = {
 
 const Cashier = observer(({ history, location, routes: routes_config }: TCashierProps) => {
     const { common, ui, client } = useStore();
-    const { withdraw, general_store, payment_agent } = useCashierStore();
+    const { withdraw, general_store, payment_agent, transaction_history } = useCashierStore();
     const { error } = withdraw;
     const {
         is_cashier_onboarding,
@@ -61,6 +61,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         cashier_route_tab_index: tab_index,
         setActiveTab,
     } = general_store;
+    const { is_crypto_transactions_visible } = transaction_history;
     const {
         data: is_payment_agent_transfer_visible,
         isLoading: is_payment_agent_checking,
@@ -133,7 +134,11 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                     value: route.component,
                     path: route.path,
                     // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
-                    has_side_note: route.path !== routes.cashier_deposit && route.path !== routes.cashier_p2p,
+                    has_side_note:
+                        !is_crypto_transactions_visible &&
+                        route.path !== routes.cashier_deposit &&
+                        route.path !== routes.cashier_withdrawal &&
+                        route.path !== routes.cashier_p2p,
                 });
             }
         });

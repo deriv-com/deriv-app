@@ -40,11 +40,11 @@ const NotificationsDialog = observer(() => {
         }
         LocalStore.setObject('p2p_settings', p2p_settings);
 
-        notifications_array.forEach(item => {
-            removeNotificationMessageByKey({ key: item.key });
+        notifications_array.forEach(({ key, should_show_again }) => {
+            removeNotificationMessageByKey({ key });
             removeNotificationMessage({
-                key: item.key,
-                should_show_again: item?.should_show_again ?? false,
+                key,
+                should_show_again,
             });
             removeNotifications(true);
         });

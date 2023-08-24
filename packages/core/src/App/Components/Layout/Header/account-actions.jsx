@@ -149,8 +149,8 @@ const AccountActions = React.memo(
                             <Button
                                 className='acc-info__button'
                                 has_effect
-                                text={localize('Deposit')}
-                                onClick={onClickDeposit}
+                                text={should_show_wallets ? localize('Manage funds') : localize('Deposit')}
+                                onClick={should_show_wallets ? () => {} : onClickDeposit}
                                 primary
                                 as_disabled={is_deposit_button_disabled}
                             />

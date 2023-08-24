@@ -18,7 +18,7 @@ const useGetAccountStatus = () => {
     }, [get_account_status_data?.get_account_status]);
 
     return {
-        /** The authorize response. */
+        /** Account status details. */
         data: modified_account_status,
         ...rest,
     };

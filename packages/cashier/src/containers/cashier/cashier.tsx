@@ -157,15 +157,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         [setActiveTab]
     );
 
-    const onTabChange = useCallback(
-        (index: number) => {
-            updateActiveTab(getMenuOptions[index].path);
-
-            setTabIndex(index);
-        },
-        [getMenuOptions, setTabIndex, updateActiveTab]
-    );
-
     useEffect(() => {
         updateActiveTab(selected_route.path);
     }, [selected_route, updateActiveTab]);
@@ -222,7 +213,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                         <VerticalTab
                             current_path={location.pathname}
                             is_floating
-                            setVerticalTabIndex={onTabChange}
+                            setVerticalTabIndex={setTabIndex}
                             vertical_tab_index={is_default_route ? 0 : tab_index}
                             is_full_width
                             is_routed

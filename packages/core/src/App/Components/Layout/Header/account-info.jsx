@@ -1,6 +1,7 @@
 import { DesktopWrapper, Icon, MobileWrapper, Popover, Text } from '@deriv/components';
 
-import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
+// import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
+import { AccountSwitcherWallet } from 'App/Containers/AccountSwitcherWallet/account-switcher-wallet.tsx';
 import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile.jsx';
 import { CSSTransition } from 'react-transition-group';
 import { Localize } from '@deriv/translations';
@@ -137,7 +138,8 @@ const AccountInfo = ({
                     unmountOnExit
                 >
                     <div className='acc-switcher__wrapper'>
-                        <AccountSwitcher is_visible={is_dialog_on} toggle={toggleDialog} />
+                        {/* <AccountSwitcher is_visible={is_dialog_on} toggle={toggleDialog} /> */}
+                        <AccountSwitcherWallet is_visible={is_dialog_on} toggle={toggleDialog} />
                     </div>
                 </CSSTransition>
             </DesktopWrapper>

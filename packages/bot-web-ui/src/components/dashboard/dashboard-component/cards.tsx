@@ -115,7 +115,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                     <input
                         type='file'
                         ref={file_input_ref}
-                        accept='.xml'
+                        accept='text/xml'
                         hidden
                         onChange={e => {
                             setIsFileSupported(handleFileChange(e, false));

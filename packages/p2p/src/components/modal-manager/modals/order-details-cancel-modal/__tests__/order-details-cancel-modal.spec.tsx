@@ -1,15 +1,15 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { useStores } from 'Stores';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { requestWS } from 'Utils/websocket';
-import OrderDetailsCancelModal from '../order-details-cancel-modal.jsx';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context.ts';
+import OrderDetailsCancelModal from '../order-details-cancel-modal';
 
 const el_modal = document.createElement('div');
 
 jest.mock('Utils/websocket', () => ({
     ...jest.requireActual('Utils/websocket'),
-    requestWS: jest.fn().mockRejectedValue(),
+    requestWS: jest.fn().mockRejectedValue('Error'),
 }));
 
 jest.mock('@deriv/shared', () => ({
@@ -17,24 +17,26 @@ jest.mock('@deriv/shared', () => ({
     useIsMounted: jest.fn().mockReturnValue(() => true),
 }));
 
+const mock_store_values = {
+    general_store: {
+        advertiser_info: {
+            cancels_remaining: 10,
+        },
+    },
+    order_store: {
+        cancellation_block_duration: '17',
+        cancellation_limit: '8',
+        cancellation_count_period: '19',
+        order_information: {
+            id: '10',
+        },
+        setErrorMessage: jest.fn(),
+    },
+};
+
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
-    useStores: jest.fn().mockReturnValue({
-        general_store: {
-            advertiser_info: {
-                cancels_remaining: 10,
-            },
-        },
-        order_store: {
-            cancellation_block_duration: '17',
-            cancellation_limit: '8',
-            cancellation_count_period: '19',
-            order_information: {
-                id: '10',
-            },
-            setErrorMessage: jest.fn(),
-        },
-    }),
+    useStores: () => mock_store_values,
 }));
 
 jest.mock('Components/modal-manager/modal-manager-context', () => ({
@@ -55,15 +57,14 @@ describe('<OrderDetailsCancelModal/>', () => {
         document.body.removeChild(el_modal);
     });
 
-    it('should render cancel modal in desktop ', () => {
+    it('should render order details cancel modal in desktop ', () => {
         render(<OrderDetailsCancelModal />);
 
         expect(screen.getByText('Do you want to cancel this order?')).toBeInTheDocument();
     });
 
     it('should warn the user if the number of remaining cancels is equal to 1 ', () => {
-        const { general_store } = useStores();
-        general_store.advertiser_info.cancels_remaining = 1;
+        mock_store_values.general_store.advertiser_info.cancels_remaining = 1;
 
         render(<OrderDetailsCancelModal />);
 
@@ -76,30 +77,29 @@ describe('<OrderDetailsCancelModal/>', () => {
         const { hideModal } = useModalManagerContext();
 
         render(<OrderDetailsCancelModal />);
-        fireEvent.click(screen.getByRole('button', { name: 'Do not cancel' }));
+        userEvent.click(screen.getByRole('button', { name: 'Do not cancel' }));
 
         expect(hideModal).toHaveBeenCalled();
     });
 
     it('should cancel the order when Cancel this order button is clicked', () => {
-        requestWS.mockResolvedValue({ message: 'Success' });
+        (requestWS as jest.Mock).mockResolvedValue({ message: 'Success' });
         render(<OrderDetailsCancelModal />);
-        fireEvent.click(screen.getByRole('button', { name: 'Cancel this order' }));
+        userEvent.click(screen.getByRole('button', { name: 'Cancel this order' }));
 
         expect(requestWS).toHaveBeenCalled();
     });
 
     it('should show error message when error response is received', async () => {
         const error_msg = 'Error';
-        const { order_store } = useStores();
 
-        requestWS.mockResolvedValue({ error: { message: error_msg } });
+        (requestWS as jest.Mock).mockResolvedValue({ error: { message: error_msg } });
 
         render(<OrderDetailsCancelModal />);
-        fireEvent.click(screen.getByRole('button', { name: 'Cancel this order' }));
+        userEvent.click(screen.getByRole('button', { name: 'Cancel this order' }));
 
         await waitFor(() => {
-            expect(order_store.setErrorMessage).toHaveBeenCalledWith(error_msg);
+            expect(mock_store_values.order_store.setErrorMessage).toHaveBeenCalledWith(error_msg);
         });
     });
 });

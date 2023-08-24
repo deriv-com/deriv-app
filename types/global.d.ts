@@ -1,5 +1,6 @@
 declare global {
     interface Window {
+        clipboardData: DataTransfer;
         LiveChatWidget: {
             init: () => void;
             on: (key: string, callback: VoidFunction) => void;

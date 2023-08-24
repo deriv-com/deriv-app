@@ -6,12 +6,6 @@ import { FormikValues } from 'formik';
 import { getIDVDocumentConfig } from '../Constants/idv-document-config';
 import { TServerError } from '../Types';
 
-declare global {
-    interface Window {
-        clipboardData: DataTransfer;
-    }
-}
-
 export const documentAdditionalError = (document_additional: string, document_additional_format: string) => {
     let error_message = null;
     if (!document_additional) {
@@ -92,7 +86,7 @@ export const getRegex = (target_regex: string) => {
  * @param {string} selected_doc  - Could be one of the following: 'drivers_license', 'ssnit', 'id_card', 'passport'
  * @returns {string} - Returns the placeholder text for the document number input
  */
-export const generatePlaceholderText = (selected_doc: string) => {
+export const generatePlaceholderText = (selected_doc: string): string => {
     switch (selected_doc) {
         case 'drivers_license':
             return localize('Enter Driver License Reference number');

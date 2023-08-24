@@ -2,14 +2,12 @@ import React from 'react';
 import { FormikValues } from 'formik/dist/types';
 import ProofOfAddressForm from '@deriv/account/src/Sections/Verification/ProofOfAddress/proof-of-address-form';
 import { observer } from '@deriv/stores';
-import { TIsForCFDModalPOA } from 'Components/props.types';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
 type TCFDPOA = {
     index: number;
     onSave: (index: number, values: FormikValues) => void;
     onSubmit: (index: number, values: FormikValues) => void;
-    setIsForCFDModalPOA: (is_for_cfd_modal_poa: TIsForCFDModalPOA) => void;
 };
 
 const CFDPOA = observer(({ index, onSave, onSubmit }: TCFDPOA) => {
@@ -21,7 +19,7 @@ const CFDPOA = observer(({ index, onSave, onSubmit }: TCFDPOA) => {
         toggleCompareAccountsModal,
     } = useCfdStore();
 
-    const setDefaultIsForCFDModal = () => {
+    const setIsNotForCFDModal = () => {
         setIsForCFDModalPOA({ is_for_compare_accounts: false, is_for_account_signup: false });
     };
 
@@ -32,13 +30,13 @@ const CFDPOA = observer(({ index, onSave, onSubmit }: TCFDPOA) => {
         } else if (is_for_cfd_modal_poa?.is_for_compare_accounts) {
             toggleCompareAccountsModal();
         }
-        setDefaultIsForCFDModal();
+        setIsNotForCFDModal();
     };
 
     const onSubmitForCFDModal = (index: number, values: FormikValues) => {
         onSave(index, values);
         onSubmit(index, values);
-        setDefaultIsForCFDModal();
+        setIsNotForCFDModal();
     };
 
     return (

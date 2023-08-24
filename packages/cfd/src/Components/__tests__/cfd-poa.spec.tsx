@@ -53,7 +53,7 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<CFDPOA />', () => {
-    const props: React.ComponentProps<typeof CFDPOA> = {
+    const mock_props: React.ComponentProps<typeof CFDPOA> = {
         index: 0,
         onSave: jest.fn(),
         onSubmit: jest.fn(),
@@ -72,6 +72,8 @@ describe('<CFDPOA />', () => {
         },
         modules: {
             cfd: {
+                is_for_cfd_modal_poa: { is_for_account_signup: true, is_for_compare_accounts: true },
+                setIsForCFDModalPOA: jest.fn(),
                 toggleCFDVerificationModal: jest.fn(),
                 toggleJurisdictionModal: jest.fn(),
             },
@@ -82,7 +84,7 @@ describe('<CFDPOA />', () => {
         render(
             <BrowserRouter>
                 <CFDProviders store={mock_store}>
-                    <CFDPOA {...props} />
+                    <CFDPOA {...mock_props} />
                 </CFDProviders>
             </BrowserRouter>
         );
@@ -96,6 +98,7 @@ describe('<CFDPOA />', () => {
         userEvent.click(buttons[0]);
         expect(mock_store.modules.cfd.toggleCFDVerificationModal).toHaveBeenCalled();
         expect(mock_store.modules.cfd.toggleJurisdictionModal).toHaveBeenCalled();
+        expect(mock_store.modules.cfd.setIsForCFDModalPOA).toHaveBeenCalled();
 
         const uploader = screen.getByTestId('dt_file_upload_input');
         const file = new File(['test file'], 'test_file.png', { type: 'image/png' });
@@ -107,8 +110,9 @@ describe('<CFDPOA />', () => {
             userEvent.click(buttons[1]);
         });
         await waitFor(() => {
-            expect(props.onSave).toHaveBeenCalled();
-            expect(props.onSubmit).toHaveBeenCalled();
+            expect(mock_props.onSave).toHaveBeenCalled();
+            expect(mock_props.onSubmit).toHaveBeenCalled();
+            expect(mock_store.modules.cfd.setIsForCFDModalPOA).toHaveBeenCalled();
         });
     });
 });

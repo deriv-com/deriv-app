@@ -22,8 +22,6 @@ const PoiCountrySelector = ({
     selected_country,
     setSelectedCountry,
 }: TPoiCountrySelector) => {
-    // const [residence_list, setCountryList] = React.useState<TCountry[]>([]);
-
     const initial_form_values: FormikValues = {
         country_input: '',
     };

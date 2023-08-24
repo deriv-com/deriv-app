@@ -4,10 +4,10 @@ import { localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 
 type TErrorComponent = {
-    header: React.ReactElement;
-    message: React.ReactNode;
-    redirect_label: React.ReactElement;
-    redirectOnClick: () => void;
+    header: JSX.Element | string;
+    message: JSX.Element | string;
+    redirect_label: string;
+    redirectOnClick: (() => void) | null;
     should_show_refresh: boolean;
 };
 
@@ -26,7 +26,7 @@ const ErrorComponent = ({
             messages={
                 message
                     ? [message, refresh_message]
-                    : [localize('Sorry, an error occured while processing your request.'), refresh_message]
+                    : [localize('Sorry, an error occurred while processing your request.'), refresh_message]
             }
             redirect_urls={[routes.trade]}
             redirect_labels={[redirect_label || localize('Refresh')]}

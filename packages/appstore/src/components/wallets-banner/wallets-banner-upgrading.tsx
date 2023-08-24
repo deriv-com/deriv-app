@@ -2,7 +2,7 @@ import React from 'react';
 import WalletsImage from 'Assets/svgs/wallets';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { TWalletsImagesListKeys } from 'Assets/svgs/wallets/image-types';
+import { TWalletsImagesListKey } from 'Assets/svgs/wallets/image-types';
 import { observer, useStore } from '@deriv/stores';
 
 // just for now for testing purpose, in the future 'is_eu' value will be taken from the store
@@ -14,7 +14,7 @@ const WalletsBannerUpgrading = observer(({ is_eu }: TWalletsBannerUpgrading) => 
     const { ui } = useStore();
     const { is_mobile } = ui;
 
-    const image: TWalletsImagesListKeys = is_mobile
+    const image: TWalletsImagesListKey = is_mobile
         ? `upgrading_mobile${is_eu ? '_eu' : ''}`
         : `upgrading_desktop${is_eu ? '_eu' : ''}`;
     const title_size = is_mobile ? 'xs' : 'sm';

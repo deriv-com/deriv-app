@@ -1,5 +1,5 @@
 import React from 'react';
-import { TImageTestID, TWalletsImagesListKeys, WalletsImageProps } from './image-types';
+import { TImageTestID, TWalletsImagesListKey, WalletsImageProps } from './image-types';
 import HowItWorks from 'Assets/svgs/wallets/how-it-works.svg';
 import IntroducingWallets from 'Assets/svgs/wallets/introducing-wallets.svg';
 import IntroducingWalletsEU from 'Assets/svgs/wallets/introducing-wallets-eu.svg';
@@ -32,7 +32,7 @@ export const WalletsImagesList = {
     ready_to_upgrade_wallets_image: ReadyToUpgradeWalletsImage,
 } as const;
 
-const WalletsImage = ({ image, className, width }: WalletsImageProps<TWalletsImagesListKeys>) => {
+const WalletsImage = ({ image, className, width }: WalletsImageProps<TWalletsImagesListKey>) => {
     const Component = WalletsImagesList[image] as React.ElementType;
     const data_testid: TImageTestID = `dt_${image}`;
 

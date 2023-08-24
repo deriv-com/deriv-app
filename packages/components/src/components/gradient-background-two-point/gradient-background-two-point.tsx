@@ -2,7 +2,7 @@ import React, { CSSProperties } from 'react';
 import './gradient-background-two-point.scss';
 
 type TGradientBackgroundTwoPoint = {
-    blurRadius?: number;
+    blur_radius?: number;
     backgroundColor: CSSProperties['backgroundColor'];
     primaryColor: CSSProperties['background'];
     secondaryColor: CSSProperties['background'];
@@ -10,7 +10,7 @@ type TGradientBackgroundTwoPoint = {
 
 const GradientBackgroundTwoPoint: React.FC<React.PropsWithChildren<TGradientBackgroundTwoPoint>> = ({
     children,
-    blurRadius = 48,
+    blur_radius = 48,
     backgroundColor,
     primaryColor,
     secondaryColor,
@@ -18,11 +18,11 @@ const GradientBackgroundTwoPoint: React.FC<React.PropsWithChildren<TGradientBack
     <div className='gradient-background-two-point' style={{ backgroundColor }}>
         <div
             className='gradient-background-two-point__primary'
-            style={{ filter: `blur(${blurRadius}px)`, background: primaryColor }}
+            style={{ filter: `blur(${blur_radius}px)`, background: primaryColor }}
         />
         <div
             className='gradient-background-two-point__secondary'
-            style={{ filter: `blur(${blurRadius}px)`, background: secondaryColor }}
+            style={{ filter: `blur(${blur_radius}px)`, background: secondaryColor }}
         />
         {children && <div className='gradient-background-two-point__children'>{children}</div>}
     </div>

@@ -4,9 +4,7 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import MainTitleBar from '..';
 
 describe('MainTitleBar', () => {
-    const render_container = () => {
-        const mock = mockStore({});
-
+    const render_container = (mock: any) => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
@@ -17,17 +15,27 @@ describe('MainTitleBar', () => {
     };
 
     it('should render the component', () => {
-        const { container } = render_container();
+        const mock = mockStore({});
+        const { container } = render_container(mock);
         expect(container).toBeInTheDocument();
     });
 
     it('should render the correct title text', () => {
-        render_container();
+        const mock = mockStore({});
+        render_container(mock);
         expect(screen.getByText(/Trader's Hub/)).toBeInTheDocument();
     });
 
     it('should render the total assets text', () => {
-        render_container();
-        expect(screen.getByText(/Total assets/)).toBeInTheDocument();
+        const mock = mockStore({
+            exchange_rates: {
+                data: {
+                    date: 12345,
+                },
+            },
+        });
+
+        render_container(mock);
+        expect(screen.getByText('Total assets')).toBeInTheDocument();
     });
 });

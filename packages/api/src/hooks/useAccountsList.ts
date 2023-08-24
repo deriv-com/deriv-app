@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import useAuthorize from './useAuthorize';
 import useBalance from './useBalance';
+import useCurrencyConfig from './useCurrencyConfig';
 import useGetAccountStatus from './useGetAccountStatus';
 
 /** A custom hook that returns the list of accounts of the logged in user. */
@@ -8,6 +9,7 @@ const useAccountsList = () => {
     const { data: authorize_data, ...rest } = useAuthorize();
     const { data: balance_data } = useBalance();
     const { data: get_account_status_data } = useGetAccountStatus();
+    const { getConfig } = useCurrencyConfig();
 
     // Add additional information to the authorize response.
     const modified_accounts = useMemo(() => {
@@ -34,6 +36,8 @@ const useAccountsList = () => {
                 poa_status: get_account_status_data?.authentication?.document?.status,
                 /** This represent the current status for proof of identity document submitted for authentication. */
                 poi_status: get_account_status_data?.authentication?.identity?.status,
+                /** Account's currency config information */
+                currency_config: account.currency ? getConfig(account.currency) : undefined,
             } as const;
         });
     }, [

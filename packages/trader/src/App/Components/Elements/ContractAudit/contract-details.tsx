@@ -65,9 +65,10 @@ const ContractDetails = ({
     const show_barrier = !is_vanilla && !isAccumulatorContract(contract_type) && !isSmartTraderContract(contract_type);
     const show_duration = !isAccumulatorContract(contract_type) || !isNaN(Number(contract_end_time));
     const show_payout_per_point = isTurbosContract(contract_type) || is_vanilla;
+    const ticks_label = Number(tick_count) < 2 ? localize('tick') : localize('ticks');
     const ticks_duration_text = isAccumulatorContract(contract_type)
         ? `${tick_passed}/${tick_count} ${localize('ticks')}`
-        : `${tick_count} ${Number(tick_count) < 2 ? localize('tick') : localize('ticks')}`;
+        : `${tick_count} ${ticks_label}`;
 
     const getLabel = () => {
         if (isUserSold(contract_info) && isEndedBeforeCancellationExpired(contract_info))

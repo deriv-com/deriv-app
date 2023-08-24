@@ -20,11 +20,7 @@ export const isContractElapsed = (contract_info: TContractInfo, tick?: TickSpotD
 
 export const isEndedBeforeCancellationExpired = (contract_info: TContractInfo) => {
     const end_time = getEndTime(contract_info) || 0;
-    return !!(
-        contract_info.cancellation &&
-        contract_info.cancellation.date_expiry &&
-        end_time < contract_info.cancellation.date_expiry
-    );
+    return !!(contract_info.cancellation?.date_expiry && end_time < contract_info.cancellation.date_expiry);
 };
 
 export const isSoldBeforeStart = (contract_info: TIsSoldBeforeStart) =>

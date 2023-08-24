@@ -3,12 +3,12 @@ import React from 'react';
 import { Button, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
 import { routes, formatMoney, PlatformContext, moduleLoader } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useFeatureFlags, useWalletAccountsList } from '@deriv/hooks';
+// import { useFeatureFlags, useWalletAccountsList } from '@deriv/hooks';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
 import ToggleNotifications from './toggle-notifications.jsx';
 import { BinaryLink } from '../../Routes';
-import { AccountsInfoLoader } from './Components/Preloader';
+// import { AccountsInfoLoader } from './Components/Preloader';
 import 'Sass/app/_common/components/account-switcher.scss';
 
 const AccountInfo = React.lazy(() =>
@@ -44,18 +44,21 @@ const AccountActions = React.memo(
         toggleAccountsDialog,
         toggleNotifications,
         is_deposit_button_disabled,
-        is_mobile,
+        // is_mobile,
     }) => {
         const { is_appstore } = React.useContext(PlatformContext);
 
-        const { is_wallet_enabled } = useFeatureFlags();
-        const { has_wallet, isLoading } = useWalletAccountsList();
+        // const { is_wallet_enabled } = useFeatureFlags();
+        // const { has_wallet, isLoading } = useWalletAccountsList();
 
-        const should_show_wallets = is_wallet_enabled && has_wallet;
+        // const should_show_wallets = is_wallet_enabled && has_wallet;
 
-        if (isLoading) {
-            return <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />;
-        }
+        // if (isLoading) {
+        //     return <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />;
+        // }
+
+        // TODO: delete it, it's just for testing right now
+        const should_show_wallets = true;
 
         if (is_logged_in) {
             return (

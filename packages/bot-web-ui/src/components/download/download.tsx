@@ -27,7 +27,7 @@ const Download = observer(({ tab }: TDownloadProps) => {
             classNameBubble='run-panel__info--bubble'
             alignment='bottom'
             message={popover_message}
-            zIndex={'5'}
+            zIndex='5'
         >
             <Button
                 id='download-button'

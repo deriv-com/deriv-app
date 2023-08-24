@@ -12,7 +12,7 @@ const TradersHubOnboarding = observer(() => {
     const { is_dark_mode_on } = ui;
 
     return (
-        <div data-testid='dt_trading_hub_onboarding' className='trading-hub-header__tradinghub--onboarding'>
+        <div data-testid='dt_trading_hub_onboarding' className='trading-hub-header__tradershub--onboarding'>
             <div className='trading-hub-header__tradinghub--onboarding--logo'>
                 <Popover
                     classNameBubble='account-settings-toggle__tooltip'

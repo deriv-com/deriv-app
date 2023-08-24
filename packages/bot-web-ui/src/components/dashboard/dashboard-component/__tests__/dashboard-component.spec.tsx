@@ -59,10 +59,6 @@ export const mocked_props = {
 };
 
 describe('<Dashboard />', () => {
-    it('should render PopoverComponent if isMobile is false', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-    });
-
     it('user guide button click should be enabled', () => {
         render(<UserGuide {...mocked_props} />);
         const use_guide_button = screen.getByTestId('btn-user-guide');

@@ -119,8 +119,8 @@ describe('<TermsOfUse/>', () => {
     });
 
     it('should render TermsOfUse component for maltainvest accounts and show "Add account" button for mobile', () => {
-        isMobile.mockReturnValue(true);
-        isDesktop.mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
 
         mock_props.real_account_signup_target = 'maltainvest';
 

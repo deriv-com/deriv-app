@@ -14,6 +14,7 @@ import type {
     SetFinancialAssessmentRequest,
     SetFinancialAssessmentResponse,
     StatesList,
+    WebsiteStatus,
 } from '@deriv/api-types';
 import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
@@ -240,6 +241,16 @@ type TDXTraderStatusServerType = Record<'all' | 'demo' | 'real', number>;
 
 type TMt5StatusServer = Record<'demo' | 'real', TMt5StatusServerType[]>;
 
+type RealAccountSignupSettings = {
+    active_modal_index: number;
+    current_currency: string;
+    error_code?: string;
+    error_details?: string;
+    error_message: string;
+    previous_currency: string;
+    success_message: string;
+};
+
 type TClientStore = {
     fetchStatesList: () => Promise<StatesList>;
     accounts: { [k: string]: TActiveAccount };
@@ -252,7 +263,7 @@ type TClientStore = {
     };
     account_list: TAccountsList;
     account_status: GetAccountStatus;
-    available_crypto_currencies: string[];
+    available_crypto_currencies: Array<WebsiteStatus['currencies_config']>;
     balance?: string | number;
     can_change_fiat_currency: boolean;
     cfd_score: number;
@@ -325,6 +336,7 @@ type TClientStore = {
     switched: boolean;
     switch_broadcast: boolean;
     switchEndSignal: () => void;
+    upgradeable_currencies: Array<WebsiteStatus['currencies_config']>;
     verification_code: {
         payment_agent_withdraw: string;
         payment_withdraw: string;
@@ -378,6 +390,7 @@ type TClientStore = {
     has_account_error_in_mt5_demo_list: boolean;
     has_account_error_in_dxtrade_real_list: boolean;
     has_account_error_in_dxtrade_demo_list: boolean;
+    has_fiat: boolean;
     is_fully_authenticated: boolean;
     states_list: StatesList;
     /** @deprecated Use `useCurrencyConfig` or `useCurrentCurrencyConfig` from `@deriv/hooks` package instead. */
@@ -449,9 +462,11 @@ type TUiStore = {
     is_dark_mode_on: boolean;
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
+    is_desktop: boolean;
     is_app_disabled: boolean;
     is_link_expired_modal_visible: boolean;
     is_mobile: boolean;
+    is_tablet: boolean;
     is_positions_drawer_on: boolean;
     is_services_error_visible: boolean;
     openRealAccountSignup: (
@@ -476,7 +491,6 @@ type TUiStore = {
     toggleSetCurrencyModal: () => void;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
     toggleServicesErrorModal: () => void;
-    is_tablet: boolean;
     removeToast: (key: string) => void;
     is_ready_to_deposit_modal_visible: boolean;
     reports_route_tab_index: number;
@@ -495,6 +509,7 @@ type TUiStore = {
     is_top_up_virtual_open: boolean;
     is_top_up_virtual_in_progress: boolean;
     is_top_up_virtual_success: boolean;
+    real_account_signup_target: string;
     closeSuccessTopUpModal: () => void;
     closeTopUpModal: () => void;
     is_cfd_reset_password_modal_enabled: boolean;
@@ -503,6 +518,8 @@ type TUiStore = {
     is_accounts_switcher_on: boolean;
     openTopUpModal: () => void;
     is_reset_trading_password_modal_visible: boolean;
+    real_account_signup: RealAccountSignupSettings;
+    resetRealAccountSignupParams: () => void;
     setResetTradingPasswordModalOpen: () => void;
     populateHeaderExtensions: (header_items: JSX.Element | null) => void;
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;

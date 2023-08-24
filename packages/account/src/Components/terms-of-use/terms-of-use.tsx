@@ -9,12 +9,46 @@ import {
     AutoHeightWrapper,
     StaticUrl,
 } from '@deriv/components';
-import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
+import { isDesktop, isMobile, PlatformContext, TBrokerCodes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import CheckboxField from './checkbox-field.jsx';
-import { SharedMessage, BrokerSpecificMessage, Hr } from './terms-of-use-messages.jsx';
+import CheckboxField from './checkbox-field';
+import { SharedMessage, BrokerSpecificMessage, Hr } from './terms-of-use-messages';
 import './terms-of-use.scss';
 
+type TTermsOfUseFormProps = {
+    agreed_tos: boolean;
+    agreed_tnc: boolean;
+};
+
+type TTermsOfUseProps = {
+    getCurrentStep: () => number;
+    onCancel: (current_step: number, goToPreviousStep: () => void) => void;
+    goToPreviousStep: () => void;
+    goToNextStep: () => void;
+    onSubmit: (
+        current_step: number | null,
+        values: TTermsOfUseFormProps,
+        action: (isSubmitting: boolean) => void,
+        next_step: () => void
+    ) => void;
+    value: TTermsOfUseFormProps;
+    real_account_signup_target: TBrokerCodes;
+    form_error?: string;
+};
+
+/**
+ * Terms of use component for account signup
+ * @param {Function} getCurrentStep - function to get current step
+ * @param {Function} onCancel - function to cancel account signup
+ * @param {Function} goToPreviousStep - function to go to previous step
+ * @param {Function} goToNextStep - function to go to next step
+ * @param {Function} onSubmit - function to submit form
+ * @param {object} value - form values
+ * @param {string} real_account_signup_target - broker code
+ * @param {string} form_error - form error
+ * @param {object} props - other props
+ * @returns {React.ReactNode} - React node
+ */
 const TermsOfUse = ({
     getCurrentStep,
     onCancel,
@@ -24,7 +58,7 @@ const TermsOfUse = ({
     value,
     real_account_signup_target,
     ...props
-}) => {
+}: TTermsOfUseProps) => {
     const { is_appstore } = React.useContext(PlatformContext);
 
     const handleCancel = () => {
@@ -43,7 +77,7 @@ const TermsOfUse = ({
         <Formik
             initialValues={value}
             onSubmit={(values, actions) => {
-                onSubmit(getCurrentStep() - 1, {}, actions.setSubmitting, goToNextStep);
+                onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
             {({ handleSubmit, values, isSubmitting }) => (
@@ -56,10 +90,7 @@ const TermsOfUse = ({
                                 is_disabled={isDesktop()}
                             >
                                 <ThemedScrollbars>
-                                    <div
-                                        className={cn('details-form__elements', 'terms-of-use')}
-                                        style={{ paddingBottom: isDesktop() ? 'unset' : null }}
-                                    >
+                                    <div className={cn('details-form__elements', 'terms-of-use')}>
                                         <BrokerSpecificMessage target={real_account_signup_target} />
                                         <Hr />
                                         <SharedMessage />

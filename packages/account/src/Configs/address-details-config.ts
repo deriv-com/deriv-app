@@ -166,7 +166,7 @@ const addressDetailsConfig = (
     const is_svg = upgrade_info?.can_upgrade_to === 'svg';
     const config = address_details_config({ account_settings, is_svg });
     const disabled_items = account_settings.immutable_fields;
-    const is_mf = real_account_signup_target === 'maltainvest';
+    const is_gb_residence = residence === 'gb';
 
     return {
         header: {
@@ -180,9 +180,8 @@ const addressDetailsConfig = (
                 real_account_signup_target,
                 transformConfig(transformForResidence(config, residence), real_account_signup_target)
             ),
-            is_svg,
             disabled_items,
-            is_mf,
+            is_gb_residence,
         },
         passthrough: ['residence_list', 'is_fully_authenticated', 'has_real_account'],
         icon: 'IcDashboardAddress',
@@ -191,10 +190,10 @@ const addressDetailsConfig = (
 
 /**
  * Transform general rules based on residence
- *
- * @param {object} rules - Original rules
- * @param {string} residence - Client's residence
- * @return {object} rules - Transformed rules
+ * @name transformForResidence
+ * @param  rules - Original rules
+ * @param residence - Client's residence
+ * @return rules - Transformed rules
  */
 const transformForResidence = (rules: TSchema, residence: string) => {
     // Isle of Man Clients do not need to fill out state since API states_list is empty.

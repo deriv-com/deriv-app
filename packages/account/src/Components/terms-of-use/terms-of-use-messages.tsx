@@ -1,11 +1,22 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { getLegalEntityName } from '@deriv/shared';
+import { getLegalEntityName, TBrokerCodes } from '@deriv/shared';
 import { Text } from '@deriv/components';
 
+/**
+ * Renders a horizontal line
+ * @name Hr
+ * @returns {JSX.Element}
+ */
 export const Hr = () => <div className='terms-of-use__hr' />;
 
-export const BrokerSpecificMessage = ({ target }) => (
+/**
+ * Renders the broker specific message based on the broker code
+ *@name BrokerSpecificMessage
+ * @param {TBrokerCodes} param - The broker code string
+ * @returns {JSX.Element}
+ */
+export const BrokerSpecificMessage = ({ target }: { target: TBrokerCodes }) => (
     <React.Fragment>
         {target === 'svg' && <SVGDescription />}
         {target === 'iom' && <IOMDescription />}
@@ -15,6 +26,11 @@ export const BrokerSpecificMessage = ({ target }) => (
     </React.Fragment>
 );
 
+/**
+ * Returns the terms of use message specific to SVG broker code
+ * @name SVGDescription
+ * @returns {JSX.Element}
+ */
 export const SVGDescription = () => (
     <React.Fragment>
         <Text as='h4' size='xs' weight='bold'>
@@ -44,6 +60,11 @@ export const SVGDescription = () => (
     </React.Fragment>
 );
 
+/**
+ * Returns the terms of use message specific to IOM broker code
+ * @name IOMDescription
+ * @returns {JSX.Element}
+ */
 export const IOMDescription = () => (
     <React.Fragment>
         <Text as='h4' size='xs' weight='bold'>
@@ -62,6 +83,11 @@ export const IOMDescription = () => (
     </React.Fragment>
 );
 
+/**
+ * Returns the terms of use message specific to Malta broker code
+ * @name MaltaDescription
+ * @returns {JSX.Element}
+ */
 export const MaltaDescription = () => (
     <React.Fragment>
         <Text as='h4' size='xs' weight='bold'>
@@ -80,6 +106,11 @@ export const MaltaDescription = () => (
     </React.Fragment>
 );
 
+/**
+ * Returns the terms of use message specific to MaltaInvest broker code
+ * @name MaltaInvestDescription
+ * @returns {JSX.Element}
+ */
 export const MaltaInvestDescription = () => (
     <React.Fragment>
         <Text as='h4' size='xs' weight='bold'>
@@ -109,6 +140,11 @@ export const MaltaInvestDescription = () => (
     </React.Fragment>
 );
 
+/**
+ * Returns the terms of use message specific to Samoa broker code
+ * @name SamoaDescription
+ * @returns {JSX.Element}
+ */
 export const SamoaDescription = () => (
     <React.Fragment>
         <Text as='h4' size='xs' weight='bold'>
@@ -138,6 +174,11 @@ export const SamoaDescription = () => (
     </React.Fragment>
 );
 
+/**
+ * Returns the generic terms of use message
+ * @name SVGDescription
+ * @returns {JSX.Element}
+ */
 export const SharedMessage = () => (
     <React.Fragment>
         <Text as='h4' size='xs' weight='bold'>

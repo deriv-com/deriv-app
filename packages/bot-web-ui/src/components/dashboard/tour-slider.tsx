@@ -37,7 +37,7 @@ const Accordion = ({ content_data, expanded = false, ...props }: TAccordion) => 
                 <div className='dbot-accordion__navbar' onClick={() => setOpen(!is_open)}>
                     <div className='dbot-accordion__header'>
                         <Text as='span' size='xs' weight='bold'>
-                            {localize(header)}
+                            {header}
                         </Text>
                     </div>
                     <div className='dbot-accordion__icon'>
@@ -50,7 +50,7 @@ const Accordion = ({ content_data, expanded = false, ...props }: TAccordion) => 
                     })}
                 >
                     <Text as='span' size='xxs' line_height='s'>
-                        {localize(content)}
+                        {content}
                     </Text>
                 </div>
             </div>
@@ -64,7 +64,7 @@ const TourSlider = observer(() => {
         dashboard;
     const { toggleTourLoadModal } = load_modal;
     const [step, setStep] = React.useState<number>(1);
-    const [slider_content, setContent] = React.useState<string | string[]>('');
+    const [slider_content, setContent] = React.useState<React.ReactElement[]>([]);
     const [slider_header, setheader] = React.useState<string>('');
     const [slider_image, setimg] = React.useState<string>('');
     const [step_key, setStepKey] = React.useState<number>(0);
@@ -75,8 +75,8 @@ const TourSlider = observer(() => {
             if (data.key === step) {
                 setContent(data?.content);
                 setheader(data?.header);
-                setimg(data?.img);
-                setStepKey(data?.step_key);
+                if (data?.img) setimg(data?.img);
+                if (data?.step_key) setStepKey(data?.step_key);
             }
         });
         const el_ref = document.querySelector('.toolbar__group-btn svg:nth-child(2)');
@@ -110,7 +110,6 @@ const TourSlider = observer(() => {
     const bot_tour_text = !has_started_onboarding_tour && step === 3 ? localize('Finish') : localize('Next');
 
     const tour_button_text = has_started_onboarding_tour && step_key === 0 ? localize('Start') : bot_tour_text;
-
     return (
         <>
             <div
@@ -128,15 +127,9 @@ const TourSlider = observer(() => {
                             line_height='s'
                             size='xxs'
                         >{`${step_key}/6`}</Text>
-                        <Text
-                            color='prominent'
-                            weight='--text-less-prominent'
-                            line_height='s'
-                            size='xxs'
-                            onClick={onCloseTour}
-                        >
-                            {localize('Exit Tour')}
-                        </Text>
+                        <span onClick={onCloseTour}>
+                            <Icon icon='IcCross' className='db-contract-card__result-icon' color='secondary' />
+                        </span>
                     </div>
                 )}
 
@@ -160,10 +153,10 @@ const TourSlider = observer(() => {
                 )}
                 {has_started_onboarding_tour && slider_content && (
                     <>
-                        {slider_content.map(data => {
+                        {slider_content?.map((data, index) => {
                             return (
                                 <Text
-                                    key={data}
+                                    key={`${index}-tour-onboard`}
                                     align='center'
                                     color='prominent'
                                     className='dbot-slider__content'
@@ -171,7 +164,7 @@ const TourSlider = observer(() => {
                                     line_height='s'
                                     size='xxs'
                                 >
-                                    {localize(data)}
+                                    {data}
                                 </Text>
                             );
                         })}

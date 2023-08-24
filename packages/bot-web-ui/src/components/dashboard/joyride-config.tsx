@@ -102,10 +102,10 @@ export const DBOT_ONBOARDING = [
                 label={localize('Build from scratch')}
                 content={[
                     localize(
-                        'Create your bot easily using our drag-and-drop blocks to match your desired trading strategy, or choose from our pre-made Quick Strategies.'
+                        'Create your bot using our drag-and-drop blocks or click Quick Strategy to choose from the ready-to-use bot templates.'
                     ),
                     localize(
-                        'We also provide a tutorial on this tab to show you how you can build and execute a simple strategy.'
+                        'We also provide a guide on the Tutorial tab to show you how you can build and execute a simple strategy.'
                     ),
                 ]}
                 img={getImageLocation('dbot-onboarding-tour-step-1.gif')}
@@ -134,8 +134,8 @@ export const DBOT_ONBOARDING = [
         target: '#id-tutorials',
         content: (
             <TourGuide
-                label={localize('Guides and FAQs to help you')}
-                content={[localize('Start with a video guide and the FAQs.')]}
+                label={localize('Learn more with our tutorials')}
+                content={[localize('Explore the video guides and FAQs to build your bot in the tutorials tab.')]}
                 img={getImageLocation('dbot-onboarding-tour-step-3.gif')}
                 dashboard_tab_index={0}
                 step_index={3}
@@ -148,8 +148,8 @@ export const DBOT_ONBOARDING = [
         target: '#tab__dashboard__table__tiles',
         content: (
             <TourGuide
-                label={localize('Shortcuts')}
-                content={[localize('You can also use these shortcuts to import or build your bot.')]}
+                label={localize('Use these shortcuts')}
+                content={[localize('You can also import or build your bot using any of these shortcuts.')]}
                 dashboard_tab_index={0}
                 step_index={4}
             />
@@ -162,8 +162,8 @@ export const DBOT_ONBOARDING = [
         target: '.dc-drawer__container',
         content: (
             <TourGuide
-                label={localize('How is my bot doing?')}
-                content={[localize("See your bot's performance in real-time.")]}
+                label={localize('Check your bot’s performance')}
+                content={[localize('See how your bot is doing in real-time.')]}
                 img={getImageLocation('dbot-onboarding-tour-step-5.gif')}
                 dashboard_tab_index={0}
                 step_index={5}
@@ -177,8 +177,14 @@ export const DBOT_ONBOARDING = [
         target: '.animation__wrapper',
         content: (
             <TourGuide
-                label={localize('Run or stop your bot')}
-                content={[localize('Click Run when you want to start trading, and click Stop when you want to stop.')]}
+                label={localize('Run your bot')}
+                content={[
+                    <Localize
+                        key='run your bot'
+                        i18n_default_text='Click <0>Run</0> when you want to start trading, and click <0>Stop</0> when you want to stop.'
+                        components={[<strong key={0} />]}
+                    />,
+                ]}
                 img={getImageLocation('dbot-onboarding-tour-step-6.gif')}
                 dashboard_tab_index={0}
                 step_index={6}
@@ -462,43 +468,47 @@ export const BOT_BUILDER_TOUR = [
 
 export type TStepMobile = {
     header: string;
-    content: React.ReactElement;
+    content: React.ReactElement[];
     key: number;
+    step_key?: number;
+    img?: string;
 };
 
 export const BOT_BUILDER_MOBILE: TStepMobile[] = [
     {
         header: localize('Step 1'),
-        content: <Localize i18n_default_text={`First, click the Import icon on the tool bar.`} />,
+        content: [<Localize key='step-1' i18n_default_text={`First, click the Import icon on the tool bar.`} />],
         key: 1,
     },
     {
         header: localize('Step 2'),
-        content: (
+        content: [
             <Localize
+                key='step-2'
                 i18n_default_text={`Next, import your bot directly from your mobile device or from Google Drive.`}
-            />
-        ),
+            />,
+        ],
         key: 2,
     },
     {
         header: localize('Step 3'),
-        content: (
+        content: [
             <Localize
+                key='step-3'
                 i18n_default_text={`Once imported, you will see a preview of the bot on the workspace. Click run to start trading with this bot.`}
-            />
-        ),
+            />,
+        ],
         key: 3,
     },
 ];
 
-export const DBOT_ONBOARDING_MOBILE = [
+export const DBOT_ONBOARDING_MOBILE: TStepMobile[] = [
     {
         header: localize('Get started on Deriv Bot'),
         content: [
             <Localize
-                key='get-started=mobile'
-                i18n_default_text='Hi! Hit <0>Start</0> for a quick tour to help you get started.'
+                key='get-started-on-deriv-bot'
+                i18n_default_text='Hi! Hit <0>Start</0> for a quick tour.'
                 components={[<strong key={0} />]}
             />,
         ],
@@ -506,12 +516,13 @@ export const DBOT_ONBOARDING_MOBILE = [
         step_key: 0,
     },
     {
-        header: localize('Build from scratch'),
+        header: localize('Import or choose your bot'),
         img: getImageLocation('dbot-mobile-onboarding-step-1.gif'),
         content: [
-            localize(
-                'Import a bot from your mobile device or from Google drive, see a preview in the bot builder, and start trading by running the bot, or choose from our pre-made Quick Strategies. '
-            ),
+            <Localize
+                key='import-or-choose-your-bot'
+                i18n_default_text='Import your bot or tap Quick Strategies to choose from the ready-to-use bot templates.'
+            />,
         ],
         key: 2,
         step_key: 1,
@@ -519,35 +530,58 @@ export const DBOT_ONBOARDING_MOBILE = [
     {
         header: localize('Monitor the market'),
         img: getImageLocation('dbot-mobile-onboarding-step-2.png'),
-        content: [localize('View the market price of your favourite assets.')],
+        content: [
+            <Localize key='monitor-the-market' i18n_default_text='View the market price of your favourite assets.' />,
+        ],
         key: 3,
         step_key: 2,
     },
     {
-        header: localize('Guides and FAQs to help you'),
+        header: localize('Learn more with our tutorials'),
         img: getImageLocation('dbot-mobile-onboarding-step-3.gif'),
-        content: [localize('Start with a video guide and the FAQs.')],
+        content: [
+            <Localize
+                key='learn-more-with-our-tutorials'
+                i18n_default_text='Explore the video guides and FAQs to build your bot in the tutorials tab.'
+            />,
+        ],
         key: 4,
         step_key: 3,
     },
     {
-        header: localize('Shortcuts'),
+        header: localize('Use these shortcuts'),
         img: getImageLocation('dbot-mobile-onboarding-step-4.png'),
-        content: [localize('You can also use these shortcuts to import or build your bot.')],
+        content: [
+            <Localize
+                key='use-these-shortcuts'
+                i18n_default_text='You can also import or build your bot using any of these shortcuts.'
+            />,
+        ],
         key: 5,
         step_key: 4,
     },
     {
-        header: localize('How is my bot doing?'),
+        header: localize('Check your bot’s performance'),
         img: getImageLocation('dbot-mobile-onboarding-step-5.gif'),
-        content: [localize("See your bot's performance in real-time.")],
+        content: [
+            <Localize
+                key='check-bot-performance'
+                i18n_default_text='Click <0>Run</0> when you want to start trading, and click <0>Stop</0> when you want to stop.'
+                components={[<strong key={0} />]}
+            />,
+        ],
         key: 6,
         step_key: 5,
     },
     {
-        header: localize('Run or stop your bot'),
+        header: localize('Run your bot'),
         img: getImageLocation('dbot-mobile-onboarding-step-6.gif'),
-        content: [localize('Click Run when you want to start trading, and click Stop when you want to stop.')],
+        content: [
+            <Localize
+                key='run-your-bot'
+                i18n_default_text='Click Run when you want to start trading, and click Stop when you want to stop.'
+            />,
+        ],
         key: 7,
         step_key: 6,
     },

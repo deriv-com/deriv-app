@@ -611,6 +611,7 @@ type TUiStore = {
     ) => void;
     is_wallet_creation_success_modal_open: boolean;
     toggleIsWalletCreationSuccessModalOpen: (value: boolean) => void;
+    account_switcher_disabled_message: string;
 };
 
 type TPortfolioStore = {

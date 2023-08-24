@@ -360,6 +360,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setResetTradingPasswordModalOpen: jest.fn(),
             is_wallet_creation_success_modal_open: false,
             toggleIsWalletCreationSuccessModalOpen: jest.fn(),
+            account_switcher_disabled_message: '',
         },
         traders_hub: {
             CFDs_restricted_countries: false,

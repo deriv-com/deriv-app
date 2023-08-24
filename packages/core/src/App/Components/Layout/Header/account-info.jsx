@@ -5,9 +5,7 @@ import { CSSTransition } from 'react-transition-group';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode } from '@deriv/shared';
-import { useFeatureFlags, useWalletAccountsList } from '@deriv/hooks';
 import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
-import AccountInfoWallets from './account-info-wallets';
 import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile';
 import AccountInfoWrapper from './account-info-wrapper';
 import AccountInfoIcon from './account-info-icon';
@@ -27,41 +25,6 @@ const AccountInfo = ({
     toggleDialog,
     is_disabled,
 }) => {
-    const { is_wallet_enabled } = useFeatureFlags();
-    const { has_wallet } = useWalletAccountsList();
-
-    const should_show_wallets = is_wallet_enabled && has_wallet;
-
-    // console.log('is_wallet_enabled = ', is_wallet_enabled, ', has_wallet = ', has_wallet);
-
-    // const should_show_wallets = false;
-
-    /*
-    const { data: trading_accounts } = useTradingAccountsList();
-
-    const trading_account_loginid =
-        wallet_account.linked_to?.find(account => account.platform === 'dtrade')?.loginid ?? '';
-    const linked_trading_account = trading_accounts?.find(account => account.loginid === trading_account_loginid);
-    */
-
-    if (should_show_wallets)
-        return (
-            <AccountInfoWallets
-                acc_switcher_disabled_message={acc_switcher_disabled_message}
-                account_type={account_type}
-                // balance={balance}
-                // currency={currency}
-                country_standpoint={country_standpoint}
-                disableApp={disableApp}
-                enableApp={enableApp}
-                is_dialog_on={is_dialog_on}
-                is_eu={is_eu}
-                // is_virtual={is_virtual}
-                toggleDialog={toggleDialog}
-                // is_disabled={is_disabled}
-            />
-        );
-
     const currency_lower = currency?.toLowerCase();
 
     return (
@@ -80,7 +43,6 @@ const AccountInfo = ({
                 >
                     <span className='acc-info__id'>
                         <DesktopWrapper>
-                            USUAL
                             <AccountInfoIcon is_virtual={is_virtual} currency={currency_lower} />
                         </DesktopWrapper>
                         <MobileWrapper>

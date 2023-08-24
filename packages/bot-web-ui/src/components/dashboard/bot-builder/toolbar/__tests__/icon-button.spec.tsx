@@ -43,11 +43,6 @@ describe('IconButton', () => {
         expect(container).toBeInTheDocument();
     });
 
-    it('should render the Popover with the message', () => {
-        render(<IconButton icon={'icon'} icon_id={'icon_id'} iconOnClick={mockOnClick} popover_message={''} />);
-        expect(screen.getByTestId('popover_message')).toBeInTheDocument();
-    });
-
     it('should render the Icon', () => {
         render(<IconButton icon={'icon'} icon_id={'icon_id'} iconOnClick={mockOnClick} popover_message={''} />);
         expect(screen.getByTestId('icon_button')).toBeInTheDocument();

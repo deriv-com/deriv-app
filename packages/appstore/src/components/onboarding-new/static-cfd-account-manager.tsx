@@ -144,7 +144,7 @@ const StaticCFDAccountManager = ({
                 }
 
                 {platform === CFD_PLATFORMS.CTRADER && (
-                    <TradigPlatformIconProps
+                    <TradingPlatformIconProps
                         icon='CTrader'
                         size={icon_size}
                         className={classNames('static-cfd-account-manager--cfds', {

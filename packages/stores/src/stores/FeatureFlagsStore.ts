@@ -1,9 +1,7 @@
 import BaseStore from './BaseStore';
 
 const FLAGS = {
-    foo: false,
-    bar: false,
-    baz: false,
+    rise_fall: false,
     // Add your flag here 🚀
 } satisfies Record<string, boolean>;
 

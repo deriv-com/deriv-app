@@ -1,3 +1,4 @@
+import { FeatureFlagsStore } from '@deriv/stores/src/stores';
 import ClientStore from './client-store';
 import CommonStore from './common-store';
 import GTMStore from './gtm-store';
@@ -16,6 +17,7 @@ export default class RootStore {
     constructor() {
         this.client = new ClientStore(this);
         this.common = new CommonStore(this);
+        this.feature_flags = new FeatureFlagsStore();
         this.modules = new ModulesStore(this);
         this.ui = new UIStore(this);
         this.gtm = new GTMStore(this);

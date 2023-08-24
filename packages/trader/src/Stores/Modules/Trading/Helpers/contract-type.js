@@ -16,6 +16,7 @@ import {
     getContractTypesConfig,
     getContractSubtype,
     getLocalizedBasis,
+    LocalStore,
 } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
@@ -80,11 +81,13 @@ export const ContractType = (() => {
 
                 available_contract_types[type].config = config;
             });
-
+            const hidden_trade_types = Object.entries(LocalStore.getObject('FeatureFlagsStore')?.data ?? {})
+                .filter(([, value]) => !value)
+                .map(([key]) => key);
             // cleanup categories
             Object.keys(available_categories).forEach(key => {
                 available_categories[key].categories = available_categories[key].categories?.filter(
-                    item => typeof item === 'object'
+                    item => typeof item === 'object' && hidden_trade_types?.every(i => !item.value.includes(i))
                 );
                 if (available_categories[key].categories?.length === 0) {
                     delete available_categories[key];

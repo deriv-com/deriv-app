@@ -14,5 +14,6 @@ export default class RootStore {
         this.portfolio = core_store.portfolio;
         this.chart_barrier_store = core_store.chart_barrier_store;
         this.active_symbols = core_store.active_symbols;
+        this.feature_flags = core_store.feature_flags;
     }
 }

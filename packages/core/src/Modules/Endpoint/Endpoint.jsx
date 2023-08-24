@@ -173,7 +173,7 @@ const Endpoint = () => {
                         text='Reset to original settings'
                         secondary
                     />
-                    <FeatureFlagsSection />
+                    {location.hostname.includes('binary.sx') && <FeatureFlagsSection />}
                 </Form>
             )}
         </Formik>

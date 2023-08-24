@@ -4,6 +4,16 @@
     align-items: center;
 }
 
+@mixin recent-list-properties {
+    display: -webkit-box;
+    max-width: 90%;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+}
+
 .bot-dashboard {
     position: relative;
     height: calc(100vh - 8.4rem);
@@ -480,14 +490,9 @@
                     font-size: var(--text-size-xs);
                 }
 
-                &__recent-item-text {
-                    display: -webkit-box;
-                    max-width: 90%;
-                    -webkit-line-clamp: 1;
-                    -webkit-box-orient: vertical;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    word-break: break-all;
+                &__recent-item-text,
+                &__recent-item-saved {
+                    @include recent-list-properties;
                 }
             }
         }

@@ -5,7 +5,7 @@ import Counter from '../counter/counter';
 import Button from '../button/button';
 
 type TButtonToggleProps = {
-    buttons_arr: Array<{ text: string; value: string; count?: number }>;
+    buttons_arr: Array<{ text: string; value: number | string; count?: number }>;
     className?: string;
     id?: string;
     is_animated?: boolean;
@@ -50,7 +50,7 @@ const ButtonToggle = ({
                     <Button
                         id={`dc_${val.value}_toggle_item`}
                         key={idx}
-                        onClick={() => changeValue(val.value)}
+                        onClick={() => changeValue(val.value.toString())}
                         className={menuClassNames}
                         is_button_toggle
                     >

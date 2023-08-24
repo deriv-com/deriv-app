@@ -1,27 +1,26 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/root-store';
+import { observer } from '@deriv/stores';
+import { useDBotStore } from 'Stores/useDBotStore';
 
-type TWorkspaceControlProps = {
-    onZoomInOutClick: (zoom_in: boolean) => void;
-};
+const WorkspaceControl = observer(() => {
+    const { dashboard } = useDBotStore();
+    const { onZoomInOutClick } = dashboard;
 
-const WorkspaceControl = ({ onZoomInOutClick }: TWorkspaceControlProps) => (
-    <div className='load-strategy__preview-workspace-controls'>
-        <Icon
-            icon={'IcAddRounded'}
-            className='load-strategy__preview-workspace-icon'
-            onClick={() => onZoomInOutClick(true)}
-        />
-        <Icon
-            icon={'IcMinusRounded'}
-            className='load-strategy__preview-workspace-icon'
-            onClick={() => onZoomInOutClick(false)}
-        />
-    </div>
-);
+    return (
+        <div className='load-strategy__preview-workspace-controls'>
+            <Icon
+                icon={'IcAddRounded'}
+                className='load-strategy__preview-workspace-icon'
+                onClick={() => onZoomInOutClick(true)}
+            />
+            <Icon
+                icon={'IcMinusRounded'}
+                className='load-strategy__preview-workspace-icon'
+                onClick={() => onZoomInOutClick(false)}
+            />
+        </div>
+    );
+});
 
-export default connect(({ dashboard }: RootStore) => ({
-    onZoomInOutClick: dashboard.onZoomInOutClick,
-}))(WorkspaceControl);
+export default WorkspaceControl;

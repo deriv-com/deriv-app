@@ -6,14 +6,13 @@ import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedSc
 import { getPlatformSettings, reorderCurrencies, getAddressDetailsFields } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
-import { TCurrencyConfig } from 'Types';
 import RadioButton from './radio-button';
 import RadioButtonGroup from './radio-button-group';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
 export const Hr = () => <div className='currency-hr' />;
 
-const CURRENCY_TYPE = {
+const CURRENCY_TYPE: Record<string, 'crypto' | 'fiat'> = {
     CRYPTO: 'crypto',
     FIAT: 'fiat',
 };
@@ -99,11 +98,15 @@ const CurrencySelector = observer(
 
         const { real_account_signup, real_account_signup_target, resetRealAccountSignupParams, is_desktop, is_mobile } =
             ui;
+
+        // Wrapped with String() to avoid type mismatch
         const crypto = legal_allowed_currencies.filter(
-            selected_currency => selected_currency.type === CURRENCY_TYPE.CRYPTO
+            selected_currency => String(selected_currency.type) === CURRENCY_TYPE.CRYPTO
         );
+
+        // Wrapped with String() to avoid type mismatch
         const fiat = legal_allowed_currencies.filter(
-            selected_currency => selected_currency.type === CURRENCY_TYPE.FIAT
+            selected_currency => String(selected_currency.type) === CURRENCY_TYPE.FIAT
         );
         const [is_bypass_step, setIsBypassStep] = React.useState<boolean>(false);
 
@@ -224,13 +227,13 @@ const CurrencySelector = observer(
                                     is_disabled={is_desktop}
                                 >
                                     <ThemedScrollbars height={height}>
-                                        {!!reorderCurrencies(fiat)?.length && (
+                                        {!!fiat?.length && (
                                             <React.Fragment>
                                                 <RadioButtonGroup
                                                     className='currency-selector__radio-group currency-selector__radio-group--with-margin'
                                                     label={localize('Fiat currencies')}
                                                     is_fiat
-                                                    item_count={reorderCurrencies(fiat).length}
+                                                    item_count={fiat.length}
                                                     description={description}
                                                     has_fiat={should_disable_fiat && has_fiat}
                                                 >
@@ -264,7 +267,7 @@ const CurrencySelector = observer(
                                                             component={RadioButton}
                                                             selected={
                                                                 available_crypto_currencies?.filter(
-                                                                    (crypto_data: TCurrencyConfig) =>
+                                                                    (crypto_data: WebsiteStatus['currencies_config']) =>
                                                                         crypto_data.value === avbl_currency.value
                                                                 )?.length === 0
                                                             }

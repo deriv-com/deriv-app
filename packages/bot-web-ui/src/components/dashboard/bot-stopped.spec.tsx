@@ -44,8 +44,8 @@ describe('<BotStopped />', () => {
         render(<BotStopped />, {
             wrapper,
         });
-
-        expect(screen.getByText('You’re back online')).toBeInTheDocument();
+        const dailog_title_element = screen.getByTestId('data-title');
+        expect(dailog_title_element).toBeInTheDocument();
     });
     it('should go to reports page on click of go to reports button', async () => {
         render(<BotStopped />, {
@@ -75,12 +75,9 @@ describe('<BotStopped />', () => {
         render(<BotStopped />, {
             wrapper,
         });
+        const svgCloseIcon = screen.getByTestId('data-close-button');
         act(() => {
-            // eslint-disable-next-line testing-library/no-node-access
-            const svgCloseIcon = document.querySelector('.dc-dialog__header--close');
-            expect(svgCloseIcon).toBeInTheDocument();
             userEvent.click(svgCloseIcon);
-            expect(global.location.reload).toHaveBeenCalled();
         });
         await waitFor(() => {
             expect(global.location.reload).toHaveBeenCalled();

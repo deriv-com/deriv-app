@@ -11,11 +11,19 @@
         padding: 2rem;
     }
     .dc-dialog {
+        position: relative;
         &__header-wrapper {
             margin: 0 0 2.4rem;
         }
         &__content {
-            margin: 0 0 2.4rem;
+            &__header {
+                display: flex;
+                justify-content: space-between;
+                margin: 0 0 2.4rem;
+                .dc-icon {
+                    cursor: pointer;
+                }
+            }
         }
 
         @include mobile {

@@ -13,7 +13,6 @@ const useExchangeRate = () => {
     const getRate = useCallback((currency: string) => rates?.[currency] || 1, [rates]);
 
     return {
-        rates,
         getRate,
         last_update: data?.date,
         base_currency: data?.base_currency || 'USD',

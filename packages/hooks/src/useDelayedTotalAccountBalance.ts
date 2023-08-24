@@ -20,7 +20,7 @@ const useDelayedTotalAccountBalance = (accounts: TUseDelayedTotalAccountBalance[
         return total + (account.balance || 0) * exchange_rate;
     }, 0);
 
-    const delayedBalance = useThrottle(balance, delay / 1000);
+    const delayedBalance = useThrottle(balance, delay * 1000);
 
     return {
         balance: delayedBalance || 0,

@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
-import useAuthorize from './useAuthorize';
 import useFetch from '../useFetch';
+import useSettings from './useSettings';
 
 /** A custom hook that returns the available landing companies of the user's country. */
 const useLandingCompany = () => {
-    const { data: authorize_data } = useAuthorize();
+    const { data: settings_data } = useSettings();
     const { data, ...rest } = useFetch('landing_company', {
-        payload: { landing_company: authorize_data.country || '' },
-        options: { enabled: Boolean(authorize_data.country) },
+        payload: { landing_company: settings_data.country_code || '' },
+        options: { enabled: Boolean(settings_data.country_code) },
     });
 
     const modified_data = useMemo(() => {

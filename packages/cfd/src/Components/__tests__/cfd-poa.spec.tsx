@@ -72,8 +72,6 @@ describe('<CFDPOA />', () => {
         },
         modules: {
             cfd: {
-                is_for_cfd_modal_poa: { is_for_account_signup: true, is_for_compare_accounts: true },
-                setIsForCFDModalPOA: jest.fn(),
                 toggleCFDVerificationModal: jest.fn(),
                 toggleJurisdictionModal: jest.fn(),
             },
@@ -98,7 +96,6 @@ describe('<CFDPOA />', () => {
         userEvent.click(buttons[0]);
         expect(mock_store.modules.cfd.toggleCFDVerificationModal).toHaveBeenCalled();
         expect(mock_store.modules.cfd.toggleJurisdictionModal).toHaveBeenCalled();
-        expect(mock_store.modules.cfd.setIsForCFDModalPOA).toHaveBeenCalled();
 
         const uploader = screen.getByTestId('dt_file_upload_input');
         const file = new File(['test file'], 'test_file.png', { type: 'image/png' });
@@ -112,7 +109,6 @@ describe('<CFDPOA />', () => {
         await waitFor(() => {
             expect(mock_props.onSave).toHaveBeenCalled();
             expect(mock_props.onSubmit).toHaveBeenCalled();
-            expect(mock_store.modules.cfd.setIsForCFDModalPOA).toHaveBeenCalled();
         });
     });
 });

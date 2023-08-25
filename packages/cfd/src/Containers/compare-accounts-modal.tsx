@@ -100,7 +100,7 @@ const CompareAccountsModal = observer(
         } = client;
         const { content_flag, show_eu_related_content, CFDs_restricted_countries } = traders_hub;
 
-        const { is_compare_accounts_visible, setIsForCFDModalPOA, toggleCompareAccountsModal } = useCfdStore();
+        const { is_compare_accounts_visible, toggleCompareAccountsModal } = useCfdStore();
         const location = window.location.pathname;
         const is_pre_appstore_setting = location.startsWith('/appstore/traders-hub');
 
@@ -220,7 +220,6 @@ const CompareAccountsModal = observer(
                     should_show_derivx={should_show_derivx}
                     show_eu_related_content={show_eu_related_content}
                     toggleCompareAccounts={toggleCompareAccountsModal}
-                    setIsForCFDModalPOA={setIsForCFDModalPOA}
                 />
             );
         };

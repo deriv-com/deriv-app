@@ -6,3 +6,4 @@ export { default as useCurrencyConfig } from './useCurrencyConfig';
 export { default as useMT5LoginList } from './useMT5LoginList';
 export { default as useTradingPlatformAccounts } from './useTradingPlatformAccounts';
 export { default as useWalletAccountsList } from './useWalletAccountsList';
+export { default as useAvailableWallets } from './useAvailableWallets';

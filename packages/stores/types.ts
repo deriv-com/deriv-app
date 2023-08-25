@@ -188,11 +188,11 @@ type TButtonProps = {
     text: string;
 };
 
-export type TActionProps = TButtonProps & {
+type TActionProps = TButtonProps & {
     route?: string;
 };
 
-export type TNotificationMessage = {
+type TNotificationMessage = {
     action?: TActionProps;
     className?: string;
     cta_btn?: TButtonProps;

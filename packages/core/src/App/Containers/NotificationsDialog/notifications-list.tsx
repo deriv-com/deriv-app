@@ -4,7 +4,9 @@ import { Button, Icon, Text } from '@deriv/components';
 import { BinaryLink } from 'App/Components/Routes';
 import { isEmptyObject, toTitleCase } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { TActionProps, TNotificationMessage } from '@deriv/stores/types';
+
+type TActionProps = ReturnType<typeof useStore>['notifications']['notifications'][0]['action'];
+type TNotificationMessage = ReturnType<typeof useStore>['notifications']['notifications'][0];
 
 const NotificationsList = observer(() => {
     const { notifications } = useStore();

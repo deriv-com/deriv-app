@@ -41,10 +41,11 @@ const WithdrawalSideNotes = observer(() => {
 });
 
 const WithdrawalPageContent = observer(() => {
-    const { client } = useStore();
+    const { client, ui } = useStore();
     const {
         verification_code: { payment_withdraw: verification_code },
     } = client;
+    const { is_mobile } = ui;
     const { iframe, withdraw } = useCashierStore();
     const { iframe_url } = iframe;
     const { is_withdraw_confirmed } = withdraw;
@@ -72,7 +73,7 @@ const WithdrawalPageContent = observer(() => {
         );
 
     return (
-        <PageContainer hide_breadcrumb>
+        <PageContainer hide_breadcrumb right={is_mobile ? <WithdrawalSideNotes /> : undefined}>
             <WithdrawalVerificationEmail />
         </PageContainer>
     );

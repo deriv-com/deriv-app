@@ -48,8 +48,13 @@ export default class GeneralStore extends BaseStore {
         );
     }
 
-    active_container: 'account_transfer' | 'deposit' | 'payment_agent' | 'payment_agent_transfer' | 'withdraw' =
-        'deposit';
+    active_container:
+        | 'account_transfer'
+        | 'deposit'
+        | 'payment_agent'
+        | 'payment_agent_transfer'
+        | 'withdraw'
+        | 'onramp' = 'deposit';
     cashier_route_tab_index = 0;
     deposit_target: '/cashier/deposit' | '/cashier/on-ramp' | '/cashier/p2p' | '/cashier/payment-agent' | '' = '';
     is_cashier_onboarding = true;

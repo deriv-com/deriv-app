@@ -8,16 +8,16 @@ import { getDocumentData, preventEmptyClipboardPaste, generatePlaceholderText, g
 import { TDocumentList, TIDVForm } from 'Types';
 
 const IDVForm = ({
+    class_name,
     errors,
-    touched,
-    values,
     handleBlur,
     handleChange,
-    setFieldValue,
-    class_name,
-    selected_country,
     hide_hint,
-    can_skip_document_verification = false,
+    is_for_new_real_account = false,
+    setFieldValue,
+    selected_country,
+    touched,
+    values,
 }: TIDVForm) => {
     const [document_list, setDocumentList] = React.useState<TDocumentList[]>([]);
     const [document_image, setDocumentImage] = React.useState<string | null>(null);
@@ -33,7 +33,7 @@ const IDVForm = ({
         sample_image: '',
     };
 
-    const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
+    const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(is_for_new_real_account), []);
 
     React.useEffect(() => {
         if (document_data && selected_country && selected_country.value) {
@@ -72,13 +72,9 @@ const IDVForm = ({
                     example_format,
                 };
             });
-            if (can_skip_document_verification) {
-                setDocumentList([...new_document_list, IDV_NOT_APPLICABLE_OPTION]);
-            } else {
-                setDocumentList([...new_document_list]);
-            }
+            setDocumentList([...new_document_list, IDV_NOT_APPLICABLE_OPTION]);
         }
-    }, [document_data, selected_country, can_skip_document_verification, IDV_NOT_APPLICABLE_OPTION]);
+    }, [document_data, selected_country, IDV_NOT_APPLICABLE_OPTION]);
 
     const resetDocumentItemSelected = () => {
         setFieldValue('document_type', default_document, true);

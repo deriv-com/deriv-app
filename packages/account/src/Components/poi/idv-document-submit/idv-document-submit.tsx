@@ -25,19 +25,20 @@ type TIDVDocumentSubmitProps = {
     account_settings: GetSettings;
     getChangeableFields: () => Array<string>;
     handleBack: React.MouseEventHandler;
+    handleSelectionNext: (is_idv_skipping: boolean) => void;
     handleViewComplete: () => void;
-    is_from_external: boolean;
     selected_country: ResidenceList[0];
 };
 
 const IdvDocumentSubmit = ({
     handleBack,
+    handleSelectionNext,
     handleViewComplete,
     selected_country,
-    is_from_external,
     account_settings,
     getChangeableFields,
 }: TIDVDocumentSubmitProps) => {
+    const [is_idv_skipping, setIsIdvSkipping] = React.useState(false);
     const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
     const form_initial_values = filterObjProperties(account_settings, visible_settings) || {};
 
@@ -98,6 +99,12 @@ const IdvDocumentSubmit = ({
     const validateFields = (values: TIDVFormValues) => {
         const errors: Partial<TInputFieldValues> = {};
         const { document_type, document_number, document_additional } = values;
+
+        if (document_type.id === IDV_NOT_APPLICABLE_OPTION.id) {
+            setIsIdvSkipping(true);
+            return errors;
+        }
+
         const needs_additional_document = !!document_type.additional;
 
         errors.document_type = isDocumentTypeValid(document_type);
@@ -122,6 +129,11 @@ const IdvDocumentSubmit = ({
     };
 
     const submitHandler = async (values, { setSubmitting, setErrors }) => {
+        if (is_idv_skipping) {
+            handleSelectionNext(true);
+            return;
+        }
+
         setSubmitting(true);
 
         const request = makeSettingsRequest(values, changeable_fields);
@@ -184,7 +196,6 @@ const IdvDocumentSubmit = ({
                             setFieldValue={setFieldValue}
                             hide_hint={false}
                             selected_country={selected_country}
-                            is_from_external={is_from_external}
                             class_name='idv-layout'
                         />
 
@@ -223,7 +234,7 @@ const IdvDocumentSubmit = ({
                             onClick={handleSubmit}
                             has_effect
                             is_disabled={!dirty || isSubmitting || !isValid}
-                            text={localize('Verify')}
+                            text={is_idv_skipping ? localize('Next') : localize('Verify')}
                             large
                             primary
                         />

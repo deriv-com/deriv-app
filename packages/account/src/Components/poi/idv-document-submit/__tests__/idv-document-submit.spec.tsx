@@ -66,7 +66,6 @@ describe('<IdvDocumentSubmit/>', () => {
                 },
             },
         },
-        is_from_external: false,
         account_settings: {},
         getChangeableFields: jest.fn(() => []),
     };

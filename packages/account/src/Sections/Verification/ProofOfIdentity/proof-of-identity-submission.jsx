@@ -30,7 +30,7 @@ const POISubmission = ({
     const [submission_service, setSubmissionService] = React.useState();
     const [selected_country, setSelectedCountry] = React.useState({});
 
-    const handleSelectionNext = () => {
+    const handleSelectionNext = (is_idv_skipping = false) => {
         if (Object.keys(selected_country).length) {
             const { submissions_left: idv_submissions_left } = idv;
             const { submissions_left: onfido_submissions_left } = onfido;
@@ -38,7 +38,7 @@ const POISubmission = ({
             const is_onfido_supported =
                 selected_country.identity.services.onfido.is_country_supported && selected_country.value !== 'ng';
 
-            if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed) {
+            if (!is_idv_skipping && is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed) {
                 setSubmissionService(service_code.idv);
             } else if (onfido_submissions_left && is_onfido_supported) {
                 setSubmissionService(service_code.onfido);
@@ -128,6 +128,7 @@ const POISubmission = ({
                 case service_code.idv:
                     return (
                         <IdvDocumentSubmit
+                            handleSelectionNext={handleSelectionNext}
                             handleViewComplete={handleViewComplete}
                             handleBack={handleBack}
                             selected_country={selected_country}

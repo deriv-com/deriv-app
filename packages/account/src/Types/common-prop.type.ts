@@ -172,10 +172,10 @@ type TFormProps = {
 };
 
 export type TIDVForm = {
-    selected_country: ResidenceList[0];
-    hide_hint?: boolean;
     class_name?: string;
-    can_skip_document_verification: boolean;
+    hide_hint?: boolean;
+    is_for_new_real_account?: boolean;
+    selected_country: ResidenceList[0];
 } & Partial<FormikHandlers> &
     FormikProps<TFormProps>;
 

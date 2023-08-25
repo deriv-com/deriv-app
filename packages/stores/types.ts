@@ -638,4 +638,6 @@ export type TCoreStores = {
 export type TStores = TCoreStores & {
     exchange_rates: ExchangeRatesStore;
     feature_flags: FeatureFlagsStore;
+    gtm?: Record<string, unknown>;
+    portfolio?: Record<string, unknown>;
 };

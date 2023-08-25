@@ -1,14 +1,6 @@
 import React from 'react';
-import { action, autorun, computed, makeObservable, observable, reaction } from 'mobx';
-import {
-    config,
-    getSavedWorkspaces,
-    load,
-    observer as globalObserver,
-    removeExistingWorkspace,
-    save_types,
-    setColors,
-} from '@deriv/bot-skeleton';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
+import { config, getSavedWorkspaces, load, removeExistingWorkspace, save_types, setColors } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { clearInjectionDiv, tabs_title } from 'Constants/load-modal';
@@ -154,7 +146,7 @@ export default class LoadModalStore implements ILoadModalStore {
 
     get selected_strategy() {
         return (
-            this.dashboard_strategies.find(ws => ws.id === this.selected_strategy_id) || this.dashboard_strategies[0]
+            this.dashboard_strategies.find(ws => ws.id === this.selected_strategy_id) ?? this.dashboard_strategies[0]
         );
     }
 
@@ -255,16 +247,13 @@ export default class LoadModalStore implements ILoadModalStore {
     onActiveIndexChange = (): void => {
         if (this.tab_name === tabs_title.TAB_RECENT) {
             this.previewRecentStrategy(this.selected_strategy_id);
-        } else {
-            // eslint-disable-next-line no-lonely-if
-            if (this.recent_workspace) {
-                setTimeout(() => {
-                    // Dispose of recent workspace when switching away from Recent tab.
-                    // Process in next cycle so user doesn't have to wait.
-                    this.recent_workspace.dispose();
-                    this.recent_workspace = null;
-                });
-            }
+        } else if (this.recent_workspace) {
+            setTimeout(() => {
+                // Dispose of recent workspace when switching away from Recent tab.
+                // Process in next cycle so user doesn't have to wait.
+                this.recent_workspace.dispose();
+                this.recent_workspace = null;
+            });
         }
 
         if (this.tab_name === tabs_title.TAB_LOCAL) {
@@ -275,16 +264,12 @@ export default class LoadModalStore implements ILoadModalStore {
                     this.drop_zone.addEventListener('drop', event => this.handleFileChange(event, false));
                 }
             }
-        } else {
-            // Dispose of local workspace when switching away from Local tab.
-            // eslint-disable-next-line no-lonely-if
-            if (this.local_workspace) {
-                setTimeout(() => {
-                    this.local_workspace.dispose();
-                    this.local_workspace = null;
-                    this.setLoadedLocalFile(null);
-                }, 0);
-            }
+        } else if (this.local_workspace) {
+            setTimeout(() => {
+                this.local_workspace.dispose();
+                this.local_workspace = null;
+                this.setLoadedLocalFile(null);
+            }, 0);
         }
 
         // Forget about drop zone when not on Local tab.

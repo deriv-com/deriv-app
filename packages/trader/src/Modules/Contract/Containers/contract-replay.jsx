@@ -15,9 +15,11 @@ import {
     getDurationPeriod,
     getDurationUnitText,
     getPlatformRedirect,
+    getContractTypeDisplay,
     isAccumulatorContract,
     isDesktop,
     isEmptyObject,
+    isHighLow,
     isMobile,
     isMultiplierContract,
     isTurbosContract,
@@ -38,7 +40,7 @@ import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const ContractReplay = observer(({ contract_id }) => {
-    const { common, contract_replay, ui } = useStore();
+    const { common, contract_replay, feature_flags, ui } = useStore();
     const { contract_store } = contract_replay;
     const {
         is_market_closed,
@@ -76,6 +78,28 @@ const ContractReplay = observer(({ contract_id }) => {
         const is_from_table_row = !isEmptyObject(location.state) ? location.state.from_table_row : false;
         return is_from_table_row ? history.goBack() : routeBackInApp(history);
     };
+
+    React.useEffect(() => {
+        // don't open Contract details page for trade types with disabled feature flag:
+        if (feature_flags.data && contract_info.contract_type) {
+            const trade_feature_flag_prefix = 'trade_';
+            const trade_display_name =
+                contract_info.contract_type &&
+                getContractTypeDisplay(contract_info.contract_type, isHighLow({ shortcode: contract_info.shortcode }))
+                    .props?.i18n_default_text;
+            const is_trade_type_disabled = !!Object.entries(feature_flags.data).find(
+                ([key, value]) =>
+                    !value &&
+                    key.startsWith(trade_feature_flag_prefix) &&
+                    (key.includes(trade_display_name?.slice(0, 4).toLowerCase()) ||
+                        contract_info.contract_type.toLowerCase().includes(key.replace(trade_feature_flag_prefix, '')))
+            );
+            if (is_trade_type_disabled) {
+                onClickClose();
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [feature_flags.data, contract_info.contract_type, contract_info.shortcode]);
 
     if (!contract_info.underlying) return null;
 

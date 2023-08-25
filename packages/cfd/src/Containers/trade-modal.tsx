@@ -118,7 +118,7 @@ const TradeModal = ({
                         size={isMobile() ? 'xxxs' : 'xxs'}
                         weight='bold'
                     >
-                        {localize('Download Deriv cTrader on your phone to trade with the Deriv cTrader account')}
+                        {localize('Download cTrader on your phone to trade with the Deriv cTrader account')}
                     </Text>
                 );
             default:

@@ -1140,7 +1140,10 @@ export default class NotificationStore extends BaseStore {
                 header: localize('Lets get your address verified'),
                 message: localize('Please submit your proof of address.'),
                 type: 'warning',
-                should_show_again: true,
+                action: {
+                    route: routes.proof_of_address,
+                    text: localize('Submit now'),
+                },
             },
             poi_failed: {
                 action: {

@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import { Icon, Popover } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 
 const TradersHubOnboarding = observer(() => {
     const history = useHistory();
@@ -16,7 +16,7 @@ const TradersHubOnboarding = observer(() => {
             <Popover
                 classNameBubble='account-settings-toggle__tooltip'
                 alignment='bottom'
-                message={localize('View onboarding')}
+                message={<Localize i18n_default_text='View onboarding' />}
                 should_disable_pointer_events
                 zIndex='9999'
             >

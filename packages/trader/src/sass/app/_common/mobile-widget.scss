@@ -164,3 +164,21 @@
         color: var(--text-prominent);
     }
 }
+
+#duration_amount_selector {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-gap: 4.65rem;
+    padding: 0.7rem 0.8rem;
+
+    .mobile-widget {
+        &__duration {
+            display: flex;
+            justify-content: flex-start;
+        }
+        &__amount--container {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}

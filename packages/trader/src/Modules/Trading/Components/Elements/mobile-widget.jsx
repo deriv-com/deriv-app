@@ -25,6 +25,7 @@ const MobileWidget = observer(({ toggleDigitsWidget, is_collapsed }) => {
     } = trade_store;
 
     const [is_open, setIsOpen] = React.useState(false);
+    const [tab_index, setTabIndex] = React.useState(0);
 
     React.useEffect(() => {
         assertDurationIsWithinBoundary();
@@ -44,7 +45,11 @@ const MobileWidget = observer(({ toggleDigitsWidget, is_collapsed }) => {
         }
     };
 
-    const toggleWidget = () => setIsOpen(!is_open);
+    // tab_index 0 is duration and  1 is amount
+    const toggleWidget = tab_index => {
+        setTabIndex(tab_index);
+        setIsOpen(!is_open);
+    };
 
     const getHumanReadableDuration = () => {
         if (!duration_unit) return '';
@@ -88,15 +93,19 @@ const MobileWidget = observer(({ toggleDigitsWidget, is_collapsed }) => {
             {is_multiplier ? (
                 <MultiplierAmountWidget />
             ) : (
-                <div id='duration_amount_selector' className='mobile-widget' onClick={toggleWidget}>
-                    <div className='mobile-widget__duration'>{getHumanReadableDuration()}</div>
-                    <div className='mobile-widget__amount'>
-                        <Money amount={amount} currency={currency} show_currency />
+                <div id='duration_amount_selector' className='mobile-widget'>
+                    <div className='mobile-widget__duration' onClick={() => toggleWidget(0)}>
+                        {getHumanReadableDuration()}
                     </div>
-                    <div className='mobile-widget__type'>{stakeOrPayout()}</div>
+                    <div className='mobile-widget__amount--container' onClick={() => toggleWidget(1)}>
+                        <div className='mobile-widget__amount'>
+                            <Money amount={amount} currency={currency} show_currency />
+                        </div>
+                        <div className='mobile-widget__type'>{stakeOrPayout()}</div>
+                    </div>
                 </div>
             )}
-            <TradeParamsModal is_open={is_open} toggleModal={toggleWidget} />
+            <TradeParamsModal is_open={is_open} toggleModal={() => toggleWidget(0)} tab_index={tab_index} />
             {isVisible('last_digit') && is_collapsed && (
                 <div className='mobile-widget' onClick={toggleDigitsWidget}>
                     <div className='mobile-widget__amount'>

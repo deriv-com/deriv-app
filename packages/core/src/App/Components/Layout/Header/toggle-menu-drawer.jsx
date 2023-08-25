@@ -246,6 +246,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 setTransitionExit(false);
             }, 400);
         }
+        setIsPlatformSwitcherOpen(false);
         expandSubMenu(false);
     }, [expandSubMenu, is_open]);
 
@@ -388,7 +389,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 onToggle={is_expanded => {
                     expandSubMenu(is_expanded);
                     setIsLanguageChange(is_changing => !is_changing);
-                    setIsPlatformSwitcherOpen(false);
                 }}
                 submenu_toggle_class='dc-mobile-drawer__submenu-toggle--hidden'
             >
@@ -510,7 +510,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         is_landing_company_loaded={is_landing_company_loaded}
                                         is_logged_in={is_logged_in}
                                         is_logging_in={is_logging_in}
-                                        is_open={is_platform_switcher_open && !is_language_change}
+                                        is_open={is_platform_switcher_open}
                                         platform_config={platform_config}
                                         toggleDrawer={toggleDrawer}
                                         current_language={current_language}

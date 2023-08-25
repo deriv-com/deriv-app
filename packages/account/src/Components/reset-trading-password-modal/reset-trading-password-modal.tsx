@@ -1,9 +1,8 @@
 import React, { ChangeEvent } from 'react';
-import PropTypes from 'prop-types';
 import { Formik, Form, FormikValues, FormikErrors } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text, FormSubmitButton } from '@deriv/components';
-import { getErrorMessages, validPassword, validLength, WS, getCFDPlatformLabel } from '@deriv/shared';
+import { getErrorMessages, validPassword, validLength, WS, getCFDPlatformLabel, TPlatform } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import './reset-trading-password-modal.scss';
 
@@ -11,7 +10,7 @@ type TResetTradingPassword = {
     setDialogTitleFunc?: (value: boolean) => void;
     toggleResetTradingPasswordModal: (value: boolean) => void;
     verification_code: string;
-    platform: 'dxtrade' | 'mt5' | 'derivez';
+    platform: TPlatform;
 };
 
 const ResetTradingPassword = ({
@@ -248,14 +247,4 @@ export const ResetTradingPasswordModal = ({
             />
         </Dialog>
     );
-};
-
-ResetTradingPasswordModal.propTypes = {
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
-    is_loading: PropTypes.bool,
-    is_visible: PropTypes.bool,
-    toggleResetTradingPasswordModal: PropTypes.func,
-    verification_code: PropTypes.string,
-    platform: PropTypes.string,
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { CFD_PLATFORMS } from '@deriv/shared';
+import { CFD_PLATFORMS, TPlatform } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import ResetTradingPasswordModal from '../Components/reset-trading-password-modal';
 
@@ -15,8 +15,7 @@ const ResetTradingPassword = observer(() => {
     } = ui;
     const location = useLocation();
     const query_params = new URLSearchParams(location.search);
-    const cfd_platform = /^trading_platform_(.*)_password_reset$/.exec(query_params.get('action') || '')?.[1];
-    const [platform] = React.useState(cfd_platform);
+    const platform = /^trading_platform_(.*)_password_reset$/.exec(query_params.get('action') || '')?.[1];
     const verification_code =
         platform === CFD_PLATFORMS.MT5
             ? client.verification_code.trading_platform_mt5_password_reset
@@ -24,7 +23,7 @@ const ResetTradingPassword = observer(() => {
 
     return (
         <ResetTradingPasswordModal
-            platform={platform}
+            platform={platform as TPlatform}
             enableApp={enableApp}
             disableApp={disableApp}
             toggleResetTradingPasswordModal={setResetTradingPasswordModalOpen}
@@ -34,5 +33,7 @@ const ResetTradingPassword = observer(() => {
         />
     );
 });
+
+ResetTradingPassword.displayName = 'ResetTradingPassword';
 
 export default ResetTradingPassword;

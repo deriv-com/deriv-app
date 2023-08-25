@@ -71,7 +71,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const { is_from_derivgo } = common;
     const { is_demo } = traders_hub;
     const { is_cashier_visible: is_visible, toggleCashier, toggleReadyToDepositModal } = ui;
-    const { is_account_setting_loaded, is_logged_in, is_logging_in, is_svg } = client;
+    const { currency, is_account_setting_loaded, is_logged_in, is_logging_in, is_svg } = client;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
     const p2p_notification_count = useP2PNotificationCount();
@@ -79,7 +79,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         data: is_p2p_enabled,
         isSuccess: is_p2p_enabled_success,
         isLoading: is_p2p_enabled_loading,
-        is_p2p_supported_currency,
     } = useIsP2PEnabled();
 
     React.useEffect(() => {
@@ -124,7 +123,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                     error.setErrorMessage({
                         code: 'ShareMyAdsError',
                         message:
-                            !is_p2p_supported_currency && is_svg
+                            currency !== 'USD' && is_svg
                                 ? localize('Deriv P2P is currently unavailable in this currency.')
                                 : localize('Deriv P2P is currently unavailable in your country.'),
                     });

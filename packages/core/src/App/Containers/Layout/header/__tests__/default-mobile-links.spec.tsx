@@ -10,9 +10,9 @@ jest.mock('@deriv/components', () => {
         Popover: () => <div>mockedPopover</div>,
     };
 });
-jest.mock('App/Components/Routes', () => jest.fn(() => 'mockedBinaryLink'));
-jest.mock('../show-notifications', () => jest.fn(() => 'mockedShowNotifications'));
-jest.mock('../traders-hub-onboarding', () => jest.fn(() => 'mockedTradersHubOnboarding'));
+jest.mock('App/Components/Routes', () => jest.fn(() => 'MockedBinaryLink'));
+jest.mock('../show-notifications', () => jest.fn(() => 'MockedShowNotifications'));
+jest.mock('../traders-hub-onboarding', () => jest.fn(() => 'MockedTradersHubOnboarding'));
 
 describe('DefaultMobileLinks', () => {
     const mock_props: React.ComponentProps<typeof DefaultMobileLinks> = {
@@ -21,7 +21,7 @@ describe('DefaultMobileLinks', () => {
 
     it('should render and display the "DefaultMobileLinks" component on screen', () => {
         render(<DefaultMobileLinks {...mock_props} />);
-        expect(screen.getByText('mockedTradersHubOnboarding')).toBeInTheDocument();
+        expect(screen.getByText('MockedTradersHubOnboarding')).toBeInTheDocument();
     });
 
     it('should display the cashier button', () => {

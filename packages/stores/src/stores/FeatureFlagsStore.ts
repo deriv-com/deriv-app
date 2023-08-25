@@ -1,8 +1,7 @@
 import BaseStore from './BaseStore';
 
 const FLAGS = {
-    foo: false,
-    trade_rise_fall: false,
+    trade_sharkfin: false,
     // Add your flag here 🚀 Note: Trade type keys should start with `trade_` prefix.
 } satisfies Record<string, boolean>;
 

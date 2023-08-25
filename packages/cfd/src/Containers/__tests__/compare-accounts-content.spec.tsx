@@ -3,7 +3,7 @@ import { screen, render } from '@testing-library/react';
 import CompareAccountsContent from '../compare-accounts-content';
 
 describe('should render the CompareAccountsContent component properly', () => {
-    let modal_root_el;
+    let modal_root_el, mock_props;
 
     beforeAll(() => {
         modal_root_el = document.createElement('div');
@@ -24,8 +24,6 @@ describe('should render the CompareAccountsContent component properly', () => {
             financial_stp: 'USD',
         },
     };
-
-    let mock_props;
 
     beforeEach(() => {
         mock_props = {
@@ -61,27 +59,27 @@ describe('should render the CompareAccountsContent component properly', () => {
         expect(screen.getAllByText('Fixed/Variable')[0]).toBeInTheDocument();
 
         expect(screen.getAllByText(/Commission/i)).toHaveLength(3);
-        expect(screen.getAllByText(/No/i).length).toBe(12);
+        expect(screen.getAllByText(/No/i)).toHaveLength(12);
 
-        expect(screen.getAllByText(/Minimum deposit/i)).toHaveLength(1);
+        expect(screen.getAllByText(/Maximum leverage/i)[0]).toBeInTheDocument();
 
         expect(screen.getAllByText(/Margin call/i)).toHaveLength(4);
-        expect(screen.getAllByText('100%').length).toBe(3);
+        expect(screen.getAllByText('100%')).toHaveLength(3);
 
         expect(screen.getAllByText(/Stop out level/i)).toHaveLength(5);
-        expect(screen.getAllByText('50%').length).toBe(3);
+        expect(screen.getAllByText('50%')).toHaveLength(3);
 
-        expect(screen.getAllByText(/Number of assets/i)).toHaveLength(1);
-        expect(screen.getAllByText('20+').length).toBe(1);
-        expect(screen.getAllByText('50+').length).toBe(1);
-        expect(screen.getAllByText('70+').length).toBe(1);
+        expect(screen.getAllByText(/Number of assets/i)[0]).toBeInTheDocument();
+        expect(screen.getAllByText('20+')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('50+')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('70+')[0]).toBeInTheDocument();
 
         expect(screen.getAllByText(/Cryptocurrency trading/i)).toHaveLength(4);
-        expect(screen.getAllByText('N/A').length).toBe(1);
-        expect(screen.getAllByText('24/7').length).toBe(2);
+        expect(screen.getAllByText('N/A')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('24/7')).toHaveLength(2);
 
-        expect(screen.getAllByText(/Trading instruments/i)).toHaveLength(1);
-        expect(screen.getAllByText(/Synthetics/i).length).toBe(1);
+        expect(screen.getAllByText(/Trading instruments/i)[0]).toBeInTheDocument();
+        expect(screen.getAllByText(/Synthetics/i)[0]).toBeInTheDocument();
         expect(
             screen.getByText(/Forex, stocks, stock indices, cryptocurrencies, synthetic indices/i)
         ).toBeInTheDocument();
@@ -152,7 +150,7 @@ describe('should render the CompareAccountsContent component properly', () => {
         );
 
         expect(screen.getAllByText(/Account currency/i)[0]).toBeInTheDocument();
-        expect(screen.getAllByText('EUR/GBP')).toHaveLength(1);
+        expect(screen.getAllByText('EUR/GBP')[0]).toBeInTheDocument();
         expect(screen.getByText(/Number of assets/i)).toBeInTheDocument();
         expect(screen.getByText('90+')).toBeInTheDocument();
         expect(

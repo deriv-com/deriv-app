@@ -23,7 +23,7 @@ export type TCFDPersonalDetailsContainerProps = {
     onSubmit: (index: number, value: { [key: string]: string }) => void;
 };
 
-type CFD_Platform = 'dxtrade' | 'mt5';
+export type CFD_Platform = 'dxtrade' | 'mt5';
 
 export type TCFDChangePasswordConfirmationProps = {
     confirm_label?: string;
@@ -110,6 +110,7 @@ export type TInvestorPasswordManager = {
     setPasswordType: (value: string) => void;
     toggleModal: () => void;
     validatePassword: (values: { old_password: string; new_password: string; password_type: string }) => void | object;
+    onClick?: () => void;
 };
 
 export type TCountdownComponent = {

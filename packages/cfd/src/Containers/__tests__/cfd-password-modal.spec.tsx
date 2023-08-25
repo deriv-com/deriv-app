@@ -32,6 +32,7 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 jest.mock('../../Assets/svgs/trading-platform', () => jest.fn(() => 'MockedMT5Icon'));
+
 describe('<CFDPasswordModal/>', () => {
     const mockFn = jest.fn();
     const mockDisableCFDPasswordModalFn = jest.fn();
@@ -42,7 +43,7 @@ describe('<CFDPasswordModal/>', () => {
     const history = createBrowserHistory();
     let modal_root_el;
 
-    let mockRootStore = {
+    const mock_root_store = {
         client: {
             email: '',
             account_status: {},
@@ -77,7 +78,7 @@ describe('<CFDPasswordModal/>', () => {
 
     const mock_props = {
         form_error: '',
-        history: history,
+        history,
         platform: 'mt5',
     };
 
@@ -96,9 +97,15 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should render create Password modal when valid conditions are met', async () => {
-        const store = mockStore(mockRootStore);
+        const store = mockStore(mock_root_store);
 
-        store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
+        store.client.account_status = {
+            status: ['mt5_password_not_set', 'dxtrade_password_not_set'],
+            currency_config: {},
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+        };
 
         render(
             <Router history={history}>
@@ -112,9 +119,15 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should render password form with Try later button and forget password button', async () => {
-        const store = mockStore(mockRootStore);
+        const store = mockStore(mock_root_store);
 
-        store.client.account_status = { status: [] };
+        store.client.account_status = {
+            status: [],
+            currency_config: {},
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+        };
         store.modules.cfd.error_type = 'PasswordReset';
 
         render(
@@ -131,9 +144,15 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should close modal when Forget Password button is clicked', async () => {
-        const store = mockStore(mockRootStore);
+        const store = mockStore(mock_root_store);
 
-        store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
+        store.client.account_status = {
+            status: ['mt5_password_not_set', 'dxtrade_password_not_set'],
+            currency_config: {},
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+        };
         store.modules.cfd.error_type = 'PasswordReset';
 
         render(
@@ -155,9 +174,15 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should invoke verifyEmail when forgot password is clicked', async () => {
-        const store = mockStore(mockRootStore);
+        const store = mockStore(mock_root_store);
 
-        store.client.account_status = { status: [], category: 'Real' };
+        store.client.account_status = {
+            status: [],
+            currency_config: {},
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+        };
         store.modules.cfd.error_type = 'PasswordReset';
         store.modules.cfd.account_type = { category: 'real', type: 'financial' };
 
@@ -179,9 +204,15 @@ describe('<CFDPasswordModal/>', () => {
     it('should display password field for user to enter the password and hold the entered value', async () => {
         const user_input = 'zo8lAet#2q01Ih';
 
-        const store = mockStore(mockRootStore);
+        const store = mockStore(mock_root_store);
 
-        store.client.account_status = { status: [], category: 'Real' };
+        store.client.account_status = {
+            status: [],
+            currency_config: {},
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+        };
 
         render(
             <Router history={history}>
@@ -198,17 +229,23 @@ describe('<CFDPasswordModal/>', () => {
         expect(await screen.findByRole('button', { name: /add account/i })).toBeInTheDocument();
 
         await waitFor(() => {
-            expect(ele_password_field.value).toEqual(user_input);
+            expect((ele_password_field as HTMLInputElement).value).toEqual(user_input);
         });
     });
 
     it('should display error message when password does not meet requirements', async () => {
-        validPassword.mockReturnValue(false);
+        (validPassword as jest.Mock).mockReturnValue(false);
         const user_input = 'demo@deriv.com';
 
-        const store = mockStore(mockRootStore);
+        const store = mockStore(mock_root_store);
 
-        store.client.account_status = { status: [], category: 'Real' };
+        store.client.account_status = {
+            status: [],
+            currency_config: {},
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+        };
         store.client.email = user_input;
 
         render(
@@ -232,11 +269,17 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should display error message when password contain non-english characters', async () => {
-        validPassword.mockReturnValue(false);
+        (validPassword as jest.Mock).mockReturnValue(false);
 
-        const store = mockStore(mockRootStore);
+        const store = mockStore(mock_root_store);
 
-        store.client.account_status = { status: [], category: 'Real' };
+        store.client.account_status = {
+            status: [],
+            currency_config: {},
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+        };
         store.client.email = 'demo@deriv.com';
 
         render(
@@ -264,9 +307,15 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should show transfer message on successful DerivX account creation', async () => {
-        const store = mockStore(mockRootStore);
+        const store = mockStore(mock_root_store);
 
-        store.client.account_status = { status: [], category: 'Real' };
+        store.client.account_status = {
+            status: [],
+            currency_config: {},
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+        };
         store.modules.cfd.account_type = { category: 'real', type: 'financial' };
         store.modules.cfd.is_cfd_success_dialog_enabled = true;
         store.modules.cfd.error_type = 'PasswordReset';
@@ -286,9 +335,15 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should close the dialog when you click on ok button', async () => {
-        const store = mockStore(mockRootStore);
+        const store = mockStore(mock_root_store);
 
-        store.client.account_status = { status: [], category: 'Real' };
+        store.client.account_status = {
+            status: [],
+            currency_config: {},
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+        };
         store.modules.cfd.account_type = { category: 'real', type: 'financial' };
         store.modules.cfd.is_cfd_success_dialog_enabled = true;
         store.modules.cfd.jurisdiction_selected_shortcode = 'bvi';
@@ -312,7 +367,7 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should show success dialog with buttons to Transfer now or later when password has been updated successfully', async () => {
-        const store = mockStore(mockRootStore);
+        const store = mockStore(mock_root_store);
 
         store.modules.cfd.account_type = { category: 'real', type: 'financial' };
         store.modules.cfd.is_cfd_success_dialog_enabled = true;
@@ -331,9 +386,15 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should display Derived icon in Success Dialog', async () => {
-        const store = mockStore(mockRootStore);
+        const store = mockStore(mock_root_store);
 
-        store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
+        store.client.account_status = {
+            status: ['mt5_password_not_set', 'dxtrade_password_not_set'],
+            currency_config: {},
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+        };
         store.modules.cfd.account_type = { category: 'real', type: 'synthetic' };
         store.modules.cfd.error_type = 'PasswordError';
         store.modules.cfd.is_cfd_success_dialog_enabled = true;
@@ -351,9 +412,15 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should display icon in Success Dialog in tradershub', async () => {
-        const store = mockStore(mockRootStore);
+        const store = mockStore(mock_root_store);
 
-        store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
+        store.client.account_status = {
+            status: ['mt5_password_not_set', 'dxtrade_password_not_set'],
+            currency_config: {},
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+        };
         store.modules.cfd.account_type = { category: 'real', type: 'synthetic' };
         store.modules.cfd.error_type = 'PasswordError';
         store.modules.cfd.is_cfd_success_dialog_enabled = true;
@@ -371,9 +438,15 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should display Financial icon in Success Dialog', async () => {
-        const store = mockStore(mockRootStore);
+        const store = mockStore(mock_root_store);
 
-        store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
+        store.client.account_status = {
+            status: ['mt5_password_not_set', 'dxtrade_password_not_set'],
+            currency_config: {},
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+        };
         store.modules.cfd.account_type = { category: 'real', type: 'financial' };
         store.modules.cfd.error_type = 'PasswordError';
         store.modules.cfd.is_cfd_success_dialog_enabled = true;
@@ -391,9 +464,15 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should display IcRebrandingDerivx icon in Success Dialog', async () => {
-        const store = mockStore(mockRootStore);
+        const store = mockStore(mock_root_store);
 
-        store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
+        store.client.account_status = {
+            status: ['mt5_password_not_set', 'dxtrade_password_not_set'],
+            currency_config: {},
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+        };
         store.modules.cfd.account_type = { category: 'real', type: 'all' };
         store.modules.cfd.error_type = 'PasswordError';
         store.modules.cfd.is_cfd_success_dialog_enabled = true;
@@ -411,9 +490,15 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should display IcCfds icon in Success Dialog', async () => {
-        const store = mockStore(mockRootStore);
+        const store = mockStore(mock_root_store);
 
-        store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
+        store.client.account_status = {
+            status: ['mt5_password_not_set', 'dxtrade_password_not_set'],
+            currency_config: {},
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+        };
         store.traders_hub.show_eu_related_content = true;
         store.modules.cfd.account_type = { category: 'real', type: 'financial' };
         store.modules.cfd.error_type = 'PasswordError';
@@ -431,9 +516,15 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should invoke verifyEmail for DerivX when Forgot password is clicked', async () => {
-        const store = mockStore(mockRootStore);
+        const store = mockStore(mock_root_store);
 
-        store.client.account_status = { status: [], category: 'Real' };
+        store.client.account_status = {
+            status: [],
+            currency_config: {},
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+        };
         store.client.email = 'demo@deriv.com';
         store.modules.cfd.account_type = { category: 'demo', type: 'financial' };
         store.modules.cfd.error_type = 'PasswordReset';
@@ -459,11 +550,17 @@ describe('<CFDPasswordModal/>', () => {
 
     it('should create Deriv MT5 password when clicked on Create Deriv MT5 password', async () => {
         const user_input = 'zo8lAet#2q01Ih';
-        validPassword.mockReturnValue(true);
+        (validPassword as jest.Mock).mockReturnValue(true);
 
-        const store = mockStore(mockRootStore);
+        const store = mockStore(mock_root_store);
 
-        store.client.account_status = { status: ['mt5_password_not_set'], category: 'Real' };
+        store.client.account_status = {
+            status: ['mt5_password_not_set'],
+            currency_config: {},
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+        };
         store.modules.cfd.account_type = { category: 'real', type: 'financial' };
 
         render(
@@ -484,11 +581,17 @@ describe('<CFDPasswordModal/>', () => {
 
     it('should create DerivX platform password when clicked on Add account', async () => {
         const user_input = 'zo8lAet#2q01Ih';
-        validPassword.mockReturnValue(true);
+        (validPassword as jest.Mock).mockReturnValue(true);
 
-        const store = mockStore(mockRootStore);
+        const store = mockStore(mock_root_store);
 
-        store.client.account_status = { status: ['mt5_password_not_set'], category: 'Real' };
+        store.client.account_status = {
+            status: ['mt5_password_not_set'],
+            currency_config: {},
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+        };
         store.modules.cfd.account_type = { category: 'real', type: 'financial' };
 
         render(

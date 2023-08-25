@@ -1,5 +1,6 @@
 import { DetailsOfEachMT5Loginid, Mt5NewAccount, VerifyEmailResponse } from '@deriv/api-types';
 import { TTradingPlatformAvailableAccount } from 'Components/props.types';
+import { CFD_Platform } from 'Containers/props.types';
 import { TCFDPasswordFormValues } from 'Containers/cfd-password-modal';
 import { TDerivezCompanies, TDxCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 import { FormikHelpers } from 'formik';
@@ -45,7 +46,7 @@ export type TCFDStore = {
     dxtrade_companies: TDxCompanies;
     derivez_companies: TDerivezCompanies;
     mt5_companies: TMtCompanies;
-    platform: string;
+    platform: CFD_Platform;
     topUpVirtual: (platform: string) => void;
     current_account?: DetailsOfEachMT5Loginid & {
         display_login: string;

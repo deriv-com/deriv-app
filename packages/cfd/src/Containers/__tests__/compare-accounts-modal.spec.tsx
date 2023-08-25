@@ -7,7 +7,7 @@ import { mockStore } from '@deriv/stores';
 jest.mock('../mt5-compare-table-content', () => jest.fn(() => 'MockedMt5CompareTableContent'));
 
 describe('CompareAccountsModal', () => {
-    let modal_root_el;
+    let modal_root_el, mock_props;
 
     beforeAll(() => {
         modal_root_el = document.createElement('div');
@@ -19,7 +19,6 @@ describe('CompareAccountsModal', () => {
         document.body.removeChild(modal_root_el);
     });
 
-    let mock_props;
     beforeEach(() => {
         mock_props = {
             ui: {

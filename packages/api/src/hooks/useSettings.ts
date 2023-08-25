@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import useFetch from '../useFetch';
 import useInvalidateQuery from '../useInvalidateQuery';
 import useRequest from '../useRequest';
@@ -11,11 +11,11 @@ type TSetSettingsPayload = NonNullable<
 const useSettings = () => {
     const { data, ...rest } = useFetch('get_settings');
     const invalidate = useInvalidateQuery();
-    const { mutate } = useRequest('set_settings', {
+    const { mutate, ...mutate_rest } = useRequest('set_settings', {
         onSuccess: () => invalidate('get_settings'),
     });
 
-    const set_settings = useCallback(
+    const setSettings = useCallback(
         (values: NonNullable<TSetSettingsPayload>) => mutate({ payload: { ...values } }),
         [mutate]
     );
@@ -26,7 +26,8 @@ const useSettings = () => {
         /** User information and settings */
         data: modified_data,
         /** Function to update user settings */
-        set_settings,
+        setSettings,
+        mutation: mutate_rest,
         ...rest,
     };
 };

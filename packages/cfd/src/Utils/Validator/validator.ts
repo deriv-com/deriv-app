@@ -3,7 +3,7 @@ import { getPreBuildDVRs } from '@deriv/shared';
 import Error from './errors';
 import { TCoreStores } from '@deriv/stores/types';
 
-type Rule = {
+type TRule = {
     name: string;
     options: {
         message?: string;
@@ -17,20 +17,20 @@ type Rule = {
     validator?: ValidatorFunction;
 };
 
-type Rules = {
-    [key: string]: Rule[];
+type TRules = {
+    [key: string]: TRule[];
 };
 
 type ValidatorFunction = (
     input: string,
-    options: Rule['options'],
+    options: TRule['options'],
     store: TCoreStores,
     inputObject: Record<string, string>
 ) => boolean;
 
-type RuleObject = {
+type TRuleObject = {
     name: string;
-    options: Rule['options'];
+    options: TRule['options'];
     validator?: ValidatorFunction;
 };
 
@@ -43,12 +43,12 @@ type ValidationResult = {
 
 class Validator {
     input: { [key: string]: string };
-    rules: Rules;
+    rules: TRules;
     store: TCoreStores;
     errors: Error;
     error_count: number;
 
-    constructor(input: { [key: string]: any }, rules: Rules, store: TCoreStores) {
+    constructor(input: { [key: string]: any }, rules: TRules, store: TCoreStores) {
         this.input = input;
         this.rules = rules;
         this.store = store;
@@ -63,7 +63,7 @@ class Validator {
      * @param {string} attribute
      * @param {object} rule
      */
-    addFailure(attribute: string, rule: Rule, error_message?: string): void {
+    addFailure(attribute: string, rule: TRule, error_message?: string): void {
         let message = error_message || rule.options.message || getPreBuildDVRs()[rule.name].message();
         if (rule.name === 'length') {
             message = template(message, [
@@ -89,7 +89,7 @@ class Validator {
                 return;
             }
 
-            this.rules[attribute].forEach((rule: Rule) => {
+            this.rules[attribute].forEach((rule: TRule) => {
                 const ruleObject = Validator.getRuleObject(rule as unknown as TRuleString);
 
                 if (!ruleObject.validator || typeof ruleObject.validator !== 'function') {
@@ -142,9 +142,9 @@ class Validator {
      * @param {array} rule
      * @return {object}
      */
-    static getRuleObject(rule: TRuleString): RuleObject {
+    static getRuleObject(rule: TRuleString): TRuleObject {
         const is_rule_string = typeof rule === 'string';
-        const rule_object: RuleObject = {
+        const rule_object: TRuleObject = {
             name: is_rule_string ? rule : rule[0],
             options: is_rule_string ? {} : rule[1] || {},
         };

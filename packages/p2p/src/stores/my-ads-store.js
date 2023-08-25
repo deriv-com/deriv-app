@@ -145,7 +145,7 @@ export default class MyAdsStore extends BaseStore {
                         const { status } = get_account_status?.authentication?.identity ?? {};
                         this.root_store.general_store.setPoiStatus(status);
                     } else {
-                        this.setErrorMessage(response?.error);
+                        this.setErrorMessage(response.error);
                     }
                 }
                 this.setIsLoading(false);

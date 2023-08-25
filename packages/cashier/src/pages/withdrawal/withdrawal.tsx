@@ -73,7 +73,7 @@ const WithdrawalPageContent = observer(() => {
         );
 
     return (
-        <PageContainer hide_breadcrumb right={is_mobile ? <WithdrawalSideNotes /> : undefined}>
+        <PageContainer hide_breadcrumb right={currency_config.is_crypto ? <WithdrawalSideNotes /> : undefined}>
             <WithdrawalVerificationEmail />
         </PageContainer>
     );

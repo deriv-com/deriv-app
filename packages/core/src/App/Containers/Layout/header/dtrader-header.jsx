@@ -12,6 +12,7 @@ import NewVersionNotification from 'App/Containers/new-version-notification.jsx'
 import { connect } from 'Stores/connect';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
+
 import { TradersHubHomeButton } from './traders-hub-header';
 
 const Divider = () => <div className='header__menu--dtrader--separator' />;

@@ -396,14 +396,14 @@ type TClientStore = {
 };
 
 type TCommonStoreError = {
-    app_routing_history: TAppRoutingHistory[];
+    app_routing_history?: TAppRoutingHistory[];
     header: string | JSX.Element;
     message: string | JSX.Element;
     redirect_label: string;
-    redirect_to: string;
+    redirect_to?: string;
     redirectOnClick: (() => void) | null;
-    setError: (has_error: boolean, error: React.ReactNode | null) => void;
-    should_clear_error_on_click: boolean;
+    setError?: (has_error: boolean, error: React.ReactNode | null) => void;
+    should_clear_error_on_click?: boolean;
     should_show_refresh: boolean;
     type?: string;
 };

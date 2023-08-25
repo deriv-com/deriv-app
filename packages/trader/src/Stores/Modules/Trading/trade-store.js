@@ -182,7 +182,6 @@ export default class TradeStore extends BaseStore {
             'barrier_2',
             'basis',
             'contract_start_type',
-            'contract_type',
             'duration',
             'duration_unit',
             'expiry_date',
@@ -203,7 +202,7 @@ export default class TradeStore extends BaseStore {
             'take_profit',
             'is_trade_params_expanded',
         ];
-        const session_storage_properties = ['symbol'];
+        const session_storage_properties = ['contract_type', 'symbol'];
         super({
             root_store,
             local_storage_properties,

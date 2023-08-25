@@ -60,12 +60,15 @@ const ApiToken = () => {
             is_delete_success: false,
         }
     );
-    let timeout_deletetokens: NodeJS.Timeout | undefined;
+    const timeout_ref = React.useRef<NodeJS.Timeout | undefined>();
 
     React.useEffect(() => {
         getApiTokens();
 
-        return () => setState({ dispose_token: '' });
+        return () => {
+            setState({ dispose_token: '' });
+            clearTimeout(timeout_ref.current);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -160,15 +163,13 @@ const ApiToken = () => {
     const deleteToken = async (token: string) => {
         setState({ is_delete_loading: true });
 
-        clearTimeout(timeout_deletetokens);
-
         const token_response = await WS.authorized.apiToken({ api_token: 1, delete_token: token });
 
         populateTokenResponse(token_response);
 
         if (isMounted()) setState({ is_delete_loading: false, is_delete_success: true });
 
-        timeout_deletetokens = setTimeout(() => {
+        timeout_ref.current = setTimeout(() => {
             if (isMounted()) setState({ is_delete_success: false });
         }, 500);
     };

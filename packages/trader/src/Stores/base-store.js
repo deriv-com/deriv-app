@@ -85,6 +85,7 @@ export default class BaseStore {
 
         const { root_store, local_storage_properties, session_storage_properties, validation_rules, store_name } =
             options;
+
         Object.defineProperty(this, 'root_store', {
             enumerable: false,
             writable: true,
@@ -106,6 +107,7 @@ export default class BaseStore {
             if (!store_name) {
                 throw new Error('store_name is required for local/session storage');
             }
+
             Object.defineProperty(this, 'store_name', {
                 value: store_name,
                 enumerable: false,
@@ -187,6 +189,7 @@ export default class BaseStore {
             if (value !== null) return value;
             return undefined;
         });
+
         if (storage === BaseStore.STORAGES.LOCAL_STORAGE) {
             localStorage.setItem(this.store_name, snapshot);
         } else if (storage === BaseStore.STORAGES.SESSION_STORAGE) {

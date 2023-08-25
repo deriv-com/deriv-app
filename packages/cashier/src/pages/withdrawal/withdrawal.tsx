@@ -52,7 +52,7 @@ const WithdrawalPageContent = observer(() => {
 
     if (!currency_config.is_crypto && (verification_code || iframe_url))
         return (
-            <PageContainer hide_breadcrumb right={<WithdrawalSideNotes />}>
+            <PageContainer hide_breadcrumb>
                 <Withdraw />
             </PageContainer>
         );

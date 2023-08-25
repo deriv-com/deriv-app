@@ -200,6 +200,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
     const [is_submenu_expanded, expandSubMenu] = React.useState(false);
     const [is_language_change, setIsLanguageChange] = React.useState(false);
+    const [is_platform_switcher_open, setIsPlatformSwitcherOpen] = React.useState(false);
     const { is_appstore } = React.useContext(PlatformContext);
     const timeout = React.useRef();
     const history = useHistory();
@@ -387,6 +388,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 onToggle={is_expanded => {
                     expandSubMenu(is_expanded);
                     setIsLanguageChange(is_changing => !is_changing);
+                    setIsPlatformSwitcherOpen(false);
                 }}
                 submenu_toggle_class='dc-mobile-drawer__submenu-toggle--hidden'
             >
@@ -442,6 +444,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                     onClick={() => {
                         if (!is_language_change) {
                             setIsLanguageChange(true);
+                            setIsPlatformSwitcherOpen(false);
                         }
                     }}
                 >
@@ -507,10 +510,12 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         is_landing_company_loaded={is_landing_company_loaded}
                                         is_logged_in={is_logged_in}
                                         is_logging_in={is_logging_in}
+                                        is_open={is_platform_switcher_open && !is_language_change}
                                         platform_config={platform_config}
                                         toggleDrawer={toggleDrawer}
                                         current_language={current_language}
                                         setTogglePlatformType={setTogglePlatformType}
+                                        setIsOpen={setIsPlatformSwitcherOpen}
                                     />
                                 </MobileDrawer.SubHeader>
                             )}

@@ -19,11 +19,22 @@ const PlatformSwitcher = ({
     is_landing_company_loaded,
     is_logged_in,
     is_logging_in,
+    is_open: is_switcher_open,
+    setIsOpen: setIsSwitcherOpen,
     setTogglePlatformType,
 }) => {
-    const [is_open, setIsOpen] = React.useState(false);
-
+    const [is_platform_switcher_open, setIsPlatformSwitcherOpen] = React.useState(false);
     const is_close_drawer_fired_ref = React.useRef(false);
+    const is_open = is_switcher_open || is_platform_switcher_open;
+
+    const handleToggle = (state = !is_open) => {
+        if (setIsSwitcherOpen) {
+            setIsSwitcherOpen(state);
+        } else {
+            // use local state if setIsOpen prop is not provided by parent
+            setIsPlatformSwitcherOpen(state);
+        }
+    };
 
     React.useEffect(() => {
         platform_config.forEach(data => {
@@ -44,7 +55,7 @@ const PlatformSwitcher = ({
     });
 
     const closeDrawer = () => {
-        setIsOpen(false);
+        handleToggle(false);
         is_close_drawer_fired_ref.current = true;
     };
 
@@ -66,7 +77,7 @@ const PlatformSwitcher = ({
                     { 'platform-switcher--active': is_open },
                     { 'platform-switcher--is-mobile': isMobile() }
                 )}
-                onClick={() => setIsOpen(!is_open)}
+                onClick={() => handleToggle(!is_open)}
             >
                 <Icon
                     className='platform-switcher__icon'
@@ -108,6 +119,8 @@ PlatformSwitcher.propTypes = {
     is_landing_company_loaded: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
+    is_open: PropTypes.bool,
+    setIsOpen: PropTypes.func,
     setTogglePlatformType: PropTypes.func,
 };
 

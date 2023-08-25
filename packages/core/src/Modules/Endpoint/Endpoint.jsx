@@ -1,12 +1,25 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
 import { Button, Input, Checkbox, Text } from '@deriv/components';
-import { getDebugServiceWorker, getAppId, getSocketURL, PlatformContext, isMobile } from '@deriv/shared';
+import {
+    getDebugServiceWorker,
+    getAppId,
+    getSocketURL,
+    PlatformContext,
+    isMobile,
+    website_domain,
+} from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
 const FeatureFlagsSection = observer(() => {
     const { feature_flags } = useStore();
-
+    const visible_feature_flags = Object.entries(feature_flags.data ?? {})?.reduce(
+        (a, [key, value]) => ({
+            ...a,
+            ...(location.hostname === website_domain && key.startsWith('trade_') ? {} : { [key]: value }),
+        }),
+        {} // hiding flags for trade types in production
+    );
     if (!feature_flags.data) return null;
 
     return (
@@ -14,11 +27,11 @@ const FeatureFlagsSection = observer(() => {
             <Text as='h1' weight='bold' color='prominent'>
                 Feature flags
             </Text>
-            {Object.keys(feature_flags.data).map(flag => (
+            {Object.keys(visible_feature_flags).map(flag => (
                 <div key={flag} style={{ marginTop: '1.6rem' }}>
                     <Checkbox
                         label={flag}
-                        value={feature_flags.data[flag]}
+                        value={visible_feature_flags[flag]}
                         onChange={e => feature_flags.update(old => ({ ...old, [flag]: e.target.checked }))}
                     />
                 </div>

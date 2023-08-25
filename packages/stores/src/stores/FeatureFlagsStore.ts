@@ -1,8 +1,9 @@
 import BaseStore from './BaseStore';
 
 const FLAGS = {
-    rise_fall: false,
-    // Add your flag here 🚀
+    foo: false,
+    trade_rise_fall: false,
+    // Add your flag here 🚀 Note: Trade type keys should start with `trade_` prefix.
 } satisfies Record<string, boolean>;
 
 export default class FeatureFlagsStore extends BaseStore<{ [k in keyof typeof FLAGS]: boolean }> {

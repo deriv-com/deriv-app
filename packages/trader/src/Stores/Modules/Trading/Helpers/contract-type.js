@@ -83,7 +83,7 @@ export const ContractType = (() => {
             });
             const hidden_trade_types = Object.entries(LocalStore.getObject('FeatureFlagsStore')?.data ?? {})
                 .filter(([, value]) => !value)
-                .map(([key]) => key);
+                .map(([key]) => key.replace('trade_', ''));
             // cleanup categories
             Object.keys(available_categories).forEach(key => {
                 available_categories[key].categories = available_categories[key].categories?.filter(

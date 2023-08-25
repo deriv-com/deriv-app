@@ -1137,8 +1137,8 @@ export default class NotificationStore extends BaseStore {
             },
             poa_older_than_six_months: {
                 key: 'poa_older_than_six_months',
-                header: localize('Lets get your address verified'),
-                message: localize('Please submit your proof of address.'),
+                header: <Localize i18n_default_text='Lets get your address verified' />,
+                message: <Localize i18n_default_text='Please submit your proof of address' />,
                 type: 'warning',
                 action: {
                     route: routes.proof_of_address,

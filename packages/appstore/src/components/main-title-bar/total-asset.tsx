@@ -13,14 +13,15 @@ const TotalAsset = observer(() => {
     const { current_language } = common;
     const { real: platform_real_accounts, demo: platform_demo_account } = usePlatformAccounts();
     const { real: cfd_real_accounts, demo: cfd_demo_accounts } = useCFDAccounts();
-    const platform_real_balance = useDelayedTotalAccountBalance(platform_real_accounts, 60);
-    const cfd_real_balance = useDelayedTotalAccountBalance(cfd_real_accounts, 60);
-    const cfd_demo_balance = useDelayedTotalAccountBalance(cfd_demo_accounts, 60);
+    const platform_real_balance = useDelayedTotalAccountBalance(platform_real_accounts, 60 * 1000);
+    const cfd_real_balance = useDelayedTotalAccountBalance(cfd_real_accounts, 60 * 1000);
+    const cfd_demo_balance = useDelayedTotalAccountBalance(cfd_demo_accounts, 60 * 1000);
     const is_real = selected_account_type === 'real';
     const real_total_balance = platform_real_balance.balance + cfd_real_balance.balance;
     const demo_total_balance = (platform_demo_account?.balance || 0) + cfd_demo_balance.balance;
 
-    const has_active_related_deriv_account = !((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)); // if selected region is non-eu, check active cr accounts, if selected region is eu- check active mf accounts
+    // if selected region is non-eu, check active cr accounts, if selected region is eu- check active mf accounts
+    const has_active_related_deriv_account = !((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user));
     return (
         <div className='asset-summary'>
             {has_active_related_deriv_account || selected_account_type === 'demo' ? (

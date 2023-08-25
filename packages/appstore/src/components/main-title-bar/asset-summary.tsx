@@ -11,7 +11,6 @@ const AssetSummary = observer(() => {
     const { is_eu_user, no_CR_account, no_MF_account } = traders_hub;
     const { is_logging_in, is_switching } = client;
 
-    // if selected region is non-eu, check active cr accounts, if selected region is eu- check active mf accounts
     const eu_account = is_eu_user && !no_MF_account;
     const cr_account = !is_eu_user && !no_CR_account;
 

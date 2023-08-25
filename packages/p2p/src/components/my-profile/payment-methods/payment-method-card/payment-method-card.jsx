@@ -38,7 +38,7 @@ const PaymentMethodCard = ({
                 key: 'DeletePaymentMethodConfirmationModal',
                 props: {
                     payment_method_id: id,
-                    payment_method_name: fields?.bank_name?.value || fields?.name?.value || display_name,
+                    payment_method_name: payment_bank_name || payment_name || display_name,
                 },
             });
         } else if (e.target.value === 'edit') {
@@ -88,7 +88,7 @@ const PaymentMethodCard = ({
                 ) : (
                     <PaymentMethodIcon
                         className='payment-method-card__icon'
-                        display_name={payment_method?.display_name}
+                        display_name={display_name}
                         size={medium || small ? 16 : 24}
                     />
                 )}

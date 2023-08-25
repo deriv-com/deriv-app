@@ -2,7 +2,7 @@ import BaseStore from './BaseStore';
 
 const FLAGS = {
     trade_sharkfin: false,
-    // Add your flag here 🚀 Note: Trade type keys should start with `trade_` prefix.
+    // Add your flag here 🚀 Note: Trade feature flags should start with 'trade_' prefix.
 } satisfies Record<string, boolean>;
 
 export default class FeatureFlagsStore extends BaseStore<{ [k in keyof typeof FLAGS]: boolean }> {

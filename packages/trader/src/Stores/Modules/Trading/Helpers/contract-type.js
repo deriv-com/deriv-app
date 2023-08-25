@@ -81,13 +81,14 @@ export const ContractType = (() => {
 
                 available_contract_types[type].config = config;
             });
+            const trade_feature_flag_prefix = 'trade_';
             const hidden_trade_types = Object.entries(LocalStore.getObject('FeatureFlagsStore')?.data ?? {})
-                .filter(([, value]) => !value)
-                .map(([key]) => key.replace('trade_', ''));
+                .filter(([key, value]) => key.startsWith(trade_feature_flag_prefix) && !value)
+                .map(([key]) => key.replace(trade_feature_flag_prefix, ''));
             // cleanup categories
             Object.keys(available_categories).forEach(key => {
                 available_categories[key].categories = available_categories[key].categories?.filter(
-                    item => typeof item === 'object' && hidden_trade_types?.every(i => !item.value.includes(i))
+                    item => typeof item === 'object' && hidden_trade_types?.every(type => !item.value.includes(type))
                 );
                 if (available_categories[key].categories?.length === 0) {
                     delete available_categories[key];

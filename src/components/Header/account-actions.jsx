@@ -87,7 +87,7 @@ const AccountActions = () => {
                 dispatch(client_slice.updateActiveAccount(api_base.account_info));
                 setActiveLoginId(account_switcher_id);
                 dispatch(client_slice.setLoginId(account_switcher_id));
-                dispatch(setShouldReloadWorkspace(false));
+                dispatch(setShouldReloadWorkspace(true));
                 $('.barspinner').hide();
                 syncWithDerivApp();
             });

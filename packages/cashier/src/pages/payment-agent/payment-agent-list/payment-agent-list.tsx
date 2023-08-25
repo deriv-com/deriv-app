@@ -5,7 +5,6 @@ import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import SideNote from '../../../components/side-note';
-import { TSideNotesProps } from '../../../types';
 import DepositTab from './deposit-tab';
 import WithdrawalTab from './withdrawal-tab';
 import MissingPaymentMethodNote from '../missing-payment-method-note';
@@ -14,7 +13,7 @@ import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-list.scss';
 
 type TProps = {
-    setSideNotes?: (notes: TSideNotesProps) => void;
+    setSideNotes: (notes: React.ReactNode[]) => void;
 };
 
 const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
@@ -26,7 +25,7 @@ const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
 
     React.useEffect(() => {
         if (!general_store.is_loading && !payment_agent.is_try_withdraw_successful) {
-            setSideNotes?.([
+            setSideNotes([
                 <SideNote has_title={false} key={0}>
                     <PaymentAgentDisclaimer />
                 </SideNote>,
@@ -35,8 +34,12 @@ const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
                 </SideNote>,
             ]);
         } else {
-            setSideNotes?.([]);
+            setSideNotes([]);
         }
+
+        return () => {
+            setSideNotes([]);
+        };
     }, [setSideNotes, general_store.is_loading, payment_agent.is_try_withdraw_successful, current_language]);
 
     return (

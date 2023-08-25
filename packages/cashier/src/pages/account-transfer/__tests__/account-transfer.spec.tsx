@@ -46,7 +46,6 @@ const cashier_mock = {
     },
     crypto_fiat_converter: {},
     transaction_history: {
-        onMount: jest.fn(),
         is_crypto_transactions_visible: false,
     },
 };
@@ -106,7 +105,7 @@ describe('<AccountTransfer />', () => {
         renderAccountTransfer(mock_root_store);
 
         await waitFor(() => {
-            expect(props.setSideNotes).toHaveBeenCalledWith(null);
+            expect(props.setSideNotes).toHaveBeenCalledWith([]);
         });
     });
 

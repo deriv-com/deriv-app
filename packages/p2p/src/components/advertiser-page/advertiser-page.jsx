@@ -65,6 +65,7 @@ const AdvertiserPage = () => {
     };
 
     React.useEffect(() => {
+        buy_sell_store.setShowAdvertiserPage(true);
         advertiser_page_store.onMount();
         advertiser_page_store.setIsDropdownMenuVisible(false);
 
@@ -118,6 +119,7 @@ const AdvertiserPage = () => {
         return () => {
             disposeCounterpartyAdvertiserIdReaction();
             advertiser_page_store.onUnmount();
+            buy_sell_store.setShowAdvertiserPage(false);
         };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

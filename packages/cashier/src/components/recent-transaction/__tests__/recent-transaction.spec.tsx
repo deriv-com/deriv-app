@@ -6,6 +6,25 @@ import { Router } from 'react-router';
 import CashierProviders from '../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
 
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useSubscription: jest.fn(() => ({
+        last_transaction: {
+            address_hash: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
+            address_url: 'https://www.blockchain.com/btc-testnet/address/tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
+            amount: 0.01,
+            id: '262',
+            is_valid_to_cancel: 1,
+            status_code: 'LOCKED',
+            status_message:
+                "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.",
+            submit_date: 1644408421,
+            transaction_type: 'withdrawal',
+        },
+        subscribe: jest.fn(),
+    })),
+}));
+
 describe('<RecentTransaction />', () => {
     let history: BrowserHistory, mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
@@ -17,22 +36,6 @@ describe('<RecentTransaction />', () => {
             modules: {
                 cashier: {
                     transaction_history: {
-                        crypto_transactions: [
-                            {
-                                address_hash: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
-                                address_url:
-                                    'https://www.blockchain.com/btc-testnet/address/tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
-                                amount: 0.01,
-                                id: '262',
-                                is_valid_to_cancel: 1,
-                                status_code: 'LOCKED',
-                                status_message:
-                                    "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.",
-                                submit_date: 1644408421,
-                                transaction_type: 'withdrawal',
-                            },
-                        ],
-                        onMount: jest.fn(),
                         setIsCryptoTransactionsVisible: jest.fn(),
                     },
                 },

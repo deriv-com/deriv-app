@@ -13,11 +13,10 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
-import { TReactChangeEvent, TAccount, TAccountsList, TError, TSideNotesProps } from '../../../types';
+import { TReactChangeEvent, TAccount, TAccountsList, TError } from '../../../types';
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
 import ErrorDialog from '../../../components/error-dialog';
 import PercentageSelector from '../../../components/percentage-selector';
-import RecentTransaction from '../../../components/recent-transaction';
 import AccountTransferNote from './account-transfer-form-side-note';
 import SideNote from '../../../components/side-note';
 import AccountPlatformIcon from '../../../components/account-platform-icon';
@@ -29,7 +28,7 @@ type TAccountTransferFormProps = {
     onClickDeposit?: () => void;
     onClickNotes?: () => void;
     onClose?: () => void;
-    setSideNotes?: (notes: TSideNotesProps) => void;
+    setSideNotes: (notes: React.ReactNode[]) => void;
 };
 
 const AccountOption = ({ account, idx }: TAccountsList) => {
@@ -84,7 +83,7 @@ const AccountTransferForm = observer(
         } = useStore();
 
         const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
-        const { account_transfer, crypto_fiat_converter, transaction_history, general_store } = useCashierStore();
+        const { account_transfer, crypto_fiat_converter, general_store } = useCashierStore();
 
         const {
             account_transfer_amount,
@@ -113,7 +112,6 @@ const AccountTransferForm = observer(
             onChangeConverterToAmount,
             resetConverter,
         } = crypto_fiat_converter;
-        const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
 
         const [from_accounts, setFromAccounts] = React.useState({});
         const [to_accounts, setToAccounts] = React.useState({});
@@ -134,10 +132,6 @@ const AccountTransferForm = observer(
         const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
 
         const history = useHistory();
-
-        React.useEffect(() => {
-            recentTransactionOnMount();
-        }, [recentTransactionOnMount]);
 
         const validateAmount = (amount: string) => {
             if (!amount) return localize('This field is required.');
@@ -254,11 +248,8 @@ const AccountTransferForm = observer(
         }, [accounts_list, selected_to, selected_from]); // eslint-disable-line react-hooks/exhaustive-deps
 
         React.useEffect(() => {
-            if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
+            if (Object.keys(from_accounts).length) {
                 const side_notes = [];
-                if (is_crypto) {
-                    side_notes.push(<RecentTransaction key={2} />);
-                }
                 side_notes.push(
                     <AccountTransferNote
                         allowed_transfers_count={{
@@ -285,6 +276,10 @@ const AccountTransferForm = observer(
                     </SideNote>,
                 ]);
             }
+
+            return () => {
+                setSideNotes([]);
+            };
         }, [
             transfer_fee,
             selected_from,
@@ -292,7 +287,6 @@ const AccountTransferForm = observer(
             minimum_fee,
             from_accounts,
             is_dxtrade_allowed,
-            crypto_transactions,
             setSideNotes,
             is_crypto,
             internal_remaining_transfers?.allowed,
@@ -612,7 +606,6 @@ const AccountTransferForm = observer(
                                     </div>
                                     {!is_from_outside_cashier && (
                                         <SideNote title={<Localize i18n_default_text='Notes' />} is_mobile>
-                                            {is_crypto ? <RecentTransaction /> : null}
                                             <AccountTransferNote
                                                 allowed_transfers_count={{
                                                     internal: internal_remaining_transfers?.allowed,

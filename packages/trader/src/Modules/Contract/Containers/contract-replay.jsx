@@ -73,11 +73,11 @@ const ContractReplay = observer(({ contract_id }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [contract_id, location, onMount, onUnmount]);
 
-    const onClickClose = () => {
+    const onClickClose = React.useCallback(() => {
         setIsVisible(false);
         const is_from_table_row = !isEmptyObject(location.state) ? location.state.from_table_row : false;
         return is_from_table_row ? history.goBack() : routeBackInApp(history);
-    };
+    }, [history, routeBackInApp]);
 
     React.useEffect(() => {
         // don't open Contract details page for trade types with disabled feature flag:
@@ -94,12 +94,11 @@ const ContractReplay = observer(({ contract_id }) => {
                     (key.includes(trade_display_name?.slice(0, 4).toLowerCase()) ||
                         contract_info.contract_type.toLowerCase().includes(key.replace(trade_feature_flag_prefix, '')))
             );
-            if (is_trade_type_disabled) {
+            if (is_trade_type_disabled && is_visible) {
                 onClickClose();
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [feature_flags.data, contract_info.contract_type, contract_info.shortcode]);
+    }, [feature_flags.data, contract_info.contract_type, contract_info.shortcode, is_visible, onClickClose]);
 
     if (!contract_info.underlying) return null;
 

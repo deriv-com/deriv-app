@@ -264,13 +264,13 @@ const CFDsListing = observer(() => {
                 <PlatformLoader />
             )}
 
-            {!is_eu_user && !is_real && (
+            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && !is_real && (
                 <div className='cfd-full-row'>
                     <hr className='divider' />
                 </div>
             )}
 
-            {!is_eu_user && !is_real && (
+            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && !is_real && (
                 <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
                     <Text weight='bold'>{localize('Deriv cTrader')}</Text>
                 </div>

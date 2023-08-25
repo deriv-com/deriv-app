@@ -8,7 +8,7 @@ const ShowNotifications = observer(() => {
     const { is_notifications_visible, notifications, toggleNotificationsModal } = notifications_store;
 
     return (
-        <div data-testid='dt_trading_hub_show_notifications' className='trading-hub-header__notification'>
+        <div data-testid='dt_traders_hub_show_notifications' className='trading-hub-header__notification'>
             <ToggleNotifications
                 count={notifications.length}
                 is_visible={is_notifications_visible}

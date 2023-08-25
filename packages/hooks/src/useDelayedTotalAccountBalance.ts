@@ -2,6 +2,13 @@ import useRealTotalAssetCurrency from './useTotalAssetCurrency';
 import useExchangeRate from './useExchangeRate';
 import useThrottle from './useThrottle';
 
+/**
+ * we can use this hook to get the total balance of the given accounts list with a delay given to the hook as the second parameter. notice that the delay should be in milliseconds.
+ * it loops through the accounts list and adds the balance of each account
+ * to the total balance, it also converts the balance to the currency of the
+ * first account in the list and then throttles the balance with the given delay and returns the throttled balance
+ */
+
 type TUseDelayedTotalAccountBalance = {
     balance?: number;
     currency?: string;

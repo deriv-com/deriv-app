@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 
-function useThrottle<T>(value: T, interval = 500): T {
+/** We can use this hook to limit how frequently updates occur for the given value.
+ * It ensures that the value can only be updated once the set time interval has passed since the last update.
+ */
+const useThrottle = <T>(value: T, interval = 500): T => {
     const [throttledValue, setThrottledValue] = useState<T>(value);
     const lastExecuted = useRef<number>(Date.now());
 
@@ -19,6 +22,6 @@ function useThrottle<T>(value: T, interval = 500): T {
     }, [value, interval]);
 
     return throttledValue;
-}
+};
 
 export default useThrottle;

@@ -1,33 +1,28 @@
 import React from 'react';
-import { Field, FieldProps, useFormikContext } from 'formik';
+import { Field, FieldProps } from 'formik';
 import { CompositeCheckbox } from '@deriv/components';
 
 type TApiTokenCard = {
     description: string;
     display_name: string;
     name: string;
-    value: boolean;
 };
 
-const ApiTokenCard = ({ name, value, display_name, description, children }: React.PropsWithChildren<TApiTokenCard>) => {
-    const { setFieldValue } = useFormikContext();
+const ApiTokenCard = ({ name, display_name, description, children }: React.PropsWithChildren<TApiTokenCard>) => {
     return (
         <Field name={name}>
-            {({ field }: FieldProps<string | boolean>) => {
-                return (
-                    <CompositeCheckbox
-                        {...field}
-                        onChange={() => setFieldValue(name, !value)}
-                        value={value}
-                        className='api-token__checkbox'
-                        defaultChecked={value}
-                        label={display_name}
-                        description={description}
-                    >
-                        {children}
-                    </CompositeCheckbox>
-                );
-            }}
+            {({ field, form: { setFieldValue } }: FieldProps<boolean>) => (
+                <CompositeCheckbox
+                    {...field}
+                    // Used to set the checkbox value when clicked on the encased region
+                    onChange={() => setFieldValue(name, !field.value)}
+                    className='api-token__checkbox'
+                    label={display_name}
+                    description={description}
+                >
+                    {children}
+                </CompositeCheckbox>
+            )}
         </Field>
     );
 };

@@ -38,9 +38,8 @@ type TApiTokenForm = {
 };
 
 const ApiToken = () => {
-    const { client } = useStore();
+    const { client, ui } = useStore();
     const { is_switching } = client;
-    const { ui } = useStore();
     const { is_desktop, is_mobile } = ui;
     const isMounted = useIsMounted();
     const prev_is_switching = React.useRef(is_switching);
@@ -61,6 +60,7 @@ const ApiToken = () => {
             is_delete_success: false,
         }
     );
+    let timeout_deletetokens: NodeJS.Timeout | undefined;
 
     React.useEffect(() => {
         getApiTokens();
@@ -121,7 +121,6 @@ const ApiToken = () => {
             new_token: values.token_name,
             new_token_scopes: selectedTokenScope(values),
         });
-
         if (token_response.error) {
             setFieldError('token_name', token_response.error.message);
         } else if (isMounted()) {
@@ -133,7 +132,6 @@ const ApiToken = () => {
                 if (isMounted()) setState({ is_success: false });
             }, 500);
         }
-
         resetForm();
         setSubmitting(false);
     };
@@ -162,13 +160,15 @@ const ApiToken = () => {
     const deleteToken = async (token: string) => {
         setState({ is_delete_loading: true });
 
+        clearTimeout(timeout_deletetokens);
+
         const token_response = await WS.authorized.apiToken({ api_token: 1, delete_token: token });
 
         populateTokenResponse(token_response);
 
         if (isMounted()) setState({ is_delete_loading: false, is_delete_success: true });
 
-        setTimeout(() => {
+        timeout_deletetokens = setTimeout(() => {
             if (isMounted()) setState({ is_delete_success: false });
         }, 500);
     };
@@ -191,7 +191,7 @@ const ApiToken = () => {
     return (
         <React.Fragment>
             <ApiTokenContext.Provider value={context_value}>
-                <section className={classNames('da-api-token')}>
+                <section className='da-api-token'>
                     <div className='da-api-token__wrapper'>
                         <ThemedScrollbars className='da-api-token__scrollbars' is_bypassed={is_mobile}>
                             {is_mobile && <ApiTokenArticle />}
@@ -201,6 +201,7 @@ const ApiToken = () => {
                                     errors,
                                     isValid,
                                     dirty,
+                                    touched,
                                     handleChange,
                                     handleBlur,
                                     isSubmitting,
@@ -214,7 +215,6 @@ const ApiToken = () => {
                                                 <div className='da-api-token__checkbox-wrapper'>
                                                     <ApiTokenCard
                                                         name='read'
-                                                        value={values.read}
                                                         display_name={localize('Read')}
                                                         description={localize(
                                                             'This scope will allow third-party apps to view your account activity, settings, limits, balance sheets, trade purchase history, and more.'
@@ -222,7 +222,6 @@ const ApiToken = () => {
                                                     />
                                                     <ApiTokenCard
                                                         name='trade'
-                                                        value={values.trade}
                                                         display_name={localize('Trade')}
                                                         description={localize(
                                                             'This scope will allow third-party apps to buy and sell contracts for you, renew your expired purchases, and top up your demo accounts.'
@@ -230,7 +229,6 @@ const ApiToken = () => {
                                                     />
                                                     <ApiTokenCard
                                                         name='payments'
-                                                        value={values.payments}
                                                         display_name={localize('Payments')}
                                                         description={localize(
                                                             'This scope will allow third-party apps to withdraw to payment agents and make inter-account transfers for you.'
@@ -238,7 +236,6 @@ const ApiToken = () => {
                                                     />
                                                     <ApiTokenCard
                                                         name='trading_information'
-                                                        value={values.trading_information}
                                                         display_name={localize('Trading information')}
                                                         description={localize(
                                                             'This scope will allow third-party apps to view your trading history.'
@@ -246,7 +243,6 @@ const ApiToken = () => {
                                                     />
                                                     <ApiTokenCard
                                                         name='admin'
-                                                        value={values.admin}
                                                         display_name={localize('Admin')}
                                                         description={localize(
                                                             'This scope will allow third-party apps to open accounts for you, manage your settings and token usage, and more. '
@@ -286,7 +282,11 @@ const ApiToken = () => {
                                                                     'Length of token name must be between 2 and 32 characters.'
                                                                 )}
                                                                 required
-                                                                error={errors.token_name}
+                                                                error={
+                                                                    touched.token_name && errors.token_name
+                                                                        ? errors.token_name
+                                                                        : undefined
+                                                                }
                                                             />
                                                         )}
                                                     </Field>

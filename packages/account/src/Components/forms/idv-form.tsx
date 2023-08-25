@@ -1,11 +1,35 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Field, FieldProps } from 'formik';
+import { Field, FormikProps, FormikHandlers, FieldProps } from 'formik';
+import { ResidenceList } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
-import { formatInput, getIDVNotApplicableOption } from '@deriv/shared';
+import { formatInput, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
 import { Autocomplete, DesktopWrapper, Input, MobileWrapper, SelectNative, Text } from '@deriv/components';
 import { getDocumentData, preventEmptyClipboardPaste, generatePlaceholderText, getExampleFormat } from 'Helpers/utils';
-import { TDocumentList, TIDVForm } from 'Types';
+
+type TDocumentList = Array<{
+    id: string;
+    text: string;
+    value?: string;
+    sample_image?: string;
+    example_format?: string;
+    additional?: any;
+}>;
+
+type TFormProps = {
+    document_type: TDocumentList[0];
+    document_number: string;
+    document_additional?: string;
+    error_message?: string;
+};
+
+type TIDVForm = {
+    selected_country: ResidenceList[0];
+    hide_hint?: boolean;
+    class_name?: string;
+    can_skip_document_verification: boolean;
+} & Partial<FormikHandlers> &
+    FormikProps<TFormProps>;
 
 const IDVForm = ({
     errors,
@@ -19,7 +43,7 @@ const IDVForm = ({
     hide_hint,
     can_skip_document_verification = false,
 }: TIDVForm) => {
-    const [document_list, setDocumentList] = React.useState<TDocumentList[]>([]);
+    const [document_list, setDocumentList] = React.useState<TDocumentList>([]);
     const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [selected_doc, setSelectedDoc] = React.useState('');
 
@@ -32,8 +56,6 @@ const IDVForm = ({
         example_format: '',
         sample_image: '',
     };
-
-    const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
 
     React.useEffect(() => {
         if (document_data && selected_country && selected_country.value) {
@@ -78,7 +100,7 @@ const IDVForm = ({
                 setDocumentList([...new_document_list]);
             }
         }
-    }, [document_data, selected_country, can_skip_document_verification, IDV_NOT_APPLICABLE_OPTION]);
+    }, [document_data, selected_country, can_skip_document_verification]);
 
     const resetDocumentItemSelected = () => {
         setFieldValue('document_type', default_document, true);
@@ -98,7 +120,7 @@ const IDVForm = ({
         setFieldValue(document_name, current_input, true);
     };
 
-    const bindDocumentData = (item: TDocumentList) => {
+    const bindDocumentData = (item: TDocumentList[0]) => {
         setFieldValue('document_type', item, true);
         setSelectedDoc(item?.id);
         if (item?.id === IDV_NOT_APPLICABLE_OPTION.id) {
@@ -149,7 +171,7 @@ const IDVForm = ({
                                                                     }
                                                                 }}
                                                                 onChange={handleChange}
-                                                                onItemSelection={(item: TDocumentList) => {
+                                                                onItemSelection={(item: TDocumentList[0]) => {
                                                                     if (
                                                                         item.text === 'No results found' ||
                                                                         !item.text

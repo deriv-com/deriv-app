@@ -20,10 +20,9 @@ const ContractDrawerCard = observer(
         is_market_closed,
         is_mobile,
         is_multiplier,
-        is_vanilla,
-        is_smarttrader_contract,
         is_sell_requested,
         is_turbos,
+        is_vanilla,
         onClickCancel,
         onClickSell,
         onSwipedUp,
@@ -147,8 +146,7 @@ const ContractDrawerCard = observer(
             </ContractCard>
         );
 
-        const has_swipeable_drawer =
-            is_sold || is_multiplier || is_accumulator || is_vanilla || is_turbos || is_smarttrader_contract;
+        const has_swipeable_drawer = is_sold || is_multiplier || is_accumulator || is_turbos || is_vanilla;
 
         return (
             <React.Fragment>
@@ -172,7 +170,6 @@ const ContractDrawerCard = observer(
 ContractDrawerCard.propTypes = {
     currency: PropTypes.string,
     is_accumulator: PropTypes.bool,
-    is_smarttrader_contract: PropTypes.bool,
     is_collapsed: PropTypes.bool,
     is_turbos: PropTypes.bool,
     onClickCancel: PropTypes.func,

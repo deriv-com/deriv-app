@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import CashierBreadcrumb from '../cashier-breadcrumb';
@@ -17,19 +17,29 @@ const PageContainer: React.FC<React.PropsWithChildren<TProps>> = observer(
         const { is_authorize } = client;
         const is_loading = !is_authorize;
 
+        const LeftSideContent = useCallback(
+            () => (left ? <div className='page-container__left'>{left}</div> : <></>),
+            [left]
+        );
+
+        const RightSideContent = useCallback(
+            () => (right ? <div className='page-container__right'>{right}</div> : <></>),
+            [right]
+        );
+
         return (
             <div className='page-container'>
                 {is_loading && <Loading is_fullscreen={false} />}
                 {!is_loading && (
                     <div className='page-container__content'>
-                        {!is_mobile && left && <div className='page-container__sidebar--left'>{left}</div>}
+                        {!is_mobile && <LeftSideContent />}
                         <ThemedScrollbars className='page-container__main'>
                             {!hide_breadcrumb && <CashierBreadcrumb />}
-                            {is_mobile && left && <div className='page-container__sidebar--left'>{left}</div>}
+                            {is_mobile && <LeftSideContent />}
                             {children}
-                            {is_mobile && right && <div className='page-container__sidebar--right'>{right}</div>}
+                            {is_mobile && <RightSideContent />}
                         </ThemedScrollbars>
-                        {!is_mobile && <div className='page-container__sidebar--right'>{right}</div>}
+                        {!is_mobile && <RightSideContent />}
                     </div>
                 )}
             </div>

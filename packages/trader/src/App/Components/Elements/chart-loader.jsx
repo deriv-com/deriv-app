@@ -5,7 +5,7 @@ import Loading from '_common/components/loading';
 const ChartLoader = ({ is_dark, is_visible }) =>
     is_visible ? (
         <div className='chart-container__loader'>
-            <Loading theme={is_dark ? 'dark' : 'light'} data_testid='dt_barspinner' />
+            <Loading theme={is_dark ? 'dark' : 'light'} />
         </div>
     ) : null;
 

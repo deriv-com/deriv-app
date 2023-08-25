@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import ContractTypeList from '../contract-type-list';
+import ContractTypeList from '../contract-type-list.jsx';
 
 const list = [
-    { contract_types: [], label: 'first-item', icon: 'first-icon', key: 'All' },
-    { contract_types: [], label: 'second-item', icon: 'second-icon', key: 'Options' },
+    { contract_types: [], label: 'first-item' },
+    { contract_types: [], label: 'second-item' },
 ];
 const MockContractTypeList = () => <ContractTypeList list={list} />;
 

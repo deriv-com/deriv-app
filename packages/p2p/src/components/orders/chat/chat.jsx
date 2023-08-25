@@ -11,15 +11,7 @@ import { useStores } from 'Stores';
 import 'Components/orders/chat/chat.scss';
 
 const Chat = observer(() => {
-    const { order_store, sendbird_store } = useStores();
-
-    React.useLayoutEffect(() => {
-        return () => {
-            order_store.onPageReturn();
-        };
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const { sendbird_store } = useStores();
 
     if (sendbird_store.is_chat_loading) {
         return (

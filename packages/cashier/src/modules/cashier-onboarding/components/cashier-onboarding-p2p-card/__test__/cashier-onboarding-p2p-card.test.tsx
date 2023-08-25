@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHasFiatCurrency, useHasP2PSupportedCurrencies, useIsP2PEnabled } from '@deriv/hooks';
 import { mockStore } from '@deriv/stores';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../../cashier-providers';
@@ -9,27 +10,19 @@ jest.mock('react-router', () => ({
     useHistory: () => ({ push: jest.fn() }),
 }));
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
-    useFetch: jest.fn(() => ({
-        data: {
-            website_status: {
-                currencies_config: {
-                    USD: { type: 'fiat', name: 'US Dollar' },
-                    AUD: { type: 'fiat', name: 'Australian Dollar' },
-                    BTC: { type: 'crypto', name: 'Bitcoin' },
-                },
-                p2p_config: { supported_currencies: ['usd'] },
-            },
-        },
-    })),
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useFiatAccountList: () => [{ is_virtual: 0, loginid: 'CR80128121' }],
+    useHasFiatCurrency: jest.fn(() => true),
+    useHasP2PSupportedCurrencies: jest.fn(() => ({ data: true })),
+    useIsP2PEnabled: jest.fn(() => ({ data: true })),
 }));
 
 describe('CashierOnboardingP2PCard', () => {
     test('should call the onClick callback when clicked', () => {
         const mock = mockStore({
             client: {
-                currency: 'USD',
+                is_crypto: () => true,
             },
             modules: {
                 cashier: {
@@ -58,9 +51,7 @@ describe('CashierOnboardingP2PCard', () => {
     test('should open real account signup when card is clicked', async () => {
         const mock = mockStore({
             client: {
-                currency: 'BTC',
-                account_list: [{ title: 'BTC' }],
-                active_accounts: [{ is_virtual: 0, currency: 'USD' }],
+                is_crypto: () => true,
             },
             modules: {
                 cashier: {
@@ -74,10 +65,11 @@ describe('CashierOnboardingP2PCard', () => {
             },
         });
 
+        (useHasFiatCurrency as jest.Mock).mockImplementation(() => false);
+
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <CashierProviders store={mock}>{children}</CashierProviders>
         );
-
         render(<CashierOnboardingP2PCard />, { wrapper });
 
         const container = screen.getByTestId('dt_cashier_onboarding_card');
@@ -90,9 +82,7 @@ describe('CashierOnboardingP2PCard', () => {
     test('should call onClick callback when current currency is not crypto', async () => {
         const mock = mockStore({
             client: {
-                currency: 'USD',
-                account_list: [{ title: 'USD' }],
-                active_accounts: [{ is_virtual: 0, currency: 'USD' }],
+                is_crypto: () => false,
             },
             modules: {
                 cashier: {
@@ -106,22 +96,18 @@ describe('CashierOnboardingP2PCard', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <CashierProviders store={mock}>{children}</CashierProviders>
         );
-
         render(<CashierOnboardingP2PCard />, { wrapper });
 
         const container = screen.getByTestId('dt_cashier_onboarding_card');
 
         fireEvent.click(container);
-
         expect(mock.modules.cashier.general_store.setDepositTarget).toBeCalledTimes(1);
     });
 
     test('should render blank element', async () => {
         const mock = mockStore({
             client: {
-                currency: 'AUD',
-                account_list: [{ title: 'AUD' }],
-                active_accounts: [{ is_virtual: 0, currency: 'AUD' }],
+                is_crypto: () => true,
             },
             modules: {
                 cashier: {
@@ -131,13 +117,12 @@ describe('CashierOnboardingP2PCard', () => {
                 },
             },
         });
-
+        (useHasP2PSupportedCurrencies as jest.Mock).mockImplementation(() => ({ data: false }));
+        (useIsP2PEnabled as jest.Mock).mockImplementation(() => ({ data: false }));
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <CashierProviders store={mock}>{children}</CashierProviders>
         );
-
         const { container } = render(<CashierOnboardingP2PCard />, { wrapper });
-
         expect(container).toBeEmptyDOMElement();
     });
 });

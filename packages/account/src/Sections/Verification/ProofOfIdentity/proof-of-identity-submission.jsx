@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { WS } from '@deriv/shared';
 import CountrySelector from 'Components/poi/poi-country-selector';

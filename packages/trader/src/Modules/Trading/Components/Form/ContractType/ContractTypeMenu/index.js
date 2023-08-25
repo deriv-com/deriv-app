@@ -1,3 +1,3 @@
-import Dialog from './contract-type-menu';
+import Dialog from './contract-type-menu.jsx';
 
 export default Dialog;

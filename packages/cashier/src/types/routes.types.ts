@@ -8,7 +8,7 @@ export type TRoute = {
     is_invisible?: boolean;
     path?: string;
     to?: string;
-    component?: React.FC<any>; // Using `any` as the prop type of the component since at this point we don't know what the component is.
+    component?: typeof React.Component;
     getTitle: () => string;
     routes?: TRoute[];
 };

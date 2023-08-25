@@ -3,17 +3,18 @@ import { APIProvider } from '@deriv/api';
 import { StoreProvider } from '@deriv/stores';
 import { ThemeProvider } from '@deriv/ui';
 import { CashierStoreProvider } from './stores/useCashierStores';
+import type { TCoreStores } from '@deriv/stores/types';
 
-type TProps = { store: React.ComponentProps<typeof StoreProvider>['store'] };
-
-const CashierProviders: React.FC<React.PropsWithChildren<TProps>> = ({ children, store }) => (
-    <StoreProvider store={store}>
-        <CashierStoreProvider>
-            <APIProvider>
-                <ThemeProvider>{children}</ThemeProvider>
-            </APIProvider>
-        </CashierStoreProvider>
-    </StoreProvider>
-);
+const CashierProviders = ({ children, store }: React.PropsWithChildren<{ store: TCoreStores }>) => {
+    return (
+        <StoreProvider store={store}>
+            <CashierStoreProvider>
+                <APIProvider>
+                    <ThemeProvider>{children}</ThemeProvider>
+                </APIProvider>
+            </CashierStoreProvider>
+        </StoreProvider>
+    );
+};
 
 export default CashierProviders;

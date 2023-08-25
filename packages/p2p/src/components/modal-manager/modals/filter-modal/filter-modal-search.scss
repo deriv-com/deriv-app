@@ -7,7 +7,7 @@
     }
 
     @include mobile {
-        padding: 0.8rem 1rem;
+        margin: 0.8rem 1.6rem 1rem;
         min-width: 25rem;
 
         .dc-input {
@@ -31,6 +31,7 @@
 
             &__container {
                 border: none;
+                padding: 0;
                 height: 6rem;
             }
             &__field {

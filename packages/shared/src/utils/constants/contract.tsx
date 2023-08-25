@@ -3,7 +3,7 @@ import { localize, Localize } from '@deriv/translations';
 import { shouldShowCancellation, shouldShowExpiration, TURBOS } from '../contract';
 
 export const getLocalizedBasis = () => ({
-    accumulator: localize('Accumulators'),
+    accumulator: localize('Accumulator'),
     payout: localize('Payout'),
     payout_per_point: localize('Payout per point'),
     stake: localize('Stake'),
@@ -121,7 +121,7 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         components: [],
     },
     accumulator: {
-        title: localize('Accumulators'),
+        title: localize('Accumulator'),
         trade_types: ['ACCU'],
         basis: ['stake'],
         components: ['take_profit', 'accumulator', 'accu_info_display'],
@@ -332,6 +332,22 @@ export const getMarketNamesMap = () => ({
 
 export const getUnsupportedContracts = () =>
     ({
+        EXPIRYMISS: {
+            name: localize('Ends Outside'),
+            position: 'top',
+        },
+        EXPIRYRANGE: {
+            name: localize('Ends Between'),
+            position: 'bottom',
+        },
+        RANGE: {
+            name: localize('Stays Between'),
+            position: 'top',
+        },
+        UPORDOWN: {
+            name: localize('Goes Outside'),
+            position: 'bottom',
+        },
         RESETCALL: {
             name: localize('Reset Call'),
             position: 'top',
@@ -382,7 +398,7 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
     ({
         ACCU: {
             button_name: <Localize i18n_default_text='Buy' />,
-            name: <Localize i18n_default_text='Accumulators' />,
+            name: <Localize i18n_default_text='Accumulator' />,
             position: 'top',
         },
         CALL: {
@@ -465,22 +481,6 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
         },
         RUNLOW: {
             name: <Localize i18n_default_text='Only Downs' />,
-            position: 'bottom',
-        },
-        EXPIRYMISS: {
-            name: <Localize i18n_default_text='Ends Outside' />,
-            position: 'top',
-        },
-        EXPIRYRANGE: {
-            name: <Localize i18n_default_text='Ends Between' />,
-            position: 'bottom',
-        },
-        RANGE: {
-            name: <Localize i18n_default_text='Stays Between' />,
-            position: 'top',
-        },
-        UPORDOWN: {
-            name: <Localize i18n_default_text='Goes Outside' />,
             position: 'bottom',
         },
     } as const);

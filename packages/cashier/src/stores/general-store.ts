@@ -48,10 +48,9 @@ export default class GeneralStore extends BaseStore {
         );
     }
 
-    active_container: 'account_transfer' | 'deposit' | 'payment_agent' | 'payment_agent_transfer' | 'withdraw' =
-        'deposit';
+    active_container: keyof typeof Constants.containers = Constants.containers.deposit;
     cashier_route_tab_index = 0;
-    deposit_target: '/cashier/deposit' | '/cashier/on-ramp' | '/cashier/p2p' | '/cashier/payment-agent' | '' = '';
+    deposit_target = '';
     is_cashier_onboarding = true;
     is_deposit = false;
     is_loading = false;
@@ -75,7 +74,7 @@ export default class GeneralStore extends BaseStore {
         const { client, modules } = this.root_store;
         const { account_transfer } = modules.cashier;
 
-        if (this.active_container === 'account_transfer') {
+        if (this.active_container === account_transfer.container) {
             this.percentage = Number(
                 ((Number(amount) / Number(account_transfer.selected_from.balance)) * 100).toFixed(0)
             );
@@ -107,7 +106,7 @@ export default class GeneralStore extends BaseStore {
         this.is_cashier_onboarding = is_cashier_onboarding;
     }
 
-    setDepositTarget(target: typeof this.deposit_target): void {
+    setDepositTarget(target: string): void {
         this.deposit_target = target;
     }
 
@@ -182,6 +181,7 @@ export default class GeneralStore extends BaseStore {
             ) {
                 routeTo(routes.cashier_deposit);
                 transaction_history.setIsCryptoTransactionsVisible(true);
+                transaction_history.onMount();
             }
         }
     }
@@ -194,8 +194,8 @@ export default class GeneralStore extends BaseStore {
         this.is_loading = is_loading;
     }
 
-    setActiveTab(container: typeof this.active_container): void {
-        this.active_container = container;
+    setActiveTab(container: string): void {
+        this.active_container = container as keyof typeof Constants.containers;
     }
 
     accountSwitcherListener() {

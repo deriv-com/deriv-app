@@ -28,6 +28,7 @@ describe('<CryptoWithdrawReceipt />', () => {
                         percentageSelectorSelectionStatus: jest.fn(),
                     },
                     transaction_history: {
+                        onMount: jest.fn(),
                         setIsCryptoTransactionsVisible: jest.fn(),
                     },
                     withdraw: {

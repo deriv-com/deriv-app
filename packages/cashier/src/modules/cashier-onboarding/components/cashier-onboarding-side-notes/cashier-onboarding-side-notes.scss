@@ -1,0 +1,15 @@
+.cashier-onboarding-side-notes {
+    &__link-container {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    &__link {
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline var(--brand-red-coral);
+        }
+    }
+}

@@ -7,7 +7,6 @@ import CryptoTransactionsCancelModal from './crypto-transactions-cancel-modal';
 import CryptoTransactionsStatusModal from './crypto-transactions-status-modal';
 import CryptoTransactionsRenderer from './crypto-transactions-renderer';
 import { useCashierStore } from '../../stores/useCashierStores';
-import { useCryptoTransactions } from '@deriv/hooks';
 
 const getHeaders = () => [
     { text: localize('Transaction') },
@@ -23,8 +22,7 @@ const getHeaders = () => [
 const CryptoTransactionsHistory = observer(() => {
     const { client } = useStore();
     const { transaction_history, general_store } = useCashierStore();
-    const { setIsCryptoTransactionsVisible } = transaction_history;
-    const { data, is_loading } = useCryptoTransactions();
+    const { crypto_transactions, is_loading, setIsCryptoTransactionsVisible } = transaction_history;
     const { setIsDeposit } = general_store;
     const { currency } = client;
     const [is_modal_visible, setIsModalVisible] = React.useState(false);
@@ -59,7 +57,7 @@ const CryptoTransactionsHistory = observer(() => {
                     <CryptoTransactionsCancelModal />
                     <CryptoTransactionsStatusModal />
                 </MobileWrapper>
-                {(data?.length || 0) > 0 ? (
+                {crypto_transactions.length > 0 ? (
                     <Table className='crypto-transactions-history__table'>
                         {isDesktop() && (
                             <Table.Header className='crypto-transactions-history__table-header'>
@@ -76,7 +74,7 @@ const CryptoTransactionsHistory = observer(() => {
                             ) : (
                                 <DataList
                                     // TODO: CHECK THIS TYPE ERROR
-                                    data_source={data}
+                                    data_source={crypto_transactions}
                                     rowRenderer={row_props => (
                                         <CryptoTransactionsRenderer
                                             {...row_props}

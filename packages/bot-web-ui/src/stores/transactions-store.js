@@ -12,7 +12,6 @@ export default class TransactionsStore {
             recovered_completed_transactions: observable,
             recovered_transactions: observable,
             is_called_proposal_open_contract: observable,
-            is_transaction_details_modal_open: observable,
             transactions: computed,
             onBotContractEvent: action.bound,
             pushTransaction: action.bound,
@@ -26,10 +25,8 @@ export default class TransactionsStore {
             updateResultsCompletedContract: action.bound,
             sortOutPositionsBeforeAction: action.bound,
             recoverPendingContractsById: action.bound,
-            toggleTransactionDetailsModal: action.bound,
         });
 
-        this.is_transaction_details_modal_open = false;
         this.root_store = root_store;
         this.core = core;
         this.disposeReactionsFn = this.registerReactions();
@@ -42,14 +39,9 @@ export default class TransactionsStore {
     recovered_completed_transactions = [];
     recovered_transactions = [];
     is_called_proposal_open_contract = false;
-    is_transaction_details_modal_open = false;
 
     get transactions() {
         return this.elements.filter(element => element.type === transaction_elements.CONTRACT);
-    }
-
-    toggleTransactionDetailsModal(is_open) {
-        this.is_transaction_details_modal_open = is_open;
     }
 
     onBotContractEvent(data) {
@@ -152,7 +144,6 @@ export default class TransactionsStore {
         this.elements = this.elements.slice(0, 0);
         this.recovered_completed_transactions = this.recovered_completed_transactions.slice(0, 0);
         this.recovered_transactions = this.recovered_transactions.slice(0, 0);
-        this.is_transaction_details_modal_open = false;
     }
 
     registerReactions() {
@@ -176,17 +167,9 @@ export default class TransactionsStore {
             () => this.recoverPendingContracts()
         );
 
-        const disposeSwitchAcountListener = reaction(
-            () => client.loginid,
-            () => this.clear()
-        );
-
         return () => {
             disposeTransactionElementsListener();
             disposeRecoverContracts();
-            if (typeof this.disposeSwitchAcountListener === 'function') {
-                disposeSwitchAcountListener();
-            }
         };
     }
 
@@ -220,7 +203,7 @@ export default class TransactionsStore {
     }
 
     sortOutPositionsBeforeAction(positions, element_id = false) {
-        positions?.forEach(position => {
+        positions.forEach(position => {
             if (!element_id || (element_id && position.id === element_id)) {
                 const contract_details = position.contract_info;
                 this.updateResultsCompletedContract(contract_details);

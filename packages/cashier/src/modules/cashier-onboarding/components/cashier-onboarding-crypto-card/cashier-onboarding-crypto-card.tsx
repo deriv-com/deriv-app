@@ -1,5 +1,6 @@
 import React from 'react';
-import { useCurrentCurrencyConfig, useHasCryptoCurrency } from '@deriv/hooks';
+import { useHasCryptoCurrency } from '@deriv/hooks';
+import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useCashierStore } from '../../../../stores/useCashierStores';
@@ -7,26 +8,26 @@ import { CashierOnboardingCard } from '../cashier-onboarding-card';
 import { CashierOnboardingIconMarquee } from '../cashier-onboarding-icon-marquee';
 
 const icons: React.ComponentProps<typeof CashierOnboardingIconMarquee>['icons'] = [
-    'IcCashierBitcoin',
-    'IcCashierEthereum',
-    'IcCashierLiteCoin',
-    'IcCashierUsdCoin',
-    'IcCashierTether',
+    { light: 'IcCashierBitcoinLight', dark: 'IcCashierBitcoinDark' },
+    { light: 'IcCashierEthereumLight', dark: 'IcCashierEthereumDark' },
+    { light: 'IcCashierLiteCoinLight', dark: 'IcCashierLiteCoinDark' },
+    { light: 'IcCashierUsdCoinLight', dark: 'IcCashierUsdCoinDark' },
+    { light: 'IcCashierTetherLight', dark: 'IcCashierTetherDark' },
 ];
 
 const CashierOnboardingCryptoCard: React.FC = observer(() => {
-    const { ui } = useStore();
+    const { client, ui } = useStore();
     const { general_store } = useCashierStore();
-    const { openRealAccountSignup, shouldNavigateAfterChooseCrypto, is_dark_mode_on } = ui;
+    const { is_crypto } = client;
+    const { openRealAccountSignup, shouldNavigateAfterChooseCrypto } = ui;
     const { setDepositTarget } = general_store;
     const has_crypto_account = useHasCryptoCurrency();
-    const currency_config = useCurrentCurrencyConfig();
 
     const onClick = () => {
-        setDepositTarget('/cashier/deposit');
-        if (currency_config.is_crypto || has_crypto_account) {
+        setDepositTarget(routes.cashier_deposit);
+        if (is_crypto() || has_crypto_account) {
             openRealAccountSignup('choose');
-            shouldNavigateAfterChooseCrypto('/cashier/deposit');
+            shouldNavigateAfterChooseCrypto(routes.cashier_deposit);
         } else {
             openRealAccountSignup('add_crypto');
         }
@@ -38,7 +39,7 @@ const CashierOnboardingCryptoCard: React.FC = observer(() => {
             description={localize('We accept the following cryptocurrencies:')}
             onClick={onClick}
         >
-            <CashierOnboardingIconMarquee icons={icons.map(icon => `${icon}${is_dark_mode_on ? 'Dark' : 'Light'}`)} />
+            <CashierOnboardingIconMarquee icons={icons} />
         </CashierOnboardingCard>
     );
 });

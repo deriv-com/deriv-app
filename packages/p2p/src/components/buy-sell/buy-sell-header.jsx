@@ -98,20 +98,12 @@ const BuySellHeader = ({ table_type }) => {
                         placeholder={isDesktop() ? localize('Search by nickname') : localize('Search')}
                     />
                     <SortDropdown />
-                    <div className='buy-sell__header-row--filter'>
-                        <div
-                            className={classNames('buy-sell__header-row--filter-status', {
-                                'buy-sell__header-row--filter-status--disabled':
-                                    buy_sell_store.selected_payment_method_value.length === 0,
-                            })}
-                        />
-                        <Icon
-                            icon='IcFilter'
-                            className='buy-sell__header-row--filter-icon'
-                            onClick={() => general_store.showModal({ key: 'FilterModal', props: {} })}
-                            size={40}
-                        />
-                    </div>
+                    <Icon
+                        className='buy-sell__header-row--filter'
+                        icon='IcFilter'
+                        onClick={() => general_store.showModal({ key: 'FilterModal', props: {} })}
+                        size={40}
+                    />
                 </div>
             </div>
         </div>

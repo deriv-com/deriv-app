@@ -48,6 +48,7 @@ export default class BuySellStore extends BaseStore {
         // For sell orders we require extra information.
         ...(this.is_sell_advert ? { contact_info: this.root_store.general_store.contact_info } : {}),
     };
+    filter_payment_methods = [];
     payment_method_ids = [];
 
     constructor(root_store) {
@@ -102,6 +103,7 @@ export default class BuySellStore extends BaseStore {
             loadMoreItems: action.bound,
             onChangeTableType: action.bound,
             onClickApply: action.bound,
+            onClickReset: action.bound,
             onConfirmClick: action.bound,
             onLocalCurrencySelect: action.bound,
             setApiErrorMessage: action.bound,
@@ -252,31 +254,27 @@ export default class BuySellStore extends BaseStore {
     handleResponse = async order => {
         const { sendbird_store, order_store, general_store, floating_rate_store } = this.root_store;
         const { setErrorMessage, handleConfirm, handleClose } = this.form_props;
-        const { error, p2p_order_create, p2p_order_info, subscription } = order || {};
-
-        if (error) {
-            setErrorMessage(error.message);
-            this.setFormErrorCode(error.code);
+        if (order.error) {
+            setErrorMessage(order.error.message);
+            this.setFormErrorCode(order.error.code);
         } else {
-            if (subscription?.id && !this.is_create_order_subscribed) {
+            if (order?.subscription?.id && !this.is_create_order_subscribed) {
                 this.setIsCreateOrderSubscribed(true);
             }
             setErrorMessage(null);
             general_store.hideModal();
             floating_rate_store.setIsMarketRateChanged(false);
-
-            if (p2p_order_create?.id) {
-                const response = await requestWS({ p2p_order_info: 1, id: p2p_order_create.id });
+            sendbird_store.setChatChannelUrl(order?.p2p_order_create?.chat_channel_url ?? '');
+            if (order?.p2p_order_create?.id) {
+                const response = await requestWS({ p2p_order_info: 1, id: order?.p2p_order_create?.id });
                 handleConfirm(response?.p2p_order_info);
             }
-
-            if (p2p_order_info?.id && p2p_order_info?.chat_channel_url) {
-                sendbird_store.setChatChannelUrl(p2p_order_info.chat_channel_url);
-                order_store.setOrderDetails(order);
-            }
-
             handleClose();
             this.payment_method_ids = [];
+        }
+        if (order?.p2p_order_info?.id && order?.p2p_order_info?.chat_channel_url) {
+            sendbird_store.setChatChannelUrl(order?.p2p_order_info?.chat_channel_url ?? '');
+            order_store.setOrderDetails(order);
         }
     };
 
@@ -403,6 +401,10 @@ export default class BuySellStore extends BaseStore {
         this.setItems([]);
         this.setIsLoading(true);
         this.loadMoreItems({ startIndex: 0 });
+    }
+
+    onClickReset() {
+        this.setShouldUseClientLimits(false);
     }
 
     onConfirmClick(order_info) {

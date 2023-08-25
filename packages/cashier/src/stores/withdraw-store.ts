@@ -11,6 +11,7 @@ export default class WithdrawStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
         makeObservable(this, {
             blockchain_address: observable,
+            container: observable,
             error: observable,
             is_10k_withdrawal_limit_reached: observable,
             is_withdraw_confirmed: observable,
@@ -40,6 +41,7 @@ export default class WithdrawStore {
     }
 
     blockchain_address = '';
+    container: string = Constants.containers.withdraw;
     error = new ErrorStore();
     is_10k_withdrawal_limit_reached?: boolean = undefined;
     is_withdraw_confirmed = false;

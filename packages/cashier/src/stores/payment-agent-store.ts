@@ -23,6 +23,7 @@ export default class PaymentAgentStore {
         makeObservable(this, {
             list: observable,
             agents: observable,
+            container: observable,
             error: observable,
             filtered_list: observable,
             is_name_selected: observable,
@@ -74,6 +75,7 @@ export default class PaymentAgentStore {
 
     list: TPartialPaymentAgentList[] = [];
     agents: TAgent[] = [];
+    container = Constants.containers.payment_agent;
     error = new ErrorStore();
     filtered_list: TPartialPaymentAgentList[] = [];
     is_name_selected = true;

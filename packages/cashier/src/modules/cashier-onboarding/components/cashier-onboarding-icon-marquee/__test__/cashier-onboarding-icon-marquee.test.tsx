@@ -7,7 +7,7 @@ describe('CashierOnboardingIconMarquee', () => {
     test('should render cashier onboarding icon marquee', () => {
         const mock = mockStore({});
         const props: React.ComponentProps<typeof CashierOnboardingIconMarquee> = {
-            icons: ['foo', 'bar', 'baz'],
+            icons: [{ light: 'light', dark: 'dark' }],
         };
 
         const wrapper = ({ children }: { children: JSX.Element }) => (

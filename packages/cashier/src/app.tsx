@@ -1,10 +1,25 @@
 import React from 'react';
-import AppContent from './app-content';
+import { setWebsocket } from '@deriv/shared';
+import { init } from 'Utils/server_time';
 import CashierProviders from './cashier-providers';
+import type { TWebSocket } from './types';
+import type { TCoreStores } from '@deriv/stores/types';
+import AppContent from './app-content';
 
-type TProps = { passthrough: { root_store: React.ComponentProps<typeof CashierProviders>['store'] } };
+type TAppProps = {
+    passthrough: {
+        WS: TWebSocket;
+        root_store: TCoreStores;
+    };
+};
 
-const App: React.FC<TProps> = ({ passthrough: { root_store } }) => {
+const App = ({ passthrough: { WS, root_store } }: TAppProps) => {
+    React.useEffect(() => {
+        setWebsocket(WS);
+        init();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <CashierProviders store={root_store}>
             <AppContent />

@@ -24,10 +24,6 @@ const useUnsafeCashierRouteHandler = () => {
             setIsCryptoTransactionsVisible(is_hash_crypto_transactions_visible);
 
             history.replace({ pathname: history.location.pathname, hash: '' });
-        } else {
-            setIsCashierOnboarding(false);
-            setIsDeposit(false);
-            setIsCryptoTransactionsVisible(false);
         }
     }, [history, setIsCashierOnboarding, setIsCryptoTransactionsVisible, setIsDeposit]);
 };

@@ -159,7 +159,7 @@ export const DBOT_ONBOARDING = [
         disableOverlay: false,
     },
     {
-        target: '.dc-drawer__container',
+        target: '[data-testid="drawer"]',
         content: (
             <TourGuide
                 label={localize('How is my bot doing?')}

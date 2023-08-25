@@ -62,7 +62,7 @@ const StatisticsTile = ({ content, contentClassName, title }: TStatisticsTile) =
     </div>
 );
 
-export const StatisticsSummary = ({
+const StatisticsSummary = ({
     currency,
     is_mobile,
     lost_contracts,

@@ -22,19 +22,16 @@ const TogglePositionsMobile = observer(
         onClickCancel,
         toggleUnsupportedContractModal,
     }) => {
-        const { togglePositionsDrawer, is_positions_drawer_on } = useStore().ui;
-        const [hidden_positions_ids, setHiddenPositionsIds] = React.useState([]);
-        const displayed_positions = filtered_positions
-            .filter(p =>
-                hidden_positions_ids.every(hidden_position_id => hidden_position_id !== p.contract_info.contract_id)
-            )
-            .slice(0, 5);
-        const closed_positions_ids = displayed_positions
-            .filter(position => position.contract_info?.is_sold)
-            .map(p => p.contract_info.contract_id);
-
+        const { portfolio, ui } = useStore();
+        const { removePositionById: onClickRemove } = portfolio;
+        const { togglePositionsDrawer, is_positions_drawer_on } = ui;
         const closeModal = () => {
-            setHiddenPositionsIds([...new Set([...hidden_positions_ids, ...closed_positions_ids])]);
+            filtered_positions.slice(0, 5).map(position => {
+                const { contract_info } = position;
+                if (contract_info?.is_sold) {
+                    onClickRemove(contract_info.contract_id);
+                }
+            });
             togglePositionsDrawer();
         };
 
@@ -42,7 +39,7 @@ const TogglePositionsMobile = observer(
         const body_content = (
             <React.Fragment>
                 <TransitionGroup component='div'>
-                    {displayed_positions.map(portfolio_position => (
+                    {filtered_positions.slice(0, 5).map(portfolio_position => (
                         <CSSTransition
                             appear
                             key={portfolio_position.id}
@@ -59,6 +56,7 @@ const TogglePositionsMobile = observer(
                             <PositionsModalCard
                                 onClickSell={onClickSell}
                                 onClickCancel={onClickCancel}
+                                onClickRemove={onClickRemove}
                                 key={portfolio_position.id}
                                 currency={currency}
                                 toggleUnsupportedContractModal={toggleUnsupportedContractModal}
@@ -95,15 +93,11 @@ const TogglePositionsMobile = observer(
                                 {localize('Recent positions')}
                             </Text>
                             <div className='positions-modal__close-btn' onClick={closeModal}>
-                                <Icon data_testid='dt_modal_header_close' icon='IcMinusBold' />
+                                <Icon icon='IcMinusBold' />
                             </div>
                         </div>
                         <div className='positions-modal__body'>
-                            {is_empty || !displayed_positions.length || error ? (
-                                <EmptyPortfolioMessage error={error} />
-                            ) : (
-                                body_content
-                            )}
+                            {is_empty || error ? <EmptyPortfolioMessage error={error} /> : body_content}
                         </div>
                         <div className='positions-modal__footer'>
                             <NavLink

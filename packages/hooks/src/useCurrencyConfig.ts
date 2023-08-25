@@ -3,21 +3,16 @@ import { useFetch } from '@deriv/api';
 
 /** A custom hook to get the currency config information from `website_status` endpoint */
 const useCurrencyConfig = () => {
-    const { data: website_status_data } = useFetch('website_status');
-    const { data: crypto_config_data } = useFetch('crypto_config');
+    const { data } = useFetch('website_status');
 
     const currencies_config = useMemo(() => {
-        if (!website_status_data?.website_status?.currencies_config) return undefined;
+        if (!data?.website_status?.currencies_config) return undefined;
 
-        const website_status_currencies_config = website_status_data.website_status.currencies_config;
-
-        const modified_currencies_config = Object.keys(website_status_currencies_config).map(currency => {
-            const currency_config = website_status_currencies_config[currency];
-            const crypto_config = crypto_config_data?.crypto_config?.currencies_config[currency];
+        const modified_currencies_config = Object.keys(data.website_status.currencies_config).map(currency => {
+            const currency_config = data?.website_status?.currencies_config[currency];
 
             return {
                 ...currency_config,
-                ...crypto_config,
                 /** determine if the currency is a `crypto` currency */
                 is_crypto: currency_config?.type === 'crypto',
                 /** determine if the currency is a `fiat` currency */
@@ -73,7 +68,7 @@ const useCurrencyConfig = () => {
             (previous, current) => ({ ...previous, [current.code]: current }),
             {}
         );
-    }, [crypto_config_data?.crypto_config?.currencies_config, website_status_data?.website_status?.currencies_config]);
+    }, [data?.website_status?.currencies_config]);
 
     const getConfig = useCallback((currency: string) => currencies_config?.[currency], [currencies_config]);
 

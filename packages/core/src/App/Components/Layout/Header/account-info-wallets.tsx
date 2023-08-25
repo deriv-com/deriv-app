@@ -79,7 +79,7 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                         </span>
                     ) : (
                         <div className='acc-info__wallets-container'>
-                            <Icon icon={'IcWalletOptionsLight'} size={24} />
+                            <Icon icon={'IcWalletOptionsLight'} size={24} data_testid='dt_ic_wallet_options' />
                             <WalletIcon
                                 icon={linked_wallet?.icons.light}
                                 type={linked_wallet?.is_virtual ? 'demo' : linked_wallet?.currency_config?.type}

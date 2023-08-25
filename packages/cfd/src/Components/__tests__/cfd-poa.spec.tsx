@@ -70,12 +70,6 @@ describe('<CFDPOA />', () => {
             fetchResidenceList: jest.fn(() => Promise.resolve('')),
             getChangeableFields: jest.fn(() => []),
         },
-        modules: {
-            cfd: {
-                toggleCFDVerificationModal: jest.fn(),
-                toggleJurisdictionModal: jest.fn(),
-            },
-        },
     });
 
     it('should render CFDPOA and trigger buttons', async () => {
@@ -89,13 +83,9 @@ describe('<CFDPOA />', () => {
 
         expect(await screen.findByText('PersonalDetailsForm')).toBeInTheDocument();
 
-        const buttons = screen.getAllByRole('button');
-        expect(buttons[0]).toHaveTextContent('Back');
-        expect(buttons[1]).toHaveTextContent('Save and submit');
-
-        userEvent.click(buttons[0]);
-        expect(mock_store.modules.cfd.toggleCFDVerificationModal).toHaveBeenCalled();
-        expect(mock_store.modules.cfd.toggleJurisdictionModal).toHaveBeenCalled();
+        const button = screen.getByRole('button');
+        expect(button).toHaveTextContent('Continue');
+        expect(button).toBeDisabled();
 
         const uploader = screen.getByTestId('dt_file_upload_input');
         const file = new File(['test file'], 'test_file.png', { type: 'image/png' });
@@ -103,9 +93,11 @@ describe('<CFDPOA />', () => {
         await waitFor(() => {
             userEvent.upload(uploader, file);
         });
-        await waitFor(() => {
-            userEvent.click(buttons[1]);
-        });
+
+        expect(button).toBeEnabled();
+
+        userEvent.click(button);
+
         await waitFor(() => {
             expect(mock_props.onSave).toHaveBeenCalled();
             expect(mock_props.onSubmit).toHaveBeenCalled();

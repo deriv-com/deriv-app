@@ -1,8 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import { BinaryRoutes } from 'Components/Routes';
 import { observer, useStore } from '@deriv/stores';
-import ErrorComponent from 'Components/error-component';
+import { BinaryRoutes } from '../Components/Routes';
+import ErrorComponent from '../Components/error-component';
 
 const Routes = observer(() => {
     const { client, common } = useStore();

@@ -114,7 +114,7 @@ const TourSlider = observer(() => {
     const tour_button_text = has_started_onboarding_tour && step_key === 0 ? localize('Start') : bot_tour_text;
 
     const onboarding_completed_text =
-        has_started_onboarding_tour && step === 8 ? localize('Got it thanks') : tour_button_text;
+        has_started_onboarding_tour && step === 8 ? localize('Got it, thanks!') : tour_button_text;
 
     return (
         <>

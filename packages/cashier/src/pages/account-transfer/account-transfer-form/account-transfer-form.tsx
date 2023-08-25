@@ -13,11 +13,10 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
-import { TReactChangeEvent, TAccount, TAccountsList, TError, TSideNotesProps } from '../../../types';
+import { TReactChangeEvent, TAccount, TAccountsList, TError } from '../../../types';
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
 import ErrorDialog from '../../../components/error-dialog';
 import PercentageSelector from '../../../components/percentage-selector';
-import RecentTransaction from '../../../components/recent-transaction';
 import AccountTransferNote from './account-transfer-form-side-note';
 import SideNote from '../../../components/side-note';
 import AccountPlatformIcon from '../../../components/account-platform-icon';
@@ -29,7 +28,7 @@ type TAccountTransferFormProps = {
     onClickDeposit?: () => void;
     onClickNotes?: () => void;
     onClose?: () => void;
-    setSideNotes?: (notes: TSideNotesProps) => void;
+    setSideNotes?: (notes: React.ReactNode[]) => void;
 };
 
 const AccountOption = ({ account, idx }: TAccountsList) => {
@@ -58,7 +57,7 @@ const AccountOption = ({ account, idx }: TAccountsList) => {
                 <Money
                     amount={account.balance}
                     currency={account.currency}
-                    has_sign={Boolean(account.balance && account.balance < 0)}
+                    has_sign={Boolean(account.balance && Number(account.balance) < 0)}
                     show_currency
                 />
             </span>
@@ -66,15 +65,15 @@ const AccountOption = ({ account, idx }: TAccountsList) => {
     );
 };
 
-let accounts_from: Array<TAccount> = [];
-let accounts_to: Array<TAccount> = [];
-let derivez_accounts_from: Array<TAccount> = [];
-let derivez_accounts_to: Array<TAccount> = [];
-let dxtrade_accounts_from: Array<TAccount> = [];
-let dxtrade_accounts_to: Array<TAccount> = [];
-let mt_accounts_from: Array<TAccount> = [];
-let mt_accounts_to: Array<TAccount> = [];
-let remaining_transfers: boolean | undefined;
+let accounts_from: TAccount[] = [];
+let accounts_to: TAccount[] = [];
+let derivez_accounts_from: TAccount[] = [];
+let derivez_accounts_to: TAccount[] = [];
+let dxtrade_accounts_from: TAccount[] = [];
+let dxtrade_accounts_to: TAccount[] = [];
+let mt_accounts_from: TAccount[] = [];
+let mt_accounts_to: TAccount[] = [];
+let remaining_transfers: number | undefined;
 
 const AccountTransferForm = observer(
     ({ error, onClickDeposit, onClickNotes, setSideNotes }: TAccountTransferFormProps) => {
@@ -84,7 +83,7 @@ const AccountTransferForm = observer(
         } = useStore();
 
         const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
-        const { account_transfer, crypto_fiat_converter, transaction_history, general_store } = useCashierStore();
+        const { account_transfer, crypto_fiat_converter, general_store } = useCashierStore();
 
         const {
             account_transfer_amount,
@@ -113,7 +112,6 @@ const AccountTransferForm = observer(
             onChangeConverterToAmount,
             resetConverter,
         } = crypto_fiat_converter;
-        const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
 
         const [from_accounts, setFromAccounts] = React.useState({});
         const [to_accounts, setToAccounts] = React.useState({});
@@ -135,10 +133,6 @@ const AccountTransferForm = observer(
 
         const history = useHistory();
 
-        React.useEffect(() => {
-            recentTransactionOnMount();
-        }, [recentTransactionOnMount]);
-
         const validateAmount = (amount: string) => {
             if (!amount) return localize('This field is required.');
 
@@ -150,7 +144,8 @@ const AccountTransferForm = observer(
             });
             if (!is_ok) return message;
 
-            if (selected_from.balance && +selected_from.balance < +amount) return localize('Insufficient balance');
+            if (selected_from.balance && Number(selected_from.balance) < Number(amount))
+                return localize('Insufficient balance');
 
             return undefined;
         };
@@ -253,11 +248,8 @@ const AccountTransferForm = observer(
         }, [accounts_list, selected_to, selected_from]); // eslint-disable-line react-hooks/exhaustive-deps
 
         React.useEffect(() => {
-            if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
+            if (Object.keys(from_accounts).length) {
                 const side_notes = [];
-                if (is_crypto && crypto_transactions?.length) {
-                    side_notes.push(<RecentTransaction key={2} />);
-                }
                 side_notes.push(
                     <AccountTransferNote
                         allowed_transfers_count={{
@@ -278,12 +270,16 @@ const AccountTransferForm = observer(
                         is_derivez_transfer={is_derivez_transfer}
                     />
                 );
-                setSideNotes([
+                setSideNotes?.([
                     <SideNote title={<Localize i18n_default_text='Notes' />} key={0}>
                         {side_notes}
                     </SideNote>,
                 ]);
             }
+
+            return () => {
+                setSideNotes?.([]);
+            };
         }, [
             transfer_fee,
             selected_from,
@@ -291,7 +287,6 @@ const AccountTransferForm = observer(
             minimum_fee,
             from_accounts,
             is_dxtrade_allowed,
-            crypto_transactions,
             setSideNotes,
             is_crypto,
             internal_remaining_transfers?.allowed,
@@ -319,7 +314,7 @@ const AccountTransferForm = observer(
             remaining_transfers = getRemainingTransfers();
 
             const hint =
-                remaining_transfers && +remaining_transfers === 1
+                remaining_transfers && Number(remaining_transfers) === 1
                     ? localize('You have {{number}} transfer remaining for today.', { number: remaining_transfers })
                     : localize('You have {{number}} transfers remaining for today.', { number: remaining_transfers });
             setTransferToHint(hint);
@@ -390,7 +385,7 @@ const AccountTransferForm = observer(
                     }}
                     onSubmit={() => {
                         requestTransferBetweenAccounts({
-                            amount: account_transfer_amount ? +account_transfer_amount : 0,
+                            amount: account_transfer_amount ? Number(account_transfer_amount) : 0,
                         });
                     }}
                     validateOnBlur={false}
@@ -527,13 +522,14 @@ const AccountTransferForm = observer(
                                         >
                                             <div className='account-transfer-form__crypto--percentage-selector'>
                                                 <PercentageSelector
-                                                    amount={selected_from.balance ? +selected_from.balance : 0}
-                                                    currency={selected_from.currency || ''}
+                                                    amount={selected_from.balance ? Number(selected_from.balance) : 0}
                                                     from_account={selected_from.value}
                                                     getCalculatedAmount={setTransferPercentageSelectorResult}
                                                     percentage={percentage}
                                                     should_percentage_reset={should_percentage_reset}
                                                     to_account={selected_to.value}
+                                                    from_currency={selected_from.currency || ''}
+                                                    to_currency={selected_to.currency || ''}
                                                 />
                                             </div>
                                             <CryptoFiatConverter
@@ -592,10 +588,10 @@ const AccountTransferForm = observer(
                                             type='submit'
                                             is_disabled={
                                                 isSubmitting ||
-                                                (remaining_transfers && !+remaining_transfers) ||
+                                                (remaining_transfers && !Number(remaining_transfers)) ||
                                                 !!selected_from.error ||
                                                 !!selected_to.error ||
-                                                (selected_from.balance && !+selected_from.balance) ||
+                                                (selected_from.balance && !Number(selected_from.balance)) ||
                                                 !!converter_from_error ||
                                                 !!converter_to_error ||
                                                 !!errors.amount ||
@@ -610,7 +606,6 @@ const AccountTransferForm = observer(
                                     </div>
                                     {!is_from_outside_cashier && (
                                         <SideNote title={<Localize i18n_default_text='Notes' />} is_mobile>
-                                            {is_crypto && crypto_transactions?.length ? <RecentTransaction /> : null}
                                             <AccountTransferNote
                                                 allowed_transfers_count={{
                                                     internal: internal_remaining_transfers?.allowed,
@@ -642,5 +637,5 @@ const AccountTransferForm = observer(
         );
     }
 );
-
+AccountTransferForm.displayName = 'AccountTransferForm';
 export default AccountTransferForm;

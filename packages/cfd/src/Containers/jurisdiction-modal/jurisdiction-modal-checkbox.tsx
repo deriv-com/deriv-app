@@ -1,6 +1,6 @@
 import React from 'react';
 import { Checkbox, StaticUrl, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isMobile, Jurisdiction } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { TJurisdictionCheckBoxProps } from '../props.types';
 
@@ -9,22 +9,19 @@ const JurisdictionCheckBox = ({
     is_checked,
     jurisdiction_selected_shortcode,
     onCheck,
-    context,
     should_restrict_bvi_account_creation,
     should_restrict_vanuatu_account_creation,
 }: TJurisdictionCheckBoxProps) => {
     const shouldShowCheckBox = () => {
-        if (jurisdiction_selected_shortcode) {
-            if (
-                jurisdiction_selected_shortcode === 'svg' ||
-                (jurisdiction_selected_shortcode === 'bvi' && should_restrict_bvi_account_creation) ||
-                (jurisdiction_selected_shortcode === 'vanuatu' && should_restrict_vanuatu_account_creation)
-            ) {
-                return false;
-            }
-            return true;
+        if (
+            !jurisdiction_selected_shortcode ||
+            jurisdiction_selected_shortcode === Jurisdiction.SVG ||
+            (jurisdiction_selected_shortcode === Jurisdiction.BVI && should_restrict_bvi_account_creation) ||
+            (jurisdiction_selected_shortcode === Jurisdiction.VANUATU && should_restrict_vanuatu_account_creation)
+        ) {
+            return false;
         }
-        return false;
+        return true;
     };
 
     const dbvi_company_names: { [key: string]: { [key: string]: string } } = {
@@ -57,7 +54,6 @@ const JurisdictionCheckBox = ({
             {shouldShowCheckBox() && (
                 <div className={class_name}>
                     <Checkbox
-                        context={context}
                         value={is_checked}
                         onChange={onCheck}
                         label={getCheckboxLabel()}

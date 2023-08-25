@@ -55,6 +55,7 @@
             margin-bottom: 0.5rem;
             margin-left: 2rem;
             cursor: not-allowed;
+            pointer-events: none;
 
             &--blurry {
                 opacity: 0.2;
@@ -70,6 +71,7 @@
             margin-bottom: 0.5rem;
             margin-left: 2rem;
             cursor: not-allowed;
+            pointer-events: none;
 
             &--blurry {
                 opacity: 0.2;
@@ -82,8 +84,9 @@
         }
 
         &-get {
-            cursor: not-allowed;
             margin-left: 1rem;
+            user-select: none;
+            pointer-events: none;
             &--blurry {
                 opacity: 0.2;
             }

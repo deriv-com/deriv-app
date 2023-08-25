@@ -19,7 +19,7 @@ const ChangeAccountCurrency = ({
     client_currency,
     current_currency_type,
     current_fiat_currency,
-    closeModal,
+    closeRealAccountSignup,
 }) => {
     const getReorderedCurrencies = () =>
         reorderCurrencies(legal_allowed_currencies.filter(currency => currency.type === FIAT_CURRENCY_TYPE));
@@ -33,7 +33,7 @@ const ChangeAccountCurrency = ({
                     key={0}
                     className='link link--orange'
                     onClick={() => {
-                        closeModal();
+                        closeRealAccountSignup();
                         window.LC_API.open_chat_window();
                     }}
                 />,
@@ -134,10 +134,12 @@ ChangeAccountCurrency.propTypes = {
     current_currency_type: PropTypes.string,
     current_fiat_currency: PropTypes.string,
     client_currency: PropTypes.string,
+    closeRealAccountSignup: PropTypes.func,
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
     legal_allowed_currencies: client.upgradeable_currencies,
     client_currency: client.currency,
     current_fiat_currency: client.current_fiat_currency,
+    closeRealAccountSignup: ui.closeRealAccountSignup,
 }))(ChangeAccountCurrency);

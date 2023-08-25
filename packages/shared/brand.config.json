@@ -12,20 +12,20 @@
     },
     "platforms": {
         "trader": {
-            "name": "DTrader",
-            "icon": "IcBrandDtrader"
+            "name": "Deriv Trader",
+            "icon": "IcRebrandingDerivTrader"
         },
         "dbot": {
-            "name": "DBot",
-            "icon": "IcBrandDbot"
+            "name": "Deriv Bot",
+            "icon": "IcRebrandingDerivBot"
         },
         "mt5": {
             "name": "Deriv MT5",
-            "icon": "IcBrandDmt5"
+            "icon": "IcRebrandingDmt5"
         },
         "dxtrade": {
             "name": "Deriv X",
-            "icon": "IcBrandDxtrade"
+            "icon": "IcRebrandingDxtrade"
         },
         "derivez": {
             "name": "Deriv EZ",
@@ -33,25 +33,25 @@
         },
         "smarttrader": {
             "name": "SmartTrader",
-            "icon": "IcBrandSmarttrader"
+            "icon": "IcRebrandingSmarttrader"
         },
         "bbot": {
             "name": "Binary Bot",
-            "icon": "IcBrandBinarybot"
+            "icon": "IcRebrandingBinaryBot"
         },
         "go": {
             "name": "Deriv GO",
-            "icon": ""
+            "icon": "IcRebrandingDerivGo"
         }
     },
     "platforms_appstore": {
         "trader": {
-            "name": "DTrader",
+            "name": "Deriv Trader",
             "icon": "DTrader",
             "availability": "All"
         },
         "dbot": {
-            "name": "DBot",
+            "name": "Deriv Bot",
             "icon": "DBot",
             "availability": "Non-EU"
         },

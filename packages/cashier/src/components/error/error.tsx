@@ -47,7 +47,13 @@ const ErrorComponent = ({ header, message, button_link, onClickButton, button_te
     </div>
 );
 
-const Error = ({ error }: { error: ErrorStore }) => {
+/** @deprecated Use `ErrorState` instead */
+const Error = ({
+    error,
+}: {
+    error: Pick<ErrorStore, 'code' | 'message'> &
+        Partial<Pick<ErrorStore, 'fields' | 'onClickButton' | 'setErrorMessage'>>;
+}) => {
     const error_fields: TErrorFields = {
         address_city: localize('Town/City'),
         address_line_1: localize('First line of home address'),

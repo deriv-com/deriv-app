@@ -2,12 +2,12 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { isCryptocurrency, getLimitOrderAmount, isValidToSell } from '@deriv/shared';
-import ContractCardItem from './contract-card-item.jsx';
-import ToggleCardDialog from './toggle-card-dialog.jsx';
+import ContractCardItem from './contract-card-item';
+import ToggleCardDialog from './toggle-card-dialog';
 import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
-import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
+import { ResultStatusIcon } from '../result-overlay/result-overlay';
 
 const AccumulatorCardBody = ({
     addToast,
@@ -30,12 +30,12 @@ const AccumulatorCardBody = ({
     const { buy_price, profit, limit_order, sell_price } = contract_info;
     const { take_profit } = getLimitOrderAmount(contract_update || limit_order);
     const is_valid_to_sell = isValidToSell(contract_info);
-    const { CURRENT_STAKE, STAKE, TAKE_PROFIT, TOTAL_PROFIT_LOSS } = getCardLabels();
+    const { CURRENT_STAKE, INITIAL_STAKE, TAKE_PROFIT, TOTAL_PROFIT_LOSS } = getCardLabels();
 
     return (
         <React.Fragment>
             <div className='dc-contract-card-items-wrapper'>
-                <ContractCardItem header={STAKE} className='dc-contract-card__stake'>
+                <ContractCardItem header={INITIAL_STAKE} className='dc-contract-card__stake'>
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
                 <ContractCardItem header={CURRENT_STAKE} className='dc-contract-card__current-stake'>

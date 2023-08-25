@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'Stores/connect';
 import ProofOfOwnershipForm from './proof-of-ownership-form.jsx';
 import { POONotRequired, POOVerified, POORejetced, POOSubmitted } from 'Components/poo/statuses';
 import { Loading } from '@deriv/components';
 import { POO_STATUSES } from './constants/constants';
 import getPaymentMethodsConfig from './payment-method-config.js';
+import { observer, useStore } from '@deriv/stores';
 
-export const ProofOfOwnership = ({
-    account_status,
-    client_email,
-    is_dark_mode,
-    refreshNotifications,
-    updateAccountStatus,
-}) => {
+export const ProofOfOwnership = observer(() => {
+    const { client, notifications, ui } = useStore();
+    const { account_status, email: client_email, updateAccountStatus } = client;
+    const { refreshNotifications } = notifications;
+    const { is_dark_mode_on: is_dark_mode } = ui;
     const cards = account_status?.authentication?.ownership?.requests;
     const [status, setStatus] = useState(POO_STATUSES.none);
+    const citizen = client?.account_settings?.citizen || client?.account_settings?.country_code;
+
     const grouped_payment_method_data = React.useMemo(() => {
         const groups = {};
         const payment_methods_config = getPaymentMethodsConfig();
@@ -52,6 +52,7 @@ export const ProofOfOwnership = ({
                 updateAccountStatus={updateAccountStatus}
                 refreshNotifications={refreshNotifications}
                 client_email={client_email}
+                citizen={citizen}
             />
         ); // Proof of ownership is required.
     }
@@ -68,12 +69,6 @@ export const ProofOfOwnership = ({
         return <POORejetced onTryAgain={onTryAgain} />; // Proof of ownership rejected
     }
     return <Loading is_fullscreen={false} className='account__initial-loader' />;
-};
+});
 
-export default connect(({ client, notifications, ui }) => ({
-    account_status: client.account_status,
-    client_email: client.email,
-    is_dark_mode: ui.is_dark_mode_on,
-    refreshNotifications: notifications.refreshNotifications,
-    updateAccountStatus: client.updateAccountStatus,
-}))(withRouter(ProofOfOwnership));
+export default withRouter(ProofOfOwnership);

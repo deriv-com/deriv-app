@@ -3,48 +3,30 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
-import { useDepositLocked } from '@deriv/hooks';
 import NoBalance from '../no-balance';
 import CashierProviders from '../../../cashier-providers';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useDepositLocked: jest.fn(() => false),
 }));
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
+const mock_root_store = mockStore({
+    client: {
+        currency: 'USD',
+        mt5_login_list: [
+            {
+                account_type: 'demo',
+                sub_account_type: 'financial_stp',
+            },
+        ],
+    },
+    modules: { cashier: { general_store: { setCashierTabIndex: jest.fn() } } },
+});
 
 describe('<NoBalance />', () => {
     const history = createBrowserHistory();
-    let mockRootStore;
-
-    beforeEach(() => {
-        mockRootStore = {
-            client: {
-                currency: 'USD',
-                mt5_login_list: [
-                    {
-                        account_type: 'demo',
-                        sub_account_type: 'financial_stp',
-                    },
-                ],
-            },
-            modules: {
-                cashier: {
-                    deposit: { is_deposit_locked: useDepositLocked.mockReturnValue(false) },
-                    general_store: { setCashierTabIndex: jest.fn() },
-                },
-            },
-        };
-    });
 
     it('component should render', () => {
         render(
@@ -52,7 +34,7 @@ describe('<NoBalance />', () => {
                 <NoBalance />
             </Router>,
             {
-                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+                wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
             }
         );
 
@@ -67,7 +49,7 @@ describe('<NoBalance />', () => {
                 <NoBalance />
             </Router>,
             {
-                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+                wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
             }
         );
 

@@ -49,7 +49,8 @@ export const getAppId = () => {
     const user_app_id = ''; // you can insert Application ID of your registered application here
     const config_app_id = window.localStorage.getItem('config.app_id');
     const current_domain = getCurrentProductionDomain() || '';
-    const platform = window.localStorage.getItem('config.platform');
+    window.localStorage.removeItem('config.platform'); // Remove config stored in localstorage if there's any.
+    const platform = window.sessionStorage.getItem('config.platform');
     const { is_pathname_bot, is_config_route_bot } = isBot();
     // Added platform at the top since this should take precedence over the config_app_id
     if (platform && platform_app_ids[platform as keyof typeof platform_app_ids]) {

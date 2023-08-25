@@ -26,7 +26,7 @@ const svg_loaders = [
                     { removeUselessStrokeAndFill: false },
                     { removeUknownsAndDefaults: false },
                 ],
-                floatPrecision: 2,
+                floatPrecision: 3,
             },
         },
     },
@@ -156,7 +156,7 @@ module.exports = function (env) {
                   ]
                 : [],
         },
-        devtool: is_release ? undefined : 'eval-cheap-module-source-map',
+        devtool: is_release ? 'source-map' : 'eval-cheap-module-source-map',
         externals: [
             {
                 react: true,

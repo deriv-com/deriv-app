@@ -52,7 +52,7 @@ describe('CFDDownloadContainer', () => {
         render(<CFDDownloadContainer {...mock_props} />);
         expect(screen.getByText(/IcInstallationWindows/i).closest('a')).toHaveAttribute(
             'href',
-            'https://download.mql5.com/cdn/web/deriv.limited/mt5/derivmt5setup.exe'
+            'https://download.mql5.com/cdn/web/deriv.holdings.guernsey/mt5/deriv5setup.exe'
         );
         expect(screen.getByText(/IcInstallationMacos/i).closest('a')).toHaveAttribute(
             'href',
@@ -64,7 +64,7 @@ describe('CFDDownloadContainer', () => {
         );
         expect(screen.getByText(/IcInstallationGoogle/i).closest('a')).toHaveAttribute(
             'href',
-            'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server'
+            'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server,Deriv-Server-02'
         );
         expect(screen.getByText(/IcInstallationHuawei/i).closest('a')).toHaveAttribute(
             'href',
@@ -74,7 +74,7 @@ describe('CFDDownloadContainer', () => {
 
     it('should render the correct icons and text for the Deriv X platform', () => {
         render(<CFDDownloadContainer {...mock_props} platform='dxtrade' />);
-        expect(screen.getByText(/IcBrandDxtrade/i)).toBeInTheDocument();
+        expect(screen.getByText(/IcRebrandingDxtrade/i)).toBeInTheDocument();
         expect(screen.getByText(/IcInstallationGoogle/i)).toBeInTheDocument();
         expect(screen.getByText(/IcInstallationApple/i)).toBeInTheDocument();
         expect(screen.getByText(/web terminal/i)).toBeInTheDocument();
@@ -82,7 +82,7 @@ describe('CFDDownloadContainer', () => {
 
     it('should download/redirect the correct file for DerivX', () => {
         render(<CFDDownloadContainer {...mock_props} platform='dxtrade' active_index={0} />);
-        expect(screen.getByText(/IcBrandDxtrade/i).closest('a')).toHaveAttribute('href', 'https://dx.deriv.com');
+        expect(screen.getByText(/IcRebrandingDxtrade/i).closest('a')).toHaveAttribute('href', 'https://dx.deriv.com');
         expect(screen.getByText(/IcInstallationGoogle/i).closest('a')).toHaveAttribute(
             'href',
             'https://play.google.com/store/apps/details?id=com.deriv.dx'
@@ -94,6 +94,9 @@ describe('CFDDownloadContainer', () => {
     });
     it('should render demo account dashboard and the demo link for derivx web terminal if active_index is 1 ', () => {
         render(<CFDDownloadContainer {...mock_props} active_index={1} platform='dxtrade' />);
-        expect(screen.getByText(/IcBrandDxtrade/i).closest('a')).toHaveAttribute('href', 'https://dx-demo.deriv.com');
+        expect(screen.getByText(/IcRebrandingDxtrade/i).closest('a')).toHaveAttribute(
+            'href',
+            'https://dx-demo.deriv.com'
+        );
     });
 });

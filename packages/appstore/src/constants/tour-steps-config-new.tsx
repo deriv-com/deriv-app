@@ -50,7 +50,7 @@ export const getTourStepConfig = (): Step[] => [
         title: (
             <React.Fragment>
                 <Text as='p' weight='bold' color='brand-red-coral'>
-                    {localize("Trader's hub tour")}
+                    {localize("Trader's Hub tour")}
                 </Text>
                 <div className='toggle-account-type__divider' />
             </React.Fragment>
@@ -81,7 +81,7 @@ export const getTourStepConfigHighRisk = (): Step[] => [
         title: (
             <React.Fragment>
                 <Text as='p' weight='bold' color='brand-red-coral'>
-                    {localize("Trader's hub tour")}
+                    {localize("Trader's Hub tour")}
                     <div className='toggle-account-type__divider' />
                 </Text>
             </React.Fragment>

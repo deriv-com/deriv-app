@@ -1,15 +1,15 @@
 import { deriv_urls } from '../constants';
 import { reset, urlFor, websiteUrl, getPath, getContractPath } from '../url';
-import { expect } from '../../../test_utils/test_common';
 
 // Testable URLs
 const urls = [deriv_urls.DERIV_APP_PRODUCTION];
 
 function mockLocation(url) {
     // Mocking global location
-    delete global.window.location;
-    global.window = Object.create(window);
-    window.location = new URL(url);
+    Object.defineProperty(window, 'location', {
+        writable: true,
+        value: new URL(url),
+    });
     reset();
 }
 

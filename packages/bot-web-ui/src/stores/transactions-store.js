@@ -1,38 +1,55 @@
-import { action, computed, observable, reaction, makeObservable } from 'mobx';
-import { formatDate, isEnded, isBot } from '@deriv/shared';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { log_types } from '@deriv/bot-skeleton';
+import { formatDate, isBot, isEnded } from '@deriv/shared';
 import { transaction_elements } from '../constants/transactions';
 import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';
 
 export default class TransactionsStore {
-    constructor(root_store) {
+    constructor(root_store, core) {
         makeObservable(this, {
             elements: observable,
             active_transaction_id: observable,
+            recovered_completed_transactions: observable,
+            recovered_transactions: observable,
+            is_called_proposal_open_contract: observable,
+            is_transaction_details_modal_open: observable,
             transactions: computed,
             onBotContractEvent: action.bound,
             pushTransaction: action.bound,
-            setActiveTransactionId: action.bound,
             onClickOutsideTransaction: action.bound,
             onMount: action.bound,
             onUnmount: action.bound,
             clear: action.bound,
+            setActiveTransactionId: action.bound,
+            registerReactions: action.bound,
+            recoverPendingContracts: action.bound,
+            updateResultsCompletedContract: action.bound,
+            sortOutPositionsBeforeAction: action.bound,
+            recoverPendingContractsById: action.bound,
+            toggleTransactionDetailsModal: action.bound,
         });
 
+        this.is_transaction_details_modal_open = false;
         this.root_store = root_store;
+        this.core = core;
         this.disposeReactionsFn = this.registerReactions();
     }
 
     TRANSACTION_CACHE = 'transaction_cache';
 
-    elements = getStoredItemsByUser(this.TRANSACTION_CACHE, this.root_store?.core.client.loginid, []);
+    elements = getStoredItemsByUser(this.TRANSACTION_CACHE, this.core?.client.loginid, []);
     active_transaction_id = null;
     recovered_completed_transactions = [];
     recovered_transactions = [];
     is_called_proposal_open_contract = false;
+    is_transaction_details_modal_open = false;
 
     get transactions() {
         return this.elements.filter(element => element.type === transaction_elements.CONTRACT);
+    }
+
+    toggleTransactionDetailsModal(is_open) {
+        this.is_transaction_details_modal_open = is_open;
     }
 
     onBotContractEvent(data) {
@@ -135,10 +152,11 @@ export default class TransactionsStore {
         this.elements = this.elements.slice(0, 0);
         this.recovered_completed_transactions = this.recovered_completed_transactions.slice(0, 0);
         this.recovered_transactions = this.recovered_transactions.slice(0, 0);
+        this.is_transaction_details_modal_open = false;
     }
 
     registerReactions() {
-        const { client } = this.root_store?.core;
+        const { client } = this.core;
 
         // Write transactions to session storage on each change in transaction elements.
         const disposeTransactionElementsListener = reaction(
@@ -158,9 +176,17 @@ export default class TransactionsStore {
             () => this.recoverPendingContracts()
         );
 
+        const disposeSwitchAcountListener = reaction(
+            () => client.loginid,
+            () => this.clear()
+        );
+
         return () => {
             disposeTransactionElementsListener();
             disposeRecoverContracts();
+            if (typeof this.disposeSwitchAcountListener === 'function') {
+                disposeSwitchAcountListener();
+            }
         };
     }
 
@@ -194,7 +220,7 @@ export default class TransactionsStore {
     }
 
     sortOutPositionsBeforeAction(positions, element_id = false) {
-        positions.forEach(position => {
+        positions?.forEach(position => {
             if (!element_id || (element_id && position.id === element_id)) {
                 const contract_details = position.contract_info;
                 this.updateResultsCompletedContract(contract_details);
@@ -203,8 +229,8 @@ export default class TransactionsStore {
     }
 
     recoverPendingContractsById(contract_id) {
-        const { ws, core } = this.root_store;
-        const positions = core.portfolio.positions;
+        const { ws } = this.root_store;
+        const positions = this.core.portfolio.positions;
 
         // TODO: the idea is to remove the POC calls completely
         // but adding this check to prevent making POC calls only for bot as of now

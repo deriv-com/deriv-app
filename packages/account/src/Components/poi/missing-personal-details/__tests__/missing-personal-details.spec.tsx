@@ -15,7 +15,7 @@ jest.mock('@deriv/components', () => {
 describe('<MissingPersonalDetails />', () => {
     const renderWithRouter = component =>
         render(
-            <PlatformContext.Provider value={{ is_appstore: true }}>
+            <PlatformContext.Provider value={{ is_appstore: true, is_deriv_crypto: false, is_pre_appstore: false }}>
                 <BrowserRouter>{component}</BrowserRouter>
             </PlatformContext.Provider>
         );
@@ -62,7 +62,7 @@ describe('<MissingPersonalDetails />', () => {
 
     it('should show missing msg with proper icon if has_invalid_postal_code is false and is_appstore is false', () => {
         render(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
+            <PlatformContext.Provider value={{ is_appstore: false, is_deriv_crypto: false, is_pre_appstore: false }}>
                 <BrowserRouter>
                     <MissingPersonalDetails />
                 </BrowserRouter>

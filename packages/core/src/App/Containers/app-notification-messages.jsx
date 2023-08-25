@@ -11,7 +11,11 @@ import Notification, {
     max_display_notifications_mobile,
 } from '../Components/Elements/NotificationMessage';
 import { useLocation } from 'react-router-dom';
-import { excluded_notifications, priority_toast_messages } from '../../Stores/Helpers/client-notifications';
+import {
+    excluded_notifications,
+    priority_toast_messages,
+    maintenance_notifications,
+} from '../../Stores/Helpers/client-notifications';
 
 const Portal = ({ children }) =>
     isMobile() ? ReactDOM.createPortal(children, document.getElementById('deriv_app')) : children;
@@ -107,68 +111,80 @@ const AppNotificationMessages = ({
         const is_not_marked_notification = !marked_notifications.includes(message.key);
         const is_non_hidden_notification = isMobile()
             ? [
-                  'unwelcome',
-                  'contract_sold',
-                  'dp2p',
-                  'install_pwa',
-                  'tnc',
-                  'need_fa',
+                  ...maintenance_notifications,
+                  'authenticate',
                   'deriv_go',
-                  'close_mx_mlt_account',
-                  'trustpilot',
-                  'close_uk_account',
-                  'p2p_daily_limit_increase',
                   'document_needs_action',
+                  'dp2p',
+                  'close_mx_mlt_account',
+                  'close_uk_account',
+                  'contract_sold',
+                  'has_changed_two_fa',
                   'identity',
+                  'install_pwa',
+                  'need_fa',
+                  'notify_financial_assessment',
                   'poi_name_mismatch',
+                  'poa_address_mismatch_failure',
+                  'poa_address_mismatch_success',
+                  'poa_address_mismatch_warning',
+                  'poa_expired',
+                  'poa_failed',
+                  'poa_rejected_for_mt5',
+                  'poa_verified',
                   'poi_expired',
                   'poi_failed',
                   'poi_verified',
-                  'poa_expired',
-                  'resticted_mt5_with_pending_poa',
-                  'poa_verified',
-                  'poa_failed',
+                  'p2p_daily_limit_increase',
                   'resticted_mt5_with_failed_poa',
-                  'poa_rejected_for_mt5',
-                  'poa_address_mismatch_warning',
-                  'poa_address_mismatch_success',
-                  'poa_address_mismatch_failure',
-                  'svg_needs_poi_poa',
+                  'resticted_mt5_with_pending_poa',
                   'svg_needs_poa',
                   'svg_needs_poi',
+                  'svg_needs_poi_poa',
                   'svg_poi_expired',
                   'switched_to_real',
+                  'tnc',
+                  'trustpilot',
+                  'unwelcome',
+                  'mt5_notification',
               ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
 
         const is_only_for_p2p_notification =
             window.location.pathname !== routes.cashier_p2p || message?.platform === 'P2P';
-        return is_not_marked_notification && is_non_hidden_notification && is_only_for_p2p_notification;
+
+        const is_maintenance_notifications = maintenance_notifications.includes(message.key);
+
+        return (
+            is_not_marked_notification &&
+            is_non_hidden_notification &&
+            (is_only_for_p2p_notification || is_maintenance_notifications)
+        );
     });
 
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
     //TODO (yauheni-kryzhyk): showing pop-up only for specific messages. the rest of notifications are hidden. this logic should be changed in the upcoming new pop-up notifications implementation
 
     const filtered_excluded_notifications = notifications.filter(message =>
-        priority_toast_messages.includes(message.key) ? message : excluded_notifications.includes(message.key)
+        priority_toast_messages.includes(message.key) || message.type.includes('p2p')
+            ? message
+            : excluded_notifications.includes(message.key)
     );
 
-    const getNotificationSublist = () => {
-        if (window.location.pathname === routes.cashier_deposit) {
-            return filtered_excluded_notifications.filter(message =>
-                message.key.includes('switched_to_real') ? message : null
-            );
-        }
-        return filtered_excluded_notifications.slice(0, notifications_limit);
-    };
+    const notifications_sublist =
+        window.location.pathname === routes.cashier_deposit
+            ? filtered_excluded_notifications.filter(message =>
+                  ['switched_to_real', ...maintenance_notifications].includes(message.key)
+              )
+            : filtered_excluded_notifications.slice(0, notifications_limit);
 
     if (!should_show_popups) return null;
 
-    return getNotificationSublist().length ? (
+    return notifications_sublist.length ? (
         <div ref={ref => setNotificationsRef(ref)} className='notification-messages-bounds'>
             <Portal>
                 <NotificationsContent
-                    notifications={getNotificationSublist()}
+                    notifications={notifications_sublist}
                     is_notification_loaded={is_notification_loaded}
                     style={style}
                     removeNotificationMessage={removeNotificationMessage}

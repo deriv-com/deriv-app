@@ -1,0 +1,117 @@
+import React from 'react';
+import { ApiHelpers, ServerTime, setColors } from '@deriv/bot-skeleton';
+import { Loading } from '@deriv/components';
+import { observer, useStore } from '@deriv/stores';
+import { Audio, BotNotificationMessages, Dashboard, NetworkToastPopup, RoutePromptDialog } from 'Components';
+import BotBuilder from 'Components/dashboard/bot-builder';
+import TransactionDetailsModal from 'Components/transaction-details';
+import GTM from 'Utils/gtm';
+import { useDBotStore } from 'Stores/useDBotStore';
+import BlocklyLoading from '../components/blockly-loading';
+import './app.scss';
+
+const AppContent = observer(() => {
+    const [is_loading, setIsLoading] = React.useState(true);
+    const RootStore = useStore();
+    const {
+        common,
+        client,
+        ui: { is_dark_mode_on },
+    } = RootStore;
+    const DBotStores = useDBotStore();
+    const { app } = DBotStores;
+    const { showDigitalOptionsMaltainvestError } = app;
+
+    // TODO: Remove this when connect is removed completely
+    const combinedStore = { ...DBotStores, core: { ...RootStore } };
+
+    //Do not remove this is for the bot-skeleton package to load blockly with the theme
+    React.useEffect(() => {
+        setColors(is_dark_mode_on);
+    }, [is_dark_mode_on]);
+
+    React.useEffect(() => {
+        /**
+         * Inject: External Script Hotjar - for DBot only
+         */
+        (function (h, o, t, j) {
+            /* eslint-disable */
+            h.hj =
+                h.hj ||
+                function () {
+                    (h.hj.q = h.hj.q || []).push(arguments);
+                };
+            /* eslint-enable */
+            h._hjSettings = { hjid: 3050531, hjsv: 6 };
+            const a = o.getElementsByTagName('head')[0];
+            const r = o.createElement('script');
+            r.async = 1;
+            r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+    }, []);
+
+    React.useEffect(() => {
+        showDigitalOptionsMaltainvestError(client, common);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [client.is_options_blocked, client.account_settings.country_code]);
+
+    const init = () => {
+        GTM.init(combinedStore);
+        ServerTime.init(common);
+        app.setDBotEngineStores(combinedStore);
+        ApiHelpers.setInstance(app.api_helpers_store);
+    };
+
+    const changeActiveSymbolLoadingState = () => {
+        init();
+        const { active_symbols } = ApiHelpers.instance;
+        active_symbols.retrieveActiveSymbols(true).then(() => {
+            setIsLoading(false);
+        });
+    };
+
+    React.useEffect(() => {
+        init();
+        setIsLoading(true);
+        if (!client.is_logged_in) {
+            changeActiveSymbolLoadingState();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // use is_landing_company_loaded to know got details of accounts to identify should show an error or not
+    if (client.is_landing_company_loaded) {
+        changeActiveSymbolLoadingState();
+    }
+
+    React.useEffect(() => {
+        const onDisconnectFromNetwork = () => {
+            setIsLoading(false);
+        };
+        window.addEventListener('offline', onDisconnectFromNetwork);
+        return () => {
+            window.removeEventListener('offline', onDisconnectFromNetwork);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    return is_loading ? (
+        <Loading />
+    ) : (
+        <>
+            <BlocklyLoading />
+            <div className='bot-dashboard bot'>
+                <Audio />
+                <BotNotificationMessages />
+                <Dashboard />
+                <NetworkToastPopup />
+                <BotBuilder />
+                <RoutePromptDialog />
+                <TransactionDetailsModal />
+            </div>
+        </>
+    );
+});
+
+export default AppContent;

@@ -1,24 +1,30 @@
-import { DataList, Icon, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import classnames from 'classnames';
-import { contract_stages } from 'Constants/contract-stage';
 import React from 'react';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import classnames from 'classnames';
+import { DataList, Icon, Text } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+import { contract_stages } from 'Constants/contract-stage';
+import { useDBotStore } from 'Stores/useDBotStore';
+import { TCheckedFilters, TFilterMessageValues, TJournalDataListArgs } from './journal.types';
 import { JournalItem, JournalLoader, JournalTools } from './journal-components';
-import { TCheckedFilters, TFilterMessageValues, TJournalDataListArgs, TJournalProps } from './journal.types';
 
-const Journal = ({
-    contract_stage,
-    filtered_messages,
-    is_mobile,
-    is_stop_button_visible,
-    unfiltered_messages,
-    ...props
-}: TJournalProps) => {
+const Journal = observer(() => {
+    const { journal, run_panel } = useDBotStore();
+    const {
+        checked_filters,
+        filterMessage,
+        filters,
+        filtered_messages,
+        is_filter_dialog_visible,
+        toggleFilterDialog,
+        unfiltered_messages,
+    } = journal;
+    const { is_stop_button_visible, contract_stage } = run_panel;
+
     const filtered_messages_length = Array.isArray(filtered_messages) && filtered_messages.length;
     const unfiltered_messages_length = Array.isArray(unfiltered_messages) && unfiltered_messages.length;
-    const { checked_filters } = props;
+    const is_mobile = isMobile();
 
     return (
         <div
@@ -26,7 +32,13 @@ const Journal = ({
                 'run-panel-tab__content': !is_mobile,
             })}
         >
-            <JournalTools {...props} />
+            <JournalTools
+                checked_filters={checked_filters}
+                filters={filters}
+                filterMessage={filterMessage}
+                is_filter_dialog_visible={is_filter_dialog_visible}
+                toggleFilterDialog={toggleFilterDialog}
+            />
             <div className='journal__item-list'>
                 {filtered_messages_length ? (
                     <DataList
@@ -85,17 +97,6 @@ const Journal = ({
             </div>
         </div>
     );
-};
+});
 
-export default connect(({ journal, run_panel, ui }: RootStore) => ({
-    checked_filters: journal.checked_filters,
-    filterMessage: journal.filterMessage,
-    filters: journal.filters,
-    filtered_messages: journal.filtered_messages,
-    is_filter_dialog_visible: journal.is_filter_dialog_visible,
-    toggleFilterDialog: journal.toggleFilterDialog,
-    unfiltered_messages: journal.unfiltered_messages,
-    is_stop_button_visible: run_panel.is_stop_button_visible,
-    contract_stage: run_panel.contract_stage,
-    is_mobile: ui.is_mobile,
-}))(Journal);
+export default Journal;

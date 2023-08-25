@@ -91,6 +91,8 @@ const EditPaymentMethodForm = () => {
                                                             className={classNames({
                                                                 'add-payment-method-form__payment-method-field':
                                                                     !errors[payment_method_field[0]]?.length,
+                                                                'add-payment-method-form__payment-method-field--text-area':
+                                                                    payment_method_field[0] === 'instructions',
                                                             })}
                                                             onChange={handleChange}
                                                             name={payment_method_field[0]}

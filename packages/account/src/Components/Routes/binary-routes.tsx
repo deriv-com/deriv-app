@@ -3,11 +3,11 @@ import { Switch } from 'react-router-dom';
 import { PlatformContext } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import getRoutesConfig from 'Constants/routes-config';
-import { TBinaryRoutes, TPlatformContext, TRoute } from 'Types';
+import { TBinaryRoutes, TRoute } from 'Types';
 import RouteWithSubRoutes from './route-with-sub-routes';
 
 const BinaryRoutes = (props: TBinaryRoutes) => {
-    const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     return (
         <React.Suspense

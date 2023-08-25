@@ -23,6 +23,7 @@ class DBot {
      */
     async initWorkspace(public_path, store, api_helpers_store, is_mobile) {
         const recent_files = await getSavedWorkspaces();
+
         return new Promise((resolve, reject) => {
             __webpack_public_path__ = public_path; // eslint-disable-line no-global-assign
             ApiHelpers.setInstance(api_helpers_store);
@@ -46,7 +47,6 @@ class DBot {
                     return;
                 }
                 this.workspace = Blockly.inject(el_scratch_div, {
-                    grid: { spacing: 40, length: 11, colour: '#f3f3f3' },
                     media: `${__webpack_public_path__}media/`,
                     trashcan: !is_mobile,
                     zoom: { wheel: true, startScale: workspaceScale },
@@ -54,10 +54,6 @@ class DBot {
                 });
 
                 this.workspace.cached_xml = { main: main_xml };
-                this.workspace.save_workspace_interval = setInterval(async () => {
-                    // Periodically save the workspace.
-                    await saveWorkspaceToRecent(Blockly.Xml.workspaceToDom(this.workspace), save_types.UNSAVED);
-                }, 10000);
 
                 this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
                 this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
@@ -73,12 +69,15 @@ class DBot {
                 // Push main.xml to workspace and reset the undo stack.
                 this.workspace.current_strategy_id = Blockly.utils.genUid();
                 Blockly.derivWorkspace.strategy_to_load = main_xml;
+                Blockly.mainWorkspace.strategy_to_load = main_xml;
                 let file_name = config.default_file_name;
                 if (recent_files && recent_files.length) {
                     const latest_file = recent_files[0];
                     Blockly.derivWorkspace.strategy_to_load = latest_file.xml;
+                    Blockly.mainWorkspace.strategy_to_load = latest_file.xml;
                     file_name = latest_file.name;
                     Blockly.derivWorkspace.current_strategy_id = latest_file.id;
+                    Blockly.mainWorkspace.current_strategy_id = latest_file.id;
                 }
 
                 const event_group = `dbot-load${Date.now()}`;
@@ -106,6 +105,10 @@ class DBot {
                 throw error;
             }
         });
+    }
+
+    async saveRecentWorkspace() {
+        await saveWorkspaceToRecent(Blockly.Xml.workspaceToDom(this.workspace), save_types.UNSAVED);
     }
 
     /**

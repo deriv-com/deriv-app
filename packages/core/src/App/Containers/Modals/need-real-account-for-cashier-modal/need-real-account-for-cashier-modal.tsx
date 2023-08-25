@@ -21,7 +21,7 @@ const NeedRealAccountForCashierModal = observer(() => {
 
     const createAccount = () => {
         toggleNeedRealAccountForCashierModal();
-        return is_eu_user ? openRealAccountSignup('maltainvest') : openRealAccountSignup();
+        return is_eu_user ? openRealAccountSignup('maltainvest') : openRealAccountSignup('svg');
     };
 
     const switchRegulation = () => {

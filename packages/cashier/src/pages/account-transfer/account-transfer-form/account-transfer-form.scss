@@ -24,9 +24,12 @@
 
     &__button-link {
         cursor: pointer;
-        margin: 3.4rem 0.8rem 2.4rem 6.4rem;
-        position: absolute;
-        left: 0;
+        margin: 3.2rem auto 2.4rem 1.6rem;
+
+        @include mobile {
+            margin-top: 2.4rem;
+            margin-left: 0;
+        }
 
         &:hover {
             text-decoration: underline var(--brand-red-coral);
@@ -116,16 +119,27 @@
             margin-bottom: 0.8rem;
         }
     }
-    &__wrapper .account-transfer-form__input {
-        margin-bottom: -0.8rem !important;
-        min-width: 36rem;
-        &-fit-content {
-            width: fit-content;
+    &__wrapper {
+        .cashier__form-submit {
+            margin-top: 0;
+
+            @include mobile {
+                margin-top: 0.8rem;
+            }
         }
-        @include mobile {
-            width: 100%;
-            min-width: auto;
-            margin-bottom: 2.6rem !important;
+        .account-transfer-form__input {
+            margin-bottom: -0.8rem !important;
+            min-width: 36rem;
+            .dc-input__hint {
+                margin: 0.9rem 0 -1.9rem 1.3rem;
+            }
+            &-fit-content {
+                width: fit-content;
+            }
+            @include mobile {
+                width: 100%;
+                min-width: auto;
+            }
         }
     }
     &__currency,
@@ -200,6 +214,7 @@
 }
 .dc-modal__container_account_transfer {
     &_switch_modal {
+        transition: none;
         .dc-modal {
             @include mobile() {
                 &-header__close {

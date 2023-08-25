@@ -1,7 +1,6 @@
 import { Button, Loading } from '@deriv/components';
 import { WS, getPlatformRedirect, platforms } from '@deriv/shared';
 import { identity_status_codes, service_code } from './proof-of-identity-utils';
-
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
 import Expired from 'Components/poi/status/expired';
@@ -19,9 +18,11 @@ import { populateVerificationStatus } from '../Helpers/verification';
 import { useHistory } from 'react-router';
 
 const ProofOfIdentityContainer = ({
+    account_settings,
     account_status,
     app_routing_history,
     fetchResidenceList,
+    getChangeableFields,
     height,
     is_from_external,
     is_switching,
@@ -33,6 +34,7 @@ const ProofOfIdentityContainer = ({
     routeBackInApp,
     should_allow_authentication,
     setIsCfdPoiCompleted,
+    updateAccountStatus,
 }) => {
     const history = useHistory();
     const [api_error, setAPIError] = React.useState();
@@ -42,10 +44,17 @@ const ProofOfIdentityContainer = ({
 
     const from_platform = getPlatformRedirect(app_routing_history);
 
-    const should_show_redirect_btn = Object.keys(platforms).includes(from_platform.ref);
+    const should_show_redirect_btn = Object.keys(platforms).includes(from_platform?.ref);
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
     const handleRequireSubmission = () => setHasRequireSubmission(true);
+    const country_code = account_settings?.citizen || account_settings?.country_code;
+
+    const handleManualSubmit = () => {
+        WS.authorized.getAccountStatus().then(() => {
+            refreshNotifications();
+        });
+    };
 
     React.useEffect(() => {
         // only re-mount logic when switching is done
@@ -89,44 +98,37 @@ const ProofOfIdentityContainer = ({
         needs_poa,
         onfido,
     } = verification_status;
-    const last_attempt_status = identity_last_attempt?.status;
-    const is_last_attempt_idv = identity_last_attempt?.service === 'idv';
-    const is_last_attempt_onfido = identity_last_attempt?.service === 'onfido';
     const should_ignore_idv = is_high_risk && is_withdrawal_lock;
 
     if (!should_allow_authentication && !is_age_verified) {
         return <NotRequired />;
     }
 
-    const redirect_button = should_show_redirect_btn ? (
-        <Button
-            primary
-            className='proof-of-identity__redirect'
-            onClick={() => {
-                if (platforms[from_platform.ref].is_hard_redirect) {
-                    const url = platforms[from_platform.ref]?.url;
-                    window.location.href = url;
-                } else {
-                    routeBackTo(from_platform.route);
-                }
-            }}
-        >
+    const onClickRedirectButton = () => {
+        const platform = platforms[from_platform.ref];
+        const { is_hard_redirect = false, url = '' } = platform ?? {};
+        if (is_hard_redirect) {
+            window.location.href = url;
+            window.sessionStorage.removeItem('config.platform');
+        } else {
+            routeBackTo(from_platform.route);
+        }
+    };
+
+    const redirect_button = should_show_redirect_btn && (
+        <Button primary className='proof-of-identity__redirect' onClick={onClickRedirectButton}>
             <Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name: from_platform.name }} />
         </Button>
-    ) : null;
+    );
 
-    if (
-        identity_status === identity_status_codes.none ||
-        has_require_submission ||
-        allow_poi_resubmission ||
-        (should_ignore_idv && is_last_attempt_idv && manual?.status !== 'verified' && manual?.status !== 'pending') ||
-        (should_ignore_idv && is_last_attempt_onfido && last_attempt_status === 'rejected')
-    ) {
+    if (identity_status === identity_status_codes.none || has_require_submission || allow_poi_resubmission) {
         return (
             <POISubmission
+                account_settings={account_settings}
                 allow_poi_resubmission={allow_poi_resubmission}
                 has_require_submission={has_require_submission}
                 height={height ?? null}
+                getChangeableFields={getChangeableFields}
                 identity_last_attempt={identity_last_attempt}
                 idv={idv}
                 is_from_external={!!is_from_external}
@@ -139,6 +141,7 @@ const ProofOfIdentityContainer = ({
                 refreshNotifications={refreshNotifications}
                 residence_list={residence_list}
                 setIsCfdPoiCompleted={setIsCfdPoiCompleted}
+                updateAccountStatus={updateAccountStatus}
             />
         );
     } else if (
@@ -201,17 +204,22 @@ const ProofOfIdentityContainer = ({
                     manual={manual}
                     setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                     redirect_button={redirect_button}
+                    country_code={country_code}
+                    handleViewComplete={handleManualSubmit}
                 />
             );
         case service_code.manual:
             return (
                 <Unsupported
                     manual={manual}
+                    country_code={country_code}
                     is_from_external={is_from_external}
                     setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                     needs_poa={needs_poa}
                     redirect_button={redirect_button}
                     handleRequireSubmission={handleRequireSubmission}
+                    handleViewComplete={handleManualSubmit}
+                    onfido={onfido}
                 />
             );
         default:

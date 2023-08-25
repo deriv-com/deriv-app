@@ -3,17 +3,23 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { isMobile } from '@deriv/shared';
 import AccountTransferForm from '../account-transfer-form';
 import CashierProviders from '../../../../cashier-providers';
+import { mockStore } from '@deriv/stores';
+import { TError } from '../../../../types';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
     isMobile: jest.fn(),
 }));
 
-let mockRootStore;
+let mockRootStore: ReturnType<typeof mockStore>;
+
+jest.mock('Assets/svgs/trading-platform', () =>
+    jest.fn(props => <div data-testid={props.icon}>TradingPlatformIcon</div>)
+);
 
 describe('<AccountTransferForm />', () => {
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 account_limits: {
                     daily_transfers: {
@@ -25,7 +31,7 @@ describe('<AccountTransferForm />', () => {
                 mt5_login_list: [
                     {
                         login: 'value',
-                        market_type: 'gaming',
+                        market_type: 'financial',
                         server_info: {
                             geolocation: {
                                 region: 'region',
@@ -78,9 +84,6 @@ describe('<AccountTransferForm />', () => {
                     crypto_fiat_converter: {
                         resetConverter: jest.fn(),
                     },
-                    transaction_history: {
-                        onMount: jest.fn(),
-                    },
                 },
             },
             common: {
@@ -89,7 +92,7 @@ describe('<AccountTransferForm />', () => {
             traders_hub: {
                 selected_account: {},
             },
-        };
+        });
     });
     beforeAll(() => {
         const modal_root_el = document.createElement('div');
@@ -107,7 +110,7 @@ describe('<AccountTransferForm />', () => {
         error: {
             code: 'testCode',
             message: 'testMessage',
-        },
+        } as TError,
     };
 
     const renderAccountTransferForm = () => {
@@ -200,7 +203,7 @@ describe('<AccountTransferForm />', () => {
         props.error = {
             code: 'Fiat2CryptoTransferOverLimit',
             message: 'testMessage',
-        };
+        } as TError;
 
         renderAccountTransferForm();
 
@@ -211,7 +214,7 @@ describe('<AccountTransferForm />', () => {
         props.error = {
             code: 'testCode',
             message: 'testMessage',
-        };
+        } as TError;
 
         renderAccountTransferForm();
 
@@ -274,5 +277,167 @@ describe('<AccountTransferForm />', () => {
         renderAccountTransferForm();
 
         expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
+    });
+
+    describe('<Dropdown />', () => {
+        const accountsList = [
+            {
+                currency: 'BTC',
+                is_mt: false,
+                is_dxtrade: false,
+                is_derivez: false,
+                is_crypto: true,
+                text: 'BTC',
+                value: 'CR90000249',
+            },
+            {
+                currency: 'USD',
+                is_mt: false,
+                is_dxtrade: false,
+                is_derivez: false,
+                is_crypto: false,
+                text: 'USD',
+                value: 'CR90000212',
+            },
+            {
+                currency: 'USD',
+                platform_icon: 'IcRebrandingDerivEz',
+                is_mt: false,
+                is_dxtrade: false,
+                is_derivez: true,
+                is_crypto: false,
+                text: 'Deriv EZ',
+                value: 'EZR80000469',
+            },
+            {
+                currency: 'USD',
+                is_mt: false,
+                is_dxtrade: true,
+                is_derivez: false,
+                is_crypto: false,
+                platform_icon: 'IcRebrandingDeriv X',
+                text: 'Deriv X',
+                value: 'DXR1029',
+            },
+            {
+                text: 'USD',
+                currency: 'USD',
+                value: 'MTR40013177',
+                platform_icon: 'Derived',
+                is_crypto: false,
+                is_mt: true,
+                is_dxtrade: false,
+                is_derivez: false,
+            },
+        ];
+
+        const derivez_account = {
+            currency: 'USD',
+            is_mt: false,
+            is_dxtrade: false,
+            is_derivez: true,
+            is_crypto: false,
+            text: 'Deriv EZ',
+            value: 'EZR80000469',
+        };
+
+        const derivx_account = {
+            currency: 'USD',
+            is_mt: false,
+            is_dxtrade: true,
+            is_derivez: false,
+            is_crypto: false,
+            platform_icon: 'IcDxtradeDeriv X',
+            text: 'Deriv X',
+            value: 'DXR1029',
+        };
+
+        const currency_usd_account = {
+            text: 'USD',
+            value: 'CR90000212',
+            balance: '9953.89',
+            currency: 'USD',
+            is_crypto: false,
+            is_mt: false,
+            is_dxtrade: false,
+            is_derivez: false,
+        };
+
+        const currency_btc_account = {
+            text: 'BTC',
+            value: 'CR90000249',
+            currency: 'BTC',
+            is_crypto: true,
+            is_mt: false,
+            is_dxtrade: false,
+            is_derivez: false,
+        };
+
+        const mt5_account = {
+            text: 'USD',
+            currency: 'USD',
+            value: 'MTR40013177',
+            is_crypto: false,
+            is_mt: true,
+            is_dxtrade: false,
+            is_derivez: false,
+        };
+
+        describe('from_dropdown', () => {
+            it('should check for USD icon when USD is selected in from_dropdown', () => {
+                mockRootStore.modules.cashier.account_transfer.accounts_list = accountsList;
+                mockRootStore.modules.cashier.account_transfer.selected_from = currency_usd_account;
+                mockRootStore.modules.cashier.account_transfer.setTransferPercentageSelectorResult = jest
+                    .fn()
+                    .mockReturnValue(10.0);
+
+                renderAccountTransferForm();
+                expect(screen.getByTestId('dt_account_platform_icon_currency_usd')).toBeInTheDocument();
+            });
+
+            it('should check for icon BTC when BTC is selected in from dropdown', () => {
+                mockRootStore.modules.cashier.account_transfer.accounts_list = accountsList;
+                mockRootStore.modules.cashier.account_transfer.selected_from = currency_btc_account;
+                mockRootStore.modules.cashier.account_transfer.setTransferPercentageSelectorResult = jest
+                    .fn()
+                    .mockReturnValue(100.0);
+
+                renderAccountTransferForm();
+                expect(screen.getByTestId('dt_account_platform_icon_currency_btc')).toBeInTheDocument();
+            });
+
+            it('should check for derivez icon when derivez is selected in from_dropdown', () => {
+                mockRootStore.modules.cashier.account_transfer.accounts_list = accountsList;
+                mockRootStore.modules.cashier.account_transfer.selected_from = derivez_account;
+                mockRootStore.modules.cashier.account_transfer.setTransferPercentageSelectorResult = jest
+                    .fn()
+                    .mockReturnValue(100.0);
+
+                renderAccountTransferForm();
+                expect(screen.getByTestId('dt_account_platform_icon_IcRebrandingDerivEz')).toBeInTheDocument();
+            });
+
+            it('should check for MT5 icon when MT5 is selected in from_dropdown', () => {
+                mockRootStore.modules.cashier.account_transfer.accounts_list = accountsList;
+                mockRootStore.modules.cashier.account_transfer.selected_from = mt5_account;
+                mockRootStore.modules.cashier.account_transfer.setTransferPercentageSelectorResult = jest
+                    .fn()
+                    .mockReturnValue(100.0);
+
+                renderAccountTransferForm();
+                expect(screen.getByTestId('Derived')).toBeInTheDocument();
+            });
+
+            it('should check for DerivX icon when DerivX is selected in from_dropdown', () => {
+                mockRootStore.modules.cashier.account_transfer.accounts_list = accountsList;
+                mockRootStore.modules.cashier.account_transfer.selected_from = derivx_account;
+                mockRootStore.modules.cashier.account_transfer.setTransferPercentageSelectorResult = jest
+                    .fn()
+                    .mockReturnValue(100.0);
+
+                renderAccountTransferForm();
+                expect(screen.getByTestId('dt_account_platform_icon_IcRebrandingDeriv X')).toBeInTheDocument();
+            });
+        });
     });
 });

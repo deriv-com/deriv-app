@@ -1,10 +1,18 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { TCFDPasswordReset } from '../Containers/props.types';
 
 export type TCFDPlatform = 'dxtrade' | 'mt5';
+
+export type TCFDsPlatformType = 'dxtrade' | 'derivez' | 'mt5' | 'ctrader' | '';
 
 export type TCFDAccountCopy = {
     text: string | undefined;
     className: string;
+};
+
+export type TDxtradeDesktopDownloadProps = {
+    dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
+    is_demo: string;
 };
 
 export type TAccountIconValues = { [key: string]: string };
@@ -20,7 +28,7 @@ export type TPasswordBoxProps = {
 };
 
 export type TType = {
-    category: string;
+    category: TCFDPasswordReset['account_group'];
     type: string;
     platform: string;
 };
@@ -30,6 +38,10 @@ export type TCFDDashboardContainer = {
     active_index: number;
     is_dark_mode_on: boolean;
     dxtrade_tokens: {
+        demo: string;
+        real: string;
+    };
+    derivez_tokens: {
         demo: string;
         real: string;
     };
@@ -52,7 +64,7 @@ export type TCFDAccountCardActionProps = {
 };
 
 export type TTradingPlatformAvailableAccount = {
-    market_type: 'financial' | 'gaming';
+    market_type: 'financial' | 'gaming' | 'all';
     name: string;
     requirements: {
         after_first_deposit: {
@@ -64,8 +76,80 @@ export type TTradingPlatformAvailableAccount = {
         };
         signup: string[];
     };
-    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
+    shortcode: 'bvi' | 'labuan' | 'maltainvest' | 'svg' | 'vanuatu';
     sub_account_type: string;
+    account_type?: 'real' | 'demo';
+    landing_company_short?: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
+};
+
+export type TCardFlipStatus = {
+    svg: boolean;
+    bvi: boolean;
+    labuan: boolean;
+    vanuatu: boolean;
+    maltainvest: boolean;
+};
+
+export type TClickableDescription = {
+    type: 'text' | 'link';
+    text: string;
+};
+
+export type TJurisdictionCardSectionTitleIndicators = {
+    type: 'displayText' | 'displayIcons';
+    display_text?: string;
+    display_text_skin_color?: string;
+};
+
+export type TJurisdictionCardSection = {
+    key: string;
+    title: string;
+    title_indicators?: TJurisdictionCardSectionTitleIndicators;
+    description?: string;
+    clickable_description?: Array<TClickableDescription>;
+};
+
+export type TJurisdictionCardVerificationStatus = 'Pending' | 'Verified' | 'Failed' | 'Default';
+
+export type TJurisdictionCardItemVerificationItem =
+    | 'document_number'
+    | 'selfie'
+    | 'identity_document'
+    | 'name_and_address'
+    | 'not_applicable';
+
+export type TJurisdictionCardItemVerification = Array<TJurisdictionCardItemVerificationItem>;
+
+export type TJurisdictionCardItems = {
+    header: string;
+    over_header?: string;
+    synthetic_contents: TJurisdictionCardSection[];
+    financial_contents: TJurisdictionCardSection[];
+    swapfree_contents?: TJurisdictionCardSection[];
+    is_over_header_available: boolean;
+    synthetic_verification_docs?: TJurisdictionCardItemVerification;
+    financial_verification_docs?: TJurisdictionCardItemVerification;
+};
+
+export type TJurisdictionVerificationSection = {
+    icon: string;
+    text: string;
+};
+
+export type TJurisdictionVerificationItems = {
+    document_number?: TJurisdictionVerificationSection;
+    selfie?: TJurisdictionVerificationSection;
+    identity_document?: TJurisdictionVerificationSection;
+    name_and_address?: TJurisdictionVerificationSection;
+    not_applicable?: TJurisdictionVerificationSection;
+};
+
+type TJurisdictionVerificationColors = 'yellow' | 'red' | 'green';
+
+export type TJurisdictionVerificationStatus = {
+    icon: string;
+    text: string;
+    color: TJurisdictionVerificationColors;
 };
 
 export type TExistingData = DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
@@ -74,15 +158,8 @@ export type TCFDAccountCard = {
     button_label?: string | JSX.Element;
     commission_message: string;
     descriptor: string;
-    dxtrade_tokens: {
-        demo: string;
-        real: string;
-    };
+    existing_accounts_data?: TExistingData | null;
     is_hovered?: boolean;
-    isEligibleForMoreDemoMt5Svg: (market_type: 'synthetic' | 'financial') => boolean;
-    isEligibleForMoreRealMt5: (market_type: 'synthetic' | 'financial') => boolean;
-    existing_accounts_data?: TExistingData;
-    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     has_banner?: boolean;
     has_cfd_account_error?: boolean;
     has_real_account?: boolean;
@@ -91,8 +168,6 @@ export type TCFDAccountCard = {
     is_disabled: boolean;
     is_logged_in: boolean;
     is_virtual?: boolean;
-    is_eu?: boolean;
-    onHover?: (value: string | undefined) => void;
     platform: string;
     specs?: { [key: string]: { key: () => string; value: () => string } };
     title: string;
@@ -102,23 +177,12 @@ export type TCFDAccountCard = {
     onPasswordManager: (
         arg1: string | undefined,
         arg2: string,
-        arg3: string,
+        group: TCFDPasswordReset['account_group'],
         arg4: string,
         arg5: string | undefined
     ) => void;
     toggleAccountsDialog?: (arg?: boolean) => void;
-    toggleMT5TradeModal: (arg?: boolean) => void;
-    toggleShouldShowRealAccountsList?: (arg?: boolean) => void;
-    setMT5TradeAccount: (arg: any) => void;
-    toggleCFDVerificationModal: () => void;
-    setJurisdictionSelectedShortcode: (shortcode: string) => void;
-    setAccountType: (account_type: { category: string; type?: string }) => void;
-    setIsAcuityModalOpen: (value: boolean) => void;
-    updateAccountStatus: () => void;
-    real_account_creation_unlock_date: string;
-    setShouldShowCooldownModal: (value: boolean) => void;
-    setAppstorePlatform: (value: string) => void;
-    show_eu_related_content: boolean;
+    toggleShouldShowRealAccountsList?: (arg: boolean) => void;
 };
 
 export type TTradingPlatformAccounts = {
@@ -158,9 +222,9 @@ export type TTradingPlatformAccounts = {
     /**
      * Market type
      */
-    market_type?: 'financial' | 'synthetic';
+    market_type?: 'financial' | 'synthetic' | 'all';
     /**
      * Name of trading platform.
      */
-    platform?: 'dxtrade';
+    platform?: 'dxtrade' | string;
 };

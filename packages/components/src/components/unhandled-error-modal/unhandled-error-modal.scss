@@ -1,0 +1,16 @@
+.unhandled-error {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .dc-btn {
+        margin-top: 2.4rem;
+    }
+    @include mobile {
+        height: calc(100vh - 80px);
+        .dc-btn {
+            width: 100%;
+            margin-top: 1.6rem;
+        }
+    }
+}

@@ -11,6 +11,7 @@ const PurchaseFieldset = ({
     basis,
     buy_info,
     currency,
+    growth_rate,
     has_cancellation,
     info,
     index,
@@ -23,6 +24,7 @@ const PurchaseFieldset = ({
     is_vanilla,
     is_proposal_empty,
     is_proposal_error,
+    is_turbos,
     purchased_states_arr,
     onClickPurchase,
     onHoverPurchase,
@@ -42,6 +44,7 @@ const PurchaseFieldset = ({
                 currency={currency}
                 info={info}
                 index={index}
+                growth_rate={growth_rate}
                 has_deal_cancellation={is_multiplier && has_cancellation}
                 is_accumulator={is_accumulator}
                 is_disabled={is_disabled}
@@ -50,6 +53,7 @@ const PurchaseFieldset = ({
                 is_multiplier={is_multiplier}
                 is_vanilla={is_vanilla}
                 is_proposal_empty={is_proposal_empty}
+                is_turbos={is_turbos}
                 purchased_states_arr={purchased_states_arr}
                 onClickPurchase={onClickPurchase}
                 setPurchaseState={setPurchaseState}
@@ -69,6 +73,7 @@ const PurchaseFieldset = ({
         <Fieldset
             className={classNames('trade-container__fieldset', 'purchase-container__option', {
                 'purchase-container__option--has-cancellation': has_cancellation,
+                'purchase-container__option--turbos': is_turbos,
             })}
         >
             <DesktopWrapper>
@@ -85,6 +90,7 @@ const PurchaseFieldset = ({
                             has_increased={info.has_increased}
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}
+                            is_turbos={is_turbos}
                             is_vanilla={is_vanilla}
                             should_fade={should_fade}
                             type={type}
@@ -149,6 +155,7 @@ PurchaseFieldset.propTypes = {
     basis: PropTypes.string,
     buy_info: PropTypes.object,
     currency: PropTypes.string,
+    growth_rate: PropTypes.number,
     has_cancellation: PropTypes.bool,
     index: PropTypes.number,
     info: PropTypes.object,
@@ -160,6 +167,7 @@ PurchaseFieldset.propTypes = {
     is_multiplier: PropTypes.bool,
     is_proposal_empty: PropTypes.bool,
     is_proposal_error: PropTypes.bool,
+    is_turbos: PropTypes.bool,
     is_vanilla: PropTypes.bool,
     onClickPurchase: PropTypes.func,
     onHoverPurchase: PropTypes.func,

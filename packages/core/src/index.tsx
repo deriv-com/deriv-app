@@ -10,6 +10,7 @@ import initStore from 'App/initStore';
 import App from 'App/app.jsx';
 import { checkAndSetEndpointFromUrl } from '@deriv/shared';
 import AppNotificationMessages from './App/Containers/app-notification-messages.jsx';
+import './Utils/Datadog'; // to enable datadog
 
 if (
     !!window?.localStorage.getItem?.('debug_service_worker') || // To enable local service worker related development

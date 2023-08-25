@@ -5,7 +5,6 @@ import { Button, Icon, Modal } from '@deriv/components';
 import { isMobile, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
-import { TPlatformContext } from 'Types';
 
 type TLeaveConfirmMessage = {
     back: () => void;
@@ -18,7 +17,8 @@ type TTransitionBlocker = {
 };
 
 const LeaveConfirmMessage = ({ back, leave }: TLeaveConfirmMessage) => {
-    const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
+
     return (
         <IconMessageContent
             className='leave-confirm'

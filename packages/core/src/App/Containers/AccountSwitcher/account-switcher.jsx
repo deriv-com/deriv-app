@@ -14,7 +14,7 @@ import {
     Text,
     useOnClickOutside,
 } from '@deriv/components';
-import { routes, formatMoney, ContentFlag } from '@deriv/shared';
+import { routes, formatMoney, ContentFlag, getStaticUrl } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { connect } from 'Stores/connect';
@@ -22,6 +22,7 @@ import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
 import { getSortedAccountList, getSortedCFDList, isDemo } from './helpers';
 import { BinaryLink } from 'App/Components/Routes';
+import { useHasSetCurrency } from '@deriv/hooks';
 
 const AccountSwitcher = ({
     available_crypto_currencies,
@@ -37,6 +38,7 @@ const AccountSwitcher = ({
     history,
     is_dark_mode_on,
     is_eu,
+    is_landing_company_loaded,
     is_low_risk,
     is_high_risk,
     is_logged_in,
@@ -49,7 +51,6 @@ const AccountSwitcher = ({
     mt5_login_list,
     obj_total_balance,
     openRealAccountSignup,
-    routeBackInApp,
     should_show_real_accounts_list,
     show_eu_related_content,
     switchAccount,
@@ -98,8 +99,8 @@ const AccountSwitcher = ({
         if (is_positions_drawer_on) {
             togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
-        routeBackInApp(history);
-        await logoutClient();
+        history.push(routes.index);
+        await logoutClient().then(() => (window.location.href = getStaticUrl('/')));
     };
 
     const closeAccountsDialog = () => {
@@ -131,13 +132,16 @@ const AccountSwitcher = ({
     const isDemoAccountTab = active_tab_index === 1;
 
     const getRealMT5 = () => {
-        const low_risk_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
-        if (low_risk_non_eu) {
-            return getSortedCFDList(mt5_login_list).filter(
-                account => !isDemo(account) && account.landing_company_short !== 'maltainvest'
-            );
+        if (is_landing_company_loaded) {
+            const low_risk_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
+            if (low_risk_non_eu) {
+                return getSortedCFDList(mt5_login_list).filter(
+                    account => !isDemo(account) && account.landing_company_short !== 'maltainvest'
+                );
+            }
+            return getSortedCFDList(mt5_login_list).filter(account => !isDemo(account));
         }
-        return getSortedCFDList(mt5_login_list).filter(account => !isDemo(account));
+        return [];
     };
 
     const canOpenMulti = () => {
@@ -164,9 +168,7 @@ const AccountSwitcher = ({
         return [];
     };
 
-    const hasSetCurrency = () => {
-        return account_list.filter(account => !account.is_virtual).some(account => account.title !== 'Real');
-    };
+    const hasSetCurrency = useHasSetCurrency();
 
     const getTotalDemoAssets = () => {
         const vrtc_balance = accounts[vrtc_loginid] ? accounts[vrtc_loginid].balance : 0;
@@ -313,7 +315,7 @@ const AccountSwitcher = ({
                                                     if (real_account_creation_unlock_date) {
                                                         closeAccountsDialog();
                                                         setShouldShowCooldownModal(true);
-                                                    } else openRealAccountSignup(account);
+                                                    } else openRealAccountSignup('svg');
                                                 }}
                                                 className='acc-switcher__new-account-btn'
                                                 secondary
@@ -387,7 +389,7 @@ const AccountSwitcher = ({
                                                     closeAccountsDialog();
                                                     setShouldShowCooldownModal(true);
                                                 } else {
-                                                    openRealAccountSignup(account);
+                                                    openRealAccountSignup('maltainvest');
                                                 }
                                             }}
                                             className='acc-switcher__new-account-btn'
@@ -425,7 +427,7 @@ const AccountSwitcher = ({
                     <div className='acc-switcher__traders-hub'>
                         <BinaryLink onClick={handleRedirect} className='acc-switcher__traders-hub--link'>
                             <Text size='xs' align='center' className='acc-switcher__traders-hub--text'>
-                                <Localize i18n_default_text="Looking for CFD accounts? Go to Trader's hub" />
+                                <Localize i18n_default_text="Looking for CFD accounts? Go to Trader's Hub" />
                             </Text>
                         </BinaryLink>
                     </div>
@@ -507,7 +509,7 @@ const AccountSwitcher = ({
                         className='acc-switcher__btn--traders_hub'
                         secondary
                         onClick={
-                            has_any_real_account && !hasSetCurrency()
+                            has_any_real_account && !hasSetCurrency
                                 ? setAccountCurrency
                                 : () => openRealAccountSignup('manage')
                         }
@@ -540,6 +542,7 @@ AccountSwitcher.propTypes = {
     history: PropTypes.object,
     is_dark_mode_on: PropTypes.bool,
     is_eu: PropTypes.bool,
+    is_landing_company_loaded: PropTypes.bool,
     is_low_risk: PropTypes.bool,
     is_high_risk: PropTypes.bool,
     is_logged_in: PropTypes.bool,
@@ -553,7 +556,6 @@ AccountSwitcher.propTypes = {
     obj_total_balance: PropTypes.object,
     openAccountNeededModal: PropTypes.func,
     openRealAccountSignup: PropTypes.func,
-    routeBackInApp: PropTypes.func,
     should_show_real_accounts_list: PropTypes.bool,
     show_eu_related_content: PropTypes.bool,
     switchAccount: PropTypes.func,
@@ -570,7 +572,7 @@ AccountSwitcher.propTypes = {
 };
 
 const account_switcher = withRouter(
-    connect(({ client, common, ui, traders_hub }) => ({
+    connect(({ client, ui, traders_hub }) => ({
         available_crypto_currencies: client.available_crypto_currencies,
         account_loginid: client.loginid,
         accounts: client.accounts,
@@ -580,6 +582,7 @@ const account_switcher = withRouter(
         country_standpoint: client.country_standpoint,
         is_dark_mode_on: ui.is_dark_mode_on,
         is_eu: client.is_eu,
+        is_landing_company_loaded: client.is_landing_company_loaded,
         is_low_risk: client.is_low_risk,
         is_high_risk: client.is_high_risk,
         is_logged_in: client.is_logged_in,
@@ -593,7 +596,6 @@ const account_switcher = withRouter(
         has_active_real_account: client.has_active_real_account,
         logoutClient: client.logout,
         upgradeable_landing_companies: client.upgradeable_landing_companies,
-        routeBackInApp: common.routeBackInApp,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         openRealAccountSignup: ui.openRealAccountSignup,
         toggleAccountsDialog: ui.toggleAccountsDialog,

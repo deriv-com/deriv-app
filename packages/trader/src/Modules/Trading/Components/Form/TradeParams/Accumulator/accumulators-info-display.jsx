@@ -1,49 +1,50 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import { connect } from 'Stores/connect';
-import { Money, Text } from '@deriv/components';
+import { Money, Text, Popover } from '@deriv/components';
 import classNames from 'classnames';
+import { observer } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
+import { isMobile } from '@deriv/shared';
 
-const AccumulatorsInfoDisplay = ({ currency, maximum_payout, maximum_ticks }) => {
-    const labels = [localize('Maximum payout'), localize('Maximum ticks')].map((label, index) => (
-        <Text key={index} size='xxs' weight='bold'>
-            {label}
-        </Text>
-    ));
+const AccumulatorsInfoDisplay = observer(() => {
+    const { currency, maximum_payout, maximum_ticks } = useTraderStore();
 
-    const values = [
-        <Money key={0} amount={maximum_payout} show_currency currency={currency} />,
-        localize('{{maximum_ticks}} {{ticks}}', {
-            maximum_ticks,
-            ticks: maximum_ticks === 1 ? 'tick' : 'ticks',
-        }),
-    ].map((value_component, index) => (
-        <Text key={index} size='xxs' align='right'>
-            {value_component}
-        </Text>
-    ));
+    const content = [
+        {
+            label: localize('Max. payout'),
+            value: <Money amount={maximum_payout} show_currency currency={currency} />,
+            tooltip_text: localize('Your contract will be automatically closed when your payout reaches this amount.'),
+        },
+        {
+            label: localize('Max. ticks'),
+            value: `${maximum_ticks || 0} ${maximum_ticks === 1 ? localize('tick') : localize('ticks')}`,
+            tooltip_text: localize('Your contract will be automatically closed upon reaching this number of ticks.'),
+        },
+    ];
 
     return (
         <Fieldset className={classNames('trade-container__fieldset', 'accu-info-display')}>
-            {[labels, values].map((text, index) => (
-                <div key={index} className='accu-info-display__column'>
-                    {text}
+            {content.map(({ label, value, tooltip_text }) => (
+                <div key={label} className='accu-info-display__row'>
+                    <Text size='xxs' weight='bold' line_height='xxs'>
+                        {label}
+                    </Text>
+                    <Text size='xxs' align='right' as='div'>
+                        {value}
+                        <Popover
+                            alignment='left'
+                            icon='info'
+                            is_bubble_hover_enabled
+                            message={tooltip_text}
+                            margin={isMobile() ? 0 : 216}
+                            zIndex='9999'
+                        />
+                    </Text>
                 </div>
             ))}
         </Fieldset>
     );
-};
+});
 
-AccumulatorsInfoDisplay.propTypes = {
-    currency: PropTypes.string,
-    maximum_payout: PropTypes.number,
-    maximum_ticks: PropTypes.number,
-};
-
-export default connect(({ modules }) => ({
-    currency: modules.trade.currency,
-    maximum_payout: modules.trade.maximum_payout,
-    maximum_ticks: modules.trade.maximum_ticks,
-}))(AccumulatorsInfoDisplay);
+export default AccumulatorsInfoDisplay;

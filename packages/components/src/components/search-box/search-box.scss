@@ -17,28 +17,41 @@
 
     &__field {
         margin-bottom: 0 !important;
+        text-indent: 2rem;
+        height: 4.2rem;
+
+        ::placeholder {
+            opacity: 0.5;
+        }
 
         .dc-input {
             justify-content: center;
 
             &__field {
                 flex-grow: 1;
-                height: 4rem;
-                padding-right: 3rem;
+                padding-right: 2rem;
                 width: unset;
+                text-indent: 2.4rem;
+                ::placeholder {
+                    opacity: 0.5;
+                }
 
                 @include mobile {
                     grid-column: 1;
                     width: 100%;
-                    padding: 0 2.8rem 0 0.4rem;
+                    margin-left: -1.1rem;
                 }
             }
 
             &__leading-icon {
                 cursor: pointer;
-                margin-left: 0.8rem;
+                top: 31%;
+                margin-left: 0.9rem;
                 pointer-events: unset;
-                position: unset;
+                @include mobile {
+                    padding-bottom: 0.1rem;
+                    padding-right: 0.3rem;
+                }
             }
         }
     }

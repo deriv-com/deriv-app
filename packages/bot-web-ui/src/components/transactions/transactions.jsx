@@ -1,14 +1,15 @@
-import classnames from 'classnames';
-import { Icon, DesktopWrapper, DataList, ThemedScrollbars, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { useNewRowTransition } from '@deriv/shared';
-import { PropTypes } from 'prop-types';
 import React from 'react';
+import classnames from 'classnames';
+import { PropTypes } from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
+import { Button, DataList, DesktopWrapper, Icon, Text, ThemedScrollbars } from '@deriv/components';
+import { isMobile, useNewRowTransition } from '@deriv/shared';
+import { observer } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 import Download from 'Components/download';
 import { contract_stages } from 'Constants/contract-stage';
 import { transaction_elements } from 'Constants/transactions';
-import { connect } from 'Stores/connect';
+import { useDBotStore } from 'Stores/useDBotStore';
 import Transaction from './transaction.jsx';
 
 const TransactionItem = ({ row, is_new_row }) => {
@@ -36,11 +37,17 @@ const TransactionItem = ({ row, is_new_row }) => {
     }
 };
 
-const Transactions = ({ contract_stage, elements, is_drawer_open, is_mobile, onMount, onUnmount }) => {
+const Transactions = observer(({ is_drawer_open }) => {
+    const { run_panel, transactions } = useDBotStore();
+    const { contract_stage } = run_panel;
+    const { elements, onMount, onUnmount, toggleTransactionDetailsModal } = transactions;
+
     React.useEffect(() => {
         onMount();
         return () => onUnmount();
     }, [onMount, onUnmount]);
+
+    const is_mobile = isMobile();
 
     return (
         <div
@@ -49,11 +56,21 @@ const Transactions = ({ contract_stage, elements, is_drawer_open, is_mobile, onM
                 'run-panel-tab__content--mobile': is_mobile && is_drawer_open,
             })}
         >
-            <DesktopWrapper>
-                <div className='download__container'>
+            <div className='download__container transaction-details__button-container'>
+                <DesktopWrapper>
                     <Download tab='transactions' />
-                </div>
-            </DesktopWrapper>
+                </DesktopWrapper>
+                <Button
+                    id='download__container-view-detail-button'
+                    className='download__container-view-detail-button'
+                    is_disabled={!elements.length}
+                    text={localize('View Detail')}
+                    onClick={() => {
+                        toggleTransactionDetailsModal(true);
+                    }}
+                    secondary
+                />
+            </div>
             <div className='transactions__header'>
                 <span className='transactions__header-column transactions__header-type'>{localize('Type')}</span>
                 <span className='transactions__header-column transactions__header-spot'>
@@ -149,21 +166,10 @@ const Transactions = ({ contract_stage, elements, is_drawer_open, is_mobile, onM
             </div>
         </div>
     );
-};
+});
 
 Transactions.propTypes = {
-    contract_stage: PropTypes.number,
-    elements: PropTypes.array,
     is_drawer_open: PropTypes.bool,
-    is_mobile: PropTypes.bool,
-    onMount: PropTypes.func,
-    onUnmount: PropTypes.func,
 };
 
-export default connect(({ transactions, run_panel, ui }) => ({
-    contract_stage: run_panel.contract_stage,
-    elements: transactions.elements,
-    is_mobile: ui.is_mobile,
-    onMount: transactions.onMount,
-    onUnmount: transactions.onUnmount,
-}))(Transactions);
+export default Transactions;

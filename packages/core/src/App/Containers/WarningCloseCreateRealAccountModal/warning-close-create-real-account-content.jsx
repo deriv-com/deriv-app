@@ -32,19 +32,19 @@ const WarningMessageModal = ({
         >
             <div className='close-real-acc-modal'>
                 <Text line_height='x' weight='bold' className='close-real-acc-modal__warning-message'>
-                    {localize("You haven't finished creating your account")}
+                    {localize('Stop creating an account?')}
                 </Text>
                 <div className='close-real-acc-modal__content-wrapper'>
                     <Text size='xs' as='p' align='left' className='close-real-acc-modal__content'>
-                        {localize('If you close this window, you will lose any information you have entered.')}
+                        {localize('If you hit Yes, the info you entered will be lost.')}
                     </Text>
                 </div>
                 <FormSubmitButton
                     is_disabled={false}
-                    label={localize('Continue creating account')}
+                    label={localize('No')}
                     className='close-real-acc-modal__close-account-button'
                     has_cancel
-                    cancel_label={localize('Close this window')}
+                    cancel_label={localize('Yes')}
                     onClick={() => setIsClosingCreateRealAccountModal(false)}
                     onCancel={closeModal}
                 />

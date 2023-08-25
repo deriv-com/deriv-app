@@ -38,6 +38,12 @@ const mt5 = {
         'stop-out-level': { key: () => localize('Stop out level'), value: () => localize('50%') },
         'number-of-assets': { key: () => localize('Number of assets'), value: () => localize('150+') },
     },
+    real_all_specs: {
+        leverage: { key: () => localize('Leverage'), value: () => localize('Up to 1:1000') },
+        'margin-call': { key: () => localize('Margin call'), value: () => localize('100%') },
+        'stop-out-level': { key: () => localize('Stop out level'), value: () => localize('50%') },
+        'number-of-assets': { key: () => localize('Number of assets'), value: () => localize('40+') },
+    },
     eu_real_financial_specs: {
         leverage: { key: () => localize('Leverage'), value: () => localize('Up to 1:30') },
         'margin-call': { key: () => localize('Margin call'), value: () => localize('100%') },

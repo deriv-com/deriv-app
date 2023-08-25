@@ -13,21 +13,25 @@ const ALL_LANGUAGES = Object.freeze({
     FR: 'Français',
     ID: 'Indonesian',
     IT: 'Italiano',
+    KO: '한국어',
     PL: 'Polish',
-    PT: 'Português',
     RU: 'Русский',
     VI: 'Tiếng Việt',
     ZH_CN: '简体中文',
     ZH_TW: '繁體中文',
+    TH: 'ไทย',
 });
 
 export const getAllowedLanguages = () => {
     const allowed_languages = {
         EN: 'English',
-        PT: 'Português',
         ES: 'Español',
+        KO: '한국어',
         RU: 'Русский',
         FR: 'Français',
+        IT: 'Italiano',
+        TH: 'ไทย',
+        VI: 'Tiếng Việt',
     };
     const exclude_languages = ['ACH'];
     // TODO Change language_list to const when languages are available in prod.
@@ -134,7 +138,7 @@ export const changeLanguage = async (lang: string, cb: (arg0: string) => void) =
 // <Localize /> component wrapped with i18n
 export const Localize = withI18n(i18n);
 
-export const localize = <T extends object>(string: string, values?: T) => {
+export const localize = (string: string, values?: Record<string, unknown>) => {
     if (!string) return '';
 
     return i18n.t(crc32(string).toString(), { defaultValue: string, ...values });

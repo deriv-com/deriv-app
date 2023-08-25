@@ -2,11 +2,12 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoWithdrawReceipt from '../crypto-withdraw-receipt';
 import CashierProviders from '../../../../cashier-providers';
+import { mockStore } from '@deriv/stores';
 
 describe('<CryptoWithdrawReceipt />', () => {
-    let mockRootStore;
+    let mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 currency: 'BTC',
             },
@@ -27,7 +28,6 @@ describe('<CryptoWithdrawReceipt />', () => {
                         percentageSelectorSelectionStatus: jest.fn(),
                     },
                     transaction_history: {
-                        onMount: jest.fn(),
                         setIsCryptoTransactionsVisible: jest.fn(),
                     },
                     withdraw: {
@@ -38,7 +38,7 @@ describe('<CryptoWithdrawReceipt />', () => {
                     },
                 },
             },
-        };
+        });
     });
 
     const renderCryptoWithdrawReceipt = () => {

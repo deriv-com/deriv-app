@@ -1,15 +1,11 @@
 import React from 'react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { WS, validPassword } from '@deriv/shared';
+import { WS, getErrorMessages, validPassword, Jurisdiction } from '@deriv/shared';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import CFDPasswordModal from '../cfd-password-modal';
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import CFDProviders from '../../cfd-providers';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/account', () => ({
     SentEmailModal: jest.fn(({ should_show_sent_email_modal }) => (
@@ -26,7 +22,7 @@ jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     getErrorMessages: jest.fn().mockReturnValue({
         password_warnings: '',
-        password: jest.fn(),
+        password: jest.fn().mockReturnValue('Password should have lower and uppercase English letters with numbers.'),
     }),
     isDesktop: jest.fn().mockReturnValue(true),
     WS: {
@@ -45,33 +41,44 @@ describe('<CFDPasswordModal/>', () => {
     const mockSubmitCFDPasswordFn = jest.fn();
     const history = createBrowserHistory();
     let modal_root_el;
+
+    let mockRootStore = {
+        client: {
+            email: '',
+            account_status: {},
+            updateAccountStatus: jest.fn(),
+            landing_companies: {},
+            mt5_login_list: [],
+            is_dxtrade_allowed: false,
+        },
+        traders_hub: {
+            show_eu_related_content: false,
+        },
+        modules: {
+            cfd: {
+                is_cfd_password_modal_enabled: true,
+                is_cfd_success_dialog_enabled: false,
+                submitMt5Password: mockSubmitMt5Password,
+                submitCFDPassword: mockSubmitCFDPasswordFn,
+                setError: mockSetMt5Error,
+                setCFDSuccessDialog: mockSetCFDSuccessDialog,
+                has_cfd_error: false,
+                error_message: '',
+                error_type: '',
+                account_title: '',
+                account_type: {},
+                disableCFDPasswordModal: mockDisableCFDPasswordModalFn,
+                getAccountStatus: mockFn,
+                new_account_response: {},
+                jurisdiction_selected_shortcode: Jurisdiction.SVG,
+            },
+        },
+    };
+
     const mock_props = {
-        account_title: '',
-        account_type: {},
-        account_status: {},
-        disableCFDPasswordModal: mockDisableCFDPasswordModalFn,
-        email: '',
-        error_message: '',
-        error_type: '',
         form_error: '',
-        getAccountStatus: mockFn,
         history: history,
-        is_eu: false,
-        is_fully_authenticated: false,
-        is_cfd_password_modal_enabled: true,
-        is_cfd_success_dialog_enabled: false,
-        is_dxtrade_allowed: false,
-        jurisdiction_selected_shortcode: 'svg',
         platform: 'mt5',
-        has_cfd_error: false,
-        landing_companies: {},
-        mt5_login_list: [],
-        cfd_new_account: {},
-        setCFDSuccessDialog: mockSetCFDSuccessDialog,
-        setMt5Error: mockSetMt5Error,
-        submitMt5Password: mockSubmitMt5Password,
-        submitCFDPassword: mockSubmitCFDPasswordFn,
-        updateAccountStatus: jest.fn(),
     };
 
     beforeAll(() => {
@@ -89,22 +96,34 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should render create Password modal when valid conditions are met', async () => {
+        const store = mockStore(mockRootStore);
+
+        store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
+
         render(
             <Router history={history}>
-                <CFDPasswordModal
-                    {...mock_props}
-                    account_status={{ status: ['mt5_password_not_set', 'dxtrade_password_not_set'] }}
-                />
-            </Router>
+                <CFDPasswordModal {...mock_props} />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
         );
         expect(await screen.findByTestId('dt_create_password')).toBeInTheDocument();
     });
 
     it('should render password form with Try later button and forget password button', async () => {
+        const store = mockStore(mockRootStore);
+
+        store.client.account_status = { status: [] };
+        store.modules.cfd.error_type = 'PasswordReset';
+
         render(
             <Router history={history}>
-                <CFDPasswordModal {...mock_props} account_status={{ status: [] }} error_type='PasswordReset' />
-            </Router>
+                <CFDPasswordModal {...mock_props} />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
         );
 
         expect(await screen.findByRole('button', { name: /try later/i })).toBeInTheDocument();
@@ -112,14 +131,18 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should close modal when Forget Password button is clicked', async () => {
+        const store = mockStore(mockRootStore);
+
+        store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
+        store.modules.cfd.error_type = 'PasswordReset';
+
         render(
             <Router history={history}>
-                <CFDPasswordModal
-                    {...mock_props}
-                    account_status={{ status: ['mt5_password_not_set', 'dxtrade_password_not_set'] }}
-                    error_type='PasswordReset'
-                />
-            </Router>
+                <CFDPasswordModal {...mock_props} />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
         );
         const ele_forget_btn = await screen.findByRole('button', { name: /forgot password?/i });
         fireEvent.click(ele_forget_btn);
@@ -132,15 +155,19 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should invoke verifyEmail when forgot password is clicked', async () => {
+        const store = mockStore(mockRootStore);
+
+        store.client.account_status = { status: [], category: 'Real' };
+        store.modules.cfd.error_type = 'PasswordReset';
+        store.modules.cfd.account_type = { category: 'real', type: 'financial' };
+
         render(
             <Router history={history}>
-                <CFDPasswordModal
-                    {...mock_props}
-                    account_status={{ status: [], category: 'Real' }}
-                    error_type='PasswordReset'
-                    account_type={{ category: 'real', type: 'financial' }}
-                />
-            </Router>
+                <CFDPasswordModal {...mock_props} />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
         );
         const ele_forget_btn = await screen.findByRole('button', { name: /forgot password?/i });
         fireEvent.click(ele_forget_btn);
@@ -151,10 +178,18 @@ describe('<CFDPasswordModal/>', () => {
 
     it('should display password field for user to enter the password and hold the entered value', async () => {
         const user_input = 'zo8lAet#2q01Ih';
+
+        const store = mockStore(mockRootStore);
+
+        store.client.account_status = { status: [], category: 'Real' };
+
         render(
             <Router history={history}>
-                <CFDPasswordModal {...mock_props} account_status={{ status: [], category: 'Real' }} />
-            </Router>
+                <CFDPasswordModal {...mock_props} />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
         );
 
         const ele_password_field = await screen.findByTestId('dt_mt5_password');
@@ -170,14 +205,19 @@ describe('<CFDPasswordModal/>', () => {
     it('should display error message when password does not meet requirements', async () => {
         validPassword.mockReturnValue(false);
         const user_input = 'demo@deriv.com';
+
+        const store = mockStore(mockRootStore);
+
+        store.client.account_status = { status: [], category: 'Real' };
+        store.client.email = user_input;
+
         render(
             <Router history={history}>
-                <CFDPasswordModal
-                    {...mock_props}
-                    account_status={{ status: [], category: 'Real' }}
-                    email={user_input}
-                />
-            </Router>
+                <CFDPasswordModal {...mock_props} />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
         );
         const ele_password_input = await screen.findByTestId('dt_mt5_password');
         fireEvent.change(ele_password_input, { target: { value: user_input } });
@@ -191,20 +231,53 @@ describe('<CFDPasswordModal/>', () => {
         expect(await screen.findByText(/your password cannot be the same as your email address./i)).toBeInTheDocument();
     });
 
-    it('should show transfer message on successful DerivX account creation', async () => {
-        const props = {
-            is_cfd_success_dialog_enabled: true,
-            is_password_modal_exited: true,
-            account_type: { category: 'real', type: 'financial' },
-            is_eu: false,
-            is_fully_authenticated: false,
-            platform: 'dxtrade',
-        };
+    it('should display error message when password contain non-english characters', async () => {
+        validPassword.mockReturnValue(false);
+
+        const store = mockStore(mockRootStore);
+
+        store.client.account_status = { status: [], category: 'Real' };
+        store.client.email = 'demo@deriv.com';
 
         render(
             <Router history={history}>
-                <CFDPasswordModal {...mock_props} {...props} />
-            </Router>
+                <CFDPasswordModal {...mock_props} />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
+        );
+        const ele_password_input = await screen.findByTestId('dt_mt5_password');
+        fireEvent.change(ele_password_input, { target: { value: 'Passwordååøø' } });
+        await waitFor(() => {
+            fireEvent.focusOut(ele_password_input);
+        });
+
+        await waitFor(() => {
+            expect(validPassword).toHaveBeenCalled();
+        });
+
+        expect(getErrorMessages).toHaveBeenCalled();
+        expect(
+            await screen.findByText(/Password should have lower and uppercase English letters with numbers./i)
+        ).toBeInTheDocument();
+    });
+
+    it('should show transfer message on successful DerivX account creation', async () => {
+        const store = mockStore(mockRootStore);
+
+        store.client.account_status = { status: [], category: 'Real' };
+        store.modules.cfd.account_type = { category: 'real', type: 'financial' };
+        store.modules.cfd.is_cfd_success_dialog_enabled = true;
+        store.modules.cfd.error_type = 'PasswordReset';
+
+        render(
+            <Router history={history}>
+                <CFDPasswordModal {...mock_props} platform='dxtrade' />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
         );
 
         expect(
@@ -213,19 +286,20 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should close the dialog when you click on ok button', async () => {
-        const props = {
-            is_cfd_success_dialog_enabled: true,
-            is_password_modal_exited: true,
-            account_type: { category: 'real', type: 'financial' },
-            is_eu: true,
-            is_fully_authenticated: false,
-            jurisdiction_selected_shortcode: 'bvi',
-        };
+        const store = mockStore(mockRootStore);
+
+        store.client.account_status = { status: [], category: 'Real' };
+        store.modules.cfd.account_type = { category: 'real', type: 'financial' };
+        store.modules.cfd.is_cfd_success_dialog_enabled = true;
+        store.modules.cfd.jurisdiction_selected_shortcode = 'bvi';
 
         render(
             <Router history={history}>
-                <CFDPasswordModal {...mock_props} {...props} />
-            </Router>
+                <CFDPasswordModal {...mock_props} />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
         );
 
         fireEvent.click(await screen.findByRole('button', { name: /ok/i }));
@@ -238,17 +312,18 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should show success dialog with buttons to Transfer now or later when password has been updated successfully', async () => {
+        const store = mockStore(mockRootStore);
+
+        store.modules.cfd.account_type = { category: 'real', type: 'financial' };
+        store.modules.cfd.is_cfd_success_dialog_enabled = true;
+
         render(
             <Router history={history}>
-                <CFDPasswordModal
-                    {...mock_props}
-                    is_eu
-                    is_fully_authenticated
-                    is_cfd_success_dialog_enabled
-                    is_password_modal_exited
-                    account_type={{ category: 'real', type: 'financial' }}
-                />
-            </Router>
+                <CFDPasswordModal {...mock_props} />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
         );
 
         expect(await screen.findByRole('button', { name: /maybe later/i }));
@@ -256,111 +331,123 @@ describe('<CFDPasswordModal/>', () => {
     });
 
     it('should display Derived icon in Success Dialog', async () => {
-        const props = {
-            account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
-            error_type: 'PasswordError',
-            account_type: { category: 'real', type: 'synthetic' },
-        };
+        const store = mockStore(mockRootStore);
+
+        store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
+        store.modules.cfd.account_type = { category: 'real', type: 'synthetic' };
+        store.modules.cfd.error_type = 'PasswordError';
+        store.modules.cfd.is_cfd_success_dialog_enabled = true;
+
         render(
             <Router history={history}>
-                <CFDPasswordModal {...mock_props} {...props} is_cfd_success_dialog_enabled is_eu />
-            </Router>
+                <CFDPasswordModal {...mock_props} />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
         );
 
         expect(await screen.findByText('IcMt5SyntheticPlatform')).toBeInTheDocument();
     });
 
     it('should display icon in Success Dialog in tradershub', async () => {
-        const props = {
-            account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
-            error_type: 'PasswordError',
-            account_type: { category: 'real', type: 'synthetic' },
-        };
+        const store = mockStore(mockRootStore);
+
+        store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
+        store.modules.cfd.account_type = { category: 'real', type: 'synthetic' };
+        store.modules.cfd.error_type = 'PasswordError';
+        store.modules.cfd.is_cfd_success_dialog_enabled = true;
+
         render(
             <Router history={history}>
-                <CFDPasswordModal {...mock_props} {...props} is_cfd_success_dialog_enabled is_eu />
-            </Router>
+                <CFDPasswordModal {...mock_props} />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
         );
 
         expect(await screen.findByText('IcMt5SyntheticPlatform')).toBeInTheDocument();
     });
 
     it('should display Financial icon in Success Dialog', async () => {
-        const props = {
-            account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
-            error_type: 'PasswordError',
-            account_type: { category: 'real', type: 'financial' },
-        };
+        const store = mockStore(mockRootStore);
+
+        store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
+        store.modules.cfd.account_type = { category: 'real', type: 'financial' };
+        store.modules.cfd.error_type = 'PasswordError';
+        store.modules.cfd.is_cfd_success_dialog_enabled = true;
+
         render(
             <Router history={history}>
-                <CFDPasswordModal {...mock_props} {...props} is_cfd_success_dialog_enabled />
-            </Router>
+                <CFDPasswordModal {...mock_props} />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
         );
 
         expect(await screen.findByText('IcMt5FinancialPlatform')).toBeInTheDocument();
     });
 
-    it('should display IcDxtradeSyntheticPlatform icon in Success Dialog', async () => {
-        const props = {
-            account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
-            platform: 'dxtrade',
-            error_type: 'PasswordError',
-            account_type: { category: 'real', type: 'synthetic' },
-        };
+    it('should display IcRebrandingDerivx icon in Success Dialog', async () => {
+        const store = mockStore(mockRootStore);
+
+        store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
+        store.modules.cfd.account_type = { category: 'real', type: 'all' };
+        store.modules.cfd.error_type = 'PasswordError';
+        store.modules.cfd.is_cfd_success_dialog_enabled = true;
+
         render(
             <Router history={history}>
-                <CFDPasswordModal {...mock_props} {...props} is_cfd_success_dialog_enabled />
-            </Router>
+                <CFDPasswordModal {...mock_props} platform='dxtrade' />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
         );
 
-        expect(await screen.findByText('IcDxtradeSyntheticPlatform')).toBeInTheDocument();
-    });
-
-    it('should display IcDxtradeFinancialPlatform icon in Success Dialog', async () => {
-        const props = {
-            account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
-            platform: 'dxtrade',
-            error_type: 'PasswordError',
-            account_type: { category: 'real', type: 'financial' },
-        };
-        render(
-            <Router history={history}>
-                <CFDPasswordModal {...mock_props} {...props} is_cfd_success_dialog_enabled />
-            </Router>
-        );
-
-        expect(await screen.findByText('IcDxtradeFinancialPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('IcRebrandingDxtradeDashboard')).toBeInTheDocument();
     });
 
     it('should display IcCfds icon in Success Dialog', async () => {
-        const props = {
-            account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
-            error_type: 'PasswordError',
-            account_type: { category: 'real', type: 'financial' },
-        };
+        const store = mockStore(mockRootStore);
+
+        store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
+        store.traders_hub.show_eu_related_content = true;
+        store.modules.cfd.account_type = { category: 'real', type: 'financial' };
+        store.modules.cfd.error_type = 'PasswordError';
+        store.modules.cfd.is_cfd_success_dialog_enabled = true;
+
         render(
             <Router history={history}>
-                <CFDPasswordModal {...mock_props} {...props} show_eu_related_content is_cfd_success_dialog_enabled />
-            </Router>
+                <CFDPasswordModal {...mock_props} />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
         );
         expect(await screen.findByText('IcMt5CfdPlatform')).toBeInTheDocument();
     });
 
     it('should invoke verifyEmail for DerivX when Forgot password is clicked', async () => {
-        const props = {
-            account_status: { status: [], category: 'Real' },
-            platform: 'dxtrade',
-            error_type: 'PasswordReset',
-            setCFDSuccessDialog: mockFn,
-            account_type: { category: 'demo', type: 'financial' },
-            email: 'demo@deriv.com',
-        };
+        const store = mockStore(mockRootStore);
+
+        store.client.account_status = { status: [], category: 'Real' };
+        store.client.email = 'demo@deriv.com';
+        store.modules.cfd.account_type = { category: 'demo', type: 'financial' };
+        store.modules.cfd.error_type = 'PasswordReset';
+        store.modules.cfd.setCFDSuccessDialog = mockFn;
 
         render(
             <Router history={history}>
-                <CFDPasswordModal {...mock_props} {...props} />
-            </Router>
+                <CFDPasswordModal {...mock_props} platform='dxtrade' />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
         );
+
         const ele_forget_btn = await screen.findByRole('button', { name: /forgot password?/i });
         fireEvent.click(ele_forget_btn);
         await waitFor(() => {
@@ -374,15 +461,18 @@ describe('<CFDPasswordModal/>', () => {
         const user_input = 'zo8lAet#2q01Ih';
         validPassword.mockReturnValue(true);
 
+        const store = mockStore(mockRootStore);
+
+        store.client.account_status = { status: ['mt5_password_not_set'], category: 'Real' };
+        store.modules.cfd.account_type = { category: 'real', type: 'financial' };
+
         render(
             <Router history={history}>
-                <CFDPasswordModal
-                    {...mock_props}
-                    account_status={{ status: ['mt5_password_not_set'], category: 'Real' }}
-                    account_type={{ category: 'real', type: 'financial' }}
-                />
-                ;
-            </Router>
+                <CFDPasswordModal {...mock_props} />;
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
         );
         fireEvent.change(await screen.findByTestId('dt_mt5_password'), { target: { value: user_input } });
         fireEvent.click(await screen.findByRole('button', { name: 'Create Deriv MT5 password' }));
@@ -396,17 +486,20 @@ describe('<CFDPasswordModal/>', () => {
         const user_input = 'zo8lAet#2q01Ih';
         validPassword.mockReturnValue(true);
 
+        const store = mockStore(mockRootStore);
+
+        store.client.account_status = { status: ['mt5_password_not_set'], category: 'Real' };
+        store.modules.cfd.account_type = { category: 'real', type: 'financial' };
+
         render(
             <Router history={history}>
-                <CFDPasswordModal
-                    {...mock_props}
-                    account_status={{ status: ['mt5_password_not_set'], category: 'Real' }}
-                    platform='dxtrade'
-                    account_type={{ category: 'real', type: 'financial' }}
-                />
-                ;
-            </Router>
+                <CFDPasswordModal {...mock_props} platform='dxtrade' />;
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
         );
+
         fireEvent.change(await screen.findByTestId('dt_dxtrade_password'), { target: { value: user_input } });
         fireEvent.click(await screen.findByRole('button', { name: 'Add account' }));
 

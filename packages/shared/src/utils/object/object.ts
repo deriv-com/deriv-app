@@ -66,7 +66,7 @@ export const removeEmptyPropertiesFromObject = (obj: any) => {
     const clone = { ...obj };
 
     Object.getOwnPropertyNames(obj).forEach(key => {
-        if (!obj[key]) {
+        if ([undefined, null, ''].includes(obj[key])) {
             delete clone[key];
         }
     });

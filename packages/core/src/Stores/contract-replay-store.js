@@ -102,7 +102,6 @@ export default class ContractReplayStore extends BaseStore {
             this.contract_id = contract_id;
             this.contract_store = new ContractStore(this.root_store, { contract_id });
             this.subscribeProposalOpenContract();
-            WS.storage.activeSymbols('brief');
             WS.setOnReconnect(() => {
                 if (!this.root_store.client.is_switching) {
                     this.subscribeProposalOpenContract();
@@ -305,7 +304,7 @@ export default class ContractReplayStore extends BaseStore {
         if (this.has_error) {
             this.removeErrorMessage();
             this.onMount(contract_id);
-        } else {
+        } else if (!this.root_store.common.is_language_changing) {
             history.push(routes.reports);
         }
         return Promise.resolve();

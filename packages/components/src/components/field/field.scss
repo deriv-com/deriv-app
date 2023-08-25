@@ -1,12 +1,12 @@
 .dc-field {
     position: absolute;
-    top: 4rem;
+    top: 4.1rem;
     text-align: left !important;
     font-size: var(--text-size-xxs);
     line-height: 1.25;
 
     &--error {
-        padding-left: 1rem;
+        padding-left: 1.1rem;
         @include typeface(--small-left-normal-red);
         line-height: 1;
     }

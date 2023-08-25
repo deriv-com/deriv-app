@@ -1,24 +1,25 @@
-import { Field, Formik, FieldProps, FormikHelpers, FormikProps, FormikErrors } from 'formik';
 import React from 'react';
+import { Field, FieldProps, Formik, FormikErrors, FormikHelpers, FormikProps } from 'formik';
+import { AccountStatusResponse, GetSettings, StatesList } from '@deriv/api-types';
 import {
     AutoHeightWrapper,
-    FormSubmitButton,
-    ThemedScrollbars,
-    Dropdown,
-    Loading,
+    DesktopWrapper,
     Div100vhContainer,
+    Dropdown,
+    FormSubmitButton,
+    Loading,
+    MobileWrapper,
     Modal,
     SelectNative,
-    DesktopWrapper,
-    MobileWrapper,
-    useStateCallback,
     Text,
+    ThemedScrollbars,
+    useStateCallback,
 } from '@deriv/components';
 import { FileUploaderContainer, FormSubHeader, PoaStatusCodes } from '@deriv/account';
 import { localize } from '@deriv/translations';
-import { isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode, WS } from '@deriv/shared';
+import { WS, isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode } from '@deriv/shared';
 import { InputField } from './cfd-personal-details-form';
-import { GetSettings, StatesList, AccountStatusResponse } from '@deriv/api-types';
+import { TJurisdiction } from '../../types';
 
 type TErrors = {
     code: string;
@@ -79,11 +80,13 @@ export type TCFDPOAProps = {
     onSubmit: (index: number, value: TFormValues) => void;
     refreshNotifications: () => void;
     form_error: string;
-    get_settings: GetSettings;
+    account_settings: GetSettings;
     height: string;
     states_list: StatesList;
     storeProofOfAddress: TStoreProofOfAddress;
     value: TFormValue;
+    jurisdiction_selected_shortcode: TJurisdiction;
+    is_authenticated_with_idv_photoid: boolean;
 };
 type TUpload = {
     upload: () => void;
@@ -91,7 +94,15 @@ type TUpload = {
 
 let file_uploader_ref: React.RefObject<HTMLElement & TUpload>;
 
-const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCFDPOAProps) => {
+const CFDPOA = ({
+    onSave,
+    index,
+    onSubmit,
+    refreshNotifications,
+    jurisdiction_selected_shortcode,
+    is_authenticated_with_idv_photoid,
+    ...props
+}: TCFDPOAProps) => {
     const form = React.useRef<FormikProps<TFormValues> | null>(null);
 
     const [is_loading, setIsLoading] = React.useState(true);
@@ -112,10 +123,10 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
         const validations: Record<string, Array<(value: string) => boolean>> = {
             address_line_1: [
                 (v: string) => !!v && !v.match(/^\s*$/),
-                (v: string) => validAddress(v),
                 (v: string) => validLength(v, { max: 70 }),
+                (v: string) => validAddress(v).is_ok,
             ],
-            address_line_2: [(v: string) => !v || validAddress(v), (v: string) => validLength(v, { max: 70 })],
+            address_line_2: [(v: string) => validLength(v, { max: 70 }), (v: string) => validAddress(v).is_ok],
             address_city: [
                 (v: string) => !!v && !v.match(/^\s*$/),
                 (v: string) => validLength(v, { min: 1, max: 35 }),
@@ -128,12 +139,12 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
         const validation_errors: Record<string, Array<string>> = {
             address_line_1: [
                 localize('First line of address is required'),
-                localize('First line of address is not in a proper format.'),
                 localize('This should not exceed {{max}} characters.', { max: 70 }),
+                localize('First line of address is not in a proper format.'),
             ],
             address_line_2: [
-                localize('Second line of address is not in a proper format.'),
                 localize('This should not exceed {{max}} characters.', { max: 70 }),
+                localize('Second line of address is not in a proper format.'),
             ],
             address_city: [
                 localize('Town/City is required.'),
@@ -259,7 +270,8 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
     } = props;
     const { form_error, poa_status } = form_state;
 
-    const is_form_visible = !is_loading && poa_status !== PoaStatusCodes.verified;
+    const is_form_visible =
+        !is_loading && (poa_status !== PoaStatusCodes.verified || is_authenticated_with_idv_photoid);
 
     return (
         <Formik

@@ -1,15 +1,20 @@
 .traders-hub {
-    width: 100%;
-    padding: 5rem 4rem;
+    max-width: 123.2rem;
+    margin: auto;
+    padding: 5rem 0;
 
     @include mobile {
         padding: 2rem;
+        width: 100%;
     }
 
     &__main-container {
         display: flex;
         flex-direction: column;
         gap: 2.4rem;
+        &-reversed {
+            flex-direction: column-reverse;
+        }
     }
 
     &__button-toggle {
@@ -34,7 +39,7 @@
     }
 }
 
-.disclamer {
+.disclaimer {
     position: fixed;
     bottom: 3.6rem;
     width: 100%;

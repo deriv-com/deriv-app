@@ -1,27 +1,29 @@
 import React from 'react';
 import { Money } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import { getExpiryType, getDurationMinMaxValues, getLocalizedBasis } from '@deriv/shared';
 import { MultiplierAmountWidget } from 'Modules/Trading/Components/Form/TradeParams/Multiplier/widgets.jsx';
 import TradeParamsModal from '../../Containers/trade-params-mobile.jsx';
+import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const MobileWidget = ({
-    amount,
-    basis,
-    currency,
-    duration,
-    duration_min_max,
-    duration_unit,
-    form_components,
-    is_collapsed,
-    is_multiplier,
-    last_digit,
-    onChange,
-    onChangeUiStore,
-    toggleDigitsWidget,
-    trade_store,
-}) => {
+const MobileWidget = observer(({ toggleDigitsWidget, is_collapsed }) => {
+    const { ui } = useStore();
+    const { onChangeUiStore } = ui;
+    const trade_store = useTraderStore();
+    const {
+        amount,
+        basis,
+        currency,
+        duration,
+        duration_min_max,
+        duration_unit,
+        form_components,
+        is_multiplier,
+        last_digit,
+        onChange,
+    } = trade_store;
+
     const [is_open, setIsOpen] = React.useState(false);
 
     React.useEffect(() => {
@@ -104,19 +106,6 @@ const MobileWidget = ({
             )}
         </div>
     );
-};
+});
 
-export default connect(({ modules, ui }) => ({
-    amount: modules.trade.amount,
-    basis: modules.trade.basis,
-    currency: modules.trade.currency,
-    duration: modules.trade.duration,
-    duration_min_max: modules.trade.duration_min_max,
-    duration_unit: modules.trade.duration_unit,
-    form_components: modules.trade.form_components,
-    is_multiplier: modules.trade.is_multiplier,
-    last_digit: modules.trade.last_digit,
-    onChange: modules.trade.onChange,
-    onChangeUiStore: ui.onChangeUiStore,
-    trade_store: modules.trade,
-}))(MobileWidget);
+export default MobileWidget;

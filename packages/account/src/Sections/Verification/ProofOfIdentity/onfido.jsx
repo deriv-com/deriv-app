@@ -14,6 +14,8 @@ const Onfido = ({
     redirect_button,
     manual,
     setIsCfdPoiCompleted,
+    country_code,
+    handleViewComplete,
 }) => {
     const { status, submissions_left, last_rejected: rejected_reasons } = onfido;
 
@@ -34,6 +36,9 @@ const Onfido = ({
                         manual={manual}
                         is_from_external={is_from_external}
                         setIsCfdPoiCompleted={setIsCfdPoiCompleted}
+                        country_code={country_code}
+                        handleViewComplete={handleViewComplete}
+                        onfido={onfido}
                     />
                 );
             }

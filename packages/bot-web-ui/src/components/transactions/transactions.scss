@@ -1,6 +1,14 @@
 .transactions {
     $transaction: &;
     $grid-template-columns: 0.8fr 1fr 1.1fr;
+    flex-direction: column;
+
+    .transaction-details {
+        &__button-container {
+            display: flex;
+            align-items: center;
+        }
+    }
 
     &-empty {
         height: 100%;
@@ -28,12 +36,15 @@
         &__message {
             margin: 0 auto;
             margin-bottom: 2rem;
+            & .dc-text {
+                line-height: var(--text-lh-xxl);
+            }
         }
         &__list {
-            list-style-type: circle;
+            list-style-type: disc;
             margin-left: 2rem;
             font-size: var(--text-size-xxs);
-            line-height: var(--text-lh-m);
+            line-height: var(--text-lh-xl);
             color: var(--text-less-prominent);
         }
     }
@@ -64,7 +75,7 @@
         }
     }
     &__content {
-        height: calc(100% - 9.2rem);
+        height: calc(100% - 11rem);
 
         &--mobile {
             height: calc(100% - 4.2rem);

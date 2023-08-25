@@ -24,7 +24,7 @@ const AccountTransferNoAccount = observer(() => {
             <Text as='h2' weight='bold' align='center'>
                 <Localize i18n_default_text='You only have one account' />
             </Text>
-            <Text as='p' size='xs' line_height='s' align='center' className='cashier__text'>
+            <Text as='p' size='xs' line_height='s' align='center'>
                 <Localize i18n_default_text='Transferring funds will require you to create a second account.' />
             </Text>
             <Button
@@ -35,7 +35,7 @@ const AccountTransferNoAccount = observer(() => {
                     history.push(routes.traders_hub);
                 }}
             >
-                <Localize i18n_default_text="Back to trader's hub" />
+                <Localize i18n_default_text="Back to Trader's Hub" />
             </Button>
         </div>
     );

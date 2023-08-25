@@ -78,6 +78,13 @@ const CreateAdForm = () => {
         },
     });
 
+    const onCleanup = () => {
+        my_ads_store.setApiErrorMessage('');
+        floating_rate_store.setApiErrorMessage('');
+        my_ads_store.setShowAdForm(false);
+        buy_sell_store.setCreateSellAdFromNoAds(false);
+    };
+
     React.useEffect(() => {
         my_ads_store.setCurrentMethod({ key: null, is_deleted: false });
         my_profile_store.getPaymentMethodsList();
@@ -93,10 +100,7 @@ const CreateAdForm = () => {
 
         return () => {
             disposeApiErrorReaction();
-            my_ads_store.setApiErrorMessage('');
-            floating_rate_store.setApiErrorMessage('');
-            my_ads_store.setShowAdForm(false);
-            buy_sell_store.setCreateSellAdFromNoAds(false);
+            onCleanup();
         };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -349,27 +353,31 @@ const CreateAdForm = () => {
                                                 </Field>
                                             </div>
                                             {is_sell_advert && (
-                                                <Field name='contact_info'>
-                                                    {({ field }) => (
-                                                        <Input
-                                                            {...field}
-                                                            data-testid='contact_info'
-                                                            data-lpignore='true'
-                                                            type='textarea'
-                                                            label={
-                                                                <Text color='less-prominent' size='xs'>
-                                                                    <Localize i18n_default_text='Your contact details' />
-                                                                </Text>
-                                                            }
-                                                            error={touched.contact_info && errors.contact_info}
-                                                            className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                            initial_character_count={general_store.contact_info.length}
-                                                            required
-                                                            has_character_counter
-                                                            max_characters={300}
-                                                        />
-                                                    )}
-                                                </Field>
+                                                <div className='p2p-my-ads__form-field--contact-details'>
+                                                    <Field name='contact_info'>
+                                                        {({ field }) => (
+                                                            <Input
+                                                                {...field}
+                                                                data-testid='contact_info'
+                                                                data-lpignore='true'
+                                                                type='textarea'
+                                                                label={
+                                                                    <Text color='less-prominent' size='xs'>
+                                                                        <Localize i18n_default_text='Your contact details' />
+                                                                    </Text>
+                                                                }
+                                                                error={touched.contact_info && errors.contact_info}
+                                                                className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
+                                                                initial_character_count={
+                                                                    general_store.contact_info.length
+                                                                }
+                                                                required
+                                                                has_character_counter
+                                                                max_characters={300}
+                                                            />
+                                                        )}
+                                                    </Field>
+                                                </div>
                                             )}
                                             <Field name='default_advert_description'>
                                                 {({ field }) => (
@@ -420,7 +428,7 @@ const CreateAdForm = () => {
                                                 className='p2p-my-ads__form-button'
                                                 secondary
                                                 large
-                                                onClick={() => my_ads_store.setShowAdForm(false)}
+                                                onClick={onCleanup}
                                                 type='button'
                                             >
                                                 <Localize i18n_default_text='Cancel' />

@@ -199,7 +199,6 @@ export default class TradeStore extends BaseStore {
             'multiplier',
             'start_date',
             'start_time',
-            // 'symbol',
             'stop_loss',
             'take_profit',
             'is_trade_params_expanded',

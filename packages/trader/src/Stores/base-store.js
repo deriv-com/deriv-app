@@ -85,9 +85,6 @@ export default class BaseStore {
 
         const { root_store, local_storage_properties, session_storage_properties, validation_rules, store_name } =
             options;
-        // console.log('options', options);
-        // console.log('local_storage_properties', local_storage_properties);
-        // console.log('session_storage_properties', session_storage_properties);
         Object.defineProperty(this, 'root_store', {
             enumerable: false,
             writable: true,
@@ -109,7 +106,6 @@ export default class BaseStore {
             if (!store_name) {
                 throw new Error('store_name is required for local/session storage');
             }
-            // console.log('base store');
             Object.defineProperty(this, 'store_name', {
                 value: store_name,
                 enumerable: false,
@@ -191,14 +187,9 @@ export default class BaseStore {
             if (value !== null) return value;
             return undefined;
         });
-        // console.log('save to storage', storage);
         if (storage === BaseStore.STORAGES.LOCAL_STORAGE) {
-            // console.log('snapshot 1', snapshot);
-            // console.log('save to storage 1', storage);
             localStorage.setItem(this.store_name, snapshot);
         } else if (storage === BaseStore.STORAGES.SESSION_STORAGE) {
-            // console.log('snapshot 2', snapshot);
-            // console.log('save to storage 2', storage);
             sessionStorage.setItem(this.store_name, snapshot);
         }
     }
@@ -208,8 +199,6 @@ export default class BaseStore {
      *
      */
     retrieveFromStorage() {
-        // console.log('retrieveFromStorage');
-
         const local_storage_snapshot = JSON.parse(localStorage.getItem(this.store_name, {}));
         const session_storage_snapshot = JSON.parse(sessionStorage.getItem(this.store_name, {}));
 

@@ -1,5 +1,7 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { WS } from '@deriv/shared';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import AccountWizard from '../account-wizard';
 
 jest.mock('Stores/connect', () => ({
@@ -29,7 +31,21 @@ jest.mock('../account-wizard-form', () => ({
     ]),
 }));
 
-const Test = () => <div>TestComponent</div>;
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    WS: {
+        send: jest.fn().mockResolvedValue({}),
+    },
+}));
+
+const mock_form_data = { name: 'Test', document_number: 'none', document_type: { id: 'none' } };
+
+const Test = ({ onSubmit }) => (
+    <div>
+        TestComponent
+        <button onClick={() => onSubmit(0, mock_form_data)}>Submit</button>
+    </div>
+);
 
 jest.mock('../account-wizard-form', () => ({
     getItems: jest.fn(() => [
@@ -66,13 +82,17 @@ describe('<AccountWizard />', () => {
         has_residence: true,
         is_virtual: true,
         real_account_signup_target: 'svg',
-        realAccountSignup: jest.fn(),
+        onFinishSuccess: jest.fn(),
+        realAccountSignup: jest.fn().mockResolvedValue({ new_account_real: { currency: 'USD' } }),
+        setIsRiskWarningVisible: jest.fn(),
         refreshNotifications: jest.fn(),
+        onError: jest.fn(),
         residence: 'id',
         setIsRealAccountSignupModalVisible: jest.fn(),
         setIsTradingAssessmentForNewUserEnabled: jest.fn(),
         setShouldShowAppropriatenessWarningModal: jest.fn(),
         setShouldShowRiskWarningModal: jest.fn(),
+        setRealAccountFormData: jest.fn(),
         upgrade_info: '',
         setSubSectionIndex: jest.fn(),
         sub_section_index: 0,
@@ -184,5 +204,14 @@ describe('<AccountWizard />', () => {
         render(<AccountWizard {...mock_props} states_list={[]} />);
         expect(mock_props.fetchStatesList).toBeCalledTimes(1);
         expect(screen.getByText('TestComponent')).toBeInTheDocument();
+    });
+
+    it('should invoke Create account and IDV data submission APIs on click of Submit button', async () => {
+        render(<AccountWizard {...mock_props} />);
+        const ele_submit_btn = screen.getByRole('button', { name: 'Submit' });
+        await waitFor(() => {
+            userEvent.click(ele_submit_btn);
+        });
+        expect(WS.send).toHaveBeenCalled();
     });
 });

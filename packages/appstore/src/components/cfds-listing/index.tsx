@@ -1,18 +1,17 @@
-import { StaticUrl, Text } from '@deriv/components';
-import { useAuthenticationStatusInfo } from '@deriv/hooks';
-import { Jurisdiction, formatMoney, isMobile } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
-import AddOptionsAccount from 'Components/add-options-account';
+import React from 'react';
+import { observer, useStore } from '@deriv/stores';
+import { Text, StaticUrl } from '@deriv/components';
+import { isMobile, formatMoney, Jurisdiction } from '@deriv/shared';
+import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
+import AddOptionsAccount from 'Components/add-options-account';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { Actions } from 'Components/containers/trading-app-card-actions';
 import GetMoreAccounts from 'Components/get-more-accounts';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
-import { useStores } from 'Stores/index';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
-import { observer } from 'mobx-react-lite';
-import React from 'react';
+import { useAuthenticationStatusInfo } from '@deriv/hooks';
 import './cfds-listing.scss';
 
 type TDetailedExistingAccount = AvailableAccount &
@@ -21,17 +20,16 @@ type TDetailedExistingAccount = AvailableAccount &
         key: string;
     };
 
-const CFDsListing = () => {
+const CFDsListing = observer(() => {
     const {
         client,
         modules: { cfd },
         traders_hub,
         common,
         ui,
-    } = useStores();
+    } = useStore();
     const {
         available_dxtrade_accounts,
-        available_derivez_accounts,
         combined_cfd_mt5_accounts,
         selected_region,
         has_any_real_account,
@@ -103,7 +101,11 @@ const CFDsListing = () => {
                     return null;
                 }
                 default:
-                    return null;
+                    if (current_acc_status === 'proof_failed') {
+                        return 'failed';
+                    } else if (current_acc_status === 'verification_pending') {
+                        return 'pending';
+                    }
             }
         }
         return null;
@@ -182,7 +184,7 @@ const CFDsListing = () => {
                             existing_account.status || is_idv_revoked
                                 ? getMT5AccountAuthStatus(
                                       existing_account.status,
-                                      existing_account?.short_code_and_region?.toLowerCase()
+                                      existing_account?.landing_company_short
                                   )
                                 : null;
 
@@ -388,6 +390,6 @@ const CFDsListing = () => {
                 : !is_real && <PlatformLoader />} */}
         </ListingContainer>
     );
-};
+});
 
-export default observer(CFDsListing);
+export default CFDsListing;

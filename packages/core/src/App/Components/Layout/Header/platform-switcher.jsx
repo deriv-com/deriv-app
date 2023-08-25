@@ -23,16 +23,16 @@ const PlatformSwitcher = ({
     setIsOpen: setIsSwitcherOpen,
     setTogglePlatformType,
 }) => {
-    const [is_platform_switcher_open, setIsPlatformSwitcherOpen] = React.useState(false);
+    const [is_switcher_open_local, setIsSwitcherOpenLocal] = React.useState(false);
     const is_close_drawer_fired_ref = React.useRef(false);
-    const is_open = is_switcher_open || is_platform_switcher_open;
+    const is_open = is_switcher_open || is_switcher_open_local;
 
-    const handleToggle = (state = !is_open) => {
+    const setIsOpen = (state = !is_open) => {
         if (setIsSwitcherOpen) {
             setIsSwitcherOpen(state);
         } else {
             // use local state if setIsOpen prop is not provided by parent
-            setIsPlatformSwitcherOpen(state);
+            setIsSwitcherOpenLocal(state);
         }
     };
 
@@ -55,7 +55,7 @@ const PlatformSwitcher = ({
     });
 
     const closeDrawer = () => {
-        handleToggle(false);
+        setIsOpen(false);
         is_close_drawer_fired_ref.current = true;
     };
 
@@ -77,7 +77,7 @@ const PlatformSwitcher = ({
                     { 'platform-switcher--active': is_open },
                     { 'platform-switcher--is-mobile': isMobile() }
                 )}
-                onClick={() => handleToggle(!is_open)}
+                onClick={() => setIsOpen(!is_open)}
             >
                 <Icon
                     className='platform-switcher__icon'

@@ -3,7 +3,7 @@ import { getPreBuildDVRs } from '@deriv/shared';
 import Error from './errors';
 import { TCoreStores } from '@deriv/stores/types';
 
-interface Rule {
+type Rule = {
     name: string;
     options: {
         message?: string;
@@ -15,11 +15,11 @@ interface Rule {
         [key: string]: string | number | boolean | ((store: TCoreStores) => boolean) | undefined;
     };
     validator?: ValidatorFunction;
-}
+};
 
-interface Rules {
+type Rules = {
     [key: string]: Rule[];
-}
+};
 
 type ValidatorFunction = (
     input: string,

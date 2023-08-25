@@ -3,7 +3,7 @@ import { Icon } from '@deriv/components';
 
 type TAccountInfoIcon = {
     is_virtual?: boolean;
-    currency: string;
+    currency?: string;
 };
 
 const AccountInfoIcon = ({ is_virtual, currency }: TAccountInfoIcon) => (

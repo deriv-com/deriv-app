@@ -3,7 +3,7 @@ import { Popover } from '@deriv/components';
 
 type TAccountInfoWrapper = {
     is_disabled?: boolean;
-    disabled_message: string;
+    disabled_message?: string;
 };
 
 const AccountInfoWrapper = ({

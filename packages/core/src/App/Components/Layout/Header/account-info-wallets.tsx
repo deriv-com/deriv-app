@@ -73,7 +73,7 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                             (active_account?.is_virtual || active_account?.currency) && (
                             <AccountInfoIcon
                                 is_virtual={active_account?.is_virtual}
-                                currency={active_account?.currency?.toLowerCase() || ''}
+                                currency={active_account?.currency?.toLowerCase()}
                             />
                             )
                         </span>

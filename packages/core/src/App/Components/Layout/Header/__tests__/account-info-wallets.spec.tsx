@@ -98,7 +98,7 @@ jest.mock('@deriv/api', () => ({
 
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize' | 'balance' | 'website_status'>>;
 
-describe('AccountInfoWallet component', () => {
+describe('AccountInfoWallets component', () => {
     it('should show "disabled_message" when "is_disabled" property is "true"', () => {
         const mock = mockStore({
             ui: {

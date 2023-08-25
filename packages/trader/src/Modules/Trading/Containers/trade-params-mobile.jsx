@@ -40,7 +40,7 @@ const TradeParamsModal = observer(({ is_open, toggleModal, tab_index }) => {
     const getDefaultDuration = React.useCallback(makeGetDefaultDuration(duration, duration_unit), []);
 
     const [state, dispatch] = React.useReducer(reducer, {
-        trade_param_tab_idx: 0,
+        trade_param_tab_idx: tab_index,
         duration_tab_idx: undefined,
         amount_tab_idx: undefined,
         has_amount_error: false,

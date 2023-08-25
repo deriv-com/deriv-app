@@ -19,7 +19,7 @@ import { FileUploaderContainer, FormSubHeader, PoaStatusCodes } from '@deriv/acc
 import { localize } from '@deriv/translations';
 import { WS, isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode } from '@deriv/shared';
 import { InputField } from './cfd-personal-details-form';
-import { TJurisdiction } from '../../types';
+import { TJurisdiction } from '../types/types';
 
 type TErrors = {
     code: string;

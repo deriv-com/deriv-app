@@ -129,6 +129,8 @@ const useWalletAccountsList = () => {
     return {
         /** List of all wallet accounts for the current user. */
         data: sorted_accounts,
+        /** Indicating whether the user has a wallet */
+        has_wallet: sorted_accounts && sorted_accounts.length > 0,
         ...rest,
     };
 };

@@ -183,6 +183,30 @@
             height: 2.8rem !important;
         }
     }
+
+    &__wallets {
+        padding: 1.2rem 1.6rem;
+
+        &-container {
+            align-items: center;
+            -webkit-box-align: center;
+            display: flex;
+            gap: 0.8rem;
+            margin-right: 0.8rem;
+        }
+
+        &-account-type-and-balance {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0;
+            pointer-events: none;
+        }
+
+        &-is-virtual-balance {
+            color: var(--text-info-blue);
+        }
+    }
 }
 
 /* @define acc-switcher; weak */

@@ -363,7 +363,7 @@ const ProofOfAddressForm = observer(
                                             is_absolute={isMobile()}
                                             is_loading={isSubmitting}
                                             form_error={status?.msg}
-                                            has_cancel
+                                            has_cancel={step_index === 0}
                                             onCancel={onCancel}
                                             cancel_label={localize('Back')}
                                         />

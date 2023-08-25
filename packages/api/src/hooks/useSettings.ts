@@ -11,7 +11,7 @@ type TSetSettingsPayload = NonNullable<
 const useSettings = () => {
     const { data, ...rest } = useFetch('get_settings');
     const invalidate = useInvalidateQuery();
-    const { mutate } = useRequest('set_settings', {
+    const { mutate, ...mutate_rest } = useRequest('set_settings', {
         onSuccess: () => invalidate('get_settings'),
     });
 
@@ -27,6 +27,7 @@ const useSettings = () => {
         data: modified_data,
         /** Function to update user settings */
         setSettings,
+        mutation: mutate_rest,
         ...rest,
     };
 };

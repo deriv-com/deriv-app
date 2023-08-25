@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, WalletIcon, Badge } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { getCurrencyDisplayCode } from '@deriv/shared';
+import { formatMoney } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { useActiveAccount, useLinkedWalletsAccounts, useWalletAccountsList } from '@deriv/hooks';
 import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
@@ -64,7 +64,6 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                     id='dt_core_account-info_acc-info'
                     className={classNames('acc-info acc-info__wallets', {
                         'acc-info--show': is_dialog_on,
-                        'acc-info--is-virtual': active_account?.is_virtual,
                         'acc-info--is-disabled': active_account?.is_disabled,
                     })}
                     onClick={active_account?.is_disabled ? undefined : () => toggleDialog()}
@@ -83,7 +82,8 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                             <Icon icon={'IcWalletOptionsLight'} size={24} />
                             <WalletIcon
                                 icon={linked_wallet?.icons.light}
-                                type={linked_wallet?.currency_config?.type}
+                                type={linked_wallet?.is_virtual ? 'demo' : linked_wallet?.currency_config?.type}
+                                gradient_class={linked_wallet?.gradients.card.light}
                                 size={'small'}
                                 has_bg
                                 hide_watermark
@@ -105,12 +105,16 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                                 className={classNames('acc-info__balance', {
                                     'acc-info__balance--no-currency':
                                         !active_account?.currency && !active_account?.is_virtual,
+                                    'acc-info__wallets-is-virtual-balance':
+                                        active_account?.currency && active_account?.is_virtual,
                                 })}
                             >
                                 {!active_account?.currency ? (
                                     <Localize i18n_default_text='No currency assigned' />
                                 ) : (
-                                    `${active_account?.balance} ${getCurrencyDisplayCode(active_account?.currency)}`
+                                    `${formatMoney(active_account?.currency, active_account?.balance, true)} ${
+                                        active_account?.currency_config?.display_code
+                                    }`
                                 )}
                             </p>
                         </div>

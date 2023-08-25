@@ -34,7 +34,11 @@ const initRoutesConfig = (): TRouteConfig[] => [
             },
             {
                 path: routes.cashier_withdrawal,
-                component: Withdrawal,
+                component: () => (
+                    <CashierLockedChecker>
+                        <Withdrawal />
+                    </CashierLockedChecker>
+                ),
                 getTitle: () => localize('Withdrawal'),
                 icon_component: 'IcCashierMinus',
             },

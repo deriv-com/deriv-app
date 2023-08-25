@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
-import { useFetch } from '@deriv/api';
+import useFetch from '../useFetch';
 
-/** @deprecated Use `useCurrencyConfig` from `@deriv/api` package instead. */
+/** A custom hook to get the currency config information from `website_status` endpoint and `crypto_config` endpoint */
 const useCurrencyConfig = () => {
     const { data: website_status_data } = useFetch('website_status');
     const { data: crypto_config_data } = useFetch('crypto_config');
@@ -64,8 +64,6 @@ const useCurrencyConfig = () => {
                 code: currency,
                 /** Currency display code */
                 display_code: currency === 'UST' ? 'USDT' : currency,
-                /** Local asset name for the currency icon. ex: `IcCurrencyUsd` for `USD` */
-                icon: `IcCurrency${currency[0].toUpperCase() + currency.slice(1).toLowerCase()}`,
             };
         });
 

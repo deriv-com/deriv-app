@@ -6,8 +6,8 @@ import useSettings from './useSettings';
 const useLandingCompany = () => {
     const { data: settings_data } = useSettings();
     const { data, ...rest } = useFetch('landing_company', {
-        payload: { landing_company: settings_data.country_code || '' },
-        options: { enabled: Boolean(settings_data.country_code) },
+        payload: { landing_company: settings_data?.country_code || '' },
+        options: { enabled: Boolean(settings_data?.country_code) },
     });
 
     const modified_data = useMemo(() => {
@@ -21,7 +21,7 @@ const useLandingCompany = () => {
             /** Short code of virtual landing company */
             virtual_company,
         };
-    }, [data]);
+    }, [data?.landing_company, settings_data?.country_code]);
 
     return {
         /** List of available landing companies */

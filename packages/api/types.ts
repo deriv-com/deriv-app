@@ -229,6 +229,216 @@ import type {
 import type { useMutation, useQuery } from '@tanstack/react-query';
 
 type TPrivateSocketEndpoints = {
+    trading_platform_accounts: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            trading_platform_accounts: 1;
+            /**
+             * Trading platform name
+             */
+            platform: 'dxtrade' | 'mt5' | 'derivez';
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            /**
+             * Array containing Trading account objects.
+             */
+            trading_platform_accounts?: {
+                /**
+                 * ID of Trading account.
+                 */
+                account_id?: string;
+                /**
+                 * Account type.
+                 */
+                account_type?: 'demo' | 'real';
+                /**
+                 * Balance of the Trading account.
+                 */
+                balance?: null | number;
+                /**
+                 * Residence of the MT5 account.
+                 */
+                country?: string;
+                /**
+                 * Currency of the Trading account.
+                 */
+                currency?: string;
+                /**
+                 * Account balance, formatted to appropriate decimal places.
+                 */
+                display_balance?: null | string;
+                /**
+                 * Email address of the MT5 account.
+                 */
+                email?: string;
+                /**
+                 * Account enabled status
+                 */
+                enabled?: number;
+                /**
+                 * Error in MT5 account details.
+                 */
+                error?: {
+                    /**
+                     * Error code string.
+                     */
+                    code?: string;
+                    /**
+                     * Extra information about the error.
+                     */
+                    details?: {
+                        /**
+                         * MT5 account type.
+                         */
+                        account_type?: string;
+                        /**
+                         * MT5 account login ID.
+                         */
+                        login?: string;
+                        /**
+                         * Trade server name of the MT5 account.
+                         */
+                        server?: string;
+                        /**
+                         * Trade server information.
+                         */
+                        server_info?: {
+                            /**
+                             * The environment. E.g. Deriv-Server.
+                             */
+                            environment?: 'Deriv-Demo' | 'Deriv-Server' | 'Deriv-Server-02';
+                            /**
+                             * Geographical location of the server.
+                             */
+                            geolocation?: {
+                                /**
+                                 * Internal server grouping.
+                                 */
+                                group?: string;
+                                /**
+                                 * Sever location.
+                                 */
+                                location?: string;
+                                /**
+                                 * Sever region.
+                                 */
+                                region?: string;
+                                /**
+                                 * Sever sequence.
+                                 */
+                                sequence?: number;
+                            };
+                            /**
+                             * Server id.
+                             */
+                            id?: string;
+                        };
+                    };
+                    /**
+                     * Error message.
+                     */
+                    message_to_client?: string;
+                };
+                /**
+                 * Group type of the MT5 account, e.g. `demo\svg_financial`
+                 */
+                group?: string;
+                /**
+                 * Landing company shortcode of the Trading account.
+                 */
+                landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'svg' | 'vanuatu' | 'seychelles';
+                /**
+                 * Leverage of the MT5 account (1 to 1000).
+                 */
+                leverage?: number;
+                /**
+                 * Login name used to log in into Trading platform
+                 */
+                login?: string;
+                /**
+                 * Market type
+                 */
+                market_type?: 'financial' | 'synthetic' | 'all';
+                /**
+                 * Name of the owner of the MT5 account.
+                 */
+                name?: string;
+                /**
+                 * Name of trading platform.
+                 */
+                platform?: 'dxtrade' | 'mt5';
+                /**
+                 * Trade server name of the MT5 account.
+                 */
+                server?: string;
+                /**
+                 * Trade server information.
+                 */
+                server_info?: {
+                    /**
+                     * The environment. E.g. Deriv-Server.
+                     */
+                    environment?: 'Deriv-Demo' | 'Deriv-Server' | 'Deriv-Server-02';
+                    /**
+                     * Geographical location of the server.
+                     */
+                    geolocation?: {
+                        /**
+                         * Internal server grouping.
+                         */
+                        group?: string;
+                        /**
+                         * Sever location.
+                         */
+                        location?: string;
+                        /**
+                         * Sever region.
+                         */
+                        region?: string;
+                        /**
+                         * Sever sequence.
+                         */
+                        sequence?: number;
+                    };
+                    /**
+                     * Server id.
+                     */
+                    id?: string;
+                };
+                /**
+                 * Sub account type
+                 */
+                sub_account_type?: 'financial' | 'financial_stp';
+            }[];
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'trading_platform_accounts';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
     cashier_payments: {
         request: {
             /**

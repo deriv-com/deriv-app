@@ -6,5 +6,7 @@ export { default as useAvailableAccounts } from './useAvailableAccounts';
 export { default as useBalance } from './useBalance';
 export { default as useCurrencyConfig } from './useCurrencyConfig';
 export { default as useLandingCompany } from './useLandingCompany';
+export { default as useMT5LoginList } from './useMT5LoginList';
 export { default as useSettings } from './useSettings';
+export { default as useTradingPlatformAccounts } from './useTradingPlatformAccounts';
 export { default as useWalletAccountsList } from './useWalletAccountsList';

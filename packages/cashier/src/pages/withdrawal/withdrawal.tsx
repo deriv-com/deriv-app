@@ -60,7 +60,7 @@ const WithdrawalPageContent = observer(() => {
     if (verification_code && currency_config.is_crypto && !is_withdraw_confirmed)
         return (
             <PageContainer hide_breadcrumb right={<WithdrawalSideNotes />}>
-                <CryptoWithdrawForm />;
+                <CryptoWithdrawForm />
             </PageContainer>
         );
 
@@ -73,7 +73,7 @@ const WithdrawalPageContent = observer(() => {
 
     return (
         <PageContainer hide_breadcrumb>
-            <WithdrawalVerificationEmail />;
+            <WithdrawalVerificationEmail />
         </PageContainer>
     );
 });

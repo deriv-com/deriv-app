@@ -199,14 +199,16 @@ export default class TradeStore extends BaseStore {
             'multiplier',
             'start_date',
             'start_time',
-            'symbol',
+            // 'symbol',
             'stop_loss',
             'take_profit',
             'is_trade_params_expanded',
         ];
+        const session_storage_properties = ['symbol'];
         super({
             root_store,
             local_storage_properties,
+            session_storage_properties,
             store_name,
             validation_rules: getValidationRules(),
         });

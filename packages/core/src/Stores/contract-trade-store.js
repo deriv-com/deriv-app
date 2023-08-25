@@ -208,7 +208,8 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     applicable_contracts = () => {
-        const { symbol: underlying, contract_type: trade_type } = JSON.parse(localStorage.getItem('trade_store')) || {};
+        const { contract_type: trade_type } = JSON.parse(localStorage.getItem('trade_store')) || {};
+        const { symbol: underlying } = JSON.parse(sessionStorage.getItem('trade_store')) || {};
 
         if (!trade_type || !underlying) {
             return [];
@@ -249,7 +250,7 @@ export default class ContractTradeStore extends BaseStore {
     };
 
     get has_crossed_accu_barriers() {
-        const { symbol } = JSON.parse(localStorage.getItem('trade_store')) || {};
+        const { symbol } = JSON.parse(sessionStorage.getItem('trade_store')) || {};
         const {
             current_spot: contract_current_spot,
             entry_spot,
@@ -274,7 +275,8 @@ export default class ContractTradeStore extends BaseStore {
 
     get markers_array() {
         let markers = [];
-        const { contract_type: trade_type, symbol } = JSON.parse(localStorage.getItem('trade_store')) || {};
+        const { contract_type: trade_type } = JSON.parse(localStorage.getItem('trade_store')) || {};
+        const { symbol } = JSON.parse(sessionStorage.getItem('trade_store')) || {};
         markers = this.applicable_contracts()
             .map(c => c.marker)
             .filter(m => m)

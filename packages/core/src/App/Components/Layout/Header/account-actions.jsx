@@ -1,13 +1,13 @@
 import * as PropTypes from 'prop-types';
 import React from 'react';
-import { Button, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
+import { Button, Icon, Popover } from '@deriv/components';
 import { routes, formatMoney, PlatformContext, moduleLoader } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useFeatureFlags, useWalletAccountsList } from '@deriv/hooks';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
-import ToggleNotifications from './toggle-notifications.jsx';
 import { BinaryLink } from '../../Routes';
+import ToggleNotifications from './toggle-notifications.jsx';
 import 'Sass/app/_common/components/account-switcher.scss';
 
 const AccountInfo = React.lazy(() =>
@@ -43,7 +43,7 @@ const AccountActions = React.memo(
         toggleAccountsDialog,
         toggleNotifications,
         is_deposit_button_disabled,
-        // is_mobile,
+        is_mobile,
     }) => {
         const { is_appstore } = React.useContext(PlatformContext);
 
@@ -53,104 +53,97 @@ const AccountActions = React.memo(
         const should_show_wallets = is_wallet_enabled && has_wallet;
 
         if (is_logged_in && !isLoading) {
-            return (
+            return is_mobile ? (
                 <React.Fragment>
-                    <MobileWrapper>
-                        <ToggleNotifications
-                            count={notifications_count}
-                            is_visible={is_notifications_visible}
-                            toggleDialog={toggleNotifications}
-                        />
-                        <React.Suspense fallback={<div />}>
-                            {should_show_wallets ? (
-                                <AccountInfoWallets
-                                    is_dialog_on={is_acc_switcher_on}
-                                    toggleDialog={toggleAccountsDialog}
-                                />
-                            ) : (
-                                <AccountInfo
-                                    acc_switcher_disabled_message={acc_switcher_disabled_message}
-                                    account_type={account_type}
-                                    balance={
-                                        typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
-                                    }
-                                    is_disabled={is_acc_switcher_disabled}
-                                    disableApp={disableApp}
-                                    enableApp={enableApp}
-                                    is_eu={is_eu}
-                                    is_virtual={is_virtual}
-                                    currency={currency}
-                                    country_standpoint={country_standpoint}
-                                    is_dialog_on={is_acc_switcher_on}
-                                    toggleDialog={toggleAccountsDialog}
-                                />
-                            )}
-                        </React.Suspense>
-                    </MobileWrapper>
-                    <DesktopWrapper>
-                        <ToggleNotifications
-                            count={notifications_count}
-                            is_visible={is_notifications_visible}
-                            toggleDialog={toggleNotifications}
-                            tooltip_message={<Localize i18n_default_text='View notifications' />}
-                            should_disable_pointer_events
-                        />
-                        <Popover
-                            classNameBubble='account-settings-toggle__tooltip'
-                            alignment='bottom'
-                            message={<Localize i18n_default_text='Manage account settings' />}
-                            should_disable_pointer_events
-                            zIndex={9999}
-                        >
-                            <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
-                                <Icon icon='IcUserOutline' />
-                            </BinaryLink>
-                        </Popover>
-                        <React.Suspense fallback={<div />}>
-                            {should_show_wallets ? (
-                                <AccountInfoWallets
-                                    is_dialog_on={is_acc_switcher_on}
-                                    toggleDialog={toggleAccountsDialog}
-                                />
-                            ) : (
-                                <AccountInfo
-                                    acc_switcher_disabled_message={acc_switcher_disabled_message}
-                                    account_type={account_type}
-                                    balance={
-                                        typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
-                                    }
-                                    is_disabled={is_acc_switcher_disabled}
-                                    is_eu={is_eu}
-                                    is_virtual={is_virtual}
-                                    currency={currency}
-                                    country_standpoint={country_standpoint}
-                                    is_dialog_on={is_acc_switcher_on}
-                                    toggleDialog={toggleAccountsDialog}
-                                />
-                            )}
-                        </React.Suspense>
-                        {!is_virtual && !currency && (
-                            <div className='set-currency'>
-                                <Button
-                                    onClick={() => openRealAccountSignup('set_currency')}
-                                    has_effect
-                                    type='button'
-                                    text={localize('Set currency')}
-                                    primary
-                                />
-                            </div>
-                        )}
-                        {currency && (
-                            <Button
-                                className='acc-info__button'
-                                has_effect
-                                text={should_show_wallets ? localize('Manage funds') : localize('Deposit')}
-                                onClick={should_show_wallets ? () => {} : onClickDeposit}
-                                primary
-                                as_disabled={is_deposit_button_disabled}
+                    <ToggleNotifications
+                        count={notifications_count}
+                        is_visible={is_notifications_visible}
+                        toggleDialog={toggleNotifications}
+                    />
+                    <React.Suspense fallback={<div />}>
+                        {should_show_wallets ? (
+                            <AccountInfoWallets is_dialog_on={is_acc_switcher_on} toggleDialog={toggleAccountsDialog} />
+                        ) : (
+                            <AccountInfo
+                                acc_switcher_disabled_message={acc_switcher_disabled_message}
+                                account_type={account_type}
+                                balance={
+                                    typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
+                                }
+                                is_disabled={is_acc_switcher_disabled}
+                                disableApp={disableApp}
+                                enableApp={enableApp}
+                                is_eu={is_eu}
+                                is_virtual={is_virtual}
+                                currency={currency}
+                                country_standpoint={country_standpoint}
+                                is_dialog_on={is_acc_switcher_on}
+                                toggleDialog={toggleAccountsDialog}
                             />
                         )}
-                    </DesktopWrapper>
+                    </React.Suspense>
+                </React.Fragment>
+            ) : (
+                <React.Fragment>
+                    <ToggleNotifications
+                        count={notifications_count}
+                        is_visible={is_notifications_visible}
+                        toggleDialog={toggleNotifications}
+                        tooltip_message={<Localize i18n_default_text='View notifications' />}
+                        should_disable_pointer_events
+                    />
+                    <Popover
+                        classNameBubble='account-settings-toggle__tooltip'
+                        alignment='bottom'
+                        message={<Localize i18n_default_text='Manage account settings' />}
+                        should_disable_pointer_events
+                        zIndex={9999}
+                    >
+                        <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
+                            <Icon icon='IcUserOutline' />
+                        </BinaryLink>
+                    </Popover>
+                    <React.Suspense fallback={<div />}>
+                        {should_show_wallets ? (
+                            <AccountInfoWallets is_dialog_on={is_acc_switcher_on} toggleDialog={toggleAccountsDialog} />
+                        ) : (
+                            <AccountInfo
+                                acc_switcher_disabled_message={acc_switcher_disabled_message}
+                                account_type={account_type}
+                                balance={
+                                    typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
+                                }
+                                is_disabled={is_acc_switcher_disabled}
+                                is_eu={is_eu}
+                                is_virtual={is_virtual}
+                                currency={currency}
+                                country_standpoint={country_standpoint}
+                                is_dialog_on={is_acc_switcher_on}
+                                toggleDialog={toggleAccountsDialog}
+                            />
+                        )}
+                    </React.Suspense>
+                    {!is_virtual && !currency && (
+                        <div className='set-currency'>
+                            <Button
+                                onClick={() => openRealAccountSignup('set_currency')}
+                                has_effect
+                                type='button'
+                                text={localize('Set currency')}
+                                primary
+                            />
+                        </div>
+                    )}
+                    {currency && (
+                        <Button
+                            className='acc-info__button'
+                            has_effect
+                            text={should_show_wallets ? localize('Manage funds') : localize('Deposit')}
+                            onClick={should_show_wallets ? () => {} : onClickDeposit}
+                            primary
+                            as_disabled={is_deposit_button_disabled}
+                        />
+                    )}
                 </React.Fragment>
             );
         }

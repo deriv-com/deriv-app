@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import useFetch from '../useFetch';
 
 /**
@@ -11,9 +12,20 @@ const useAccountTypes = (landing_company?: string) => {
         options: { enabled: Boolean(landing_company) },
     });
 
+    const modified_data = useMemo(() => {
+        if (!data?.get_account_types) return;
+
+        return {
+            /** List of available account types */
+            ...data.get_account_types,
+            /** Landing company for the account types */
+            landing_company,
+        };
+    }, [data?.get_account_types]);
+
     return {
         /** Object of available account types for the current landing company */
-        data: data?.get_account_types,
+        data: modified_data,
     };
 };
 

@@ -125,6 +125,7 @@ const AppNotificationMessages = ({
                   'need_fa',
                   'notify_financial_assessment',
                   'poi_name_mismatch',
+                  'poa_older_than_six_months',
                   'poa_address_mismatch_failure',
                   'poa_address_mismatch_success',
                   'poa_address_mismatch_warning',

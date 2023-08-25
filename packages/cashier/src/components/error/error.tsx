@@ -47,6 +47,7 @@ const ErrorComponent = ({ header, message, button_link, onClickButton, button_te
     </div>
 );
 
+/** @deprecated Use `ErrorState` instead */
 const Error = ({
     error,
 }: {

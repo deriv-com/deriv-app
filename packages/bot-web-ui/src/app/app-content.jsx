@@ -4,6 +4,7 @@ import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Audio, BotNotificationMessages, Dashboard, NetworkToastPopup, RoutePromptDialog } from 'Components';
 import BotBuilder from 'Components/dashboard/bot-builder';
+import TransactionDetailsModal from 'Components/transaction-details';
 import GTM from 'Utils/gtm';
 import { useDBotStore } from 'Stores/useDBotStore';
 import BlocklyLoading from '../components/blockly-loading';
@@ -107,6 +108,7 @@ const AppContent = observer(() => {
                 <NetworkToastPopup />
                 <BotBuilder />
                 <RoutePromptDialog />
+                <TransactionDetailsModal />
             </div>
         </>
     );

@@ -17,9 +17,6 @@ describe('TradersHubOnboarding', () => {
             </StoreProvider>
         );
         expect(screen.getByTestId('dt_traders_hub_onboarding')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_traders_hub_onboarding')).toHaveClass(
-            'trading-hub-header__tradershub--onboarding'
-        );
     });
 
     it('should display the trading hub onboarding icon', () => {

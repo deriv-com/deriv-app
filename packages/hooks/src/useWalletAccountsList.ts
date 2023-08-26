@@ -96,6 +96,8 @@ const useWalletAccountsList = () => {
                 gradients,
                 /** Local asset names for the wallet icon. ex: `IcWalletCurrencyUsd` for `USD`  */
                 icons: currency_to_icon_mapper[wallet_currency_type],
+                /** The DTrade account ID of this wallet */
+                dtrade_loginid: wallet.linked_to?.find(account => account.platform === 'dtrade')?.loginid,
 
                 /** @deprecated Use `is_virtual` instead. */
                 is_demo: wallet.is_virtual,

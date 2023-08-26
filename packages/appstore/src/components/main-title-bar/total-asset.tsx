@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import BalanceText from 'Components/elements/text/balance-text';
-import { useDelayedTotalAccountBalance, useCFDAccounts, usePlatformAccounts } from '@deriv/hooks';
+import { useTotalAccountBalance, useCFDAccounts, usePlatformAccounts, useThrottle } from '@deriv/hooks';
 
 const TotalAsset = observer(() => {
     const { traders_hub, client, common } = useStore();
@@ -13,12 +13,15 @@ const TotalAsset = observer(() => {
     const { current_language } = common;
     const { real: platform_real_accounts, demo: platform_demo_account } = usePlatformAccounts();
     const { real: cfd_real_accounts, demo: cfd_demo_accounts } = useCFDAccounts();
-    const platform_real_balance = useDelayedTotalAccountBalance(platform_real_accounts, 60 * 1000);
-    const cfd_real_balance = useDelayedTotalAccountBalance(cfd_real_accounts, 60 * 1000);
-    const cfd_demo_balance = useDelayedTotalAccountBalance(cfd_demo_accounts, 60 * 1000);
+    const platform_real_balance = useTotalAccountBalance(platform_real_accounts);
+    const cfd_real_balance = useTotalAccountBalance(cfd_real_accounts);
+    const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
     const is_real = selected_account_type === 'real';
     const real_total_balance = platform_real_balance.balance + cfd_real_balance.balance;
     const demo_total_balance = (platform_demo_account?.balance || 0) + cfd_demo_balance.balance;
+    const total_asset = is_real
+        ? useThrottle(real_total_balance, 60 * 1000)
+        : useThrottle(demo_total_balance, 60 * 1000);
 
     // if selected region is non-eu, check active cr accounts, if selected region is eu- check active mf accounts
     const has_active_related_deriv_account = !((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user));
@@ -43,7 +46,7 @@ const TotalAsset = observer(() => {
                                     ? platform_real_balance.currency || ''
                                     : platform_demo_account?.currency || default_currency
                             }
-                            balance={is_real ? real_total_balance : demo_total_balance}
+                            balance={total_asset}
                             underline_style='dotted'
                         />
                     </Popover>

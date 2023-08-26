@@ -314,7 +314,6 @@
     }
     &--multiplier,
     &--accumulator {
-        margin: 0;
         .btn-purchase__info--left {
             width: 35%;
             flex: none;
@@ -393,6 +392,34 @@
                 }
                 &__icon_wrapper {
                     height: 1.6rem;
+                }
+            }
+        }
+    }
+    &--turbos {
+        .btn-purchase {
+            &__info--left {
+                width: 70%;
+            }
+            &__effect-detail {
+                &--arrow {
+                    left: 12rem;
+                }
+            }
+            @include mobile {
+                &__top {
+                    align-items: center;
+                    width: auto;
+                }
+            }
+        }
+        &.btn-purchase--swoosh {
+            .btn-purchase {
+                &__effect-detail {
+                    transform: scale3d(15, 1, 1);
+                    &--arrow {
+                        transform: translate3d(12rem, 0, 0) rotate(45deg);
+                    }
                 }
             }
         }

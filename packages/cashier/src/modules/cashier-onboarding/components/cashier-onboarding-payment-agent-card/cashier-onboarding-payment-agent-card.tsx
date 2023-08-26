@@ -1,6 +1,5 @@
 import React from 'react';
 import { usePaymentAgentList } from '@deriv/hooks';
-import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useCashierStore } from '../../../../stores/useCashierStores';
@@ -16,9 +15,9 @@ const CashierOnboardingPaymentAgentCard: React.FC = observer(() => {
 
     const onClick = () => {
         setShouldShowAllAvailableCurrencies(true);
-        setDepositTarget(routes.cashier_pa);
+        setDepositTarget('/cashier/payment-agent');
         openRealAccountSignup('choose');
-        shouldNavigateAfterChooseCrypto(routes.cashier_pa);
+        shouldNavigateAfterChooseCrypto('/cashier/payment-agent');
     };
 
     if (!is_payment_agent_visible_in_onboarding) return null;

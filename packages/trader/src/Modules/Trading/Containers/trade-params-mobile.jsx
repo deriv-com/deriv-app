@@ -174,7 +174,7 @@ const TradeParamsMobile = observer(
         h_duration,
         d_duration,
     }) => {
-        const { basis_list, basis, is_vanilla, expiry_epoch } = useTraderStore();
+        const { basis_list, basis, expiry_epoch, is_turbos, is_vanilla } = useTraderStore();
         const getDurationText = () => {
             const duration = duration_units_list.find(d => d.value === duration_unit);
             return `${duration_value} ${
@@ -208,7 +208,7 @@ const TradeParamsMobile = observer(
                     return (
                         <div className='trade-params__header'>
                             <div className='trade-params__header-label'>
-                                {is_vanilla ? localize('Stake') : localize('Amount')}
+                                {is_turbos || is_vanilla ? localize('Stake') : localize('Amount')}
                             </div>
                             <div
                                 className={classNames('trade-params__header-value', {

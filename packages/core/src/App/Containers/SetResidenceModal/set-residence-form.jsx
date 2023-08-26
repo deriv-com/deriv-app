@@ -9,6 +9,7 @@ const SetResidenceForm = ({
     default_value,
     history_value,
     errors,
+    onResidenceSelectionChanged,
     touched,
     setFieldTouched,
     setFieldValue,
@@ -37,7 +38,10 @@ const SetResidenceForm = ({
                             error={touched.residence && errors.residence}
                             required
                             list_items={residence_list}
-                            onItemSelection={({ value, text }) => setFieldValue('residence', value ? text : '', true)}
+                            onItemSelection={({ value, text }) => {
+                                setFieldValue('residence', value ? text : '', true);
+                                onResidenceSelectionChanged?.();
+                            }}
                         />
                     </React.Fragment>
                 )}
@@ -56,6 +60,7 @@ SetResidenceForm.propTypes = {
     default_value: PropTypes.string,
     history_value: PropTypes.string,
     errors: PropTypes.object,
+    onResidenceSelectionChanged: PropTypes.func,
     residence_list: PropTypes.arrayOf(PropTypes.object),
     setFieldTouched: PropTypes.func,
     setFieldValue: PropTypes.func,

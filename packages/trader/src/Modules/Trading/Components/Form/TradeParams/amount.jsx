@@ -1,11 +1,12 @@
 import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces } from '@deriv/shared';
-import { ButtonToggle, Dropdown, InputField, Text } from '@deriv/components';
+import { ButtonToggle, Dropdown, InputField } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 
 import AllowEquals from './allow-equals.jsx';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import Multiplier from './Multiplier/multiplier.jsx';
 import MultipliersInfo from './Multiplier/info.jsx';
+import MinMaxStakeInfo from './min-max-stake-info';
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
@@ -51,7 +52,7 @@ export const Input = ({
 const Amount = observer(({ is_minimized, is_nativepicker }) => {
     const { ui, client } = useStore();
     const { currencies_list, is_single_currency } = client;
-    const { setCurrentFocus, vanilla_trade_type, current_focus } = ui;
+    const { setCurrentFocus, current_focus } = ui;
     const {
         amount,
         basis,
@@ -65,10 +66,11 @@ const Amount = observer(({ is_minimized, is_nativepicker }) => {
         is_accumulator,
         is_equal,
         is_multiplier,
+        is_turbos,
+        is_vanilla,
         has_equals_only,
         onChange,
         validation_errors,
-        stake_boundary,
     } = useTraderStore();
 
     if (is_minimized) {
@@ -107,7 +109,7 @@ const Amount = observer(({ is_minimized, is_nativepicker }) => {
         <Fieldset
             className='trade-container__fieldset center-text'
             header={
-                is_multiplier || ['high_low', 'vanilla'].includes(contract_type) || is_accumulator
+                is_multiplier || ['high_low', 'vanilla'].includes(contract_type) || is_accumulator || is_turbos
                     ? localize('Stake')
                     : undefined
             }
@@ -181,22 +183,7 @@ const Amount = observer(({ is_minimized, is_nativepicker }) => {
                     />
                 </React.Fragment>
             )}
-            {contract_type === 'vanilla' && (
-                <section className='trade-container__stake-field'>
-                    <div className='trade-container__stake-field--min'>
-                        <Text size='xxxs'>{localize('Min. stake')}</Text>
-                        <Text size='xxs'>
-                            {stake_boundary[vanilla_trade_type].min_stake} {currency}
-                        </Text>
-                    </div>
-                    <div className='trade-container__stake-field--max'>
-                        <Text size='xxxs'>{localize('Max. stake')}</Text>
-                        <Text size='xxs'>
-                            {stake_boundary[vanilla_trade_type].max_stake} {currency}
-                        </Text>
-                    </div>
-                </section>
-            )}
+            {(is_turbos || is_vanilla) && <MinMaxStakeInfo />}
         </Fieldset>
     );
 });

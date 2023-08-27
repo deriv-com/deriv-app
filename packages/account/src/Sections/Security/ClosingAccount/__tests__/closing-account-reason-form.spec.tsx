@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import ClosingAccountReasonForm from '../closing-account-reason-form';
 
 describe('<ClosingAccountReasonForm />', () => {
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof ClosingAccountReasonForm> = {
         validateFields: jest.fn(),
         onSubmit: jest.fn(),
         is_checkbox_disabled: false,

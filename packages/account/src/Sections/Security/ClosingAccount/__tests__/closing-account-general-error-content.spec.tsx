@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import ClosingAccountGeneralErrorContent from '../closing-account-general-error-content';
 
 describe('<ClosingAccountGeneralErrorContent />', () => {
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof ClosingAccountGeneralErrorContent> = {
         message: 'mock message',
         onClick: jest.fn(),
     };
@@ -16,7 +16,7 @@ describe('<ClosingAccountGeneralErrorContent />', () => {
     it('should call onClick when button is clicked', () => {
         render(<ClosingAccountGeneralErrorContent {...mock_props} />);
 
-        const ok_button = screen.getByRole('button', { name: /OK/i });
+        const ok_button = screen.getByRole('button', { name: /ok/i });
         userEvent.click(ok_button);
 
         expect(mock_props.onClick).toHaveBeenCalledTimes(1);

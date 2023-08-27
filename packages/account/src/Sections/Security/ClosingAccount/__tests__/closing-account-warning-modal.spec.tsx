@@ -4,11 +4,11 @@ import userEvent from '@testing-library/user-event';
 import ClosingAccountWarningModal from '../closing-account-warning-modal';
 
 describe('<ClosingAccountWarningModal />', () => {
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof ClosingAccountWarningModal> = {
         startDeactivating: jest.fn(),
         closeModal: jest.fn(),
     };
-    it('should render the ClosingAccountWarningModal component', async () => {
+    it('should render the ClosingAccountWarningModal component', () => {
         render(<ClosingAccountWarningModal {...mock_props} />);
         expect(screen.getByText('Close your account?')).toBeInTheDocument();
         expect(screen.getByText(/Closing your account will automatically log you out./i)).toBeInTheDocument();

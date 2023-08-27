@@ -20,13 +20,12 @@ const ClosingAccountWarningModal = ({ closeModal, startDeactivating }: TClosingA
                 </Text>
             </div>
             <FormSubmitButton
-                is_disabled={false}
                 label={localize('Close account')}
                 className='account-closure-warning-modal__close-account-button'
                 has_cancel
                 cancel_label={localize('Go Back')}
-                onClick={() => startDeactivating()}
-                onCancel={() => closeModal()}
+                onClick={startDeactivating}
+                onCancel={closeModal}
             />
         </div>
     );

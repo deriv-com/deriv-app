@@ -21,24 +21,22 @@ describe('<ClosingAccountReason />', () => {
 
     jest.mock('../closing-account-reason-form', () => <div>ClosingAccountReasonForm </div>);
 
-    it('Should render ClosingAccountReason component', async () => {
+    const renderComponent = () =>
         render(
             <StoreProvider store={mockRootStore}>
                 <ClosingAccountReason {...mock_props} />
             </StoreProvider>
         );
+
+    it('Should render ClosingAccountReason component', async () => {
+        renderComponent();
         await waitFor(() => {
             expect(screen.getByText(/Please tell us why you’re leaving/i)).toBeInTheDocument();
         });
     });
 
     it('Should be disabled when no reason has been selected', async () => {
-        render(
-            <StoreProvider store={mockRootStore}>
-                <ClosingAccountReason {...mock_props} />
-            </StoreProvider>
-        );
-
+        renderComponent();
         fireEvent.click(screen.getByRole('checkbox', { name: /I have other financial priorities./i }));
         fireEvent.click(screen.getByRole('checkbox', { name: /I have other financial priorities./i }));
 
@@ -49,50 +47,37 @@ describe('<ClosingAccountReason />', () => {
         });
     });
 
-    it('should reduce remaining chars', () => {
-        render(
-            <StoreProvider store={mockRootStore}>
-                <ClosingAccountReason {...mock_props} />
-            </StoreProvider>
-        );
-
+    it('should reduce remaining chars', async () => {
+        renderComponent();
         expect(screen.getByText(/Remaining characters: 110/i)).toBeInTheDocument();
 
-        act(() => {
-            fireEvent.change(screen.getByLabelText(/I want to stop myself from trading/i), {
-                target: { value: 'true' },
-            });
+        fireEvent.change(screen.getByLabelText(/I want to stop myself from trading/i), {
+            target: { value: 'true' },
         });
 
-        expect(screen.getByText(/Remaining characters: 110/i)).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText(/Remaining characters: 110/i)).toBeInTheDocument();
+        });
 
-        act(() => {
-            fireEvent.change(screen.getByPlaceholderText(/What could we do to improve/i), {
-                target: { value: 'do_to_improve' },
-            });
+        fireEvent.change(screen.getByPlaceholderText(/What could we do to improve/i), {
+            target: { value: 'do_to_improve' },
         });
 
         expect(screen.getByText(/Remaining characters: 97/i)).toBeInTheDocument();
     });
 
-    it('should call onBackClick when back button is clicked', () => {
-        render(
-            <StoreProvider store={mockRootStore}>
-                <ClosingAccountReason {...mock_props} />
-            </StoreProvider>
-        );
+    it('should call onBackClick when back button is clicked', async () => {
+        renderComponent();
 
         const el_checkbox = screen.getByRole('checkbox', {
             name: /i’m closing my account for other reasons\./i,
         });
-        act(() => {
-            fireEvent.click(el_checkbox);
-        });
+        fireEvent.click(el_checkbox);
 
-        act(() => {
-            fireEvent.click(screen.getByRole('button', { name: /Back/i }));
-        });
+        fireEvent.click(screen.getByRole('button', { name: /Back/i }));
 
-        expect(mock_props.onBackClick).toHaveBeenCalledTimes(1);
+        await waitFor(() => {
+            expect(mock_props.onBackClick).toHaveBeenCalledTimes(1);
+        });
     });
 });

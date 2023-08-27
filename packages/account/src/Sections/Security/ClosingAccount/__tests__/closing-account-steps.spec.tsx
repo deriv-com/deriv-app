@@ -7,9 +7,9 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import ClosingAccountSteps from '../closing-account-steps';
 
 describe('<ClosingAccountSteps />', () => {
-    const mockRootStore: ReturnType<typeof mockStore> = mockStore({});
+    const mockRootStore = mockStore({});
     const history = createBrowserHistory();
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof ClosingAccountSteps> = {
         redirectToReasons: jest.fn(),
     };
 

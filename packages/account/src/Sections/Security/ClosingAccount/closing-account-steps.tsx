@@ -9,9 +9,8 @@ type TClosingAccountStepsProps = {
 };
 
 const ClosingAccountSteps = observer(({ redirectToReasons }: TClosingAccountStepsProps) => {
-    const {
-        common: { is_from_derivgo },
-    } = useStore();
+    const { common } = useStore();
+    const { is_from_derivgo } = common;
 
     return (
         <div>

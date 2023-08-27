@@ -1,12 +1,13 @@
 /** Add types that are shared between components */
-import { FormikHandlers, FormikProps, FormikValues } from 'formik';
 import {
     Authorize,
     DetailsOfEachMT5Loginid,
     IdentityVerificationAddDocumentResponse,
     ResidenceList,
 } from '@deriv/api-types';
+import { FormikHandlers, FormikProps, FormikValues } from 'formik';
 import { Redirect, RouteProps } from 'react-router-dom';
+import { CFD_PLATFORMS } from '@deriv/shared';
 import { TPage404 } from '../Constants/routes-config';
 
 export type TToken = {
@@ -195,6 +196,21 @@ export type TIDVFormValues = {
     document_additional?: string;
     error_message?: string;
 };
+export type TCFDPlatform = typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS];
+
+export type TClosingAccountFormValues = {
+    'financial-priorities': boolean;
+    'stop-trading': boolean;
+    'not-interested': boolean;
+    'another-website': boolean;
+    'not-user-friendly': boolean;
+    'difficult-transactions': boolean;
+    'lack-of-features': boolean;
+    'unsatisfactory-service': boolean;
+    'other-reasons': boolean;
+    other_trading_platforms: string;
+    do_to_improve: string;
+};
 
 export type TAccounts = {
     account?: {
@@ -224,3 +240,15 @@ export type TAccounts = {
     mt5_login_list?: DetailsOfEachMT5Loginid[];
     title?: string;
 };
+
+type TPendingAccountDetails = {
+    balance?: number;
+    currency?: string;
+    display_login?: string;
+    positions?: number;
+    withdrawals?: number;
+};
+
+export type TDetailsOfDerivAccount = TAccounts & TPendingAccountDetails;
+export type TDetailsOfMT5Account = DetailsOfEachMT5Loginid & TPendingAccountDetails;
+export type TDetailsOfDerivXAccount = TDetailsOfMT5Account & { account_id?: string };

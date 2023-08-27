@@ -22,7 +22,7 @@ const useLandingCompany = () => {
             /** Short code of virtual landing company */
             virtual_company_shortcode: virtual_company,
         };
-    }, [data?.landing_company, settings_data?.country_code]);
+    }, [data?.landing_company]);
 
     return {
         /** List of available landing companies */

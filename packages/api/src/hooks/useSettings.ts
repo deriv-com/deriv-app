@@ -4,8 +4,8 @@ import useInvalidateQuery from '../useInvalidateQuery';
 import useRequest from '../useRequest';
 
 type TSetSettingsPayload = NonNullable<
-    NonNullable<Parameters<ReturnType<typeof useRequest<'set_settings'>>['mutate']>>[0]
->['payload'];
+    NonNullable<NonNullable<Parameters<ReturnType<typeof useRequest<'set_settings'>>['mutate']>>[0]>['payload']
+>;
 
 /** A custom hook to get user settings (email, date of birth, address etc) */
 const useSettings = () => {
@@ -15,10 +15,7 @@ const useSettings = () => {
         onSuccess: () => invalidate('get_settings'),
     });
 
-    const setSettings = useCallback(
-        (values: NonNullable<TSetSettingsPayload>) => mutate({ payload: { ...values } }),
-        [mutate]
-    );
+    const update = useCallback((values: TSetSettingsPayload) => mutate({ payload: { ...values } }), [mutate]);
 
     const modified_data = useMemo(() => ({ ...data?.get_settings }), [data?.get_settings]);
 
@@ -26,7 +23,7 @@ const useSettings = () => {
         /** User information and settings */
         data: modified_data,
         /** Function to update user settings */
-        setSettings,
+        update,
         mutation: mutate_rest,
         ...rest,
     };

@@ -5,9 +5,9 @@ import useLandingCompany from './useLandingCompany';
 /** A custom hook to get available accounts for every landing companies */
 const useAvailableAccounts = () => {
     const { data: landing_company_data } = useLandingCompany();
-    const { data: financial_accounts } = useAccountTypes(landing_company_data?.financial_company);
-    const { data: gaming_accounts } = useAccountTypes(landing_company_data?.gaming_company);
-    const { data: virtual_accounts } = useAccountTypes(landing_company_data?.virtual_company);
+    const { data: financial_accounts } = useAccountTypes(landing_company_data?.financial_company_shortcode);
+    const { data: gaming_accounts } = useAccountTypes(landing_company_data?.gaming_company_shortcode);
+    const { data: virtual_accounts } = useAccountTypes(landing_company_data?.virtual_company_shortcode);
 
     const available_accounts = useMemo(() => {
         if (!financial_accounts && !gaming_accounts && !virtual_accounts) return;

@@ -228,21 +228,410 @@ import type {
 } from '@deriv/api-types';
 import type { useMutation, useQuery } from '@tanstack/react-query';
 
-/** Remove this after we have the types from BE */
-type TPrivateEndpoints = {
+type TPrivateSocketEndpoints = {
     wallet_migration: {
         request: {
+            /**
+             * Wallet migration action.
+             */
             wallet_migration: 'state' | 'start' | 'reset';
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
         };
         response: {
-            wallet_migration: {
+            /**
+             * The information regarding wallet migration state
+             */
+            wallet_migration?: {
+                /**
+                 * [Optional] This field is only presented when state is eligible. It contains a list of accounts that are eligible for migration and provide information what wallets are going to be created
+                 */
+                account_list?: {
+                    /**
+                     * The category of the account
+                     */
+                    account_category: 'wallet';
+                    /**
+                     * The type of the account
+                     */
+                    account_type: string;
+                    /**
+                     * The currency of the account
+                     */
+                    currency: string;
+                    /**
+                     * The landing company short code of the account
+                     */
+                    landing_company_short: string;
+                    /**
+                     * The list of accounts that will be linked to this wallet account
+                     */
+                    link_accounts: {
+                        /**
+                         * The category of the account
+                         */
+                        account_category: 'trading';
+                        /**
+                         * The type of the account
+                         */
+                        account_type: 'standard' | 'mt5' | 'dxtrade' | 'derivez' | 'ctrader';
+                        /**
+                         * The loginid of the account
+                         */
+                        loginid: string;
+                        /**
+                         * The platform of the account
+                         */
+                        platform: 'dtrade' | 'mt5' | 'dxtrade' | 'derivez' | 'ctrader';
+                    }[];
+                    /**
+                     * The platform of the account
+                     */
+                    platform: 'dwallet';
+                }[];
+                /**
+                 * Current state of migration process
+                 */
                 state: 'ineligible' | 'eligible' | 'in_progress' | 'migrated' | 'failed';
             };
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'wallet_migration';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
         };
     };
-};
-
-type TPrivateSocketEndpoints = {
+    new_account_wallet: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            new_account_wallet: 1;
+            /**
+             * Show whether client has accepted risk disclaimer.
+             */
+            accept_risk?: 0 | 1;
+            /**
+             * [Optional] Purpose and reason for requesting the account opening.
+             */
+            account_opening_reason?: 'Speculative' | 'Income Earning' | 'Hedging';
+            /**
+             * To set the wallets type - only doughflow and crptyo wallets are allowed for initial phase, other types will be added later
+             */
+            account_type: 'doughflow' | 'crypto';
+            /**
+             * [Optional] Within 35 characters.
+             */
+            address_city?: string;
+            /**
+             * [Optional] Mailing address.
+             */
+            address_line_1?: string;
+            /**
+             * [Optional] Within 70 characters.
+             */
+            address_line_2?: string;
+            /**
+             * [Optional] Within 20 characters and may not contain '+'.
+             */
+            address_postcode?: string;
+            /**
+             * [Optional] Possible value receive from `states_list` call.
+             */
+            address_state?: string;
+            /**
+             * [Optional] Country of legal citizenship, 2-letter country code. Possible value receive from `residence_list` call.
+             */
+            citizen?: string;
+            /**
+             * [Optional] Indicates whether this is for a client requesting an account with professional status.
+             */
+            client_type?: 'professional' | 'retail';
+            /**
+             * To set currency of the account. List of supported currencies can be acquired with `payout_currencies` call.
+             */
+            currency: string;
+            /**
+             * [Optional] Date of birth format: `yyyy-mm-dd`.
+             */
+            date_of_birth?: string;
+            /**
+             * Required for maltainvest
+             */
+            financial_assessment?: {
+                /**
+                 * The anticipated account turnover.
+                 */
+                account_turnover?:
+                    | 'Less than $25,000'
+                    | '$25,000 - $50,000'
+                    | '$50,001 - $100,000'
+                    | '$100,001 - $500,000'
+                    | 'Over $500,000';
+                /**
+                 * How much experience do you have in CFD trading?
+                 */
+                cfd_experience?: 'No experience' | 'Less than a year' | '1 - 2 years' | 'Over 3 years';
+                /**
+                 * How many CFD trades have you placed in the past 12 months?
+                 */
+                cfd_frequency?:
+                    | 'No transactions in the past 12 months'
+                    | '1 - 5 transactions in the past 12 months'
+                    | '6 - 10 transactions in the past 12 months'
+                    | '11 - 39 transactions in the past 12 months'
+                    | '40 transactions or more in the past 12 months';
+                /**
+                 * In your understanding, CFD trading allows you to:
+                 */
+                cfd_trading_definition?:
+                    | 'Purchase shares of a company or physical commodities.'
+                    | 'Place a bet on the price movement.'
+                    | 'Speculate on the price movement.'
+                    | 'Make a long-term investment.';
+                /**
+                 * Level of Education.
+                 */
+                education_level?: 'Primary' | 'Secondary' | 'Tertiary';
+                /**
+                 * Industry of Employment.
+                 */
+                employment_industry?:
+                    | 'Construction'
+                    | 'Education'
+                    | 'Finance'
+                    | 'Health'
+                    | 'Tourism'
+                    | 'Information & Communications Technology'
+                    | 'Science & Engineering'
+                    | 'Legal'
+                    | 'Social & Cultural'
+                    | 'Agriculture'
+                    | 'Real Estate'
+                    | 'Food Services'
+                    | 'Manufacturing'
+                    | 'Unemployed';
+                /**
+                 * Employment Status.
+                 */
+                employment_status?: 'Employed' | 'Pensioner' | 'Self-Employed' | 'Student' | 'Unemployed';
+                /**
+                 * Estimated Net Worth.
+                 */
+                estimated_worth?:
+                    | 'Less than $100,000'
+                    | '$100,000 - $250,000'
+                    | '$250,001 - $500,000'
+                    | '$500,001 - $1,000,000'
+                    | 'Over $1,000,000';
+                /**
+                 * Income Source.
+                 */
+                income_source?:
+                    | 'Salaried Employee'
+                    | 'Self-Employed'
+                    | 'Investments & Dividends'
+                    | 'Pension'
+                    | 'State Benefits'
+                    | 'Savings & Inheritance';
+                /**
+                 * How does leverage affect CFD trading?
+                 */
+                leverage_impact_trading?:
+                    | 'Leverage is a risk mitigation technique.'
+                    | 'Leverage prevents you from opening large positions.'
+                    | 'Leverage guarantees profits.'
+                    | "Leverage lets you open larger positions for a fraction of the trade's value.";
+                /**
+                 * Leverage trading is high-risk, so it's a good idea to use risk management features such as stop loss. Stop loss allows you to
+                 */
+                leverage_trading_high_risk_stop_loss?:
+                    | 'Cancel your trade at any time within a chosen timeframe.'
+                    | 'Close your trade automatically when the loss is more than or equal to a specific amount.'
+                    | 'Close your trade automatically when the profit is more than or equal to a specific amount.'
+                    | 'Make a guaranteed profit on your trade.';
+                /**
+                 * Net Annual Income.
+                 */
+                net_income?:
+                    | 'Less than $25,000'
+                    | '$25,000 - $50,000'
+                    | '$50,001 - $100,000'
+                    | '$100,001 - $500,000'
+                    | 'Over $500,000';
+                /**
+                 * Occupation.
+                 */
+                occupation?:
+                    | 'Chief Executives, Senior Officials and Legislators'
+                    | 'Managers'
+                    | 'Professionals'
+                    | 'Clerks'
+                    | 'Personal Care, Sales and Service Workers'
+                    | 'Agricultural, Forestry and Fishery Workers'
+                    | 'Craft, Metal, Electrical and Electronics Workers'
+                    | 'Plant and Machine Operators and Assemblers'
+                    | 'Cleaners and Helpers'
+                    | 'Mining, Construction, Manufacturing and Transport Workers'
+                    | 'Armed Forces'
+                    | 'Government Officers'
+                    | 'Students'
+                    | 'Unemployed';
+                /**
+                 * When would you be required to pay an initial margin?
+                 */
+                required_initial_margin?:
+                    | 'When opening a Leveraged CFD trade.'
+                    | 'When trading Multipliers.'
+                    | 'When buying shares of a company.'
+                    | 'All of the above.';
+                /**
+                 * Do you understand that you could potentially lose 100% of the money you use to trade?
+                 */
+                risk_tolerance?: 'Yes' | 'No';
+                /**
+                 * How much knowledge and experience do you have in relation to online trading?
+                 */
+                source_of_experience?:
+                    | 'I have an academic degree, professional certification, and/or work experience.'
+                    | 'I trade forex CFDs and other complex financial instruments.'
+                    | 'I have attended seminars, training, and/or workshops.'
+                    | 'I have little experience.'
+                    | 'I have no knowledge.';
+                /**
+                 * [Optional] Source of wealth.
+                 */
+                source_of_wealth?:
+                    | 'Accumulation of Income/Savings'
+                    | 'Cash Business'
+                    | 'Company Ownership'
+                    | 'Divorce Settlement'
+                    | 'Inheritance'
+                    | 'Investment Income'
+                    | 'Sale of Property';
+                /**
+                 * How much experience do you have with other financial instruments?
+                 */
+                trading_experience_financial_instruments?:
+                    | 'No experience'
+                    | 'Less than a year'
+                    | '1 - 2 years'
+                    | 'Over 3 years';
+                /**
+                 * How many trades have you placed with other financial instruments in the past 12 months?
+                 */
+                trading_frequency_financial_instruments?:
+                    | 'No transactions in the past 12 months'
+                    | '1 - 5 transactions in the past 12 months'
+                    | '6 - 10 transactions in the past 12 months'
+                    | '11 - 39 transactions in the past 12 months'
+                    | '40 transactions or more in the past 12 months';
+            };
+            /**
+             * [Optional] Within 2-50 characters, use only letters, spaces, hyphens, full-stops or apostrophes.
+             */
+            first_name?: string;
+            /**
+             * [Optional] Set the landing company of the wallet. Default value is 'svg' if company not provided
+             */
+            landing_company_short?: 'maltainvest' | 'svg';
+            /**
+             * [Optional] Within 2-50 characters, use only letters, spaces, hyphens, full-stops or apostrophes.
+             */
+            last_name?: string;
+            /**
+             * [Optional] Indicates client's self-declaration of not being a PEP/RCA (Politically Exposed Person/Relatives and Close Associates).
+             */
+            non_pep_declaration?: number;
+            /**
+             * [Optional] Starting with `+` followed by 8-35 digits, allowing hyphens or space.
+             */
+            phone?: string;
+            /**
+             * Accept any value in enum list.
+             */
+            salutation?: 'Mr' | 'Ms' | 'Miss' | 'Mrs';
+            /**
+             * Tax identification number. Only applicable for real money account. Required for `maltainvest` landing company.
+             */
+            tax_identification_number?: string;
+            /**
+             * Residence for tax purpose. Comma separated iso country code if multiple jurisdictions. Only applicable for real money account. Required for `maltainvest` landing company.
+             */
+            tax_residence?: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            new_account_wallet?: {
+                /**
+                 * Client ID of new real money account
+                 */
+                client_id: string;
+                /**
+                 * Currency of an account
+                 */
+                currency?: string;
+                /**
+                 * Landing company full name
+                 */
+                landing_company: string;
+                /**
+                 * Landing company shortcode
+                 */
+                landing_company_short?: string;
+                /**
+                 * Landing company shortcode
+                 */
+                landing_company_shortcode?: string;
+                /**
+                 * OAuth token for client's login session
+                 */
+                oauth_token: string;
+            };
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'new_account_wallet';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
     trading_platform_accounts: {
         request: {
             /**
@@ -455,16 +844,103 @@ type TPrivateSocketEndpoints = {
     };
     trading_platform_available_accounts: {
         request: {
-            platform: 'derivez' | 'dxtrade' | 'mt5';
+            /**
+             * Must be `1`
+             */
+            trading_platform_available_accounts: 1;
+            /**
+             * Name of trading platform.
+             */
+            platform: 'mt5' | 'ctrader';
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
         };
         response: {
-            trading_platform_available_accounts: {
-                name: string;
-                shortcode: string;
-                sub_account_type: 'standard' | 'swap_free';
-                login: string;
-                market_type: 'gaming' | 'financial' | 'all';
-            }[];
+            /**
+             * Available Trading Accounts
+             */
+            trading_platform_available_accounts?:
+                | {
+                      /**
+                       * A list of Deriv landing companies that can work with this account type
+                       */
+                      linkable_landing_companies?: ('svg' | 'maltainvest')[];
+                      /**
+                       * The type of market tradable by this account
+                       */
+                      market_type?: 'financial' | 'gaming' | 'all';
+                      /**
+                       * Landing Company legal name
+                       */
+                      name?: string;
+                      /**
+                       * Legal requirements for the Landing Company
+                       */
+                      requirements?: {
+                          /**
+                           * After first deposit requirements
+                           */
+                          after_first_deposit?: {
+                              /**
+                               * Financial assessment requirements
+                               */
+                              financial_assessment?: string[];
+                          };
+                          /**
+                           * Compliance requirements
+                           */
+                          compliance?: {
+                              /**
+                               * Compliance MT5 requirements
+                               */
+                              mt5?: string[];
+                              /**
+                               * Compliance tax information requirements
+                               */
+                              tax_information?: string[];
+                          };
+                          /**
+                           * Sign up requirements
+                           */
+                          signup?: string[];
+                          /**
+                           * Withdrawal requirements
+                           */
+                          withdrawal?: string[];
+                      };
+                      /**
+                       * Landing Company short code
+                       */
+                      shortcode?: string;
+                      /**
+                       * Sub account type
+                       */
+                      sub_account_type?: 'standard' | 'swap_free' | 'stp';
+                  }[]
+                | null;
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**z
+             * Action name of the request made.
+             */
+            msg_type: 'trading_platform_available_accounts';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
         };
     };
     cashier_payments: {
@@ -1042,8 +1518,7 @@ type TSocketEndpoints = {
         request: ServerStatusRequest;
         response: ServerStatusResponse;
     };
-} & TPrivateSocketEndpoints &
-    TPrivateEndpoints;
+} & TPrivateSocketEndpoints;
 
 export type TSocketEndpointNames = keyof TSocketEndpoints;
 

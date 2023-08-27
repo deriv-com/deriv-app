@@ -6,9 +6,15 @@
     gap: 1.6rem;
     width: 100%;
 
+    @include mobile {
+        padding-top: 0;
+    }
+
     &__title {
         @include mobile {
+            padding-left: 1.5rem;
             font-size: var(--text-size-m);
+            padding-left: 1.6rem;
         }
     }
     &__content {
@@ -25,7 +31,7 @@
         border: 0.1rem solid var(--general-active);
         background-color: var(--general-main-1);
         box-shadow: $wallet-box-shadow;
-        cursor: pointer;
+        user-select: none;
         &-description,
         &-wrapper {
             display: flex;

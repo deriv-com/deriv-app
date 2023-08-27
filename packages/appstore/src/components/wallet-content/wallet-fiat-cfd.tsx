@@ -11,26 +11,11 @@ type TWalletFiatMT5 = {
 };
 
 const WalletFiatCFD = observer(({ wallet_account }: TWalletFiatMT5) => {
-    const {
-        modules: { cfd },
-        traders_hub,
-        ui,
-    } = useStore();
+    const { traders_hub } = useStore();
     const { available_dxtrade_accounts } = traders_hub;
-    const { is_mobile } = ui;
-    const { toggleCompareAccountsModal } = cfd;
-    const accounts_sub_text =
-        wallet_account.landing_company_name === 'svg' ? localize('Compare accounts') : localize('Account information');
 
     return (
         <React.Fragment>
-            {is_mobile && (
-                <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
-                    <Text size='xs' color='red' weight='bold' line_height='s'>
-                        {accounts_sub_text}
-                    </Text>
-                </div>
-            )}
             <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
                 <Text line_height='m' weight='bold' color='prominent'>
                     {localize('Deriv MT5')}

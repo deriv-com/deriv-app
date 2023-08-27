@@ -22,4 +22,8 @@
         cursor: not-allowed !important;
         opacity: 0.32;
     }
+
+    @include mobile {
+        margin-bottom: 2rem;
+    }
 }

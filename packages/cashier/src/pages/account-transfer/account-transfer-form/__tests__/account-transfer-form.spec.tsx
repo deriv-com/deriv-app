@@ -84,9 +84,6 @@ describe('<AccountTransferForm />', () => {
                     crypto_fiat_converter: {
                         resetConverter: jest.fn(),
                     },
-                    transaction_history: {
-                        onMount: jest.fn(),
-                    },
                 },
             },
             common: {

@@ -1,18 +1,20 @@
-import React, { useMemo } from 'react';
-import { useWalletAccountsList } from '@deriv/hooks';
+import React from 'react';
+import { useHistory } from 'react-router';
 import { Button, Text, useOnClickOutside } from '@deriv/components';
-import { AccountSwitcherWalletItem } from './account-switcher-wallet-item';
+import { useWalletAccountsList } from '@deriv/hooks';
+import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { AccountSwitcherWalletItem } from './account-switcher-wallet-item';
 import './account-switcher-wallet.scss';
 
-export const AccountSwitcherWallet = ({
-    is_visible,
-    toggle,
-}: {
+type TAccountSwitcherWalletProps = {
     is_visible: boolean;
     toggle: (value: boolean) => void;
-}) => {
-    const { data: wallets } = useWalletAccountsList();
+};
+
+export const AccountSwitcherWallet = ({ is_visible, toggle }: TAccountSwitcherWalletProps) => {
+    const { data: accounts } = useWalletAccountsList();
+    const history = useHistory();
 
     const wrapper_ref = React.useRef<HTMLDivElement>(null);
 
@@ -25,8 +27,6 @@ export const AccountSwitcherWallet = ({
 
     useOnClickOutside(wrapper_ref, closeAccountsDialog, validateClickOutside);
 
-    const trading_accounts = useMemo(() => wallets.filter(account => account.is_trading), [wallets]);
-
     return (
         <div className='account-switcher-wallet' ref={wrapper_ref}>
             <div className='account-switcher-wallet__header'>
@@ -35,8 +35,12 @@ export const AccountSwitcherWallet = ({
                 </Text>
             </div>
             <div className='account-switcher-wallet__list'>
-                {trading_accounts.map(account => (
-                    <AccountSwitcherWalletItem key={account.created_at?.toDateString()} {...account} />
+                {accounts?.map(account => (
+                    <AccountSwitcherWalletItem
+                        key={`${account.created_at?.toISOString()}-${account.loginid}`}
+                        closeAccountsDialog={closeAccountsDialog}
+                        {...account}
+                    />
                 ))}
             </div>
             <Button
@@ -45,6 +49,10 @@ export const AccountSwitcherWallet = ({
                 text={localize('Looking for CFDs? Go to Trader’s hub')}
                 onClick={() => {
                     /* redirect to trader's hub */
+                    // implement account switch
+                    closeAccountsDialog();
+                    history.push(routes.traders_hub);
+                    // setTogglePlatformType('cfd');
                 }}
                 secondary
                 small

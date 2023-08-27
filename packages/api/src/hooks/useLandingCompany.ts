@@ -14,14 +14,15 @@ const useLandingCompany = () => {
         if (!data?.landing_company) return;
         const { financial_company, gaming_company, virtual_company } = data.landing_company;
         return {
+            ...data.landing_company,
             /** Short code of financial landing company */
-            financial_company: financial_company?.shortcode,
+            financial_company_shotcode: financial_company?.shortcode,
             /** Short code of gaming landing company */
-            gaming_company: gaming_company?.shortcode,
+            gaming_company_shortcode: gaming_company?.shortcode,
             /** Short code of virtual landing company */
-            virtual_company,
+            virtual_company_shortcode: virtual_company,
         };
-    }, [data?.landing_company, settings_data?.country_code]);
+    }, [data?.landing_company]);
 
     return {
         /** List of available landing companies */

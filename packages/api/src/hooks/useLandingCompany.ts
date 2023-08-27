@@ -16,7 +16,7 @@ const useLandingCompany = () => {
         return {
             ...data.landing_company,
             /** Short code of financial landing company */
-            financial_company_shotcode: financial_company?.shortcode,
+            financial_company_shortcode: financial_company?.shortcode,
             /** Short code of gaming landing company */
             gaming_company_shortcode: gaming_company?.shortcode,
             /** Short code of virtual landing company */

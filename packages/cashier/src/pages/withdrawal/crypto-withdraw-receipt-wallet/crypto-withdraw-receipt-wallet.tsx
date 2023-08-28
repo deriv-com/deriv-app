@@ -35,7 +35,7 @@ const CryptoWithdrawReceiptWallet = observer(() => {
         icon: active_wallet?.icon || '',
         icon_type: active_wallet?.is_fiat_currency ? 'fiat' : 'crypto',
         jurisdiction_title: active_wallet?.landing_company_name || '',
-        name: `${active_wallet?.wallet_currency_type} ${localize('wallet')}}`,
+        name: `${active_wallet?.wallet_currency_type} ${localize('wallet')}`,
         gradient_class: active_wallet?.gradient_card_class || '',
     };
 

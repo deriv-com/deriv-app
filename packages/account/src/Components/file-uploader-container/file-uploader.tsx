@@ -5,7 +5,7 @@ import React from 'react';
 import classNames from 'classnames';
 import DocumentUploader from '@binary-com/binary-document-uploader';
 import { FileDropzone, Icon, Text, useStateCallback } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import {
     isMobile,
     compressImageFiles,
@@ -27,12 +27,14 @@ const UploadMessage = () => {
             <Icon icon='IcUpload' className='dc-file-dropzone__message-icon' size={30} />
             <div className='dc-file-dropzone__message-subtitle'>
                 <Text size='xxs' align='center' weight='bold' color='less-prominent'>
-                    {isMobile()
-                        ? localize('Click here to upload.')
-                        : localize('Drag and drop a file or click to browse your files.')}
+                    {isMobile() ? (
+                        <Localize i18n_default_text='Click here to upload.' />
+                    ) : (
+                        <Localize i18n_default_text='Drag and drop a file or click to browse your files.' />
+                    )}
                 </Text>
                 <Text size={isMobile() ? 'xxxxs' : 'xxxs'} align='center' color='less-prominent'>
-                    {localize('Remember, selfies, pictures of houses, or non-related images will be rejected.')}
+                    <Localize i18n_default_text='Remember, selfies, pictures of houses, or non-related images will be rejected.' />
                 </Text>
             </div>
         </React.Fragment>

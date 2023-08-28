@@ -1,20 +1,61 @@
 import React from 'react';
-import classNames from 'classnames';
-import { Loading, Table, Text, ThemedScrollbars } from '@deriv/components';
 import Bowser from 'bowser';
+import classNames from 'classnames';
+import moment from 'moment';
+import { Loading, Table, Text, ThemedScrollbars } from '@deriv/components';
 import { isMobile, isDesktop, PlatformContext, WS } from '@deriv/shared';
+import { LoginHistory as TLoginHistory } from '@deriv/api-types';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { useFetch } from '@deriv/api';
 import LoadErrorMessage from 'Components/load-error-message';
-import moment from 'moment';
+
+type TListCell = {
+    title: string;
+    text: string;
+    className?: string;
+    right?: boolean;
+};
+
+type TData = {
+    date: string;
+    action: string;
+    browser: string;
+    ip: string;
+    status: string;
+    id: number;
+}[];
+
+type TFields = {
+    date: string;
+    action: string;
+    browser: string;
+    ip: string;
+    status: string;
+};
+
+type TUA =
+    | (Bowser.Parser.Details & {
+          app?: string;
+      })
+    | undefined;
 
 const API_FETCH_LIMIT = 50;
 
-const getFormattedData = login_history => {
-    const data = [];
+const getFormattedData = (login_history: TLoginHistory) => {
+    const data: TData = [];
     const fetch_limit = Math.min(API_FETCH_LIMIT, login_history.length);
+    const data_object = {
+        date: '',
+        action: '',
+        browser: '',
+        ip: '',
+        status: '',
+        id: 0,
+    };
+
     for (let i = 0; i < fetch_limit; i++) {
-        data[i] = {};
+        data[i] = data_object;
         const environment = login_history[i].environment;
         const environment_split = environment.split(' ');
         const mobile_app_UA = environment.match(
@@ -25,8 +66,8 @@ const getFormattedData = login_history => {
         data[i].date = `${moment(date).format('YYYY-MM-DD')} ${time}`;
         data[i].action = login_history[i].action === 'login' ? localize('Login') : localize('Logout');
         const user_agent = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
-        const ua = mobile_app_UA ? mobile_app_UA.groups : Bowser.getParser(user_agent)?.getBrowser();
-        data[i].browser = ua ? `${ua.name} ${ua.app || ''} v${ua.version}` : localize('Unknown');
+        const ua: TUA = mobile_app_UA ? mobile_app_UA.groups : Bowser.getParser(user_agent)?.getBrowser();
+        data[i].browser = ua ? `${ua.name} ${ua.app ?? ''} v${ua.version}` : localize('Unknown');
         data[i].ip = environment_split[2].split('=')[1];
         data[i].status = login_history[i].status === 1 ? localize('Successful') : localize('Failed');
         data[i].id = i;
@@ -42,7 +83,7 @@ const getFields = () => ({
     status: localize('Status'),
 });
 
-const LoginHistoryContent = ({ data }) => {
+const LoginHistoryContent = ({ data }: { data: TData }) => {
     const { is_appstore } = React.useContext(PlatformContext);
     if (isMobile()) {
         return renderList(getFields(), data, is_appstore);
@@ -50,7 +91,7 @@ const LoginHistoryContent = ({ data }) => {
     return renderTable(getFields(), data);
 };
 
-const renderTable = (fields, login_history) => (
+const renderTable = (fields: TFields, login_history: TData) => (
     <Table fixed className='login-history__table'>
         <Table.Header>
             <Table.Row className='login-history__table__header'>
@@ -81,7 +122,7 @@ const renderTable = (fields, login_history) => (
     </Table>
 );
 
-const renderList = (fields, login_history, is_appstore) => {
+const renderList = (fields: TFields, login_history: TData, is_appstore: boolean) => {
     return (
         <Table className='login-history__list'>
             <Table.Body>
@@ -151,7 +192,7 @@ const renderList = (fields, login_history, is_appstore) => {
     );
 };
 
-const ListCell = ({ title, text, className, right }) => (
+const ListCell = ({ title, text, className, right }: TListCell) => (
     <React.Fragment>
         <Text as='h3' align={right ? 'right' : 'left'} weight='bold' className='login-history__list__row__cell--title'>
             {title}
@@ -170,32 +211,21 @@ const ListCell = ({ title, text, className, right }) => (
 const LoginHistory = observer(() => {
     const { client } = useStore();
     const { is_switching } = client;
-    const [is_loading, setLoading] = React.useState(true);
-    const [error, setError] = React.useState('');
-    const [data, setData] = React.useState([]);
+    const [login_history, setLoginHistory] = React.useState<TData>([]);
+
+    const { data, isError, isLoading, error } = useFetch('login_history', { payload: { limit: API_FETCH_LIMIT } });
 
     React.useEffect(() => {
-        const fetchData = async () => {
-            const api_res = await WS.authorized.fetchLoginHistory(API_FETCH_LIMIT);
-            setLoading(false);
-            if (api_res.error) {
-                setError(api_res.error.message);
-            } else {
-                const formatted_data = getFormattedData(api_res.login_history);
-                setData(formatted_data);
-            }
-        };
-
-        fetchData();
-    }, []);
+        if (!isLoading && !isError && data.login_history) setLoginHistory(getFormattedData(data.login_history));
+    }, [data, isLoading, isError]);
 
     if (is_switching) return <Loading />;
-    if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    if (error) return <LoadErrorMessage error_message={error} />;
+    if (isLoading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
+    if (isError) return <LoadErrorMessage error_message={error as string} />;
 
     return (
         <ThemedScrollbars is_bypassed={isMobile()} className='login-history'>
-            {data.length ? <LoginHistoryContent data={data} /> : null}
+            {login_history.length ? <LoginHistoryContent data={login_history} /> : null}
         </ThemedScrollbars>
     );
 });

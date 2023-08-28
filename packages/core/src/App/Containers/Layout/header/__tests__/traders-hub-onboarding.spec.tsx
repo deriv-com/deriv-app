@@ -19,7 +19,7 @@ describe('TradersHubOnboarding', () => {
         expect(screen.getByTestId('dt_traders_hub_onboarding')).toBeInTheDocument();
     });
 
-    it('should display the trading hub onboarding icon', () => {
+    it('should display the traders hub onboarding icon', () => {
         render(
             <StoreProvider store={store}>
                 <TradersHubOnboarding />

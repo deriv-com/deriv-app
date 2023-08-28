@@ -26,13 +26,13 @@ describe('Header', () => {
         );
     };
 
-    it('should render the "TradersHubHeader" component if user is logged in and in trading hub route', () => {
+    it('should render the "TradersHubHeader" component if user is logged in and in traders hub route', () => {
         mock_use_location.pathname = '/appstore/traders-hub';
         renderComponent();
         expect(screen.getByText('MockedTradersHubHeader')).toBeInTheDocument();
     });
 
-    it('should render the "DTraderHeader" component if user is logged in and not in the trading hub route', () => {
+    it('should render the "DTraderHeader" component if user is logged in and not in the traders hub route', () => {
         mock_use_location.pathname = '/';
         renderComponent();
         expect(screen.getByText('MockedDTraderHeader')).toBeInTheDocument();

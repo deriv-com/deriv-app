@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import {
@@ -50,7 +50,7 @@ type TCashierOptions = {
 
 const Cashier = observer(({ history, location, routes: routes_config }: TCashierProps) => {
     const { common, ui, client } = useStore();
-    const { withdraw, general_store, transaction_history, payment_agent } = useCashierStore();
+    const { withdraw, general_store, payment_agent } = useCashierStore();
     const { error } = withdraw;
     const {
         is_cashier_onboarding,
@@ -59,8 +59,8 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         setAccountSwitchListener,
         setCashierTabIndex: setTabIndex,
         cashier_route_tab_index: tab_index,
+        setActiveTab,
     } = general_store;
-    const { is_crypto_transactions_visible } = transaction_history;
     const {
         data: is_payment_agent_transfer_visible,
         isLoading: is_payment_agent_checking,
@@ -79,42 +79,8 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         isLoading: is_p2p_enabled_loading,
     } = useIsP2PEnabled();
 
-    React.useEffect(() => {
-        toggleCashier();
-        // we still need to populate the tabs shown on cashier
-        return () => {
-            toggleCashier();
-        };
-    }, [toggleCashier]);
-
-    React.useEffect(() => {
-        (async () => {
-            await WS?.wait('authorize');
-            if (is_logged_in) {
-                onMount();
-                setAccountSwitchListener();
-            }
-        })();
-    }, [is_logged_in, onMount, setAccountSwitchListener]);
-
-    React.useEffect(() => {
-        if (
-            is_payment_agent_transfer_visible_is_success &&
-            !is_payment_agent_transfer_visible &&
-            history.location.pathname === routes.cashier_pa_transfer
-        ) {
-            history.push(routes.cashier_deposit);
-        }
-    }, [history, is_payment_agent_transfer_visible, is_payment_agent_transfer_visible_is_success]);
-
-    React.useEffect(() => {
-        if (is_p2p_enabled_success && !is_p2p_enabled && history.location.pathname.startsWith(routes.cashier_p2p)) {
-            history.push(routes.cashier_deposit);
-        }
-    }, [history, is_p2p_enabled, is_p2p_enabled_success]);
-
     const onClickClose = () => history.push(routes.traders_hub);
-    const getMenuOptions = () => {
+    const getMenuOptions = useMemo(() => {
         const options: TCashierOptions[] = [];
         routes_config.forEach(route => {
             if (
@@ -132,23 +98,112 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                     label: route.getTitle(),
                     value: route.component,
                     path: route.path,
-                    has_side_note: is_crypto_transactions_visible ? false : route.path !== routes.cashier_p2p, // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
+                    // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
+                    has_side_note:
+                        route.path !== routes.cashier_deposit &&
+                        route.path !== routes.cashier_withdrawal &&
+                        route.path !== routes.cashier_p2p,
                 });
             }
         });
 
         return options;
-    };
+    }, [
+        is_account_transfer_visible,
+        is_onramp_visible,
+        is_p2p_enabled,
+        is_payment_agent_transfer_visible,
+        is_payment_agent_visible,
+        p2p_notification_count,
+        routes_config,
+    ]);
 
-    const selected_route = getSelectedRoute({ routes: routes_config, pathname: location.pathname });
-    // const should_show_tab_headers_note =
-    //     !is_virtual &&
-    //     (location.pathname.startsWith(routes.cashier_deposit) ||
-    //         location.pathname.startsWith(routes.cashier_withdrawal));
+    const selected_route = useMemo(
+        () => getSelectedRoute({ routes: routes_config, pathname: location.pathname }),
+        [location.pathname, routes_config]
+    );
 
-    const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: location.pathname }).default;
+    const is_default_route = !!selected_route.default;
 
-    // '|| !is_account_setting_loaded' condition added to make sure client_tnc_status loaded
+    const getHeaderTitle = useMemo(() => {
+        if (!isMobile() || (is_default_route && (is_loading || is_cashier_onboarding))) return localize('Cashier');
+
+        return selected_route.getTitle?.();
+    }, [is_cashier_onboarding, is_default_route, is_loading, selected_route]);
+
+    const updateActiveTab = useCallback(
+        (path?: string) => {
+            switch (path) {
+                case routes.cashier_deposit:
+                    setActiveTab('deposit');
+                    break;
+                case routes.cashier_withdrawal:
+                    setActiveTab('withdraw');
+                    break;
+                case routes.cashier_pa:
+                    setActiveTab('payment_agent');
+                    break;
+                case routes.cashier_pa_transfer:
+                    setActiveTab('payment_agent_transfer');
+                    break;
+                case routes.cashier_acc_transfer:
+                    setActiveTab('account_transfer');
+                    break;
+                case routes.cashier_onramp:
+                    setActiveTab('onramp');
+                    break;
+                default:
+                    setActiveTab('deposit');
+                    break;
+            }
+        },
+        [setActiveTab]
+    );
+
+    useEffect(() => {
+        updateActiveTab(selected_route.path);
+    }, [selected_route, updateActiveTab]);
+
+    useEffect(() => {
+        toggleCashier();
+        // we still need to populate the tabs shown on cashier
+        return () => {
+            toggleCashier();
+        };
+    }, [toggleCashier]);
+
+    useEffect(() => {
+        (async () => {
+            await WS?.wait('authorize');
+            if (is_logged_in) {
+                onMount();
+                setAccountSwitchListener();
+            }
+        })();
+    }, [is_logged_in, onMount, setAccountSwitchListener]);
+
+    useEffect(() => {
+        if (
+            is_payment_agent_transfer_visible_is_success &&
+            !is_payment_agent_transfer_visible &&
+            history.location.pathname === routes.cashier_pa_transfer
+        ) {
+            history.push(routes.cashier_deposit);
+        }
+    }, [history, is_payment_agent_transfer_visible, is_payment_agent_transfer_visible_is_success]);
+
+    useEffect(() => {
+        if (!is_onramp_visible && history.location.pathname === routes.cashier_onramp) {
+            history.push(routes.cashier_deposit);
+        }
+    }, [history, is_onramp_visible]);
+
+    useEffect(() => {
+        if (is_p2p_enabled_success && !is_p2p_enabled && history.location.pathname.startsWith(routes.cashier_p2p)) {
+            history.push(routes.cashier_deposit);
+        }
+    }, [history, is_p2p_enabled, is_p2p_enabled_success]);
+
     if (
         ((!is_logged_in || isMobile()) && is_logging_in) ||
         !is_account_setting_loaded ||
@@ -158,17 +213,11 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         return <Loading is_fullscreen />;
     }
 
-    const getHeaderTitle = () => {
-        if (!isMobile() || (is_default_route && (is_loading || is_cashier_onboarding))) return localize('Cashier');
-
-        return selected_route.getTitle?.();
-    };
-
     return (
         <FadeWrapper is_visible={is_visible} className='cashier__page-wrapper' keyname='cashier__page-wrapper'>
             <ErrorDialog error={error} />
             <div className='cashier'>
-                <PageOverlay header={getHeaderTitle()} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
+                <PageOverlay header={getHeaderTitle} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
                     <DesktopWrapper>
                         <VerticalTab
                             current_path={location.pathname}
@@ -177,7 +226,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                             vertical_tab_index={is_default_route ? 0 : tab_index}
                             is_full_width
                             is_routed
-                            list={getMenuOptions()}
+                            list={getMenuOptions}
                             tab_headers_note={
                                 <Button
                                     id='cashier_learn_more'
@@ -187,25 +236,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                                     secondary
                                 />
                             }
-                            // TODO: Uncomment when Ewallet.Exchange is available
-                            // tab_headers_note={
-                            //     should_show_tab_headers_note ? (
-                            //         <Text as='p' size='xxs' className='cashier__tab-header-note'>
-                            //             <Localize
-                            //                 i18n_default_text='Want to exchange between e-wallet currencies? Try <0>Ewallet.Exchange</0>'
-                            //                 components={[
-                            //                     <a
-                            //                         key={0}
-                            //                         href='https://ewallet.exchange'
-                            //                         rel='noopener noreferrer'
-                            //                         target='_blank'
-                            //                         className='link'
-                            //                     />,
-                            //                 ]}
-                            //             />
-                            //         </Text>
-                            //     ) : undefined
-                            // }
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -214,7 +244,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                                 <selected_route.component
                                     component_icon={selected_route.icon_component}
                                     history={history}
-                                    menu_options={getMenuOptions()}
+                                    menu_options={getMenuOptions}
                                 />
                             )}
                         </Div100vhContainer>

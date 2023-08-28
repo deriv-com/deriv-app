@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, DesktopWrapper, MobileWrapper, Tabs, Icon } from '@deriv/components';
-import { useWalletsList, useFeatureFlags } from '@deriv/hooks';
+import { useFeatureFlags } from '@deriv/hooks';
 import { ContentFlag } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import AccountTypeDropdown from './account-type-dropdown';
@@ -25,9 +25,6 @@ const MainTitleBar = () => {
     }, [selected_region]);
 
     const { is_wallet_enabled } = useFeatureFlags();
-    const { has_wallet } = useWalletsList();
-
-    const should_show_banner = is_wallet_enabled && !has_wallet;
 
     // TODO: Remove this when we have BE API ready
     removeAllNotificationMessages(true);
@@ -40,7 +37,7 @@ const MainTitleBar = () => {
     return (
         <React.Fragment>
             <DesktopWrapper>
-                {should_show_banner && <WalletsBanner />}
+                {is_wallet_enabled && <WalletsBanner />}
                 <div className='main-title-bar'>
                     <div className='main-title-bar__right'>
                         <Text size='m' weight='bold' color='prominent'>
@@ -53,7 +50,7 @@ const MainTitleBar = () => {
                 </div>
             </DesktopWrapper>
             <MobileWrapper>
-                {should_show_banner && <WalletsBanner />}
+                {is_wallet_enabled && <WalletsBanner />}
                 <Text weight='bold' className='main-title-bar__text' color='prominent'>
                     {localize("Trader's Hub")}
                 </Text>

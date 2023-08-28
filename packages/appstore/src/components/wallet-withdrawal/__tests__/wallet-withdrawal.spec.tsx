@@ -126,7 +126,6 @@ describe('WalletWithdrawal', () => {
             wrapper: ({ children }) => <CashierProviders store={mock_store}>{children}</CashierProviders>,
         });
 
-        expect(screen.queryByTestId('dt_empty_state_icon')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_empty_state_title')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_empty_state_description')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_empty_state_action')).toHaveTextContent('Send email');

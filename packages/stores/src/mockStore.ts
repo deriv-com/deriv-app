@@ -113,6 +113,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_eu_country: false,
             has_residence: false,
             is_financial_account: false,
+            is_financial_assessment_needed: false,
             is_financial_information_incomplete: false,
             is_low_risk: false,
             is_identity_verification_needed: false,
@@ -246,6 +247,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             init: jest.fn(),
             setLoginId: jest.fn(),
             resetLocalStorageValues: jest.fn(),
+            accountRealReaction: jest.fn(),
         },
         common: {
             error: {
@@ -295,6 +297,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_only_forward_starting_contracts: false,
             is_link_expired_modal_visible: false,
             is_mobile: false,
+            is_positions_drawer_on: false,
             is_reports_visible: false,
             is_services_error_visible: false,
             disableApp: jest.fn(),
@@ -302,6 +305,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setCurrentFocus: jest.fn(),
             toggleAccountsDialog: jest.fn(),
             toggleCashier: jest.fn(),
+            togglePositionsDrawer: jest.fn(),
             setDarkMode: jest.fn(),
             setReportsTabIndex: jest.fn(),
             has_real_account_signup_ended: false,
@@ -354,6 +358,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleShouldShowRealAccountsList: jest.fn(),
             is_reset_trading_password_modal_visible: false,
             setResetTradingPasswordModalOpen: jest.fn(),
+            is_wallet_creation_success_modal_open: false,
+            toggleIsWalletCreationSuccessModalOpen: jest.fn(),
         },
         traders_hub: {
             CFDs_restricted_countries: false,
@@ -430,6 +436,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_demo_low_risk: false,
             is_mt5_notification_modal_visible: false,
             setMT5NotificationModal: jest.fn(),
+            available_derivez_accounts: [],
         },
         notifications: {
             addNotificationMessage: jest.fn(),

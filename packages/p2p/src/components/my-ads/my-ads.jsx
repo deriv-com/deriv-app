@@ -24,6 +24,7 @@ const MyAds = () => {
         my_ads_store.setIsLoading(true);
         my_ads_store.setShowEditAdForm(false);
         my_ads_store.getAccountStatus();
+        if (general_store.active_index !== 2) general_store.setActiveIndex(2);
 
         return () => {
             my_ads_store.setShowAdForm(false);

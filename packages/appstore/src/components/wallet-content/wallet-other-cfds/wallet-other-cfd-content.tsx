@@ -3,7 +3,7 @@ import { useStore, observer } from '@deriv/stores';
 import { useActiveWallet, useExistingCFDAccounts } from '@deriv/hooks';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { formatMoney } from '@deriv/shared';
-import { TDetailsOfEachMT5Loginid, TWalletAccount } from 'Types';
+import { TWalletAccount } from 'Types';
 import { localize } from '@deriv/translations';
 
 type TWalletOtherCFDContent = {
@@ -19,7 +19,6 @@ const WalletOtherCFDContent = observer(({ wallet_account }: TWalletOtherCFDConte
     } = useStore();
     const {
         selected_region,
-        getExistingAccounts,
         selected_account_type,
         no_CR_account,
         is_real,

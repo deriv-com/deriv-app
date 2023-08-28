@@ -20,10 +20,6 @@ import DefaultMobileLinks from './default-mobile-links';
 import ShowNotifications from './show-notifications';
 import TradersHubOnboarding from './traders-hub-onboarding';
 
-const Divider = () => {
-    return <div className='trading-hub-header__divider' />;
-};
-
 export const TradersHubHomeButton = ({ is_dark_mode }) => {
     const history = useHistory();
     const { pathname } = history.location;
@@ -152,14 +148,14 @@ const TradersHubHeader = ({
                     </StaticUrl>
                 </div>
                 <DesktopWrapper>
-                    <Divider />
+                    <div className='trading-hub-header__divider' />
                     <TradersHubHomeButton is_dark_mode={is_dark_mode} />
                 </DesktopWrapper>
                 <MenuLinks is_traders_hub_routes />
             </div>
             <DesktopWrapper>
                 <div className='trading-hub-header__menu-right'>
-                    <Divider />
+                    <div className='trading-hub-header__divider' />
                     <div className='trading-hub-header__menu-right--items'>
                         <div className='trading-hub-header__menu-right--items--onboarding'>
                             <TradersHubOnboarding />

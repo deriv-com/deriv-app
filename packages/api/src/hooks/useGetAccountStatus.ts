@@ -11,7 +11,7 @@ const useGetAccountStatus = () => {
 
         return {
             ...get_account_status_data.get_account_status,
-            prompt_client_to_authenticate: Boolean(
+            should_prompt_client_to_authenticate: Boolean(
                 get_account_status_data.get_account_status.prompt_client_to_authenticate
             ),
         };

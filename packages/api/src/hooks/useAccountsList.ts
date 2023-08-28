@@ -30,18 +30,9 @@ const useAccountsList = () => {
                 is_wallet: account.account_category === 'wallet',
                 /** The account ID of specified account. */
                 loginid: `${account.loginid}`,
-                /** This represents the current status of the proof of address document submitted for authentication. */
-                poa_status: get_account_status_data?.authentication?.document?.status,
-                /** This represent the current status for proof of identity document submitted for authentication. */
-                poi_status: get_account_status_data?.authentication?.identity?.status,
             } as const;
         });
-    }, [
-        authorize_data.account_list,
-        authorize_data.loginid,
-        get_account_status_data?.authentication?.document?.status,
-        get_account_status_data?.authentication?.identity?.status,
-    ]);
+    }, [authorize_data.account_list, authorize_data.loginid]);
 
     // Add balance to each account
     const modified_accounts_with_balance = useMemo(
@@ -54,9 +45,23 @@ const useAccountsList = () => {
         [balance_data?.accounts, modified_accounts]
     );
 
+    // Add poi and poa status to response if available
+    const modified_accounts_with_status = useMemo(() => {
+        return {
+            ...modified_accounts_with_balance,
+            /** This represents the current status of the proof of address document submitted for authentication. */
+            poa_status: get_account_status_data?.authentication?.document?.status,
+            /** This represent the current status for proof of identity document submitted for authentication. */
+            poi_status: get_account_status_data?.authentication?.identity?.status,
+        };
+    }, [
+        get_account_status_data?.authentication?.document?.status,
+        get_account_status_data?.authentication?.identity?.status,
+    ]);
+
     return {
         /** The list of accounts. */
-        data: modified_accounts_with_balance,
+        data: modified_accounts_with_status,
         ...rest,
     };
 };

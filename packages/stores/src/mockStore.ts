@@ -405,6 +405,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             selected_platform_type: 'options',
             no_CR_account: false,
             no_MF_account: false,
+            modal_data: {
+                active_modal: '',
+                data: {},
+            },
             multipliers_account_status: '',
             openFailedVerificationModal: jest.fn(),
             setTogglePlatformType: jest.fn(),

@@ -577,6 +577,11 @@ type TBalance = {
     balance: number;
 };
 
+type TModalData = {
+    active_modal: string;
+    data: Record<string, never>;
+};
+
 type TTradersHubStore = {
     closeModal: () => void;
     content_flag: 'low_risk_cr_eu' | 'low_risk_cr_non_eu' | 'high_risk_cr' | 'cr_demo' | 'eu_demo' | 'eu_real' | '';
@@ -607,6 +612,7 @@ type TTradersHubStore = {
     toggleRegulatorsCompareModal: () => void;
     selected_region: string;
     openFailedVerificationModal: (selected_account_type: string) => void;
+    modal_data: TModalData;
     multipliers_account_status: string;
     financial_restricted_countries: boolean;
     selected_account_type: string;

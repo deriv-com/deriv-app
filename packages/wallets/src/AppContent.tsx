@@ -2,13 +2,6 @@ import React from 'react';
 import { useFetch } from '@deriv/api';
 import IcBrandingDerivEzDashboard from './assets/ic-branding-derivez-dashboard.svg';
 
-export const getUrlBase = (path = '') => {
-    const l = window.location;
-
-    if (!/^\/(br_)/.test(l.pathname)) return path;
-
-    return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
-};
 const AppContent: React.FC = () => {
     const { data } = useFetch('time', { options: { refetchInterval: 1000 } });
 

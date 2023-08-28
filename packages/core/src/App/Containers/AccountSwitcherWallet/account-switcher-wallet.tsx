@@ -3,6 +3,7 @@ import { useHistory } from 'react-router';
 import { Button, Text, useOnClickOutside } from '@deriv/components';
 import { useWalletAccountsList } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { AccountSwitcherWalletItem } from './account-switcher-wallet-item';
 import './account-switcher-wallet.scss';
@@ -12,8 +13,16 @@ type TAccountSwitcherWalletProps = {
     toggle: (value: boolean) => void;
 };
 
-export const AccountSwitcherWallet = ({ is_visible, toggle }: TAccountSwitcherWalletProps) => {
-    const { data: accounts } = useWalletAccountsList();
+export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountSwitcherWalletProps) => {
+    const {
+        client: { switchAccount },
+        traders_hub: { setTogglePlatformType },
+        ui: { is_dark_mode_on },
+    } = useStore();
+
+    const { data: wallets } = useWalletAccountsList();
+    const dtrade_account_wallets = React.useMemo(() => wallets?.filter(wallet => wallet.dtrade_loginid), [wallets]);
+
     const history = useHistory();
 
     const wrapper_ref = React.useRef<HTMLDivElement>(null);
@@ -27,6 +36,12 @@ export const AccountSwitcherWallet = ({ is_visible, toggle }: TAccountSwitcherWa
 
     useOnClickOutside(wrapper_ref, closeAccountsDialog, validateClickOutside);
 
+    const handleTradersHubRedirect = async () => {
+        closeAccountsDialog();
+        history.push(routes.traders_hub);
+        setTogglePlatformType('cfd');
+    };
+
     return (
         <div className='account-switcher-wallet' ref={wrapper_ref}>
             <div className='account-switcher-wallet__header'>
@@ -35,11 +50,13 @@ export const AccountSwitcherWallet = ({ is_visible, toggle }: TAccountSwitcherWa
                 </Text>
             </div>
             <div className='account-switcher-wallet__list'>
-                {accounts?.map(account => (
+                {dtrade_account_wallets?.map(account => (
                     <AccountSwitcherWalletItem
-                        key={`${account.created_at?.toISOString()}-${account.loginid}`}
+                        key={`${account.loginid}-${account.dtrade_loginid}`}
+                        account={account}
                         closeAccountsDialog={closeAccountsDialog}
-                        {...account}
+                        is_dark_mode_on={is_dark_mode_on}
+                        switchAccount={switchAccount}
                     />
                 ))}
             </div>
@@ -47,18 +64,12 @@ export const AccountSwitcherWallet = ({ is_visible, toggle }: TAccountSwitcherWa
                 className='account-switcher-wallet__button'
                 has_effect
                 text={localize('Looking for CFDs? Go to Trader’s hub')}
-                onClick={() => {
-                    /* redirect to trader's hub */
-                    // implement account switch
-                    closeAccountsDialog();
-                    history.push(routes.traders_hub);
-                    // setTogglePlatformType('cfd');
-                }}
+                onClick={handleTradersHubRedirect}
                 secondary
                 small
             />
         </div>
     );
-};
+});
 
 export default AccountSwitcherWallet;

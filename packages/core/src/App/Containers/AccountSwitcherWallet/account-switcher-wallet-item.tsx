@@ -3,32 +3,34 @@ import classNames from 'classnames';
 import { AppLinkedWithWalletIcon, Text, Badge } from '@deriv/components';
 import { useActiveAccount, useWalletAccountsList } from '@deriv/hooks';
 import { formatMoney } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import './account-switcher-wallet-item.scss';
 
-type TAccountSwitcherWalletItemProps = Exclude<ReturnType<typeof useWalletAccountsList>['data'], undefined>[number] & {
+type TAccountSwitcherWalletItemProps = {
+    account: ReturnType<typeof useWalletAccountsList>['data'][number];
     closeAccountsDialog: () => void;
+    is_dark_mode_on: boolean;
+    switchAccount: (loginid?: string) => Promise<void>;
 };
 
 export const AccountSwitcherWalletItem = ({
-    balance,
     closeAccountsDialog,
-    currency,
-    currency_config,
-    dtrade_loginid,
-    gradients,
-    icons,
-    is_active,
-    is_virtual,
-    landing_company_name,
-    linked_to,
+    switchAccount,
+    is_dark_mode_on,
+    account,
 }: TAccountSwitcherWalletItemProps) => {
     const {
-        ui: { is_dark_mode_on },
-        client: { switchAccount },
-    } = useStore();
-
+        currency,
+        currency_config,
+        dtrade_loginid,
+        dtrade_balance,
+        gradients,
+        icons,
+        is_active,
+        is_virtual,
+        landing_company_name,
+        linked_to,
+    } = account;
     const active_account = useActiveAccount();
 
     const theme = is_dark_mode_on ? 'dark' : 'light';
@@ -62,7 +64,7 @@ export const AccountSwitcherWalletItem = ({
             <div className='acc-switcher-wallet-item__content'>
                 <Text size='xxs'>{currency_config?.name}</Text>
                 <Text size='xs' weight='bold'>
-                    {`${formatMoney(currency || '', balance, true)} ${currency_config?.display_code}`}
+                    {`${formatMoney(currency || '', dtrade_balance || 0, true)} ${currency_config?.display_code}`}
                 </Text>
             </div>
             {is_virtual ? (

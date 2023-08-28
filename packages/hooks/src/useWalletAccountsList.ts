@@ -84,6 +84,8 @@ const useWalletAccountsList = () => {
                 },
             } as const;
 
+            const dtrade_loginid = wallet.linked_to?.find(account => account.platform === 'dtrade')?.loginid;
+
             return {
                 ...wallet,
                 /** Returns the wallet's currency type. ex: `Demo`, `USD`, etc. */
@@ -97,8 +99,9 @@ const useWalletAccountsList = () => {
                 /** Local asset names for the wallet icon. ex: `IcWalletCurrencyUsd` for `USD`  */
                 icons: currency_to_icon_mapper[wallet_currency_type],
                 /** The DTrade account ID of this wallet */
-                dtrade_loginid: wallet.linked_to?.find(account => account.platform === 'dtrade')?.loginid,
-
+                dtrade_loginid,
+                /** The DTrade account balance of this wallet */
+                dtrade_balance: account_list_data?.find(account => account.loginid === dtrade_loginid)?.balance,
                 /** @deprecated Use `is_virtual` instead. */
                 is_demo: wallet.is_virtual,
                 /** @deprecated Use `is_active` instead. */

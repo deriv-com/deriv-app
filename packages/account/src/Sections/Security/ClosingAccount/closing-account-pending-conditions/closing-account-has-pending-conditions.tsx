@@ -16,7 +16,7 @@ type TClosingAccountHasPendingConditionsProps = {
         open_positions?: Record<string, number>;
         balance?: Record<string, { balance: number; currency: string }>;
     };
-    onBackClick: () => void;
+    onConfirm: () => void;
 };
 
 const getDerivAccount = (client_accounts: TAccounts[], login_id: string) =>
@@ -29,7 +29,7 @@ const getCurrentDxtradeAccount = (dxtrade_accounts_list: TDetailsOfDerivXAccount
     dxtrade_accounts_list.find(account_obj => account_obj.account_id === login_id);
 
 const ClosingAccountHasPendingConditions = observer(
-    ({ details, onBackClick }: TClosingAccountHasPendingConditionsProps) => {
+    ({ details, onConfirm }: TClosingAccountHasPendingConditionsProps) => {
         const { client } = useStore();
         const { dxtrade_accounts_list, mt5_login_list, account_list } = client;
 
@@ -197,7 +197,7 @@ const ClosingAccountHasPendingConditions = observer(
                     )}
                 </ThemedScrollbars>
                 <div>
-                    <Button className='closing-account-error__button' primary onClick={onBackClick}>
+                    <Button className='closing-account-error__button' primary onClick={onConfirm}>
                         <Localize i18n_default_text='OK' />
                     </Button>
                 </div>

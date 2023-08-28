@@ -14,7 +14,7 @@ const ClosingAccount = () => {
     return (
         <div className='closing-account' data-testid='dt_closing_account'>
             {render_close_account_reason ? (
-                <ClosingAccountReason onBackClick={redirectToSteps} />
+                <ClosingAccountReason redirectToSteps={redirectToSteps} />
             ) : (
                 <ClosingAccountSteps redirectToReasons={redirectToReasons} />
             )}

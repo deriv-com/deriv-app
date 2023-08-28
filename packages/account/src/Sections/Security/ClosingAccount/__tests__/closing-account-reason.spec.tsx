@@ -6,7 +6,7 @@ import ClosingAccountReason from '../closing-account-reason';
 describe('<ClosingAccountReason />', () => {
     const mockRootStore: ReturnType<typeof mockStore> = mockStore({});
     const mock_props = {
-        onBackClick: jest.fn(),
+        redirectToSteps: jest.fn(),
     };
     let modal_root_el: HTMLDivElement;
     beforeAll(() => {
@@ -66,7 +66,7 @@ describe('<ClosingAccountReason />', () => {
         expect(screen.getByText(/Remaining characters: 97/i)).toBeInTheDocument();
     });
 
-    it('should call onBackClick when back button is clicked', async () => {
+    it('should call redirectToSteps when back button is clicked', async () => {
         renderComponent();
 
         const el_checkbox = screen.getByRole('checkbox', {
@@ -77,7 +77,7 @@ describe('<ClosingAccountReason />', () => {
         fireEvent.click(screen.getByRole('button', { name: /Back/i }));
 
         await waitFor(() => {
-            expect(mock_props.onBackClick).toHaveBeenCalledTimes(1);
+            expect(mock_props.redirectToSteps).toHaveBeenCalledTimes(1);
         });
     });
 });

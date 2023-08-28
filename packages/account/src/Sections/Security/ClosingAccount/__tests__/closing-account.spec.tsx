@@ -12,7 +12,9 @@ jest.mock('../closing-account-steps', () => ({
 
 jest.mock('../closing-account-reason', () => ({
     __esModule: true,
-    default: ({ onBackClick }: { onBackClick: () => void }) => <div onClick={onBackClick}>ClosingAccountReason </div>,
+    default: ({ redirectToSteps }: { redirectToSteps: () => void }) => (
+        <div onClick={redirectToSteps}>ClosingAccountReason </div>
+    ),
 }));
 
 describe('<ClosingAccountReason />', () => {

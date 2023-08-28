@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ClosingAccountReasonForm from '../closing-account-reason-form';
 
@@ -39,9 +39,7 @@ describe('<ClosingAccountReasonForm />', () => {
         const el_checkbox = screen.getByRole('checkbox', {
             name: /i’m closing my account for other reasons\./i,
         });
-        act(() => {
-            userEvent.click(el_checkbox);
-        });
+        userEvent.click(el_checkbox);
         expect(mock_props.onChangeCheckbox).toHaveBeenCalled();
     });
 

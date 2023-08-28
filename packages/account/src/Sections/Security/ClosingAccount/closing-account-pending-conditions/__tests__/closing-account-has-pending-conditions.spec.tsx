@@ -23,7 +23,7 @@ describe('<ClosingAccountHasPendingConditions />', () => {
                 },
             },
         },
-        onBackClick: jest.fn(),
+        onConfirm: jest.fn(),
     };
     store = mockStore({
         client: {

@@ -1,8 +1,8 @@
+import React from 'react';
+import classNames from 'classnames';
 import { Icon } from '@deriv/components';
 import { getSnakeCase } from '@deriv/components/utils/helper';
 import { useP2PPaymentMethods } from '@deriv/hooks';
-import classNames from 'classnames';
-import React from 'react';
 
 type TPaymentMethodIconProps = {
     className?: string;

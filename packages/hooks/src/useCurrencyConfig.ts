@@ -1,7 +1,7 @@
 import { useFetch } from '@deriv/api';
 import { useCallback, useMemo } from 'react';
 
-/** A custom hook to get the currency config information from `website_status` endpoint */
+/** @deprecated Use `useCurrencyConfig` from `@deriv/api` package instead. */
 const useCurrencyConfig = () => {
     const { data: website_status_data } = useFetch('website_status');
     const { data: crypto_config_data, ...rest } = useFetch('crypto_config');

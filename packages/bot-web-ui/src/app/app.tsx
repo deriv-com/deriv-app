@@ -1,4 +1,4 @@
-import '../public-path'; // Leave this here (at the top)! OK boss!
+import '../public-path';
 import React from 'react';
 import { TStores } from '@deriv/stores/types';
 import type { TWebSocket } from 'Types';

@@ -10,6 +10,7 @@ import {
     Text,
     useCopyToClipboard,
 } from '@deriv/components';
+import { websiteUrl } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -27,7 +28,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
     const { hideModal, is_modal_open } = useModalManagerContext();
 
     const divRef = React.useRef(null);
-    const advert_url = `${window.location.origin}/cashier/p2p/advertiser?id=${advertiser_id}&advert_id=${id}`;
+    const advert_url = `${websiteUrl()}/cashier/p2p/advertiser?id=${advertiser_id}&advert_id=${id}`;
     const custom_message_values = { account_currency, advert_url, local_currency, rate_display };
     const getCustomMessage = () => {
         if (rate_type === ad_type.FLOAT) {
@@ -71,7 +72,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
 
     const handleShareLink = () => {
         navigator.share({
-            text: getCustomMessage() as string,
+            text: getCustomMessage(),
         });
     };
 
@@ -89,13 +90,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
     }, [is_copied]);
 
     return (
-        <Modal
-            has_close_icon
-            is_open={is_modal_open}
-            title={localize('Share this ad')}
-            toggleModal={hideModal}
-            width='71rem'
-        >
+        <Modal is_open={is_modal_open} title={localize('Share this ad')} toggleModal={hideModal} width='71rem'>
             <Modal.Body className='share-my-ads-modal__body'>
                 <React.Fragment>
                     <DesktopWrapper>

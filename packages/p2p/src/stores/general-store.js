@@ -23,7 +23,7 @@ export default class GeneralStore extends BaseStore {
     balance;
     cancels_remaining = null;
     contact_info = '';
-    counterparty_advert_id = null;
+    counterparty_advert_id = '';
     counterparty_advertiser_id = null;
     error_code = '';
     external_stores = {};

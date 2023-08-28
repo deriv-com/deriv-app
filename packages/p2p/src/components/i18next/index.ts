@@ -22,7 +22,7 @@ import zh_tw from 'Translations/zh_tw.json';
 const DEFAULT_LANGUAGE = 'EN';
 let CURRENT_LANGUAGE = 'EN';
 
-export const setLanguage = lang => {
+export const setLanguage = (lang: string) => {
     CURRENT_LANGUAGE = lang || DEFAULT_LANGUAGE;
     i18n.changeLanguage(lang);
 };
@@ -49,7 +49,7 @@ const i18n_config = {
         ZH_TW: { translations: { ...zh_tw } },
     },
     react: {
-        hashTransKey(defaultValue) {
+        hashTransKey(defaultValue: string) {
             return crc32(defaultValue);
         },
     },
@@ -65,9 +65,9 @@ i18n.use(initReactI18next) // passes i18n down to react-i18next
 // <Localize /> component wrapped with i18n
 export const Localize = withI18n(i18n);
 
-export const localize = (string, values) => {
+export const localize = <T extends object>(string: string, values?: T) => {
     if (!string) return '';
-    return i18n.t(crc32(string), { defaultValue: string, ...values });
+    return i18n.t(crc32(string).toString(), { defaultValue: string, ...values });
 };
 
 export default i18n;

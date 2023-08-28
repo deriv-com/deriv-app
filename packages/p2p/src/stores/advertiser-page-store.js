@@ -1,9 +1,7 @@
 import { action, computed, makeObservable, observable } from 'mobx';
-import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { requestWS, subscribeWS } from 'Utils/websocket';
 import BaseStore from 'Stores/base_store';
-import { isMobile } from '@deriv/shared';
 
 export default class AdvertiserPageStore extends BaseStore {
     active_index = 0;
@@ -43,7 +41,6 @@ export default class AdvertiserPageStore extends BaseStore {
             advertiser_details: computed,
             advertiser_details_id: computed,
             advertiser_details_name: computed,
-            getAdvertInfo: action.bound,
             getCounterpartyAdvertiserList: action.bound,
             handleTabItemClick: action.bound,
             onAdvertiserIdUpdate: action.bound,
@@ -150,37 +147,6 @@ export default class AdvertiserPageStore extends BaseStore {
         }
 
         this.setIsLoading(false);
-    }
-
-    /** This function gets the advert info from the counterparty when user wants to view a shared advert */
-    getAdvertInfo() {
-        const { buy_sell_store, general_store } = this.root_store;
-
-        requestWS({ p2p_advert_info: 1, id: general_store.counterparty_advert_id }).then(response => {
-            if (response) {
-                const { p2p_advert_info } = response;
-                const { is_active, is_visible } = p2p_advert_info || {};
-                const advert_type = p2p_advert_info?.type === buy_sell.BUY ? 1 : 0;
-
-                if (!response.error && is_active && is_visible) {
-                    this.setActiveIndex(advert_type);
-                    this.handleTabItemClick(advert_type);
-                    buy_sell_store.setSelectedAdState(p2p_advert_info);
-                    this.loadMoreAdvertiserAdverts({ startIndex: 0 });
-                    general_store.showModal({ key: 'BuySellModal' });
-                } else {
-                    general_store.showModal({
-                        key: 'ErrorModal',
-                        props: {
-                            error_message: localize("It's either deleted or no longer active."),
-                            error_modal_button_text: localize('OK'),
-                            error_modal_title: localize('This ad is unavailable'),
-                            width: isMobile() ? '90vw' : '',
-                        },
-                    });
-                }
-            }
-        });
     }
 
     getCounterpartyAdvertiserList(advertiser_id) {

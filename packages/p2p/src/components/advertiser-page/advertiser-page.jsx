@@ -1,5 +1,6 @@
 import React from 'react';
 import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
+import { useP2PAdvertInfo } from '@deriv/hooks';
 import { daysSince, isMobile, routes } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
@@ -20,10 +21,12 @@ import BlockUserOverlay from './block-user/block-user-overlay';
 import classNames from 'classnames';
 import { OnlineStatusIcon, OnlineStatusLabel } from 'Components/online-status';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { buy_sell } from 'Constants/buy-sell';
 import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store, general_store, my_profile_store } = useStores();
+    const { counterparty_advert_id, is_advertiser, is_barred } = general_store;
     const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
 
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
@@ -63,6 +66,45 @@ const AdvertiserPage = () => {
                   name: nickname,
               });
     };
+    const { data: p2p_advert_info, isSuccess: has_p2p_advert_info } = useP2PAdvertInfo(counterparty_advert_id, {
+        enabled: !!counterparty_advert_id,
+    });
+
+    const setShowAdvertInfo = React.useCallback(
+        () => {
+            if (has_p2p_advert_info && is_advertiser && !is_barred) {
+                const { is_active, is_visible } = p2p_advert_info || {};
+                const advert_type = p2p_advert_info?.type === buy_sell.BUY ? 1 : 0;
+
+                if (is_active && is_visible) {
+                    advertiser_page_store.setActiveIndex(advert_type);
+                    advertiser_page_store.handleTabItemClick(advert_type);
+                    buy_sell_store.setSelectedAdState(p2p_advert_info);
+                    advertiser_page_store.loadMoreAdvertiserAdverts({ startIndex: 0 });
+                    showModal({ key: 'BuySellModal' });
+                } else {
+                    showModal({
+                        key: 'ErrorModal',
+                        props: {
+                            error_message: "It's either deleted or no longer active.",
+                            error_modal_button_text: 'OK',
+                            error_modal_title: 'This ad is unavailable',
+                            width: isMobile() ? '90vw' : '',
+                        },
+                    });
+                }
+            }
+        },
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [has_p2p_advert_info, p2p_advert_info]
+    );
+
+    React.useEffect(() => {
+        if (counterparty_advert_id) {
+            setShowAdvertInfo();
+        }
+    }, [counterparty_advert_id, setShowAdvertInfo]);
 
     React.useEffect(() => {
         buy_sell_store.setShowAdvertiserPage(true);
@@ -76,15 +118,9 @@ const AdvertiserPage = () => {
                     // DO NOT REMOVE. This fixes reloading issue when user navigates to advertiser page via URL
                     advertiser_page_store.onAdvertiserIdUpdate();
 
-                    if (
-                        general_store.counterparty_advert_id &&
-                        !general_store.is_barred &&
-                        general_store.is_advertiser
-                    ) {
-                        advertiser_page_store.getAdvertInfo();
-                    } else if (general_store.is_barred) {
+                    if (is_barred) {
                         history.push(routes.p2p_buy_sell);
-                    } else if (!general_store.is_advertiser) {
+                    } else if (!is_advertiser) {
                         history.push(routes.p2p_my_ads);
                     }
 

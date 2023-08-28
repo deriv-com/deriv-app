@@ -1,13 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import { TFunctionDetailedResult } from 'i18next';
 import { FacebookShareButton, TelegramShareButton, TwitterShareButton, WhatsappShareButton } from 'react-share';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 
 type TShareMyAdsSocialsProps = {
     advert_url: string;
-    custom_message: string | TFunctionDetailedResult<object>;
+    custom_message: string;
 };
 
 const ShareMyAdsSocials = ({ advert_url, custom_message }: TShareMyAdsSocialsProps) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
-import { Button, Modal } from '@deriv/components';
+import { Button, Modal, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
@@ -24,7 +24,11 @@ const ErrorModal = ({
             toggleModal={onClose ?? hideModal}
             width={width}
         >
-            <Modal.Body className='error-modal__body'>{error_message}</Modal.Body>
+            <Modal.Body className='error-modal__body'>
+                <Text>
+                    <Localize i18n_default_text={error_message} />
+                </Text>
+            </Modal.Body>
             <Modal.Footer>
                 <Button large primary onClick={onClose ?? hideModal}>
                     <Localize i18n_default_text={error_modal_button_text} />

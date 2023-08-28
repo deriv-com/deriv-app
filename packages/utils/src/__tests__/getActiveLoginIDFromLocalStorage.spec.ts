@@ -17,6 +17,6 @@ describe('getActiveLoginIDFromLocalStorage', () => {
 
         const result = getActiveLoginIDFromLocalStorage();
 
-        expect(result).toBeNull();
+        expect(result).toBeUndefined();
     });
 });

@@ -265,6 +265,18 @@ const BuySellForm = props => {
                                             ))}
                                     </div>
                                 </div>
+                                {/* TODO: Uncomment when BE is done */}
+                                {/* <div className='buy-sell__modal-field-wrapper'>
+                                    <div className='buy-sell__modal-field'>
+                                        <Text as='p' color='less-prominent' size='xxs'>
+                                                <Localize i18n_default_text="Order Completion time" />
+                                        </Text>
+                                        <Text as='p' color='general' size='xs'>
+                                            <Localize i18n_default_text='{{minutes}} minutes' values={{ minutes: 30 }} />
+                                        </Text>
+                                        
+                                    </div>
+                                </div> */}
                                 <div className='buy-sell__modal-line' />
                                 {buy_sell_store.is_sell_advert && payment_method_names && (
                                     <React.Fragment>

@@ -1,0 +1,17 @@
+.order-time-selection {
+    max-width: 67.2rem;
+    margin-top: 2.4rem;
+    &__title {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+    .dc-dropdown__display {
+        height: 4rem;
+
+        .dc-text {
+            font-size: 1.2rem;
+            line-height: 1.8rem;
+        }
+    }
+}

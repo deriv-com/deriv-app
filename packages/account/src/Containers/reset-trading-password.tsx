@@ -16,7 +16,7 @@ const ResetTradingPassword = observer(() => {
     } = ui;
     const location = useLocation();
     const query_params = new URLSearchParams(location.search);
-    const platform = /^trading_platform_(.*)_password_reset$/.exec(query_params.get('action') || '')?.[1];
+    const platform = /^trading_platform_(.*)_password_reset$/.exec(query_params.get('action') ?? '')?.[1];
     const verification_code =
         platform === CFD_PLATFORMS.MT5
             ? client.verification_code.trading_platform_mt5_password_reset

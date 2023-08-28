@@ -24,14 +24,16 @@ jest.mock('../../Components/reset-trading-password-modal', () =>
 );
 
 describe('ResetTradingPassword', () => {
+    const MOCK_MT5_CODE = 'reset_mt5';
+    const MOCK_DXTRADE_CODE = 'reset_dxtrade';
     const mock_store = mockStore({
         ui: {
             is_reset_trading_password_modal_visible: true,
         },
         client: {
             verification_code: {
-                trading_platform_mt5_password_reset: 'reset_mt5',
-                trading_platform_dxtrade_password_reset: 'reset_dxtrade',
+                trading_platform_mt5_password_reset: MOCK_MT5_CODE, // Mock data
+                trading_platform_dxtrade_password_reset: MOCK_DXTRADE_CODE, // Mock data,
             },
         },
     });
@@ -65,13 +67,13 @@ describe('ResetTradingPassword', () => {
         renderComponent({});
 
         expect(screen.getByText('mt5')).toBeInTheDocument();
-        expect(screen.getByText('reset_mt5')).toBeInTheDocument();
+        expect(screen.getByText(MOCK_MT5_CODE)).toBeInTheDocument();
     });
 
     it('should render ResetTradingPassword component for DxTrade', () => {
         renderComponent({ search: '?action=trading_platform_dxtrade_password_reset' });
 
         expect(screen.getByText('dxtrade')).toBeInTheDocument();
-        expect(screen.getByText('reset_dxtrade')).toBeInTheDocument();
+        expect(screen.getByText(MOCK_DXTRADE_CODE)).toBeInTheDocument();
     });
 });

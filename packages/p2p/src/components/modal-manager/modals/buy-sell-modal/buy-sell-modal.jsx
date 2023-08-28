@@ -212,7 +212,7 @@ const BuySellModal = () => {
             buy_sell_store.fetchAdvertiserAdverts();
         }
         floating_rate_store.setIsMarketRateChanged(false);
-        general_store.setCounterpartyAdvertId(null);
+        general_store.setCounterpartyAdvertId('');
     };
 
     const onConfirmClick = order_info => {

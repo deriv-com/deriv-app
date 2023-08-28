@@ -7,10 +7,11 @@ const useGetAccountStatus = () => {
 
     // Add additional information to the authorize response.
     const modified_account_status = useMemo(() => {
-        if (!get_account_status_data?.get_account_status) return undefined;
+        if (!get_account_status_data?.get_account_status) return;
 
         return {
             ...get_account_status_data.get_account_status,
+            /** Indicates whether the client should be prompted to authenticate their account. */
             should_prompt_client_to_authenticate: Boolean(
                 get_account_status_data.get_account_status.prompt_client_to_authenticate
             ),

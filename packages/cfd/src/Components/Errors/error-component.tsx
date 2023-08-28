@@ -4,14 +4,13 @@ import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 type TErrorComponent = {
-    header: string;
-    message: Array<{ message: string; has_html?: boolean }> | string;
-    is_dialog: boolean;
+    header: string | JSX.Element;
+    message: string | JSX.Element;
+    is_dialog?: boolean;
     redirect_label: string;
-    redirectOnClick: () => void;
+    redirectOnClick: (() => void) | null;
     should_show_refresh: boolean;
 };
-
 const ErrorComponent = ({
     header,
     message,
@@ -29,6 +28,7 @@ const ErrorComponent = ({
                 is_visible
                 confirm_button_text={redirect_label || localize('Ok')}
                 onConfirm={redirectOnClick || (() => location.reload())}
+                has_close_icon={false}
             >
                 {message || localize('Sorry, an error occured while processing your request.')}
             </Dialog>
@@ -37,7 +37,7 @@ const ErrorComponent = ({
     return (
         <PageErrorContainer
             error_header={header ?? ''}
-            error_messages={message && Array.isArray(message) ? [{ message, refresh_message }] : []}
+            error_messages={message ? [message, refresh_message] : []}
             redirect_urls={[routes.trade]}
             redirect_labels={[redirect_label || localize('Refresh')]}
             buttonOnClick={redirectOnClick || (() => location.reload())}

@@ -1,12 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { AccountSwitcherWalletItem } from '../account-switcher-wallet-item';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { TStores } from '@deriv/stores/types';
+import { AccountSwitcherWalletItem } from '../account-switcher-wallet-item';
 
 jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/shared'),
+    ...jest.requireActual('@deriv/hooks'),
     useActiveAccount: jest.fn(() => ({ data: { loginid: 'CR007' } })),
 }));
 

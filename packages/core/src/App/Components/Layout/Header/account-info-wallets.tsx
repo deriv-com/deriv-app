@@ -11,7 +11,7 @@ import {
     useLinkedWalletsAccounts,
     useWalletAccountsList,
 } from '@deriv/hooks';
-import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
+import { AccountSwitcherWallet } from 'App/Containers/AccountSwitcherWallet';
 import { AccountsInfoLoader } from './Components/Preloader';
 import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile';
 import AccountInfoWrapper from './account-info-wrapper';
@@ -158,7 +158,7 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                     unmountOnExit
                 >
                     <div className='acc-switcher__wrapper'>
-                        <AccountSwitcher is_visible={is_dialog_on} toggle={toggleDialog} />
+                        <AccountSwitcherWallet is_visible={is_dialog_on} toggle={toggleDialog} />
                     </div>
                 </CSSTransition>
             )}

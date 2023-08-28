@@ -1,9 +1,54 @@
 import { template } from '_common/utility';
 import { getPreBuildDVRs } from '@deriv/shared';
 import Error from './errors';
+import { TCoreStores } from '@deriv/stores/types';
+
+type TRule = {
+    name: string;
+    options: {
+        message?: string;
+        condition?: (store: TCoreStores) => boolean;
+        min?: number;
+        max?: number;
+        name1?: string;
+        name2?: string;
+        [key: string]: string | number | boolean | ((store: TCoreStores) => boolean) | undefined;
+    };
+    validator?: ValidatorFunction;
+};
+
+type TRules = {
+    [key: string]: TRule[];
+};
+
+type ValidatorFunction = (
+    input: string,
+    options: TRule['options'],
+    store: TCoreStores,
+    inputObject: Record<string, string>
+) => boolean;
+
+type TRuleObject = {
+    name: string;
+    options: TRule['options'];
+    validator?: ValidatorFunction;
+};
+
+type TRuleString = string | [string, any];
+
+type ValidationResult = {
+    is_ok: boolean;
+    message?: string;
+};
 
 class Validator {
-    constructor(input, rules, store = null) {
+    input: { [key: string]: string };
+    rules: TRules;
+    store: TCoreStores;
+    errors: Error;
+    error_count: number;
+
+    constructor(input: { [key: string]: any }, rules: TRules, store: TCoreStores) {
         this.input = input;
         this.rules = rules;
         this.store = store;
@@ -18,7 +63,7 @@ class Validator {
      * @param {string} attribute
      * @param {object} rule
      */
-    addFailure(attribute, rule, error_message) {
+    addFailure(attribute: string, rule: TRule, error_message?: string): void {
         let message = error_message || rule.options.message || getPreBuildDVRs()[rule.name].message();
         if (rule.name === 'length') {
             message = template(message, [
@@ -38,16 +83,16 @@ class Validator {
      *
      * @return {boolean} Whether it passes; true = passes, false = fails
      */
-    check() {
-        Object.keys(this.input).forEach(attribute => {
+    check(): boolean {
+        Object.keys(this.input).forEach((attribute: string) => {
             if (!Object.prototype.hasOwnProperty.call(this.rules, attribute)) {
                 return;
             }
 
-            this.rules[attribute].forEach(rule => {
-                const ruleObject = Validator.getRuleObject(rule);
+            this.rules[attribute].forEach((rule: TRule) => {
+                const ruleObject = Validator.getRuleObject(rule as unknown as TRuleString);
 
-                if (!ruleObject.validator && typeof ruleObject.validator !== 'function') {
+                if (!ruleObject.validator || typeof ruleObject.validator !== 'function') {
                     return;
                 }
 
@@ -59,16 +104,17 @@ class Validator {
                     return;
                 }
 
-                let is_valid, error_message;
+                let is_valid: boolean;
+                let error_message = '';
                 if (ruleObject.name === 'number') {
                     const { is_ok, message } = ruleObject.validator(
                         this.input[attribute],
                         ruleObject.options,
                         this.store,
                         this.input
-                    );
+                    ) as unknown as ValidationResult;
                     is_valid = is_ok;
-                    error_message = message;
+                    error_message = message || '';
                 } else {
                     is_valid = ruleObject.validator(this.input[attribute], ruleObject.options, this.store, this.input);
                 }
@@ -86,7 +132,7 @@ class Validator {
      *
      * @return {boolean}
      */
-    isPassed() {
+    isPassed(): boolean {
         return this.check();
     }
 
@@ -96,9 +142,9 @@ class Validator {
      * @param {array} rule
      * @return {object}
      */
-    static getRuleObject(rule) {
+    static getRuleObject(rule: TRuleString): TRuleObject {
         const is_rule_string = typeof rule === 'string';
-        const rule_object = {
+        const rule_object: TRuleObject = {
             name: is_rule_string ? rule : rule[0],
             options: is_rule_string ? {} : rule[1] || {},
         };

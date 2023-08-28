@@ -16,7 +16,7 @@ describe('UnlinkAccountModal', () => {
         document.body.removeChild(modal_root_el);
     });
 
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof UnlinkAccountModal> = {
         onClose: jest.fn(),
         is_open: true,
         identifier_title: 'Google',

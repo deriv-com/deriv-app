@@ -44,7 +44,7 @@ describe('<FinancialDetails />', () => {
         fieldsRenderCheck();
 
         const inputs = screen.getAllByTestId('dti_dropdown_display');
-        expect(inputs.length).toBe(8);
+        expect(inputs).toHaveLength(8);
 
         expect(screen.getByText('Next')).toBeInTheDocument();
         expect(screen.getByText('Previous')).toBeInTheDocument();
@@ -59,7 +59,7 @@ describe('<FinancialDetails />', () => {
         fieldsRenderCheck();
 
         const inputs = screen.getAllByRole('combobox');
-        expect(inputs.length).toBe(8);
+        expect(inputs).toHaveLength(8);
 
         expect(screen.getByText('Next')).toBeInTheDocument();
         expect(screen.getByText('Previous')).toBeInTheDocument();

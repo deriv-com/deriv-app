@@ -2,6 +2,7 @@ import React from 'react';
 import { fireEvent, screen, render, waitFor } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import CurrencySelector from '../currency-selector';
+import { TStores } from '@deriv/stores/types';
 
 jest.mock('../../real-account-signup/helpers/utils.ts', () => ({
     splitValidationResultTypes: jest.fn(() => ({
@@ -262,7 +263,7 @@ describe('<CurrencySelector/>', () => {
     });
 
     it('should disable fiat if user already have a fiat ', () => {
-        const new_store = {
+        const new_store: TStores = {
             ...store,
             client: {
                 ...store.client,
@@ -312,7 +313,7 @@ describe('<CurrencySelector/>', () => {
     });
 
     it('should render Fiat currencies when is_dxtrade_allowed,is_eu and is_mt5_allowed are true', () => {
-        const new_store = {
+        const new_store: TStores = {
             ...store,
             client: {
                 ...store.client,
@@ -326,7 +327,7 @@ describe('<CurrencySelector/>', () => {
     });
 
     it('should render Fiat currencies when is_mt5_allowed and is_eu are true', () => {
-        const new_store = {
+        const new_store: TStores = {
             ...store,
             client: {
                 ...store.client,
@@ -339,7 +340,7 @@ describe('<CurrencySelector/>', () => {
     });
 
     it('should render Fiat currencies when is_mt5_allowed is true', () => {
-        const new_store = {
+        const new_store: TStores = {
             ...store,
             client: {
                 ...store.client,
@@ -351,7 +352,7 @@ describe('<CurrencySelector/>', () => {
     });
 
     it('should render Cryptocurrencies and submit the form ', async () => {
-        const new_props = {
+        const new_props: React.ComponentProps<typeof CurrencySelector> = {
             ...mock_props,
             set_currency: true,
         };
@@ -417,7 +418,7 @@ describe('<CurrencySelector/>', () => {
     });
 
     it('should call handleCancel when previous button is called', () => {
-        const new_props = {
+        const new_props: React.ComponentProps<typeof CurrencySelector> = {
             ...mock_props,
             has_wallet_account: true,
             has_cancel: true,
@@ -437,7 +438,7 @@ describe('<CurrencySelector/>', () => {
     });
 
     it('should bypass to next step in case of personal details form error', () => {
-        const new_store = {
+        const new_store: TStores = {
             ...store,
             ui: {
                 ...store.ui,
@@ -454,7 +455,7 @@ describe('<CurrencySelector/>', () => {
     });
 
     it('should bypass to address step in case of address details form error', () => {
-        const new_store = {
+        const new_store: TStores = {
             ...store,
             ui: {
                 ...store.ui,

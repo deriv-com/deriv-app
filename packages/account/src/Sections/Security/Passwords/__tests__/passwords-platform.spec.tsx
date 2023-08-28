@@ -41,7 +41,7 @@ describe('<PasswordsPlatform />', () => {
     });
 
     it('should render DX password section when platform is DerivX', async () => {
-        const new_props = {
+        const new_props: React.ComponentProps<typeof PasswordsPlatform> = {
             ...mock_props,
             has_dxtrade_accounts: true,
             has_mt5_accounts: false,

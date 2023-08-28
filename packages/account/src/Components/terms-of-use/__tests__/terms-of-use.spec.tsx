@@ -24,13 +24,13 @@ describe('<TermsOfUse/>', () => {
     const svg_description =
         'Your account will be opened with Deriv (SVG) LLC, and will be subject to the laws of Saint Vincent and the Grenadines.';
 
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof TermsOfUse> = {
         getCurrentStep: jest.fn(),
         goToNextStep: jest.fn(),
         goToPreviousStep: jest.fn(),
         onCancel: jest.fn(),
         onSubmit: jest.fn(),
-        real_account_signup_target: '',
+        real_account_signup_target: 'svg',
         value: { agreed_tos: false, agreed_tnc: false },
     };
 
@@ -42,8 +42,6 @@ describe('<TermsOfUse/>', () => {
     };
 
     it('should render TermsOfUse component for svg accounts', () => {
-        mock_props.real_account_signup_target = 'svg';
-
         render(<TermsOfUse {...mock_props} />);
 
         commonFieldsCheck();

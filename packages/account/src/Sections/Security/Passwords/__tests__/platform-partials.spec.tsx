@@ -5,7 +5,7 @@ import { CFD_PLATFORMS } from '@deriv/shared';
 import PlatformPartials from '../platform-partials';
 
 describe('<PlatformPartials />', () => {
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof PlatformPartials> = {
         type: CFD_PLATFORMS.DXTRADE,
         description: <div>Test description</div>,
         handleClick: jest.fn(),

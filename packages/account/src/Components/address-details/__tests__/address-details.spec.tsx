@@ -5,6 +5,7 @@ import { useStatesList } from '@deriv/hooks';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import AddressDetails, { TAddressDetailFormProps } from '../address-details';
+import { TStores } from '@deriv/stores/types';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -106,7 +107,7 @@ describe('<AddressDetails/>', () => {
     });
 
     it('should render AddressDetails component for mobile', async () => {
-        const new_store_config = {
+        const new_store_config: TStores = {
             ...store,
             ui: {
                 ...store.ui,
@@ -197,7 +198,7 @@ describe('<AddressDetails/>', () => {
             ],
             isFetched: true,
         });
-        const new_store_config = {
+        const new_store_config: TStores = {
             ...store,
             ui: {
                 ...store.ui,
@@ -234,7 +235,7 @@ describe('<AddressDetails/>', () => {
     });
 
     it('should disable the field if it is immutable from BE', async () => {
-        const new_props = {
+        const new_props: React.ComponentProps<typeof AddressDetails> = {
             ...mock_props,
             disabled_items: ['address_line_1', 'address_line_2'],
             value: { ...mock_props.value, address_state: '' },

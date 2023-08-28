@@ -245,7 +245,7 @@ type RealAccountSignupSettings = {
     active_modal_index: number;
     current_currency: string;
     error_code?: string;
-    error_details?: string;
+    error_details?: string | Record<string, string>;
     error_message: string;
     previous_currency: string;
     success_message: string;

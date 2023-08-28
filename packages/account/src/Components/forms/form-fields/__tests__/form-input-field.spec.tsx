@@ -5,7 +5,7 @@ import FormInputField from '../form-input-field';
 
 describe('Tesing <FormInputField/> component', () => {
     it('should render properties', () => {
-        const props = {
+        const props: React.ComponentProps<typeof FormInputField> = {
             name: 'test-name',
             required: true,
         };

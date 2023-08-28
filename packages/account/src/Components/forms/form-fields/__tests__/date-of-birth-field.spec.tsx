@@ -5,7 +5,7 @@ import DateOfBirthField from '../date-of-birth-field';
 
 describe('Tesing <DateOfBirthField/> component', () => {
     it('should render properties', () => {
-        const props = {
+        const props: Partial<React.ComponentProps<typeof DateOfBirthField>> = {
             name: 'test-name',
             portal_id: 'test-portal-id',
         };

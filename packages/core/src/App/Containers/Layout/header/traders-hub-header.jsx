@@ -45,6 +45,9 @@ const TradersHubHeader = ({
 }) => {
     const { pathname } = useLocation();
     const cashier_routes = pathname.startsWith(routes.cashier);
+    const history = useHistory();
+    const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
+
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
@@ -52,9 +55,6 @@ const TradersHubHeader = ({
             }
             return true;
         });
-    const history = useHistory();
-
-    const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
 
     const toggleModal = () => {
         if (!has_any_real_account) {
@@ -78,26 +78,26 @@ const TradersHubHeader = ({
                 acc_switcher_disabled_message={acc_switcher_disabled_message}
                 account_type={account_type}
                 balance={formatMoney(currency, balance, true)}
+                country_standpoint={country_standpoint}
+                currency={currency}
+                is_dialog_on={is_acc_switcher_on}
                 is_disabled={is_acc_switcher_disabled}
                 is_eu={is_eu}
                 is_virtual={is_virtual}
-                currency={currency}
-                country_standpoint={country_standpoint}
-                is_dialog_on={is_acc_switcher_on}
                 toggleDialog={toggleAccountsDialog}
             />
         ),
         [
-            is_acc_switcher_on,
-            is_acc_switcher_disabled,
-            is_eu,
-            is_virtual,
-            currency,
-            country_standpoint,
-            toggleAccountsDialog,
+            acc_switcher_disabled_message,
             account_type,
             balance,
-            acc_switcher_disabled_message,
+            country_standpoint,
+            currency,
+            is_acc_switcher_disabled,
+            is_acc_switcher_on,
+            is_eu,
+            is_virtual,
+            toggleAccountsDialog,
         ]
     );
 

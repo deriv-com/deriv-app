@@ -7,7 +7,7 @@ import { TCoreStores } from '@deriv/stores/types';
 import { isMobile } from '@deriv/shared';
 
 const default_mocked_props = {
-    selected_contract_type: 'vanilla',
+    selected_contract_type: 'vanillalongcall',
     data_testid: 'dt_description_video',
 };
 

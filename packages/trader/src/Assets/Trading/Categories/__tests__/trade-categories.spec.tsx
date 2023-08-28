@@ -148,7 +148,7 @@ describe('<TradeCategores />', () => {
         ).toBeInTheDocument();
     });
     it('Ensure trade category "vanilla" description is rendered properly', () => {
-        render(<TradeCategories category='vanilla' onClick={jest.fn()} />);
+        render(<TradeCategories category='vanillalongcall' onClick={jest.fn()} />);
         expect(
             screen.getByText(
                 'Vanilla options allow you to predict an upward (bullish) or downward (bearish) direction of the underlying asset by purchasing a "Call" or a "Put".'

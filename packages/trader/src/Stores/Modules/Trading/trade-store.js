@@ -18,6 +18,7 @@ import {
     isMarketClosed,
     isMobile,
     isTurbosContract,
+    isVanillaContract,
     pickDefaultSymbol,
     removeBarrier,
     resetEndTimeOnVolatilityIndices,
@@ -640,6 +641,9 @@ export default class TradeStore extends BaseStore {
         } else if (!(name in this)) {
             throw new Error(`Invalid Argument: ${name}`);
         }
+        // console.log('store name', name);
+        // console.log('store value', value);
+        // console.log('store this.contract_type before', this.contract_type);
 
         await this.processNewValuesAsync(
             { [name]: value },
@@ -647,6 +651,7 @@ export default class TradeStore extends BaseStore {
             name === 'contract_type' ? { contract_type: this.contract_type } : {}, // refer to [Multiplier validation rules] below
             true
         ); // wait for store to be updated
+        // console.log('store this.contract_type after', this.contract_type);
         this.validateAllProperties(); // then run validation before sending proposal
         this.root_store.common.setSelectedContractType(this.contract_type);
     }
@@ -1574,7 +1579,7 @@ export default class TradeStore extends BaseStore {
     }
 
     get is_vanilla() {
-        return this.contract_type === 'vanilla';
+        return isVanillaContract(this.contract_type);
     }
 
     setContractPurchaseToastbox(response) {

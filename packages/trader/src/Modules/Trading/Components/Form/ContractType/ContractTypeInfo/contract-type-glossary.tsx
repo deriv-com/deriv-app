@@ -39,7 +39,8 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                     },
                 ];
                 break;
-            case 'vanilla':
+            case 'vanillalongcall':
+            case 'vanillalongput':
                 content = [
                     { type: 'heading', text: localize('Payout') },
                     {

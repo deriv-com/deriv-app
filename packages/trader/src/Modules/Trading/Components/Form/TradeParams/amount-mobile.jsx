@@ -80,7 +80,7 @@ const Basis = observer(
                     {(is_turbos || is_vanilla) && <MinMaxStakeInfo />}
                     <div
                         className={classNames('trade-params__amount-keypad', {
-                            strike__pos: contract_type === 'vanilla',
+                            strike__pos: contract_type === 'vanillalongcall' || contract_type === 'vanillalongput',
                         })}
                     >
                         <Numpad

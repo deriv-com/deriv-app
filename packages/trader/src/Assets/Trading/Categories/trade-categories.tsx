@@ -434,7 +434,8 @@ const TradeCategories = ({ category, onClick }: { category?: string; onClick: ()
             case 'turboslong':
                 TradeTypeTemplate = <TurbosTradeDescription />;
                 break;
-            case 'vanilla':
+            case 'vanillalongcall':
+            case 'vanillalongput':
                 TradeTypeTemplate = (
                     <React.Fragment>
                         <Text as='p'>

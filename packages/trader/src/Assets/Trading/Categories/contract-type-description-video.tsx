@@ -9,15 +9,19 @@ type TContractTypeDescriptionVideo = {
 };
 
 const ContractTypeDescriptionVideo = ({ selected_contract_type, data_testid }: TContractTypeDescriptionVideo) => {
+    let contract_name = selected_contract_type;
+    if (selected_contract_type === 'vanillalongcall' || selected_contract_type === 'vanillalongput') {
+        contract_name = 'vanilla';
+    }
     const { ui } = useStore();
     const { is_dark_mode_on: is_dark_theme } = ui;
     const getVideoSource = React.useCallback(
         (extension: 'mp4' | 'webm') => {
             return getUrlBase(
-                `/public/videos/${selected_contract_type}_description${is_dark_theme ? '_dark' : '_light'}.${extension}`
+                `/public/videos/${contract_name}_description${is_dark_theme ? '_dark' : '_light'}.${extension}`
             );
         },
-        [is_dark_theme, selected_contract_type]
+        [contract_name, is_dark_theme]
     );
 
     // memoize file paths for videos and open the modal only after we get them

@@ -67,7 +67,8 @@ const TradeCategoriesGIF = ({
         case 'turbosshort':
         case 'turboslong':
             return <ImageTurbos />;
-        case 'vanilla':
+        case 'vanillalongcall':
+        case 'vanillalongput':
             return <ContractTypeDescriptionVideo selected_contract_type={selected_contract_type} />;
         default:
             return null;

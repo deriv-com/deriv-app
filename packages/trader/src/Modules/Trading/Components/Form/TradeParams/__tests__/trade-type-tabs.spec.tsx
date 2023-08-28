@@ -38,7 +38,7 @@ describe('Trade Type Tabs', () => {
 
     it('should render Call & Put tabs when contract_type = vanilla, and vanilla_trade_type = VANILLALONGCALL', () => {
         if (mock_root_store.modules) {
-            mock_root_store.modules.trade.contract_type = 'vanilla';
+            mock_root_store.modules.trade.contract_type = 'vanillalongcall';
         }
         render(mockTradeTypeTabs(mock_root_store));
         const call_tab = screen.getByText('Call');

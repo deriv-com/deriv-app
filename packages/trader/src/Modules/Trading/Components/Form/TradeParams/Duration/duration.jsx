@@ -38,7 +38,7 @@ const Duration = ({
     start_date,
 }) => {
     React.useEffect(() => {
-        if (contract_type === 'vanilla') {
+        if (contract_type === 'vanillalongcall' || contract_type === 'vanillalongput') {
             onToggleDurationType({ target: { value: true, name: 'is_advanced_duration' } });
         }
     }, [contract_type]);
@@ -194,7 +194,7 @@ const Duration = ({
                             simple_duration_unit={simple_duration_unit}
                         />
                     )}
-                    {contract_type !== 'vanilla' && (
+                    {(contract_type !== 'vanillacall' || contract_type !== 'vanillaput') && (
                         <DurationToggle
                             name={'is_advanced_duration'}
                             onChange={onToggleDurationType}

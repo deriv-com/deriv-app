@@ -232,7 +232,8 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'vanilla':
+            case 'vanillalongcall':
+            case 'vanillalongput':
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>

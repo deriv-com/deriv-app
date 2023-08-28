@@ -12,7 +12,7 @@ jest.mock('react-router-dom', () => ({
 }));
 jest.mock('../default-header.jsx', () => jest.fn(() => 'MockedDefaultHeader'));
 jest.mock('../dtrader-header.jsx', () => jest.fn(() => 'MockedDTraderHeader'));
-jest.mock('../traders-hub-header.jsx', () => jest.fn(() => 'MockedTradersHubHeader'));
+jest.mock('../traders-hub-header', () => jest.fn(() => 'MockedTradersHubHeader'));
 
 describe('Header', () => {
     const store = mockStore({

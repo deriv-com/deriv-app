@@ -35,6 +35,7 @@
         "@deriv/translations": "^1.0.0",
         "@deriv/hooks": "^1.0.0",
         "@deriv/analytics": "^1.0.3",
+        "@deriv/wallets": "^1.0.0",
         "classnames": "^2.2.6",
         "formik": "^2.1.4",
         "mobx": "^6.6.1",

@@ -1,19 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import PlatformSwitcher from '../platform-switcher';
 import { createBrowserHistory } from 'history';
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect:
-        () =>
-        <T,>(Component: T) =>
-            Component,
-}));
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -34,15 +23,6 @@ const withRouter = <T extends object>(Component: React.ComponentType<T>) => {
 const PlatformSwitcherComponent = withRouter(PlatformSwitcher);
 
 describe('PlatformSwitcher component', () => {
-    beforeAll(() => {
-        ReactDOM.createPortal = jest.fn(component => {
-            return component as React.ReactPortal;
-        });
-    });
-    afterAll(() => {
-        (ReactDOM.createPortal as jest.Mock).mockClear();
-    });
-
     it('should render <PlatformSwitcherLoader /> component if "app_routing_history" is an empty array', () => {
         render(<PlatformSwitcherComponent app_routing_history={[{ pathname: '' }]} is_logged_in />);
         const div_element = screen.getByTestId('dt_platform_switcher_preloader');
@@ -71,17 +51,5 @@ describe('PlatformSwitcher component', () => {
         render(<PlatformSwitcherComponent app_routing_history={[{ pathname: 'test' }]} />);
         const div_element = screen.getByTestId('dt_platform_switcher');
         expect(div_element).toHaveClass('platform-switcher--is-mobile');
-    });
-
-    it('should call setIsOpen with false upon closing platform switcher if setIsOpen prop is passed', () => {
-        const props = {
-            app_routing_history: [{ pathname: 'test' }],
-            is_open: true,
-            setIsOpen: jest.fn(),
-        };
-        render(<PlatformSwitcherComponent {...props} />);
-        const div_element = screen.getByTestId('dt_platform_switcher');
-        userEvent.click(div_element);
-        expect(props.setIsOpen).toHaveBeenCalledWith(false);
     });
 });

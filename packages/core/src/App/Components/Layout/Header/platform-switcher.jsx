@@ -19,22 +19,11 @@ const PlatformSwitcher = ({
     is_landing_company_loaded,
     is_logged_in,
     is_logging_in,
-    is_open: is_switcher_open,
-    setIsOpen: setIsSwitcherOpen,
     setTogglePlatformType,
 }) => {
-    const [is_switcher_open_local, setIsSwitcherOpenLocal] = React.useState(false);
-    const is_close_drawer_fired_ref = React.useRef(false);
-    const is_open = is_switcher_open || is_switcher_open_local;
+    const [is_open, setIsOpen] = React.useState(false);
 
-    const setIsOpen = (state = !is_open) => {
-        if (setIsSwitcherOpen) {
-            setIsSwitcherOpen(state);
-        } else {
-            // use local state if setIsOpen prop is not provided by parent
-            setIsSwitcherOpenLocal(state);
-        }
-    };
+    const is_close_drawer_fired_ref = React.useRef(false);
 
     React.useEffect(() => {
         platform_config.forEach(data => {
@@ -119,8 +108,6 @@ PlatformSwitcher.propTypes = {
     is_landing_company_loaded: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
-    is_open: PropTypes.bool,
-    setIsOpen: PropTypes.func,
     setTogglePlatformType: PropTypes.func,
 };
 

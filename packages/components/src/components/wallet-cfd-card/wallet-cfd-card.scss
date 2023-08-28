@@ -1,0 +1,46 @@
+.wallet-cfd-card {
+    width: 240px;
+    height: 144px;
+    position: relative;
+    border-radius: $BORDER-RADIUS;
+
+    background: var(--wallets-card-active-gradient-background);
+
+    &__icon-wrapper {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+    }
+
+    &__cfd-icon {
+        position: relative;
+        z-index: 1;
+    }
+    &__wallet-icon {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        z-index: 0;
+    }
+
+    &__badge {
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        padding: 0 0.8rem 0.4rem;
+        border-radius: 0 0 0 4px;
+        background-color: var(--brand-red-coral);
+    }
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.6rem;
+
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+}

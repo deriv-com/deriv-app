@@ -42,6 +42,7 @@ import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { useFeatureFlags } from '@deriv/hooks';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -534,26 +535,34 @@ const CFDPasswordForm = ({
                                 )}
                             </Text>
                         )}
+                        {/* TODO: Check if do we have to add 'PasswordMeter' in production aswell. */}
                         <div className='input-element'>
-                            <PasswordInput
-                                autoComplete='new-password'
-                                label={localize('{{platform}} password', {
-                                    platform: getCFDPlatformLabel(platform),
-                                })}
-                                error={
-                                    (touched.password && errors.password) ||
-                                    (values.password.length === 0 ? error_message : '')
-                                }
-                                name='password'
-                                value={values.password}
-                                onBlur={handleBlur}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    handlePasswordInputChange(e, handleChange, validateForm, setFieldTouched);
-                                }}
-                                data_testId={`dt_${platform}_password`}
-                            />
+                            <PasswordMeter
+                                input={values.password}
+                                has_error={!!(touched.password && errors.password)}
+                                custom_feedback_messages={getErrorMessages().password_warnings}
+                            >
+                                {() => (
+                                    <PasswordInput
+                                        autoComplete='new-password'
+                                        label={localize('{{platform}} password', {
+                                            platform: getCFDPlatformLabel(platform),
+                                        })}
+                                        error={
+                                            (touched.password && errors.password) ||
+                                            (values.password.length === 0 ? error_message : '')
+                                        }
+                                        name='password'
+                                        value={values.password}
+                                        onBlur={handleBlur}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            handlePasswordInputChange(e, handleChange, validateForm, setFieldTouched);
+                                        }}
+                                        data_testId={`dt_${platform}_password`}
+                                    />
+                                )}
+                            </PasswordMeter>
                         </div>
-
                         {is_real_financial_stp && (
                             <div className='dc-modal__container_cfd-password-modal__description'>
                                 <Localize
@@ -625,6 +634,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     } = useCfdStore();
 
     const history = useHistory();
+
+    const { is_wallet_enabled } = useFeatureFlags();
 
     const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);
     const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
@@ -821,6 +832,12 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
         const mt5_platform_label = jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'Deriv MT5' : '';
 
+        const wallet_account_title = (account_title: string) => {
+            return account_title.replace(/Demo|Real/g, '');
+        };
+        const wallet_platform_label =
+            jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'MT5' : 'MT5 CFDs';
+
         if (category === 'real') {
             let platformName = '';
             switch (platform) {
@@ -863,15 +880,28 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         }
 
         return (
-            <Localize
-                i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account. '
-                values={{
-                    type: type_label,
-                    platform: getCFDPlatformLabel(platform),
-                    category: category_label,
-                }}
-                components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}
-            />
+            <React.Fragment>
+                {is_wallet_enabled ? (
+                    <Localize
+                        i18n_default_text='You can now start practicing trading with your {{wallet_platform_label}} {{account_title}} {{category_label}} account.'
+                        values={{
+                            wallet_platform_label,
+                            account_title: wallet_account_title(account_title),
+                            category_label,
+                        }}
+                    />
+                ) : (
+                    <Localize
+                        i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account. '
+                        values={{
+                            type: type_label,
+                            platform: getCFDPlatformLabel(platform),
+                            category: category_label,
+                        }}
+                        components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}
+                    />
+                )}
+            </React.Fragment>
         );
     };
 
@@ -940,11 +970,31 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         </MobileDialog>
     );
 
+    const wallet_header = () => {
+        const { category } = account_type;
+        return (
+            <>
+                {category === 'demo' ? (
+                    <Localize
+                        i18n_default_text='Your {{account_title}} {{category}} account is ready'
+                        values={{
+                            category,
+                            account_title: account_title.replace(/Demo|Real/g, ''),
+                        }}
+                    />
+                ) : (
+                    <Localize i18n_default_text='Almost there!' />
+                )}
+            </>
+        );
+    };
+
     return (
         <React.Fragment>
             {password_modal}
             {password_dialog}
             <SuccessDialog
+                heading={wallet_header()}
                 is_open={should_show_success}
                 toggleModal={closeModal}
                 onCancel={closeModal}

@@ -3,6 +3,13 @@ import { render } from '@testing-library/react';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AdvertiserPage from '../advertiser-page.jsx';
 
+jest.mock('@deriv/hooks', () => {
+    return {
+        ...jest.requireActual('@deriv/hooks'),
+        useP2PAdvertInfo: jest.fn(() => ({ data: true, isLoading: false, isSuccess: true })),
+    };
+});
+
 jest.mock('@sendbird/chat', () => ({
     SendbirdChat: jest.fn().mockReturnValue({}),
 }));
@@ -71,6 +78,7 @@ describe('<AdvertiserPage />', () => {
         expect(mocked_store_values.advertiser_page_store.onMount).toHaveBeenCalledTimes(1);
         expect(mocked_store_values.buy_sell_store.setShowAdvertiserPage).toHaveBeenCalledWith(true);
     });
+
     it('should handle unmount of advertiser page', () => {
         const { unmount } = render(<AdvertiserPage />);
         unmount();

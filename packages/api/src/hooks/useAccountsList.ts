@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import useAuthorize from './useAuthorize';
 import useBalance from './useBalance';
+import useCurrencyConfig from './useCurrencyConfig';
 import useGetAccountStatus from './useGetAccountStatus';
 
 /** A custom hook that returns the list of accounts of the logged in user. */
@@ -8,6 +9,7 @@ const useAccountsList = () => {
     const { data: authorize_data, ...rest } = useAuthorize();
     const { data: balance_data } = useBalance();
     const { data: get_account_status_data } = useGetAccountStatus();
+    const { getConfig } = useCurrencyConfig();
 
     // Add additional information to the authorize response.
     const modified_accounts = useMemo(() => {
@@ -30,6 +32,8 @@ const useAccountsList = () => {
                 is_wallet: account.account_category === 'wallet',
                 /** The account ID of specified account. */
                 loginid: `${account.loginid}`,
+                /** Account's currency config information */
+                currency_config: account.currency ? getConfig(account.currency) : undefined,
             } as const;
         });
     }, [authorize_data.account_list, authorize_data.loginid]);

@@ -1,9 +1,16 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Dialog, PageErrorContainer } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
+type TErrorComponent = {
+    header: string | JSX.Element;
+    message: string | JSX.Element;
+    is_dialog?: boolean;
+    redirect_label: string;
+    redirectOnClick: (() => void) | null;
+    should_show_refresh: boolean;
+};
 const ErrorComponent = ({
     header,
     message,
@@ -11,7 +18,7 @@ const ErrorComponent = ({
     redirect_label,
     redirectOnClick,
     should_show_refresh = true,
-}) => {
+}: TErrorComponent) => {
     const refresh_message = should_show_refresh ? localize('Please refresh this page to continue.') : '';
 
     if (is_dialog) {
@@ -21,6 +28,7 @@ const ErrorComponent = ({
                 is_visible
                 confirm_button_text={redirect_label || localize('Ok')}
                 onConfirm={redirectOnClick || (() => location.reload())}
+                has_close_icon={false}
             >
                 {message || localize('Sorry, an error occured while processing your request.')}
             </Dialog>
@@ -35,16 +43,6 @@ const ErrorComponent = ({
             buttonOnClick={redirectOnClick || (() => location.reload())}
         />
     );
-};
-
-ErrorComponent.propTypes = {
-    header: PropTypes.string,
-    is_dialog: PropTypes.bool,
-    message: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
-    redirect_label: PropTypes.string,
-    redirectOnClick: PropTypes.func,
-    should_show_refresh: PropTypes.bool,
-    type: PropTypes.string,
 };
 
 export default ErrorComponent;

@@ -44,7 +44,7 @@ const useWalletAccountsList = () => {
     }, [modified_accounts]);
 
     return {
-        /** List of all wallet accounts for the current user. */
+        /** The list of wallet accounts for the current user. */
         data: sorted_accounts,
         ...rest,
     };

@@ -2,6 +2,7 @@
 import { FormikHandlers, FormikProps, FormikValues } from 'formik';
 import { Authorize, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
+import { Platforms } from '@deriv/shared';
 
 export type TToken = {
     display_name: string;
@@ -189,3 +190,5 @@ export type TIDVFormValues = {
     document_additional?: string;
     error_message?: string;
 };
+
+export type TPlatforms = typeof Platforms[keyof typeof Platforms];

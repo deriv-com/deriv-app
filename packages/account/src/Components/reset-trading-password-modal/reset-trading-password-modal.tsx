@@ -2,15 +2,16 @@ import React, { ChangeEvent } from 'react';
 import { Formik, Form, FormikValues, FormikErrors } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text, FormSubmitButton } from '@deriv/components';
-import { getErrorMessages, validPassword, validLength, WS, getCFDPlatformLabel, TPlatform } from '@deriv/shared';
+import { getErrorMessages, validPassword, validLength, WS, getCFDPlatformLabel } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { TPlatforms } from '../../Types';
 import './reset-trading-password-modal.scss';
 
 type TResetTradingPassword = {
     setDialogTitleFunc?: (value: boolean) => void;
     toggleResetTradingPasswordModal: (value: boolean) => void;
     verification_code: string;
-    platform: TPlatform;
+    platform: TPlatforms;
 };
 
 const ResetTradingPassword = ({

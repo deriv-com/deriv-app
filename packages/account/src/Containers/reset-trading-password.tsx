@@ -1,8 +1,9 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { CFD_PLATFORMS, TPlatform } from '@deriv/shared';
+import { CFD_PLATFORMS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import ResetTradingPasswordModal from '../Components/reset-trading-password-modal';
+import { TPlatforms } from '../Types';
 
 const ResetTradingPassword = observer(() => {
     const { ui, client } = useStore();
@@ -23,7 +24,7 @@ const ResetTradingPassword = observer(() => {
 
     return (
         <ResetTradingPasswordModal
-            platform={platform as TPlatform}
+            platform={platform as TPlatforms}
             enableApp={enableApp}
             disableApp={disableApp}
             toggleResetTradingPasswordModal={setResetTradingPasswordModalOpen}

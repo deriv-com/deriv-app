@@ -5,7 +5,7 @@ import {
     isAccumulatorContract,
     isAccumulatorContractOpen,
     isCallPut,
-    // isHighLow,
+    isHighLow,
     isDesktop,
     isEnded,
     isMobile,
@@ -240,22 +240,12 @@ export default class ContractTradeStore extends BaseStore {
                 const trade_type_is_supported = trade_types.indexOf(info.contract_type) !== -1;
                 // both high_low & rise_fall have the same contract_types in POC response
                 // entry_spot=barrier means it is rise_fall contract (blame the api)
-                // if (trade_type_is_supported && info.barrier && info.entry_tick && is_call_put) {
-                //     if (`${+info.entry_tick}` === `${+info.barrier}`) {
-                //         return trade_type === 'rise_fall' || trade_type === 'rise_fall_equal';
-                //     }
-                //     return trade_type === 'high_low';
-                // }
-                // 2
-                // console.log('test', info);
-                // isHighLow is not working?
-                if (trade_type_is_supported && is_call_put && info?.shortcode) {
-                    // console.log('test isHL', isHighLow(info.shortcode));
-                    return /_S0P_/i.test(info.shortcode)
-                        ? trade_type === 'rise_fall' || trade_type === 'rise_fall_equal'
-                        : trade_type === 'high_low';
+                if (trade_type_is_supported && is_call_put && ((info.barrier && info.entry_tick) || info.shortcode)) {
+                    if (`${+info.entry_tick}` === `${+info.barrier}` && !isHighLow(info)) {
+                        return trade_type === 'rise_fall' || trade_type === 'rise_fall_equal';
+                    }
+                    return trade_type === 'high_low';
                 }
-
                 return trade_type_is_supported;
             });
     };

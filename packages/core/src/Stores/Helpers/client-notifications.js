@@ -73,5 +73,6 @@ export const priority_toast_messages = [
     'authenticate',
     'notify_financial_assessment',
     'mt5_notification',
+    'additional_kyc_info',
     ...maintenance_notifications,
 ];

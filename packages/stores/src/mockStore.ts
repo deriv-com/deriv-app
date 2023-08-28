@@ -6,6 +6,7 @@ const mock = (): TStores & { is_mock: boolean } => {
         is_mock: true,
         client: {
             account_settings: {},
+            account_type: 'virtual',
             accounts: {},
             is_social_signup: false,
             active_account_landing_company: '',
@@ -95,6 +96,14 @@ const mock = (): TStores & { is_mock: boolean } => {
             },
             balance: '',
             can_change_fiat_currency: false,
+            country_standpoint: {
+                is_belgium: false,
+                is_france: false,
+                is_isle_of_man: false,
+                is_other_eu: false,
+                is_rest_of_eu: false,
+                is_united_kingdom: false,
+            },
             currency: '',
             current_currency_type: '',
             current_fiat_currency: '',

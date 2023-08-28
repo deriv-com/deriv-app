@@ -241,8 +241,18 @@ type TDXTraderStatusServerType = Record<'all' | 'demo' | 'real', number>;
 
 type TMt5StatusServer = Record<'demo' | 'real', TMt5StatusServerType[]>;
 
+type TCountryStandpoint = {
+    is_belgium: boolean;
+    is_france: boolean;
+    is_isle_of_man: boolean;
+    is_other_eu: boolean;
+    is_rest_of_eu: boolean;
+    is_united_kingdom: boolean;
+};
+
 type TClientStore = {
     fetchStatesList: () => Promise<StatesList>;
+    account_type: string;
     accounts: { [k: string]: TActiveAccount };
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
@@ -258,6 +268,7 @@ type TClientStore = {
     can_change_fiat_currency: boolean;
     cfd_score: number;
     setCFDScore: (score: number) => void;
+    country_standpoint: TCountryStandpoint;
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;

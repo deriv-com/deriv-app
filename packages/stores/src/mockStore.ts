@@ -284,6 +284,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             network_status: {},
         },
         ui: {
+            account_switcher_disabled_message: '',
             app_contents_scroll_ref: {
                 current: null,
             },
@@ -296,10 +297,12 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_language_settings_modal_on: false,
             is_unsupported_contract_modal_visible: false,
             has_only_forward_starting_contracts: false,
+            header_extension: null,
             is_link_expired_modal_visible: false,
             is_mobile: false,
             is_positions_drawer_on: false,
             is_reports_visible: false,
+            is_route_modal_on: false,
             is_services_error_visible: false,
             disableApp: jest.fn(),
             enableApp: jest.fn(),

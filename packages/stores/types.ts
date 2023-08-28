@@ -444,6 +444,7 @@ type TCommonStore = {
 
 type TUiStore = {
     addToast: (toast_config: TAddToastProps) => void;
+    account_switcher_disabled_message: string;
     app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;
     current_focus: string | null;
     disableApp: () => void;
@@ -454,8 +455,10 @@ type TUiStore = {
     is_closing_create_real_account_modal: boolean;
     is_unsupported_contract_modal_visible: boolean;
     has_only_forward_starting_contracts: boolean;
+    header_extension: JSX.Element | null;
     is_dark_mode_on: boolean;
     is_reports_visible: boolean;
+    is_route_modal_on: boolean;
     is_language_settings_modal_on: boolean;
     is_app_disabled: boolean;
     is_link_expired_modal_visible: boolean;

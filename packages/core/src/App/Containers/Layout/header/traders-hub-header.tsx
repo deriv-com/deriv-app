@@ -1,54 +1,62 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useHistory, useLocation, withRouter } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, StaticUrl } from '@deriv/components';
+import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
 import { routes, platforms, formatMoney } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
-import { connect } from 'Stores/connect';
 import { BinaryLink } from 'App/Components/Routes';
 import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-rebranding-logo.svg';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
-import CurrencySelectionModal from '../../CurrencySelectionModal';
 import AccountInfo from 'App/Components/Layout/Header/account-info';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
-import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
+import CurrencySelectionModal from '../../CurrencySelectionModal';
 import DefaultMobileLinks from './default-mobile-links';
 import ShowNotifications from './show-notifications';
 import TradersHubOnboarding from './traders-hub-onboarding';
-import { TradersHubHomeButton } from './traders-hub-home-button';
+import TradersHubHomeButton from './traders-hub-home-button';
 
-const TradersHubHeader = ({
-    account_type,
-    balance,
-    country_standpoint,
-    currency,
-    has_any_real_account,
-    header_extension,
-    is_acc_switcher_disabled,
-    is_acc_switcher_on,
-    is_app_disabled,
-    is_eu,
-    is_logged_in,
-    is_mt5_allowed,
-    is_route_modal_on,
-    is_virtual,
-    modal_data,
-    platform,
-    acc_switcher_disabled_message,
-    toggleAccountsDialog,
-    toggleNeedRealAccountForCashierModal,
-    toggleReadyToDepositModal,
-}) => {
+type TTradersHubHeader = {
+    is_acc_switcher_disabled: boolean;
+};
+type TPlatformConfig = typeof platform_config;
+type TPlatforms = typeof platforms;
+
+const TradersHubHeader = observer(({ is_acc_switcher_disabled }: TTradersHubHeader) => {
+    const { client, common, traders_hub, ui } = useStore();
+    const {
+        account_type,
+        balance,
+        country_standpoint,
+        currency,
+        has_any_real_account,
+        is_eu,
+        is_logged_in,
+        is_mt5_allowed,
+        is_virtual,
+    } = client;
+    const { platform } = common;
+    const { modal_data } = traders_hub;
+    const {
+        header_extension,
+        is_accounts_switcher_on,
+        is_app_disabled,
+        is_route_modal_on,
+        account_switcher_disabled_message,
+        toggleAccountsDialog,
+        toggleNeedRealAccountForCashierModal,
+        toggleReadyToDepositModal,
+    } = ui;
     const { pathname } = useLocation();
     const cashier_routes = pathname.startsWith(routes.cashier);
     const history = useHistory();
     const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
 
-    const filterPlatformsForClients = payload =>
+    const filterPlatformsForClients = (payload: TPlatformConfig) =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
                 return !is_logged_in || is_mt5_allowed;
@@ -75,12 +83,12 @@ const TradersHubHeader = ({
     const AccountInfoComponent = React.useCallback(
         () => (
             <AccountInfo
-                acc_switcher_disabled_message={acc_switcher_disabled_message}
+                acc_switcher_disabled_message={account_switcher_disabled_message}
                 account_type={account_type}
-                balance={formatMoney(currency, balance, true)}
+                balance={formatMoney(currency, balance ?? '', true)}
                 country_standpoint={country_standpoint}
                 currency={currency}
-                is_dialog_on={is_acc_switcher_on}
+                is_dialog_on={is_accounts_switcher_on}
                 is_disabled={is_acc_switcher_disabled}
                 is_eu={is_eu}
                 is_virtual={is_virtual}
@@ -88,13 +96,13 @@ const TradersHubHeader = ({
             />
         ),
         [
-            acc_switcher_disabled_message,
+            account_switcher_disabled_message,
             account_type,
             balance,
             country_standpoint,
             currency,
             is_acc_switcher_disabled,
-            is_acc_switcher_on,
+            is_accounts_switcher_on,
             is_eu,
             is_virtual,
             toggleAccountsDialog,
@@ -105,13 +113,12 @@ const TradersHubHeader = ({
         <header
             className={classNames('trading-hub-header', {
                 'trading-hub-header--is-disabled': is_app_disabled || is_route_modal_on,
-                'trading-hub-header--is-hidden': platforms[platform],
+                'trading-hub-header--is-hidden': platforms[platform as keyof TPlatforms],
             })}
         >
             <div className='trading-hub-header__menu-left'>
                 <MobileWrapper>
-                    <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
-
+                    <ToggleMenuDrawer {...{ platform_config: filterPlatformsForClients(platform_config) }} />
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
                 <div
@@ -127,7 +134,7 @@ const TradersHubHeader = ({
                     <div className='trading-hub-header__divider' />
                     <TradersHubHomeButton />
                 </DesktopWrapper>
-                <MenuLinks is_traders_hub_routes />
+                <MenuLinks {...{ is_traders_hub_routes: true }} />
             </div>
             <DesktopWrapper>
                 <div className='trading-hub-header__menu-right'>
@@ -144,7 +151,7 @@ const TradersHubHeader = ({
                             alignment='bottom'
                             message={<Localize i18n_default_text='Manage account settings' />}
                             should_disable_pointer_events
-                            zIndex={9999}
+                            zIndex={'9999'}
                         >
                             <BinaryLink className='trading-hub-header__setting' to={routes.personal_details}>
                                 <Icon icon='IcUserOutline' size={20} />
@@ -182,52 +189,6 @@ const TradersHubHeader = ({
             <CurrencySelectionModal is_visible={modal_data.active_modal === 'currency_selection'} />
         </header>
     );
-};
+});
 
-TradersHubHeader.propTypes = {
-    acc_switcher_disabled_message: PropTypes.string,
-    account_type: PropTypes.string,
-    balance: PropTypes.string,
-    country_standpoint: PropTypes.object,
-    currency: PropTypes.string,
-    has_any_real_account: PropTypes.bool,
-    header_extension: PropTypes.any,
-    is_acc_switcher_disabled: PropTypes.bool,
-    is_acc_switcher_on: PropTypes.bool,
-    is_app_disabled: PropTypes.bool,
-    is_eu: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_mt5_allowed: PropTypes.bool,
-    is_route_modal_on: PropTypes.bool,
-    is_settings_modal_on: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    modal_data: PropTypes.object,
-    platform: PropTypes.string,
-    settings_extension: PropTypes.array,
-    toggleAccountsDialog: PropTypes.func,
-    toggleNeedRealAccountForCashierModal: PropTypes.func,
-    toggleReadyToDepositModal: PropTypes.func,
-};
-
-export default connect(({ client, common, ui, traders_hub }) => ({
-    account_type: client.account_type,
-    balance: client.balance,
-    content_flag: traders_hub.content_flag,
-    country_standpoint: client.country_standpoint,
-    currency: client.currency,
-    has_any_real_account: client.has_any_real_account,
-    header_extension: ui.header_extension,
-    is_acc_switcher_on: !!ui.is_accounts_switcher_on,
-    is_app_disabled: ui.is_app_disabled,
-    is_eu: client.is_eu,
-    is_logged_in: client.is_logged_in,
-    is_mt5_allowed: client.is_mt5_allowed,
-    is_route_modal_on: ui.is_route_modal_on,
-    is_virtual: client.is_virtual,
-    modal_data: traders_hub.modal_data,
-    platform: common.platform,
-    acc_switcher_disabled_message: ui.account_switcher_disabled_message,
-    toggleAccountsDialog: ui.toggleAccountsDialog,
-    toggleNeedRealAccountForCashierModal: ui.toggleNeedRealAccountForCashierModal,
-    toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
-}))(withRouter(TradersHubHeader));
+export default TradersHubHeader;

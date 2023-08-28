@@ -50,13 +50,32 @@ const WithdrawalPageContent = observer(() => {
     const { is_withdraw_confirmed } = withdraw;
     const currency_config = useCurrentCurrencyConfig();
 
-    if (!currency_config.is_crypto && (verification_code || iframe_url)) return <Withdraw />;
+    if (!currency_config.is_crypto && (verification_code || iframe_url))
+        return (
+            <PageContainer hide_breadcrumb>
+                <Withdraw />
+            </PageContainer>
+        );
 
-    if (verification_code && currency_config.is_crypto && !is_withdraw_confirmed) return <CryptoWithdrawForm />;
+    if (verification_code && currency_config.is_crypto && !is_withdraw_confirmed)
+        return (
+            <PageContainer hide_breadcrumb right={<WithdrawalSideNotes />}>
+                <CryptoWithdrawForm />
+            </PageContainer>
+        );
 
-    if (is_withdraw_confirmed) return <CryptoWithdrawReceipt />;
+    if (is_withdraw_confirmed)
+        return (
+            <PageContainer hide_breadcrumb right={<WithdrawalSideNotes />}>
+                <CryptoWithdrawReceipt />
+            </PageContainer>
+        );
 
-    return <WithdrawalVerificationEmail />;
+    return (
+        <PageContainer hide_breadcrumb right={currency_config.is_crypto ? <WithdrawalSideNotes /> : undefined}>
+            <WithdrawalVerificationEmail />
+        </PageContainer>
+    );
 });
 
 const Withdrawal = observer(() => {
@@ -123,11 +142,7 @@ const Withdrawal = observer(() => {
 
     if (is_crypto_transactions_visible) return <CryptoTransactionsHistory />;
 
-    return (
-        <PageContainer hide_breadcrumb right={<WithdrawalSideNotes />}>
-            <WithdrawalPageContent />
-        </PageContainer>
-    );
+    return <WithdrawalPageContent />;
 });
 
 export default Withdrawal;

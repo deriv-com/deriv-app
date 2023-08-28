@@ -2,9 +2,10 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import MainTitleBar from '..';
+import { TStores } from '@deriv/stores/types';
 
 describe('MainTitleBar', () => {
-    const render_container = (mock: any) => {
+    const render_container = (mock: TStores) => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );

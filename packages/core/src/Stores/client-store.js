@@ -1660,12 +1660,6 @@ export default class ClientStore extends BaseStore {
                     language: getLanguage().toLowerCase(),
                     app_id: getAppId(),
                 });
-                console.log(`
-                ${this.user_id}, {
-                    language: ${getLanguage().toLowerCase()},
-                    app_id: ${getAppId()},
-                }
-                `);
                 //eslint-disable-next-line no-debugger
                 debugger;
                 const current_page = window.location.hostname + window.location.pathname;
@@ -2265,20 +2259,19 @@ export default class ClientStore extends BaseStore {
 
                 const social_identity_provider = get_account_status?.social_identity_provider;
 
-                RudderStack.track('ce_virtual_signup_form', {
-                    action: 'signup_continued',
-                    signup_provider: social_identity_provider,
-                    form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
-                });
-                console.log(`
-                    'ce_virtual_signup_form', {
+                RudderStack.track(
+                    'ce_virtual_signup_form',
+                    {
                         action: 'signup_continued',
-                        signup_provider: ${social_identity_provider},
-                        form_name: ${
-                            isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default'
-                        },
+                        signup_provider: social_identity_provider,
+                        form_name: isMobile()
+                            ? 'virtual_signup_web_mobile_default'
+                            : 'virtual_signup_web_desktop_default',
+                    },
+                    {
+                        is_anonymous: true,
                     }
-                `);
+                );
             }
 
             if (login_new_user) {

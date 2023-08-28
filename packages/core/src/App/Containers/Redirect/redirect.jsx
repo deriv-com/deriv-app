@@ -45,20 +45,19 @@ const Redirect = ({
                     pathname: routes.onboarding,
                     search: url_query_string,
                 });
-                RudderStack.track('ce_virtual_signup_form', {
-                    action: 'email_confirmed',
-                    form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
-                    email: url_params.get('email'),
-                });
-                console.log(`
-                'ce_virtual_signup_form', {
-                    action: 'email_confirmed',
-                    form_name: ${
-                        isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default'
+                RudderStack.track(
+                    'ce_virtual_signup_form',
+                    {
+                        action: 'email_confirmed',
+                        form_name: isMobile()
+                            ? 'virtual_signup_web_mobile_default'
+                            : 'virtual_signup_web_desktop_default',
+                        email: url_params.get('email'),
                     },
-                    email: ${url_params.get('email')},
-                }
-                `);
+                    {
+                        is_anonymous: true,
+                    }
+                );
             }
             sessionStorage.removeItem('redirect_url');
             redirected_to_route = true;

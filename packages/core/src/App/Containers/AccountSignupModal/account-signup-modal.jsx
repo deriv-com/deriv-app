@@ -48,15 +48,16 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
             setIsLoading(false);
         });
 
-        RudderStack.track('ce_virtual_signup_form', {
-            action: 'country_selection_screen_opened',
-            form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
-        });
-        console.log(`
-        'ce_virtual_signup_form', {
-            action: 'country_selection_screen_opened',
-            form_name: ${isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default'},
-        }`);
+        RudderStack.track(
+            'ce_virtual_signup_form',
+            {
+                action: 'country_selection_screen_opened',
+                form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+            },
+            {
+                is_anonymous: true,
+            }
+        );
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const validateSignupPassthrough = values => validateSignupFields(values, residence_list);
@@ -81,32 +82,31 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
         if (error) {
             setApiError(error);
 
-            RudderStack.track('ce_virtual_signup_form', {
-                action: 'signup_flow_error',
-                form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
-                error_message: error,
-            });
-            console.log(`
-            'ce_virtual_signup_form', {
-                action: 'signup_flow_error',
-                form_name: ${isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default'},
-                error_message: ${error},
-            }
-            `);
+            RudderStack.track(
+                'ce_virtual_signup_form',
+                {
+                    action: 'signup_flow_error',
+                    form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                    error_message: error,
+                },
+                {
+                    is_anonymous: true,
+                }
+            );
         } else {
             isModalVisible(false);
             enableApp();
 
-            RudderStack.track('ce_virtual_signup_form', {
-                action: 'signup_done',
-                form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
-            });
-
-            console.log(`
-            'ce_virtual_signup_form', {
-                action: 'signup_done',
-                form_name: ${isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default'},
-            }`);
+            RudderStack.track(
+                'ce_virtual_signup_form',
+                {
+                    action: 'signup_done',
+                    form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                },
+                {
+                    is_anonymous: true,
+                }
+            );
         }
     };
 
@@ -184,16 +184,6 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                                         ? 'virtual_signup_web_mobile_default'
                                                         : 'virtual_signup_web_desktop_default',
                                                 });
-                                                console.log(`
-                                                'ce_virtual_signup_form', {
-                                                    action: 'password_screen_opened',
-                                                    form_name: ${
-                                                        isMobile()
-                                                            ? 'virtual_signup_web_mobile_default'
-                                                            : 'virtual_signup_web_desktop_default'
-                                                    },
-                                                }
-                                                `);
                                             }}
                                             primary
                                             large

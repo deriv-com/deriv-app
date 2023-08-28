@@ -95,19 +95,17 @@ const StaticDashboard = observer(
                 }
             }, 5000);
 
-            RudderStack.track('ce_virtual_signup_form', {
-                action: 'signup_confirmed',
-                form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
-                email,
-            });
-
-            console.log(`
-            'ce_virtual_signup_form', {
-                action: 'signup_confirmed',
-                form_name: ${isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default'},
-                email: ${email},
-            }
-            `);
+            RudderStack.track(
+                'ce_virtual_signup_form',
+                {
+                    action: 'signup_confirmed',
+                    form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                    email,
+                },
+                {
+                    is_anonymous: true,
+                }
+            );
 
             return () => clearInterval(change_index_interval_id);
             // eslint-disable-next-line react-hooks/exhaustive-deps

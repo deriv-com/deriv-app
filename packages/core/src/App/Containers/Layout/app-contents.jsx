@@ -48,11 +48,6 @@ const AppContents = observer(({ children }) => {
             RudderStack.identifyEvent(user_id, {
                 language: getLanguage().toLowerCase() || 'en',
             });
-            console.log(`
-                user_id, {
-                    language: ${getLanguage().toLowerCase() || 'en'},
-                }
-                `);
             RudderStack.pageView(current_page);
         }
         if (scroll_ref.current) setAppContentsScrollRef(scroll_ref);

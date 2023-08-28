@@ -1,17 +1,18 @@
 import { matchPath } from 'react-router';
 import { routes } from '@deriv/shared';
+import { TRouteConfig } from '../props.types';
 
-export const normalizePath = path => (/^\//.test(path) ? path : `/${path || ''}`); // Default to '/'
+export const normalizePath = (path: string) => (/^\//.test(path) ? path : `/${path || ''}`); // Default to '/'
 
-export const findRouteByPath = (path, routes_config) => {
-    let result;
+export const findRouteByPath = (path: string, routes_config: TRouteConfig[]) => {
+    let result: TRouteConfig | undefined;
 
     routes_config.some(route_info => {
         let match_path;
         try {
             match_path = matchPath(path, route_info);
         } catch (e) {
-            if (/undefined/.test(e.message)) {
+            if (/undefined/.test((e as Error).message)) {
                 return undefined;
             }
         }
@@ -29,9 +30,10 @@ export const findRouteByPath = (path, routes_config) => {
     return result;
 };
 
-export const isRouteVisible = (route, is_logged_in) => !(route && route.is_authenticated && !is_logged_in);
+export const isRouteVisible = (route: TRouteConfig, is_logged_in: boolean) =>
+    !(route && route.is_authenticated && !is_logged_in);
 
-export const getPath = (route_path, params = {}) =>
+export const getPath = (route_path: string, params: { [x: string]: string } = {}) =>
     Object.keys(params).reduce((p, name) => p.replace(`:${name}`, params[name]), route_path);
 
-export const getContractPath = contract_id => getPath(routes.contract, { contract_id });
+export const getContractPath = (contract_id: string) => getPath(routes.contract, { contract_id });

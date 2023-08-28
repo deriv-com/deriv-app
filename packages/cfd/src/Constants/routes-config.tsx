@@ -2,16 +2,13 @@ import React from 'react';
 import CFD from '../Containers';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { TCFDDashboardProps } from '../Containers/cfd-dashboard';
+import { TRouteConfig } from '../Components/props.types';
 
 export type TRoute = {
     path?: string;
     component?: (props: any) => React.ReactNode;
     getTitle: () => string;
-};
-
-export type TRouteConfig = TRoute & {
-    is_authenticated?: boolean;
-    routes?: TRoute[];
 };
 
 // Error Routes
@@ -23,14 +20,14 @@ const initRoutesConfig = (): TRouteConfig[] => {
         {
             path: routes.dxtrade,
             // eslint-disable-next-line react/display-name
-            component: props => <CFD {...props} platform='dxtrade' />,
+            component: (props: TCFDDashboardProps) => <CFD {...props} platform='dxtrade' />,
             getTitle: () => localize('Deriv X'),
             is_authenticated: false,
         },
         {
             path: routes.mt5,
             // eslint-disable-next-line react/display-name
-            component: props => <CFD {...props} platform='mt5' />,
+            component: (props: TCFDDashboardProps) => <CFD {...props} platform='mt5' />,
             getTitle: () => localize('MT5'),
             is_authenticated: false,
         },

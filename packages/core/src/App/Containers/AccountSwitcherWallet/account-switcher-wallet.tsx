@@ -61,5 +61,3 @@ export const AccountSwitcherWallet = ({ is_visible, toggle }: TAccountSwitcherWa
         </div>
     );
 };
-
-export default AccountSwitcherWallet;

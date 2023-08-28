@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { useWalletAccountsList } from '@deriv/hooks';
-import AccountSwitcherWallet from '../account-switcher-wallet';
+import { AccountSwitcherWallet } from '../account-switcher-wallet';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),

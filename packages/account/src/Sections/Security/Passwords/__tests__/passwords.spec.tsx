@@ -57,7 +57,7 @@ describe('<Passwords />', () => {
         });
         renderComponent({ store_config });
 
-        const ele_mt5 = await screen.findByText('Deriv X Password');
-        expect(ele_mt5).toBeInTheDocument();
+        const ele_derivx = await screen.findByText('Deriv X Password');
+        expect(ele_derivx).toBeInTheDocument();
     });
 });

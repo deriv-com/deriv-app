@@ -55,10 +55,9 @@ describe('<PasswordsPlatform />', () => {
         renderComponent({});
 
         userEvent.click(screen.getByRole('button', { name: /change password/i }));
-        let el_modal;
         await waitFor(() => {
-            el_modal = screen.getByText('We’ve sent you an email');
+            const el_modal = screen.getByText('We’ve sent you an email');
+            expect(el_modal).toBeInTheDocument();
         });
-        expect(el_modal).toBeInTheDocument();
     });
 });

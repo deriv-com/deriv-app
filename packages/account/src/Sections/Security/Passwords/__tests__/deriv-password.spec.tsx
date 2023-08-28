@@ -1,10 +1,16 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import DerivPassword from '../deriv-password';
 import { APIProvider } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
+import { useVerifyEmail } from '@deriv/hooks';
 
 jest.mock('Assets/ic-brand-deriv-red.svg', () => () => 'BrandDerivRed');
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useVerifyEmail: jest.fn(() => ({ send: jest.fn() })),
+}));
 
 describe('<DerivPassword />', () => {
     let modal_root_el: HTMLDivElement;
@@ -86,7 +92,7 @@ describe('<DerivPassword />', () => {
         expect(change_password_button).toBeInTheDocument();
     });
 
-    it('should invoke verifyEmail when change password is clicked', () => {
+    it('should invoke verifyEmail when change password is clicked', async () => {
         renderComponent({});
         const ele_change_btn = screen.getByRole('button', {
             name: /change password/i,
@@ -94,6 +100,9 @@ describe('<DerivPassword />', () => {
         fireEvent.click(ele_change_btn);
         expect(screen.queryByText(/we’ve sent you an email/i)).toBeInTheDocument();
         expect(screen.getByText(/please click on the link in the email to reset your password\./i)).toBeInTheDocument();
+        await waitFor(() => {
+            expect(useVerifyEmail).toHaveBeenCalled();
+        });
     });
 
     it('displays a button to unlink social identity provider', () => {

@@ -77,14 +77,14 @@ describe('DerivEmail', () => {
         let el_modal;
         await waitFor(() => {
             el_modal = screen.getByText('Change your login email');
+            expect(el_modal).toBeInTheDocument();
         });
-        expect(el_modal).toBeInTheDocument();
         const el_unlink_btn = screen.getByRole('button', { name: /Unlink from Google/i });
         userEvent.click(el_unlink_btn);
 
         await waitFor(() => {
             el_modal = screen.getByText('We’ve sent you an email');
+            expect(el_modal).toBeInTheDocument();
         });
-        expect(el_modal).toBeInTheDocument();
     });
 });

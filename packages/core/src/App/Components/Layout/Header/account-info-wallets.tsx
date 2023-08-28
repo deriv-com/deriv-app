@@ -5,7 +5,12 @@ import { Icon, WalletIcon, Badge } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { formatMoney } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import { useActiveAccount, useLinkedWalletsAccounts, useWalletAccountsList } from '@deriv/hooks';
+import {
+    useActiveAccount,
+    useActiveWalletAccount,
+    useLinkedWalletsAccounts,
+    useWalletAccountsList,
+} from '@deriv/hooks';
 import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
 import { AccountsInfoLoader } from './Components/Preloader';
 import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile';
@@ -20,20 +25,18 @@ type TAccountInfoWallets = {
 const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInfoWallets) => {
     const { client, ui } = useStore();
     const { switchAccount, is_logged_in } = client;
-    const { is_mobile, account_switcher_disabled_message, disableApp, enableApp } = ui;
+    const { is_mobile, account_switcher_disabled_message, disableApp, enableApp, is_dark_mode_on } = ui;
 
     const active_account = useActiveAccount();
+    const active_wallet = useActiveWalletAccount();
     const { data: wallets_list } = useWalletAccountsList();
     const { data: linked_accounts } = useLinkedWalletsAccounts();
 
     let linked_dtrade_trading_account_loginind = active_account?.loginid;
 
-    if (active_account?.account_category === 'wallet') {
+    if (active_wallet) {
         // get 'dtrade' loginid account linked to the current wallet
-        linked_dtrade_trading_account_loginind =
-            active_account?.linked_to?.find(account => account?.platform === 'dtrade')?.loginid ||
-            linked_accounts.dtrade?.[0]?.loginid ||
-            '';
+        linked_dtrade_trading_account_loginind = active_wallet.dtrade_loginid || linked_accounts.dtrade?.[0]?.loginid;
 
         // switch to dtrade account
         if (
@@ -44,10 +47,8 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
         }
     }
 
-    const linked_wallet = wallets_list?.find(wallet =>
-        wallet.linked_to?.some(
-            wallet_linked_account => wallet_linked_account.loginid === linked_dtrade_trading_account_loginind
-        )
+    const linked_wallet = wallets_list?.find(
+        wallet => wallet.dtrade_loginid === linked_dtrade_trading_account_loginind
     );
 
     if (!linked_wallet) return <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />;
@@ -79,11 +80,19 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                         </span>
                     ) : (
                         <div className='acc-info__wallets-container'>
-                            <Icon icon={'IcWalletOptionsLight'} size={24} data_testid='dt_ic_wallet_options' />
+                            <Icon
+                                icon={is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight'}
+                                size={24}
+                                data_testid='dt_ic_wallet_options'
+                            />
                             <WalletIcon
-                                icon={linked_wallet?.icons.light}
+                                icon={is_dark_mode_on ? linked_wallet?.icons.dark : linked_wallet?.icons.light}
                                 type={linked_wallet?.is_virtual ? 'demo' : linked_wallet?.currency_config?.type}
-                                gradient_class={linked_wallet?.gradients.card.light}
+                                gradient_class={
+                                    is_dark_mode_on
+                                        ? linked_wallet?.gradients.card.dark
+                                        : linked_wallet?.gradients.card.light
+                                }
                                 size={'small'}
                                 has_bg
                                 hide_watermark

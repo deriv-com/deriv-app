@@ -42,6 +42,7 @@ export { default as Drawer } from './components/drawer';
 export { default as Dropdown } from './components/dropdown';
 export * from './components/empty-state';
 export { default as ExpansionPanel } from './components/expansion-panel';
+export { default as ErrorModal } from './components/error-modal';
 export { default as FadeWrapper } from './components/fade-wrapper';
 export { default as Field } from './components/field';
 export { default as FileDropzone } from './components/file-dropzone';

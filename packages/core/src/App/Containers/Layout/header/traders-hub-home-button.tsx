@@ -15,18 +15,18 @@ const TradersHubHomeButton = observer(() => {
     return (
         <div
             data-testid='dt_traders_hub_home_button'
-            className={classNames('trading-hub-header__tradershub', {
-                'trading-hub-header__tradershub--active': pathname === routes.traders_hub,
+            className={classNames('traders-hub-header__tradershub', {
+                'traders-hub-header__tradershub--active': pathname === routes.traders_hub,
             })}
             onClick={() => history.push(routes.traders_hub)}
         >
-            <div className='trading-hub-header__tradershub--home-logo'>
+            <div className='traders-hub-header__tradershub--home-logo'>
                 <Icon
                     icon={is_dark_mode_on ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHome'}
                     size={is_dark_mode_on ? 15 : 17}
                 />
             </div>
-            <Text className='trading-hub-header__tradershub--text'>
+            <Text className='traders-hub-header__tradershub--text'>
                 <Localize i18n_default_text="Trader's Hub" />
             </Text>
         </div>

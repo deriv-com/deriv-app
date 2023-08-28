@@ -12,10 +12,10 @@ type TDefaultMobileLinks = {
 
 const DefaultMobileLinks = ({ handleClickCashier }: TDefaultMobileLinks) => (
     <React.Fragment>
-        <div className='trading-hub-header__menu-right--items--onboarding'>
+        <div className='traders-hub-header__menu-right--items--onboarding'>
             <TradersHubOnboarding />
         </div>
-        <div className='trading-hub-header__menu-right--items--notifications'>
+        <div className='traders-hub-header__menu-right--items--notifications'>
             <ShowNotifications />
         </div>
         <Popover
@@ -25,11 +25,11 @@ const DefaultMobileLinks = ({ handleClickCashier }: TDefaultMobileLinks) => (
             should_disable_pointer_events
             zIndex='9999'
         >
-            <BinaryLink className='trading-hub-header__setting' to={routes.personal_details}>
+            <BinaryLink className='traders-hub-header__setting' to={routes.personal_details}>
                 <Icon icon='IcUserOutline' size={20} />
             </BinaryLink>
         </Popover>
-        <div className='trading-hub-header__cashier-button'>
+        <div className='traders-hub-header__cashier-button'>
             <Button primary small onClick={handleClickCashier}>
                 <Localize i18n_default_text='Cashier' />
             </Button>

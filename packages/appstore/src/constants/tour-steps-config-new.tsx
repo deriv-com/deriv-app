@@ -56,7 +56,7 @@ export const getTourStepConfig = (): Step[] => [
             </React.Fragment>
         ),
         content: <Text as='p'>{localize('Click here if you ever need to repeat this tour.')}</Text>,
-        target: '.trading-hub-header__tradinghub--onboarding--logo',
+        target: '.traders-hub-header__tradershub--onboarding--logo',
         disableBeacon: true,
         disableOverlayClose: true,
     },
@@ -87,7 +87,7 @@ export const getTourStepConfigHighRisk = (): Step[] => [
             </React.Fragment>
         ),
         content: <Text as='p'>{localize('Click here if you ever need to repeat this tour.')}</Text>,
-        target: '.trading-hub-header__tradinghub--onboarding--logo',
+        target: '.traders-hub-header__tradershub--onboarding--logo',
         disableBeacon: true,
         disableOverlayClose: true,
     },

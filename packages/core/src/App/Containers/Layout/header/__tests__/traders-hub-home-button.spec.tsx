@@ -30,6 +30,6 @@ describe('TradersHubHomeButton', () => {
                 <TradersHubHomeButton />
             </StoreProvider>
         );
-        expect(screen.getByTestId('dt_traders_hub_home_button')).toHaveClass('trading-hub-header__tradershub--active');
+        expect(screen.getByTestId('dt_traders_hub_home_button')).toHaveClass('traders-hub-header__tradershub--active');
     });
 });

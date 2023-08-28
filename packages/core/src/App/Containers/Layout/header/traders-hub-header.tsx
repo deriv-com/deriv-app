@@ -111,39 +111,39 @@ const TradersHubHeader = observer(({ is_acc_switcher_disabled }: TTradersHubHead
 
     return (
         <header
-            className={classNames('trading-hub-header', {
-                'trading-hub-header--is-disabled': is_app_disabled || is_route_modal_on,
-                'trading-hub-header--is-hidden': platforms[platform as keyof TPlatforms],
+            className={classNames('traders-hub-header', {
+                'traders-hub-header--is-disabled': is_app_disabled || is_route_modal_on,
+                'traders-hub-header--is-hidden': platforms[platform as keyof TPlatforms],
             })}
         >
-            <div className='trading-hub-header__menu-left'>
+            <div className='traders-hub-header__menu-left'>
                 <MobileWrapper>
                     <ToggleMenuDrawer {...{ platform_config: filterPlatformsForClients(platform_config) }} />
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
                 <div
-                    className={classNames('trading-hub-header__logo-wrapper', {
-                        'trading-hub-header__logo-wrapper--cashier': cashier_routes,
+                    className={classNames('traders-hub-header__logo-wrapper', {
+                        'traders-hub-header__logo-wrapper--cashier': cashier_routes,
                     })}
                 >
                     <StaticUrl href='/'>
-                        <DerivBrandLogo className='trading-hub-header__logo' />
+                        <DerivBrandLogo className='traders-hub-header__logo' />
                     </StaticUrl>
                 </div>
                 <DesktopWrapper>
-                    <div className='trading-hub-header__divider' />
+                    <div className='traders-hub-header__divider' />
                     <TradersHubHomeButton />
                 </DesktopWrapper>
                 <MenuLinks {...{ is_traders_hub_routes: true }} />
             </div>
             <DesktopWrapper>
-                <div className='trading-hub-header__menu-right'>
-                    <div className='trading-hub-header__divider' />
-                    <div className='trading-hub-header__menu-right--items'>
-                        <div className='trading-hub-header__menu-right--items--onboarding'>
+                <div className='traders-hub-header__menu-right'>
+                    <div className='traders-hub-header__divider' />
+                    <div className='traders-hub-header__menu-right--items'>
+                        <div className='traders-hub-header__menu-right--items--onboarding'>
                             <TradersHubOnboarding />
                         </div>
-                        <div className='trading-hub-header__menu-right--items--notifications'>
+                        <div className='traders-hub-header__menu-right--items--notifications'>
                             <ShowNotifications />
                         </div>
                         <Popover
@@ -153,12 +153,12 @@ const TradersHubHeader = observer(({ is_acc_switcher_disabled }: TTradersHubHead
                             should_disable_pointer_events
                             zIndex={'9999'}
                         >
-                            <BinaryLink className='trading-hub-header__setting' to={routes.personal_details}>
+                            <BinaryLink className='traders-hub-header__setting' to={routes.personal_details}>
                                 <Icon icon='IcUserOutline' size={20} />
                             </BinaryLink>
                         </Popover>
                         {cashier_routes && (
-                            <div className='trading-hub-header__menu-right--items--account-toggle'>
+                            <div className='traders-hub-header__menu-right--items--account-toggle'>
                                 <AccountInfoComponent />
                             </div>
                         )}
@@ -167,14 +167,14 @@ const TradersHubHeader = observer(({ is_acc_switcher_disabled }: TTradersHubHead
                 <RealAccountSignup />
             </DesktopWrapper>
             <MobileWrapper>
-                <div className='trading-hub-header__mobile-parent'>
-                    <div className='trading-hub-header__menu-middle'>
+                <div className='traders-hub-header__mobile-parent'>
+                    <div className='traders-hub-header__menu-middle'>
                         {cashier_routes ? (
                             <React.Fragment>
-                                <div className='trading-hub-header__menu-right--items--notifications__cashier'>
+                                <div className='traders-hub-header__menu-right--items--notifications__cashier'>
                                     <ShowNotifications />
                                 </div>
-                                <div className='trading-hub-header__menu-right--items--account-toggle'>
+                                <div className='traders-hub-header__menu-right--items--account-toggle'>
                                     <AccountInfoComponent />
                                 </div>
                             </React.Fragment>

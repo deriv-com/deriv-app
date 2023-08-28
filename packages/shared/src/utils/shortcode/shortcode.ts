@@ -87,7 +87,6 @@ export const extractInfoFromShortcode = (shortcode: string): TInfoFromShortcode 
 
 export const isHighLow = ({ shortcode = '', shortcode_info }: TIsHighLow) => {
     const info_from_shortcode = shortcode ? extractInfoFromShortcode(shortcode) : shortcode_info;
-    // console.log('test info_from_shortcode', info_from_shortcode);
     return info_from_shortcode && info_from_shortcode.barrier_1 ? !/^S0P$/.test(info_from_shortcode.barrier_1) : false;
 };
 

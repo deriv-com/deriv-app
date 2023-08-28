@@ -8,12 +8,10 @@ const getActiveAuthTokenIDFromLocalStorage = () => {
     const accounts = getAccountsFromLocalStorage();
     const active_loginid = getActiveLoginIDFromLocalStorage();
 
-    // If there is no active loginid, then there is no active auth token.
-    if (!active_loginid) return;
+    // If there is no active loginid or no accounts list, return undefined.
+    if (!active_loginid || !accounts) return;
 
-    const active_auth_token = accounts?.[active_loginid]?.token;
-
-    return active_auth_token;
+    return accounts[active_loginid]?.token;
 };
 
 export default getActiveAuthTokenIDFromLocalStorage;

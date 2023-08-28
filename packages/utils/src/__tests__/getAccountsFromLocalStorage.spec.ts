@@ -29,6 +29,6 @@ describe('getAccountsFromLocalStorage', () => {
 
         const result = getAccountsFromLocalStorage();
 
-        expect(result).toMatchObject({});
+        expect(result).toBeUndefined();
     });
 });

@@ -22,13 +22,20 @@ const POISubmissionForMT5 = ({
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // submitting
     const [submission_service, setSubmissionService] = React.useState();
+    const [is_idv_skipping, setIsIdvSkipping] = React.useState(false);
     React.useEffect(() => {
         if (citizen_data) {
             const { submissions_left: idv_submissions_left } = idv;
             const { submissions_left: onfido_submissions_left } = onfido;
             const is_idv_supported = isVerificationServiceSupported(residence_list, account_settings, 'idv');
             const is_onfido_supported = isVerificationServiceSupported(residence_list, account_settings, 'onfido');
-            if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed && !is_eu_user) {
+            if (
+                !is_idv_skipping &&
+                is_idv_supported &&
+                Number(idv_submissions_left) > 0 &&
+                !is_idv_disallowed &&
+                !is_eu_user
+            ) {
                 setSubmissionService(service_code.idv);
             } else if (onfido_submissions_left > 0 && is_onfido_supported) {
                 setSubmissionService(service_code.onfido);
@@ -37,7 +44,7 @@ const POISubmissionForMT5 = ({
             }
             setSubmissionStatus(submission_status_code.submitting);
         }
-    }, [citizen_data]);
+    }, [citizen_data, is_idv_skipping]);
 
     const handlePOIComplete = () => {
         if (onStateChange && typeof onStateChange === 'function') {
@@ -92,6 +99,7 @@ const POISubmissionForMT5 = ({
                         onNext={handleIdvSubmit}
                         has_idv_error={has_idv_error}
                         getChangeableFields={getChangeableFields}
+                        handleIdvSkipping={setIsIdvSkipping}
                         account_settings={account_settings}
                     />
                 );

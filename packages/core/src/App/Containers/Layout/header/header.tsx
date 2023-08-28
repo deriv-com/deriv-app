@@ -1,11 +1,11 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { PlatformContext, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import DefaultHeader from './default-header.jsx';
 import DashboardHeader from './dashboard-header.jsx';
-import TradersHubHeader from './traders-hub-header.jsx';
 import DTraderHeader from './dtrader-header.jsx';
-import { useLocation } from 'react-router-dom';
+import TradersHubHeader from './traders-hub-header';
 
 const Header = observer(() => {
     const { client } = useStore();
@@ -20,7 +20,7 @@ const Header = observer(() => {
     } else if (is_logged_in) {
         let result;
         if (trading_hub_routes) {
-            result = <TradersHubHeader />;
+            result = <TradersHubHeader is_acc_switcher_disabled={false} />;
         } else if (pathname === routes.onboarding) {
             result = null;
         } else {

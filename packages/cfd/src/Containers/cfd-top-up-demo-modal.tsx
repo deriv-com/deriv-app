@@ -7,6 +7,7 @@ import {
     TDxCompanies,
     TMtCompanies,
     TDerivezCompanies,
+    TCTraderCompanies,
     getCTraderCompanies,
 } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { getTopUpConfig } from '../Helpers/constants';
@@ -30,6 +31,8 @@ const CFDTopUpDemoModal = observer(({ platform }: TCFDTopUpDemoModalProps) => {
 
     const { current_account, dxtrade_companies, derivez_companies, mt5_companies, topUpVirtual } = useCfdStore();
 
+    const ctrader_companies = getCTraderCompanies();
+
     const getAccountTitle = React.useCallback(() => {
         let title = '';
         if ((!mt5_companies && !dxtrade_companies && !derivez_companies) || !current_account) return '';
@@ -45,6 +48,12 @@ const CFDTopUpDemoModal = observer(({ platform }: TCFDTopUpDemoModalProps) => {
                 title =
                     derivez_companies[current_account.category as keyof TDerivezCompanies][
                         current_account.type as keyof TDerivezCompanies['demo' | 'real']
+                    ].title;
+                break;
+            case CFD_PLATFORMS.CTRADER:
+                title =
+                    ctrader_companies[current_account.category as keyof TCTraderCompanies][
+                        current_account.type as keyof TCTraderCompanies['demo' | 'real']
                     ].title;
                 break;
             case CFD_PLATFORMS.DXTRADE:

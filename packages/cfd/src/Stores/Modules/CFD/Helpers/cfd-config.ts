@@ -83,7 +83,7 @@ export const getCTraderCompanies = () => {
             all: {
                 ctrader_account_type: all_config.account_type,
                 leverage: all_config.leverage,
-                title: localize('Demo All'),
+                title: localize('Demo'),
                 short_title: all_config.short_title,
             },
         },

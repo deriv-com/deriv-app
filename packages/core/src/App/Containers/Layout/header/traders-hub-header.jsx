@@ -2,7 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useHistory, useLocation, withRouter } from 'react-router-dom';
-import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, StaticUrl } from '@deriv/components';
+import { DesktopWrapper, Icon, MobileWrapper, Popover, StaticUrl } from '@deriv/components';
 import { routes, platforms, formatMoney } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { MenuLinks } from 'App/Components/Layout/Header';
@@ -19,30 +19,7 @@ import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
 import DefaultMobileLinks from './default-mobile-links';
 import ShowNotifications from './show-notifications';
 import TradersHubOnboarding from './traders-hub-onboarding';
-
-export const TradersHubHomeButton = ({ is_dark_mode }) => {
-    const history = useHistory();
-    const { pathname } = history.location;
-
-    return (
-        <div
-            className={classNames('trading-hub-header__tradershub', {
-                'trading-hub-header__tradershub--active': pathname === routes.traders_hub,
-            })}
-            onClick={() => history.push(routes.traders_hub)}
-        >
-            <div className='trading-hub-header__tradershub--home-logo'>
-                <Icon
-                    icon={is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHome'}
-                    size={is_dark_mode ? 15 : 17}
-                />
-            </div>
-            <Text className='trading-hub-header__tradershub--text'>
-                <Localize i18n_default_text="Trader's Hub" />
-            </Text>
-        </div>
-    );
-};
+import { TradersHubHomeButton } from './traders-hub-home-button';
 
 const TradersHubHeader = ({
     account_type,
@@ -54,7 +31,6 @@ const TradersHubHeader = ({
     is_acc_switcher_disabled,
     is_acc_switcher_on,
     is_app_disabled,
-    is_dark_mode,
     is_eu,
     is_logged_in,
     is_mt5_allowed,
@@ -149,7 +125,7 @@ const TradersHubHeader = ({
                 </div>
                 <DesktopWrapper>
                     <div className='trading-hub-header__divider' />
-                    <TradersHubHomeButton is_dark_mode={is_dark_mode} />
+                    <TradersHubHomeButton />
                 </DesktopWrapper>
                 <MenuLinks is_traders_hub_routes />
             </div>
@@ -219,7 +195,6 @@ TradersHubHeader.propTypes = {
     is_acc_switcher_disabled: PropTypes.bool,
     is_acc_switcher_on: PropTypes.bool,
     is_app_disabled: PropTypes.bool,
-    is_dark_mode: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
@@ -244,7 +219,6 @@ export default connect(({ client, common, ui, traders_hub }) => ({
     header_extension: ui.header_extension,
     is_acc_switcher_on: !!ui.is_accounts_switcher_on,
     is_app_disabled: ui.is_app_disabled,
-    is_dark_mode: ui.is_dark_mode_on,
     is_eu: client.is_eu,
     is_logged_in: client.is_logged_in,
     is_mt5_allowed: client.is_mt5_allowed,

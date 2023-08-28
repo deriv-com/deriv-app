@@ -177,13 +177,6 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                             onClick={() => {
                                                 history_value.current = values;
                                                 setIsPasswordModal(true);
-
-                                                RudderStack.track('ce_virtual_signup_form', {
-                                                    action: 'password_screen_opened',
-                                                    form_name: isMobile()
-                                                        ? 'virtual_signup_web_mobile_default'
-                                                        : 'virtual_signup_web_desktop_default',
-                                                });
                                             }}
                                             primary
                                             large

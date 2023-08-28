@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { Div100vhContainer, Icon, Text, WalletCard, Clipboard, Button } from '@deriv/components';
 import { useCashierStore } from '../../../stores/useCashierStores';
@@ -19,6 +19,7 @@ const CryptoWithdrawReceiptWallet = observer(() => {
     const openTransactionsTab = () => {
         setVerificationCode('', 'payment_withdraw');
         setWalletModalActiveTab('Transactions');
+        setIsWithdrawConfirmed(false);
         resetWithdrawForm();
     };
 
@@ -28,6 +29,13 @@ const CryptoWithdrawReceiptWallet = observer(() => {
         setIsWithdrawConfirmed(false);
         resetWithdrawForm();
     };
+
+    useEffect(() => {
+        return () => {
+            closeWithdrawForm();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const wallet: React.ComponentProps<typeof WalletCard>['wallet'] = {
         balance: `-${withdraw_amount}`,

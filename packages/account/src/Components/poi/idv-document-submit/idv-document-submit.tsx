@@ -104,6 +104,7 @@ const IdvDocumentSubmit = ({
             setIsIdvSkipping(true);
             return errors;
         }
+        setIsIdvSkipping(false);
 
         const needs_additional_document = !!document_type.additional;
 
@@ -198,29 +199,32 @@ const IdvDocumentSubmit = ({
                             selected_country={selected_country}
                             class_name='idv-layout'
                         />
-
-                        <FormSubHeader title={localize('Details')} />
-                        <div
-                            className={classNames({
-                                'account-form__poi-confirm-example_container': !shouldHideHelperImage(
-                                    values?.document_type?.id
-                                ),
-                            })}
-                        >
-                            <PersonalDetailsForm
-                                errors={errors}
-                                touched={touched}
-                                values={values}
-                                handleChange={handleChange}
-                                handleBlur={handleBlur}
-                                setFieldValue={setFieldValue}
-                                setFieldTouched={setFieldTouched}
-                                is_qualified_for_idv={true}
-                                is_appstore
-                                should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
-                                editable_fields={changeable_fields}
-                            />
-                        </div>
+                        {!is_idv_skipping && (
+                            <React.Fragment>
+                                <FormSubHeader title={localize('Details')} />
+                                <div
+                                    className={classNames({
+                                        'account-form__poi-confirm-example_container': !shouldHideHelperImage(
+                                            values?.document_type?.id
+                                        ),
+                                    })}
+                                >
+                                    <PersonalDetailsForm
+                                        errors={errors}
+                                        touched={touched}
+                                        values={values}
+                                        handleChange={handleChange}
+                                        handleBlur={handleBlur}
+                                        setFieldValue={setFieldValue}
+                                        setFieldTouched={setFieldTouched}
+                                        is_qualified_for_idv={true}
+                                        is_appstore
+                                        should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
+                                        editable_fields={changeable_fields}
+                                    />
+                                </div>
+                            </React.Fragment>
+                        )}
                     </section>
                     <FormFooter className='proof-of-identity__footer'>
                         {isDesktop() && (

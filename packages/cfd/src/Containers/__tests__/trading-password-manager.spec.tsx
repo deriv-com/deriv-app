@@ -1,6 +1,7 @@
 import React from 'react';
-import { screen, render, fireEvent, waitFor } from '@testing-library/react';
+import { screen, render, fireEvent } from '@testing-library/react';
 import TradingPasswordManager from '../trading-password-manager';
+import { TPasswordResetAndTradingPasswordManager } from '../props.types';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -19,7 +20,7 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
 }));
 
 describe('TradingPasswordManager', () => {
-    const mock_props = {
+    const mock_props: TPasswordResetAndTradingPasswordManager = {
         platform: 'mt5',
         email: '',
         account_group: '',
@@ -80,25 +81,32 @@ describe('TradingPasswordManager', () => {
         render(<TradingPasswordManager {...mock_props} />);
         fireEvent.click(screen.getByRole('button', { name: /Change password/i }));
         fireEvent.click(screen.getByRole('button', { name: /Confirm/i }));
-        await waitFor(() => expect(screen.getByText(/We've sent you an email/i)).toBeInTheDocument());
-        await waitFor(() =>
-            expect(
-                screen.getByText(/Please click on the link in the email to change your Deriv MT5 password./i)
-            ).toBeInTheDocument()
+        const confirmation_email_text = await screen.findByText(/We've sent you an email/i);
+        expect(confirmation_email_text).toBeInTheDocument();
+
+        const confirmation_email_link_text = await screen.findByText(
+            /Please click on the link in the email to change your Deriv MT5 password./i
         );
-        await waitFor(() => expect(screen.getByText(/Didn't receive the email?/i)).toBeInTheDocument());
+        expect(confirmation_email_link_text).toBeInTheDocument();
+
+        const email_not_recieved_text = await screen.findByText(/Didn't receive the email?/i);
+        expect(email_not_recieved_text).toBeInTheDocument();
     });
 
     it('should call SendEmailModal if the confirm button is clicked for Deriv X account', async () => {
         render(<TradingPasswordManager {...mock_props} platform='dxtrade' />);
         fireEvent.click(screen.getByRole('button', { name: /Change password/i }));
         fireEvent.click(screen.getByRole('button', { name: /Confirm/i }));
-        await waitFor(() => expect(screen.getByText(/We've sent you an email/i)).toBeInTheDocument());
-        await waitFor(() =>
-            expect(
-                screen.getByText(/Please click on the link in the email to change your Deriv X password./i)
-            ).toBeInTheDocument()
+
+        const confirmation_email_text = await screen.findByText(/We've sent you an email/i);
+        expect(confirmation_email_text).toBeInTheDocument();
+
+        const confirmation_email_link_text = await screen.findByText(
+            /Please click on the link in the email to change your Deriv X password./i
         );
-        await waitFor(() => expect(screen.getByText(/Didn't receive the email?/i)).toBeInTheDocument());
+        expect(confirmation_email_link_text).toBeInTheDocument();
+
+        const email_not_recieved_text = await screen.findByText(/Didn't receive the email?/i);
+        expect(email_not_recieved_text).toBeInTheDocument();
     });
 });

@@ -1,11 +1,12 @@
 import React from 'react';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import MissingRealAccount from '../missing-real-account';
+import { CFD_PLATFORMS } from '@deriv/shared';
 
 describe('<MissingRealAccount />', () => {
     const props = {
         onClickSignup: jest.fn(),
-        platform: 'mt5',
+        platform: CFD_PLATFORMS.MT5,
     };
     it('should show "You need a real account (fiat currency or cryptocurrency) in Deriv to create a real Deriv MT5 account." when platform="mt5"', () => {
         render(<MissingRealAccount {...props} />);

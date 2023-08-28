@@ -83,7 +83,7 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
         jest.clearAllMocks();
     });
 
-    let mockRootStore = {
+    const mockRootStore = {
         notifications: {
             addNotificationByKey: jest.fn(),
             refreshNotifications: jest.fn(),
@@ -186,8 +186,12 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
         jurisdiction_selected_shortcode: 'svg',
     };
 
+    const mock_props = {
+        onFinish: jest.fn(() => true),
+    };
+
     it('should render CFDFinancialStpRealAccountSignup component', () => {
-        render(<CFDFinancialStpRealAccountSignup />, {
+        render(<CFDFinancialStpRealAccountSignup {...mock_props} />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
 
@@ -195,8 +199,10 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
     });
 
     it('should render properly for the first step content', () => {
-        getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_bvi_labuan_vanuatu: true });
-        render(<CFDFinancialStpRealAccountSignup />, {
+        (getAuthenticationStatusInfo as jest.Mock).mockReturnValueOnce({
+            need_poi_for_bvi_labuan_vanuatu: true,
+        });
+        render(<CFDFinancialStpRealAccountSignup {...mock_props} />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
 
@@ -204,8 +210,10 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
     });
 
     it('should render properly for the second step content', () => {
-        getAuthenticationStatusInfo.mockReturnValueOnce({ poa_resubmit_for_labuan: true });
-        const { getByTestId } = render(<CFDFinancialStpRealAccountSignup />, {
+        (getAuthenticationStatusInfo as jest.Mock).mockReturnValueOnce({
+            poa_resubmit_for_labuan: true,
+        });
+        render(<CFDFinancialStpRealAccountSignup {...mock_props} />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
 
@@ -224,9 +232,11 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
             },
         };
 
-        getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_bvi_labuan_vanuatu: true });
+        (getAuthenticationStatusInfo as jest.Mock).mockReturnValueOnce({
+            need_poi_for_bvi_labuan_vanuatu: true,
+        });
 
-        render(<CFDFinancialStpRealAccountSignup />, {
+        render(<CFDFinancialStpRealAccountSignup {...mock_props} />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(new_mock_store)}>{children}</CFDProviders>,
         });
         testAllStepsFn(steps, 0);
@@ -244,9 +254,11 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
             },
         };
 
-        getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_maltainvest: true });
+        (getAuthenticationStatusInfo as jest.Mock).mockReturnValueOnce({
+            need_poi_for_maltainvest: true,
+        });
 
-        render(<CFDFinancialStpRealAccountSignup />, {
+        render(<CFDFinancialStpRealAccountSignup {...mock_props} />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(new_mock_store)}>{children}</CFDProviders>,
         });
         testAllStepsFn(steps, 1);

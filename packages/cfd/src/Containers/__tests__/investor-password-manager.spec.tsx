@@ -1,7 +1,7 @@
 import React from 'react';
-import { screen, render, waitFor, fireEvent, act } from '@testing-library/react';
-import InvestorPasswordManager from '../investor-password-manager';
 import { localize } from '@deriv/translations';
+import { screen, render, waitFor, fireEvent } from '@testing-library/react';
+import InvestorPasswordManager from '../investor-password-manager';
 
 jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     __esModule: true,
@@ -34,7 +34,13 @@ describe('<InvestorPasswordManager> ', () => {
     const mock_props = {
         error_message_investor: 'Forgot your password? Please reset your password.',
         is_submit_success_investor: false,
-        multi_step_ref: { current: { nextStep: jest.fn() } },
+        multi_step_ref: {
+            current: {
+                nextStep: jest.fn(),
+                goNextStep: jest.fn(),
+                goPrevStep: jest.fn(),
+            },
+        },
         onSubmit: jest.fn(),
         setPasswordType: jest.fn(() => 'investor'),
         toggleModal: jest.fn(),
@@ -120,7 +126,7 @@ describe('<InvestorPasswordManager> ', () => {
                     /strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers/i
                 )[0]
             ).toBeInTheDocument();
-            expect(change_investor_password_btn).not.toBeDisabled();
+            expect(change_investor_password_btn).toBeEnabled();
             fireEvent.click(change_investor_password_btn);
             expect(screen.getByTestId('dt_error_message_investor')).toBeInTheDocument();
             expect(mockOnClick).toHaveBeenCalled();

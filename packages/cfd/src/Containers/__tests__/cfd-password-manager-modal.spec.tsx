@@ -4,6 +4,8 @@ import CFDPasswordManagerModal from '../cfd-password-manager-modal';
 import { BrowserRouter } from 'react-router-dom';
 import CFDProviders from '../../cfd-providers';
 import { mockStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+import { TCFDPasswordManagerModal } from '../props.types';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -97,7 +99,7 @@ describe('<CFDPasswordManagerModal />', () => {
 
     afterEach(cleanup);
 
-    const mock_props = {
+    const mock_props: TCFDPasswordManagerModal & { selected_account?: string } = {
         is_visible: true,
         platform: 'mt5',
         selected_login: 'MTD20103241',
@@ -244,9 +246,8 @@ describe('<CFDPasswordManagerModal />', () => {
             await screen.findByText(/please click on the link in the email to change your deriv x password./i)
         ).toBeInTheDocument();
 
-        await waitFor(() => expect(screen.getByText(/didn't receive the email?/i)).toBeInTheDocument());
         fireEvent.click(screen.getByRole('button', { name: /didn't receive the email?/i }));
-        await waitFor(() => expect(screen.getByRole('button', { name: /resend email/i })).toBeInTheDocument());
+        expect(await screen.findByRole('button', { name: /resend email/i })).toBeInTheDocument();
         fireEvent.click(screen.getByRole('button', { name: /resend email/i }));
         act(() => {
             jest.advanceTimersByTime(60000);

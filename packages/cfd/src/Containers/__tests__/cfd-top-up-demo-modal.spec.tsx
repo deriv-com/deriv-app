@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import CFDTopUpDemoModal from '../cfd-top-up-demo-modal.tsx';
+import CFDTopUpDemoModal from '../cfd-top-up-demo-modal';
 import CFDProviders from '../../cfd-providers';
 import { mockStore } from '@deriv/stores';
 
-jest.mock('../../Components/success-dialog.jsx', () => () => <div>Success Dialog</div>);
+jest.mock('../../Components/success-dialog', () => jest.fn(() => <div>Success Dialog</div>));
 
 describe('CFDTopUpDemoModal', () => {
     let modal_root_el;
@@ -65,7 +65,7 @@ describe('CFDTopUpDemoModal', () => {
                     },
                 },
                 topUpVirtual: jest.fn(),
-                current_account: { category: 'demo', type: 'financial', balance: '700', display_balance: '700' },
+                current_account: { category: 'demo', type: 'financial', balance: 700 },
             },
         },
         ui: {
@@ -92,7 +92,14 @@ describe('CFDTopUpDemoModal', () => {
         render(<CFDTopUpDemoModal platform={mock_props.platform} />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
         });
-        expect(screen.getByText('700.00')).toBeInTheDocument();
+
+        const top_up_button_element = screen.getByRole('button', { name: /Top up/i });
+        expect(top_up_button_element).toBeInTheDocument();
+
+        const top_up_button_text = top_up_button_element.textContent
+            ?.match(/\d{1,3}(,\d{3})*(\.\d+)?/)?.[0]
+            ?.replace(/,/g, '');
+        expect(top_up_button_text).toBe('10000.00');
     });
 
     it('should disable the top up button if the balance is higher than 1000 USD', () => {
@@ -127,7 +134,7 @@ describe('CFDTopUpDemoModal', () => {
     });
 
     it('should render the success component if the is_top_up_virtual_success is true', () => {
-        mock_props.current_account = { category: 'demo', type: 'financial', balance: 500 };
+        mock_props.modules.cfd.current_account = { category: 'demo', type: 'financial', balance: 500 };
         mock_props.ui.is_top_up_virtual_success = true;
         mock_props.ui.is_top_up_virtual_open = false;
 

@@ -310,7 +310,7 @@ const ChartTrade = observer(props => {
         language: current_language.toLowerCase(),
         position: is_chart_layout_default ? 'bottom' : 'left',
         theme: is_dark_mode_on ? 'dark' : 'light',
-        ...(is_accumulator ? { whitespace: isMobile() ? 160 : 190 } : {}),
+        ...(is_accumulator ? { whitespace: isMobile() ? 240 : 190 } : {}),
     };
 
     const { current_spot, current_spot_time } = accumulator_barriers_data || {};
@@ -342,8 +342,7 @@ const ChartTrade = observer(props => {
     const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;
 
     // max ticks to display for mobile view for tick chart
-    const zero_granularity_max_ticks = is_accumulator ? 20 : 8;
-    const max_ticks = granularity === 0 ? zero_granularity_max_ticks : 24;
+    const max_ticks = granularity === 0 ? 8 : 24;
 
     if (!symbol || active_symbols.length === 0) return null;
 

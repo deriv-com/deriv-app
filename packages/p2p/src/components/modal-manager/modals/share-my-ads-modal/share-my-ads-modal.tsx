@@ -29,29 +29,17 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
 
     const divRef = React.useRef(null);
     const advert_url = `${websiteUrl()}cashier/p2p/advertiser?id=${advertiser_id}&advert_id=${id}`;
-    const custom_message_values = { account_currency, advert_url, local_currency, rate_display };
-    const getCustomMessage = () => {
-        if (rate_type === ad_type.FLOAT) {
-            return type === buy_sell.BUY
-                ? localize(
-                      "Hi! I'd like to exchange {{local_currency}} for {{account_currency}} at {{rate_display}}% on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n\n{{- advert_url}}\n\nThanks!",
-                      custom_message_values
-                  )
-                : localize(
-                      "Hi! I'd like to exchange {{account_currency}} for {{local_currency}} at {{rate_display}}% on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n\n{{- advert_url}}\n\nThanks!",
-                      custom_message_values
-                  );
+    const is_buy_ad = type === buy_sell.BUY;
+    const custom_message = localize(
+        "Hi! I'd like to exchange {{first_currency}} for {{second_currency}} at {{rate_display}}{{rate_type}} on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n\n{{- advert_url}}\n\nThanks!",
+        {
+            first_currency: is_buy_ad ? local_currency : account_currency,
+            second_currency: is_buy_ad ? account_currency : local_currency,
+            rate_display,
+            rate_type: rate_type === ad_type.FLOAT ? '%' : ` ${local_currency}`,
+            advert_url,
         }
-        return type === buy_sell.BUY
-            ? localize(
-                  "Hi! I'd like to exchange {{local_currency}} for {{account_currency}} at {{rate_display}} {{local_currency}} on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n\n{{- advert_url}}\n\nThanks!",
-                  custom_message_values
-              )
-            : localize(
-                  "Hi! I'd like to exchange {{account_currency}} for {{local_currency}} at {{rate_display}} {{local_currency}} on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n\n{{- advert_url}}\n\nThanks!",
-                  custom_message_values
-              );
-    };
+    );
 
     const onCopy = (event: { stopPropagation: () => void }) => {
         copyToClipboard(advert_url);
@@ -72,7 +60,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
 
     const handleShareLink = () => {
         navigator.share({
-            text: getCustomMessage(),
+            text: custom_message,
         });
     };
 
@@ -134,7 +122,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                                 <Text weight='bold'>
                                     <Localize i18n_default_text='Share link to' />
                                 </Text>
-                                <ShareMyAdsSocials advert_url={advert_url} custom_message={getCustomMessage()} />
+                                <ShareMyAdsSocials advert_url={advert_url} custom_message={custom_message} />
                                 <MyProfileSeparatorContainer.Line
                                     className='share-my-ads-modal__line'
                                     is_invisible={false}

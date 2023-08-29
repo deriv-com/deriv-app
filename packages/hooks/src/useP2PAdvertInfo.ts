@@ -14,7 +14,6 @@ const useP2PAdvertInfo = (id: string, options: TSocketRequestQueryOptions<'p2p_a
         if (!p2p_advert_info) return undefined;
 
         return p2p_advert_info;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.p2p_advert_info]);
 
     return {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
-import { get, init, timePromise } from '../../../cashier/src/utils/server_time';
+import { get, init, timePromise } from '../utils/server_time';
 import { isEmptyObject, isMobile, routes, toMoment } from '@deriv/shared';
 import BaseStore from 'Stores/base_store';
 import { localize, Localize } from 'Components/i18next';
@@ -254,7 +254,7 @@ export default class GeneralStore extends BaseStore {
             p2p_advertiser_create: 1,
             name,
         }).then(response => {
-            const { sendbird_store, buy_sell_store } = this.root_store;
+            const { sendbird_store } = this.root_store;
             const { error, p2p_advertiser_create } = response;
             const {
                 daily_buy,
@@ -278,7 +278,6 @@ export default class GeneralStore extends BaseStore {
                 this.setNicknameError(undefined);
                 sendbird_store.handleP2pAdvertiserInfo(response);
                 this.toggleNicknamePopup();
-                buy_sell_store.hideVerification();
             }
         });
     }

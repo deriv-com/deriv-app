@@ -1,12 +1,13 @@
 import { WS } from '@deriv/shared';
-import { queryClient } from './APIProvider';
 import { TSocketEndpointNames, TSocketRequestPayload, TSocketResponseData } from '../types';
 
 export const send = async <T extends TSocketEndpointNames>(
     name: T,
     payload?: TSocketRequestPayload<T>
 ): Promise<TSocketResponseData<T>> => {
-    const response = await WS.send({ [name]: 1, ...(payload || {}) });
+    const target_WS = AUTH_REQUIRED_ENDPOINTS.includes(name) ? WS.authorized : WS;
+
+    const response = await target_WS.send({ [name]: 1, ...(payload || {}) });
 
     if (response.error) {
         throw response.error;
@@ -63,20 +64,3 @@ const AUTH_REQUIRED_ENDPOINTS = [
     'transfer_between_accounts',
     'wallet_migration',
 ];
-
-export const isAuthorized = (name: TSocketEndpointNames) => {
-    let is_authorized = true;
-
-    if (AUTH_REQUIRED_ENDPOINTS.includes(name)) {
-        const accounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
-        const active_loginid = localStorage.getItem('active_loginid');
-        const current_token = accounts?.[active_loginid || '']?.token;
-        const state = queryClient.getQueryState<TSocketResponseData<'authorize'>>([
-            'authorize',
-            JSON.stringify({ authorize: current_token }),
-        ]);
-        is_authorized = Boolean(state?.data?.authorize);
-    }
-
-    return is_authorized;
-};

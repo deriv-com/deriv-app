@@ -145,20 +145,6 @@ export default class BuySellStore extends BaseStore {
             handleResponse: action.bound,
             setIsCreateOrderSubscribed: action.bound,
         });
-
-        reaction(
-            () => this.advert,
-            (new_advert, previous_advert) => {
-                // check to see if the rate is initialized in the store for the first time (when unitialized it is undefined) AND
-                const rate_has_changed = previous_advert?.rate !== new_advert.rate;
-                // check to see if user is not switching between different adverts, it should not trigger rate change modal
-                const is_the_same_advert = previous_advert?.id === new_advert.id;
-                if (rate_has_changed && is_the_same_advert) {
-                    this.root_store.general_store.showModal({ key: 'MarketRateChangeErrorModal' });
-                    this.setFormErrorCode('');
-                }
-            }
-        );
     }
 
     create_order_subscription = {};

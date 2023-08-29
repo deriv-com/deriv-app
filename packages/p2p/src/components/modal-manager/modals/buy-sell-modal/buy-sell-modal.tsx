@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { reaction } from 'mobx';
 import { useHistory, useLocation } from 'react-router-dom';
 import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal, ThemedScrollbars } from '@deriv/components';
 import { routes } from '@deriv/shared';
@@ -76,6 +77,27 @@ const BuySellModal = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_modal_open]);
+
+    React.useEffect(() => {
+        const disposeHasRateChangedReaction = reaction(
+            () => buy_sell_store.advert,
+            (new_advert, previous_advert) => {
+                // check to see if the rate is initialized in the store for the first time (when uninitialized it is undefined) AND
+                const rate_has_changed = previous_advert?.rate !== new_advert.rate;
+                // check to see if user is not switching between different adverts, it should not trigger rate change modal
+                const is_the_same_advert = previous_advert?.id === new_advert.id;
+                if (rate_has_changed && is_the_same_advert) {
+                    general_store.showModal({ key: 'MarketRateChangeErrorModal' });
+                    buy_sell_store.setFormErrorCode('');
+                }
+            }
+        );
+
+        return () => {
+            disposeHasRateChangedReaction();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <React.Fragment>

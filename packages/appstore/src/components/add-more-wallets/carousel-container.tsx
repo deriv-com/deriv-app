@@ -1,7 +1,7 @@
 import React from 'react';
 import useEmblaCarousel, { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel-react';
-import { PrevButton, NextButton } from './carousel-buttons';
 import { observer, useStore } from '@deriv/stores';
+import { PrevButton, NextButton } from './carousel-buttons';
 
 const CarouselContainer: React.FC<React.PropsWithChildren<unknown>> = observer(({ children }) => {
     const { ui } = useStore();

@@ -15,11 +15,11 @@ import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
 import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS, ContentFlag, getStaticUrl, getUrlSmartTrader, getUrlBinaryBot } from '@deriv/shared';
+import { useActiveWallet } from '@deriv/hooks';
 import './trading-app-card.scss';
 
 type TWalletsProps = {
-    is_wallet?: boolean;
-    is_wallet_demo?: boolean;
+    wallet_account?: ReturnType<typeof useActiveWallet>;
 };
 
 const TradingAppCard = ({
@@ -38,8 +38,7 @@ const TradingAppCard = ({
     mt5_acc_auth_status,
     selected_mt5_jurisdiction,
     openFailedVerificationModal,
-    is_wallet,
-    is_wallet_demo,
+    wallet_account,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid & TWalletsProps) => {
     const {
         common,
@@ -49,6 +48,9 @@ const TradingAppCard = ({
     const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
     const { current_language } = common;
     const { is_account_being_created } = cfd;
+
+    const demo_label = localize('Demo');
+    const is_real_account = wallet_account ? !wallet_account.is_virtual : is_real;
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
@@ -108,16 +110,10 @@ const TradingAppCard = ({
             <div className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}>
                 <div className='trading-app-card__details'>
                     <div>
-                        {is_wallet ? (
-                            <Text className='title' size='xs' line_height='s' color='prominent'>
-                                {is_wallet_demo && sub_title ? `${sub_title} ${localize('Demo')}` : sub_title}
-                            </Text>
-                        ) : (
-                            <Text className='title' size='xs' line_height='s' color='prominent'>
-                                {!is_real && sub_title ? `${sub_title} ${localize('Demo')}` : sub_title}
-                            </Text>
-                        )}
-                        {!is_wallet && short_code_and_region && (
+                        <Text className='title' size='xs' line_height='s' color='prominent'>
+                            {!is_real_account && sub_title ? `${sub_title} ${demo_label}` : sub_title}
+                        </Text>
+                        {!wallet_account && short_code_and_region && (
                             <Text
                                 weight='bolder'
                                 size='xxxs'
@@ -128,27 +124,15 @@ const TradingAppCard = ({
                             </Text>
                         )}
                     </div>
-                    {is_wallet ? (
-                        <Text
-                            className='title'
-                            size='xs'
-                            line_height='s'
-                            weight='bold'
-                            color={action_type === 'trade' ? 'prominent' : 'general'}
-                        >
-                            {is_wallet_demo && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
-                        </Text>
-                    ) : (
-                        <Text
-                            className='title'
-                            size='xs'
-                            line_height='s'
-                            weight='bold'
-                            color={action_type === 'trade' ? 'prominent' : 'general'}
-                        >
-                            {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
-                        </Text>
-                    )}
+                    <Text
+                        className='title'
+                        size='xs'
+                        line_height='s'
+                        weight='bold'
+                        color={action_type === 'trade' ? 'prominent' : 'general'}
+                    >
+                        {!is_real_account && !sub_title && !is_deriv_platform ? `${name} ${demo_label}` : name}
+                    </Text>
                     <Text className='description' color={'general'} size='xxs' line_height='m'>
                         {app_desc}
                     </Text>

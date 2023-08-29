@@ -151,7 +151,7 @@ const CFDsListing = observer(() => {
             title={
                 !isMobile() && (
                     <div className='cfd-accounts__title'>
-                        <Text size='sm' line_height='m' weight='bold' color='prominent'>
+                        <Text size='sm' weight='bold' color='prominent'>
                             {localize('CFDs')}
                         </Text>
                         <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>

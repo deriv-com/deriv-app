@@ -86,7 +86,7 @@ describe('TransferAccountList', () => {
     it('Should render proper amount of transfer accounts', () => {
         render(<TransferAccountList {...mocked_props} />);
 
-        expect(screen.getAllByText('WalletTransferTile').length).toBe(3);
+        expect(screen.getAllByText('WalletTransferTile')).toHaveLength(3);
     });
 
     it('Should render transfer hint for Wallets account list', () => {

@@ -57,7 +57,7 @@ const ToggleCardDialog = ({
     const [is_visible, setIsVisible] = React.useState(false);
     const [top, setTop] = React.useState(0);
     const [left, setLeft] = React.useState(0);
-    const [is_do_not_show_selected, setIsDoNotShowSelected] = React.useState(!should_show_cancellation_warning);
+    const [should_hide_selected, setShouldHideSelected] = React.useState(!should_show_cancellation_warning);
 
     const toggle_ref = React.useRef<HTMLDivElement>(null);
     const dialog_ref = React.useRef<HTMLDivElement>(null);
@@ -94,13 +94,13 @@ const ToggleCardDialog = ({
     };
 
     const onPopoverClose = () => {
-        if (is_do_not_show_selected) {
+        if (should_hide_selected) {
             toggleCancellationWarning?.();
         }
     };
 
     const onPopoverCheckboxChange = () => {
-        setIsDoNotShowSelected(!is_do_not_show_selected);
+        setShouldHideSelected(!should_hide_selected);
     };
 
     const toggleDialog = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -140,7 +140,7 @@ const ToggleCardDialog = ({
                 zIndex='2'
                 message={
                     <PopoverMessageCheckbox
-                        defaultChecked={is_do_not_show_selected}
+                        defaultChecked={should_hide_selected}
                         checkboxLabel={getCardLabels().DONT_SHOW_THIS_AGAIN}
                         message={getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE}
                         name='should_show_cancellation_warning'

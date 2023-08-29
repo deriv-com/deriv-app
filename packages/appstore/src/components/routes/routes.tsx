@@ -29,8 +29,8 @@ const Routes: React.FC = observer(() => {
             <Switch>
                 <RouteWithSubroutes
                     path={'/appstore/traders-hub'}
-                    component={is_next_wallet_enabled ? Wallets : should_show_wallets ? WalletsModule : TradersHub}
-                    getTitle={() => localize('TradersHub')}
+                    component={should_show_wallets ? WalletsModule : TradersHub}
+                    getTitle={() => localize("Trader's Hub")}
                 />
                 <RouteWithSubroutes
                     path={'/appstore/onboarding'}

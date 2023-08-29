@@ -1,14 +1,14 @@
 .wallets-migration-failed {
     padding: 2.4rem !important;
 
-    &--mobile {
+    @include mobile {
         padding: 1.6rem !important;
     }
 
     &__title {
         margin-bottom: 2.4rem;
 
-        &--mobile {
+        @include mobile {
             margin-bottom: 1.6rem;
         }
     }
@@ -16,13 +16,13 @@
     &__footer {
         padding: 0 2.4rem 2.4rem;
 
-        &--mobile {
+        @include mobile {
             padding: 0 1.6rem 1.6rem;
         }
     }
 
     &__text {
-        &--mobile {
+        @include mobile {
             font-size: 1.2rem !important;
         }
     }

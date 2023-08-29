@@ -26,8 +26,8 @@ describe('groupTransactionsByDay', () => {
 
         const grouped_transactions = groupTransactionsByDay(transactions);
 
-        expect(transactions.length).toBe(6);
-        expect(Object.keys(grouped_transactions).length).toBe(3);
+        expect(transactions).toHaveLength(6);
+        expect(Object.keys(grouped_transactions)).toHaveLength(3);
         expect(Object.keys(grouped_transactions)).toStrictEqual(['08 Jun 2023', '10 Jun 2023', '12 Jun 2023']);
     });
 });

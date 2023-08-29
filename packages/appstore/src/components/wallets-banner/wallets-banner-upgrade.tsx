@@ -2,7 +2,7 @@ import React from 'react';
 import WalletsImage from 'Assets/svgs/wallets';
 import { Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { TWalletsImagesListKeys } from 'Assets/svgs/wallets/image-types';
+import { TWalletsImagesListKey } from 'Assets/svgs/wallets/image-types';
 import { observer, useStore } from '@deriv/stores';
 
 const WalletsBannerUpgrade = observer(() => {
@@ -10,7 +10,7 @@ const WalletsBannerUpgrade = observer(() => {
     const { toggleWalletsUpgrade } = traders_hub;
     const { is_mobile } = ui;
 
-    const image: TWalletsImagesListKeys = is_mobile ? 'upgrade_mobile' : 'upgrade_desktop';
+    const image: TWalletsImagesListKey = is_mobile ? 'upgrade_mobile' : 'upgrade_desktop';
     const size: string = is_mobile ? 'xs' : 'm';
 
     return (

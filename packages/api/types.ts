@@ -734,7 +734,11 @@ type TSocketEndpoints = {
         response: LandingCompanyDetailsResponse;
     };
     landing_company: {
-        request: LandingCompanyRequest;
+        // TODO: Fix typings of this endpoint, because landing_company payload should be a string instead of LandingCompany interface
+        request: Omit<LandingCompanyRequest, 'landing_company'> & {
+            /** Client's 2-letter country code (obtained from `residence_list` call). */
+            landing_company: string;
+        };
         response: LandingCompanyResponse;
     };
     login_history: {
@@ -1100,3 +1104,8 @@ export type TSocketAcceptableProps<T extends TSocketEndpointNames, O extends boo
     : Partial<TSocketRequestProps<T, O>> extends TSocketRequestProps<T, O>
     ? [TSocketRequestProps<T, O>?]
     : [TSocketRequestProps<T, O>];
+
+export type TSocketPaginateableEndpointNames = KeysMatching<
+    TSocketEndpoints,
+    { request: { limit?: number; offset?: number } }
+>;

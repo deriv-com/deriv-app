@@ -69,6 +69,16 @@ jest.mock('@deriv/api', () => ({
                     },
                 },
             };
+        } else if (name === 'crypto_config') {
+            return {
+                data: {
+                    crypto_config: {
+                        currencies_config: {
+                            BTC: {},
+                        },
+                    },
+                },
+            };
         }
 
         return undefined;

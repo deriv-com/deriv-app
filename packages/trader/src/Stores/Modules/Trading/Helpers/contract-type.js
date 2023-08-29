@@ -113,15 +113,25 @@ export const ContractType = (() => {
             symbol,
             short_barriers,
             long_barriers,
+            strike_price_choices,
         } = store;
 
         if (!contract_type) return {};
 
-        let stored_barriers_data = {};
-        if (getContractSubtype(contract_type) === 'Short') {
-            stored_barriers_data = short_barriers;
-        } else if (getContractSubtype(contract_type) === 'Long') {
-            stored_barriers_data = long_barriers;
+        let stored_barriers_data;
+        switch (getContractSubtype(contract_type)) {
+            case 'Short':
+                stored_barriers_data = short_barriers;
+                break;
+            case 'Long':
+                stored_barriers_data = long_barriers;
+                break;
+            case 'Call':
+            case 'Put':
+                stored_barriers_data = strike_price_choices;
+                break;
+            default:
+                stored_barriers_data = {};
         }
 
         const form_components = getComponents(contract_type);

@@ -156,6 +156,9 @@ export default class TradeStore extends BaseStore {
     long_barriers = {};
     short_barriers = {};
 
+    // Vanilla trade params
+    strike_price_choices = {};
+
     // Mobile
     is_trade_params_expanded = true;
 
@@ -192,6 +195,7 @@ export default class TradeStore extends BaseStore {
             'hovered_barrier',
             'short_barriers',
             'long_barriers',
+            'strike_price_choices',
             'is_equal',
             'last_digit',
             'multiplier',
@@ -278,6 +282,7 @@ export default class TradeStore extends BaseStore {
             start_date: observable,
             start_dates_list: observable,
             start_time: observable,
+            strike_price_choices: observable,
             stop_loss: observable,
             stop_out: observable,
             symbol: observable,
@@ -1444,6 +1449,7 @@ export default class TradeStore extends BaseStore {
             this.prev_chart_layout.is_used = false;
         }
         this.resetAccumulatorData();
+        this.setBarrierChoices([]);
     }
 
     prev_chart_layout = null;
@@ -1611,6 +1617,9 @@ export default class TradeStore extends BaseStore {
             } else {
                 this.short_barriers = stored_barriers_data;
             }
+        }
+        if (this.is_vanilla) {
+            this.strike_price_choices = { barrier: this.barrier_1, barrier_choices };
         }
     }
 

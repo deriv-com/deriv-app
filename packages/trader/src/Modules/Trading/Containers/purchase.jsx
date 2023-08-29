@@ -90,8 +90,9 @@ const Purchase = observer(({ is_market_closed }) => {
                     components.push(purchase_fieldset);
                     break;
             }
+        } else if (contract_type.toUpperCase() === type) {
+            components.push(purchase_fieldset);
         }
-        components.push(purchase_fieldset);
     });
 
     const should_disable_accu_purchase =

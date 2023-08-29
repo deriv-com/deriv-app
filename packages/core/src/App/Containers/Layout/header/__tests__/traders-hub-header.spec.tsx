@@ -1,4 +1,5 @@
 import React from 'react';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import TradersHubHeader from '../traders-hub-header';
@@ -23,8 +24,6 @@ jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
     return {
         ...original_module,
-        // DesktopWrapper: children => <div>MockedDesktopWrapper{children}</div>,
-        // MobileWrapper: jest.fn(() => <div>MockedMobileWrapper</div>),
         Icon: jest.fn(() => 'MockedIcon'),
         StaticUrl: jest.fn(() => 'MockedStaticUrl'),
         Popover: jest.fn(props => <span>{props.message}</span>),
@@ -95,5 +94,12 @@ describe('TradersHubHeader', () => {
     it('should render "Manage account settings" option in the header', () => {
         renderComponent();
         expect(screen.getByText('Manage account settings')).toBeInTheDocument();
+    });
+
+    it('should render the Cashier button in mobile view', () => {
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
+        renderComponent();
+        expect(screen.getByRole('button', { name: 'Cashier' })).toBeInTheDocument();
     });
 });

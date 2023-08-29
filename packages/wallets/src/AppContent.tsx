@@ -1,9 +1,7 @@
 import React from 'react';
-import { useFetch } from '@deriv/api';
+import WalletsCarousel from './components/WalletCarousel';
 
 const AppContent: React.FC = () => {
-    const { data } = useFetch('time', { options: { refetchInterval: 1000 } });
-
     return (
         <div
             style={{
@@ -16,10 +14,7 @@ const AppContent: React.FC = () => {
                 fontSize: 30,
             }}
         >
-            <h1>Server Time</h1>
-            <br />
-            <br />
-            {data?.time && <h1>{new Date(data?.time * 1000).toLocaleString()}</h1>}
+            <WalletsCarousel />
         </div>
     );
 };

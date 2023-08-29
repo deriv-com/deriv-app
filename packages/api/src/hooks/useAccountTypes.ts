@@ -7,9 +7,8 @@ import useFetch from '../useFetch';
  *  @param landing_company {string} - The landing company shortcode
  */
 const useAccountTypes = (landing_company?: string) => {
-    const { data } = useFetch('get_account_types', {
+    const { data, ...rest } = useFetch('get_account_types', {
         payload: { company: landing_company },
-        options: { enabled: Boolean(landing_company) },
     });
 
     const modified_data = useMemo(() => {
@@ -21,11 +20,11 @@ const useAccountTypes = (landing_company?: string) => {
             /** Landing company for the account types */
             landing_company,
         };
-    }, [data?.get_account_types]);
+    }, [data?.get_account_types, landing_company]);
 
     return {
-        /** Object of available account types for the current landing company */
         data: modified_data,
+        ...rest,
     };
 };
 

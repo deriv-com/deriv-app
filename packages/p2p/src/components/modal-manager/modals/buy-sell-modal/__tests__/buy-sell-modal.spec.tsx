@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
+import { screen, render, act, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
@@ -44,6 +44,7 @@ describe('<BuySellModal />', () => {
                     advertiser_details: {
                         name: 'test',
                     },
+                    rate: 1,
                 },
                 selected_ad_state: {
                     account_currency: 'USD',
@@ -51,6 +52,7 @@ describe('<BuySellModal />', () => {
                 table_type: 'buy',
                 fetchAdvertiserAdverts: jest.fn(),
                 is_buy_advert: true,
+                setFormErrorCode: jest.fn(),
             },
             floating_rate_store: {
                 setIsMarketRateChanged: jest.fn(),
@@ -131,6 +133,19 @@ describe('<BuySellModal />', () => {
         userEvent.click(confirm_button);
 
         expect(submitFormSpy).toHaveBeenCalled();
+    });
+
+    it('should call showModal and setFormErrorCode when advert rate has changed', async () => {
+        render(<BuySellModal />);
+
+        act(() => {
+            mock_store.buy_sell_store.advert.rate = 2;
+        });
+
+        await waitFor(() => {
+            expect(mock_modal_manager.showModal).toHaveBeenCalledWith({ key: 'MarketRateChangeErrorModal', props: {} });
+            expect(mock_store.buy_sell_store.setFormErrorCode).toHaveBeenCalledWith('');
+        });
     });
 
     it('should setErrorMessage to empty string if is_modal_open is false', () => {

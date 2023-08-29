@@ -87,10 +87,11 @@ const BuySellModal = () => {
                 // check to see if user is not switching between different adverts, it should not trigger rate change modal
                 const is_the_same_advert = previous_advert?.id === new_advert.id;
                 if (rate_has_changed && is_the_same_advert) {
-                    general_store.showModal({ key: 'MarketRateChangeErrorModal' });
+                    showModal({ key: 'MarketRateChangeErrorModal', props: {} });
                     buy_sell_store.setFormErrorCode('');
                 }
-            }
+            },
+            { fireImmediately: true }
         );
 
         return () => {

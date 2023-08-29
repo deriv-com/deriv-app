@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
+import { VANILLALONG, TURBOS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import AccumulatorTradeDescription from './accumulator-trade-description';
 import { TurbosTradeDescription } from './turbos-trade-description';
@@ -430,12 +431,12 @@ const TradeCategories = ({ category, onClick }: { category?: string; onClick: ()
                     </React.Fragment>
                 );
                 break;
-            case 'turbosshort':
-            case 'turboslong':
+            case TURBOS.LONG:
+            case TURBOS.SHORT:
                 TradeTypeTemplate = <TurbosTradeDescription />;
                 break;
-            case 'vanillalongcall':
-            case 'vanillalongput':
+            case VANILLALONG.CALL:
+            case VANILLALONG.PUT:
                 TradeTypeTemplate = (
                     <React.Fragment>
                         <Text as='p'>

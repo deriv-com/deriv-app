@@ -109,10 +109,7 @@ const Amount = observer(({ is_minimized, is_nativepicker }) => {
         <Fieldset
             className='trade-container__fieldset center-text'
             header={
-                is_multiplier ||
-                ['high_low', 'vanillalongcall', 'vanillalongput'].includes(contract_type) ||
-                is_accumulator ||
-                is_turbos
+                contract_type === 'high_low' || is_multiplier || is_accumulator || is_vanilla || is_turbos
                     ? localize('Stake')
                     : undefined
             }

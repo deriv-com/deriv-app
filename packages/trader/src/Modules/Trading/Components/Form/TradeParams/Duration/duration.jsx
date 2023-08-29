@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import { Dropdown } from '@deriv/components';
-import { toMoment } from '@deriv/shared';
+import { toMoment, VANILLALONG } from '@deriv/shared';
 import DurationToggle from './duration-toggle.jsx';
 import AdvancedDuration from './advanced-duration.jsx';
 import SimpleDuration from './simple-duration.jsx';
@@ -38,7 +38,7 @@ const Duration = ({
     start_date,
 }) => {
     React.useEffect(() => {
-        if (contract_type === 'vanillalongcall' || contract_type === 'vanillalongput') {
+        if (contract_type === VANILLALONG.CALL || contract_type === VANILLALONG.PUT) {
             onToggleDurationType({ target: { value: true, name: 'is_advanced_duration' } });
         }
     }, [contract_type]);

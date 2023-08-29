@@ -29,7 +29,6 @@ const Purchase = observer(({ is_market_closed }) => {
         purchase_info,
         symbol,
         validation_errors,
-        vanilla_trade_type,
         trade_types,
         is_trade_enabled,
     } = useTraderStore();
@@ -91,9 +90,8 @@ const Purchase = observer(({ is_market_closed }) => {
                     components.push(purchase_fieldset);
                     break;
             }
-        } else if (vanilla_trade_type === type) {
-            components.push(purchase_fieldset);
         }
+        components.push(purchase_fieldset);
     });
 
     const should_disable_accu_purchase =

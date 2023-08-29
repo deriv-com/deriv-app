@@ -16,7 +16,6 @@ describe('Trade Type Tabs', () => {
                         mock_root_store.modules.trade.contract_type = 'turbosshort';
                     }
                 }),
-                vanilla_trade_type: 'VANILLALONGCALL',
             },
         },
     };
@@ -36,7 +35,7 @@ describe('Trade Type Tabs', () => {
         });
     });
 
-    it('should render Call & Put tabs when contract_type = vanilla, and vanilla_trade_type = VANILLALONGCALL', () => {
+    it('should render Call & Put tabs when contract_type = vanilla', () => {
         if (mock_root_store.modules) {
             mock_root_store.modules.trade.contract_type = 'vanillalongcall';
         }

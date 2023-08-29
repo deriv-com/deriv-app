@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import BarriersList from './barriers-list';
 import { DesktopWrapper, InputField, MobileWrapper, Dropdown, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { toMoment } from '@deriv/shared';
+import { getContractSubtype, toMoment } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';
 import { observer, useStore } from '@deriv/stores';
@@ -13,12 +13,12 @@ const Strike = observer(() => {
     const { ui, common } = useStore();
     const {
         barrier_1,
+        contract_type,
         onChange,
         validation_errors,
         barrier_choices: strike_price_choices,
         expiry_type,
         expiry_date,
-        vanilla_trade_type,
     } = useTraderStore();
     const { current_focus, setCurrentFocus, advanced_duration_unit } = ui;
     const { server_time } = common;
@@ -54,10 +54,11 @@ const Strike = observer(() => {
                             i18n_default_text='If you buy a "<0>{{trade_type}}</0>" option, you receive a payout at expiry if the final price is {{payout_status}} the strike price. Otherwise, your “<0>{{trade_type}}</0>” option will expire worthless.'
                             components={[<strong key={0} />]}
                             values={{
-                                trade_type:
-                                    vanilla_trade_type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
+                                trade_type: localize(getContractSubtype(contract_type)),
                                 payout_status:
-                                    vanilla_trade_type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
+                                    getContractSubtype(contract_type) === 'Call'
+                                        ? localize('above')
+                                        : localize('below'),
                             }}
                         />
                     }
@@ -125,13 +126,13 @@ const Strike = observer(() => {
                         <div className='mobile-widget__type'>{localize('Strike price')}</div>
                     </div>
                     <StrikeParamModal
+                        contract_subtype={getContractSubtype(contract_type)}
                         is_open={is_open}
                         toggleModal={toggleWidget}
                         strike={barrier_1}
                         onChange={onChange}
                         name='barrier_1'
                         strike_price_list={strike_price_list}
-                        vanilla_trade_type={vanilla_trade_type}
                     />
                 </div>
             </MobileWrapper>

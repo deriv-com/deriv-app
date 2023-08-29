@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon } from '@deriv/components';
+import { VANILLALONG, TURBOS } from '@deriv/shared';
 
 type TIconTradeCategory = {
     category: string;
@@ -219,8 +220,8 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </div>
                 );
                 break;
-            case 'turboslong':
-            case 'turbosshort':
+            case TURBOS.LONG:
+            case TURBOS.SHORT:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -232,8 +233,8 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'vanillalongcall':
-            case 'vanillalongput':
+            case VANILLALONG.CALL:
+            case VANILLALONG.PUT:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>

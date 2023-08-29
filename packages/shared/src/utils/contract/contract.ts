@@ -14,9 +14,15 @@ type TGetAccuBarriersDTraderTimeout = (params: {
 export const DELAY_TIME_1S_SYMBOL = 500;
 // generation_interval will be provided via API later to help us distinguish between 1-second and 2-second symbols
 export const symbols_2s = ['R_10', 'R_25', 'R_50', 'R_75', 'R_100'];
+
 export const TURBOS = {
     LONG: 'turboslong',
     SHORT: 'turbosshort',
+} as const;
+
+export const VANILLALONG = {
+    CALL: 'vanillalongcall',
+    PUT: 'vanillalongput',
 } as const;
 
 export const getContractStatus = ({ contract_type, exit_tick_time, profit, status }: TContractInfo) => {

@@ -3,7 +3,7 @@ import React from 'react';
 import { Money, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
-import { isMobile, isVanillaContract } from '@deriv/shared';
+import { isMobile } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 type TMinMaxStakeInfo = {
@@ -12,12 +12,9 @@ type TMinMaxStakeInfo = {
 type TStakeBoundary = { [key: string]: { min_stake: number; max_stake: number } };
 
 const MinMaxStakeInfo = observer(({ className }: TMinMaxStakeInfo) => {
-    const { contract_type, currency, stake_boundary, vanilla_trade_type } = useTraderStore();
+    const { contract_type, currency, stake_boundary } = useTraderStore();
     // remove assertion and local TStakeBoundary type after TS migration for trade package is complete
-    const { min_stake, max_stake } =
-        (isVanillaContract(contract_type)
-            ? (stake_boundary as TStakeBoundary)[vanilla_trade_type]
-            : (stake_boundary as TStakeBoundary)[contract_type.toUpperCase()]) || {};
+    const { min_stake, max_stake } = (stake_boundary as TStakeBoundary)[contract_type.toUpperCase()] || {};
 
     return (
         <section className={classNames('trade-container__stake-field', className)}>

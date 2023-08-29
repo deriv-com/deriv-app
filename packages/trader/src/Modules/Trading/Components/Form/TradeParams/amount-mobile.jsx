@@ -4,7 +4,7 @@ import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Localize, localize } from '@deriv/translations';
 import { Money, Numpad, Tabs } from '@deriv/components';
-import { getDecimalPlaces, isEmptyObject } from '@deriv/shared';
+import { getDecimalPlaces, isEmptyObject, VANILLALONG } from '@deriv/shared';
 import MinMaxStakeInfo from './min-max-stake-info';
 
 const Basis = observer(
@@ -80,7 +80,7 @@ const Basis = observer(
                     {(is_turbos || is_vanilla) && <MinMaxStakeInfo />}
                     <div
                         className={classNames('trade-params__amount-keypad', {
-                            strike__pos: contract_type === 'vanillalongcall' || contract_type === 'vanillalongput',
+                            strike__pos: contract_type === VANILLALONG.CALL || contract_type === VANILLALONG.PUT,
                         })}
                     >
                         <Numpad

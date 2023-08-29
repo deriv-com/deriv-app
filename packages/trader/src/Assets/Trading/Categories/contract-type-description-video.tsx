@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { getUrlBase, isMobile } from '@deriv/shared';
+import { getUrlBase, isMobile, VANILLALONG } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 
 type TContractTypeDescriptionVideo = {
@@ -9,12 +9,19 @@ type TContractTypeDescriptionVideo = {
 };
 
 const ContractTypeDescriptionVideo = ({ selected_contract_type, data_testid }: TContractTypeDescriptionVideo) => {
-    let contract_name = selected_contract_type;
-    if (selected_contract_type === 'vanillalongcall' || selected_contract_type === 'vanillalongput') {
-        contract_name = 'vanilla';
-    }
     const { ui } = useStore();
     const { is_dark_mode_on: is_dark_theme } = ui;
+
+    let contract_name: string | undefined;
+    switch (selected_contract_type) {
+        case VANILLALONG.CALL:
+        case VANILLALONG.PUT:
+            contract_name = 'vanilla';
+            break;
+        default:
+            contract_name = selected_contract_type;
+            break;
+    }
     const getVideoSource = React.useCallback(
         (extension: 'mp4' | 'webm') => {
             return getUrlBase(

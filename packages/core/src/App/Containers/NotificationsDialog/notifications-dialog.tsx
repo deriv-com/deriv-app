@@ -3,7 +3,7 @@ import { CSSTransition } from 'react-transition-group';
 import { DesktopWrapper, MobileDialog, MobileWrapper, useOnClickOutside } from '@deriv/components';
 import { LocalStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import NotificationListWrapper from './notification-list-wrapper';
 
 const NotificationsDialog = observer(() => {
@@ -57,7 +57,7 @@ const NotificationsDialog = observer(() => {
             <MobileWrapper>
                 <MobileDialog
                     portal_element_id='modal_root'
-                    title={localize('Notifications')}
+                    title={<Localize i18n_default_text='Notifications' />}
                     wrapper_classname='notifications-mobile-dialog'
                     visible={is_notifications_visible}
                     onClose={toggleNotificationsModal}

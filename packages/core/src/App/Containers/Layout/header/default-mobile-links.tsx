@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Icon, Popover } from '@deriv/components';
 import { routes } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import ShowNotifications from './show-notifications';
 import TradersHubOnboarding from './traders-hub-onboarding';
@@ -21,7 +21,7 @@ const DefaultMobileLinks = ({ handleClickCashier }: TDefaultMobileLinks) => (
         <Popover
             alignment='bottom'
             classNameBubble='account-settings-toggle__tooltip'
-            message={localize('Manage account settings')}
+            message={<Localize i18n_default_text='Manage account settings' />}
             should_disable_pointer_events
             zIndex='9999'
         >

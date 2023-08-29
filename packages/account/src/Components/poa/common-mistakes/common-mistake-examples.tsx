@@ -7,7 +7,7 @@ import IcErrorBadge from '../../../Assets/ic-error-badge.svg';
 import './common-mistake-examples.scss';
 
 type TCommonMistakeExamplePartialsProps = {
-    description: string;
+    description: JSX.Element;
     image: React.ReactElement;
 };
 

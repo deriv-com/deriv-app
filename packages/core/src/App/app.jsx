@@ -38,9 +38,6 @@ import '@deriv/deriv-charts/dist/smartcharts.css';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
 
-// eslint-disable-next-line
-console.log(process.env.RUDDERSTACK_URL, process.env.RUDDERSTACK_STAGING_KEY, process.env.RUDDERSTACK_PRODUCTION_KEY);
-
 const AppWithoutTranslation = ({ root_store }) => {
     const l = window.location;
     const base = l.pathname.split('/')[1];

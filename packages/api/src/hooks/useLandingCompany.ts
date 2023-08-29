@@ -10,21 +10,16 @@ const useLandingCompany = () => {
         options: { enabled: Boolean(settings_data?.country_code) },
     });
 
-    const modified_data = useMemo(() => {
+    // Add additional information to the landing company response.
+    const modified_landing_company = useMemo(() => {
         if (!data?.landing_company) return;
-        const { financial_company, virtual_company } = data.landing_company;
-        return {
-            ...data.landing_company,
-            /** Short code of financial landing company */
-            financial_company_shortcode: financial_company?.shortcode,
-            /** Short code of virtual landing company */
-            virtual_company_shortcode: virtual_company,
-        };
+
+        return { ...data.landing_company };
     }, [data?.landing_company]);
 
     return {
-        /** List of available landing companies */
-        data: modified_data,
+        /** The landing company response. */
+        data: modified_landing_company,
         ...rest,
     };
 };

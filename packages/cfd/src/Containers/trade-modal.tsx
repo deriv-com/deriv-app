@@ -259,11 +259,21 @@ const TradeModal = ({
             <div className='cfd-trade-modal__download-center-options'>
                 <div className='cfd-trade-modal__download-center-options--mobile-links'>
                     <div className='cfd-trade-modal__download-center-options--mobile-links--apple'>
-                        <a href={mobileDownloadLink(platform, 'ios')} target='_blank' rel='noopener noreferrer'>
+                        <a
+                            href={mobileDownloadLink(platform, 'ios')}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            style={platform === CFD_PLATFORMS.CTRADER ? { pointerEvents: 'none' } : {}}
+                        >
                             <Icon icon='IcInstallationApple' width={isMobile() ? '160' : '130'} height={40} />
                         </a>
                     </div>
-                    <a href={mobileDownloadLink(platform, 'android')} target='_blank' rel='noopener noreferrer'>
+                    <a
+                        href={mobileDownloadLink(platform, 'android')}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        style={platform === CFD_PLATFORMS.CTRADER ? { pointerEvents: 'none' } : {}}
+                    >
                         <Icon icon='IcInstallationGoogle' width={135} height={40} />
                     </a>
                     {platform !== CFD_PLATFORMS.CTRADER && (

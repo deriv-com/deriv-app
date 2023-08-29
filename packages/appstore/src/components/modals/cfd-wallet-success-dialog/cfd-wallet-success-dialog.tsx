@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button, Modal, Text, WalletCFDCard } from '@deriv/components';
+import { Button, Modal, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
+import WalletCFDCard from 'Components/wallet-cfd-card';
 import './cfd-wallet-success-dialog.scss';
 
 type TCFDWalletSuccessDialog = {

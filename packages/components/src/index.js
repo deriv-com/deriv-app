@@ -117,7 +117,6 @@ export { default as UILoader } from './components/u-i-loader';
 export { default as UnhandledErrorModal } from './components/unhandled-error-modal';
 export { default as VerticalTab } from './components/vertical-tab';
 export { default as Wizard } from './components/wizard';
-export { default as WalletCFDCard } from './components/wallet-cfd-card';
 export * from './components/wallet-card';
 export * from './components/wallet-icon';
 export * from './components/app-linked-with-wallet-icon';

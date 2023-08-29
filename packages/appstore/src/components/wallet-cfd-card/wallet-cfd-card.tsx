@@ -1,7 +1,7 @@
 import React from 'react';
-import Text from '../text';
-import { WalletIcon } from '../wallet-icon';
-import TradingPlatformIcon from './TradingPlatformIcon';
+import Text from '../../../../components/src/components/text';
+import { WalletIcon } from '../../../../components/src/components/wallet-icon';
+import TradingPlatformIcon from 'Assets/svgs/trading-platform';
 import { isMobile } from '@deriv/shared';
 import './wallet-cfd-card.scss';
 

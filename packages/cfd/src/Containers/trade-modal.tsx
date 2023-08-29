@@ -42,7 +42,7 @@ const PlatformIconsAndDescriptions = (
                         i18n_default_text='Deriv {{platform}} <0>{{is_demo}}</0>'
                         values={{
                             platform: platformsText(platform),
-                            is_demo: is_demo ? 'Demo' : '',
+                            is_demo: is_demo && platform === CFD_PLATFORMS.CTRADER ? 'Demo' : '',
                         }}
                         components={[<span key={0} className={CFD_PLATFORMS.CTRADER ? 'cfd-trade-modal--tag' : ''} />]}
                     />

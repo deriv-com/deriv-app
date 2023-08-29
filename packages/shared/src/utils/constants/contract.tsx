@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
-import { shouldShowCancellation, shouldShowExpiration, TURBOS } from '../contract';
+import { shouldShowCancellation, shouldShowExpiration, TURBOS, VANILLALONG } from '../contract';
 
 export const getLocalizedBasis = () => ({
     accumulator: localize('Accumulators'),
@@ -182,7 +182,7 @@ export const getContractCategoriesConfig = () => ({
     'Ins & Outs': { name: localize('Ins & Outs'), categories: ['end', 'stay'] },
     'Look Backs': { name: localize('Look Backs'), categories: ['lb_high_low', 'lb_put', 'lb_call'] },
     Digits: { name: localize('Digits'), categories: ['match_diff', 'even_odd', 'over_under'] },
-    Vanillas: { name: localize('Vanillas'), categories: ['vanillalongcall', 'vanillalongput'] },
+    Vanillas: { name: localize('Vanillas'), categories: [VANILLALONG.CALL, VANILLALONG.PUT] },
     Accumulators: { name: localize('Accumulators'), categories: ['accumulator'] },
 });
 

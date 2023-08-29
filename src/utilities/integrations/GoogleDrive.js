@@ -169,11 +169,13 @@ class GoogleDriveUtil {
                 this.client.requestAccessToken({ prompt: '' });
             }
 
-            const error = new TrackJSError(
-                'GoogleDrive',
-                translate('There was an error listing files from Google Drive'),
-                err
+            const error = translate('There was an error listing files from Google Drive');
+
+            errLogger(
+                JSON.stringify(err, ['message', 'arguments', 'type', 'name']),
+                translate('There was an error listing files from Google Drive')
             );
+
             globalObserver.emit('Error', error);
         }
     };

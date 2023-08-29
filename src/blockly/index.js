@@ -398,14 +398,16 @@ export default class _Blockly {
     resetAccount() {
         const all_blocks = Blockly?.mainWorkspace?.getAllBlocks();
         const trade_option_block = all_blocks.find(block => block.type === 'tradeOptions');
-        const currency_field = trade_option_block.getField('CURRENCY_LIST');
-        const active_account = getActiveAccount();
+        if (trade_option_block) {
+            const currency_field = trade_option_block.getField('CURRENCY_LIST');
+            const active_account = getActiveAccount();
 
-        if (currency_field && active_account) {
-            // eslint-disable-next-line no-underscore-dangle
-            currency_field.text_ = active_account?.currency;
-            // eslint-disable-next-line no-underscore-dangle
-            currency_field.render_();
+            if (currency_field && active_account) {
+                // eslint-disable-next-line no-underscore-dangle
+                currency_field.text_ = active_account?.currency;
+                // eslint-disable-next-line no-underscore-dangle
+                currency_field.render_();
+            }
         }
     }
     /* eslint-disable class-methods-use-this */

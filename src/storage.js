@@ -192,14 +192,10 @@ export const getActiveAccount = () => {
 
 export const getLanguage = () => {
     const parsed_url = parseQueryString().lang || parseQueryString().l;
-    const parsed_valid_url =
-        parsed_url?.length > 1 ? document.location.search.match(/(lang|l)=([a-z]{2})/)[2] : parsed_url;
-
-    const lang = getLang();
-    const supported_storage_lang = lang in supported_languages ? lang : null;
+    const supported_storage_lang = getLang() in supported_languages ? getLang() : null;
     const get_cookie_lang = Cookies.get('user_language');
     const getUserLang = () => {
-        if (parsed_valid_url) return parsed_valid_url;
+        if (parsed_url) return parsed_url;
         if (supported_storage_lang) return supported_storage_lang;
         if (get_cookie_lang) return get_cookie_lang;
         return 'en';

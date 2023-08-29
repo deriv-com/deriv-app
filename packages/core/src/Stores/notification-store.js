@@ -345,7 +345,7 @@ export default class NotificationStore extends BaseStore {
 
             this.handlePOAAddressMismatchNotifications();
 
-            if (status?.mt5_additional_kyc_required)
+            if (!status?.mt5_additional_kyc_required)
                 this.addNotificationMessage(this.client_notifications.additional_kyc_info);
 
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
@@ -1545,9 +1545,13 @@ export default class NotificationStore extends BaseStore {
                 message: (
                     <Localize i18n_default_text='We require additional information for your Deriv MT5 account(s). Please take a moment to update your information now.' />
                 ),
+                should_show_again: true,
                 action: {
                     text: localize('Update now'),
-                    onClick: () => ui.toggleAdditionalKycInfoModal(),
+                    onClick: () => {
+                        ui.toggleAdditionalKycInfoModal();
+                        this.markNotificationMessage({ key: 'additional_kyc_info' });
+                    },
                 },
                 type: 'warning',
             },

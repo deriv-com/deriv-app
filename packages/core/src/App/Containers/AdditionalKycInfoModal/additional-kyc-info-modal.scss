@@ -1,0 +1,29 @@
+.dc-modal {
+    &-header {
+        border-bottom: 2px solid var(--general-section-1);
+    }
+}
+
+.dc-page-overlay {
+    &__header {
+        padding: 2.5rem 2rem;
+
+        &-close {
+            position: inherit;
+            right: 0;
+        }
+    }
+
+    &__content {
+        padding: 2rem;
+    }
+
+    .additional-kyc-info-modal {
+        &__portal {
+            &-header {
+                font-size: 1.4rem;
+                text-align: left;
+            }
+        }
+    }
+}

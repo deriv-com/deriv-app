@@ -13,3 +13,4 @@ export { default as useSettings } from './useSettings';
 export { default as useTradingAccountsList } from './useTradingAccountsList';
 export { default as useTradingPlatformAccounts } from './useTradingPlatformAccounts';
 export { default as useWalletAccountsList } from './useWalletAccountsList';
+export { default as useTradingPlatformAvailableAccounts } from './useTradingPlatformAvailableAccounts';

@@ -229,6 +229,107 @@ import type {
 import type { useMutation, useQuery } from '@tanstack/react-query';
 
 type TPrivateSocketEndpoints = {
+    trading_platform_available_accounts: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            trading_platform_available_accounts: 1;
+            /**
+             * Name of trading platform.
+             */
+            platform: 'mt5' | 'ctrader';
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            /**
+             * Available Trading Accounts
+             */
+            trading_platform_available_accounts?:
+                | {
+                      /**
+                       * A list of Deriv landing companies that can work with this account type
+                       */
+                      linkable_landing_companies?: ('svg' | 'maltainvest')[];
+                      /**
+                       * The type of market tradable by this account
+                       */
+                      market_type?: 'financial' | 'gaming' | 'all';
+                      /**
+                       * Landing Company legal name
+                       */
+                      name?: string;
+                      /**
+                       * Legal requirements for the Landing Company
+                       */
+                      requirements?: {
+                          /**
+                           * After first deposit requirements
+                           */
+                          after_first_deposit?: {
+                              /**
+                               * Financial assessment requirements
+                               */
+                              financial_assessment?: string[];
+                          };
+                          /**
+                           * Compliance requirements
+                           */
+                          compliance?: {
+                              /**
+                               * Compliance MT5 requirements
+                               */
+                              mt5?: string[];
+                              /**
+                               * Compliance tax information requirements
+                               */
+                              tax_information?: string[];
+                          };
+                          /**
+                           * Sign up requirements
+                           */
+                          signup?: string[];
+                          /**
+                           * Withdrawal requirements
+                           */
+                          withdrawal?: string[];
+                      };
+                      /**
+                       * Landing Company short code
+                       */
+                      shortcode?: string;
+                      /**
+                       * Sub account type
+                       */
+                      sub_account_type?: 'standard' | 'swap_free' | 'stp';
+                  }[]
+                | null;
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**z
+             * Action name of the request made.
+             */
+            msg_type: 'trading_platform_available_accounts';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
     trading_platform_accounts: {
         request: {
             /**

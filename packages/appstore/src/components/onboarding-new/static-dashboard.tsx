@@ -270,11 +270,11 @@ const StaticDashboard = observer(
                                         availability='All'
                                         has_applauncher_account={has_applauncher_account}
                                         is_item_blurry={is_blurry.platformlauncher}
-                                        has_divider={!eu_user}
+                                        has_divider={!eu_user && !financial_restricted_countries}
                                     />
                                 </div>
 
-                                {!eu_user && (
+                                {!eu_user && !financial_restricted_countries && (
                                     <React.Fragment>
                                         <div className='static-dashboard-wrapper__body--apps-item'>
                                             <StaticTradingAppCard
@@ -429,7 +429,7 @@ const StaticDashboard = observer(
                             </div>
 
                             <div className='static-dashboard-wrapper__body'>
-                                {!is_eu_user && !CFDs_restricted_countries && (
+                                {!is_eu_user && !financial_restricted_countries && (
                                     <StaticCFDAccountManager
                                         type='synthetic'
                                         platform='mt5'
@@ -540,7 +540,7 @@ const StaticDashboard = observer(
                                     </div>
                                 </React.Fragment>
                             )}
-                            {!is_eu_user && !CFDs_restricted_countries && (
+                            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                                 <div className='static-dashboard-wrapper__body'>
                                     <StaticCFDAccountManager
                                         type='all'

@@ -20,10 +20,10 @@ const useTradingPlatformAvailableAccounts = () => {
     /** This function is used to group the available MT5 accounts by market type. By `all`, `financial` and `gaming` */
     const grouped_mt5_available_accounts = useMemo(() => {
         return modified_mt5_available_accounts?.reduce((acc, account) => {
-            type marketType = keyof typeof acc;
             const { market_type } = account;
-            if (!acc[market_type as marketType]) acc[market_type as marketType] = [];
-            acc[market_type as marketType].push(account);
+            const marketType = market_type as keyof typeof acc;
+            const marketTypeArray = acc[marketType] || (acc[marketType] = []);
+            marketTypeArray.push(account);
             return acc;
         }, {} as Record<string, typeof modified_mt5_available_accounts>);
     }, [modified_mt5_available_accounts]);

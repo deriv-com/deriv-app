@@ -1,29 +1,21 @@
 import React from 'react';
-import useFetch from '../useFetch';
 import useWalletAccountsList from './useWalletAccountsList';
-import useAuthorize from './useAuthorize';
 import useCurrencyConfig from './useCurrencyConfig';
+import useAllAvailableAccounts from './useAllAvailableAccounts';
 
 const useAvailableWallets = () => {
-    const { data } = useAuthorize();
-    const { data: account_type_data, ...rest } = useFetch('get_account_types', {
-        payload: {
-            // This is temporary fix, will be changed by BE
-            company: data?.landing_company_name === 'virtual' ? 'svg' : data?.landing_company_name,
-        },
-        options: { enabled: Boolean(data?.landing_company_name) },
-    });
+    const { data: account_type_data } = useAllAvailableAccounts();
 
     const { data: added_wallets } = useWalletAccountsList();
     const { getConfig } = useCurrencyConfig();
 
     const sortedWallets = React.useMemo(() => {
         if (!account_type_data) return undefined;
-        const { crypto, doughflow } = account_type_data?.get_account_types?.wallet || {};
+        const { crypto, doughflow } = account_type_data?.wallet;
         const crypto_currencies = crypto?.currencies;
         const fiat_currencies = doughflow?.currencies;
 
-        if (!crypto_currencies || !fiat_currencies) return undefined;
+        if (!crypto_currencies || !fiat_currencies) return [];
         const available_currencies = [...fiat_currencies, ...crypto_currencies];
         const non_virtual_wallets = added_wallets?.filter(wallet => !wallet.is_virtual);
 
@@ -37,8 +29,7 @@ const useAvailableWallets = () => {
             .filter(currency => !modified_wallets?.some(wallet => wallet.currency === currency))
             .map(currency => ({
                 currency,
-                // This will also be changed by BE
-                landing_company_name: data?.landing_company_name === 'virtual' ? 'svg' : data?.landing_company_name,
+                landing_company_name: account_type_data?.landing_company,
                 is_added: false,
             }));
 
@@ -66,10 +57,9 @@ const useAvailableWallets = () => {
         }
 
         return [...available_wallets];
-    }, [added_wallets, account_type_data, data?.landing_company_name, getConfig]);
+    }, [account_type_data, added_wallets, getConfig]);
 
     return {
-        ...rest,
         /** Sorted available wallets */
         data: sortedWallets,
     };

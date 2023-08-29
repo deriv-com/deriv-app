@@ -12,6 +12,7 @@ import {
     useOnLoadTranslation,
     setWebsocket,
 } from '@deriv/shared';
+import { RudderStack } from '@deriv/analytics';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
@@ -37,6 +38,10 @@ import '@deriv/deriv-charts/dist/smartcharts.css';
 // eslint-disable-next-line import/extensions
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
+
+window.RudderStack = RudderStack;
+// eslint-disable-next-line
+console.log(process.env.RUDDERSTACK_URL, process.env.RUDDERSTACK_STAGING_KEY, process.env.RUDDERSTACK_PRODUCTION_KEY);
 
 const AppWithoutTranslation = ({ root_store }) => {
     const l = window.location;

@@ -98,9 +98,6 @@ const ProofOfIdentityContainer = ({
         needs_poa,
         onfido,
     } = verification_status;
-    const last_attempt_status = identity_last_attempt?.status;
-    const is_last_attempt_idv = identity_last_attempt?.service === 'idv';
-    const is_last_attempt_onfido = identity_last_attempt?.service === 'onfido';
     const should_ignore_idv = is_high_risk && is_withdrawal_lock;
 
     if (!should_allow_authentication && !is_age_verified) {
@@ -124,13 +121,7 @@ const ProofOfIdentityContainer = ({
         </Button>
     );
 
-    if (
-        identity_status === identity_status_codes.none ||
-        has_require_submission ||
-        allow_poi_resubmission ||
-        (should_ignore_idv && is_last_attempt_idv && manual?.status !== 'verified' && manual?.status !== 'pending') ||
-        (should_ignore_idv && is_last_attempt_onfido && last_attempt_status === 'rejected')
-    ) {
+    if (identity_status === identity_status_codes.none || has_require_submission || allow_poi_resubmission) {
         return (
             <POISubmission
                 account_settings={account_settings}

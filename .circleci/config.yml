@@ -78,6 +78,7 @@ commands:
             - "packages/translations/node_modules"
             - "packages/utils/node_modules"
             - "packages/analytics/node_modules"
+            - "packages/wallets/node_modules"
             # VERIFY_CACHE_FOLDERS_END (DO NOT REMOVE)
 
   build:
@@ -271,6 +272,9 @@ jobs:
       - run:
           name: "Check TypeScript for @deriv/stores"
           command: npx tsc --project packages/stores/tsconfig.json -noEmit
+      - run:
+          name: "Check TypeScript for @deriv/wallets"
+          command: npx tsc --project packages/wallets/tsconfig.json -noEmit
       # - run:
       #     name: "Check TypeScript for @deriv/cashier"
       #     command: npx tsc --project packages/cashier/tsconfig.json -noEmit

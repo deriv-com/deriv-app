@@ -2,6 +2,7 @@ import type {
     AccountLimitsResponse,
     Authorize,
     ContractUpdate,
+    ContractUpdateHistory,
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
@@ -18,7 +19,6 @@ import type {
 import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
 import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
-import { TContractStore as ContractStore } from '../shared/src/utils/contract';
 
 type TRoutes =
     | '/404'
@@ -538,13 +538,30 @@ type TPortfolioStore = {
     removePositionById: (id: number) => void;
 };
 
-type TContractStore = {
-    getContractById: (id: number) => ContractStore;
+type TContractTradeStore = {
     contract_info: TPortfolioPosition['contract_info'];
     contract_update_stop_loss: string;
     contract_update_take_profit: string;
+    getContractById: (id: number) => TContractStore;
     has_contract_update_stop_loss: boolean;
     has_contract_update_take_profit: boolean;
+};
+
+type TContractStore = {
+    clearContractUpdateConfigValues: () => void;
+    contract_info: TPortfolioPosition['contract_info'];
+    contract_update_history: ContractUpdateHistory;
+    contract_update_take_profit: number | string;
+    contract_update_stop_loss: number | string;
+    digits_info: { [key: number]: { digit: number; spot: string } };
+    display_status: string;
+    has_contract_update_take_profit: boolean;
+    has_contract_update_stop_loss: boolean;
+    is_digit_contract: boolean;
+    is_ended: boolean;
+    onChange: (param: { name: string; value: string | number | boolean }) => void;
+    updateLimitOrder: () => void;
+    validation_errors: { contract_update_stop_loss: string[]; contract_update_take_profit: string[] };
 };
 
 type TMenuStore = {
@@ -629,7 +646,7 @@ export type TCoreStores = {
     menu: TMenuStore;
     ui: TUiStore;
     portfolio: TPortfolioStore;
-    contract_trade: TContractStore;
+    contract_trade: TContractTradeStore;
     // This should be `any` as this property will be handled in each package.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     modules: Record<string, any>;

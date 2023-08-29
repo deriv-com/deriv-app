@@ -6,7 +6,7 @@
     }
     &:hover {
         svg {
-            @extend %inline-icon.active;
+            @extend %inline-icon-active;
         }
     }
 }

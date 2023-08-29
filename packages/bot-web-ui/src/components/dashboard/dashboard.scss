@@ -647,10 +647,18 @@
     position: fixed;
     z-index: 1;
     left: 0;
+    right: 0;
     bottom: 7rem;
 
-    .dc-toast__message {
-        background: var(--text-general);
-        color: var(--general-main-1);
+    .dc-toast {
+        width: 100%;
+        &__message {
+            background: var(--text-prominent);
+            color: var(--general-main-1);
+        }
+    }
+
+    @include mobile {
+        bottom: 10rem;
     }
 }

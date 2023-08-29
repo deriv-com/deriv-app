@@ -3,21 +3,20 @@ import useFetch from '../useFetch';
 
 /** A custom hook to get the currency config information from `website_status` endpoint and `crypto_config` endpoint */
 const useCurrencyConfig = () => {
-    const { data: website_status_data } = useFetch('website_status');
+    const { data: website_status_data, ...rest } = useFetch('website_status');
     const { data: crypto_config_data } = useFetch('crypto_config');
 
-    const currencies_config = useMemo(() => {
+    // Add additional information to the currency config.
+    const modified_currencies_config = useMemo(() => {
         if (!website_status_data?.website_status?.currencies_config) return undefined;
 
         const website_status_currencies_config = website_status_data.website_status.currencies_config;
 
-        const modified_currencies_config = Object.keys(website_status_currencies_config).map(currency => {
+        return Object.keys(website_status_currencies_config).map(currency => {
             const currency_config = website_status_currencies_config[currency];
-            const crypto_config = crypto_config_data?.crypto_config?.currencies_config[currency];
 
             return {
                 ...currency_config,
-                ...crypto_config,
                 /** determine if the currency is a `crypto` currency */
                 is_crypto: currency_config?.type === 'crypto',
                 /** determine if the currency is a `fiat` currency */
@@ -66,20 +65,35 @@ const useCurrencyConfig = () => {
                 display_code: currency === 'UST' ? 'USDT' : currency,
             };
         });
+    }, [website_status_data?.website_status?.currencies_config]);
 
-        return modified_currencies_config.reduce<Record<string, typeof modified_currencies_config[number]>>(
+    // Add additional information to the crypto config.
+    const modified_crypto_config = useMemo(() => {
+        return modified_currencies_config?.map(currency_config => ({
+            ...currency_config,
+            ...crypto_config_data?.crypto_config?.currencies_config[currency_config.code],
+        }));
+    }, [crypto_config_data?.crypto_config?.currencies_config, modified_currencies_config]);
+
+    // Transform the currency config array into a record object.
+    const transformed_currencies_config = useMemo(() => {
+        return modified_crypto_config?.reduce<Record<string, typeof modified_crypto_config[number]>>(
             (previous, current) => ({ ...previous, [current.code]: current }),
             {}
         );
-    }, [crypto_config_data?.crypto_config?.currencies_config, website_status_data?.website_status?.currencies_config]);
+    }, [modified_crypto_config]);
 
-    const getConfig = useCallback((currency: string) => currencies_config?.[currency], [currencies_config]);
+    const getConfig = useCallback(
+        (currency: string) => transformed_currencies_config?.[currency],
+        [transformed_currencies_config]
+    );
 
     return {
+        /** Available currencies and their information */
+        data: transformed_currencies_config,
         /** Returns the currency config object for the given currency */
         getConfig,
-        /** Available currencies and their information */
-        currencies_config,
+        ...rest,
     };
 };
 

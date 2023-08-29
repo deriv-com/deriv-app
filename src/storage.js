@@ -23,6 +23,7 @@ if (typeof localStorage !== 'undefined') {
 export const getActiveLoginId = () => {
     store[ACTIVE_LOGIN_ID] = !(ACTIVE_LOGIN_ID in store) ? '' : store[ACTIVE_LOGIN_ID];
     try {
+        if (store[ACTIVE_LOGIN_ID] === 'null' || store[ACTIVE_LOGIN_ID] === 'undefined') return '';
         return store[ACTIVE_LOGIN_ID];
     } catch (e) {
         store[ACTIVE_LOGIN_ID] = '';

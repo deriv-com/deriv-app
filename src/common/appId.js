@@ -59,7 +59,8 @@ export async function loginAndSetTokens(token_list = []) {
         if (login_id) {
             account = token_list.find(t => t.accountName === login_id);
         } else {
-            [account] = token_list; // pick up first account from the account list
+            const [first_account] = token_list; // first account will be the active account
+            account = first_account;
         }
 
         if (!account.token) throw new Error('Token not found');

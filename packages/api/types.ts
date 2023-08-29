@@ -559,6 +559,89 @@ type TPrivateSocketEndpoints = {
             [k: string]: unknown;
         };
     };
+    get_account_types: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            get_account_types: 1;
+            /**
+             * [Optional] Set to landing company to get relevant account types. If not set, this defaults to current account landing company
+             */
+            company?: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            get_account_types?: {
+                /**
+                 * Trading account types that are available to create or link to
+                 */
+                trading: {
+                    /**
+                     * Details for trading account types
+                     *
+                     * This interface was referenced by `undefined`'s JSON-Schema definition
+                     * via the `patternProperty` "^(binary|dxtrade|mt5|standard|derivez)$".
+                     */
+                    [k: string]: {
+                        /**
+                         * Wallet currencies allowed for this trading account
+                         */
+                        allowed_wallet_currencies: string[];
+                        /**
+                         * Can this trading account linked to another currency after opening
+                         */
+                        linkable_to_different_currency: 0 | 1;
+                        /**
+                         * Wallet types that this trading account can be linked to.
+                         */
+                        linkable_wallet_types: string[];
+                    };
+                };
+                /**
+                 * Wallet accounts types that are available to create or link to
+                 */
+                wallet: {
+                    /**
+                     * Details for wallets account types
+                     *
+                     * This interface was referenced by `undefined`'s JSON-Schema definition
+                     * via the `patternProperty` "^(affiliate|crypto|doughflow|p2p|paymentagent|paymentagent_client|virtual)$".
+                     */
+                    [k: string]: {
+                        /**
+                         * Allowed currencies for creating accounts of this type; used or disallowed currencies are not listed.
+                         */
+                        currencies: string[];
+                    };
+                };
+            };
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'get_account_types';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
 };
 
 type TSocketEndpoints = {

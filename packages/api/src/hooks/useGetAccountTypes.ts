@@ -4,7 +4,7 @@ import useFetch from '../useFetch';
 /**
  * A custom hook to get available account types for a specific landing company.
  */
-const useAccountTypes = (landing_company?: string) => {
+const useGetAccountTypes = (landing_company?: string) => {
     const { data, ...rest } = useFetch('get_account_types', {
         payload: { company: landing_company },
         options: { enabled: Boolean(landing_company) },
@@ -28,4 +28,4 @@ const useAccountTypes = (landing_company?: string) => {
     };
 };
 
-export default useAccountTypes;
+export default useGetAccountTypes;

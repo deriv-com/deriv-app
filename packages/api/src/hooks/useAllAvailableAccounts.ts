@@ -1,11 +1,13 @@
 import { useMemo } from 'react';
-import useAccountTypes from './useAccountTypes';
+import useGetAccountTypes from './useGetAccountTypes';
 import useLandingCompany from './useLandingCompany';
 
 /** A custom hook to get all available accounts that user can have. */
 const useAllAvailableAccounts = () => {
     const { data: landing_company_data } = useLandingCompany();
-    const { data: account_types_data, ...rest } = useAccountTypes(landing_company_data?.financial_company?.shortcode);
+    const { data: account_types_data, ...rest } = useGetAccountTypes(
+        landing_company_data?.financial_company?.shortcode
+    );
 
     // Add additional information to the account types response.
     const modified_account_types_data = useMemo(() => {

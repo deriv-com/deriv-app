@@ -63,18 +63,19 @@ describe('useP2PAdvertInfo', () => {
         );
 
         const { result } = renderHook(() => useP2PAdvertInfo('1', { enabled: true }), { wrapper });
+        const advertiser_details = result.current.data?.advertiser_details;
 
-        expect(result.current.data?.advertiser_details?.completed_orders_count).toBe(0);
-        expect(result.current.data?.advertiser_details?.id).toBe('1');
-        expect(result.current.data?.advertiser_details?.is_online).toBe(1);
-        expect(result.current.data?.advertiser_details?.last_online_time).toBe(111);
-        expect(result.current.data?.advertiser_details?.loginid).toBe('111');
-        expect(result.current.data?.advertiser_details?.name).toBe('test');
-        expect(result.current.data?.advertiser_details?.rating_average).toBe(0);
-        expect(result.current.data?.advertiser_details?.rating_count).toBe(0);
-        expect(result.current.data?.advertiser_details?.recommended_average).toBe(0);
-        expect(result.current.data?.advertiser_details?.recommended_count).toBe(0);
-        expect(result.current.data?.advertiser_details?.total_completion_rate).toBe(0);
+        expect(advertiser_details?.completed_orders_count).toBe(0);
+        expect(advertiser_details?.id).toBe('1');
+        expect(advertiser_details?.is_online).toBe(1);
+        expect(advertiser_details?.last_online_time).toBe(111);
+        expect(advertiser_details?.loginid).toBe('111');
+        expect(advertiser_details?.name).toBe('test');
+        expect(advertiser_details?.rating_average).toBe(0);
+        expect(advertiser_details?.rating_count).toBe(0);
+        expect(advertiser_details?.recommended_average).toBe(0);
+        expect(advertiser_details?.recommended_count).toBe(0);
+        expect(advertiser_details?.total_completion_rate).toBe(0);
         expect(result.current.data?.amount).toBe(50);
         expect(result.current.data?.id).toBe('101');
         expect(result.current.data?.price).toBe(13500);

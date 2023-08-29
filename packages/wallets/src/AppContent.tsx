@@ -1,14 +1,12 @@
 import React from 'react';
 import WalletList from './components/WalletList';
 import WalletsCarousel from './components/WalletCarousel';
+import useDevice from './hooks/useDevice';
 
 const AppContent: React.FC = () => {
-    return (
-        <div>
-            <WalletList />
-            <WalletsCarousel />
-        </div>
-    );
+    const { is_mobile } = useDevice();
+
+    return <div>{is_mobile ? <WalletsCarousel /> : <WalletList />}</div>;
 };
 
 export default AppContent;

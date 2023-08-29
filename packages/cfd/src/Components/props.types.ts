@@ -228,8 +228,3 @@ export type TTradingPlatformAccounts = {
      */
     platform?: 'dxtrade' | string;
 };
-
-export type TIsForCFDModalPOA = {
-    is_for_compare_accounts?: boolean;
-    is_for_account_signup?: boolean;
-};

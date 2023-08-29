@@ -16,7 +16,6 @@ import {
     TClickableDescription,
     TJurisdictionCardItems,
     TJurisdictionCardItemVerification,
-    TIsForCFDModalPOA,
 } from '../Components/props.types';
 import RootStore from '../Stores/index';
 

@@ -799,14 +799,6 @@ $MIN_HEIGHT_FLOATING: calc(
     .account-management {
         &__container {
             margin: 0 auto;
-
-            &-dashboard {
-                width: calc(100vw - 33rem);
-
-                @include mobile {
-                    width: 100%;
-                }
-            }
         }
 
         &__list {

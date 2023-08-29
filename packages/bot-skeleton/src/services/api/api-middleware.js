@@ -81,14 +81,19 @@ class APIMiddleware {
                 if (performance.getEntriesByName('bot-start', 'mark').length) {
                     measure = performance.measure('run-proposal', 'bot-start', 'first_proposal_end');
                     performance.clearMarks('bot-start');
+                    console.table('bot-first-run', measure.duration)
                 }
             }
             if (res_type === 'history') {
                 performance.mark('ticks_history_end');
                 measure = performance.measure('ticks_history', 'ticks_history_start', 'ticks_history_end');
+                console.table('ticks_history', measure.duration)
             } else {
                 performance.mark(`${res_type}_end`);
                 measure = performance.measure(`${res_type}`, `${res_type}_start`, `${res_type}_end`);
+                if (res_type === 'proposal') { 
+                    console.table('proposal', measure.duration)
+                }
             }
             return (measure.startTimeDate = new Date(Date.now() - measure.startTime));
         }

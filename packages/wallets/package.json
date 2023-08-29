@@ -1,0 +1,13 @@
+{
+    "name": "@deriv/wallets",
+    "private": true,
+    "version": "1.0.0",
+    "main": "src/index.tsx",
+    "dependencies": {
+        "@deriv/api": "^1.0.0",
+        "react": "^17.0.2"
+    },
+    "devDependencies": {
+        "typescript": "^4.6.3"
+    }
+}

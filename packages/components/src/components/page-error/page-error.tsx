@@ -16,7 +16,7 @@ type TPageErrorProps = {
     header: React.ReactNode;
     image_url?: string;
     messages: Array<TMessageObject | React.ReactNode>;
-    redirect_labels: string[];
+    redirect_labels: Array<JSX.Element | string>;
     redirect_urls?: string[];
     setError?: (has_error: boolean, error: React.ReactNode) => void;
     should_clear_error_on_click?: boolean;

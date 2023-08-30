@@ -18,10 +18,14 @@ const WalletHeader: React.FC = () => {
                                     <p> Icon (Placeholder)</p>
                                 </div>
                                 <div className='wallet-list__action-container'>
-                                    <div className='wallet-list__title'>
-                                        {account.currency_config?.display_code} Wallet
+                                    <div className='wallet-list__elements'>
+                                        <div className='wallet-list__title'>
+                                            {account.currency_config?.display_code} Wallet
+                                        </div>
                                         <div className='wallet-list__badge'>
-                                            <p>{account.landing_company_name?.toLocaleUpperCase()}</p>
+                                            <div className='wallet-list__landing-company-name'>
+                                                <p>{account.landing_company_name?.toLocaleUpperCase()}</p>
+                                            </div>
                                         </div>
                                     </div>
                                     <div className='wallet-list__actions'>

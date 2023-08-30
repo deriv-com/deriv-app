@@ -2,11 +2,11 @@
     width: 240px;
     height: 144px;
     position: relative;
+    overflow: hidden;
     border-radius: $BORDER-RADIUS;
-
     background: var(--wallets-card-active-gradient-background);
 
-    &__icon-wrapper {
+    &__icon {
         position: absolute;
         top: 16px;
         left: 16px;
@@ -16,6 +16,7 @@
         position: relative;
         z-index: 1;
     }
+
     &__wallet-icon {
         position: absolute;
         top: 12px;
@@ -30,7 +31,12 @@
 
         padding: 0 0.8rem 0.4rem;
         border-radius: 0 0 0 4px;
-        background-color: var(--brand-red-coral);
+        &--real {
+            background-color: var(--brand-red-coral);
+        }
+        &--demo {
+            background-color: var(--status-info);
+        }
     }
 
     &__details {
@@ -42,5 +48,26 @@
         position: absolute;
         bottom: 0;
         left: 0;
+    }
+
+    &__shine {
+        width: 100%;
+        height: 100%;
+        clip-path: polygon(40% 10%, 104% -6.94%, 92.5% 100%, 28% 100%);
+        mix-blend-mode: overlay;
+        opacity: 0.16;
+        border-top-right-radius: $BORDER_RADIUS_2;
+        background-color: $color-white;
+    }
+
+    &__bg {
+        background: radial-gradient(
+                100% 277.78% at 0% 100%,
+                rgba(165, 168, 169, 0.24) 0%,
+                rgba(193, 204, 207, 0.48) 100%
+            )
+            #ffffff;
+        height: 100%;
+        width: 100%;
     }
 }

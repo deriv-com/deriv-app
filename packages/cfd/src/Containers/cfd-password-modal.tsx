@@ -1,5 +1,5 @@
-import { Formik, FormikErrors, FormikHelpers } from 'formik';
 import React from 'react';
+import { Formik, FormikErrors, FormikHelpers } from 'formik';
 import { useHistory } from 'react-router';
 import { SentEmailModal } from '@deriv/account';
 import {
@@ -20,6 +20,7 @@ import {
     PasswordMeter,
     Text,
     MultiStep,
+    WalletCFDSuccessDialog,
 } from '@deriv/components';
 import {
     CFD_PLATFORMS,
@@ -42,7 +43,8 @@ import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
-import { useFeatureFlags } from '@deriv/hooks';
+import { useActiveWallet, useFeatureFlags } from '@deriv/hooks';
+import useInvalidateQuery from '../../../api/src/useInvalidateQuery';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -634,8 +636,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     } = useCfdStore();
 
     const history = useHistory();
-
     const { is_wallet_enabled } = useFeatureFlags();
+    const invalidate = useInvalidateQuery();
 
     const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);
     const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
@@ -714,6 +716,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const closeModal = () => {
         closeDialogs();
         disableCFDPasswordModal();
+        invalidate('mt5_login_list');
     };
 
     const closeOpenSuccess = () => {
@@ -799,6 +802,10 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         return localize('Continue');
     }, [platform, account_type, is_selected_mt5_verified]);
 
+    const wallet_account_title = (account_title: string) => {
+        return account_title.replace(/Demo|Real/g, '');
+    };
+
     const getSubmitText = () => {
         const { category, type } = account_type;
         if (!category && !type) return '';
@@ -832,9 +839,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
         const mt5_platform_label = jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'Deriv MT5' : '';
 
-        const wallet_account_title = (account_title: string) => {
-            return account_title.replace(/Demo|Real/g, '');
-        };
         const wallet_platform_label =
             jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'MT5' : 'MT5 CFDs';
 
@@ -881,7 +885,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
         return (
             <React.Fragment>
-                {is_wallet_enabled ? (
+                {is_wallet_enabled && platform == CFD_PLATFORMS.MT5 ? (
                     <Localize
                         i18n_default_text='You can now start practicing trading with your {{wallet_platform_label}} {{account_title}} {{category_label}} account.'
                         values={{
@@ -970,22 +974,32 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         </MobileDialog>
     );
 
-    const wallet_header = () => {
-        const { category } = account_type;
+    const active_wallet = useActiveWallet();
+    const { type, category } = account_type;
+
+    const cfd_details = {
+        currency: active_wallet?.currency,
+        gradient_header_class: active_wallet?.gradient_header_class,
+        icon: active_wallet?.icon,
+        is_demo: active_wallet?.is_demo,
+        type,
+    };
+
+    const getWalletHeader = () => {
         return (
-            <>
+            <React.Fragment>
                 {category === 'demo' ? (
                     <Localize
                         i18n_default_text='Your {{account_title}} {{category}} account is ready'
                         values={{
                             category,
-                            account_title: account_title.replace(/Demo|Real/g, ''),
+                            account_title: wallet_account_title(account_title),
                         }}
                     />
                 ) : (
-                    <Localize i18n_default_text='Almost there!' />
+                    <Localize i18n_default_text='Almost there' />
                 )}
-            </>
+            </React.Fragment>
         );
     };
 
@@ -993,32 +1007,46 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         <React.Fragment>
             {password_modal}
             {password_dialog}
-            <SuccessDialog
-                heading={wallet_header()}
-                is_open={should_show_success}
-                toggleModal={closeModal}
-                onCancel={closeModal}
-                onSubmit={platform === CFD_PLATFORMS.MT5 && !is_selected_mt5_verified ? closeModal : closeOpenSuccess}
-                classNameMessage='cfd-password-modal__message'
-                message={getSubmitText()}
-                icon={
-                    <IconType
-                        platform={platform}
-                        type={account_type.type}
-                        show_eu_related_content={show_eu_related_content}
-                    />
-                }
-                icon_size='xlarge'
-                text_submit={success_modal_submit_label}
-                has_cancel={
-                    platform === CFD_PLATFORMS.MT5
-                        ? is_selected_mt5_verified && account_type.category === 'real'
-                        : account_type.category === 'real'
-                }
-                has_close_icon={false}
-                width={isMobile() ? '32.8rem' : 'auto'}
-                is_medium_button={isMobile()}
-            />
+            {/* TODO: Remove this once development is completed */}
+            {is_wallet_enabled && category === 'demo' && platform === CFD_PLATFORMS.MT5 ? (
+                <WalletCFDSuccessDialog
+                    header={getWalletHeader()}
+                    is_open={should_show_success}
+                    message={getSubmitText()}
+                    onSubmit={closeModal}
+                    submit_button_text={success_modal_submit_label}
+                    toggleModal={closeModal}
+                    wallet={cfd_details}
+                />
+            ) : (
+                <SuccessDialog
+                    is_open={should_show_success}
+                    toggleModal={closeModal}
+                    onCancel={closeModal}
+                    onSubmit={
+                        platform === CFD_PLATFORMS.MT5 && !is_selected_mt5_verified ? closeModal : closeOpenSuccess
+                    }
+                    classNameMessage='cfd-password-modal__message'
+                    message={getSubmitText()}
+                    icon={
+                        <IconType
+                            platform={platform}
+                            type={account_type.type}
+                            show_eu_related_content={show_eu_related_content}
+                        />
+                    }
+                    icon_size='xlarge'
+                    text_submit={success_modal_submit_label}
+                    has_cancel={
+                        platform === CFD_PLATFORMS.MT5
+                            ? is_selected_mt5_verified && account_type.category === 'real'
+                            : account_type.category === 'real'
+                    }
+                    has_close_icon={false}
+                    width={isMobile() ? '32.8rem' : 'auto'}
+                    is_medium_button={isMobile()}
+                />
+            )}
             <SentEmailModal
                 is_open={should_show_sent_email_modal}
                 identifier_title='trading_password'

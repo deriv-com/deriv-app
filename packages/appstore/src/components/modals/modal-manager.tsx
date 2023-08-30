@@ -22,7 +22,6 @@ import RealWalletsUpgrade from './real-wallets-upgrade/real-wallets-upgrade';
 import WalletsMigrationFailed from './wallets-migration-failed';
 import WalletModal from './wallet-modal';
 import WalletSuccessDialog from './wallet-success-dialog/wallet-success-dialog';
-import CFDWalletSuccessDialog from './cfd-wallet-success-dialog/cfd-wallet-success-dialog';
 
 type TCurrentList = DetailsOfEachMT5Loginid & {
     enabled: number;
@@ -175,7 +174,6 @@ const ModalManager = () => {
             <WalletsMigrationFailed />
             <WalletModal />
             <WalletSuccessDialog />
-            <CFDWalletSuccessDialog is_open={true} />
         </React.Fragment>
     );
 };

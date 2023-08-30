@@ -10,6 +10,7 @@ type TAppIconProps = {
     size?: 'small' | 'medium' | 'large';
     type: React.ComponentProps<typeof WalletIcon>['type'];
     wallet_icon: string;
+    app_type?: React.ComponentProps<typeof WalletIcon>['type'];
 };
 
 /**
@@ -35,6 +36,7 @@ const AppLinkedWithWalletIcon = ({
     size = 'medium',
     type,
     wallet_icon,
+    app_type = 'app',
 }: TAppIconProps) => {
     if (!app_icon || !wallet_icon || !gradient_class) {
         return null;
@@ -44,7 +46,7 @@ const AppLinkedWithWalletIcon = ({
         <div className={`app-icon app-icon--${size}`}>
             {/* Top Icon */}
             <div className='app-icon__top-icon'>
-                <WalletIcon icon={app_icon} size={sizes.top[size]} type='app' />
+                <WalletIcon icon={app_icon} size={sizes.top[size]} type={app_type} />
             </div>
 
             {/* Bottom Icon */}

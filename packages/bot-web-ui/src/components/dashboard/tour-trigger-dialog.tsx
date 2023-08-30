@@ -37,7 +37,7 @@ const TourTriggrerDialog = observer(() => {
             return (
                 <Localize
                     key={0}
-                    i18n_default_text={'Hi! Hit <0>Start</0> for a quick tour to help you get started.'}
+                    i18n_default_text='Hi! Hit <0>Start</0> for a quick tour.'
                     components={[<strong key={0} />]}
                 />
             );

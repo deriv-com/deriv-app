@@ -1,13 +1,13 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { useFetch, APIProvider } from '@deriv/api';
+import { useLoginHistory, APIProvider } from '@deriv/api';
 import { isMobile } from '@deriv/shared';
 import LoginHistory from '../login-history';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useFetch: jest.fn(),
+    useLoginHistory: jest.fn(),
 }));
 
 jest.mock('@deriv/shared', () => ({
@@ -15,21 +15,20 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(() => false),
 }));
 
-const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'login_history'>>;
+const mockUseLoginHistory = useLoginHistory as jest.MockedFunction<typeof useLoginHistory>;
 
 describe('<LoginHistory />', () => {
     let mock_store = mockStore({});
     let response = {
-        data: {
-            login_history: [
-                {
-                    environment: '',
-                    action: '',
-                    status: 1,
-                    time: 0,
-                },
-            ],
-        },
+        login_history: [
+            {
+                date: '',
+                browser: '',
+                action: '',
+                status: '',
+                ip: '',
+            },
+        ],
         isLoading: false,
         isError: false,
         error: '',
@@ -39,21 +38,20 @@ describe('<LoginHistory />', () => {
         mock_store = mockStore({
             client: {
                 is_switching: false,
+                is_authorize: true,
             },
         });
 
         response = {
-            data: {
-                login_history: [
-                    {
-                        environment:
-                            '28-Aug-23 03:11:01GMT IP=175.143.37.57 IP_COUNTRY=MY User_AGENT=Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36 LANG=EN',
-                        action: 'login',
-                        status: 1 as const,
-                        time: 2100,
-                    },
-                ],
-            },
+            login_history: [
+                {
+                    date: '2023-08-28 03:11:45 GMT',
+                    browser: '"Chrome  v116.0.0.0"',
+                    action: 'login',
+                    status: 'successful',
+                    ip: '175.143.37.57',
+                },
+            ],
             isLoading: false,
             isError: false,
             error: 'this is an error message',
@@ -68,7 +66,7 @@ describe('<LoginHistory />', () => {
             </APIProvider>
         );
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue(response);
+        mockUseLoginHistory.mockReturnValue(response);
         const { container } = render(<LoginHistory />, { wrapper });
         expect(container).toBeInTheDocument();
         expect(screen.getByText(/date and time/i)).toHaveClass('dc-text login-history__list__row__cell--title');
@@ -81,7 +79,7 @@ describe('<LoginHistory />', () => {
             </APIProvider>
         );
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue(response);
+        mockUseLoginHistory.mockReturnValue(response);
         const { container } = render(<LoginHistory />, { wrapper });
         expect(container).toBeInTheDocument();
         expect(screen.getByText(/date and time/i)).not.toHaveClass('dc-text login-history__list__row__cell--title');
@@ -94,7 +92,7 @@ describe('<LoginHistory />', () => {
             </APIProvider>
         );
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue(response);
+        mockUseLoginHistory.mockReturnValue(response);
         render(<LoginHistory />, { wrapper });
         const table_headers = [/date and time/i, /action/i, /browser/i, /ip address/i, /status/i];
         table_headers.forEach(header => {
@@ -109,10 +107,10 @@ describe('<LoginHistory />', () => {
             </APIProvider>
         );
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue(response);
+        mockUseLoginHistory.mockReturnValue(response);
         render(<LoginHistory />, { wrapper });
         const table_items = [
-            /invalid date 03:11:01 GMT/i,
+            /2023-08-28 03:11:45 GMT/i,
             /login/i,
             /chrome v116.0.0.0/i,
             /175.143.37.57/i,
@@ -131,7 +129,7 @@ describe('<LoginHistory />', () => {
             </APIProvider>
         );
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue(response);
+        mockUseLoginHistory.mockReturnValue(response);
         render(<LoginHistory />, { wrapper });
         expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
     });
@@ -144,7 +142,7 @@ describe('<LoginHistory />', () => {
             </APIProvider>
         );
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue(response);
+        mockUseLoginHistory.mockReturnValue(response);
         render(<LoginHistory />, { wrapper });
         expect(screen.getByTestId('dt_initial_loader')).toHaveClass('initial-loader account__initial-loader');
     });
@@ -157,33 +155,33 @@ describe('<LoginHistory />', () => {
             </APIProvider>
         );
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue(response);
+        mockUseLoginHistory.mockReturnValue(response);
         render(<LoginHistory />, { wrapper });
         expect(screen.getByText(/this is an error message/i)).toBeInTheDocument();
     });
 
     it('should render Table Item text: Logout under action is action is not login', () => {
-        response.data.login_history[0].action = 'logout';
+        response.login_history[0].action = 'logout';
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
                 <StoreProvider store={mock_store}>{children}</StoreProvider>
             </APIProvider>
         );
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue(response);
+        mockUseLoginHistory.mockReturnValue(response);
         render(<LoginHistory />, { wrapper });
         expect(screen.getByText(/logout/i)).toBeInTheDocument();
     });
 
     it('should render Table Item text: Failed under status if status is not 1', () => {
-        response.data.login_history[0].status = 0;
+        response.login_history[0].status = 'failed';
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
                 <StoreProvider store={mock_store}>{children}</StoreProvider>
             </APIProvider>
         );
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue(response);
+        mockUseLoginHistory.mockReturnValue(response);
         render(<LoginHistory />, { wrapper });
         expect(screen.getByText(/failed/i)).toBeInTheDocument();
     });

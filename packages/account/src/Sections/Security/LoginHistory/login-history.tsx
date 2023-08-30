@@ -71,16 +71,6 @@ const renderList = (fields: TFields, login_history: TData) => {
                             <Table.Cell className='login-history__list__row__cell'>
                                 <ListCell title={fields.date} text={item.date} />
                             </Table.Cell>
-                            {/* {isMobile() && (
-                                <Table.Cell className='login-history__list__row__cell'>
-                                    <ListCell
-                                        className='login-history__list__row__cell--action'
-                                        title={fields.action}
-                                        text={item.action}
-                                        right
-                                    />
-                                </Table.Cell>
-                            )} */}
                         </Table.Row>
                         <Table.Row className='login-history__list__row login-history__list__row--with-margin'>
                             <Table.Cell className='login-history__list__row__cell'>
@@ -90,11 +80,6 @@ const renderList = (fields: TFields, login_history: TData) => {
                                     text={item.browser}
                                 />
                             </Table.Cell>
-                            {/* {isMobile() ? (
-                                <Table.Cell className='login-history__list__row__cell'>
-                                    <ListCell title={fields.status} text={item.status} right />
-                                </Table.Cell>
-                            ) : ( */}
                             <Table.Cell className='login-history__list__row__cell'>
                                 <ListCell
                                     className='login-history__list__row__cell--action'
@@ -102,7 +87,6 @@ const renderList = (fields: TFields, login_history: TData) => {
                                     text={item.action}
                                 />
                             </Table.Cell>
-                            {/* // )} */}
                         </Table.Row>
                         <Table.Row className='login-history__list__row'>
                             <Table.Cell className='login-history__list__row__cell'>

@@ -32,3 +32,10 @@ h1,
 .account-category {
     font-style: italic;
 }
+
+.no-wallets {
+    @include desktop {
+        background-color: #add8e6;
+        height: 100vh;
+    }
+}

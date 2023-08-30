@@ -5,7 +5,7 @@ import './WalletList.scss';
 const WalletList: React.FC = () => {
     const { data } = useWalletAccountsList();
 
-    if (!data.length) return <h1>No wallets found</h1>;
+    if (!data.length) return <h1 className='no-wallets'>No wallets found</h1>;
 
     return (
         <div className='account-list'>

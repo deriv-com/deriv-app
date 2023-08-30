@@ -19,10 +19,10 @@ const getFormattedData = (login_history: TLoginHistory) => {
     const fetch_limit = Math.min(API_FETCH_LIMIT, login_history.length);
     const data_object = {
         date: '',
-        action: '',
+        action: <></>,
         browser: '',
         ip: '',
-        status: '',
+        status: <></>,
         id: 0,
     };
 

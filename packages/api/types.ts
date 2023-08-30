@@ -1090,9 +1090,9 @@ type TDataItem = TFields & {
 };
 
 export type TFields = {
-    date: React.ReactNode;
-    action: React.ReactNode;
-    browser: React.ReactNode;
-    ip: React.ReactNode;
-    status: React.ReactNode;
+    date: string;
+    action: JSX.Element;
+    browser: string | JSX.Element;
+    ip: string;
+    status: JSX.Element;
 };

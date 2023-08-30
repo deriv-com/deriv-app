@@ -4,15 +4,23 @@ import { Loading, Table, Text, ThemedScrollbars } from '@deriv/components';
 import { isMobile, isDesktop } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { TData, TFields } from '@deriv/api/types';
+import { TData } from '@deriv/api/types';
 import { useLoginHistory } from '@deriv/api';
 import LoadErrorMessage from 'Components/load-error-message';
 
 type TListCell = {
-    title: React.ReactNode;
-    text: React.ReactNode;
+    title: JSX.Element | string;
+    text: JSX.Element | string;
     className?: string;
-    right?: boolean;
+    is_align_right?: boolean;
+};
+
+type TGetFields = {
+    date: JSX.Element;
+    action: JSX.Element;
+    browser: JSX.Element;
+    ip: JSX.Element;
+    status: JSX.Element;
 };
 
 const getFields = () => ({
@@ -30,7 +38,7 @@ const LoginHistoryContent = ({ data }: { data: TData }) => {
     return renderTable(getFields(), data);
 };
 
-const renderTable = (fields: TFields, login_history: TData) => (
+const renderTable = (fields: TGetFields, login_history: TData) => (
     <Table fixed className='login-history__table'>
         <Table.Header>
             <Table.Row className='login-history__table__header'>
@@ -61,7 +69,7 @@ const renderTable = (fields: TFields, login_history: TData) => (
     </Table>
 );
 
-const renderList = (fields: TFields, login_history: TData) => {
+const renderList = (fields: TGetFields, login_history: TData) => {
     return (
         <Table className='login-history__list'>
             <Table.Body>
@@ -109,16 +117,21 @@ const renderList = (fields: TFields, login_history: TData) => {
     );
 };
 
-const ListCell = ({ title, text, className, right }: TListCell) => (
+const ListCell = ({ title, text, className, is_align_right }: TListCell) => (
     <React.Fragment>
-        <Text as='h3' align={right ? 'right' : 'left'} weight='bold' className='login-history__list__row__cell--title'>
+        <Text
+            as='h3'
+            align={is_align_right ? 'right' : 'left'}
+            weight='bold'
+            className='login-history__list__row__cell--title'
+        >
             {title}
         </Text>
         <Text
-            className={classNames(className, { 'login-history__list__row__cell--right': right })}
+            className={classNames(className, { 'login-history__list__row__cell--right': is_align_right })}
             line_height='xs'
             size='xs'
-            align={right ? 'right' : 'left'}
+            align={is_align_right ? 'right' : 'left'}
         >
             {text}
         </Text>
@@ -137,7 +150,7 @@ const LoginHistory = observer(() => {
 
     return (
         <ThemedScrollbars is_bypassed={isMobile()} className='login-history'>
-            {login_history.length ? <LoginHistoryContent data={login_history} /> : null}
+            {login_history.length && <LoginHistoryContent data={login_history} />}
         </ThemedScrollbars>
     );
 });

@@ -1,25 +1,12 @@
 import React, { useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
+import { useWalletAccountsList } from '@deriv/api';
 import AccountsList from '../AccountsList';
 
 const WalletsCarousel = () => {
     const [emblaRef, emblaApi] = useEmblaCarousel({ skipSnaps: true, containScroll: false });
-    const data = [
-        {
-            text: 'BTC',
-            background: 'yellow',
-        },
-        {
-            text: 'ETH',
-            background: 'blue',
-        },
-        {
-            text: 'USDT',
-            background: 'red',
-        },
-    ];
-
     const [active_index, setActiveIndex] = useState(0);
+    const { data: wallet_accounts_list } = useWalletAccountsList();
 
     React.useEffect(() => {
         emblaApi?.scrollTo(active_index);
@@ -32,18 +19,33 @@ const WalletsCarousel = () => {
         });
     }, [emblaApi]);
 
+    if (!wallet_accounts_list.length) return <h1>No wallets found</h1>;
+
     return (
         <React.Fragment>
             <div className='wallets-carousel' ref={emblaRef}>
                 <section className='wallets-carousel__container'>
-                    {data.map(item => (
-                        <div className='wallet-card' style={{ backgroundColor: item.background }} key={item.text}>
-                            {item.text}
+                    {wallet_accounts_list.map(wallet => (
+                        <div className='wallet-card' key={wallet.loginid}>
+                            <div className='wallet-card__data'>
+                                <div className='wallet-card__data__currency'>
+                                    <h1>{wallet.currency}</h1>
+                                    <div className='wallet-card__data__currency-balance'>
+                                        <p>{wallet.currency} Wallet</p>
+                                        <h3>
+                                            {wallet.balance} {wallet.currency}
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div className='wallet-card__data__landing-company'>
+                                    <p>{wallet.landing_company_name}</p>
+                                </div>
+                            </div>
                         </div>
                     ))}
                 </section>
             </div>
-            <AccountsList data={data[active_index]} />
+            <AccountsList data={wallet_accounts_list[active_index]} />
         </React.Fragment>
     );
 };

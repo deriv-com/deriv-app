@@ -39,37 +39,12 @@ jest.mock('../../../CurrencySelectionModal', () => jest.fn(() => <div>MockedCurr
 jest.mock('../show-notifications', () => jest.fn(() => <div>MockedShowNotifications</div>));
 
 describe('TradersHubHeader', () => {
-    const store = mockStore({
-        client: {
-            account_type: 'financial',
-            balance: '2000',
-            country_standpoint: {},
-            currency: 'USD',
-            has_any_real_account: true,
-            is_eu: false,
-            is_logged_in: true,
-            is_mt5_allowed: true,
-            is_virtual: false,
-        },
-        common: { platform: 'mt5' },
-        traders_hub: {},
-        ui: {
-            is_accounts_switcher_on: true,
-            is_app_disabled: false,
-            is_route_modal_on: true,
-            account_switcher_disabled_message: 'MockedAccountSwitcherDisabledMessage',
-            toggleAccountsDialog: jest.fn(),
-            toggleNeedRealAccountForCashierModal: jest.fn(),
-            toggleReadyToDepositModal: jest.fn(),
-        },
-    });
-    const renderComponent = (modified_store = store) => {
-        return render(
-            <StoreProvider store={modified_store}>
+    const renderComponent = () =>
+        render(
+            <StoreProvider store={mockStore({})}>
                 <TradersHubHeader is_acc_switcher_disabled={false} />
             </StoreProvider>
         );
-    };
 
     it('should render "CurrencySelectionModal" as a child component', () => {
         renderComponent();

@@ -18,13 +18,12 @@ describe('Header', () => {
     const store = mockStore({
         client: { is_logged_in: true },
     });
-    const renderComponent = (modified_store = store) => {
-        return render(
+    const renderComponent = (modified_store = store) =>
+        render(
             <StoreProvider store={modified_store}>
                 <Header />
             </StoreProvider>
         );
-    };
 
     it('should render the "TradersHubHeader" component if user is logged in and in traders hub route', () => {
         mock_use_location.pathname = '/appstore/traders-hub';

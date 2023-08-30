@@ -10,7 +10,7 @@ const WalletLandingCompanyBadge: React.FC<TProps> = ({ account }) => {
     return (
         <div className='wallet-landing-company__badge'>
             <div className='wallet-landing-company__name'>
-                <p>{account.landing_company_name?.toLocaleUpperCase()}</p>
+                <p>{account.landing_company_name}</p>
             </div>
         </div>
     );

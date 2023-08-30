@@ -24,7 +24,7 @@ export const getExampleImagesConfig = (): Array<TExampleImageConfig> => [
     },
     {
         image: IcDocumentAddressMismatch,
-        description: <Localize i18n_default_text='Address in document doesn’t match your Deriv profile.' />,
+        description: <Localize i18n_default_text='Address in document doesn’t match address you entered above.' />,
         ref: 'address_mismatch',
     },
     {

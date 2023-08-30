@@ -17,9 +17,9 @@ describe('<ClosingAccountReasonForm />', () => {
     };
     it('Should render ClosingAccountReasonForm component', () => {
         render(<ClosingAccountReasonForm {...mock_props} />);
-        expect(screen.getByLabelText(/I want to stop myself from trading./i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/i want to stop myself from trading./i)).toBeInTheDocument();
         expect(
-            screen.getByPlaceholderText(/If you don’t mind sharing, which other trading platforms do you use?/i)
+            screen.getByPlaceholderText(/if you don’t mind sharing, which other trading platforms do you use?/i)
         ).toBeInTheDocument();
 
         expect(screen.getByRole('button', { name: /Continue/i })).toBeDisabled();
@@ -47,9 +47,9 @@ describe('<ClosingAccountReasonForm />', () => {
         render(<ClosingAccountReasonForm {...mock_props} />);
 
         const otherPlatformsInput = screen.getByPlaceholderText(
-            /If you don’t mind sharing, which other trading platforms do you use?/i
+            /if you don’t mind sharing, which other trading platforms do you use?/i
         );
-        const improveInput = screen.getByPlaceholderText(/What could we do to improve?/i);
+        const improveInput = screen.getByPlaceholderText(/what could we do to improve?/i);
 
         fireEvent.change(otherPlatformsInput, { target: { value: 'Other Platforms Input' } });
         fireEvent.paste(improveInput, { clipboardData: { getData: () => 'Pasted Text' } });

@@ -10,14 +10,14 @@ describe('<ClosingAccountWarningModal />', () => {
     };
     it('should render the ClosingAccountWarningModal component', () => {
         render(<ClosingAccountWarningModal {...mock_props} />);
-        expect(screen.getByText('Close your account?')).toBeInTheDocument();
-        expect(screen.getByText(/Closing your account will automatically log you out./i)).toBeInTheDocument();
+        expect(screen.getByText(/close your account?/i)).toBeInTheDocument();
+        expect(screen.getByText(/closing your account will automatically log you out./i)).toBeInTheDocument();
     });
 
     it('calls startDeactivating when "Close account" button is clicked', () => {
         render(<ClosingAccountWarningModal {...mock_props} />);
 
-        const closeButton = screen.getByRole('button', { name: /Close account/i });
+        const closeButton = screen.getByRole('button', { name: /close account/i });
         userEvent.click(closeButton);
 
         expect(mock_props.startDeactivating).toHaveBeenCalledTimes(1);
@@ -26,7 +26,7 @@ describe('<ClosingAccountWarningModal />', () => {
     it('calls closeModal when "Go Back" button is clicked', () => {
         render(<ClosingAccountWarningModal {...mock_props} />);
 
-        const goBackButton = screen.getByRole('button', { name: /Go Back/i });
+        const goBackButton = screen.getByRole('button', { name: /go back/i });
         userEvent.click(goBackButton);
 
         expect(mock_props.closeModal).toHaveBeenCalledTimes(1);

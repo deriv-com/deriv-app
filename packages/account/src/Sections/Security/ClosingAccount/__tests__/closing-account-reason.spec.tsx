@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { APIProvider, useRequest } from '@deriv/api';
-import { useCloseDerivAccount } from '@deriv/hooks';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import ClosingAccountReason from '../closing-account-reason';
 
@@ -21,6 +20,9 @@ describe('<ClosingAccountReason />', () => {
     };
 
     let modal_root_el: HTMLDivElement;
+    const other_financial_priorities_text = /i have other financial priorities/i;
+    const other_reasons_text = /i’m closing my account for other reasons\./i;
+
     beforeAll(() => {
         modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
@@ -49,17 +51,17 @@ describe('<ClosingAccountReason />', () => {
         renderComponent();
 
         await waitFor(() => {
-            expect(screen.getByText(/Please tell us why you’re leaving/i)).toBeInTheDocument();
+            expect(screen.getByText(/please tell us why you’re leaving/i)).toBeInTheDocument();
         });
     });
 
     it('Should be disabled when no reason has been selected', async () => {
         renderComponent();
-        fireEvent.click(screen.getByRole('checkbox', { name: /I have other financial priorities./i }));
-        fireEvent.click(screen.getByRole('checkbox', { name: /I have other financial priorities./i }));
+        fireEvent.click(screen.getByRole('checkbox', { name: other_financial_priorities_text }));
+        fireEvent.click(screen.getByRole('checkbox', { name: other_financial_priorities_text }));
 
         await waitFor(() => {
-            expect(screen.getByText(/Please select at least one reason/i)).toBeInTheDocument();
+            expect(screen.getByText(/please select at least one reason/i)).toBeInTheDocument();
             const continueButton = screen.getAllByRole('button')[1];
             expect(continueButton).toBeDisabled();
         });
@@ -67,32 +69,33 @@ describe('<ClosingAccountReason />', () => {
 
     it('should reduce remaining chars', async () => {
         renderComponent();
-        expect(screen.getByText(/Remaining characters: 110/i)).toBeInTheDocument();
+        expect(screen.getByText(/remaining characters: 110/i)).toBeInTheDocument();
 
-        fireEvent.change(screen.getByLabelText(/I want to stop myself from trading/i), {
+        fireEvent.change(screen.getByLabelText(/i want to stop myself from trading/i), {
             target: { value: 'true' },
         });
 
         await waitFor(() => {
-            expect(screen.getByText(/Remaining characters: 110/i)).toBeInTheDocument();
+            expect(screen.getByText(/remaining characters: 110/i)).toBeInTheDocument();
         });
 
-        fireEvent.change(screen.getByPlaceholderText(/What could we do to improve/i), {
+        fireEvent.change(screen.getByPlaceholderText(/what could we do to improve/i), {
             target: { value: 'do_to_improve' },
         });
-
-        expect(screen.getByText(/Remaining characters: 97/i)).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText(/remaining characters: 97/i)).toBeInTheDocument();
+        });
     });
 
     it('should call redirectToSteps when back button is clicked', async () => {
         renderComponent();
 
         const el_checkbox = screen.getByRole('checkbox', {
-            name: /i’m closing my account for other reasons\./i,
+            name: other_reasons_text,
         });
         fireEvent.click(el_checkbox);
 
-        fireEvent.click(screen.getByRole('button', { name: /Back/i }));
+        fireEvent.click(screen.getByRole('button', { name: /back/i }));
 
         await waitFor(() => {
             expect(mock_props.redirectToSteps).toHaveBeenCalledTimes(1);
@@ -103,11 +106,11 @@ describe('<ClosingAccountReason />', () => {
         renderComponent();
 
         const el_checkbox = screen.getByRole('checkbox', {
-            name: /i’m closing my account for other reasons\./i,
+            name: other_reasons_text,
         });
         fireEvent.click(el_checkbox);
 
-        fireEvent.click(screen.getByRole('button', { name: /Continue/i }));
+        fireEvent.click(screen.getByRole('button', { name: /continue/i }));
 
         await waitFor(() => {
             expect(mockUseRequest).toBeCalledWith('account_closure');

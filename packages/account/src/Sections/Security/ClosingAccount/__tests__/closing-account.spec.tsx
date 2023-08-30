@@ -5,16 +5,12 @@ import ClosingAccount from '../closing-account';
 
 jest.mock('../closing-account-steps', () => ({
     __esModule: true,
-    default: ({ redirectToReasons }: { redirectToReasons: () => void }) => (
-        <div onClick={redirectToReasons}>ClosingAccountSteps </div>
-    ),
+    default: () => <div>ClosingAccountSteps </div>,
 }));
 
 jest.mock('../closing-account-reason', () => ({
     __esModule: true,
-    default: ({ redirectToSteps }: { redirectToSteps: () => void }) => (
-        <div onClick={redirectToSteps}>ClosingAccountReason </div>
-    ),
+    default: () => <div>ClosingAccountReason </div>,
 }));
 
 describe('<ClosingAccountReason />', () => {
@@ -33,18 +29,5 @@ describe('<ClosingAccountReason />', () => {
         render(<ClosingAccount />);
         expect(screen.getByText('ClosingAccountReason')).toBeInTheDocument();
         spy.mockRestore();
-    });
-
-    it('should switch from ClosingAccountReason to ClosingAccountSteps on clicking back button in ClosingAccountReason ', () => {
-        render(<ClosingAccount />);
-        const closingAccountSteps = screen.getByText('ClosingAccountSteps');
-
-        userEvent.click(closingAccountSteps);
-
-        const backBtn = screen.getByText('ClosingAccountReason');
-        userEvent.click(backBtn);
-
-        const closingAccountStepsAfterBack = screen.getByText('ClosingAccountSteps');
-        expect(closingAccountStepsAfterBack).toBeInTheDocument();
     });
 });

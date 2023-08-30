@@ -26,23 +26,24 @@ describe('<ClosingAccountSteps />', () => {
 
     it('should render the ClosingAccountSteps component', () => {
         renderComponent();
-        expect(screen.getByText('Are you sure?')).toBeInTheDocument();
-        expect(screen.getByText('If you close your account:')).toBeInTheDocument();
-        expect(screen.getByText("You can't trade on Deriv.")).toBeInTheDocument();
-        expect(screen.getByText("You can't make transactions.")).toBeInTheDocument();
-        expect(screen.getByText('Before closing your account:')).toBeInTheDocument();
-        expect(screen.getByText('Close all your positions.')).toBeInTheDocument();
-        expect(screen.getByText('Withdraw your funds.')).toBeInTheDocument();
+
+        expect(screen.getByText(/are you sure?/i)).toBeInTheDocument();
+        expect(screen.getByText(/if you close your account:/i)).toBeInTheDocument();
+        expect(screen.getByText(/you can't trade on Deriv./i)).toBeInTheDocument();
+        expect(screen.getByText(/you can't make transactions./i)).toBeInTheDocument();
+        expect(screen.getByText(/before closing your account:/i)).toBeInTheDocument();
+        expect(screen.getByText(/close all your positions./i)).toBeInTheDocument();
+        expect(screen.getByText(/withdraw your funds/i)).toBeInTheDocument();
         expect(
             screen.getByText(
-                'We shall delete your personal information as soon as our legal obligations are met, as mentioned in the section on Data Retention in our'
+                /we shall delete your personal information as soon as our legal obligations are met, as mentioned in the section on Data Retention in our/i
             )
         ).toBeInTheDocument();
     });
 
     it('should have link to security and privacy policy pdf', () => {
         renderComponent();
-        expect(screen.getByRole('link', { name: /Security and privacy policy/i })).toHaveAttribute(
+        expect(screen.getByRole('link', { name: /security and privacy policy/i })).toHaveAttribute(
             'href',
             'https://deriv.com/tnc/security-and-privacy.pdf'
         );
@@ -50,7 +51,7 @@ describe('<ClosingAccountSteps />', () => {
 
     it('should call redirectToReasons when close_account_button is clicked ', () => {
         renderComponent();
-        const close_account_button = screen.getByRole('button', { name: /Close my account/i });
+        const close_account_button = screen.getByRole('button', { name: /close my account/i });
         expect(close_account_button).toBeInTheDocument();
         userEvent.click(close_account_button);
         expect(mock_props.redirectToReasons).toHaveBeenCalled();
@@ -58,7 +59,7 @@ describe('<ClosingAccountSteps />', () => {
 
     it('should navigate to root page on clicking the cancel button', () => {
         renderComponent();
-        const cancel_button = screen.getByRole('button', { name: /Cancel/i });
+        const cancel_button = screen.getByRole('button', { name: /cancel/i });
         expect(cancel_button).toBeInTheDocument();
         userEvent.click(cancel_button);
         expect(history.location.pathname).toBe('/');
@@ -67,8 +68,8 @@ describe('<ClosingAccountSteps />', () => {
     it('should render proper button if is_from_derivgo is true', () => {
         mockRootStore.common.is_from_derivgo = true;
         renderComponent();
-        expect(screen.queryByRole('button', { name: /Cancel/i })).not.toBeInTheDocument();
-        const close_account_button = screen.getByRole('button', { name: /Close my account/i });
+        expect(screen.queryByRole('button', { name: /cancel/i })).not.toBeInTheDocument();
+        const close_account_button = screen.getByRole('button', { name: /close my account/i });
         expect(close_account_button).toBeInTheDocument();
         userEvent.click(close_account_button);
         expect(mock_props.redirectToReasons).toHaveBeenCalled();

@@ -4,7 +4,7 @@ import ClosingAccountPendingWrapper from '../closing-account-pending-wrapper';
 
 describe('ClosingAccountPendingWrapper', () => {
     const mock_props: React.ComponentProps<typeof ClosingAccountPendingWrapper> = {
-        title: <div>mock_title</div>,
+        title: <span>mock_title</span>,
     };
     it('should render the ClosingAccountPendingWrapper component', () => {
         render(<ClosingAccountPendingWrapper {...mock_props} />);

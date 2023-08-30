@@ -24,10 +24,7 @@ const WalletCryptoDeposit = observer(() => {
                 )}
 
                 {/* This should be in the side notes, Need to talk to the design team to change it */}
-                <div
-                    className='details-container__onramp-side-note'
-                    style={{ alignSelf: is_mobile ? 'unset' : 'center' }}
-                >
+                <div className='details-container__onramp-side-note'>
                     <DepositCryptoSideNoteTryFiatOnRamp />
                 </div>
             </div>

@@ -60,6 +60,8 @@ const Verification = ({ should_wrap }) => {
         },
     ];
 
+    if (general_store.should_show_popup) return <></>;
+
     return (
         <VerificationWrapper should_wrap={should_wrap}>
             <div className='dp2p-verification' data-testid='dp2p-verification_container'>

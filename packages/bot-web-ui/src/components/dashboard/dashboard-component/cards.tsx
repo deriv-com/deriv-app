@@ -2,29 +2,16 @@
 import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, Dialog, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
-import SaveModalStore from 'Stores/save-modal-store';
+import { useDBotStore } from 'Stores/useDBotStore';
 import GoogleDrive from './load-bot-preview/google-drive';
 import Recent from './load-bot-preview/recent';
 
 type TCardProps = {
-    dialog_options: { [key: string]: string };
     has_dashboard_strategies: boolean;
-    is_dialog_open: boolean;
     is_mobile: boolean;
-    save_modal: SaveModalStore;
-    closeResetDialog: () => void;
-    handleFileChange: (e: React.ChangeEvent, flag?: boolean) => boolean;
-    loadFileFromLocal: () => void;
-    loadDataStrategy: () => void;
-    setActiveTab: (active_tab: number) => void;
-    setFileLoaded: (param: boolean) => void;
-    setPreviewOnPopup: (show: boolean) => void;
-    setOpenSettings: (toast_message: string, show_toast?: boolean) => void;
-    showVideoDialog: (param: { [key: string]: string | React.ReactNode }) => void;
 };
 
 type TCardArray = {
@@ -33,21 +20,21 @@ type TCardArray = {
     method: () => void;
 };
 
-const Cards = ({
-    closeResetDialog,
-    dialog_options,
-    handleFileChange,
-    has_dashboard_strategies,
-    is_dialog_open,
-    is_mobile,
-    loadFileFromLocal,
-    setActiveTab,
-    setFileLoaded,
-    setPreviewOnPopup,
-    setOpenSettings,
-    showVideoDialog,
-    loadDataStrategy,
-}: TCardProps) => {
+const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => {
+    const { dashboard, load_modal, quick_strategy } = useDBotStore();
+    const {
+        onCloseDialog,
+        dialog_options,
+        is_dialog_open,
+        setActiveTab,
+        setFileLoaded,
+        setPreviewOnPopup,
+        setOpenSettings,
+        showVideoDialog,
+    } = dashboard;
+    const { handleFileChange, loadFileFromLocal } = load_modal;
+    const { loadDataStrategy } = quick_strategy;
+
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
 
@@ -141,7 +128,7 @@ const Cards = ({
                         <Dialog
                             title={dialog_options.title}
                             is_visible={is_dialog_open}
-                            onCancel={closeResetDialog}
+                            onCancel={onCloseDialog}
                             is_mobile_full_width
                             className='dc-dialog__wrapper--google-drive'
                             has_close_icon
@@ -156,7 +143,7 @@ const Cards = ({
                             header={localize('Load strategy')}
                             onClickClose={() => {
                                 setPreviewOnPopup(false);
-                                closeResetDialog();
+                                onCloseDialog();
                             }}
                             height_offset='80px'
                             page_overlay
@@ -172,20 +159,6 @@ const Cards = ({
         ),
         [is_dialog_open, has_dashboard_strategies]
     );
-};
+});
 
-export default connect(({ load_modal, dashboard, quick_strategy }: RootStore) => ({
-    closeResetDialog: dashboard.onCloseDialog,
-    dialog_options: dashboard.dialog_options,
-    handleFileChange: load_modal.handleFileChange,
-    is_dialog_open: dashboard.is_dialog_open,
-    loadFileFromLocal: load_modal.loadFileFromLocal,
-    onDriveConnect: load_modal.onDriveConnect,
-    setActiveTab: dashboard.setActiveTab,
-    setFileLoaded: dashboard.setFileLoaded,
-    setLoadedLocalFile: load_modal.setLoadedLocalFile,
-    setPreviewOnPopup: dashboard.setPreviewOnPopup,
-    setOpenSettings: dashboard.setOpenSettings,
-    showVideoDialog: dashboard.showVideoDialog,
-    loadDataStrategy: quick_strategy.loadDataStrategy,
-}))(Cards);
+export default Cards;

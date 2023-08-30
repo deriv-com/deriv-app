@@ -1,6 +1,6 @@
-type TPoaStatusCodes = Readonly<Record<'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected', string>>;
+import { TVerificationStatus } from 'Types';
 
-export const poa_status_codes: TPoaStatusCodes = {
+export const poa_status_codes: TVerificationStatus = {
     none: 'none',
     pending: 'pending',
     rejected: 'rejected',

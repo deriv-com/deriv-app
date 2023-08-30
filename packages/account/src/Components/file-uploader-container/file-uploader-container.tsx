@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
-import { PlatformContext, isDesktop, WS } from '@deriv/shared';
+import { PlatformContext, isDesktop, WS, TSettings } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import FileUploader from './file-uploader';
 import { TFile, TPlatformContext } from 'Types';
@@ -11,6 +11,7 @@ export type TFileUploaderContainer = {
     getSocket: () => WebSocket;
     onFileDrop: (file: TFile | undefined) => void;
     onRef: (ref: React.RefObject<unknown> | undefined) => void;
+    settings: TSettings;
 };
 
 const FileProperties = () => {
@@ -49,6 +50,7 @@ const FileUploaderContainer = ({
     getSocket,
     onFileDrop,
     onRef,
+    settings,
 }: TFileUploaderContainer) => {
     const { is_appstore } = React.useContext<Partial<TPlatformContext>>(PlatformContext);
     const ref = React.useRef();
@@ -67,7 +69,7 @@ const FileUploaderContainer = ({
                 <div className='account-poa__upload-file account-poa__upload-file-dashboard'>
                     <FileProperties />
                     <div className='account-poa__upload-file-zone'>
-                        <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} />
+                        <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} settings={settings} />
                     </div>
                 </div>
             </div>
@@ -130,7 +132,7 @@ const FileUploaderContainer = ({
                     'account-poa__upload-file--dashboard': isDesktop() && is_appstore,
                 })}
             >
-                <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} />
+                <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} settings={settings} />
             </div>
         </div>
     );

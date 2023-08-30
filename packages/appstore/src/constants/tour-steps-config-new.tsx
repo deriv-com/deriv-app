@@ -1,7 +1,7 @@
 import { Step, Styles, Locale } from 'react-joyride';
 import React from 'react';
 import { Text, SpanButton, Icon } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import 'Components/toggle-account-type/toggle-account-type.scss';
 import { isMobile } from '@deriv/shared';
 
@@ -10,12 +10,16 @@ export const getTourStepConfig = (): Step[] => [
         title: (
             <React.Fragment>
                 <Text as='p' weight='bold' color='brand-red-coral'>
-                    {localize('Switch accounts')}
+                    <Localize i18n_default_text='Switch accounts' />
                 </Text>
                 <div className='toggle-account-type__divider' />
             </React.Fragment>
         ),
-        content: <Text as='p'>{localize('You can switch between real and demo accounts.')}</Text>,
+        content: (
+            <Text as='p'>
+                <Localize i18n_default_text='You can switch between real and demo accounts.' />
+            </Text>
+        ),
         target: '.account-type-dropdown--parent',
         disableBeacon: true,
         disableOverlayClose: true,
@@ -24,7 +28,7 @@ export const getTourStepConfig = (): Step[] => [
         title: (
             <React.Fragment>
                 <Text as='p' weight='bold' color='brand-red-coral'>
-                    {localize('Choice of regulation')}
+                    <Localize i18n_default_text='Choice of regulation' />
                 </Text>
                 <div className='toggle-account-type__divider' />
             </React.Fragment>
@@ -50,13 +54,15 @@ export const getTourStepConfig = (): Step[] => [
         title: (
             <React.Fragment>
                 <Text as='p' weight='bold' color='brand-red-coral'>
-                    {localize("Trader's Hub tour")}
+                    <Localize i18n_default_text="Trader's Hub tour" />
                 </Text>
                 <div className='toggle-account-type__divider' />
             </React.Fragment>
         ),
         content: (
-            <Text as='p'>{<Localize i18n_default_text='Click here if you ever need to repeat this tour.' />}</Text>
+            <Text as='p'>
+                <Localize i18n_default_text='Click here if you ever need to repeat this tour.' />
+            </Text>
         ),
         target: '.traders-hub-header__tradershub--onboarding--logo',
         disableBeacon: true,
@@ -69,12 +75,16 @@ export const getTourStepConfigHighRisk = (): Step[] => [
         title: (
             <React.Fragment>
                 <Text as='p' weight='bold' color='brand-red-coral'>
-                    {localize('Switch accounts')}
+                    <Localize i18n_default_text='Switch accounts' />
                 </Text>
                 <div className='toggle-account-type__divider' />
             </React.Fragment>
         ),
-        content: <Text as='p'>{localize('You can switch between real and demo accounts.')}</Text>,
+        content: (
+            <Text as='p'>
+                <Localize i18n_default_text='You can switch between real and demo accounts.' />
+            </Text>
+        ),
         target: '.account-type-dropdown--parent',
         disableBeacon: true,
         disableOverlayClose: true,
@@ -83,13 +93,15 @@ export const getTourStepConfigHighRisk = (): Step[] => [
         title: (
             <React.Fragment>
                 <Text as='p' weight='bold' color='brand-red-coral'>
-                    {localize("Trader's Hub tour")}
+                    <Localize i18n_default_text="Trader's Hub tour" />
                     <div className='toggle-account-type__divider' />
                 </Text>
             </React.Fragment>
         ),
         content: (
-            <Text as='p'>{<Localize i18n_default_text='Click here if you ever need to repeat this tour.' />}</Text>
+            <Text as='p'>
+                <Localize i18n_default_text='Click here if you ever need to repeat this tour.' />
+            </Text>
         ),
         target: '.traders-hub-header__tradershub--onboarding--logo',
         disableBeacon: true,
@@ -142,18 +154,11 @@ export const tour_styles_dark_mode: Styles = {
         fontWeight: 'bold',
     },
 };
-export const getTourStepLocale = (): Locale => ({
-    back: <SpanButton has_effect text={localize('Back')} secondary medium />,
-    close: localize('Close'),
-    last: localize('OK'),
-    next: localize('Next'),
-    skip: localize('Skip'),
-});
 
-export const getHighRiskTourStepLocale = (): Locale => ({
-    back: <SpanButton has_effect text={localize('Back')} secondary medium />,
-    close: localize('Close'),
-    last: localize('OK'),
-    next: localize('Next'),
-    skip: localize('Skip'),
+export const getTourStepLocale = (): Locale => ({
+    back: <SpanButton has_effect text={<Localize i18n_default_text='Back' />} secondary medium />,
+    close: <Localize i18n_default_text='Close' />,
+    last: <Localize i18n_default_text='OK' />,
+    next: <Localize i18n_default_text='Next' />,
+    skip: <Localize i18n_default_text='Skip' />,
 });

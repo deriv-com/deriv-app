@@ -9,7 +9,6 @@ import {
     getTourStepLocale,
     tour_styles_dark_mode,
     getTourStepConfigHighRisk,
-    getHighRiskTourStepLocale,
 } from 'Constants/tour-steps-config-new';
 import { useStores } from 'Stores/index';
 import { routes, ContentFlag } from '@deriv/shared';
@@ -31,7 +30,7 @@ const TourGuide = () => {
     const history = useHistory();
     const [joyride_index, setJoyrideIndex] = React.useState<number>(0);
     const tour_step_locale = getTourStepLocale();
-    const high_risk_tour_step_locale = getHighRiskTourStepLocale();
+    const high_risk_tour_step_locale = getTourStepLocale();
 
     tour_step_locale.last = (
         <div

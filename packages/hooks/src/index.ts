@@ -54,6 +54,7 @@ export { default as useRealSTPAccount } from './useRealSTPAccount';
 export { default as useTotalAccountBalance } from './useTotalAccountBalance';
 export { default as useTradingAccountsList } from './useTradingAccountsList';
 export { default as useTransferBetweenAccounts } from './useTransferBetweenAccounts';
+export { default as useTransferMessageList } from './useTransferMessageList';
 export { default as useVerifyEmail } from './useVerifyEmail';
 export { default as useWalletMigration } from './useWalletMigration';
 export { default as useCreateWallet } from './useCreateWallet';

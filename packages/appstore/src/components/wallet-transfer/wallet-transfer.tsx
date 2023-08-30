@@ -2,13 +2,14 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, Formik, Form, FormikHelpers } from 'formik';
 import { AmountInput, AnimatedList, AlertMessage, Button, Loading } from '@deriv/components';
-import { useCurrencyConfig, useWalletTransfer } from '@deriv/hooks';
+import { useCurrencyConfig, useTransferMessageList, useWalletTransfer } from '@deriv/hooks';
 import { validNumber } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import TransferAccountSelector from './transfer-account-selector';
 import { getAccountName } from 'Constants/utils';
 import type { TMessageItem } from 'Types';
+import { getDailyLimitTransferMessages } from 'Constants/wallet-transfer-messages';
 import './wallet-transfer.scss';
 
 type TWalletTransferProps = {
@@ -47,7 +48,9 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         setToAccount,
     } = useWalletTransfer();
 
-    const [message_list, setMessageList] = React.useState<TMessageItem[]>([]);
+    // const [message_list, setMessageList] = React.useState<TMessageItem[]>([]);
+    const { message_list } = useTransferMessageList(from_account, to_account, getDailyLimitTransferMessages);
+    console.log('=> message_list', message_list);
 
     const portal_id = is_mobile ? 'mobile_list_modal_root' : 'modal_root';
 
@@ -69,57 +72,58 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         );
     }, [active_wallet?.loginid, active_wallet_name, from_account, to_account?.loginid]);
 
-    const clearErrorMessages = React.useCallback(
-        () => setMessageList(list => list.filter(el => el.type !== 'error')),
-        []
-    );
+    // Remove this
+    // const clearErrorMessages = React.useCallback(
+    //     () => setMessageList(list => list.filter(el => el.type !== 'error')),
+    //     []
+    // );
 
-    const validateAmount = (amount: number) => {
-        clearErrorMessages();
+    // const validateAmount = (amount: number) => {
+    //     clearErrorMessages();
 
-        if (!amount || is_amount_to_input_disabled) return;
+    //     if (!amount || is_amount_to_input_disabled) return;
 
-        if (active_wallet?.is_demo) {
-            const { is_valid, message } = validNumber(amount.toString(), {
-                type: 'float',
-                decimals: getConfig(from_account?.currency || '')?.fractional_digits,
-                min: 1,
-                max: from_account?.balance,
-            });
+    //     if (active_wallet?.is_demo) {
+    //         const { is_valid, message } = validNumber(amount.toString(), {
+    //             type: 'float',
+    //             decimals: getConfig(from_account?.currency || '')?.fractional_digits,
+    //             min: 1,
+    //             max: from_account?.balance,
+    //         });
 
-            const should_reset_balance =
-                active_wallet?.balance !== undefined &&
-                amount > active_wallet?.balance &&
-                active_wallet?.balance < initial_demo_balance;
+    //         const should_reset_balance =
+    //             active_wallet?.balance !== undefined &&
+    //             amount > active_wallet?.balance &&
+    //             active_wallet?.balance < initial_demo_balance;
 
-            if (from_account?.loginid === active_wallet.loginid && should_reset_balance) {
-                setMessageList(list => [
-                    ...list,
-                    {
-                        variant: 'with-action-button',
-                        id: ERROR_CODES.is_demo.insufficient_fund,
-                        button_label: localize('Reset balance'),
-                        onClickHandler: () => setWalletModalActiveTab('Deposit'),
-                        message: localize(
-                            'You have insufficient fund in the selected wallet, please reset your virtual balance'
-                        ),
-                        type: 'error',
-                    },
-                ]);
-            } else if (!is_valid) {
-                //else if not wallet loginid and not is_ok message
-                setMessageList(list => [
-                    ...list,
-                    {
-                        variant: 'base',
-                        id: ERROR_CODES.is_demo.between_min_max,
-                        message: `${message} ${from_account?.display_currency_code}` || '',
-                        type: 'error',
-                    },
-                ]);
-            }
-        }
-    };
+    //         if (from_account?.loginid === active_wallet.loginid && should_reset_balance) {
+    //             setMessageList(list => [
+    //                 ...list,
+    //                 {
+    //                     variant: 'with-action-button',
+    //                     id: ERROR_CODES.is_demo.insufficient_fund,
+    //                     button_label: localize('Reset balance'),
+    //                     onClickHandler: () => setWalletModalActiveTab('Deposit'),
+    //                     message: localize(
+    //                         'You have insufficient fund in the selected wallet, please reset your virtual balance'
+    //                     ),
+    //                     type: 'error',
+    //                 },
+    //             ]);
+    //         } else if (!is_valid) {
+    //             //else if not wallet loginid and not is_ok message
+    //             setMessageList(list => [
+    //                 ...list,
+    //                 {
+    //                     variant: 'base',
+    //                     id: ERROR_CODES.is_demo.between_min_max,
+    //                     message: `${message} ${from_account?.display_currency_code}` || '',
+    //                     type: 'error',
+    //                 },
+    //             ]);
+    //         }
+    //     }
+    // };
 
     const onSelectFromAccount = React.useCallback(
         (
@@ -136,10 +140,10 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
             } else {
                 setToAccount(active_wallet);
             }
-            clearErrorMessages();
+            // clearErrorMessages();
             resetForm();
         },
-        [active_wallet, clearErrorMessages, from_account?.loginid, setFromAccount, setToAccount]
+        [active_wallet /* clearErrorMessages */, , from_account?.loginid, setFromAccount, setToAccount]
     );
 
     const onSelectToAccount = React.useCallback(
@@ -152,10 +156,10 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         ) => {
             if (account?.loginid === to_account?.loginid) return;
             setToAccount(account);
-            clearErrorMessages();
+            // clearErrorMessages();
             resetForm();
         },
-        [clearErrorMessages, setToAccount, to_account?.loginid]
+        [, /* clearErrorMessages */ setToAccount, to_account?.loginid]
     );
 
     if (is_accounts_loading || is_switching) {
@@ -180,7 +184,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                     'wallet-transfer__tile-disable-margin-bottom': message_list.length > 0,
                                 })}
                             >
-                                <Field name='from_amount' validate={validateAmount}>
+                                <Field name='from_amount' /* validate={validateAmount} */>
                                     {({ field }: FieldProps<number>) => (
                                         <AmountInput
                                             {...field}

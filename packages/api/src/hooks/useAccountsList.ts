@@ -3,7 +3,7 @@ import useAuthorize from './useAuthorize';
 import useBalance from './useBalance';
 import useCurrencyConfig from './useCurrencyConfig';
 
-/** A custom hook that returns the list of accounts of the logged in user. */
+/** A custom hook that returns the list of accounts for the current user. */
 const useAccountsList = () => {
     const { data: authorize_data, ...rest } = useAuthorize();
     const { data: balance_data } = useBalance();
@@ -34,7 +34,7 @@ const useAccountsList = () => {
                 currency_config: account.currency ? getConfig(account.currency) : undefined,
             } as const;
         });
-    }, [authorize_data.account_list, authorize_data.loginid]);
+    }, [authorize_data.account_list, authorize_data.loginid, getConfig]);
 
     // Add balance to each account
     const modified_accounts_with_balance = useMemo(
@@ -48,7 +48,7 @@ const useAccountsList = () => {
     );
 
     return {
-        /** The list of accounts. */
+        /** The list of accounts for the current user. */
         data: modified_accounts_with_balance,
         ...rest,
     };

@@ -20,7 +20,7 @@ const Header = observer(() => {
     } else if (is_logged_in) {
         let result;
         if (traders_hub_routes) {
-            result = <TradersHubHeader is_acc_switcher_disabled={false} />;
+            result = <TradersHubHeader />;
         } else if (pathname === routes.onboarding) {
             result = null;
         } else {

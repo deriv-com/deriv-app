@@ -20,13 +20,10 @@ import ShowNotifications from './show-notifications';
 import TradersHubOnboarding from './traders-hub-onboarding';
 import TradersHubHomeButton from './traders-hub-home-button';
 
-type TTradersHubHeader = {
-    is_acc_switcher_disabled: boolean;
-};
 type TPlatformConfig = typeof platform_config;
 type TPlatforms = typeof platforms;
 
-const TradersHubHeader = observer(({ is_acc_switcher_disabled }: TTradersHubHeader) => {
+const TradersHubHeader = observer(() => {
     const { client, common, traders_hub, ui } = useStore();
     const {
         account_type,
@@ -89,7 +86,7 @@ const TradersHubHeader = observer(({ is_acc_switcher_disabled }: TTradersHubHead
                 country_standpoint={country_standpoint}
                 currency={currency}
                 is_dialog_on={is_accounts_switcher_on}
-                is_disabled={is_acc_switcher_disabled}
+                is_disabled={false}
                 is_eu={is_eu}
                 is_virtual={is_virtual}
                 toggleDialog={toggleAccountsDialog}
@@ -101,7 +98,6 @@ const TradersHubHeader = observer(({ is_acc_switcher_disabled }: TTradersHubHead
             balance,
             country_standpoint,
             currency,
-            is_acc_switcher_disabled,
             is_accounts_switcher_on,
             is_eu,
             is_virtual,

@@ -41,7 +41,7 @@ describe('TradersHubHeader', () => {
     const renderComponent = () =>
         render(
             <StoreProvider store={mockStore({})}>
-                <TradersHubHeader is_acc_switcher_disabled={false} />
+                <TradersHubHeader />
             </StoreProvider>
         );
 

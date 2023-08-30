@@ -26,7 +26,13 @@ import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store, general_store, my_profile_store } = useStores();
-    const { counterparty_advert_id, is_advertiser, is_barred } = general_store;
+    const {
+        counterparty_advert_id,
+        counterparty_advertiser_id,
+        is_advertiser,
+        is_barred,
+        setCounterpartyAdvertiserId,
+    } = general_store;
     const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
 
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
@@ -114,7 +120,7 @@ const AdvertiserPage = () => {
         const disposeCounterpartyAdvertiserIdReaction = reaction(
             () => [general_store.counterparty_advertiser_id, general_store.is_advertiser_info_subscribed],
             () => {
-                if (general_store.counterparty_advertiser_id) {
+                if (counterparty_advertiser_id) {
                     // DO NOT REMOVE. This fixes reloading issue when user navigates to advertiser page via URL
                     advertiser_page_store.onAdvertiserIdUpdate();
 
@@ -212,7 +218,7 @@ const AdvertiserPage = () => {
                         if (general_store.active_index === general_store.path.my_profile)
                             my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
                         history.push(general_store.active_tab_route);
-                        general_store.setCounterpartyAdvertiserId(null);
+                        setCounterpartyAdvertiserId(null);
                     }}
                     page_title={localize("Advertiser's page")}
                 />

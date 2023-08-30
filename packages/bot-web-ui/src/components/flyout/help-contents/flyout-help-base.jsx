@@ -1,26 +1,29 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Icon, Text } from '@deriv/components';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { help_content_config, help_content_types } from 'Utils/help-content/help-content.config';
-import { connect } from 'Stores/connect';
+import { useDBotStore } from 'Stores/useDBotStore';
 import FlyoutBlock from '../flyout-block.jsx';
 import FlyoutImage from './flyout-img.jsx';
 import FlyoutText from './flyout-text.jsx';
 import FlyoutVideo from './flyout-video.jsx';
 
-const HelpBase = ({
-    block_node,
-    block_type,
-    examples,
-    help_string,
-    is_search_flyout,
-    onBackClick,
-    onSequenceClick,
-    should_next_disable,
-    should_previous_disable,
-    title,
-}) => {
+const HelpBase = observer(() => {
+    const { flyout, flyout_help } = useDBotStore();
+    const {
+        block_node,
+        block_type,
+        examples,
+        help_string,
+        onBackClick,
+        onSequenceClick,
+        should_next_disable,
+        should_previous_disable,
+        title,
+    } = flyout_help;
+    const { is_search_flyout } = flyout;
+
     const block_help_component = help_string && help_content_config(__webpack_public_path__)[block_type];
     let text_count = 0;
 
@@ -122,30 +125,6 @@ const HelpBase = ({
             )}
         </React.Fragment>
     );
-};
+});
 
-HelpBase.propTypes = {
-    block_node: PropTypes.object,
-    block_type: PropTypes.string,
-    examples: PropTypes.array,
-    help_string: PropTypes.object,
-    is_search_flyout: PropTypes.bool,
-    onBackClick: PropTypes.func,
-    onSequenceClick: PropTypes.func,
-    should_next_disable: PropTypes.bool,
-    should_previous_disable: PropTypes.bool,
-    title: PropTypes.string,
-};
-
-export default connect(({ flyout, flyout_help }) => ({
-    block_node: flyout_help.block_node,
-    block_type: flyout_help.block_type,
-    examples: flyout_help.examples,
-    help_string: flyout_help.help_string,
-    is_search_flyout: flyout.is_search_flyout,
-    onBackClick: flyout_help.onBackClick,
-    onSequenceClick: flyout_help.onSequenceClick,
-    should_next_disable: flyout_help.should_next_disable,
-    should_previous_disable: flyout_help.should_previous_disable,
-    title: flyout_help.title,
-}))(HelpBase);
+export default HelpBase;

@@ -1,12 +1,11 @@
 import React from 'react';
-import { isAccumulatorContract, isEmptyObject, isMobile } from '@deriv/shared';
+import { isAccumulatorContract, isEmptyObject } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import PurchaseButtonsOverlay from 'Modules/Trading/Components/Elements/purchase-buttons-overlay.jsx';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
-import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 
 const Purchase = observer(({ is_market_closed }) => {
     const {
@@ -22,6 +21,7 @@ const Purchase = observer(({ is_market_closed }) => {
         growth_rate,
         has_cancellation,
         is_purchase_enabled,
+        is_turbos,
         is_vanilla,
         onPurchase: onClickPurchase,
         onHoverPurchase,
@@ -51,45 +51,32 @@ const Purchase = observer(({ is_market_closed }) => {
         const is_proposal_error =
             is_multiplier || (is_accumulator && !is_mobile) ? info.has_error && !!info.message : info.has_error;
         const purchase_fieldset = (
-            <div className='trade-params--mobile__payout-container'>
-                {is_vanilla && isMobile() && (
-                    <ContractInfo
-                        basis={basis}
-                        currency={currency}
-                        has_increased={info.has_increased}
-                        is_loading={isLoading(info)}
-                        is_multiplier={is_multiplier}
-                        is_vanilla={is_vanilla}
-                        proposal_info={info}
-                        type={type}
-                    />
-                )}
-                <PurchaseFieldset
-                    basis={basis}
-                    buy_info={purchase_info}
-                    currency={currency}
-                    info={info}
-                    key={index}
-                    index={getSortedIndex(index, type)}
-                    growth_rate={growth_rate}
-                    has_cancellation={has_cancellation}
-                    is_disabled={is_disabled}
-                    is_accumulator={is_accumulator}
-                    is_high_low={is_high_low}
-                    is_loading={isLoading(info)}
-                    is_market_closed={is_market_closed}
-                    is_mobile={is_mobile}
-                    is_multiplier={is_multiplier}
-                    is_vanilla={is_vanilla}
-                    is_proposal_empty={is_proposal_empty}
-                    is_proposal_error={is_proposal_error}
-                    purchased_states_arr={purchased_states_arr}
-                    onHoverPurchase={onHoverPurchase}
-                    onClickPurchase={onClickPurchase}
-                    setPurchaseState={setPurchaseState}
-                    type={type}
-                />
-            </div>
+            <PurchaseFieldset
+                basis={basis}
+                buy_info={purchase_info}
+                currency={currency}
+                growth_rate={growth_rate}
+                info={info}
+                key={index}
+                index={getSortedIndex(index, type)}
+                has_cancellation={has_cancellation}
+                is_accumulator={is_accumulator}
+                is_disabled={is_disabled}
+                is_high_low={is_high_low}
+                is_loading={isLoading(info)}
+                is_market_closed={is_market_closed}
+                is_mobile={is_mobile}
+                is_multiplier={is_multiplier}
+                is_turbos={is_turbos}
+                is_vanilla={is_vanilla}
+                is_proposal_empty={is_proposal_empty}
+                is_proposal_error={is_proposal_error}
+                purchased_states_arr={purchased_states_arr}
+                onHoverPurchase={onHoverPurchase}
+                onClickPurchase={onClickPurchase}
+                setPurchaseState={setPurchaseState}
+                type={type}
+            />
         );
 
         if (!is_vanilla) {

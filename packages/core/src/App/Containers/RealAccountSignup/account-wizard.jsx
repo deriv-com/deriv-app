@@ -249,7 +249,7 @@ const AccountWizard = props => {
         const passthrough = getCurrent('passthrough', step_index);
         const properties = getCurrent('props', step_index) || {};
 
-        if (passthrough && passthrough.length) {
+        if (passthrough?.length) {
             passthrough.forEach(item => {
                 Object.assign(properties, { [item]: props[item] });
             });
@@ -261,6 +261,12 @@ const AccountWizard = props => {
     const createRealAccount = (payload = undefined) => {
         setLoading(true);
         const form_data = { ...form_values() };
+        /**
+         * Remove document_type from payload if it is not present (For Non IDV supporting countries)
+         */
+        if (!form_data?.document_type?.id) {
+            delete form_data.document_type;
+        }
         submitForm(payload)
             .then(async response => {
                 props.setIsRiskWarningVisible(false);
@@ -275,7 +281,7 @@ const AccountWizard = props => {
                 /**
                  * If IDV details are present, then submit IDV details
                  */
-                if (form_data.document_type) {
+                if (form_data?.document_type) {
                     const idv_submit_data = {
                         identity_verification_document_add: 1,
                         ...formatIDVFormValues(form_data, country_code),

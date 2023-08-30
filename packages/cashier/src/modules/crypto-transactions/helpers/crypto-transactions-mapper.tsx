@@ -5,7 +5,7 @@ import { Localize, localize } from '@deriv/translations';
 import moment from 'moment';
 
 const cryptoTransactionMapper = (
-    transaction: NonNullable<ReturnType<typeof useCryptoTransactions>['last_transactions']>
+    transaction: NonNullable<ReturnType<typeof useCryptoTransactions>['last_transaction']>
 ) => {
     const is_deposit = transaction.transaction_type === 'deposit';
     const submit_date = transaction.submit_date;

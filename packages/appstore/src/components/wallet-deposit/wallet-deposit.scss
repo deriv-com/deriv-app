@@ -22,6 +22,16 @@
                     margin: 3.2rem 0 0;
                     row-gap: 1.6rem;
                 }
+
+                .details-container {
+                    &__onramp-side-note {
+                        align-self: center;
+
+                        @include mobile {
+                            align-self: unset;
+                        }
+                    }
+                }
             }
 
             &__side-notes-container {

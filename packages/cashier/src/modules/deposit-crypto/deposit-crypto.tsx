@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { observer, useStore } from '@deriv/stores';
 import { Divider } from '@deriv/components';
+import { observer, useStore } from '@deriv/stores';
 import { PageContainer } from '../../components/page-container';
 import { useCashierStore } from '../../stores/useCashierStores';
 import { DepositCryptoCurrencyDetails, DepositCryptoSideNotes, DepositCryptoWalletAddress } from './components';

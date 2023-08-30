@@ -16,7 +16,7 @@ const WalletDeposit = observer(() => {
             <WalletFiatDeposit />
         </Div100vhContainer>
     ) : (
-        <WalletCryptoDeposit is_mobile={is_mobile} />
+        <WalletCryptoDeposit />
     );
 });
 

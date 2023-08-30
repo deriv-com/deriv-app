@@ -1,15 +1,15 @@
 import React from 'react';
 import { Divider } from '@deriv/components';
+import { useStore, observer } from '@deriv/stores';
 import DepositCryptoCurrencyDetails from '@deriv/cashier/src/modules/deposit-crypto/components/deposit-crypto-currency-details/deposit-crypto-currency-details';
-import DepositCryptoWalletAddress from '@deriv/cashier/src/modules/deposit-crypto/components/deposit-crypto-wallet-address/deposit-crypto-wallet-address';
-import DepositCryptoSideNoteTryFiatOnRamp from '@deriv/cashier/src/modules/deposit-crypto/components/deposit-crypto-side-notes/deposit-crypto-side-note-try-fiat-onramp';
 import DepositCryptoSideNotes from '@deriv/cashier/src/modules/deposit-crypto/components/deposit-crypto-side-notes/deposit-crypto-side-notes';
+import DepositCryptoSideNoteTryFiatOnRamp from '@deriv/cashier/src/modules/deposit-crypto/components/deposit-crypto-side-notes/deposit-crypto-side-note-try-fiat-onramp';
+import DepositCryptoWalletAddress from '@deriv/cashier/src/modules/deposit-crypto/components/deposit-crypto-wallet-address/deposit-crypto-wallet-address';
 
-type TWalletCryptoDeposit = {
-    is_mobile: boolean;
-};
+const WalletCryptoDeposit = observer(() => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
 
-const WalletCryptoDeposit = ({ is_mobile }: TWalletCryptoDeposit) => {
     return (
         <div className='wallet-deposit__crypto-container'>
             <div className='crypto-container__details-container'>
@@ -24,7 +24,10 @@ const WalletCryptoDeposit = ({ is_mobile }: TWalletCryptoDeposit) => {
                 )}
 
                 {/* This should be in the side notes, Need to talk to the design team to change it */}
-                <div style={{ alignSelf: is_mobile ? 'unset' : 'center' }}>
+                <div
+                    className='details-container__onramp-side-note'
+                    style={{ alignSelf: is_mobile ? 'unset' : 'center' }}
+                >
                     <DepositCryptoSideNoteTryFiatOnRamp />
                 </div>
             </div>
@@ -35,6 +38,6 @@ const WalletCryptoDeposit = ({ is_mobile }: TWalletCryptoDeposit) => {
             )}
         </div>
     );
-};
+});
 
 export default WalletCryptoDeposit;

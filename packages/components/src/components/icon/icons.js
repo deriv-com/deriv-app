@@ -666,6 +666,7 @@ import './flag/ic-flag-es.svg';
 import './flag/ic-flag-fr.svg';
 import './flag/ic-flag-id.svg';
 import './flag/ic-flag-it.svg';
+import './flag/ic-flag-ko.svg';
 import './flag/ic-flag-pl.svg';
 import './flag/ic-flag-pt.svg';
 import './flag/ic-flag-ru.svg';

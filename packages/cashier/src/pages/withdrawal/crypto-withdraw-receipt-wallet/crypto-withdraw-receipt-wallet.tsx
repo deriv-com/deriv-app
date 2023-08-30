@@ -16,23 +16,25 @@ const CryptoWithdrawReceiptWallet = observer(() => {
 
     const { blockchain_address, resetWithdrawForm, setIsWithdrawConfirmed, withdraw_amount } = withdraw;
 
-    const openTransactionsTab = () => {
+    const resetVerification = () => {
         setVerificationCode('', 'payment_withdraw');
-        setWalletModalActiveTab('Transactions');
         setIsWithdrawConfirmed(false);
         resetWithdrawForm();
     };
 
+    const openTransactionsTab = () => {
+        setWalletModalActiveTab('Transactions');
+        resetVerification();
+    };
+
     const closeWithdrawForm = () => {
-        setVerificationCode('', 'payment_withdraw');
         setWalletModalActiveTab('Withdraw');
-        setIsWithdrawConfirmed(false);
-        resetWithdrawForm();
+        resetVerification();
     };
 
     useEffect(() => {
         return () => {
-            closeWithdrawForm();
+            resetVerification();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

@@ -1,4 +1,4 @@
-.account-list {
+.wallets-account-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -8,13 +8,13 @@
 }
 
 h1,
-.currency,
-.balance,
-.account-category {
+.wallets-currency,
+.wallets-balance,
+.wallets-account-category {
     font-size: 3rem;
 }
 
-.account-item {
+.wallets-account-item {
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px;
@@ -25,10 +25,10 @@ h1,
     width: 90%;
 }
 
-.currency {
+.wallets-currency {
     font-weight: bold;
 }
 
-.account-category {
+.wallets-account-category {
     font-style: italic;
 }

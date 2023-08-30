@@ -159,8 +159,8 @@ const createProposalRequestForContract = (store, type_of_contract) => {
                 barrier: store.barrier_1 || store.last_digit,
             }),
         ...(store.barrier_count === 2 && !isAccumulatorContract(type_of_contract) && { barrier2: store.barrier_2 }),
+        limit_order,
         ...obj_accumulator,
         ...obj_multiplier,
-        limit_order,
     };
 };

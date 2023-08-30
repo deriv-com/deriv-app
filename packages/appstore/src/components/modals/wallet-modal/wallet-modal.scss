@@ -205,14 +205,8 @@
 
     .dc-tabs__content {
         width: 100%;
-        font-size: var(--text-size-l);
-        color: var(--text-prominent);
         display: flex;
         align-items: center;
         justify-content: center;
-
-        @include mobile {
-            font-size: var(--text-size-xs);
-        }
     }
 }

@@ -4,4 +4,35 @@
         max-width: 58.8rem;
         margin: 0 auto;
     }
+
+    &__crypto-container {
+        display: flex;
+        justify-content: flex-end;
+
+        .crypto-container {
+            &__details-container {
+                display: flex;
+                flex-direction: column;
+                row-gap: 2.4rem;
+                width: 100%;
+                max-width: 58.8rem;
+                margin: 4.4rem 2.4rem 0;
+
+                @include mobile {
+                    margin: 3.2rem 0 0;
+                    row-gap: 1.6rem;
+                }
+            }
+
+            &__side-notes-container {
+                width: 100%;
+                max-width: 28.2rem;
+            }
+
+            &__divider {
+                border-top: 1px solid var(--general-section-1);
+                border-bottom: 1px solid var(--general-section-1);
+            }
+        }
+    }
 }

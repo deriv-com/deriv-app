@@ -8,11 +8,12 @@ import { DepositCryptoDisclaimers } from '../deposit-crypto-disclaimers';
 import './deposit-crypto-wallet-address.scss';
 
 const DepositCryptoWalletAddress: React.FC = observer(() => {
-    const { ui } = useStore();
+    const { ui, client } = useStore();
     const { is_mobile } = ui;
+    const { is_switching } = client;
     const { data: deposit_crypto_address, isLoading, error, resend } = useDepositCryptoAddress();
 
-    if (isLoading) return <Loading is_fullscreen={false} />;
+    if (isLoading || is_switching) return <Loading is_fullscreen={false} />;
 
     if (error) {
         return (

@@ -2,6 +2,7 @@ import { getImageLocation } from '../../public-path';
 import React from 'react';
 import { CallBackProps } from 'react-joyride';
 import { Icon, Text } from '@deriv/components';
+import { getUrlBase } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { getSetting, storeSetting } from '../../utils/settings';
 import TourGuide from './tour-guide';
@@ -109,8 +110,7 @@ export const DBOT_ONBOARDING = [
                         'We also provide a tutorial on this tab to show you how you can build and execute a simple strategy.'
                     ),
                 ]}
-                img={getImageLocation('dbot-onboarding-tour-step-1.gif')}
-                dashboard_tab_index={0}
+                media={getUrlBase('/public/videos/dbot-onboarding-tour-step-1.mp4')}
                 step_index={1}
             />
         ),
@@ -123,8 +123,7 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('Monitor the market')}
                 content={[localize('View the market price of your favourite assets.')]}
-                img={getImageLocation('dbot-onboarding-tour-step-2.gif')}
-                dashboard_tab_index={0}
+                media={getUrlBase('/public/videos/dbot-onboarding-tour-step-2.mp4')}
                 step_index={2}
             />
         ),
@@ -137,8 +136,7 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('Guides and FAQs to help you')}
                 content={[localize('Start with a video guide and the FAQs.')]}
-                img={getImageLocation('dbot-onboarding-tour-step-3.gif')}
-                dashboard_tab_index={0}
+                media={getUrlBase('/public/videos/dbot-onboarding-tour-step-3.mp4')}
                 step_index={3}
             />
         ),
@@ -151,7 +149,6 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('Shortcuts')}
                 content={[localize('You can also use these shortcuts to import or build your bot.')]}
-                dashboard_tab_index={0}
                 step_index={4}
             />
         ),
@@ -165,8 +162,7 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('How is my bot doing?')}
                 content={[localize("See your bot's performance in real-time.")]}
-                img={getImageLocation('dbot-onboarding-tour-step-5.gif')}
-                dashboard_tab_index={0}
+                media={getUrlBase('/public/videos/dbot-onboarding-tour-step-5.mp4')}
                 step_index={5}
             />
         ),
@@ -180,8 +176,7 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('Run or stop your bot')}
                 content={[localize('Click Run when you want to start trading, and click Stop when you want to stop.')]}
-                img={getImageLocation('dbot-onboarding-tour-step-6.gif')}
-                dashboard_tab_index={0}
+                media={getUrlBase('/public/videos/dbot-onboarding-tour-step-6.mp4')}
                 step_index={6}
             />
         ),
@@ -371,7 +366,9 @@ const Step4 = ({ show_label = false }) => (
             </div>
         </div>
         <div>
-            <img src={getImageLocation('bot-builder-tour-step-4.gif')} alt='step4' />
+            <video autoPlay loop controls playsInline preload='auto' disablePictureInPicture controlsList='nodownload'>
+                <source src={getUrlBase('/public/videos/bot-builder-tour-step-4.mp4')} type='video/mp4' />
+            </video>
         </div>
     </div>
 );
@@ -419,7 +416,9 @@ const Step5 = ({ show_label = false }) => (
             </ul>
         </div>
         <div>
-            <img src={getImageLocation('bot-builder-tour-step-5.gif')} alt='step5' />
+            <video autoPlay loop controls playsInline preload='auto' disablePictureInPicture controlsList='nodownload'>
+                <source src={getUrlBase('/public/videos/bot-builder-tour-step-5.mp4')} type='video/mp4' />
+            </video>
         </div>
     </div>
 );
@@ -532,49 +531,58 @@ export const DBOT_ONBOARDING_MOBILE = [
         step_key: 0,
     },
     {
-        header: localize('Build from scratch'),
-        img: getImageLocation('dbot-mobile-onboarding-step-1.gif'),
-        content: [
-            localize(
-                'Import a bot from your mobile device or from Google drive, see a preview in the bot builder, and start trading by running the bot, or choose from our pre-made Quick Strategies. '
-            ),
-        ],
+        header: localize('Import or choose your bot'),
+        media: getUrlBase('/public/videos/dbot-mobile-onboarding-step-1.mp4'),
+        content: [localize('Import your bot or tap Quick Strategies to choose from the ready-to-use bot templates.')],
         key: 2,
         step_key: 1,
     },
     {
         header: localize('Monitor the market'),
-        img: getImageLocation('dbot-mobile-onboarding-step-2.png'),
+        media: getUrlBase('/public/videos/dbot-mobile-onboarding-step-2.mp4'),
         content: [localize('View the market price of your favourite assets.')],
         key: 3,
         step_key: 2,
     },
     {
-        header: localize('Guides and FAQs to help you'),
-        img: getImageLocation('dbot-mobile-onboarding-step-3.gif'),
-        content: [localize('Start with a video guide and the FAQs.')],
+        header: localize('Learn more with our tutorials'),
+        media: getUrlBase('/public/videos/dbot-mobile-onboarding-step-3.mp4'),
+        content: [localize('Explore the video guides and FAQs to build your bot in the tutorials tab.')],
         key: 4,
         step_key: 3,
     },
     {
-        header: localize('Shortcuts'),
+        header: localize('Use these shortcuts'),
         img: getImageLocation('dbot-mobile-onboarding-step-4.png'),
-        content: [localize('You can also use these shortcuts to import or build your bot.')],
+        content: [localize('You can also import or build your bot using any of these shortcuts.')],
         key: 5,
         step_key: 4,
     },
     {
-        header: localize('How is my bot doing?'),
-        img: getImageLocation('dbot-mobile-onboarding-step-5.gif'),
-        content: [localize("See your bot's performance in real-time.")],
+        header: localize('Check your bot’s performance'),
+        media: getUrlBase('/public/videos/dbot-mobile-onboarding-step-5.mp4'),
+        content: [localize('See how your bot is doing in real-time.')],
         key: 6,
         step_key: 5,
     },
     {
-        header: localize('Run or stop your bot'),
-        img: getImageLocation('dbot-mobile-onboarding-step-6.gif'),
-        content: [localize('Click Run when you want to start trading, and click Stop when you want to stop.')],
+        header: localize('Run your bot'),
+        media: getUrlBase('/public/videos/dbot-mobile-onboarding-step-6.mp4'),
+        content: [
+            <Localize
+                key='get-started=mobile'
+                i18n_default_text='Click <0>Run</0> when you want to start trading, and click <0>Stop</0> when you want to stop.'
+                components={[<strong key={0} />]}
+            />,
+        ],
         key: 7,
         step_key: 6,
+    },
+    {
+        header: localize('Want to retake the tour?'),
+        img: getImageLocation('dbot-mobile-onboarding-step-7.png'),
+        content: [localize('Head to the Tutorials tab to do so.')],
+        key: 8,
+        step_key: 7,
     },
 ];

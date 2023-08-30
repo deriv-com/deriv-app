@@ -1,35 +1,22 @@
 import React from 'react';
-import { Loading, Text } from '@deriv/components';
+import { Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 type TTourGuide = {
     content: string[];
-    img?: string;
+    media?: string;
     label: string | boolean;
-    onCloseTour: () => void;
     step_index: number;
     show_actions?: boolean;
     has_localize_component?: boolean;
 };
 
 const TourGuide = observer(
-    ({ content, img, label, step_index, has_localize_component = false, show_actions = true }: TTourGuide) => {
+    ({ content, media, label, step_index, has_localize_component = false, show_actions = true }: TTourGuide) => {
         const { dashboard } = useDBotStore();
         const { onCloseTour } = dashboard;
-
-        const [has_image_loaded, setImageLoaded] = React.useState(false);
-
-        React.useEffect(() => {
-            if (img) {
-                const tour_image = new Image();
-                tour_image.onload = () => {
-                    setImageLoaded(true);
-                };
-                tour_image.src = img;
-            }
-        }, [step_index]);
 
         return (
             <React.Fragment>
@@ -50,10 +37,18 @@ const TourGuide = observer(
                         </Text>
                     </div>
 
-                    {img && (
-                        <div className='onboard__container'>
-                            {has_image_loaded ? <img src={img} loading='eager' /> : <Loading />}
-                        </div>
+                    {media && (
+                        <video
+                            autoPlay={true}
+                            loop
+                            controls
+                            preload='auto'
+                            playsInline
+                            disablePictureInPicture
+                            controlsList='nodownload'
+                            style={{ width: '100%' }}
+                            src={media}
+                        />
                     )}
 
                     <div className='onboard__content'>

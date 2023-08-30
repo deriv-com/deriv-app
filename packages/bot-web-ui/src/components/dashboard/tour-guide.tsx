@@ -1,11 +1,10 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
-import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 type TTourGuide = {
-    content: string[];
+    content: string[] | React.ReactElement[];
     media?: string;
     label: string | boolean;
     step_index: number;
@@ -26,9 +25,9 @@ const TourGuide = observer(
                             <Text color='less-prominent' line_height='l'>
                                 {step_index}/6
                             </Text>
-                            <Text className='onboard__header--close' line_height='l' onClick={onCloseTour}>
-                                {localize('Exit tour')}
-                            </Text>
+                            <span onClick={onCloseTour}>
+                                <Icon icon='IcCross' className='db-contract-card__result-icon' />
+                            </span>
                         </div>
                     )}
                     <div className='onboard__label'>
@@ -57,7 +56,7 @@ const TourGuide = observer(
                                 return has_localize_component ? (
                                     content_data
                                 ) : (
-                                    <div className='onboard__content__block' key={`${content_data + index}`}>
+                                    <div className='onboard__content__block' key={`onboard--${index}`}>
                                         <Text align='left' as='h' size='xs' line_height='l'>
                                             {content_data}
                                         </Text>

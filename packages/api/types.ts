@@ -1078,3 +1078,17 @@ export type TSocketPaginateableEndpointNames = KeysMatching<
     TSocketEndpoints,
     { request: { limit?: number; offset?: number } }
 >;
+
+export type TData = TDataItem[];
+
+type TDataItem = TFields & {
+    id: number;
+};
+
+export type TFields = {
+    date: React.ReactNode;
+    action: React.ReactNode;
+    browser: React.ReactNode;
+    ip: React.ReactNode;
+    status: React.ReactNode;
+};

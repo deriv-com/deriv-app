@@ -8,7 +8,6 @@ interface IToolbarStore {
     file_name: { [key: string]: string };
     has_undo_stack: boolean;
     has_redo_stack: boolean;
-    toggleAnimationInfoModal: () => void;
     onResetClick: () => void;
     closeResetDialog: () => void;
     onResetOkButtonClick: () => void;
@@ -29,7 +28,6 @@ export default class ToolbarStore implements IToolbarStore {
             file_name: observable,
             has_undo_stack: observable,
             has_redo_stack: observable,
-            toggleAnimationInfoModal: action.bound,
             onResetClick: action.bound,
             closeResetDialog: action.bound,
             onResetOkButtonClick: action.bound,
@@ -46,10 +44,6 @@ export default class ToolbarStore implements IToolbarStore {
     file_name = config.default_file_name;
     has_undo_stack = false;
     has_redo_stack = false;
-
-    toggleAnimationInfoModal = (): void => {
-        this.is_animation_info_modal_open = !this.is_animation_info_modal_open;
-    };
 
     onResetClick = (): void => {
         this.is_dialog_open = true;

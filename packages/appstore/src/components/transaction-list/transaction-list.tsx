@@ -1,18 +1,12 @@
 import React, { useState } from 'react';
-import { Text, Dropdown } from '@deriv/components';
+import { Dropdown } from '@deriv/components';
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
-import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { groupTransactionsByDay } from '@deriv/utils';
-import NonPendingTransaction from './non-pending-transaction';
+import { TransactionsForADay } from './transaction-for-day';
 import './transaction-list.scss';
 
 const TransactionList = () => {
-    const {
-        client: { loginid },
-        ui: { is_mobile },
-    } = useStore();
-
     const wallet = useActiveWallet();
 
     const filter_options = [
@@ -50,37 +44,8 @@ const TransactionList = () => {
     // @ts-expect-error reset_balance is not supported in the API yet
     const grouped_transactions = groupTransactionsByDay(transactions);
 
-    const TransactionsForADay = ({
-        day,
-        transaction_list,
-    }: {
-        day: string;
-        transaction_list: ReturnType<typeof useWalletTransactions>['transactions'];
-    }) => {
-        return (
-            <div className='transaction-list__day'>
-                <Text
-                    className='transaction-list__day-header'
-                    size={is_mobile ? 'xxxxs' : 'xxxs'}
-                    line_height={is_mobile ? 'm' : 's'}
-                    color='less-prominent'
-                    weight='lighter'
-                >
-                    {day}
-                </Text>
-                {transaction_list.map(transaction => {
-                    let display_transaction = transaction;
-                    if (
-                        transaction?.action_type === 'transfer' &&
-                        transaction?.from?.loginid === loginid &&
-                        typeof transaction?.amount === 'number'
-                    ) {
-                        display_transaction = { ...transaction, amount: -transaction.amount };
-                    }
-                    return <NonPendingTransaction key={transaction.transaction_id} transaction={display_transaction} />;
-                })}
-            </div>
-        );
+    const onValueChange = (e: { target: { name: string; value: string } }) => {
+        setFilter(e.target.value as typeof filter);
     };
 
     return (
@@ -90,7 +55,7 @@ const TransactionList = () => {
                     className='transaction-list__filter'
                     is_align_text_left
                     list={filter_options}
-                    onChange={(e: { target: { value: typeof filter } }) => setFilter(e.target.value)}
+                    onChange={onValueChange}
                     label={localize('Filter')}
                     suffix_icon='IcFilter'
                     value={filter}

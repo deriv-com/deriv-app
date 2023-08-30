@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCurrencyConfig } from '@deriv/hooks';
+import { useCurrencyConfig } from '@deriv/api';
 import { useStore, observer } from '@deriv/stores';
 import { Div100vhContainer } from '@deriv/components';
 import DepositFiatIframe from '@deriv/cashier/src/modules/deposit-fiat/components/deposit-fiat-iframe/deposit-fiat-iframe';

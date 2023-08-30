@@ -1,7 +1,7 @@
 import React from 'react';
 import { TWalletInfo } from 'Types';
 import { Text, WalletCard } from '@deriv/components';
-import { useCurrencyConfig } from '@deriv/hooks';
+import { useCurrencyConfig } from '@deriv/api';
 import { observer, useStore } from '@deriv/stores';
 import { getWalletCurrencyIcon } from '@deriv/utils';
 import wallet_description_mapper from 'Constants/wallet_description_mapper';

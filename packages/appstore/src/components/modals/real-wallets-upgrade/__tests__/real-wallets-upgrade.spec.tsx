@@ -5,6 +5,14 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import { APIProvider } from '@deriv/api';
 
 describe('<RealWalletsUpgrade />', () => {
+    const wrapper = (mock: ReturnType<typeof mockStore>) => {
+        const Component = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
+        );
+        return Component;
+    };
     test('should render the Modal', async () => {
         const mock = mockStore({
             traders_hub: {
@@ -13,13 +21,7 @@ describe('<RealWalletsUpgrade />', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        const { container } = render(<RealWalletsUpgrade />, { wrapper });
+        const { container } = render(<RealWalletsUpgrade />, { wrapper: wrapper(mock) });
 
         expect(container).toBeInTheDocument();
     });
@@ -32,13 +34,7 @@ describe('<RealWalletsUpgrade />', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        const { container } = render(<RealWalletsUpgrade />, { wrapper });
+        const { container } = render(<RealWalletsUpgrade />, { wrapper: wrapper(mock) });
 
         expect(container).toBeEmptyDOMElement();
     });

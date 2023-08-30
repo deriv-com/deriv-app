@@ -42,7 +42,7 @@ const WalletModal = observer(() => {
         (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
             if (is_mobile && is_wallet_modal_visible) {
                 const target = e.target as HTMLDivElement;
-                setIsWalletNameVisible(!(target.scrollTop > 0));
+                setIsWalletNameVisible(target.scrollTop <= 0);
             }
         },
         [is_mobile, is_wallet_modal_visible]

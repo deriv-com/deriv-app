@@ -70,12 +70,28 @@ const WalletOptionsAndMultipliersListing = observer(() => {
 
     const wallet_account = useActiveWallet();
 
-    if (!wallet_account || is_switching || is_logging_in || !is_landing_company_loaded)
+    if (!wallet_account || is_switching || is_logging_in || !is_landing_company_loaded) {
         return (
             <div className='wallet-content__loader'>
                 <PlatformLoader />
             </div>
         );
+    }
+
+    const platforms_action_type =
+        is_demo || (!no_CR_account && !is_eu_user) || (has_maltainvest_account && is_eu_user) ? 'trade' : 'none';
+
+    const derivAccountAction = () => {
+        if (no_MF_account) {
+            if (real_account_creation_unlock_date) {
+                setShouldShowCooldownModal(true);
+            } else {
+                openRealAccountSignup('maltainvest');
+            }
+        } else {
+            openRealAccountSignup('svg');
+        }
+    };
 
     return (
         <ListingContainer
@@ -94,17 +110,7 @@ const WalletOptionsAndMultipliersListing = observer(() => {
                         name={localize('Deriv account')}
                         description={localize('Get a real Deriv account, start trading and manage your funds.')}
                         icon='Options'
-                        onAction={() => {
-                            if (no_MF_account) {
-                                if (real_account_creation_unlock_date) {
-                                    setShouldShowCooldownModal(true);
-                                } else {
-                                    openRealAccountSignup('maltainvest');
-                                }
-                            } else {
-                                openRealAccountSignup('svg');
-                            }
-                        }}
+                        onAction={derivAccountAction}
                     />
                 </div>
             )}
@@ -112,11 +118,7 @@ const WalletOptionsAndMultipliersListing = observer(() => {
                 <TradingAppCard
                     key={`trading_app_card_${available_platform.name}`}
                     {...available_platform}
-                    action_type={
-                        is_demo || (!no_CR_account && !is_eu_user) || (has_maltainvest_account && is_eu_user)
-                            ? 'trade'
-                            : 'none'
-                    }
+                    action_type={platforms_action_type}
                     is_deriv_platform
                     has_divider={getHasDivider(index, available_platforms.length, 3)}
                 />

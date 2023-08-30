@@ -38,7 +38,7 @@ const IconComponent = ({ account, icon_size }: TWalletTileProps) => {
     return account?.icon && account?.active_wallet_icon ? (
         <AppLinkedWithWalletIcon
             app_icon={account?.icon}
-            gradient_class={account?.gradient_class || ''}
+            gradient_class={account?.gradient_class ?? ''}
             size={icon_size as React.ComponentProps<typeof AppLinkedWithWalletIcon>['size']}
             type={account?.type}
             wallet_icon={account?.active_wallet_icon}
@@ -54,7 +54,7 @@ const Balance = ({ account, is_list_item, is_mobile }: TWalletTileProps) => {
 
         return (
             <Text as='div' size={size}>
-                {localize('Balance')}: {formatMoney(account?.currency || '', account.balance, true)}{' '}
+                {localize('Balance')}: {formatMoney(account?.currency ?? '', account.balance, true)}{' '}
                 {account.display_currency_code}
             </Text>
         );

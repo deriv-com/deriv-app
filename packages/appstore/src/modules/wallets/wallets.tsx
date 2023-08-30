@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Loading, ThemedScrollbars } from '@deriv/components';
+import { ThemedScrollbars } from '@deriv/components';
 import { useActiveWallet, useWalletsList } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import AddMoreWallets from 'Components/add-more-wallets';

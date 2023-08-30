@@ -1,7 +1,7 @@
 import { template } from '../utility';
 
 describe('Utility', () => {
-    describe('.template()', () => {
+    describe('should return correct template format', () => {
         it('works as expected', () => {
             expect(template('abc [_1] abc', ['2'])).toBe('abc 2 abc');
             expect(template('[_1] [_2]', ['1', '2'])).toBe('1 2');

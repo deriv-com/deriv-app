@@ -1,6 +1,6 @@
 import React from 'react';
 import CFD from '../Containers';
-import { routes } from '@deriv/shared';
+import { routes, CFD_PLATFORMS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TCFDDashboardProps } from '../Containers/cfd-dashboard';
 import { TRouteConfig } from '../Components/props.types';
@@ -20,14 +20,14 @@ const initRoutesConfig = (): TRouteConfig[] => {
         {
             path: routes.dxtrade,
             // eslint-disable-next-line react/display-name
-            component: (props: TCFDDashboardProps) => <CFD {...props} platform='dxtrade' />,
+            component: (props: TCFDDashboardProps) => <CFD {...props} platform={CFD_PLATFORMS.DXTRADE} />,
             getTitle: () => localize('Deriv X'),
             is_authenticated: false,
         },
         {
             path: routes.mt5,
             // eslint-disable-next-line react/display-name
-            component: (props: TCFDDashboardProps) => <CFD {...props} platform='mt5' />,
+            component: (props: TCFDDashboardProps) => <CFD {...props} platform={CFD_PLATFORMS.MT5} />,
             getTitle: () => localize('MT5'),
             is_authenticated: false,
         },

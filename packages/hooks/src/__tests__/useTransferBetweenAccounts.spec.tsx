@@ -216,6 +216,37 @@ jest.mock('@deriv/api', () => ({
 
         return { data: undefined };
     }),
+    useCurrencyConfig: jest.fn(() => ({
+        getConfig: jest.fn(() => ({
+            fractional_digits: 2,
+            name: 'US Dollar',
+            type: 'fiat',
+            is_crypto: false,
+            is_fiat: true,
+            is_AUD: false,
+            is_USD: true,
+            is_EUR: false,
+            is_GBP: false,
+            is_BTC: false,
+            is_ETH: false,
+            is_LTC: false,
+            is_DAI: false,
+            is_IDK: false,
+            is_PAX: false,
+            is_USB: false,
+            is_USDT: false,
+            is_TUSD: false,
+            is_BUSD: false,
+            is_EURS: false,
+            is_eUSDT: false,
+            is_tUSDT: false,
+            is_USDC: false,
+            is_USDK: false,
+            code: 'USD',
+            display_code: 'USD',
+            icon: 'IcCurrencyUsd',
+        })),
+    })),
 }));
 
 describe('useTransferBetweenAccounts', () => {

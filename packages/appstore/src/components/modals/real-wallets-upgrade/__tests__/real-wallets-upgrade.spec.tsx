@@ -1,6 +1,6 @@
 import React from 'react';
 import RealWalletsUpgrade from '../real-wallets-upgrade';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { APIProvider } from '@deriv/api';
 

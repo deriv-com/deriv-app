@@ -13,12 +13,11 @@ jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
     useHistory: () => ({ location: { pathname: '/appstore/traders-hub' } }),
 }));
-const mock_use_location = {
-    pathname: '/appstore/traders-hub',
-};
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
-    useLocation: () => mock_use_location,
+    useLocation: () => ({
+        pathname: '/appstore/traders-hub',
+    }),
 }));
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');

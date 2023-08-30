@@ -10,12 +10,31 @@ const SocketCache = require('./socket_cache');
 const APIMiddleware = require('./api_middleware');
 const { CFD_PLATFORMS } = require('@deriv/shared');
 
+const Endpoints = Object.freeze({
+    demo: 'blue.binaryws.com',
+    real: 'green.binaryws.com',
+});
+
+const createDerivAPIInstance = socket_url => {
+    const websocket = new WebSocket(
+        `wss://${socket_url}/websockets/v3?app_id=${getAppId()}&l=${getLanguage()}&brand=deriv`
+    );
+    return new DerivAPIBasic({ connection: websocket });
+};
+
 /*
  * An abstraction layer over native javascript WebSocket,
  * which provides additional functionality like
  * reopen the closed connection and process the buffered requests
  */
 const BinarySocketBase = (() => {
+    const deriv_api_instances = Object.keys(Endpoints).map(e => {
+        return {
+            id: e,
+            deriv_ws: createDerivAPIInstance(Endpoints[e]),
+        };
+    });
+
     let deriv_api, binary_socket, client_store;
 
     let config = {};
@@ -30,6 +49,19 @@ const BinarySocketBase = (() => {
         is_down: false,
     };
 
+    const getEnvironmentByLoginId = loginid => {
+        if (/^VRT/.test(loginid)) return 'demo';
+        return 'real';
+    };
+
+    const getDerivAPIInstanceByLoginId = loginid => {
+        const matching_endpoint = deriv_api_instances.find(i => i.id === getEnvironmentByLoginId(loginid));
+        if (!matching_endpoint) {
+            return deriv_api_instances[0].deriv_ws;
+        }
+        return matching_endpoint.deriv_ws;
+    };
+
     const getSocketUrl = language =>
         `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${language}&brand=${website_name.toLowerCase()}`;
 
@@ -42,6 +74,10 @@ const BinarySocketBase = (() => {
     };
 
     const closeAndOpenNewConnection = (language = getLanguage()) => {
+        if (/appstore/.test(window.location.href)) {
+            this.deriv_api = getDerivAPIInstanceByLoginId(client_store.loginid);
+            return;
+        }
         close();
         is_switching_socket = true;
         openNewConnection(language);

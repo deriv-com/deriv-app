@@ -12,7 +12,6 @@
 
     &__title {
         @include mobile {
-            padding-left: 1.5rem;
             font-size: var(--text-size-m);
             padding-left: 1.6rem;
         }

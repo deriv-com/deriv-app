@@ -25,7 +25,7 @@ const WalletHeader: React.FC = () => {
                                         <WalletCurrencyTitle account={account} />
                                         <WalletLandingCompanyBadge account={account} />
                                     </div>
-                                    <WalletHeaderActions />
+                                    <WalletHeaderActions account={account} />
                                 </div>
                             </div>
                             <WalletBalance account={account} />

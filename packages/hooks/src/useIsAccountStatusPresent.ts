@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStore } from '@deriv/stores';
+import useAccountStatus from './useAccountStatus';
 
 const AccountStatusList = [
     'address_verified',
@@ -49,11 +49,9 @@ const AccountStatusList = [
 type TAccountStatus = typeof AccountStatusList[number];
 
 export const useIsAccountStatusPresent = (status: TAccountStatus) => {
-    const {
-        client: { account_status },
-    } = useStore();
+    const { data } = useAccountStatus();
 
-    const status_list = account_status?.status;
+    const status_list = data?.status;
 
     return React.useMemo(() => status_list?.includes(status) ?? false, [status_list, status]);
 };

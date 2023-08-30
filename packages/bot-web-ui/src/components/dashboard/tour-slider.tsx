@@ -58,26 +58,32 @@ const Accordion = ({ content_data, expanded = false, ...props }: TAccordion) => 
     );
 };
 
+type TTourData = TStepMobile & {
+    img: string;
+    step_key: number;
+};
+
+const default_tour_data = {
+    content: [],
+    header: '',
+    img: '',
+    step_key: 0,
+};
+
 const TourSlider = observer(() => {
     const { dashboard, load_modal } = useDBotStore();
     const { has_started_bot_builder_tour, has_started_onboarding_tour, onCloseTour, onTourEnd, setTourActiveStep } =
         dashboard;
     const { toggleTourLoadModal } = load_modal;
     const [step, setStep] = React.useState<number>(1);
-    const [slider_content, setContent] = React.useState<string | string[]>('');
-    const [slider_header, setheader] = React.useState<string>('');
-    const [slider_image, setimg] = React.useState<string>('');
-    const [step_key, setStepKey] = React.useState<number>(0);
+    const [tour_data, setTourData] = React.useState<TTourData>(default_tour_data);
+    const get_tour_config = !has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE;
+    const { content, header, img, step_key } = tour_data;
 
     React.useEffect(() => {
         setTourActiveStep(step);
-        Object.values(!has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE).forEach(data => {
-            if (data.key === step) {
-                setContent(data?.content);
-                setheader(data?.header);
-                setimg(data?.img);
-                setStepKey(data?.step_key);
-            }
+        Object.values(get_tour_config).forEach(data => {
+            if (data.key === step) setTourData(data);
         });
         const el_ref = document.querySelector('.toolbar__group-btn svg:nth-child(2)');
         if (has_started_bot_builder_tour && step === 1) {
@@ -86,16 +92,15 @@ const TourSlider = observer(() => {
         } else {
             el_ref?.classList.remove('dbot-tour-blink');
         }
-        if (has_started_bot_builder_tour && step === 2) {
-            toggleTourLoadModal(true);
-        } else toggleTourLoadModal(false);
+
+        if (has_started_bot_builder_tour && step === 2) toggleTourLoadModal(true);
+        else toggleTourLoadModal(false);
     }, [step]);
 
     const onChange = React.useCallback(
         (param: string) => {
-            const MOBILE_TOUR = !has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE;
-            if (param === 'inc' && step < Object.keys(MOBILE_TOUR).length) setStep(step + 1);
-            else if (param === 'dec' && step > 1) setStep(step - 1);
+            if (param === 'inc') setStep(step + 1);
+            else if (param === 'dec') setStep(step - 1);
             else if (param === 'skip') onCloseTour();
         },
         [step]
@@ -120,7 +125,7 @@ const TourSlider = observer(() => {
                     'dbot-slider--tour-position': has_started_onboarding_tour && step_key !== 0,
                 })}
             >
-                {has_started_onboarding_tour && slider_header && step_key !== 0 && (
+                {has_started_onboarding_tour && header && step_key !== 0 && (
                     <div className='dbot-slider__navbar'>
                         <Text
                             color='less-prominent'
@@ -140,7 +145,7 @@ const TourSlider = observer(() => {
                     </div>
                 )}
 
-                {has_started_onboarding_tour && slider_header && (
+                {has_started_onboarding_tour && header && (
                     <Text
                         color='prominent'
                         weight='bold'
@@ -150,17 +155,17 @@ const TourSlider = observer(() => {
                         line_height='s'
                         size='xs'
                     >
-                        {localize(slider_header)}
+                        {localize(header)}
                     </Text>
                 )}
-                {has_started_onboarding_tour && slider_image && (
+                {has_started_onboarding_tour && img && (
                     <div className='dbot-slider__image'>
-                        <img src={slider_image} />
+                        <img src={img} />
                     </div>
                 )}
-                {has_started_onboarding_tour && slider_content && (
+                {has_started_onboarding_tour && content && (
                     <>
-                        {slider_content.map(data => {
+                        {content.map(data => {
                             return (
                                 <Text
                                     key={data}

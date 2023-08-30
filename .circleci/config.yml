@@ -273,7 +273,7 @@ jobs:
           name: "Check TypeScript for @deriv/stores"
           command: npx tsc --project packages/stores/tsconfig.json -noEmit
       - run:
-          name: "Check TypeScript for @deriv/wallets"
+          name: "Check TypeScript and linting for @deriv/wallets"
           command: |
             npx tsc --project packages/wallets/tsconfig.json -noEmit
             npx eslint --fix --config packages/wallets/.eslintrc.js packages/wallets

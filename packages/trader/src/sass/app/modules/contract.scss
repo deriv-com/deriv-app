@@ -39,7 +39,7 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
                 max-width: 35rem;
 
                 @include mobile {
-                    max-width: 16rem;
+                    max-width: 11rem;
                 }
 
                 a {
@@ -59,7 +59,7 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
                     font-size: 1rem;
                     letter-spacing: normal;
                     line-height: 1.4;
-                    max-width: 16rem;
+                    max-width: 11rem;
                     line-clamp: 2;
                     -webkit-line-clamp: 2;
                 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Accordion, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
@@ -38,6 +38,24 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
 
     const { faq_search_value } = dashboard;
 
+    const timer_id = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const handleAccordionClick = () => {
+        // Scroll to the top of the open accordion item.
+        // Need timer to first close the accordion item.
+        timer_id.current = setTimeout(() => {
+            const openAccordionItem = document?.querySelector('.dc-accordion__item--open');
+            openAccordionItem?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (timer_id?.current) clearTimeout(timer_id.current);
+        }, 100);
+    };
+
+    useEffect(() => {
+        return () => {
+            if (timer_id.current) clearTimeout(timer_id.current);
+        };
+    }, []);
+
     const getList = () => {
         return faq_list.map(({ title, description }: TFAQList) => ({
             header: (
@@ -52,7 +70,9 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
                     {title}
                 </Text>
             ),
-            content: description.map(item => <FAQ {...item} key={`faq-description-item-${item}`} />),
+            content: description.map((item, index) => (
+                <FAQ {...item} key={`faq-description-item-${item?.content}-${index}`} />
+            )),
         }));
     };
 
@@ -65,7 +85,9 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
                     </Text>
                 )}
                 {faq_list?.length ? (
-                    <Accordion className='faq__wrapper__content' list={getList()} icon_close='' icon_open='' />
+                    <div onClick={handleAccordionClick}>
+                        <Accordion className='faq__wrapper__content' list={getList()} icon_close='' icon_open='' />
+                    </div>
                 ) : (
                     <div className='faq__wrapper__nosearch'>
                         <Text as='h1' weight='bold' line_height='xxs'>

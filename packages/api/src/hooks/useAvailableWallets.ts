@@ -9,7 +9,7 @@ const useAvailableWallets = () => {
     const { data: added_wallets } = useWalletAccountsList();
     const { getConfig } = useCurrencyConfig();
 
-    const sortedWallets = React.useMemo(() => {
+    const sorted_wallets = React.useMemo(() => {
         if (!account_type_data) return undefined;
         const { crypto, doughflow } = account_type_data?.wallet;
         const crypto_currencies = crypto?.currencies;
@@ -61,7 +61,7 @@ const useAvailableWallets = () => {
 
     return {
         /** Sorted available wallets */
-        data: sortedWallets,
+        data: sorted_wallets,
     };
 };
 

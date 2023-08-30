@@ -63,6 +63,13 @@ const useCurrencyConfig = () => {
                 code: currency,
                 /** Currency display code */
                 display_code: currency === 'UST' ? 'USDT' : currency,
+                /** Format the balance */
+                formatBalance: (amount: number) => {
+                    return new Intl.NumberFormat('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                    }).format(amount);
+                },
             };
         });
     }, [website_status_data?.website_status?.currencies_config]);

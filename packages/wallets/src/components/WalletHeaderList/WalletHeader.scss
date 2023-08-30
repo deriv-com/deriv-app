@@ -42,4 +42,8 @@
         gap: 8px;
         align-self: stretch;
     }
+
+    &__dropdown {
+        cursor: pointer;
+    }
 }

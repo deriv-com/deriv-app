@@ -5,6 +5,7 @@ import WalletCardIcon from '../WalletCardIcon/WalledCardIcon';
 import WalletCurrencyTitle from '../WalletCurrencyTitle/WalletCurrencyTitle';
 import WalletLandingCompanyBadge from '../WalletLandingCompanyBadge/WalletLandingCompanyBadge';
 import WalletHeaderActions from '../WalletHeaderActions/WalletHeaderActions';
+import IcDropdown from '../../public/images/ic-dropdown.svg';
 import './WalletHeader.scss';
 
 const WalletHeader: React.FC = () => {
@@ -29,7 +30,9 @@ const WalletHeader: React.FC = () => {
                                 </div>
                             </div>
                             <WalletBalance account={account} />
-                            <div className='wallet-list__toggle'>V</div>
+                            <div className='wallet-list__dropdown'>
+                                <IcDropdown />
+                            </div>
                         </div>
                     </div>
                 );

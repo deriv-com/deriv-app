@@ -11,7 +11,7 @@ const WalletBalance = ({
         <div className='wallet-balance__container'>
             <div className='wallet-balance__title'>Wallet balance</div>
             <div className='wallet-balance__value'>
-                {account.balance.toLocaleString()} {account.currency_config?.display_code}
+                {account.currency_config?.formatBalance(account?.balance)} {account?.currency}
             </div>
         </div>
     );

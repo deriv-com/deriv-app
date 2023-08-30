@@ -206,19 +206,20 @@
 
     &__menu--traders-hub {
         padding: 1.5rem;
-    }
-
-    &__menu--traders-hub-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    &__menu--traders-hub-text {
-        width: 13rem;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+        &-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        &-text {
+            width: 13rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        &-beta-icon {
+            margin: 0 4rem 0 1rem;
+        }
     }
 
     &__menu--explore-traders-hub {
@@ -245,10 +246,6 @@
             justify-content: space-between;
             width: 100%;
         }
-    }
-
-    &__menu--traders-hub-beta-icon {
-        margin: 0 4rem 0 1rem;
     }
 
     &__menu--exit-traders-hub-beta-icon {

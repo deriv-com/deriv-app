@@ -4,6 +4,7 @@ import WalletBalance from '../WalletBalance/WalletBalance';
 import WalletCardIcon from '../WalletCardIcon/WalledCardIcon';
 import WalletCurrencyTitle from '../WalletCurrencyTitle/WalletCurrencyTitle';
 import WalletLandingCompanyBadge from '../WalletLandingCompanyBadge/WalletLandingCompanyBadge';
+import WalletHeaderActions from '../WalletHeaderActions/WalletHeaderActions';
 import './WalletHeader.scss';
 
 const WalletHeader: React.FC = () => {
@@ -24,12 +25,7 @@ const WalletHeader: React.FC = () => {
                                         <WalletCurrencyTitle account={account} />
                                         <WalletLandingCompanyBadge account={account} />
                                     </div>
-                                    <div className='wallet-list__actions'>
-                                        <p>Deposit</p>
-                                        <p>Withdraw</p>
-                                        <p>Transfer</p>
-                                        <p>Transactions</p>
-                                    </div>
+                                    <WalletHeaderActions />
                                 </div>
                             </div>
                             <WalletBalance account={account} />

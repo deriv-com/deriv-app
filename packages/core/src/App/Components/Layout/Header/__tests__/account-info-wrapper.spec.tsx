@@ -2,8 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import AccountInfoWrapper from '../account-info-wrapper';
 
-// is_disabled, disabled_message, children,
-
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Popover: jest.fn(({ children }) => <div>Popover: {children}</div>),

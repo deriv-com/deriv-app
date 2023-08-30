@@ -140,6 +140,7 @@ describe('AccountInfoWallets component', () => {
 
         const toggleDialog = jest.fn();
         render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper });
+
         const popover = screen.getByTestId('dt_popover_wrapper');
         userEvent.hover(popover);
         const disabled_message = screen.getByText(/test disabled message/i);
@@ -187,7 +188,7 @@ describe('AccountInfoWallets component', () => {
 
         const toggleDialog = jest.fn();
         render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper });
-        // render(<AccountInfoWallets is_disabled />);
+
         const div_element = screen.getByTestId('dt_acc_info');
         expect(div_element).toHaveClass('acc-info--is-disabled');
     });
@@ -203,6 +204,7 @@ describe('AccountInfoWallets component', () => {
 
         const toggleDialog = jest.fn();
         render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper });
+
         const div_element = screen.getByTestId('dt_acc_info');
         expect(div_element).not.toHaveClass('acc-info--show');
     });
@@ -248,6 +250,7 @@ describe('AccountInfoWallets component', () => {
 
         const toggleDialog = jest.fn();
         render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper });
+
         const div_element = screen.getByTestId('dt_acc_info');
         userEvent.click(div_element);
         expect(toggleDialog).toHaveBeenCalledTimes(0);

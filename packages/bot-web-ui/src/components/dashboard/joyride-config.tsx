@@ -67,6 +67,7 @@ export const tour_status_ended: TTourStatus = {
 
 let tour: { [key: string]: string } = {};
 let current_target: number | undefined;
+
 export const handleJoyrideCallback = (data: CallBackProps) => {
     const { action, index, status } = data;
     if (status === 'finished') {
@@ -186,6 +187,26 @@ export const DBOT_ONBOARDING = [
             />
         ),
         ...joyride_props,
+        disableOverlay: false,
+    },
+    {
+        target: '#id-tutorials',
+        content: (
+            <TourGuide
+                label={localize('Want to retake the tour?')}
+                content={[
+                    <Text key={`${0}-id-tutorials`} as='p'>
+                        <Localize i18n_default_text={'Head to the Tutorials tab to do so.'} />
+                    </Text>,
+                ]}
+                step_index={7}
+                show_actions={false}
+                has_localize_component
+            />
+        ),
+        locale: { last: localize('Got it, thanks!') },
+        ...joyride_props,
+        hideBackButton: true,
         disableOverlay: false,
     },
 ];
@@ -461,6 +482,7 @@ export const BOT_BUILDER_TOUR = [
     {
         target: '.animation__wrapper',
         content: <Step6 show_label />,
+        locale: { last: localize('Next') },
         ...joyride_props,
     },
 ];
@@ -556,18 +578,13 @@ export const DBOT_ONBOARDING_MOBILE: TStepMobile[] = [
                 i18n_default_text='You can also import or build your bot using any of these shortcuts.'
             />,
         ],
+        img: getImageLocation('dbot-mobile-onboarding-step-4.png'),
         key: 5,
         step_key: 4,
     },
     {
         header: localize('Check your bot’s performance'),
-        content: [
-            <Localize
-                key='check-bot-performance'
-                i18n_default_text='Click <0>Run</0> when you want to start trading, and click <0>Stop</0> when you want to stop.'
-                components={[<strong key={0} />]}
-            />,
-        ],
+        content: [<Localize key='check-bot-performance' i18n_default_text='See how your bot is doing in real-time.' />],
         media: getUrlBase('/public/videos/dbot-mobile-onboarding-step-5.mp4'),
         key: 6,
         step_key: 5,
@@ -589,7 +606,7 @@ export const DBOT_ONBOARDING_MOBILE: TStepMobile[] = [
         header: localize('Want to retake the tour?'),
         img: getImageLocation('dbot-mobile-onboarding-step-7.png'),
         content: [<Localize key='want-to-retake-the-tour' i18n_default_text='Head to the Tutorials tab to do so.' />],
-        key: 7,
-        step_key: 6,
+        key: 8,
+        step_key: 7,
     },
 ];

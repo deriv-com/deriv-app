@@ -54,7 +54,7 @@ const Strike = observer(() => {
                             i18n_default_text='If you buy a "<0>{{trade_type}}</0>" option, you receive a payout at expiry if the final price is {{payout_status}} the strike price. Otherwise, your “<0>{{trade_type}}</0>” option will expire worthless.'
                             components={[<strong key={0} />]}
                             values={{
-                                trade_type: localize(getContractSubtype(contract_type)),
+                                trade_type: getContractSubtype(contract_type),
                                 payout_status:
                                     getContractSubtype(contract_type) === 'Call'
                                         ? localize('above')

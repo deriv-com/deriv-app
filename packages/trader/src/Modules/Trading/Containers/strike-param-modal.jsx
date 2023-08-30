@@ -27,7 +27,7 @@ const StrikeParamModal = ({ contract_subtype, is_open, toggleModal, strike, onCh
                             i18n_default_text='If you buy a "<0>{{trade_type}}</0>" option, you receive a payout at expiry if the final price is {{payout_status}} the strike price. Otherwise, your “<0>{{trade_type}}</0>” option will expire worthless.'
                             components={[<strong key={0} />]}
                             values={{
-                                trade_type: localize(contract_subtype),
+                                trade_type: contract_subtype,
                                 payout_status: contract_subtype === 'Call' ? localize('above') : localize('below'),
                             }}
                         />

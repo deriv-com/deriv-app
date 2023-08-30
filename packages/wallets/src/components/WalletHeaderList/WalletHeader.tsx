@@ -48,7 +48,11 @@ const WalletHeader: React.FC = () => {
 
 export default WalletHeader;
 
-const WalletCardBalance = ({ account }) => {
+const WalletCardBalance = ({
+    account,
+}: {
+    account: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
+}) => {
     return (
         <div className='wallet-list__balance-container'>
             <div className='wallet-list__balance-title'>Wallet balance</div>

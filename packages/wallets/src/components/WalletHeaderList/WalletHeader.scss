@@ -16,7 +16,6 @@
         align-items: center;
         gap: 24px;
         align-self: stretch;
-        background-color: rgb(187, 206, 112);
     }
 
     &__details-container {
@@ -26,7 +25,6 @@
         gap: 24px;
         align-self: stretch;
         border-radius: 16px;
-        background-color: skyblue;
     }
 
     &__wallet-icon {
@@ -60,7 +58,7 @@
         color: var(--system-light-1-prominent-text, #333);
 
         /* desktop/subtitle/Sub 2 - bold */
-        font-family: IBM Plex Sans;
+        font-family: 'IBM Plex Sans';
         font-size: 20px;
         font-style: normal;
         font-weight: 700;
@@ -81,7 +79,7 @@
         color: var(--system-light-1-prominent-text, #333);
 
         /* desktop/extra small/XS - bold */
-        font-family: IBM Plex Sans;
+        font-family: 'IBM Plex Sans';
         font-size: 10px;
         font-style: normal;
         font-weight: 700;
@@ -105,7 +103,7 @@
         text-align: right;
 
         /* desktop/small/S - regular */
-        font-family: IBM Plex Sans;
+        font-family: 'IBM Plex Sans';
         font-size: 12px;
         font-style: normal;
         font-weight: 400;
@@ -117,7 +115,7 @@
         text-align: right;
 
         /* desktop/subtitle/Sub 1 - bold */
-        font-family: IBM Plex Sans;
+        font-family: 'IBM Plex Sans';
         font-size: 24px;
         font-style: normal;
         font-weight: 700;

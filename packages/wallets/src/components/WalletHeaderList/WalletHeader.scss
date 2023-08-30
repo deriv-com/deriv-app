@@ -43,37 +43,26 @@
         align-self: stretch;
     }
 
-    // &__title {
-    //     color: var(--system-light-1-prominent-text, #333);
-
-    //     /* desktop/subtitle/Sub 2 - bold */
-    //     font-family: 'IBM Plex Sans';
-    //     font-size: 20px;
-    //     font-style: normal;
-    //     font-weight: 700;
-    //     line-height: 30px; /* 150% */
+    // &__badge {
+    //     display: flex;
+    //     padding: 0px 4px;
+    //     justify-content: center;
+    //     align-items: center;
+    //     gap: 4px;
+    //     border-radius: 2px;
+    //     border: 1px solid var(--system-light-1-prominent-text, #333);
     // }
 
-    &__badge {
-        display: flex;
-        padding: 0px 4px;
-        justify-content: center;
-        align-items: center;
-        gap: 4px;
-        border-radius: 2px;
-        border: 1px solid var(--system-light-1-prominent-text, #333);
-    }
+    // &__landing-company-name {
+    //     color: var(--system-light-1-prominent-text, #333);
 
-    &__landing-company-name {
-        color: var(--system-light-1-prominent-text, #333);
-
-        /* desktop/extra small/XS - bold */
-        font-family: 'IBM Plex Sans';
-        font-size: 10px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 14px; /* 140% */
-    }
+    //     /* desktop/extra small/XS - bold */
+    //     font-family: 'IBM Plex Sans';
+    //     font-size: 10px;
+    //     font-style: normal;
+    //     font-weight: 700;
+    //     line-height: 14px; /* 140% */
+    // }
 
     &__actions {
         display: flex;

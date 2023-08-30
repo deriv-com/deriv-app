@@ -3,6 +3,7 @@ import { useWalletAccountsList } from '@deriv/api';
 import WalletBalance from '../WalletBalance/WalletBalance';
 import WalletCardIcon from '../WalletCardIcon/WalledCardIcon';
 import WalletCurrencyTitle from '../WalletCurrencyTitle/WalletCurrencyTitle';
+import WalletLandingCompanyBadge from '../WalletLandingCompanyBadge/WalletLandingCompanyBadge';
 import './WalletHeader.scss';
 
 const WalletHeader: React.FC = () => {
@@ -21,11 +22,7 @@ const WalletHeader: React.FC = () => {
                                 <div className='wallet-list__action-container'>
                                     <div className='wallet-list__elements'>
                                         <WalletCurrencyTitle account={account} />
-                                        <div className='wallet-list__badge'>
-                                            <div className='wallet-list__landing-company-name'>
-                                                <p>{account.landing_company_name?.toLocaleUpperCase()}</p>
-                                            </div>
-                                        </div>
+                                        <WalletLandingCompanyBadge account={account} />
                                     </div>
                                     <div className='wallet-list__actions'>
                                         <p>Deposit</p>

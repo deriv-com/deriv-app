@@ -19,7 +19,6 @@ import {
     getAccuBarriersDefaultTimeout,
     getAccuBarriersForContractDetails,
     getEndTime,
-    isOpen,
 } from '@deriv/shared';
 import { getChartConfig } from './Helpers/logic';
 import { setLimitOrderBarriers, getLimitOrder } from './Helpers/limit-orders';

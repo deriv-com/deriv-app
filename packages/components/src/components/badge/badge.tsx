@@ -45,16 +45,16 @@ const Badge = (props: BadgeProps) => {
 
     const badge_height = React.useMemo(() => {
         switch (size) {
+            case 'large':
+                return {
+                    height: isMobile() ? '1.6rem' : '2.2rem',
+                    paddingInline: '0.8rem',
+                };
             case 'medium':
             default:
                 return {
                     height: isMobile() ? '1.2rem' : '1.4rem',
                     paddingInline: '0.4rem',
-                };
-            case 'large':
-                return {
-                    height: isMobile() ? '1.6rem' : '2.2rem',
-                    paddingInline: '0.8rem',
                 };
         }
     }, [size]);

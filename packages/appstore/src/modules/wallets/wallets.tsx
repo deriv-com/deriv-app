@@ -10,7 +10,7 @@ import './wallets.scss';
 
 const Wallets = observer(() => {
     const { client, ui } = useStore();
-    const { switchAccount, is_authorize } = client;
+    const { switchAccount } = client;
     const { is_mobile } = ui;
     const { data } = useWalletsList();
     const active_wallet = useActiveWallet();

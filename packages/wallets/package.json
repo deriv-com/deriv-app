@@ -9,6 +9,7 @@
         "react": "^17.0.2"
     },
     "devDependencies": {
+        "@tanstack/eslint-plugin-query": "^4.34.1",
         "typescript": "^4.6.3"
     }
 }

@@ -66,8 +66,9 @@ export type TRoute = {
     icon?: string;
     default?: boolean;
     to?: string;
-    component?: ((cashier_routes?: TRoute[]) => JSX.Element) | typeof Redirect;
+    component?: ((routes?: TRoute[]) => JSX.Element) | typeof Redirect;
     getTitle?: () => string;
+    is_disabled?: boolean;
     subroutes?: TRoute[];
 };
 

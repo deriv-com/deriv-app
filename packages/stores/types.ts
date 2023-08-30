@@ -437,6 +437,7 @@ type TUiStore = {
     disableApp: () => void;
     enableApp: () => void;
     has_real_account_signup_ended: boolean;
+    is_account_settings_visible: boolean;
     is_loading: boolean;
     is_cashier_visible: boolean;
     is_closing_create_real_account_modal: boolean;
@@ -464,6 +465,7 @@ type TUiStore = {
     setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: Omit<string, TRoutes> | TRoutes) => void;
     toggleAccountsDialog: () => void;
+    toggleAccountSettings: (props?: boolean) => void;
     toggleCashier: () => void;
     toggleLanguageSettingsModal: () => void;
     toggleLinkExpiredModal: (state_change: boolean) => void;

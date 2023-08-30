@@ -16,7 +16,6 @@ export default class RootStore {
     modules: ModulesStore;
     ui: TCoreStores['ui'];
     gtm: unknown;
-    pushwoosh: unknown;
     notifications: TCoreStores['notifications'];
     contract_replay: unknown;
     contract_trade: TCoreStores['contract_trade'];
@@ -30,7 +29,6 @@ export default class RootStore {
         this.modules = new ModulesStore(this);
         this.ui = core_store.ui;
         this.gtm = core_store.gtm;
-        this.pushwoosh = core_store.pushwoosh;
         this.notifications = core_store.notifications;
         this.contract_replay = core_store.contract_replay;
         this.contract_trade = core_store.contract_trade;

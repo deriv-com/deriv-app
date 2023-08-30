@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 import useFetch from '../useFetch';
 
-/** A hook that retrieves the account status   */
+/** A custom hook to retrieves the account status for the current user. */
 const useGetAccountStatus = () => {
     const { data: get_account_status_data, ...rest } = useFetch('get_account_status');
 
-    // Add additional information to the authorize response.
+    // Add additional information to the account status response.
     const modified_account_status = useMemo(() => {
         if (!get_account_status_data?.get_account_status) return;
 
@@ -19,7 +19,7 @@ const useGetAccountStatus = () => {
     }, [get_account_status_data?.get_account_status]);
 
     return {
-        /** Account status details. */
+        /** The account status response. */
         data: modified_account_status,
         ...rest,
     };

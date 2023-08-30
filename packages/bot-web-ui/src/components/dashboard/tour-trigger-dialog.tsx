@@ -14,21 +14,17 @@ const TourTriggrerDialog = observer(() => {
     const is_mobile = isMobile();
 
     const toggleTour = (value: boolean, type: string) => {
-        if (tour_type.key === 'onboard_tour') {
+        const current_tour_type_key = tour_type.key;
+
+        if (current_tour_type_key === 'onboard_tour' || current_tour_type_key === 'bot_builder') {
             if (type === 'onConfirm') {
                 toggleOnConfirm(active_tab, value);
             } else {
-                setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
+                setTourSettings(new Date().getTime(), `${current_tour_type_key}_token`);
             }
-            tour_type.key = 'onboard_tour';
-        } else if (tour_type.key === 'bot_builder') {
-            if (type === 'onConfirm') {
-                toggleOnConfirm(active_tab, value);
-            } else {
-                setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
-            }
-            tour_type.key = 'bot_builder';
+            tour_type.key = current_tour_type_key;
         }
+
         setTourDialogVisibility(false);
     };
 
@@ -48,14 +44,13 @@ const TourTriggrerDialog = observer(() => {
     };
 
     const getTourHeaders = (tour_check: boolean, tab_id: number) => {
-        let text;
         if (!tour_check) {
-            if (tab_id === 1 && is_mobile) text = localize('Bot Builder guide');
-            else if (tab_id === 1) text = localize("Let's build a Bot!");
-            else text = localize('Get started on Deriv Bot');
-        } else if (tab_id === 1) text = localize('Congratulations');
-        else text = localize('Want to retake the tour?');
-        return text;
+            if (tab_id === 1) {
+                return is_mobile ? localize('Bot Builder guide') : localize("Let's build a Bot!");
+            }
+            return localize('Get started on Deriv Bot');
+        }
+        return tab_id === 1 ? localize('Congratulations') : localize('Want to retake the tour?');
     };
 
     const tourDialogInfo = is_mobile
@@ -132,10 +127,11 @@ const TourTriggrerDialog = observer(() => {
     const confirm_button = active_tab === 0 ? localize('Got it, thanks!') : localize('OK');
 
     const onHandleConfirm = React.useCallback(() => {
-        const status = tour_status_ended.key === 'finished';
-        toggleTour(status ? false : !has_tour_ended, 'onConfirm');
+        const is_finished = tour_status_ended.key === 'finished';
+        const new_tour_status = is_finished ? false : !has_tour_ended;
+        toggleTour(new_tour_status, 'onConfirm');
         tour_status_ended.key = '';
-        return status ? tour_status_ended.key : null;
+        return is_finished ?? tour_status_ended.key;
     }, [has_tour_ended, active_tab]);
 
     return (
@@ -147,9 +143,8 @@ const TourTriggrerDialog = observer(() => {
                 confirm_button_text={has_tour_ended ? confirm_button : localize('Start')}
                 onConfirm={onHandleConfirm}
                 is_mobile_full_width
-                className={classNames('dc-dialog', {
-                    'tour-dialog': active_tab === 0 || active_tab === 1,
-                    'tour-dialog--end': (active_tab === 0 || active_tab === 1) && has_tour_ended,
+                className={classNames('dc-dialog tour-dialog', {
+                    'tour-dialog--end': has_tour_ended,
                 })}
                 has_close_icon={false}
             >

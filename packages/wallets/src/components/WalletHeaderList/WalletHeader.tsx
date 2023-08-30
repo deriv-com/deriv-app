@@ -1,5 +1,8 @@
 import React from 'react';
 import { useWalletAccountsList } from '@deriv/api';
+import WalletBalance from '../WalletBalance/WalletBalance';
+import WalletCardIcon from '../WalletCardIcon/WalledCardIcon';
+import WalletCurrencyTitle from '../WalletCurrencyTitle/WalletCurrencyTitle';
 import './WalletHeader.scss';
 
 const WalletHeader: React.FC = () => {
@@ -14,14 +17,10 @@ const WalletHeader: React.FC = () => {
                     <div className='wallet-list__card_container' key={account.loginid}>
                         <div className='wallet-list__content'>
                             <div className='wallet-list__details-container'>
-                                <div className='wallet-list__wallet-icon'>
-                                    <p> Icon (Placeholder)</p>
-                                </div>
+                                <WalletCardIcon />
                                 <div className='wallet-list__action-container'>
                                     <div className='wallet-list__elements'>
-                                        <div className='wallet-list__title'>
-                                            {account.currency_config?.display_code} Wallet
-                                        </div>
+                                        <WalletCurrencyTitle account={account} />
                                         <div className='wallet-list__badge'>
                                             <div className='wallet-list__landing-company-name'>
                                                 <p>{account.landing_company_name?.toLocaleUpperCase()}</p>
@@ -36,7 +35,7 @@ const WalletHeader: React.FC = () => {
                                     </div>
                                 </div>
                             </div>
-                            <WalletCardBalance account={account} />
+                            <WalletBalance account={account} />
                             <div className='wallet-list__toggle'>V</div>
                         </div>
                     </div>
@@ -47,18 +46,3 @@ const WalletHeader: React.FC = () => {
 };
 
 export default WalletHeader;
-
-const WalletCardBalance = ({
-    account,
-}: {
-    account: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
-}) => {
-    return (
-        <div className='wallet-list__balance-container'>
-            <div className='wallet-list__balance-title'>Wallet balance</div>
-            <div className='wallet-list__balance-value'>
-                {account.balance.toLocaleString()} {account.currency_config?.display_code}
-            </div>
-        </div>
-    );
-};

@@ -1,5 +1,5 @@
 import React from 'react';
-import WalletHeader from './components/WalletHeaderList';
+import { WalletHeader } from './components';
 // import WalletsCarousel from './components/WalletCarousel';
 import './AppContent.scss';
 

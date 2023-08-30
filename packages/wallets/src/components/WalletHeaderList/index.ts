@@ -1,4 +1,1 @@
-import WalletHeader from './WalletHeader';
-import './WalletHeader.scss';
-
-export default WalletHeader;
+export { default as WalletHeader } from './WalletHeader';

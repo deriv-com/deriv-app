@@ -7,7 +7,7 @@ import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 
 const InfoBoxLongcode = ({ contract_info }) => {
-    const max_longcode_length = isMobile() ? 70 : 150;
+    const max_longcode_length = isMobile() ? 47 : 150;
     const [is_collapsed, setIsCollapsed] = React.useState(true);
 
     const handleToggle = () => {

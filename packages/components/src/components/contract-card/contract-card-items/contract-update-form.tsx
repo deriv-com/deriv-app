@@ -6,6 +6,7 @@ import {
     getLimitOrderAmount,
     isCryptocurrency,
     isDeepEqual,
+    isMultiplierContract,
     pick,
     getTotalProfit,
 } from '@deriv/shared';
@@ -14,11 +15,21 @@ import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import InputWithCheckbox from '../../input-wth-checkbox';
-import { TGetCardLables, TToastConfig } from '../../types';
 import { TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
+import { TGeneralContractCardBodyProps } from './contract-card-body';
+import { TGetCardLables } from '../../types';
 
-export type TContractUpdateFormProps = {
-    addToast: (toast_config: TToastConfig) => void;
+export type TContractUpdateFormProps = Pick<
+    TGeneralContractCardBodyProps,
+    | 'addToast'
+    | 'current_focus'
+    | 'error_message_alignment'
+    | 'getCardLabels'
+    | 'onMouseLeave'
+    | 'removeToast'
+    | 'setCurrentFocus'
+    | 'status'
+> & {
     contract: TContractStore;
     current_focus?: string;
     error_message_alignment: string;
@@ -30,6 +41,7 @@ export type TContractUpdateFormProps = {
     toggleDialog: (e: React.MouseEvent<HTMLButtonElement>) => void;
     getContractById: (contract_id: number) => TContractStore;
     is_accumulator?: boolean;
+    is_turbos?: boolean;
 };
 
 const ContractUpdateForm = (props: TContractUpdateFormProps) => {
@@ -39,6 +51,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
         current_focus,
         error_message_alignment,
         getCardLabels,
+        is_turbos,
         is_accumulator,
         onMouseLeave,
         removeToast,
@@ -79,14 +92,14 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
     const isValid = (val?: number | null) => !(val === undefined || val === null);
 
     const is_take_profit_valid = has_contract_update_take_profit
-        ? Number(contract_update_take_profit) > 0
+        ? +contract_update_take_profit > 0
         : isValid(stop_loss);
-    const is_stop_loss_valid = has_contract_update_stop_loss
-        ? Number(contract_update_stop_loss) > 0
-        : isValid(take_profit);
-    const is_valid_accu_contract_update = is_accumulator && !!is_take_profit_valid;
-    const is_valid_contract_update =
-        is_valid_accu_contract_update || (is_valid_to_cancel ? false : !!(is_take_profit_valid || is_stop_loss_valid));
+    const is_stop_loss_valid = has_contract_update_stop_loss ? +contract_update_stop_loss > 0 : isValid(take_profit);
+    const is_multiplier = isMultiplierContract(contract_info.contract_type || '');
+    const is_valid_multiplier_contract_update = is_valid_to_cancel
+        ? false
+        : !!(is_take_profit_valid || is_stop_loss_valid);
+    const is_valid_contract_update = is_multiplier ? is_valid_multiplier_contract_update : !!is_take_profit_valid;
 
     const getStateToCompare = (
         _state: Partial<ReturnType<typeof getContractUpdateConfig> & TContractUpdateFormProps>
@@ -142,7 +155,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             onChange={onChange}
             error_message_alignment={error_message_alignment || 'right'}
             value={contract_profit_or_loss.contract_update_take_profit}
-            is_disabled={!is_accumulator && !!is_valid_to_cancel}
+            is_disabled={is_multiplier && !!is_valid_to_cancel}
             setCurrentFocus={setCurrentFocus}
         />
     );
@@ -201,11 +214,11 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             </MobileWrapper>
             <div
                 className={classNames('dc-contract-card-dialog__form', {
-                    'dc-contract-card-dialog__form-accumulator': is_accumulator,
+                    'dc-contract-card-dialog__form--no-stop-loss': is_accumulator || is_turbos,
                 })}
             >
                 <div className='dc-contract-card-dialog__input'>{take_profit_input}</div>
-                {!is_accumulator && <div className='dc-contract-card-dialog__input'>{stop_loss_input}</div>}
+                {is_multiplier && <div className='dc-contract-card-dialog__input'>{stop_loss_input}</div>}
                 <div className='dc-contract-card-dialog__button'>
                     <Button
                         text={getCardLabels().APPLY}

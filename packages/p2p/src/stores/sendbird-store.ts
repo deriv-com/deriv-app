@@ -386,8 +386,7 @@ export default class SendbirdStore extends BaseStore {
                 } else {
                     this.setChannelMessages([]);
                 }
-            },
-            { fireImmediately: true }
+            }
         );
 
         return () => {

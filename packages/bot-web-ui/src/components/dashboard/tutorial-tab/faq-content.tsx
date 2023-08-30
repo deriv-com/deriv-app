@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text, Accordion } from '@deriv/components';
+import { Accordion, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TDescription } from './tutorial-content';
 

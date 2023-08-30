@@ -78,6 +78,7 @@ commands:
             - "packages/translations/node_modules"
             - "packages/utils/node_modules"
             - "packages/analytics/node_modules"
+            - "packages/wallets/node_modules"
             # VERIFY_CACHE_FOLDERS_END (DO NOT REMOVE)
 
   build:
@@ -161,9 +162,9 @@ commands:
       - run:
           name: "Publish to cloudflare pages (staging)"
           command: |
-            npm i wrangler@2.0.19
+            npm i wrangler@3.1.0
             cd packages/core
-            npx wrangler pages publish dist/ --project-name=deriv-app-pages --branch=staging
+            npx wrangler pages deploy dist/ --project-name=deriv-app-pages --branch=staging
             echo "New staging website - http://staging.cf-pages-deriv-app.deriv.com"
 
   publish_to_pages_production:
@@ -172,9 +173,9 @@ commands:
       - run:
           name: "Publish to cloudflare pages (production)"
           command: |
-            npm i wrangler@2.0.19
+            npm i wrangler@3.1.0
             cd packages/core
-            npx wrangler pages publish dist/ --project-name=deriv-app-pages --branch=main
+            npx wrangler pages deploy dist/ --project-name=deriv-app-pages --branch=main
             echo "New website - http://cf-pages-deriv-app.deriv.com"
 
 jobs:
@@ -271,6 +272,9 @@ jobs:
       - run:
           name: "Check TypeScript for @deriv/stores"
           command: npx tsc --project packages/stores/tsconfig.json -noEmit
+      - run:
+          name: "Check TypeScript for @deriv/wallets"
+          command: npx tsc --project packages/wallets/tsconfig.json -noEmit
       # - run:
       #     name: "Check TypeScript for @deriv/cashier"
       #     command: npx tsc --project packages/cashier/tsconfig.json -noEmit

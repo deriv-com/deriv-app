@@ -12,7 +12,7 @@
         flex: 1;
         display: flex;
         flex-direction: row;
-        align-items: flex-start;
+        align-items: center;
         gap: 24px;
         align-self: stretch;
         background-color: rgb(187, 206, 112);
@@ -39,11 +39,42 @@
         background-color: rgb(200, 100, 180);
     }
 
+    &__action-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 8px;
+        flex: 1 0 0;
+    }
+
+    &__title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        align-self: stretch;
+    }
+
+    &__badge {
+        display: flex;
+        padding: 0px 4px;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        border-radius: 2px;
+        border: 1px solid var(--system-light-1-prominent-text, #333);
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
     &__balance-container {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
-        background-color: rgb(108, 171, 108);
     }
 
     &__balance-title {

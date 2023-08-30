@@ -18,8 +18,8 @@ const CarouselContainer: React.FC<React.PropsWithChildren<unknown>> = observer((
     const [prev_btn_disabled, setPrevBtnEnabled] = React.useState(false);
     const [next_btn_disabled, setNextBtnEnabled] = React.useState(false);
 
-    const scrollPrev = React.useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
-    const scrollNext = React.useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
+    const scrollPrev = React.useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+    const scrollNext = React.useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
     const onSelect = React.useCallback((embla_api: EmblaCarouselType) => {
         setPrevBtnEnabled(embla_api.canScrollPrev());

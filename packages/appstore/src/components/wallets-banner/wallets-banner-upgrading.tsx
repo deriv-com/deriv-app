@@ -14,9 +14,10 @@ const WalletsBannerUpgrading = observer(({ is_eu }: TWalletsBannerUpgrading) => 
     const { ui } = useStore();
     const { is_mobile } = ui;
 
-    const image: TWalletsImagesListKey = is_mobile
-        ? `upgrading_mobile${is_eu ? '_eu' : ''}`
-        : `upgrading_desktop${is_eu ? '_eu' : ''}`;
+    const mobile_class = is_eu ? 'upgrading_mobile_eu' : 'upgrading_mobile';
+    const desktop_class = is_eu ? 'upgrading_desktop_eu' : 'upgrading_desktop';
+    const image: TWalletsImagesListKey = is_mobile ? mobile_class : desktop_class;
+
     const title_size = is_mobile ? 'xs' : 'sm';
     const description_size = is_mobile ? 'xxxs' : 'xs';
 

@@ -18,15 +18,17 @@ if (isProduction) {
     dataDogEnv = 'staging';
 }
 
-datadogLogs.init({
-    clientToken: DATADOG_CLIENT_TOKEN_LOGS,
-    site: 'datadoghq.com',
-    forwardErrorsToLogs: false,
-    service: 'Dbot',
-    sessionSampleRate: dataDogSessionSampleRate,
-    version: dataDogVersion,
-    env: dataDogEnv,
-});
+if (DATADOG_CLIENT_TOKEN_LOGS) {
+    datadogLogs.init({
+        clientToken: DATADOG_CLIENT_TOKEN_LOGS,
+        site: 'datadoghq.com',
+        forwardErrorsToLogs: false,
+        service: 'Dbot',
+        sessionSampleRate: dataDogSessionSampleRate,
+        version: dataDogVersion,
+        env: dataDogEnv,
+    });
+}
 
 export const REQUESTS = [
     'active_symbols',
@@ -109,7 +111,9 @@ class APIMiddleware {
         REQUESTS.forEach(req_type => {
             const measure = performance.getEntriesByName(req_type);
             if (measure && measure.length) {
-                this.log(measure, is_bot_running, req_type);
+                if (process.env.DATADOG_CLIENT_TOKEN_LOGS) {
+                    this.log(measure, is_bot_running, req_type);
+                }
             }
         });
         performance.clearMeasures();

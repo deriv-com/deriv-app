@@ -286,6 +286,12 @@
             padding-top: 0;
             padding-left: 0;
             padding-bottom: 0;
+
+            &--grid-layout {
+                @include mobile {
+                    padding-top: 2.4rem;
+                }
+            }
         }
     }
 

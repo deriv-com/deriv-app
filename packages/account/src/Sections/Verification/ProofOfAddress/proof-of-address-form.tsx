@@ -304,7 +304,7 @@ const ProofOfAddressForm = observer(
                                 <ThemedScrollbars height='572px' is_bypassed={!is_for_cfd_modal || isMobile()}>
                                     <FormBody scroll_offset={setOffset(status)}>
                                         {is_resubmit && (
-                                            <Text size='xs' align='left' color='loss-danger'>
+                                            <Text size={isMobile() ? 'xxs' : 'xs'} align='left' color='loss-danger'>
                                                 <Localize i18n_default_text='We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.' />
                                             </Text>
                                         )}

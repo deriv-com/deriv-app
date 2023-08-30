@@ -15,7 +15,7 @@ export type TLocationList = TType & {
 
 export const getLocation = (location_list: TLocationList[], value: string, type: keyof TType) => {
     const location_obj = location_list.find(
-        location => location[type === 'text' ? 'value' : 'text'].toLowerCase() === value.toLowerCase()
+        location => location[type === 'text' ? 'value' : 'text']?.toLowerCase() === value.toLowerCase()
     );
 
     if (location_obj) return location_obj[type];

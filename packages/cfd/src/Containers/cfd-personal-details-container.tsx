@@ -1,25 +1,20 @@
 import React from 'react';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from '../Stores/connect';
-import RootStore from '../Stores/index';
 import { TCFDPersonalDetailsContainerProps } from './props.types';
 import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form';
 import { getPropertyValue, isDesktop, WS } from '@deriv/shared';
 import { GetSettings } from '@deriv/api-types';
+import { observer, useStore } from '@deriv/stores';
 
 type TFormValues = { [key: string]: string };
 type TSetSubmitting = (isSubmitting: boolean) => void;
 
-const CFDPersonalDetailsContainer = ({
-    account_settings,
-    context,
-    getChangeableFields,
-    landing_company,
-    residence_list,
-    setAccountSettings,
-    onSubmit,
-}: TCFDPersonalDetailsContainerProps) => {
+const CFDPersonalDetailsContainer = observer(({ onSubmit }: TCFDPersonalDetailsContainerProps) => {
+    const { client } = useStore();
+
+    const { account_settings, getChangeableFields, landing_company, residence_list, setAccountSettings } = client;
+
     const [form_error, setFormError] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(false);
     const [form_values, setFormValues] = React.useState<TFormValues>({
@@ -113,7 +108,6 @@ const CFDPersonalDetailsContainer = ({
             </div>
             <div className='cfd-personal-details-modal__body'>
                 <CFDPersonalDetailsForm
-                    context={context}
                     form_error={form_error}
                     index={2}
                     is_loading={is_loading}
@@ -133,14 +127,6 @@ const CFDPersonalDetailsContainer = ({
             <MobileWrapper>{getPersonalDetailsForm()}</MobileWrapper>
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ ui, client }: RootStore) => ({
-    account_settings: client.account_settings,
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
-    getChangeableFields: client.getChangeableFields,
-    landing_company: client.landing_company,
-    residence_list: client.residence_list,
-    setAccountSettings: client.setAccountSettings,
-}))(CFDPersonalDetailsContainer);
+export default CFDPersonalDetailsContainer;

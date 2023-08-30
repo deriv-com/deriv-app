@@ -66,7 +66,7 @@ const error_messages = {
 describe('<CFDPOA />', () => {
     const address = {
         address_line_1: 'First line of address*',
-        address_line_2: 'Second line of address',
+        address_line_2: 'Second line of address (optional)',
         address_postcode: 'Postal/ZIP code',
         address_state: 'State/Province',
         address_town: 'Town/City*',
@@ -181,11 +181,11 @@ describe('<CFDPOA />', () => {
 
         expect(await screen.findByText(/Address information/i)).toBeInTheDocument();
 
-        const address_line_1_input = screen.getByPlaceholderText(address.address_line_1);
-        const address_line_2_input = screen.getByPlaceholderText(address.address_line_2);
-        const address_town_input = screen.getByPlaceholderText(address.address_town);
-        const address_state_input = screen.getByPlaceholderText(address.address_state);
-        const address_postcode_input = screen.getByPlaceholderText(address.address_postcode);
+        const address_line_1_input = screen.getByLabelText(address.address_line_1);
+        const address_line_2_input = screen.getByLabelText(address.address_line_2);
+        const address_town_input = screen.getByLabelText(address.address_town);
+        const address_state_input = screen.getByLabelText(address.address_state);
+        const address_postcode_input = screen.getByLabelText(address.address_postcode);
 
         expect(address_line_1_input.value).toBe('dead end');
         expect(address_line_2_input.value).toBe('Psycho Path');
@@ -199,8 +199,8 @@ describe('<CFDPOA />', () => {
 
         expect(await screen.findByText(/Address information/i)).toBeInTheDocument();
 
-        const address_line_1_input = screen.getByPlaceholderText(address.address_line_1);
-        const address_town_input = screen.getByPlaceholderText(address.address_town);
+        const address_line_1_input = screen.getByLabelText(address.address_line_1);
+        const address_town_input = screen.getByLabelText(address.address_town);
 
         fireEvent.blur(address_line_1_input);
         fireEvent.blur(address_town_input);

@@ -24,7 +24,7 @@ const NewsTicker = ({ children, className, speed }: React.PropsWithChildren<TNew
     const animation_duration = element_width / speed; // time = distance / speed
 
     return (
-        <div className={classNames(className, 'dc-news-ticker')} ref={onRefChange}>
+        <div className={classNames('dc-news-ticker', className)} ref={onRefChange}>
             <NewsTickerChildren
                 animation_duration={animation_duration}
                 is_exceeding_parent={is_exceeding_parent}

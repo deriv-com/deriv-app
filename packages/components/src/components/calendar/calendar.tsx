@@ -20,7 +20,7 @@ type TCalendarProps = {
     start_date: string;
     value: string;
     disable_days: number[];
-    calendar_view: string;
+    calendar_view?: string;
     calendar_el_ref: React.RefObject<HTMLDivElement>;
     disabled_days: number[];
     events: Array<{
@@ -29,7 +29,7 @@ type TCalendarProps = {
     }>;
     has_range_selection: boolean;
     keep_open: boolean;
-    onHover: (selected_date: moment.MomentInput | null) => void;
+    onHover?: (selected_date: moment.MomentInput | null) => void;
     should_show_today: boolean;
 };
 

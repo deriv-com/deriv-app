@@ -11,7 +11,15 @@ import { useStores } from 'Stores';
 import 'Components/orders/chat/chat.scss';
 
 const Chat = observer(() => {
-    const { sendbird_store } = useStores();
+    const { order_store, sendbird_store } = useStores();
+
+    React.useLayoutEffect(() => {
+        return () => {
+            order_store.onPageReturn();
+        };
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     if (sendbird_store.is_chat_loading) {
         return (
@@ -32,7 +40,11 @@ const Chat = observer(() => {
                         <Button
                             has_effect
                             large
-                            onClick={() => sendbird_store.initialiseChatWsConnection()}
+                            onClick={() => {
+                                (async () => {
+                                    await sendbird_store.initialiseChatWsConnection();
+                                })();
+                            }}
                             primary
                             text={localize('Retry')}
                             type='button'

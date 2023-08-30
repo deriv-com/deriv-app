@@ -10,6 +10,18 @@ jest.mock('Utils/websocket', () => ({
     requestWS: jest.fn().mockResolvedValue({ error: { message: 'P2P Error' } }),
 }));
 
+jest.mock('@sendbird/chat', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/groupChannel', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/message', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
     useStores: jest.fn().mockReturnValue({

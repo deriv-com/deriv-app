@@ -9,6 +9,7 @@ import { localize } from '@deriv/translations';
 export const Verified = ({ needs_poa, redirect_button, is_from_external }: TPOIStatus) => {
     const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
     const message = localize('Your proof of identity is verified');
+
     if (!needs_poa) {
         return (
             <IconMessageContent

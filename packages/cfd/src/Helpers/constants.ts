@@ -52,7 +52,7 @@ const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503'
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
 const DXTRADE_HUAWEI_APP_URL = 'https://appgallery.huawei.com/app/C104633219';
 
-const getBrokerName = () => 'Deriv Limited';
+const getBrokerName = () => 'Deriv Holdings (Guernsey) Limited';
 
 const getTopUpConfig = () => {
     return {
@@ -90,17 +90,17 @@ const getPlatformDerivEZDownloadLink = (platform: 'ios' | 'android' | 'huawei') 
 const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) => {
     switch (platform || OSDetect()) {
         case 'windows':
-            return 'https://download.mql5.com/cdn/web/deriv.limited/mt5/derivmt5setup.exe';
+            return 'https://download.mql5.com/cdn/web/deriv.holdings.guernsey/mt5/deriv5setup.exe';
         case 'linux':
             return 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux';
         case 'ios':
-            return 'https://apps.apple.com/us/app/metatrader-5/id413251709';
+            return 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server,Deriv-Server-02';
         case 'macos':
             return 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg';
         case 'huawei':
             return 'https://appgallery.huawei.com/#/app/C102015329';
         case 'android':
-            return 'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server';
+            return 'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server,Deriv-Server-02';
         default:
             return getMT5WebTerminalLink({ category: 'real' }); // Web
     }

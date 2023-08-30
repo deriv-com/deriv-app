@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import { isMobile } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import AppContent from '../app-content.jsx';
 
@@ -86,18 +85,6 @@ describe('<AppContent/>', () => {
 
     //     expect(screen.getByText('Dp2pBlocked')).toBeInTheDocument();
     // });
-
-    it('should render the nickname form component when should_show_popup state is true and user is in mobile', () => {
-        isMobile.mockReturnValueOnce(true);
-        useStores.mockImplementation(() => ({
-            general_store: { ...mocked_store_values, should_show_popup: true },
-        }));
-        render(<AppContent />, {
-            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
-        });
-
-        expect(screen.getByText('NicknameForm')).toBeInTheDocument();
-    });
 
     // it('should render only the first notification component when multiple error status is set', () => {
     //     useStores.mockImplementation(() => ({

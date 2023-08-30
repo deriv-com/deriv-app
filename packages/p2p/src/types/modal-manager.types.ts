@@ -46,4 +46,5 @@ export type TShowModalOptions = {
 export type THideModalOptions = {
     should_save_form_history?: boolean;
     should_hide_all_modals?: boolean;
+    should_restore_local_state?: boolean;
 };

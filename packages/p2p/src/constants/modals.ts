@@ -109,6 +109,9 @@ export const Modals = {
                 /* webpackChunkName: "invalid-verification-link-modal" */ 'Components/modal-manager/modals/invalid-verification-link-modal'
             )
     ),
+    LeavePageModal: React.lazy(
+        () => import(/* webpackChunkName: "leave-page-modal" */ 'Components/modal-manager/modals/leave-page-modal')
+    ),
     LoadingModal: React.lazy(
         () => import(/* webpackChunkName: "loading-modal" */ 'Components/modal-manager/modals/loading-modal')
     ),

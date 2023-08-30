@@ -46,13 +46,23 @@ const CancelAddPaymentMethodModal = ({
                         hideModal({
                             should_save_form_history: false,
                             should_hide_all_modals: should_hide_all_modals_on_cancel ?? false,
+                            should_restore_local_state: false,
                         });
                     }}
                     secondary
                 >
                     <Localize i18n_default_text='Cancel' />
                 </Button>
-                <Button large onClick={() => hideModal({ should_save_form_history: true })} primary>
+                <Button
+                    large
+                    onClick={() => {
+                        hideModal({
+                            should_save_form_history: true,
+                            should_restore_local_state: true,
+                        });
+                    }}
+                    primary
+                >
                     <Localize i18n_default_text='Go back' />
                 </Button>
             </Modal.Footer>

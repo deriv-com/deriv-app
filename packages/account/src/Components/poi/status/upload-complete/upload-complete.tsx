@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
-import { PlatformContext } from '@deriv/shared';
+import { PlatformContext, isNavigationFromP2P, isNavigationFromDerivGO } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import PoaButton from 'Components/poa/poa-button';
 import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
@@ -20,6 +20,8 @@ export const UploadComplete = ({
         ? localize('We’ll review your documents and notify you of its status within 1 - 3 working days.')
         : localize('We’ll review your documents and notify you of its status within 5 minutes.');
 
+    const is_redirected_from_platform = isNavigationFromP2P() || isNavigationFromDerivGO();
+
     if (!needs_poa) {
         return (
             <IconMessageContent
@@ -34,7 +36,7 @@ export const UploadComplete = ({
                 }
                 className={classNames({ 'account-management-dashboard': is_appstore })}
             >
-                {!is_from_external && (redirect_button || <ContinueTradingButton />)}
+                {!is_from_external && (redirect_button || (!is_redirected_from_platform && <ContinueTradingButton />))}
             </IconMessageContent>
         );
     }

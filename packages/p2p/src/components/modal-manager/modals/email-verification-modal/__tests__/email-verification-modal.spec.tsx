@@ -24,6 +24,18 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
     useModalManagerContext: jest.fn(() => mock_modal_manager),
 }));
 
+jest.mock('@sendbird/chat', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/groupChannel', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/message', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
 describe('EmailVerificationModal />', () => {
     beforeEach(() => {
         mock_store = {

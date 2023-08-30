@@ -115,7 +115,6 @@ const BuySellModal = () => {
     const [is_submit_disabled, setIsSubmitDisabled] = useSafeState(true);
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
     const [has_rate_changed_recently, setHasRateChangedRecently] = React.useState(false);
-    const MAX_ALLOWED_RATE_CHANGED_WARNING_DELAY = 2000;
     const { hideModal, is_modal_open, showModal } = useModalManagerContext();
     const history = useHistory();
     const location = useLocation();
@@ -130,9 +129,6 @@ const BuySellModal = () => {
                 const is_the_same_advert = previous_advert?.id === new_advert.id;
                 if (rate_has_changed && is_the_same_advert) {
                     setHasRateChangedRecently(true);
-                    setTimeout(() => {
-                        setHasRateChangedRecently(false);
-                    }, MAX_ALLOWED_RATE_CHANGED_WARNING_DELAY);
                 }
             }
         );
@@ -167,6 +163,7 @@ const BuySellModal = () => {
         } else {
             showModal({ key: 'MarketRateChangeErrorModal' });
         }
+        setHasRateChangedRecently(false);
     };
 
     const BuySellFormError = () => {
@@ -205,6 +202,7 @@ const BuySellModal = () => {
         } else {
             hideModal();
             buy_sell_store.fetchAdvertiserAdverts();
+            buy_sell_store.unsubscribeAdvertInfo();
         }
         floating_rate_store.setIsMarketRateChanged(false);
     };
@@ -281,7 +279,7 @@ const BuySellModal = () => {
                             <BuySellModalFooter
                                 is_submit_disabled={is_submit_disabled}
                                 onCancel={onCancel}
-                                onSubmit={submitForm.current}
+                                onSubmit={onSubmit}
                             />
                         </React.Fragment>
                     )}

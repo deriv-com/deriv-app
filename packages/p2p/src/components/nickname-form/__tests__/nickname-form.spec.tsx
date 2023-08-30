@@ -11,6 +11,18 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(() => mock_store),
 }));
 
+jest.mock('@sendbird/chat', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/groupChannel', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/message', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
 describe('<NicknameForm/>', () => {
     beforeEach(() => {
         mock_store = {

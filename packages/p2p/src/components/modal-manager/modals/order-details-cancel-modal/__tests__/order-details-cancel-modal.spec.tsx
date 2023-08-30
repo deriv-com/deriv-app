@@ -33,6 +33,17 @@ const mock_store_values = {
         setErrorMessage: jest.fn(),
     },
 };
+jest.mock('@sendbird/chat', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/groupChannel', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/message', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
 
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),

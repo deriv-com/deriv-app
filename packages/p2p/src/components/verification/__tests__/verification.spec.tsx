@@ -11,6 +11,18 @@ jest.mock('@deriv/shared', () => ({
     isDesktop: jest.fn(() => false),
 }));
 
+jest.mock('@sendbird/chat', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/groupChannel', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/message', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
 const mock_modal_manager = {
     isCurrentModal: false,
     showModal: jest.fn(),
@@ -137,5 +149,15 @@ describe('<Verification />', () => {
 
         const el_dp2p_Dp2pBlocked_container = screen.getByTestId('dt_dp2p-blocked-container');
         expect(el_dp2p_Dp2pBlocked_container).toBeInTheDocument();
+    });
+
+    it('Should render empty content when nickname form is open', () => {
+        (useStores as jest.Mock).mockReturnValue({
+            general_store: { ...mocked_store_values, should_show_popup: true },
+        });
+
+        const { container } = render(<Verification should_wrap={false} />);
+
+        expect(container).toBeEmptyDOMElement();
     });
 });

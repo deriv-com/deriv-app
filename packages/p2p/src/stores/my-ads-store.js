@@ -284,6 +284,10 @@ export default class MyAdsStore extends BaseStore {
                         });
                     } else {
                         setIsAdvertActive(!!response.p2p_advert_update.is_active);
+                        const updated_items = this.adverts.map(ad =>
+                            ad.id === response.p2p_advert_update.id ? response.p2p_advert_update : ad
+                        );
+                        this.setAdverts(updated_items);
                     }
                 }
                 this.setSelectedAdId('');

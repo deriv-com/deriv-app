@@ -165,7 +165,7 @@ const BuySellForm = props => {
                 initialErrors={buy_sell_store.is_sell_advert ? { contact_info: true } : {}}
                 onSubmit={(...args) => buy_sell_store.handleSubmit(() => isMounted(), ...args)}
             >
-                {({ errors, isSubmitting, isValid, setFieldValue, submitForm, touched }) => {
+                {({ errors, isSubmitting, isValid, validateForm, setFieldValue, submitForm, touched }) => {
                     buy_sell_store.form_props.setIsSubmitDisabled(
                         !isValid ||
                             isSubmitting ||
@@ -311,9 +311,12 @@ const BuySellForm = props => {
                                                                             is_vertical_ellipsis_visible={false}
                                                                             key={key}
                                                                             medium
-                                                                            onClick={() =>
-                                                                                onClickPaymentMethodCard(payment_method)
-                                                                            }
+                                                                            onClick={async () => {
+                                                                                onClickPaymentMethodCard(
+                                                                                    payment_method
+                                                                                );
+                                                                                await validateForm();
+                                                                            }}
                                                                             payment_method={payment_method}
                                                                             style={
                                                                                 selected_methods.includes(

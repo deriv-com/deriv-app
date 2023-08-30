@@ -11,6 +11,18 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(() => mock_store),
 }));
 
+jest.mock('@sendbird/chat', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/groupChannel', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
+jest.mock('@sendbird/chat/message', () => ({
+    SendbirdChat: jest.fn().mockReturnValue({}),
+}));
+
 describe('<FloatingRate/>', () => {
     beforeEach(() => {
         mock_store = {
@@ -43,7 +55,7 @@ describe('<FloatingRate/>', () => {
         });
 
         expect(screen.getByText('of the market rate')).toBeInTheDocument();
-        expect(screen.getAllByRole('button').length).toBe(2);
+        expect(screen.getAllByRole('button')).toHaveLength(2);
     });
 
     it('should display error messages when error is passed as props', () => {

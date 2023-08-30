@@ -66,8 +66,8 @@ const useCurrencyConfig = () => {
                 /** Format the balance */
                 formatBalance: (amount: number) => {
                     return new Intl.NumberFormat('en-US', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
+                        minimumFractionDigits: currency_config.fractional_digits,
+                        maximumFractionDigits: currency_config.fractional_digits,
                     }).format(amount);
                 },
             };

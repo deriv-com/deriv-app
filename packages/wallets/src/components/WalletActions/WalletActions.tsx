@@ -1,10 +1,10 @@
 import React from 'react';
-import './WalletHeaderActions.scss';
 import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierWithdrawal from '../../public/images/ic-cashier-withdrawal.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import { useWalletAccountsList } from '@deriv/api';
+import './WalletActions.scss';
 
 const getWalletHeaderButtons = (is_demo: boolean, handleAction?: () => void) => {
     const buttons = [

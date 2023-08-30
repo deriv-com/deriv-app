@@ -2,7 +2,8 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { FormikValues, FormikErrors } from 'formik';
 import { Loading, Modal, Text } from '@deriv/components';
-import { routes, WS } from '@deriv/shared';
+import { routes } from '@deriv/shared';
+import { useCloseDerivAccount } from '@deriv/hooks';
 import { localize, Localize } from '@deriv/translations';
 import { TClosingAccountFormValues } from 'Types';
 import ClosingAccountHasPendingConditions from './closing-account-pending-conditions/closing-account-has-pending-conditions';
@@ -20,8 +21,6 @@ type TFormError = FormikErrors<TClosingAccountFormValues> & {
 };
 
 type TCustomState = {
-    is_account_closed: boolean;
-    is_loading: boolean;
     is_modal_open: boolean;
     modal_type: string;
     reason: string;
@@ -29,38 +28,26 @@ type TCustomState = {
     total_checkbox_checked: number;
     remaining_characters: number;
     total_accumulated_characters: number;
-    api_error_message: string;
-    details: Record<string, unknown>;
 };
 type TAction =
-    | { type: 'SET_ACCOUNT_CLOSED'; payload: boolean }
-    | { type: 'SET_LOADING'; payload: boolean }
     | { type: 'SET_MODAL'; payload: { is_modal_open: boolean; modal_type: string } }
     | { type: 'SET_REASON'; payload: string }
     | { type: 'SET_CHECKBOX_DISABLED'; payload: boolean }
     | { type: 'SET_TOTAL_CHECKBOX_CHECKED'; payload: number }
     | { type: 'SET_REMAINING_CHARACTERS'; payload: number }
-    | { type: 'SET_TOTAL_ACCUMULATED_CHARACTERS'; payload: number }
-    | { type: 'SET_API_ERROR_MESSAGE'; payload: string }
-    | { type: 'SET_DETAILS'; payload: Record<string, unknown> };
+    | { type: 'SET_TOTAL_ACCUMULATED_CHARACTERS'; payload: number };
 
 const CHARACTER_LIMIT = 110;
 const MAX_ALLOWED_REASONS = 3;
 
-const SET_ACCOUNT_CLOSED = 'SET_ACCOUNT_CLOSED';
-const SET_LOADING = 'SET_LOADING';
 const SET_MODAL = 'SET_MODAL';
 const SET_REASON = 'SET_REASON';
 const SET_CHECKBOX_DISABLED = 'SET_CHECKBOX_DISABLED';
 const SET_TOTAL_CHECKBOX_CHECKED = 'SET_TOTAL_CHECKBOX_CHECKED';
 const SET_REMAINING_CHARACTERS = 'SET_REMAINING_CHARACTERS';
 const SET_TOTAL_ACCUMULATED_CHARACTERS = 'SET_TOTAL_ACCUMULATED_CHARACTERS';
-const SET_API_ERROR_MESSAGE = 'SET_API_ERROR_MESSAGE';
-const SET_DETAILS = 'SET_DETAILS';
 
 const initial_state = {
-    is_account_closed: false,
-    is_loading: false,
     is_modal_open: false,
     modal_type: '',
     reason: '',
@@ -68,16 +55,11 @@ const initial_state = {
     total_checkbox_checked: 0,
     remaining_characters: CHARACTER_LIMIT,
     total_accumulated_characters: 0,
-    api_error_message: '',
     details: {},
 };
 
 const reducer = (state: TCustomState, action: TAction) => {
     switch (action.type) {
-        case SET_ACCOUNT_CLOSED:
-            return { ...state, is_account_closed: action.payload };
-        case SET_LOADING:
-            return { ...state, is_loading: action.payload };
         case SET_MODAL:
             return {
                 ...state,
@@ -94,10 +76,6 @@ const reducer = (state: TCustomState, action: TAction) => {
             return { ...state, remaining_characters: action.payload };
         case SET_TOTAL_ACCUMULATED_CHARACTERS:
             return { ...state, total_accumulated_characters: action.payload };
-        case SET_API_ERROR_MESSAGE:
-            return { ...state, api_error_message: action.payload };
-        case SET_DETAILS:
-            return { ...state, details: action.payload };
         default:
             return state;
     }
@@ -125,11 +103,11 @@ const selectedReasonsForCloseAccount = (values: TClosingAccountFormValues) =>
     );
 
 const ClosingAccountReason = ({ redirectToSteps }: TClosingAccountReasonProps) => {
+    const { mutate, error, isSuccess, isLoading } = useCloseDerivAccount();
+
     const [state, dispatch] = React.useReducer(reducer, initial_state);
 
     const {
-        is_account_closed,
-        is_loading,
         is_modal_open,
         modal_type,
         reason,
@@ -137,8 +115,6 @@ const ClosingAccountReason = ({ redirectToSteps }: TClosingAccountReasonProps) =
         total_checkbox_checked,
         remaining_characters,
         total_accumulated_characters,
-        api_error_message,
-        details,
     } = state;
 
     React.useEffect(() => {
@@ -146,6 +122,25 @@ const ClosingAccountReason = ({ redirectToSteps }: TClosingAccountReasonProps) =
             dispatch({ type: SET_CHECKBOX_DISABLED, payload: true });
         } else if (is_checkbox_disabled) dispatch({ type: SET_CHECKBOX_DISABLED, payload: false });
     }, [total_checkbox_checked, is_checkbox_disabled]);
+
+    React.useEffect(() => {
+        if (error) {
+            if (typeof error === 'object' && 'code' in error && typeof error.code === 'string') {
+                const { code } = error;
+                const getModalToRender = () => {
+                    if (code === 'AccountHasPendingConditions') {
+                        return 'account_has_pending_conditions_modal';
+                    }
+                    if (code === 'MT5AccountInaccessible') {
+                        return 'inaccessible_modal';
+                    }
+                    return 'error_modal';
+                };
+
+                dispatch({ type: SET_MODAL, payload: { is_modal_open: true, modal_type: getModalToRender() } });
+            }
+        }
+    }, [error]);
 
     const validateFields = (values: TClosingAccountFormValues) => {
         const error: TFormError = {};
@@ -172,7 +167,6 @@ const ClosingAccountReason = ({ redirectToSteps }: TClosingAccountReasonProps) =
 
     const handleSubmitForm = (values: TClosingAccountFormValues) => {
         const final_reason = formatReasonsForCloseAccount(values);
-
         dispatch({ type: SET_MODAL, payload: { is_modal_open: true, modal_type: 'warning_modal' } });
         dispatch({ type: SET_REASON, payload: final_reason });
     };
@@ -233,9 +227,33 @@ const ClosingAccountReason = ({ redirectToSteps }: TClosingAccountReasonProps) =
             case 'warning_modal':
                 return <ClosingAccountWarningModal closeModal={closeModal} startDeactivating={startDeactivating} />;
             case 'account_has_pending_conditions_modal':
-                return <ClosingAccountHasPendingConditions details={details} onConfirm={redirectToSteps} />;
+                return (
+                    <ClosingAccountHasPendingConditions
+                        details={
+                            error &&
+                            typeof error === 'object' &&
+                            'details' in error &&
+                            typeof error.details === 'object'
+                                ? error.details
+                                : {}
+                        }
+                        onConfirm={redirectToSteps}
+                    />
+                );
             case 'inaccessible_modal':
-                return <ClosingAccountGeneralErrorContent message={api_error_message} onClick={closeModal} />;
+                return (
+                    <ClosingAccountGeneralErrorContent
+                        message={
+                            error &&
+                            typeof error === 'object' &&
+                            'message' in error &&
+                            typeof error.message === 'string'
+                                ? error.message
+                                : ''
+                        }
+                        onClick={closeModal}
+                    />
+                );
             default:
                 return null;
         }
@@ -247,36 +265,13 @@ const ClosingAccountReason = ({ redirectToSteps }: TClosingAccountReasonProps) =
 
     const startDeactivating = async () => {
         closeModal();
-        dispatch({ type: SET_LOADING, payload: true });
-        const account_closure_response = await WS.authorized.accountClosure({
-            account_closure: 1,
-            reason,
-        });
 
-        if (account_closure_response.account_closure === 1) {
-            dispatch({ type: SET_ACCOUNT_CLOSED, payload: true });
-        } else {
-            const { code, message, details } = account_closure_response.error;
-            const getModalToRender = () => {
-                if (code === 'AccountHasPendingConditions') {
-                    return 'account_has_pending_conditions_modal';
-                }
-                if (code === 'MT5AccountInaccessible') {
-                    return 'inaccessible_modal';
-                }
-                return 'error_modal';
-            };
-
-            dispatch({ type: SET_MODAL, payload: { is_modal_open: true, modal_type: getModalToRender() } });
-            dispatch({ type: SET_DETAILS, payload: details });
-            dispatch({ type: SET_API_ERROR_MESSAGE, payload: message });
-            dispatch({ type: SET_LOADING, payload: false });
-        }
+        mutate({ payload: { reason } });
     };
 
-    if (is_account_closed) return <Redirect to={routes.account_closed} />;
+    if (isSuccess) return <Redirect to={routes.account_closed} />;
 
-    if (is_loading) return <Loading is_fullscreen={false} />;
+    if (isLoading) return <Loading is_fullscreen={false} />;
 
     return (
         <div className='closing-account-reasons'>
@@ -297,6 +292,7 @@ const ClosingAccountReason = ({ redirectToSteps }: TClosingAccountReasonProps) =
                 remaining_characters={remaining_characters}
                 onBackClick={redirectToSteps}
             />
+
             {is_modal_open && modal_type && (
                 <Modal
                     className='closing-account-reasons'

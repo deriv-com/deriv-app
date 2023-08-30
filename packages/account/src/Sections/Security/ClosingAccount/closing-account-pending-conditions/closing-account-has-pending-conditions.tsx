@@ -10,12 +10,14 @@ import ClosingAccountPendingWrapper from './closing-account-pending-wrapper';
 import ClosingAccountPendingBalance from './closing-account-pending-balance';
 import ClosingAccountPendingPositions from './closing-account-pending-positions';
 
+type TDetails = {
+    pending_withdrawals?: Record<string, number>;
+    open_positions?: Record<string, number>;
+    balance?: Record<string, { balance: number; currency: string }>;
+};
+
 type TClosingAccountHasPendingConditionsProps = {
-    details?: {
-        pending_withdrawals?: Record<string, number>;
-        open_positions?: Record<string, number>;
-        balance?: Record<string, { balance: number; currency: string }>;
-    };
+    details: TDetails | null;
     onConfirm: () => void;
 };
 
@@ -35,7 +37,7 @@ const ClosingAccountHasPendingConditions = observer(
 
         let deriv_open_positions: TDetailsOfDerivAccount[] = [];
         let deriv_balance: TDetailsOfDerivAccount[] = [];
-        const account_pending_withdrawals: TDetailsOfDerivAccount[] = [];
+        let account_pending_withdrawals: TDetailsOfDerivAccount[] = [];
 
         let mt5_open_positions: TDetailsOfMT5Account[] = [];
         let mt5_balance: TDetailsOfMT5Account[] = [];
@@ -50,12 +52,12 @@ const ClosingAccountHasPendingConditions = observer(
                 };
                 const deriv_account = getDerivAccount(account_list, login_id);
                 if (deriv_account) {
-                    account_pending_withdrawals.push({ ...deriv_account, ...info });
+                    account_pending_withdrawals = [...account_pending_withdrawals, { ...deriv_account, ...info }];
                 }
             });
         }
         if (details?.open_positions) {
-            Object.keys(details?.open_positions).forEach(login_id => {
+            Object.keys(details.open_positions).forEach(login_id => {
                 const info = {
                     positions: details.open_positions?.[login_id],
                 };

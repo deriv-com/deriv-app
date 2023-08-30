@@ -66,6 +66,7 @@ export const tour_status_ended: TTourStatus = {
 
 let tour: { [key: string]: string } = {};
 let current_target: number | undefined;
+
 export const handleJoyrideCallback = (data: CallBackProps) => {
     const { action, index, status } = data;
     if (status === 'finished') {
@@ -185,6 +186,30 @@ export const DBOT_ONBOARDING = [
             />
         ),
         ...joyride_props,
+        disableOverlay: false,
+    },
+    {
+        target: '#id-tutorials',
+        content: (
+            <TourGuide
+                label={localize('Looking to retake the tour?')}
+                content={[
+                    <Text key={`${0}-id-tutorials`} as='p'>
+                        <Localize
+                            i18n_default_text={`If you're interested, head to <0>Tutorials.</0>`}
+                            components={[<strong key={0} />]}
+                        />
+                    </Text>,
+                ]}
+                dashboard_tab_index={0}
+                step_index={7}
+                show_actions={false}
+                has_localize_component
+            />
+        ),
+        locale: { last: localize('Got it, thanks!') },
+        ...joyride_props,
+        hideBackButton: true,
         disableOverlay: false,
     },
 ];
@@ -456,6 +481,7 @@ export const BOT_BUILDER_TOUR = [
     {
         target: '.animation__wrapper',
         content: <Step6 show_label />,
+        locale: { last: localize('Next') },
         ...joyride_props,
     },
 ];

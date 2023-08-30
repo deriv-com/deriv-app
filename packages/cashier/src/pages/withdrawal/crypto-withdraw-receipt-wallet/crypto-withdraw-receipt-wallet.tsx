@@ -87,12 +87,23 @@ const CryptoWithdrawReceiptWallet = observer(() => {
                     <Text as='p' color='prominent' weight='bold' size={is_mobile ? 'xsm' : 'm'} align='center'>
                         {withdraw_amount} {active_wallet?.currency?.toUpperCase()}
                     </Text>
-                    <Text as='p' color='prominent' size={is_mobile ? 'xs' : 's'} align='center'>
-                        <Localize i18n_default_text='Your withdrawal is currently in review. It will be processed within 24 hours.' />
-                    </Text>
-                    <Text as='p' color='prominent' size={is_mobile ? 'xs' : 's'} align='center'>
-                        <Localize i18n_default_text='We’ll send you an email once your transaction has been processed.' />
-                    </Text>
+
+                    {is_mobile && (
+                        <Text as='p' color='prominent' size={is_mobile ? 'xs' : 's'} align='center'>
+                            <Localize i18n_default_text='Your withdrawal is currently in review. It will be processed within 24 hours. We’ll send you an email once your transaction has been processed.' />
+                        </Text>
+                    )}
+
+                    {!is_mobile && (
+                        <>
+                            <Text as='p' color='prominent' size={is_mobile ? 'xs' : 's'} align='center'>
+                                <Localize i18n_default_text='Your withdrawal is currently in review. It will be processed within 24 hours.' />
+                            </Text>
+                            <Text as='p' color='prominent' size={is_mobile ? 'xs' : 's'} align='center'>
+                                <Localize i18n_default_text='We’ll send you an email once your transaction has been processed.' />
+                            </Text>
+                        </>
+                    )}
                 </div>
                 <div className='crypto-withdraw-receipt-wallet__button-wrapper'>
                     <Button

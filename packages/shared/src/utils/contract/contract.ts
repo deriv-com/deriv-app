@@ -26,25 +26,6 @@ export const getContractStatus = ({ contract_type, exit_tick_time, profit, statu
         : status;
 };
 
-type TGetAccuBarriersDTraderTimeout = (params: {
-    barriers_update_timestamp: number;
-    has_default_timeout: boolean;
-    should_update_contract_barriers?: boolean;
-    tick_update_timestamp: number | null;
-    underlying: string;
-}) => number;
-
-export const DELAY_TIME_1S_SYMBOL = 500;
-// generation_interval will be provided via API later to help us distinguish between 1-second and 2-second symbols
-export const symbols_2s = ['R_10', 'R_25', 'R_50', 'R_75', 'R_100'];
-
-export const getContractStatus = ({ contract_type, exit_tick_time, profit, status }: TContractInfo) => {
-    const closed_contract_status = profit && profit < 0 && exit_tick_time ? 'lost' : 'won';
-    return isAccumulatorContract(contract_type)
-        ? (status === 'open' && !exit_tick_time && 'open') || closed_contract_status
-        : status;
-};
-
 export const getFinalPrice = (contract_info: TContractInfo) => contract_info.sell_price || contract_info.bid_price;
 
 export const getIndicativePrice = (contract_info: TContractInfo) =>
@@ -92,37 +73,6 @@ export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contrac
 export const isSmartTraderContract = (contract_type = '') => /RUN|EXPIRY|RANGE|UPORDOWN/i.test(contract_type);
 
 export const isCryptoContract = (underlying = '') => underlying.startsWith('cry');
-
-export const getAccuBarriersDefaultTimeout = (symbol: string) => {
-    return symbols_2s.includes(symbol) ? DELAY_TIME_1S_SYMBOL * 2 : DELAY_TIME_1S_SYMBOL;
-};
-
-export const getAccuBarriersDTraderTimeout: TGetAccuBarriersDTraderTimeout = ({
-    barriers_update_timestamp,
-    has_default_timeout,
-    should_update_contract_barriers,
-    tick_update_timestamp,
-    underlying,
-}) => {
-    if (has_default_timeout || !tick_update_timestamp) return getAccuBarriersDefaultTimeout(underlying);
-    const animation_correction_time =
-        (should_update_contract_barriers
-            ? getAccuBarriersDefaultTimeout(underlying) / -4
-            : getAccuBarriersDefaultTimeout(underlying) / 4) || 0;
-    const target_update_time =
-        tick_update_timestamp + getAccuBarriersDefaultTimeout(underlying) + animation_correction_time;
-    const difference = target_update_time - barriers_update_timestamp;
-    return difference < 0 ? 0 : difference;
-};
-
-export const getAccuBarriersForContractDetails = (contract_info: TContractInfo) => {
-    if (!isAccumulatorContract(contract_info.contract_type)) return {};
-    const is_contract_open = isOpen(contract_info);
-    const { current_spot_high_barrier, current_spot_low_barrier, high_barrier, low_barrier } = contract_info || {};
-    const accu_high_barrier = is_contract_open ? current_spot_high_barrier : high_barrier;
-    const accu_low_barrier = is_contract_open ? current_spot_low_barrier : low_barrier;
-    return { accu_high_barrier, accu_low_barrier };
-};
 
 export const getAccuBarriersDefaultTimeout = (symbol: string) => {
     return symbols_2s.includes(symbol) ? DELAY_TIME_1S_SYMBOL * 2 : DELAY_TIME_1S_SYMBOL;

@@ -1,4 +1,3 @@
-import type { ElementType } from 'react';
 import type {
     AccountLimitsResponse,
     Authorize,

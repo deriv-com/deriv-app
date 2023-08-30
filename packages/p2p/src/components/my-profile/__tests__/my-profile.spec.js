@@ -13,6 +13,7 @@ const mock_store = {
         },
         is_advertiser: false,
         should_show_dp2p_blocked: false,
+        setActiveIndex: jest.fn(),
     },
     my_profile_store: {
         error_message: '',

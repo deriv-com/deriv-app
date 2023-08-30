@@ -694,6 +694,7 @@ export const icons =
     ],
     'mt5': [
         'IcMt5Acuity',
+        'IcMt5BviDerived',
         'IcMt5CfdPlatform',
         'IcMt5Cfds',
         'IcMt5Derived',
@@ -715,6 +716,7 @@ export const icons =
         'IcMt5PasswordUpdated',
         'IcMt5Responsive',
         'IcMt5Support',
+        'IcMt5SvgDerived',
         'IcMt5SwapFreePlatform',
         'IcMt5SyntheticDashboard',
         'IcMt5SyntheticIndices',

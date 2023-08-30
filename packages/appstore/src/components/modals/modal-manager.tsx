@@ -18,6 +18,7 @@ import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import FailedVerificationModal from './failed-veriification-modal';
 import AccountTransferModal from 'Components/account-transfer-modal';
+import MT5MigrationModal from './mt5-migration-modal';
 
 type TCurrentList = DetailsOfEachMT5Loginid & {
     enabled: number;
@@ -151,6 +152,7 @@ const ModalManager = () => {
                 verification_code={trading_platform_dxtrade_password_reset || trading_platform_mt5_password_reset}
             />
             <MT5AccountTypeModal />
+            <MT5MigrationModal />
             <RegulatorsCompareModal />
             <CompareAccountsModal
                 platform={platform}

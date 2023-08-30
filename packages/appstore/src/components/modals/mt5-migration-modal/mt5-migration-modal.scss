@@ -1,0 +1,23 @@
+.mt5-migration-modal {
+    &__description {
+        margin: 3.2rem 2.4rem;
+    }
+    &__migration_content {
+        margin: 3.2rem 15rem;
+        display: flex;
+        // flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        &-items {
+            margin-top: 1.6rem;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+}
+
+.dc-modal__container_mt5-migration-modal {
+    .dc-modal-header {
+        border-bottom: 2px solid var(--general-section-1);
+    }
+}

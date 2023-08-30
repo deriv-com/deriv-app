@@ -29,7 +29,7 @@ const NotificationsClearAllFooter = observer(({ clearNotifications }: TNotificat
                     onClick={clearNotifications}
                 >
                     <Text size='xxs' color='prominent' weight='bold'>
-                        {<Localize i18n_default_text='Clear All' />}
+                        <Localize i18n_default_text='Clear All' />
                     </Text>
                 </Button>
             </div>

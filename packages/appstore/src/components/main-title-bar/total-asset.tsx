@@ -1,13 +1,13 @@
 import React from 'react';
-import { Text, Popover } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
+import { Popover, Text } from '@deriv/components';
+import { useCFDAccounts, usePlatformAccounts, useThrottle, useTotalAccountBalance } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 import BalanceText from 'Components/elements/text/balance-text';
-import { useTotalAccountBalance, useCFDAccounts, usePlatformAccounts, useThrottle } from '@deriv/hooks';
 
 const TotalAsset = observer(() => {
-    const { traders_hub, client, common } = useStore();
+    const { traders_hub, client, common, ui } = useStore();
+    const { is_mobile } = ui;
     const { selected_account_type, is_eu_user, no_CR_account, no_MF_account } = traders_hub;
     const { default_currency } = client;
     const { current_language } = common;
@@ -29,13 +29,13 @@ const TotalAsset = observer(() => {
         <div className='asset-summary'>
             {has_active_related_deriv_account || selected_account_type === 'demo' ? (
                 <React.Fragment>
-                    {!isMobile() ? (
+                    {!is_mobile ? (
                         <Text align='right' key={`asset-summary--key-${current_language}`} size='xs' line_height='s'>
                             {localize('Total assets')}
                         </Text>
                     ) : null}
                     <Popover
-                        alignment={isMobile() ? 'top' : 'left'}
+                        alignment={is_mobile ? 'top' : 'left'}
                         message={localize('Total assets in all your accounts')}
                         zIndex={9999}
                         is_bubble_hover_enabled

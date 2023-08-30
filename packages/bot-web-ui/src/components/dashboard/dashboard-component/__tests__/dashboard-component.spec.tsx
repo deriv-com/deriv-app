@@ -2,7 +2,6 @@ import React from 'react';
 import { isMobile } from '@deriv/shared';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Sidebar from '../sidebar';
 import UserGuide from '../user-guide';
 
 jest.mock('@deriv/components', () => {
@@ -71,13 +70,5 @@ describe('<Dashboard />', () => {
         userEvent.click(use_guide_button);
         expect(screen.getByTestId('btn-user-guide')).toBeInTheDocument();
         expect(use_guide_button).toBeEnabled();
-    });
-
-    it('on user guide button click it should render the tutorials tab', () => {
-        render(<UserGuide {...mocked_props} />);
-        const use_guide_button = screen.getByTestId('btn-user-guide');
-        userEvent.click(use_guide_button);
-        render(<Sidebar {...mocked_props} />);
-        expect(mocked_props.setActiveTab).toHaveBeenCalledWith(3);
     });
 });

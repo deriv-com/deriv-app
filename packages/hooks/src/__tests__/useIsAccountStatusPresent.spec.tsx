@@ -3,14 +3,15 @@ import { renderHook } from '@testing-library/react-hooks';
 import { APIProvider } from '@deriv/api';
 import useIsAccountStatusPresent from '../useIsAccountStatusPresent';
 
-jest.mock('../useGetAccountStatus', () =>
-    jest.fn(() => ({
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useGetAccountStatus: jest.fn(() => ({
         data: {
             status: ['cashier_locked', 'authenticated'],
         },
         isFetched: true,
-    }))
-);
+    })),
+}));
 
 describe('useIsAccountStatusPresent', () => {
     it('should return false when the status is not present', () => {

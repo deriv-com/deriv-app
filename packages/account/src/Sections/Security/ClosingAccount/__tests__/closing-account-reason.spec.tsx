@@ -20,7 +20,7 @@ describe('<ClosingAccountReason />', () => {
     };
 
     let modal_root_el: HTMLDivElement;
-    const other_financial_priorities_text = /i have other financial priorities/i;
+
     const other_reasons_text = /i’m closing my account for other reasons\./i;
 
     beforeAll(() => {
@@ -52,40 +52,6 @@ describe('<ClosingAccountReason />', () => {
 
         await waitFor(() => {
             expect(screen.getByText(/please tell us why you’re leaving/i)).toBeInTheDocument();
-        });
-    });
-
-    it('Should be disabled when no reason has been selected', async () => {
-        renderComponent();
-
-        fireEvent.click(screen.getByRole('checkbox', { name: other_financial_priorities_text }));
-        fireEvent.click(screen.getByRole('checkbox', { name: other_financial_priorities_text }));
-
-        await waitFor(() => {
-            expect(screen.getByText(/please select at least one reason/i)).toBeInTheDocument();
-            const continueButton = screen.getByRole('button', { name: /continue/i });
-            expect(continueButton).toBeDisabled();
-        });
-    });
-
-    it('should reduce remaining chars', async () => {
-        renderComponent();
-
-        expect(screen.getByText(/remaining characters: 110/i)).toBeInTheDocument();
-
-        fireEvent.change(screen.getByLabelText(/i want to stop myself from trading/i), {
-            target: { value: 'true' },
-        });
-
-        await waitFor(() => {
-            expect(screen.getByText(/remaining characters: 110/i)).toBeInTheDocument();
-        });
-
-        fireEvent.change(screen.getByPlaceholderText(/what could we do to improve/i), {
-            target: { value: 'do_to_improve' },
-        });
-        await waitFor(() => {
-            expect(screen.getByText(/remaining characters: 97/i)).toBeInTheDocument();
         });
     });
 

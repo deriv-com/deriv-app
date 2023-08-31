@@ -1,20 +1,16 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ClosingAccountReasonForm from '../closing-account-reason-form';
 
 describe('<ClosingAccountReasonForm />', () => {
     const mock_props: React.ComponentProps<typeof ClosingAccountReasonForm> = {
-        validateFields: jest.fn(),
-        onSubmit: jest.fn(),
-        is_checkbox_disabled: false,
-        onChangeCheckbox: jest.fn(),
-        character_limit_no: 20,
-        onInputChange: jest.fn(),
-        onInputPaste: jest.fn(),
-        remaining_characters: 5,
+        onConfirmClick: jest.fn(),
         onBackClick: jest.fn(),
     };
+
+    const other_financial_priorities_text = /i have other financial priorities/i;
+
     it('Should render ClosingAccountReasonForm component', () => {
         render(<ClosingAccountReasonForm {...mock_props} />);
         expect(screen.getByLabelText(/i want to stop myself from trading./i)).toBeInTheDocument();
@@ -33,28 +29,70 @@ describe('<ClosingAccountReasonForm />', () => {
         expect(mock_props.onBackClick).toHaveBeenCalledTimes(1);
     });
 
-    it('should call onChangeCheckbox when checkbox is clicked', () => {
+    it('Should be disabled when no reason has been selected', async () => {
         render(<ClosingAccountReasonForm {...mock_props} />);
 
-        const el_checkbox = screen.getByRole('checkbox', {
-            name: /i’m closing my account for other reasons\./i,
+        fireEvent.click(screen.getByRole('checkbox', { name: other_financial_priorities_text }));
+        fireEvent.click(screen.getByRole('checkbox', { name: other_financial_priorities_text }));
+
+        await waitFor(() => {
+            expect(screen.getByText(/please select at least one reason/i)).toBeInTheDocument();
+            const continueButton = screen.getByRole('button', { name: /continue/i });
+            expect(continueButton).toBeDisabled();
         });
-        userEvent.click(el_checkbox);
-        expect(mock_props.onChangeCheckbox).toHaveBeenCalled();
     });
 
-    it('should call the onInputChange and onInputPaste functions for textarea inputs', () => {
+    it('should reduce remaining chars', async () => {
         render(<ClosingAccountReasonForm {...mock_props} />);
 
-        const otherPlatformsInput = screen.getByPlaceholderText(
-            /if you don’t mind sharing, which other trading platforms do you use?/i
+        expect(screen.getByText(/remaining characters: 110/i)).toBeInTheDocument();
+
+        fireEvent.change(screen.getByLabelText(/i want to stop myself from trading/i), {
+            target: { value: 'true' },
+        });
+
+        await waitFor(() => {
+            expect(screen.getByText(/remaining characters: 110/i)).toBeInTheDocument();
+        });
+
+        fireEvent.change(screen.getByPlaceholderText(/what could we do to improve/i), {
+            target: { value: 'do_to_improve' },
+        });
+        await waitFor(() => {
+            expect(screen.getByText(/remaining characters: 97/i)).toBeInTheDocument();
+        });
+    });
+
+    it('should show validation error on invalid characters in input box', async () => {
+        render(<ClosingAccountReasonForm {...mock_props} />);
+
+        fireEvent.click(screen.getByRole('checkbox', { name: other_financial_priorities_text }));
+        fireEvent.change(screen.getByPlaceholderText(/what could we do to improve/i), {
+            target: { value: 'test_suggestion' },
+        });
+
+        fireEvent.click(screen.getByRole('button', { name: /continue/i }));
+
+        await waitFor(() => {
+            expect(screen.getByText(/must be numbers, letters, and special characters/i)).toBeInTheDocument();
+        });
+    });
+
+    it('should call the onConfirmClick function when continue button is clicked', async () => {
+        render(<ClosingAccountReasonForm {...mock_props} />);
+
+        fireEvent.click(screen.getByRole('checkbox', { name: other_financial_priorities_text }));
+        fireEvent.change(
+            screen.getByPlaceholderText(/if you don’t mind sharing, which other trading platforms do you use?/i),
+            {
+                target: { value: 'other reasons' },
+            }
         );
-        const improveInput = screen.getByPlaceholderText(/what could we do to improve?/i);
 
-        fireEvent.change(otherPlatformsInput, { target: { value: 'Other Platforms Input' } });
-        fireEvent.paste(improveInput, { clipboardData: { getData: () => 'Pasted Text' } });
+        fireEvent.click(screen.getByRole('button', { name: /continue/i }));
 
-        expect(mock_props.onInputChange).toHaveBeenCalledTimes(1);
-        expect(mock_props.onInputPaste).toHaveBeenCalledTimes(1);
+        await waitFor(() => {
+            expect(mock_props.onConfirmClick).toHaveBeenCalled();
+        });
     });
 });

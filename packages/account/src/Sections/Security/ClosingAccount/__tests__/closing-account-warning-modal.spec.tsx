@@ -4,9 +4,14 @@ import userEvent from '@testing-library/user-event';
 import ClosingAccountWarningModal from '../closing-account-warning-modal';
 
 describe('<ClosingAccountWarningModal />', () => {
+    const modal_root_el = document.createElement('div');
+    modal_root_el.setAttribute('id', 'modal_root');
+    document.body.appendChild(modal_root_el);
+
     const mock_props: React.ComponentProps<typeof ClosingAccountWarningModal> = {
         startDeactivating: jest.fn(),
-        closeModal: jest.fn(),
+        closeWarningModal: jest.fn(),
+        show_warning_modal: true,
     };
     it('should render the ClosingAccountWarningModal component', () => {
         render(<ClosingAccountWarningModal {...mock_props} />);
@@ -29,6 +34,6 @@ describe('<ClosingAccountWarningModal />', () => {
         const goBackButton = screen.getByRole('button', { name: /go back/i });
         userEvent.click(goBackButton);
 
-        expect(mock_props.closeModal).toHaveBeenCalledTimes(1);
+        expect(mock_props.closeWarningModal).toHaveBeenCalledTimes(1);
     });
 });

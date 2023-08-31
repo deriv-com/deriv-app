@@ -18,12 +18,9 @@ const MAX_ALLOWED_REASONS = 3;
 const ClosingAccountReason = ({ redirectToSteps }: TClosingAccountReasonProps) => {
     const { mutate, error, isSuccess, isLoading } = useCloseDerivAccount();
 
-    const [modal_info, setModalnfo] = React.useState({
-        is_modal_open: false,
-        modal_type: '',
-    });
-
     const [reasons_to_close_account, setReasonsToCloseAccount] = React.useState('');
+    const [error_info, setErrorInfo] = React.useState('');
+    const [show_warning_modal, setShowWarningModal] = React.useState(false);
 
     React.useEffect(() => {
         if (error) {
@@ -39,27 +36,23 @@ const ClosingAccountReason = ({ redirectToSteps }: TClosingAccountReasonProps) =
                     return 'error_modal';
                 };
 
-                setModalnfo({ is_modal_open: true, modal_type: getModalToRender() });
+                setErrorInfo(getModalToRender());
             }
         }
     }, [error]);
 
-    const getModalTitle = () => {
-        switch (modal_info.modal_type) {
+    const getErrorModalTitle = () => {
+        switch (error_info) {
             case 'error_modal':
                 return <Localize i18n_default_text='An error occurred' />;
             case 'inaccessible_modal':
                 return <Localize i18n_default_text='Inaccessible MT5 account(s)' />;
-            case 'warning_modal':
-                return '';
             default:
                 return <Localize i18n_default_text='Action required' />;
         }
     };
-    const getModalContent = () => {
-        switch (modal_info.modal_type) {
-            case 'warning_modal':
-                return <ClosingAccountWarningModal closeModal={closeModal} startDeactivating={startDeactivating} />;
+    const getErrorModalContent = () => {
+        switch (error_info) {
             case 'account_has_pending_conditions_modal':
                 return (
                     <ClosingAccountHasPendingConditions
@@ -85,7 +78,7 @@ const ClosingAccountReason = ({ redirectToSteps }: TClosingAccountReasonProps) =
                                 ? error.message
                                 : ''
                         }
-                        onClick={closeModal}
+                        onClick={closeErrorModal}
                     />
                 );
             default:
@@ -94,16 +87,19 @@ const ClosingAccountReason = ({ redirectToSteps }: TClosingAccountReasonProps) =
     };
 
     const onConfirm = (final_reason: string) => {
-        setModalnfo({ is_modal_open: true, modal_type: 'warning_modal' });
+        setShowWarningModal(true);
         setReasonsToCloseAccount(final_reason);
     };
 
-    const closeModal = () => {
-        setModalnfo({ is_modal_open: false, modal_type: '' });
+    const closeErrorModal = () => {
+        setErrorInfo('');
+    };
+    const closeWarningModal = () => {
+        setShowWarningModal(false);
     };
 
     const startDeactivating = async () => {
-        closeModal();
+        closeWarningModal();
         mutate({ payload: { reason: reasons_to_close_account } });
     };
 
@@ -121,14 +117,22 @@ const ClosingAccountReason = ({ redirectToSteps }: TClosingAccountReasonProps) =
             </Text>
             <ClosingAccountReasonForm onBackClick={redirectToSteps} onConfirmClick={onConfirm} />
 
-            {modal_info.is_modal_open && modal_info.modal_type && (
+            {show_warning_modal && (
+                <ClosingAccountWarningModal
+                    show_warning_modal={show_warning_modal}
+                    closeWarningModal={closeWarningModal}
+                    startDeactivating={startDeactivating}
+                />
+            )}
+
+            {error_info && (
                 <Modal
                     className='closing-account-reasons'
-                    is_open={modal_info.is_modal_open}
-                    toggleModal={closeModal}
-                    title={getModalTitle()}
+                    is_open={!!error_info}
+                    toggleModal={closeErrorModal}
+                    title={getErrorModalTitle()}
                 >
-                    {getModalContent()}
+                    {getErrorModalContent()}
                 </Modal>
             )}
         </div>

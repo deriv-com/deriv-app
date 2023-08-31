@@ -44,6 +44,5 @@ export { default as useRealSTPAccount } from './useRealSTPAccount';
 export { default as useTotalAccountBalance } from './useTotalAccountBalance';
 export { default as useVerifyEmail } from './useVerifyEmail';
 export { default as useP2PAdvertList } from './useP2PAdvertList';
-export { useIsAccountStatusPresent } from './useIsAccountStatusPresent';
-export { default as useAccountStatus } from './useAccountStatus';
+export { default as useIsAccountStatusPresent } from './useIsAccountStatusPresent';
 export { default as useAuthenticationStatusInfo } from './useAuthenticationStatusInfo';

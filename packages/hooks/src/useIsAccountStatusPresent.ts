@@ -1,5 +1,5 @@
 import React from 'react';
-import useAccountStatus from './useAccountStatus';
+import { useGetAccountStatus } from '@deriv/api';
 
 const AccountStatusList = [
     'address_verified',
@@ -48,10 +48,12 @@ const AccountStatusList = [
 
 type TAccountStatus = typeof AccountStatusList[number];
 
-export const useIsAccountStatusPresent = (status: TAccountStatus) => {
-    const { data } = useAccountStatus();
+const useIsAccountStatusPresent = (status: TAccountStatus) => {
+    const { data } = useGetAccountStatus();
 
     const status_list = data?.status;
 
     return React.useMemo(() => status_list?.includes(status) ?? false, [status_list, status]);
 };
+
+export default useIsAccountStatusPresent;

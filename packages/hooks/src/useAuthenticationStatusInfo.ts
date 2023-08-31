@@ -1,11 +1,11 @@
-import useAccountStatus from './useAccountStatus';
+import { useGetAccountStatus } from '@deriv/api';
 import { useIsAccountStatusPresent } from './useIsAccountStatusPresent';
 
 type TAcknowledgeStatuses = ('pending' | 'verified')[];
 type TFailedCases = ('rejected' | 'expired' | 'suspected')[];
 
 const useAuthenticationStatusInfo = () => {
-    const { data: account_status, ...rest } = useAccountStatus();
+    const { data: account_status, ...rest } = useGetAccountStatus();
 
     const is_idv_revoked = useIsAccountStatusPresent('idv_revoked');
     const is_authenticated_with_idv_photoid = useIsAccountStatusPresent('authenticated_with_idv_photoid');

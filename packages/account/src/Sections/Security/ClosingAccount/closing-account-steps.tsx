@@ -7,6 +7,11 @@ import { Button, StaticUrl, Text } from '@deriv/components';
 type TClosingAccountStepsProps = {
     redirectToReasons: () => void;
 };
+const CloseButton = ({ redirectToReasons }: TClosingAccountStepsProps) => (
+    <Button className='closing-account__button--close-account' large onClick={() => redirectToReasons()} primary>
+        <Localize i18n_default_text='Close my account' />
+    </Button>
+);
 
 const ClosingAccountSteps = observer(({ redirectToReasons }: TClosingAccountStepsProps) => {
     const { common } = useStore();
@@ -57,14 +62,7 @@ const ClosingAccountSteps = observer(({ redirectToReasons }: TClosingAccountStep
             </div>
             {is_from_derivgo ? (
                 <div className='closing-account__buttons-container'>
-                    <Button
-                        className='closing-account__button--close-account'
-                        large
-                        onClick={() => redirectToReasons()}
-                        primary
-                    >
-                        <Localize i18n_default_text='Close my account' />
-                    </Button>
+                    <CloseButton redirectToReasons={redirectToReasons} />
                 </div>
             ) : (
                 <div className='closing-account__buttons-container'>
@@ -73,14 +71,7 @@ const ClosingAccountSteps = observer(({ redirectToReasons }: TClosingAccountStep
                             <Localize i18n_default_text='Cancel' />
                         </Button>
                     </Link>
-                    <Button
-                        className='closing-account__button--close-account'
-                        large
-                        onClick={() => redirectToReasons()}
-                        primary
-                    >
-                        <Localize i18n_default_text='Close my account' />
-                    </Button>
+                    <CloseButton redirectToReasons={redirectToReasons} />
                 </div>
             )}
         </div>

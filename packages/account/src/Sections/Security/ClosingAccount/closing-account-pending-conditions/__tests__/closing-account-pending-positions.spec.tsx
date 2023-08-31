@@ -79,7 +79,7 @@ describe('<ClosingAccountHasPendingConditions />', () => {
             <StoreProvider store={store}>{children}</StoreProvider>
         );
 
-        return render(<ClosingAccountHasPendingConditions {...props} />, {
+        render(<ClosingAccountHasPendingConditions {...props} />, {
             wrapper,
         });
     };

@@ -8,7 +8,7 @@ import ClosingAccountPendingContent from './closing-account-pending-content';
 
 type TClosingAccountPendingPositionsProps = {
     platform: TCFDPlatform;
-    open_positions: TDetailsOfMT5Account[] | TDetailsOfDerivXAccount[];
+    open_positions: Array<TDetailsOfMT5Account | TDetailsOfDerivXAccount>;
 };
 
 const ClosingAccountPendingPositions = observer(

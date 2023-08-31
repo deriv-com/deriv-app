@@ -2,6 +2,7 @@ import React from 'react';
 import { Field, Form, Formik, FormikErrors, FieldProps } from 'formik';
 import { Checkbox, FormSubmitButton, Input, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import getCloseAccountReasonsList from 'Constants/account_closing_reasons_list';
 import { TClosingAccountFormValues } from 'Types';
 
 type TClosingAccountReasonFormProps = {
@@ -37,45 +38,6 @@ const initial_form_values: TClosingAccountFormValues = {
     do_to_improve: '',
 };
 
-const account_closing_reasons = [
-    {
-        name: 'financial-priorities',
-        label: <Localize i18n_default_text='I have other financial priorities.' />,
-    },
-    {
-        name: 'stop-trading',
-        label: <Localize i18n_default_text='I want to stop myself from trading.' />,
-    },
-    {
-        name: 'not-interested',
-        label: <Localize i18n_default_text='I’m no longer interested in trading.' />,
-    },
-    {
-        name: 'another-website',
-        label: <Localize i18n_default_text='I prefer another trading website.' />,
-    },
-    {
-        name: 'not-user-friendly',
-        label: <Localize i18n_default_text='The platforms aren’t user-friendly.' />,
-    },
-    {
-        name: 'difficult-transactions',
-        label: <Localize i18n_default_text='Making deposits and withdrawals is difficult.' />,
-    },
-    {
-        name: 'lack-of-features',
-        label: <Localize i18n_default_text='The platforms lack key features or functionality.' />,
-    },
-    {
-        name: 'unsatisfactory-service',
-        label: <Localize i18n_default_text='Customer service was unsatisfactory.' />,
-    },
-    {
-        name: 'other-reasons',
-        label: <Localize i18n_default_text='I’m closing my account for other reasons.' />,
-    },
-];
-
 const ClosingAccountReasonForm = ({
     validateFields,
     onSubmit,
@@ -91,7 +53,7 @@ const ClosingAccountReasonForm = ({
         <Formik initialValues={initial_form_values} validate={validateFields} onSubmit={onSubmit}>
             {({ values, setFieldValue, errors, handleChange, dirty }) => (
                 <Form>
-                    {account_closing_reasons.map(reason => (
+                    {getCloseAccountReasonsList().map(reason => (
                         <Field name={reason.name} key={reason.name}>
                             {({ field }: FieldProps) => (
                                 <Checkbox
@@ -114,7 +76,7 @@ const ClosingAccountReasonForm = ({
                                 {...field}
                                 className='closing-account-reasons__input'
                                 data-lpignore='true'
-                                autoComplete='off' // prevent chrome autocomplete
+                                autoComplete='off'
                                 type='textarea'
                                 placeholder={localize(
                                     'If you don’t mind sharing, which other trading platforms do you use?'

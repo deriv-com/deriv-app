@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Button, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 
@@ -10,8 +9,9 @@ type TNotificationsClearAllFooter = {
 };
 
 const NotificationsClearAllFooter = observer(({ clearNotifications }: TNotificationsClearAllFooter) => {
-    const { notifications } = useStore();
+    const { notifications, ui } = useStore();
     const { is_notifications_empty } = notifications;
+    const { is_mobile } = ui;
 
     return (
         <React.Fragment>
@@ -20,7 +20,7 @@ const NotificationsClearAllFooter = observer(({ clearNotifications }: TNotificat
                 data-testid='dt_clear_all_footer_button'
                 className={classNames('notifications-dialog__footer', {
                     'notifications-dialog__content--empty': is_notifications_empty,
-                    'notifications-dialog__content--sticky': isMobile(),
+                    'notifications-dialog__content--sticky': is_mobile,
                 })}
             >
                 <Button

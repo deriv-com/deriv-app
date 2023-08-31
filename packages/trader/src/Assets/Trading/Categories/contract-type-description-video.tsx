@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { getUrlBase, isMobile, VANILLALONG } from '@deriv/shared';
+import { getUrlBase, isMobile } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 
 type TContractTypeDescriptionVideo = {

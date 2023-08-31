@@ -147,7 +147,7 @@ describe('<TradeCategores />', () => {
             )
         ).toBeInTheDocument();
     });
-    it('Ensure trade category "vanilla" description is rendered properly', () => {
+    it('Ensure trade category "vanillalongcall" description is rendered properly', () => {
         render(<TradeCategories category='vanillalongcall' onClick={jest.fn()} />);
         expect(
             screen.getByText(

@@ -3,7 +3,6 @@ import { renderHook } from '@testing-library/react-hooks';
 import { APIProvider, useGetAccountStatus } from '@deriv/api';
 import useAuthenticationStatusInfo from '../useAuthenticationStatusInfo';
 import useIsAccountStatusPresent from '../useIsAccountStatusPresent';
-// import useAccountStatus from '../useAccountStatus';
 
 jest.mock('../useIsAccountStatusPresent.ts', () => jest.fn());
 
@@ -12,7 +11,7 @@ jest.mock('@deriv/api', () => ({
     useGetAccountStatus: jest.fn(),
 }));
 
-const mockUseAccountStatus = useGetAccountStatus as jest.MockedFunction<typeof useGetAccountStatus>;
+const mockUseGetAccountStatus = useGetAccountStatus as jest.MockedFunction<typeof useGetAccountStatus>;
 const mockUseIsAccountStatusPresent = useIsAccountStatusPresent as jest.MockedFunction<
     typeof useIsAccountStatusPresent
 >;
@@ -87,7 +86,7 @@ describe('useAuthenticationStatusInfo', () => {
     };
 
     it('should return correct authentication status for POA and POI documents when none of them are submitted', () => {
-        mockUseAccountStatus.mockReturnValueOnce({
+        mockUseGetAccountStatus.mockReturnValueOnce({
             // @ts-expect-error need to come up with a way to mock the return type of useFetch
             data: mockAccountStatus,
         });
@@ -106,7 +105,7 @@ describe('useAuthenticationStatusInfo', () => {
         mockAccountStatus.authentication.document.status = 'pending';
         mockAccountStatus.authentication.identity.status = 'verified';
 
-        mockUseAccountStatus.mockReturnValueOnce({
+        mockUseGetAccountStatus.mockReturnValueOnce({
             // @ts-expect-error need to come up with a way to mock the return type of useFetch
             data: mockAccountStatus,
         });
@@ -124,7 +123,7 @@ describe('useAuthenticationStatusInfo', () => {
         // @ts-expect-error need to check by not providing services
         mockAccountStatus.authentication.identity.status = undefined;
 
-        mockUseAccountStatus.mockReturnValueOnce({
+        mockUseGetAccountStatus.mockReturnValueOnce({
             // @ts-expect-error need to come up with a way to mock the return type of useFetch
             data: mockAccountStatus,
         });
@@ -143,7 +142,7 @@ describe('useAuthenticationStatusInfo', () => {
         mockAccountStatus.authentication.identity.services.manual.status = 'verified';
         mockAccountStatus.authentication.identity.services.onfido.status = 'none';
         mockAccountStatus.authentication.identity.services.idv.status = 'verified';
-        mockUseAccountStatus.mockReturnValueOnce({
+        mockUseGetAccountStatus.mockReturnValueOnce({
             // @ts-expect-error need to come up with a way to mock the return type of useFetch
             data: mockAccountStatus,
         });
@@ -165,7 +164,7 @@ describe('useAuthenticationStatusInfo', () => {
         mockAccountStatus.authentication.identity.services.onfido.status = 'verified';
         mockAccountStatus.authentication.identity.services.manual.status = 'none';
         mockAccountStatus.authentication.identity.status = 'verified';
-        mockUseAccountStatus.mockReturnValueOnce({
+        mockUseGetAccountStatus.mockReturnValueOnce({
             // @ts-expect-error need to come up with a way to mock the return type of useFetch
             data: mockAccountStatus,
         });
@@ -186,7 +185,7 @@ describe('useAuthenticationStatusInfo', () => {
         mockAccountStatus.authentication.identity.services.onfido.status = 'pending';
         mockAccountStatus.authentication.identity.services.manual.status = 'none';
         mockAccountStatus.authentication.identity.status = 'pending';
-        mockUseAccountStatus.mockReturnValueOnce({
+        mockUseGetAccountStatus.mockReturnValueOnce({
             // @ts-expect-error need to come up with a way to mock the return type of useFetch
             data: mockAccountStatus,
         });
@@ -208,7 +207,7 @@ describe('useAuthenticationStatusInfo', () => {
         mockAccountStatus.authentication.identity.services.manual.status = 'none';
         mockAccountStatus.authentication.identity.status = 'none';
 
-        mockUseAccountStatus.mockReturnValueOnce({
+        mockUseGetAccountStatus.mockReturnValueOnce({
             // @ts-expect-error need to come up with a way to mock the return type of useFetch
             data: mockAccountStatus,
         });
@@ -231,7 +230,7 @@ describe('useAuthenticationStatusInfo', () => {
         mockAccountStatus.authentication.identity.services.manual.status = 'verified';
         mockAccountStatus.authentication.identity.services.onfido.status = 'none';
         mockAccountStatus.authentication.identity.services.idv.status = 'verified';
-        mockUseAccountStatus.mockReturnValueOnce({
+        mockUseGetAccountStatus.mockReturnValueOnce({
             // @ts-expect-error need to come up with a way to mock the return type of useFetch
             data: mockAccountStatus,
         });
@@ -252,7 +251,7 @@ describe('useAuthenticationStatusInfo', () => {
         mockAccountStatus.authentication.identity.services.idv.status = 'verified';
         mockAccountStatus.authentication.identity.status = 'verified';
 
-        mockUseAccountStatus.mockReturnValueOnce({
+        mockUseGetAccountStatus.mockReturnValueOnce({
             // @ts-expect-error need to come up with a way to mock the return type of useFetch
             data: mockAccountStatus,
         });
@@ -274,7 +273,7 @@ describe('useAuthenticationStatusInfo', () => {
         mockAccountStatus.authentication.identity.services.manual.status = 'none';
         mockAccountStatus.authentication.identity.status = 'pending';
 
-        mockUseAccountStatus.mockReturnValueOnce({
+        mockUseGetAccountStatus.mockReturnValueOnce({
             // @ts-expect-error need to come up with a way to mock the return type of useFetch
             data: mockAccountStatus,
         });
@@ -297,7 +296,7 @@ describe('useAuthenticationStatusInfo', () => {
         mockAccountStatus.authentication.identity.services.manual.status = 'none';
         mockAccountStatus.authentication.identity.status = 'rejected';
 
-        mockUseAccountStatus.mockReturnValueOnce({
+        mockUseGetAccountStatus.mockReturnValueOnce({
             // @ts-expect-error need to come up with a way to mock the return type of useFetch
             data: mockAccountStatus,
         });
@@ -316,7 +315,7 @@ describe('useAuthenticationStatusInfo', () => {
     test('should return correct  aythentication for triggering IDV resubmit', () => {
         mockUseIsAccountStatusPresent.mockReturnValueOnce(false);
 
-        mockUseAccountStatus.mockReturnValueOnce({
+        mockUseGetAccountStatus.mockReturnValueOnce({
             // @ts-expect-error need to come up with a way to mock the return type of useFetch
             data: mockAccountStatus,
         });

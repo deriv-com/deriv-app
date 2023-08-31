@@ -4,13 +4,14 @@
     }
     &__migration_content {
         margin: 3.2rem 15rem;
-        display: flex;
-        // flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: 1.6rem;
         &-items {
-            margin-top: 1.6rem;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+            justify-items: center;
             align-items: center;
         }
     }

@@ -81,6 +81,13 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         []
     );
 
+    const appendMessage = (error_code: string, message: TMessageItem) => {
+        setMessageList(list => {
+            if (list.some(el => el.key === error_code)) return list;
+            return [...list, message];
+        });
+    };
+
     const validateAmount = (amount: number) => {
         clearErrorMessages();
 
@@ -99,35 +106,23 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
             active_wallet?.balance < initial_demo_balance;
 
         if (from_account?.loginid === active_wallet.loginid && should_reset_balance) {
-            setMessageList(list => {
-                if (list.some(el => el.key === ERROR_CODES.is_demo.insufficient_fund)) return list;
-                return [
-                    ...list,
-                    {
-                        variant: 'with-action-button',
-                        key: ERROR_CODES.is_demo.insufficient_fund,
-                        button_label: localize('Reset balance'),
-                        onClickHandler: () => setWalletModalActiveTab('Deposit'),
-                        message: localize(
-                            'You have insufficient fund in the selected wallet, please reset your virtual balance'
-                        ),
-                        type: 'error',
-                    },
-                ];
+            appendMessage(ERROR_CODES.is_demo.insufficient_fund, {
+                variant: 'with-action-button',
+                key: ERROR_CODES.is_demo.insufficient_fund,
+                button_label: localize('Reset balance'),
+                onClickHandler: () => setWalletModalActiveTab('Deposit'),
+                message: localize(
+                    'You have insufficient fund in the selected wallet, please reset your virtual balance'
+                ),
+                type: 'error',
             });
         } else if (!is_ok) {
             //else if not wallet loginid and not is_ok message
-            setMessageList(list => {
-                if (list.some(el => el.key === ERROR_CODES.is_demo.between_min_max)) return list;
-                return [
-                    ...list,
-                    {
-                        variant: 'base',
-                        key: ERROR_CODES.is_demo.between_min_max,
-                        message: `${message} ${from_account?.display_currency_code}`,
-                        type: 'error',
-                    },
-                ];
+            appendMessage(ERROR_CODES.is_demo.between_min_max, {
+                variant: 'base',
+                key: ERROR_CODES.is_demo.between_min_max,
+                message: `${message} ${from_account?.display_currency_code}`,
+                type: 'error',
             });
         }
     };

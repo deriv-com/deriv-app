@@ -51,6 +51,17 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
         RudderStack.track(
             'ce_virtual_signup_form',
             {
+                action: 'signup_confirmed',
+                form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+            },
+            {
+                is_anonymous: true,
+            }
+        );
+
+        RudderStack.track(
+            'ce_virtual_signup_form',
+            {
                 action: 'country_selection_screen_opened',
                 form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
             },

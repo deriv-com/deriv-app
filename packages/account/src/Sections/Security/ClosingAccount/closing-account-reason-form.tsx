@@ -1,28 +1,13 @@
 import React from 'react';
-import { Field, Form, Formik, FormikErrors, FieldProps } from 'formik';
+import { Field, Form, Formik, FormikErrors, FieldProps, FormikValues } from 'formik';
 import { Checkbox, FormSubmitButton, Input, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import getCloseAccountReasonsList from 'Constants/account_closing_reasons_list';
 import { TClosingAccountFormValues } from 'Types';
 
 type TClosingAccountReasonFormProps = {
-    validateFields: (values: TClosingAccountFormValues) => FormikErrors<TClosingAccountFormValues>;
-    onSubmit: (values: TClosingAccountFormValues) => void;
-    is_checkbox_disabled: boolean;
-    onChangeCheckbox: (
-        values: TClosingAccountFormValues,
-        field_name: string,
-        setFieldValue: (name: string, values: string | boolean) => void
-    ) => void;
-    character_limit_no: number;
-    onInputChange: (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-        old_value: string,
-        onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
-    ) => void;
-    onInputPaste: (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    remaining_characters: number;
     onBackClick: () => void;
+    onConfirmClick: (reason: string) => void;
 };
 const initial_form_values: TClosingAccountFormValues = {
     'financial-priorities': false,
@@ -37,20 +22,156 @@ const initial_form_values: TClosingAccountFormValues = {
     other_trading_platforms: '',
     do_to_improve: '',
 };
+const CHARACTER_LIMIT = 110;
 
-const ClosingAccountReasonForm = ({
-    validateFields,
-    onSubmit,
-    is_checkbox_disabled,
-    onChangeCheckbox,
-    character_limit_no,
-    onInputChange,
-    onInputPaste,
-    remaining_characters,
-    onBackClick,
-}: TClosingAccountReasonFormProps) => {
+type TFormError = FormikErrors<TClosingAccountFormValues> & {
+    empty_reason?: string;
+    characters_limits?: string;
+};
+
+type TCustomState = {
+    is_checkbox_disabled: boolean;
+    total_checkbox_checked: number;
+    remaining_characters: number;
+    total_accumulated_characters: number;
+};
+type TAction =
+    | { type: 'SET_CHECKBOX_DISABLED'; payload: boolean }
+    | { type: 'SET_TOTAL_CHECKBOX_CHECKED'; payload: number }
+    | { type: 'SET_REMAINING_CHARACTERS'; payload: number }
+    | { type: 'SET_TOTAL_ACCUMULATED_CHARACTERS'; payload: number };
+
+const MAX_ALLOWED_REASONS = 3;
+
+const SET_CHECKBOX_DISABLED = 'SET_CHECKBOX_DISABLED';
+const SET_TOTAL_CHECKBOX_CHECKED = 'SET_TOTAL_CHECKBOX_CHECKED';
+const SET_REMAINING_CHARACTERS = 'SET_REMAINING_CHARACTERS';
+const SET_TOTAL_ACCUMULATED_CHARACTERS = 'SET_TOTAL_ACCUMULATED_CHARACTERS';
+
+const initial_state = {
+    is_checkbox_disabled: false,
+    total_checkbox_checked: 0,
+    remaining_characters: CHARACTER_LIMIT,
+    total_accumulated_characters: 0,
+};
+
+const reducer = (state: TCustomState, action: TAction) => {
+    switch (action.type) {
+        case SET_CHECKBOX_DISABLED:
+            return { ...state, is_checkbox_disabled: action.payload };
+        case SET_TOTAL_CHECKBOX_CHECKED:
+            return { ...state, total_checkbox_checked: action.payload };
+        case SET_REMAINING_CHARACTERS:
+            return { ...state, remaining_characters: action.payload };
+        case SET_TOTAL_ACCUMULATED_CHARACTERS:
+            return { ...state, total_accumulated_characters: action.payload };
+        default:
+            return state;
+    }
+};
+
+const ClosingAccountReasonForm = ({ onBackClick, onConfirmClick }: TClosingAccountReasonFormProps) => {
+    const [state, dispatch] = React.useReducer(reducer, initial_state);
+
+    const { is_checkbox_disabled, total_checkbox_checked, remaining_characters, total_accumulated_characters } = state;
+
+    React.useEffect(() => {
+        if (total_checkbox_checked === MAX_ALLOWED_REASONS) {
+            dispatch({ type: SET_CHECKBOX_DISABLED, payload: true });
+        } else if (is_checkbox_disabled) dispatch({ type: SET_CHECKBOX_DISABLED, payload: false });
+    }, [total_checkbox_checked, is_checkbox_disabled]);
+
+    const validateFields = (values: TClosingAccountFormValues) => {
+        const error: TFormError = {};
+        const selected_reason_count = selectedReasonsForCloseAccount(values).length;
+        const text_inputs_length = (values.other_trading_platforms + values.do_to_improve).length;
+        let remaining_chars = CHARACTER_LIMIT - text_inputs_length;
+
+        if (selected_reason_count) {
+            const final_value = formatReasonsForCloseAccount(values);
+            remaining_chars = remaining_chars >= 0 ? remaining_chars : 0;
+
+            if (!/^[a-zA-Z0-9.,'\-\s]*$/.test(final_value)) {
+                error.characters_limits = localize("Must be numbers, letters, and special characters . , ' -");
+            }
+        } else {
+            error.empty_reason = localize('Please select at least one reason');
+        }
+
+        dispatch({ type: SET_TOTAL_ACCUMULATED_CHARACTERS, payload: text_inputs_length });
+        dispatch({ type: SET_REMAINING_CHARACTERS, payload: remaining_chars });
+
+        return error;
+    };
+
+    const handleSubmitForm = (values: TClosingAccountFormValues) => {
+        const final_reason = formatReasonsForCloseAccount(values);
+
+        onConfirmClick(final_reason);
+    };
+
+    const handleChangeCheckbox = (
+        values: FormikValues,
+        name: string,
+        setFieldValue: (name: string, values: string | boolean) => void
+    ) => {
+        if (!values[name]) {
+            dispatch({ type: SET_TOTAL_CHECKBOX_CHECKED, payload: total_checkbox_checked + 1 });
+
+            setFieldValue(name, !values[name]);
+        } else {
+            dispatch({ type: SET_TOTAL_CHECKBOX_CHECKED, payload: total_checkbox_checked - 1 });
+
+            setFieldValue(name, !values[name]);
+        }
+    };
+
+    const handleInputChange = (
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        old_value: string,
+        onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+    ) => {
+        const value = event.target.value;
+        const is_delete_action = old_value.length > value.length;
+
+        if ((remaining_characters <= 0 || total_accumulated_characters >= CHARACTER_LIMIT) && !is_delete_action) {
+            event.preventDefault();
+        } else {
+            onChange(event);
+        }
+    };
+
+    const handleInputPaste = async (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>): Promise<void> => {
+        const clipboardData = e.clipboardData.getData('text') || (await navigator.clipboard.readText());
+
+        if (remaining_characters <= 0 || clipboardData.length > remaining_characters) {
+            e.preventDefault();
+        }
+    };
+
+    const formatReasonsForCloseAccount = (values: TClosingAccountFormValues) => {
+        let selected_reasons = selectedReasonsForCloseAccount(values)
+            .map(val => val[0])
+            .toString();
+        const is_other_trading_platform__has_value = !!values.other_trading_platforms.length;
+        const is_to_do_improve_has_value = !!values.do_to_improve.length;
+        if (is_other_trading_platform__has_value) {
+            selected_reasons = `${selected_reasons}, ${values.other_trading_platforms}`;
+        }
+        if (is_to_do_improve_has_value) {
+            selected_reasons = `${selected_reasons}, ${values.do_to_improve}`;
+        }
+
+        return selected_reasons.replace(/(\r\n|\n|\r)/gm, ' ');
+    };
+
+    const selectedReasonsForCloseAccount = (values: TClosingAccountFormValues) =>
+        Object.entries(values).filter(
+            ([key, value]) => !['other_trading_platforms', 'do_to_improve'].includes(key) && value
+        );
+
     return (
-        <Formik initialValues={initial_form_values} validate={validateFields} onSubmit={onSubmit}>
+        <Formik initialValues={initial_form_values} validate={validateFields} onSubmit={handleSubmitForm}>
             {({ values, setFieldValue, errors, handleChange, dirty }) => (
                 <Form>
                     {getCloseAccountReasonsList().map(reason => (
@@ -64,7 +185,7 @@ const ClosingAccountReasonForm = ({
                                     className='closing-account-reasons__checkbox'
                                     label={reason.label}
                                     onChange={() => {
-                                        onChangeCheckbox(values, field.name, setFieldValue);
+                                        handleChangeCheckbox(values, field.name, setFieldValue);
                                     }}
                                 />
                             )}
@@ -83,9 +204,9 @@ const ClosingAccountReasonForm = ({
                                 )}
                                 name='other_trading_platforms'
                                 value={values.other_trading_platforms}
-                                max_characters={character_limit_no}
-                                onChange={e => onInputChange(e, values.other_trading_platforms, handleChange)}
-                                onPaste={onInputPaste}
+                                max_characters={CHARACTER_LIMIT}
+                                onChange={e => handleInputChange(e, values.other_trading_platforms, handleChange)}
+                                onPaste={handleInputPaste}
                             />
                         )}
                     </Field>
@@ -100,9 +221,9 @@ const ClosingAccountReasonForm = ({
                                 placeholder={localize('What could we do to improve?')}
                                 name='do_to_improve'
                                 value={values.do_to_improve}
-                                max_characters={character_limit_no}
-                                onChange={e => onInputChange(e, values.do_to_improve, handleChange)}
-                                onPaste={onInputPaste}
+                                max_characters={CHARACTER_LIMIT}
+                                onChange={e => handleInputChange(e, values.do_to_improve, handleChange)}
+                                onPaste={handleInputPaste}
                             />
                         )}
                     </Field>

@@ -2,12 +2,6 @@
     max-height: 100%;
     width: 100%;
 
-    @include tablet-up {
-        &--app-settings {
-            padding: 2.4rem;
-        }
-    }
-
     & .dc-timeline__container {
         width: 100%;
     }

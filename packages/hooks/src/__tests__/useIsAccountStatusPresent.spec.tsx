@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { useIsAccountStatusPresent } from '../useIsAccountStatusPresent';
 import { APIProvider } from '@deriv/api';
+import useIsAccountStatusPresent from '../useIsAccountStatusPresent';
 
-jest.mock('../useAccountStatus', () =>
+jest.mock('../useGetAccountStatus', () =>
     jest.fn(() => ({
         data: {
             status: ['cashier_locked', 'authenticated'],

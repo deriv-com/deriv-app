@@ -319,24 +319,19 @@ const AccountTransferForm = observer(
                 return internal_remaining_transfers?.available;
             };
 
-            remaining_transfers = getRemainingTransfers();
             let hint_text;
             // flag 'open_position_status' does not exist in mt5_login_list, @deriv/api-types yet
             if (mt5_login_list.find(account => account?.login === selected_to.value)?.open_position_status) {
                 hint_text = <Localize i18n_default_text='You can no longer open new positions with this account.' />;
             } else {
-                hint_text =
-                    remaining_transfers && Number(remaining_transfers) === 1 ? (
-                        <Localize
-                            i18n_default_text='You have {{remaining_transfers}} transfer remaining for today.'
-                            values={{ remaining_transfers }}
-                        />
-                    ) : (
-                        <Localize
-                            i18n_default_text='You have {{remaining_transfers}} transfers remaining for today.'
-                            values={{ remaining_transfers }}
-                        />
-                    );
+                remaining_transfers = getRemainingTransfers() ?? 0;
+                const transfer_text = Number(remaining_transfers) > 1 ? 'transfers' : 'transfer';
+                hint_text = (
+                    <Localize
+                        i18n_default_text='You have {{remaining_transfers}} {{transfer_text}} remaining for today.'
+                        values={{ remaining_transfers, transfer_text }}
+                    />
+                );
             }
             setTransferToHint(hint_text);
             resetConverter();

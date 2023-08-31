@@ -29,13 +29,13 @@ const OptionsAndMultipliersListing = () => {
     const OptionsTitle = () => {
         if ((low_risk_cr_non_eu || high_risk_cr || cr_demo) && !isMobile()) {
             return (
-                <Text size='sm' line_height='m' weight='bold'>
+                <Text size='sm' weight='bold'>
                     <Localize i18n_default_text='Options & Multipliers' />
                 </Text>
             );
         } else if ((low_risk_cr_eu || is_eu) && !isMobile()) {
             return (
-                <Text size='sm' line_height='m' weight='bold' color='prominent'>
+                <Text size='sm' weight='bold' color='prominent'>
                     <Localize i18n_default_text='Multipliers' />
                 </Text>
             );

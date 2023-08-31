@@ -18,7 +18,7 @@ const useFetch = <T extends TSocketEndpointNames>(name: T, ...props: TSocketAcce
 
     return useQuery<TSocketResponseData<T>, unknown>(getQueryKeys(name, payload), () => send(name, payload), {
         ...options,
-        enabled: options?.enabled ?? is_authorized,
+        enabled: options?.enabled && is_authorized,
     });
 };
 

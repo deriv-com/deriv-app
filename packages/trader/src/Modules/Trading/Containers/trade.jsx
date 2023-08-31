@@ -310,7 +310,7 @@ const ChartTrade = observer(props => {
         language: current_language.toLowerCase(),
         position: is_chart_layout_default ? 'bottom' : 'left',
         theme: is_dark_mode_on ? 'dark' : 'light',
-        ...(is_accumulator ? { whitespace: isMobile() ? 240 : 190, minimumLeftBars: isMobile() ? 4 : undefined } : {}),
+        ...(is_accumulator ? { whitespace: 190, minimumLeftBars: isMobile() ? 3 : undefined } : {}),
     };
 
     const { current_spot, current_spot_time } = accumulator_barriers_data || {};

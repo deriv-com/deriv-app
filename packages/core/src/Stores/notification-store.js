@@ -123,7 +123,10 @@ export default class NotificationStore extends BaseStore {
                     (Object.keys(root_store.client.account_status || {}).length > 0 &&
                         Object.keys(root_store.client.landing_companies || {}).length > 0)
                 ) {
-                    this.refreshNotifications();
+                    this.removeNotifications();
+                    this.removeAllNotificationMessages();
+                    this.setClientNotifications();
+                    this.handleClientNotifications();
                     this.filterNotificationMessages();
                     this.checkNotificationMessages();
                 }

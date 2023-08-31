@@ -240,7 +240,7 @@ type TDXTraderStatusServerType = Record<'all' | 'demo' | 'real', number>;
 
 type TMt5StatusServer = Record<'demo' | 'real', TMt5StatusServerType[]>;
 
-type TClientStore = {
+export type TClientStore = {
     fetchStatesList: () => Promise<StatesList>;
     accounts: { [k: string]: TActiveAccount };
     active_accounts: TActiveAccount[];
@@ -393,6 +393,7 @@ type TClientStore = {
         payload: SetFinancialAssessmentRequest
     ) => Promise<SetFinancialAssessmentResponse>;
     prev_account_type: string;
+    getToken: () => string;
 };
 
 type TCommonStoreError = {

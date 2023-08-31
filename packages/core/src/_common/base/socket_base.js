@@ -1,14 +1,6 @@
-const DerivAPIBasic = require('@deriv/deriv-api/dist/DerivAPIBasic');
-const getAppId = require('@deriv/shared').getAppId;
-const getSocketURL = require('@deriv/shared').getSocketURL;
-const cloneObject = require('@deriv/shared').cloneObject;
-const getPropertyValue = require('@deriv/shared').getPropertyValue;
-const State = require('@deriv/shared').State;
+const { CFD_PLATFORMS, cloneObject, getAppId, getPropertyValue, State } = require('@deriv/shared');
 const { getLanguage } = require('@deriv/translations');
-const website_name = require('@deriv/shared').website_name;
-const SocketCache = require('./socket_cache');
-const APIMiddleware = require('./api_middleware');
-const { CFD_PLATFORMS } = require('@deriv/shared');
+const { ConnectionManager } = require('./connection-manager');
 
 /*
  * An abstraction layer over native javascript WebSocket,
@@ -16,7 +8,7 @@ const { CFD_PLATFORMS } = require('@deriv/shared');
  * reopen the closed connection and process the buffered requests
  */
 const BinarySocketBase = (() => {
-    let deriv_api, binary_socket, client_store;
+    let deriv_api, binary_socket, client_store, connection_manager;
 
     let config = {};
     let wrong_app_id = 0;
@@ -29,9 +21,6 @@ const BinarySocketBase = (() => {
         is_updating: false,
         is_down: false,
     };
-
-    const getSocketUrl = language =>
-        `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${language}&brand=${website_name.toLowerCase()}`;
 
     const isReady = () => hasReadyState(1);
 
@@ -54,21 +43,20 @@ const BinarySocketBase = (() => {
             config = options;
         }
         client_store = client;
+
+        if (!connection_manager) {
+            connection_manager = new ConnectionManager({ config, client_store, wait });
+        }
     };
 
-    const openNewConnection = (language = getLanguage()) => {
+    const openNewConnection = () => {
         if (wrong_app_id === getAppId()) return;
 
         if (!is_switching_socket) config.wsEvent('init');
 
         if (isClose()) {
-            is_disconnect_called = false;
-            binary_socket = new WebSocket(getSocketUrl(language));
-            deriv_api = new DerivAPIBasic({
-                connection: binary_socket,
-                storage: SocketCache,
-                middleware: new APIMiddleware(config),
-            });
+            deriv_api = connection_manager.active_connection?.deriv_api;
+            binary_socket = connection_manager.active_connection?.connection;
         }
 
         deriv_api.onOpen().subscribe(() => {

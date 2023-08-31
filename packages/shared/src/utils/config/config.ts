@@ -1,5 +1,6 @@
 import { isBot } from '../platform';
 import { isStaging } from '../url/helpers';
+import { website_name } from './app-config';
 
 /*
  * Configuration values needed in js codes
@@ -28,6 +29,11 @@ export const domain_app_ids = {
 export const platform_app_ids = {
     derivgo: 23789,
 };
+
+export const websocket_servers = Object.freeze({
+    demo: 'blue.binaryws.com',
+    real: 'green.binaryws.com',
+});
 
 export const getCurrentProductionDomain = () =>
     !/^staging\./.test(window.location.hostname) &&
@@ -79,10 +85,7 @@ export const getAppId = () => {
     return app_id;
 };
 
-export const getSocketURL = () => {
-    const local_storage_server_url = window.localStorage.getItem('config.server_url');
-    if (local_storage_server_url) return local_storage_server_url;
-
+export const getActiveLoginID = () => {
     let active_loginid_from_url;
     const search = window.location.search;
     if (search) {
@@ -90,13 +93,27 @@ export const getSocketURL = () => {
         active_loginid_from_url = params.get('acct1');
     }
 
-    const loginid = window.localStorage.getItem('active_loginid') || active_loginid_from_url;
-    const is_real = loginid && !/^(VRT|VRW)/.test(loginid);
+    return window.localStorage.getItem('active_loginid') || active_loginid_from_url;
+};
 
-    const server = is_real ? 'green' : 'blue';
-    const server_url = `${server}.binaryws.com`;
+export const getActiveLoginIDType = (): keyof typeof websocket_servers => {
+    const active_loginid = getActiveLoginID();
+    if (active_loginid && !/^(VRT|VRW)/.test(active_loginid)) {
+        return 'real';
+    }
+    return 'demo';
+};
 
-    return server_url;
+export const getServerURL = () => {
+    const local_storage_server_url = window.localStorage.getItem('config.server_url');
+    if (local_storage_server_url) return local_storage_server_url;
+
+    return websocket_servers[getActiveLoginIDType()];
+};
+
+export const getSocketURL = ({ url = '', language = 'EN' }: { url?: string; language?: string }) => {
+    const server_url = url || getServerURL();
+    return `wss://${server_url}/websockets/v3?app_id=${getAppId()}&l=${language}&brand=${website_name.toLowerCase()}`;
 };
 
 export const checkAndSetEndpointFromUrl = () => {

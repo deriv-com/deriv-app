@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
 import { Button, Input, Checkbox, Text } from '@deriv/components';
-import { getDebugServiceWorker, getAppId, getSocketURL, PlatformContext, isMobile } from '@deriv/shared';
+import { getDebugServiceWorker, getAppId, PlatformContext, isMobile, getServerURL } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
 const FeatureFlagsSection = observer(() => {
@@ -54,7 +54,7 @@ const Endpoint = () => {
         <Formik
             initialValues={{
                 app_id: getAppId(),
-                server: getSocketURL(),
+                server: getServerURL(),
                 is_appstore_enabled: platform_store.is_appstore,
                 is_debug_service_worker_enabled: !!getDebugServiceWorker(),
             }}

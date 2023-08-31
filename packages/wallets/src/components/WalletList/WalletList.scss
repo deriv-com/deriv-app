@@ -1,4 +1,4 @@
-.account-list {
+.wallet-list-account-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -7,14 +7,14 @@
     padding-top: 2rem;
 }
 
-h1,
-.currency,
-.balance,
-.account-category {
+.wallet-list-title,
+.wallet-list-currency,
+.wallet-list-balance,
+.wallet-list-account-category {
     font-size: 3rem;
 }
 
-.account-item {
+.wallet-list-account-item {
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px;
@@ -25,10 +25,10 @@ h1,
     width: 90%;
 }
 
-.currency {
+.wallet-list-currency {
     font-weight: bold;
 }
 
-.account-category {
+.wallet-list-account-category {
     font-style: italic;
 }

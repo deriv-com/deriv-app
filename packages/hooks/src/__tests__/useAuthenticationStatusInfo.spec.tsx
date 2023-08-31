@@ -1,12 +1,21 @@
 import * as React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, useGetAccountStatus } from '@deriv/api';
 import useAuthenticationStatusInfo from '../useAuthenticationStatusInfo';
-import useAccountStatus from '../useAccountStatus';
+import useIsAccountStatusPresent from '../useIsAccountStatusPresent';
+// import useAccountStatus from '../useAccountStatus';
 
-jest.mock('../useAccountStatus.ts', () => jest.fn());
+jest.mock('../useIsAccountStatusPresent.ts', () => jest.fn());
 
-const mockUseAccountStatus = useAccountStatus as jest.MockedFunction<typeof useAccountStatus>;
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useGetAccountStatus: jest.fn(),
+}));
+
+const mockUseAccountStatus = useGetAccountStatus as jest.MockedFunction<typeof useGetAccountStatus>;
+const mockUseIsAccountStatusPresent = useIsAccountStatusPresent as jest.MockedFunction<
+    typeof useIsAccountStatusPresent
+>;
 
 describe('useAuthenticationStatusInfo', () => {
     const mockAccountStatus = {
@@ -77,11 +86,13 @@ describe('useAuthenticationStatusInfo', () => {
         ],
     };
 
-    test('should return correct authentication status for POA and POI documents when none of them are submitted', () => {
+    it('should return correct authentication status for POA and POI documents when none of them are submitted', () => {
         mockUseAccountStatus.mockReturnValueOnce({
             // @ts-expect-error need to come up with a way to mock the return type of useFetch
             data: mockAccountStatus,
         });
+
+        mockUseIsAccountStatusPresent.mockReturnValueOnce(true);
 
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
@@ -300,5 +311,20 @@ describe('useAuthenticationStatusInfo', () => {
         expect(result.current.poi.bvi_labuan_vanuatu.not_submitted).toBe(false);
         expect(result.current.poi.bvi_labuan_vanuatu.need_resubmission).toBe(true);
         expect(result.current.poi.bvi_labuan_vanuatu.acknowledged).toBe(false);
+    });
+
+    test('should return correct  aythentication for triggering IDV resubmit', () => {
+        mockUseIsAccountStatusPresent.mockReturnValueOnce(false);
+
+        mockUseAccountStatus.mockReturnValueOnce({
+            // @ts-expect-error need to come up with a way to mock the return type of useFetch
+            data: mockAccountStatus,
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+
+        const { result } = renderHook(() => useAuthenticationStatusInfo(), { wrapper });
+
+        expect(result.current.is_idv_revoked).toBeFalsy();
     });
 });

@@ -1,5 +1,5 @@
 import { useGetAccountStatus } from '@deriv/api';
-import { useIsAccountStatusPresent } from './useIsAccountStatusPresent';
+import useIsAccountStatusPresent from './useIsAccountStatusPresent';
 
 type TAcknowledgeStatuses = ('pending' | 'verified')[];
 type TFailedCases = ('rejected' | 'expired' | 'suspected')[];

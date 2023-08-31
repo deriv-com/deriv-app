@@ -157,9 +157,6 @@ describe('<ClosingAccountHasPendingConditions />', () => {
     });
 
     it('should show deriv accounts with pending withdrawals', () => {
-        const processing_text = /we are still processing your withdrawal request/i;
-        const transaction_warning = /please wait for the transaction to be completed before deactivating your account/i;
-
         const new_props = {
             ...mock_props,
             details: {
@@ -171,7 +168,9 @@ describe('<ClosingAccountHasPendingConditions />', () => {
 
         renderComponent(new_props);
         expect(screen.getByText(/pending withdrawal request:/i)).toBeInTheDocument();
-        expect(screen.getByText(processing_text)).toBeInTheDocument();
-        expect(screen.getByText(transaction_warning)).toBeInTheDocument();
+        expect(screen.getByText(/we are still processing your withdrawal request/i)).toBeInTheDocument();
+        expect(
+            screen.getByText(/please wait for the transaction to be completed before deactivating your account/i)
+        ).toBeInTheDocument();
     });
 });

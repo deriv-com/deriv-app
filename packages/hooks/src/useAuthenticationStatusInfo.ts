@@ -73,9 +73,7 @@ const useAuthenticationStatusInfo = () => {
     const poi_poa_verified_for_maltainvest = poi_verified_for_maltainvest && poa_verified;
 
     //bvi-labuan-vanuatu
-    let poi_acknowledged_for_bvi_labuan_vanuatu = bvi_labuan_vanuatu_jurisdiction_statuses.some(status =>
-        acknowledged_status.includes(status as TAcknowledgeStatuses[number])
-    );
+    let poi_acknowledged_for_bvi_labuan_vanuatu;
     if (risk_classification === 'high') {
         poi_acknowledged_for_bvi_labuan_vanuatu = Boolean(
             onfido_status && acknowledged_status.includes(onfido_status as TAcknowledgeStatuses[number])

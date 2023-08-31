@@ -190,13 +190,14 @@ const ProofOfAddressForm = observer(
                 return;
             }
 
-            const get_settings = await WS.authorized.storage.getSettings();
+            const get_settings_response = await WS.authorized.storage.getSettings();
 
-            if (get_settings.error) {
-                setAPIInitialLoadError(get_settings.error.message);
+            if (get_settings_response.error) {
+                setAPIInitialLoadError(get_settings_response.error.message);
                 setSubmitting(false);
                 return;
             }
+            const get_settings = get_settings_response.get_settings;
             const { address_line_1, address_line_2, address_city, address_state, address_postcode } = get_settings;
 
             setFormValues({
@@ -216,13 +217,14 @@ const ProofOfAddressForm = observer(
                     return;
                 }
 
-                const get_account_status = WS.authorized.storage.getAccountStatus();
+                const get_account_status_response = await WS.authorized.getAccountStatus();
 
-                if (get_account_status.error) {
-                    setAPIInitialLoadError(get_account_status.error.message);
+                if (get_account_status_response.error) {
+                    setAPIInitialLoadError(get_account_status_response.error.message);
                     setSubmitting(false);
                     return;
                 }
+                const get_account_status = get_account_status_response.get_account_status;
 
                 setFormState({
                     ...form_state,

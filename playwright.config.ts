@@ -71,6 +71,10 @@ export default defineConfig({
 
         /* Run tests for each of our packages from root of the project */
         {
+            name: 'account',
+            testDir: './packages/account/e2e-tests',
+        },
+        {
             name: 'integration',
             testDir: './packages/integration/e2e-tests',
         },

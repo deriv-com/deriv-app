@@ -62,7 +62,7 @@ const TourTriggrerDialog = ({
         let text;
         if (!tour_check) {
             if (tab_id === 1) text = localize(is_mobile ? 'Bot Builder guide' : "Let's build a Bot!");
-            else text = localize('Get started on DBot');
+            else text = localize('Get started on Deriv Bot');
         } else if (tab_id === 1) text = localize('Congratulations');
         else text = localize('Want to retake the tour?');
         return text;
@@ -82,7 +82,7 @@ const TourTriggrerDialog = ({
                                     key={0}
                                     i18n_default_text={
                                         is_mobile
-                                            ? 'Here’s a quick guide on how to use DBot on the go.'
+                                            ? 'Here’s a quick guide on how to use Deriv Bot on the go.'
                                             : 'Learn how to build your bot from scratch using a simple strategy.'
                                     }
                                 />

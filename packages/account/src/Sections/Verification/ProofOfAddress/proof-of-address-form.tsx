@@ -4,15 +4,7 @@
 import React from 'react';
 import { Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
 import { DocumentUploadResponse } from '@deriv/api-types';
-import {
-    Loading,
-    Button,
-    FormSubmitErrorMessage,
-    Text,
-    ThemedScrollbars,
-    FormSubmitButton,
-    Modal,
-} from '@deriv/components';
+import { Loading, Button, Text, ThemedScrollbars, FormSubmitButton, Modal, HintBox } from '@deriv/components';
 import { isMobile, validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -305,6 +297,20 @@ const ProofOfAddressForm = observer(
                             <form noValidate className='account-form account-form_poa' onSubmit={handleSubmit}>
                                 <ThemedScrollbars height='572px' is_bypassed={!is_for_cfd_modal || isMobile()}>
                                     <FormBody scroll_offset={setOffset(status)}>
+                                        {status?.msg && (
+                                            <HintBox
+                                                className='account-form_poa-submit-error'
+                                                icon='IcAlertDanger'
+                                                icon_height={16}
+                                                icon_width={16}
+                                                message={
+                                                    <Text as='p' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                        {status.msg}
+                                                    </Text>
+                                                }
+                                                is_danger
+                                            />
+                                        )}
                                         {is_resubmit && (
                                             <Text size={isMobile() ? 'xxs' : 'xs'} align='left' color='loss-danger'>
                                                 <Localize i18n_default_text='We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.' />
@@ -357,7 +363,6 @@ const ProofOfAddressForm = observer(
                                     </Modal.Footer>
                                 ) : (
                                     <FormFooter className='account-form__footer-poa'>
-                                        {status?.msg && <FormSubmitErrorMessage message={status.msg} />}
                                         <Button
                                             className='account-form__footer-btn'
                                             type='submit'

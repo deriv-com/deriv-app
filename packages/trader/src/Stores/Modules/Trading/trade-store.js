@@ -30,6 +30,7 @@ import {
     BARRIER_COLORS,
     BARRIER_LINE_STYLES,
 } from '@deriv/shared';
+import { RudderStack } from '@deriv/analytics';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
@@ -1541,15 +1542,56 @@ export default class TradeStore extends BaseStore {
     };
 
     chartStateChange(state, option) {
-        const market_close_prop = 'isClosed';
-        switch (state) {
-            case 'MARKET_STATE_CHANGE':
-                if (option && market_close_prop in option) {
-                    if (this.is_trade_component_mounted && option[market_close_prop] !== this.is_market_closed)
-                        this.prepareTradeStore(false);
-                }
-                break;
-            default:
+        if (option) {
+            const market_close_prop = 'isClosed';
+            const account_type = this.root_store.client.loginid.substring(0, 2);
+            const device_type = isMobile() ? 'mobile' : 'desktop';
+            const form_name = 'default';
+            switch (state) {
+                case 'MARKET_STATE_CHANGE':
+                    if (market_close_prop in option) {
+                        if (this.is_trade_component_mounted && option[market_close_prop] !== this.is_market_closed)
+                            this.prepareTradeStore(false);
+                    }
+                    break;
+                case 'CHART_MODE_TOGGLE':
+                    if ('is_open' in option) {
+                        const { chart_type_name, is_open, time_interval_name } = option;
+                        RudderStack.track('ce_chart_types_form', {
+                            action: is_open ? 'open' : 'close',
+                            form_name: 'default',
+                            chart_type_name,
+                            time_interval_name,
+                            ...{ account_type, device_type, form_name },
+                        });
+                    }
+                    break;
+                case 'CHART_TYPE_CHANGE':
+                    if ('chart_type_name' in option) {
+                        const { chart_type_name, time_interval_name } = option;
+                        RudderStack.track('ce_chart_types_form', {
+                            action: 'choose_chart_type',
+                            form_name: 'default',
+                            chart_type_name,
+                            time_interval_name,
+                            ...{ account_type, device_type, form_name },
+                        });
+                    }
+                    break;
+                case 'CHART_INTERVAL_CHANGE':
+                    if ('time_interval_name' in option) {
+                        const { chart_type_name, time_interval_name } = option;
+                        RudderStack.track('ce_chart_types_form', {
+                            action: 'choose_time_interval',
+                            form_name: 'default',
+                            chart_type_name,
+                            time_interval_name,
+                            ...{ account_type, device_type, form_name },
+                        });
+                    }
+                    break;
+                default:
+            }
         }
     }
 

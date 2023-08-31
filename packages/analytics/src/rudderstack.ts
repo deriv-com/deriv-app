@@ -46,6 +46,15 @@ type VirtualSignupEmailConfirmationAction = {
     error_message?: string;
 };
 
+type ChartTypesFormAction = {
+    action: 'open' | 'close' | 'choose_chart_type' | 'choose_time_interval';
+    form_name: string;
+    chart_type_name: string;
+    time_interval_name: string;
+    account_type: string;
+    device_type: string;
+};
+
 type TradeTypesFormAction =
     | {
           action: 'open' | 'close' | 'info_close';
@@ -88,6 +97,7 @@ type IdentifyAction = {
 };
 
 type TEvents = {
+    ce_chart_types_form: ChartTypesFormAction;
     ce_virtual_signup_form: VirtualSignupFormAction;
     ce_real_account_signup_form: RealAccountSignupFormAction;
     ce_virtual_signup_email_confirmation: VirtualSignupEmailConfirmationAction;

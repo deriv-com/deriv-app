@@ -39,7 +39,7 @@ const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) =>
 const CFDDbviOnboarding = observer(() => {
     const { client, ui } = useStore();
 
-    const { account_status, fetchAccountSettings, is_virtual, updateAccountStatus, updateMT5Status } = client;
+    const { fetchAccountSettings, is_virtual, updateAccountStatus, updateMT5Status } = client;
     const { disableApp, enableApp } = ui;
 
     const {
@@ -108,7 +108,6 @@ const CFDDbviOnboarding = observer(() => {
             <PoiPoaDocsSubmitted
                 onClickOK={toggleCFDVerificationModal}
                 updateAccountStatus={updateAccountStatus}
-                account_status={account_status}
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                 has_created_account_for_selected_jurisdiction={has_created_account_for_selected_jurisdiction}
                 openPasswordModal={enableCFDPasswordModal}

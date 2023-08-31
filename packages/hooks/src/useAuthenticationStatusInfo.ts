@@ -1,10 +1,14 @@
 import useAccountStatus from './useAccountStatus';
+import { useIsAccountStatusPresent } from './useIsAccountStatusPresent';
 
 type TAcknowledgeStatuses = ('pending' | 'verified')[];
 type TFailedCases = ('rejected' | 'expired' | 'suspected')[];
 
 const useAuthenticationStatusInfo = () => {
     const { data: account_status, ...rest } = useAccountStatus();
+
+    const is_idv_revoked = useIsAccountStatusPresent('idv_revoked');
+    const is_authenticated_with_idv_photoid = useIsAccountStatusPresent('authenticated_with_idv_photoid');
 
     const STATUSES: {
         NONE: 'none';
@@ -45,10 +49,6 @@ const useAuthenticationStatusInfo = () => {
     const poi_not_submitted = poi_status === NONE;
     const poi_or_poa_not_submitted = poa_not_submitted || poi_not_submitted;
     const poi_and_poa_not_submitted = poa_not_submitted && poi_not_submitted;
-
-    const is_idv_revoked = account_status?.status?.includes('idv_revoked');
-
-    const is_authenticated_with_idv_photoid = account_status?.status?.includes('authenticated_with_idv_photoid');
 
     //maltainvest
 
@@ -102,6 +102,7 @@ const useAuthenticationStatusInfo = () => {
 
     const poi_poa_verified_for_bvi_labuan_vanuatu = poi_verified_for_bvi_labuan_vanuatu && poa_verified;
 
+    // TODO: Check if this status can be removed outside the hook
     const poa_resubmit_for_labuan = is_authenticated_with_idv_photoid;
 
     const config = {
@@ -152,7 +153,6 @@ const useAuthenticationStatusInfo = () => {
         // to check if both POI and POA are not submitted
         poi_and_poa_not_submitted,
         is_idv_revoked,
-
         STATUSES,
         ...rest,
     };

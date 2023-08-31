@@ -1,9 +1,10 @@
 import React from 'react';
-import { Button, Icon, Loading } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
-import IconMessageContent from 'Components/icon-message-content';
 import { GetAccountStatus } from '@deriv/api-types';
+import { Button, Icon, Loading } from '@deriv/components';
+import { useAuthenticationStatusInfo } from '@deriv/hooks';
+import { Localize, localize } from '@deriv/translations';
+import { Jurisdiction } from '@deriv/shared';
+import IconMessageContent from 'Components/icon-message-content';
 
 type TPoiPoaDocsSubmitted = {
     account_status: GetAccountStatus;
@@ -15,7 +16,6 @@ type TPoiPoaDocsSubmitted = {
 };
 
 const PoiPoaDocsSubmitted = ({
-    account_status,
     jurisdiction_selected_shortcode,
     onClickOK,
     updateAccountStatus,
@@ -23,6 +23,9 @@ const PoiPoaDocsSubmitted = ({
     openPasswordModal,
 }: TPoiPoaDocsSubmitted) => {
     const [is_loading, setIsLoading] = React.useState(false);
+
+    const { identity_status, poa, poi, STATUSES } = useAuthenticationStatusInfo();
+
     React.useEffect(() => {
         setIsLoading(true);
         updateAccountStatus()
@@ -41,23 +44,24 @@ const PoiPoaDocsSubmitted = ({
     };
 
     const getDescription = () => {
-        const { manual_status, poi_verified_for_maltainvest, poi_verified_for_bvi_labuan_vanuatu, poa_pending } =
-            getAuthenticationStatusInfo(account_status);
+        const { maltainvest, bvi_labuan_vanuatu } = poi;
         const is_maltainvest_selected = jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST;
-        if (
-            (is_maltainvest_selected && poi_verified_for_maltainvest && poa_pending) ||
-            (!is_maltainvest_selected && poi_verified_for_bvi_labuan_vanuatu && poa_pending) ||
-            manual_status === 'pending'
-        ) {
-            return localize('We’ll review your documents and notify you of its status within 1 - 3 working days.');
+        const check_for_mf = is_maltainvest_selected && maltainvest.verified && poa.status === STATUSES.PENDING;
+        const check_for_cr = !is_maltainvest_selected && bvi_labuan_vanuatu.verified && poa.status === STATUSES.PENDING;
+        if (check_for_mf || check_for_cr || identity_status.manual === STATUSES.PENDING) {
+            return (
+                <Localize i18n_default_text='We’ll review your documents and notify you of its status within 1 - 3 working days.' />
+            );
         }
-        return localize('We’ll review your documents and notify you of its status within 5 minutes.');
+        return (
+            <Localize i18n_default_text='We’ll review your documents and notify you of its status within 5 minutes.' />
+        );
     };
     return is_loading ? (
         <Loading is_fullscreen={false} />
     ) : (
         <IconMessageContent
-            message={localize('Your documents were submitted successfully')}
+            message={<Localize i18n_default_text='Your documents were submitted successfully' />}
             text={getDescription()}
             icon={<Icon icon='IcDocsSubmit' size={128} />}
             className='poi-poa-submitted'

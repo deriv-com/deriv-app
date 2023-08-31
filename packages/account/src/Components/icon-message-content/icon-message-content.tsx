@@ -8,7 +8,7 @@ type TIconMessageContent = {
     full_width?: boolean;
     icon: React.ReactElement;
     message: React.ReactNode;
-    text?: string | React.ReactElement;
+    text?: string | JSX.Element;
 };
 
 const IconMessageContent = ({

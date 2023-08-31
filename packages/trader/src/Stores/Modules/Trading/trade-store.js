@@ -1449,7 +1449,9 @@ export default class TradeStore extends BaseStore {
             this.prev_chart_layout.is_used = false;
         }
         this.resetAccumulatorData();
-        this.setBarrierChoices([]);
+        if (this.is_vanilla) {
+            this.setBarrierChoices([]);
+        }
     }
 
     prev_chart_layout = null;

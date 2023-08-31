@@ -182,19 +182,14 @@ export const ContractType = (() => {
     };
 
     const getComponents = c_type => {
-        let check = [];
-        if (contract_types[c_type]?.config?.should_override) {
-            check = [...contract_types[c_type].components];
-        } else {
-            check = ['duration', 'amount', ...contract_types[c_type].components].filter(
-                component =>
-                    !(
-                        component === 'duration' &&
-                        contract_types[c_type].config &&
-                        contract_types[c_type].config.hide_duration
-                    )
-            );
-        }
+        const check = ['duration', 'amount', ...contract_types[c_type].components].filter(
+            component =>
+                !(
+                    component === 'duration' &&
+                    contract_types[c_type].config &&
+                    contract_types[c_type].config.hide_duration
+                )
+        );
         return (
             contract_types && {
                 form_components: check,

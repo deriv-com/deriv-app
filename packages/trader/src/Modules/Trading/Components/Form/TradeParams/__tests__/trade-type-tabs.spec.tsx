@@ -35,7 +35,7 @@ describe('Trade Type Tabs', () => {
         });
     });
 
-    it('should render Call & Put tabs when contract_type = vanilla', () => {
+    it('should render Call & Put tabs when contract_type = vanillalongcall', () => {
         if (mock_root_store.modules) {
             mock_root_store.modules.trade.contract_type = 'vanillalongcall';
         }

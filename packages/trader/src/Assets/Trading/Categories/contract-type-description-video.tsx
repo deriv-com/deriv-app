@@ -12,23 +12,13 @@ const ContractTypeDescriptionVideo = ({ selected_contract_type, data_testid }: T
     const { ui } = useStore();
     const { is_dark_mode_on: is_dark_theme } = ui;
 
-    let contract_name: string | undefined;
-    switch (selected_contract_type) {
-        case VANILLALONG.CALL:
-        case VANILLALONG.PUT:
-            contract_name = 'vanilla';
-            break;
-        default:
-            contract_name = selected_contract_type;
-            break;
-    }
     const getVideoSource = React.useCallback(
         (extension: 'mp4' | 'webm') => {
             return getUrlBase(
-                `/public/videos/${contract_name}_description${is_dark_theme ? '_dark' : '_light'}.${extension}`
+                `/public/videos/${selected_contract_type}_description${is_dark_theme ? '_dark' : '_light'}.${extension}`
             );
         },
-        [contract_name, is_dark_theme]
+        [is_dark_theme, selected_contract_type]
     );
 
     // memoize file paths for videos and open the modal only after we get them

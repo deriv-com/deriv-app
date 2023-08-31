@@ -3,7 +3,7 @@ import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggl
 import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
-import { TURBOS, VANILLALONG } from '@deriv/shared';
+import { TURBOS, VANILLALONG, isTurbosContract, isVanillaContract } from '@deriv/shared';
 
 const PopulateHeader = observer(() => {
     const { portfolio, ui, client } = useStore();
@@ -18,23 +18,21 @@ const PopulateHeader = observer(() => {
         onClickCancel: onPositionsCancel,
     } = portfolio;
 
-    const filtered_positions = positions.filter(p => {
-        if (p.contract_info && symbol === p.contract_info.underlying) {
-            if (trade_contract_type.includes('turbos')) {
-                return (
-                    filterByContractType(p.contract_info, TURBOS.SHORT) ||
-                    filterByContractType(p.contract_info, TURBOS.LONG)
-                );
-            }
-            if (trade_contract_type.includes('vanilla')) {
-                return (
-                    filterByContractType(p.contract_info, VANILLALONG.CALL) ||
-                    filterByContractType(p.contract_info, VANILLALONG.PUT)
-                );
-            }
-            return filterByContractType(p.contract_info, trade_contract_type);
-        }
-    });
+    const filtered_positions = positions.filter(
+        p =>
+            p.contract_info &&
+            symbol === p.contract_info.underlying &&
+            (isTurbosContract(trade_contract_type) || isVanillaContract(trade_contract_type)
+                ? filterByContractType(
+                      p.contract_info,
+                      isTurbosContract(trade_contract_type) ? TURBOS.SHORT : VANILLALONG.CALL
+                  ) ||
+                  filterByContractType(
+                      p.contract_info,
+                      isTurbosContract(trade_contract_type) ? TURBOS.LONG : VANILLALONG.PUT
+                  )
+                : filterByContractType(p.contract_info, trade_contract_type))
+    );
 
     return (
         <TogglePositionsMobile

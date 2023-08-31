@@ -70,7 +70,7 @@ const TradeCategoriesGIF = ({
             return <ImageTurbos />;
         case VANILLALONG.CALL:
         case VANILLALONG.PUT:
-            return <ContractTypeDescriptionVideo selected_contract_type={selected_contract_type} />;
+            return <ContractTypeDescriptionVideo selected_contract_type='vanilla' />;
         default:
             return null;
     }

@@ -22,7 +22,7 @@ describe('ClosingAccountPendingContent', () => {
     });
 
     it('should render  title and loginid', () => {
-        const new_props = {
+        const new_props: React.ComponentProps<typeof ClosingAccountPendingContent> = {
             ...mock_props,
             title: 'mock_title',
             loginid: 'CR123',

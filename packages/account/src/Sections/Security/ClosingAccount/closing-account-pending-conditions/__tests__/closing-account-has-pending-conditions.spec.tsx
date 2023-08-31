@@ -9,7 +9,6 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<ClosingAccountHasPendingConditions />', () => {
-    let store = mockStore({});
     const mock_props: React.ComponentProps<typeof ClosingAccountHasPendingConditions> = {
         details: {
             balance: {
@@ -25,7 +24,7 @@ describe('<ClosingAccountHasPendingConditions />', () => {
         },
         onConfirm: jest.fn(),
     };
-    store = mockStore({
+    const store = mockStore({
         client: {
             mt5_login_list: [
                 {
@@ -113,7 +112,7 @@ describe('<ClosingAccountHasPendingConditions />', () => {
     });
 
     it('should show deriv accounts with balance', () => {
-        const new_props = {
+        const new_props: React.ComponentProps<typeof ClosingAccountHasPendingConditions> = {
             ...mock_props,
             details: {
                 balance: {
@@ -141,7 +140,7 @@ describe('<ClosingAccountHasPendingConditions />', () => {
     });
 
     it('should show deriv accounts with open_positions', () => {
-        const new_props = {
+        const new_props: React.ComponentProps<typeof ClosingAccountHasPendingConditions> = {
             ...mock_props,
             details: {
                 open_positions: {
@@ -157,7 +156,7 @@ describe('<ClosingAccountHasPendingConditions />', () => {
     });
 
     it('should show deriv accounts with pending withdrawals', () => {
-        const new_props = {
+        const new_props: React.ComponentProps<typeof ClosingAccountHasPendingConditions> = {
             ...mock_props,
             details: {
                 pending_withdrawals: {

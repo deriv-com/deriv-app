@@ -13,9 +13,9 @@ jest.mock('@deriv/api', () => ({
 const mockUseRequest = useRequest as jest.MockedFunction<typeof useRequest<'account_closure'>>;
 
 describe('<ClosingAccountReason />', () => {
-    const mockRootStore: ReturnType<typeof mockStore> = mockStore({});
+    const mockRootStore = mockStore({});
 
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof ClosingAccountReason> = {
         redirectToSteps: jest.fn(),
     };
 

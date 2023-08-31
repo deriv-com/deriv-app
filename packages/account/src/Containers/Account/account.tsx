@@ -6,6 +6,7 @@ import { observer, useStore } from '@deriv/stores';
 import PageOverlayWrapper from './page-overlay-wrapper';
 import { TRoute } from '../../Types';
 import 'Styles/account.scss';
+import { flatten } from 'Helpers/utils';
 
 type TAccountProps = RouteComponentProps & {
     routes: Array<TRoute>;
@@ -30,7 +31,8 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
         should_allow_authentication,
     } = client;
     const { toggleAccountSettings, is_account_settings_visible } = ui;
-    const subroutes = routes.map(i => i.subroutes);
+    // subroutes of a route is structured as an array of arrays
+    const subroutes = flatten(routes.map(i => i.subroutes));
     let selected_content = subroutes.find(r => matchRoute(r, location.pathname));
 
     React.useEffect(() => {

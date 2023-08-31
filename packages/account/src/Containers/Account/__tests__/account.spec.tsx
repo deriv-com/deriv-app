@@ -49,11 +49,11 @@ describe('Account', () => {
     const renderComponent = ({ store_config = store, route = mock_route, props = mock_props }) =>
         render(
             <MemoryRouter initialEntries={[route]}>
-                <BrowserRouter>
-                    <StoreProvider store={store_config}>
+                <StoreProvider store={store_config}>
+                    <BrowserRouter>
                         <Account {...props} />
-                    </StoreProvider>
-                </BrowserRouter>
+                    </BrowserRouter>
+                </StoreProvider>
             </MemoryRouter>
         );
 

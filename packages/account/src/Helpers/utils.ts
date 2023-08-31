@@ -166,3 +166,6 @@ export const isDocumentNumberValid = (document_number: string, document_type: Fo
 };
 
 export const shouldHideHelperImage = (document_id: string) => document_id === IDV_NOT_APPLICABLE_OPTION.id;
+
+// @ts-expect-error as the generic is a Array
+export const flatten = <T extends Array<unknown>>(arr: T) => [].concat(...arr);

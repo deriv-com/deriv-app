@@ -1,7 +1,7 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import SelfExclusion from '../self-exclusion';
+import SelfExclusion from '..';
 import { FormikValues } from 'formik';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { WS } from '@deriv/shared';
@@ -38,7 +38,7 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     useWS: () => undefined,
 }));
 
-jest.mock('../self-exclusion-modal', () => {
+jest.mock('Components/self-exclusion/self-exclusion-modal', () => {
     const MockSelfExclusionModal = () => <div>SelfExclusionModal</div>;
     return MockSelfExclusionModal;
 });
@@ -63,26 +63,9 @@ describe('<SelfExclusion />', () => {
     let mock_props = {
         footer_ref: undefined,
         is_app_settings: false,
-        is_appstore: false,
         is_wrapper_bypassed: false,
         overlay_ref: document.createElement('div'),
         setIsOverlayShown: jest.fn(),
-        WS: {
-            authorized: {
-                getLimits: () =>
-                    Promise.resolve({
-                        get_limits: {},
-                    }),
-                getSelfExclusion: () =>
-                    Promise.resolve({
-                        error: { message: '' },
-                    }),
-                setSelfExclusion: () =>
-                    Promise.resolve({
-                        error: false,
-                    }),
-            },
-        },
     };
 
     beforeEach(() => {
@@ -91,7 +74,6 @@ describe('<SelfExclusion />', () => {
         mock_props = {
             footer_ref: undefined,
             is_app_settings: false,
-            is_appstore: false,
             is_wrapper_bypassed: false,
             overlay_ref: document.createElement('div'),
             setIsOverlayShown: jest.fn(),
@@ -130,9 +112,9 @@ describe('<SelfExclusion />', () => {
         expect(screen.getByText('SelfExclusionModal')).toBeInTheDocument();
         const currencies = screen.getAllByText(/Test currency/i);
         expect(currencies[0]).toBeInTheDocument();
-        expect(currencies.length).toBe(7);
+        expect(currencies).toHaveLength(7);
         const inputs = screen.getAllByRole('textbox');
-        expect(inputs.length).toBe(11);
+        expect(inputs).toHaveLength(11);
     });
 
     it('should render SelfExclusion component with error', async () => {
@@ -255,7 +237,7 @@ describe('<SelfExclusion />', () => {
         expect(next_btn_1).toHaveTextContent('Next');
 
         const inputs_1 = await screen.findAllByRole('textbox');
-        expect(inputs_1.length).toBe(11);
+        expect(inputs_1).toHaveLength(11);
         const max_turnover_input = inputs_1.find((input: FormikValues) => input.name === 'max_turnover');
         const max_open_bets_input = inputs_1.find((input: FormikValues) => input.name === 'max_open_bets');
 
@@ -286,7 +268,7 @@ describe('<SelfExclusion />', () => {
         const next_btn_2 = screen.getByRole('button');
         expect(next_btn_2).toHaveTextContent('Next');
         const inputs_2 = await screen.findAllByRole('textbox');
-        expect(inputs_2.length).toBe(11);
+        expect(inputs_2).toHaveLength(11);
         const max_balance_input = inputs_1.find((input: FormikValues) => input.name === 'max_balance');
 
         act(() => {
@@ -336,7 +318,7 @@ describe('<SelfExclusion />', () => {
         expect(next_btn_1).toHaveTextContent('Next');
 
         const inputs = await screen.findAllByRole('textbox');
-        expect(inputs.length).toBe(11);
+        expect(inputs).toHaveLength(11);
 
         const exclude_until_input = inputs.find((input: FormikValues) => input.name === 'exclude_until');
         const max_open_bets_input = inputs.find((input: FormikValues) => input.name === 'max_open_bets');

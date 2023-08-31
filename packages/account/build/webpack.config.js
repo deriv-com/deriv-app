@@ -53,7 +53,6 @@ module.exports = function (env) {
             'poi-poa-docs-submitted': 'Components/poi-poa-docs-submitted/poi-poa-docs-submitted',
             'reset-trading-password-modal': 'Components/reset-trading-password-modal',
             'risk-tolerance-warning-modal': 'Components/trading-assessment/risk-tolerance-warning-modal.jsx',
-            'self-exclusion': 'Components/self-exclusion',
             'scrollbars-container': 'Components/scrollbars-container',
             'sent-email-modal': 'Components/sent-email-modal',
             'terms-of-use': 'Components/terms-of-use',

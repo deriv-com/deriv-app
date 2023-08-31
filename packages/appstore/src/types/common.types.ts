@@ -227,3 +227,26 @@ export type TWalletButton = {
     icon: string;
     action: () => void;
 };
+
+export type TRealWalletsUpgrade = {
+    current_step: number;
+    handleBack: () => void;
+    handleClose: () => void;
+    handleNext: () => void;
+    is_disabled: boolean;
+    toggleCheckbox: () => void;
+    upgradeToWallets: (value: boolean) => void;
+};
+
+export type TwalletSteps = {
+    handleBack: () => void;
+    handleClose: () => void;
+    handleNext: () => void;
+    is_disabled: boolean;
+    toggleCheckbox: () => void;
+    upgradeToWallets: (value: boolean) => void;
+};
+
+export type TModalContentFooter = TwalletSteps & {
+    current_step: number;
+};

@@ -56,7 +56,7 @@ describe('<DemoResetBalance />', () => {
             ),
         });
 
-        expect(screen.getByTestId('dt_reset_balance_button')).toBeDisabled();
+        expect(screen.getByRole('button', { name: /Reset balance/i })).toBeDisabled();
     });
 
     it('should call reset balance API when click on Reset balance', () => {
@@ -85,7 +85,7 @@ describe('<DemoResetBalance />', () => {
             ),
         });
 
-        const reset_balance_button = screen.getByTestId('dt_reset_balance_button');
+        const reset_balance_button = screen.getByRole('button', { name: /Reset balance/i });
         fireEvent.click(reset_balance_button);
         expect(mutate).toBeCalledTimes(1);
     });
@@ -106,7 +106,8 @@ describe('<DemoResetBalance />', () => {
             ),
         });
 
-        const transfer_funds_button = screen.getByTestId('dt_transfer_fund_button');
+        const transfer_funds_button = screen.getByRole('button', { name: /Transfer funds/i });
+
         fireEvent.click(transfer_funds_button);
         expect(setActiveTabIndex).toBeCalledTimes(1);
     });

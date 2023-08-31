@@ -1,9 +1,10 @@
+import { localize } from '@deriv/translations';
 import { getWalletCurrencyIcon } from './utils';
 
 const getMockWalletMigrationResponse = () => {
     return [
         {
-            title: 'Non-EU USD accounts',
+            title: localize('Non-EU USD accounts'),
             wallets: [
                 {
                     wallet_details: {
@@ -113,7 +114,7 @@ const getMockWalletMigrationResponse = () => {
             ],
         },
         {
-            title: 'EU-regulated USD accounts',
+            title: localize('EU-regulated USD accounts'),
             wallets: [
                 {
                     wallet_details: {
@@ -145,7 +146,7 @@ const getMockWalletMigrationResponse = () => {
             ],
         },
         {
-            title: 'Cryptocurrency accounts',
+            title: localize('Cryptocurrency accounts'),
             wallets: [
                 {
                     wallet_details: {

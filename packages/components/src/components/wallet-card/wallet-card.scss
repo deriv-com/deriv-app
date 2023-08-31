@@ -18,10 +18,7 @@
 
         &-fade {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
+            inset: 0;
             opacity: 0;
             background: var(--wallets-card-active-gradient-background);
             border-radius: inherit;
@@ -45,10 +42,7 @@
 
     &__shine {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        inset: 0;
         clip-path: polygon(40% 10%, 104% -6.94%, 92.5% 100%, 28% 100%);
         mix-blend-mode: overlay;
         opacity: 0.16;
@@ -103,10 +97,7 @@
 
     &__active-icon {
         position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
+        inset: 0;
         display: flex;
         justify-content: center;
         align-items: center;

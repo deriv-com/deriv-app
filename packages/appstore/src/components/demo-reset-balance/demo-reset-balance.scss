@@ -5,7 +5,8 @@
     align-items: center;
     flex-direction: column;
 
-    &__title {
+    &__title,
+    &__button {
         margin-top: 2.4rem;
 
         @include mobile {
@@ -15,13 +16,5 @@
 
     &__text {
         margin-top: 0.8rem;
-    }
-
-    &__button {
-        margin-top: 2.4rem;
-
-        @include mobile {
-            margin-top: 1.6rem;
-        }
     }
 }

@@ -15,6 +15,12 @@ const Routes: React.FC = observer(() => {
     const { has_wallet, isLoading } = useWalletsList();
 
     const should_show_wallets = is_wallet_enabled && has_wallet;
+    let content: React.FC = TradersHub;
+    if (is_next_wallet_enabled) {
+        content = Wallets;
+    } else if (should_show_wallets) {
+        content = WalletsModule;
+    }
 
     if (isLoading) return <Loading />;
 
@@ -29,8 +35,8 @@ const Routes: React.FC = observer(() => {
             <Switch>
                 <RouteWithSubroutes
                     path={'/appstore/traders-hub'}
-                    component={is_next_wallet_enabled ? Wallets : should_show_wallets ? WalletsModule : TradersHub}
-                    getTitle={() => localize('TradersHub')}
+                    component={content}
+                    getTitle={() => localize("Trader's Hub")}
                 />
                 <RouteWithSubroutes
                     path={'/appstore/onboarding'}

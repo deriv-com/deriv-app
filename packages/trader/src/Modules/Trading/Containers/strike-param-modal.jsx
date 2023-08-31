@@ -1,6 +1,7 @@
 import React from 'react';
 import { Localize, localize } from '@deriv/translations';
 import { Div100vhContainer, Modal, Popover, RadioGroup } from '@deriv/components';
+import { VANILLALONG } from '@deriv/shared';
 import classNames from 'classnames';
 
 const StrikeParamModal = ({ contract_type, is_open, toggleModal, strike, onChange, name, strike_price_list }) => (
@@ -27,9 +28,9 @@ const StrikeParamModal = ({ contract_type, is_open, toggleModal, strike, onChang
                             i18n_default_text='If you buy a "<0>{{trade_type}}</0>" option, you receive a payout at expiry if the final price is {{payout_status}} the strike price. Otherwise, your “<0>{{trade_type}}</0>” option will expire worthless.'
                             components={[<strong key={0} />]}
                             values={{
-                                trade_type: contract_type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
+                                trade_type: contract_type === VANILLALONG.CALL ? localize('Call') : localize('Put'),
                                 payout_status:
-                                    contract_type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
+                                    contract_type === VANILLALONG.CALL ? localize('above') : localize('below'),
                             }}
                         />
                     }

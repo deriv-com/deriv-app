@@ -1,10 +1,8 @@
 module.exports = {
     root: true,
     extends: '../../.eslintrc.js',
-    plugins: ['@tanstack/query', 'simple-import-sort'],
+    plugins: ['simple-import-sort'],
     rules: {
-        '@tanstack/query/exhaustive-deps': 'error',
-        '@tanstack/query/prefer-query-object-syntax': 'error',
         'simple-import-sort/imports': [
             'error',
             {

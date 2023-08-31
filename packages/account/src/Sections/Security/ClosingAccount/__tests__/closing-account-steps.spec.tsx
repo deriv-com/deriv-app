@@ -26,7 +26,6 @@ describe('<ClosingAccountSteps />', () => {
 
     it('should render the ClosingAccountSteps component', () => {
         renderComponent();
-
         expect(screen.getByText(/are you sure?/i)).toBeInTheDocument();
         expect(screen.getByText(/if you close your account:/i)).toBeInTheDocument();
         expect(screen.getByText(/you can't trade on Deriv./i)).toBeInTheDocument();

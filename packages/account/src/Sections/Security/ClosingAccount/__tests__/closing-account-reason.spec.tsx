@@ -57,18 +57,20 @@ describe('<ClosingAccountReason />', () => {
 
     it('Should be disabled when no reason has been selected', async () => {
         renderComponent();
+
         fireEvent.click(screen.getByRole('checkbox', { name: other_financial_priorities_text }));
         fireEvent.click(screen.getByRole('checkbox', { name: other_financial_priorities_text }));
 
         await waitFor(() => {
             expect(screen.getByText(/please select at least one reason/i)).toBeInTheDocument();
-            const continueButton = screen.getAllByRole('button')[1];
+            const continueButton = screen.getByRole('button', { name: /continue/i });
             expect(continueButton).toBeDisabled();
         });
     });
 
     it('should reduce remaining chars', async () => {
         renderComponent();
+
         expect(screen.getByText(/remaining characters: 110/i)).toBeInTheDocument();
 
         fireEvent.change(screen.getByLabelText(/i want to stop myself from trading/i), {

@@ -24,7 +24,7 @@ const ClosingAccountReason = ({ redirectToSteps }: TClosingAccountReasonProps) =
 
     React.useEffect(() => {
         if (error) {
-            if (typeof error === 'object' && 'code' in error && typeof error.code === 'string') {
+            if (typeof error === 'object' && 'code' in error) {
                 const { code } = error;
                 const getModalToRender = () => {
                     if (code === 'AccountHasPendingConditions') {
@@ -125,7 +125,7 @@ const ClosingAccountReason = ({ redirectToSteps }: TClosingAccountReasonProps) =
                 />
             )}
 
-            {error_info && (
+            {!!error_info && (
                 <Modal
                     className='closing-account-reasons'
                     is_open={!!error_info}

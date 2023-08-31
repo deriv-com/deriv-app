@@ -1,28 +1,13 @@
-name: Deployment Playwright Tests
+name: Playwright Tests
 on:
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
 jobs:
-  test_setup:
-    name: Test setup
-    runs-on: ubuntu-latest
-    outputs:
-      preview_url: ${{ steps.waitForVercelPreviewDeployment.outputs.url }}
-    steps:
-      - name: Wait for Vercel preview deployment to be ready
-        uses: patrickedqvist/wait-for-vercel-preview@1.2.0
-        id: waitForVercelPreviewDeployment
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          max_timeout: 600
-  test_e2e:
-    needs: tests_setup
-    name: Playwright tests
+  test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    if: github.event.deployment_status.state == 'success'
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
@@ -30,9 +15,13 @@ jobs:
         node-version: 18
     - name: Install dependencies
       run: npm ci
-    - name: Install Playwright
+    - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run Playwright tests
       run: npx playwright test
-      env:
-        PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
+    - uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30

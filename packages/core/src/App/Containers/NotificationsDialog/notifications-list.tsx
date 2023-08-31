@@ -44,14 +44,7 @@ const NotificationsList = observer(() => {
         <React.Fragment>
             {notifications_array.map(item => (
                 <div className='notifications-item' key={item.key}>
-                    <Text
-                        as='h2'
-                        className='notifications-item__title'
-                        weight='bold'
-                        size='xs'
-                        line_height='m'
-                        color='prominent'
-                    >
+                    <Text as='h2' className='notifications-item__title' weight='bold' size='xs' color='prominent'>
                         {item.type && (
                             <Icon
                                 icon={getNotificationItemIcon(item)}

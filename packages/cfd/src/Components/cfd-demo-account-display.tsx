@@ -39,11 +39,10 @@ type TCFDDemoAccountDisplayProps = {
         meta: TOpenAccountTransferMeta
     ) => void;
     platform: TCFDPlatform;
-    current_list: Record<string, DetailsOfEachMT5Loginid>;
+    current_list: Record<string, DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[]>;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     residence: string;
     landing_companies?: LandingCompany;
-    toggleMT5TradeModal: () => void;
 };
 
 const CFDDemoAccountDisplay = ({
@@ -63,7 +62,6 @@ const CFDDemoAccountDisplay = ({
     current_list,
     openPasswordManager,
     residence,
-    toggleMT5TradeModal,
 }: TCFDDemoAccountDisplayProps) => {
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
@@ -151,7 +149,6 @@ const CFDDemoAccountDisplay = ({
                     descriptor={localize('Trade CFDs on our synthetics, baskets, and derived FX.')}
                     specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
                     has_banner
-                    toggleMT5TradeModal={toggleMT5TradeModal}
                 />
             )}
 
@@ -160,7 +157,6 @@ const CFDDemoAccountDisplay = ({
                     title={is_eu_user ? localize('CFDs') : localize('Financial')}
                     is_disabled={has_cfd_account_error}
                     is_logged_in={is_logged_in}
-                    is_eu={is_eu_user}
                     type={{
                         category: 'demo',
                         type: 'financial',
@@ -187,7 +183,6 @@ const CFDDemoAccountDisplay = ({
                     descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu_user)}
                     specs={financial_specs}
                     has_banner
-                    toggleMT5TradeModal={toggleMT5TradeModal}
                 />
             )}
         </div>

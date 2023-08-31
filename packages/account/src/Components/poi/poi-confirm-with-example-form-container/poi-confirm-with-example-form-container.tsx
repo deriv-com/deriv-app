@@ -158,6 +158,7 @@ const PoiConfirmWithExampleFormContainer = ({
                             setFieldTouched={setFieldTouched}
                             editable_fields={rest_state.changeable_fields}
                             is_rendered_for_onfido
+                            warning_items={undefined}
                         />
                         <button
                             type='submit'

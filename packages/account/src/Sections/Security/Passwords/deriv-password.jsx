@@ -31,6 +31,7 @@ const DerivPassword = ({
     const platform_name_go = getPlatformSettings('go').name;
     const platform_name_smarttrader = getPlatformSettings('smarttrader').name;
     const platform_name_trader = getPlatformSettings('trader').name;
+    const platform_name_derivez = getPlatformSettings('derivez').name;
 
     const PlatformDescription = () => {
         let text =
@@ -108,13 +109,22 @@ const DerivPassword = ({
                             </React.Fragment>
                         )}
                         {(!is_eu_user || financial_restricted_countries) && (
-                            <Popover alignment='bottom' message={platform_name_go}>
-                                <Icon
-                                    icon={`${getPlatformSettings('go').icon}-dashboard`}
-                                    size={32}
-                                    description='derivgo'
-                                />
-                            </Popover>
+                            <React.Fragment>
+                                <Popover alignment='bottom' message={platform_name_go}>
+                                    <Icon
+                                        icon={`${getPlatformSettings('go').icon}-dashboard`}
+                                        size={32}
+                                        description='derivgo'
+                                    />
+                                </Popover>
+                                <Popover alignment='bottom' message={platform_name_derivez}>
+                                    <Icon
+                                        icon={`${getPlatformSettings('derivez').icon}`}
+                                        size={32}
+                                        description='derivez'
+                                    />
+                                </Popover>
+                            </React.Fragment>
                         )}
                     </div>
                 </React.Fragment>

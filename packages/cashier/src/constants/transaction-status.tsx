@@ -1,9 +1,16 @@
 import React from 'react';
 import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { TStatusCode, TTransactionType } from '../types';
+import type { TSocketResponse } from '@deriv/api/types';
 
-export const getStatus = (transaction_hash: string, transaction_type: TTransactionType, status_code: TStatusCode) => {
+type TCryptoTransactionItem = NonNullable<TSocketResponse<'cashier_payments'>['cashier_payments']>['crypto'][number];
+
+export const getStatus = (
+    transaction_hash: TCryptoTransactionItem['transaction_hash'],
+    transaction_type: TCryptoTransactionItem['transaction_type'],
+    status_code: TCryptoTransactionItem['status_code'],
+    confirmations: TCryptoTransactionItem['confirmations']
+) => {
     const formatted_transaction_hash = transaction_hash
         ? `${transaction_hash.substring(0, 4)}....${transaction_hash.substring(transaction_hash.length - 4)}`
         : localize('Pending');
@@ -95,15 +102,26 @@ export const getStatus = (transaction_hash: string, transaction_type: TTransacti
         },
     };
 
-    const isDeposit = (status: TStatusCode): status is keyof typeof status_list.deposit =>
+    const isDeposit = (status: TCryptoTransactionItem['status_code']): status is keyof typeof status_list.deposit =>
         Object.keys(status_list.deposit).includes(status);
-    const isWithdrawal = (status: TStatusCode): status is keyof typeof status_list.withdrawal =>
-        Object.keys(status_list.withdrawal).includes(status);
+    const isWithdrawal = (
+        status: TCryptoTransactionItem['status_code']
+    ): status is keyof typeof status_list.withdrawal => Object.keys(status_list.withdrawal).includes(status);
+
+    let confirmation_label = '-';
+
+    if (transaction_type === 'deposit') {
+        if (status_code === 'CONFIRMED') {
+            confirmation_label = localize('Confirmed');
+        } else {
+            confirmation_label = confirmations ? `${confirmations}` : localize('Pending');
+        }
+    }
 
     if (transaction_type === 'deposit' && isDeposit(status_code)) {
-        return status_list[transaction_type][status_code];
+        return { ...status_list[transaction_type][status_code], confirmation_label };
     } else if (transaction_type === 'withdrawal' && isWithdrawal(status_code)) {
-        return status_list[transaction_type][status_code];
+        return { ...status_list[transaction_type][status_code], confirmation_label };
     }
 
     return null;

@@ -98,6 +98,7 @@ const OptionsAndMultipliersListing = () => {
                     <TradingAppCard
                         key={`trading_app_card_${available_platform.name}`}
                         {...available_platform}
+                        clickable_icon
                         action_type={
                             is_demo || (!no_CR_account && !is_eu_user) || (has_maltainvest_account && is_eu_user)
                                 ? 'trade'

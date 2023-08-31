@@ -27,6 +27,7 @@ const SelectPaymentMethod = () => {
                             <Autocomplete
                                 {...field}
                                 autoComplete='off' // prevent chrome autocomplete
+                                className='add-payment-method-select__input'
                                 data-lpignore='true'
                                 label={localize('Payment method')}
                                 list_items={my_profile_store.payment_methods_list_items}

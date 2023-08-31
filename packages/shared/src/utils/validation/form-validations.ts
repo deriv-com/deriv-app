@@ -1,28 +1,29 @@
+import { TInitPreBuildDVRs, TOptions, getPreBuildDVRs } from './declarative-validation-rules';
+
 import fromEntries from 'object.fromentries';
-import { getPreBuildDVRs, TInitPreBuildDVRs, TOptions } from './declarative-validation-rules';
 
 type TConfig = {
-    default_value: string;
+    default_value: string | boolean | number;
     supported_in: string[];
-    rules: Array<(TOptions & string)[]>;
-    values: Record<string, string | boolean>;
+    rules?: Array<(TOptions | any)[]>;
+    values?: Record<string, string | boolean>;
 };
-type TSchema = { [key: string]: TConfig };
+export type TSchema = { [key: string]: TConfig };
 
 /**
  * Prepare default field and names for form.
  * @param {string} landing_company
  * @param {object} schema
  */
-export const getDefaultFields = (landing_company: string, schema: TSchema) => {
-    const output: { [key: string]: string } = {};
+export const getDefaultFields = (landing_company: string, schema: TSchema | Record<string, never>) => {
+    const output: { [key: string]: string | number | boolean } = {};
     Object.entries(filterByLandingCompany(landing_company, schema)).forEach(([field_name, opts]) => {
         output[field_name] = opts.default_value;
     });
     return output;
 };
 
-export const filterByLandingCompany = (landing_company: string, schema: TSchema) =>
+export const filterByLandingCompany = (landing_company: string, schema: TSchema | Record<string, never>) =>
     fromEntries(Object.entries(schema).filter(([, opts]) => opts.supported_in.includes(landing_company)));
 
 /**
@@ -43,7 +44,7 @@ export const generateValidationFunction = (landing_company: string, schema: TSch
 
         Object.entries(values).forEach(([field_name, value]) => {
             if (field_name in rules) {
-                rules[field_name].some(([rule, message, options]) => {
+                rules[field_name]?.some(([rule, message, options]) => {
                     if (
                         checkForErrors({
                             field_name,

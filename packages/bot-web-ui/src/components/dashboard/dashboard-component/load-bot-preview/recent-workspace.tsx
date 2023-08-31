@@ -4,46 +4,33 @@ import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { DBOT_TABS } from 'Constants/bot-contents';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { useDBotStore } from 'Stores/useDBotStore';
 import { useComponentVisibility } from '../../hooks/useComponentVisibility';
 import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from './constants';
 import './index.scss';
 
 type TRecentWorkspace = {
-    active_tab: number;
-    dashboard_strategies: [];
-    getRecentFileIcon: (string: string) => void;
-    getSaveType: (type: string) => string;
     index: number;
-    getSelectedStrategyID: (current_workspace_id: string) => void;
-    loadFileFromRecent: () => void;
-    onToggleDeleteDialog: (is_delete_modal_open: boolean) => void;
-    previewRecentStrategy: (workspaceId: string) => void;
-    selected_strategy_id: string;
-    setActiveTab: (active_tab: number) => void;
-    setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
-    toggleSaveModal: () => void;
     workspace: { [key: string]: string };
 };
 
-const RecentWorkspace = ({
-    active_tab,
-    dashboard_strategies,
-    getRecentFileIcon,
-    getSaveType,
-    index,
-    loadFileFromRecent,
-    onToggleDeleteDialog,
-    previewRecentStrategy,
-    selected_strategy_id,
-    getSelectedStrategyID,
-    setActiveTab,
-    setPreviewOnDialog,
-    toggleSaveModal,
-    workspace,
-}: TRecentWorkspace) => {
+const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
+    const { dashboard, load_modal, save_modal } = useDBotStore();
+    const { active_tab, setActiveTab, setPreviewOnDialog } = dashboard;
+    const { toggleSaveModal } = save_modal;
+    const {
+        dashboard_strategies,
+        getRecentFileIcon,
+        getSaveType,
+        getSelectedStrategyID,
+        loadFileFromRecent,
+        onToggleDeleteDialog,
+        previewRecentStrategy,
+        selected_strategy_id,
+    } = load_modal;
+
     const trigger_div_ref = React.useRef<HTMLInputElement | null>(null);
     const toggle_ref = React.useRef<HTMLDivElement>(null);
     const visible = useComponentVisibility(toggle_ref);
@@ -189,19 +176,6 @@ const RecentWorkspace = ({
             </MobileWrapper>
         </div>
     );
-};
+});
 
-export default connect(({ load_modal, dashboard, save_modal }: RootStore) => ({
-    active_tab: dashboard.active_tab,
-    dashboard_strategies: load_modal.dashboard_strategies,
-    getRecentFileIcon: load_modal.getRecentFileIcon,
-    getSaveType: load_modal.getSaveType,
-    getSelectedStrategyID: load_modal.getSelectedStrategyID,
-    loadFileFromRecent: load_modal.loadFileFromRecent,
-    onToggleDeleteDialog: load_modal.onToggleDeleteDialog,
-    previewRecentStrategy: load_modal.previewRecentStrategy,
-    selected_strategy_id: load_modal.selected_strategy_id,
-    setActiveTab: dashboard.setActiveTab,
-    setPreviewOnDialog: dashboard.setPreviewOnDialog,
-    toggleSaveModal: save_modal.toggleSaveModal,
-}))(RecentWorkspace);
+export default RecentWorkspace;

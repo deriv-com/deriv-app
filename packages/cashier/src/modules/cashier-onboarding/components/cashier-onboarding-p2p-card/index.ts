@@ -1,3 +1,1 @@
-import CashierOnboardingP2PCard from './cashier-onboarding-p2p-card';
-
-export { CashierOnboardingP2PCard };
+export { default as CashierOnboardingP2PCard } from './cashier-onboarding-p2p-card';

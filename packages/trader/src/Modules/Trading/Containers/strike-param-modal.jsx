@@ -3,7 +3,7 @@ import { Localize, localize } from '@deriv/translations';
 import { Div100vhContainer, Modal, Popover, RadioGroup } from '@deriv/components';
 import classNames from 'classnames';
 
-const StrikeParamModal = ({ contract_subtype, is_open, toggleModal, strike, onChange, name, strike_price_list }) => (
+const StrikeParamModal = ({ contract_type, is_open, toggleModal, strike, onChange, name, strike_price_list }) => (
     <Modal
         className='trade-params'
         is_open={is_open}
@@ -27,8 +27,9 @@ const StrikeParamModal = ({ contract_subtype, is_open, toggleModal, strike, onCh
                             i18n_default_text='If you buy a "<0>{{trade_type}}</0>" option, you receive a payout at expiry if the final price is {{payout_status}} the strike price. Otherwise, your “<0>{{trade_type}}</0>” option will expire worthless.'
                             components={[<strong key={0} />]}
                             values={{
-                                trade_type: contract_subtype,
-                                payout_status: contract_subtype === 'Call' ? localize('above') : localize('below'),
+                                trade_type: contract_type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
+                                payout_status:
+                                    contract_type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
                             }}
                         />
                     }

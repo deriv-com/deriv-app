@@ -11,7 +11,6 @@ type TContractTypeDescriptionVideo = {
 const ContractTypeDescriptionVideo = ({ selected_contract_type, data_testid }: TContractTypeDescriptionVideo) => {
     const { ui } = useStore();
     const { is_dark_mode_on: is_dark_theme } = ui;
-
     const getVideoSource = React.useCallback(
         (extension: 'mp4' | 'webm') => {
             return getUrlBase(

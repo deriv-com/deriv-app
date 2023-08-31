@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import BarriersList from './barriers-list';
 import { DesktopWrapper, InputField, MobileWrapper, Dropdown, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { getContractSubtype, toMoment } from '@deriv/shared';
+import { toMoment } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';
 import { observer, useStore } from '@deriv/stores';
@@ -54,11 +54,9 @@ const Strike = observer(() => {
                             i18n_default_text='If you buy a "<0>{{trade_type}}</0>" option, you receive a payout at expiry if the final price is {{payout_status}} the strike price. Otherwise, your “<0>{{trade_type}}</0>” option will expire worthless.'
                             components={[<strong key={0} />]}
                             values={{
-                                trade_type: getContractSubtype(contract_type),
+                                trade_type: contract_type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
                                 payout_status:
-                                    getContractSubtype(contract_type) === 'Call'
-                                        ? localize('above')
-                                        : localize('below'),
+                                    contract_type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
                             }}
                         />
                     }
@@ -126,7 +124,7 @@ const Strike = observer(() => {
                         <div className='mobile-widget__type'>{localize('Strike price')}</div>
                     </div>
                     <StrikeParamModal
-                        contract_subtype={getContractSubtype(contract_type)}
+                        contract_type={contract_type}
                         is_open={is_open}
                         toggleModal={toggleWidget}
                         strike={barrier_1}

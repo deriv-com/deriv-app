@@ -4,7 +4,7 @@ import { Formik, Form, Field, FormikErrors, FieldProps, FormikHelpers } from 'fo
 import { Timeline, Input, Button, ThemedScrollbars, Loading } from '@deriv/components';
 import InlineNoteWithIcon from '../inline-note-with-icon';
 import { getPropertyValue, useIsMounted, WS } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import ApiTokenArticle from './api-token-article';
 import ApiTokenCard from './api-token-card';
@@ -217,43 +217,43 @@ const ApiToken = () => {
                                                     <ApiTokenCard
                                                         name='read'
                                                         display_name={localize('Read')}
-                                                        description={localize(
-                                                            'This scope will allow third-party apps to view your account activity, settings, limits, balance sheets, trade purchase history, and more.'
-                                                        )}
+                                                        description={
+                                                            <Localize i18n_default_text='This scope will allow third-party apps to view your account activity, settings, limits, balance sheets, trade purchase history, and more.' />
+                                                        }
                                                     />
                                                     <ApiTokenCard
                                                         name='trade'
                                                         display_name={localize('Trade')}
-                                                        description={localize(
-                                                            'This scope will allow third-party apps to buy and sell contracts for you, renew your expired purchases, and top up your demo accounts.'
-                                                        )}
+                                                        description={
+                                                            <Localize i18n_default_text='This scope will allow third-party apps to buy and sell contracts for you, renew your expired purchases, and top up your demo accounts.' />
+                                                        }
                                                     />
                                                     <ApiTokenCard
                                                         name='payments'
                                                         display_name={localize('Payments')}
-                                                        description={localize(
-                                                            'This scope will allow third-party apps to withdraw to payment agents and make inter-account transfers for you.'
-                                                        )}
+                                                        description={
+                                                            <Localize i18n_default_text='This scope will allow third-party apps to withdraw to payment agents and make inter-account transfers for you.' />
+                                                        }
                                                     />
                                                     <ApiTokenCard
                                                         name='trading_information'
                                                         display_name={localize('Trading information')}
-                                                        description={localize(
-                                                            'This scope will allow third-party apps to view your trading history.'
-                                                        )}
+                                                        description={
+                                                            <Localize i18n_default_text='This scope will allow third-party apps to view your trading history.' />
+                                                        }
                                                     />
                                                     <ApiTokenCard
                                                         name='admin'
                                                         display_name={localize('Admin')}
-                                                        description={localize(
-                                                            'This scope will allow third-party apps to open accounts for you, manage your settings and token usage, and more. '
-                                                        )}
+                                                        description={
+                                                            <Localize i18n_default_text='This scope will allow third-party apps to open accounts for you, manage your settings and token usage, and more. ' />
+                                                        }
                                                     >
                                                         <InlineNoteWithIcon
                                                             icon='IcAlertWarning'
-                                                            message={localize(
-                                                                'To avoid loss of funds, do not share tokens with the Admin scope with unauthorised parties.'
-                                                            )}
+                                                            message={
+                                                                <Localize i18n_default_text='To avoid loss of funds, do not share tokens with the Admin scope with unauthorised parties.' />
+                                                            }
                                                             title={localize('Note')}
                                                         />
                                                     </ApiTokenCard>

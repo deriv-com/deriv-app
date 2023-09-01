@@ -11,7 +11,7 @@ type TCompositeCheckbox = {
     className?: string;
     label: string;
     id?: string;
-    description: string;
+    description: JSX.Element;
 };
 
 const CompositeCheckbox = ({

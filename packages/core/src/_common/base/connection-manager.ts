@@ -20,7 +20,7 @@ export class ConnectionManager {
     client_store: TClientStore;
     connections: ConnectionInstance[];
     active_connection?: ConnectionInstance;
-    is_connected_before: boolean;
+    has_connected_before: boolean;
     is_switching_socket: boolean;
     is_disconnect_called: boolean;
     invalid_app_id: number | string;
@@ -32,7 +32,7 @@ export class ConnectionManager {
         this.invalid_app_id = 0;
         this.is_switching_socket = false;
         this.is_disconnect_called = false;
-        this.is_connected_before = false;
+        this.has_connected_before = false;
         this.config = config;
         const language = getLanguage();
         this.connections = Object.keys(websocket_servers).map(env => {
@@ -52,6 +52,20 @@ export class ConnectionManager {
         }
 
         this.handleLoginIDChange();
+    }
+
+    hasReadyState(...states: number[]) {
+        return (
+            this.active_connection?.connection && states.some(s => this.active_connection?.connection.readyState === s)
+        );
+    }
+
+    isClosed() {
+        return !this.active_connection?.connection || this.hasReadyState(2, 3);
+    }
+
+    isReady() {
+        return this.hasReadyState(1);
     }
 
     createConnectionInstance({
@@ -75,6 +89,15 @@ export class ConnectionManager {
         };
     }
 
+    closeWebSocketValidation(): boolean {
+        if (this.invalid_app_id === getAppId()) return false;
+        if (!this.is_switching_socket && typeof this.config.wsEvent === 'function') {
+            this.config.wsEvent('init');
+        }
+        if (!this.isClosed()) return false;
+        return true;
+    }
+
     handleLoginIDChange() {
         if (window.localStorage.getItem('config.server_url')) return;
         const account_type = getActiveLoginID();
@@ -84,6 +107,10 @@ export class ConnectionManager {
     handleLanguageChange(new_language: string) {
         if (this.active_connection) {
             this.active_connection.connection.close();
+            this.is_switching_socket = true;
+
+            if (!this.closeWebSocketValidation()) return;
+
             const new_instance = this.createConnectionInstance({
                 id: this.active_connection.id,
                 url: getSocketURL({ language: new_language }),
@@ -96,6 +123,8 @@ export class ConnectionManager {
     attachEventHandlers(deriv_api: DerivAPIBasic) {
         if (typeof deriv_api.onOpen === 'function') {
             deriv_api.onOpen().subscribe(() => {
+                this.is_disconnect_called = false;
+
                 if (typeof this.config.wsEvent === 'function') {
                     this.config.wsEvent('open');
                 }
@@ -111,12 +140,12 @@ export class ConnectionManager {
                     this.config.onOpen();
                 }
 
-                if (typeof this.config.onReconnect === 'function' && this.is_connected_before) {
+                if (typeof this.config.onReconnect === 'function' && this.has_connected_before) {
                     this.config.onReconnect();
                 }
 
-                if (!this.is_connected_before) {
-                    this.is_connected_before = true;
+                if (!this.has_connected_before) {
+                    this.has_connected_before = true;
                 }
             });
         }
@@ -148,16 +177,15 @@ export class ConnectionManager {
                     this.is_switching_socket = false;
                 }
 
-                if (this.invalid_app_id !== getAppId() && typeof this.config.onDisconnect === 'function') {
+                if (
+                    this.invalid_app_id !== getAppId() &&
+                    typeof this.config.onDisconnect === 'function' &&
+                    !this.is_disconnect_called
+                ) {
                     this.config.onDisconnect();
+                    this.is_disconnect_called = true;
                 }
             });
         }
     }
-
-    removeEventHandlers = (deriv_api: DerivAPIBasic) => {
-        delete deriv_api?.onOpen;
-        delete deriv_api?.onMessage;
-        delete deriv_api?.onClose;
-    };
 }

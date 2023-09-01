@@ -1,5 +1,4 @@
-const { CFD_PLATFORMS, cloneObject, getAppId, getPropertyValue, State } = require('@deriv/shared');
-const { getLanguage } = require('@deriv/translations');
+const { CFD_PLATFORMS } = require('@deriv/shared');
 const { ConnectionManager } = require('./connection-manager');
 
 /*
@@ -11,10 +10,6 @@ const BinarySocketBase = (() => {
     let deriv_api, binary_socket, client_store, connection_manager;
 
     let config = {};
-    let wrong_app_id = 0;
-    let is_disconnect_called = false;
-    let is_connected_before = false;
-    let is_switching_socket = false;
 
     const availability = {
         is_up: true,
@@ -22,21 +17,15 @@ const BinarySocketBase = (() => {
         is_down: false,
     };
 
-    const isReady = () => hasReadyState(1);
-
-    const isClose = () => !binary_socket || hasReadyState(2, 3);
-
     const close = () => {
         binary_socket.close();
     };
 
-    const closeAndOpenNewConnection = (language = getLanguage()) => {
-        close();
-        is_switching_socket = true;
-        openNewConnection(language);
-    };
+    const handleLanguageChange = new_language => connection_manager?.handleLanguageChange(new_language);
 
-    const hasReadyState = (...states) => binary_socket && states.some(s => binary_socket.readyState === s);
+    const handleLoginIDChange = () => connection_manager?.handleLoginIDChange();
+
+    const hasReadyState = (...states) => connection_manager?.hasReadyState(states);
 
     const init = ({ options, client }) => {
         if (typeof options === 'object' && config !== options) {
@@ -46,69 +35,14 @@ const BinarySocketBase = (() => {
 
         if (!connection_manager) {
             connection_manager = new ConnectionManager({ config, client_store, wait });
+            deriv_api = connection_manager.active_connection?.deriv_api;
+            binary_socket = connection_manager.active_connection?.connection;
         }
     };
 
     const openNewConnection = () => {
-        if (wrong_app_id === getAppId()) return;
-
-        if (!is_switching_socket) config.wsEvent('init');
-
-        if (isClose()) {
-            deriv_api = connection_manager.active_connection?.deriv_api;
-            binary_socket = connection_manager.active_connection?.connection;
-        }
-
-        deriv_api.onOpen().subscribe(() => {
-            config.wsEvent('open');
-
-            wait('website_status');
-
-            if (client_store.is_logged_in) {
-                const authorize_token = client_store.getToken();
-                deriv_api.authorize(authorize_token);
-            }
-
-            if (typeof config.onOpen === 'function') {
-                config.onOpen(isReady());
-            }
-
-            if (typeof config.onReconnect === 'function' && is_connected_before) {
-                config.onReconnect();
-            }
-
-            if (!is_connected_before) {
-                is_connected_before = true;
-            }
-        });
-
-        deriv_api.onMessage().subscribe(({ data: response }) => {
-            const msg_type = response.msg_type;
-            State.set(['response', msg_type], cloneObject(response));
-
-            config.wsEvent('message');
-
-            if (getPropertyValue(response, ['error', 'code']) === 'InvalidAppID') {
-                wrong_app_id = getAppId();
-            }
-
-            if (typeof config.onMessage === 'function') {
-                config.onMessage(response);
-            }
-        });
-
-        deriv_api.onClose().subscribe(() => {
-            if (!is_switching_socket) {
-                config.wsEvent('close');
-            } else {
-                is_switching_socket = false;
-            }
-
-            if (wrong_app_id !== getAppId() && typeof config.onDisconnect === 'function' && !is_disconnect_called) {
-                config.onDisconnect();
-                is_disconnect_called = true;
-            }
-        });
+        deriv_api = connection_manager.active_connection?.deriv_api;
+        binary_socket = connection_manager.active_connection?.connection;
     };
 
     const isSiteUp = status => /^up$/i.test(status);
@@ -453,7 +387,8 @@ const BinarySocketBase = (() => {
         tncApproval,
         transferBetweenAccounts,
         fetchLoginHistory,
-        closeAndOpenNewConnection,
+        handleLoginIDChange,
+        handleLanguageChange,
         accountStatistics,
         realityCheck,
         tradingServers,

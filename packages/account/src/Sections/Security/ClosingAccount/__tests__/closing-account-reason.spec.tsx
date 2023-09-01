@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { APIProvider, useRequest } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import ClosingAccountReason from '../closing-account-reason';
@@ -61,9 +62,9 @@ describe('<ClosingAccountReason />', () => {
         const el_checkbox = screen.getByRole('checkbox', {
             name: other_reasons_text,
         });
-        fireEvent.click(el_checkbox);
+        userEvent.click(el_checkbox);
 
-        fireEvent.click(screen.getByRole('button', { name: /back/i }));
+        userEvent.click(screen.getByRole('button', { name: /back/i }));
 
         await waitFor(() => {
             expect(mock_props.redirectToSteps).toHaveBeenCalledTimes(1);
@@ -76,9 +77,9 @@ describe('<ClosingAccountReason />', () => {
         const el_checkbox = screen.getByRole('checkbox', {
             name: other_reasons_text,
         });
-        fireEvent.click(el_checkbox);
+        userEvent.click(el_checkbox);
 
-        fireEvent.click(screen.getByRole('button', { name: /continue/i }));
+        userEvent.click(screen.getByRole('button', { name: /continue/i }));
 
         await waitFor(() => {
             expect(mockUseRequest).toBeCalledWith('account_closure');

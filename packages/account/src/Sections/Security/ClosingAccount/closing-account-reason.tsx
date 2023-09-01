@@ -42,6 +42,7 @@ const ClosingAccountReason = ({ redirectToSteps }: TClosingAccountReasonProps) =
     }, [error]);
 
     const getErrorModalTitle = () => {
+        if (!error_info) return '';
         switch (error_info) {
             case 'error_modal':
                 return <Localize i18n_default_text='An error occurred' />;
@@ -124,17 +125,14 @@ const ClosingAccountReason = ({ redirectToSteps }: TClosingAccountReasonProps) =
                     startDeactivating={startDeactivating}
                 />
             )}
-
-            {!!error_info && (
-                <Modal
-                    className='closing-account-reasons'
-                    is_open={!!error_info}
-                    toggleModal={closeErrorModal}
-                    title={getErrorModalTitle()}
-                >
-                    {getErrorModalContent()}
-                </Modal>
-            )}
+            <Modal
+                className='closing-account-reasons'
+                is_open={!!error_info}
+                toggleModal={closeErrorModal}
+                title={getErrorModalTitle()}
+            >
+                {getErrorModalContent()}
+            </Modal>
         </div>
     );
 };

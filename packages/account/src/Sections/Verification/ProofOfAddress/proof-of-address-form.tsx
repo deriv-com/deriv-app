@@ -224,7 +224,7 @@ const ProofOfAddressForm = observer(
                 });
 
                 const { needs_verification } = get_account_status.authentication;
-                const needs_poi = !!needs_verification.length && needs_verification.includes('identity');
+                const needs_poi = Boolean(needs_verification.length) && needs_verification.includes('identity');
                 onSubmit?.(needs_poi);
 
                 ['authenticate', 'needs_poa', 'poa_expired'].forEach(key => {

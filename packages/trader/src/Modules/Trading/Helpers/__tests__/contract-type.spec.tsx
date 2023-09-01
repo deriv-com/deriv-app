@@ -6,14 +6,14 @@ import {
 } from '../contract-type';
 
 const contract_types_test_list = {
-    Accumulators: { name: 'Accumulators', categories: [{ value: 'accumulator', text: 'Accumulator' }] },
+    Accumulators: { name: 'Accumulators', categories: [{ value: 'accumulator', text: 'Accumulators' }] },
     Digits: { name: 'Digits', categories: [{ value: 'match_diff', text: 'Matches/Differs' }] },
     'Ins & Outs': { name: 'Ins & Outs', categories: [{ value: 'end', text: 'Ends In/Ends Out' }] },
 };
 const unsupported_test_list = ['end', 'stay'];
 const unsupported_short_test_list = ['stay'];
 const contract_type_array = [
-    { value: 'accumulator', text: 'Accumulator' },
+    { value: 'accumulator', text: 'Accumulators' },
     { value: 'rise_fall', text: 'Rise/Fall' },
 ];
 const contract_category_list = [

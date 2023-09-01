@@ -445,7 +445,6 @@ PositionsModalCard.propTypes = {
     is_sell_requested: PropTypes.bool,
     is_unsupported: PropTypes.bool,
     is_valid_to_sell: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
-    onClickRemove: PropTypes.func,
     onClickSell: PropTypes.func,
     onClickCancel: PropTypes.func,
     profit_loss: PropTypes.number,

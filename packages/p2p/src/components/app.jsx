@@ -11,6 +11,7 @@ import { useStores } from 'Stores';
 import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
 import { ModalManager, ModalManagerContextProvider } from './modal-manager';
+import { init } from '../utils/server_time';
 import Routes from './routes/routes.jsx';
 import './app.scss';
 
@@ -34,6 +35,8 @@ const App = () => {
     const [code_param, setCodeParam] = React.useState();
 
     React.useEffect(() => {
+        init();
+
         general_store.setExternalStores({ client, common, modules, notifications, ui });
         general_store.setWebsocketInit(WS);
         general_store.getWebsiteStatus();

@@ -48,8 +48,8 @@ const AddMoreWalletsCarousel = () => {
     const [prev_btn_enabled, setPrevBtnEnabled] = useState(false);
     const [next_btn_enabled, setNextBtnEnabled] = useState(false);
 
-    const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
-    const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
+    const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+    const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
     const onSelect = useCallback((embla_api: EmblaCarouselType) => {
         setPrevBtnEnabled(embla_api.canScrollPrev());

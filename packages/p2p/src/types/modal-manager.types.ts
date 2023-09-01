@@ -28,7 +28,7 @@ export type TModalVariants = {
 };
 
 export type TModalManagerContext = {
-    hideModal: (options?: THideModalOptions) => void;
+    hideModal: (options?: THideModalOptions | React.MouseEvent<HTMLElement, MouseEvent>) => void;
     is_modal_open: boolean;
     isCurrentModal: (...keys: TModalKeys[]) => boolean;
     modal_props: Map<TModalKeys, TModalProps[TModalKeys]>;
@@ -46,4 +46,5 @@ export type TShowModalOptions = {
 export type THideModalOptions = {
     should_save_form_history?: boolean;
     should_hide_all_modals?: boolean;
+    should_restore_local_state?: boolean;
 };

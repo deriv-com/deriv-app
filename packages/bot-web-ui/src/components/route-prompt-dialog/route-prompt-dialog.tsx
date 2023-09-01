@@ -1,26 +1,13 @@
 import React from 'react';
 import { Dialog } from '@deriv/components';
+import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { useDBotStore } from 'Stores/useDBotStore';
 
-type TRoutePromptDialog = {
-    onCancel: () => void;
-    onConfirm: () => void;
-    continueRoute: () => void;
-    is_confirmed: boolean;
-    should_show: boolean;
-    last_location: string[];
-};
+const RoutePromptDialog = observer(() => {
+    const { route_prompt_dialog } = useDBotStore();
+    const { continueRoute, should_show, is_confirmed, last_location, onCancel, onConfirm } = route_prompt_dialog;
 
-const RoutePromptDialog = ({
-    continueRoute,
-    is_confirmed,
-    last_location,
-    should_show,
-    onCancel,
-    onConfirm,
-}: TRoutePromptDialog) => {
     React.useEffect(continueRoute, [is_confirmed, last_location, continueRoute]);
 
     return (
@@ -31,17 +18,11 @@ const RoutePromptDialog = ({
             onConfirm={onConfirm}
             onCancel={onCancel}
             is_visible={should_show}
+            has_close_icon={false}
         >
             <Localize i18n_default_text='If you leave, your current contract will be completed, but your bot will stop running immediately.' />
         </Dialog>
     );
-};
+});
 
-export default connect(({ route_prompt_dialog }: RootStore) => ({
-    continueRoute: route_prompt_dialog.continueRoute,
-    should_show: route_prompt_dialog.should_show,
-    is_confirmed: route_prompt_dialog.is_confirmed,
-    last_location: route_prompt_dialog.last_location,
-    onCancel: route_prompt_dialog.onCancel,
-    onConfirm: route_prompt_dialog.onConfirm,
-}))(RoutePromptDialog);
+export default RoutePromptDialog;

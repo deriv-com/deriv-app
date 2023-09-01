@@ -63,7 +63,7 @@ type TCFDRealAccountDisplayProps = {
         server?: string
     ) => void;
     toggleAccountsDialog: (is_accounts_switcher_on?: boolean) => void;
-    toggleShouldShowRealAccountsList: (is_should_show_real_acc_list?: boolean) => void;
+    toggleShouldShowRealAccountsList: (prop: boolean) => void;
     residence: string;
     account_status?: object;
     openDerivRealAccountNeededModal: () => void;

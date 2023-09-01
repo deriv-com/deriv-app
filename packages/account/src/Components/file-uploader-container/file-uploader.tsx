@@ -10,6 +10,7 @@ import {
     getSupportedFiles,
     max_document_size,
     supported_filetypes,
+    TSettings,
 } from '@deriv/shared';
 import { TFile } from 'Types';
 
@@ -34,8 +35,8 @@ const fileReadErrorMessage = (filename: string) => {
 
 const FileUploader = React.forwardRef<
     HTMLElement,
-    { onFileDrop: (file: TFile | undefined) => void; getSocket: () => WebSocket }
->(({ onFileDrop, getSocket }, ref) => {
+    { onFileDrop: (file: TFile | undefined) => void; getSocket: () => WebSocket; settings: TSettings }
+>(({ onFileDrop, getSocket, settings = {} }, ref) => {
     const [document_file, setDocumentFile] = useStateCallback({ files: [], error_message: null });
 
     const handleAcceptedFiles = (files: TFileObject[]) => {
@@ -72,7 +73,7 @@ const FileUploader = React.forwardRef<
         return new Promise((resolve, reject) => {
             compressImageFiles(document_file.files)
                 .then(files_to_process => {
-                    readFiles(files_to_process, fileReadErrorMessage)
+                    readFiles(files_to_process, fileReadErrorMessage, settings)
                         .then(processed_files => {
                             processed_files.forEach(file => {
                                 if (file.message) {

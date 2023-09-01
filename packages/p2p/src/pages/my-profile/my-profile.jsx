@@ -13,6 +13,7 @@ const MyProfile = () => {
     const { general_store, my_profile_store } = useStores();
 
     React.useEffect(() => {
+        if (general_store.active_index !== 3) general_store.setActiveIndex(3);
         my_profile_store.getSettings();
 
         return () => {

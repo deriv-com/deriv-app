@@ -182,7 +182,7 @@ export type TCFDAccountCard = {
         arg5: string | undefined
     ) => void;
     toggleAccountsDialog?: (arg?: boolean) => void;
-    toggleShouldShowRealAccountsList?: (arg?: boolean) => void;
+    toggleShouldShowRealAccountsList?: (arg: boolean) => void;
 };
 
 export type TTradingPlatformAccounts = {

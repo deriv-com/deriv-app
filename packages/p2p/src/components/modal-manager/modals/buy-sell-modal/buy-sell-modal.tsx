@@ -47,6 +47,7 @@ const BuySellModal = () => {
         } else {
             hideModal();
             buy_sell_store.fetchAdvertiserAdverts();
+            buy_sell_store.unsubscribeAdvertInfo();
         }
         floating_rate_store.setIsMarketRateChanged(false);
     };

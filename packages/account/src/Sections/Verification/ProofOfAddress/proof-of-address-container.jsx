@@ -95,7 +95,7 @@ const ProofOfAddressContainer = ({
 
     const from_platform = getPlatformRedirect(app_routing_history);
 
-    const should_show_redirect_btn = Object.keys(platforms).includes(from_platform.ref);
+    const should_show_redirect_btn = Object.keys(platforms).includes(from_platform?.ref);
 
     const redirect_button = should_show_redirect_btn ? (
         <Button

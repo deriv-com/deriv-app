@@ -1,0 +1,32 @@
+.mt5-notification-modal {
+    &-body {
+        border-top: 2px solid #f2f3f4;
+    }
+    @include mobile {
+        &-description {
+            margin: 2rem;
+            &--button {
+                display: flex;
+                width: 100%;
+            }
+            &--footer {
+                padding: 1rem 1.6rem;
+            }
+        }
+    }
+}
+.mt5-notification-list {
+    list-style: none;
+    &-container {
+        list-style: auto;
+        padding: 1.5rem;
+        font-size: 1.6rem;
+        color: var(--text-general);
+        &-item {
+            list-style: decimal;
+        }
+    }
+    &-contact {
+        margin-top: 1rem;
+    }
+}

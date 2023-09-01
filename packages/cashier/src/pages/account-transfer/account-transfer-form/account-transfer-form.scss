@@ -24,9 +24,12 @@
 
     &__button-link {
         cursor: pointer;
-        margin: 3.4rem 0.8rem 2.4rem 6.4rem;
-        position: absolute;
-        left: 0;
+        margin: 3.2rem auto 2.4rem 1.6rem;
+
+        @include mobile {
+            margin-top: 2.4rem;
+            margin-left: 0;
+        }
 
         &:hover {
             text-decoration: underline var(--brand-red-coral);
@@ -119,6 +122,10 @@
     &__wrapper {
         .cashier__form-submit {
             margin-top: 0;
+
+            @include mobile {
+                margin-top: 0.8rem;
+            }
         }
         .account-transfer-form__input {
             margin-bottom: -0.8rem !important;

@@ -3,26 +3,15 @@ import localForage from 'localforage';
 import LZString from 'lz-string';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { Dialog, Text } from '@deriv/components';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { useDBotStore } from 'Stores/useDBotStore';
 
-type TDeleteDialog = {
-    is_delete_modal_open: boolean;
-    onToggleDeleteDialog: (param: boolean) => void;
-    removeBotStrategy: (param: string) => void;
-    selected_strategy_id: string;
-    setDashboardStrategies: (param: string[]) => void;
-    setStrategies: (param: string[]) => void;
-    setOpenSettings: (toast_message: string, show_toast: boolean) => void;
-};
+const DeleteDialog = observer(() => {
+    const { load_modal, dashboard } = useDBotStore();
+    const { is_delete_modal_open, onToggleDeleteDialog, selected_strategy_id, setDashboardStrategies } = load_modal;
+    const { setOpenSettings } = dashboard;
 
-const DeleteDialog = ({
-    is_delete_modal_open,
-    onToggleDeleteDialog,
-    selected_strategy_id,
-    setDashboardStrategies,
-    setOpenSettings,
-}: TDeleteDialog) => {
     const removeBotStrategy = async (strategy_id: string) => {
         const workspaces = await getSavedWorkspaces();
         workspaces.map((strategy_from_workspace: string[] | { [key: string]: string }, index: number) => {
@@ -77,13 +66,6 @@ const DeleteDialog = ({
             </Dialog>
         </div>
     );
-};
+});
 
-export default connect(({ toolbar, load_modal, dashboard }) => ({
-    is_dialog_open: toolbar.is_dialog_open,
-    is_delete_modal_open: load_modal.is_delete_modal_open,
-    onToggleDeleteDialog: load_modal.onToggleDeleteDialog,
-    selected_strategy_id: load_modal.selected_strategy_id,
-    setDashboardStrategies: load_modal.setDashboardStrategies,
-    setOpenSettings: dashboard.setOpenSettings,
-}))(DeleteDialog);
+export default DeleteDialog;

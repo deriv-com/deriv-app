@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
@@ -11,6 +10,34 @@ import { filterByContractType } from './helpers';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
 
+type TUiStore = Pick<
+    ReturnType<typeof useStore>['ui'],
+    | 'addToast'
+    | 'current_focus'
+    | 'is_mobile'
+    | 'removeToast'
+    | 'setCurrentFocus'
+    | 'should_show_cancellation_warning'
+    | 'toggleCancellationWarning'
+    | 'toggleUnsupportedContractModal'
+>;
+type TPortfolioStore = Pick<
+    ReturnType<typeof useStore>['portfolio'],
+    'onHoverPosition' | 'onClickCancel' | 'onClickSell'
+>;
+type TPositionDrawerCardItem = TPortfolioStore &
+    TUiStore & {
+        currency: ReturnType<typeof useStore>['client']['currency'];
+        getContractById: ReturnType<typeof useStore>['contract_trade']['getContractById'];
+        is_new_row?: boolean;
+        measure?: () => void;
+        onClickRemove: ReturnType<typeof useStore>['portfolio']['removePositionById'];
+        row?: TPortfolioPosition | { [key: string]: any };
+        server_time: ReturnType<typeof useStore>['common']['server_time'];
+        symbol: ReturnType<typeof useTraderStore>['symbol'];
+    };
+type TPortfolioPosition = ReturnType<typeof useStore>['portfolio']['active_positions'][0];
+
 const PositionsDrawerCardItem = ({
     row: portfolio_position,
     measure,
@@ -18,12 +45,12 @@ const PositionsDrawerCardItem = ({
     symbol,
     is_new_row,
     ...props
-}) => {
-    const { in_prop } = useNewRowTransition(is_new_row);
+}: TPositionDrawerCardItem) => {
+    const { in_prop } = useNewRowTransition(is_new_row as boolean);
 
     React.useEffect(() => {
-        measure();
-    }, [portfolio_position.contract_info.is_sold, measure]);
+        measure?.();
+    }, [portfolio_position?.contract_info.is_sold, measure]);
 
     return (
         <CSSTransition
@@ -43,10 +70,10 @@ const PositionsDrawerCardItem = ({
                     {...portfolio_position}
                     {...props}
                     onMouseEnter={() => {
-                        onHoverPosition(true, portfolio_position, symbol);
+                        onHoverPosition(true, portfolio_position as TPortfolioPosition, symbol);
                     }}
                     onMouseLeave={() => {
-                        onHoverPosition(false, portfolio_position, symbol);
+                        onHoverPosition(false, portfolio_position as TPortfolioPosition, symbol);
                     }}
                     onFooterEntered={measure}
                     should_show_transition={is_new_row}
@@ -84,16 +111,16 @@ const PositionsDrawer = observer(({ ...props }) => {
         toggleUnsupportedContractModal,
     } = ui;
     const drawer_ref = React.useRef(null);
-    const list_ref = React.useRef(null);
-    const scrollbar_ref = React.useRef(null);
+    const list_ref = React.useRef<HTMLDivElement>(null);
+    const scrollbar_ref = React.useRef<HTMLElement>(null);
 
     React.useEffect(() => {
         onMount();
     }, [onMount]);
 
     React.useEffect(() => {
-        list_ref?.current?.scrollTo(0);
-        scrollbar_ref?.current?.scrollToTop();
+        list_ref?.current?.scrollTo({ top: 0 });
+        if (scrollbar_ref.current) scrollbar_ref.current.scrollTop = 0;
     }, [symbol, trade_contract_type]);
 
     const positions = all_positions.filter(
@@ -178,11 +205,5 @@ const PositionsDrawer = observer(({ ...props }) => {
         </React.Fragment>
     );
 });
-
-PositionsDrawer.propTypes = {
-    children: PropTypes.node,
-    onChangeContractUpdate: PropTypes.func,
-    onClickContractUpdate: PropTypes.func,
-};
 
 export default PositionsDrawer;

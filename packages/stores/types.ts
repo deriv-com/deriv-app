@@ -536,6 +536,7 @@ type TPortfolioStore = {
     is_loading: boolean;
     is_multiplier: boolean;
     is_accumulator: boolean;
+    onHoverPosition: (is_over: boolean, position: TPortfolioPosition, underlying: string) => void;
     onClickCancel: (contract_id?: number) => void;
     onClickSell: (contract_id?: number) => void;
     onMount: () => void;

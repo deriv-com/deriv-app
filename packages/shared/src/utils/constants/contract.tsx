@@ -24,7 +24,7 @@ type TContractTypesConfig = {
     config?: { hide_duration?: boolean; should_override?: boolean };
 };
 
-type TGetContractTypesConfig = (symbol: string) => Record<string, TContractTypesConfig>;
+type TGetContractTypesConfig = (symbol?: string) => Record<string, TContractTypesConfig>;
 
 type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
 

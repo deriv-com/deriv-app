@@ -14,7 +14,7 @@ type TResultOverlayProps = {
     is_unsupported?: boolean;
     is_visible: boolean;
     onClick: () => void;
-    onClickRemove?: (contract_id?: number) => void;
+    onClickRemove?: (contract_id: number) => void;
     result: string;
 };
 
@@ -88,7 +88,9 @@ const ResultOverlay = ({
                         <span
                             id={`dc_contract_card_${contract_id}_result_close_icon`}
                             className='dc-result__close-btn'
-                            onClick={() => onClickRemove?.(contract_id)}
+                            onClick={() => {
+                                if (contract_id) onClickRemove?.(contract_id);
+                            }}
                         />
                     )}
                     {getContractPath && (

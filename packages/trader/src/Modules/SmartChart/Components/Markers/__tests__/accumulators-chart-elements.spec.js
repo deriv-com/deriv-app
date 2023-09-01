@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import AccumulatorsChartElements from '../accumulators-chart-elements';
 
-jest.mock('App/Components/Elements/PositionsDrawer/helpers/positions-helper.js', () => ({
+jest.mock('App/Components/Elements/PositionsDrawer/helpers/positions-helper', () => ({
     filterByContractType: jest.fn(() => true),
 }));
 jest.mock('../accumulators-profit-loss-tooltip.jsx', () => () => <div>AccumulatorsProfitLossTooltip</div>);

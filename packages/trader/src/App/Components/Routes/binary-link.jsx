@@ -7,7 +7,7 @@ import getRoutesConfig from '../../Constants/routes-config';
 // TODO: solve circular dependency problem
 // when binary link is imported into components present in routes config
 // or into their descendants
-const BinaryLink = ({ active_class, to, children, ...props }) => {
+const BinaryLink = ({ active_class = '', to, children, ...props }) => {
     const path = normalizePath(to);
     const route = findRouteByPath(path, getRoutesConfig());
 

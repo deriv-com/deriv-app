@@ -18,6 +18,7 @@ const mockUsePaginatedFetch = usePaginatedFetch as jest.MockedFunction<typeof us
 describe('useP2POrdertList', () => {
     it('should return undefined if there is no response', () => {
         const mock_store = mockStore({});
+        // @ts-expect-error need to come up with a way to mock the return type of usePaginatedFetch
         mockUsePaginatedFetch.mockReturnValue({});
 
         const wrapper = ({ children }: TWrapper) => (

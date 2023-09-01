@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ErrorModal from '../error-modal';
-import ErrorModalContent from '../error-modal-content';
 
 describe('<ErrorModal />', () => {
     let modal_root_el: HTMLDivElement;

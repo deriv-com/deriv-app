@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
@@ -10,7 +10,8 @@ const TradersHubHomeButton = observer(() => {
     const { ui } = useStore();
     const { is_dark_mode_on } = ui;
     const history = useHistory();
-    const { pathname } = history.location;
+    const location = useLocation();
+    const { pathname } = location;
 
     return (
         <div

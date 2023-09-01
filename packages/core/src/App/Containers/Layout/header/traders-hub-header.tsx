@@ -61,17 +61,13 @@ const TradersHubHeader = observer(() => {
             return true;
         });
 
-    const toggleModal = () => {
-        if (!has_any_real_account) {
-            toggleReadyToDepositModal();
-        } else if (window.location.pathname === routes.traders_hub) {
-            toggleNeedRealAccountForCashierModal();
-        }
-    };
-
     const handleClickCashier = () => {
         if ((!has_any_real_account && is_virtual) || real_account_needed_for_cashier) {
-            toggleModal();
+            if (!has_any_real_account) {
+                toggleReadyToDepositModal();
+            } else if (window.location.pathname === routes.traders_hub) {
+                toggleNeedRealAccountForCashierModal();
+            }
         } else {
             history.push(routes.cashier_deposit);
         }

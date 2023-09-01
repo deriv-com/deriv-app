@@ -15,6 +15,22 @@
             align-items: center;
         }
     }
+    &__existing-accounts {
+        margin: 3.2rem 2.4rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 1.6rem;
+
+        &-card {
+            height: 29.6rem;
+            width: 26.2rem;
+            background-color: $color-grey-2;
+            border-radius: $BORDER-RADIUS * 2;
+            &-content {
+                margin: 1.6rem;
+            }
+        }
+    }
 }
 
 .dc-modal__container_mt5-migration-modal {

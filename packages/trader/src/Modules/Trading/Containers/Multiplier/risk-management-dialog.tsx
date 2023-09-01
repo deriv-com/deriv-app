@@ -7,9 +7,19 @@ import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import StopLoss from 'Modules/Trading/Components/Form/TradeParams/Multiplier/stop-loss.jsx';
 import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit.jsx';
-import CancelDeal from 'Modules/Trading/Components/Elements/Multiplier/cancel-deal-mobile.jsx';
+import CancelDeal from 'Modules/Trading/Components/Elements/Multiplier/cancel-deal-mobile';
 
-const RiskManagementDialog = observer(({ is_open, onClose, toggleDialog }) => {
+type TRiskManagementDialog = {
+    is_open: boolean;
+    onClose: () => void;
+    toggleDialog: () => void;
+};
+type TValidation_errors = {
+    take_profit: string[] | [];
+    stop_loss: string[] | [];
+};
+
+const RiskManagementDialog = observer(({ is_open, onClose, toggleDialog }: TRiskManagementDialog) => {
     const {
         is_turbos,
         take_profit,
@@ -31,11 +41,11 @@ const RiskManagementDialog = observer(({ is_open, onClose, toggleDialog }) => {
     };
     const [state, setState] = React.useState(applied_risk_management_state);
 
-    const [validation_errors, setValidationErrors] = React.useState({});
+    const [validation_errors, setValidationErrors] = React.useState<TValidation_errors | Record<string, never>>({});
 
     const should_show_deal_cancellation = cancellation_range_list?.length > 0;
 
-    const getStateToCompare = _state => {
+    const getStateToCompare = (_state: typeof applied_risk_management_state) => {
         const props_to_pick = [
             'has_take_profit',
             'has_stop_loss',
@@ -52,7 +62,7 @@ const RiskManagementDialog = observer(({ is_open, onClose, toggleDialog }) => {
         return isDeepEqual(getStateToCompare(state), getStateToCompare(applied_risk_management_state));
     };
 
-    const validate = new_state => {
+    const validate = (new_state: typeof applied_risk_management_state) => {
         setValidationErrors({
             take_profit:
                 new_state.has_take_profit && !new_state.take_profit
@@ -63,15 +73,15 @@ const RiskManagementDialog = observer(({ is_open, onClose, toggleDialog }) => {
         });
     };
 
-    const onChange = e => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         const new_state = { ...state };
-        new_state[name] = value;
+        new_state[name as 'take_profit' | 'stop_loss' | 'cancellation_duration'] = value;
         setState(new_state);
         validate(new_state);
     };
 
-    const onChangeMultipleLocal = props => {
+    const onChangeMultipleLocal = (props: keyof typeof applied_risk_management_state) => {
         const new_state = { ...state };
         Object.assign(new_state, props);
         setState(new_state);
@@ -83,9 +93,9 @@ const RiskManagementDialog = observer(({ is_open, onClose, toggleDialog }) => {
         toggleDialog();
     };
 
-    const resetAndClose = (...args) => {
+    const resetAndClose = () => {
         setState(applied_risk_management_state);
-        onClose(...args);
+        onClose();
     };
 
     return (
@@ -98,6 +108,7 @@ const RiskManagementDialog = observer(({ is_open, onClose, toggleDialog }) => {
                     height_offset='54px'
                 >
                     <TakeProfit
+                        // @ts-expect-error TODO: ts migration of <TakeProfit />
                         take_profit={state.take_profit}
                         has_take_profit={state.has_take_profit}
                         onChange={onChange}
@@ -106,6 +117,7 @@ const RiskManagementDialog = observer(({ is_open, onClose, toggleDialog }) => {
                     />
                     {!is_turbos && (
                         <StopLoss
+                            // @ts-expect-error TODO: ts migration of <StopLoss />
                             stop_loss={state.stop_loss}
                             has_stop_loss={state.has_stop_loss}
                             onChange={onChange}

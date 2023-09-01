@@ -296,7 +296,7 @@ describe('<AccountTransferForm />', () => {
                 currency: 'USD',
                 display_balance: '1233.00',
                 login: 'TEST_LOGIN_ID',
-                open_position_status: true,
+                open_order_position_status: true,
             },
         ];
         mockRootStore.modules.cashier.account_transfer.selected_to.value = 'TEST_LOGIN_ID';

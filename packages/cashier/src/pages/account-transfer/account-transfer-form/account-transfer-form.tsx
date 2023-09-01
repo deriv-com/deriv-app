@@ -320,8 +320,8 @@ const AccountTransferForm = observer(
             };
 
             let hint_text;
-            // flag 'open_position_status' does not exist in mt5_login_list, @deriv/api-types yet
-            if (mt5_login_list.find(account => account?.login === selected_to.value)?.open_position_status) {
+            // flag 'open_order_position_status' does not exist in mt5_login_list, @deriv/api-types yet
+            if (mt5_login_list.find(account => account?.login === selected_to.value)?.open_order_position_status) {
                 hint_text = <Localize i18n_default_text='You can no longer open new positions with this account.' />;
             } else {
                 remaining_transfers = getRemainingTransfers() ?? 0;

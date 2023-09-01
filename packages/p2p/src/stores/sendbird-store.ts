@@ -23,7 +23,6 @@ export default class SendbirdStore extends BaseStore {
     file_upload_properties: FileMessage | null = null;
     is_upload_complete = false;
     messages_ref: React.RefObject<HTMLDivElement> | null = null;
-    scroll_debounce?: ReturnType<typeof setTimeout>;
     sendbird_api: ReturnType<typeof SendbirdChat.init<GroupChannelModule[]>> | null = null;
     service_token_timeout?: ReturnType<typeof setTimeout>;
     disposeOrderIdReaction?: IReactionDisposer;

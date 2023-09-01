@@ -108,13 +108,14 @@ export const AdditionalKycInfoForm = observer(() => {
                                 disable_message_icon
                                 message={
                                     <Localize
-                                        i18n_default_text="Don't know your tax identification number? Click <0>here</0> to learn more."
+                                        i18n_default_text="Don't know your tax identification number? <1></1>Click <0>here</0> to learn more."
                                         components={[
                                             <StaticUrl
                                                 key={0}
                                                 className='link'
                                                 href='https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
                                             />,
+                                            <br key={1} />,
                                         ]}
                                     />
                                 }

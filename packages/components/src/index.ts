@@ -83,7 +83,7 @@ export { default as Popover } from './components/popover';
 export { default as Popup } from './components/popup';
 export { default as PopoverMessageCheckbox } from './components/popover-message-checkbox';
 export { default as ProgressBar } from './components/progress-bar';
-export { default as ProgressBarOnboarding } from './components/progress-bar-onboarding';
+export { default as ProgressBarTracker } from './components/progress-bar-tracker';
 export { default as ProgressIndicator } from './components/progress-indicator';
 export { default as ProgressSlider } from './components/progress-slider';
 export { default as ProgressSliderMobile } from './components/progress-slider-mobile';

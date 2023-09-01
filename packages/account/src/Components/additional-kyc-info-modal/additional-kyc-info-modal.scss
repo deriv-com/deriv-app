@@ -17,13 +17,43 @@
             right: 0;
         }
     }
+}
 
-    .additional-kyc-info-modal {
-        &__portal {
-            &-header {
-                font-size: 1.4rem;
-                text-align: left;
+.additional-kyc-info-modal {
+    &__portal {
+        &-header {
+            font-size: 1.4rem;
+            text-align: left;
+        }
+    }
+
+    &__form {
+        padding: unset;
+        &--header {
+            margin-top: 1.6rem;
+            margin-bottom: 2.4rem;
+        }
+        // padding: 1rem 0;
+        height: 100%;
+        &-layout {
+            display: flex;
+            flex-direction: column;
+            &--fields {
+                display: flex;
+                flex-direction: column;
+                padding: 0 24.4rem;
             }
+        }
+        &-field {
+            margin-bottom: 3.2rem;
+            &--info {
+                display: flex;
+                align-items: baseline;
+                gap: 0.8rem;
+            }
+        }
+        &-action {
+            padding-right: 2.4rem;
         }
     }
 }

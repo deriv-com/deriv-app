@@ -5,12 +5,13 @@ import {
     DesktopWrapper,
     MobileWrapper,
     UILoader,
-    Button,
     PageOverlay,
     Div100vhContainer,
+    Text,
 } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { AdditionalKycInfoForm } from './Form';
+import './additional-kyc-info-modal.scss';
 
 export const AdditionalKycInfoModal = observer(() => {
     const {
@@ -29,9 +30,19 @@ export const AdditionalKycInfoModal = observer(() => {
                         }
                         toggleModal={toggleAdditionalKycInfoModal}
                         className='additinal-kyc-info'
-                        width='90rem'
+                        width='90.4rem'
+                        height='49.6rem'
                     >
                         <Modal.Body className='additional-kyc-info-modal__form'>
+                            <Text
+                                as='p'
+                                size='s'
+                                line_height='xxl'
+                                align='center'
+                                className='additional-kyc-info-modal__form--header'
+                            >
+                                <Localize i18n_default_text='Please take a moment to update your information now.' />
+                            </Text>
                             <AdditionalKycInfoForm />
                         </Modal.Body>
                     </Modal>

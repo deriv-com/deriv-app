@@ -226,7 +226,6 @@ export default class RunPanelStore {
             this.showStopMultiplierContractDialog();
         } else {
             this.stopBot();
-            this.dbot.terminateBot();
             summary_card.clear();
             this.setShowBotStopMessage(true);
         }

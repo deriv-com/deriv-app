@@ -228,7 +228,7 @@ export default class TicksService {
         const stringified_options = JSON.stringify(options);
 
         if (style === 'ticks') {
-            if (!this.ticks_history_promise || this.ticks_history_promise.stringified_options !== stringified_options) {
+            if (this.ticks_history_promise?.stringified_options !== stringified_options) {
                 this.ticks_history_promise = {
                     promise: this.requestPipSizes().then(() => this.requestTicks(options)),
                     stringified_options,

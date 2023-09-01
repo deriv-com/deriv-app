@@ -4,7 +4,7 @@ import AppContent from './AppContent';
 
 const App: React.FC = () => (
     <APIProvider>
-        <AppContent />;
+        <AppContent />
     </APIProvider>
 );
 

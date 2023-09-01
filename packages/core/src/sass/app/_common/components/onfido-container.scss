@@ -218,8 +218,6 @@
             }
 
             &__example {
-                height: 100%;
-
                 @include mobile {
                     flex-direction: column;
                 }

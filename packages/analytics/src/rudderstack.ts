@@ -46,6 +46,22 @@ type VirtualSignupEmailConfirmationAction = {
     error_message?: string;
 };
 
+type MarketTypesFormAction = {
+    action:
+        | 'open'
+        | 'close'
+        | 'choose_market_type'
+        | 'search'
+        | 'info_redirect'
+        | 'add_to_favorites'
+        | 'delete_from_favorites';
+    form_name: string;
+    market_type_name: string;
+    tab_market_name?: string;
+    account_type: string;
+    device_type: string;
+};
+
 type ChartTypesFormAction = {
     action: 'open' | 'close' | 'choose_chart_type' | 'choose_time_interval';
     form_name: string;
@@ -98,6 +114,7 @@ type IdentifyAction = {
 
 type TEvents = {
     ce_chart_types_form: ChartTypesFormAction;
+    ce_market_types_form: MarketTypesFormAction;
     ce_virtual_signup_form: VirtualSignupFormAction;
     ce_real_account_signup_form: RealAccountSignupFormAction;
     ce_virtual_signup_email_confirmation: VirtualSignupEmailConfirmationAction;

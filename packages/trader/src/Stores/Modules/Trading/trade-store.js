@@ -1590,6 +1590,17 @@ export default class TradeStore extends BaseStore {
                         });
                     }
                     break;
+                case 'MARKETS_LIST_TOGGLE':
+                    if ('is_open' in option) {
+                        const { is_open, market_type_name } = option;
+                        RudderStack.track('ce_market_types_form', {
+                            action: is_open ? 'open' : 'close',
+                            form_name: 'default',
+                            market_type_name,
+                            ...{ account_type, device_type, form_name },
+                        });
+                    }
+                    break;
                 default:
             }
         }

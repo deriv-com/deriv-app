@@ -20,6 +20,7 @@ export { default as ButtonToggle } from './components/button-toggle';
 export { default as Calendar } from './components/calendar';
 export { default as Card } from './components/card';
 export { default as Carousel } from './components/carousel';
+export { default as CFDCompareAccountsCarousel } from './components/cfd-compare-accounts-carousel';
 export { default as Clipboard } from './components/clipboard';
 export { default as Checkbox } from './components/checkbox';
 export { default as Checklist } from './components/checklist';

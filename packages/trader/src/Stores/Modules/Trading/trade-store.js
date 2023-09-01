@@ -1559,7 +1559,6 @@ export default class TradeStore extends BaseStore {
                         const { chart_type_name, is_open, time_interval_name } = option;
                         RudderStack.track('ce_chart_types_form', {
                             action: is_open ? 'open' : 'close',
-                            form_name: 'default',
                             chart_type_name,
                             time_interval_name,
                             ...{ account_type, device_type, form_name },
@@ -1571,7 +1570,6 @@ export default class TradeStore extends BaseStore {
                         const { chart_type_name, time_interval_name } = option;
                         RudderStack.track('ce_chart_types_form', {
                             action: 'choose_chart_type',
-                            form_name: 'default',
                             chart_type_name,
                             time_interval_name,
                             ...{ account_type, device_type, form_name },
@@ -1583,7 +1581,6 @@ export default class TradeStore extends BaseStore {
                         const { chart_type_name, time_interval_name } = option;
                         RudderStack.track('ce_chart_types_form', {
                             action: 'choose_time_interval',
-                            form_name: 'default',
                             chart_type_name,
                             time_interval_name,
                             ...{ account_type, device_type, form_name },
@@ -1595,8 +1592,18 @@ export default class TradeStore extends BaseStore {
                         const { is_open, market_type_name } = option;
                         RudderStack.track('ce_market_types_form', {
                             action: is_open ? 'open' : 'close',
-                            form_name: 'default',
                             market_type_name,
+                            ...{ account_type, device_type, form_name },
+                        });
+                    }
+                    break;
+                case 'SYMBOL_CHANGE':
+                    if ('market_type_name' in option) {
+                        const { market_type_name, tab_market_name } = option;
+                        RudderStack.track('ce_market_types_form', {
+                            action: 'choose_market_type',
+                            market_type_name,
+                            tab_market_name,
                             ...{ account_type, device_type, form_name },
                         });
                     }

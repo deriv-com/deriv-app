@@ -295,44 +295,6 @@ export default class SendbirdStore extends BaseStore {
         }
     }
 
-    onMessagesScroll() {
-        if (this.scroll_debounce) {
-            clearInterval(this.scroll_debounce);
-        }
-
-        this.scroll_debounce = setTimeout(() => {
-            if (!this.messages_ref?.current) return;
-
-            if (this.messages_ref.current.scrollTop === 0) {
-                this.setIsChatLoading(true);
-                const oldest_message_timestamp = this.chat_messages.reduce(
-                    (prev_created_at, chat_message) =>
-                        chat_message.created_at < prev_created_at ? chat_message.created_at : prev_created_at,
-                    Infinity
-                );
-                this.getPreviousMessages(oldest_message_timestamp)
-                    .then(chat_messages => {
-                        if (chat_messages && chat_messages.length > 0) {
-                            const previous_messages = chat_messages.map(chat_message =>
-                                convertFromChannelMessage(chat_message)
-                            );
-
-                            this.replaceChannelMessage(0, 0, previous_messages[0]);
-                        }
-                        this.setIsChatLoading(false);
-                    })
-                    .catch(error => {
-                        // eslint-disable-next-line no-console
-                        console.warn(error);
-                    });
-            } else {
-                (async () => {
-                    await this.markMessagesAsRead(true);
-                })();
-            }
-        }, 1000);
-    }
-
     onReadReceiptUpdated(channel: GroupChannel) {
         if (channel.url === this.chat_channel_url) {
             // Force a re-render to reflect correct read receipts.

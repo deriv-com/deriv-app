@@ -36,13 +36,7 @@ const ChatMessages = observer(() => {
         let current_date = null;
 
         return (
-            <ThemedScrollbars
-                autohide
-                className='order-chat__messages'
-                height='unset'
-                refSetter={scroll_ref}
-                onScroll={event => sendbird_store.onMessagesScroll(event)}
-            >
+            <ThemedScrollbars autohide className='order-chat__messages' height='unset' refSetter={scroll_ref}>
                 {sendbird_store.chat_messages.map(chat_message => {
                     const is_my_message = chat_message.sender_user_id === sendbird_store.chat_info.user_id;
                     const message_date = formatMilliseconds(chat_message.created_at, 'MMMM D, YYYY');

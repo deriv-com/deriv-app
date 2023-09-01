@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { LegacyRef } from 'react';
 import { Text, ThemedScrollbars } from '@deriv/components';
-import { isMobile, routes } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import EmptyNotification from 'App/Components/Elements/Notifications/empty-notification';
@@ -12,8 +12,9 @@ type TNotificationListWrapper = { clearNotifications: () => void };
 
 const NotificationListWrapperForwardRef = React.forwardRef(
     ({ clearNotifications }: TNotificationListWrapper, ref: LegacyRef<HTMLDivElement> | undefined) => {
-        const { notifications } = useStore();
+        const { notifications, ui } = useStore();
         const { is_notifications_empty } = notifications;
+        const { is_mobile } = ui;
 
         const traders_hub = window.location.pathname === routes.traders_hub;
 
@@ -44,7 +45,7 @@ const NotificationListWrapperForwardRef = React.forwardRef(
                         'notifications-dialog__content--empty': is_notifications_empty,
                     })}
                 >
-                    <ThemedScrollbars is_bypassed={isMobile() || is_notifications_empty}>
+                    <ThemedScrollbars is_bypassed={is_mobile || is_notifications_empty}>
                         {is_notifications_empty ? <EmptyNotification /> : <NotificationsList />}
                     </ThemedScrollbars>
                 </div>

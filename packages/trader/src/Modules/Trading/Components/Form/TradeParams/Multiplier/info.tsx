@@ -20,6 +20,10 @@ type TMultipliersInfo = {
     multiplier?: number;
 };
 
+type TPopoverPosition = React.ComponentProps<typeof Popover>['alignment'];
+
+type TTooltip_params = { alignment: TPopoverPosition; relative_render?: boolean; margin?: number; zIndex?: string };
+
 const MultipliersInfo = observer(
     ({
         className,
@@ -100,13 +104,11 @@ const MultipliersInfo = observer(
             message: React.ReactNode;
             margin: number;
         }) => {
+            const tooltip_params: TTooltip_params = is_tooltip_relative
+                ? { alignment: 'left', relative_render: true, margin }
+                : { alignment: 'top', zIndex: '9999' };
             return should_show_tooltip ? (
-                <Popover
-                    message={message}
-                    {...(is_tooltip_relative
-                        ? { alignment: 'left', relative_render: true, margin }
-                        : { alignment: 'top', zIndex: '9999' })}
-                >
+                <Popover message={message} {...tooltip_params}>
                     {text}
                 </Popover>
             ) : (

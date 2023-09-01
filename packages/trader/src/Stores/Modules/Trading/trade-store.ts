@@ -1498,7 +1498,7 @@ export default class TradeStore extends BaseStore {
         unmarkNotificationMessage({ key: 'close_mx_mlt_account' });
         if (get_notification_messages !== null && is_logged_in && (has_iom_account || has_malta_account)) {
             when(
-                () => is_logged_in && notification_messages.length === 0,
+                () => notification_messages.length === 0,
                 () => {
                     const hidden_close_account_notification =
                         parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification') as string) === 1;

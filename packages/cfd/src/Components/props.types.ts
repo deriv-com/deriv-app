@@ -47,6 +47,11 @@ export type TCFDDashboardContainer = {
     };
 };
 
+type TOpenAccountTransferMeta = {
+    category: string;
+    type?: string;
+};
+
 export type TCFDAccountCardActionProps = {
     button_label?: string | JSX.Element;
     handleClickSwitchAccount: () => void;
@@ -80,6 +85,11 @@ export type TTradingPlatformAvailableAccount = {
     sub_account_type: string;
     account_type?: 'real' | 'demo';
     landing_company_short?: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
+};
+
+export type TModifiedTradingPlatformAvailableAccount = Omit<TTradingPlatformAvailableAccount, 'market_type'> & {
+    platform?: 'mt5' | 'dxtrade';
+    market_type: TTradingPlatformAvailableAccount['market_type'] | 'synthetic';
 };
 
 export type TCardFlipStatus = {
@@ -232,4 +242,44 @@ export type TTradingPlatformAccounts = {
      * Name of trading platform.
      */
     platform?: 'dxtrade' | string;
+};
+
+export type TInstrumentsIcon = {
+    icon:
+        | 'DerivedFX'
+        | 'Synthetics'
+        | 'Baskets'
+        | 'Stocks'
+        | 'StockIndices'
+        | 'Commodities'
+        | 'Forex'
+        | 'Cryptocurrencies'
+        | 'ETF';
+    text: string;
+    highlighted: boolean;
+    className?: string;
+    is_asterisk?: boolean;
+};
+
+export type TCompareAccountsCard = {
+    trading_platforms: TModifiedTradingPlatformAvailableAccount;
+    is_eu_user?: boolean;
+    is_demo?: boolean;
+};
+
+export type TJurisdictionData = {
+    jurisdiction?: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest' | 'malta';
+};
+
+export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
+    display_login?: string;
+    landing_company_short?: string;
+    short_code_and_region?: string;
+    mt5_acc_auth_status?: string | null;
+    selected_mt5_jurisdiction?: TOpenAccountTransferMeta &
+        TJurisdictionData & {
+            platform?: string;
+        };
+
+    openFailedVerificationModal?: (from_account: string) => void;
 };

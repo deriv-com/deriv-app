@@ -572,10 +572,10 @@ describe('<PersonalDetails/>', () => {
         const previous_btn = screen.getByRole('button', { name: /previous/i });
         const next_btn = screen.getByRole('button', { name: /next/i });
 
-        const checkbox = screen.getByLabelText(
+        const checkbox = screen.queryByLabelText(
             /i confirm that the name and date of birth above match my chosen identity document/i
         );
-        fireEvent.click(checkbox);
+        expect(checkbox).not.toBeInTheDocument();
 
         expect(previous_btn).toBeEnabled();
         expect(next_btn).toBeEnabled();
@@ -621,6 +621,11 @@ describe('<PersonalDetails/>', () => {
         const tax_identification_confirm = screen.getByTestId('tax_identification_confirm');
         const account_opening_reason_mobile = screen.getByTestId('account_opening_reason_mobile');
 
+        const checkbox = screen.queryByLabelText(
+            /i confirm that the name and date of birth above match my chosen identity document/i
+        );
+        expect(checkbox).not.toBeInTheDocument();
+
         fireEvent.click(mr_radio_btn);
         fireEvent.change(first_name, { target: { value: 'test firstname' } });
         fireEvent.change(last_name, { target: { value: 'test lastname' } });
@@ -635,11 +640,6 @@ describe('<PersonalDetails/>', () => {
 
         expect(mr_radio_btn.checked).toEqual(true);
         const next_btn = screen.getByRole('button', { name: /next/i });
-        const checkbox = screen.getByLabelText(
-            /i confirm that the name and date of birth above match my chosen identity document/i
-        );
-
-        fireEvent.click(checkbox);
 
         expect(next_btn).toBeEnabled();
         fireEvent.click(next_btn);

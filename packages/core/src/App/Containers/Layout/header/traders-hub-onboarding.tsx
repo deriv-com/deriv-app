@@ -13,23 +13,25 @@ const TradersHubOnboarding = observer(() => {
 
     return (
         <div data-testid='dt_traders_hub_onboarding'>
-            <Popover
-                classNameBubble='account-settings-toggle__tooltip'
-                alignment='bottom'
-                message={<Localize i18n_default_text='View onboarding' />}
-                should_disable_pointer_events
-                zIndex='9999'
-            >
-                <Icon
-                    data_testid='dt_traders_hub_onboarding_icon'
-                    icon={is_dark_mode_on ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
-                    size={20}
-                    onClick={() => {
-                        history.push(routes.onboarding);
-                        setIsOnboardingVisited(false);
-                    }}
-                />
-            </Popover>
+            <div className='traders-hub-header__tradershub--onboarding--logo'>
+                <Popover
+                    classNameBubble='account-settings-toggle__tooltip'
+                    alignment='bottom'
+                    message={<Localize i18n_default_text='View onboarding' />}
+                    should_disable_pointer_events
+                    zIndex='9999'
+                >
+                    <Icon
+                        data_testid='dt_traders_hub_onboarding_icon'
+                        icon={is_dark_mode_on ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
+                        size={20}
+                        onClick={() => {
+                            history.push(routes.onboarding);
+                            setIsOnboardingVisited(false);
+                        }}
+                    />
+                </Popover>
+            </div>
         </div>
     );
 });

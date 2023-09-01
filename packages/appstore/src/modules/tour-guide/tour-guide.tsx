@@ -4,11 +4,11 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Localize, localize } from '@deriv/translations';
 import {
-    getTourStepConfig,
+    tour_step_config,
     tour_styles,
     getTourStepLocale,
     tour_styles_dark_mode,
-    getTourStepConfigHighRisk,
+    tour_step_config_high_risk,
 } from 'Constants/tour-steps-config';
 import { useStores } from 'Stores/index';
 import { routes, ContentFlag } from '@deriv/shared';
@@ -69,7 +69,7 @@ const TourGuide = () => {
         );
     }
 
-    if (getTourStepConfig().length === joyride_index + 1) {
+    if (tour_step_config.length === joyride_index + 1) {
         tour_step_locale.back = (
             <SpanButton
                 has_effect
@@ -106,7 +106,7 @@ const TourGuide = () => {
             disableScrolling
             hideCloseButton
             disableCloseOnEsc
-            steps={low_risk ? getTourStepConfig() : getTourStepConfigHighRisk()}
+            steps={low_risk ? tour_step_config : tour_step_config_high_risk}
             styles={is_dark_mode_on ? tour_styles_dark_mode : tour_styles}
             locale={low_risk ? tour_step_locale : high_risk_tour_step_locale}
             floaterProps={{

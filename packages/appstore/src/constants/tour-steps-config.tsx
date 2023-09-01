@@ -5,7 +5,7 @@ import { Localize } from '@deriv/translations';
 import 'Components/toggle-account-type/toggle-account-type.scss';
 import { isMobile } from '@deriv/shared';
 
-export const getTourStepConfig = (): Step[] => [
+export const tour_step_config: Step[] = [
     {
         title: (
             <React.Fragment>
@@ -70,7 +70,7 @@ export const getTourStepConfig = (): Step[] => [
     },
 ];
 
-export const getTourStepConfigHighRisk = (): Step[] => [
+export const tour_step_config_high_risk: Step[] = [
     {
         title: (
             <React.Fragment>

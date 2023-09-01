@@ -799,7 +799,7 @@ export default class ClientStore extends BaseStore {
 
     get is_valid_login() {
         if (!this.is_logged_in) return true;
-        const valid_login_ids_regex = new RegExp('^(MF|VRTC|MLT|CR|FOG)[0-9]+$', 'i');
+        const valid_login_ids_regex = new RegExp('^(MF|MFW|VRTC|VRW|MLT|CR|CRW)[0-9]+$', 'i');
         return this.all_loginids.every(id => valid_login_ids_regex.test(id));
     }
 
@@ -1539,7 +1539,7 @@ export default class ClientStore extends BaseStore {
         this.setIsLoggingIn(true);
         this.root_store.notifications.removeNotifications(true);
         this.root_store.notifications.removeAllNotificationMessages(true);
-        if (!this.is_virtual && /VRTC/.test(loginid)) {
+        if (!this.is_virtual && /VRTC|VRW/.test(loginid)) {
             this.setPrevRealAccountLoginid(this.loginid);
         }
         this.setSwitched(loginid);

@@ -797,7 +797,6 @@ import './tradetype/ic-tradetype-digitover.svg';
 import './tradetype/ic-tradetype-digitunder.svg';
 import './tradetype/ic-tradetype-expirymiss.svg';
 import './tradetype/ic-tradetype-expiryrange.svg';
-import './tradetype/ic-tradetype-expiryrangee.svg';
 import './tradetype/ic-tradetype-lbcall.svg';
 import './tradetype/ic-tradetype-lbhighlow.svg';
 import './tradetype/ic-tradetype-lbput.svg';

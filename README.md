@@ -267,7 +267,7 @@ If preferable to use manual deployment, you can use [gh-pages](https://pages.git
 
     **A.** Just as installing, except the `npm` command you'd run would be `npm uninstall` (shortened to `npm un`). e.g.: `lerna exec --scope=@deriv/translations -- npm un i18next`.
 
-3. How do I run `npm ci` or equivalent (to add dependencies based on `package-lock.json`?
+3. How do I run `npm ci` or equivalent to add dependencies based on `package-lock.json`?
 
     **A.** You have two options:
 
@@ -280,15 +280,7 @@ If preferable to use manual deployment, you can use [gh-pages](https://pages.git
 
     If you face this issue, simply run `sudo chown -R $(whoami) .` from the root of the project.
 
-5. My build(s) fail and I can see it related to Node Sass (`node-sass`), what do I do?
-
-    **A.** This issue happens when your `node-sass` has its `binding.node` set to a version of node different from the current projects' one. Please try the following in order:
-
-    1. First run `npx lerna exec -- npm rebuild node-sass` and try building your packages again.
-    2. If that doesn't work, try `npm cache clean --force`, followed by `npm run clean`, and then `npm run bootstrap`.
-    3. And finally, if that doesn't work then you can read deeper into this [StackOverflow post](https://stackoverflow.com/questions/37986800).
-
-6. How can I regenerate `package-lock.json` file?
+5. How can I regenerate `package-lock.json` file?
 
     We have added `bootstrap:dev` to scripts. If you are updating or adding a package and you want to regenerate `package-lock.json` file, you should run this command
     `npm run bootstrap:dev`

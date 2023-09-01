@@ -4,7 +4,7 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import RootStore from '../../stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from '../../stores/useDBotStore';
-import { setTourType } from './joyride-config';
+import { setTourType } from './dbot-tours/utils';
 import TourTriggrerDialog from './tour-trigger-dialog';
 
 jest.mock('@deriv/shared', () => ({

@@ -2,7 +2,7 @@ import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { blocksCoordinate, setColors } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
 import { clearInjectionDiv } from 'Constants/load-modal';
-import { setTourSettings, tour_type, TTourType } from '../components/dashboard/joyride-config';
+import { setTourSettings, tour_type, TTourType } from '../components/dashboard/dbot-tours/utils';
 import RootStore from './root-store';
 
 export interface IDashboardStore {

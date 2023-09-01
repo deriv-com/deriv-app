@@ -10,18 +10,12 @@ import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import RunPanel from '../run-panel';
 import RunStrategy from './dashboard-component/run-strategy';
+import { DBOT_ONBOARDING } from './dbot-tours/config';
+import MobileTours from './dbot-tours/mobile-tours/mobile-tours';
+import { getTourSettings, setTourSettings, setTourType, tour_status_ended, tour_type } from './dbot-tours/utils';
 import DashboardComponent from './dashboard-component';
-import {
-    DBOT_ONBOARDING,
-    getTourSettings,
-    setTourSettings,
-    setTourType,
-    tour_status_ended,
-    tour_type,
-} from './joyride-config';
 import ReactJoyrideWrapper from './react-joyride-wrapper';
 import StrategyNotification from './strategy-notification';
-import TourSlider from './tour-slider';
 import TourTriggrerDialog from './tour-trigger-dialog';
 import Tutorial from './tutorial-tab';
 
@@ -215,7 +209,7 @@ const Dashboard = observer(() => {
                     {has_tour_started &&
                         active_tab === DASHBOARD &&
                         (is_mobile ? (
-                            <TourSlider />
+                            <MobileTours />
                         ) : (
                             <ReactJoyrideWrapper steps={DBOT_ONBOARDING} spotlightClicks hideCloseButton />
                         ))}

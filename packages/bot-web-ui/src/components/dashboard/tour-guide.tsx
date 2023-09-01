@@ -8,7 +8,6 @@ type TTourGuide = {
     content: string[];
     img?: string;
     label: string | boolean;
-    onCloseTour: () => void;
     step_index: number;
 };
 

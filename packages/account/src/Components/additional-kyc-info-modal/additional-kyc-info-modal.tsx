@@ -34,11 +34,6 @@ export const AdditionalKycInfoModal = observer(() => {
                         <Modal.Body className='additional-kyc-info-modal__form'>
                             <AdditionalKycInfoForm />
                         </Modal.Body>
-                        <Modal.Footer has_separator>
-                            <Button primary onClick={toggleAdditionalKycInfoModal}>
-                                <Localize i18n_default_text='Submit' />
-                            </Button>
-                        </Modal.Footer>
                     </Modal>
                 </DesktopWrapper>
                 <MobileWrapper>

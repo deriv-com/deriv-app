@@ -2,6 +2,10 @@
     &-header {
         border-bottom: 2px solid var(--general-section-1);
     }
+
+    &-footer {
+        padding: 1.6rem 0 0;
+    }
 }
 
 .dc-page-overlay {
@@ -12,10 +16,6 @@
             position: inherit;
             right: 0;
         }
-    }
-
-    &__content {
-        padding: 2rem;
     }
 
     .additional-kyc-info-modal {

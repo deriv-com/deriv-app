@@ -60,7 +60,9 @@ const WarningCloseCreateRealAccountModal = React.lazy(() =>
 );
 
 const AdditionalKycInfoModal = React.lazy(() =>
-    import(/* webpackChunkName: "additional-kyc-info-modal" */ '../AdditionalKycInfoModal')
+    import(
+        /* webpackChunkName: "additional-kyc-info-modal" */ '@deriv/account/src/Components/additional-kyc-info-modal'
+    )
 );
 
 const AppModals = ({

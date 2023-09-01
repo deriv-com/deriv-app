@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Popover, Money, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
@@ -9,8 +8,27 @@ import { useTraderStore } from 'Stores/useTraderStores';
 const commission_tooltip_margin = 30;
 const stop_out_tooltip_margin = 160;
 
+type TMultipliersInfo = {
+    amount?: number | string;
+    className: string;
+    commission_text_size?: string;
+    commission?: number | null;
+    is_tooltip_relative?: boolean;
+    should_show_tooltip?: boolean;
+    stop_out_text_size?: string;
+    stop_out?: number | null;
+    multiplier?: number;
+};
+
 const MultipliersInfo = observer(
-    ({ className, commission_text_size, stop_out_text_size, is_tooltip_relative, should_show_tooltip, ...props }) => {
+    ({
+        className,
+        commission_text_size,
+        stop_out_text_size,
+        is_tooltip_relative,
+        should_show_tooltip,
+        ...props
+    }: TMultipliersInfo) => {
         const trade = useTraderStore();
         const { currency, has_stop_loss } = trade;
         const multiplier = props.multiplier ?? (trade.multiplier || 0);
@@ -54,7 +72,7 @@ const MultipliersInfo = observer(
             <Localize
                 i18n_default_text='<0>{{commission_percentage}}%</0> of (<1/> * {{multiplier}})'
                 values={{
-                    commission_percentage: Number((commission * 100) / (multiplier * amount)).toFixed(4),
+                    commission_percentage: ((Number(commission) * 100) / (multiplier * Number(amount))).toFixed(4),
                     multiplier,
                 }}
                 components={[
@@ -68,18 +86,26 @@ const MultipliersInfo = observer(
             <Localize
                 i18n_default_text='When your current loss equals or exceeds {{stop_out_percentage}}% of your stake, your contract will be closed at the nearest available asset price.'
                 values={{
-                    stop_out_percentage: Math.floor(Math.abs(Number((stop_out * 100) / amount))),
+                    stop_out_percentage: Math.floor(Math.abs((stop_out * 100) / Number(amount))),
                 }}
             />
         );
 
-        const getInfo = ({ text, message, margin }) => {
+        const getInfo = ({
+            text,
+            message,
+            margin,
+        }: {
+            text: React.ReactNode;
+            message: React.ReactNode;
+            margin: number;
+        }) => {
             return should_show_tooltip ? (
                 <Popover
                     message={message}
                     {...(is_tooltip_relative
                         ? { alignment: 'left', relative_render: true, margin }
-                        : { alignment: 'top', zIndex: 9999 })}
+                        : { alignment: 'top', zIndex: '9999' })}
                 >
                     {text}
                 </Popover>
@@ -109,13 +135,5 @@ const MultipliersInfo = observer(
         );
     }
 );
-
-MultipliersInfo.propTypes = {
-    className: PropTypes.string,
-    commission_text_size: PropTypes.string,
-    is_tooltip_relative: PropTypes.bool,
-    should_show_tooltip: PropTypes.bool,
-    stop_out_text_size: PropTypes.string,
-};
 
 export default MultipliersInfo;

@@ -6,7 +6,7 @@ import MultiplierAmountModal from 'Modules/Trading/Containers/Multiplier/multipl
 import RadioGroupOptionsModal from 'Modules/Trading/Containers/radio-group-options-modal.jsx';
 import MultipliersExpiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration.jsx';
 import MultipliersExpirationModal from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration-modal.jsx';
-import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info.jsx';
+import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info';
 import { localize } from '@deriv/translations';
 import { getGrowthRatePercentage } from '@deriv/shared';
 

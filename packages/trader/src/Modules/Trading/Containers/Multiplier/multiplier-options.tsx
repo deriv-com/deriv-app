@@ -1,5 +1,5 @@
 import React from 'react';
-import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info.jsx';
+import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info';
 import RadioGroupWithInfoMobile from 'Modules/Trading/Components/Form/RadioGroupWithInfoMobile';
 import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
 import { localize } from '@deriv/translations';
@@ -52,7 +52,6 @@ const MultiplierOptions = observer(({ toggleModal }: TMultiplierOptions) => {
                 toggleModal={toggleModal}
             />
             <MultipliersInfo
-                // @ts-expect-error TODO: ts migration of <MultipliersInfo />
                 className='trade-params__multiplier-trade-info'
                 should_show_tooltip
                 commission={commission}

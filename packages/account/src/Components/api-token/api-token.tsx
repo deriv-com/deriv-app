@@ -217,14 +217,14 @@ const ApiToken = () => {
                                                 item_title={localize('Select scopes based on the access you need.')}
                                             >
                                                 <div className='da-api-token__checkbox-wrapper'>
-                                                    {api_token_card_array.map(card =>
-                                                        card.name === 'admin' ? (
-                                                            <ApiTokenCard
-                                                                key={card.name}
-                                                                name={card.name}
-                                                                display_name={card.display_name}
-                                                                description={card.description}
-                                                            >
+                                                    {api_token_card_array.map(card => (
+                                                        <ApiTokenCard
+                                                            key={card.name}
+                                                            name={card.name}
+                                                            display_name={card.display_name}
+                                                            description={card.description}
+                                                        >
+                                                            {card.name === 'admin' && (
                                                                 <InlineNoteWithIcon
                                                                     icon='IcAlertWarning'
                                                                     message={
@@ -232,16 +232,9 @@ const ApiToken = () => {
                                                                     }
                                                                     title={localize('Note')}
                                                                 />
-                                                            </ApiTokenCard>
-                                                        ) : (
-                                                            <ApiTokenCard
-                                                                key={card.name}
-                                                                name={card.name}
-                                                                display_name={card.display_name}
-                                                                description={card.description}
-                                                            />
-                                                        )
-                                                    )}
+                                                            )}
+                                                        </ApiTokenCard>
+                                                    ))}
                                                 </div>
                                             </Timeline.Item>
                                             <Timeline.Item

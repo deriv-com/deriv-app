@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
+import { observer, useStore } from '@deriv/stores';
 import { Text, StaticUrl } from '@deriv/components';
 import { isMobile, formatMoney, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -7,10 +7,10 @@ import ListingContainer from 'Components/containers/listing-container';
 import AddOptionsAccount from 'Components/add-options-account';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
+import CompareAccount from 'Components/compare-account';
 import GetMoreAccounts from 'Components/get-more-accounts';
 import { Actions } from 'Components/containers/trading-app-card-actions';
 import { getHasDivider } from 'Constants/utils';
-import { useStores } from 'Stores/index';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import './cfds-listing.scss';
 
@@ -20,14 +20,14 @@ type TDetailedExistingAccount = AvailableAccount &
         key: string;
     };
 
-const CFDsListing = () => {
+const CFDsListing = observer(() => {
     const {
         client,
         modules: { cfd },
         traders_hub,
         common,
         ui,
-    } = useStores();
+    } = useStore();
     const {
         available_dxtrade_accounts,
         available_derivez_accounts,
@@ -54,7 +54,7 @@ const CFDsListing = () => {
         financial_restricted_countries,
     } = traders_hub;
 
-    const { toggleCompareAccountsModal, setAccountType } = cfd;
+    const { setAccountType } = cfd;
     const { is_landing_company_loaded, real_account_creation_unlock_date, account_status } = client;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal, setShouldShowCooldownModal } = ui;
@@ -62,8 +62,12 @@ const CFDsListing = () => {
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
 
-    const { poi_pending_for_bvi_labuan, poi_resubmit_for_bvi_labuan, poa_resubmit_for_labuan, is_idv_revoked } =
-        getAuthenticationStatusInfo(account_status);
+    const {
+        poi_pending_for_bvi_labuan_vanuatu,
+        poi_resubmit_for_bvi_labuan_vanuatu,
+        poa_resubmit_for_labuan,
+        is_idv_revoked,
+    } = getAuthenticationStatusInfo(account_status);
 
     const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
 
@@ -74,13 +78,16 @@ const CFDsListing = () => {
                     if (
                         getAuthStatus([
                             is_idv_revoked,
-                            poi_resubmit_for_bvi_labuan,
+                            poi_resubmit_for_bvi_labuan_vanuatu,
                             current_acc_status === 'proof_failed',
                         ])
                     ) {
                         return 'failed';
                     } else if (
-                        getAuthStatus([poi_pending_for_bvi_labuan, current_acc_status === 'verification_pending'])
+                        getAuthStatus([
+                            poi_pending_for_bvi_labuan_vanuatu,
+                            current_acc_status === 'verification_pending',
+                        ])
                     ) {
                         return 'pending';
                     }
@@ -91,20 +98,27 @@ const CFDsListing = () => {
                         getAuthStatus([
                             poa_resubmit_for_labuan,
                             is_idv_revoked,
-                            poi_resubmit_for_bvi_labuan,
+                            poi_resubmit_for_bvi_labuan_vanuatu,
                             current_acc_status === 'proof_failed',
                         ])
                     ) {
                         return 'failed';
                     } else if (
-                        getAuthStatus([poi_pending_for_bvi_labuan, current_acc_status === 'verification_pending'])
+                        getAuthStatus([
+                            poi_pending_for_bvi_labuan_vanuatu,
+                            current_acc_status === 'verification_pending',
+                        ])
                     ) {
                         return 'pending';
                     }
                     return null;
                 }
                 default:
-                    return null;
+                    if (current_acc_status === 'proof_failed') {
+                        return 'failed';
+                    } else if (current_acc_status === 'verification_pending') {
+                        return 'pending';
+                    }
             }
         }
         return null;
@@ -141,11 +155,7 @@ const CFDsListing = () => {
                         <Text size='sm' line_height='m' weight='bold' color='prominent'>
                             {localize('CFDs')}
                         </Text>
-                        <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
-                            <Text key={0} color='red' size='xxs' weight='bold' styles={{ marginLeft: '1rem' }}>
-                                <Localize i18n_default_text={accounts_sub_text} />
-                            </Text>
-                        </div>
+                        <CompareAccount accounts_sub_text={accounts_sub_text} is_desktop={!isMobile()} />
                     </div>
                 )
             }
@@ -160,13 +170,7 @@ const CFDsListing = () => {
                 </Text>
             }
         >
-            {isMobile() && (
-                <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
-                    <Text size='xs' color='red' weight='bold' line_height='s'>
-                        <Localize i18n_default_text={accounts_sub_text} />
-                    </Text>
-                </div>
-            )}
+            {isMobile() && <CompareAccount accounts_sub_text={accounts_sub_text} />}
 
             <AddDerivAccount />
 
@@ -183,7 +187,7 @@ const CFDsListing = () => {
                             existing_account.status || is_idv_revoked
                                 ? getMT5AccountAuthStatus(
                                       existing_account.status,
-                                      existing_account?.short_code_and_region?.toLowerCase()
+                                      existing_account?.landing_company_short
                                   )
                                 : null;
 
@@ -389,6 +393,6 @@ const CFDsListing = () => {
                 : !is_real && <PlatformLoader />} */}
         </ListingContainer>
     );
-};
+});
 
-export default observer(CFDsListing);
+export default CFDsListing;

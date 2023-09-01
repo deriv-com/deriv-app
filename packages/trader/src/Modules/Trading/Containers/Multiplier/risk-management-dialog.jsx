@@ -11,6 +11,7 @@ import CancelDeal from 'Modules/Trading/Components/Elements/Multiplier/cancel-de
 
 const RiskManagementDialog = observer(({ is_open, onClose, toggleDialog }) => {
     const {
+        is_turbos,
         take_profit,
         has_take_profit,
         has_stop_loss,
@@ -103,13 +104,15 @@ const RiskManagementDialog = observer(({ is_open, onClose, toggleDialog }) => {
                         onChangeMultiple={onChangeMultipleLocal}
                         validation_errors={validation_errors}
                     />
-                    <StopLoss
-                        stop_loss={state.stop_loss}
-                        has_stop_loss={state.has_stop_loss}
-                        onChange={onChange}
-                        onChangeMultiple={onChangeMultipleLocal}
-                        validation_errors={validation_errors}
-                    />
+                    {!is_turbos && (
+                        <StopLoss
+                            stop_loss={state.stop_loss}
+                            has_stop_loss={state.has_stop_loss}
+                            onChange={onChange}
+                            onChangeMultiple={onChangeMultipleLocal}
+                            validation_errors={validation_errors}
+                        />
+                    )}
                     {should_show_deal_cancellation && (
                         <CancelDeal
                             has_take_profit={state.has_take_profit}

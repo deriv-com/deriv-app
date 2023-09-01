@@ -15,6 +15,7 @@ const BuySell = () => {
     const previous_scroll_top = React.useRef(0);
 
     React.useEffect(() => {
+        if (general_store.active_index !== 0) general_store.setActiveIndex(0);
         const disposeIsListedReaction = buy_sell_store.registerIsListedReaction();
         const disposeAdvertIntervalReaction = buy_sell_store.registerAdvertIntervalReaction();
         buy_sell_store.setLocalCurrency(buy_sell_store.selected_local_currency);

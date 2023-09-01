@@ -76,6 +76,7 @@ export type TCellContentProps = {
     passthrough: any;
     row_obj: any;
     is_footer: boolean;
+    is_turbos: boolean;
     is_vanilla: boolean;
 };
 

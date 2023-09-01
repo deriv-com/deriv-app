@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ClosingAccountReasonForm from '../closing-account-reason-form';
 
@@ -32,8 +32,8 @@ describe('<ClosingAccountReasonForm />', () => {
     it('Should be disabled when no reason has been selected', async () => {
         render(<ClosingAccountReasonForm {...mock_props} />);
 
-        fireEvent.click(screen.getByRole('checkbox', { name: other_financial_priorities_text }));
-        fireEvent.click(screen.getByRole('checkbox', { name: other_financial_priorities_text }));
+        userEvent.click(screen.getByRole('checkbox', { name: other_financial_priorities_text }));
+        userEvent.click(screen.getByRole('checkbox', { name: other_financial_priorities_text }));
 
         await waitFor(() => {
             expect(screen.getByText(/please select at least one reason/i)).toBeInTheDocument();
@@ -42,36 +42,30 @@ describe('<ClosingAccountReasonForm />', () => {
         });
     });
 
-    it('should reduce remaining chars', async () => {
+    it('should reduce remaining chars from maximum characters count when input is typed', async () => {
         render(<ClosingAccountReasonForm {...mock_props} />);
 
         expect(screen.getByText(/remaining characters: 110/i)).toBeInTheDocument();
 
-        fireEvent.change(screen.getByLabelText(/i want to stop myself from trading/i), {
-            target: { value: 'true' },
-        });
+        userEvent.click(screen.getByLabelText(/i want to stop myself from trading/i));
 
         await waitFor(() => {
             expect(screen.getByText(/remaining characters: 110/i)).toBeInTheDocument();
         });
 
-        fireEvent.change(screen.getByPlaceholderText(/what could we do to improve/i), {
-            target: { value: 'do_to_improve' },
-        });
+        userEvent.type(screen.getByPlaceholderText(/what could we do to improve/i), 'test suggestion');
         await waitFor(() => {
-            expect(screen.getByText(/remaining characters: 97/i)).toBeInTheDocument();
+            expect(screen.getByText(/remaining characters: 95/i)).toBeInTheDocument();
         });
     });
 
     it('should show validation error on invalid characters in input box', async () => {
         render(<ClosingAccountReasonForm {...mock_props} />);
 
-        fireEvent.click(screen.getByRole('checkbox', { name: other_financial_priorities_text }));
-        fireEvent.change(screen.getByPlaceholderText(/what could we do to improve/i), {
-            target: { value: 'test_suggestion' },
-        });
+        userEvent.click(screen.getByRole('checkbox', { name: other_financial_priorities_text }));
+        userEvent.type(screen.getByPlaceholderText(/what could we do to improve/i), 'test_suggestion');
 
-        fireEvent.click(screen.getByRole('button', { name: /continue/i }));
+        userEvent.click(screen.getByRole('button', { name: /continue/i }));
 
         await waitFor(() => {
             expect(screen.getByText(/must be numbers, letters, and special characters/i)).toBeInTheDocument();
@@ -81,15 +75,13 @@ describe('<ClosingAccountReasonForm />', () => {
     it('should call the onConfirmClick function when continue button is clicked', async () => {
         render(<ClosingAccountReasonForm {...mock_props} />);
 
-        fireEvent.click(screen.getByRole('checkbox', { name: other_financial_priorities_text }));
-        fireEvent.change(
+        userEvent.click(screen.getByRole('checkbox', { name: other_financial_priorities_text }));
+        userEvent.type(
             screen.getByPlaceholderText(/if you don’t mind sharing, which other trading platforms do you use?/i),
-            {
-                target: { value: 'other reasons' },
-            }
+            'other reasons'
         );
 
-        fireEvent.click(screen.getByRole('button', { name: /continue/i }));
+        userEvent.click(screen.getByRole('button', { name: /continue/i }));
 
         await waitFor(() => {
             expect(mock_props.onConfirmClick).toHaveBeenCalled();

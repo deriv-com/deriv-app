@@ -161,7 +161,7 @@ const generateInitialValues = (fields: Record<string, any>) => {
 };
 
 const getField = (fields: Record<string, any>, field_name: string, withInputTypes: boolean) => {
-    const { label, placeholder, is_required, disabled, type, options } = fields[field_name];
+    const { label, placeholder, is_required, disabled, type, list_items } = fields[field_name];
 
     return {
         name: field_name,
@@ -170,7 +170,7 @@ const getField = (fields: Record<string, any>, field_name: string, withInputType
         disabled,
         ...(withInputTypes ? { type } : {}),
         ...(placeholder ? { placeholder } : {}),
-        ...(options ? { options } : {}),
+        ...(list_items ? { list_items } : {}),
     };
 };
 

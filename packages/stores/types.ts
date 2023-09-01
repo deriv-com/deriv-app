@@ -569,7 +569,6 @@ type TBalance = {
 };
 
 type TTradersHubStore = {
-    getAccount: () => void;
     closeModal: () => void;
     content_flag: 'low_risk_cr_eu' | 'low_risk_cr_non_eu' | 'high_risk_cr' | 'cr_demo' | 'eu_demo' | 'eu_real' | '';
     combined_cfd_mt5_accounts: DetailsOfEachMT5Loginid &
@@ -619,7 +618,6 @@ type TTradersHubStore = {
     is_demo_low_risk: boolean;
     is_mt5_notification_modal_visible: boolean;
     setMT5NotificationModal: (value: boolean) => void;
-    available_dxtrade_accounts: DetailsOfEachMT5Loginid[];
     available_derivez_accounts: DetailsOfEachMT5Loginid[];
     has_any_real_account: boolean;
     startTrade: () => void;

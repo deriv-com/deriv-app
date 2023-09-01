@@ -3,8 +3,8 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { isMobile } from '@deriv/shared';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useStores } from 'Stores';
 import FilterModal from '../filter-modal';
-import { useStores } from 'Stores/index';
 
 const mock_store = {
     buy_sell_store: {
@@ -131,27 +131,12 @@ describe('<FilterModal />', () => {
         expect(mock_store.my_profile_store.setSearchTerm).toHaveBeenCalledWith('');
     });
     it('should handle clicking clear button', () => {
-        (useStores as jest.Mock).mockReturnValue({
-            ...mock_store,
-            buy_sell_store: {
-                ...mock_store.buy_sell_store,
-                show_filter_payment_methods: true,
-            },
-        });
         render(<FilterModal />);
         const clear_button = screen.getByRole('button', { name: 'Clear' });
         userEvent.click(clear_button);
         expect(mock_fn).toHaveBeenCalledTimes(2);
     });
     it('should close the payment methods section on clicking back from there', async () => {
-        (isMobile as jest.Mock).mockReturnValue(false);
-        (useStores as jest.Mock).mockReturnValue({
-            ...mock_store,
-            buy_sell_store: {
-                ...mock_store.buy_sell_store,
-                show_filter_payment_methods: true,
-            },
-        });
         render(<FilterModal />);
         const back_icon = screen.getByTestId('dt_page_return_icon');
         userEvent.click(back_icon);

@@ -25,8 +25,10 @@ export class ConnectionManager {
     is_disconnect_called: boolean;
     invalid_app_id: number | string;
     wait: (api_call: string) => void;
+    synchronize: (active_connection: ConnectionInstance) => void;
 
-    constructor({ config = {}, client_store, wait }: DerivAPIConstructorArgs) {
+    constructor({ config = {}, client_store, wait, synchronize }: DerivAPIConstructorArgs) {
+        this.synchronize = synchronize;
         this.wait = wait;
         this.client_store = client_store;
         this.invalid_app_id = 0;
@@ -48,6 +50,7 @@ export class ConnectionManager {
             const instance = this.createConnectionInstance({ id: 'endpoint', url: endpoint_url, language });
             this.connections.push(instance);
             this.active_connection = instance;
+            this.attachEventHandlers(instance.deriv_api);
             return;
         }
 
@@ -100,8 +103,14 @@ export class ConnectionManager {
 
     handleLoginIDChange() {
         if (window.localStorage.getItem('config.server_url')) return;
-        const account_type = getActiveLoginID();
-        this.active_connection = this.connections.find(c => c.id === account_type);
+        const active_loginid = getActiveLoginID();
+        this.active_connection = this.connections.find(
+            c => c.id === (active_loginid && !/VRTC|VRW/.test(active_loginid) ? 'real' : 'demo')
+        );
+
+        if (this.active_connection?.deriv_api) {
+            this.attachEventHandlers(this.active_connection?.deriv_api);
+        }
     }
 
     handleLanguageChange(new_language: string) {
@@ -117,6 +126,9 @@ export class ConnectionManager {
                 language: new_language,
             });
             this.active_connection = new_instance;
+            if (this.active_connection?.deriv_api) {
+                this.attachEventHandlers(this.active_connection?.deriv_api);
+            }
         }
     }
 
@@ -186,6 +198,10 @@ export class ConnectionManager {
                     this.is_disconnect_called = true;
                 }
             });
+        }
+
+        if (this.active_connection) {
+            this.synchronize(this.active_connection);
         }
     }
 }

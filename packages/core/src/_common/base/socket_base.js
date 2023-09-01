@@ -27,6 +27,13 @@ const BinarySocketBase = (() => {
 
     const hasReadyState = (...states) => connection_manager?.hasReadyState(states);
 
+    const synchronizeConnections = active_connection => {
+        if (active_connection) {
+            deriv_api = active_connection?.deriv_api;
+            binary_socket = active_connection?.connection;
+        }
+    };
+
     const init = ({ options, client }) => {
         if (typeof options === 'object' && config !== options) {
             config = options;
@@ -34,9 +41,12 @@ const BinarySocketBase = (() => {
         client_store = client;
 
         if (!connection_manager) {
-            connection_manager = new ConnectionManager({ config, client_store, wait });
-            deriv_api = connection_manager.active_connection?.deriv_api;
-            binary_socket = connection_manager.active_connection?.connection;
+            connection_manager = new ConnectionManager({
+                config,
+                client_store,
+                wait,
+                synchronize: synchronizeConnections,
+            });
         }
     };
 

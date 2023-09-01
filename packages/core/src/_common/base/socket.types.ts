@@ -6,6 +6,7 @@ export type DerivAPIConstructorArgs = {
     config?: Record<string, unknown>;
     client_store: TClientStore;
     wait: (api_call: string) => void;
+    synchronize: (active_connection: ConnectionInstance) => void;
 };
 
 export interface DerivAPIBasic {

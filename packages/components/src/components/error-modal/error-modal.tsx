@@ -15,7 +15,8 @@ type TErrorModalProps = {
 };
 
 const ErrorModal = ({ messages }: TErrorModalProps) => {
-    const [is_error_modal_open, setErrorModalOpen] = React.useState<boolean>(false);
+    const [is_error_modal_open, setErrorModalOpen] = React.useState(false);
+    const error_message_description = messages?.[0]?.toString();
 
     React.useEffect(() => {
         setErrorModalOpen(true);
@@ -24,13 +25,6 @@ const ErrorModal = ({ messages }: TErrorModalProps) => {
     const toggleErrorModal = () => {
         setErrorModalOpen(!is_error_modal_open);
     };
-
-    const error_message_description = messages.map(message => {
-        if (typeof message === 'string') {
-            return message;
-        }
-        return message?.toString();
-    });
 
     return (
         <Modal has_close_icon width='440px' height='284px' is_open={is_error_modal_open} toggleModal={toggleErrorModal}>

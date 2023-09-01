@@ -14,16 +14,20 @@ describe('<ErrorModalContent />', () => {
     afterAll(() => {
         document.body.removeChild(modal_root_el);
     });
-    const error_message = [{ message: 'Sorry for the interruption' }];
+    const error_message = 'You have reached the rate limit of requests per second. Please try later.';
     it('should renders the error message', () => {
         render(<ErrorModalContent error_message={error_message} />);
-        const error_description = screen.getByText('[object Object]');
+        const error_description = screen.getByText(
+            /You have reached the rate limit of requests per second. Please try later./i
+        );
         expect(error_description).toBeInTheDocument();
     });
 
     it('renders the error message', () => {
         render(<ErrorModalContent error_message={error_message} />);
-        const error_description = screen.getByText('[object Object]');
+        const error_description = screen.getByText(
+            /You have reached the rate limit of requests per second. Please try later./i
+        );
         expect(error_description).toHaveClass('dc-text', 'da-icon-with-message__text__desc');
     });
 

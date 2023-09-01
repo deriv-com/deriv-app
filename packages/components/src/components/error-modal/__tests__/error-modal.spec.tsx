@@ -1,8 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ErrorModal from '../error-modal';
+import ErrorModalContent from '../error-modal-content';
 
-describe('<ErrorModa />', () => {
+describe('<ErrorModal />', () => {
     let modal_root_el: HTMLDivElement;
 
     beforeAll(() => {
@@ -20,9 +21,14 @@ describe('<ErrorModa />', () => {
     it('should render the error modal with modal content', () => {
         render(<ErrorModal messages={messages} />);
         expect(screen.getByText(/Sorry for the interruption/i)).toBeInTheDocument();
-        const error_description = screen.getByText('[object Object]');
-        expect(error_description).toBeInTheDocument();
-        expect(screen.getByText('Refresh')).toBeInTheDocument();
+        expect(screen.getByText(/Refresh/i)).toBeInTheDocument();
+    });
+
+    it('should check if the parent container is present', () => {
+        render(<ErrorModal messages={messages} />);
+        const has_modal_root_el = document.body.contains(modal_root_el);
+        // Assert that the element is present
+        expect(has_modal_root_el).toBeTruthy();
     });
 
     it('should closes the error modal when the Refresh button is clicked', () => {

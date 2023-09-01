@@ -1,42 +1,46 @@
 import React from 'react';
-import { Field as FormField, Formik, Form } from 'formik';
+import { Field as FormField, Formik, Form, FormikValues } from 'formik';
 import debounce from 'lodash.debounce';
 import { Icon, Input } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
+import { observer } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import './filter-modal-search.scss';
 
 const FilterModalSearch = () => {
     const { buy_sell_store, my_profile_store } = useStores();
+    const { setIsFilterModalLoading } = buy_sell_store;
+    const { getPaymentMethodsList, setSearchResults, setSearchTerm } = my_profile_store;
 
     const returnedFunction = debounce(() => {
-        my_profile_store.getPaymentMethodsList();
+        getPaymentMethodsList();
     }, 1000);
 
-    const onSearch = ({ search }) => {
-        my_profile_store.setSearchTerm(search.trim());
+    const onSearch = ({ search }: { search: string }) => {
+        setSearchTerm(search.trim());
 
         if (!search.trim()) {
-            my_profile_store.setSearchResults([]);
+            setSearchResults([]);
             return;
         }
 
-        buy_sell_store.setIsFilterModalLoading(true);
+        setIsFilterModalLoading(true);
         returnedFunction();
     };
 
-    const onSearchClear = setFieldValue => {
+    const onSearchClear = (setFieldValue: (name: string, value: string) => void) => {
         setFieldValue('search', '');
-        my_profile_store.setSearchTerm('');
-        my_profile_store.setSearchResults([]);
+        setSearchTerm('');
+        setSearchResults([]);
     };
 
-    const onSearchKeyUp = submitForm => {
+    const onSearchKeyUp = (submitForm: VoidFunction) => {
+        let typing_timer: NodeJS.Timeout | undefined;
+
         clearTimeout(typing_timer);
 
-        const typing_timer = setTimeout(() => {
+        typing_timer = setTimeout(() => {
             submitForm();
         }, 1000);
     };
@@ -47,7 +51,7 @@ const FilterModalSearch = () => {
                 {({ submitForm, values: { search }, setFieldValue }) => (
                     <Form>
                         <FormField name='search'>
-                            {({ field }) => (
+                            {({ field }: FormikValues) => (
                                 <Input
                                     {...field}
                                     className='filter-modal-search__field'
@@ -62,6 +66,7 @@ const FilterModalSearch = () => {
                                             <Icon
                                                 className='filter-modal-search__cross-icon'
                                                 color='secondary'
+                                                data_testid='dt_filter_modal_search_icon'
                                                 icon='IcCloseCircle'
                                                 onClick={() => onSearchClear(setFieldValue)}
                                             />

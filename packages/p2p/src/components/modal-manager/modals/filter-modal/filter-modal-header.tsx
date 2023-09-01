@@ -1,15 +1,19 @@
-import * as React from 'react';
-import { observer } from 'mobx-react-lite';
-import { localize, Localize } from 'Components/i18next';
-import { useStores } from 'Stores';
-import PageReturn from 'Components/page-return';
+import React from 'react';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
-import PropTypes from 'prop-types';
+import { observer } from '@deriv/stores';
+import { localize, Localize } from 'Components/i18next';
+import PageReturn from 'Components/page-return';
+import { useStores } from 'Stores';
 
-const FilterModalHeader = ({ pageHeaderReturnFn }) => {
+type TFilterModalHeaderProps = {
+    pageHeaderReturnFn: () => void;
+};
+
+const FilterModalHeader = ({ pageHeaderReturnFn }: TFilterModalHeaderProps) => {
     const { buy_sell_store } = useStores();
+    const { show_filter_payment_methods } = buy_sell_store;
 
-    if (buy_sell_store.show_filter_payment_methods) {
+    if (show_filter_payment_methods) {
         return (
             <React.Fragment>
                 <DesktopWrapper>
@@ -25,7 +29,6 @@ const FilterModalHeader = ({ pageHeaderReturnFn }) => {
                             className='filter-modal__header-return-button'
                             icon='IcArrowLeftBold'
                             onClick={pageHeaderReturnFn}
-                            size={16}
                         />
                         <Localize i18n_default_text='Payment methods' />
                     </Text>
@@ -35,10 +38,6 @@ const FilterModalHeader = ({ pageHeaderReturnFn }) => {
     }
 
     return <Localize i18n_default_text='Filter' />;
-};
-
-FilterModalHeader.propTypes = {
-    pageHeaderReturnFn: PropTypes.func,
 };
 
 export default observer(FilterModalHeader);

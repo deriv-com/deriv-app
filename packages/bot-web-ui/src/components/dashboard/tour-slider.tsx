@@ -97,35 +97,63 @@ const TourSlider = observer(() => {
         else toggleTourLoadModal(false);
     }, [step]);
 
-    const onChange = React.useCallback(
-        (param: string) => {
-            if (param === 'inc') setStep(step + 1);
-            else if (param === 'dec') setStep(step - 1);
-            else if (param === 'skip') onCloseTour();
-        },
-        [step]
-    );
-
     const content_data = BOT_BUILDER_MOBILE.find(({ key }) => key === step);
-    const onClickNext = React.useCallback(() => {
-        onChange('inc');
-        onTourEnd(step, has_started_onboarding_tour);
-    }, [step]);
 
     const bot_tour_text = !has_started_onboarding_tour && step === 3 ? localize('Finish') : localize('Next');
 
     const tour_button_text = has_started_onboarding_tour && step_key === 0 ? localize('Start') : bot_tour_text;
 
-    return (
-        <>
+    const botBuilderTour = () => {
+        return (
             <div
                 className={classNames('dbot-slider', {
                     'dbot-slider__bot-builder-tour': !has_started_onboarding_tour,
-                    'dbot-slider--active': has_started_onboarding_tour && step === 1,
-                    'dbot-slider--tour-position': has_started_onboarding_tour && step_key !== 0,
                 })}
             >
-                {has_started_onboarding_tour && header && step_key !== 0 && (
+                {content_data && <Accordion content_data={content_data} expanded />}
+                <div className='dbot-slider__status'>
+                    <div className='dbot-slider__progress-bar'>
+                        {
+                            <ProgressBarOnboarding
+                                step={step}
+                                amount_of_steps={Object.keys(
+                                    !has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE
+                                )}
+                                setStep={setStep}
+                            />
+                        }
+                    </div>
+                    <div className='dbot-slider__button-group'>
+                        {step !== 1 && (
+                            <TourButton
+                                onClick={() => {
+                                    setStep(step - 1);
+                                }}
+                                label={localize('Previous')}
+                            />
+                        )}
+                        <TourButton
+                            type='danger'
+                            onClick={() => {
+                                setStep(step + 1);
+                                onTourEnd(step, false);
+                            }}
+                            label={tour_button_text}
+                        />
+                    </div>
+                </div>
+            </div>
+        );
+    };
+    const onBoardTour = () => {
+        return (
+            <div
+                className={classNames('dbot-slider', {
+                    //'dbot-slider__bot-builder-tour': !has_started_onboarding_tour,
+                    'dbot-slider--active': step === 1,
+                })}
+            >
+                {step_key !== 0 && (
                     <div className='dbot-slider__navbar'>
                         <Text
                             color='less-prominent'
@@ -145,7 +173,7 @@ const TourSlider = observer(() => {
                     </div>
                 )}
 
-                {has_started_onboarding_tour && header && (
+                {header && (
                     <Text
                         color='prominent'
                         weight='bold'
@@ -158,12 +186,12 @@ const TourSlider = observer(() => {
                         {localize(header)}
                     </Text>
                 )}
-                {has_started_onboarding_tour && img && (
+                {img && (
                     <div className='dbot-slider__image'>
                         <img src={img} />
                     </div>
                 )}
-                {has_started_onboarding_tour && content && (
+                {content && (
                     <>
                         {content.map(data => {
                             return (
@@ -182,43 +210,51 @@ const TourSlider = observer(() => {
                         })}
                     </>
                 )}
-                {!has_started_onboarding_tour && content_data && <Accordion content_data={content_data} expanded />}
+                {/* {!has_started_onboarding_tour && content_data && <Accordion content_data={content_data} expanded />} */}
                 <div className='dbot-slider__status'>
                     <div className='dbot-slider__progress-bar'>
-                        {(!has_started_onboarding_tour || (has_started_onboarding_tour && step !== 1)) && (
+                        {step !== 1 && (
                             <ProgressBarOnboarding
                                 step={step}
-                                amount_of_steps={Object.keys(
-                                    !has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE
-                                )}
+                                amount_of_steps={Object.keys(DBOT_ONBOARDING_MOBILE)}
                                 setStep={setStep}
                             />
                         )}
                     </div>
                     <div className='dbot-slider__button-group'>
-                        {has_started_onboarding_tour && step === 1 && (
+                        {step === 1 && (
                             <TourButton
                                 onClick={() => {
-                                    onChange('skip');
+                                    onCloseTour();
                                 }}
                                 label={localize('Skip')}
                             />
                         )}
-                        {((has_started_bot_builder_tour && step !== 1) ||
-                            (has_started_onboarding_tour && step !== 1 && step !== 2)) && (
+                        {step !== 1 && step !== 2 && (
                             <TourButton
                                 onClick={() => {
-                                    onChange('dec');
+                                    setStep(step - 1);
                                 }}
                                 label={localize('Previous')}
                             />
                         )}
-                        <TourButton type='danger' onClick={onClickNext} label={tour_button_text} />
+                        <TourButton
+                            type='danger'
+                            onClick={() => {
+                                setStep(step + 1);
+                                onTourEnd(step, true);
+                            }}
+                            label={tour_button_text}
+                        />
                     </div>
                 </div>
             </div>
-        </>
-    );
+        );
+    };
+
+    const renderContent = has_started_onboarding_tour ? onBoardTour : botBuilderTour;
+
+    return <>{renderContent()}</>;
 });
 
 export default TourSlider;

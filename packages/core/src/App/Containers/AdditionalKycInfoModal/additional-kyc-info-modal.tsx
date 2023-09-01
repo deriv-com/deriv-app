@@ -10,6 +10,7 @@ import {
     Div100vhContainer,
 } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { AdditionalKycInfoForm } from './Form';
 
 export const AdditionalKycInfoModal = observer(() => {
     const {
@@ -31,7 +32,7 @@ export const AdditionalKycInfoModal = observer(() => {
                         width='90rem'
                     >
                         <Modal.Body className='additional-kyc-info-modal__form'>
-                            <div>Form</div>
+                            <AdditionalKycInfoForm />
                         </Modal.Body>
                         <Modal.Footer has_separator>
                             <Button primary onClick={toggleAdditionalKycInfoModal}>

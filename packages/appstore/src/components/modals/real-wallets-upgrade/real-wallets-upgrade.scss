@@ -9,13 +9,11 @@
 
     &__content {
         max-width: 77.6rem;
-        margin: 0 auto;
+        margin: 5rem auto 0;
         text-align: center;
-        margin-top: 5rem;
 
         @include mobile {
-            margin-top: 2rem;
-            margin-bottom: 8rem;
+            margin: 2rem auto 8rem;
         }
     }
 

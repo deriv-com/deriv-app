@@ -21,6 +21,7 @@ export default class RunPanelStore {
             is_sell_requested: observable,
             run_id: observable,
             error_type: observable,
+            show_bot_stop_message: observable,
             statistics: computed,
             is_stop_button_visible: computed,
             is_stop_button_disabled: computed,
@@ -52,6 +53,7 @@ export default class RunPanelStore {
             setContractStage: action.bound,
             setHasOpenContract: action.bound,
             setIsRunning: action.bound,
+            setShowBotStopMessage: action.bound,
             onMount: action.bound,
             onUnmount: action.bound,
             handleInvalidToken: action.bound,
@@ -82,6 +84,7 @@ export default class RunPanelStore {
     is_drawer_open = true;
     is_dialog_open = false;
     is_sell_requested = false;
+    show_bot_stop_message = false;
 
     run_id = '';
 
@@ -139,6 +142,10 @@ export default class RunPanelStore {
             this.has_open_contract ||
             (journal.unfiltered_messages.length === 0 && transactions.elements.length === 0)
         );
+    }
+
+    setShowBotStopMessage(value) {
+        this.show_bot_stop_message = value;
     }
 
     async performSelfExclusionCheck() {
@@ -207,15 +214,20 @@ export default class RunPanelStore {
             this.setContractStage(contract_stages.STARTING);
             this.dbot.runBot();
         });
+        this.setShowBotStopMessage(false);
     }
 
     onStopButtonClick() {
         const { is_multiplier } = this.root_store.summary_card;
+        const { summary_card } = this.root_store;
 
         if (is_multiplier) {
             this.showStopMultiplierContractDialog();
         } else {
             this.stopBot();
+            this.dbot.terminateBot();
+            summary_card.clear();
+            this.setShowBotStopMessage(true);
         }
     }
 
@@ -553,7 +565,7 @@ export default class RunPanelStore {
 
     onBotTradeAgain(is_trade_again) {
         if (!is_trade_again) {
-            this.onStopButtonClick();
+            this.stopBot();
         }
     }
 

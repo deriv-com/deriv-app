@@ -10,22 +10,36 @@ import {
     Text,
     useCopyToClipboard,
 } from '@deriv/components';
+import { websiteUrl } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import MyProfileSeparatorContainer from 'Components/my-profile/my-profile-separator-container';
+import { buy_sell } from 'Constants/buy-sell';
+import { ad_type } from 'Constants/floating-rate';
 import { TAdvert } from 'Types';
-import ShareMyAdsIcons from './share-my-ads-socials';
 import ShareMyAdsCard from './share-my-ads-card';
+import ShareMyAdsSocials from './share-my-ads-socials';
 
 const ShareMyAdsModal = ({ advert }: TAdvert) => {
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
+    const { account_currency, advertiser_details, id, local_currency, rate_display, rate_type, type } = advert;
+    const { id: advertiser_id } = advertiser_details;
+    const { hideModal, is_modal_open } = useModalManagerContext();
 
     const divRef = React.useRef(null);
-    // TODO: replace with proper url when available
-    const advert_url = window.location.href;
-
-    const { hideModal, is_modal_open } = useModalManagerContext();
+    const advert_url = `${websiteUrl()}cashier/p2p/advertiser?id=${advertiser_id}&advert_id=${id}`;
+    const is_buy_ad = type === buy_sell.BUY;
+    const custom_message = localize(
+        "Hi! I'd like to exchange {{first_currency}} for {{second_currency}} at {{rate_display}}{{rate_type}} on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n\n{{- advert_url}}\n\nThanks!",
+        {
+            first_currency: is_buy_ad ? local_currency : account_currency,
+            second_currency: is_buy_ad ? account_currency : local_currency,
+            rate_display,
+            rate_type: rate_type === ad_type.FLOAT ? '%' : ` ${local_currency}`,
+            advert_url,
+        }
+    );
 
     const onCopy = (event: { stopPropagation: () => void }) => {
         copyToClipboard(advert_url);
@@ -33,23 +47,20 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
         event.stopPropagation();
     };
 
-    const handleGenerateImage = () => {
+    const handleGenerateImage = async () => {
         if (divRef.current) {
-            toPng(divRef.current).then(dataUrl => {
-                const link = document.createElement('a');
-                link.download = `${advert.type}_${advert.id}.png`;
-                link.href = dataUrl;
-                link.click();
-            });
+            const file_name = `${advert.type}_${advert.id}.png`;
+            const dataUrl = await toPng(divRef.current);
+            const link = document.createElement('a');
+            link.download = file_name;
+            link.href = dataUrl;
+            link.click();
         }
     };
 
-    // TODO: Replace with proper message and url when available
     const handleShareLink = () => {
         navigator.share({
-            url: advert_url,
-            title: 'P2P Advert',
-            text: 'This is my advert!',
+            text: custom_message,
         });
     };
 
@@ -67,15 +78,9 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
     }, [is_copied]);
 
     return (
-        <React.Fragment>
-            <Modal
-                has_close_icon
-                is_open={is_modal_open}
-                title={localize('Share this ad')}
-                toggleModal={hideModal}
-                width='71rem'
-            >
-                <Modal.Body className='share-my-ads-modal__body'>
+        <Modal is_open={is_modal_open} title={localize('Share this ad')} toggleModal={hideModal} width='71rem'>
+            <Modal.Body className='share-my-ads-modal__body'>
+                <React.Fragment>
                     <DesktopWrapper>
                         <Text>
                             <Localize i18n_default_text='Promote your ad by sharing the QR code and link.' />
@@ -117,7 +122,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                                 <Text weight='bold'>
                                     <Localize i18n_default_text='Share link to' />
                                 </Text>
-                                <ShareMyAdsIcons />
+                                <ShareMyAdsSocials advert_url={advert_url} custom_message={custom_message} />
                                 <MyProfileSeparatorContainer.Line
                                     className='share-my-ads-modal__line'
                                     is_invisible={false}
@@ -127,7 +132,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                                 </Text>
                                 <div className='share-my-ads-modal__copy'>
                                     <Text className='share-my-ads-modal__copy-link' color='less-prominent'>
-                                        <Localize i18n_default_text='Click {{- link}}' values={{ link: advert_url }} />
+                                        <Localize i18n_default_text='{{- link}}' values={{ link: advert_url }} />
                                     </Text>
                                     <div className='share-my-ads-modal__copy-clipboard'>
                                         <Clipboard
@@ -143,9 +148,9 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                             </div>
                         </DesktopWrapper>
                     </div>
-                </Modal.Body>
-            </Modal>
-        </React.Fragment>
+                </React.Fragment>
+            </Modal.Body>
+        </Modal>
     );
 };
 

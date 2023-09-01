@@ -1,14 +1,15 @@
 import React from 'react';
+import classNames from 'classnames';
 import { FacebookShareButton, TelegramShareButton, TwitterShareButton, WhatsappShareButton } from 'react-share';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
-import classNames from 'classnames';
 
-const ShareMyAdsSocials = () => {
-    // TODO: replace with proper url and message when available
-    const advert_url = window.location.href;
-    const custom_message = 'This is my advert!';
+type TShareMyAdsSocialsProps = {
+    advert_url: string;
+    custom_message: string;
+};
 
+const ShareMyAdsSocials = ({ advert_url, custom_message }: TShareMyAdsSocialsProps) => {
     const share_buttons = [
         {
             ShareButton: WhatsappShareButton,
@@ -22,14 +23,14 @@ const ShareMyAdsSocials = () => {
         {
             ShareButton: TwitterShareButton,
             icon: 'IcStockTwitter',
-            messagePropName: 'quote',
+            messagePropName: 'title',
             size: 28,
             small_icon: true,
             text: 'Twitter',
         },
         {
             ShareButton: 'a',
-            href: `https://mail.google.com/mail/?view=cm&fs=1&body=${advert_url}`,
+            href: `https://mail.google.com/mail/?view=cm&fs=1&body=${custom_message}`,
             icon: 'IcStockGoogle',
             rel: 'noreferrer',
             size: 28,
@@ -44,7 +45,7 @@ const ShareMyAdsSocials = () => {
             {share_buttons.map(({ ShareButton, href, icon, messagePropName, rel, size, small_icon, target, text }) => (
                 <ShareButton
                     key={text}
-                    url={advert_url}
+                    url={text === 'Facebook' ? advert_url : ' '}
                     {...(messagePropName && { [messagePropName]: custom_message })}
                     {...(href && { href })}
                     {...(target && { target: '_blank' })}

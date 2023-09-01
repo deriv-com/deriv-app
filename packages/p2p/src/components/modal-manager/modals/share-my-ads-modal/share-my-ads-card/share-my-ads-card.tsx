@@ -1,9 +1,10 @@
 import React from 'react';
-import { QRCode } from 'react-qrcode-logo';
+import { QRCodeSVG } from 'qrcode.react';
 import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import { base64_images } from 'Constants/base64-images';
+import { ad_type } from 'Constants/floating-rate';
 import { TAdvertProps } from 'Types';
 
 type TShareMyAdsCardProps = {
@@ -13,18 +14,16 @@ type TShareMyAdsCardProps = {
 };
 
 const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) => {
-    const { account_currency, id, max_order_amount_limit_display, min_order_amount_limit_display, rate_display, type } =
-        advert;
-
-    const options = {
-        enableCORS: true,
-        size: isMobile() ? 120 : 150,
-        removeQrCodeBehindLogo: true,
-        logoPadding: 4,
-        logoImage: base64_images.dp2p_logo,
-        logoWidth: isMobile() ? 30 : 40,
-        logoHeight: isMobile() ? 30 : 40,
-    };
+    const {
+        account_currency,
+        id,
+        local_currency,
+        max_order_amount_limit_display,
+        min_order_amount_limit_display,
+        rate_display,
+        rate_type,
+        type,
+    } = advert;
 
     return (
         <div className='share-my-ads-card' ref={divRef}>
@@ -52,13 +51,23 @@ const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) =>
                         {min_order_amount_limit_display} - {max_order_amount_limit_display} {account_currency}
                     </Text>
                     <Text color='colored-background' size='xs' weight='bold'>
-                        {rate_display}%
+                        {rate_display}
+                        {rate_type === ad_type.FIXED ? ` ${local_currency}` : '%'}
                     </Text>
                 </div>
             </div>
             <div className='share-my-ads-card__qr'>
                 <div className='share-my-ads-card__qr-container'>
-                    <QRCode value={advert_url} {...options} />
+                    <QRCodeSVG
+                        value={advert_url}
+                        size={isMobile() ? 120 : 140}
+                        imageSettings={{
+                            src: base64_images.dp2p_logo,
+                            height: 25,
+                            width: 25,
+                            excavate: true,
+                        }}
+                    />
                 </div>
                 <Text className='share-my-ads-card__qr-text' color='less-prominent' size='xxs'>
                     <Localize i18n_default_text='Scan this code to order via Deriv P2P' />

@@ -21,7 +21,7 @@
         &__card {
             display: flex;
             flex-direction: column;
-            width: 50%;
+            width: 48%;
 
             @include mobile {
                 align-items: center;
@@ -97,6 +97,6 @@
 
     &__share {
         padding-left: 2.4rem;
-        width: 50%;
+        width: 52%;
     }
 }

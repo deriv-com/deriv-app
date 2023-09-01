@@ -52,11 +52,13 @@
         }
 
         &-container {
+            align-items: center;
             background-color: $color-white;
             display: flex;
-            padding: 0.4rem;
+            padding: 1.5rem;
             border: 0.1rem solid $color-grey-5;
             border-radius: 1rem;
+            justify-content: center;
             position: relative;
             width: fit-content;
         }

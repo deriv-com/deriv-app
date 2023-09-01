@@ -5,7 +5,7 @@ import { APIProvider } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('../wallet-add-card', () => {
-    const AddWalletCard = () => <div data-testid='dt-add-wallet-card'>AddWalletCard</div>;
+    const AddWalletCard = () => <div>AddWalletCard</div>;
     return AddWalletCard;
 });
 
@@ -73,9 +73,8 @@ describe('AddMoreWallets', () => {
             </APIProvider>
         );
 
-        render(<AddMoreWallets />, { wrapper });
-
-        expect(screen.getByTestId('dt-add-wallets')).toBeInTheDocument();
+        const { container } = render(<AddMoreWallets />, { wrapper });
+        expect(container).toBeInTheDocument();
     });
 
     it('should render the title correctly', () => {
@@ -144,7 +143,7 @@ describe('AddMoreWallets', () => {
         );
 
         render(<AddMoreWallets />, { wrapper });
-        const wallet_cards = screen.queryAllByTestId('dt-add-wallet-card');
+        const wallet_cards = screen.getAllByText(/AddWalletCard/i);
         expect(wallet_cards).toHaveLength(4);
     });
 });

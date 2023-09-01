@@ -163,10 +163,10 @@ describe('<WalletCardsCarousel />', () => {
 
         render(<WalletCardsCarousel />, { wrapper });
 
-        const btn1 = screen.queryByText(/Deposit/i);
-        const btn2 = screen.queryByText(/Withdraw/i);
-        const btn3 = screen.queryByText(/Transfer/i);
-        const btn4 = screen.queryByText(/Transactions/i);
+        const btn1 = screen.getByRole('button', { name: /Deposit/i });
+        const btn2 = screen.getByRole('button', { name: /Withdraw/i });
+        const btn3 = screen.getByRole('button', { name: /Transfer/i });
+        const btn4 = screen.getByRole('button', { name: /Transactions/i });
 
         expect(btn1).toBeInTheDocument();
         expect(btn2).toBeInTheDocument();
@@ -205,9 +205,9 @@ describe('<WalletCardsCarousel />', () => {
 
         render(<WalletCardsCarousel />, { wrapper });
 
-        const btn1 = screen.queryByText(/Transfer/i);
-        const btn2 = screen.queryByText(/Transactions/i);
-        const btn3 = screen.queryByText(/Reset balance/i);
+        const btn1 = screen.getByRole('button', { name: /Transfer/i });
+        const btn2 = screen.getByRole('button', { name: /Transactions/i });
+        const btn3 = screen.getByRole('button', { name: /Reset balance/i });
 
         expect(btn1).toBeInTheDocument();
         expect(btn2).toBeInTheDocument();

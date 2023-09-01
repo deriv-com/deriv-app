@@ -104,7 +104,7 @@ type TIconTypes =
     | 'SmartTraderBlue'
     | 'CFDs';
 
-interface AvailableAccount {
+type AvailableAccount = {
     name: string;
     is_item_blurry?: boolean;
     has_applauncher_account?: boolean;
@@ -118,7 +118,7 @@ interface AvailableAccount {
     availability: TRegionAvailability;
     short_code_and_region?: string;
     login?: string;
-}
+};
 
 interface ExistingMT5Account {
     account_type: string;
@@ -299,7 +299,7 @@ type IncrementedProperties<N extends number> = {
     [K in keyof LoginParams as `${string & K}${N}`]: string;
 };
 
-export type LoginURLParams<N extends number> = LoginParams & IncrementedProperties<N>;
+type LoginURLParams<N extends number> = LoginParams & IncrementedProperties<N>;
 type TStandPoint = {
     financial_company: string;
     gaming_company: string;

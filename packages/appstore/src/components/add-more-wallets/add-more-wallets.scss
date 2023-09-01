@@ -39,16 +39,6 @@
         &-description {
             align-items: flex-start;
             gap: 0.8rem;
-            &__header {
-                @include mobile {
-                    font-size: var(--text-size-xs);
-                }
-            }
-            &__text {
-                @include mobile {
-                    line-height: var(--text-lh-s);
-                }
-            }
         }
         &-wrapper {
             align-items: center;

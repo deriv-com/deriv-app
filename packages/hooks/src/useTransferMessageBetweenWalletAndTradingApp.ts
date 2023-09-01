@@ -1,9 +1,21 @@
 import { useState } from 'react';
+
 import useExchangeRate from './useExchangeRate';
 
-const checkTradingApp = (account_type: string) => {
-    const trading_account_types = ['standard', 'trading', 'ctrader', 'derivez', 'dxtrade', 'mt5'];
+const checkIsTradingAccount = (account_type: string) => {
+    const trading_account_types = ['ctrader', 'derivez', 'dxtrade', 'mt5', 'trading'];
     return trading_account_types.includes(account_type);
+};
+
+const trading_account_mapper = (category: string, type: string): string => {
+    if (category === 'fiat')
+        switch (type) {
+            case 'trading':
+                return 'dtrade';
+            default:
+                return type;
+        }
+    return 'virtual';
 };
 
 /*
@@ -16,35 +28,34 @@ const checkTradingApp = (account_type: string) => {
 const useTransferMessageBetweenWalletAndTradingApp = (
     from_account: any,
     to_account: any,
-    account_limits: any,
-    getMessageContent: any
-) => {
-    const { getRate } = useExchangeRate();
-    const message_list = [];
-    let limits;
+    account_limits: any
+): Array<any> => {
+    let message_list: Array<any> = [];
 
-    // need to do limit exchange
-    if (from_account && to_account) {
-        if (from_account.account_type === 'wallet' && checkTradingApp(to_account.account_type)) {
-            limits = account_limits?.daily_transfers[to_account.account_type];
-            console.log('=> limits', limits);
-            return [
-                {
-                    variant: 'base',
-                    id: 69420,
-                    message: getMessageContent(
-                        limits.available,
-                        'USD',
-                        'Usd walleT',
-                        'Dtrader',
-                        parseFloat(limits.available) === parseFloat(limits.allowed)
-                    ),
-                    type: 'success',
-                },
-            ];
+    const { getRate } = useExchangeRate();
+
+    if (from_account && to_account)
+        if (from_account.account_type === 'wallet' && checkIsTradingAccount(to_account.account_type)) {
+            const limits =
+                account_limits.daily_transfers[trading_account_mapper(to_account.type, to_account.account_type)];
+            console.log('=> type to_account', parseFloat(limits.available), to_account.type);
+
+            message_list.push({
+                code:
+                    from_account.demo_account === 0
+                        ? 'WalletToTradingAppDailyLimit'
+                        : 'DemoWalletToTradingAppDailyLimit',
+                mt5_market_type: to_account.mt5_market_type,
+                is_first_transfer: parseFloat(limits?.allowed) !== parseFloat(limits?.available),
+                limit: !from_account.demo_account
+                    ? parseFloat(limits?.available) * getRate(from_account.currency)
+                    : parseFloat(limits?.available),
+                currency: from_account.currency,
+                type: 'success',
+            });
         }
-    }
-    return [];
+
+    return message_list;
 };
 
 export default useTransferMessageBetweenWalletAndTradingApp;

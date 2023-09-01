@@ -1,16 +1,15 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, Formik, Form, FormikHelpers } from 'formik';
-import { AmountInput, AnimatedList, AlertMessage, Button, Loading } from '@deriv/components';
-import { useCurrencyConfig, useTransferMessageList, useWalletTransfer } from '@deriv/hooks';
+import { AmountInput, Button, Loading } from '@deriv/components';
+import { useCurrencyConfig, useWalletTransfer } from '@deriv/hooks';
 import { validNumber } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import TransferAccountSelector from './transfer-account-selector';
 import { getAccountName } from 'Constants/utils';
-import type { TMessageItem } from 'Types';
-import { getDailyLimitTransferMessages } from 'Constants/wallet-transfer-messages';
 import './wallet-transfer.scss';
+import { WalletTransferMessages } from './components/wallet-transfer-messages';
 
 type TWalletTransferProps = {
     contentScrollHandler: React.UIEventHandler<HTMLDivElement>;
@@ -20,14 +19,14 @@ type TWalletTransferProps = {
 
 const Divider = () => <div className='wallet-transfer__divider' />;
 
-const initial_demo_balance = 10000.0;
+// const initial_demo_balance = 10000.0;
 
-const ERROR_CODES = {
-    is_demo: {
-        between_min_max: 'BetweenMinMax',
-        insufficient_fund: 'InsufficientFund',
-    },
-};
+// const ERROR_CODES = {
+//     is_demo: {
+//         between_min_max: 'BetweenMinMax',
+//         insufficient_fund: 'InsufficientFund',
+//     },
+// };
 
 const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisible }: TWalletTransferProps) => {
     const { client, ui, traders_hub } = useStore();
@@ -48,9 +47,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         setToAccount,
     } = useWalletTransfer();
 
-    // const [message_list, setMessageList] = React.useState<TMessageItem[]>([]);
-    const { message_list } = useTransferMessageList(from_account, to_account, getDailyLimitTransferMessages);
-    console.log('=> message_list', message_list);
+    const [message_list, setMessageList] = React.useState<any[]>([]);
 
     const portal_id = is_mobile ? 'mobile_list_modal_root' : 'modal_root';
 
@@ -193,7 +190,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                                 getConfig(from_account?.currency || '')?.fractional_digits || 0
                                             }
                                             disabled={false}
-                                            has_error={message_list.some(el => el.type === 'error')}
+                                            /*                                           has_error={message_list.some(el => el.type === 'error')} */
                                             initial_value={field.value}
                                             label={localize('Amount you send')}
                                             onChange={(value: number) => {
@@ -221,11 +218,17 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                     value={from_account}
                                 />
                             </div>
-                            <AnimatedList>
+                            {/* <AnimatedList>
+                                
                                 {message_list.map(item => (
                                     <AlertMessage key={item.id} {...item} />
                                 ))}
-                            </AnimatedList>
+                            </AnimatedList> */}
+                            <WalletTransferMessages
+                                from_account={from_account}
+                                to_account={to_account}
+                                setMessageList={setMessageList}
+                            />
                             <div className='wallet-transfer__tile'>
                                 <Field name='to_amount'>
                                     {({ field }: FieldProps<number>) => (
@@ -236,7 +239,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                                 getConfig(to_account?.currency || '')?.fractional_digits || 0
                                             }
                                             disabled={is_amount_to_input_disabled}
-                                            has_error={message_list.some(el => el.type === 'error')}
+                                            /*                                             has_error={message_list.some(el => el.type === 'error')} */
                                             initial_value={field.value}
                                             label={localize('Amount you receive')}
                                             onChange={(value: number) => {
@@ -269,9 +272,8 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                 large
                                 type='submit'
                                 disabled={
-                                    is_amount_to_input_disabled ||
-                                    values.to_amount === 0 ||
-                                    message_list.some(el => el.type === 'error')
+                                    is_amount_to_input_disabled || values.to_amount === 0
+                                    /* || message_list.some(el => el.type === 'error') */
                                 }
                             >
                                 {localize('Transfer')}

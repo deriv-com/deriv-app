@@ -25,7 +25,7 @@ jest.mock('../withdrawal-locked', () => jest.fn(() => 'WithdrawalLocked'));
 jest.mock('Components/no-balance', () => jest.fn(() => 'NoBalance'));
 jest.mock('Components/error', () => jest.fn(() => 'Error'));
 jest.mock('../withdraw', () => jest.fn(() => 'Withdraw'));
-jest.mock('../crypto-withdraw-form', () => jest.fn(() => 'CryptoWithdrawForm'));
+jest.mock('../crypto-withdrawal', () => jest.fn(() => 'CryptoWithdrawal'));
 jest.mock('../crypto-withdraw-receipt', () => jest.fn(() => 'CryptoWithdrawReceipt'));
 jest.mock('Components/crypto-transactions-history', () => jest.fn(() => 'CryptoTransactionsHistory'));
 jest.mock('../withdrawal-verification-email', () => jest.fn(() => 'WithdrawalVerificationEmail'));

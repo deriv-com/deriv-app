@@ -12,7 +12,6 @@
 
     &__title {
         @include mobile {
-            padding-left: 1.5rem;
             font-size: var(--text-size-m);
             padding-left: 1.6rem;
         }
@@ -40,16 +39,6 @@
         &-description {
             align-items: flex-start;
             gap: 0.8rem;
-            &__header {
-                @include mobile {
-                    font-size: var(--text-size-xs);
-                }
-            }
-            &__text {
-                @include mobile {
-                    line-height: var(--text-lh-s);
-                }
-            }
         }
         &-wrapper {
             align-items: center;

@@ -34,6 +34,7 @@ const WalletButton = ({ button, is_desktop_wallet, is_disabled, is_open }: TProp
                     color={is_disabled ? 'disabled' : 'prominent'}
                     size='xs'
                     className='wallet-button__desktop-item-text'
+                    role='button'
                 >
                     {button.text}
                 </Text>
@@ -44,7 +45,7 @@ const WalletButton = ({ button, is_desktop_wallet, is_disabled, is_open }: TProp
             <div className='wallet-button__mobile-item-icon'>
                 <Icon icon={button.icon} />
             </div>
-            <Text size='xxxxs' className='wallet-button__mobile-item-text'>
+            <Text size='xxxxs' className='wallet-button__mobile-item-text' role='button'>
                 {button.text}
             </Text>
         </div>

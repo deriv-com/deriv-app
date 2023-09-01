@@ -1,13 +1,8 @@
 import React from 'react';
 import RealWalletsUpgrade from '../real-wallets-upgrade';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { APIProvider } from '@deriv/api';
-
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    Modal: () => <div>Modal</div>,
-}));
 
 describe('<RealWalletsUpgrade />', () => {
     test('should render the Modal', async () => {

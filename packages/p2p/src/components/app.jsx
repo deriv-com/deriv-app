@@ -4,7 +4,7 @@ import { reaction } from 'mobx';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Loading } from '@deriv/components';
-import { routes, isMobile, WS } from '@deriv/shared';
+import { routes, WS } from '@deriv/shared';
 import ServerTime from 'Utils/server-time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
@@ -17,7 +17,7 @@ import Routes from './routes/routes.jsx';
 import './app.scss';
 
 const App = () => {
-    const list_item_limit = isMobile() ? 10 : 50;
+    const list_item_limit = is_mobile ? 10 : 50;
     const { data, error } = useP2POrderList({
         p2p_order_list: 1,
         subscribe: 1,

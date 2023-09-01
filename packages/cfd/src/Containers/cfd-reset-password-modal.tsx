@@ -13,7 +13,7 @@ const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TReset
     const reset_password_type = localStorage.getItem('cfd_reset_password_type') || 'main'; // Default to main
     const has_intent =
         reset_password_intent &&
-        /(real|demo)\.(financial_stp|financial|synthetic|synthetic_svg|synthetic_bvi|financial_svg|financial_bvi|financial_fx|financial_v|all_svg|dxtrade)/.test(
+        /(real|demo)\.(all|all_svg|dxtrade|synthetic|synthetic_svg|synthetic_bvi|financial|financial_svg|financial_stp|financial_bvi|financial_fx|financial_v)/.test(
             reset_password_intent
         );
 

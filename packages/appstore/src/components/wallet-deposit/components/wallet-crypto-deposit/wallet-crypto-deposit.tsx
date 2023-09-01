@@ -15,18 +15,19 @@ const WalletCryptoDeposit = observer(() => {
             <div className='crypto-container__details-container'>
                 <DepositCryptoCurrencyDetails />
                 <DepositCryptoWalletAddress />
-                {is_mobile && (
+                {is_mobile ? (
                     <>
                         <Divider />
+                        <div className='details-container__onramp-side-note'>
+                            <DepositCryptoSideNoteTryFiatOnRamp />
+                        </div>
                         <DepositCryptoSideNotes />
-                        <Divider />
                     </>
+                ) : (
+                    <div className='details-container__onramp-side-note'>
+                        <DepositCryptoSideNoteTryFiatOnRamp />
+                    </div>
                 )}
-
-                {/* This should be in the side notes, Need to talk to the design team to change it */}
-                <div className='details-container__onramp-side-note'>
-                    <DepositCryptoSideNoteTryFiatOnRamp />
-                </div>
             </div>
             {!is_mobile && (
                 <div className='crypto-container__side-notes-container'>

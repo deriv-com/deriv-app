@@ -5,6 +5,7 @@ import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 import MT5AccountTypeModal from './account-type-modal';
 import RegulatorsCompareModal from './regulators-compare-modal';
 import { useStores } from 'Stores';
+import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import CFDServerErrorDialog from '@deriv/cfd/src/Containers/cfd-server-error-dialog';
 import JurisdictionModal from '@deriv/cfd/src/Containers/jurisdiction-modal/jurisdiction-modal';
 import CFDPasswordModal from '@deriv/cfd/src/Containers/cfd-password-modal';
@@ -53,8 +54,16 @@ const ModalManager = () => {
         setShouldShowCooldownModal,
         is_reset_trading_password_modal_visible,
         setResetTradingPasswordModalOpen,
+        is_mt5_migration_modal_open,
+        toggleMT5MigrationModal,
     } = ui;
     const { is_demo, is_account_transfer_modal_open, toggleAccountTransferModal } = traders_hub;
+
+    // const { svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
+    // console.log('svg_accounts_to_migrate', svg_accounts_to_migrate);
+    // if (svg_accounts_to_migrate) {
+    //     toggleMT5MigrationModal();
+    // }
 
     const [password_manager, setPasswordManager] = React.useState<{
         is_visible: boolean;

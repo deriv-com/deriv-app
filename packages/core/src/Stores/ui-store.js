@@ -138,6 +138,7 @@ export default class UIStore extends BaseStore {
 
     // MT5 account needed modal
     is_account_needed_modal_on = false;
+    is_mt5_migration_modal_visible = false;
     account_needed_modal_props = {
         target: '',
         target_label: '',
@@ -276,6 +277,7 @@ export default class UIStore extends BaseStore {
             is_trading_assessment_for_existing_user_enabled: observable,
             is_trading_assessment_for_new_user_enabled: observable,
             is_welcome_modal_visible: observable,
+            is_mt5_migration_modal_visible: observable,
             manage_real_account_tab_index: observable,
             modal_index: observable,
             notification_messages_ui: observable,
@@ -397,6 +399,7 @@ export default class UIStore extends BaseStore {
             toggleLanguageSettingsModal: action.bound,
             toggleUnsupportedContractModal: action.bound,
             toggleUpdateEmailModal: action.bound,
+            toggleMT5MigrationModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -923,5 +926,9 @@ export default class UIStore extends BaseStore {
 
     setSubSectionIndex(index) {
         this.sub_section_index = index;
+    }
+
+    toggleMT5MigrationModal() {
+        this.is_mt5_migration_modal_visible = !this.is_mt5_migration_modal_visible;
     }
 }

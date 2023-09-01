@@ -326,6 +326,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_real_acc_signup_on: false,
             is_need_real_account_for_cashier_modal_visible: false,
             is_chart_layout_default: false,
+            is_mt5_migration_modal_open: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
             setIsAcuityModalOpen: jest.fn(),
             setAppContentsScrollRef: jest.fn(),
@@ -349,6 +350,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleShouldShowRealAccountsList: jest.fn(),
             is_reset_trading_password_modal_visible: false,
             setResetTradingPasswordModalOpen: jest.fn(),
+            toggleMT5MigrationModal: jest.fn(),
         },
         traders_hub: {
             closeModal: jest.fn(),

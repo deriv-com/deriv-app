@@ -67,7 +67,7 @@ const Basis = observer(
             const localized_message = <Localize i18n_default_text='Should not be 0 or empty' />;
             const min_max_stake_message = (
                 <Localize
-                    i18n_default_text={`Stake must be between ${min_stake} ${currency} and ${max_stake} ${currency}`}
+                    i18n_default_text={`Stake must be between {{min_stake}} {{currency}} and {{max_stake}} {{currency}}`}
                 />
             );
             const selected_value = parseFloat(value.toString());

@@ -45,7 +45,7 @@ const MobileWidget = observer(({ toggleDigitsWidget, is_collapsed }) => {
         }
     };
 
-    // tab_index 0 is duration and  1 is amount
+    // tab_index 0 is duration and 1 is amount
     const toggleWidget = tab_index => {
         setTabIndex(tab_index);
         setIsOpen(!is_open);
@@ -93,7 +93,7 @@ const MobileWidget = observer(({ toggleDigitsWidget, is_collapsed }) => {
             {is_multiplier ? (
                 <MultiplierAmountWidget />
             ) : (
-                <div id='duration_amount_selector' className='mobile-widget'>
+                <div id='duration_amount_selector' className='mobile-widget duration_amount_selector'>
                     <div className='mobile-widget__duration' onClick={() => toggleWidget(0)}>
                         {getHumanReadableDuration()}
                     </div>

@@ -223,10 +223,9 @@ const ProofOfAddressForm = observer(
                     ...{ is_submit_success: true, is_btn_loading: false },
                 });
 
-                const { identity, needs_verification } = get_account_status.authentication;
-                const has_poi = !(identity && identity.status === 'none');
-                const needs_poi = needs_verification.length && needs_verification.includes('identity');
-                onSubmit?.(has_poi);
+                const { needs_verification } = get_account_status.authentication;
+                const needs_poi = !!needs_verification.length && needs_verification.includes('identity');
+                onSubmit?.(needs_poi);
 
                 ['authenticate', 'needs_poa', 'poa_expired'].forEach(key => {
                     removeNotificationMessage({ key });

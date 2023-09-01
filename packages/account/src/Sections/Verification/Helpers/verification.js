@@ -14,8 +14,8 @@ export const populateVerificationStatus = account_status => {
     const has_poa = !(document && document.status === 'none');
     const has_poi = !(identity && identity.status === 'none');
     const has_submitted_poa = document_status === 'pending' && !allow_poa_resubmission;
-    const needs_poa = needs_verification.length && needs_verification.includes('document');
-    const needs_poi = needs_verification.length && needs_verification.includes('identity');
+    const needs_poa = !!needs_verification.length && needs_verification.includes('document');
+    const needs_poi = !!needs_verification.length && needs_verification.includes('identity');
 
     const { idv, onfido, manual } = identity.services;
     const identity_last_attempt = attempts.latest;

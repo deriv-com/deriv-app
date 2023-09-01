@@ -172,7 +172,7 @@ const ClosingAccountReasonForm = ({ onBackClick, onConfirmClick }: TClosingAccou
 
     return (
         <Formik initialValues={initial_form_values} validate={validateFields} onSubmit={handleSubmitForm}>
-            {({ values, setFieldValue, errors, handleChange, dirty }) => (
+            {({ values, setFieldValue, errors, handleChange, dirty, isValid }) => (
                 <Form>
                     {getCloseAccountReasonsList().map(reason => (
                         <Field name={reason.name} key={reason.name}>
@@ -250,7 +250,7 @@ const ClosingAccountReasonForm = ({ onBackClick, onConfirmClick }: TClosingAccou
                                 ))}
                         </div>
                         <FormSubmitButton
-                            is_disabled={!dirty || Object.keys(errors).length > 0}
+                            is_disabled={!dirty || !isValid}
                             label={localize('Continue')}
                             has_cancel
                             cancel_label={localize('Back')}

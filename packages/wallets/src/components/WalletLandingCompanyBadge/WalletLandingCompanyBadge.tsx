@@ -1,16 +1,15 @@
 import React from 'react';
-import { useWalletAccountsList } from '@deriv/api';
 import './WalletLandingCompanyBadge.scss';
 
 type TProps = {
-    account: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
+    landing_company_name: string;
 };
 
-const WalletLandingCompanyBadge: React.FC<TProps> = ({ account }) => {
+const WalletLandingCompanyBadge: React.FC<TProps> = ({ landing_company_name }) => {
     return (
         <div className='wallet-landing-company__badge'>
             <div className='wallet-landing-company__name'>
-                <p>{account.landing_company_name}</p>
+                <p>{landing_company_name.toUpperCase()}</p>
             </div>
         </div>
     );

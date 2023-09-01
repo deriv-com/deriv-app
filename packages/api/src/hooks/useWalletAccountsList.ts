@@ -21,7 +21,7 @@ const useWalletAccountsList = () => {
                 /** Returns the wallet's currency type. ex: `Demo`, `USD`, etc. */
                 wallet_currency_type,
                 /** Landing company shortcode the account belongs to. */
-                landing_company_name: wallet.landing_company_name?.replace('maltainvest', 'malta').toUpperCase(),
+                landing_company_name: wallet.landing_company_name?.replace('maltainvest', 'malta'),
                 /** Indicating whether the wallet is a maltainvest wallet. */
                 is_malta_wallet: wallet.landing_company_name === 'malta',
             } as const;

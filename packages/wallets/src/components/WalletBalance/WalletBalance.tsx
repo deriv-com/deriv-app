@@ -11,7 +11,7 @@ const WalletBalance = ({
         <div className='wallet-balance__container'>
             <div className='wallet-balance__title'>Wallet balance</div>
             <div className='wallet-balance__value'>
-                {account.currency_config?.formatBalance(account?.balance)} {account?.currency}
+                {account.display_balance} {account?.currency}
             </div>
         </div>
     );

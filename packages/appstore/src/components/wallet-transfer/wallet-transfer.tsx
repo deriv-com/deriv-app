@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, Formik, Form, FormikHelpers } from 'formik';
-import { useCurrencyConfig } from '@deriv/api';
 import { AmountInput, Button, Loading, MessageList } from '@deriv/components';
-import { useWalletTransfer } from '@deriv/hooks';
+import { useWalletTransfer, useCurrencyConfig } from '@deriv/hooks';
 import { validNumber } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';

@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { useStore } from '@deriv/stores';
-import { useFetch, useCurrencyConfig } from '@deriv/api';
+import { useFetch } from '@deriv/api';
 import useActiveWallet from './useActiveWallet';
+import useCurrencyConfig from './useCurrencyConfig';
 import useExistingCFDAccounts from './useExistingCFDAccounts';
 import useWalletsList from './useWalletsList';
 

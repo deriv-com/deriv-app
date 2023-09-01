@@ -60,30 +60,6 @@ jest.mock('@deriv/api', () => ({
 
         return { data: undefined };
     }),
-    useCurrencyConfig: jest.fn(() => ({
-        getConfig: jest.fn((currency: string) => {
-            return {
-                USD: {
-                    name: 'US Dollar',
-                    type: 'fiat',
-                    code: 'USD',
-                    display_code: 'USD',
-                },
-                BTC: {
-                    name: 'Bitcoin',
-                    type: 'crypto',
-                    code: 'BTC',
-                    display_code: 'BTC',
-                },
-                UST: {
-                    name: 'USDT',
-                    type: 'crypto',
-                    code: 'UST',
-                    display_code: 'USDT',
-                },
-            }[currency];
-        }),
-    })),
 }));
 
 describe('AddWalletCard', () => {

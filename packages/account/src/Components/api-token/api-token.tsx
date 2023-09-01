@@ -12,6 +12,7 @@ import ApiTokenTable from './api-token-table';
 import ApiTokenContext from './api-token-context';
 import { TToken } from 'Types';
 import { observer, useStore } from '@deriv/stores';
+import { getApiTokenCardDetails } from 'Constants/api-token-card-details';
 
 const MIN_TOKEN = 2;
 const MAX_TOKEN = 32;
@@ -189,6 +190,8 @@ const ApiToken = () => {
         deleteToken,
     };
 
+    const api_token_card_array = getApiTokenCardDetails();
+
     return (
         <React.Fragment>
             <ApiTokenContext.Provider value={context_value}>
@@ -214,49 +217,31 @@ const ApiToken = () => {
                                                 item_title={localize('Select scopes based on the access you need.')}
                                             >
                                                 <div className='da-api-token__checkbox-wrapper'>
-                                                    <ApiTokenCard
-                                                        name='read'
-                                                        display_name={localize('Read')}
-                                                        description={
-                                                            <Localize i18n_default_text='This scope will allow third-party apps to view your account activity, settings, limits, balance sheets, trade purchase history, and more.' />
-                                                        }
-                                                    />
-                                                    <ApiTokenCard
-                                                        name='trade'
-                                                        display_name={localize('Trade')}
-                                                        description={
-                                                            <Localize i18n_default_text='This scope will allow third-party apps to buy and sell contracts for you, renew your expired purchases, and top up your demo accounts.' />
-                                                        }
-                                                    />
-                                                    <ApiTokenCard
-                                                        name='payments'
-                                                        display_name={localize('Payments')}
-                                                        description={
-                                                            <Localize i18n_default_text='This scope will allow third-party apps to withdraw to payment agents and make inter-account transfers for you.' />
-                                                        }
-                                                    />
-                                                    <ApiTokenCard
-                                                        name='trading_information'
-                                                        display_name={localize('Trading information')}
-                                                        description={
-                                                            <Localize i18n_default_text='This scope will allow third-party apps to view your trading history.' />
-                                                        }
-                                                    />
-                                                    <ApiTokenCard
-                                                        name='admin'
-                                                        display_name={localize('Admin')}
-                                                        description={
-                                                            <Localize i18n_default_text='This scope will allow third-party apps to open accounts for you, manage your settings and token usage, and more. ' />
-                                                        }
-                                                    >
-                                                        <InlineNoteWithIcon
-                                                            icon='IcAlertWarning'
-                                                            message={
-                                                                <Localize i18n_default_text='To avoid loss of funds, do not share tokens with the Admin scope with unauthorised parties.' />
-                                                            }
-                                                            title={localize('Note')}
-                                                        />
-                                                    </ApiTokenCard>
+                                                    {api_token_card_array.map(card =>
+                                                        card.name === 'admin' ? (
+                                                            <ApiTokenCard
+                                                                key={card.name}
+                                                                name={card.name}
+                                                                display_name={card.display_name}
+                                                                description={card.description}
+                                                            >
+                                                                <InlineNoteWithIcon
+                                                                    icon='IcAlertWarning'
+                                                                    message={
+                                                                        <Localize i18n_default_text='To avoid loss of funds, do not share tokens with the Admin scope with unauthorised parties.' />
+                                                                    }
+                                                                    title={localize('Note')}
+                                                                />
+                                                            </ApiTokenCard>
+                                                        ) : (
+                                                            <ApiTokenCard
+                                                                key={card.name}
+                                                                name={card.name}
+                                                                display_name={card.display_name}
+                                                                description={card.description}
+                                                            />
+                                                        )
+                                                    )}
                                                 </div>
                                             </Timeline.Item>
                                             <Timeline.Item

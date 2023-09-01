@@ -1,6 +1,17 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ContractTypeWidget from '../contract-type-widget';
+import { useStore } from '@deriv/stores';
+
+jest.mock('@deriv/stores', () => ({
+    ...jest.requireActual('@deriv/stores'),
+    observer: jest.fn(x => x),
+    useStore: jest.fn(() => ({
+        ui: {
+            is_mobile: false,
+        },
+    })),
+}));
 
 describe('<ContractTypeWidget />', () => {
     const list = [
@@ -72,6 +83,11 @@ describe('<ContractTypeWidget />', () => {
     };
 
     it('should render <ContractTypeMenu /> component when click on ', () => {
+        (useStore as jest.Mock).mockReturnValue({
+            ui: {
+                is_mobile: false,
+            },
+        });
         render(<ContractTypeWidget onChange={jest.fn()} list={list} value={item.value} />);
         expect(screen.getByTestId('dt_contract_widget')).toBeInTheDocument();
     });

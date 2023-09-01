@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import React from 'react';
 import { Money, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { observer } from '@deriv/stores';
-import { isMobile, isVanillaContract } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { isVanillaContract } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 type TMinMaxStakeInfo = {
@@ -13,6 +13,9 @@ type TStakeBoundary = { [key: string]: { min_stake: number; max_stake: number } 
 
 const MinMaxStakeInfo = observer(({ className }: TMinMaxStakeInfo) => {
     const { contract_type, currency, stake_boundary, vanilla_trade_type } = useTraderStore();
+    const {
+        ui: { is_mobile },
+    } = useStore();
     // remove assertion and local TStakeBoundary type after TS migration for trade package is complete
     const { min_stake, max_stake } =
         (isVanillaContract(contract_type)
@@ -28,7 +31,7 @@ const MinMaxStakeInfo = observer(({ className }: TMinMaxStakeInfo) => {
                         key={text}
                         as='p'
                         line_height='s'
-                        size={isMobile() ? 'xxs' : 'xxxs'}
+                        size={is_mobile ? 'xxs' : 'xxxs'}
                         className={`trade-container__stake-field--${text.toLowerCase()}`}
                     >
                         <Localize

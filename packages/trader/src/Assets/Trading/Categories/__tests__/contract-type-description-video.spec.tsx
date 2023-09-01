@@ -4,17 +4,11 @@ import { mockStore } from '@deriv/stores';
 import TraderProviders from '../../../../trader-providers';
 import ContractTypeDescriptionVideo from '../contract-type-description-video';
 import { TCoreStores } from '@deriv/stores/types';
-import { isMobile } from '@deriv/shared';
 
 const default_mocked_props = {
     selected_contract_type: 'vanilla',
     data_testid: 'dt_description_video',
 };
-
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(),
-}));
 
 describe('<ContractTypeDescriptionVideo />', () => {
     const mockContractTypeDescriptionVideo = (
@@ -28,7 +22,6 @@ describe('<ContractTypeDescriptionVideo />', () => {
         );
     };
     it('should render the component with video if selected_contract_type does support video', () => {
-        (isMobile as jest.Mock).mockReturnValue(false);
         const mock_root_store = mockStore({});
         render(mockContractTypeDescriptionVideo(mock_root_store, default_mocked_props));
         const video = screen.getByTestId(/description_video/i);
@@ -44,8 +37,7 @@ describe('<ContractTypeDescriptionVideo />', () => {
         expect(screen.getByTestId(/description_video/i)).toBeInTheDocument();
     });
     it('should render the component with video of proper width and height if it is mobile', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        const mock_root_store = mockStore({});
+        const mock_root_store = mockStore({ ui: { is_mobile: true } });
         render(mockContractTypeDescriptionVideo(mock_root_store, default_mocked_props));
         const video = screen.getByTestId(/description_video/i);
 

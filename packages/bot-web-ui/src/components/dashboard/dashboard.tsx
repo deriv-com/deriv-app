@@ -10,7 +10,6 @@ import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import RunPanel from '../run-panel';
 import RunStrategy from './dashboard-component/run-strategy';
-import BotNotification from './bot-notification';
 import DashboardComponent from './dashboard-component';
 import {
     DBOT_ONBOARDING,
@@ -21,6 +20,7 @@ import {
     tour_type,
 } from './joyride-config';
 import ReactJoyrideWrapper from './react-joyride-wrapper';
+import StrategyNotification from './strategy-notification';
 import TourSlider from './tour-slider';
 import TourTriggrerDialog from './tour-trigger-dialog';
 import Tutorial from './tutorial-tab';
@@ -264,7 +264,7 @@ const Dashboard = observer(() => {
             >
                 {dialog_options.message}
             </Dialog>
-            <BotNotification />
+            <StrategyNotification />
         </React.Fragment>
     );
 });

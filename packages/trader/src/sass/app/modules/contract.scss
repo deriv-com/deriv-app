@@ -52,6 +52,7 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
             }
             &-text {
                 &--collapsed {
+                    text-overflow: ellipsis;
                     -webkit-box-orient: vertical;
                     -webkit-line-clamp: 3;
                     display: -webkit-box;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ProgressBarOnboarding } from '@deriv/components';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { BOT_BUILDER_MOBILE } from '../config';
@@ -7,7 +8,7 @@ import { highlightLoadModalButton } from '../utils';
 import Accordion from './common/accordion';
 import TourButton from './common/tour-button';
 
-const BotBuilderTour = () => {
+const BotBuilderTour = observer(() => {
     const { dashboard, load_modal } = useDBotStore();
     const { toggleTourLoadModal } = load_modal;
     const { onTourEnd, has_started_bot_builder_tour, setTourActiveStep } = dashboard;
@@ -60,6 +61,6 @@ const BotBuilderTour = () => {
             </div>
         </div>
     );
-};
+});
 
 export default BotBuilderTour;

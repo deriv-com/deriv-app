@@ -109,53 +109,6 @@ commands:
           name: Tag
           command: echo "<< parameters.version_name >>-$(date -u +"%Y-%m-%dT%H:%M:%SZ")" > packages/core/dist/version
 
-  docker_build_push:
-    description: "Build and Push image to docker hub"
-    parameters:
-      docker_image_latest_tag:
-        type: string
-        default: "latest-staging"
-      docker_image_name:
-        type: string
-        default: "deriv-app"
-      docker_file:
-        type: string
-        default: "Dockerfile"
-    steps:
-      - setup_remote_docker
-      - run:
-          name: Building docker image
-          command: |
-            TAG=${CIRCLE_TAG:-$CIRCLE_SHA1}
-            docker build -t ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>:${TAG} -t ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>:<< parameters.docker_image_latest_tag >>  -f << parameters.docker_file >> .
-      - run:
-          name: Pushing Image to docker hub
-          command: |
-            TAG=${CIRCLE_TAG:-$CIRCLE_SHA1}
-            echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-            docker push ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>:<< parameters.docker_image_latest_tag >>
-            docker push ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>:${TAG}
-  k8s_deploy:
-    description: "Deploy to k8s cluster"
-    parameters:
-      k8s_namespace:
-        type: string
-        default: "deriv-app-staging"
-      k8s_service:
-        type: string
-        default: "deriv-app"
-    steps:
-      - k8s/install-kubectl
-      - run:
-          name: Deploying to k8s cluster to namespace << parameters.k8s_namespace >>
-          command: |
-            TAG=${CIRCLE_TAG:-$CIRCLE_SHA1}
-            export NAMESPACE=<< parameters.k8s_namespace >>
-            git clone https://github.com/binary-com/devops-ci-scripts
-            cd devops-ci-scripts/k8s-build_tools
-            echo $CA_CRT | base64 --decode > ca.crt
-            ./release.sh << parameters.k8s_service >> ${TAG}
-
   publish_to_pages_staging:
     description: "Publish to cloudflare pages"
     steps:
@@ -202,8 +155,6 @@ jobs:
           root: packages
           paths:
             - core
-      - docker_build_push
-      - k8s_deploy
       - notify_slack
     environment:
       NODE_ENV: staging
@@ -222,10 +173,8 @@ jobs:
           root: packages
           paths:
             - core
-      - docker_build_push:
-          docker_image_latest_tag: latest
-      - k8s_deploy:
-          k8s_namespace: "deriv-app-production"
+
+
       - notify_slack
     environment:
       NODE_ENV: staging

@@ -6,8 +6,7 @@ export { default as mock_get_financial_assessment } from './mocks/auth/get_finan
 export { default as mock_get_limits } from './mocks/auth/get_limits';
 export { default as mock_get_self_exclusion } from './mocks/auth/get_self_exclusion';
 export { default as mock_get_settings } from './mocks/auth/get_settings';
-export { default as mock_landing_company_svg } from './mocks/auth/landing_company_svg';
-export { default as mock_landing_company_th } from './mocks/auth/landing_company_th';
+export { default as mock_landing_company } from './mocks/auth/landing_company';
 export { default as mock_mt5_login_list } from './mocks/auth/mt5_login_list';
 export { default as mock_paymentagent_list } from './mocks/auth/paymentagent_list';
 export { default as mock_platform_dxtrade } from './mocks/auth/platform_dxtrade';

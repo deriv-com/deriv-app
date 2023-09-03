@@ -1,7 +1,7 @@
 import { Context } from 'Utils/mocks/mocks';
 
 export default function mock_landing_company(context: Context) {
-    if ('landing_company' in context.request && context.request.landing_company === 'th') {
+    if ('landing_company' in context.request) {
         context.response = {
             echo_req: {
                 landing_company: 'svg',

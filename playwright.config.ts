@@ -25,7 +25,7 @@ export default defineConfig({
     use: {
         // headless: !!process.env.CI,
         /* Base URL to use in actions like `await page.goto('/')`. */
-        baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL || 'https://localhost.binary.sx',
+        baseURL: 'https://localhost.binary.sx',
         ignoreHTTPSErrors: true,
 
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */

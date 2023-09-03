@@ -37,7 +37,7 @@ const WalletsCarousel = () => {
             <div className='wallets-carousel' ref={emblaRef}>
                 <section className='wallets-carousel__container'>
                     {data.map(item => (
-                        <div className='wallet-card' style={{ backgroundColor: item.background }} key={item.text}>
+                        <div className='wallets-card' style={{ backgroundColor: item.background }} key={item.text}>
                             {item.text}
                         </div>
                     ))}

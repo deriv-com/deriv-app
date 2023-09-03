@@ -1628,11 +1628,30 @@ export default class TradeStore extends BaseStore {
                     }
                     break;
                 case 'MARKET_SEARCH':
-                    if ('search_string' in option) {
+                    if (option.search_string) {
                         const { search_string } = option;
                         RudderStack.track('ce_market_types_form', {
                             action: 'search',
                             search_string,
+                            ...{ device_type, form_name },
+                        });
+                    }
+                    break;
+                case 'INDICATOR_SEARCH':
+                    if (option.search_string) {
+                        const { search_string } = option;
+                        RudderStack.track('ce_indicators_types_form', {
+                            action: 'search',
+                            search_string,
+                            ...{ device_type, form_name },
+                        });
+                    }
+                    break;
+                case 'INDICATORS_MODAL_TOGGLE':
+                    if ('is_open' in option) {
+                        const { is_open } = option;
+                        RudderStack.track('ce_indicators_types_form', {
+                            action: is_open ? 'open' : 'close',
                             ...{ device_type, form_name },
                         });
                     }

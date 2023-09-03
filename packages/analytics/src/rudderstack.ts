@@ -46,6 +46,26 @@ type VirtualSignupEmailConfirmationAction = {
     error_message?: string;
 };
 
+type IndicatorsTypesFormAction = {
+    action:
+        | 'open'
+        | 'close'
+        | 'add_active'
+        | 'clean_all_active'
+        | 'delete_active'
+        | 'edit_active'
+        | 'search'
+        | 'info_open'
+        | 'info_close';
+    form_name?: string;
+    indicator_type_name?: string;
+    indicators_category_name?: string;
+    search_string?: string;
+    subform_name?: string;
+    account_type: string;
+    device_type: string;
+};
+
 type MarketTypesFormAction = {
     action:
         | 'open'
@@ -116,6 +136,7 @@ type IdentifyAction = {
 
 type TEvents = {
     ce_chart_types_form: ChartTypesFormAction;
+    ce_indicators_types_form: IndicatorsTypesFormAction;
     ce_market_types_form: MarketTypesFormAction;
     ce_virtual_signup_form: VirtualSignupFormAction;
     ce_real_account_signup_form: RealAccountSignupFormAction;

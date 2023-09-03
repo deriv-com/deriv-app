@@ -1544,7 +1544,6 @@ export default class TradeStore extends BaseStore {
     chartStateChange(state, option) {
         if (option) {
             const market_close_prop = 'isClosed';
-            const account_type = this.root_store.client.loginid.substring(0, 2);
             const device_type = isMobile() ? 'mobile' : 'desktop';
             const form_name = 'default';
             switch (state) {
@@ -1561,7 +1560,7 @@ export default class TradeStore extends BaseStore {
                             action: is_open ? 'open' : 'close',
                             chart_type_name,
                             time_interval_name,
-                            ...{ account_type, device_type, form_name },
+                            ...{ device_type, form_name },
                         });
                     }
                     break;
@@ -1572,7 +1571,7 @@ export default class TradeStore extends BaseStore {
                             action: 'choose_chart_type',
                             chart_type_name,
                             time_interval_name,
-                            ...{ account_type, device_type, form_name },
+                            ...{ device_type, form_name },
                         });
                     }
                     break;
@@ -1583,7 +1582,7 @@ export default class TradeStore extends BaseStore {
                             action: 'choose_time_interval',
                             chart_type_name,
                             time_interval_name,
-                            ...{ account_type, device_type, form_name },
+                            ...{ device_type, form_name },
                         });
                     }
                     break;
@@ -1593,7 +1592,7 @@ export default class TradeStore extends BaseStore {
                         RudderStack.track('ce_market_types_form', {
                             action: is_open ? 'open' : 'close',
                             market_type_name,
-                            ...{ account_type, device_type, form_name },
+                            ...{ device_type, form_name },
                         });
                     }
                     break;
@@ -1604,7 +1603,27 @@ export default class TradeStore extends BaseStore {
                             action: 'choose_market_type',
                             market_type_name,
                             tab_market_name,
-                            ...{ account_type, device_type, form_name },
+                            ...{ device_type, form_name },
+                        });
+                    }
+                    break;
+                case 'MARKET_INFO_CLICK':
+                    if ('markets_category_name' in option) {
+                        const { markets_category_name } = option;
+                        RudderStack.track('ce_market_types_form', {
+                            action: 'info_redirect',
+                            markets_category_name,
+                            ...{ device_type, form_name },
+                        });
+                    }
+                    break;
+                case 'FAVORITE_MARKETS_TOGGLE':
+                    if ('is_favorite' in option) {
+                        const { is_favorite, market_type_name } = option;
+                        RudderStack.track('ce_market_types_form', {
+                            action: is_favorite ? 'add_to_favorites' : 'delete_from_favorites',
+                            market_type_name,
+                            ...{ device_type, form_name },
                         });
                     }
                     break;

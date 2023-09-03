@@ -1627,6 +1627,16 @@ export default class TradeStore extends BaseStore {
                         });
                     }
                     break;
+                case 'MARKET_SEARCH':
+                    if ('search_string' in option) {
+                        const { search_string } = option;
+                        RudderStack.track('ce_market_types_form', {
+                            action: 'search',
+                            search_string,
+                            ...{ device_type, form_name },
+                        });
+                    }
+                    break;
                 default:
             }
         }

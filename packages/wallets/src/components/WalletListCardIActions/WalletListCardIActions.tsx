@@ -4,7 +4,7 @@ import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
 import IcCashierWithdrawal from '../../public/images/ic-cashier-withdrawal.svg';
-import './WalletActions.scss';
+import './WalletListCardIActions.scss';
 
 const getWalletHeaderButtons = (is_demo: boolean, handleAction?: () => void) => {
     const buttons = [
@@ -39,11 +39,11 @@ const getWalletHeaderButtons = (is_demo: boolean, handleAction?: () => void) => 
     }));
 };
 
-const WalletHeaderActions = ({
-    account,
-}: {
+type TProps = {
     account: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
-}) => {
+};
+
+const WalletListCardIActions: React.FC<TProps> = ({ account }) => {
     const is_demo = account.is_virtual;
     return (
         <div className='wallets-header__actions'>
@@ -56,4 +56,4 @@ const WalletHeaderActions = ({
     );
 };
 
-export default WalletHeaderActions;
+export default WalletListCardIActions;

@@ -34,6 +34,10 @@ const FAQ = ({ type, content, src }: TDescription) => {
 };
 
 const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => {
+    // Setting the inner height of the document to the --vh variable to fix the issue of dynamic vh on mobile browsers
+    const vh = window.innerHeight;
+    document.body.style.setProperty('--vh', `${vh}px`);
+
     const { dashboard } = useDBotStore();
 
     const { faq_search_value } = dashboard;
@@ -41,13 +45,26 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
     const timer_id = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const handleAccordionClick = () => {
-        // Scroll to the top of the open accordion item.
-        // Need timer to first close the accordion item.
+        // Scroll to the top of the open accordion item. Need timer to first close the accordion item then scroll the new item to top.
         timer_id.current = setTimeout(() => {
-            const openAccordionItem = document?.querySelector('.dc-accordion__item--open');
-            openAccordionItem?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const faqWrapper = document?.querySelector('.faq__wrapper');
+            const openAccordionItem: HTMLElement | null = document?.querySelector('.dc-accordion__item--open');
+            const previousSibling = openAccordionItem?.previousElementSibling as HTMLElement;
+
+            if (openAccordionItem && previousSibling) {
+                faqWrapper?.scrollTo({
+                    top: previousSibling.offsetTop - 80,
+                    behavior: 'smooth',
+                });
+            } else if (openAccordionItem) {
+                faqWrapper?.scrollTo({
+                    top: 0,
+                    behavior: 'smooth',
+                });
+            }
+
             if (timer_id?.current) clearTimeout(timer_id.current);
-        }, 100);
+        }, 5);
     };
 
     useEffect(() => {

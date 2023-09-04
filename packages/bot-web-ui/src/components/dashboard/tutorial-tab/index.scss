@@ -107,7 +107,7 @@
         padding-bottom: 18px;
 
         @include mobile {
-            height: calc(100vh - 290px);
+            height: calc(var(--vh) - 280px);
         }
 
         &__nosearch {

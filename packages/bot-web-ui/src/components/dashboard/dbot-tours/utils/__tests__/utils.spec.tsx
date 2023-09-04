@@ -43,17 +43,17 @@ describe('Tour Functions and Handlers', () => {
         expect(storeSetting).toHaveBeenCalledTimes(1);
     });
 
-    test('getTourSettings calls getSetting with argument if not token', () => {
+    it('getTourSettings calls getSetting with argument if not token', () => {
         getTourSettings('status');
         expect(getSetting).toHaveBeenCalledWith(`${tour_type.key}_status`);
     });
 
-    test('getTourSettings calls getSetting with the correct arguments token', () => {
+    it('getTourSettings calls getSetting with the correct arguments token', () => {
         getTourSettings('token');
         expect(getSetting).toHaveBeenCalledWith(`${tour_type.key}_token`);
     });
 
-    test('handleJoyrideCallback updates tour status', () => {
+    it('handleJoyrideCallback updates tour status', () => {
         const data = { status: 'finished', action: 'close', index: 1 };
         handleJoyrideCallback(data);
         expect(tour_status_ended.key).toBe('finished');

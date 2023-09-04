@@ -1,5 +1,8 @@
 import useRealTotalAssetCurrency from './useTotalAssetCurrency';
 import useExchangeRate from './useExchangeRate';
+import { useStore } from '@deriv/stores';
+import { useCallback } from 'react';
+import useThrottle from './useThrottle';
 /**
  * we can use this hook to get the total balance of the given accounts list.
  * it loops through the accounts list and adds the balance of each account
@@ -12,9 +15,21 @@ type TUseTotalAccountBalance = {
     account_type?: string;
 };
 
+const useThrottledExchangeRate = (currency: string) => {
+    const { exchange_rates } = useStore();
+    const data = exchange_rates.data;
+    const rates = data?.rates;
+    const value = rates?.[currency] || 1;
+
+    const throttledValue = useThrottle(value, 20 * 1000);
+
+    return throttledValue;
+};
+
 const useTotalAccountBalance = (accounts: TUseTotalAccountBalance[]) => {
     const total_assets_real_currency = useRealTotalAssetCurrency();
     const { getRate } = useExchangeRate();
+    // const throttled_rates = useThrottledExchangeRate(total_assets_real_currency || '');
 
     if (!accounts.length) return { balance: 0, currency: total_assets_real_currency };
 

@@ -11,7 +11,7 @@ import {
     Checkbox,
     StaticUrl,
 } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 
@@ -51,9 +51,14 @@ const MigrateAccount = ({ to, type }: { to: string; type: string }) => {
     );
 };
 
-const MT5MigrationModal = observer(() => {
+type TMT5MigrationModalProps = {
+    openPasswordModal: (acc_type: unknown) => void;
+};
+
+const MT5MigrationModal = observer(({ openPasswordModal }: TMT5MigrationModalProps) => {
     const { ui } = useStore();
     const {
+        svg_accounts_to_migrate,
         no_of_svg_accounts_to_migrate,
         eligible_account_to_migrate,
         eligible_svg_to_bvi_derived_accounts,
@@ -62,7 +67,7 @@ const MT5MigrationModal = observer(() => {
         eligible_svg_to_vanuatu_financial_accounts,
     } = useMT5SVGEligibleToMigrate();
 
-    const { disableApp, enableApp, is_mt5_migration_modal_open } = ui;
+    const { disableApp, enableApp, is_mt5_migration_modal_open, toggleMT5MigrationModal } = ui;
     const [show_modal_front_side, setShowModalFrontSide] = React.useState(true);
     const [is_checked, setIsChecked] = React.useState(false);
     const modal_title = <Localize i18n_default_text='Enhancing your trading experience' />;
@@ -173,6 +178,17 @@ const MT5MigrationModal = observer(() => {
         </React.Fragment>
     );
 
+    React.useEffect(() => {
+        if (svg_accounts_to_migrate.length) {
+            toggleMT5MigrationModal();
+        }
+    }, []);
+
+    const onConfirmMigration = () => {
+        toggleMT5MigrationModal();
+        openPasswordModal({ category: 'real', type: 'financial' });
+    };
+
     return (
         <div>
             <React.Suspense fallback={<UILoader />}>
@@ -181,16 +197,15 @@ const MT5MigrationModal = observer(() => {
                     disableApp={disableApp}
                     enableApp={enableApp}
                     exit_classname='cfd-modal--custom-exit'
-                    is_open={true}
+                    is_open={is_mt5_migration_modal_open}
                     title={modal_title}
+                    toggleModal={toggleMT5MigrationModal}
                     width='58.8rem'
                     height={
                         show_modal_front_side ? (no_of_svg_accounts_to_migrate < 1 ? '54.2rem' : '44rem') : '61.6rem'
                     }
                 >
                     {show_modal_front_side ? <ShowFrontSide /> : <ShowBackSide />}
-
-                    {/* </Modal.Body> */}
 
                     {show_modal_front_side ? (
                         <Modal.Footer has_separator>
@@ -204,12 +219,7 @@ const MT5MigrationModal = observer(() => {
                                 Back
                             </Button>
 
-                            <Button
-                                type='button'
-                                large
-                                primary
-                                onClick={() => setShowModalFrontSide(false)} // need to toggle
-                            >
+                            <Button type='button' large primary onClick={onConfirmMigration}>
                                 Next
                             </Button>
                         </Modal.Footer>

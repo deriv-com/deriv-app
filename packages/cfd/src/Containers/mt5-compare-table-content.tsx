@@ -331,6 +331,7 @@ const DMT5CompareModalContent = observer(
                 category: is_demo_tab ? 'demo' : 'real',
                 type: selected_account_type(),
             };
+
             clearCFDError();
             setAccountType(type_of_account);
 

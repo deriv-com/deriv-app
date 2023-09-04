@@ -217,6 +217,15 @@ type TTradingPlatformAvailableAccount = {
     sub_account_type: string;
 };
 
+type TAvailableCFDAccounts = {
+    availability: 'Non-EU' | 'EU' | 'All';
+    description: string;
+    icon: 'Derived' | 'Financial' | 'DerivX' | 'SwapFree';
+    market_type: 'synthetic' | 'financial' | 'all' | 'gaming';
+    name: string;
+    platform: 'mt5' | 'dxtrade';
+};
+
 type TAuthenticationStatus = { document_status: string; identity_status: string };
 
 type TAddToastProps = {
@@ -673,13 +682,14 @@ type TTradersHubStore = {
     available_platforms: BrandConfig[];
     selected_region: TRegionAvailability;
     getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
-    available_dxtrade_accounts: AvailableAccount[];
     can_get_more_cfd_mt5_accounts: boolean;
     toggleAccountTypeModalVisibility: () => void;
     active_modal_tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions';
     setWalletModalActiveTab: (tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions') => void;
     active_modal_wallet_id?: string;
     setWalletModalActiveWalletID: (wallet_id?: string) => void;
+    available_cfd_accounts: TAvailableCFDAccounts[];
+    available_dxtrade_accounts: TAvailableCFDAccounts[];
     toggleIsTourOpen: (is_tour_open: boolean) => void;
     is_demo_low_risk: boolean;
     is_mt5_notification_modal_visible: boolean;

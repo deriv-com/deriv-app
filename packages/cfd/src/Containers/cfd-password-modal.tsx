@@ -42,6 +42,7 @@ import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { useCreateMT5Account } from '@deriv/api';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -431,6 +432,9 @@ const CFDPasswordForm = ({
 
         return onForgotPassword();
     };
+    const handleOnClick = () => {
+        handleSubmit();
+    };
 
     if (error_type === 'PasswordReset') {
         return (
@@ -443,7 +447,7 @@ const CFDPasswordForm = ({
                     </div>
                     <Formik onSubmit={closeModal} initialValues={{}}>
                         {({ handleSubmit }) => (
-                            <form onSubmit={handleSubmit}>
+                            <form onSubmit={handleOnClick}>
                                 <FormSubmitButton
                                     has_cancel={has_cancel_button}
                                     cancel_label={cancel_button_label}
@@ -623,7 +627,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         submitCFDPassword,
         new_account_response,
     } = useCfdStore();
-
+    // const { mutate: createMT5Account } = useCreateMT5Account();
     const history = useHistory();
 
     const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);

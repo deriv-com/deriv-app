@@ -14,3 +14,4 @@ export { default as useTradingAccountsList } from './useTradingAccountsList';
 export { default as useTradingPlatformAccounts } from './useTradingPlatformAccounts';
 export { default as useTradingPlatformAvailableAccounts } from './useTradingPlatformAvailableAccounts';
 export { default as useWalletAccountsList } from './useWalletAccountsList';
+export { default as useCreateMT5Account } from './useCreateMT5Account';

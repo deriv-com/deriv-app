@@ -42,7 +42,6 @@ import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
-// import { useCreateMT5Account } from '@deriv/api';
 import { useCreateMT5Account } from '../../../api/src/hooks';
 
 export type TCFDPasswordFormValues = { password: string };
@@ -639,7 +638,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         submitCFDPassword,
         new_account_response,
     } = useCfdStore();
-    // const { mutate: createMT5Account } = useCreateMT5Account();
 
     const history = useHistory();
 

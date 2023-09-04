@@ -16,26 +16,22 @@ import SocketCache from './socket_cache';
 import type { ConnectionConfig, ConnectionInstance, DerivAPIBasic, DerivAPIConstructorArgs } from './socket.types';
 
 export class ConnectionManager {
-    config: ConnectionConfig;
-    client_store: TClientStore;
+    client_store?: TClientStore;
     connections: ConnectionInstance[];
     active_connection?: ConnectionInstance;
     has_connected_before: boolean;
     is_switching_socket: boolean;
     is_disconnect_called: boolean;
     invalid_app_id: number | string;
-    wait: (api_call: string) => void;
     synchronize: (active_connection: ConnectionInstance) => void;
+    config: ConnectionConfig = {};
 
-    constructor({ config = {}, client_store, wait, synchronize }: DerivAPIConstructorArgs) {
+    constructor({ synchronize }: DerivAPIConstructorArgs) {
         this.synchronize = synchronize;
-        this.wait = wait;
-        this.client_store = client_store;
         this.invalid_app_id = 0;
         this.is_switching_socket = false;
         this.is_disconnect_called = false;
         this.has_connected_before = false;
-        this.config = config;
         const language = getLanguage();
         this.connections = Object.keys(websocket_servers).map(env => {
             return this.createConnectionInstance({
@@ -54,7 +50,25 @@ export class ConnectionManager {
             return;
         }
 
-        this.handleLoginIDChange();
+        const matching_connection = this.getActiveConnection();
+        this.active_connection = matching_connection;
+        if (this.active_connection) {
+            this.synchronize(this.active_connection);
+        }
+    }
+
+    setClientStore(client_store: TClientStore) {
+        this.client_store = client_store;
+    }
+
+    setConfig(config: ConnectionConfig) {
+        this.config = config;
+    }
+
+    wait(...responses: string[]) {
+        this.active_connection?.deriv_api.expectResponse(
+            responses.filter(r => !(r === 'authorize' && !this.client_store?.is_logged_in))
+        );
     }
 
     hasReadyState(...states: number[]) {
@@ -101,12 +115,18 @@ export class ConnectionManager {
         return true;
     }
 
-    handleLoginIDChange() {
-        if (window.localStorage.getItem('config.server_url')) return;
+    getActiveConnection() {
         const active_loginid = getActiveLoginID();
-        this.active_connection = this.connections.find(
+        const matching_connection = this.connections.find(
             c => c.id === (active_loginid && !/VRTC|VRW/.test(active_loginid) ? 'real' : 'demo')
         );
+        return matching_connection;
+    }
+
+    handleLoginIDChange() {
+        if (window.localStorage.getItem('config.server_url')) return;
+        const matching_connection = this.getActiveConnection();
+        this.active_connection = matching_connection;
 
         if (this.active_connection?.deriv_api) {
             this.attachEventHandlers(this.active_connection?.deriv_api);
@@ -143,7 +163,7 @@ export class ConnectionManager {
 
                 this.wait('website_status');
 
-                if (this.client_store.is_logged_in) {
+                if (this.client_store?.is_logged_in) {
                     const authorize_token = this.client_store.getToken();
                     deriv_api.authorize(authorize_token);
                 }

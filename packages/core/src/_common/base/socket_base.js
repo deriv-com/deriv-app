@@ -7,7 +7,14 @@ const { ConnectionManager } = require('./connection-manager');
  * reopen the closed connection and process the buffered requests
  */
 const BinarySocketBase = (() => {
-    let deriv_api, binary_socket, client_store, connection_manager;
+    const connection_manager = new ConnectionManager({
+        synchronize: active_connection => {
+            deriv_api = active_connection?.deriv_api;
+            binary_socket = active_connection?.connection;
+        },
+    });
+
+    let deriv_api, binary_socket, client_store;
 
     let config = {};
 
@@ -27,27 +34,13 @@ const BinarySocketBase = (() => {
 
     const hasReadyState = (...states) => connection_manager?.hasReadyState(states);
 
-    const synchronizeConnections = active_connection => {
-        if (active_connection) {
-            deriv_api = active_connection?.deriv_api;
-            binary_socket = active_connection?.connection;
-        }
-    };
-
     const init = ({ options, client }) => {
         if (typeof options === 'object' && config !== options) {
             config = options;
+            connection_manager.setConfig(config);
         }
+        connection_manager.setClientStore(client);
         client_store = client;
-
-        if (!connection_manager) {
-            connection_manager = new ConnectionManager({
-                config,
-                client_store,
-                wait,
-                synchronize: synchronizeConnections,
-            });
-        }
     };
 
     const openNewConnection = () => {

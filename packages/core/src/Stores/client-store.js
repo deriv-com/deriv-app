@@ -1952,7 +1952,7 @@ export default class ClientStore extends BaseStore {
         const should_switch_socket_connection = this.is_virtual || /VRTC/.test(from_login_id);
 
         if (should_switch_socket_connection) {
-            BinarySocket.closeAndOpenNewConnection();
+            BinarySocket.handleLoginIDChange();
             await BinarySocket.wait('authorize');
         } else {
             await WS.forgetAll('balance');

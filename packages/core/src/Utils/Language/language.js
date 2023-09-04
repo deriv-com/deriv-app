@@ -27,7 +27,7 @@ export const changeLanguage = (key, changeCurrentLanguage) => {
         window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
         changeLanguageTranslation(key, () => {
             changeCurrentLanguage(key);
-            BinarySocket.closeAndOpenNewConnection(key);
+            BinarySocket.handleLanguageChange(key);
         });
     });
 };

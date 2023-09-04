@@ -1,18 +1,13 @@
-import { TClientStore } from '@deriv/stores/types';
 import { Observable } from 'rxjs';
 
 export type DerivAPIConstructorArgs = {
-    language?: string;
-    config?: Record<string, unknown>;
-    client_store: TClientStore;
-    wait: (api_call: string) => void;
     synchronize: (active_connection: ConnectionInstance) => void;
 };
 
 export interface DerivAPIBasic {
     (args: DerivAPIConstructorArgs): void;
     authorize: (token: string) => void;
-    expectResponse: () => void;
+    expectResponse: (responses: string[]) => void;
     onOpen?: () => Observable<GenericResponse>;
     onMessage?: () => Observable<GenericResponse>;
     onClose?: () => Observable<GenericResponse>;

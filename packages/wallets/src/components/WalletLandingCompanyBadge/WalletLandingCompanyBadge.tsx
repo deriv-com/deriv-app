@@ -7,8 +7,8 @@ type TProps = {
 
 const WalletLandingCompanyBadge: React.FC<TProps> = ({ landing_company_name }) => {
     return (
-        <div className='wallet-landing-company__badge'>
-            <div className='wallet-landing-company__name'>
+        <div className='wallets-landing-company__badge'>
+            <div className='wallets-landing-company__name'>
                 <p>{landing_company_name.toUpperCase()}</p>
             </div>
         </div>

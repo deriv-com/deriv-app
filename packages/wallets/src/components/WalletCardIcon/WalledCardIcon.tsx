@@ -3,7 +3,7 @@ import './WalletCardIcon.scss';
 
 const WalletCardIcon: React.FC = () => {
     return (
-        <div className='wallet-card__icon'>
+        <div className='wallets-card__icon'>
             <p> Icon (Placeholder)</p>
         </div>
     );

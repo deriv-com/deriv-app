@@ -6,7 +6,7 @@ type TProps = {
 };
 
 const WalletCurrencyTitle: React.FC<TProps> = ({ currency }) => {
-    return <div className='wallet-currency__title'>{currency} Wallet</div>;
+    return <div className='wallets-currency__title'>{currency} Wallet</div>;
 };
 
 export default WalletCurrencyTitle;

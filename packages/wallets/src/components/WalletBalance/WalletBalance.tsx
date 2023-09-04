@@ -8,9 +8,9 @@ const WalletBalance = ({
     account: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
 }) => {
     return (
-        <div className='wallet-balance__container'>
-            <div className='wallet-balance__title'>Wallet balance</div>
-            <div className='wallet-balance__value'>
+        <div className='wallets-balance__container'>
+            <div className='wallets-balance__title'>Wallet balance</div>
+            <div className='wallets-balance__value'>
                 {account.display_balance} {account?.currency}
             </div>
         </div>

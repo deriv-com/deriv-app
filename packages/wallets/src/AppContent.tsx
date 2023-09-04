@@ -5,8 +5,8 @@ import './AppContent.scss';
 
 const AppContent: React.FC = () => {
     return (
-        <div className='wallet-app'>
-            <div className='wallet-app__content'>
+        <div className='wallets-app'>
+            <div className='wallets-app__content'>
                 <DesktopWalletsHeader />
             </div>
             {/* <WalletsCarousel /> */}

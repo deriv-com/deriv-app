@@ -1,9 +1,9 @@
 import React from 'react';
 import { useWalletAccountsList } from '@deriv/api';
 import IcDropdown from '../../public/images/ic-dropdown.svg';
-import WalletBalance from '../WalletBalance/WalletBalance';
+import WalletListCardIBalance from '../WalletListCardIBalance/WalletListCardIBalance';
 import WalletListCardIcon from '../WalletListCardIcon/WalletListCardIcon';
-import WalletListDetails from '../WalletListDetails/WalletListDetails';
+import WalletListCardIDetails from '../WalletListCardIDetails/WalletListCardIDetails';
 import './WalletListCard.scss';
 
 type TProps = {
@@ -16,9 +16,9 @@ const WalletListCard: React.FC<TProps> = ({ account }) => {
             <div className='wallets-list-header__content'>
                 <div className='wallets-list-header__details-container'>
                     <WalletListCardIcon />
-                    <WalletListDetails account={account} />
+                    <WalletListCardIDetails account={account} />
                 </div>
-                <WalletBalance account={account} />
+                <WalletListCardIBalance account={account} />
                 <div className='wallets-list-header__dropdown'>
                     <IcDropdown />
                 </div>

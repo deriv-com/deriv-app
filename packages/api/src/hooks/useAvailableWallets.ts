@@ -11,7 +11,7 @@ const useAvailableWallets = () => {
     /** Get the available wallets for the wallet account type */
     const modified_available_wallets = React.useMemo(() => {
         if (!account_type_data) return;
-        const { crypto, doughflow } = account_type_data?.wallet;
+        const { crypto, doughflow } = account_type_data?.wallet || {};
         const crypto_currencies = crypto?.currencies;
         const fiat_currencies = doughflow?.currencies;
 

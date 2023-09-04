@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTransferMessageList } from '@deriv/hooks';
+import { useWalletTransfer, useTransferMessageList } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import { AnimatedList, AlertMessage } from '@deriv/components';
 import { getAccountName } from 'Constants/utils';
@@ -11,6 +11,11 @@ type TMessageMapperParams = {
     limit: number;
     from_name: string;
     to_name: string;
+};
+
+type TWalletTransferMessagesProps = {
+    from_account: ReturnType<typeof useWalletTransfer>['from_account'];
+    to_account: ReturnType<typeof useWalletTransfer>['to_account'];
 };
 
 const message_code_to_message_mapper: any = {
@@ -35,7 +40,7 @@ const message_code_to_message_mapper: any = {
         }),
 };
 
-const WalletTransferMessages = ({ from_account, to_account }: any) => {
+const WalletTransferMessages = ({ from_account, to_account }: TWalletTransferMessagesProps) => {
     const { data: message_list } = useTransferMessageList(from_account, to_account);
 
     return (

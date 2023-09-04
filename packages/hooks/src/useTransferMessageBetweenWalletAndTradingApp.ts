@@ -32,6 +32,12 @@ const trading_account_mapper = {
         trading: 'virtual',
     },
 };
+const tradingAccountMapper = (account_type: string, currency_type: string): string => {
+    if (account_type === 'trading')
+        if (currency_type === 'demo') return 'virtual';
+        else return 'dtrade';
+    return account_type;
+};
 
 /**
  * Generates and returns the list of all messages to be shown for transfer between wallets and trading accounts linked to it.
@@ -57,8 +63,7 @@ const useTransferMessageBetweenWalletAndTradingApp = (
         if (from_account.account_type === 'wallet' && checkIsTradingAccount(to_account.account_type)) {
             let limits;
             if (to_account.account_type)
-                limits =
-                    account_limits.daily_transfers[trading_account_mapper[to_account.type][to_account.account_type]];
+                limits = account_limits.daily_transfers[tradingAccountMapper(to_account.account_type, to_account.type)];
 
             message_list.push({
                 code:

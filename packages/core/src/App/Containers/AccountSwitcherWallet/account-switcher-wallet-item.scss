@@ -11,6 +11,10 @@
         &--active {
             background-color: var(--general-active);
         }
+
+        &:hover:not(&--active) {
+            background-color: var(--general-hover);
+        }
     }
 
     &__content {

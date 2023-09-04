@@ -50,7 +50,7 @@ const useAccountsList = () => {
                     display_balance: Intl.NumberFormat(authorize_data?.preferred_language || 'en-US', {
                         minimumFractionDigits: account.currency_config?.fractional_digits || 2,
                         maximumFractionDigits: account.currency_config?.fractional_digits || 2,
-                        minimumIntegerDigits: 2,
+                        minimumIntegerDigits: 1,
                     }).format(balance),
                 };
             }),

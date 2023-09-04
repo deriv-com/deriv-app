@@ -6,3 +6,5 @@ export * from './WalletListCardBadge';
 export * from './WalletListCardIActions';
 export * from './WalletListCard';
 export * from './WalletListCardIDetails';
+export * from './AccountsList';
+export * from './WalletsCarousel';

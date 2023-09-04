@@ -31,7 +31,6 @@ const DTraderHeaderWallets = observer(() => {
     );
 
     const { is_in_progress } = useWalletMigration();
-    // const { is_virtual, balance, currency } = useActiveAccount();
     const active_account = useActiveAccount();
     const currency = active_account?.currency ?? '';
 

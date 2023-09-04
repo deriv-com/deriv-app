@@ -269,8 +269,17 @@ type TClientStore = {
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
+    email_address: string;
     has_any_real_account: boolean;
     getLimits: () => Promise<{ get_limits?: GetLimits }>;
+    getTwoFAStatus: () => Promise<
+        | boolean
+        | {
+              error: {
+                  message: string;
+              };
+          }
+    >;
     has_active_real_account: boolean;
     has_logged_out: boolean;
     has_maltainvest_account: boolean;

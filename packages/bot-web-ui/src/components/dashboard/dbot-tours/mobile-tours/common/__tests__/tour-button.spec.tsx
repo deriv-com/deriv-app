@@ -4,8 +4,8 @@ import TourButton from '../tour-button';
 
 const mocked_props = {
     label: 'Start Tour',
-    type: 'primary', // You can customize the type as needed
-    onClick: jest.fn(), // Mocking a click handler function
+    type: 'primary',
+    onClick: jest.fn(),
 };
 describe('<TourButton />', () => {
     it('should render TourButton with label', () => {

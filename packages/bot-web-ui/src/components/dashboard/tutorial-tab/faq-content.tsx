@@ -33,6 +33,15 @@ const FAQ = ({ type, content, src }: TDescription) => {
     );
 };
 
+const scrollToElement = (wrapper_element: HTMLElement, offset: number) => {
+    if (wrapper_element) {
+        wrapper_element.scrollTo({
+            top: offset,
+            behavior: 'smooth',
+        });
+    }
+};
+
 const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => {
     const { dashboard } = useDBotStore();
     const { faq_search_value } = dashboard;
@@ -43,21 +52,12 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
         // Scroll to the top of the open accordion item.
         // Need timer to first close the accordion item then scroll the new item to top.
         timer_id.current = setTimeout(() => {
-            if (faq_wrapper_element?.current) {
-                const open_accordion_element: HTMLElement | null =
-                    faq_wrapper_element?.current?.querySelector('.dc-accordion__item--open');
-                const previous_sibling_element = open_accordion_element?.previousElementSibling as HTMLElement;
-                if (previous_sibling_element) {
-                    faq_wrapper_element.current.scrollTo({
-                        top: previous_sibling_element.offsetTop - 80,
-                        behavior: 'smooth',
-                    });
-                } else if (open_accordion_element) {
-                    faq_wrapper_element.current.scrollTo({
-                        top: 0,
-                        behavior: 'smooth',
-                    });
-                }
+            const open_accordion_element: HTMLElement | null | undefined =
+                faq_wrapper_element.current?.querySelector('.dc-accordion__item--open');
+            const previous_sibling_element = open_accordion_element?.previousElementSibling as HTMLElement;
+            if (faq_wrapper_element?.current && open_accordion_element) {
+                const offset = previous_sibling_element ? previous_sibling_element.offsetTop - 80 : 0;
+                scrollToElement(faq_wrapper_element?.current, offset);
             }
             if (timer_id?.current) clearTimeout(timer_id.current);
         }, 5);

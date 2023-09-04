@@ -34,10 +34,6 @@ const FAQ = ({ type, content, src }: TDescription) => {
 };
 
 const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => {
-    // Setting the inner height of the document to the --vh variable to fix the issue of dynamic vh on mobile browsers
-    const vh = window.innerHeight;
-    document.body.style.setProperty('--vh', `${vh}px`);
-
     const { dashboard } = useDBotStore();
 
     const { faq_search_value } = dashboard;

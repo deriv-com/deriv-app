@@ -41,19 +41,20 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
     const timer_id = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const handleAccordionClick = () => {
-        // Scroll to the top of the open accordion item. Need timer to first close the accordion item then scroll the new item to top.
+        // Scroll to the top of the open accordion item.
+        // Need timer to first close the accordion item then scroll the new item to top.
         timer_id.current = setTimeout(() => {
-            const faqWrapper = document?.querySelector('.faq__wrapper');
-            const openAccordionItem: HTMLElement | null = document?.querySelector('.dc-accordion__item--open');
-            const previousSibling = openAccordionItem?.previousElementSibling as HTMLElement;
+            const faq_wrapper_element = document?.querySelector('.faq__wrapper');
+            const open_accordion_element: HTMLElement | null = document?.querySelector('.dc-accordion__item--open');
+            const previous_sibling_element = faq_wrapper_element?.previousElementSibling as HTMLElement;
 
-            if (openAccordionItem && previousSibling) {
-                faqWrapper?.scrollTo({
-                    top: previousSibling.offsetTop - 80,
+            if (open_accordion_element && previous_sibling_element) {
+                faq_wrapper_element?.scrollTo({
+                    top: previous_sibling_element.offsetTop - 80,
                     behavior: 'smooth',
                 });
-            } else if (openAccordionItem) {
-                faqWrapper?.scrollTo({
+            } else if (open_accordion_element) {
+                faq_wrapper_element?.scrollTo({
                     top: 0,
                     behavior: 'smooth',
                 });

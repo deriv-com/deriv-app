@@ -43,10 +43,6 @@ describe('<TwoFactorAuthentication/>', () => {
         common: {
             is_language_changing: false,
         },
-        ui: {
-            // @ts-expect-error component is passed from Store. Will be refactored later
-            notification_messages_ui: jest.fn(() => <div>Notification</div>),
-        },
     });
 
     const renderComponent = ({ store_config = store }) => {
@@ -227,6 +223,7 @@ describe('<TwoFactorAuthentication/>', () => {
             expect(title_3).toBeInTheDocument();
         });
     });
+
     it('should render DigitForm component when 2FA is enabled', async () => {
         const new_store_config = {
             ...store,

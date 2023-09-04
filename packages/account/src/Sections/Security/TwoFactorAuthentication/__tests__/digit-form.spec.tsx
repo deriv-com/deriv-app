@@ -147,6 +147,4 @@ describe('<DigitForm />', () => {
             expect(error).not.toBeInTheDocument();
         });
     });
-
-    // it('should ');
 });

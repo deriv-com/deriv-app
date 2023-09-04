@@ -289,7 +289,8 @@ const BuySellForm = props => {
                                                                             advertiser_payment_method.display_name ===
                                                                             add_payment_method
                                                                     );
-                                                                return matching_payment_methods.length > 0 ? (
+
+                                                                return matching_payment_methods?.length > 0 ? (
                                                                     matching_payment_methods.map(payment_method => (
                                                                         <PaymentMethodCard
                                                                             is_vertical_ellipsis_visible={false}

@@ -12,5 +12,5 @@ module.exports = {
     transformIgnorePatterns: ['/node_modules/(?!@enykeev/react-virtualized).+\\.js$'],
     setupFiles: ['<rootDir>/../../jest.setup.js'],
     setupFilesAfterEnv: ['<rootDir>/../../setupTests.js'],
-    testPathIgnorePatterns: ['/e2e-tests/'],
+    testPathIgnorePatterns: ['/integration-tests/'],
 };

@@ -9,7 +9,7 @@ type TAccountsListProps = {
 
 const AccountsList = ({ data }: TAccountsListProps) => {
     return (
-        <div className='accounts-list' style={{ backgroundColor: data.background }}>
+        <div className='wallets-accounts-list' style={{ backgroundColor: data.background }}>
             AccountsList
         </div>
     );

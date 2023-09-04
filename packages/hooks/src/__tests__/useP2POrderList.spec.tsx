@@ -41,7 +41,7 @@ describe('useP2POrdertList', () => {
                     list: [
                         // @ts-expect-error need to come up with a way to mock the return type of usePaginatedFetch
                         {
-                            id: 1,
+                            id: '1',
                             account_currency: 'USD',
                             amount: 0.1,
                             amount_display: '0.10',
@@ -49,7 +49,7 @@ describe('useP2POrdertList', () => {
                             contact_info: 'Created by script. Please call me 02203400',
                         },
                         {
-                            id: 2,
+                            id: '2',
                             account_currency: 'USD',
                             amount: 0.7,
                             amount_display: '0.70',

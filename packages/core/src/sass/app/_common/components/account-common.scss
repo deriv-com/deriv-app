@@ -336,6 +336,11 @@
                 .dc-hint-box {
                     justify-content: flex-start;
                     width: 100% !important;
+
+                    &__icon {
+                        min-width: fit-content;
+                        align-self: baseline;
+                    }
                 }
             }
 
@@ -497,7 +502,7 @@
 
         .dc-hint-box {
             border-radius: 0.8rem;
-            margin: 1.6rem auto 3.2rem;
+            margin: 1.6rem auto;
 
             @include desktop {
                 width: fit-content;
@@ -512,6 +517,17 @@
             &__icon {
                 @include mobile {
                     margin-top: 0.2rem;
+                    align-self: baseline;
+                }
+            }
+        }
+
+        .account-form__poi-confirm-example--status-message {
+            .dc-hint-box {
+                margin: 0;
+
+                .dc-icon {
+                    min-width: fit-content;
                     align-self: baseline;
                 }
             }

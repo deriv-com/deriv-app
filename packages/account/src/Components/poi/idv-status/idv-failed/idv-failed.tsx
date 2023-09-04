@@ -329,7 +329,7 @@ const IdvFailed = ({
                             <Localize i18n_default_text='Your identity verification failed because:' />
                         </Text>
                         <HintBox
-                            icon='IcCloseCircleRed'
+                            icon='IcAlertDanger'
                             icon_height={16}
                             icon_width={16}
                             message={

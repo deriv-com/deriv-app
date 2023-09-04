@@ -84,8 +84,23 @@ const PoiConfirmWithExampleFormContainer = ({
         );
         const data = await WS.setSettings(request);
 
+        const generic_error_message = (
+            <Localize i18n_default_text='Sorry, an internal error occurred. Hit the above checkbox to try again.' />
+        );
+
+        const duplicated_account_error_message = (
+            <Localize
+                i18n_default_text='An account with these details already exists. Please make sure the details you entered are corrrect as only one real account is allowed per client. If this is a mistake, contact us via <0>live chat</0>.'
+                components={[
+                    <span key={0} className='link link--orange' onClick={() => window.LC_API.open_chat_window()} />,
+                ]}
+            />
+        );
+
         if (data.error) {
-            setStatus({ error_msg: data.error.message });
+            const response_error =
+                data.error.code === 'DuplicateAccount' ? duplicated_account_error_message : generic_error_message;
+            setStatus({ error_msg: response_error });
             setSubmitting(false);
         } else {
             const response = await WS.authorized.storage.getSettings();
@@ -178,7 +193,7 @@ const PoiConfirmWithExampleFormContainer = ({
                                     icon_width={16}
                                     message={
                                         <Text as='p' size='xxxs'>
-                                            <Localize i18n_default_text='Sorry, an internal error occurred. Hit the above checkbox to try again.' />
+                                            {status?.error_msg}
                                         </Text>
                                     }
                                     is_danger

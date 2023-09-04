@@ -107,10 +107,23 @@ const IdvDocumentSubmit = ({
 
         const data = await WS.setSettings(request);
 
-        const generic_error_message = localize('Sorry, an internal error occurred. Click Verify to try again.');
+        const generic_error_message = (
+            <Localize i18n_default_text='Sorry, an internal error occurred. Click Verify to try again.' />
+        );
+
+        const duplicated_account_error_message = (
+            <Localize
+                i18n_default_text='An account with these details already exists. Please make sure the details you entered are corrrect as only one real account is allowed per client. If this is a mistake, contact us via <0>live chat</0>.'
+                components={[
+                    <span key={0} className='link link--orange' onClick={() => window.LC_API.open_chat_window()} />,
+                ]}
+            />
+        );
 
         if (data.error) {
-            setStatus({ error_message: generic_error_message });
+            const response_error =
+                data.error.code === 'DuplicateAccount' ? duplicated_account_error_message : generic_error_message;
+            setStatus({ error_message: response_error });
             setSubmitting(false);
             return;
         }

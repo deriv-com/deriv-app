@@ -370,6 +370,7 @@ const TickContract = RawMarkerMaker(
         }
         if (is_in_contract_details) return;
 
+        ctx.save();
         ctx.strokeStyle = color;
         ctx.fillStyle = color;
 

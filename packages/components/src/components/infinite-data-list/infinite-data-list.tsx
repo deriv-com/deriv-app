@@ -15,6 +15,8 @@ type TInfiniteDatalist = {
     has_filler: boolean;
     overscanRowCount: number;
     getRowSize?: (params: { index: number }) => number;
+    clearScroll?: () => void;
+    scrollToIndex?: number;
 };
 
 const InfiniteDataList = ({
@@ -29,6 +31,10 @@ const InfiniteDataList = ({
     rowRenderer,
     overscanRowCount,
     getRowSize,
+    clearScroll = () => {
+        // Do nothing.
+    },
+    scrollToIndex = -1,
 }: TInfiniteDatalist) => {
     const item_count = has_filler ? items.length - 1 : items.length;
     const row_count = has_more_items_to_load ? item_count + 1 : item_count;
@@ -49,6 +55,7 @@ const InfiniteDataList = ({
                 {({ onRowsRendered, registerChild }) => (
                     <DataList
                         className={data_list_className}
+                        clearScroll={clearScroll}
                         data_source={items}
                         getRowSize={getRowSize}
                         keyMapper={keyMapperFn}
@@ -56,6 +63,7 @@ const InfiniteDataList = ({
                         onScroll={onScroll}
                         overscanRowCount={overscanRowCount}
                         rowRenderer={rowRenderer}
+                        scrollToIndex={scrollToIndex}
                         setListRef={registerChild}
                     />
                 )}

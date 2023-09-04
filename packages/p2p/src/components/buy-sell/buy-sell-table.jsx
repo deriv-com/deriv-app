@@ -27,12 +27,16 @@ const BuySellRowRenderer = observer(BuySellRowRendererComponent);
 
 const BuySellTable = ({ onScroll }) => {
     const { buy_sell_store, my_profile_store } = useStores();
+    const { scroll_index, setScrollIndex } = buy_sell_store;
+    const [scrollToIndex, setScrollToIndex] = React.useState(0);
+
     const {
         client: { currency },
     } = useStore();
 
     React.useEffect(
         () => {
+            setScrollToIndex(scroll_index);
             my_profile_store.getPaymentMethodsList();
             reaction(
                 () => buy_sell_store.is_buy,
@@ -43,6 +47,11 @@ const BuySellTable = ({ onScroll }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     );
+
+    const clearScroll = () => {
+        setScrollToIndex(-1);
+        setScrollIndex(-1);
+    };
 
     if (buy_sell_store.is_loading) {
         return <Loading is_fullscreen={false} />;
@@ -107,9 +116,11 @@ const BuySellTable = ({ onScroll }) => {
                     )}
                     <Table.Body className='buy-sell__table-body'>
                         <InfiniteDataList
+                            clearScroll={clearScroll}
                             data_list_className='buy-sell__data-list'
                             items={buy_sell_store.rendered_items}
                             rowRenderer={props => <BuySellRowRenderer {...props} />}
+                            scrollToIndex={scrollToIndex}
                             loadMoreRowsFn={buy_sell_store.loadMoreItems}
                             has_filler
                             has_more_items_to_load={buy_sell_store.has_more_items_to_load}

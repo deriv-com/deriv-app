@@ -44,6 +44,7 @@ const BuySellRow = ({ row: advert }) => {
         advertiser_details,
         counterparty_type,
         effective_rate,
+        index,
         local_currency,
         max_order_amount_limit_display,
         min_order_amount_limit_display,
@@ -66,6 +67,7 @@ const BuySellRow = ({ row: advert }) => {
         market_rate: effective_rate,
     });
     const onClickRow = () => {
+        buy_sell_store.setScrollIndex(index);
         if (!general_store.is_advertiser) {
             buy_sell_store.setShouldShowVerification(true);
         } else if (!general_store.is_barred) {

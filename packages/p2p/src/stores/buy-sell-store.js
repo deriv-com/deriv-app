@@ -26,6 +26,7 @@ export default class BuySellStore extends BaseStore {
     local_currencies = [];
     local_currency = null;
     receive_amount = 0;
+    scroll_index = -1;
     search_results = [];
     search_term = '';
     selected_ad_state = {};
@@ -69,6 +70,7 @@ export default class BuySellStore extends BaseStore {
             local_currencies: observable,
             local_currency: observable,
             receive_amount: observable,
+            scroll_index: observable,
             search_results: observable,
             search_term: observable,
             selected_ad_state: observable,
@@ -120,6 +122,7 @@ export default class BuySellStore extends BaseStore {
             setLocalCurrencies: action.bound,
             setInitialReceiveAmount: action.bound,
             setReceiveAmount: action.bound,
+            setScrollIndex: action.bound,
             setSearchResults: action.bound,
             setSearchTerm: action.bound,
             setSelectedAdState: action.bound,
@@ -527,6 +530,10 @@ export default class BuySellStore extends BaseStore {
 
     setReceiveAmount(receive_amount) {
         this.receive_amount = receive_amount;
+    }
+
+    setScrollIndex(scroll_index) {
+        this.scroll_index = scroll_index;
     }
 
     setSearchResults(search_results) {

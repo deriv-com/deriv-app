@@ -36,6 +36,7 @@ export type TRow = { [key: string]: any };
 
 export type TDataList = {
     className?: string;
+    clearScroll?: () => void;
     data_source: TRow[];
     footer?: TRow;
     getRowAction?: (row: TRow) => { component: JSX.Element } | string;
@@ -45,6 +46,7 @@ export type TDataList = {
     onScroll?: React.UIEventHandler<HTMLDivElement>;
     passthrough?: TPassThrough;
     row_gap?: number;
+    scrollToIndex?: number;
     setListRef?: (ref: MeasuredCellParent) => void;
     rowRenderer: TRowRenderer;
     children?: React.ReactNode;
@@ -56,12 +58,16 @@ const DataList = React.memo(
     ({
         children,
         className,
+        clearScroll = () => {
+            // do nothing
+        },
         data_source,
         footer,
         getRowSize,
         keyMapper,
         onRowsRendered,
         onScroll,
+        scrollToIndex = -1,
         setListRef,
         overscanRowCount,
         ...other_props
@@ -113,7 +119,9 @@ const DataList = React.memo(
 
         const rowRenderer = ({ style, index, key, parent }: ListRowProps) => {
             const { getRowAction, passthrough, row_gap } = other_props;
-            const row = data_source[index];
+            const data = { index, ...data_source[index] };
+            const row = data;
+            // const row = {...data_source[index], index}
             const action = getRowAction && getRowAction(row);
             const destination_link = typeof action === 'string' ? action : undefined;
             const action_desc = typeof action === 'object' ? action : undefined;
@@ -147,6 +155,7 @@ const DataList = React.memo(
         };
 
         const handleScroll = (ev: Partial<React.UIEvent<HTMLDivElement>>) => {
+            if (scroll_top !== 0) clearScroll();
             let timeout;
 
             clearTimeout(timeout);
@@ -202,6 +211,8 @@ const DataList = React.memo(
                                             }
                                             rowRenderer={rowRenderer}
                                             scrollingResetTimeInterval={0}
+                                            scrollToIndex={scrollToIndex}
+                                            scrollToAlignment='start'
                                             width={width}
                                             {...(isDesktop()
                                                 ? { scrollTop: scroll_top, autoHeight: true }

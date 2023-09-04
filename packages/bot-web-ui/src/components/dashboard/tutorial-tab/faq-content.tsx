@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Accordion, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
@@ -35,36 +35,34 @@ const FAQ = ({ type, content, src }: TDescription) => {
 
 const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => {
     const { dashboard } = useDBotStore();
-
     const { faq_search_value } = dashboard;
-
+    const faq_wrapper_element = React.useRef<HTMLDivElement>(null);
     const timer_id = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const handleAccordionClick = () => {
         // Scroll to the top of the open accordion item.
         // Need timer to first close the accordion item then scroll the new item to top.
         timer_id.current = setTimeout(() => {
-            const faq_wrapper_element = document?.querySelector('.faq__wrapper');
             const open_accordion_element: HTMLElement | null = document?.querySelector('.dc-accordion__item--open');
             const previous_sibling_element = open_accordion_element?.previousElementSibling as HTMLElement;
-
-            if (open_accordion_element && previous_sibling_element) {
-                faq_wrapper_element?.scrollTo({
-                    top: previous_sibling_element.offsetTop - 80,
-                    behavior: 'smooth',
-                });
-            } else if (open_accordion_element) {
-                faq_wrapper_element?.scrollTo({
-                    top: 0,
-                    behavior: 'smooth',
-                });
+            if (faq_wrapper_element?.current && open_accordion_element) {
+                if (previous_sibling_element) {
+                    faq_wrapper_element.current.scrollTo({
+                        top: previous_sibling_element.offsetTop - 80,
+                        behavior: 'smooth',
+                    });
+                } else if (open_accordion_element) {
+                    faq_wrapper_element.current.scrollTo({
+                        top: 0,
+                        behavior: 'smooth',
+                    });
+                }
             }
-
             if (timer_id?.current) clearTimeout(timer_id.current);
         }, 5);
     };
 
-    useEffect(() => {
+    React.useEffect(() => {
         return () => {
             if (timer_id.current) clearTimeout(timer_id.current);
         };
@@ -92,7 +90,7 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
 
     return (
         <div>
-            <div className='faq__wrapper'>
+            <div className='faq__wrapper' ref={faq_wrapper_element}>
                 {!hide_header && (
                     <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
                         {localize('FAQ')}

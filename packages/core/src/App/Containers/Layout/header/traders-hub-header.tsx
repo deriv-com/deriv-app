@@ -48,9 +48,9 @@ const TradersHubHeader = observer(() => {
         toggleNeedRealAccountForCashierModal,
         toggleReadyToDepositModal,
     } = ui;
+    const history = useHistory();
     const { pathname } = useLocation();
     const cashier_routes = pathname.startsWith(routes.cashier);
-    const history = useHistory();
     const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
     const account_balance = formatMoney(currency, balance ?? '', true);
 

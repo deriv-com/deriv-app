@@ -5,7 +5,8 @@ import TradersHubHomeButton from '../traders-hub-home-button';
 
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
-    useHistory: () => ({ location: { pathname: '/appstore/traders-hub' } }),
+    useHistory: () => ({ history: {} }),
+    useLocation: () => ({ pathname: '/appstore/traders-hub' }),
 }));
 
 describe('TradersHubHomeButton', () => {

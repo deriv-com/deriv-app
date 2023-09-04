@@ -11,13 +11,8 @@ jest.mock('@deriv/shared', () => ({
 }));
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
-    useHistory: () => ({ location: { pathname: '/appstore/traders-hub' } }),
-}));
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useLocation: () => ({
-        pathname: '/appstore/traders-hub',
-    }),
+    useHistory: () => ({ history: {} }),
+    useLocation: () => ({ pathname: '/appstore/traders-hub' }),
 }));
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');

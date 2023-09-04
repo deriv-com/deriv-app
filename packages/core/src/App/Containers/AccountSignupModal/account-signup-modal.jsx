@@ -3,7 +3,7 @@ import { Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Checkbox, Dialog, Loading, Text } from '@deriv/components';
-import { getLocation, PlatformContext, isMobile } from '@deriv/shared';
+import { getLocation, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
@@ -14,7 +14,7 @@ import 'Sass/app/modules/account-signup.scss';
 import validateSignupFields from './validate-signup-fields.jsx';
 import { RudderStack } from '@deriv/analytics';
 
-const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, residence_list }) => {
+const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, residence_list, is_mobile }) => {
     const signupInitialValues = { citizenship: '', password: '', residence: '' };
     const { is_appstore } = React.useContext(PlatformContext);
     const [api_error, setApiError] = React.useState(false);
@@ -52,7 +52,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
             'ce_virtual_signup_form',
             {
                 action: 'signup_confirmed',
-                form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
             },
             {
                 is_anonymous: true,
@@ -63,7 +63,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
             'ce_virtual_signup_form',
             {
                 action: 'country_selection_screen_opened',
-                form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
             },
             {
                 is_anonymous: true,
@@ -97,7 +97,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                 'ce_virtual_signup_form',
                 {
                     action: 'signup_flow_error',
-                    form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                    form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
                     error_message: error,
                 },
                 {
@@ -112,7 +112,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                 'ce_virtual_signup_form',
                 {
                     action: 'signup_done',
-                    form_name: isMobile() ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                    form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
                 },
                 {
                     is_anonymous: true,
@@ -225,6 +225,7 @@ AccountSignup.propTypes = {
     onSignup: PropTypes.func,
     residence_list: PropTypes.array,
     isModalVisible: PropTypes.func,
+    is_mobile: PropTypes.bool,
 };
 
 const AccountSignupModal = ({
@@ -238,6 +239,7 @@ const AccountSignupModal = ({
     onSignup,
     residence_list,
     toggleAccountSignupModal,
+    is_mobile,
 }) => {
     React.useEffect(() => {
         // a logged in user should not be able to create a new account
@@ -261,6 +263,7 @@ const AccountSignupModal = ({
                 residence_list={residence_list}
                 isModalVisible={toggleAccountSignupModal}
                 enableApp={enableApp}
+                is_mobile={is_mobile}
             />
         </Dialog>
     );
@@ -277,6 +280,7 @@ AccountSignupModal.propTypes = {
     onSignup: PropTypes.func,
     residence_list: PropTypes.arrayOf(PropTypes.object),
     toggleAccountSignupModal: PropTypes.func,
+    is_mobile: PropTypes.bool,
 };
 
 export default connect(({ ui, client }) => ({
@@ -290,4 +294,5 @@ export default connect(({ ui, client }) => ({
     residence_list: client.residence_list,
     clients_country: client.clients_country,
     logout: client.logout,
+    is_mobile: ui.is_mobile,
 }))(AccountSignupModal);

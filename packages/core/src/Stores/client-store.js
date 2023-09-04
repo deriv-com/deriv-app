@@ -15,7 +15,6 @@ import {
     isDesktopOs,
     isEmptyObject,
     isLocal,
-    isMobile,
     isProduction,
     isStaging,
     isTestLink,
@@ -2263,7 +2262,7 @@ export default class ClientStore extends BaseStore {
                     {
                         action: 'signup_continued',
                         signup_provider: social_identity_provider,
-                        form_name: isMobile()
+                        form_name: this.root_store?.ui?.is_mobile
                             ? 'virtual_signup_web_mobile_default'
                             : 'virtual_signup_web_desktop_default',
                     },

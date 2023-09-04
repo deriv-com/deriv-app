@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { loginUrl, routes, PlatformContext, isMobile } from '@deriv/shared';
+import { loginUrl, routes, PlatformContext } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
@@ -20,6 +20,7 @@ const Redirect = ({
     setNewEmail,
     toggleResetEmailModal,
     toggleUpdateEmailModal,
+    is_mobile,
 }) => {
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
@@ -49,7 +50,7 @@ const Redirect = ({
                     'ce_virtual_signup_form',
                     {
                         action: 'email_confirmed',
-                        form_name: isMobile()
+                        form_name: is_mobile
                             ? 'virtual_signup_web_mobile_default'
                             : 'virtual_signup_web_desktop_default',
                         email: url_params.get('email'),
@@ -219,6 +220,7 @@ Redirect.propTypes = {
     toggleResetEmailModal: PropTypes.func,
     toggleUpdateEmailModal: PropTypes.func,
     verification_code: PropTypes.object,
+    is_mobile: PropTypes.bool,
 };
 
 export default withRouter(
@@ -236,5 +238,6 @@ export default withRouter(
         setNewEmail: client.setNewEmail,
         toggleResetEmailModal: ui.toggleResetEmailModal,
         toggleUpdateEmailModal: ui.toggleUpdateEmailModal,
+        is_mobile: ui.is_mobile,
     }))(Redirect)
 );

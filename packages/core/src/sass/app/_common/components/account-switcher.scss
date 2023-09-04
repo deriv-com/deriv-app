@@ -53,6 +53,10 @@
         z-index: 2;
         background: var(--general-main-1);
 
+        &--wallets {
+            width: 47rem;
+        }
+
         &:before {
             content: '';
             position: absolute;

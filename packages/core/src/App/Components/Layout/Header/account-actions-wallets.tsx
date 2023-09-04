@@ -11,7 +11,7 @@ import ToggleNotifications from './toggle-notifications.jsx';
 import 'Sass/app/_common/components/account-switcher.scss';
 
 const AccountInfoWallets = React.lazy(() =>
-    moduleLoader(() => import('App/Components/Layout/Header/account-info-wallets.tsx'))
+    moduleLoader(() => import('App/Components/Layout/Header/account-info-wallets'))
 );
 
 type TAccointActionsWallets = {

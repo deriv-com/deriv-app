@@ -52,6 +52,7 @@ const TradersHubHeader = observer(() => {
     const cashier_routes = pathname.startsWith(routes.cashier);
     const history = useHistory();
     const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
+    const account_balance = formatMoney(currency, balance ?? '', true);
 
     const filterPlatformsForClients = (payload: TPlatformConfig) =>
         payload.filter(config => {
@@ -130,7 +131,7 @@ const TradersHubHeader = observer(() => {
                                 <AccountInfo
                                     acc_switcher_disabled_message={account_switcher_disabled_message}
                                     account_type={account_type}
-                                    balance={formatMoney(currency, balance ?? '', true)}
+                                    balance={account_balance}
                                     country_standpoint={country_standpoint}
                                     currency={currency}
                                     is_dialog_on={is_accounts_switcher_on}
@@ -157,7 +158,7 @@ const TradersHubHeader = observer(() => {
                                     <AccountInfo
                                         acc_switcher_disabled_message={account_switcher_disabled_message}
                                         account_type={account_type}
-                                        balance={formatMoney(currency, balance ?? '', true)}
+                                        balance={account_balance}
                                         country_standpoint={country_standpoint}
                                         currency={currency}
                                         is_dialog_on={is_accounts_switcher_on}

@@ -491,19 +491,7 @@ const CFDPasswordForm = ({
             }}
             enableReinitialize
             validate={validatePassword}
-            onSubmit={values => {
-                createMT5Account({
-                    payload: {
-                        account_type: 'financial',
-                        mainPassword: values.password,
-                        email: 'hamza.muhammad+sg@deriv.com',
-                        leverage: 500,
-                        name: 'Johnny Derived',
-                        mt5_account_type: 'financial',
-                        country: 'id',
-                    },
-                });
-            }}
+            onSubmit={submitPassword}
         >
             {({
                 errors,

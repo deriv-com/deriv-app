@@ -1,8 +1,8 @@
 import React from 'react';
+import { Formik, Form } from 'formik';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ApiTokenCard from '../api-token-card';
-import { Formik, Form } from 'formik';
 
 describe('<ApiTokenCard />', () => {
     const mock_props = {

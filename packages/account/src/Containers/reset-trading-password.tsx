@@ -15,16 +15,24 @@ const ResetTradingPassword = observer(() => {
         setResetTradingPasswordModalOpen,
     } = ui;
     const location = useLocation();
+    const platform = React.useRef('');
     const query_params = new URLSearchParams(location.search);
-    const platform = /^trading_platform_(.*)_password_reset$/.exec(query_params.get('action') ?? '')?.[1];
+    const cfd_platform = /^trading_platform_(.*)_password_reset$/.exec(query_params.get('action') ?? '')?.[1];
+    if (cfd_platform) {
+        /**
+         * Keep the platform value reference to avoid value loss when modal re-renders due to route re-direction
+         */
+        platform.current = cfd_platform;
+    }
+
     const verification_code =
-        platform === CFD_PLATFORMS.MT5
+        platform.current === CFD_PLATFORMS.MT5
             ? client.verification_code.trading_platform_mt5_password_reset
             : client.verification_code.trading_platform_dxtrade_password_reset;
 
     return (
         <ResetTradingPasswordModal
-            platform={platform as TPlatforms}
+            platform={platform.current as TPlatforms}
             enableApp={enableApp}
             disableApp={disableApp}
             toggleResetTradingPasswordModal={setResetTradingPasswordModalOpen}

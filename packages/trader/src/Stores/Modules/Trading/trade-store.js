@@ -1656,6 +1656,18 @@ export default class TradeStore extends BaseStore {
                         });
                     }
                     break;
+                case 'INDICATOR_ADDED':
+                    if ('indicator_type_name' in option) {
+                        const { indicator_type_name, indicators_category_name, is_info_open } = option;
+                        RudderStack.track('ce_indicators_types_form', {
+                            action: 'add_active',
+                            indicator_type_name,
+                            indicators_category_name,
+                            subform_name: is_info_open ? 'indicators_info' : 'indicators_type',
+                            ...{ device_type, form_name },
+                        });
+                    }
+                    break;
                 default:
             }
         }

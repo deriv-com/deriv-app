@@ -54,7 +54,6 @@ const DTraderHeader = ({
     has_any_real_account,
     setTogglePlatformType,
     setWalletsMigrationInProgressPopup,
-    is_mobile,
 }) => {
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -169,7 +168,6 @@ const DTraderHeader = ({
                             toggleNotifications={toggleNotifications}
                             openRealAccountSignup={openRealAccountSignup}
                             is_deposit_button_disabled={is_in_progress}
-                            is_mobile={is_mobile}
                         />
                     </div>
                 </div>
@@ -219,7 +217,6 @@ DTraderHeader.propTypes = {
     has_any_real_account: PropTypes.bool,
     setTogglePlatformType: PropTypes.func,
     setWalletsMigrationInProgressPopup: PropTypes.func,
-    is_mobile: PropTypes.bool,
 };
 
 export default connect(({ client, common, ui, notifications, traders_hub }) => ({
@@ -259,5 +256,4 @@ export default connect(({ client, common, ui, notifications, traders_hub }) => (
     setTogglePlatformType: traders_hub.setTogglePlatformType,
     current_language: common.current_language,
     setWalletsMigrationInProgressPopup: client.setWalletsMigrationInProgressPopup,
-    is_mobile: ui.is_mobile,
 }))(withRouter(DTraderHeader));

@@ -221,6 +221,10 @@
                 @include mobile {
                     flex-direction: column;
                 }
+
+                &-image {
+                    align-self: center;
+                }
             }
         }
 

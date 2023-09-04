@@ -55,7 +55,7 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
             const open_accordion_element: HTMLElement | null | undefined =
                 faq_wrapper_element.current?.querySelector('.dc-accordion__item--open');
             const previous_sibling_element = open_accordion_element?.previousElementSibling as HTMLElement;
-            if (faq_wrapper_element?.current && open_accordion_element) {
+            if (faq_wrapper_element.current && open_accordion_element) {
                 const offset = previous_sibling_element ? previous_sibling_element.offsetTop - 80 : 0;
                 scrollToElement(faq_wrapper_element?.current, offset);
             }

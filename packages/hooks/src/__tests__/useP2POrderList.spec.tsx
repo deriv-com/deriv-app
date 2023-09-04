@@ -59,7 +59,7 @@ describe('useP2POrdertList', () => {
             </APIProvider>
         );
 
-        const { result } = renderHook(() => useP2POrderList({}), { wrapper });
+        const { result } = renderHook(() => useP2POrderList(), { wrapper });
         const p2p_order_list = result.current.data;
 
         expect(p2p_order_list).toHaveLength(1);

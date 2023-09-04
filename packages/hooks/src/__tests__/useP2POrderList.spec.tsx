@@ -39,7 +39,6 @@ describe('useP2POrdertList', () => {
             data: {
                 p2p_order_list: {
                     list: [
-                        // @ts-expect-error need to come up with a way to mock the return type of usePaginatedFetch
                         {
                             id: '1',
                             account_currency: 'USD',

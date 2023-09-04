@@ -16,7 +16,7 @@ export default Engine =>
                 return Promise.resolve();
             }
 
-            const { id, askPrice } = this.selectProposal(contract_type);
+            const { askPrice } = this.selectProposal(contract_type);
 
             const onSuccess = response => {
                 // Don't unnecessarily send a forget request for a purchased contract.
@@ -42,7 +42,11 @@ export default Engine =>
                     buy_price: buy.buy_price,
                 });
             };
-            const action = () => api_base.api.send({ buy: id, price: askPrice });
+
+            const trade_option = this.getTradeOption(contract_type);
+
+            const action = () => api_base.api.send(trade_option);
+
             this.isSold = false;
             contractStatus({
                 id: 'contract.purchase_sent',
@@ -74,6 +78,35 @@ export default Engine =>
                 delayIndex++
             ).then(onSuccess);
         }
+        getTradeOption = contract_type => {
+            const trade_option = {
+                buy: 1,
+                price: this.trade_option.amount,
+                parameters: {
+                    contract_type,
+                    ...this.trade_option,
+                },
+            };
+
+            const extra_fields = [
+                'contractTypes',
+                'candleInterval',
+                'timeMachineEnabled',
+                'shouldRestartOnError',
+                'secondBarrierOffset',
+                'barrierOffset',
+                'limitations',
+            ];
+
+            // Trim unnecessary data
+            extra_fields.forEach(f => {
+                if (trade_option.parameters[f] !== undefined) {
+                    delete trade_option.parameters[f];
+                }
+            });
+
+            return trade_option;
+        };
         getPurchaseReference = () => purchase_reference;
         regeneratePurchaseReference = () => {
             purchase_reference = getUUID();

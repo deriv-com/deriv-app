@@ -77,34 +77,6 @@ const TradersHubHeader = observer(() => {
         }
     };
 
-    const AccountInfoComponent = React.useCallback(
-        () => (
-            <AccountInfo
-                acc_switcher_disabled_message={account_switcher_disabled_message}
-                account_type={account_type}
-                balance={formatMoney(currency, balance ?? '', true)}
-                country_standpoint={country_standpoint}
-                currency={currency}
-                is_dialog_on={is_accounts_switcher_on}
-                is_disabled={false}
-                is_eu={is_eu}
-                is_virtual={is_virtual}
-                toggleDialog={toggleAccountsDialog}
-            />
-        ),
-        [
-            account_switcher_disabled_message,
-            account_type,
-            balance,
-            country_standpoint,
-            currency,
-            is_accounts_switcher_on,
-            is_eu,
-            is_virtual,
-            toggleAccountsDialog,
-        ]
-    );
-
     return (
         <header
             className={classNames('traders-hub-header', {
@@ -155,7 +127,18 @@ const TradersHubHeader = observer(() => {
                         </Popover>
                         {cashier_routes && (
                             <div className='traders-hub-header__menu-right--items--account-toggle'>
-                                <AccountInfoComponent />
+                                <AccountInfo
+                                    acc_switcher_disabled_message={account_switcher_disabled_message}
+                                    account_type={account_type}
+                                    balance={formatMoney(currency, balance ?? '', true)}
+                                    country_standpoint={country_standpoint}
+                                    currency={currency}
+                                    is_dialog_on={is_accounts_switcher_on}
+                                    is_disabled={false}
+                                    is_eu={is_eu}
+                                    is_virtual={is_virtual}
+                                    toggleDialog={toggleAccountsDialog}
+                                />
                             </div>
                         )}
                     </div>
@@ -171,7 +154,18 @@ const TradersHubHeader = observer(() => {
                                     <ShowNotifications />
                                 </div>
                                 <div className='traders-hub-header__menu-right--items--account-toggle'>
-                                    <AccountInfoComponent />
+                                    <AccountInfo
+                                        acc_switcher_disabled_message={account_switcher_disabled_message}
+                                        account_type={account_type}
+                                        balance={formatMoney(currency, balance ?? '', true)}
+                                        country_standpoint={country_standpoint}
+                                        currency={currency}
+                                        is_dialog_on={is_accounts_switcher_on}
+                                        is_disabled={false}
+                                        is_eu={is_eu}
+                                        is_virtual={is_virtual}
+                                        toggleDialog={toggleAccountsDialog}
+                                    />
                                 </div>
                             </React.Fragment>
                         ) : (

@@ -18,7 +18,7 @@ const PaymentMethodIcon = ({ className, display_name, size }: TPaymentMethodIcon
 
     const payment_method_icon = React.useMemo(() => {
         return p2p_payment_methods?.find(method => method.display_name === display_name)?.icon || '';
-    }, [p2p_payment_methods]);
+    }, [p2p_payment_methods, display_name]);
 
     return (
         <Icon

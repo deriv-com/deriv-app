@@ -7,7 +7,7 @@ import './app-content.scss';
 const AppContent: React.FC = () => {
     return (
         <div>
-            <div className='icon' />
+            <div className='wallets-app-content-icon' />
             <IcBrandDerivGo width={25} height={25} />
             <WalletList />
             <WalletsCarousel />

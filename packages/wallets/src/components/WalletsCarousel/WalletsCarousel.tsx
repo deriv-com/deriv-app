@@ -28,16 +28,16 @@ const WalletsCarousel = () => {
                     {wallet_accounts_list.map(wallet => (
                         <div className='wallet-card' key={wallet.loginid}>
                             <div className='wallet-card__data'>
-                                <div className='wallet-card__data__currency'>
+                                <div className='wallets-card__data__details'>
                                     <h1>{wallet.currency}</h1>
-                                    <div className='wallet-card__data__currency-balance'>
+                                    <div className='wallets-card__data__details-balance'>
                                         <p>{wallet.currency} Wallet</p>
                                         <h3>
                                             {wallet.balance} {wallet.currency}
                                         </h3>
                                     </div>
                                 </div>
-                                <div className='wallet-card__data__landing-company'>
+                                <div className='wallets-card__data__landing-company'>
                                     <p>{wallet.landing_company_name}</p>
                                 </div>
                             </div>

@@ -18,7 +18,11 @@ const useCreateOtherCFDAccount = () => {
         return { ...data };
     }, [data]);
 
-    return { data: modified_data, ...rest };
+    return {
+        /** The response and the mutation of the create Other CFD account API request */
+        data: modified_data,
+        ...rest,
+    };
 };
 
 export default useCreateOtherCFDAccount;

@@ -18,7 +18,11 @@ const useCreateMT5Account = () => {
         return { ...data?.mt5_new_account };
     }, [data]);
 
-    return { data: modified_data, ...rest };
+    return {
+        /** The response and the mutation of the create MT5 account API request */
+        data: modified_data,
+        ...rest,
+    };
 };
 
 export default useCreateMT5Account;

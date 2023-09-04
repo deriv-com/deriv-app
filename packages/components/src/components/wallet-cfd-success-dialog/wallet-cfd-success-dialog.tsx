@@ -8,12 +8,10 @@ import { localize } from '@deriv/translations';
 import './wallet-cfd-success-dialog.scss';
 
 export type TWalletCFDCard = {
-    account_title: string;
     currency: string;
     gradient_header_class: string;
     icon: string;
     is_demo: boolean;
-    platform: string;
     type: string;
 };
 
@@ -45,7 +43,7 @@ const WalletCFDSuccessDialog = ({
             shouldCloseOnEscape={false}
             small
             toggleModal={toggleModal}
-            width={isMobile() ? '298px' : '392px'}
+            width={isMobile() ? '29.8rem' : '39.2rem'}
         >
             <Modal.Body>
                 <div className='wallet-cfd-dialog__card'>

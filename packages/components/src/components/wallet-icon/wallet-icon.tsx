@@ -1,15 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 import Icon from '../icon';
-import TradingPlatformIcon from '../trading-platform-icon';
-import { IconProps } from '../trading-platform-icon/trading-platform-icon';
 import './wallet-icon.scss';
 
 type TWalletIconSizes = keyof typeof sizes['square' | 'box'];
 
 type TWalletIconProps = {
     gradient_class?: string;
-    icon: string | IconProps<string>['icon'];
+    icon: string;
     size?: TWalletIconSizes;
     type?: 'demo' | 'fiat' | 'crypto' | 'app' | 'cfd';
     has_bg?: boolean;
@@ -68,11 +66,10 @@ const WalletIcon = ({ gradient_class, icon, size = 'medium', type, has_bg, hide_
             })}
             data-testid='dt_wallet_icon'
         >
-            {(type === 'fiat' || type === 'app') && <Icon icon={icon} size={sizes.square[size]} />}
+            {(type === 'fiat' || type === 'app' || type === 'cfd') && <Icon icon={icon} size={sizes.square[size]} />}
             {(type === 'demo' || type === 'crypto') && (
                 <Icon icon={icon} width={sizes.box[size].width} height={sizes.box[size].height} />
             )}
-            {type === 'cfd' && <TradingPlatformIcon icon={icon} size={sizes.square[size]} />}
         </div>
     );
 };

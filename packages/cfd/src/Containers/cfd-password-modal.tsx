@@ -44,7 +44,7 @@ import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { useActiveWallet, useFeatureFlags } from '@deriv/hooks';
-import useInvalidateQuery from '../../../api/src/useInvalidateQuery';
+import { useInvalidateQuery } from '@deriv/api';
 
 export type TCFDPasswordFormValues = { password: string };
 

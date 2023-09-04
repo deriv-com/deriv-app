@@ -1,6 +1,6 @@
 .wallet-cfd-card {
-    width: 240px;
-    height: 144px;
+    width: 24rem;
+    height: 14.4rem;
     position: relative;
     overflow: hidden;
     border-radius: $BORDER-RADIUS;
@@ -30,7 +30,7 @@
         right: 0;
 
         padding: 0 0.8rem 0.4rem;
-        border-radius: 0 0 0 4px;
+        border-radius: 0 0 0 $BORDER_RADIUS;
         &--real {
             background-color: var(--brand-red-coral);
         }
@@ -66,7 +66,7 @@
                 rgba(165, 168, 169, 0.24) 0%,
                 rgba(193, 204, 207, 0.48) 100%
             )
-            #ffffff;
+            var(--general-main-1);
         height: 100%;
         width: 100%;
     }

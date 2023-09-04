@@ -41,14 +41,16 @@ const useAccountsList = () => {
         () =>
             modified_accounts?.map(account => {
                 const balance = balance_data?.accounts?.[account.loginid]?.balance || 0;
+
                 return {
                     ...account,
                     /** The balance of the account. */
                     balance,
                     /** The balance of the account in currency format. */
                     display_balance: Intl.NumberFormat(authorize_data?.preferred_language || 'en-US', {
-                        minimumFractionDigits: account.currency_config?.fractional_digits,
-                        maximumFractionDigits: account.currency_config?.fractional_digits,
+                        minimumFractionDigits: account.currency_config?.fractional_digits || 2,
+                        maximumFractionDigits: account.currency_config?.fractional_digits || 2,
+                        minimumIntegerDigits: 2,
                     }).format(balance),
                 };
             }),

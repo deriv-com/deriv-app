@@ -1,7 +1,7 @@
 import React from 'react';
-import './WalletCardIcon.scss';
+import './WalletListCardIcon.scss';
 
-const WalletCardIcon: React.FC = () => {
+const WalletListCardIcon: React.FC = () => {
     return (
         <div className='wallets-card__icon'>
             <p> Icon (Placeholder)</p>
@@ -9,4 +9,4 @@ const WalletCardIcon: React.FC = () => {
     );
 };
 
-export default WalletCardIcon;
+export default WalletListCardIcon;

@@ -1,6 +1,6 @@
 import React from 'react';
-import WalletsCarousel from './components/WalletCarousel';
 import WalletList from './components/WalletList';
+import WalletsCarousel from './components/WalletsCarousel';
 import IcBrandDerivGo from './public/ic-brand-derivgo.svg';
 import './app-content.scss';
 

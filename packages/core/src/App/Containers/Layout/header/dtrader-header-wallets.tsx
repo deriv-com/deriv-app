@@ -11,7 +11,7 @@ import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
-import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
+import { AccountsInfoLoaderWallets } from 'App/Components/Layout/Header/Components/Preloader';
 import { TradersHubHomeButton } from './trading-hub-header';
 
 const Divider = () => <div className='header__menu--dtrader--separator' />;
@@ -108,7 +108,7 @@ const DTraderHeaderWallets = observer(() => {
                                 }
                             )}
                         >
-                            <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />
+                            <AccountsInfoLoaderWallets is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />
                         </div>
                     )}
                     <div id={'dt_core_header_acc-info-container'} className='acc-info__container'>

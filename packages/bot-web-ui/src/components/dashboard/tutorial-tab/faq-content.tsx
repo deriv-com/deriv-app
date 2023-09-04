@@ -46,7 +46,7 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
         timer_id.current = setTimeout(() => {
             const faq_wrapper_element = document?.querySelector('.faq__wrapper');
             const open_accordion_element: HTMLElement | null = document?.querySelector('.dc-accordion__item--open');
-            const previous_sibling_element = faq_wrapper_element?.previousElementSibling as HTMLElement;
+            const previous_sibling_element = open_accordion_element?.previousElementSibling as HTMLElement;
 
             if (open_accordion_element && previous_sibling_element) {
                 faq_wrapper_element?.scrollTo({

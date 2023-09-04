@@ -1,66 +1,59 @@
 import React from 'react';
-import { mockStore, StoreProvider } from '@deriv/stores';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { mock_ws } from 'Utils/mock';
-import RootStore from 'Stores/root-store';
-import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import BotBuilderTour from '../../bot-builder-tour';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import Accordion from '../accordion';
 
-jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
-jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
-jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
-jest.mock('@deriv/deriv-charts', () => ({
-    setSmartChartsPublicPath: jest.fn(),
-}));
+const mocked_props = {
+    content_data: [
+        'test dasdasdasde 1',
+        {
+            content: 'content 1',
+            header: 'header 1',
+        },
+        {
+            content: 'content 2',
+            header: 'header 2',
+        },
 
-describe('BotBuilderTour', () => {
-    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
+        {
+            content: 'content 3',
+            header: 'header 3',
+        },
+    ],
+    expanded: true,
+    test_id: 'test_string',
+};
 
-    beforeAll(() => {
-        const mock_store = mockStore({});
-        mock_DBot_store = mockDBotStore(mock_store, mock_ws);
-
-        wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock_store}>
-                <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
-                    {children}
-                </DBotStoreProvider>
-            </StoreProvider>
-        );
+describe('<Accordion />', () => {
+    it('should render Accordion with correct props and content', () => {
+        render(<Accordion {...mocked_props} />);
+        const accordion = screen.getByTestId('test_string');
+        expect(accordion).toBeInTheDocument();
     });
 
-    it('shows accordion when tour rendered', () => {
-        render(<BotBuilderTour />, {
-            wrapper,
-        });
-        const tourElement = screen.getByTestId('botbuilder-tour-mobile');
-        expect(tourElement).toHaveClass('dbot-slider__bot-builder-tour');
+    it('should not render Accordion if content_data is empty', () => {
+        const props_with_empty_content = {
+            ...mocked_props,
+            content_data: null,
+        };
+        render(<Accordion {...props_with_empty_content} />);
+        const accordion = screen.queryByTestId('test_string');
+        expect(accordion).not.toBeInTheDocument();
     });
 
-    it('check if accordion is open', async () => {
-        render(<BotBuilderTour />, {
-            wrapper,
-        });
-        const accordion = screen.getByTestId('bot-builder-acc');
+    it('should open accordion', async () => {
+        render(<Accordion {...mocked_props} />);
         await waitFor(() => {
-            // eslint-disable-next-line testing-library/no-node-access
-            expect(accordion.querySelector('.dbot-accordion__content--open')).toBeInTheDocument();
+            expect(screen.getByTestId('accordion-content')).toHaveClass('dbot-accordion__content--open');
         });
     });
-
-    it('check if accordion is closed', async () => {
-        render(<BotBuilderTour />, {
-            wrapper,
+    it('should close accordion', async () => {
+        render(<Accordion {...mocked_props} />);
+        const accordion = screen.getByTestId('test_string');
+        act(() => {
+            fireEvent.click(accordion);
         });
-        const accordion = screen.getByTestId('dbot-acc-id');
-        const accordionOnClickMock = jest.fn();
-        accordion.onclick = accordionOnClickMock;
-        userEvent.click(accordion);
-
         await waitFor(() => {
-            // eslint-disable-next-line testing-library/no-node-access
-            expect(accordion.querySelector('.dbot-accordion__content--open')).not.toBeInTheDocument();
+            expect(screen.getByTestId('accordion-content')).not.toHaveClass('dbot-accordion__content--open');
         });
     });
 });

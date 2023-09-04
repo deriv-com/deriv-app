@@ -5,15 +5,15 @@ import { localize } from '@deriv/translations';
 import { TStepMobile } from '../../config';
 
 type TAccordion = {
-    content_data: TStepMobile;
+    content_data: TStepMobile | null;
     expanded: boolean;
     test_id: string;
 };
 
 const Accordion = ({ content_data, expanded = false, test_id = 'dbot-acc-id', ...props }: TAccordion) => {
     const [is_open, setOpen] = React.useState(expanded);
+    if (!content_data) return null;
     const { content, header } = content_data;
-
     return (
         <div className='dbot-accordion' {...props}>
             <div>
@@ -31,6 +31,7 @@ const Accordion = ({ content_data, expanded = false, test_id = 'dbot-acc-id', ..
                     className={classNames('dbot-accordion__content', {
                         'dbot-accordion__content--open': is_open,
                     })}
+                    data-testid='accordion-content'
                 >
                     <Text as='span' size='xxs' line_height='s'>
                         {localize(content)}

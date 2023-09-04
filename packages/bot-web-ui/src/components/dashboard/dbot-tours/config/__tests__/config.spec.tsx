@@ -6,7 +6,7 @@ import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import BotBuilderTour from '../../mobile-tours/bot-builder-tour';
 import OnboardingTour from '../../mobile-tours/onboarding-tour';
-import { BOT_BUILDER_MOBILE, BOT_BUILDER_TOUR, DBOT_ONBOARDING, DBOT_ONBOARDING_MOBILE } from '../index';
+import { BOT_BUILDER_MOBILE, DBOT_ONBOARDING_MOBILE } from '../index';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());

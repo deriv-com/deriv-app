@@ -1,6 +1,6 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
@@ -14,7 +14,7 @@ jest.mock('@deriv/deriv-charts', () => ({
     setSmartChartsPublicPath: jest.fn(),
 }));
 
-describe('<MobileTours />', () => {
+describe('<OnboardingTour />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
 
     beforeAll(() => {
@@ -50,7 +50,9 @@ describe('<MobileTours />', () => {
             wrapper,
         });
         const exitTourButton = screen.getByTestId('exit-onboard-tour');
-        userEvent.click(exitTourButton);
+        act(() => {
+            userEvent.click(exitTourButton);
+        });
         expect(mock_DBot_store?.dashboard.has_started_onboarding_tour).toBe(false);
     });
 
@@ -59,7 +61,9 @@ describe('<MobileTours />', () => {
             wrapper,
         });
         const skipTourButton = screen.getByTestId('skip-onboard-tour');
-        userEvent.click(skipTourButton);
+        act(() => {
+            userEvent.click(skipTourButton);
+        });
         expect(mock_DBot_store?.dashboard.has_started_onboarding_tour).toBe(false);
     });
 
@@ -74,7 +78,9 @@ describe('<MobileTours />', () => {
         }
         const onClickMock = jest.fn();
         nextButton.onclick = onClickMock;
-        userEvent.click(nextButton);
+        act(() => {
+            userEvent.click(nextButton);
+        });
         await waitFor(() => {
             expect(onClickMock).toHaveBeenCalledTimes(1);
         });

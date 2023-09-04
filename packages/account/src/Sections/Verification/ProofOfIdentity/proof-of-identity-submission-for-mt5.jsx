@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import { WS, Jurisdiction, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
+import { WS, isVerificationServiceSupported, formatIDVFormValues } from '@deriv/shared';
 import Unsupported from 'Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view-container';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
@@ -18,7 +17,8 @@ const POISubmissionForMT5 = ({
     refreshNotifications,
     citizen_data,
     has_idv_error,
-    jurisdiction_selected_shortcode,
+    residence_list,
+    is_eu_user,
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // submitting
     const [submission_service, setSubmissionService] = React.useState();
@@ -26,16 +26,11 @@ const POISubmissionForMT5 = ({
         if (citizen_data) {
             const { submissions_left: idv_submissions_left } = idv;
             const { submissions_left: onfido_submissions_left } = onfido;
-            const is_idv_supported = citizen_data.identity.services.idv.is_country_supported;
-            const is_onfido_supported = citizen_data.identity.services.onfido.is_country_supported;
-            if (
-                is_idv_supported &&
-                Number(idv_submissions_left) > 0 &&
-                !is_idv_disallowed &&
-                jurisdiction_selected_shortcode !== Jurisdiction.VANUATU
-            ) {
+            const is_idv_supported = isVerificationServiceSupported(residence_list, account_settings, 'idv');
+            const is_onfido_supported = isVerificationServiceSupported(residence_list, account_settings, 'onfido');
+            if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed && !is_eu_user) {
                 setSubmissionService(service_code.idv);
-            } else if (onfido_submissions_left && is_onfido_supported) {
+            } else if (onfido_submissions_left > 0 && is_onfido_supported) {
                 setSubmissionService(service_code.onfido);
             } else {
                 setSubmissionService(service_code.manual);
@@ -55,7 +50,6 @@ const POISubmissionForMT5 = ({
 
     const handleIdvSubmit = async (values, { setSubmitting, setErrors }) => {
         setSubmitting(true);
-        const { document_number, document_type } = values;
 
         const request = makeSettingsRequest(values, [...getChangeableFields()]);
 
@@ -76,15 +70,8 @@ const POISubmissionForMT5 = ({
 
         const submit_data = {
             identity_verification_document_add: 1,
-            document_number,
-            document_type: document_type.id,
-            issuing_country: citizen_data.value,
+            ...formatIDVFormValues(values, citizen_data.value),
         };
-
-        if (submit_data.document_type === IDV_NOT_APPLICABLE_OPTION.id) {
-            handlePOIComplete();
-            return;
-        }
 
         WS.send(submit_data).then(response => {
             setSubmitting(false);
@@ -131,7 +118,14 @@ const POISubmissionForMT5 = ({
                 );
             }
             case service_code.manual:
-                return <Unsupported is_mt5 handlePOIforMT5Complete={handlePOIComplete} />;
+                return (
+                    <Unsupported
+                        onfido={onfido}
+                        country_code={citizen_data.value}
+                        is_mt5
+                        handlePOIforMT5Complete={handlePOIComplete}
+                    />
+                );
             default:
                 return null;
         }

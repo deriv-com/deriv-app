@@ -1,28 +1,22 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
-import CashierBreadcrumb from '../../cashier-breadcrumb';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './real.scss';
 
-const Real = observer(({ is_deposit = false }: { is_deposit?: boolean }) => {
-    const { traders_hub, ui } = useStore();
-    const { is_low_risk_cr_eu_real } = traders_hub;
+const Real = observer(() => {
+    const { ui } = useStore();
     const { is_dark_mode_on } = ui;
-    const { iframe, deposit, general_store } = useCashierStore();
+    const { iframe, general_store } = useCashierStore();
     const { clearIframe, iframe_height, iframe_url, checkIframeLoaded, setContainerHeight } = iframe;
     const { is_loading } = general_store;
-    const { onMountDeposit } = deposit;
-
-    const should_show_breadcrumbs = !is_low_risk_cr_eu_real && is_deposit && Boolean(iframe_height);
     const should_show_loader = is_loading || !iframe_height;
 
     React.useEffect(() => {
         return () => {
             clearIframe();
-            onMountDeposit?.();
         };
-    }, [clearIframe, onMountDeposit]);
+    }, [clearIframe]);
 
     React.useEffect(() => {
         // To show loading state when switching theme
@@ -33,7 +27,6 @@ const Real = observer(({ is_deposit = false }: { is_deposit?: boolean }) => {
     return (
         <div className='cashier__wrapper real'>
             {should_show_loader && <Loading className='real__loader' />}
-            {should_show_breadcrumbs && <CashierBreadcrumb />}
             {iframe_url && (
                 <iframe
                     className='cashier__content'

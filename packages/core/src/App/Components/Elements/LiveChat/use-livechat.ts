@@ -39,6 +39,7 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
     }, []);
 
     const liveChatSetup = (is_logged_in: boolean) => {
+        window.LiveChatWidget.init();
         window.LiveChatWidget?.on('ready', () => {
             // Open and close the chat window to trigger the widget to listen for new events.
             window.LC_API?.open_chat_window();

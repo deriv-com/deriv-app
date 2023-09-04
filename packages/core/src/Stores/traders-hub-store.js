@@ -17,6 +17,7 @@ export default class TradersHubStore extends BaseStore {
     is_onboarding_visited = false;
     is_failed_verification_modal_visible = false;
     is_regulators_compare_modal_visible = false;
+    is_mt5_notification_modal_visible = false;
     is_tour_open = false;
     is_account_type_modal_visible = false;
     account_type_card = '';
@@ -43,6 +44,7 @@ export default class TradersHubStore extends BaseStore {
             is_account_transfer_modal_open: observable,
             is_account_type_modal_visible: observable,
             is_regulators_compare_modal_visible: observable,
+            is_mt5_notification_modal_visible: observable,
             is_failed_verification_modal_visible: observable,
             is_tour_open: observable,
             modal_data: observable,
@@ -89,6 +91,7 @@ export default class TradersHubStore extends BaseStore {
             closeAccountTransferModal: action.bound,
             toggleAccountTypeModalVisibility: action.bound,
             setIsOnboardingVisited: action.bound,
+            setMT5NotificationModal: action.bound,
             toggleFailedVerificationModalVisibility: action.bound,
             openFailedVerificationModal: action.bound,
             toggleIsTourOpen: action.bound,
@@ -134,8 +137,8 @@ export default class TradersHubStore extends BaseStore {
             () => [this.root_store.client.loginid, this.root_store.client.residence],
             () => {
                 const residence = this.root_store.client.residence;
-                const active_demo = /^VRT/.test(this.root_store.client.loginid);
-                const active_real_mf = /^MF/.test(this.root_store.client.loginid);
+                const active_demo = /^VRT|VRW/.test(this.root_store.client.loginid);
+                const active_real_mf = /^MF|MFW/.test(this.root_store.client.loginid);
 
                 const default_region = () => {
                     if (((active_demo || active_real_mf) && isEuCountry(residence)) || active_real_mf) {
@@ -143,7 +146,7 @@ export default class TradersHubStore extends BaseStore {
                     }
                     return 'Non-EU';
                 };
-                this.selected_account_type = !/^VRT/.test(this.root_store.client.loginid) ? 'real' : 'demo';
+                this.selected_account_type = !/^VRT|VRW/.test(this.root_store.client.loginid) ? 'real' : 'demo';
                 this.selected_region = default_region();
             }
         );
@@ -329,6 +332,10 @@ export default class TradersHubStore extends BaseStore {
 
     toggleRegulatorsCompareModal() {
         this.is_regulators_compare_modal_visible = !this.is_regulators_compare_modal_visible;
+    }
+
+    setMT5NotificationModal(is_visible) {
+        this.is_mt5_notification_modal_visible = is_visible;
     }
 
     get has_any_real_account() {

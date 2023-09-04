@@ -1,3 +1,4 @@
+export * from './cashier-onboarding-account-identifier-message';
 export * from './cashier-onboarding-card';
 export * from './cashier-onboarding-crypto-card';
 export * from './cashier-onboarding-fiat-card';
@@ -6,4 +7,3 @@ export * from './cashier-onboarding-onramp-card';
 export * from './cashier-onboarding-p2p-card';
 export * from './cashier-onboarding-payment-agent-card';
 export * from './cashier-onboarding-side-notes';
-export * from './cashier-onboarding-title';

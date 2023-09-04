@@ -12,6 +12,7 @@ import { useStores } from 'Stores';
 import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
 import { ModalManager, ModalManagerContextProvider } from './modal-manager';
+import { init } from '../utils/server_time';
 import Routes from './routes/routes.jsx';
 import './app.scss';
 
@@ -44,6 +45,8 @@ const App = () => {
     });
 
     React.useEffect(() => {
+        init();
+
         general_store.setExternalStores({ client, common, modules, notifications, ui });
         general_store.setWebsocketInit(WS);
         general_store.getWebsiteStatus();
@@ -77,7 +80,7 @@ const App = () => {
         // Redirect back to /p2p, this was implemented for the mobile team. Do not remove.
         if (/\/verification$/.test(location.pathname)) {
             localStorage.setItem('is_verifying_p2p', true);
-            history.push(routes.cashier_p2p);
+            history.push(routes.p2p_my_ads);
         }
 
         ServerTime.init(general_store.server_time);

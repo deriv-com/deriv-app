@@ -42,7 +42,8 @@ import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
-import { useCreateMT5Account } from '@deriv/api';
+// import { useCreateMT5Account } from '@deriv/api';
+import { useCreateMT5Account } from '../../../api/src/hooks';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -411,6 +412,8 @@ const CFDPasswordForm = ({
     submitPassword,
     validatePassword,
 }: TCFDPasswordFormProps) => {
+    const { mutate: createMT5Account } = useCreateMT5Account();
+
     const button_label = React.useMemo(() => {
         if (error_type === 'PasswordReset') {
             return localize('Try later');
@@ -432,9 +435,6 @@ const CFDPasswordForm = ({
 
         return onForgotPassword();
     };
-    const handleOnClick = () => {
-        handleSubmit();
-    };
 
     if (error_type === 'PasswordReset') {
         return (
@@ -447,7 +447,7 @@ const CFDPasswordForm = ({
                     </div>
                     <Formik onSubmit={closeModal} initialValues={{}}>
                         {({ handleSubmit }) => (
-                            <form onSubmit={handleOnClick}>
+                            <form onSubmit={handleSubmit}>
                                 <FormSubmitButton
                                     has_cancel={has_cancel_button}
                                     cancel_label={cancel_button_label}
@@ -492,7 +492,19 @@ const CFDPasswordForm = ({
             }}
             enableReinitialize
             validate={validatePassword}
-            onSubmit={submitPassword}
+            onSubmit={values => {
+                createMT5Account({
+                    payload: {
+                        account_type: 'financial',
+                        mainPassword: values.password,
+                        email: 'hamza.muhammad+sg@deriv.com',
+                        leverage: 500,
+                        name: 'Johnny Derived',
+                        mt5_account_type: 'financial',
+                        country: 'id',
+                    },
+                });
+            }}
         >
             {({
                 errors,
@@ -628,6 +640,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         new_account_response,
     } = useCfdStore();
     // const { mutate: createMT5Account } = useCreateMT5Account();
+
     const history = useHistory();
 
     const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);

@@ -43,9 +43,10 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
         // Scroll to the top of the open accordion item.
         // Need timer to first close the accordion item then scroll the new item to top.
         timer_id.current = setTimeout(() => {
-            const open_accordion_element: HTMLElement | null = document?.querySelector('.dc-accordion__item--open');
-            const previous_sibling_element = open_accordion_element?.previousElementSibling as HTMLElement;
-            if (faq_wrapper_element?.current && open_accordion_element) {
+            if (faq_wrapper_element?.current) {
+                const open_accordion_element: HTMLElement | null =
+                    faq_wrapper_element?.current?.querySelector('.dc-accordion__item--open');
+                const previous_sibling_element = open_accordion_element?.previousElementSibling as HTMLElement;
                 if (previous_sibling_element) {
                     faq_wrapper_element.current.scrollTo({
                         top: previous_sibling_element.offsetTop - 80,

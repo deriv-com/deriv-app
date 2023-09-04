@@ -1,0 +1,5 @@
+.wallets-mobile-wrapper {
+    @include desktop {
+        display: none;
+    }
+}

@@ -1,16 +1,17 @@
 import React from 'react';
-import { DesktopWalletsList } from './components';
-// import WalletsCarousel from './components/WalletCarousel';
+import { DesktopWalletsList, DesktopWrapper, MobileWrapper, WalletsCarousel } from './components';
 import './AppContent.scss';
 
 const AppContent: React.FC = () => {
     return (
-        <div className='wallets-app'>
-            <div className='wallets-app__content'>
+        <React.Fragment>
+            <DesktopWrapper>
                 <DesktopWalletsList />
-            </div>
-            {/* <WalletsCarousel /> */}
-        </div>
+            </DesktopWrapper>
+            <MobileWrapper>
+                <WalletsCarousel />
+            </MobileWrapper>
+        </React.Fragment>
     );
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import WalletList from './components/WalletList';
 import WalletsCarousel from './components/WalletCarousel';
+import WalletList from './components/WalletList';
 import useDevice from './hooks/useDevice';
 import './app-content.scss';
 

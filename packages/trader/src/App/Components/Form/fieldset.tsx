@@ -7,7 +7,7 @@ import { Popover } from '@deriv/components';
 //   Currently last_digit.jsx returns object (React-Element) as 'children'
 //   props type.
 type TFieldset = {
-    children: React.ReactNode[] | React.ReactNode;
+    children?: React.ReactNode[] | React.ReactNode;
     className: string;
     header?: string | React.ReactNode;
     header_tooltip?: string | React.ReactNode;

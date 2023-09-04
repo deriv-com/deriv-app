@@ -6,14 +6,7 @@ import CFDDxtradeDemoAccountDisplay from '../cfd-dxtrade-demo-account-display';
 
 const mocked_props = {
     has_cfd_account_error: false,
-    standpoint: {
-        financial_company: 'test',
-        gaming_company: 'test',
-        iom: false,
-        malta: true,
-        maltainvest: true,
-        svg: false,
-    },
+    standpoint: {} as React.ComponentProps<typeof CFDDxtradeDemoAccountDisplay>['standpoint'],
     is_loading: false,
     is_logged_in: true,
     onSelectAccount: jest.fn(),

@@ -4,14 +4,14 @@ import { routes, PlatformContext, moduleLoader } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useActiveAccount } from '@deriv/hooks';
-import { LoginButton } from './login-button.jsx';
-import { SignupButton } from './signup-button.jsx';
-import { BinaryLink } from '../../Routes';
-import ToggleNotifications from './toggle-notifications.jsx';
+import { LoginButton } from '../login-button.jsx';
+import { SignupButton } from '../signup-button.jsx';
+import { BinaryLink } from '../../../Routes/index.js';
+import ToggleNotifications from '../toggle-notifications.jsx';
 import 'Sass/app/_common/components/account-switcher.scss';
 
 const AccountInfoWallets = React.lazy(() =>
-    moduleLoader(() => import('App/Components/Layout/Header/account-info-wallets.tsx'))
+    moduleLoader(() => import('App/Components/Layout/Header/wallets/account-info-wallets.tsx'))
 );
 
 type TAccointActionsWallets = {

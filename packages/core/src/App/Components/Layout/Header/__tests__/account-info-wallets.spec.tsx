@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { APIProvider, useFetch } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import AccountInfoWallets from '../account-info-wallets';
+import AccountInfoWallets from '../wallets/account-info-wallets';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),

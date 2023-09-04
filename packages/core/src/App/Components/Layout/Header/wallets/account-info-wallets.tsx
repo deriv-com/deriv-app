@@ -12,10 +12,10 @@ import {
     useWalletAccountsList,
 } from '@deriv/hooks';
 import { AccountSwitcherWallet } from 'App/Containers/AccountSwitcherWallet';
-import { AccountsInfoLoader } from './Components/Preloader';
+import { AccountsInfoLoader } from '../Components/Preloader';
 import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile';
-import AccountInfoWrapper from './account-info-wrapper';
-import AccountInfoIcon from './account-info-icon';
+import AccountInfoWrapper from '../account-info-wrapper';
+import AccountInfoIcon from '../account-info-icon';
 
 type TAccountInfoWallets = {
     toggleDialog: () => void;

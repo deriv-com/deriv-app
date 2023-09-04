@@ -279,7 +279,12 @@ const CreatePassword = ({
                             width='122'
                             height='108'
                         />
-                        <Text size='s' weight='bold' className='cfd-password-modal__create-password-title'>
+                        <Text
+                            size='s'
+                            align='center'
+                            weight='bold'
+                            className='cfd-password-modal__create-password-title'
+                        >
                             <Localize
                                 i18n_default_text='Create a {{platform}} password'
                                 values={{

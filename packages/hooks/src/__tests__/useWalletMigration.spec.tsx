@@ -1,8 +1,8 @@
 import React from 'react';
 import { APIProvider, useFetch, useRequest } from '@deriv/api';
 import { renderHook } from '@testing-library/react-hooks';
-import useWalletMigration from '../useWalletMigration';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import useWalletMigration from '../useWalletMigration';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),

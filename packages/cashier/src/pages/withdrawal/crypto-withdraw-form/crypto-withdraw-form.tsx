@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Input, InlineMessage, Loading, Text } from '@deriv/components';
-import { CryptoConfig, getCurrencyName, isMobile } from '@deriv/shared';
+import { CryptoConfig, getCurrencyName } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import classNames from 'classnames';
@@ -41,7 +41,7 @@ const Header = ({ currency }: THeaderProps) => {
 };
 
 const CryptoWithdrawForm = observer(({ is_wallet }: { is_wallet?: boolean }) => {
-    const { client } = useStore();
+    const { client, ui } = useStore();
     const {
         balance,
         currency,

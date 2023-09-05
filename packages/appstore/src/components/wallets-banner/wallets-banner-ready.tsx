@@ -4,7 +4,6 @@ import { Button, Icon, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { TWalletsImagesListKey } from 'Assets/svgs/wallets/image-types';
 import { observer, useStore } from '@deriv/stores';
-import money from '../../../../components/src/components/money/money';
 
 // just for now for testing purpose, in the future 'is_eu' value will be taken from the store
 type TWalletsBannerReady = {

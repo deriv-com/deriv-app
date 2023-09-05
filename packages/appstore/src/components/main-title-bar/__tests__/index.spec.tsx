@@ -58,7 +58,7 @@ describe('MainTitleBar', () => {
         const mock_store = mockStore({ feature_flags: { data: { wallet: false } } });
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
-                <StoreProvider store={mock_store_override || mock_store}>{children}</StoreProvider>
+                <StoreProvider store={mock_store_override ?? mock_store}>{children}</StoreProvider>
             </APIProvider>
         );
 

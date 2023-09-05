@@ -495,16 +495,29 @@ const TradeCategories = ({ category, is_vanilla_fx, onClick }: TTradeCategoriesP
                             )}
                         </Text>
                         <Text as='p'>
-                            <Localize
-                                i18n_default_text='You may sell the contract up until 60 seconds before expiry. If you do, we’ll pay you the <0>contract value</0>.'
-                                components={[
-                                    <span
-                                        className='contract-type-info__content-definition'
-                                        onClick={onClick}
-                                        key={0}
-                                    />,
-                                ]}
-                            />
+                            {is_vanilla_fx ? (
+                                <Localize
+                                    i18n_default_text='You may sell the contract up to 24 hours before expiry. If you do, we’ll pay you the <0>contract value</0>.'
+                                    components={[
+                                        <span
+                                            className='contract-type-info__content-definition'
+                                            onClick={onClick}
+                                            key={0}
+                                        />,
+                                    ]}
+                                />
+                            ) : (
+                                <Localize
+                                    i18n_default_text='You may sell the contract up until 60 seconds before expiry. If you do, we’ll pay you the <0>contract value</0>.'
+                                    components={[
+                                        <span
+                                            className='contract-type-info__content-definition'
+                                            onClick={onClick}
+                                            key={0}
+                                        />,
+                                    ]}
+                                />
+                            )}
                         </Text>
                     </React.Fragment>
                 );

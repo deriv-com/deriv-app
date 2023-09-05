@@ -20,7 +20,7 @@ const BotBuilderTour = observer(() => {
         //component does not rerender so calling this to highlight
         highlightLoadModalButton(has_started_bot_builder_tour, tour_step);
         if (tour_step === 2) toggleTourLoadModal(true);
-        toggleTourLoadModal(false);
+        else toggleTourLoadModal(false);
     }, [tour_step]);
 
     const tour_button_text = tour_step === 3 ? localize('Finish') : localize('Next');

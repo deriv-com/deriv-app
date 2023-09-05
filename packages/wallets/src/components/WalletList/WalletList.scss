@@ -1,0 +1,34 @@
+.wallets-list-account-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+}
+
+.wallets-list-title,
+.wallets-list-currency,
+.wallets-list-balance,
+.wallets-list-account-category {
+    font-size: 3rem;
+}
+
+.wallets-list-account-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+}
+
+.wallets-list-currency {
+    font-weight: bold;
+}
+
+.wallets-list-account-category {
+    font-style: italic;
+}

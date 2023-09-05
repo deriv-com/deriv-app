@@ -16,6 +16,7 @@ describe('JurisdictionModalContent', () => {
         account_type: '',
         is_non_idv_design: false,
         is_virtual: false,
+        toggleDynamicLeverage: jest.fn(),
         jurisdiction_selected_shortcode: '',
         setJurisdictionSelectedShortcode: jest.fn(),
         all_market_type_available_accounts: [

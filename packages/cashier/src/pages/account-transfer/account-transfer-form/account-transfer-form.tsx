@@ -22,13 +22,14 @@ import SideNote from '../../../components/side-note';
 import AccountPlatformIcon from '../../../components/account-platform-icon';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './account-transfer-form.scss';
+import AccountTransferReceipt from '../account-transfer-receipt/account-transfer-receipt';
 
 type TAccountTransferFormProps = {
     error?: TError;
     onClickDeposit?: () => void;
     onClickNotes?: () => void;
-    onClose?: () => void;
-    setSideNotes: (notes: React.ReactNode[]) => void;
+    onClose: () => void;
+    setSideNotes?: (notes: React.ReactNode[]) => void;
 };
 
 const AccountOption = ({ account, idx }: TAccountsList) => {
@@ -78,7 +79,7 @@ let mt_accounts_to: TAccount[] = [];
 let remaining_transfers: number | undefined;
 
 const AccountTransferForm = observer(
-    ({ error, onClickDeposit, onClickNotes, setSideNotes }: TAccountTransferFormProps) => {
+    ({ error, onClickDeposit, onClickNotes, setSideNotes, onClose }: TAccountTransferFormProps) => {
         const {
             client,
             common: { is_from_derivgo },
@@ -103,6 +104,7 @@ const AccountTransferForm = observer(
             transfer_limit,
             validateTransferFromAmount,
             validateTransferToAmount,
+            is_transfer_confirm,
         } = account_transfer;
         const { is_crypto, percentage, should_percentage_reset } = general_store;
         const {
@@ -148,7 +150,7 @@ const AccountTransferForm = observer(
             });
             if (!is_ok) return message;
 
-            if (selected_from.balance && Number(selected_from.balance) < Number(amount))
+            if (typeof selected_from.balance !== 'undefined' && Number(selected_from.balance) < Number(amount))
                 return localize('Insufficient balance');
 
             return undefined;
@@ -290,7 +292,7 @@ const AccountTransferForm = observer(
                         is_derivez_transfer={is_derivez_transfer}
                     />
                 );
-                setSideNotes([
+                setSideNotes?.([
                     <SideNote title={<Localize i18n_default_text='Notes' />} key={0}>
                         {side_notes}
                     </SideNote>,
@@ -298,7 +300,7 @@ const AccountTransferForm = observer(
             }
 
             return () => {
-                setSideNotes([]);
+                setSideNotes?.([]);
             };
         }, [
             transfer_fee,
@@ -384,6 +386,10 @@ const AccountTransferForm = observer(
                 </div>
             );
         };
+
+        if (is_transfer_confirm) {
+            return <AccountTransferReceipt onClose={onClose} />;
+        }
 
         return (
             <div

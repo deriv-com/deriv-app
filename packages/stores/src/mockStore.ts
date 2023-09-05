@@ -351,6 +351,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             setResetTradingPasswordModalOpen: jest.fn(),
             is_additional_kyc_info_modal_open: false,
             toggleAdditionalKycInfoModal: jest.fn(),
+            is_information_submitted_modal_open: false,
+            toggleInformationSubmittedModal: jest.fn(),
         },
         traders_hub: {
             getAccount: jest.fn(),

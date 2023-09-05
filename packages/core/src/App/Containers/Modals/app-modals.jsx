@@ -64,6 +64,9 @@ const AdditionalKycInfoModal = React.lazy(() =>
         /* webpackChunkName: "additional-kyc-info-modal" */ '@deriv/account/src/Components/additional-kyc-info-modal'
     )
 );
+const InformationSubmittedModal = React.lazy(() =>
+    import(/* webpackChunkName: "additional-kyc-info-modal" */ './information-submitted-modal')
+);
 
 const AppModals = ({
     is_account_needed_modal_on,
@@ -90,6 +93,7 @@ const AppModals = ({
     should_show_risk_accept_modal,
     is_need_real_account_for_cashier_modal_visible,
     is_additional_kyc_info_modal_open,
+    is_information_submitted_modal_open,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
@@ -179,6 +183,10 @@ const AppModals = ({
         ComponentToLoad = <AdditionalKycInfoModal />;
     }
 
+    if (is_information_submitted_modal_open) {
+        ComponentToLoad = <InformationSubmittedModal />;
+    }
+
     return (
         <>
             <RedirectNoticeModal is_logged_in={is_logged_in} is_eu={is_eu_user} portal_id='popup_root' />
@@ -215,4 +223,5 @@ export default connect(({ client, ui, traders_hub }) => ({
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     should_show_risk_accept_modal: ui.should_show_risk_accept_modal,
     is_additional_kyc_info_modal_open: ui.is_additional_kyc_info_modal_open,
+    is_information_submitted_modal_open: ui.is_information_submitted_modal_open,
 }))(AppModals);

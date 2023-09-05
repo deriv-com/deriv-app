@@ -58,6 +58,7 @@ export const AdditionalKycInfoForm = observer(
             if (!isLoading && isSuccess) {
                 notifications.refreshNotifications();
                 ui.toggleAdditionalKycInfoModal();
+                ui.toggleInformationSubmittedModal();
             }
         }, [isLoading, isSuccess, notifications, ui]);
 

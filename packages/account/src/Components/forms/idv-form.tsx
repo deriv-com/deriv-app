@@ -207,10 +207,7 @@ const IDVForm = ({
                                                                     values.document_type.example_format ?? ''
                                                                 )
                                                             }
-                                                            disabled={
-                                                                !values.document_type.id ||
-                                                                values.document_type.id === IDV_NOT_APPLICABLE_OPTION.id
-                                                            }
+                                                            disabled={!values.document_type.id}
                                                             error={
                                                                 (touched.document_number && errors.document_number) ||
                                                                 errors.error_message
@@ -237,11 +234,7 @@ const IDVForm = ({
                                                                         values.document_type.additional?.example_format
                                                                     )
                                                                 }
-                                                                disabled={
-                                                                    !values.document_type.id ||
-                                                                    values.document_type.id ===
-                                                                        IDV_NOT_APPLICABLE_OPTION.id
-                                                                }
+                                                                disabled={!values.document_type.id}
                                                                 error={
                                                                     (touched.document_additional &&
                                                                         errors.document_additional) ||

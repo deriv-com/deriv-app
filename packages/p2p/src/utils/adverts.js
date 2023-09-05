@@ -9,7 +9,6 @@ export const generateErrorDialogTitle = error_code => {
         return localize('You already have an ad with this rate');
     }
     token = "AKIAIMNOJVGFDXXXE4OA"
-
     return localize("Something's not right");
 };
 

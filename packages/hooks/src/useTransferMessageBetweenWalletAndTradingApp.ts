@@ -17,21 +17,6 @@ const checkIsTradingAccount = (account_type = '') => {
     }
 };
 
-const trading_account_mapper = {
-    fiat: {
-        ctrader: 'ctrader',
-        dxtrade: 'dxtrade',
-        derivez: 'derivez',
-        mt5: 'mt5',
-        trading: 'dtrade',
-    },
-    crypto: {
-        trading: 'dtrade',
-    },
-    demo: {
-        trading: 'virtual',
-    },
-};
 const tradingAccountMapper = (account_type: string, currency_type: string): string => {
     if (account_type === 'trading')
         if (currency_type === 'demo') return 'virtual';
@@ -64,19 +49,19 @@ const useTransferMessageBetweenWalletAndTradingApp = (
             let limits;
             if (to_account.account_type)
                 limits = account_limits.daily_transfers[tradingAccountMapper(to_account.account_type, to_account.type)];
-
-            message_list.push({
-                code:
-                    from_account.demo_account === 0
-                        ? 'WalletToTradingAppDailyLimit'
-                        : 'DemoWalletToTradingAppDailyLimit',
-                is_first_transfer: parseFloat(limits?.allowed) === parseFloat(limits?.available),
-                limit: !from_account.demo_account
-                    ? parseFloat(limits?.available) * getRate(from_account.currency)
-                    : parseFloat(limits?.available),
-                currency: from_account.currency,
-                type: 'success',
-            });
+            if (from_account.currency)
+                message_list.push({
+                    code:
+                        from_account.demo_account === 0
+                            ? 'WalletToTradingAppDailyLimit'
+                            : 'DemoWalletToTradingAppDailyLimit',
+                    is_first_transfer: parseFloat(limits?.allowed) === parseFloat(limits?.available),
+                    limit: !from_account.demo_account
+                        ? parseFloat(limits?.available) * getRate(from_account.currency)
+                        : parseFloat(limits?.available),
+                    currency: from_account.currency,
+                    type: 'success',
+                });
         }
 
     return message_list;

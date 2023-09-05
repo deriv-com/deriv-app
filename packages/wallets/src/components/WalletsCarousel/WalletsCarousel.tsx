@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useWalletAccountsList } from '@deriv/api';
 import AccountsList from '../AccountsList';
+import { WalletCard } from '../WalletCard';
+import './WalletsCarousel.scss';
 
 const WalletsCarousel = () => {
     const [emblaRef, emblaApi] = useEmblaCarousel({ skipSnaps: true, containScroll: false });
@@ -26,22 +28,7 @@ const WalletsCarousel = () => {
             <div className='wallets-carousel' ref={emblaRef}>
                 <section className='wallets-carousel__container'>
                     {wallet_accounts_list.map(wallet => (
-                        <div className='wallet-card' key={wallet.loginid}>
-                            <div className='wallet-card__data'>
-                                <div className='wallets-card__data__details'>
-                                    <h1>{wallet.currency}</h1>
-                                    <div className='wallets-card__data__details-balance'>
-                                        <p>{wallet.currency} Wallet</p>
-                                        <h3>
-                                            {wallet.balance} {wallet.currency}
-                                        </h3>
-                                    </div>
-                                </div>
-                                <div className='wallets-card__data__landing-company'>
-                                    <p>{wallet.landing_company_name}</p>
-                                </div>
-                            </div>
-                        </div>
+                        <WalletCard key={wallet.loginid} account={wallet} />
                     ))}
                 </section>
             </div>

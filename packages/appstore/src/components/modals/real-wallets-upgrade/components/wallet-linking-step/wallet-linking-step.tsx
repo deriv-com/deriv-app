@@ -49,10 +49,10 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
                 </div>
             )}
             <ThemedScrollbars className='wallet-linking-step__content'>
-                {data.wallets.map((wallet, index) => {
+                {data.wallets.map(wallet => {
                     return (
                         <WalletLinkWrapper
-                            key={index}
+                            key={wallet.wallet_details.name}
                             account_list={wallet.account_list}
                             wallet_details={wallet.wallet_details}
                         />

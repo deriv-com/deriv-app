@@ -32,10 +32,10 @@ const WalletLinkWrapper = observer(({ wallet_details, account_list }: TWalletLin
                         {localize('Your current trading account(s)')}
                     </Text>
                 )}
-                {account_list.map((account, index) => {
+                {account_list.map(account => {
                     return (
                         <WalletAccount
-                            key={index}
+                            key={`${account.account_name}-${account.currency}}`}
                             balance={account.balance}
                             currency={account.currency}
                             icon={account.icon}

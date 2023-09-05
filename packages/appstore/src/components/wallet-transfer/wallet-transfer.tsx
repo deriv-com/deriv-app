@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, Formik, Form, FormikHelpers } from 'formik';
 import { AmountInput, Button, Loading, MessageList } from '@deriv/components';
-import { useCurrencyConfig, useWalletTransfer } from '@deriv/hooks';
+import { useWalletTransfer, useCurrencyConfig } from '@deriv/hooks';
 import { validNumber } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
@@ -80,56 +80,49 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         []
     );
 
+    const appendMessage = (error_code: string, message: TMessageItem) => {
+        setMessageList(list => {
+            if (list.some(el => el.key === error_code)) return list;
+            return [...list, message];
+        });
+    };
+
     const validateAmount = (amount: number) => {
         clearErrorMessages();
 
-        if (!amount || is_amount_to_input_disabled) return;
+        if (!amount || is_amount_to_input_disabled || !active_wallet?.is_demo) return;
 
-        if (active_wallet?.is_demo) {
-            const { is_ok, message } = validNumber(amount.toString(), {
-                type: 'float',
-                decimals: getConfig(from_account?.currency || '')?.fractional_digits,
-                min: 1,
-                max: from_account?.balance,
+        const { is_ok, message } = validNumber(amount.toString(), {
+            type: 'float',
+            decimals: getConfig(from_account?.currency ?? '')?.fractional_digits,
+            min: 1,
+            max: from_account?.balance,
+        });
+
+        const should_reset_balance =
+            active_wallet?.balance !== undefined &&
+            amount > active_wallet?.balance &&
+            active_wallet?.balance < initial_demo_balance;
+
+        if (from_account?.loginid === active_wallet.loginid && should_reset_balance) {
+            appendMessage(ERROR_CODES.is_demo.insufficient_fund, {
+                variant: 'with-action-button',
+                key: ERROR_CODES.is_demo.insufficient_fund,
+                button_label: localize('Reset balance'),
+                onClickHandler: () => setWalletModalActiveTab('Deposit'),
+                message: localize(
+                    'You have insufficient fund in the selected wallet, please reset your virtual balance'
+                ),
+                type: 'error',
             });
-
-            const should_reset_balance =
-                active_wallet?.balance !== undefined &&
-                amount > active_wallet?.balance &&
-                active_wallet?.balance < initial_demo_balance;
-
-            if (from_account?.loginid === active_wallet.loginid && should_reset_balance) {
-                setMessageList(list => {
-                    if (list.some(el => el.key === ERROR_CODES.is_demo.insufficient_fund)) return list;
-                    return [
-                        ...list,
-                        {
-                            variant: 'with-action-button',
-                            key: ERROR_CODES.is_demo.insufficient_fund,
-                            button_label: localize('Reset balance'),
-                            onClickHandler: () => setWalletModalActiveTab('Deposit'),
-                            message: localize(
-                                'You have insufficient fund in the selected wallet, please reset your virtual balance'
-                            ),
-                            type: 'error',
-                        },
-                    ];
-                });
-            } else if (!is_ok) {
-                //else if not wallet loginid and not is_ok message
-                setMessageList(list => {
-                    if (list.some(el => el.key === ERROR_CODES.is_demo.between_min_max)) return list;
-                    return [
-                        ...list,
-                        {
-                            variant: 'base',
-                            key: ERROR_CODES.is_demo.between_min_max,
-                            message: `${message} ${from_account?.display_currency_code}`,
-                            type: 'error',
-                        },
-                    ];
-                });
-            }
+        } else if (!is_ok) {
+            //else if not wallet loginid and not is_ok message
+            appendMessage(ERROR_CODES.is_demo.between_min_max, {
+                variant: 'base',
+                key: ERROR_CODES.is_demo.between_min_max,
+                message: `${message} ${from_account?.display_currency_code}`,
+                type: 'error',
+            });
         }
     };
 

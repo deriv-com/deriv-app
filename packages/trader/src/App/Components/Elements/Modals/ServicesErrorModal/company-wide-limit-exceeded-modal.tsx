@@ -1,19 +1,22 @@
 import React from 'react';
 import { Button, Modal, StaticUrl } from '@deriv/components';
+import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
 
 type TCompanyWideLimitExceededModal = {
     is_visible: boolean;
     onConfirm: () => void;
 };
 
-const CompanyWideLimitExceededModal = ({ is_visible, onConfirm }: TCompanyWideLimitExceededModal) => {
+const CompanyWideLimitExceededModal = observer(({ is_visible, onConfirm }: TCompanyWideLimitExceededModal) => {
+    const {
+        ui: { is_mobile },
+    } = useStore();
     return (
         <Modal
             is_open={is_visible}
             small
-            is_vertical_centered={isMobile()}
+            is_vertical_centered={is_mobile}
             toggleModal={onConfirm}
             title={localize('Purchase Error')}
         >
@@ -28,6 +31,6 @@ const CompanyWideLimitExceededModal = ({ is_visible, onConfirm }: TCompanyWideLi
             </Modal.Footer>
         </Modal>
     );
-};
+});
 
 export default CompanyWideLimitExceededModal;

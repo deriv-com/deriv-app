@@ -44,6 +44,14 @@ const mock_get_limits_response = {
     },
 };
 
+jest.mock('../useExchangeRate', () => ({
+    ...jest.requireActual('../useExchangeRate'),
+    __esModule: true,
+    useExchangeRate: jest.fn(() => ({
+        getRate: jest.fn(() => 0.1),
+    })),
+}));
+
 const wrapper = ({ children }: { children: JSX.Element }) => (
     <StoreProvider store={mockStore({})}>{children}</StoreProvider>
 );
@@ -73,5 +81,6 @@ describe('useTransferMessageBetweenWalletAndTradingApp', () => {
             { wrapper }
         );
         expect(result.current[0].code).toBe('DemoWalletToTradingAppDailyLimit');
+        expect(result.current[0].limit).toBe(Number(mock_get_limits_response.daily_transfers.virtual.available));
     });
 });

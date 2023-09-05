@@ -1,9 +1,13 @@
 import { useMemo } from 'react';
 import useAuthorize from './useAuthorize';
+import useBalance from './useBalance';
+import useCurrencyConfig from './useCurrencyConfig';
 
-/** A custom hook that returns the list of accounts of the logged in user. */
+/** A custom hook that returns the list of accounts for the current user. */
 const useAccountsList = () => {
     const { data: authorize_data, ...rest } = useAuthorize();
+    const { data: balance_data } = useBalance();
+    const { getConfig } = useCurrencyConfig();
 
     // Add additional information to the authorize response.
     const modified_accounts = useMemo(() => {
@@ -26,13 +30,36 @@ const useAccountsList = () => {
                 is_wallet: account.account_category === 'wallet',
                 /** The account ID of specified account. */
                 loginid: `${account.loginid}`,
+                /** Account's currency config information */
+                currency_config: account.currency ? getConfig(account.currency) : undefined,
             } as const;
         });
-    }, [authorize_data.account_list, authorize_data.loginid]);
+    }, [authorize_data.account_list, authorize_data.loginid, getConfig]);
+
+    // Add balance to each account
+    const modified_accounts_with_balance = useMemo(
+        () =>
+            modified_accounts?.map(account => {
+                const balance = balance_data?.accounts?.[account.loginid]?.balance || 0;
+
+                return {
+                    ...account,
+                    /** The balance of the account. */
+                    balance,
+                    /** The balance of the account in currency format. */
+                    display_balance: Intl.NumberFormat(authorize_data?.preferred_language || 'en-US', {
+                        minimumFractionDigits: account.currency_config?.fractional_digits || 2,
+                        maximumFractionDigits: account.currency_config?.fractional_digits || 2,
+                        minimumIntegerDigits: 1,
+                    }).format(balance),
+                };
+            }),
+        [balance_data?.accounts, modified_accounts, authorize_data?.preferred_language]
+    );
 
     return {
-        /** The list of accounts. */
-        data: modified_accounts,
+        /** The list of accounts for the current user. */
+        data: modified_accounts_with_balance,
         ...rest,
     };
 };

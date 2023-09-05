@@ -1,11 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Button, Icon, Modal, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { Button, Icon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import ContractResultOverlay from 'Components/contract-result-overlay';
+import BotStopNotification from 'Components/dashboard/bot-stop-notification';
 import { contract_stages } from 'Constants/contract-stage';
 import { useDBotStore } from 'Stores/useDBotStore';
 
@@ -15,44 +15,6 @@ const CircularWrapper = ({ className }) => (
         <span className='dynamic-circle' />
     </div>
 );
-
-const AnimationInfo = ({ toggleAnimationInfoModal }) => {
-    return (
-        <div className='animation__info' onClick={toggleAnimationInfoModal}>
-            <Icon icon='IcInfoOutline' id='db-animation__clear-stat' />
-        </div>
-    );
-};
-
-const AnimationInfoModal = ({ is_mobile, is_animation_info_modal_open, toggleAnimationInfoModal }) => {
-    return (
-        <Modal
-            className={classNames('animation__modal', { 'animation__modal--mobile': is_mobile })}
-            title={localize('Stopping the bot is risky')}
-            is_open={is_animation_info_modal_open}
-            toggleModal={toggleAnimationInfoModal}
-            width={'440px'}
-        >
-            <Modal.Body>
-                <div className={classNames({ 'animation__modal-body--mobile': is_mobile })}>
-                    <Text as='p'>
-                        {localize(
-                            'Stopping the bot will prevent further trades. Any ongoing trades will be completed by our system.'
-                        )}
-                    </Text>
-                    <Text as='p' className='animation__modal-body--content'>
-                        {localize(
-                            'Please be aware that some completed transactions may not be displayed in the transaction table if the bot is stopped while placing trades.'
-                        )}
-                    </Text>
-                    <Text as='p' className='animation__modal-body--content'>
-                        {localize('You may refer to the statement page for details of all completed transactions.')}
-                    </Text>
-                </div>
-            </Modal.Body>
-        </Modal>
-    );
-};
 
 const ContractStageText = ({ contract_stage }) => {
     switch (contract_stage) {
@@ -72,8 +34,8 @@ const ContractStageText = ({ contract_stage }) => {
     }
 };
 
-const TradeAnimation = observer(({ className, info_direction }) => {
-    const { run_panel, toolbar, summary_card } = useDBotStore();
+const TradeAnimation = observer(({ className }) => {
+    const { run_panel, summary_card } = useDBotStore();
     const { client } = useStore();
     const { is_contract_completed, profit } = summary_card;
     const {
@@ -84,13 +46,13 @@ const TradeAnimation = observer(({ className, info_direction }) => {
         onStopButtonClick,
         performSelfExclusionCheck,
         should_show_overlay,
+        show_bot_stop_message,
     } = run_panel;
-    const { is_animation_info_modal_open, toggleAnimationInfoModal } = toolbar;
     const { account_status } = client;
     const cashier_validation = account_status?.cashier_validation;
-
     const [is_button_disabled, updateIsButtonDisabled] = React.useState(false);
     const is_unavailable_for_payment_agent = cashier_validation?.includes('WithdrawServiceUnavailableForPA');
+
     // perform self-exclusion checks which will be stored under the self-exclusion-store
     React.useEffect(() => {
         performSelfExclusionCheck();
@@ -127,13 +89,12 @@ const TradeAnimation = observer(({ className, info_direction }) => {
 
     return (
         <div className={classNames('animation__wrapper', className)}>
-            {info_direction === 'left' && <AnimationInfo toggleAnimationInfoModal={toggleAnimationInfoModal} />}
             <Button
                 is_disabled={(is_stop_button_disabled || is_button_disabled) && !is_unavailable_for_payment_agent}
                 className='animation__button'
                 id={is_stop_button_visible ? 'db-animation__stop-button' : 'db-animation__run-button'}
                 text={is_stop_button_visible ? localize('Stop') : localize('Run')}
-                icon={<Icon icon={is_stop_button_visible ? 'IcPause' : 'IcPlay'} color='active' />}
+                icon={<Icon icon={is_stop_button_visible ? 'IcBotStop' : 'IcPlay'} color='active' />}
                 onClick={() => {
                     updateIsButtonDisabled(true);
                     if (is_stop_button_visible) {
@@ -145,6 +106,7 @@ const TradeAnimation = observer(({ className, info_direction }) => {
                 has_effect
                 {...(is_stop_button_visible || !is_unavailable_for_payment_agent ? { primary: true } : { green: true })}
             />
+            {show_bot_stop_message && <BotStopNotification />}
             <div
                 className={classNames('animation__container', className, {
                     'animation--running': contract_stage > 0,
@@ -164,19 +126,12 @@ const TradeAnimation = observer(({ className, info_direction }) => {
                     ))}
                 </div>
             </div>
-            {info_direction === 'right' && <AnimationInfo toggleAnimationInfoModal={toggleAnimationInfoModal} />}
-            <AnimationInfoModal
-                is_mobile={isMobile()}
-                is_animation_info_modal_open={is_animation_info_modal_open}
-                toggleAnimationInfoModal={toggleAnimationInfoModal}
-            />
         </div>
     );
 });
 
 TradeAnimation.propTypes = {
     className: PropTypes.string,
-    info_direction: PropTypes.string,
 };
 
 export default TradeAnimation;

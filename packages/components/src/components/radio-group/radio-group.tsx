@@ -48,6 +48,7 @@ const RadioGroup = ({
                 children.map(item => (
                     <ItemWrapper key={item.props.value} should_wrap_items={should_wrap_items}>
                         <label
+                            htmlFor={item.props.id}
                             className={classNames('dc-radio-group__item', className, {
                                 'dc-radio-group__item--selected': selected_option === item.props.value,
                             })}

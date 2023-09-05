@@ -1545,10 +1545,9 @@ export default class TradeStore extends BaseStore {
     chartStateChange(state, option) {
         if (option) {
             const market_close_prop = 'isClosed';
-            const account_type = this.root_store.client.loginid.substring(0, 2);
             const device_type = isMobile() ? 'mobile' : 'desktop';
             const form_name = 'default';
-            const rest_props = { account_type, device_type, form_name };
+            const rest_props = { device_type, form_name };
             if (
                 state === STATE_TYPES.MARKET_STATE_CHANGE &&
                 market_close_prop in option &&

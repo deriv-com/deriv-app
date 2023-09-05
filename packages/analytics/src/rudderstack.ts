@@ -148,6 +148,7 @@ export class RudderStack {
     has_identified = false;
     has_initialized = false;
     current_page = '';
+    account_type = '';
 
     constructor() {
         this.init();
@@ -170,6 +171,10 @@ export class RudderStack {
                 this.has_initialized = true;
             });
         }
+    }
+
+    setAccountType(account_type: string) {
+        this.account_type = account_type;
     }
 
     identifyEvent = (user_id: string, payload: TEvents['identify']) => {
@@ -204,7 +209,10 @@ export class RudderStack {
      */
     track<T extends keyof TEvents>(event: T, payload: TEvents[T]) {
         if (this.has_initialized && this.has_identified) {
-            RudderAnalytics.track(event, { ...payload });
+            RudderAnalytics.track(event, {
+                ...payload,
+                account_type: this.account_type,
+            });
         }
     }
 }

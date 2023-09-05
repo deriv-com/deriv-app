@@ -1,0 +1,83 @@
+name: Deriv App
+on:
+  push:
+    branches:
+    - master
+env:
+  CACHE_VERSION: ${{ secrets.CACHE_VERSION }}
+  COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+  DATADOG_CLIENT_TOKEN_LOGS: ${{ secrets.DATADOG_CLIENT_TOKEN_LOGS }}
+  DATADOG_SESSION_REPLAY_SAMPLE_RATE: ${{ secrets.DATADOG_SESSION_REPLAY_SAMPLE_RATE }}
+  DATADOG_SESSION_SAMPLE_RATE: ${{ secrets.DATADOG_SESSION_SAMPLE_RATE }}
+  DATADOG_SESSION_SAMPLE_RATE_LOGS: ${{ secrets.DATADOG_SESSION_SAMPLE_RATE_LOGS }}
+  GD_API_KEY: ${{ secrets.GD_API_KEY }}
+  GD_APP_ID: ${{ secrets.GD_APP_ID }}
+  GD_CLIENT_ID: ${{ secrets.GD_CLIENT_ID }}
+  JEST_MAX_WORKERS: 4
+  RUDDERSTACK_PRODUCTION_KEY: ${{ secrets.RUDDERSTACK_PRODUCTION_KEY }}
+  RUDDERSTACK_STAGING_KEY: ${{ secrets.RUDDERSTACK_STAGING_KEY }}
+  RUDDERSTACK_URL: ${{ secrets.RUDDERSTACK_URL }}
+jobs:
+  release_staging:
+    name: Release Staging
+#     if: # GitHub does not currently support regular expressions inside if conditions
+# #         github.ref == 'refs/heads//^master$/'
+    runs-on: ubuntu-latest
+    container:
+      image: node:18.16.0
+    env:
+      NODE_ENV: staging
+      CA: ${{ secrets.CA }}
+      CA_CRT: ${{ secrets.CA_CRT }}
+      DATADOG_APPLICATION_ID: ${{ secrets.DATADOG_APPLICATION_ID }}
+      DATADOG_CLIENT_TOKEN: ${{ secrets.DATADOG_CLIENT_TOKEN }}
+      SERVICEACCOUNT_TOKEN: ${{ secrets.SERVICEACCOUNT_TOKEN }}
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}\
+    steps:
+    - uses: actions/checkout@v3.6.0
+    - uses: "./.github/actions/git_checkout_from_cache"
+    - uses: "./.github/actions/npm_install_from_cache"
+    - uses: "./.github/actions/build"
+    - uses: "./.github/actions/versioning"
+      with:
+        version_name: staging
+    - uses: actions/upload-artifact@v3.1.1
+      with:
+        path: packages/core/dist
+
+    - uses: ravsamhq/notify-slack-action@v2
+      if: always()
+      with:
+        status: ${{ job.status }}
+        notification_title: "{workflow} has {status_message}"
+        message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>"
+        footer: "Linked Repo <{repo_url}|{repo}>"
+        notify_when: "failure"
+        mention_users: "U0160UUNH8S,U0080UUAA9N"
+        mention_users_when: "failure,warnings"
+        mention_groups: "SAZ94GDB8"
+        mention_groups_when: "failure,warnings"
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}  
+
+  publish_cloudflare_staging:
+#     if: # GitHub does not currently support regular expressions inside if conditions
+# #         github.ref == 'refs/heads//^master$/'
+    runs-on: ubuntu-latest
+    container:
+      image: node:18.16.0
+    needs:
+    - release_staging
+    env:
+      NODE_ENV: staging
+      CA: ${{ secrets.CA }}
+      CA_CRT: ${{ secrets.CA_CRT }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      SERVICEACCOUNT_TOKEN: ${{ secrets.SERVICEACCOUNT_TOKEN }}
+    steps:
+    - uses: actions/checkout@v3.6.0
+    - uses: actions/download-artifact@v3.0.1
+      with:
+        path: packages
+    - uses: "./.github/actions/publish_to_pages_staging"

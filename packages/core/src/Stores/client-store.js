@@ -1652,7 +1652,6 @@ export default class ClientStore extends BaseStore {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
 
                 // Client comes back from oauth and logs in
-                RudderStack.setAccountType(account_type);
                 RudderStack.identifyEvent(user_id, {
                     language: getLanguage().toLowerCase(),
                 });
@@ -1705,7 +1704,7 @@ export default class ClientStore extends BaseStore {
                 this.switchAccount(this.virtual_account_loginid);
             }
         }
-
+        this.loginid !== 'null' && RudderStack.setAccountType(this.loginid.substring(0, 2));
         this.selectCurrency('');
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());

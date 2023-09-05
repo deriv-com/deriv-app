@@ -22,7 +22,7 @@ const WalletsAccordion: React.FC<TProps> = ({ active_account, account_info, swit
                     <IcDropdown />
                 </div>
             </button>
-            <div className={`wallets-accordion__content${is_open ? '--visible' : ''}`}>{content}</div>
+            <div className={`wallets-accordion__content${is_open ? '--visible' : ''}`}>{is_open && content}</div>
         </div>
     );
 };

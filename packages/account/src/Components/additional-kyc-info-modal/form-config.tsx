@@ -27,6 +27,17 @@ export type TFormFieldsConfig = {
     [key in TFields]: TInputConfig;
 };
 
+/**
+ *  The base config for form fields with validation rules
+ *  every field should have label, type, initial_value, disabled, required, placeholder, list_items, rules
+ *
+ *  `list_items` is used for dropdowns and select
+ *
+ * @param account_settings - GetSettings
+ * @param residence_list - ResidenceList
+ * @param required_fields - TFields[]
+ * @returns TFormFieldsConfig
+ */
 export const getFormFieldsConfig = (
     account_settings: GetSettings,
     residence_list: ResidenceList,
@@ -153,6 +164,12 @@ export const getFormFieldsConfig = (
     return config;
 };
 
+/**
+ * Generate initial values for form
+ *
+ * @param fields - TFormFieldsConfig
+ * @returns Record<string, unknown> - initial values for form
+ */
 const generateInitialValues = (fields: TFormFieldsConfig) => {
     const initial_values: Record<string, unknown> = {};
     Object.keys(fields).forEach(field => {
@@ -161,6 +178,14 @@ const generateInitialValues = (fields: TFormFieldsConfig) => {
     return initial_values;
 };
 
+/**
+ * This function is used to transform form fields config to the format that is used in Formik or Formik Field
+ *
+ * @param fields - TFormFieldsConfig
+ * @param name - TFields
+ * @param with_input_types - boolean
+ * @returns - TGetField
+ */
 const getField = (fields: TFormFieldsConfig, name: TFields, with_input_types: boolean): TGetField => {
     const { label, placeholder, required, disabled, type, list_items } = fields[name];
 
@@ -175,17 +200,22 @@ const getField = (fields: TFormFieldsConfig, name: TFields, with_input_types: bo
     };
 };
 
-export const getFormConfig = ({
-    account_settings,
-    residence_list,
-    required_fields,
-    with_input_types = false,
-}: {
+/**
+ * Function to transform and return form config that can be used within the component that renders the form
+ *
+ * @param options.account_settings - GetSettings - account settings from API
+ * @param options.residence_list - ResidenceList - residence list from API
+ * @param options.required_fields - TFields[] - required fields
+ * @param options.with_input_types - boolean - to include input types in the form config or not
+ * @returns
+ */
+export const getFormConfig = (options: {
     account_settings: GetSettings;
     residence_list: ResidenceList;
     required_fields: TFields[];
     with_input_types?: boolean;
 }) => {
+    const { account_settings, residence_list, required_fields, with_input_types = false } = options;
     const fields_config = getFormFieldsConfig(account_settings, residence_list, required_fields);
     const inputs: Record<TFields | string, TGetField> = {} as Record<TFields, TGetField>;
     Object.keys(fields_config).forEach(field => {
@@ -193,6 +223,9 @@ export const getFormConfig = ({
     });
     return {
         fields: inputs,
+        /** typing fields_config as any as this current config has different structure
+         * and generateValidationFunction should have generic types
+         * */
         validate: generateValidationFunction('', fields_config as any),
         initialValues: generateInitialValues(fields_config),
     };

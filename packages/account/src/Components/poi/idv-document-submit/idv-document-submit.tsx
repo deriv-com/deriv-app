@@ -120,15 +120,15 @@ const IdvDocumentSubmit = ({
             />
         );
 
-        if (data.error) {
+        if (data?.error) {
             const response_error =
-                data.error.code === 'DuplicateAccount' ? duplicated_account_error_message : generic_error_message;
+                data.error?.code === 'DuplicateAccount' ? duplicated_account_error_message : generic_error_message;
             setStatus({ error_message: response_error });
             setSubmitting(false);
             return;
         }
         const get_settings = WS.authorized.storage.getSettings();
-        if (get_settings.error) {
+        if (get_settings?.error) {
             setStatus({ error_message: get_settings?.error?.message ?? generic_error_message });
             setSubmitting(false);
             return;

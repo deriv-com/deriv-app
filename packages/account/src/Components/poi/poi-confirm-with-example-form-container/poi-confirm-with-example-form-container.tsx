@@ -97,14 +97,14 @@ const PoiConfirmWithExampleFormContainer = ({
             />
         );
 
-        if (data.error) {
+        if (data?.error) {
             const response_error =
-                data.error.code === 'DuplicateAccount' ? duplicated_account_error_message : generic_error_message;
+                data.error?.code === 'DuplicateAccount' ? duplicated_account_error_message : generic_error_message;
             setStatus({ error_msg: response_error });
             setSubmitting(false);
         } else {
             const response = await WS.authorized.storage.getSettings();
-            if (response.error) {
+            if (response?.error) {
                 setRestState({ ...rest_state, api_error: response.error.message });
                 return;
             }

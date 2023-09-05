@@ -1,0 +1,8 @@
+name: build
+description: Build all packages
+runs:
+  using: composite
+  steps:
+  - name: Build all packages
+    run: npm run build:all
+    shell: bash

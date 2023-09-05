@@ -19,7 +19,7 @@ const CompareAccount = ({ accounts_sub_text, is_desktop }: TCompareAccount) => {
             }}
         >
             <Text
-                size='xxs'
+                size={is_desktop ? 'xxs' : 'xs'}
                 color='red'
                 weight='bold'
                 line_height='s'

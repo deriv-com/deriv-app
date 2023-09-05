@@ -4,14 +4,16 @@ import './AppContent.scss';
 
 const AppContent: React.FC = () => {
     return (
-        <React.Fragment>
-            <DesktopWrapper>
-                <DesktopWalletsList />
-            </DesktopWrapper>
-            <MobileWrapper>
-                <WalletsCarousel />
-            </MobileWrapper>
-        </React.Fragment>
+        <div className='wallets-app'>
+            <div className='wallets-app__content'>
+                <DesktopWrapper>
+                    <DesktopWalletsList />
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <WalletsCarousel />
+                </MobileWrapper>
+            </div>
+        </div>
     );
 };
 

@@ -27,8 +27,8 @@ const WalletsCarousel = () => {
             <div className='wallets-carousel' ref={emblaRef}>
                 <section className='wallets-carousel__container'>
                     {wallet_accounts_list.map(wallet => (
-                        <div className='wallet-card' key={wallet.loginid}>
-                            <div className='wallet-card__data'>
+                        <div className='wallets-card' key={wallet.loginid}>
+                            <div className='wallets-card__data'>
                                 <div className='wallets-card__data__details'>
                                     <h1>{wallet.currency}</h1>
                                     <div className='wallets-card__data__details-balance'>

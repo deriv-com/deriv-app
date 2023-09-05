@@ -1,5 +1,6 @@
 import { useWindowSize } from 'usehooks-ts';
 
+/** A custom hook to check for the client device (Try to use this for behaviour only and not for hiding JSX element) */
 const useDevice = () => {
     const { width } = useWindowSize();
     const is_mobile = width < 768;

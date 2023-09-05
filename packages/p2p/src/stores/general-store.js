@@ -509,15 +509,6 @@ export default class GeneralStore extends BaseStore {
                     },
                     [this.updateAdvertiserInfo, response => sendbird_store.handleP2pAdvertiserInfo(response)]
                 ),
-                // order_list_subscription: subscribeWS(
-                //     {
-                //         p2p_order_list: 1,
-                //         subscribe: 1,
-                //         offset: 0,
-                //         limit: this.list_item_limit,
-                //     },
-                //     [this.setP2pOrderList]
-                // ),
                 exchange_rate_subscription: subscribeWS(
                     {
                         exchange_rates: 1,

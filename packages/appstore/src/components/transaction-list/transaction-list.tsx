@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Div100vhContainer, Dropdown, Loading, Text, ThemedScrollbars } from '@deriv/components';
+import { Div100vhContainer, Dropdown, Loading, ThemedScrollbars } from '@deriv/components';
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { groupTransactionsByDay } from '@deriv/utils';
-import NonPendingTransaction from './non-pending-transaction';
+import { TransactionsForADay } from './transaction-for-day';
 import './transaction-list.scss';
 
 type TTransactionList = {
@@ -14,7 +14,6 @@ type TTransactionList = {
 
 const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTransactionList) => {
     const {
-        client: { loginid },
         ui: { is_mobile },
     } = useStore();
 
@@ -54,37 +53,9 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
 
     const grouped_transactions = groupTransactionsByDay(transactions);
 
-    const TransactionsForADay = ({
-        day,
-        transaction_list,
-    }: {
-        day: string;
-        transaction_list: ReturnType<typeof useWalletTransactions>['transactions'];
-    }) => {
-        return (
-            <div className='transaction-list__day'>
-                <Text
-                    className='transaction-list__day-header'
-                    size={is_mobile ? 'xxxxs' : 'xxxs'}
-                    line_height={is_mobile ? 'm' : 's'}
-                    color='less-prominent'
-                    weight='lighter'
-                >
-                    {day}
-                </Text>
-                {transaction_list.map((transaction: typeof transaction_list[number]) => {
-                    let display_transaction = transaction;
-                    if (
-                        transaction?.action_type === 'transfer' &&
-                        transaction?.from?.loginid === loginid &&
-                        typeof transaction?.amount === 'number'
-                    ) {
-                        display_transaction = { ...transaction, amount: -transaction.amount };
-                    }
-                    return <NonPendingTransaction key={transaction.transaction_id} transaction={display_transaction} />;
-                })}
-            </div>
-        );
+    const onValueChange = (e: { target: { name: string; value: string } }) => {
+        reset();
+        setFilter(e.target.value as typeof filter);
     };
 
     const getHeightOffset = React.useCallback(() => {
@@ -122,10 +93,7 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
                     className='transaction-list__filter'
                     is_align_text_left
                     list={filter_options}
-                    onChange={(e: { target: { value: typeof filter } }) => {
-                        reset();
-                        setFilter(e.target.value);
-                    }}
+                    onChange={onValueChange}
                     label={localize('Filter')}
                     suffix_icon='IcFilter'
                     value={filter}

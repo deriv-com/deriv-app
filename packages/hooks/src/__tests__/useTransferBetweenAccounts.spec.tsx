@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import useTransferBetweenAccounts from '../useTransferBetweenAccounts';
 import { APIProvider } from '@deriv/api';
+import useTransferBetweenAccounts from '../useTransferBetweenAccounts';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),

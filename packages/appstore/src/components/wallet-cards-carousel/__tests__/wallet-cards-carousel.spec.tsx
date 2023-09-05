@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { APIProvider, useFetch } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import WalletCardsCarousel from '..';
-import { APIProvider, useFetch } from '@deriv/api';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -117,16 +117,18 @@ jest.mock('@deriv/api', () => ({
 jest.mock('./../cards-slider-swiper', () => jest.fn(() => <div>slider</div>));
 
 describe('<WalletCardsCarousel />', () => {
-    it('Should render slider', () => {
-        const mock = mockStore({});
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
+    const wrapper = (mock: ReturnType<typeof mockStore>) => {
+        const Component = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
                 <StoreProvider store={mock}>{children}</StoreProvider>
             </APIProvider>
         );
+        return Component;
+    };
+    it('Should render slider', () => {
+        const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
 
-        render(<WalletCardsCarousel />, { wrapper });
+        render(<WalletCardsCarousel />, { wrapper: wrapper(mock) });
         const slider = screen.queryByText('slider');
 
         expect(slider).toBeInTheDocument();
@@ -155,13 +157,7 @@ describe('<WalletCardsCarousel />', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        render(<WalletCardsCarousel />, { wrapper });
+        render(<WalletCardsCarousel />, { wrapper: wrapper(mock) });
 
         const btn1 = screen.getByRole('button', { name: /Deposit/i });
         const btn2 = screen.getByRole('button', { name: /Withdraw/i });
@@ -197,13 +193,7 @@ describe('<WalletCardsCarousel />', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        render(<WalletCardsCarousel />, { wrapper });
+        render(<WalletCardsCarousel />, { wrapper: wrapper(mock) });
 
         const btn1 = screen.getByRole('button', { name: /Transfer/i });
         const btn2 = screen.getByRole('button', { name: /Transactions/i });

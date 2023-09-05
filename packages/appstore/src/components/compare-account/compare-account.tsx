@@ -18,7 +18,13 @@ const CompareAccount = ({ accounts_sub_text, is_desktop }: TCompareAccount) => {
                 history.push(routes.compare_cfds);
             }}
         >
-            <Text size='xs' color='red' weight='bold' line_height='s' styles={is_desktop ? { marginLeft: '1rem' } : ''}>
+            <Text
+                size='xxs'
+                color='red'
+                weight='bold'
+                line_height='s'
+                styles={is_desktop ? { marginLeft: '1rem' } : ''}
+            >
                 <Localize i18n_default_text={accounts_sub_text} />
             </Text>
         </div>

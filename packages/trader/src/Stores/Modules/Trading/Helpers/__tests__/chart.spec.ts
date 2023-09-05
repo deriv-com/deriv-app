@@ -196,6 +196,12 @@ describe('getChartAnalyticsData', () => {
         });
         expect(getChartAnalyticsData(STATE_TYPES.INDICATOR_ADDED, {})).toEqual({});
     });
+    it('should return correct object with data and event_type for STATE_TYPES.INDICATORS_CLEAR_ALL', () => {
+        expect(getChartAnalyticsData(STATE_TYPES.INDICATORS_CLEAR_ALL, {})).toEqual({
+            data: { action: 'clean_all_active' },
+            event_type: indicators_event_type,
+        });
+    });
     it('should return correct object with data and event_type for STATE_TYPES.INDICATOR_SEARCH', () => {
         expect(
             getChartAnalyticsData(STATE_TYPES.INDICATOR_SEARCH, {

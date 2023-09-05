@@ -29,6 +29,11 @@ jest.mock('@deriv/hooks', () => ({
     useTransferMessageList: jest.fn(),
 }));
 
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    AnimatedList: jest.fn(({ children }) => <div>{children}</div>),
+}));
+
 const mockUseTransferMessageList = useTransferMessageList as jest.MockedFunction<typeof useTransferMessageList>;
 
 const wrapper = ({ children }: { children: JSX.Element }) => (

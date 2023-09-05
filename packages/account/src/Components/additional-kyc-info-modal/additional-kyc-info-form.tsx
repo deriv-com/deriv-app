@@ -1,5 +1,4 @@
 import React from 'react';
-import { ResidenceList } from '@deriv/api-types';
 import {
     Autocomplete,
     Button,
@@ -132,7 +131,7 @@ export const AdditionalKycInfoForm = observer(
                                                         autoComplete='off' // prevent chrome autocomplete
                                                         type='text'
                                                         error={(touched && error) as string}
-                                                        onItemSelection={({ value, text }: ResidenceList[0]) => {
+                                                        onItemSelection={({ value, text }: TListItem) => {
                                                             setFieldValue(field.name, value ? text : '', true);
                                                         }}
                                                         data-testid={field.name}

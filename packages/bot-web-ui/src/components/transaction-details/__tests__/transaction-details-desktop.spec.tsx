@@ -1,7 +1,7 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import RootStore from 'Stores/index';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import TransactionDetailsDesktop from '../transaction-details-desktop';
@@ -48,6 +48,7 @@ describe('TransactionDetailsDesktop', () => {
             </StoreProvider>
         );
     });
+
     it('should render TransactionDetailsDesktop', () => {
         const { container } = render(<TransactionDetailsDesktop />, {
             wrapper,
@@ -63,15 +64,31 @@ describe('TransactionDetailsDesktop', () => {
         expect(screen.getByTestId('transaction_details_tables')).toBeInTheDocument();
     });
 
-    it('should close DesktopTransactionTable modal', () => {
+    it('should open DesktopTransactionTable modal after resizing screen', () => {
         mock_DBot_store?.transactions.toggleTransactionDetailsModal(true);
-        const { container } = render(<TransactionDetailsDesktop />, {
+        const resizeEvent = new Event('resize');
+        render(<TransactionDetailsDesktop />, {
             wrapper,
         });
-        // TODO: had to do this way as there is no identifier in Dialog close button. Need to add an identifier in there first.
-        // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
-        const close_button = container.getElementsByClassName('dc-dialog__header--close');
-        fireEvent.click(close_button[0]);
+
+        act(() => {
+            window.dispatchEvent(resizeEvent);
+        });
+
+        const draggable_element = screen.getByTestId('react-rnd-wrapper');
+        const computedStyle = window.getComputedStyle(draggable_element);
+        const transformValue = computedStyle.getPropertyValue('transform');
+
+        expect(transformValue).toBe('translate(-1034px,0px)');
+    });
+
+    it('should close DesktopTransactionTable modal', () => {
+        mock_DBot_store?.transactions.toggleTransactionDetailsModal(true);
+        render(<TransactionDetailsDesktop />, {
+            wrapper,
+        });
+        const close_btn = screen.getByTestId('react-rnd-close-modal');
+        fireEvent.click(close_btn);
         expect(mock_DBot_store?.transactions.is_transaction_details_modal_open).toBeFalsy();
     });
 });

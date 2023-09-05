@@ -1,16 +1,41 @@
 import React from 'react';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Localize, localize } from '@deriv/translations';
+import { TOptions, generateValidationFunction } from '@deriv/shared';
+import { Dropdown, SelectNative } from '@deriv/components';
 
-export const getFormFields = (
+type TListItems =
+    | React.ComponentProps<typeof Dropdown>['list']
+    | React.ComponentProps<typeof SelectNative>['list_items'];
+
+export type TFields = 'place_of_birth' | 'tax_residence' | 'tax_identification_number' | 'account_opening_reason';
+
+type TInputConfig = {
+    label: React.ReactNode | string;
+    type?: string;
+    initial_value: string | number | boolean | null;
+    disabled: boolean;
+    required: boolean;
+    placeholder?: string;
+    list_items?: TListItems;
+    rules?: Array<(TOptions | unknown)[]>;
+};
+
+type TGetField = Omit<TInputConfig, 'initial_value'> & { name: string };
+
+export type TFormFieldsConfig = {
+    [key in TFields]: TInputConfig;
+};
+
+export const getFormFieldsConfig = (
     account_settings: GetSettings,
     residence_list: ResidenceList,
-    required_fields: string[]
-) => {
+    required_fields: TFields[]
+): TFormFieldsConfig => {
     const isFieldDisabled = (field: string) =>
-        account_settings.immutable_fields && account_settings.immutable_fields.includes(field);
-    const isFieldRequired = (field: string) => required_fields.includes(field);
-    return {
+        Boolean(account_settings.immutable_fields && account_settings.immutable_fields.includes(field));
+    const isFieldRequired = (field: TFields) => required_fields.includes(field);
+    const config: TFormFieldsConfig = {
         place_of_birth: {
             label: (
                 <Localize
@@ -19,12 +44,13 @@ export const getFormFields = (
                 />
             ),
             type: 'select',
-            initial_value: account_settings.place_of_birth
-                ? residence_list.find(item => item.value === account_settings.place_of_birth)?.text
-                : '',
+            initial_value:
+                (account_settings.place_of_birth &&
+                    residence_list.find(item => item.value === account_settings.place_of_birth)?.text) ??
+                '',
             disabled: isFieldDisabled('place_of_birth'),
-            is_requried: isFieldRequired('place_of_birth'),
-            list_items: residence_list,
+            required: isFieldRequired('place_of_birth'),
+            list_items: residence_list as TListItems,
             rules: [['req', <Localize key='place_of_birth' i18n_default_text='Place of birth is required.' />]],
         },
         tax_residence: {
@@ -35,10 +61,13 @@ export const getFormFields = (
                 />
             ),
             type: 'select',
-            initial_value: account_settings.tax_residence ?? '',
+            initial_value:
+                (account_settings.tax_residence &&
+                    residence_list.find(item => item.value === account_settings.tax_residence)?.text) ??
+                '',
             disabled: isFieldDisabled('tax_residence'),
-            is_requried: isFieldRequired('tax_residence'),
-            list_items: residence_list,
+            required: isFieldRequired('tax_residence'),
+            list_items: residence_list as TListItems,
             rules: [['req', <Localize key='tax_residence' i18n_default_text='Tax residence is required.' />]],
         },
         tax_identification_number: {
@@ -51,7 +80,7 @@ export const getFormFields = (
             type: 'text',
             initial_value: account_settings.tax_identification_number ?? '',
             disabled: isFieldDisabled('tax_identification_number'),
-            is_requried: isFieldRequired('tax_identification_number'),
+            required: isFieldRequired('tax_identification_number'),
             rules: [
                 ['req', <Localize key='TIN' i18n_default_text='Tax Identification Number is required.' />],
                 [
@@ -76,7 +105,7 @@ export const getFormFields = (
                     (value: string, options: Record<string, unknown>, { tax_residence }: { tax_residence: string }) => {
                         return !!tax_residence;
                     },
-                    <Localize key='TIN' i18n_default_text='Please fill in Tax residence.' />,
+                    <Localize key='TIN' i18n_default_text='Please fill in tax residence.' />,
                 ],
                 [
                     (value: string, options: Record<string, unknown>, { tax_residence }: { tax_residence: string }) => {
@@ -98,7 +127,7 @@ export const getFormFields = (
             type: 'select',
             initial_value: account_settings.account_opening_reason ?? '',
             disabled: isFieldDisabled('account_opening_reason'),
-            is_requried: isFieldRequired('account_opening_reason'),
+            required: isFieldRequired('account_opening_reason'),
             list_items: [
                 {
                     text: localize('Hedging'),
@@ -121,78 +150,50 @@ export const getFormFields = (
             ],
         },
     };
+    return config;
 };
 
-const generateValidationFunction = (fields: Record<string, any>, required_fields: string[]) => {
-    return (values: Record<string, any>) => {
-        const errors = {};
-        Object.keys(fields).forEach(field => {
-            const field_rules = fields[field].rules;
-            const field_value = values[field];
-            const error = field_rules.reduce((error, rule) => {
-                const [rule_name, message] = rule;
-                if (error) {
-                    return error;
-                }
-                switch (rule_name) {
-                    case 'req':
-                        if (!field_value && required_fields.includes(field)) {
-                            return message;
-                        }
-                        return undefined;
-                    default:
-                        return undefined;
-                }
-            }, undefined);
-            if (error) {
-                errors[field] = error;
-            }
-        });
-        return errors;
-    };
-};
-
-const generateInitialValues = (fields: Record<string, any>) => {
-    const initial_values: any = {};
+const generateInitialValues = (fields: TFormFieldsConfig) => {
+    const initial_values: Record<string, unknown> = {};
     Object.keys(fields).forEach(field => {
-        initial_values[field] = fields[field].initial_value;
+        initial_values[field] = fields[field as TFields].initial_value;
     });
     return initial_values;
 };
 
-const getField = (fields: Record<string, any>, field_name: string, withInputTypes: boolean) => {
-    const { label, placeholder, is_required, disabled, type, list_items } = fields[field_name];
+const getField = (fields: TFormFieldsConfig, name: TFields, with_input_types: boolean): TGetField => {
+    const { label, placeholder, required, disabled, type, list_items } = fields[name];
 
     return {
-        name: field_name,
+        name,
         label,
-        required: is_required,
+        required,
         disabled,
-        ...(withInputTypes ? { type } : {}),
+        ...(with_input_types ? { type } : {}),
         ...(placeholder ? { placeholder } : {}),
         ...(list_items ? { list_items } : {}),
     };
 };
 
-export const getInputs = ({
+export const getFormConfig = ({
     account_settings,
     residence_list,
     required_fields,
-    withInputTypes = false,
+    with_input_types = false,
 }: {
     account_settings: GetSettings;
     residence_list: ResidenceList;
-    required_fields: string[];
-    withInputTypes?: boolean;
+    required_fields: TFields[];
+    with_input_types?: boolean;
 }) => {
-    const fields = getFormFields(account_settings, residence_list, required_fields);
-    const inputs: any = {};
-    Object.keys(fields).forEach(field => {
-        inputs[field] = getField(fields, field, withInputTypes);
+    const fields_config = getFormFieldsConfig(account_settings, residence_list, required_fields);
+    const inputs: Record<TFields | string, TGetField> = {} as Record<TFields, TGetField>;
+    Object.keys(fields_config).forEach(field => {
+        inputs[field as TFields] = getField(fields_config, field as TFields, with_input_types);
     });
     return {
         fields: inputs,
-        validate: generateValidationFunction(fields, required_fields),
-        initialValues: generateInitialValues(fields),
+        validate: generateValidationFunction('', fields_config as any),
+        initialValues: generateInitialValues(fields_config),
     };
 };

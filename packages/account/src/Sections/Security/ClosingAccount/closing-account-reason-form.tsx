@@ -235,7 +235,7 @@ const ClosingAccountReasonForm = ({ onBackClick, onConfirmClick }: TClosingAccou
                                     values={{ remaining_characters }}
                                 />
                             </Text>
-                            {Object.keys(errors).length > 0 &&
+                            {isValid &&
                                 Object.entries(errors).map(([key, value]) => (
                                     <Text
                                         as='p'

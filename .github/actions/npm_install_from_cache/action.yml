@@ -1,0 +1,51 @@
+name: npm_install_from_cache
+description: Install npm packages from cache
+runs:
+  using: composite
+  steps:
+  - name: Create cache key
+    run: echo $(find . ./packages/ -maxdepth 2 -name package.json -type f -exec md5sum {} \; | sort -n | md5sum | cut -d" " -f1) >> CACHE_KEY1
+    shell: bash
+  - name: restore_cache
+    uses: actions/cache@v3.3.1
+    with:
+      key: node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
+      path: UPDATE_ME
+      restore-keys: node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
+  - name: Install npm packages
+    run: |-
+      npm run bootstrap
+      # if [ -d "./node_modules" ]; then
+      #   echo "Found cache. Using cached node_modules."
+      #   node_modules/lerna/cli.js link
+      # else
+      #   echo "Could not find cache. Bootstrapping..."
+      #   npm run bootstrap
+      # fi
+    shell: bash
+  - name: save_cache
+    uses: actions/cache@v3.3.1
+    with:
+      path: |-
+        node_modules
+        packages/account/node_modules
+        packages/api/node_modules
+        packages/appstore/node_modules
+        packages/bot-skeleton/node_modules
+        packages/bot-web-ui/node_modules
+        packages/cashier/node_modules
+        packages/components/node_modules
+        packages/core/node_modules
+        packages/hooks/node_modules
+        packages/cfd/node_modules
+        packages/indicators/node_modules
+        packages/p2p/node_modules
+        packages/reports/node_modules
+        packages/shared/node_modules
+        packages/stores/node_modules
+        packages/trader/node_modules
+        packages/translations/node_modules
+        packages/utils/node_modules
+        packages/analytics/node_modules
+        packages/wallets/node_modules
+      key: node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}

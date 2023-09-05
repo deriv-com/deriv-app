@@ -104,7 +104,7 @@ export const AdditionalKycInfoForm = observer(
                                                     <SelectNative
                                                         {...field}
                                                         {...fields[field.name as keyof typeof fields]}
-                                                        error={touched && error ? error : ''}
+                                                        error={(touched && error) as string}
                                                         use_text
                                                         should_hide_disabled_options={false}
                                                         data-testid={field.name}

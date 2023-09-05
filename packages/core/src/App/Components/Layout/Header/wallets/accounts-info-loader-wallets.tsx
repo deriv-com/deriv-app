@@ -47,4 +47,4 @@ const LoggedInPreloader = ({ is_mobile }: Pick<TAccountsInfoLoaderWallets, 'is_m
     </>
 );
 
-export { AccountsInfoLoaderWallets };
+export default AccountsInfoLoaderWallets;

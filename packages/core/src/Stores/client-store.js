@@ -723,7 +723,7 @@ export default class ClientStore extends BaseStore {
     }
 
     get is_poa_older_than_six_months() {
-        return this.account_status?.status?.includes('poa_older_than_six_months');
+        return this.account_status?.status?.includes('poa_expired');
     }
 
     get is_authentication_needed() {

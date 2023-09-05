@@ -33,7 +33,6 @@ const AccountStatusList = [
     'pa_withdrawal_explicitly_allowed',
     'password_reset_required',
     'personal_details_locked',
-    'poa_older_than_six_months', //TODO: change status name with backend once it is ready
     'poi_name_mismatch',
     'professional',
     'professional_requested',

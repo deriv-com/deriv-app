@@ -18,8 +18,7 @@ const mocked_props = {
     toggleModal: jest.fn(),
     wallet: mocked_wallet,
 };
-const modal_root_el: HTMLDivElement;
-modal_root_el = document.createElement('div');
+const modal_root_el = document.createElement('div');
 modal_root_el.setAttribute('id', 'modal_root');
 document.body.appendChild(modal_root_el);
 

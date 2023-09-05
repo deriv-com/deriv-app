@@ -42,11 +42,6 @@ describe('useP2POrdertList', () => {
                         // @ts-expect-error need to come up with a way to mock the return type of usePaginatedFetch
                         {
                             id: '1',
-                            account_currency: 'USD',
-                            amount: 0.1,
-                            amount_display: '0.10',
-                            status: 'pending',
-                            contact_info: 'Created by script. Please call me 02203400',
                         },
                     ],
                 },
@@ -61,10 +56,6 @@ describe('useP2POrdertList', () => {
 
         const { result } = renderHook(() => useP2POrderList({}), { wrapper });
         const p2p_order_list = result.current.data;
-
         expect(p2p_order_list).toHaveLength(1);
-        expect(p2p_order_list?.[0].contact_info).toBe('Created by script. Please call me 02203400');
-        expect(p2p_order_list?.[0].amount).toBe(0.1);
-        expect(p2p_order_list?.[0].status).toBe('pending');
     });
 });

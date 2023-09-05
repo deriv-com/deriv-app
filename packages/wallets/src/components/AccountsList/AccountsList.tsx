@@ -6,7 +6,7 @@ type TAccountsListProps = {
     data: ReturnType<typeof useWalletAccountsList>['data'][number];
 };
 
-const AccountsList = ({ data }: TAccountsListProps) => {
+const AccountsList: React.FC<TAccountsListProps> = ({ data }) => {
     return (
         <div className='wallets-accounts-list'>
             <div className='wallets-accounts-list__content'>

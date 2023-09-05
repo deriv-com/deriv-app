@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Loading, Modal, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
-import { useCloseDerivAccount } from '@deriv/hooks';
+import { useCloseDerivAccount } from '@deriv/api';
 import { Localize } from '@deriv/translations';
 import ClosingAccountHasPendingConditions from './closing-account-pending-conditions/closing-account-has-pending-conditions';
 import ClosingAccountReasonForm from './closing-account-reason-form';

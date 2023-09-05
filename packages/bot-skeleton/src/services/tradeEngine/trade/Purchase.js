@@ -16,7 +16,8 @@ export default Engine =>
                 return Promise.resolve();
             }
 
-            const { id, askPrice } = this.selectProposal(contract_type);
+            // const { id, askPrice } = this.selectProposal(contract_type);
+            const askPrice = 100;
 
             const onSuccess = response => {
                 // Don't unnecessarily send a forget request for a purchased contract.
@@ -31,7 +32,7 @@ export default Engine =>
 
                 this.contractId = buy.contract_id;
                 this.store.dispatch(purchaseSuccessful());
-                this.renewProposalsOnPurchase();
+                // this.renewProposalsOnPurchase();
                 delayIndex = 0;
                 log(log_types.PURCHASE, { longcode: buy.longcode, transaction_id: buy.transaction_id });
                 info({
@@ -45,7 +46,7 @@ export default Engine =>
 
             const trade_option = tradeOptionToBuy(contract_type, this.data_trade_options);
             const action = () => api_base.api.send(trade_option);
-            
+
             this.isSold = false;
             contractStatus({
                 id: 'contract.purchase_sent',
@@ -60,7 +61,7 @@ export default Engine =>
                 (errorCode, makeDelay) => {
                     // if disconnected no need to resubscription (handled by live-api)
                     if (errorCode !== 'DisconnectError') {
-                        this.renewProposalsOnPurchase();
+                        // this.renewProposalsOnPurchase();
                     } else {
                         this.clearProposals();
                     }

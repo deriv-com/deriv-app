@@ -35,8 +35,11 @@
             }
 
             &__side-notes-container {
+                display: flex;
+                flex-direction: column;
                 width: 100%;
                 max-width: 28.2rem;
+                gap: 1.6rem;
             }
         }
     }

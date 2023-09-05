@@ -20,8 +20,7 @@ export const STATE_TYPES = {
     FAVORITE_MARKETS_TOGGLE: 'FAVORITE_MARKETS_TOGGLE',
     INDICATOR_ADDED: 'INDICATOR_ADDED',
     INDICATOR_DELETED: 'INDICATOR_DELETED',
-    INDICATOR_INFO_CLOSED: 'INDICATOR_INFO_CLOSED',
-    INDICATOR_INFO_OPEN: 'INDICATOR_INFO_OPEN',
+    INDICATOR_INFO_TOGGLE: 'INDICATOR_INFO_TOGGLE',
     INDICATOR_SEARCH: 'INDICATOR_SEARCH',
     INDICATOR_SETTINGS_OPEN: 'INDICATOR_SETTINGS_OPEN',
     INDICATORS_MODAL_TOGGLE: 'INDICATORS_MODAL_TOGGLE',
@@ -88,11 +87,8 @@ export const getChartAnalyticsData = (state: keyof typeof STATE_TYPES, option: T
         } else if (state === STATE_TYPES.INDICATOR_SETTINGS_OPEN) {
             payload.data.action = 'edit_active';
             return payload;
-        } else if (state === STATE_TYPES.INDICATOR_INFO_OPEN) {
-            payload.data.action = 'info_open';
-            return payload;
-        } else if (state === STATE_TYPES.INDICATOR_INFO_CLOSED) {
-            payload.data.action = 'info_close';
+        } else if (state === STATE_TYPES.INDICATOR_INFO_TOGGLE) {
+            payload.data.action = is_info_open ? 'info_open' : 'info_close';
             return payload;
         }
     }

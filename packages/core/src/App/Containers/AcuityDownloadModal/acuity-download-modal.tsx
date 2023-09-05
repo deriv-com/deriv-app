@@ -36,9 +36,7 @@ const AcuityDownloadModal = ({
     };
 
     const getLink = (language: string): string => {
-        if (language === 'PT') {
-            return getUrlBase('/public/pdf/Acuity_tool_user_guide_Portuguese.pdf');
-        } else if (language === 'ES') {
+        if (language === 'ES') {
             return getUrlBase('/public/pdf/Acuity_tool_user_guide_Spanish.pdf');
         }
         if (is_eu) {

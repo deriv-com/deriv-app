@@ -6,12 +6,13 @@ const languages = {
     FR: 'Français',
     ID: 'Indonesian',
     IT: 'Italiano',
+    KO: '한국어',
     PL: 'Polish',
-    PT: 'Português',
     RU: 'Русский',
     VI: 'Tiếng Việt',
     ZH_CN: '简体中文',
     ZH_TW: '繁體中文',
+    TH: 'ไทย',
 };
 
 describe('getAllowedLanguages method', () => {

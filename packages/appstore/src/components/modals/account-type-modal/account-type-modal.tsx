@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { useStores } from 'Stores/index';
-import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
+import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import { TModalContent, TAccountCard, TTradingPlatformAvailableAccount } from './types';
 import { TIconTypes } from 'Types';
 import { CFD_PLATFORMS } from '@deriv/shared';
@@ -23,7 +23,7 @@ const AccountCard = ({ selectAccountTypeCard, account_type_card, title_and_type,
             onClick={() => cardSelection(title_and_type)}
         >
             <div className='account-type-card__image'>
-                <TradigPlatformIconProps icon={icon as TIconTypes} size={64} />
+                <TradingPlatformIconProps icon={icon as TIconTypes} size={64} />
             </div>
             <div className='account-type-card__header'>
                 <Text as='h2' weight='bold'>
@@ -109,19 +109,21 @@ const MT5AccountTypeModal = () => {
     const is_swapfree_available = useHasSwapFreeAccount();
 
     const set_account_type = () => {
-        switch (account_type_card) {
-            case 'Derived':
+        const localizedAccountType = localize(account_type_card);
+
+        switch (localizedAccountType) {
+            case localize('Derived'):
                 setAccountType({ category: 'real', type: 'synthetic' });
                 break;
-            case 'Swap-Free':
-                setAccountType({ category: 'real', type: 'all' });
-                break;
-            case 'Financial':
-            default:
+            case localize('Financial'):
                 setAccountType({ category: 'real', type: 'financial' });
+                break;
+            default:
+                setAccountType({ category: 'real', type: 'all' });
                 break;
         }
     };
+
     return (
         <div>
             <React.Suspense fallback={<UILoader />}>

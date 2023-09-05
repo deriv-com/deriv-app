@@ -13,7 +13,7 @@ jobs:
         id: step1
         uses: actions/setup-node@v2
         with:
-          node-version: "16"
+          node-version: "18"
           check-latest: true
           registry-url: "https://registry.npmjs.org"
         env:

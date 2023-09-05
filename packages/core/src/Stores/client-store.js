@@ -24,6 +24,7 @@ import {
     toMoment,
     urlForLanguage,
 } from '@deriv/shared';
+import { RudderStack } from '@deriv/analytics';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType, getAvailableAccount } from './Helpers/client';
@@ -52,6 +53,7 @@ export default class ClientStore extends BaseStore {
     email;
     accounts = {};
     trading_platform_available_accounts = [];
+    derivez_available_accounts = [];
     pre_switch_broadcast = false;
     switched = '';
     is_switching = false;
@@ -102,6 +104,7 @@ export default class ClientStore extends BaseStore {
     mt5_login_list = [];
     mt5_login_list_error = null;
     dxtrade_accounts_list = [];
+    derivez_accounts_list = [];
     dxtrade_accounts_list_error = null;
     dxtrade_disabled_signup_types = { real: false, demo: false };
     statement = [];
@@ -167,6 +170,7 @@ export default class ClientStore extends BaseStore {
             email: observable,
             accounts: observable,
             trading_platform_available_accounts: observable,
+            derivez_available_accounts: observable,
             pre_switch_broadcast: observable,
             switched: observable,
             is_switching: observable,
@@ -202,6 +206,7 @@ export default class ClientStore extends BaseStore {
             mt5_login_list: observable,
             mt5_login_list_error: observable,
             dxtrade_accounts_list: observable,
+            derivez_accounts_list: observable,
             dxtrade_accounts_list_error: observable,
             dxtrade_disabled_signup_types: observable,
             statement: observable,
@@ -255,6 +260,7 @@ export default class ClientStore extends BaseStore {
             default_currency: computed,
             should_allow_authentication: computed,
             is_financial_assessment_incomplete: computed,
+            is_financial_assessment_needed: computed,
             is_authentication_needed: computed,
             is_identity_verification_needed: computed,
             real_account_creation_unlock_date: computed,
@@ -286,6 +292,7 @@ export default class ClientStore extends BaseStore {
             should_restrict_bvi_account_creation: computed,
             should_restrict_vanuatu_account_creation: computed,
             should_show_eu_content: computed,
+            should_show_eu_error: computed,
             is_virtual: computed,
             is_eu: computed,
             is_uk: computed,
@@ -379,6 +386,7 @@ export default class ClientStore extends BaseStore {
             responseMt5LoginList: action.bound,
             responseDxtradeTradingServers: action.bound,
             responseTradingPlatformAvailableAccounts: action.bound,
+            responseDerivezAvailableAccounts: action.bound,
             responseTradingPlatformAccountsList: action.bound,
             responseStatement: action.bound,
             getChangeableFields: action.bound,
@@ -621,10 +629,26 @@ export default class ClientStore extends BaseStore {
         return this.dxtrade_accounts_list.some(account => account.account_type === 'real');
     }
 
+    get has_real_derivez_login() {
+        return this.derivez_accounts_list.some(account => account.account_type === 'real');
+    }
+
     hasAccountErrorInCFDList = (platform, account_type) => {
         if (!this.is_logged_in) return false;
-
-        const list = platform === CFD_PLATFORMS.MT5 ? this.mt5_login_list : this.dxtrade_accounts_list;
+        let list;
+        switch (platform) {
+            case CFD_PLATFORMS.MT5:
+                list = this.mt5_login_list;
+                break;
+            case CFD_PLATFORMS.DXTRADE:
+                list = this.dxtrade_accounts_list;
+                break;
+            case CFD_PLATFORMS.DERIVEZ:
+                list = this.derivez_accounts_list;
+                break;
+            default:
+                return false;
+        }
         return list?.some(account => !!account.has_error && account.account_type === account_type);
     };
 
@@ -693,6 +717,10 @@ export default class ClientStore extends BaseStore {
         return this.account_status?.status?.includes('financial_assessment_not_complete');
     }
 
+    get is_financial_assessment_needed() {
+        return this.account_status?.status?.includes('financial_assessment_notification');
+    }
+
     get is_authentication_needed() {
         return !this.is_fully_authenticated && !!this.account_status?.authentication?.needs_verification?.length;
     }
@@ -709,8 +737,8 @@ export default class ClientStore extends BaseStore {
 
     get is_tnc_needed() {
         if (this.is_virtual) return false;
-        const { client_tnc_status } = this.account_settings;
-        const { terms_conditions_version } = this.website_status;
+        const { client_tnc_status } = this.account_settings || {};
+        const { terms_conditions_version } = this.website_status || {};
 
         return typeof client_tnc_status !== 'undefined' && client_tnc_status !== terms_conditions_version;
     }
@@ -787,7 +815,7 @@ export default class ClientStore extends BaseStore {
 
     get is_valid_login() {
         if (!this.is_logged_in) return true;
-        const valid_login_ids_regex = new RegExp('^(MX|MF|VRTC|MLT|CR|FOG)[0-9]+$', 'i');
+        const valid_login_ids_regex = new RegExp('^(MX|MF|MFW|VRTC|VRW|MLT|CR|CRW|FOG)[0-9]+$', 'i');
         return this.all_loginids.every(id => valid_login_ids_regex.test(id));
     }
 
@@ -822,7 +850,14 @@ export default class ClientStore extends BaseStore {
 
     get should_show_eu_content() {
         const is_current_mf = this.landing_company_shortcode === 'maltainvest';
-        return (!this.loginid && this.is_eu_country) || this.is_eu || is_current_mf;
+        return (!this.is_logged_in && this.is_eu_country) || this.is_eu || is_current_mf;
+    }
+
+    get should_show_eu_error() {
+        if (!this.is_landing_company_loaded) {
+            return false;
+        }
+        return this.is_eu && !this.is_low_risk;
     }
 
     get is_virtual() {
@@ -1026,10 +1061,13 @@ export default class ClientStore extends BaseStore {
                     account.shortcode !== 'maltainvest'
             )
             .map(account => account.shortcode);
-
-        const has_no_matching_accounts = available_real_accounts_shortcodes.every(shortcode =>
-            existing_real_accounts.some(account => account.landing_company_short !== shortcode)
-        );
+        const has_no_matching_accounts = available_real_accounts_shortcodes.every(shortcode => {
+            if (market_type === 'all') {
+                // as Swapfree only have SVG account for now we need to check if there is any real svg account available
+                return existing_real_accounts.some(account => account.landing_company_short === shortcode);
+            }
+            return existing_real_accounts.some(account => account.landing_company_short === shortcode);
+        });
 
         return !has_no_matching_accounts;
     }
@@ -1299,7 +1337,6 @@ export default class ClientStore extends BaseStore {
         return new Promise(resolve => {
             let client_accounts;
             const has_client_accounts = !!LocalStore.get(storage_key);
-            const { oauth_token, client_id } = response.new_account_real ?? response.new_account_maltainvest;
 
             runInAction(() => {
                 this.is_populating_account_list = true;
@@ -1318,6 +1355,7 @@ export default class ClientStore extends BaseStore {
                 console.error('JSON parse failed, invalid value (client.accounts): ', error);
             }
 
+            const { oauth_token, client_id } = response.new_account_real ?? response.new_account_maltainvest;
             BinarySocket.authorize(oauth_token)
                 .then(authorize_response => {
                     const new_data = {};
@@ -1363,7 +1401,7 @@ export default class ClientStore extends BaseStore {
         }
         this.root_store.ui.setRealAccountSignupParams(form_values);
         const { document_number, document_type, document_additional, ...required_form_values } = form_values;
-        required_form_values.citizen = form_values?.citizen || this.account_settings.citizen || this.residence;
+        required_form_values.citizen = form_values?.citizen || this.account_settings?.citizen || this.residence;
 
         const response = is_maltainvest_account
             ? await WS.newAccountRealMaltaInvest(required_form_values)
@@ -1452,7 +1490,7 @@ export default class ClientStore extends BaseStore {
 
     get residence() {
         if (this.is_logged_in) {
-            return this.account_settings.country_code ?? '';
+            return this.account_settings?.country_code ?? '';
         }
         return '';
     }
@@ -1523,7 +1561,7 @@ export default class ClientStore extends BaseStore {
         this.setIsLoggingIn(true);
         this.root_store.notifications.removeNotifications(true);
         this.root_store.notifications.removeAllNotificationMessages(true);
-        if (!this.is_virtual && /VRTC/.test(loginid)) {
+        if (!this.is_virtual && /VRTC|VRW/.test(loginid)) {
             this.setPrevRealAccountLoginid(this.loginid);
         }
         this.setSwitched(loginid);
@@ -1552,6 +1590,7 @@ export default class ClientStore extends BaseStore {
         const redirect_url = search_params?.get('redirect_url');
         const code_param = search_params?.get('code');
         const action_param = search_params?.get('action');
+        const loginid_param = search_params?.get('loginid');
         const unused_params = [
             'type',
             'acp',
@@ -1603,7 +1642,8 @@ export default class ClientStore extends BaseStore {
             return false;
         }
 
-        this.setLoginId(LocalStore.get('active_loginid'));
+        if (action_param === 'payment_withdraw' && loginid_param) this.setLoginId(loginid_param);
+        else this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
         const client = this.accounts[this.loginid];
@@ -1614,7 +1654,11 @@ export default class ClientStore extends BaseStore {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
 
                 // Client comes back from oauth and logs in
-                await this.root_store.rudderstack.identifyEvent();
+                RudderStack.identifyEvent(this.user_id, {
+                    language: getLanguage().toLowerCase(),
+                });
+                const current_page = window.location.hostname + window.location.pathname;
+                RudderStack.pageView(current_page);
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',
@@ -1673,6 +1717,8 @@ export default class ClientStore extends BaseStore {
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
             WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
+            WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ).then(this.responseTradingPlatformAccountsList);
+            WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ).then(this.responseDerivezAvailableAccounts);
 
             this.responseStatement(
                 await BinarySocket.send({
@@ -1691,6 +1737,7 @@ export default class ClientStore extends BaseStore {
             }
             if (this.residence) {
                 await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
+                await this.fetchStatesList();
             }
             if (!this.is_virtual) await this.getLimits();
 
@@ -1729,19 +1776,6 @@ export default class ClientStore extends BaseStore {
 
     responseWebsiteStatus(response) {
         this.website_status = response.website_status;
-        if (this.website_status.message && this.website_status.message.length) {
-            this.root_store.notifications.addNotificationMessage({
-                key: 'maintenance',
-                header: localize('Site is being updated'),
-                message: localize(this.website_status.message),
-                type: 'warning',
-                is_persistent: true,
-            });
-        } else {
-            this.root_store.notifications.removeNotificationMessage({
-                key: 'maintenance',
-            });
-        }
     }
 
     responseLandingCompany(response) {
@@ -2069,9 +2103,11 @@ export default class ClientStore extends BaseStore {
         this.accounts = {};
         this.mt5_login_list = [];
         this.dxtrade_accounts_list = [];
+        this.derivez_accounts_list = [];
         this.landing_companies = {};
         localStorage.removeItem('readScamMessage');
         localStorage.removeItem('isNewAccount');
+        LocalStore.set('marked_notifications', JSON.stringify([]));
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 
@@ -2090,7 +2126,7 @@ export default class ClientStore extends BaseStore {
         if (response?.logout === 1) {
             this.cleanUp();
 
-            this.root_store.rudderstack.reset();
+            RudderStack.reset();
             this.setLogout(true);
         }
 
@@ -2456,6 +2492,11 @@ export default class ClientStore extends BaseStore {
                     this.setMT5DisabledSignupTypes({
                         [account_type]: true,
                     });
+                    if (platform === CFD_PLATFORMS.DERIVEZ) {
+                        this.setCFDDisabledSignupTypes(platform, {
+                            [account_type]: true,
+                        });
+                    }
                     return {
                         account_type,
                         display_login,
@@ -2493,6 +2534,12 @@ export default class ClientStore extends BaseStore {
     responseTradingPlatformAvailableAccounts(response) {
         if (!response.error) {
             this.trading_platform_available_accounts = response.trading_platform_available_accounts;
+        }
+    }
+
+    responseDerivezAvailableAccounts(response) {
+        if (!response.error) {
+            this.derivez_available_accounts = response.trading_platform_accounts;
         }
     }
 
@@ -2552,7 +2599,7 @@ export default class ClientStore extends BaseStore {
         smartTrader.iframe = document.getElementById('localstorage-sync');
         binaryBot.iframe = document.getElementById('localstorage-sync__bot');
         smartTrader.origin = getUrlSmartTrader();
-        binaryBot.origin = getUrlBinaryBot();
+        binaryBot.origin = getUrlBinaryBot(false);
 
         [smartTrader, binaryBot].forEach(platform => {
             if (platform.iframe) {

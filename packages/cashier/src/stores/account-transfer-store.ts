@@ -16,7 +16,6 @@ import {
 import type { TransferBetweenAccountsResponse } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
 import AccountTransferGetSelectedError from '../pages/account-transfer/account-transfer-get-selected-error';
-import Constants from '../constants/constants';
 import ErrorStore from './error-store';
 import type { TRootStore, TWebSocket, TAccount, TTransferAccount, TPlatformIcon } from '../types';
 
@@ -26,7 +25,6 @@ export default class AccountTransferStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
         makeObservable(this, {
             accounts_list: observable,
-            container: observable,
             error: observable,
             has_no_account: observable,
             has_no_accounts_balance: observable,
@@ -71,7 +69,6 @@ export default class AccountTransferStore {
     }
 
     accounts_list: TAccount[] = [];
-    container: string = Constants.containers.account_transfer;
     error = new ErrorStore();
     has_no_account = false;
     has_no_accounts_balance = false;
@@ -105,8 +102,8 @@ export default class AccountTransferStore {
         return need_financial_assessment && this.error.is_ask_financial_risk_approval;
     }
 
-    setShouldSwitchAccount() {
-        this.should_switch_account = true;
+    setShouldSwitchAccount(value: boolean) {
+        this.should_switch_account = value;
     }
 
     setBalanceByLoginId(loginid: string, balance: string | number) {
@@ -377,7 +374,7 @@ export default class AccountTransferStore {
             const cfd_platforms = {
                 mt5: { name: 'Deriv MT5', icon: 'IcMt5' },
                 dxtrade: { name: 'Deriv X', icon: 'IcRebranding' },
-                derivez: { name: 'Deriv EZ', icon: 'IcDerivez' },
+                derivez: { name: 'Deriv EZ', icon: 'IcRebranding' },
             };
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const is_cfd = Object.keys(cfd_platforms).includes(account.account_type!);
@@ -661,7 +658,7 @@ export default class AccountTransferStore {
         this.setTransferLimit();
     };
 
-    setTransferPercentageSelectorResult(amount: string) {
+    setTransferPercentageSelectorResult(amount: string, exchanged_amount: number) {
         const { crypto_fiat_converter, general_store } = this.root_store.modules.cashier;
 
         const selected_from_currency = this.selected_from.currency;
@@ -673,7 +670,8 @@ export default class AccountTransferStore {
             crypto_fiat_converter.onChangeConverterFromAmount(
                 { target: { value: amount } },
                 selected_from_currency,
-                selected_to_currency
+                selected_to_currency,
+                exchanged_amount
             );
         } else {
             crypto_fiat_converter.resetConverter();

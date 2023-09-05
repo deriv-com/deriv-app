@@ -24,7 +24,6 @@ import {
     getLocation,
     WS,
 } from '@deriv/shared';
-import { connect } from 'Stores/connect';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
@@ -32,6 +31,7 @@ import FormSubHeader from 'Components/form-sub-header';
 import LoadErrorMessage from 'Components/load-error-message';
 import LeaveConfirm from 'Components/leave-confirm';
 import FileUploaderContainer from 'Components/file-uploader-container';
+import { observer, useStore } from '@deriv/stores';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
@@ -44,27 +44,23 @@ let file_uploader_ref = null;
 
 const UploaderSideNote = () => (
     <div className='account-poa__upload-box account-poa__upload-box-dashboard'>
-        <Text size='xs' line_height='s'>
+        <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'} line_height='s'>
             <Localize i18n_default_text='A recent utility bill (e.g. electricity, water or gas)' />
         </Text>
-        <Text size='xs' line_height='s'>
+        <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'} line_height='s'>
             <Localize i18n_default_text='A recent bank statement or government-issued letter with your name and address.' />
         </Text>
     </div>
 );
 
-const ProofOfAddressForm = ({
-    account_settings,
-    addNotificationByKey,
-    is_eu,
-    is_resubmit,
-    fetchResidenceList,
-    fetchStatesList,
-    onSubmit,
-    removeNotificationByKey,
-    removeNotificationMessage,
-    states_list,
-}) => {
+const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
+    const { client, notifications } = useStore();
+    const { account_settings, fetchResidenceList, fetchStatesList, is_eu, states_list } = client;
+    const {
+        addNotificationMessageByKey: addNotificationByKey,
+        removeNotificationMessage,
+        removeNotificationByKey,
+    } = notifications;
     const [document_file, setDocumentFile] = React.useState({ files: [], error_message: null });
     const [is_loading, setIsLoading] = React.useState(true);
     const [form_values, setFormValues] = useStateCallback({});
@@ -279,7 +275,7 @@ const ProofOfAddressForm = ({
                 <>
                     <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                     {form_state.should_show_form && (
-                        <form noValidate className='account-form' onSubmit={handleSubmit}>
+                        <form noValidate className='account-form account-form_poa' onSubmit={handleSubmit}>
                             <FormBody scroll_offset={isMobile() ? mobile_scroll_offset : '80px'}>
                                 {is_resubmit && (
                                     <Text size='xs' align='left' color='loss-danger'>
@@ -458,28 +454,11 @@ const ProofOfAddressForm = ({
             )}
         </Formik>
     );
-};
+});
 
 ProofOfAddressForm.propTypes = {
-    account_settings: PropTypes.object,
-    addNotificationByKey: PropTypes.func,
-    is_eu: PropTypes.bool,
     is_resubmit: PropTypes.bool,
-    fetchResidenceList: PropTypes.func,
-    fetchStatesList: PropTypes.func,
     onSubmit: PropTypes.func,
-    removeNotificationByKey: PropTypes.func,
-    removeNotificationMessage: PropTypes.func,
-    states_list: PropTypes.array,
 };
 
-export default connect(({ client, notifications }) => ({
-    account_settings: client.account_settings,
-    is_eu: client.is_eu,
-    addNotificationByKey: notifications.addNotificationMessageByKey,
-    removeNotificationMessage: notifications.removeNotificationMessage,
-    removeNotificationByKey: notifications.removeNotificationByKey,
-    states_list: client.states_list,
-    fetchResidenceList: client.fetchResidenceList,
-    fetchStatesList: client.fetchStatesList,
-}))(ProofOfAddressForm);
+export default ProofOfAddressForm;

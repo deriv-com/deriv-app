@@ -1,20 +1,97 @@
+.jurisdiction-modal {
+    &__title {
+        display: flex;
+        gap: 1.6rem;
+        align-items: center;
+        margin: 0 1rem;
+
+        &-back {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+    }
+    &__content-wrapper {
+        display: flex;
+        flex-direction: column;
+        @include desktop {
+            overflow: auto;
+        }
+        width: 100%;
+        position: absolute;
+        backface-visibility: hidden;
+        transition: transform 0.6s ease;
+        transform: rotateY(0deg);
+    }
+    &__scrollable-content {
+        @include desktop {
+            overflow: auto;
+            height: 69rem;
+        }
+    }
+    &__footer-content {
+        background-color: var(--general-main-1);
+        @include mobile {
+            position: sticky;
+            bottom: 7.2rem;
+        }
+    }
+    &__footer-button {
+        background-color: var(--general-main-1);
+        @include mobile {
+            height: 7.2rem;
+            position: sticky;
+            bottom: 0;
+        }
+    }
+
+    &__wrapper {
+        height: 76rem;
+        perspective: 100rem;
+        overflow: scroll;
+
+        @include mobile {
+            height: calc(100vh - 4rem);
+        }
+    }
+
+    &__flipped {
+        @include desktop {
+            height: 70rem;
+        }
+
+        .jurisdiction-modal {
+            &__scrollable-content {
+                height: 80rem;
+            }
+
+            &__content-wrapper {
+                height: 70rem;
+                transform: rotateY(-180deg);
+                visibility: hidden;
+            }
+        }
+
+        .dynamic-leverage-modal {
+            transform: rotateY(0deg);
+        }
+    }
+}
+
 .cfd-jurisdiction-card--synthetic,
 .cfd-jurisdiction-card--financial,
 .cfd-jurisdiction-card--all {
-    border: solid 1px var(--border-normal);
-    border-radius: 0.8rem;
+    border: solid 2px var(--border-normal);
+    border-radius: $BORDER_RADIUS * 4;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    min-height: 36rem;
-    width: 27.6em;
-    position: relative;
-    padding: 1.6rem;
-    @include mobile {
-        margin-bottom: 2rem;
-    }
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.1s ease-in;
 
-    &:hover {
+    &:not(.selected-card):not(.cfd-card-disabled):not(.cfd-card-disabled-flat):hover {
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
     }
 
@@ -22,99 +99,115 @@
         border: solid 1px var(--border-disabled);
     }
 
-    @include desktop {
-        height: auto;
-        margin: 0 0.8rem;
-    }
-
     &__wrapper {
-        padding: 0;
-        margin-top: 4.8rem;
+        margin: 4rem 6rem 2rem;
         display: flex;
         justify-content: center;
-
+        gap: 1.6rem;
         @include mobile {
+            margin: 0;
+            padding: 4rem;
+            gap: 4rem;
             flex-direction: column;
             align-items: center;
+            overflow-y: scroll;
+            height: 60%;
         }
     }
     &--selected {
-        border: solid 1px $color-blue;
-        border-radius: 4px;
+        border: solid 2px $color-green;
+        box-shadow: 0 1.2rem 1.8rem 0.8rem var(--shadow-menu);
     }
 
-    &__verification-status,
-    &__verification-status--pending,
-    &__verification-status--failed,
-    &__verification-status--account_added,
-    &__verification-status--poi_verified,
-    &__verification-status--not_submitted,
-    &__verification-status--hint {
-        width: 100%;
-        min-height: 2.4rem;
-        display: flex;
-
-        * {
-            margin: auto;
-        }
-
-        &--pending {
-            background-color: $color-yellow;
-            border-radius: 0.5rem;
-        }
-
-        &--poi_verified {
-            background: var(--text-status-info-blue);
-            border-radius: 0.5rem;
-        }
-        &--account_added {
-            background-color: $color-green-1;
-            border-radius: 0.5rem;
-        }
-
-        &--failed {
-            background-color: $color-red-1;
-            border-radius: 0.5rem;
-        }
-        &--not_submitted {
-            background-color: var(--general-section-1);
-            padding: 0.3rem;
-            border-radius: 0.5rem;
-        }
-    }
-    &__footer-wrapper {
-        @include mobile {
-            background-color: var(--general-main-1);
-            width: 100%;
-            height: 100%;
-            position: sticky;
-            bottom: 0;
-            max-height: 20rem;
-            z-index: 12;
-        }
-        .dc-modal-footer {
-            @include desktop {
-                position: fixed;
+    &__card {
+        &-content {
+            &-container {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+            &-over-header {
+                background: var(--text-info-blue-background);
+                height: 4rem;
+                width: 100%;
+                padding: 0.5rem;
+                border-radius: 1.4rem 1.4rem 0 0;
+                &-blank {
+                    height: 4rem;
+                    border-radius: 1.4rem;
+                    @include mobile {
+                        height: 2rem;
+                    }
+                }
+            }
+            &-footer {
+                position: absolute;
                 bottom: 0;
                 width: 100%;
+                &-text {
+                    background: var(--brand-secondary);
+                    height: 4rem;
+                    padding: 1rem;
+                    border-radius: 0 0 1.4rem 1.4rem;
+                }
             }
         }
+        &-flipped-container {
+            gap: 2rem;
+            padding: 4rem 1.6rem;
+        }
+        &-section-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            height: 100%;
+            margin: 0 1.6rem;
+        }
     }
+
     &__h2-header {
-        margin: 1.4rem 0 2.4rem;
+        min-height: 5rem;
+        margin: 1rem 2rem;
+        @include mobile {
+            margin-bottom: 2rem;
+            min-height: auto;
+        }
     }
-    &__footnote {
+
+    &__footer-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        @include mobile {
+            min-height: auto;
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    &__footnotes-container {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        margin: 1.6rem 2.4rem;
+        gap: 1rem;
+        margin: 1rem;
+        @include desktop {
+            min-height: 7.6rem;
+        }
+        @include mobile {
+            gap: 0;
+            margin: 0;
+        }
+    }
 
+    &__footnote {
+        display: flex;
+        justify-content: center;
         @include mobile {
             margin: unset;
             padding: 1.6rem 0.8rem;
             box-shadow: 0px -4px 4px rgba(0, 0, 0, 0.08);
         }
-
         &--pending {
             color: $color-yellow;
         }
@@ -130,33 +223,157 @@
 
     &__over-header {
         background-color: #dfeaff;
-        top: -1rem;
+        top: -2rem;
         left: 1.4rem;
         z-index: 10;
         width: 90%;
         height: 4rem;
         position: absolute;
-        border-radius: 4px;
+        border-radius: $BORDER_RADIUS * 2;
         margin-bottom: 1rem;
-
+        border: 1px solid var(--text-info-blue);
         & > p {
             font-size: 16px;
             text-align: center;
         }
     }
-
-    &__bullet-wrapper {
-        display: flex;
-        margin-bottom: 1rem;
-
-        &--checkmark {
-            margin-right: 1rem;
-        }
-    }
 }
 
-.cfd-jurisdiction-card--synthetic {
-    padding: 2.4rem;
+.cfd-card {
+    &-perspective {
+        -webkit-perspective: 100rem;
+        perspective: 100rem;
+        @include mobile {
+            width: 100%;
+        }
+    }
+    &-container {
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+        -webkit-transition: all 0.25s ease-in;
+        transition: all 0.25s ease-in;
+        width: 28rem;
+        &.synthetic,
+        &.all {
+            min-height: 48rem;
+        }
+        &.financial {
+            min-height: 55rem;
+        }
+        @include mobile {
+            height: 48rem;
+            width: 100%;
+        }
+    }
+    &-flipped {
+        -webkit-transform: rotateY(180deg);
+        transform: rotateY(180deg);
+    }
+    &-front,
+    &-back {
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    &-front {
+        z-index: 2;
+        -webkit-transform: rotateY(0deg);
+        transform: rotateY(0deg);
+    }
+    &-back {
+        -webkit-transform: rotateY(-180deg);
+        transform: rotateY(-180deg);
+    }
+    &-section {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        &-divider {
+            width: 100%;
+            border-bottom: 2px solid var(--border-divider);
+        }
+        &-title-indicator {
+            padding: 0.6rem 1.2rem;
+            border-radius: $BORDER_RADIUS;
+            &-icon-container {
+                display: flex;
+                gap: 0.5rem;
+            }
+            &__red-darker {
+                background: $color-red-8;
+            }
+            &__red-dark {
+                background: $color-red-9;
+            }
+            &__red-light {
+                background: $color-red-10;
+            }
+            &__yellow-dark {
+                background: $color-yellow-1;
+            }
+            &__yellow-light {
+                background: $color-yellow-2;
+            }
+            &__violet-dark {
+                background: $color-violet;
+            }
+            &__brown-dark {
+                background: $color-brown;
+            }
+        }
+        &-description-height {
+            @include desktop {
+                &-assets {
+                    min-height: 3.4rem;
+                }
+                &-verifications,
+                &-regulator {
+                    min-height: 5rem;
+                }
+            }
+        }
+    }
+    &-back-section {
+        &-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        &-items-sub-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        &-back-button {
+            -webkit-transition: transform 0.25s linear;
+            transition: transform 0.25s linear;
+        }
+        &-text-icon-aligned {
+            margin-top: -0.3rem;
+        }
+    }
+    &-clickable-description-link {
+        color: var(--text-red);
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+    &-title-container {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    &-disabled {
+        &-flat {
+            border: solid 1px var(--border-normal);
+        }
+    }
 }
 
 .cfd-modal--custom-exit {
@@ -227,7 +444,6 @@
         background: var(--brand-dark-grey);
         align-items: center;
         text-decoration: none;
-        padding: 0.2rem;
         border-radius: $BORDER_RADIUS;
 
         &-text {
@@ -237,6 +453,9 @@
                 padding-right: 0.5rem;
                 white-space: nowrap;
             }
+        }
+        &-icon {
+            margin-left: 0.6rem;
         }
     }
     &__specs {
@@ -283,11 +502,20 @@
     &__spec-text {
         font-family: 'Courier', monospace;
         overflow: hidden;
+        &-broker {
+            text-align: right;
+        }
     }
     &__download-center {
         border-top: 2px solid var(--general-section-1);
         padding-top: 2rem;
         padding-bottom: 5.8rem;
+
+        &-description {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.4rem;
+        }
 
         &-app {
             display: flex;
@@ -360,7 +588,7 @@
                 display: flex;
                 flex-direction: column;
                 width: 13.6rem;
-                height: 14rem;
+                height: auto;
                 padding: 0.8rem;
                 align-items: center;
                 border: 1px solid var(--border-disabled);
@@ -503,6 +731,87 @@
     }
 }
 
+.dynamic-leverage-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+    margin: 1.5rem 12.8rem 10rem;
+    position: absolute;
+    backface-visibility: hidden;
+    transition: transform 0.6s ease;
+    transform: rotateY(180deg);
+
+    @include mobile {
+        margin: 1.5rem 2.4rem 2.4rem;
+    }
+
+    &__content {
+        display: grid;
+        gap: 2.4rem;
+        grid-template-columns: 1fr 1fr;
+        margin: 0 10rem;
+
+        @include mobile {
+            grid-template-columns: 1fr;
+            margin: 0 6.5rem;
+        }
+    }
+
+    &__market {
+        border: 0.5px solid var(--border-hover);
+        border-radius: $BORDER_RADIUS * 2;
+        overflow: hidden;
+        background-color: var(--general-hover);
+        height: 24.8rem;
+
+        &-description {
+            font-style: italic;
+        }
+
+        &-table {
+            padding-bottom: 1rem;
+
+            &-header {
+                &-cell {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                &-row {
+                    grid-template-columns: 1fr 0.5fr 1.25fr;
+                    justify-items: center;
+                    border-bottom: 0;
+                    padding: 0.4rem 0;
+                    background-color: var(--general-hover);
+                }
+            }
+
+            &-row {
+                grid-template-columns: 1fr 0.5fr 1.25fr;
+                justify-items: center;
+                border-bottom: 0;
+                padding: 0.4rem 0;
+
+                &:nth-child(even) {
+                    background-color: var(--general-hover);
+                }
+
+                &:nth-child(odd) {
+                    background-color: var(--general-section-1);
+                }
+            }
+        }
+
+        &-title {
+            display: flex;
+            flex-direction: column;
+            height: 7rem;
+            padding-top: 1rem;
+            background-color: var(--general-section-1);
+        }
+    }
+}
+
 .cfd-financial-stp-modal {
     display: flex;
     height: 100%;
@@ -559,6 +868,12 @@
             flex-direction: column;
             justify-content: center;
         }
+
+        @include desktop() {
+            .onfido-container {
+                padding-top: 1.6rem;
+            }
+        }
     }
 
     &__form {
@@ -578,7 +893,7 @@
         }
     }
     @include mobile {
-        overflow: hidden;
+        overflow: initial;
         grid-template-rows: 7rem minmax(10rem, 1fr);
         &__heading {
             padding: unset;
@@ -1154,11 +1469,18 @@
 
     @for $column_count from 1 through 7 {
         .cfd-accounts-compare-modal__row-with-columns-count-#{$column_count} {
-            grid-template-columns: repeat($column_count, 1fr);
+            @if $column_count != 5 {
+                grid-template-columns: repeat($column_count, 1fr);
+            } @else if $column_count == 5 {
+                grid-template-columns: repeat($column_count - 1, 1fr);
+                @include mobile {
+                    grid-template-columns: repeat($column_count, 1fr);
+                }
+            }
         }
     }
     &__table-header {
-        grid-template-columns: 0.9fr 1.39fr 2.74fr;
+        grid-template-columns: 1fr 2fr;
         &__pre-appstore {
             grid-template-columns: 11rem 36rem 46rem 13.5rem;
         }
@@ -1210,10 +1532,24 @@
         &__pre-appstore {
             grid-template-columns: 11rem 13.4rem 12.6rem 10rem 13.4rem 12.6rem 10rem 10rem 13.5rem;
         }
+        // af, mg, pk
+        &--other-country {
+            grid-template-columns: 11rem 23.4rem 12.6rem 20rem 13.4rem 12.6rem 13.4rem 20rem 17.5rem;
+        }
+
         &--leverage {
             grid-template-columns: 11rem 38rem 36rem 10rem;
             &__pre-appstore {
                 grid-template-columns: 11rem 36rem 36rem 10rem 13.5rem;
+            }
+            &__af {
+                grid-template-columns: 11rem 36rem 33.4rem 12.6rem 13.5rem;
+            }
+            &__pk {
+                grid-template-columns: 11rem 36rem 46rem 13.4rem 17.5rem;
+            }
+            &__mg {
+                grid-template-columns: 11rem 36rem 33.4rem 12.6rem 13.4rem;
             }
         }
 
@@ -1232,6 +1568,15 @@
             &__pre-appstore {
                 grid-template-columns: 11rem 36rem 26rem 10rem 10rem 13.5rem;
             }
+            &__af {
+                grid-template-columns: 11rem 36rem 20rem 13.4rem 12.6rem 13.5rem;
+            }
+            &__pk {
+                grid-template-columns: 11rem 36rem 33rem 13rem 13.4rem;
+            }
+            &__mg {
+                grid-template-columns: 11rem 36rem 20rem 13.4rem 12.6rem 13.4rem;
+            }
         }
     }
 
@@ -1247,6 +1592,15 @@
         height: 4.8rem;
         &__pre-appstore {
             grid-template-columns: 11rem 13.4rem 12.6rem 10rem 13.4rem 12.6rem 10rem 10rem 13.5rem;
+        }
+        &__pk {
+            grid-template-columns: 11rem 23.2rem 12.8rem 17.62rem 15.4rem 13rem 13.4rem 20rem 17.5rem;
+        }
+        &__af {
+            grid-template-columns: 11rem 23.2rem 12.8rem 20rem 13.4rem 12.6rem 13.5rem 20rem 17.5rem;
+        }
+        &__mg {
+            grid-template-columns: 11rem 23.4rem 12.6rem 20rem 13.4rem 12.6rem 13.4rem 10rem 13.5rem;
         }
         &__item {
             height: 4.8rem;
@@ -1356,6 +1710,9 @@
             &-row-eu {
                 width: unset;
                 height: unset;
+            }
+            &__table-header {
+                width: calc(250vw / 7 * 3);
             }
         }
         @for $column_count from 1 through 7 {
@@ -1805,9 +2162,8 @@
 }
 
 .dc-modal__container_jurisdiction-modal {
-    min-height: 664px;
     .dc-modal-header {
-        border-bottom: 1px solid var(--general-section-1);
+        border-bottom: 2px solid var(--general-section-1);
     }
 }
 
@@ -1834,7 +2190,4 @@
             margin: 0.5rem;
         }
     }
-}
-.cfd-accounts__compare-table-title {
-    cursor: pointer;
 }

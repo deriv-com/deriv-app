@@ -26,7 +26,7 @@ const RealAccountCard = observer(() => {
         .map(key => current_list[key])
         .some(account => account.landing_company_short === 'maltainvest');
 
-    const get_currency = (IsIconCurrency(currency) && currency) || 'USD';
+    const get_currency = (IsIconCurrency(currency?.toUpperCase()) && currency) || 'USD';
 
     return (
         <CurrencySwitcherContainer
@@ -47,7 +47,7 @@ const RealAccountCard = observer(() => {
                 <Button
                     onClick={(e: MouseEvent) => {
                         e.stopPropagation();
-                        history.push(routes.cashier_deposit);
+                        history.push(`${routes.cashier_deposit}#deposit`);
                     }}
                     secondary
                     className='currency-switcher__button'

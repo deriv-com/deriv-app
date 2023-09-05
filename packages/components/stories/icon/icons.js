@@ -54,14 +54,17 @@ export const icons =
         'IcAppstoreWalletUsdLight',
         'IcAppstoreWalletUsdcLight',
         'IcAppstoreWalletUsdtLight',
-        'IcAppstoreWarning',
+        'IcAppstoreWarning'
     ],
     'brand': [
+        'IcBrandDerivEzWordmark',
+        'IcBrandDerivEz',
         'IcBrandDeriv',
         'IcBrandDerivgo',
         'IcBrandDmt5FinancialStp',
         'IcBrandDmt5Financial',
         'IcBrandDmt5Synthetics',
+        'IcBrandDxtradeWordmark'
     ],
     'cashier': [
         'IcCashierAdd',
@@ -235,7 +238,7 @@ export const icons =
         'IcCashierWyreLight',
         'IcCashierZenithbankDark',
         'IcCashierZenithbankLight',
-        'IcCashier',
+        'IcCashier'
     ],
     'common': [
         'IcAccountCross',
@@ -264,6 +267,7 @@ export const icons =
         'IcAlertInfo',
         'IcAlertSuccess',
         'IcAlertTrustpilot',
+        'IcAlertWarningDark',
         'IcAlertWarning',
         'IcAmplifier',
         'IcArchive',
@@ -282,6 +286,7 @@ export const icons =
         'IcAstroPayDark',
         'IcAstroPayLight',
         'IcAttachment',
+        'IcBackButton',
         'IcBankDashboard',
         'IcBankTransfer',
         'IcBank',
@@ -306,6 +311,7 @@ export const icons =
         'IcCatAll',
         'IcCatMultiplier',
         'IcCatOptions',
+        'IcCatTurbos',
         'IcChart',
         'IcChartsTabDbot',
         'IcChat',
@@ -357,6 +363,11 @@ export const icons =
         'IcDesktop',
         'IcDigits',
         'IcDocsSubmit',
+        'IcDocumentNumberVerificationDefault',
+        'IcDocumentNumberVerificationFailed',
+        'IcDocumentNumberVerificationPending',
+        'IcDocumentNumberVerificationVerified',
+        'IcDocumentNumberVerification',
         'IcDop',
         'IcDownload',
         'IcDp2p',
@@ -377,6 +388,7 @@ export const icons =
         'IcEmailVerificationLinkBlocked',
         'IcEmailVerificationLinkInvalid',
         'IcEmailVerificationLinkValid',
+        'IcEmailVerificationResent',
         'IcEmailVerified',
         'IcEmail',
         'IcEmptyBlockedAdvertisers',
@@ -403,6 +415,11 @@ export const icons =
         'IcIdCardFront',
         'IcIdentityCardDashboard',
         'IcIdentityCard',
+        'IcIdentityDocumentVerificationDefault',
+        'IcIdentityDocumentVerificationFailed',
+        'IcIdentityDocumentVerificationPending',
+        'IcIdentityDocumentVerificationVerified',
+        'IcIdentityDocumentVerification',
         'IcImage',
         'IcInfoBlue',
         'IcInfoOutline',
@@ -445,12 +462,18 @@ export const icons =
         'IcMoneyTransfer',
         'IcMultiplier',
         'IcMyComputer',
+        'IcNameAndAddressVerificationDefault',
+        'IcNameAndAddressVerificationFailed',
+        'IcNameAndAddressVerificationPending',
+        'IcNameAndAddressVerificationVerified',
+        'IcNameAndAddressVerification',
         'IcNetellerDark',
         'IcNetellerLight',
         'IcNewFile',
         'IcNoAd',
         'IcNoData',
         'IcNoOrder',
+        'IcNotApplicableVerificationDefault',
         'IcNotificationClear',
         'IcNotification',
         'IcOnlineNaira',
@@ -529,6 +552,11 @@ export const icons =
         'IcSearch',
         'IcSecurityAndPrivacy',
         'IcSecurity',
+        'IcSelfieVerificationDefault',
+        'IcSelfieVerificationFailed',
+        'IcSelfieVerificationPending',
+        'IcSelfieVerificationVerified',
+        'IcSelfieVerification',
         'IcSelfie',
         'IcSendMessage',
         'IcSkrillDark',
@@ -566,6 +594,9 @@ export const icons =
         'IcUserOutline',
         'IcUser',
         'IcUtility',
+        'IcVerificationStatusGreen',
+        'IcVerificationStatusRed',
+        'IcVerificationStatusYellow',
         'IcVerificationSuccess',
         'IcVerification',
         'IcVisaDark',
@@ -580,7 +611,7 @@ export const icons =
         'IcWip',
         'IcZingpay',
         'IcZoomIn',
-        'IcZoomOut',
+        'IcZoomOut'
     ],
     'contract': [
         'IcContractBarrier',
@@ -598,7 +629,7 @@ export const icons =
         'IcContractStartTimeCircle',
         'IcContractStartTime',
         'IcContractStrike',
-        'IcContractTarget',
+        'IcContractTarget'
     ],
     'currency': [
         'IcCurrencyAud',
@@ -622,10 +653,10 @@ export const icons =
         'IcCurrencyUsdc',
         'IcCurrencyUsdk',
         'IcCurrencyUst',
-        'IcCurrencyVirtual',
+        'IcCurrencyVirtual'
     ],
     'derivez': [
-        'IcDerivez',
+        'IcDerivez'
     ],
     'dxtrade': [
         'IcDxtradeDerivX',
@@ -642,7 +673,7 @@ export const icons =
         'IcDxtradeFinancialPlatform',
         'IcDxtradeFinancial',
         'IcDxtradeOnePassword',
-        'IcDxtradeSyntheticPlatform',
+        'IcDxtradeSyntheticPlatform'
     ],
     'flag': [
         'IcFlagDe',
@@ -651,6 +682,7 @@ export const icons =
         'IcFlagFr',
         'IcFlagId',
         'IcFlagIt',
+        'IcFlagKo',
         'IcFlagPl',
         'IcFlagPt',
         'IcFlagRu',
@@ -658,7 +690,7 @@ export const icons =
         'IcFlagUk',
         'IcFlagVi',
         'IcFlagZhCn',
-        'IcFlagZhTw',
+        'IcFlagZhTw'
     ],
     'mt5': [
         'IcMt5Acuity',
@@ -687,7 +719,7 @@ export const icons =
         'IcMt5SyntheticDashboard',
         'IcMt5SyntheticIndices',
         'IcMt5SyntheticPlatform',
-        'IcMt5TradeTypes',
+        'IcMt5TradeTypes'
     ],
     'option': [
         'IcOptionAccumulators',
@@ -705,24 +737,28 @@ export const icons =
         'IcOptionOverUnder',
         'IcOptionRaiseFall',
         'IcOptionTouchNotouch',
-        'IcOptionUpDownAsian',
+        'IcOptionUpDownAsian'
     ],
     'rebranding': [
         'IcRebrandingBinaryBot',
         'IcRebrandingDerivBotDashboard',
         'IcRebrandingDerivBot',
+        'IcRebrandingDerivEzWordmark',
+        'IcRebrandingDerivEz',
         'IcRebrandingDerivGoDashboard',
         'IcRebrandingDerivTraderDashboard',
         'IcRebrandingDerivTrader',
-        'IcRebrandingDerivxWordmark',
+        'IcRebrandingDerivX',
+        'IcRebrandingDerivezDashboard',
         'IcRebrandingDerivx',
         'IcRebrandingDmt5Dashboard',
         'IcRebrandingDmt5',
         'IcRebrandingDxtradeDashboard',
+        'IcRebrandingDxtradeWordmark',
         'IcRebrandingDxtrade',
         'IcRebrandingMt5Logo',
         'IcRebrandingSmarttraderDashboard',
-        'IcRebrandingSmarttrader',
+        'IcRebrandingSmarttrader'
     ],
     'stock': [
         'IcStockAdidasSalomon',
@@ -772,7 +808,7 @@ export const icons =
         'IcStockVisa',
         'IcStockWallMart',
         'IcStockWaltDisney',
-        'IcStockZoom',
+        'IcStockZoom'
     ],
     'tradetype': [
         'IcTradetypeAccu',
@@ -790,7 +826,6 @@ export const icons =
         'IcTradetypeDigitunder',
         'IcTradetypeExpirymiss',
         'IcTradetypeExpiryrange',
-        'IcTradetypeExpiryrangee',
         'IcTradetypeLbcall',
         'IcTradetypeLbhighlow',
         'IcTradetypeLbput',
@@ -808,9 +843,11 @@ export const icons =
         'IcTradetypeRunlow',
         'IcTradetypeTickhigh',
         'IcTradetypeTicklow',
+        'IcTradetypeTurboslong',
+        'IcTradetypeTurbosshort',
         'IcTradetypeUpordown',
         'IcTradetypeVanillaLongCall',
-        'IcTradetypeVanillaLongPut',
+        'IcTradetypeVanillaLongPut'
     ],
     'underlying': [
         'IcUnderlying1HZ100V',
@@ -969,7 +1006,7 @@ export const icons =
         'IcUnderlyingWLDEUR',
         'IcUnderlyingWLDGBP',
         'IcUnderlyingWLDUSD',
-        'IcUnderlyingWLDXAU',
+        'IcUnderlyingWLDXAU'
     ],
     'wallet': [
         'IcWalletClearFunds',
@@ -1005,6 +1042,6 @@ export const icons =
         'IcWalletWebmoneyLight',
         'IcWalletWebmoney',
         'IcWalletZingpayDark',
-        'IcWalletZingpayLight',
-    ],
+        'IcWalletZingpayLight'
+    ]
 }

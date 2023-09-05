@@ -24,6 +24,7 @@ import {
     TLocationList,
 } from '@deriv/shared';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
+import classNames from 'classnames';
 
 type TAddressDetails = {
     states_list: TLocationList[];
@@ -199,7 +200,7 @@ const AddressDetails = ({
                                             </Text>
                                         </div>
                                     )}
-                                    <div className='details-form__elements'>
+                                    <div className={classNames('details-form__elements', 'address-details-form ')}>
                                         <InputField
                                             name='address_line_1'
                                             required={is_svg || is_appstore || is_mf}

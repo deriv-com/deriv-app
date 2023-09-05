@@ -9,9 +9,10 @@ import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
 import { useTotalAccountBalance, useCFDAccounts, usePlatformAccounts } from '@deriv/hooks';
 
 const AssetSummary = observer(() => {
-    const { traders_hub, client } = useStore();
+    const { traders_hub, client, common } = useStore();
     const { selected_account_type, is_eu_user, no_CR_account, no_MF_account } = traders_hub;
     const { is_logging_in, is_switching, default_currency } = client;
+    const { current_language } = common;
     const { real: platform_real_accounts, demo: platform_demo_account } = usePlatformAccounts();
     const { real: cfd_real_accounts, demo: cfd_demo_accounts } = useCFDAccounts();
     const platform_real_balance = useTotalAccountBalance(platform_real_accounts);
@@ -41,7 +42,7 @@ const AssetSummary = observer(() => {
             {has_active_related_deriv_account || selected_account_type === 'demo' ? (
                 <React.Fragment>
                     {!isMobile() ? (
-                        <Text align='right' size='xs' line_height='s'>
+                        <Text align='right' key={`asset-summary--key-${current_language}`} size='xs' line_height='s'>
                             {localize('Total assets')}
                         </Text>
                     ) : null}

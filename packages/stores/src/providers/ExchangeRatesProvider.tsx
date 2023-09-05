@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useSubscription } from '@deriv/api';
 import merge from 'lodash.merge';
+import { observer } from 'mobx-react-lite';
 import useStore from '../useStore';
 
-const ExchangeRatesProvider = ({ children }: React.PropsWithChildren<unknown>) => {
+const ExchangeRatesProvider = observer(({ children }: React.PropsWithChildren<unknown>) => {
     const { data, subscribe } = useSubscription('exchange_rates');
     const {
         exchange_rates: { update },
@@ -22,6 +23,6 @@ const ExchangeRatesProvider = ({ children }: React.PropsWithChildren<unknown>) =
     }, [update, data]);
 
     return <>{children}</>;
-};
+});
 
 export default ExchangeRatesProvider;

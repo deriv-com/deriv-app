@@ -11,7 +11,7 @@ type TCheckBoxProps = Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'label'>
     greyDisabled?: boolean;
     id?: string;
     label: string | React.ReactElement;
-    onChange: (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement>) => void;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement>) => void;
     value?: boolean;
     withTabIndex?: number;
 };
@@ -41,13 +41,13 @@ const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
         const onInputChange: React.ChangeEventHandler<HTMLInputElement> = e => {
             e.persist();
             setChecked(!checked);
-            onChange(e);
+            onChange?.(e);
         };
 
         const handleKeyDown: React.KeyboardEventHandler<HTMLSpanElement> = e => {
             // Enter or space
             if (!disabled && (e.key === 'Enter' || e.keyCode === 32)) {
-                onChange(e);
+                onChange?.(e);
                 setChecked(!checked);
             }
         };
@@ -60,27 +60,29 @@ const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
                     'dc-checkbox--disabled': disabled,
                 })}
             >
-                <input
-                    className='dc-checkbox__input'
-                    type='checkbox'
-                    id={id}
-                    ref={ref}
-                    disabled={disabled}
-                    onChange={onInputChange}
-                    defaultChecked={checked}
-                    checked={checked}
-                    {...otherProps}
-                />
-                <span
-                    className={classNames('dc-checkbox__box', {
-                        'dc-checkbox__box--active': checked,
-                        'dc-checkbox__box--disabled': disabled,
-                        'dc-checkbox--grey-disabled': disabled && greyDisabled,
-                    })}
-                    tabIndex={withTabIndex}
-                    onKeyDown={handleKeyDown}
-                >
-                    {!!checked && <Icon icon='IcCheckmark' color='active' />}
+                <span>
+                    <input
+                        className='dc-checkbox__input'
+                        type='checkbox'
+                        id={id}
+                        ref={ref}
+                        disabled={disabled}
+                        onChange={onInputChange}
+                        defaultChecked={checked}
+                        checked={checked}
+                        {...otherProps}
+                    />
+                    <span
+                        className={classNames('dc-checkbox__box', {
+                            'dc-checkbox__box--active': checked,
+                            'dc-checkbox__box--disabled': disabled,
+                            'dc-checkbox--grey-disabled': disabled && greyDisabled,
+                        })}
+                        tabIndex={withTabIndex}
+                        onKeyDown={handleKeyDown}
+                    >
+                        {!!checked && <Icon icon='IcCheckmark' color='active' />}
+                    </span>
                 </span>
                 <Text size='xs' line_height='unset' className={classNames('dc-checkbox__label', classNameLabel)}>
                     {label}

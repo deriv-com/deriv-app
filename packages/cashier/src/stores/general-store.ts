@@ -1,4 +1,4 @@
-import { action, computed, observable, reaction, when, makeObservable } from 'mobx';
+import { action, computed, observable, reaction, makeObservable } from 'mobx';
 import { isCryptocurrency, routes } from '@deriv/shared';
 import Constants from 'Constants/constants';
 import BaseStore from './base-store';
@@ -13,13 +13,11 @@ export default class GeneralStore extends BaseStore {
             calculatePercentage: action.bound,
             cashier_route_tab_index: observable,
             deposit_target: observable,
-            has_set_currency: observable,
             init: action.bound,
             is_cashier_onboarding: observable,
             is_crypto: computed,
             is_deposit: observable,
             is_loading: observable,
-            onMountCashierOnboarding: action.bound,
             onMountCommon: action.bound,
             onRemount: observable,
             percentage: observable,
@@ -29,7 +27,6 @@ export default class GeneralStore extends BaseStore {
             setActiveTab: action.bound,
             setCashierTabIndex: action.bound,
             setDepositTarget: action.bound,
-            setHasSetCurrency: action.bound,
             setIsCashierOnboarding: action.bound,
             setIsDeposit: action.bound,
             setLoading: action.bound,
@@ -38,13 +35,6 @@ export default class GeneralStore extends BaseStore {
             should_percentage_reset: observable,
             should_show_all_available_currencies: observable,
         });
-
-        when(
-            () => this.root_store.client.is_logged_in,
-            () => {
-                this.setHasSetCurrency();
-            }
-        );
 
         reaction(
             () => [
@@ -58,10 +48,15 @@ export default class GeneralStore extends BaseStore {
         );
     }
 
-    active_container: keyof typeof Constants.containers = Constants.containers.deposit;
+    active_container:
+        | 'account_transfer'
+        | 'deposit'
+        | 'payment_agent'
+        | 'payment_agent_transfer'
+        | 'withdraw'
+        | 'onramp' = 'deposit';
     cashier_route_tab_index = 0;
-    deposit_target = '';
-    has_set_currency = false;
+    deposit_target: '/cashier/deposit' | '/cashier/on-ramp' | '/cashier/p2p' | '/cashier/payment-agent' | '' = '';
     is_cashier_onboarding = true;
     is_deposit = false;
     is_loading = false;
@@ -81,29 +76,11 @@ export default class GeneralStore extends BaseStore {
         return !!currency && isCryptocurrency(currency);
     }
 
-    setHasSetCurrency(): void {
-        const { account_list, has_active_real_account } = this.root_store.client;
-
-        this.has_set_currency =
-            account_list.filter(account => !account.is_virtual).some(account => account.title !== 'Real') ||
-            !has_active_real_account;
-    }
-
-    async onMountCashierOnboarding() {
-        const { account_prompt_dialog } = this.root_store.modules.cashier;
-
-        if (!this.has_set_currency) {
-            this.setHasSetCurrency();
-        }
-        this.setIsCashierOnboarding(true);
-        account_prompt_dialog.resetIsConfirmed();
-    }
-
     calculatePercentage(amount = this.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount): void {
         const { client, modules } = this.root_store;
         const { account_transfer } = modules.cashier;
 
-        if (this.active_container === account_transfer.container) {
+        if (this.active_container === 'account_transfer') {
             this.percentage = Number(
                 ((Number(amount) / Number(account_transfer.selected_from.balance)) * 100).toFixed(0)
             );
@@ -135,7 +112,7 @@ export default class GeneralStore extends BaseStore {
         this.is_cashier_onboarding = is_cashier_onboarding;
     }
 
-    setDepositTarget(target: string): void {
+    setDepositTarget(target: typeof this.deposit_target): void {
         this.deposit_target = target;
     }
 
@@ -210,7 +187,6 @@ export default class GeneralStore extends BaseStore {
             ) {
                 routeTo(routes.cashier_deposit);
                 transaction_history.setIsCryptoTransactionsVisible(true);
-                transaction_history.onMount();
             }
         }
     }
@@ -223,8 +199,12 @@ export default class GeneralStore extends BaseStore {
         this.is_loading = is_loading;
     }
 
-    setActiveTab(container: string): void {
-        this.active_container = container as keyof typeof Constants.containers;
+    setActiveTab(container: typeof this.active_container): void {
+        if (this.active_container === 'payment_agent' && container !== 'payment_agent') {
+            this.root_store.modules.cashier.payment_agent.resetPaymentAgent();
+        }
+
+        this.active_container = container;
     }
 
     accountSwitcherListener() {

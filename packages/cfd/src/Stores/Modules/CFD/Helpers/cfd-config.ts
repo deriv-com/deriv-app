@@ -1,7 +1,9 @@
 import { localize } from '@deriv/translations';
+import { Jurisdiction } from '@deriv/shared';
 
 export type TDxCompanies = ReturnType<typeof getDxCompanies>;
 export type TMtCompanies = ReturnType<typeof getMtCompanies>;
+export type TDerivezCompanies = ReturnType<typeof getDerivezCompanies>;
 
 export const getDxCompanies = () => {
     const all_config = {
@@ -91,7 +93,6 @@ export const getMtCompanies = (is_eu: boolean) => {
         leverage: 100,
         short_title: localize('Financial STP'),
     };
-
     return {
         demo: {
             all: {
@@ -104,6 +105,12 @@ export const getMtCompanies = (is_eu: boolean) => {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
                 title: localize('Demo Swap-Free SVG'),
+                short_title: localize('Swap-Free SVG'),
+            },
+            derivez: {
+                mt5_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('Demo'),
                 short_title: all_config.short_title,
             },
             synthetic: {
@@ -129,7 +136,7 @@ export const getMtCompanies = (is_eu: boolean) => {
                 mt5_account_type: financial_config.account_type,
                 leverage: financial_config.leverage,
                 title: is_eu ? localize('Demo CFDs') : localize('Demo Financial SVG'),
-                short_title: financial_config.short_title,
+                short_title: is_eu ? localize('CFDs') : localize('Financial SVG'),
             },
             financial_stp: {
                 mt5_account_type: financial_stp_config.account_type,
@@ -152,6 +159,12 @@ export const getMtCompanies = (is_eu: boolean) => {
                 short_title: all_config.short_title,
             },
             dxtrade: {
+                mt5_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('Real'),
+                short_title: all_config.short_title,
+            },
+            derivez: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
                 title: localize('Real'),
@@ -215,20 +228,46 @@ export const getMtCompanies = (is_eu: boolean) => {
     };
 };
 
+export const getDerivezCompanies = () => {
+    const all_config = {
+        account_type: '',
+        leverage: 1000,
+        short_title: localize('CFDs'),
+    };
+    return {
+        demo: {
+            all: {
+                derivez_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('Demo'),
+                short_title: all_config.short_title,
+            },
+        },
+        real: {
+            all: {
+                derivez_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('Real'),
+                short_title: all_config.short_title,
+            },
+        },
+    };
+};
+
 export const getFormattedJurisdictionCode = (jurisdiction_code: string) => {
     let formatted_label = '';
 
     switch (jurisdiction_code) {
-        case 'svg':
+        case Jurisdiction.SVG:
             formatted_label = localize('SVG');
             break;
-        case 'bvi':
+        case Jurisdiction.BVI:
             formatted_label = localize('BVI');
             break;
-        case 'labuan':
+        case Jurisdiction.LABUAN:
             formatted_label = localize('Labuan');
             break;
-        case 'vanuatu':
+        case Jurisdiction.VANUATU:
             formatted_label = localize('Vanuatu');
             break;
         default:

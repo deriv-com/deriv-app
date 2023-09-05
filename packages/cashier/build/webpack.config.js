@@ -6,7 +6,7 @@ module.exports = function (env) {
 
     return {
         context: path.resolve(__dirname, '../src'),
-        devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
+        devtool: IS_RELEASE ? 'source-map' : 'eval-cheap-module-source-map',
         entry: {
             cashier: path.resolve(__dirname, '../src', 'index.tsx'),
             'cashier-store': 'Stores/cashier-store',
@@ -47,10 +47,12 @@ module.exports = function (env) {
                 'react-router-dom': 'react-router-dom',
                 'react-router': 'react-router',
                 mobx: 'mobx',
+                '@deriv/p2p': '@deriv/p2p',
                 '@deriv/shared': '@deriv/shared',
                 '@deriv/components': '@deriv/components',
                 '@deriv/translations': '@deriv/translations',
             },
+            /^@deriv\/p2p\/.+$/,
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,
             /^@deriv\/translations\/.+$/,

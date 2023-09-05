@@ -1,7 +1,7 @@
-import { computed, observable, action, runInAction, makeObservable } from 'mobx';
-import { localize } from '@deriv/translations';
+import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { ApiHelpers, config, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
+import { localize } from '@deriv/translations';
 import GTM from 'Utils/gtm';
 import { getSetting, storeSetting } from 'Utils/settings';
 import {
@@ -355,11 +355,13 @@ export default class QuickStrategyStore {
         const { active_symbols } = ApiHelpers.instance;
         const symbols = active_symbols.getAllSymbols(/* should_be_open */ true);
 
-        const symbol_options = symbols.map((symbol: TSymbol) => ({
-            group: symbol.submarket_display,
-            text: symbol.symbol_display,
-            value: symbol.symbol,
-        }));
+        const symbol_options = symbols
+            .filter((symbol: TSymbol) => symbol.submarket_display !== 'Crash/Boom Indices')
+            .map((symbol: TSymbol) => ({
+                group: symbol.submarket_display,
+                text: symbol.symbol_display,
+                value: symbol.symbol,
+            }));
 
         this.setSymbolDropdown(symbol_options);
 

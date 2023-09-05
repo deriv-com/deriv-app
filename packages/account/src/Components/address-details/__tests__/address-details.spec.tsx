@@ -127,7 +127,7 @@ describe('<AddressDetails/>', () => {
         expect(mock_props.onCancel).toHaveBeenCalledTimes(1);
         expect(mock_props.onSave).toHaveBeenCalledTimes(1);
 
-        const address_line_1_input: HTMLInputElement = screen.getByPlaceholderText(address_line_1);
+        const address_line_1_input: HTMLInputElement = screen.getByLabelText(address_line_1_marked);
         const first_line_adress_text = 'Test first line address';
         expect(address_line_1_input.value).toBe('');
         fireEvent.change(address_line_1_input, { target: { value: first_line_adress_text } });
@@ -135,7 +135,7 @@ describe('<AddressDetails/>', () => {
             expect(address_line_1_input.value).toBe(first_line_adress_text);
         });
 
-        const address_town_input: HTMLInputElement = screen.getByPlaceholderText(address_town);
+        const address_town_input: HTMLInputElement = screen.getByLabelText(address_town_marked);
         const address_town_text = 'Test city';
         expect(address_town_input.value).toBe('');
         fireEvent.change(address_town_input, { target: { value: address_town_text } });
@@ -143,7 +143,7 @@ describe('<AddressDetails/>', () => {
             expect(address_town_input.value).toBe(address_town_text);
         });
 
-        const address_postcode_input: HTMLInputElement = screen.getByPlaceholderText(address_postcode);
+        const address_postcode_input: HTMLInputElement = screen.getByLabelText(address_postcode);
         const address_postcode_text = 'Test postcode';
         expect(address_postcode_input.value).toBe('');
         fireEvent.change(address_postcode_input, { target: { value: address_postcode_text } });
@@ -151,7 +151,7 @@ describe('<AddressDetails/>', () => {
             expect(address_postcode_input.value).toBe(address_postcode_text);
         });
 
-        const address_state_input: HTMLInputElement = screen.getByPlaceholderText(address_state);
+        const address_state_input: HTMLInputElement = screen.getByLabelText(address_state);
         const address_state_text = 'Test state';
         expect(address_state_input.value).toBe('Default test state');
         fireEvent.change(address_state_input, { target: { value: address_state_text } });
@@ -271,12 +271,12 @@ describe('<AddressDetails/>', () => {
 
         render(<AddressDetails {...mock_props} />);
 
-        expect(screen.getByPlaceholderText(address_line_1)).toBeDisabled();
-        expect(screen.getByPlaceholderText(address_line_2)).toBeDisabled();
+        expect(screen.getByLabelText(address_line_1)).toBeDisabled();
+        expect(screen.getByLabelText(address_line_2)).toBeDisabled();
         await waitFor(() => {
             expect(screen.getByRole('textbox', { name: 'State/Province' })).toBeEnabled();
         });
-        expect(screen.getByPlaceholderText(address_town)).toBeEnabled();
-        expect(screen.getByPlaceholderText(address_postcode)).toBeEnabled();
+        expect(screen.getByLabelText(address_town)).toBeEnabled();
+        expect(screen.getByLabelText(address_postcode)).toBeEnabled();
     });
 });

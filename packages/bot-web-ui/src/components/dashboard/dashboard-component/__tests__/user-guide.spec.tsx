@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import UserGuide from '../user-guide';
 import userEvent from '@testing-library/user-event';
+import UserGuide from '../user-guide';
 import { mocked_props } from './dashboard-component.spec';
 
 jest.mock('@deriv/components', () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { boolean } from '@storybook/addon-knobs';
 import { toMoment } from '@deriv/shared';
-import DatePickerNative from '../../../src/components/date-picker/date-picker-native.jsx';
+import DatePickerNative from '../../../src/components/date-picker/date-picker-native';
 import Wrapper from '../wrapper';
 
 const Disabled = () => {

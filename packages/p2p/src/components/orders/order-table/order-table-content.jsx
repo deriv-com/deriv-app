@@ -1,8 +1,9 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Loading, Button, InfiniteDataList, Div100vhContainer } from '@deriv/components';
 import { reaction } from 'mobx';
-import { isMobile } from '@deriv/shared';
+import { isMobile, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
@@ -24,6 +25,7 @@ const OrderTableContent = () => {
     const {
         client: { loginid },
     } = useStore();
+    const history = useHistory();
 
     React.useEffect(
         () =>
@@ -72,7 +74,15 @@ const OrderTableContent = () => {
     return (
         <Empty has_tabs icon='IcNoOrder' title={localize('You have no orders.')}>
             {general_store.is_active_tab && (
-                <Button primary large className='p2p-empty__button' onClick={() => general_store.handleTabClick(0)}>
+                <Button
+                    primary
+                    large
+                    className='p2p-empty__button'
+                    onClick={() => {
+                        general_store.handleTabClick(0);
+                        history.push({ pathname: routes.p2p_buy_sell });
+                    }}
+                >
                     <Localize i18n_default_text='Buy/Sell' />
                 </Button>
             )}

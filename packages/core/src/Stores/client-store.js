@@ -1706,7 +1706,7 @@ export default class ClientStore extends BaseStore {
                 this.switchAccount(this.virtual_account_loginid);
             }
         }
-        RudderStack.setAccountType(this.loginid.substring(0, 2));
+
         this.selectCurrency('');
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());

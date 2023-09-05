@@ -47,6 +47,7 @@ import BaseStore from '../../base-store';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import debounce from 'lodash.debounce';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
+import { STATE_TYPES, getChartAnalyticsData } from './Helpers/chart';
 
 const store_name = 'trade_store';
 const g_subscribers_map = {}; // blame amin.m
@@ -1544,131 +1545,24 @@ export default class TradeStore extends BaseStore {
     chartStateChange(state, option) {
         if (option) {
             const market_close_prop = 'isClosed';
+            const account_type = this.root_store.client.loginid.substring(0, 2);
             const device_type = isMobile() ? 'mobile' : 'desktop';
             const form_name = 'default';
-            switch (state) {
-                case 'MARKET_STATE_CHANGE':
-                    if (market_close_prop in option) {
-                        if (this.is_trade_component_mounted && option[market_close_prop] !== this.is_market_closed)
-                            this.prepareTradeStore(false);
-                    }
-                    break;
-                case 'CHART_MODE_TOGGLE':
-                    if ('is_open' in option) {
-                        const { chart_type_name, is_open, time_interval_name } = option;
-                        RudderStack.track('ce_chart_types_form', {
-                            action: is_open ? 'open' : 'close',
-                            chart_type_name,
-                            time_interval_name,
-                            ...{ device_type, form_name },
-                        });
-                    }
-                    break;
-                case 'CHART_TYPE_CHANGE':
-                    if ('chart_type_name' in option) {
-                        const { chart_type_name, time_interval_name } = option;
-                        RudderStack.track('ce_chart_types_form', {
-                            action: 'choose_chart_type',
-                            chart_type_name,
-                            time_interval_name,
-                            ...{ device_type, form_name },
-                        });
-                    }
-                    break;
-                case 'CHART_INTERVAL_CHANGE':
-                    if ('time_interval_name' in option) {
-                        const { chart_type_name, time_interval_name } = option;
-                        RudderStack.track('ce_chart_types_form', {
-                            action: 'choose_time_interval',
-                            chart_type_name,
-                            time_interval_name,
-                            ...{ device_type, form_name },
-                        });
-                    }
-                    break;
-                case 'MARKETS_LIST_TOGGLE':
-                    if ('is_open' in option) {
-                        const { is_open, market_type_name } = option;
-                        RudderStack.track('ce_market_types_form', {
-                            action: is_open ? 'open' : 'close',
-                            market_type_name,
-                            ...{ device_type, form_name },
-                        });
-                    }
-                    break;
-                case 'SYMBOL_CHANGE':
-                    if ('market_type_name' in option) {
-                        const { market_type_name, tab_market_name } = option;
-                        RudderStack.track('ce_market_types_form', {
-                            action: 'choose_market_type',
-                            market_type_name,
-                            tab_market_name,
-                            ...{ device_type, form_name },
-                        });
-                    }
-                    break;
-                case 'MARKET_INFO_CLICK':
-                    if ('markets_category_name' in option) {
-                        const { markets_category_name } = option;
-                        RudderStack.track('ce_market_types_form', {
-                            action: 'info_redirect',
-                            markets_category_name,
-                            ...{ device_type, form_name },
-                        });
-                    }
-                    break;
-                case 'FAVORITE_MARKETS_TOGGLE':
-                    if ('is_favorite' in option) {
-                        const { is_favorite, market_type_name } = option;
-                        RudderStack.track('ce_market_types_form', {
-                            action: is_favorite ? 'add_to_favorites' : 'delete_from_favorites',
-                            market_type_name,
-                            ...{ device_type, form_name },
-                        });
-                    }
-                    break;
-                case 'MARKET_SEARCH':
-                    if (option.search_string) {
-                        const { search_string } = option;
-                        RudderStack.track('ce_market_types_form', {
-                            action: 'search',
-                            search_string,
-                            ...{ device_type, form_name },
-                        });
-                    }
-                    break;
-                case 'INDICATOR_SEARCH':
-                    if (option.search_string) {
-                        const { search_string } = option;
-                        RudderStack.track('ce_indicators_types_form', {
-                            action: 'search',
-                            search_string,
-                            ...{ device_type, form_name },
-                        });
-                    }
-                    break;
-                case 'INDICATORS_MODAL_TOGGLE':
-                    if ('is_open' in option) {
-                        const { is_open } = option;
-                        RudderStack.track('ce_indicators_types_form', {
-                            action: is_open ? 'open' : 'close',
-                            ...{ device_type, form_name },
-                        });
-                    }
-                    break;
-                case 'INDICATOR_ADDED':
-                    if ('indicator_type_name' in option) {
-                        const { indicator_type_name, indicators_category_name, is_info_open } = option;
-                        RudderStack.track('ce_indicators_types_form', {
-                            action: 'add_active',
-                            indicator_type_name,
-                            indicators_category_name,
-                            subform_name: is_info_open ? 'indicators_info' : 'indicators_type',
-                            ...{ device_type, form_name },
-                        });
-                    }
-                    break;
-                default:
+            const rest_props = { account_type, device_type, form_name };
+            if (
+                state === STATE_TYPES.MARKET_STATE_CHANGE &&
+                market_close_prop in option &&
+                this.is_trade_component_mounted &&
+                option[market_close_prop] !== this.is_market_closed
+            ) {
+                this.prepareTradeStore(false);
+            }
+            const { data, event_type } = getChartAnalyticsData(state, option);
+            if (data) {
+                RudderStack.track(event_type, {
+                    ...data,
+                    ...rest_props,
+                });
             }
         }
     }

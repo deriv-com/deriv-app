@@ -6,7 +6,7 @@ type WalletGradientBackground = {
     currency: string;
     type?: 'card' | 'header';
     theme?: 'dark' | 'light';
-    device: 'desktop' | 'mobile';
+    device?: 'desktop' | 'mobile';
     children: React.ReactNode;
 };
 

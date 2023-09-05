@@ -5,6 +5,8 @@ import { localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
 import { TInputDateRange } from 'Types';
 
+type TDatePickerOnChangeParams = Parameters<React.ComponentProps<typeof DatePicker>['onChange']>[0];
+
 type TRadioButton = {
     id: string;
     className?: string;
@@ -51,7 +53,7 @@ type TCompositeCalendarMobile = {
         value: { from?: moment.Moment; to?: moment.Moment; is_batch?: boolean },
         extra_data?: { date_range: TInputDateRange }
     ) => void;
-    setCurrentFocus: (focus: string) => void;
+    setCurrentFocus: (focus: string | null) => void;
     from: number;
     to: number;
 };
@@ -134,11 +136,11 @@ const CompositeCalendarMobile = React.memo(
             setIsOpen(false);
         };
 
-        const selectDate = (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
+        const selectDate = (e: TDatePickerOnChangeParams, key: string) => {
             setSelectedDateRange({ value: CUSTOM_KEY });
 
-            if (key === 'from') setFrom(e.target?.value);
-            if (key === 'to') setTo(e.target?.value);
+            if (key === 'from') setFrom(e.target?.value as string);
+            if (key === 'to') setTo(e.target?.value as string);
         };
 
         const getMobileFooter = () => {
@@ -185,7 +187,7 @@ const CompositeCalendarMobile = React.memo(
                         icon={() => <Icon icon='IcCalendarDatefrom' className='inline-icon' />}
                         onClick={openDialog}
                         setCurrentFocus={setCurrentFocus}
-                        value={applied_date_range.label}
+                        value={applied_date_range.label ?? ''}
                     />
                 </div>
                 <MobileDialog
@@ -223,20 +225,18 @@ const CompositeCalendarMobile = React.memo(
                             <div className='composite-calendar-modal__custom-date-range'>
                                 <DatePicker
                                     className='composite-calendar-modal__custom-date-range-start-date'
-                                    is_nativepicker={true}
                                     placeholder={localize('Start date')}
-                                    value={from_date}
+                                    value={from_date ?? ''}
                                     max_date={to_date || today}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => selectDate(e, 'from')}
+                                    onChange={(e: TDatePickerOnChangeParams) => selectDate(e, 'from')}
                                 />
                                 <DatePicker
                                     className='composite-calendar-modal__custom-date-range-end-date'
-                                    is_nativepicker={true}
                                     placeholder={localize('End date')}
-                                    value={to_date}
+                                    value={to_date ?? ''}
                                     max_date={today}
                                     min_date={from_date}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => selectDate(e, 'to')}
+                                    onChange={(e: TDatePickerOnChangeParams) => selectDate(e, 'to')}
                                 />
                             </div>
                         </div>

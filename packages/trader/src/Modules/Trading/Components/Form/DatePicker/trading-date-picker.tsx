@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
+import moment from 'moment';
 import React from 'react';
 import { DatePicker, Tooltip } from '@deriv/components';
 import { isTimeValid, setTime, toMoment, useIsMounted, hasIntradayDurationUnit } from '@deriv/shared';
@@ -8,7 +8,19 @@ import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
-const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }) => {
+type TDatePickerOnChange = React.ComponentProps<typeof DatePicker>['onChange'];
+type TMarketEvent = {
+    dates: string[];
+    descrip: string;
+};
+type TTradingDatePickerProps = {
+    id: string;
+    is_24_hours_contract?: boolean;
+    mode?: string;
+    name: string;
+};
+
+const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TTradingDatePickerProps) => {
     const { common } = useStore();
     const { server_time } = common;
     const {
@@ -25,14 +37,15 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }) =>
 
     const isMounted = useIsMounted();
 
-    const [disabled_days, setDisabledDays] = React.useState([]);
-    const [market_events, setMarketEvents] = React.useState([]);
+    const [disabled_days, setDisabledDays] = React.useState<number[]>([]);
+    const [market_events, setMarketEvents] = React.useState<TMarketEvent[]>([]);
     const [duration, setDuration] = React.useState(current_duration);
-    const [selected_date, setSelectedDate] = React.useState();
+    const [selected_date, setSelectedDate] = React.useState<moment.Moment>();
 
     React.useEffect(() => {
         onChangeCalendarMonth();
-    }, [onChangeCalendarMonth]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     React.useEffect(() => {
         if (duration !== current_duration) {
@@ -50,7 +63,7 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }) =>
     const getMomentContractStartDateTime = () => {
         return setTime(
             toMoment(getMinDuration()),
-            isTimeValid(start_time) ? start_time : server_time.format('HH:mm:ss')
+            isTimeValid(start_time ?? '') ? start_time : server_time?.format('HH:mm:ss') ?? ''
         );
     };
 
@@ -76,7 +89,7 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }) =>
     const hasRangeSelection = () => mode === 'duration';
 
     const getFooter = () => {
-        if (!hasRangeSelection()) return null;
+        if (!hasRangeSelection()) return '';
 
         if (!duration) return localize('Minimum duration is 1 day');
         if (+duration === 1) return localize('Duration: {{duration}} day', { duration });
@@ -89,12 +102,12 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }) =>
             : selected_date || getMinDateExpiry();
     };
 
-    const onChangeDate = e => {
+    const onChangeDate: TDatePickerOnChange = e => {
         if (isMounted()) {
             if (hasRangeSelection()) {
-                setDuration(e.duration);
-            } else if (e.target.value) {
-                setSelectedDate(toMoment(e.target.value));
+                setDuration(Number(e.duration));
+            } else if (e.target?.value) {
+                setSelectedDate(toMoment(e.target?.value));
             }
         }
 
@@ -109,11 +122,13 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }) =>
     };
 
     const onChangeCalendarMonth = React.useCallback(
+        // Do not move this callback up. It will cause infinite loop.
         async (e = toMoment().format('YYYY-MM-DD')) => {
-            const new_market_events = [];
-            let new_disabled_days = [];
-
+            const new_market_events: TMarketEvent[] = [];
+            let new_disabled_days: number[] = [];
+            // @ts-expect-error TODO: check if TS error is gone after contract-type is converted to TS
             const events = await ContractType.getTradingEvents(e, symbol);
+            // @ts-expect-error TODO: check if TS error is gone after contract-type is converted to TS
             events.forEach(evt => {
                 const dates = evt.dates.split(', '); // convert dates str into array
                 const idx = dates.indexOf('Fridays');
@@ -167,18 +182,11 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }) =>
                     disabled_days={disabled_days}
                     keep_open
                     readOnly={!hasRangeSelection()}
-                    value={getDatepickerValue()}
+                    value={getDatepickerValue() as string}
                 />
             </Tooltip>
         </div>
     );
 });
-
-TradingDatePicker.propTypes = {
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    is_24_hours_contract: PropTypes.bool,
-    mode: PropTypes.string,
-    name: PropTypes.string,
-};
 
 export default TradingDatePicker;

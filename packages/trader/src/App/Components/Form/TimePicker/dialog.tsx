@@ -1,33 +1,54 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
 
-function isBetween(to_compare_moment, start_times_moment, end_times_moment, duration) {
+type TDialogProps = {
+    className: string;
+    end_times: moment.Moment[];
+    onChange: (arg: string | React.ChangeEvent<HTMLInputElement>) => void;
+    preClass: string;
+    selected_time: string;
+    start_times: moment.Moment[];
+};
+
+function isBetween(
+    to_compare_moment: moment.Moment,
+    start_times_moment: moment.Moment[],
+    end_times_moment: moment.Moment[],
+    duration?: string
+) {
     for (let i = 0; i < start_times_moment.length; i++) {
-        if (to_compare_moment.isBetween(start_times_moment[i], end_times_moment[i], duration)) {
+        if (
+            to_compare_moment.isBetween(
+                start_times_moment[i],
+                end_times_moment[i],
+                duration as moment.unitOfTime.StartOf
+            )
+        ) {
             return true;
         }
     }
     return false;
 }
 
-const Dialog = ({ preClass, selected_time, end_times, start_times, onChange, className }) => {
+const Dialog = ({ preClass, selected_time, end_times, start_times, onChange, className }: TDialogProps) => {
     const start_times_moment = start_times ? start_times.map(start_time => toMoment(start_time)) : [toMoment()];
     const end_times_moment = end_times
         ? end_times.map(end_time => toMoment(end_time))
-        : [toMoment().hour('23').minute('59').seconds('59').milliseconds('999')];
+        : [toMoment().hour(23).minute(59).seconds(59).milliseconds(999)];
     const to_compare_moment = toMoment();
     const [hour, minute] = selected_time.split(':');
     const hours = [...Array(24).keys()].map(a => `0${a}`.slice(-2));
     const minutes = [...Array(12).keys()].map(a => `0${a * 5}`.slice(-2));
 
-    const selectOption = (type, current_value, prev_value, is_enabled = true) => {
+    const selectOption = (type: string, current_value: string, prev_value: string, is_enabled = true) => {
         if (is_enabled && prev_value) {
             const [prev_hour, prev_minute] = prev_value.split(':');
             if ((type === 'h' && current_value !== prev_hour) || (type === 'm' && current_value !== prev_minute)) {
-                onChange(`${type === 'h' ? current_value : prev_hour}:${type === 'm' ? current_value : prev_minute}`);
+                const selected_hour = type === 'h' ? current_value : prev_hour;
+                const selected_minute = type === 'm' ? current_value : prev_minute;
+                onChange(`${selected_hour}:${selected_minute}`);
             }
         }
     };
@@ -41,7 +62,7 @@ const Dialog = ({ preClass, selected_time, end_times, start_times, onChange, cla
                     </div>
                     <div>
                         {hours.map((h, key) => {
-                            to_compare_moment.hour(h);
+                            to_compare_moment.hour(Number(h));
                             const start_times_reset_minute = start_times_moment.map(start_time =>
                                 start_time.clone().minute(0)
                             );
@@ -86,7 +107,7 @@ const Dialog = ({ preClass, selected_time, end_times, start_times, onChange, cla
                     </div>
                     <div>
                         {minutes.map((mm, key) => {
-                            to_compare_moment.hour(hour).minute(mm);
+                            to_compare_moment.hour(Number(hour)).minute(Number(mm));
                             const is_enabled = isBetween(
                                 to_compare_moment,
                                 start_times_moment,
@@ -114,15 +135,6 @@ const Dialog = ({ preClass, selected_time, end_times, start_times, onChange, cla
             </div>
         </div>
     );
-};
-
-Dialog.propTypes = {
-    className: PropTypes.string,
-    end_times: PropTypes.array,
-    onChange: PropTypes.func,
-    preClass: PropTypes.string,
-    selected_time: PropTypes.array,
-    start_times: PropTypes.array,
 };
 
 export default Dialog;

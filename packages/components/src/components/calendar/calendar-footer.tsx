@@ -6,7 +6,7 @@ type TFooterProps = {
     clear_text?: string;
     footer: string;
     has_clear_btn?: boolean;
-    has_today_btn: boolean;
+    has_today_btn?: boolean;
     onClick?: React.MouseEventHandler<HTMLSpanElement>;
     onClear?: React.MouseEventHandler<HTMLSpanElement>;
     use_icon?: string;

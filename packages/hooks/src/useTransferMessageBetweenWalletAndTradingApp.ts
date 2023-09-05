@@ -51,12 +51,9 @@ const useTransferMessageBetweenWalletAndTradingApp = (
                 limits = account_limits.daily_transfers[tradingAccountMapper(to_account.account_type, to_account.type)];
             if (from_account.currency)
                 message_list.push({
-                    code:
-                        from_account.demo_account === 0
-                            ? 'WalletToTradingAppDailyLimit'
-                            : 'DemoWalletToTradingAppDailyLimit',
+                    code: !from_account.is_demo ? 'WalletToTradingAppDailyLimit' : 'DemoWalletToTradingAppDailyLimit',
                     is_first_transfer: parseFloat(limits?.allowed) === parseFloat(limits?.available),
-                    limit: !from_account.demo_account
+                    limit: !from_account.is_demo
                         ? parseFloat(limits?.available) * getRate(from_account.currency)
                         : parseFloat(limits?.available),
                     currency: from_account.currency,

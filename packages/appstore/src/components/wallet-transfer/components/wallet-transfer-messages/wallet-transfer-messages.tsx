@@ -16,6 +16,7 @@ type TMessageMapperParams = {
 type TWalletTransferMessagesProps = {
     from_account: ReturnType<typeof useWalletTransfer>['from_account'];
     to_account: ReturnType<typeof useWalletTransfer>['to_account'];
+    // setMessageList: void;
 };
 
 const message_code_to_message_mapper: any = {

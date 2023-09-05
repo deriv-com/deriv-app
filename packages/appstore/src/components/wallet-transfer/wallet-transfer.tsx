@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import { Field, FieldProps, Formik, Form, FormikHelpers } from 'formik';
 import { AmountInput, Button, Loading } from '@deriv/components';
 import { useCurrencyConfig, useWalletTransfer } from '@deriv/hooks';
-import { validNumber } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import TransferAccountSelector from './transfer-account-selector';
@@ -18,15 +17,6 @@ type TWalletTransferProps = {
 };
 
 const Divider = () => <div className='wallet-transfer__divider' />;
-
-// const initial_demo_balance = 10000.0;
-
-// const ERROR_CODES = {
-//     is_demo: {
-//         between_min_max: 'BetweenMinMax',
-//         insufficient_fund: 'InsufficientFund',
-//     },
-// };
 
 const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisible }: TWalletTransferProps) => {
     const { client, ui, traders_hub } = useStore();
@@ -69,59 +59,6 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         );
     }, [active_wallet?.loginid, active_wallet_name, from_account, to_account?.loginid]);
 
-    // Remove this
-    // const clearErrorMessages = React.useCallback(
-    //     () => setMessageList(list => list.filter(el => el.type !== 'error')),
-    //     []
-    // );
-
-    // const validateAmount = (amount: number) => {
-    //     clearErrorMessages();
-
-    //     if (!amount || is_amount_to_input_disabled) return;
-
-    //     if (active_wallet?.is_demo) {
-    //         const { is_valid, message } = validNumber(amount.toString(), {
-    //             type: 'float',
-    //             decimals: getConfig(from_account?.currency || '')?.fractional_digits,
-    //             min: 1,
-    //             max: from_account?.balance,
-    //         });
-
-    //         const should_reset_balance =
-    //             active_wallet?.balance !== undefined &&
-    //             amount > active_wallet?.balance &&
-    //             active_wallet?.balance < initial_demo_balance;
-
-    //         if (from_account?.loginid === active_wallet.loginid && should_reset_balance) {
-    //             setMessageList(list => [
-    //                 ...list,
-    //                 {
-    //                     variant: 'with-action-button',
-    //                     id: ERROR_CODES.is_demo.insufficient_fund,
-    //                     button_label: localize('Reset balance'),
-    //                     onClickHandler: () => setWalletModalActiveTab('Deposit'),
-    //                     message: localize(
-    //                         'You have insufficient fund in the selected wallet, please reset your virtual balance'
-    //                     ),
-    //                     type: 'error',
-    //                 },
-    //             ]);
-    //         } else if (!is_valid) {
-    //             //else if not wallet loginid and not is_ok message
-    //             setMessageList(list => [
-    //                 ...list,
-    //                 {
-    //                     variant: 'base',
-    //                     id: ERROR_CODES.is_demo.between_min_max,
-    //                     message: `${message} ${from_account?.display_currency_code}` || '',
-    //                     type: 'error',
-    //                 },
-    //             ]);
-    //         }
-    //     }
-    // };
-
     const onSelectFromAccount = React.useCallback(
         (
             account: typeof from_account,
@@ -137,10 +74,9 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
             } else {
                 setToAccount(active_wallet);
             }
-            // clearErrorMessages();
             resetForm();
         },
-        [active_wallet /* clearErrorMessages */, , from_account?.loginid, setFromAccount, setToAccount]
+        [active_wallet, from_account?.loginid, setFromAccount, setToAccount]
     );
 
     const onSelectToAccount = React.useCallback(
@@ -153,10 +89,9 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         ) => {
             if (account?.loginid === to_account?.loginid) return;
             setToAccount(account);
-            // clearErrorMessages();
             resetForm();
         },
-        [, /* clearErrorMessages */ setToAccount, to_account?.loginid]
+        [setToAccount, to_account?.loginid]
     );
 
     if (is_accounts_loading || is_switching) {
@@ -181,7 +116,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                     'wallet-transfer__tile-disable-margin-bottom': message_list.length > 0,
                                 })}
                             >
-                                <Field name='from_amount' /* validate={validateAmount} */>
+                                <Field name='from_amount'>
                                     {({ field }: FieldProps<number>) => (
                                         <AmountInput
                                             {...field}
@@ -190,7 +125,6 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                                 getConfig(from_account?.currency || '')?.fractional_digits || 0
                                             }
                                             disabled={false}
-                                            /*                                           has_error={message_list.some(el => el.type === 'error')} */
                                             initial_value={field.value}
                                             label={localize('Amount you send')}
                                             onChange={(value: number) => {
@@ -218,16 +152,10 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                     value={from_account}
                                 />
                             </div>
-                            {/* <AnimatedList>
-                                
-                                {message_list.map(item => (
-                                    <AlertMessage key={item.id} {...item} />
-                                ))}
-                            </AnimatedList> */}
                             <WalletTransferMessages
                                 from_account={from_account}
                                 to_account={to_account}
-                                setMessageList={setMessageList}
+                                // setMessageList={setMessageList} - TODO: add this line later for managing input error messages
                             />
                             <div className='wallet-transfer__tile'>
                                 <Field name='to_amount'>
@@ -239,7 +167,6 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                                 getConfig(to_account?.currency || '')?.fractional_digits || 0
                                             }
                                             disabled={is_amount_to_input_disabled}
-                                            /*                                             has_error={message_list.some(el => el.type === 'error')} */
                                             initial_value={field.value}
                                             label={localize('Amount you receive')}
                                             onChange={(value: number) => {
@@ -271,10 +198,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                 primary
                                 large
                                 type='submit'
-                                disabled={
-                                    is_amount_to_input_disabled || values.to_amount === 0
-                                    /* || message_list.some(el => el.type === 'error') */
-                                }
+                                disabled={is_amount_to_input_disabled || values.to_amount === 0}
                             >
                                 {localize('Transfer')}
                             </Button>

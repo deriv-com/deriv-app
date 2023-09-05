@@ -10,6 +10,11 @@ jest.mock('@deriv/api', () => ({
     useRequest: jest.fn(),
 }));
 
+jest.mock('../closing-account-warning-modal', () => ({
+    __esModule: true,
+    default: () => <div>ClosingAccountWarningModal </div>,
+}));
+
 // @ts-expect-error ignore this until find a way to make arguments as partial
 const mockUseRequest = useRequest as jest.MockedFunction<typeof useRequest<'account_closure'>>;
 
@@ -71,7 +76,7 @@ describe('<ClosingAccountReason />', () => {
         });
     });
 
-    it('should call closeDerivAccount when continue button is clicked', async () => {
+    it('should show warning modal when continue button is clicked', async () => {
         renderComponent();
 
         const el_checkbox = screen.getByRole('checkbox', {
@@ -82,7 +87,7 @@ describe('<ClosingAccountReason />', () => {
         userEvent.click(screen.getByRole('button', { name: /continue/i }));
 
         await waitFor(() => {
-            expect(mockUseRequest).toBeCalledWith('account_closure');
+            expect(screen.getByText('ClosingAccountWarningModal')).toBeInTheDocument;
         });
     });
 });

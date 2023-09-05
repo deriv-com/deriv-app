@@ -53,7 +53,7 @@ const PaymentAgentContainer = observer(({ is_deposit }: TPaymentAgentContainer) 
     }, [onChangePaymentMethod]);
 
     React.useEffect(() => {
-        if (app_contents_scroll_ref && app_contents_scroll_ref.current) app_contents_scroll_ref.current.scrollTop = 0;
+        if (app_contents_scroll_ref?.current) app_contents_scroll_ref.current.scrollTop = 0;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_try_withdraw_successful, is_withdraw_successful]);
 

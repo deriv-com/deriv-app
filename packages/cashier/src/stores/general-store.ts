@@ -61,7 +61,7 @@ export default class GeneralStore extends BaseStore {
     is_deposit = false;
     is_loading = false;
     is_populating_values = false;
-    onRemount: VoidFunction = () => this;
+    onRemount: VoidFunction | (() => Promise<void>) = () => this;
     percentage = 0;
     payment_agent: PaymentAgentStore | null = null;
     should_percentage_reset = false;

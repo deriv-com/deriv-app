@@ -19,7 +19,8 @@ const getHighlightedIconLabel = (
         ['financial_labuan', 'financial_vanuatu'].includes(market_type_shortcode) ||
         is_demo ||
         trading_platforms.platform === CFD_PLATFORMS.DXTRADE ||
-        selected_region === 'EU'
+        selected_region === 'EU' ||
+        (trading_platforms.platform === CFD_PLATFORMS.MT5 && market_type_shortcode === 'all_svg')
             ? localize('Forex')
             : localize('Forex: standard/micro');
 
@@ -74,11 +75,11 @@ const getHighlightedIconLabel = (
             }
         case 'all':
         default:
-            if (trading_platforms.platform === 'mt5') {
+            if (trading_platforms.platform === CFD_PLATFORMS.MT5) {
                 return [
                     { icon: 'Synthetics', text: localize('Synthetics'), highlighted: true },
                     { icon: 'Baskets', text: localize('Baskets'), highlighted: false },
-                    { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: true },
+                    { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: false },
                     { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
                     { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
                     { icon: 'Commodities', text: localize('Commodities'), highlighted: false },

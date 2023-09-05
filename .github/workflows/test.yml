@@ -1,4 +1,4 @@
-name: binary-com/deriv-app/test
+name: Pull Request
 on:
   pull_request:
     branches:
@@ -19,6 +19,8 @@ env:
   RUDDERSTACK_URL: ${{ secrets.RUDDERSTACK_URL }}
 jobs:
   build_and_test:
+    name: Build And Test
+
 #     if: # GitHub does not currently support regular expressions inside if conditions
 # #         github.ref != 'refs/heads/master' && github.ref != 'refs/heads/gh-pages' && github.ref != 'refs/tags//.*/'
     runs-on: ubuntu-latest
@@ -26,9 +28,12 @@ jobs:
       image: node:18.16.0
     steps:
     - uses: actions/checkout@v3.6.0
-    - uses: "./.github/actions/git_checkout_from_cache"
-    - uses: "./.github/actions/npm_install_from_cache"
-    - uses: "./.github/actions/build"
+    - name: Checkout Repository
+      uses: "./.github/actions/git_checkout_from_cache"
+    - name: Install dependencies
+      uses: "./.github/actions/npm_install_from_cache"
+    - name: Build
+      uses: "./.github/actions/build"
     - name: Check TypeScript for @deriv/api
       run: npx tsc --project packages/api/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/hooks
@@ -50,6 +55,5 @@ jobs:
       run: bash ./scripts/check-tests.sh packages/utils/src
     - name: Check tests for @deriv/analytics
       run: bash ./scripts/check-tests.sh packages/analytics/src
-    - uses: "./.github/actions/build"
     - name: Run tests
       run: npm test

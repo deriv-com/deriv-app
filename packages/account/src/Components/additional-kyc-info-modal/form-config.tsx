@@ -1,24 +1,46 @@
 import React from 'react';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Localize, localize } from '@deriv/translations';
-import { TOptions, generateValidationFunction } from '@deriv/shared';
-import { Dropdown, SelectNative } from '@deriv/components';
+import { generateValidationFunction } from '@deriv/shared';
 
-type TListItems =
-    | React.ComponentProps<typeof Dropdown>['list']
-    | React.ComponentProps<typeof SelectNative>['list_items'];
+export type TListItem = {
+    text: string;
+    value: string;
+};
 
 export type TFields = 'place_of_birth' | 'tax_residence' | 'tax_identification_number' | 'account_opening_reason';
+
+// Type for the 'req' rule
+type ReqRule = ['req', React.ReactNode];
+
+// Type for the 'length' rule
+type LengthRule = ['length', React.ReactNode, { min: number; max: number }];
+
+// Type for the 'regular' rule
+type RegularRule = ['regular', React.ReactNode, { regex: RegExp }];
+
+// Type for a custom validation function
+type CustomValidator = (
+    value: string,
+    options: Record<string, unknown>,
+    { tax_residence }: { tax_residence: string }
+) => React.ReactNode;
+
+// Type for a rule with a custom validation function
+type CustomRule = [CustomValidator, React.ReactNode];
+
+// Type for any rule in the 'rules' array
+type Rule = ReqRule | LengthRule | RegularRule | CustomRule;
 
 type TInputConfig = {
     label: React.ReactNode | string;
     type?: string;
-    initial_value: string | number | boolean | null;
-    disabled: boolean;
+    initial_value: string;
     required: boolean;
+    disabled?: boolean;
     placeholder?: string;
-    list_items?: TListItems;
-    rules?: Array<(TOptions | unknown)[]>;
+    list_items?: TListItem[];
+    rules?: Array<Rule>;
 };
 
 type TGetField = Omit<TInputConfig, 'initial_value'> & { name: string };
@@ -35,7 +57,7 @@ export type TFormFieldsConfig = {
  *
  * @param account_settings - GetSettings
  * @param residence_list - ResidenceList
- * @param required_fields - TFields[]
+ * @param required_fields - TFields[] - name of the fields that are required
  * @returns TFormFieldsConfig
  */
 export const getFormFieldsConfig = (
@@ -43,9 +65,10 @@ export const getFormFieldsConfig = (
     residence_list: ResidenceList,
     required_fields: TFields[]
 ): TFormFieldsConfig => {
-    const isFieldDisabled = (field: string) =>
-        Boolean(account_settings.immutable_fields && account_settings.immutable_fields.includes(field));
+    const isFieldDisabled = (field: string) => account_settings?.immutable_fields?.includes(field);
+
     const isFieldRequired = (field: TFields) => required_fields.includes(field);
+
     const config: TFormFieldsConfig = {
         place_of_birth: {
             label: (
@@ -61,7 +84,7 @@ export const getFormFieldsConfig = (
                 '',
             disabled: isFieldDisabled('place_of_birth'),
             required: isFieldRequired('place_of_birth'),
-            list_items: residence_list as TListItems,
+            list_items: residence_list as TListItem[],
             rules: [['req', <Localize key='place_of_birth' i18n_default_text='Place of birth is required.' />]],
         },
         tax_residence: {
@@ -78,7 +101,7 @@ export const getFormFieldsConfig = (
                 '',
             disabled: isFieldDisabled('tax_residence'),
             required: isFieldRequired('tax_residence'),
-            list_items: residence_list as TListItems,
+            list_items: residence_list as TListItem[],
             rules: [['req', <Localize key='tax_residence' i18n_default_text='Tax residence is required.' />]],
         },
         tax_identification_number: {
@@ -217,7 +240,7 @@ export const getFormConfig = (options: {
 }) => {
     const { account_settings, residence_list, required_fields, with_input_types = false } = options;
     const fields_config = getFormFieldsConfig(account_settings, residence_list, required_fields);
-    const inputs: Record<TFields | string, TGetField> = {} as Record<TFields, TGetField>;
+    const inputs: Record<TFields, TGetField> = {} as Record<TFields, TGetField>;
     Object.keys(fields_config).forEach(field => {
         inputs[field as TFields] = getField(fields_config, field as TFields, with_input_types);
     });

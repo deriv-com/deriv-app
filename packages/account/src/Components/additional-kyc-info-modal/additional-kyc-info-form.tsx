@@ -17,7 +17,7 @@ import { isMobile } from '@deriv/shared';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import FormFieldInfo from '../form-field-info';
 import { FormInputField } from '../forms/form-fields';
-import { getFormConfig } from './form-config';
+import { TListItem, getFormConfig } from './form-config';
 import { useSettings } from '../../../../api/src/hooks';
 
 const FormTitle = () => (
@@ -91,11 +91,11 @@ export const AdditionalKycInfoForm = observer(
                                                 <DesktopWrapper>
                                                     <Autocomplete
                                                         {...field}
-                                                        {...fields[field.name]}
+                                                        {...fields[field.name as keyof typeof fields]}
                                                         data-lpignore='true'
                                                         autoComplete='off' // prevent chrome autocomplete
-                                                        error={touched && error ? error : ''}
-                                                        onItemSelection={({ value, text }: ResidenceList[0]) => {
+                                                        error={(touched && error) as string}
+                                                        onItemSelection={({ value, text }: TListItem) => {
                                                             setFieldValue(field.name, value ? text : '', true);
                                                         }}
                                                         data-testid={field.name}
@@ -104,7 +104,7 @@ export const AdditionalKycInfoForm = observer(
                                                 <MobileWrapper>
                                                     <SelectNative
                                                         {...field}
-                                                        {...fields[field.name]}
+                                                        {...fields[field.name as keyof typeof fields]}
                                                         error={touched && error ? error : ''}
                                                         use_text
                                                         should_hide_disabled_options={false}
@@ -127,11 +127,11 @@ export const AdditionalKycInfoForm = observer(
                                                 <DesktopWrapper>
                                                     <Autocomplete
                                                         {...field}
-                                                        {...fields[field.name]}
+                                                        {...fields[field.name as keyof typeof fields]}
                                                         data-lpignore='true'
                                                         autoComplete='off' // prevent chrome autocomplete
                                                         type='text'
-                                                        error={touched && error ? error : ''}
+                                                        error={(touched && error) as string}
                                                         onItemSelection={({ value, text }: ResidenceList[0]) => {
                                                             setFieldValue(field.name, value ? text : '', true);
                                                         }}
@@ -141,8 +141,8 @@ export const AdditionalKycInfoForm = observer(
                                                 <MobileWrapper>
                                                     <SelectNative
                                                         {...field}
-                                                        {...fields[field.name]}
-                                                        error={touched && error ? error : ''}
+                                                        {...fields[field.name as keyof typeof fields]}
+                                                        error={(touched && error) as string}
                                                         use_text
                                                         should_hide_disabled_options={false}
                                                         data-testid={field.name}
@@ -185,12 +185,12 @@ export const AdditionalKycInfoForm = observer(
                                                 <DesktopWrapper>
                                                     <Autocomplete
                                                         {...field}
-                                                        {...fields[field.name]}
+                                                        {...fields[field.name as keyof typeof fields]}
                                                         data-lpignore='true'
                                                         autoComplete='off' // prevent chrome autocomplete
                                                         type='text'
-                                                        error={touched && error ? error : ''}
-                                                        onItemSelection={({ value }: { value?: string }) => {
+                                                        error={(touched && error) as string}
+                                                        onItemSelection={({ value }: TListItem) => {
                                                             setFieldValue(field.name, value ?? '', true);
                                                         }}
                                                         list_height='8rem'
@@ -200,8 +200,8 @@ export const AdditionalKycInfoForm = observer(
                                                 <MobileWrapper>
                                                     <SelectNative
                                                         {...field}
-                                                        {...fields[field.name]}
-                                                        error={touched && error ? error : ''}
+                                                        {...fields[field.name as keyof typeof fields]}
+                                                        error={(touched && error) as string}
                                                         use_text
                                                         should_hide_disabled_options={false}
                                                         data-testid={field.name}

@@ -1,0 +1,55 @@
+name: binary-com/deriv-app/test
+on:
+  push:
+    branches:
+    - master
+env:
+  CACHE_VERSION: xxxx
+  COVERALLS_REPO_TOKEN: xxxxbrX7
+  DATADOG_CLIENT_TOKEN_LOGS: xxxx116f
+  DATADOG_SESSION_REPLAY_SAMPLE_RATE: xxxx0
+  DATADOG_SESSION_SAMPLE_RATE: xxxx0
+  DATADOG_SESSION_SAMPLE_RATE_LOGS: xxxx1
+  GD_API_KEY: xxxxnyEI
+  GD_APP_ID: xxxx8506
+  GD_CLIENT_ID: xxxx.com
+  JEST_MAX_WORKERS: xxxx
+  RUDDERSTACK_PRODUCTION_KEY: xxxxR8Pd
+  RUDDERSTACK_STAGING_KEY: xxxx2hMB
+  RUDDERSTACK_URL: xxxx.com
+jobs:
+  build_and_test:
+#     if: # GitHub does not currently support regular expressions inside if conditions
+# #         github.ref != 'refs/heads/master' && github.ref != 'refs/heads/gh-pages' && github.ref != 'refs/tags//.*/'
+    runs-on: ubuntu-latest
+    container:
+      image: node:18.16.0
+    steps:
+    - uses: actions/checkout@v3.6.0
+    - uses: "./.github/actions/git_checkout_from_cache"
+    - uses: "./.github/actions/npm_install_from_cache"
+    - uses: "./.github/actions/build"
+    - name: Check TypeScript for @deriv/api
+      run: npx tsc --project packages/api/tsconfig.json -noEmit
+    - name: Check TypeScript for @deriv/hooks
+      run: npx tsc --project packages/hooks/tsconfig.json -noEmit
+    - name: Check TypeScript for @deriv/utils
+      run: npx tsc --project packages/utils/tsconfig.json -noEmit
+    - name: Check TypeScript for @deriv/analytics
+      run: npx tsc --project packages/analytics/tsconfig.json -noEmit
+    - name: Check TypeScript for @deriv/stores
+      run: npx tsc --project packages/stores/tsconfig.json -noEmit
+    - name: Check TypeScript and linting for @deriv/wallets
+      run: |-
+        npx tsc --project packages/wallets/tsconfig.json -noEmit
+        npx eslint --fix --config packages/wallets/.eslintrc.js packages/wallets
+        npx stylelint packages/wallets/**/*.scss
+    - name: Check tests for @deriv/hooks
+      run: bash ./scripts/check-tests.sh packages/hooks/src
+    - name: Check tests for @deriv/utils
+      run: bash ./scripts/check-tests.sh packages/utils/src
+    - name: Check tests for @deriv/analytics
+      run: bash ./scripts/check-tests.sh packages/analytics/src
+    - uses: "./.github/actions/build"
+    - name: Run tests
+      run: npm test

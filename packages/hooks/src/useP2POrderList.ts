@@ -1,7 +1,7 @@
 import { usePaginatedFetch, useSubscription } from '@deriv/api';
 import { useEffect, useMemo } from 'react';
 
-/** A custom hook to get the list of p2p order list. */
+/** This custom hook returns the list of active orders by calling 'p2p_order_list' endpoint */
 const useP2POrderList = (
     payload: NonNullable<Parameters<typeof usePaginatedFetch<'p2p_order_list'>>[1]>['payload']
 ) => {

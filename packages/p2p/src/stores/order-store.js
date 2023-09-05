@@ -194,17 +194,17 @@ export default class OrderStore {
     }
 
     getP2POrderList() {
-        const response = this.root_store.general_store.p2p_order_list_response;
-        const error = this.root_store.general_store.p2p_order_list_response_error;
-        if (response) {
-            if (error) {
-                this.setErrorMessage(error.message);
+        const { p2p_order_list_response, p2p_order_list_response_error, handleNotifications } =
+            this.root_store.general_store;
+        if (p2p_order_list_response) {
+            if (p2p_order_list_response_error) {
+                this.setErrorMessage(p2p_order_list_response_error.message);
             } else {
-                const { p2p_order_list } = response || {};
+                const { p2p_order_list } = p2p_order_list_response || {};
                 const { list } = p2p_order_list || {};
 
                 if (list?.length) {
-                    this.root_store.general_store.handleNotifications(this.orders, list);
+                    handleNotifications(this.orders, list);
                     list.forEach(order => this.syncOrder(order));
                     this.setOrders(list);
                 }

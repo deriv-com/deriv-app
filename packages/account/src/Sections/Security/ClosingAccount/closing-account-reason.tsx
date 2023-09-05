@@ -4,6 +4,7 @@ import { Loading, Modal, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { useCloseDerivAccount } from '@deriv/api';
 import { Localize } from '@deriv/translations';
+import { MAX_ALLOWED_REASONS_FOR_CLOSING_ACCOUNT } from 'Constants/closing-account-config';
 import ClosingAccountHasPendingConditions from './closing-account-pending-conditions/closing-account-has-pending-conditions';
 import ClosingAccountReasonForm from './closing-account-reason-form';
 import ClosingAccountWarningModal from './closing-account-warning-modal';
@@ -12,8 +13,6 @@ import ClosingAccountGeneralErrorContent from './closing-account-general-error-c
 type TClosingAccountReasonProps = {
     redirectToSteps: () => void;
 };
-
-const MAX_ALLOWED_REASONS = 3;
 
 const ClosingAccountReason = ({ redirectToSteps }: TClosingAccountReasonProps) => {
     const { mutate, error, isSuccess, isLoading } = useCloseDerivAccount();
@@ -113,7 +112,7 @@ const ClosingAccountReason = ({ redirectToSteps }: TClosingAccountReasonProps) =
             <Text weight='bold' size='xs' className='closing-account-reasons__title' as='p'>
                 <Localize
                     i18n_default_text='Please tell us why you’re leaving. (Select up to {{ allowed_reasons }} reasons.)'
-                    values={{ allowed_reasons: MAX_ALLOWED_REASONS }}
+                    values={{ allowed_reasons: MAX_ALLOWED_REASONS_FOR_CLOSING_ACCOUNT }}
                 />
             </Text>
             <ClosingAccountReasonForm onBackClick={redirectToSteps} onConfirmClick={onConfirm} />

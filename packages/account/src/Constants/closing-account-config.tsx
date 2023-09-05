@@ -1,7 +1,14 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 
-const getCloseAccountReasonsList = () => [
+export const MAX_ALLOWED_REASONS_FOR_CLOSING_ACCOUNT = 3;
+export const CHARACTER_LIMIT_FOR_CLOSING_ACCOUNT = 110;
+export const SET_CHECKBOX_DISABLED = 'SET_CHECKBOX_DISABLED';
+export const SET_TOTAL_CHECKBOX_CHECKED = 'SET_TOTAL_CHECKBOX_CHECKED';
+export const SET_REMAINING_CHARACTERS = 'SET_REMAINING_CHARACTERS';
+export const SET_TOTAL_ACCUMULATED_CHARACTERS = 'SET_TOTAL_ACCUMULATED_CHARACTERS';
+
+export const getCloseAccountReasonsList = () => [
     {
         name: 'financial-priorities',
         label: <Localize i18n_default_text='I have other financial priorities.' />,
@@ -39,4 +46,3 @@ const getCloseAccountReasonsList = () => [
         label: <Localize i18n_default_text='I’m closing my account for other reasons.' />,
     },
 ];
-export default getCloseAccountReasonsList;

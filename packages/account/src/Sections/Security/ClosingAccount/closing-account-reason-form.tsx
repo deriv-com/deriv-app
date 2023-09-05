@@ -2,8 +2,16 @@ import React from 'react';
 import { Field, Form, Formik, FormikErrors, FieldProps, FormikValues } from 'formik';
 import { Checkbox, FormSubmitButton, Input, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import getCloseAccountReasonsList from 'Constants/account_closing_reasons_list';
 import { TClosingAccountFormValues } from 'Types';
+import {
+    CHARACTER_LIMIT_FOR_CLOSING_ACCOUNT,
+    MAX_ALLOWED_REASONS_FOR_CLOSING_ACCOUNT,
+    SET_CHECKBOX_DISABLED,
+    SET_REMAINING_CHARACTERS,
+    SET_TOTAL_ACCUMULATED_CHARACTERS,
+    SET_TOTAL_CHECKBOX_CHECKED,
+    getCloseAccountReasonsList,
+} from 'Constants/closing-account-config';
 
 type TClosingAccountReasonFormProps = {
     onBackClick: () => void;
@@ -22,7 +30,6 @@ const initial_form_values: TClosingAccountFormValues = {
     other_trading_platforms: '',
     do_to_improve: '',
 };
-const CHARACTER_LIMIT = 110;
 
 type TFormError = FormikErrors<TClosingAccountFormValues> & {
     empty_reason?: string;
@@ -41,17 +48,10 @@ type TAction =
     | { type: 'SET_REMAINING_CHARACTERS'; payload: number }
     | { type: 'SET_TOTAL_ACCUMULATED_CHARACTERS'; payload: number };
 
-const MAX_ALLOWED_REASONS = 3;
-
-const SET_CHECKBOX_DISABLED = 'SET_CHECKBOX_DISABLED';
-const SET_TOTAL_CHECKBOX_CHECKED = 'SET_TOTAL_CHECKBOX_CHECKED';
-const SET_REMAINING_CHARACTERS = 'SET_REMAINING_CHARACTERS';
-const SET_TOTAL_ACCUMULATED_CHARACTERS = 'SET_TOTAL_ACCUMULATED_CHARACTERS';
-
 const initial_state = {
     is_checkbox_disabled: false,
     total_checkbox_checked: 0,
-    remaining_characters: CHARACTER_LIMIT,
+    remaining_characters: CHARACTER_LIMIT_FOR_CLOSING_ACCOUNT,
     total_accumulated_characters: 0,
 };
 
@@ -76,7 +76,7 @@ const ClosingAccountReasonForm = ({ onBackClick, onConfirmClick }: TClosingAccou
     const { is_checkbox_disabled, total_checkbox_checked, remaining_characters, total_accumulated_characters } = state;
 
     React.useEffect(() => {
-        if (total_checkbox_checked === MAX_ALLOWED_REASONS) {
+        if (total_checkbox_checked === MAX_ALLOWED_REASONS_FOR_CLOSING_ACCOUNT) {
             dispatch({ type: SET_CHECKBOX_DISABLED, payload: true });
         } else if (is_checkbox_disabled) dispatch({ type: SET_CHECKBOX_DISABLED, payload: false });
     }, [total_checkbox_checked, is_checkbox_disabled]);
@@ -85,7 +85,7 @@ const ClosingAccountReasonForm = ({ onBackClick, onConfirmClick }: TClosingAccou
         const error: TFormError = {};
         const selected_reason_count = selectedReasonsForCloseAccount(values).length;
         const text_inputs_length = (values.other_trading_platforms + values.do_to_improve).length;
-        let remaining_chars = CHARACTER_LIMIT - text_inputs_length;
+        let remaining_chars = CHARACTER_LIMIT_FOR_CLOSING_ACCOUNT - text_inputs_length;
 
         if (selected_reason_count) {
             const final_value = formatReasonsForCloseAccount(values);
@@ -134,7 +134,10 @@ const ClosingAccountReasonForm = ({ onBackClick, onConfirmClick }: TClosingAccou
         const value = event.target.value;
         const is_delete_action = old_value.length > value.length;
 
-        if ((remaining_characters <= 0 || total_accumulated_characters >= CHARACTER_LIMIT) && !is_delete_action) {
+        if (
+            (remaining_characters <= 0 || total_accumulated_characters >= CHARACTER_LIMIT_FOR_CLOSING_ACCOUNT) &&
+            !is_delete_action
+        ) {
             event.preventDefault();
         } else {
             onChange(event);
@@ -204,7 +207,7 @@ const ClosingAccountReasonForm = ({ onBackClick, onConfirmClick }: TClosingAccou
                                 )}
                                 name='other_trading_platforms'
                                 value={values.other_trading_platforms}
-                                max_characters={CHARACTER_LIMIT}
+                                max_characters={CHARACTER_LIMIT_FOR_CLOSING_ACCOUNT}
                                 onChange={e => handleInputChange(e, values.other_trading_platforms, handleChange)}
                                 onPaste={handleInputPaste}
                             />
@@ -221,7 +224,7 @@ const ClosingAccountReasonForm = ({ onBackClick, onConfirmClick }: TClosingAccou
                                 placeholder={localize('What could we do to improve?')}
                                 name='do_to_improve'
                                 value={values.do_to_improve}
-                                max_characters={CHARACTER_LIMIT}
+                                max_characters={CHARACTER_LIMIT_FOR_CLOSING_ACCOUNT}
                                 onChange={e => handleInputChange(e, values.do_to_improve, handleChange)}
                                 onPaste={handleInputPaste}
                             />

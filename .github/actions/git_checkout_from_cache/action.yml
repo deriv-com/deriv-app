@@ -24,9 +24,9 @@ runs:
       fi
     shell: bash
   - uses: actions/checkout@v3.6.0
-  - name: Compress git objects
-    run: git gc
-    shell: bash
+  # - name: Compress git objects
+  #   run: git gc
+  #   shell: bash
   - name: save_cache
     uses: actions/cache@v3.3.1
     with:

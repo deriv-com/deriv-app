@@ -381,14 +381,12 @@ export default class AccountTransferStore {
             const cfd_text_display = cfd_platforms[account.account_type as keyof typeof cfd_platforms]?.name;
 
             const cfd_icon_display = `${cfd_platforms[account.account_type as keyof typeof cfd_platforms]?.icon}${
-                ('-' &&
-                    getCFDAccount({
-                        market_type: account.market_type,
-                        sub_account_type: account.sub_account_type,
-                        platform: account.account_type,
-                        is_eu: this.root_store.client.is_eu,
-                    })) ||
-                ''
+                getCFDAccount({
+                    market_type: account.market_type,
+                    sub_account_type: account.sub_account_type,
+                    platform: account.account_type,
+                    is_eu: this.root_store.client.is_eu,
+                }) || ''
             }`;
 
             const non_eu_accounts =
@@ -398,6 +396,8 @@ export default class AccountTransferStore {
                     ? account.landing_company_short?.charAt(0).toUpperCase() + account.landing_company_short?.slice(1)
                     : account.landing_company_short?.toUpperCase();
 
+            const account_display = this.root_store.client.is_eu ? '' : non_eu_accounts;
+
             const cfd_account_text_display =
                 account.account_type === 'mt5'
                     ? `${getCFDAccountDisplay({
@@ -405,7 +405,7 @@ export default class AccountTransferStore {
                           sub_account_type: account.sub_account_type,
                           platform: account.account_type,
                           is_eu: this.root_store.client.is_eu,
-                      })} ${this.root_store.client.is_eu ? '' : non_eu_accounts}`
+                      })} ${account_display}`
                     : `${cfd_text_display} ${getCFDAccountDisplay({
                           market_type: account.market_type,
                           sub_account_type: account.sub_account_type,
@@ -413,11 +413,13 @@ export default class AccountTransferStore {
                           is_eu: this.root_store.client.is_eu,
                           is_transfer_form: true,
                       })}`;
+
+            const account_currency_display =
+                account.currency !== 'eUSDT' ? account.currency?.toUpperCase() : account.currency;
+
             const account_text_display = is_cfd
                 ? cfd_account_text_display
-                : getCurrencyDisplayCode(
-                      account.currency !== 'eUSDT' ? account.currency?.toUpperCase() : account.currency
-                  );
+                : getCurrencyDisplayCode(account_currency_display);
 
             const combined_cfd_mt5_account = this.root_store.traders_hub?.combined_cfd_mt5_accounts.find(
                 x => x.login === account.login

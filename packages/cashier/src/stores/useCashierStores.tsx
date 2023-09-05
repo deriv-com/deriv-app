@@ -6,7 +6,6 @@ const CashierStoreContext = createContext<CashierStore | null>(null);
 
 export const CashierStoreProvider: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
     const { modules } = useStore();
-    // const memoizedValue = useMemo(() => new CashierStore(), []);
 
     return (
         <CashierStoreContext.Provider

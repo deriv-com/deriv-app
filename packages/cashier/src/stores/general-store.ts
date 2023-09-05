@@ -67,7 +67,7 @@ export default class GeneralStore extends BaseStore {
     should_percentage_reset = false;
     should_show_all_available_currencies = false;
 
-    setOnRemount(func: VoidFunction): void {
+    setOnRemount(func: VoidFunction | (() => Promise<void>)): void {
         this.onRemount = func;
     }
 

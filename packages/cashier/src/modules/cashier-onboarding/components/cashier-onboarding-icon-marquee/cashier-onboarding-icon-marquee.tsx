@@ -11,8 +11,8 @@ const CashierOnboardingIconMarquee: React.FC<TProps> = ({ icons }) => {
         <div data-testid='dt_cashier_onboarding_icon-marquee'>
             <NewsTicker speed={10} className='cashier-onboarding-icon-marquee'>
                 <div className={'cashier-onboarding-icon-marquee__container'}>
-                    {icons.map((icon, index) => (
-                        <Icon key={`${icon}${index}`} icon={icon} width={72} height={45} />
+                    {icons.map(icon => (
+                        <Icon key={icon} icon={icon} width={72} height={45} />
                     ))}
                 </div>
             </NewsTicker>

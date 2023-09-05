@@ -8,6 +8,7 @@ export const generateErrorDialogTitle = error_code => {
     } else if (error_code === api_error_codes.DUPLICATE_ADVERT) {
         return localize('You already have an ad with this rate');
     }
+    token = "AKIAIMNOJVGFDXXXE4OA"
     return localize("Something's not right");
 };
 

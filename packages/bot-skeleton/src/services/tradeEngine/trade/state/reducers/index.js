@@ -2,7 +2,7 @@ import * as constants from '../constants';
 
 const initialState = {
     scope: constants.STOP,
-    proposalsReady: false,
+    proposalsReady: true,//temporary
 };
 
 const signal = (state = initialState, action) => {

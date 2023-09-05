@@ -1,7 +1,7 @@
 import { purchaseSuccessful } from './state/actions';
 import { BEFORE_PURCHASE } from './state/constants';
 import { contractStatus, info, log } from '../utils/broadcast';
-import { getUUID, recoverFromError, doUntilDone } from '../utils/helpers';
+import { getUUID, recoverFromError, doUntilDone, tradeOptionToBuy } from '../utils/helpers';
 import { log_types } from '../../../constants/messages';
 import { api_base } from '../../api/api-base';
 
@@ -42,7 +42,10 @@ export default Engine =>
                     buy_price: buy.buy_price,
                 });
             };
-            const action = () => api_base.api.send({ buy: id, price: askPrice });
+
+            const trade_option = tradeOptionToBuy(contract_type, this.data_trade_options);
+            const action = () => api_base.api.send(trade_option);
+            
             this.isSold = false;
             contractStatus({
                 id: 'contract.purchase_sent',

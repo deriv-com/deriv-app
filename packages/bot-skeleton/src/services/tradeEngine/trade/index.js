@@ -62,7 +62,7 @@ const watchScope = ({ store, stopScope, passScope, passFlag }) => {
     });
 };
 
-export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Proposal(Ticks(Total(class {}))))))) {
+export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Proposal(Ticks(Total(class { }))))))) {
     constructor($scope) {
         super();
         this.observer = $scope.observer;
@@ -72,6 +72,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
             contract: {},
             proposals: [],
         };
+        this.data_trade_options = {};
         this.store = createStore(rootReducer, applyMiddleware(thunk));
     }
 
@@ -96,8 +97,9 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         this.tradeOptions = tradeOptions;
         this.store.dispatch(start());
         this.checkLimits(tradeOptions);
-        this.makeProposals({ ...this.options, ...tradeOptions });
-        this.checkProposalReady();
+        this.data_trade_options = { ...this.options, ...tradeOptions };
+        // this.makeProposals({ ...this.options, ...tradeOptions });
+        // this.checkProposalReady();
     }
 
     loginAndGetBalance(token) {

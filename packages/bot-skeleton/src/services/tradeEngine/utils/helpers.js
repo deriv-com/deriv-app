@@ -41,6 +41,42 @@ export const tradeOptionToProposal = (trade_option, purchase_reference) =>
         return proposal;
     });
 
+export const tradeOptionToBuy = (contract_type, trade_option) => {
+    const buy = {
+        buy: '1',
+        price: trade_option.amount,
+        parameters: {
+            amount: trade_option.amount,
+            basis: trade_option.basis,
+            contract_type: contract_type,
+            currency: trade_option.currency,
+            duration: trade_option.duration,
+            duration_unit: trade_option.duration_unit,
+            multiplier: trade_option.multiplier,
+            symbol: trade_option.symbol,
+        },
+    };
+    if (trade_option.prediction !== undefined) {
+        buy.selected_tick = trade_option.prediction;
+    }
+    if (!['TICKLOW', 'TICKHIGH'].includes(contract_type) && trade_option.prediction !== undefined) {
+        buy.barrier = trade_option.prediction;
+    } else if (trade_option.barrierOffset !== undefined) {
+        buy.barrier = trade_option.barrierOffset;
+    }
+    if (trade_option.secondBarrierOffset !== undefined) {
+        buy.barrier2 = trade_option.secondBarrierOffset;
+    }
+    if (['MULTUP', 'MULTDOWN'].includes(contract_type)) {
+        buy.duration = undefined;
+        buy.duration_unit = undefined;
+    }
+    if (!isEmptyObject(trade_option.limit_order)) {
+        buy.limit_order = trade_option.limit_order;
+    }
+    return buy;
+}
+
 export const getDirection = ticks => {
     const { length } = ticks;
     const [tickOld, tickNew] = ticks.slice(-2);

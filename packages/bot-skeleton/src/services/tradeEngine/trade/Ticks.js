@@ -19,7 +19,7 @@ export default Engine =>
                 });
 
                 const callback = ticks => {
-                    this.checkProposalReady();
+                    // this.checkProposalReady();
                     const lastTick = ticks.slice(-1)[0];
                     const { epoch } = lastTick;
                     this.store.dispatch({ type: constants.NEW_TICK, payload: epoch });

@@ -5,16 +5,16 @@
     "main": "src/index.ts",
     "private": true,
     "scripts": {
-        "start": "npm run test && npm run serve",
-        "serve": "echo \"Serving...\" && NODE_OPTIONS='-r ts-node/register' webpack --progress --watch --config \"./build/webpack.config.js\"",
-        "build": "f () { NODE_OPTIONS='-r ts-node/register' webpack --config \"./build/webpack.config.js\" --env base=$1;}; f",
+        "start": "echo \"No start specified\"",
+        "serve": "echo \"No serve specified\"",
+        "build": "echo \"No build specified\"",
         "build:travis": "echo \"No build:travis specified\"",
-        "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
         "deploy": "echo \"No deploy specified\"",
         "deploy:clean": "echo \"No deploy:clean specified\"",
         "deploy:folder": "echo \"No deploy:folder specified\"",
         "deploy:staging": "echo \"No deploy:staging specified\"",
-        "deploy:production": "echo \"No deploy:production specified\""
+        "deploy:production": "echo \"No deploy:production specified\"",
+        "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\""
     },
     "engines": {
         "node": "18.x"

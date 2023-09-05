@@ -69,6 +69,7 @@ commands:
             - "packages/core/node_modules"
             - "packages/hooks/node_modules"
             - "packages/cfd/node_modules"
+            - "packages/cfd-logic/node_modules"
             - "packages/indicators/node_modules"
             - "packages/p2p/node_modules"
             - "packages/reports/node_modules"

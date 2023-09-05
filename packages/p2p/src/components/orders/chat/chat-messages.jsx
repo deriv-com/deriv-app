@@ -23,20 +23,19 @@ const ChatMessages = observer(() => {
         }
     };
 
-    React.useEffect(() => {
-        if (sendbird_store.chat_messages.length > 0 && scroll_ref.current) {
-            // Scroll all the way to the bottom of the container.
-            scroll_ref.current.scrollTop = scroll_ref.current.scrollHeight;
-        }
-    }, [sendbird_store.chat_messages.length]); // eslint-disable-line react-hooks/exhaustive-deps
-
     sendbird_store.setMessagesRef(scroll_ref);
 
     if (sendbird_store.chat_messages.length) {
         let current_date = null;
 
         return (
-            <ThemedScrollbars autohide className='order-chat__messages' height='unset' refSetter={scroll_ref}>
+            <ThemedScrollbars
+                autohide
+                className='order-chat__messages'
+                height='unset'
+                refSetter={scroll_ref}
+                onScroll={event => sendbird_store.onMessagesScroll(event)}
+            >
                 {sendbird_store.chat_messages.map(chat_message => {
                     const is_my_message = chat_message.sender_user_id === sendbird_store.chat_info.user_id;
                     const message_date = formatMilliseconds(chat_message.created_at, 'MMMM D, YYYY');

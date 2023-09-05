@@ -23,6 +23,7 @@ export default class SendbirdStore extends BaseStore {
     file_upload_properties: FileMessage | null = null;
     is_upload_complete = false;
     messages_ref: React.RefObject<HTMLDivElement> | null = null;
+    scroll_debounce?: ReturnType<typeof setTimeout>;
     sendbird_api: ReturnType<typeof SendbirdChat.init<GroupChannelModule[]>> | null = null;
     service_token_timeout?: ReturnType<typeof setTimeout>;
     disposeOrderIdReaction?: IReactionDisposer;
@@ -40,6 +41,7 @@ export default class SendbirdStore extends BaseStore {
             chat_messages: observable.shallow,
             has_chat_error: observable,
             is_chat_loading: observable,
+            scroll_debounce: observable.ref,
             should_show_chat_modal: observable,
             should_show_chat_on_orders: observable,
             has_chat_info: computed,
@@ -47,6 +49,7 @@ export default class SendbirdStore extends BaseStore {
             last_other_user_activity: computed,
             addChannelMessage: action.bound,
             createChatForNewOrder: action.bound,
+            onMessagesScroll: action.bound,
             replaceChannelMessage: action.bound,
             setActiveChatChannel: action.bound,
             setChatChannelUrl: action.bound,
@@ -192,6 +195,7 @@ export default class SendbirdStore extends BaseStore {
             const chat_messages = await this.getPreviousMessages();
             if (chat_messages && chat_messages.length > 0) {
                 this.setChannelMessages(chat_messages.map(msg => convertFromChannelMessage(msg)));
+                this.messages_ref?.current?.scrollTo(0, this.messages_ref.current.scrollHeight);
             }
         } catch (error) {
             // eslint-disable-next-line no-console
@@ -292,6 +296,41 @@ export default class SendbirdStore extends BaseStore {
         ) {
             this.addChannelMessage(convertFromChannelMessage(channel_message));
         }
+    }
+
+    onMessagesScroll() {
+        if (this.scroll_debounce) {
+            clearInterval(this.scroll_debounce);
+        }
+
+        this.scroll_debounce = setTimeout(() => {
+            if (!this.messages_ref?.current) return;
+
+            if (this.messages_ref.current.scrollTop === 0) {
+                this.setIsChatLoading(true);
+                const oldest_message_timestamp = this.chat_messages.reduce(
+                    (prev_created_at, chat_message) =>
+                        chat_message.created_at < prev_created_at ? chat_message.created_at : prev_created_at,
+                    Infinity
+                );
+
+                this.getPreviousMessages(oldest_message_timestamp)
+                    .then(chat_messages => {
+                        if (chat_messages && chat_messages.length > 0) {
+                            const previous_messages = chat_messages.map(chat_message =>
+                                convertFromChannelMessage(chat_message)
+                            );
+
+                            this.replaceChannelMessage(0, 0, previous_messages[0]);
+                        }
+                        this.setIsChatLoading(false);
+                    })
+                    .catch(error => {
+                        // eslint-disable-next-line no-console
+                        console.warn(error);
+                    });
+            }
+        }, 1000);
     }
 
     onReadReceiptUpdated(channel: GroupChannel) {
@@ -427,6 +466,7 @@ export default class SendbirdStore extends BaseStore {
                 const msg_idx = this.chat_messages.findIndex(msg => msg.id === msg_identifier);
                 if (channel_message.isUserMessage()) {
                     this.replaceChannelMessage(msg_idx, 1, convertFromChannelMessage(channel_message));
+                    this.messages_ref?.current?.scrollTo(0, this.messages_ref.current.scrollHeight);
                 }
             })
             .onFailed(() => {

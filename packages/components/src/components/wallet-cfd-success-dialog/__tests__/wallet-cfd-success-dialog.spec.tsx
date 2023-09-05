@@ -18,18 +18,20 @@ const mocked_props = {
     toggleModal: jest.fn(),
     wallet: mocked_wallet,
 };
+const modal_root_el: HTMLDivElement;
+modal_root_el = document.createElement('div');
+modal_root_el.setAttribute('id', 'modal_root');
+document.body.appendChild(modal_root_el);
 
 describe('render <WalletCFDSuccessDialog />', () => {
-    let modal_root_el: HTMLDivElement;
-    beforeAll(() => {
-        modal_root_el = document.createElement('div');
-        modal_root_el.setAttribute('id', 'modal_root');
-        document.body.appendChild(modal_root_el);
-    });
-    it('renders the components text properly:', () => {
+    it('renders the components text correctly:', () => {
         render(<WalletCFDSuccessDialog {...mocked_props} />);
+        expect(screen.getByText(/CFD Wallet Modal Header/i)).toBeInTheDocument();
+        expect(screen.getByText(/CFD Wallet Modal Message/i)).toBeInTheDocument();
+    });
 
-        expect(screen.getByText('CFD Wallet Modal Header')).toBeInTheDocument();
-        expect(screen.getByText('CFD Wallet Modal Message')).toBeInTheDocument();
+    it('renders the button correctly:', () => {
+        render(<WalletCFDSuccessDialog {...mocked_props} />);
+        expect(screen.getByText(/OK/i)).toBeInTheDocument();
     });
 });

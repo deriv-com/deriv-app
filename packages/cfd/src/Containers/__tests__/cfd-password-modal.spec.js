@@ -228,77 +228,40 @@ describe('<CFDPasswordModal/>', () => {
         });
     });
 
-    // This test case is inaccurate. It does not test for the password however it is for the email input.
-    // TODO: Update test case and make it for password.
+    it('should display error message when password does not meet requirements', async () => {
+        validPassword.mockReturnValue(false);
+        const user_input = 'demo@deriv.com';
 
-    // it('should display error message when password does not meet requirements', async () => {
-    //     validPassword.mockReturnValue(false);
-    //     const user_input = 'demo@deriv.com';
+        const store = mockStore(mockRootStore);
 
-    //     const store = mockStore(mockRootStore);
+        store.client.account_status = { status: [], category: 'Real' };
+        store.client.email = user_input;
 
-    //     store.client.account_status = { status: [], category: 'Real' };
-    //     store.client.email = user_input;
+        render(
+            <Router history={history}>
+                <CFDPasswordModal {...mock_props} />
+            </Router>,
+            {
+                wrapper: ({ children }) => (
+                    <APIProvider>
+                        <CFDProviders store={store}>{children}</CFDProviders>
+                    </APIProvider>
+                ),
+            }
+        );
+        const ele_password_input = await screen.findByTestId('dt_mt5_password');
+        fireEvent.change(ele_password_input, { target: { value: 'password?password' } });
+        await waitFor(() => {
+            fireEvent.focusOut(ele_password_input);
+        });
 
-    //     render(
-    //         <Router history={history}>
-    //             <CFDPasswordModal {...mock_props} />
-    //         </Router>,
-    //         {
-    //             wrapper: ({ children }) => (
-    //                 <APIProvider>
-    //                     <CFDProviders store={store}>{children}</CFDProviders>
-    //                 </APIProvider>
-    //             ),
-    //         }
-    //     );
-    //     const ele_password_input = await screen.findByTestId('dt_mt5_password');
-    //     fireEvent.change(ele_password_input, { target: { value: 'user_input' } });
-    //     await waitFor(() => {
-    //         fireEvent.focusOut(ele_password_input);
-    //     });
-
-    //     await waitFor(() => {
-    //         expect(validPassword).toHaveBeenCalled();
-    //     });
-    //     expect(await screen.findByText(/your password cannot be the same as your email address./i)).toBeInTheDocument();
-    // });
-
-    // it('should display error message when password contain non-english characters', async () => {
-    //     validPassword.mockReturnValue(false);
-
-    //     const store = mockStore(mockRootStore);
-
-    //     store.client.account_status = { status: [], category: 'Real' };
-    //     store.client.email = 'demo@deriv.com';
-
-    //     render(
-    //         <Router history={history}>
-    //             <CFDPasswordModal {...mock_props} platform='test' />
-    //         </Router>,
-    //         {
-    //             wrapper: ({ children }) => (
-    //                 <APIProvider>
-    //                     <CFDProviders store={store}>{children}</CFDProviders>,
-    //                 </APIProvider>
-    //             ),
-    //         }
-    //     );
-    //     const ele_password_input = await screen.findByTestId('dt_test_password');
-    //     fireEvent.change(ele_password_input, { target: { value: 'Passwordååøø' } });
-    //     await waitFor(() => {
-    //         fireEvent.focusOut(ele_password_input);
-    //     });
-
-    //     await waitFor(() => {
-    //         expect(validPassword).toHaveBeenCalled();
-    //     });
-
-    //     expect(getErrorMessages).toHaveBeenCalled();
-    //     expect(
-    //         await screen.findByText(/Password should have lower and uppercase English letters with numbers./i)
-    //     ).toBeInTheDocument();
-    // });
+        await waitFor(() => {
+            expect(validPassword).toHaveBeenCalled();
+        });
+        expect(
+            await screen.findByText(/Password should have lower and uppercase English letters with numbers./i)
+        ).toBeInTheDocument();
+    });
 
     it('should show transfer message on successful DerivX account creation', async () => {
         const store = mockStore(mockRootStore);

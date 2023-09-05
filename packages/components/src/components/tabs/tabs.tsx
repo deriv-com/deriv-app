@@ -33,6 +33,7 @@ type TTabsProps = RouteComponentProps & {
     is_overflow_hidden?: boolean;
     is_scrollable?: boolean;
     onTabItemClick?: (active_tab_index: number) => void;
+    should_scroll_tab_into_view?: boolean;
     should_update_hash?: boolean;
     single_tab_has_no_label?: boolean;
     top: boolean;
@@ -58,6 +59,7 @@ const Tabs = ({
     is_overflow_hidden,
     is_scrollable,
     onTabItemClick,
+    should_scroll_tab_into_view = false,
     should_update_hash,
     single_tab_has_no_label,
     top,
@@ -116,6 +118,17 @@ const Tabs = ({
             onTabItemClick?.(active_tab_index);
         }
         setActiveLineStyle();
+        if (should_scroll_tab_into_view) {
+            setTimeout(
+                () =>
+                    active_tab_ref.current?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center',
+                        inline: 'nearest',
+                    }),
+                0
+            );
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active_tab_index, setActiveLineStyle]);
 

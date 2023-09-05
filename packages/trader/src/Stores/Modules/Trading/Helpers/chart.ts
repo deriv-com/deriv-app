@@ -53,34 +53,73 @@ export const getChartAnalyticsData = (state: keyof typeof STATE_TYPES, option: T
     const market_event_type = 'ce_market_types_form';
     const indicators_event_type = 'ce_indicators_types_form';
 
-    if (state === STATE_TYPES.CHART_MODE_TOGGLE && 'is_open' in option) {
-        return {
+    if (chart_type_name && time_interval_name) {
+        const payload = {
             data: {
-                action: open_close_action,
+                action: '',
                 chart_type_name,
                 time_interval_name,
             },
             event_type: chart_event_type,
         };
+        if (state === STATE_TYPES.CHART_MODE_TOGGLE) {
+            payload.data.action = open_close_action;
+            return payload;
+        } else if (state === STATE_TYPES.CHART_TYPE_CHANGE) {
+            payload.data.action = 'choose_chart_type';
+            return payload;
+        } else if (state === STATE_TYPES.CHART_INTERVAL_CHANGE) {
+            payload.data.action = 'choose_time_interval';
+            return payload;
+        }
     }
-    if (state === STATE_TYPES.CHART_TYPE_CHANGE && 'chart_type_name' in option) {
-        return {
+    if (indicator_type_name && indicators_category_name) {
+        const payload = {
             data: {
-                action: 'choose_chart_type',
-                chart_type_name,
-                time_interval_name,
+                action: '',
+                indicator_type_name,
+                indicators_category_name,
             },
-            event_type: chart_event_type,
+            event_type: indicators_event_type,
+        };
+        if (state === STATE_TYPES.INDICATOR_DELETED) {
+            payload.data.action = 'delete_active';
+            return payload;
+        } else if (state === STATE_TYPES.INDICATOR_SETTINGS_OPEN) {
+            payload.data.action = 'edit_active';
+            return payload;
+        } else if (state === STATE_TYPES.INDICATOR_INFO_OPEN) {
+            payload.data.action = 'info_open';
+            return payload;
+        } else if (state === STATE_TYPES.INDICATOR_INFO_CLOSED) {
+            payload.data.action = 'info_close';
+            return payload;
+        }
+    }
+    if (state === STATE_TYPES.INDICATORS_MODAL_TOGGLE && 'is_open' in option) {
+        return {
+            data: { action: open_close_action },
+            event_type: indicators_event_type,
         };
     }
-    if (state === STATE_TYPES.CHART_INTERVAL_CHANGE && 'time_interval_name' in option) {
+    if (state === STATE_TYPES.INDICATOR_ADDED && indicator_type_name) {
         return {
             data: {
-                action: 'choose_time_interval',
-                chart_type_name,
-                time_interval_name,
+                action: 'add_active',
+                indicator_type_name,
+                indicators_category_name,
+                subform_name: is_info_open ? 'indicators_info' : 'indicators_type',
             },
-            event_type: chart_event_type,
+            event_type: indicators_event_type,
+        };
+    }
+    if (option.search_string && (state === STATE_TYPES.MARKET_SEARCH || state === STATE_TYPES.INDICATOR_SEARCH)) {
+        return {
+            data: {
+                action: 'search',
+                search_string,
+            },
+            event_type: state === STATE_TYPES.MARKET_SEARCH ? market_event_type : indicators_event_type,
         };
     }
     if (state === STATE_TYPES.MARKETS_LIST_TOGGLE && 'is_open' in option) {
@@ -92,7 +131,7 @@ export const getChartAnalyticsData = (state: keyof typeof STATE_TYPES, option: T
             event_type: market_event_type,
         };
     }
-    if (state === STATE_TYPES.SYMBOL_CHANGE && 'market_type_name' in option) {
+    if (state === STATE_TYPES.SYMBOL_CHANGE && market_type_name) {
         return {
             data: {
                 action: 'choose_market_type',
@@ -102,7 +141,7 @@ export const getChartAnalyticsData = (state: keyof typeof STATE_TYPES, option: T
             event_type: market_event_type,
         };
     }
-    if (state === STATE_TYPES.MARKET_INFO_REDIRECT && 'tab_market_name' in option) {
+    if (state === STATE_TYPES.MARKET_INFO_REDIRECT && tab_market_name) {
         return {
             data: {
                 action: 'info_redirect',
@@ -118,72 +157,6 @@ export const getChartAnalyticsData = (state: keyof typeof STATE_TYPES, option: T
                 market_type_name,
             },
             event_type: market_event_type,
-        };
-    }
-    if (option.search_string && (state === STATE_TYPES.MARKET_SEARCH || state === STATE_TYPES.INDICATOR_SEARCH)) {
-        return {
-            data: {
-                action: 'search',
-                search_string,
-            },
-            event_type: state === STATE_TYPES.MARKET_SEARCH ? market_event_type : indicators_event_type,
-        };
-    }
-    if (state === STATE_TYPES.INDICATORS_MODAL_TOGGLE && 'is_open' in option) {
-        return {
-            data: { action: open_close_action },
-            event_type: indicators_event_type,
-        };
-    }
-    if (state === STATE_TYPES.INDICATOR_ADDED && 'indicator_type_name' in option) {
-        return {
-            data: {
-                action: 'add_active',
-                indicator_type_name,
-                indicators_category_name,
-                subform_name: is_info_open ? 'indicators_info' : 'indicators_type',
-            },
-            event_type: indicators_event_type,
-        };
-    }
-    if (state === STATE_TYPES.INDICATOR_DELETED && 'indicator_type_name' in option) {
-        return {
-            data: {
-                action: 'delete_active',
-                indicator_type_name,
-                indicators_category_name,
-            },
-            event_type: indicators_event_type,
-        };
-    }
-    if (state === STATE_TYPES.INDICATOR_SETTINGS_OPEN && 'indicator_type_name' in option) {
-        return {
-            data: {
-                action: 'edit_active',
-                indicator_type_name,
-                indicators_category_name,
-            },
-            event_type: indicators_event_type,
-        };
-    }
-    if (state === STATE_TYPES.INDICATOR_INFO_CLOSED && 'indicator_type_name' in option) {
-        return {
-            data: {
-                action: 'info_close',
-                indicator_type_name,
-                indicators_category_name,
-            },
-            event_type: indicators_event_type,
-        };
-    }
-    if (state === STATE_TYPES.INDICATOR_INFO_OPEN && 'indicator_type_name' in option) {
-        return {
-            data: {
-                action: 'info_open',
-                indicator_type_name,
-                indicators_category_name,
-            },
-            event_type: indicators_event_type,
         };
     }
     return {};

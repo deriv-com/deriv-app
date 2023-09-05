@@ -86,16 +86,19 @@ jest.mock('@deriv/api', () => ({
 }));
 
 describe('useWalletsList', () => {
-    test('should return wallets list for the current loginid', () => {
-        const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
+    const wrapper = (mock: ReturnType<typeof mockStore>) => {
+        const Component = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
                 <StoreProvider store={mock}>{children}</StoreProvider>
             </APIProvider>
         );
+        return Component;
+    };
 
-        const { result } = renderHook(() => useWalletsList(), { wrapper });
+    test('should return wallets list for the current loginid', () => {
+        const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
+
+        const { result } = renderHook(() => useWalletsList(), { wrapper: wrapper(mock) });
 
         expect(result.current.data?.every(wallet => wallet.account_category === 'wallet')).toEqual(true);
     });
@@ -103,13 +106,7 @@ describe('useWalletsList', () => {
     test('should return sorted wallet list where virtual is the last and crypto is after fiat currency', () => {
         const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        const { result } = renderHook(() => useWalletsList(), { wrapper });
+        const { result } = renderHook(() => useWalletsList(), { wrapper: wrapper(mock) });
 
         expect(result.current.data?.map(wallet => wallet.currency)).toEqual(['AUD', 'BTC', 'ETH', 'UST', 'USD']);
     });
@@ -117,13 +114,7 @@ describe('useWalletsList', () => {
     test('should return has_wallet equals to true if the client has at least one wallet', () => {
         const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        const { result } = renderHook(() => useWalletsList(), { wrapper });
+        const { result } = renderHook(() => useWalletsList(), { wrapper: wrapper(mock) });
 
         expect(result.current.has_wallet).toEqual(true);
     });
@@ -146,13 +137,7 @@ describe('useWalletsList', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        const { result } = renderHook(() => useWalletsList(), { wrapper });
+        const { result } = renderHook(() => useWalletsList(), { wrapper: wrapper(mock) });
 
         expect(result.current.has_wallet).toEqual(false);
     });

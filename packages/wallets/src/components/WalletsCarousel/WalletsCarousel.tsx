@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useWalletAccountsList } from '@deriv/api';
-import AccountsList from '../AccountsList';
+import { AccountsList } from '..';
+import './WalletsCarousel.scss';
 
 const WalletsCarousel = () => {
     const [emblaRef, emblaApi] = useEmblaCarousel({ skipSnaps: true, containScroll: false });

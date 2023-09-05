@@ -8,4 +8,5 @@ export * from './WalletListCardIDetails';
 export * from './WalletListCardIcon';
 export * from './WalletListCardTitle';
 export * from './WalletsAccordion';
+export * from './WalletsAccordionContainer';
 export * from './WalletsCarousel';

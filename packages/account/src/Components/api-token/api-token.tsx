@@ -1,32 +1,27 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Formik, Form, Field, FormikErrors, FieldProps, FormikHelpers } from 'formik';
+import { useSetApiToken, useGetApiToken } from '@deriv/api';
+import { APITokenResponse, ApiToken as TApitoken } from '@deriv/api-types';
 import { Timeline, Input, Button, ThemedScrollbars, Loading } from '@deriv/components';
-import InlineNoteWithIcon from '../inline-note-with-icon';
-import { getPropertyValue, useIsMounted, WS } from '@deriv/shared';
+import { getPropertyValue } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import { TToken } from 'Types';
 import LoadErrorMessage from 'Components/load-error-message';
+import { getApiTokenCardDetails } from 'Constants/api-token-card-details';
 import ApiTokenArticle from './api-token-article';
 import ApiTokenCard from './api-token-card';
 import ApiTokenTable from './api-token-table';
 import ApiTokenContext from './api-token-context';
-import { TToken } from 'Types';
-import { observer, useStore } from '@deriv/stores';
-import { getApiTokenCardDetails } from 'Constants/api-token-card-details';
+import InlineNoteWithIcon from '../inline-note-with-icon';
 
 const MIN_TOKEN = 2;
 const MAX_TOKEN = 32;
 
 type AptTokenState = {
     api_tokens: NonNullable<TToken[]>;
-    is_loading: boolean;
-    is_success: boolean;
-    is_overlay_shown: boolean;
     error_message: string;
-    show_delete: boolean;
-    dispose_token: string;
-    is_delete_loading: boolean;
-    is_delete_success: boolean;
 };
 
 type TApiTokenForm = {
@@ -42,8 +37,10 @@ const ApiToken = () => {
     const { client, ui } = useStore();
     const { is_switching } = client;
     const { is_desktop, is_mobile } = ui;
-    const isMounted = useIsMounted();
-    const prev_is_switching = React.useRef(is_switching);
+
+    const { updated_api_token_data, update, isSuccess, isLoading } = useSetApiToken();
+    const { api_token_data, isSuccess: is_api_token_data_fetched } = useGetApiToken();
+
     const [state, setState] = React.useReducer(
         (prev_state: Partial<AptTokenState>, value: Partial<AptTokenState>) => ({
             ...prev_state,
@@ -51,35 +48,33 @@ const ApiToken = () => {
         }),
         {
             api_tokens: [],
-            is_loading: true,
-            is_success: false,
-            is_overlay_shown: false,
             error_message: '',
-            show_delete: false,
-            dispose_token: '',
-            is_delete_loading: false,
-            is_delete_success: false,
         }
     );
-    const timeout_ref = React.useRef<NodeJS.Timeout | undefined>();
 
-    React.useEffect(() => {
-        getApiTokens();
-
-        return () => {
-            setState({ dispose_token: '' });
-            clearTimeout(timeout_ref.current);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    const populateTokenResponse = React.useCallback((response: APITokenResponse) => {
+        if (response.error) {
+            setState({
+                error_message: getPropertyValue(response, ['error', 'message']),
+            });
+        } else {
+            setState({
+                api_tokens: getPropertyValue(response, ['api_token', 'tokens']),
+            });
+        }
     }, []);
 
     React.useEffect(() => {
-        if (prev_is_switching.current !== is_switching) {
-            prev_is_switching.current = is_switching;
-            getApiTokens();
+        if (is_api_token_data_fetched) {
+            populateTokenResponse(api_token_data as APITokenResponse);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_switching]);
+    }, [api_token_data, is_api_token_data_fetched, populateTokenResponse]);
+
+    React.useEffect(() => {
+        if (isSuccess) {
+            populateTokenResponse(updated_api_token_data as APITokenResponse);
+        }
+    }, [isSuccess, populateTokenResponse, updated_api_token_data]);
 
     const initial_form = {
         token_name: '',
@@ -114,70 +109,33 @@ const ApiToken = () => {
     };
 
     const selectedTokenScope = (values: TApiTokenForm) =>
-        Object.keys(values).filter(item => item !== 'token_name' && Boolean(values[item as keyof TApiTokenForm]));
+        Object.keys(values).filter(
+            item => item !== 'token_name' && Boolean(values[item as keyof TApiTokenForm])
+        ) as NonNullable<NonNullable<TApitoken['tokens']>[0]['scopes']>;
 
-    const handleSubmit = async (
-        values: TApiTokenForm,
-        { setSubmitting, setFieldError, resetForm }: FormikHelpers<TApiTokenForm>
-    ) => {
-        const token_response = await WS.apiToken({
-            api_token: 1,
+    const handleSubmit = (values: TApiTokenForm, { setSubmitting, resetForm }: FormikHelpers<TApiTokenForm>) => {
+        update({
             new_token: values.token_name,
             new_token_scopes: selectedTokenScope(values),
         });
-        if (token_response.error) {
-            setFieldError('token_name', token_response.error.message);
-        } else if (isMounted()) {
-            setState({
-                is_success: true,
-                api_tokens: getPropertyValue(token_response, ['api_token', 'tokens']),
-            });
-            setTimeout(() => {
-                if (isMounted()) setState({ is_success: false });
-            }, 500);
-        }
+        // if (token_response.error) {
+        //     setFieldError('token_name', token_response.error.message);
+        // } else if (isMounted()) {
+        //     setState({
+        //         api_tokens: getPropertyValue(token_response, ['api_token', 'tokens']),
+        //     });
+        // }
         resetForm();
         setSubmitting(false);
     };
 
-    const populateTokenResponse = (response: import('@deriv/api-types').APITokenResponse) => {
-        if (!isMounted()) return;
-        if (response.error) {
-            setState({
-                is_loading: false,
-                error_message: getPropertyValue(response, ['error', 'message']),
-            });
-        } else {
-            setState({
-                is_loading: false,
-                api_tokens: getPropertyValue(response, ['api_token', 'tokens']),
-            });
-        }
+    const deleteToken = (token: string) => {
+        update({ delete_token: token });
     };
 
-    const getApiTokens = async () => {
-        setState({ is_loading: true });
-        const token_response = await WS.authorized.apiToken({ api_token: 1 });
-        populateTokenResponse(token_response);
-    };
+    const { api_tokens, error_message } = state;
 
-    const deleteToken = async (token: string) => {
-        setState({ is_delete_loading: true });
-
-        const token_response = await WS.authorized.apiToken({ api_token: 1, delete_token: token });
-
-        populateTokenResponse(token_response);
-
-        if (isMounted()) setState({ is_delete_loading: false, is_delete_success: true });
-
-        timeout_ref.current = setTimeout(() => {
-            if (isMounted()) setState({ is_delete_success: false });
-        }, 500);
-    };
-
-    const { api_tokens, is_loading, is_success, error_message } = state;
-
-    if (is_loading || is_switching) {
+    if (is_switching) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
@@ -199,7 +157,7 @@ const ApiToken = () => {
                     <div className='da-api-token__wrapper'>
                         <ThemedScrollbars className='da-api-token__scrollbars' is_bypassed={is_mobile}>
                             {is_mobile && <ApiTokenArticle />}
-                            <Formik initialValues={initial_form} onSubmit={handleSubmit} validate={validateFields}>
+                            <Formik initialValues={initial_form} onSubmit={handleSubmit}>
                                 {({
                                     values,
                                     errors,
@@ -274,19 +232,19 @@ const ApiToken = () => {
                                                             'dc-btn__button-group',
                                                             'da-api-token__button',
                                                             {
-                                                                'da-api-token__button--success': is_success,
+                                                                'da-api-token__button--success': isSuccess,
                                                             }
                                                         )}
                                                         type='submit'
-                                                        is_disabled={
-                                                            !dirty ||
-                                                            isSubmitting ||
-                                                            !isValid ||
-                                                            !selectedTokenScope(values).length
-                                                        }
+                                                        // is_disabled={
+                                                        //     !dirty ||
+                                                        //     isSubmitting ||
+                                                        //     !isValid ||
+                                                        //     !selectedTokenScope(values).length
+                                                        // }
                                                         has_effect
                                                         is_loading={isSubmitting}
-                                                        is_submit_success={is_success}
+                                                        is_submit_success={isLoading}
                                                         text={localize('Create')}
                                                         primary
                                                         large

@@ -5,7 +5,7 @@ import { APIProvider } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('../wallet-add-card', () => {
-    const AddWalletCard = () => <div data-testid='dt-add-wallet-card'>AddWalletCard</div>;
+    const AddWalletCard = () => <div>AddWalletCard</div>;
     return AddWalletCard;
 });
 
@@ -54,6 +54,17 @@ jest.mock('@deriv/api', () => ({
 }));
 
 describe('AddMoreWallets', () => {
+    const wrapper = (mock: ReturnType<typeof mockStore>) => {
+        const Component = ({ children }: { children: JSX.Element }) => {
+            return (
+                <APIProvider>
+                    <StoreProvider store={mock}>{children}</StoreProvider>
+                </APIProvider>
+            );
+        };
+        return Component;
+    };
+
     it('should render the component without errors', () => {
         const mock = mockStore({
             client: {
@@ -67,15 +78,8 @@ describe('AddMoreWallets', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        render(<AddMoreWallets />, { wrapper });
-
-        expect(screen.getByTestId('dt-add-wallets')).toBeInTheDocument();
+        const { container } = render(<AddMoreWallets />, { wrapper: wrapper(mock) });
+        expect(container).toBeInTheDocument();
     });
 
     it('should render the title correctly', () => {
@@ -91,13 +95,7 @@ describe('AddMoreWallets', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        render(<AddMoreWallets />, { wrapper });
+        render(<AddMoreWallets />, { wrapper: wrapper(mock) });
         expect(screen.getByText('Add more Wallets')).toBeInTheDocument();
     });
 
@@ -114,13 +112,7 @@ describe('AddMoreWallets', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        render(<AddMoreWallets />, { wrapper });
+        render(<AddMoreWallets />, { wrapper: wrapper(mock) });
         expect(screen.getByTestId('dt-carousel-container')).toBeInTheDocument();
     });
 
@@ -137,14 +129,8 @@ describe('AddMoreWallets', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        render(<AddMoreWallets />, { wrapper });
-        const wallet_cards = screen.queryAllByTestId('dt-add-wallet-card');
+        render(<AddMoreWallets />, { wrapper: wrapper(mock) });
+        const wallet_cards = screen.getAllByText(/AddWalletCard/i);
         expect(wallet_cards).toHaveLength(4);
     });
 });

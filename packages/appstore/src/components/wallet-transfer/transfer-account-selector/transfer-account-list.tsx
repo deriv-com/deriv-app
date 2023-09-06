@@ -43,7 +43,7 @@ const TransferAccountList = ({
                     return null;
 
                 return (
-                    <React.Fragment key={idx}>
+                    <React.Fragment key={key}>
                         <div
                             className={classNames('transfer-account-selector__list', {
                                 'transfer-account-selector__list--is-last':
@@ -69,9 +69,9 @@ const TransferAccountList = ({
                             </div>
                             <div className='transfer-account-selector__list-items'>
                                 {Object.values(transfer_accounts[key as 'trading_accounts' | 'wallet_accounts']).map(
-                                    (account, index) => (
+                                    account => (
                                         <WalletTransferTile
-                                            key={index}
+                                            key={account?.loginid}
                                             account={account}
                                             className={classNames('transfer-account-selector__list-tile')}
                                             is_active={selected_account?.loginid === account?.loginid}

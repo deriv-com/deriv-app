@@ -10,7 +10,6 @@ const useAvailableWallets = () => {
     const { is_crypto } = client;
     const { data } = useAuthorize();
 
-    // @ts-expect-error Need to update @deriv/api-types to fix the TS error
     const { data: account_type_data, ...rest } = useFetch('get_account_types', {
         payload: { company: data?.landing_company_name === 'virtual' ? 'svg' : data?.landing_company_name },
         options: { enabled: Boolean(data?.landing_company_name) },
@@ -20,7 +19,6 @@ const useAvailableWallets = () => {
 
     const sortedWallets = React.useMemo(() => {
         if (!account_type_data) return null;
-        // @ts-expect-error Need to update @deriv/api-types to fix the TS error
         const { crypto, doughflow } = account_type_data?.get_account_types?.wallet || {};
         const crypto_currencies = crypto?.currencies;
         const fiat_currencies = doughflow?.currencies;

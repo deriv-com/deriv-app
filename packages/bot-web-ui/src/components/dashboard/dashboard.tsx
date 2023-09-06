@@ -11,7 +11,7 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import RunPanel from '../run-panel';
 import RunStrategy from './dashboard-component/run-strategy';
 import { DBOT_ONBOARDING } from './dbot-tours/config';
-import MobileTours from './dbot-tours/mobile-tours/mobile-tours';
+import MobileTours from './dbot-tours/mobile-tours';
 import { getTourSettings, setTourSettings, setTourType, tour_status_ended, tour_type } from './dbot-tours/utils';
 import DashboardComponent from './dashboard-component';
 import ReactJoyrideWrapper from './react-joyride-wrapper';

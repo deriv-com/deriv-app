@@ -33,15 +33,15 @@ describe('Tour Config Data', () => {
         render(<OnboardingTour />, {
             wrapper,
         });
-        const firstStep = DBOT_ONBOARDING_MOBILE[0];
-        expect(screen.getByText(firstStep.header)).toBeInTheDocument();
+        const first_step = DBOT_ONBOARDING_MOBILE[0];
+        expect(screen.getByText(first_step.header)).toBeInTheDocument();
     });
 
     it('BOT_BUILDER_MOBILE is called', () => {
         render(<BotBuilderTour />, {
             wrapper,
         });
-        const firstStep = BOT_BUILDER_MOBILE[0];
-        expect(screen.getByText(firstStep.header)).toBeInTheDocument();
+        const first_step = BOT_BUILDER_MOBILE[0];
+        expect(screen.getByText(first_step.header)).toBeInTheDocument();
     });
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import SelfExclusion from '..';
+import SelfExclusion from '../self-exclusion';
 import { FormikValues } from 'formik';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { WS } from '@deriv/shared';
@@ -61,9 +61,6 @@ const mock = {
 let store = mockStore(mock);
 describe('<SelfExclusion />', () => {
     let mock_props = {
-        footer_ref: undefined,
-        is_app_settings: false,
-        is_wrapper_bypassed: false,
         overlay_ref: document.createElement('div'),
         setIsOverlayShown: jest.fn(),
     };
@@ -72,9 +69,6 @@ describe('<SelfExclusion />', () => {
         mock.client.currency = 'Test currency';
         store = mockStore(mock);
         mock_props = {
-            footer_ref: undefined,
-            is_app_settings: false,
-            is_wrapper_bypassed: false,
             overlay_ref: document.createElement('div'),
             setIsOverlayShown: jest.fn(),
         };

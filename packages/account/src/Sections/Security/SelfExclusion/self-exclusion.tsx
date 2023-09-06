@@ -23,13 +23,9 @@ import { FormikHelpers, FormikValues } from 'formik';
 import { observer, useStore } from '@deriv/stores';
 
 type TSelfExclusion = {
-    footer_ref?: React.RefObject<HTMLElement>;
-    is_app_settings: boolean;
-    is_wrapper_bypassed: boolean;
     overlay_ref: HTMLDivElement;
     setIsOverlayShown?: React.Dispatch<React.SetStateAction<boolean>>;
 };
-
 type TExclusionData = {
     max_deposit: string;
     max_turnover: string;
@@ -72,7 +68,7 @@ type TResponse = {
     };
 };
 
-const SelfExclusion = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown }: TSelfExclusion) => {
+const SelfExclusion = ({ overlay_ref, setIsOverlayShown }: TSelfExclusion) => {
     const { client, ui } = useStore();
     const { currency, is_virtual, is_switching, standpoint, is_eu, is_uk, logout, landing_company_shortcode } = client;
     const { is_tablet } = ui;
@@ -438,11 +434,9 @@ const SelfExclusion = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayS
         exclusion_fields_settings,
         exclusion_limits,
         exclusion_texts,
-        footer_ref,
         getMaxLength,
         goToConfirm,
         handleSubmit,
-        is_app_settings,
         is_eu,
         is_mf,
         is_mlt,
@@ -463,7 +457,7 @@ const SelfExclusion = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayS
             <SelfExclusionWrapper>
                 {/* Only show the modal in non-"<AppSettings>" views, others will
                     use the overlay provided by <AppSettings> */}
-                {!is_app_settings && <SelfExclusionModal />}
+                {<SelfExclusionModal />}
                 <SelfExclusionForm />
             </SelfExclusionWrapper>
             {overlay_ref && state.show_article && <SelfExclusionArticleContent is_in_overlay />}

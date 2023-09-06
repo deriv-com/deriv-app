@@ -140,7 +140,7 @@ const ChartContent = () => {
             requestSubscribe={requestSubscribe}
             settings={{ language: getLanguage() }}
             symbol={state.symbol}
-            toolbarWidget={() => <ToolbarWidgets setState={setState} />}
+            toolbarWidget={() => <ToolbarWidgets handleStateChange={setState} />}
             topWidgets={renderTopWidgets}
         />
     );

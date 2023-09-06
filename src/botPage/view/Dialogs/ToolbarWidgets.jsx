@@ -1,17 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ChartMode, DrawTools, Share, StudyLegend, ToolbarWidget, Views } from '@deriv/deriv-charts';
 
 // eslint-disable-next-line react/prop-types
-const ToolbarWidgets = ({ setState }) => (
+const ToolbarWidgets = ({ handleStateChange }) => (
     <ToolbarWidget>
         <ChartMode
             onChartType={chart_type =>
-                setState({
+                handleStateChange({
                     chart_type,
                 })
             }
             onGranularity={granularity =>
-                setState({
+                handleStateChange({
                     granularity,
                 })
             }
@@ -22,5 +23,9 @@ const ToolbarWidgets = ({ setState }) => (
         <Share />
     </ToolbarWidget>
 );
+
+ToolbarWidgets.propTypes = {
+    handleStateChange: PropTypes.func,
+};
 
 export default ToolbarWidgets;

@@ -65,7 +65,7 @@ export const AdditionalKycInfoModal = observer(() => {
                             <Localize i18n_default_text='Additional information required for Deriv MT5 account(s)' />
                         }
                         toggleModal={toggleModal}
-                        className='additinal-kyc-info'
+                        className='additional-kyc-info'
                         width='90.4rem'
                         height={error ? '52.8rem' : '49.6rem'}
                     >
@@ -79,7 +79,9 @@ export const AdditionalKycInfoModal = observer(() => {
                         is_open
                         portal_id='deriv_app'
                         header={
-                            <Localize i18n_default_text='Additional information required for Deriv MT5 account(s)' />
+                            <Text size='xs' align='left'>
+                                <Localize i18n_default_text='Additional information required for Deriv MT5 account(s)' />
+                            </Text>
                         }
                         onClickClose={toggleAdditionalKycInfoModal}
                         header_classname='additional-kyc-info-modal__portal-header'

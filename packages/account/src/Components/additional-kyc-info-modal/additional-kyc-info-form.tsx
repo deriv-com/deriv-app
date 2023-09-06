@@ -37,17 +37,18 @@ type TAdditionalKycInfoFormProps = {
 
 export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoFormProps) => {
     const { client, ui, notifications } = useStore();
-    const { account_settings, residence_list } = client;
-    const { fields, initialValues, validate } = getFormConfig({
-        account_settings,
-        residence_list,
-        required_fields: ['place_of_birth', 'tax_residence', 'tax_identification_number', 'account_opening_reason'],
-    });
-
+    const { residence_list, updateAccountStatus } = client;
     const {
         update,
         mutation: { isLoading, isSuccess, error, isError },
+        data,
     } = useSettings();
+
+    const { fields, initialValues, validate } = getFormConfig({
+        account_settings: data,
+        residence_list,
+        required_fields: ['place_of_birth', 'tax_residence', 'tax_identification_number', 'account_opening_reason'],
+    });
 
     const onSubmit = (values: typeof initialValues) => {
         const tax_residence = residence_list.find(item => item.text === values.tax_residence)?.value;
@@ -58,13 +59,12 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
 
     React.useEffect(() => {
         if (!isLoading && isSuccess) {
-            client.updateAccountStatus().then(() => {
-                notifications.refreshNotifications();
-                ui.toggleAdditionalKycInfoModal();
-                ui.toggleKycInformationSubmittedModal();
-            });
+            updateAccountStatus();
+            notifications.refreshNotifications();
+            ui.toggleAdditionalKycInfoModal();
+            ui.toggleKycInformationSubmittedModal();
         }
-    }, [isLoading, isSuccess, notifications, ui, client]);
+    }, [isLoading, isSuccess, notifications, ui, updateAccountStatus]);
 
     React.useEffect(() => {
         if (isError && setError) {
@@ -90,6 +90,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
             validateOnMount
             validateOnBlur
             validateOnChange
+            enableReinitialize
             initialValues={initialValues}
             onSubmit={onSubmit}
             validate={validate}

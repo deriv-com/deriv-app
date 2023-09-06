@@ -3,11 +3,19 @@ import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Localize, localize } from '@deriv/translations';
 import { generateValidationFunction } from '@deriv/shared';
 
+// Type for the list of items in a dropdown or select
 export type TListItem = {
+    /**
+     * The text of the item (e.g. 'United Kingdom', 'Germany', etc.)
+     */
     text: string;
+    /**
+     * The value of the item
+     */
     value: string;
 };
 
+// Type for the 'name' of the field
 export type TFields = 'place_of_birth' | 'tax_residence' | 'tax_identification_number' | 'account_opening_reason';
 
 // Type for the 'req' rule
@@ -21,9 +29,18 @@ type RegularRule = ['regular', React.ReactNode, { regex: RegExp }];
 
 // Type for a custom validation function
 type CustomValidator = (
+    /**
+     * The value of the field
+     */
     value: string,
+    /**
+     * The options passed to the validation function
+     */
     options: Record<string, unknown>,
-    { tax_residence }: { tax_residence: string }
+    /**
+     * The values of all fields in the form
+     */
+    values: Record<string, unknown>
 ) => React.ReactNode;
 
 // Type for a rule with a custom validation function
@@ -33,13 +50,37 @@ type CustomRule = [CustomValidator, React.ReactNode];
 type Rule = ReqRule | LengthRule | RegularRule | CustomRule;
 
 type TInputConfig = {
-    label: React.ReactNode | string;
+    /**
+     * The label of the input field (e.g. 'First name', 'Last name', etc.)
+     */
+    label: React.ReactNode;
+    /**
+     * The type of the input field (e.g. 'text', 'password', 'select', etc.)
+     */
     type?: string;
+    /**
+     * The initial value of the input field (e.g. 'John', 'Doe', etc.)
+     */
     initial_value: string;
+    /**
+     * Whether the input field is required or not
+     */
     required: boolean;
+    /**
+     * Whether the input field is disabled
+     */
     disabled?: boolean;
+    /**
+     * The placeholder text of the input field (e.g. 'John', 'Doe', etc.)
+     */
     placeholder?: string;
+    /**
+     * The list of items for the dropdown or select
+     */
     list_items?: TListItem[];
+    /**
+     * The validation rules for the input field (e.g. 'req', 'length', 'regular', etc.)
+     */
     rules?: Array<Rule>;
 };
 
@@ -65,8 +106,18 @@ export const getFormFieldsConfig = (
     residence_list: ResidenceList,
     required_fields: TFields[]
 ): TFormFieldsConfig => {
+    /**
+     * Check if the field is disabled based on the immutable_fields from API
+     * @param field - string - name of the field
+     * @returns boolean - whether the field is disabled or not
+     */
     const isFieldDisabled = (field: string) => account_settings?.immutable_fields?.includes(field);
 
+    /**
+     * Check if the field is required based on the required_fields from passed
+     * @param field - string - name of the field
+     * @returns boolean - whether the field is required or not
+     */
     const isFieldRequired = (field: TFields) => required_fields.includes(field);
 
     const config: TFormFieldsConfig = {
@@ -136,15 +187,16 @@ export const getFormFieldsConfig = (
                     },
                 ],
                 [
-                    (value: string, options: Record<string, unknown>, { tax_residence }: { tax_residence: string }) => {
+                    (value, options, { tax_residence }) => {
                         return !!tax_residence;
                     },
                     <Localize key='TIN' i18n_default_text='Please fill in tax residence.' />,
                 ],
                 [
-                    (value: string, options: Record<string, unknown>, { tax_residence }: { tax_residence: string }) => {
-                        const from_list = residence_list.filter(res => res.text === tax_residence && res.tin_format);
-                        const tin_format = from_list[0]?.tin_format;
+                    (value: string, options, { tax_residence }) => {
+                        const tin_format = residence_list.find(
+                            res => res.text === tax_residence && res.tin_format
+                        )?.tin_format;
                         return tin_format ? tin_format.some(tax_regex => new RegExp(tax_regex).test(value)) : true;
                     },
                     <Localize key='TIN' i18n_default_text='Tax Identification Number is invalid.' />,

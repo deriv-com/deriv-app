@@ -65,7 +65,7 @@ const AdditionalKycInfoModal = React.lazy(() =>
     )
 );
 const InformationSubmittedModal = React.lazy(() =>
-    import(/* webpackChunkName: "additional-kyc-info-modal" */ './information-submitted-modal')
+    import(/* webpackChunkName: "information-submitted-modal" */ './information-submitted-modal')
 );
 
 const AppModals = ({

@@ -1,8 +1,9 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import useWalletTransfer from '../useWalletTransfer';
+import useExchangeRate from '../useExchangeRate';
 import useTransferMessageBetweenWalletAndTradingApp from '../useTransferMessageBetweenWalletAndTradingApp';
+import useWalletTransfer from '../useWalletTransfer';
 
 const mock_from_account = {
     account_type: 'wallet',
@@ -47,17 +48,17 @@ const mock_get_limits_response = {
 jest.mock('../useExchangeRate', () => ({
     ...jest.requireActual('../useExchangeRate'),
     __esModule: true,
-    useExchangeRate: jest.fn(() => ({
-        getRate: jest.fn(() => 0.1),
-    })),
+    useExchangeRate: jest.fn(),
 }));
+
+const mockUseExchangeRate = useExchangeRate as jest.MockedFunction<typeof useExchangeRate>;
 
 const wrapper = ({ children }: { children: JSX.Element }) => (
     <StoreProvider store={mockStore({})}>{children}</StoreProvider>
 );
 
 describe('useTransferMessageBetweenWalletAndTradingApp', () => {
-    it('should check whether the hook returns the correct data for transfer between real wallet and its linked trading account', () => {
+    it('should check whether the hook returns the correct data for transfer between fiat wallet and its linked trading account', () => {
         const { result } = renderHook(
             () =>
                 useTransferMessageBetweenWalletAndTradingApp(
@@ -70,7 +71,7 @@ describe('useTransferMessageBetweenWalletAndTradingApp', () => {
         expect(result.current[0].code).toBe('WalletToTradingAppDailyLimit');
     });
 
-    it('should check whether the hook returns the correct message_code for transfer between demo wallet and its linked trading account', () => {
+    it('should check whether the it returns the correct message data for transfer between demo wallet and its linked trading account', () => {
         const { result } = renderHook(
             () =>
                 useTransferMessageBetweenWalletAndTradingApp(
@@ -82,5 +83,24 @@ describe('useTransferMessageBetweenWalletAndTradingApp', () => {
         );
         expect(result.current[0].code).toBe('DemoWalletToTradingAppDailyLimit');
         expect(result.current[0].limit).toBe(Number(mock_get_limits_response.daily_transfers.virtual.available));
+    });
+
+    it('should check whether the hook returns the correct data for transfer between crypto wallet and its linked trading account', () => {
+        mockUseExchangeRate.mockReturnValue(() => ({
+            getRate: () => 0.1,
+            last_update: 123,
+            base_currency: 'USD',
+        }));
+        const { result } = renderHook(
+            () =>
+                useTransferMessageBetweenWalletAndTradingApp(
+                    { ...mock_from_account, currency: 'BTC', display_currency_code: 'BTC' } as typeof mock_from_account,
+                    { ...mock_to_account, currency: 'BTC', display_currency_code: 'BTC' } as typeof mock_to_account,
+                    mock_get_limits_response
+                ),
+            { wrapper }
+        );
+        expect(result.current[0].code).toBe('WalletToTradingAppDailyLimit');
+        expect(result.current[0].limit).toBe(900);
     });
 });

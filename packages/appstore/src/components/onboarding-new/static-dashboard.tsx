@@ -93,7 +93,6 @@ const StaticDashboard = observer(
                     }
                 }
             }, 5000);
-
             return () => clearInterval(change_index_interval_id);
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [index]);

@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, WalletIcon, Badge } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { Icon, WalletIcon } from '@deriv/components';
+import { Localize } from '@deriv/translations';
 import { formatMoney } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import {
@@ -16,11 +16,90 @@ import { AccountsInfoLoader } from '../Components/Preloader';
 import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile';
 import AccountInfoWrapper from '../account-info-wrapper';
 import AccountInfoIcon from '../account-info-icon';
+import WalletBadge from './wallet-badge';
 
 type TAccountInfoWallets = {
     toggleDialog: () => void;
     is_dialog_on: boolean;
 };
+
+type TDropdownArrow = {
+    is_disabled?: boolean;
+};
+
+type TBalanceLabel = {
+    balance?: number;
+    currency?: string;
+    is_virtual?: boolean;
+    display_code?: string;
+};
+
+type TMobileInfoIcon = {
+    currency?: string;
+    is_virtual?: boolean;
+};
+
+type TDesktopInfoIcons = {
+    wallet_account: ReturnType<typeof useWalletAccountsList>['data'][number];
+};
+
+const DropdownArrow = ({ is_disabled = false }: TDropdownArrow) =>
+    is_disabled ? (
+        <Icon data_testid='dt_lock_icon' icon='IcLock' />
+    ) : (
+        <Icon data_testid='dt_select_arrow' icon='IcChevronDownBold' className='acc-info__select-arrow' />
+    );
+
+const BalanceLabel = ({ balance, currency, is_virtual, display_code }: TBalanceLabel) =>
+    (typeof balance !== 'undefined' || !currency) && (
+        <div className='acc-info__wallets-account-type-and-balance'>
+            <p
+                data-testid='dt_balance'
+                className={classNames('acc-info__balance', {
+                    'acc-info__balance--no-currency': !currency && !is_virtual,
+                    'acc-info__wallets-is-virtual-balance': currency && is_virtual,
+                })}
+            >
+                {!currency ? (
+                    <Localize i18n_default_text='No currency assigned' />
+                ) : (
+                    `${formatMoney(currency, balance ?? 0, true)} ${display_code}`
+                )}
+            </p>
+        </div>
+    );
+
+const MobileInfoIcon = ({ currency, is_virtual }: TMobileInfoIcon) => (
+    <span className='acc-info__id'>
+        {(is_virtual || currency) && <AccountInfoIcon is_virtual={is_virtual} currency={currency?.toLowerCase()} />}
+    </span>
+);
+
+const DesktopInfoIcons = observer(({ wallet_account }: TDesktopInfoIcons) => {
+    const { ui } = useStore();
+    const { is_dark_mode_on } = ui;
+
+    return (
+        <div className='acc-info__wallets-container'>
+            <Icon
+                icon={is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight'}
+                size={24}
+                data_testid='dt_ic_wallet_options'
+            />
+            <WalletIcon
+                icon={is_dark_mode_on ? wallet_account?.icons.dark : wallet_account?.icons.light}
+                type={wallet_account?.is_virtual ? 'demo' : wallet_account?.currency_config?.type}
+                gradient_class={
+                    is_dark_mode_on ? wallet_account?.gradients.card.dark : wallet_account?.gradients.card.light
+                }
+                size={'small'}
+                has_bg
+                hide_watermark
+            />
+            <WalletBadge is_demo={wallet_account?.is_virtual} label={wallet_account?.landing_company_name} />
+        </div>
+    );
+});
 
 const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInfoWallets) => {
     const { client, ui } = useStore();
@@ -53,68 +132,6 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
 
     if (!linked_wallet) return <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />;
 
-    const mobile_info_icon = (
-        <span className='acc-info__id'>
-            {(active_account?.is_virtual || active_account?.currency) && (
-                <AccountInfoIcon
-                    is_virtual={active_account?.is_virtual}
-                    currency={active_account?.currency?.toLowerCase()}
-                />
-            )}
-        </span>
-    );
-
-    const desktop_info_icons = (
-        <div className='acc-info__wallets-container'>
-            <Icon
-                icon={is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight'}
-                size={24}
-                data_testid='dt_ic_wallet_options'
-            />
-            <WalletIcon
-                icon={is_dark_mode_on ? linked_wallet?.icons.dark : linked_wallet?.icons.light}
-                type={linked_wallet?.is_virtual ? 'demo' : linked_wallet?.currency_config?.type}
-                gradient_class={
-                    is_dark_mode_on ? linked_wallet?.gradients.card.dark : linked_wallet?.gradients.card.light
-                }
-                size={'small'}
-                has_bg
-                hide_watermark
-            />
-            {linked_wallet?.is_virtual ? (
-                <Badge type='contained' background_color='blue' label={localize('Demo')} />
-            ) : (
-                <Badge type='bordered' label={linked_wallet?.landing_company_name?.toUpperCase() || ''} />
-            )}
-        </div>
-    );
-
-    const balance_label = (typeof active_account?.balance !== 'undefined' || !active_account?.currency) && (
-        <div className='acc-info__wallets-account-type-and-balance'>
-            <p
-                data-testid='dt_balance'
-                className={classNames('acc-info__balance', {
-                    'acc-info__balance--no-currency': !active_account?.currency && !active_account?.is_virtual,
-                    'acc-info__wallets-is-virtual-balance': active_account?.currency && active_account?.is_virtual,
-                })}
-            >
-                {!active_account?.currency ? (
-                    <Localize i18n_default_text='No currency assigned' />
-                ) : (
-                    `${formatMoney(active_account?.currency, active_account?.balance, true)} ${
-                        active_account?.currency_config?.display_code
-                    }`
-                )}
-            </p>
-        </div>
-    );
-
-    const dropdown_arrow = active_account?.is_disabled ? (
-        <Icon data_testid='dt_lock_icon' icon='IcLock' />
-    ) : (
-        <Icon data_testid='dt_select_arrow' icon='IcChevronDownBold' className='acc-info__select-arrow' />
-    );
-
     return (
         <div className='acc-info__wrapper'>
             <div className='acc-info__separator' />
@@ -131,9 +148,18 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                     })}
                     onClick={active_account?.is_disabled ? undefined : () => toggleDialog()}
                 >
-                    {is_mobile ? mobile_info_icon : desktop_info_icons}
-                    {balance_label}
-                    {dropdown_arrow}
+                    {is_mobile ? (
+                        <MobileInfoIcon currency={active_account?.currency} is_virtual={active_account?.is_virtual} />
+                    ) : (
+                        <DesktopInfoIcons wallet_account={linked_wallet} />
+                    )}
+                    <BalanceLabel
+                        balance={active_account?.balance}
+                        currency={active_account?.currency}
+                        is_virtual={active_account?.is_virtual}
+                        display_code={active_account?.currency_config?.display_code}
+                    />
+                    <DropdownArrow is_disabled={active_account?.is_disabled} />
                 </div>
             </AccountInfoWrapper>
             {is_mobile ? (

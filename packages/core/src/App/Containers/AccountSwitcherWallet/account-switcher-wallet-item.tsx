@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import { AppLinkedWithWalletIcon, Text, Badge } from '@deriv/components';
+import { AppLinkedWithWalletIcon, Text } from '@deriv/components';
 import { useActiveAccount, useWalletAccountsList } from '@deriv/hooks';
 import { formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { localize } from '@deriv/translations';
+import WalletBadge from 'App/Components/Layout/Header/wallets/wallet-badge';
 import './account-switcher-wallet-item.scss';
 
 type TAccountSwitcherWalletItemProps = {
@@ -45,21 +45,6 @@ export const AccountSwitcherWalletItem = observer(
             await switchAccount(dtrade_loginid);
         };
 
-        const account_switcher_content = (
-            <div className='acc-switcher-wallet-item__content'>
-                <Text size='xxs'>{currency_config?.name}</Text>
-                <Text size='xs' weight='bold'>
-                    {`${formatMoney(currency || '', dtrade_balance || 0, true)} ${currency_config?.display_code}`}
-                </Text>
-            </div>
-        );
-
-        const account_badge = is_virtual ? (
-            <Badge type='contained' background_color='blue' label={localize('Demo')} />
-        ) : (
-            <Badge type='bordered' label={landing_company_name?.toUpperCase() || ''} />
-        );
-
         return (
             <div
                 className={classNames('acc-switcher-wallet-item__container', {
@@ -77,8 +62,13 @@ export const AccountSwitcherWalletItem = observer(
                         hide_watermark
                     />
                 </div>
-                {account_switcher_content}
-                {account_badge}
+                <div className='acc-switcher-wallet-item__content'>
+                    <Text size='xxs'>{currency_config?.name}</Text>
+                    <Text size='xs' weight='bold'>
+                        {`${formatMoney(currency || '', dtrade_balance || 0, true)} ${currency_config?.display_code}`}
+                    </Text>
+                </div>
+                <WalletBadge is_demo={is_virtual} label={landing_company_name} />
             </div>
         );
     }

@@ -17,28 +17,12 @@ import { TradersHubHomeButton } from './trading-hub-header';
 
 const Divider = () => <div className='header__menu--dtrader--separator' />;
 
-const DTraderHeaderWallets = observer(() => {
-    const { client, common, ui, notifications, traders_hub } = useStore();
-    const { is_bot_allowed, is_logged_in, is_logging_in, is_mt5_allowed, is_dxtrade_allowed, is_switching } = client;
-    const { app_routing_history, platform, current_language } = common;
-    const { header_extension, is_app_disabled, is_route_modal_on, is_mobile } = ui;
-    const { addNotificationMessage, client_notifications, removeNotificationMessage } = notifications;
+const MenuLeft = observer(() => {
+    const { client, common, ui, traders_hub } = useStore();
+    const { is_bot_allowed, is_logged_in, is_mt5_allowed, is_dxtrade_allowed } = client;
+    const { app_routing_history, current_language } = common;
+    const { header_extension } = ui;
     const { setTogglePlatformType } = traders_hub;
-
-    const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
-    const removeUpdateNotification = React.useCallback(
-        () => removeNotificationMessage({ key: 'new_version_available' }),
-        [removeNotificationMessage]
-    );
-
-    const { is_in_progress } = useWalletMigration();
-    const active_account = useActiveAccount();
-    const currency = active_account?.currency ?? '';
-
-    React.useEffect(() => {
-        document.addEventListener('IgnorePWAUpdate', removeUpdateNotification);
-        return () => document.removeEventListener('IgnorePWAUpdate', removeUpdateNotification);
-    }, [removeUpdateNotification]);
 
     const filterPlatformsForClients = (payload: typeof platform_config) =>
         payload.filter(config => {
@@ -58,7 +42,7 @@ const DTraderHeaderWallets = observer(() => {
             return true;
         });
 
-    const menu_left = (
+    return (
         <div className='header__menu-left'>
             <DesktopWrapper>
                 <PlatformSwitcher
@@ -80,8 +64,18 @@ const DTraderHeaderWallets = observer(() => {
             <MenuLinks />
         </div>
     );
+});
 
-    const menu_right = (
+const MenuRight = observer(() => {
+    const { client, ui } = useStore();
+    const { is_logged_in, is_logging_in, is_switching } = client;
+    const { is_mobile } = ui;
+
+    const { is_in_progress } = useWalletMigration();
+    const active_account = useActiveAccount();
+    const currency = active_account?.currency ?? '';
+
+    return (
         <div
             className={classNames('header__menu-right', {
                 'header__menu-right--hidden': is_mobile && is_logging_in,
@@ -108,6 +102,24 @@ const DTraderHeaderWallets = observer(() => {
             </div>
         </div>
     );
+});
+
+const DTraderHeaderWallets = observer(() => {
+    const { common, ui, notifications } = useStore();
+    const { platform } = common;
+    const { is_app_disabled, is_route_modal_on } = ui;
+    const { addNotificationMessage, client_notifications, removeNotificationMessage } = notifications;
+
+    const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
+    const removeUpdateNotification = React.useCallback(
+        () => removeNotificationMessage({ key: 'new_version_available' }),
+        [removeNotificationMessage]
+    );
+
+    React.useEffect(() => {
+        document.addEventListener('IgnorePWAUpdate', removeUpdateNotification);
+        return () => document.removeEventListener('IgnorePWAUpdate', removeUpdateNotification);
+    }, [removeUpdateNotification]);
 
     return (
         <header
@@ -117,8 +129,8 @@ const DTraderHeaderWallets = observer(() => {
             })}
         >
             <div className='header__menu-items'>
-                {menu_left}
-                {menu_right}
+                <MenuLeft />
+                <MenuRight />
             </div>
             <RealAccountSignup />
             <SetAccountCurrencyModal />

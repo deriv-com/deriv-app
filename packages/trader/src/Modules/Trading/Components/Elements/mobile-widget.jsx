@@ -105,7 +105,7 @@ const MobileWidget = observer(({ toggleDigitsWidget, is_collapsed }) => {
                     </div>
                 </div>
             )}
-            <TradeParamsModal is_open={is_open} toggleModal={() => toggleWidget(0)} tab_index={tab_index} />
+            <TradeParamsModal is_open={is_open} toggleModal={() => toggleWidget(tab_index)} tab_index={tab_index} />
             {isVisible('last_digit') && is_collapsed && (
                 <div className='mobile-widget' onClick={toggleDigitsWidget}>
                     <div className='mobile-widget__amount'>

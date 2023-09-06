@@ -35,7 +35,6 @@ const TradeParamsModal = observer(({ is_open, toggleModal, tab_index }) => {
     const { currency } = client;
     const { enableApp, disableApp } = ui;
     const { amount, form_components, duration, duration_unit, duration_units_list } = useTraderStore();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const getDefaultDuration = React.useCallback(makeGetDefaultDuration(duration, duration_unit), []);
 

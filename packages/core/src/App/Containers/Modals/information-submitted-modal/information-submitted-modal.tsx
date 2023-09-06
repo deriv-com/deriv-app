@@ -6,7 +6,7 @@ import './information-submitted-modal.scss';
 
 const InformationSubmittedModal = observer(() => {
     const { ui } = useStore();
-    const { is_information_submitted_modal_open: is_open, toggleInformationSubmittedModal, disableApp, enableApp } = ui;
+    const { is_information_submitted_modal_open: is_open, toggleInformationSubmittedModal } = ui;
 
     return (
         <Dialog
@@ -14,9 +14,6 @@ const InformationSubmittedModal = observer(() => {
             title={localize('Information updated')}
             confirm_button_text={localize('Close')}
             onConfirm={toggleInformationSubmittedModal}
-            is_closed_on_cancel
-            disableApp={disableApp}
-            enableApp={enableApp}
             is_closed_on_confirm
             is_visible={is_open}
             dismissable={true}

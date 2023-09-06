@@ -17,7 +17,7 @@ jest.mock('@deriv/deriv-charts', () => ({
 describe('Tour Config Data', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
 
-    beforeAll(() => {
+    beforeEach(() => {
         const mock_store = mockStore({});
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
 
@@ -33,7 +33,7 @@ describe('Tour Config Data', () => {
         render(<OnboardingTour />, {
             wrapper,
         });
-        const firstStep = Object.values(DBOT_ONBOARDING_MOBILE)[0];
+        const firstStep = DBOT_ONBOARDING_MOBILE[0];
         expect(screen.getByText(firstStep.header)).toBeInTheDocument();
     });
 
@@ -41,7 +41,7 @@ describe('Tour Config Data', () => {
         render(<BotBuilderTour />, {
             wrapper,
         });
-        const firstStep = Object.values(BOT_BUILDER_MOBILE)[0];
+        const firstStep = BOT_BUILDER_MOBILE[0];
         expect(screen.getByText(firstStep.header)).toBeInTheDocument();
     });
 });

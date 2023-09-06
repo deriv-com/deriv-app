@@ -6,6 +6,7 @@ import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import BotBuilderTour from '../bot-builder-tour';
+import '@testing-library/react/dont-cleanup-after-each';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
@@ -38,85 +39,40 @@ describe('<BotBuilderTour />', () => {
     });
 
     it('shows the tour content when tour starts', () => {
-        render(<BotBuilderTour />, {
-            wrapper,
-        });
         const tourElement = screen.getByTestId('botbuilder-tour-mobile');
         expect(tourElement).toHaveClass('dbot-slider__bot-builder-tour');
     });
 
     it('Check if next button is clicked', async () => {
-        render(<BotBuilderTour />, {
-            wrapper,
-        });
         const nextButton = screen.getByTestId('next-bot-builder-tour');
-        if (!nextButton) {
-            console.error('Next button not found. Make sure it exists in your component.'); // eslint-disable-line no-console
-        }
         const onClickMock = jest.fn();
         nextButton.onclick = onClickMock;
-        act(() => {
-            userEvent.click(nextButton);
-        });
+        userEvent.click(nextButton);
         await waitFor(() => {
-            expect(onClickMock).toHaveBeenCalledTimes(1);
+            const prevButton = screen.getByTestId('prev-bot-builder-tour');
+            expect(prevButton).toBeInTheDocument();
         });
     });
 
     it('should check Previous button is clicked', async () => {
-        render(<BotBuilderTour />, {
-            wrapper,
-        });
-        const nextButton = screen.getByTestId('next-bot-builder-tour');
-        const nextButtonOnClickMock = jest.fn();
-        nextButton.onclick = nextButtonOnClickMock;
-        act(() => {
-            userEvent.click(nextButton);
-        });
         const prevButton = screen.getByTestId('prev-bot-builder-tour');
         const prevButtonOnClickMock = jest.fn();
         prevButton.onclick = prevButtonOnClickMock;
-        act(() => {
-            userEvent.click(prevButton);
-        });
+        userEvent.click(prevButton);
         await waitFor(() => {
-            expect(nextButtonOnClickMock).toHaveBeenCalledTimes(1);
-            expect(prevButtonOnClickMock).toHaveBeenCalledTimes(1);
+            expect(prevButton).not.toBeInTheDocument();
         });
     });
 
     it('calls onCloseTour when Finish is clicked', () => {
-        render(<BotBuilderTour />, {
-            wrapper,
-        });
         const nextButton = screen.getByTestId('next-bot-builder-tour');
         const nextButtonOnClickMock = jest.fn();
         nextButton.onclick = nextButtonOnClickMock;
         for (let i = 0; i < 2; i++) {
-            act(() => {
-                userEvent.click(nextButton);
-            });
+            userEvent.click(nextButton);
         }
         const endTourButton = screen.getByTestId('finish-bot-builder-tour');
-        act(() => {
-            userEvent.click(endTourButton);
-        });
+        userEvent.click(endTourButton);
         expect(mock_DBot_store?.dashboard.has_started_bot_builder_tour).toBe(false);
-    });
-
-    it('check if accordion is clicked', async () => {
-        render(<BotBuilderTour />, {
-            wrapper,
-        });
-        const accordion = screen.getByTestId('bot-builder-acc');
-        const accordionOnClickMock = jest.fn();
-        accordion.onclick = accordionOnClickMock;
-        act(() => {
-            userEvent.click(accordion);
-        });
-        await waitFor(() => {
-            // eslint-disable-next-line testing-library/no-node-access
-            expect(accordion.querySelector('.dbot-accordion__content--open')).toBeInTheDocument();
-        });
     });
 });

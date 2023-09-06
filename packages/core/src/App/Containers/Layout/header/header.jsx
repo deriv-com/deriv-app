@@ -7,7 +7,7 @@ import DefaultHeader from './default-header.jsx';
 import DashboardHeader from './dashboard-header.jsx';
 import TradingHubHeader from './trading-hub-header.jsx';
 import DTraderHeader from './dtrader-header.jsx';
-import DtraderHeaderWallets from './dtrader-header-wallets';
+import DTraderHeaderWallets from './dtrader-header-wallets';
 
 const Header = ({ is_logged_in }) => {
     const { is_appstore } = React.useContext(PlatformContext);
@@ -31,7 +31,7 @@ const Header = ({ is_logged_in }) => {
         } else if (pathname === routes.onboarding) {
             result = null;
         } else {
-            result = should_show_wallets ? <DtraderHeaderWallets /> : <DTraderHeader />;
+            result = should_show_wallets ? <DTraderHeaderWallets /> : <DTraderHeader />;
         }
         return result;
     } else if (pathname === routes.onboarding) {

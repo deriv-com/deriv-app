@@ -1,6 +1,6 @@
 import React from 'react';
-import { connect } from 'Stores/connect';
 import { useLocation } from 'react-router-dom';
+import { connect } from 'Stores/connect';
 import { PlatformContext, routes } from '@deriv/shared';
 import { useFeatureFlags, useWalletAccountsList } from '@deriv/hooks';
 import DefaultHeader from './default-header.jsx';

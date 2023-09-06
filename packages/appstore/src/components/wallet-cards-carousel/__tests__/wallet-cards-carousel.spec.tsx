@@ -94,7 +94,6 @@ jest.mock('@deriv/api', () => ({
                             LTC: {
                                 minimum_withdrawal: 0.06032091,
                             },
-                            USD: {},
                             USDC: {
                                 minimum_withdrawal: 50,
                             },

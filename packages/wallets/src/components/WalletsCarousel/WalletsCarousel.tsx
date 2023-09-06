@@ -42,7 +42,7 @@ const WalletsCarousel = () => {
                     />
                 </div>
                 <div className='wallets-carousel__actions'>
-                    <WalletListCardIActions account={wallet_accounts_list} is_desktop_wallet={false} />
+                    <WalletListCardIActions is_desktop_wallet={false} />
                 </div>
             </div>
             <AccountsList data={wallet_accounts_list?.[active_index]} />

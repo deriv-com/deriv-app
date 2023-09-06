@@ -1,5 +1,5 @@
 import React from 'react';
-import { useWalletAccountsList } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api';
 import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
@@ -40,12 +40,12 @@ const getWalletHeaderButtons = (is_demo: boolean, handleAction?: () => void) => 
 };
 
 type TProps = {
-    account: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
     is_desktop_wallet?: boolean;
 };
 
-const WalletListCardIActions: React.FC<TProps> = ({ account, is_desktop_wallet = 'true' }) => {
-    const is_demo = account.is_virtual;
+const WalletListCardIActions: React.FC<TProps> = ({ is_desktop_wallet = 'true' }) => {
+    const { data: active_wallet } = useActiveWalletAccount();
+    const is_demo = !!active_wallet?.is_virtual;
 
     if (!is_desktop_wallet)
         return (

@@ -153,14 +153,3 @@
         }
     }
 }
-
-.trade-container__fieldset {
-    @include mobile {
-        .dc-tooltip[data-tooltip] {
-            &:before,
-            &:after {
-                display: none;
-            }
-        }
-    }
-}

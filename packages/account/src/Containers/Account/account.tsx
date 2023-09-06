@@ -43,7 +43,7 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
         if (menu_item?.subroutes?.length) {
             menu_item.subroutes.forEach(route => {
                 if (route.path === shared_routes.financial_assessment) {
-                    route.is_disabled = is_virtual || landing_company_shortcode === 'maltainvest';
+                    route.is_disabled = is_virtual;
                 }
 
                 if (route.path === shared_routes.trading_assessment) {

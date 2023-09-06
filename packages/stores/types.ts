@@ -591,7 +591,7 @@ type TBalance = {
 
 type TModalData = {
     active_modal: string;
-    data: Record<string, never>;
+    data: Record<string, unknown>;
 };
 
 type TTradersHubStore = {

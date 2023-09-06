@@ -10,9 +10,14 @@ jest.mock('@deriv/components', () => {
         Popover: () => <div>mockedPopover</div>,
     };
 });
-jest.mock('App/Components/Routes', () => jest.fn(() => 'MockedBinaryLink'));
-jest.mock('../show-notifications', () => jest.fn(() => 'MockedShowNotifications'));
-jest.mock('../traders-hub-onboarding', () => jest.fn(() => 'MockedTradersHubOnboarding'));
+// eslint-disable-next-line react/display-name
+jest.mock('App/Components/Routes', () => () => <div data-testid='dt_binary_link'>MockedBinaryLink</div>);
+// eslint-disable-next-line react/display-name
+jest.mock('../show-notifications', () => () => <div data-testid='dt_show_notifications'>MockedShowNotifications</div>);
+// eslint-disable-next-line react/display-name
+jest.mock('../traders-hub-onboarding', () => () => (
+    <div data-testid='dt_traders_hub_onboarding'>MockedTradersHubOnboarding</div>
+));
 
 describe('DefaultMobileLinks', () => {
     const mock_props: React.ComponentProps<typeof DefaultMobileLinks> = {
@@ -21,6 +26,7 @@ describe('DefaultMobileLinks', () => {
 
     it('should render and display the "DefaultMobileLinks" component on screen', () => {
         render(<DefaultMobileLinks {...mock_props} />);
+        expect(screen.getByTestId('dt_traders_hub_onboarding')).toBeInTheDocument();
         expect(screen.getByText('MockedTradersHubOnboarding')).toBeInTheDocument();
     });
 

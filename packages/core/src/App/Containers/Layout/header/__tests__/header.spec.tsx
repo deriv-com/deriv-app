@@ -8,9 +8,12 @@ jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useLocation: jest.fn().mockReturnValue({ pathname: '' }),
 }));
-jest.mock('../default-header.jsx', () => jest.fn(() => 'MockedDefaultHeader'));
-jest.mock('../dtrader-header.jsx', () => jest.fn(() => 'MockedDTraderHeader'));
-jest.mock('../traders-hub-header', () => jest.fn(() => 'MockedTradersHubHeader'));
+// eslint-disable-next-line react/display-name
+jest.mock('../default-header.jsx', () => () => <div data-testid='dt_default_header'>MockedDefaultHeader</div>);
+// eslint-disable-next-line react/display-name
+jest.mock('../dtrader-header.jsx', () => () => <div data-testid='dt_dtrader_header'>MockedDTraderHeader</div>);
+// eslint-disable-next-line react/display-name
+jest.mock('../traders-hub-header', () => () => <div data-testid='dt_traders_hub_header'>MockedTradersHubHeader</div>);
 
 describe('Header', () => {
     const store = mockStore({
@@ -28,6 +31,7 @@ describe('Header', () => {
             pathname: '/appstore/traders-hub',
         });
         renderComponent();
+        expect(screen.getByTestId('dt_traders_hub_header')).toBeInTheDocument();
         expect(screen.getByText('MockedTradersHubHeader')).toBeInTheDocument();
     });
 
@@ -36,11 +40,13 @@ describe('Header', () => {
             pathname: '/',
         });
         renderComponent();
+        expect(screen.getByTestId('dt_dtrader_header')).toBeInTheDocument();
         expect(screen.getByText('MockedDTraderHeader')).toBeInTheDocument();
     });
 
     it('should render the "DefaultHeader" component if user is not logged in', () => {
         renderComponent(mockStore({ client: { is_logged_in: false } }));
+        expect(screen.getByTestId('dt_default_header')).toBeInTheDocument();
         expect(screen.getByText('MockedDefaultHeader')).toBeInTheDocument();
     });
 });

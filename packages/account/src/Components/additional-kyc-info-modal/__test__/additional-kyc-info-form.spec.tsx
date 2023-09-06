@@ -8,6 +8,12 @@ jest.mock('../../../../../api/src/hooks', () => ({
     useSettings: () => ({
         update: jest.fn(),
         mutation: { isLoading: false, isSuccess: false, error: null, isError: false },
+        data: {
+            tax_identification_number: '',
+            tax_residence: '',
+            place_of_birth: '',
+            account_opening_reason: '',
+        },
     }),
 }));
 

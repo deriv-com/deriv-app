@@ -51,6 +51,7 @@ export type TDataList = {
     rowRenderer: TRowRenderer;
     children?: React.ReactNode;
     overscanRowCount?: number;
+    retain_scroll_position?: boolean;
 };
 type GetContentType = { measure?: () => void | undefined };
 
@@ -70,6 +71,7 @@ const DataList = React.memo(
         scrollToIndex = -1,
         setListRef,
         overscanRowCount,
+        retain_scroll_position = false,
         ...other_props
     }: TDataList) => {
         const [is_loading, setLoading] = React.useState(true);
@@ -119,9 +121,7 @@ const DataList = React.memo(
 
         const rowRenderer = ({ style, index, key, parent }: ListRowProps) => {
             const { getRowAction, passthrough, row_gap } = other_props;
-            const data = { index, ...data_source[index] };
-            const row = data;
-            // const row = {...data_source[index], index}
+            const row = { ...data_source[index], index };
             const action = getRowAction && getRowAction(row);
             const destination_link = typeof action === 'string' ? action : undefined;
             const action_desc = typeof action === 'object' ? action : undefined;
@@ -212,9 +212,8 @@ const DataList = React.memo(
                                             rowRenderer={rowRenderer}
                                             scrollingResetTimeInterval={0}
                                             scrollToIndex={scrollToIndex}
-                                            scrollToAlignment='start'
                                             width={width}
-                                            {...(isDesktop()
+                                            {...(isDesktop() && !retain_scroll_position
                                                 ? { scrollTop: scroll_top, autoHeight: true }
                                                 : {
                                                       onScroll: target =>

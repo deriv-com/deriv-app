@@ -326,12 +326,13 @@ export default class BuySellStore extends BaseStore {
         const { general_store } = this.root_store;
         const counterparty_type = this.is_buy ? buy_sell.BUY : buy_sell.SELL;
         this.setApiErrorMessage('');
+        const limit = isMobile() && this.scroll_index !== -1 ? this.scroll_index : general_store.list_item_limit;
         return new Promise(resolve => {
             requestWS({
                 p2p_advert_list: 1,
                 counterparty_type,
                 offset: startIndex,
-                limit: general_store.list_item_limit,
+                limit,
                 sort_by: this.sort_by,
                 use_client_limits: this.should_use_client_limits ? 1 : 0,
                 ...(this.selected_payment_method_value.length > 0
@@ -346,7 +347,7 @@ export default class BuySellStore extends BaseStore {
                         if (response.echo_req.counterparty_type === counterparty_type) {
                             const { list } = response.p2p_advert_list;
 
-                            this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
+                            this.setHasMoreItemsToLoad(list.length >= limit);
 
                             const old_items = [...this.items];
                             const new_items = [];

@@ -78,7 +78,7 @@ const BuySellRow = ({ row: advert }) => {
 
     if (isMobile()) {
         return (
-            <div className='buy-sell-row'>
+            <div className='buy-sell-row' id={`${index}-item`}>
                 <div className='buy-sell-row__advertiser' onClick={() => onClickRow()}>
                     <OnlineStatusAvatar
                         is_online={advertiser_details.is_online}

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { InfiniteDataList, Loading, Modal, RadioGroup, Table, Text } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop, routes } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
@@ -32,11 +32,19 @@ const BuySellTable = ({ onScroll }) => {
 
     const {
         client: { currency },
+        common: { app_routing_history },
     } = useStore();
+
+    const routing_history_index = app_routing_history.length > 1 ? 1 : 0;
+    const history_item = app_routing_history[routing_history_index];
+    const is_from_advertiser_page = history_item?.pathname === routes.p2p_advertiser_page;
 
     React.useEffect(
         () => {
-            setScrollToIndex(scroll_index);
+            if (is_from_advertiser_page) {
+                setScrollToIndex(scroll_index);
+                scrollFunction();
+            }
             my_profile_store.getPaymentMethodsList();
             reaction(
                 () => buy_sell_store.is_buy,
@@ -47,6 +55,15 @@ const BuySellTable = ({ onScroll }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     );
+
+    const scrollFunction = () => {
+        if (scrollToIndex !== -1) {
+            setTimeout(() => {
+                const element = document.getElementById(`${scroll_index}-item`);
+                element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 250);
+        }
+    };
 
     const clearScroll = () => {
         setScrollToIndex(-1);
@@ -126,6 +143,7 @@ const BuySellTable = ({ onScroll }) => {
                             has_more_items_to_load={buy_sell_store.has_more_items_to_load}
                             keyMapperFn={item => item.id}
                             onScroll={onScroll}
+                            retain_scroll_position
                         />
                     </Table.Body>
                 </Table>

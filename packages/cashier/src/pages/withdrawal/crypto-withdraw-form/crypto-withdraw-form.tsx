@@ -42,7 +42,7 @@ const Header = ({ currency }: THeaderProps) => {
 };
 
 const CryptoWithdrawForm = observer(({ is_wallet }: { is_wallet?: boolean }) => {
-    const { client, ui } = useStore();
+    const { client } = useStore();
     const {
         balance,
         currency,

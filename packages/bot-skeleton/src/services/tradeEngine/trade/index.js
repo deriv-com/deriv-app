@@ -3,7 +3,6 @@ import thunk from 'redux-thunk';
 import { localize } from '@deriv/translations';
 import Balance from './Balance';
 import OpenContract from './OpenContract';
-import Proposal from './Proposal';
 import Purchase from './Purchase';
 import Sell from './Sell';
 import { start } from './state/actions';
@@ -62,7 +61,7 @@ const watchScope = ({ store, stopScope, passScope, passFlag }) => {
     });
 };
 
-export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Proposal(Ticks(Total(class { }))))))) {
+export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Ticks(Total(class {})))))) {
     constructor($scope) {
         super();
         this.observer = $scope.observer;
@@ -70,7 +69,6 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         this.observe();
         this.data = {
             contract: {},
-            proposals: [],
         };
         this.data_trade_options = {};
         this.store = createStore(rootReducer, applyMiddleware(thunk));
@@ -98,8 +96,6 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         this.store.dispatch(start());
         this.checkLimits(tradeOptions);
         this.data_trade_options = { ...this.options, ...tradeOptions };
-        // this.makeProposals({ ...this.options, ...tradeOptions });
-        // this.checkProposalReady();
     }
 
     loginAndGetBalance(token) {
@@ -136,7 +132,6 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
     observe() {
         this.observeOpenContract();
         this.observeBalance();
-        this.observeProposals();
     }
 
     watch(watchName) {

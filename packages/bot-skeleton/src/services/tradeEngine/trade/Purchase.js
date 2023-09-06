@@ -16,12 +16,8 @@ export default Engine =>
                 return Promise.resolve();
             }
 
-            // const { id, askPrice } = this.selectProposal(contract_type);
-            const askPrice = 100;
-
             const onSuccess = response => {
                 // Don't unnecessarily send a forget request for a purchased contract.
-                this.data.proposals = this.data.proposals.filter(p => p.id !== response.echo_req.buy);
                 const { buy } = response;
 
                 contractStatus({
@@ -32,7 +28,6 @@ export default Engine =>
 
                 this.contractId = buy.contract_id;
                 this.store.dispatch(purchaseSuccessful());
-                // this.renewProposalsOnPurchase();
                 delayIndex = 0;
                 log(log_types.PURCHASE, { longcode: buy.longcode, transaction_id: buy.transaction_id });
                 info({
@@ -50,7 +45,7 @@ export default Engine =>
             this.isSold = false;
             contractStatus({
                 id: 'contract.purchase_sent',
-                data: askPrice,
+                data: this.data_trade_options.amount,
             });
 
             if (!this.options.timeMachineEnabled) {
@@ -59,16 +54,9 @@ export default Engine =>
             return recoverFromError(
                 action,
                 (errorCode, makeDelay) => {
-                    // if disconnected no need to resubscription (handled by live-api)
-                    if (errorCode !== 'DisconnectError') {
-                        // this.renewProposalsOnPurchase();
-                    } else {
-                        this.clearProposals();
-                    }
-
                     const unsubscribe = this.store.subscribe(() => {
-                        const { scope, proposalsReady } = this.store.getState();
-                        if (scope === BEFORE_PURCHASE && proposalsReady) {
+                        const { scope } = this.store.getState();
+                        if (scope === BEFORE_PURCHASE) {
                             makeDelay().then(() => this.observer.emit('REVERT', 'before'));
                             unsubscribe();
                         }

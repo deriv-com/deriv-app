@@ -2,7 +2,7 @@ import * as constants from '../constants';
 
 const initialState = {
     scope: constants.STOP,
-    proposalsReady: true,//temporary
+    proposalsReady: true, //temporary
 };
 
 const signal = (state = initialState, action) => {
@@ -11,16 +11,6 @@ const signal = (state = initialState, action) => {
             return {
                 scope: constants.BEFORE_PURCHASE,
                 proposalsReady: state.proposalsReady,
-            };
-        case constants.PROPOSALS_READY:
-            return {
-                ...state,
-                proposalsReady: true,
-            };
-        case constants.CLEAR_PROPOSALS:
-            return {
-                ...state,
-                proposalsReady: false,
             };
         case constants.PURCHASE_SUCCESSFUL:
             return {

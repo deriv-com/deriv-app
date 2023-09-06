@@ -229,6 +229,107 @@ import type {
 import type { useMutation, useQuery } from '@tanstack/react-query';
 
 type TPrivateSocketEndpoints = {
+    trading_platform_available_accounts: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            trading_platform_available_accounts: 1;
+            /**
+             * Name of trading platform.
+             */
+            platform: 'mt5' | 'ctrader';
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            /**
+             * Available Trading Accounts
+             */
+            trading_platform_available_accounts?:
+                | {
+                      /**
+                       * A list of Deriv landing companies that can work with this account type
+                       */
+                      linkable_landing_companies?: ('svg' | 'maltainvest')[];
+                      /**
+                       * The type of market tradable by this account
+                       */
+                      market_type?: 'financial' | 'gaming' | 'all';
+                      /**
+                       * Landing Company legal name
+                       */
+                      name?: string;
+                      /**
+                       * Legal requirements for the Landing Company
+                       */
+                      requirements?: {
+                          /**
+                           * After first deposit requirements
+                           */
+                          after_first_deposit?: {
+                              /**
+                               * Financial assessment requirements
+                               */
+                              financial_assessment?: string[];
+                          };
+                          /**
+                           * Compliance requirements
+                           */
+                          compliance?: {
+                              /**
+                               * Compliance MT5 requirements
+                               */
+                              mt5?: string[];
+                              /**
+                               * Compliance tax information requirements
+                               */
+                              tax_information?: string[];
+                          };
+                          /**
+                           * Sign up requirements
+                           */
+                          signup?: string[];
+                          /**
+                           * Withdrawal requirements
+                           */
+                          withdrawal?: string[];
+                      };
+                      /**
+                       * Landing Company short code
+                       */
+                      shortcode?: string;
+                      /**
+                       * Sub account type
+                       */
+                      sub_account_type?: 'standard' | 'swap_free' | 'stp';
+                  }[]
+                | null;
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**z
+             * Action name of the request made.
+             */
+            msg_type: 'trading_platform_available_accounts';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
     trading_platform_accounts: {
         request: {
             /**
@@ -552,6 +653,132 @@ type TPrivateSocketEndpoints = {
              * Action name of the request made.
              */
             msg_type: 'cashier_payments';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
+    get_account_types: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            get_account_types: 1;
+            /**
+             * [Optional] Set to landing company to get relevant account types. If not set, this defaults to current account landing company
+             */
+            company?: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            get_account_types?: {
+                /**
+                 * Trading account types that are available to create or link to
+                 */
+                trading: {
+                    /**
+                     * Details for trading account types
+                     *
+                     * This interface was referenced by `undefined`'s JSON-Schema definition
+                     * via the `patternProperty` "^(binary|dxtrade|mt5|standard|derivez)$".
+                     */
+                    [k: string]: {
+                        /**
+                         * Wallet currencies allowed for this trading account
+                         */
+                        allowed_wallet_currencies: string[];
+                        /**
+                         * Can this trading account linked to another currency after opening
+                         */
+                        linkable_to_different_currency: 0 | 1;
+                        /**
+                         * Wallet types that this trading account can be linked to.
+                         */
+                        linkable_wallet_types: string[];
+                    };
+                };
+                /**
+                 * Wallet accounts types that are available to create or link to
+                 */
+                wallet: {
+                    /**
+                     * Details for wallets account types
+                     *
+                     * This interface was referenced by `undefined`'s JSON-Schema definition
+                     * via the `patternProperty` "^(affiliate|crypto|doughflow|p2p|paymentagent|paymentagent_client|virtual)$".
+                     */
+                    [k: string]: {
+                        /**
+                         * Allowed currencies for creating accounts of this type; used or disallowed currencies are not listed.
+                         */
+                        currencies: string[];
+                    };
+                };
+            };
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'get_account_types';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
+    account_closure: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            account_closure: 1;
+            /**
+             * Reason for closing off accounts.
+             */
+            reason: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            /**
+             * If set to `1`, all accounts are closed.
+             */
+            account_closure?: 0 | 1;
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'account_closure';
             /**
              * Optional field sent in request to map to response, present only when request contains `req_id`.
              */

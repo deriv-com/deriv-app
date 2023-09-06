@@ -1,10 +1,11 @@
 import React from 'react';
-import Routes from './Containers/routes';
-import ResetTradingPassword from './Containers/reset-trading-password';
+import { APIProvider } from '@deriv/api';
 import { setWebsocket } from '@deriv/shared';
 import { StoreProvider } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 import { APIProvider } from '@deriv/api';
+import Routes from './Containers/routes';
+import ResetTradingPassword from './Containers/reset-trading-password';
 
 // TODO: add correct types for WS after implementing them
 type TAppProps = {

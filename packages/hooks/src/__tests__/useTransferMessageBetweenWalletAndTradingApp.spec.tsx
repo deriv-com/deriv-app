@@ -45,60 +45,41 @@ const mock_get_limits_response = {
     },
 };
 
-jest.mock('../useExchangeRate', () => ({
-    ...jest.requireActual('../useExchangeRate'),
-    __esModule: true,
-    useExchangeRate: jest.fn(),
-}));
-
-const mockUseExchangeRate = useExchangeRate as jest.MockedFunction<typeof useExchangeRate>;
-
-const wrapper = ({ children }: { children: JSX.Element }) => (
-    <StoreProvider store={mockStore({})}>{children}</StoreProvider>
+jest.mock('../useExchangeRate', () =>
+    jest.fn(() => ({
+        getRate: () => 0.1,
+        last_update: 123,
+        base_currency: 'USD',
+    }))
 );
 
 describe('useTransferMessageBetweenWalletAndTradingApp', () => {
     it('should check whether the hook returns the correct data for transfer between fiat wallet and its linked trading account', () => {
-        const { result } = renderHook(
-            () =>
-                useTransferMessageBetweenWalletAndTradingApp(
-                    mock_from_account,
-                    mock_to_account,
-                    mock_get_limits_response
-                ),
-            { wrapper }
+        const { result } = renderHook(() =>
+            useTransferMessageBetweenWalletAndTradingApp(mock_from_account, mock_to_account, mock_get_limits_response)
         );
         expect(result.current[0].code).toBe('WalletToTradingAppDailyLimit');
     });
 
     it('should check whether the it returns the correct message data for transfer between demo wallet and its linked trading account', () => {
-        const { result } = renderHook(
-            () =>
-                useTransferMessageBetweenWalletAndTradingApp(
-                    { ...mock_from_account, demo_account: 1, is_demo: true, type: 'demo' } as typeof mock_from_account,
-                    { ...mock_to_account, demo_account: 1, is_demo: true, type: 'demo' } as typeof mock_to_account,
-                    mock_get_limits_response
-                ),
-            { wrapper }
+        const { result } = renderHook(() =>
+            useTransferMessageBetweenWalletAndTradingApp(
+                { ...mock_from_account, demo_account: 1, is_demo: true, type: 'demo' } as typeof mock_from_account,
+                { ...mock_to_account, demo_account: 1, is_demo: true, type: 'demo' } as typeof mock_to_account,
+                mock_get_limits_response
+            )
         );
         expect(result.current[0].code).toBe('DemoWalletToTradingAppDailyLimit');
         expect(result.current[0].limit).toBe(Number(mock_get_limits_response.daily_transfers.virtual.available));
     });
 
     it('should check whether the hook returns the correct data for transfer between crypto wallet and its linked trading account', () => {
-        mockUseExchangeRate.mockReturnValue(() => ({
-            getRate: () => 0.1,
-            last_update: 123,
-            base_currency: 'USD',
-        }));
-        const { result } = renderHook(
-            () =>
-                useTransferMessageBetweenWalletAndTradingApp(
-                    { ...mock_from_account, currency: 'BTC', display_currency_code: 'BTC' } as typeof mock_from_account,
-                    { ...mock_to_account, currency: 'BTC', display_currency_code: 'BTC' } as typeof mock_to_account,
-                    mock_get_limits_response
-                ),
-            { wrapper }
+        const { result } = renderHook(() =>
+            useTransferMessageBetweenWalletAndTradingApp(
+                { ...mock_from_account, currency: 'BTC', display_currency_code: 'BTC' } as typeof mock_from_account,
+                { ...mock_to_account, currency: 'BTC', display_currency_code: 'BTC' } as typeof mock_to_account,
+                mock_get_limits_response
+            )
         );
         expect(result.current[0].code).toBe('WalletToTradingAppDailyLimit');
         expect(result.current[0].limit).toBe(900);

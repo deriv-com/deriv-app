@@ -22,10 +22,8 @@ const mock_to_account = {
     shortcode: 'svg',
 } as ReturnType<typeof useWalletTransfer>['to_account'];
 
-jest.mock('../useTransferMessageBetweenWalletAndTradingApp', () => ({
-    ...jest.requireActual('../useTransferMessageBetweenWalletAndTradingApp'),
-    __esModule: true,
-    useTransferMessageBetweenWalletAndTradingApp: jest.fn(() => [
+jest.mock('../useTransferMessageBetweenWalletAndTradingApp', () =>
+    jest.fn(() => [
         {
             code: 'WalletToTradingAppDailyLimit',
             is_first_transfer: false,
@@ -33,16 +31,12 @@ jest.mock('../useTransferMessageBetweenWalletAndTradingApp', () => ({
             currency: 'USD',
             type: 'success',
         },
-    ]),
-}));
-
-const wrapper = ({ children }: { children: JSX.Element }) => {
-    return <StoreProvider store={mockStore({})}>{children}</StoreProvider>;
-};
+    ])
+);
 
 describe('useTransferMessageList', () => {
     it('should get return the generated message list', () => {
-        const { result } = renderHook(() => useTransferMessageList(mock_from_account, mock_to_account), { wrapper });
+        const { result } = renderHook(() => useTransferMessageList(mock_from_account, mock_to_account));
 
         expect(result.current.data).toStrictEqual([
             {

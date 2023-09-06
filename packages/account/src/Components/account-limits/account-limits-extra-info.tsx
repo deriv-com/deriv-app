@@ -3,7 +3,7 @@ import { Popover, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 
 type TAccountLimitsExtraInfo = {
-    message: string | JSX.Element;
+    message: string;
     className?: string;
 };
 

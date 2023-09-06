@@ -14,6 +14,7 @@ const BotBuilderTour = observer(() => {
     const { onTourEnd, has_started_bot_builder_tour, setTourActiveStep } = dashboard;
     const [tour_step, setTourStep] = React.useState<number>(1);
     const content_data = BOT_BUILDER_MOBILE.find(({ tour_step_key }) => tour_step_key === tour_step);
+    const test_id = tour_step === 3 ? 'finish-bot-builder-tour' : 'next-bot-builder-tour';
 
     React.useEffect(() => {
         setTourActiveStep(tour_step);
@@ -55,7 +56,7 @@ const BotBuilderTour = observer(() => {
                             onTourEnd(tour_step, false);
                         }}
                         label={tour_button_text}
-                        data-testid={tour_step === 3 ? 'finish-bot-builder-tour' : 'next-bot-builder-tour'}
+                        data-testid={test_id}
                     />
                 </div>
             </div>

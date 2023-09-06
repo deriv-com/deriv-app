@@ -1,5 +1,6 @@
 import React from 'react';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
 import { useDBotStore } from 'Stores/useDBotStore';
 import Toolbar from '..';
@@ -33,10 +34,14 @@ jest.mock('Stores/useDBotStore', () => ({
     useDBotStore: jest.fn(() => mockDbotStore),
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => false),
-    isDesktop: jest.fn(() => true),
+jest.mock('@deriv/stores', () => ({
+    ...jest.requireActual('@deriv/stores'),
+    observer: jest.fn(x => x),
+    useStore: jest.fn(() => ({
+        ui: {
+            is_mobile: false,
+        },
+    })),
 }));
 
 describe('Toolbar component', () => {
@@ -61,8 +66,11 @@ describe('Toolbar component', () => {
     });
 
     it('Toolbar should renders a button, when it is mobile version', async () => {
-        (isDesktop as jest.Mock).mockReturnValue(false);
-        (isMobile as jest.Mock).mockReturnValue(true);
+        (useStore as jest.Mock).mockReturnValue({
+            ui: {
+                is_mobile: true,
+            },
+        });
         render(<Toolbar />);
         expect(await screen.findByRole('button')).toBeInTheDocument();
     });

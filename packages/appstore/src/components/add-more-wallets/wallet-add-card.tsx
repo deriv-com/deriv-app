@@ -15,7 +15,7 @@ const AddWalletCard = observer(({ wallet_info }: TAddWalletCard) => {
         ui: { is_dark_mode_on, is_mobile },
     } = useStore();
 
-    const { currency, landing_company_name, is_added, gradient_card_class } = wallet_info;
+    const { currency = '', landing_company_name, is_added, gradient_card_class } = wallet_info;
     const { getConfig } = useCurrencyConfig();
     const currency_config = getConfig(currency);
     const { mutate: createWallet } = useCreateWallet();

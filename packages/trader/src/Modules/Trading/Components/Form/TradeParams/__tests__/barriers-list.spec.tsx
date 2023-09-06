@@ -10,6 +10,16 @@ const mockClickCallback = jest.fn();
 const mockHoverCallback = jest.fn();
 const mockClickCrossCallback = jest.fn();
 
+jest.mock('@deriv/stores', () => ({
+    ...jest.requireActual('@deriv/stores'),
+    observer: jest.fn(x => x),
+    useStore: jest.fn(() => ({
+        ui: {
+            is_mobile: false,
+        },
+    })),
+}));
+
 describe('<BarriersList/>', () => {
     beforeEach(() => {
         render(

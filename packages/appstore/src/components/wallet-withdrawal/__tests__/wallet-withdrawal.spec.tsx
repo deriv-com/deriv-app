@@ -118,7 +118,14 @@ describe('WalletWithdrawal', () => {
                 },
             },
             modules: {
-                cashier: { transaction_history: { onMount: jest.fn() }, iframe: { iframe_url: '' } },
+                cashier: {
+                    transaction_history: {
+                        onMount: jest.fn(),
+                        is_crypto_transactions_visible: false,
+                    },
+                    iframe: { iframe_url: '' },
+                    withdraw: { is_withdraw_confirmed: false },
+                },
             },
         });
 
@@ -145,7 +152,13 @@ describe('WalletWithdrawal', () => {
                 },
             },
             modules: {
-                cashier: { iframe: { iframe_url: 'url://iframe' } },
+                cashier: {
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                    },
+                    iframe: { iframe_url: 'url://iframe' },
+                    withdraw: { is_withdraw_confirmed: false },
+                },
             },
         });
 

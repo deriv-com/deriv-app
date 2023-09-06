@@ -12,6 +12,24 @@ type TStateChangeOption = {
     time_interval_name?: string;
 };
 
+export const ACTION = {
+    ADD_ACTIVE: 'add_active',
+    ADD_TO_FAVORITES: 'add_to_favorites',
+    CHOOSE_CHART_TYPE: 'choose_chart_type',
+    CHOOSE_MARKET_TYPE: 'choose_market_type',
+    CHOOSE_TIME_INTERVAL: 'choose_time_interval',
+    CLEAN_ALL_ACTIVE: 'clean_all_active',
+    CLOSE: 'close',
+    DELETE_ACTIVE: 'delete_active',
+    DELETE_FROM_FAVORITES: 'delete_from_favorites',
+    EDIT_ACTIVE: 'edit_active',
+    INFO_OPEN: 'info_open',
+    INFO_CLOSE: 'info_close',
+    INFO_REDIRECT: 'info_redirect',
+    OPEN: 'open',
+    SEARCH: 'search',
+} as const;
+
 export const STATE_TYPES = {
     CHART_INTERVAL_CHANGE: 'CHART_INTERVAL_CHANGE',
     CHART_MODE_TOGGLE: 'CHART_MODE_TOGGLE',
@@ -34,25 +52,30 @@ export const STATE_TYPES = {
     SYMBOL_CHANGE: 'SYMBOL_CHANGE',
 } as const;
 
+export const SUBFORM_NAME = {
+    INDICATORS_INFO: 'indicators_info',
+    INDICATORS_TYPE: 'indicators_type',
+} as const;
+
 export const getChartAnalyticsData = (state: keyof typeof STATE_TYPES, option: TStateChangeOption) => {
     const {
-        indicator_type_name,
-        indicators_category_name,
+        indicator_type_name = '',
+        indicators_category_name = '',
         is_favorite,
         is_info_open,
         is_open,
-        chart_type_name,
+        chart_type_name = '',
         search_string,
-        symbol: market_type_name,
-        symbol_category: tab_market_name,
+        symbol: market_type_name = '',
+        symbol_category: tab_market_name = '',
         time_interval_name,
     } = option;
-    const open_close_action = is_open ? 'open' : 'close';
+    const open_close_action = is_open ? ACTION.OPEN : ACTION.CLOSE;
     const chart_event_type = 'ce_chart_types_form';
     const market_event_type = 'ce_market_types_form';
     const indicators_event_type = 'ce_indicators_types_form';
 
-    if (chart_type_name && time_interval_name) {
+    if (chart_type_name) {
         const payload = {
             data: {
                 action: '',
@@ -65,14 +88,14 @@ export const getChartAnalyticsData = (state: keyof typeof STATE_TYPES, option: T
             payload.data.action = open_close_action;
             return payload;
         } else if (state === STATE_TYPES.CHART_TYPE_CHANGE) {
-            payload.data.action = 'choose_chart_type';
+            payload.data.action = ACTION.CHOOSE_CHART_TYPE;
             return payload;
         } else if (state === STATE_TYPES.CHART_INTERVAL_CHANGE) {
-            payload.data.action = 'choose_time_interval';
+            payload.data.action = ACTION.CHOOSE_TIME_INTERVAL;
             return payload;
         }
     }
-    if (indicator_type_name && indicators_category_name) {
+    if (indicator_type_name) {
         const payload = {
             data: {
                 action: '',
@@ -82,49 +105,49 @@ export const getChartAnalyticsData = (state: keyof typeof STATE_TYPES, option: T
             event_type: indicators_event_type,
         };
         if (state === STATE_TYPES.INDICATOR_DELETED) {
-            payload.data.action = 'delete_active';
+            payload.data.action = ACTION.DELETE_ACTIVE;
             return payload;
         } else if (state === STATE_TYPES.INDICATOR_SETTINGS_OPEN) {
-            payload.data.action = 'edit_active';
+            payload.data.action = ACTION.EDIT_ACTIVE;
             return payload;
         } else if (state === STATE_TYPES.INDICATOR_INFO_TOGGLE) {
-            payload.data.action = is_info_open ? 'info_open' : 'info_close';
+            payload.data.action = is_info_open ? ACTION.INFO_OPEN : ACTION.INFO_CLOSE;
             return payload;
         }
     }
-    if (state === STATE_TYPES.INDICATORS_MODAL_TOGGLE && 'is_open' in option) {
+    if (state === STATE_TYPES.INDICATORS_MODAL_TOGGLE) {
         return {
             data: { action: open_close_action },
             event_type: indicators_event_type,
         };
     }
-    if (state === STATE_TYPES.INDICATOR_ADDED && indicator_type_name) {
+    if (state === STATE_TYPES.INDICATOR_ADDED) {
         return {
             data: {
-                action: 'add_active',
+                action: ACTION.ADD_ACTIVE,
                 indicator_type_name,
                 indicators_category_name,
-                subform_name: is_info_open ? 'indicators_info' : 'indicators_type',
+                subform_name: is_info_open ? SUBFORM_NAME.INDICATORS_INFO : SUBFORM_NAME.INDICATORS_TYPE,
             },
             event_type: indicators_event_type,
         };
     }
     if (state === STATE_TYPES.INDICATORS_CLEAR_ALL) {
         return {
-            data: { action: 'clean_all_active' },
+            data: { action: ACTION.CLEAN_ALL_ACTIVE },
             event_type: indicators_event_type,
         };
     }
     if (option.search_string && (state === STATE_TYPES.MARKET_SEARCH || state === STATE_TYPES.INDICATOR_SEARCH)) {
         return {
             data: {
-                action: 'search',
+                action: ACTION.SEARCH,
                 search_string,
             },
             event_type: state === STATE_TYPES.MARKET_SEARCH ? market_event_type : indicators_event_type,
         };
     }
-    if (state === STATE_TYPES.MARKETS_LIST_TOGGLE && 'is_open' in option) {
+    if (state === STATE_TYPES.MARKETS_LIST_TOGGLE) {
         return {
             data: {
                 action: open_close_action,
@@ -133,29 +156,29 @@ export const getChartAnalyticsData = (state: keyof typeof STATE_TYPES, option: T
             event_type: market_event_type,
         };
     }
-    if (state === STATE_TYPES.SYMBOL_CHANGE && market_type_name) {
+    if (state === STATE_TYPES.SYMBOL_CHANGE) {
         return {
             data: {
-                action: 'choose_market_type',
+                action: ACTION.CHOOSE_MARKET_TYPE,
                 market_type_name,
                 tab_market_name,
             },
             event_type: market_event_type,
         };
     }
-    if (state === STATE_TYPES.MARKET_INFO_REDIRECT && tab_market_name) {
+    if (state === STATE_TYPES.MARKET_INFO_REDIRECT) {
         return {
             data: {
-                action: 'info_redirect',
+                action: ACTION.INFO_REDIRECT,
                 tab_market_name,
             },
             event_type: market_event_type,
         };
     }
-    if (state === STATE_TYPES.FAVORITE_MARKETS_TOGGLE && 'is_favorite' in option) {
+    if (state === STATE_TYPES.FAVORITE_MARKETS_TOGGLE && market_type_name) {
         return {
             data: {
-                action: is_favorite ? 'add_to_favorites' : 'delete_from_favorites',
+                action: is_favorite ? ACTION.ADD_TO_FAVORITES : ACTION.DELETE_FROM_FAVORITES,
                 market_type_name,
             },
             event_type: market_event_type,

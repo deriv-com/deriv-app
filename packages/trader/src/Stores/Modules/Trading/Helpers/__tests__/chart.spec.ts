@@ -1,4 +1,4 @@
-import { STATE_TYPES, getChartAnalyticsData } from '../chart';
+import { ACTION, getChartAnalyticsData, STATE_TYPES, SUBFORM_NAME } from '../chart';
 
 describe('getChartAnalyticsData', () => {
     const mocked_data = {
@@ -30,7 +30,7 @@ describe('getChartAnalyticsData', () => {
             })
         ).toEqual({
             data: {
-                action: 'open',
+                action: ACTION.OPEN,
                 chart_type_name: mocked_data.chart_type_name,
                 time_interval_name: mocked_data.time_interval_name,
             },
@@ -44,7 +44,7 @@ describe('getChartAnalyticsData', () => {
             })
         ).toEqual({
             data: {
-                action: 'close',
+                action: ACTION.CLOSE,
                 chart_type_name: mocked_data.chart_type_name,
                 time_interval_name: mocked_data.time_interval_name,
             },
@@ -60,7 +60,7 @@ describe('getChartAnalyticsData', () => {
             })
         ).toEqual({
             data: {
-                action: 'choose_chart_type',
+                action: ACTION.CHOOSE_CHART_TYPE,
                 chart_type_name: mocked_data.chart_type_name,
                 time_interval_name: mocked_data.time_interval_name,
             },
@@ -76,7 +76,7 @@ describe('getChartAnalyticsData', () => {
             })
         ).toEqual({
             data: {
-                action: 'choose_time_interval',
+                action: ACTION.CHOOSE_TIME_INTERVAL,
                 chart_type_name: mocked_data.chart_type_name,
                 time_interval_name: mocked_data.time_interval_name,
             },
@@ -92,7 +92,7 @@ describe('getChartAnalyticsData', () => {
             })
         ).toEqual({
             data: {
-                action: 'delete_active',
+                action: ACTION.DELETE_ACTIVE,
                 indicator_type_name: mocked_data.indicator_type_name,
                 indicators_category_name: mocked_data.indicators_category_name,
             },
@@ -108,7 +108,7 @@ describe('getChartAnalyticsData', () => {
             })
         ).toEqual({
             data: {
-                action: 'edit_active',
+                action: ACTION.EDIT_ACTIVE,
                 indicator_type_name: mocked_data.indicator_type_name,
                 indicators_category_name: mocked_data.indicators_category_name,
             },
@@ -125,7 +125,7 @@ describe('getChartAnalyticsData', () => {
             })
         ).toEqual({
             data: {
-                action: 'info_open',
+                action: ACTION.INFO_OPEN,
                 indicator_type_name: mocked_data.indicator_type_name,
                 indicators_category_name: mocked_data.indicators_category_name,
             },
@@ -138,7 +138,7 @@ describe('getChartAnalyticsData', () => {
             })
         ).toEqual({
             data: {
-                action: 'info_close',
+                action: ACTION.INFO_CLOSE,
                 indicator_type_name: mocked_data.indicator_type_name,
                 indicators_category_name: mocked_data.indicators_category_name,
             },
@@ -152,7 +152,7 @@ describe('getChartAnalyticsData', () => {
                 is_open: mocked_data.is_open,
             })
         ).toEqual({
-            data: { action: 'open' },
+            data: { action: ACTION.OPEN },
             event_type: indicators_event_type,
         });
         expect(
@@ -160,10 +160,15 @@ describe('getChartAnalyticsData', () => {
                 is_open: false,
             })
         ).toEqual({
-            data: { action: 'close' },
+            data: { action: ACTION.CLOSE },
             event_type: indicators_event_type,
         });
-        expect(getChartAnalyticsData(STATE_TYPES.INDICATORS_MODAL_TOGGLE, {})).toEqual({});
+        expect(getChartAnalyticsData(STATE_TYPES.INDICATORS_MODAL_TOGGLE, {})).toEqual({
+            data: {
+                action: ACTION.CLOSE,
+            },
+            event_type: indicators_event_type,
+        });
     });
     it('should return correct object with data and event_type for STATE_TYPES.INDICATOR_ADDED', () => {
         expect(
@@ -174,10 +179,10 @@ describe('getChartAnalyticsData', () => {
             })
         ).toEqual({
             data: {
-                action: 'add_active',
+                action: ACTION.ADD_ACTIVE,
                 indicator_type_name: mocked_data.indicator_type_name,
                 indicators_category_name: mocked_data.indicators_category_name,
-                subform_name: 'indicators_info',
+                subform_name: SUBFORM_NAME.INDICATORS_INFO,
             },
             event_type: indicators_event_type,
         });
@@ -189,18 +194,26 @@ describe('getChartAnalyticsData', () => {
             })
         ).toEqual({
             data: {
-                action: 'add_active',
+                action: ACTION.ADD_ACTIVE,
                 indicator_type_name: mocked_data.indicator_type_name,
                 indicators_category_name: mocked_data.indicators_category_name,
-                subform_name: 'indicators_type',
+                subform_name: SUBFORM_NAME.INDICATORS_TYPE,
             },
             event_type: indicators_event_type,
         });
-        expect(getChartAnalyticsData(STATE_TYPES.INDICATOR_ADDED, {})).toEqual({});
+        expect(getChartAnalyticsData(STATE_TYPES.INDICATOR_ADDED, {})).toEqual({
+            data: {
+                action: ACTION.ADD_ACTIVE,
+                indicator_type_name: '',
+                indicators_category_name: '',
+                subform_name: SUBFORM_NAME.INDICATORS_TYPE,
+            },
+            event_type: indicators_event_type,
+        });
     });
     it('should return correct object with data and event_type for STATE_TYPES.INDICATORS_CLEAR_ALL', () => {
         expect(getChartAnalyticsData(STATE_TYPES.INDICATORS_CLEAR_ALL, {})).toEqual({
-            data: { action: 'clean_all_active' },
+            data: { action: ACTION.CLEAN_ALL_ACTIVE },
             event_type: indicators_event_type,
         });
     });
@@ -211,11 +224,12 @@ describe('getChartAnalyticsData', () => {
             })
         ).toEqual({
             data: {
-                action: 'search',
+                action: ACTION.SEARCH,
                 search_string: mocked_data.search_string,
             },
             event_type: indicators_event_type,
         });
+        expect(getChartAnalyticsData(STATE_TYPES.INDICATOR_SEARCH, { search_string: '' })).toEqual({});
         expect(getChartAnalyticsData(STATE_TYPES.INDICATOR_SEARCH, {})).toEqual({});
     });
     it('should return correct object with data and event_type for STATE_TYPES.MARKET_SEARCH', () => {
@@ -225,7 +239,7 @@ describe('getChartAnalyticsData', () => {
             })
         ).toEqual({
             data: {
-                action: 'search',
+                action: ACTION.SEARCH,
                 search_string: mocked_data.search_string,
             },
             event_type: market_event_type,
@@ -240,7 +254,7 @@ describe('getChartAnalyticsData', () => {
             })
         ).toEqual({
             data: {
-                action: 'open',
+                action: ACTION.OPEN,
                 market_type_name,
             },
             event_type: market_event_type,
@@ -252,12 +266,18 @@ describe('getChartAnalyticsData', () => {
             })
         ).toEqual({
             data: {
-                action: 'close',
+                action: ACTION.CLOSE,
                 market_type_name,
             },
             event_type: market_event_type,
         });
-        expect(getChartAnalyticsData(STATE_TYPES.MARKETS_LIST_TOGGLE, {})).toEqual({});
+        expect(getChartAnalyticsData(STATE_TYPES.MARKETS_LIST_TOGGLE, {})).toEqual({
+            data: {
+                action: ACTION.CLOSE,
+                market_type_name: '',
+            },
+            event_type: market_event_type,
+        });
     });
     it('should return correct object with data and event_type for STATE_TYPES.SYMBOL_CHANGE', () => {
         expect(
@@ -267,13 +287,20 @@ describe('getChartAnalyticsData', () => {
             })
         ).toEqual({
             data: {
-                action: 'choose_market_type',
+                action: ACTION.CHOOSE_MARKET_TYPE,
                 tab_market_name,
                 market_type_name,
             },
             event_type: market_event_type,
         });
-        expect(getChartAnalyticsData(STATE_TYPES.SYMBOL_CHANGE, {})).toEqual({});
+        expect(getChartAnalyticsData(STATE_TYPES.SYMBOL_CHANGE, {})).toEqual({
+            data: {
+                action: ACTION.CHOOSE_MARKET_TYPE,
+                market_type_name: '',
+                tab_market_name: '',
+            },
+            event_type: market_event_type,
+        });
     });
     it('should return correct object with data and event_type for STATE_TYPES.MARKET_INFO_REDIRECT', () => {
         expect(
@@ -282,12 +309,18 @@ describe('getChartAnalyticsData', () => {
             })
         ).toEqual({
             data: {
-                action: 'info_redirect',
+                action: ACTION.INFO_REDIRECT,
                 tab_market_name,
             },
             event_type: market_event_type,
         });
-        expect(getChartAnalyticsData(STATE_TYPES.MARKET_INFO_REDIRECT, {})).toEqual({});
+        expect(getChartAnalyticsData(STATE_TYPES.MARKET_INFO_REDIRECT, {})).toEqual({
+            data: {
+                action: ACTION.INFO_REDIRECT,
+                tab_market_name: '',
+            },
+            event_type: market_event_type,
+        });
     });
     it('should return correct object with data and event_type for STATE_TYPES.FAVORITE_MARKETS_TOGGLE', () => {
         expect(
@@ -297,7 +330,7 @@ describe('getChartAnalyticsData', () => {
             })
         ).toEqual({
             data: {
-                action: 'add_to_favorites',
+                action: ACTION.ADD_TO_FAVORITES,
                 market_type_name,
             },
             event_type: market_event_type,
@@ -309,7 +342,7 @@ describe('getChartAnalyticsData', () => {
             })
         ).toEqual({
             data: {
-                action: 'delete_from_favorites',
+                action: ACTION.DELETE_FROM_FAVORITES,
                 market_type_name,
             },
             event_type: market_event_type,

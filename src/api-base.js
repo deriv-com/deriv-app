@@ -129,4 +129,3 @@ class APIBase {
 export default APIBase;
 
 export const api_base = new APIBase();
-window.api_base = api_base;

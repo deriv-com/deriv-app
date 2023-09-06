@@ -17,7 +17,6 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
 
     const onChangeAccount = id => {
         const active_login_id = getActiveLoginId();
-        console.log(id, active_login_id, 'login_id, active_login_id');
         if (id && active_login_id && id !== active_login_id) {
             dispatch(setAccountSwitcherId(id));
             setIsAccDropdownOpen(false);

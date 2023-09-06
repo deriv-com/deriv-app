@@ -121,6 +121,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_logged_in: false,
             is_logging_in: false,
             is_pending_proof_of_ownership: false,
+            is_poa_older_than_six_months: false,
             is_switching: false,
             is_tnc_needed: false,
             is_trading_experience_incomplete: false,

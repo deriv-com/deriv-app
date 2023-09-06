@@ -1,0 +1,38 @@
+.wallets-trading-account {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 88px;
+    padding-block: 16px;
+
+    &__icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    &__details {
+        flex-grow: 1;
+
+        & > h3 {
+            font-weight: bold;
+            font-size: 1.4rem;
+            line-height: 20px;
+        }
+
+        & > p {
+            font-size: 1.2rem;
+            line-height: 14px;
+        }
+    }
+
+    &__action {
+        outline: none;
+        border: none;
+        color: var(--system-dark-1-prominent-text, #fff);
+        font-weight: bold;
+        padding: 6px 16px;
+        border-radius: 4px;
+        background: var(--button-primary-default, #ff444f);
+        cursor: pointer;
+    }
+}

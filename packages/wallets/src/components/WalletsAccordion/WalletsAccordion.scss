@@ -2,17 +2,13 @@
     width: 100%;
     background: var(--system-light-8-primary-background, #fff);
     border-radius: 16px;
+    padding: 24px;
 
     &__header {
-        background: none;
-        border: none;
-        color: inherit;
-        outline: inherit;
-        cursor: pointer;
         width: 100%;
         display: flex;
         align-items: center;
-        padding: 24px;
+        padding: 0;
         gap: 24px;
     }
 
@@ -32,6 +28,7 @@
 
     &__dropdown {
         transition: all 0.3s ease;
+        cursor: pointer;
 
         &--open {
             transform: rotate(180deg);
@@ -43,10 +40,12 @@
         from {
             transform: translateY(-3rem);
             opacity: 0;
+            display: none;
         }
         to {
             transform: translateY(0);
             opacity: 1;
+            display: block;
         }
     }
 
@@ -54,10 +53,12 @@
         from {
             transform: translateY(0);
             opacity: 1;
+            display: block;
         }
         to {
             transform: translateY(-3rem);
             opacity: 0;
+            display: none;
         }
     }
 }

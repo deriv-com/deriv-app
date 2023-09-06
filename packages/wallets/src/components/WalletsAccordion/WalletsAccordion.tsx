@@ -16,12 +16,15 @@ const WalletsAccordion: React.FC<TProps> = ({ active_account, account_info, swit
 
     return (
         <div className='wallets-accordion'>
-            <button className='wallets-accordion__header' onClick={() => switchAccount(account_info?.loginid)}>
+            <div className='wallets-accordion__header'>
                 {header}
-                <div className={`wallets-accordion__dropdown${is_open ? '--open' : ''}`}>
+                <div
+                    className={`wallets-accordion__dropdown${is_open ? '--open' : ''}`}
+                    onClick={() => switchAccount(account_info?.loginid)}
+                >
                     <IcDropdown />
                 </div>
-            </button>
+            </div>
             <div className={`wallets-accordion__content${is_open ? '--visible' : ''}`}>{is_open && content}</div>
         </div>
     );

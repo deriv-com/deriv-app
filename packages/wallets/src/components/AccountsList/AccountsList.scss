@@ -1,5 +1,5 @@
 .wallets-accounts-list {
-    height: 60vh;
+    height: 100%;
     width: 100%;
     background: var(--system-light-8-primary-background, #fff);
 
@@ -7,11 +7,10 @@
     border-radius: 0 0 16px 16px;
 
     &__content {
-        margin-inline: 24px;
+        margin-top: 24px;
 
         // desktop styles
         border-top: 2px solid var(--system-light-7-secondary-background, #f2f3f4);
-        padding-top: 16px;
 
         & > h1 {
             font-weight: bold;

@@ -1,17 +1,12 @@
 import React from 'react';
-import { useWalletAccountsList } from '@deriv/api';
+import { OptionsAndMultipliersListing } from '..';
 import './AccountsList.scss';
 
-type TAccountsListProps = {
-    data: ReturnType<typeof useWalletAccountsList>['data'][number];
-};
-
-const AccountsList: React.FC<TAccountsListProps> = ({ data }) => {
+const AccountsList = () => {
     return (
         <div className='wallets-accounts-list'>
             <div className='wallets-accounts-list__content'>
-                <h1>CFDs</h1>
-                <p>Trade with leverage and tight spreads for better returns on trades. Learn more</p>
+                <OptionsAndMultipliersListing />
             </div>
         </div>
     );

@@ -45,7 +45,7 @@ const FileUploaderContainer = ({
             </div>
             <div className='file-uploader__file-supported-formats'>
                 <Text size={isMobile() ? 'xxxs' : 'xxs'}>
-                    <Localize i18n_default_text='Supported formats: JPEG, JPG, PNG and PDF only' />
+                    <Localize i18n_default_text='Supported formats: JPEG, JPG, PNG, PDF and GIF only' />
                 </Text>
                 <Text size={isMobile() ? 'xxxs' : 'xxs'}>
                     <Localize i18n_default_text='Maximum size: 8MB' />

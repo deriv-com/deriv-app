@@ -6,10 +6,9 @@ type TStateChangeOption = {
     is_info_open?: boolean;
     is_open?: boolean;
     chart_type_name?: string;
-    market_type_name?: string;
     search_string?: string;
     symbol?: string;
-    tab_market_name?: string;
+    symbol_category?: string;
     time_interval_name?: string;
 };
 
@@ -43,9 +42,9 @@ export const getChartAnalyticsData = (state: keyof typeof STATE_TYPES, option: T
         is_info_open,
         is_open,
         chart_type_name,
-        market_type_name,
         search_string,
-        tab_market_name,
+        symbol: market_type_name,
+        symbol_category: tab_market_name,
         time_interval_name,
     } = option;
     const open_close_action = is_open ? 'open' : 'close';

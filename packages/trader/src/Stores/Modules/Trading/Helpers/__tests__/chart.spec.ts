@@ -8,11 +8,13 @@ describe('getChartAnalyticsData', () => {
         is_info_open: true,
         is_open: true,
         chart_type_name: 'area',
-        market_type_name: 'Volatility 75 (1s) Index',
         search_string: 'test',
-        tab_market_name: 'derived-synthetics-continuous_indices',
+        symbol: 'Volatility 75 (1s) Index',
+        symbol_category: 'derived-synthetics-continuous_indices',
         time_interval_name: '1 minute',
     };
+    const market_type_name = mocked_data.symbol;
+    const tab_market_name = mocked_data.symbol_category;
     const chart_event_type = 'ce_chart_types_form';
     const market_event_type = 'ce_market_types_form';
     const indicators_event_type = 'ce_indicators_types_form';
@@ -234,24 +236,24 @@ describe('getChartAnalyticsData', () => {
         expect(
             getChartAnalyticsData(STATE_TYPES.MARKETS_LIST_TOGGLE, {
                 is_open: mocked_data.is_open,
-                market_type_name: mocked_data.market_type_name,
+                symbol: mocked_data.symbol,
             })
         ).toEqual({
             data: {
                 action: 'open',
-                market_type_name: mocked_data.market_type_name,
+                market_type_name,
             },
             event_type: market_event_type,
         });
         expect(
             getChartAnalyticsData(STATE_TYPES.MARKETS_LIST_TOGGLE, {
                 is_open: false,
-                market_type_name: mocked_data.market_type_name,
+                symbol: mocked_data.symbol,
             })
         ).toEqual({
             data: {
                 action: 'close',
-                market_type_name: mocked_data.market_type_name,
+                market_type_name,
             },
             event_type: market_event_type,
         });
@@ -260,14 +262,14 @@ describe('getChartAnalyticsData', () => {
     it('should return correct object with data and event_type for STATE_TYPES.SYMBOL_CHANGE', () => {
         expect(
             getChartAnalyticsData(STATE_TYPES.SYMBOL_CHANGE, {
-                tab_market_name: mocked_data.tab_market_name,
-                market_type_name: mocked_data.market_type_name,
+                symbol: mocked_data.symbol,
+                symbol_category: mocked_data.symbol_category,
             })
         ).toEqual({
             data: {
                 action: 'choose_market_type',
-                tab_market_name: mocked_data.tab_market_name,
-                market_type_name: mocked_data.market_type_name,
+                tab_market_name,
+                market_type_name,
             },
             event_type: market_event_type,
         });
@@ -276,12 +278,12 @@ describe('getChartAnalyticsData', () => {
     it('should return correct object with data and event_type for STATE_TYPES.MARKET_INFO_REDIRECT', () => {
         expect(
             getChartAnalyticsData(STATE_TYPES.MARKET_INFO_REDIRECT, {
-                tab_market_name: mocked_data.tab_market_name,
+                symbol_category: mocked_data.symbol_category,
             })
         ).toEqual({
             data: {
                 action: 'info_redirect',
-                tab_market_name: mocked_data.tab_market_name,
+                tab_market_name,
             },
             event_type: market_event_type,
         });
@@ -291,24 +293,24 @@ describe('getChartAnalyticsData', () => {
         expect(
             getChartAnalyticsData(STATE_TYPES.FAVORITE_MARKETS_TOGGLE, {
                 is_favorite: mocked_data.is_favorite,
-                market_type_name: mocked_data.market_type_name,
+                symbol: mocked_data.symbol,
             })
         ).toEqual({
             data: {
                 action: 'add_to_favorites',
-                market_type_name: mocked_data.market_type_name,
+                market_type_name,
             },
             event_type: market_event_type,
         });
         expect(
             getChartAnalyticsData(STATE_TYPES.FAVORITE_MARKETS_TOGGLE, {
                 is_favorite: false,
-                market_type_name: mocked_data.market_type_name,
+                symbol: mocked_data.symbol,
             })
         ).toEqual({
             data: {
                 action: 'delete_from_favorites',
-                market_type_name: mocked_data.market_type_name,
+                market_type_name,
             },
             event_type: market_event_type,
         });

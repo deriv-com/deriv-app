@@ -345,7 +345,7 @@ export default class NotificationStore extends BaseStore {
 
             this.handlePOAAddressMismatchNotifications();
 
-            if (!status?.includes('mt5_additional_kyc_required'))
+            if (status?.includes('mt5_additional_kyc_required'))
                 this.addNotificationMessage(this.client_notifications.additional_kyc_info);
 
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
@@ -1541,7 +1541,7 @@ export default class NotificationStore extends BaseStore {
             },
             additional_kyc_info: {
                 key: 'additional_kyc_info',
-                header: localize('Pending action required'),
+                header: <Localize i18n_default_text='Pending action required' />,
                 message: (
                     <Localize i18n_default_text='We require additional information for your Deriv MT5 account(s). Please take a moment to update your information now.' />
                 ),

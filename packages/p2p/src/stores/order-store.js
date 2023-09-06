@@ -203,7 +203,7 @@ export default class OrderStore {
                 const { p2p_order_list } = p2p_order_list_response || {};
                 const { list } = p2p_order_list || {};
 
-                if (list?.length) {
+                if (list) {
                     handleNotifications(this.orders, list);
                     list.forEach(order => this.syncOrder(order));
                     this.setOrders(list);

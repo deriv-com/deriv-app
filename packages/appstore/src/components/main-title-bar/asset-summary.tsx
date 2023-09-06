@@ -6,12 +6,13 @@ import BalanceText from 'Components/elements/text/balance-text';
 import { observer, useStore } from '@deriv/stores';
 import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
-import { useTotalAccountBalance, useCFDAccounts, usePlatformAccounts } from '@deriv/hooks';
+import { useTotalAccountBalance, useCFDAccounts, usePlatformAccounts, useExchangeRate } from '@deriv/hooks';
 
 const AssetSummary = observer(() => {
+    const { last_update } = useExchangeRate();
     const { traders_hub, client, common } = useStore();
     const { selected_account_type, is_eu_user, no_CR_account, no_MF_account } = traders_hub;
-    const { is_logging_in, is_switching, default_currency } = client;
+    const { is_logging_in, is_switching, default_currency, is_landing_company_loaded } = client;
     const { current_language } = common;
     const { real: platform_real_accounts, demo: platform_demo_account } = usePlatformAccounts();
     const { real: cfd_real_accounts, demo: cfd_demo_accounts } = useCFDAccounts();
@@ -27,7 +28,7 @@ const AssetSummary = observer(() => {
     const cr_account = !is_eu_user && !no_CR_account;
 
     //dont show loader if user has no respective regional account
-    if ((is_switching || is_logging_in) && (eu_account || cr_account)) {
+    if (((is_switching || is_logging_in) && (eu_account || cr_account)) || !is_landing_company_loaded || !last_update) {
         return (
             <React.Fragment>
                 <div className='asset-summary__container content-loader'>

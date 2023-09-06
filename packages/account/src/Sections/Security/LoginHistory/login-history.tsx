@@ -74,9 +74,9 @@ const LoginHistory = observer(() => {
         client,
         ui: { is_mobile },
     } = useStore();
-    const { is_switching, is_authorize } = client;
+    const { is_switching } = client;
 
-    const { data, isError, isLoading, error } = useLoginHistory(is_authorize);
+    const { data, isError, isLoading, error } = useLoginHistory();
 
     const login_history = data?.formatted_data;
 

@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { getLoginHistoryFormattedData } from '@deriv/utils';
+import useAuthorize from './useAuthorize';
 import useFetch from '../useFetch';
 
 export type TData = {
@@ -11,11 +12,12 @@ export type TData = {
     status: string;
 }[];
 
-/** Retrieve a summary of login history for user.*/
-const useLoginHistory = (is_authorize: boolean) => {
+/** A custom hook to retrieve a summary of login history for user.*/
+const useLoginHistory = () => {
+    const { isSuccess } = useAuthorize();
     const { data, ...rest } = useFetch('login_history', {
         payload: { limit: 50 },
-        options: { enabled: is_authorize },
+        options: { enabled: isSuccess },
     });
 
     /** Adding aditional properties to the response*/

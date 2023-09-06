@@ -986,12 +986,15 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     };
 
     const getWalletHeader = () => {
+        const wallet_platform_label =
+            jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'MT5' : 'MT5 CFDs';
         return (
             <React.Fragment>
                 {category === 'demo' ? (
                     <Localize
-                        i18n_default_text='Your {{account_title}} {{category}} account is ready'
+                        i18n_default_text='Your {{wallet_platform_label}} {{account_title}} {{category}} account is ready'
                         values={{
+                            wallet_platform_label,
                             category,
                             account_title: wallet_account_title(account_title),
                         }}

@@ -71,12 +71,12 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                 >
                     {is_mobile ? (
                         <span className='acc-info__id'>
-                            (active_account?.is_virtual || active_account?.currency) && (
-                            <AccountInfoIcon
-                                is_virtual={active_account?.is_virtual}
-                                currency={active_account?.currency?.toLowerCase()}
-                            />
-                            )
+                            {(active_account?.is_virtual || active_account?.currency) && (
+                                <AccountInfoIcon
+                                    is_virtual={active_account?.is_virtual}
+                                    currency={active_account?.currency?.toLowerCase()}
+                                />
+                            )}
                         </span>
                     ) : (
                         <div className='acc-info__wallets-container'>

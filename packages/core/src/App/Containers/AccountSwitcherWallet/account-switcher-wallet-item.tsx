@@ -45,6 +45,21 @@ export const AccountSwitcherWalletItem = observer(
             await switchAccount(dtrade_loginid);
         };
 
+        const account_switcher_content = (
+            <div className='acc-switcher-wallet-item__content'>
+                <Text size='xxs'>{currency_config?.name}</Text>
+                <Text size='xs' weight='bold'>
+                    {`${formatMoney(currency || '', dtrade_balance || 0, true)} ${currency_config?.display_code}`}
+                </Text>
+            </div>
+        );
+
+        const account_badge = is_virtual ? (
+            <Badge type='contained' background_color='blue' label={localize('Demo')} />
+        ) : (
+            <Badge type='bordered' label={landing_company_name?.toUpperCase() || ''} />
+        );
+
         return (
             <div
                 className={classNames('acc-switcher-wallet-item__container', {
@@ -62,17 +77,8 @@ export const AccountSwitcherWalletItem = observer(
                         hide_watermark
                     />
                 </div>
-                <div className='acc-switcher-wallet-item__content'>
-                    <Text size='xxs'>{currency_config?.name}</Text>
-                    <Text size='xs' weight='bold'>
-                        {`${formatMoney(currency || '', dtrade_balance || 0, true)} ${currency_config?.display_code}`}
-                    </Text>
-                </div>
-                {is_virtual ? (
-                    <Badge type='contained' background_color='blue' label={localize('Demo')} />
-                ) : (
-                    <Badge type='bordered' label={landing_company_name?.toUpperCase() || ''} />
-                )}
+                {account_switcher_content}
+                {account_badge}
             </div>
         );
     }

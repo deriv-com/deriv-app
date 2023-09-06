@@ -7,11 +7,11 @@ import ListingContainer from 'Components/containers/listing-container';
 import AddOptionsAccount from 'Components/add-options-account';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
+import CompareAccount from 'Components/compare-account';
 import GetMoreAccounts from 'Components/get-more-accounts';
 import { Actions } from 'Components/containers/trading-app-card-actions';
 import { getHasDivider } from 'Constants/utils';
 import { useWalletMigration } from '@deriv/hooks';
-import { useStores } from 'Stores/index';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import './cfds-listing.scss';
 
@@ -164,14 +164,10 @@ const CFDsListing = observer(() => {
             title={
                 !isMobile() && (
                     <div className='cfd-accounts__title'>
-                        <Text size='sm' line_height='m' weight='bold' color='prominent'>
+                        <Text size='sm' weight='bold' color='prominent'>
                             {localize('CFDs')}
                         </Text>
-                        <div className='cfd-accounts__compare-table-title' onClick={compareAccountsModalHandle}>
-                            <Text key={0} color='red' size='xxs' weight='bold' styles={{ marginLeft: '1rem' }}>
-                                <Localize i18n_default_text={accounts_sub_text} />
-                            </Text>
-                        </div>
+                        <CompareAccount accounts_sub_text={accounts_sub_text} is_desktop={!isMobile()} />
                     </div>
                 )
             }
@@ -186,13 +182,7 @@ const CFDsListing = observer(() => {
                 </Text>
             }
         >
-            {isMobile() && (
-                <div className='cfd-accounts__compare-table-title' onClick={compareAccountsModalHandle}>
-                    <Text size='xs' color='red' weight='bold' line_height='s'>
-                        <Localize i18n_default_text={accounts_sub_text} />
-                    </Text>
-                </div>
-            )}
+            {isMobile() && <CompareAccount accounts_sub_text={accounts_sub_text} />}
 
             <AddDerivAccount />
 

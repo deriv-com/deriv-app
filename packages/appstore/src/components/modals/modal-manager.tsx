@@ -57,7 +57,8 @@ const ModalManager = () => {
         is_reset_trading_password_modal_visible,
         setResetTradingPasswordModalOpen,
     } = ui;
-    const { is_demo, is_account_transfer_modal_open, toggleAccountTransferModal } = traders_hub;
+    const { is_demo, is_account_transfer_modal_open, toggleAccountTransferModal, is_real_wallets_upgrade_on } =
+        traders_hub;
 
     const [password_manager, setPasswordManager] = React.useState<{
         is_visible: boolean;
@@ -170,7 +171,7 @@ const ModalManager = () => {
                 toggleModal={toggleAccountTransferModal}
             />
             <FailedVerificationModal />
-            <RealWalletsUpgrade />
+            {is_real_wallets_upgrade_on && <RealWalletsUpgrade />}
             <WalletsMigrationFailed />
             <WalletModal />
             <WalletSuccessDialog />

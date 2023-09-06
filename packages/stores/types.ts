@@ -104,7 +104,7 @@ type TIconTypes =
     | 'SmartTraderBlue'
     | 'CFDs';
 
-interface AvailableAccount {
+type AvailableAccount = {
     name: string;
     is_item_blurry?: boolean;
     has_applauncher_account?: boolean;
@@ -118,7 +118,7 @@ interface AvailableAccount {
     availability: TRegionAvailability;
     short_code_and_region?: string;
     login?: string;
-}
+};
 
 interface ExistingMT5Account {
     account_type: string;
@@ -244,6 +244,15 @@ type TTradingPlatformAvailableAccount = {
     sub_account_type: string;
 };
 
+type TAvailableCFDAccounts = {
+    availability: 'Non-EU' | 'EU' | 'All';
+    description: string;
+    icon: 'Derived' | 'Financial' | 'DerivX' | 'SwapFree';
+    market_type: 'synthetic' | 'financial' | 'all' | 'gaming';
+    name: string;
+    platform: 'mt5' | 'dxtrade';
+};
+
 type TAuthenticationStatus = { document_status: string; identity_status: string };
 
 type TAddToastProps = {
@@ -299,7 +308,7 @@ type IncrementedProperties<N extends number> = {
     [K in keyof LoginParams as `${string & K}${N}`]: string;
 };
 
-export type LoginURLParams<N extends number> = LoginParams & IncrementedProperties<N>;
+type LoginURLParams<N extends number> = LoginParams & IncrementedProperties<N>;
 type TStandPoint = {
     financial_company: string;
     gaming_company: string;
@@ -709,7 +718,6 @@ type TTradersHubStore = {
     available_platforms: BrandConfig[];
     selected_region: TRegionAvailability;
     getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
-    available_dxtrade_accounts: AvailableAccount[];
     is_wallet_tour_open: boolean;
     toggleIsWalletTourOpen: (value: boolean) => void;
     can_get_more_cfd_mt5_accounts: boolean;
@@ -724,6 +732,8 @@ type TTradersHubStore = {
     has_any_real_account: boolean;
     getShortCodeAndRegion: (account: Partial<ExistingMT5Account>) => string;
     is_mt5_notificaiton_modal_visible: boolean;
+    available_cfd_accounts: TAvailableCFDAccounts[];
+    available_dxtrade_accounts: TAvailableCFDAccounts[];
     toggleIsTourOpen: (is_tour_open: boolean) => void;
     is_demo_low_risk: boolean;
     is_mt5_notification_modal_visible: boolean;

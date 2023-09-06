@@ -5,19 +5,22 @@ import { observer, useStore } from '@deriv/stores';
 import WalletsImage from 'Assets/svgs/wallets';
 import getUpgradeInformationList from 'Constants/upgrade-info-lists-config';
 import './ready-to-upgrade-wallets.scss';
+import { useContentFlag } from '@deriv/hooks';
 
 type TReadyToUpgradeWallets = {
-    is_eu: boolean;
     value: boolean;
     toggleCheckbox: () => void;
 };
 
-const ReadyToUpgradeWallets = observer(({ is_eu, value, toggleCheckbox }: TReadyToUpgradeWallets) => {
+const ReadyToUpgradeWallets = observer(({ value, toggleCheckbox }: TReadyToUpgradeWallets) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
     const text_body_size = is_mobile ? 'xs' : 's';
     const text_info_size = is_mobile ? 'xxs' : 'xs';
     const form_line_height = is_mobile ? 'm' : 'l';
+
+    const { is_eu_demo, is_eu_real, is_low_risk_cr_eu } = useContentFlag();
+    const is_eu = is_eu_demo || is_eu_real || is_low_risk_cr_eu;
 
     return (
         <div className='wallet-steps__content'>

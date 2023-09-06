@@ -11,7 +11,7 @@ const WalletJurisdictionBadge = ({ is_demo, shortcode }: TWalletJurisdictionBadg
     return is_demo ? (
         <Badge type='contained' background_color='blue' label={localize('Demo')} />
     ) : (
-        <Badge type='bordered' label={shortcode?.toUpperCase() || ''} />
+        <Badge type='bordered' label={shortcode?.toUpperCase() ?? ''} />
     );
 };
 

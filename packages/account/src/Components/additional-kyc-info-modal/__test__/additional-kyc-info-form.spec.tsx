@@ -1,9 +1,9 @@
 import React from 'react';
-import { render, fireEvent, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { AdditionalKycInfoForm } from '../additional-kyc-info-form';
+import userEvent from '@testing-library/user-event';
 
-// Mock useSettings hook to prevent errors
 jest.mock('../../../../../api/src/hooks', () => ({
     useSettings: () => ({
         update: jest.fn(),
@@ -16,10 +16,10 @@ jest.mock('@deriv/shared', () => ({
     generateValidationFunction: jest.fn(),
 }));
 
-const mock_store = mockStore({});
-
 describe('AdditionalKycInfoForm', () => {
     const setError = jest.fn();
+    const mock_store = mockStore({});
+
     it('should render the form fields', () => {
         render(
             <StoreProvider store={mock_store}>
@@ -27,11 +27,10 @@ describe('AdditionalKycInfoForm', () => {
             </StoreProvider>
         );
 
-        // Assert that form fields are rendered
-        expect(screen.getByTestId('place_of_birth')).toBeInTheDocument();
-        expect(screen.getByTestId('tax_residence')).toBeInTheDocument();
-        expect(screen.getByTestId('tax_identification_number')).toBeInTheDocument();
-        expect(screen.getByTestId('account_opening_reason')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_place_of_birth')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_tax_residence')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_tax_identification_number')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_account_opening_reason')).toBeInTheDocument();
     });
 
     it('should submit the form when all fields are valid', async () => {
@@ -44,16 +43,15 @@ describe('AdditionalKycInfoForm', () => {
         const submit_btn = screen.getByRole('button', { name: 'Submit' });
         expect(submit_btn).toBeDisabled();
 
-        // Fill in the form fields with valid data
-        fireEvent.change(screen.getByTestId('place_of_birth'), { target: { value: 'Ghana' } });
-        fireEvent.change(screen.getByTestId('tax_residence'), { target: { value: 'Ghana' } });
-        fireEvent.change(screen.getByTestId('tax_identification_number'), { target: { value: 'GHA-000000000-0' } });
-        fireEvent.change(screen.getByTestId('account_opening_reason'), { target: { value: 'Speculative' } });
+        userEvent.type(screen.getByTestId('dt_place_of_birth'), 'Ghana');
+        userEvent.type(screen.getByTestId('dt_tax_residence'), 'Ghana');
+        userEvent.type(screen.getByTestId('dt_tax_identification_number'), 'GHA-000000000-0');
+        userEvent.type(screen.getByTestId('dt_account_opening_reason'), 'Speculative');
 
         await waitFor(() => {
             expect(submit_btn).toBeEnabled();
         });
-        fireEvent.submit(screen.getByRole('button', { name: 'Submit' }));
+        userEvent.click(screen.getByRole('button', { name: 'Submit' }));
     });
 
     it('should show an error message if form validation fails', async () => {
@@ -66,12 +64,11 @@ describe('AdditionalKycInfoForm', () => {
         const submit_btn = screen.getByRole('button', { name: 'Submit' });
         expect(submit_btn).toBeDisabled();
 
-        // Fill in the form fields with valid data
-        fireEvent.change(screen.getByTestId('place_of_birth'), { target: { value: 'Ghana' } });
-        fireEvent.change(screen.getByTestId('tax_residence'), { target: { value: 'Ghana' } });
-        fireEvent.change(screen.getByTestId('tax_identification_number'), { target: { value: 'GHA-000000000' } });
-        fireEvent.change(screen.getByTestId('account_opening_reason'), { target: { value: 'Speculative' } });
+        userEvent.type(screen.getByTestId('dt_place_of_birth'), 'Ghana');
+        userEvent.type(screen.getByTestId('dt_tax_residence'), 'Ghana');
+        userEvent.type(screen.getByTestId('dt_tax_identification_number'), 'GHA-00000000');
+        userEvent.type(screen.getByTestId('dt_account_opening_reason'), 'Speculative');
 
-        fireEvent.submit(screen.getByRole('button', { name: 'Submit' }));
+        userEvent.click(screen.getByRole('button', { name: 'Submit' }));
     });
 });

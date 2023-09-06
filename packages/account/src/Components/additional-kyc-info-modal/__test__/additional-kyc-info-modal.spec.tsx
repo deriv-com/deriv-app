@@ -5,15 +5,15 @@ import { AdditionalKycInfoModal } from '../additional-kyc-info-modal';
 
 jest.mock('../additional-kyc-info-form.tsx', () => jest.fn(() => <div>AdditionalKycInfoForm</div>));
 
-let modal_root_el: HTMLElement;
-const mock_store = mockStore({
-    ui: {
-        is_additional_kyc_info_modal_open: true,
-        toggleAdditionalKycInfoModal: jest.fn(),
-    },
-});
-
 describe('AdditionalKycInfoModal', () => {
+    let modal_root_el: HTMLElement;
+    const mock_store = mockStore({
+        ui: {
+            is_additional_kyc_info_modal_open: true,
+            toggleAdditionalKycInfoModal: jest.fn(),
+        },
+    });
+
     beforeAll(() => {
         modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');

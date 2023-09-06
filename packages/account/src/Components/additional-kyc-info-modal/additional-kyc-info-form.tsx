@@ -32,7 +32,7 @@ const FormTitle = () => (
 );
 
 type TAdditionalKycInfoFormProps = {
-    setError: React.Dispatch<React.SetStateAction<string>>;
+    setError?: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoFormProps) => {
@@ -49,11 +49,11 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
         mutation: { isLoading, isSuccess, error, isError },
     } = useSettings();
 
-    const onSubmit = async (values: typeof initialValues) => {
+    const onSubmit = (values: typeof initialValues) => {
         const tax_residence = residence_list.find(item => item.text === values.tax_residence)?.value;
         const place_of_birth = residence_list.find(item => item.text === values.place_of_birth)?.value;
 
-        await update({ ...values, tax_residence, place_of_birth });
+        update({ ...values, tax_residence, place_of_birth });
     };
 
     React.useEffect(() => {
@@ -61,13 +61,13 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
             client.updateAccountStatus().then(() => {
                 notifications.refreshNotifications();
                 ui.toggleAdditionalKycInfoModal();
-                ui.toggleInformationSubmittedModal();
+                ui.toggleKycInformationSubmittedModal();
             });
         }
     }, [isLoading, isSuccess, notifications, ui, client]);
 
     React.useEffect(() => {
-        if (isError) {
+        if (isError && setError) {
             setError(error as string);
         }
     }, [error, isError, setError]);
@@ -113,7 +113,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                                     autoComplete='off' // prevent chrome autocomplete
                                                     error={(touched && error) as string}
                                                     onItemSelection={onItemSelection(field.name, setFieldValue)}
-                                                    data-testid={field.name}
+                                                    data-testid={`dt_${field.name}`}
                                                 />
                                             </DesktopWrapper>
                                             <MobileWrapper>
@@ -123,7 +123,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                                     error={(touched && error) as string}
                                                     use_text
                                                     should_hide_disabled_options={false}
-                                                    data-testid={field.name}
+                                                    data-testid={`dt_${field.name}`}
                                                 />
                                             </MobileWrapper>
                                         </React.Fragment>
@@ -148,7 +148,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                                     type='text'
                                                     error={(touched && error) as string}
                                                     onItemSelection={onItemSelection(field.name, setFieldValue)}
-                                                    data-testid={field.name}
+                                                    data-testid={`dt_${field.name}`}
                                                 />
                                             </DesktopWrapper>
                                             <MobileWrapper>
@@ -158,7 +158,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                                     error={(touched && error) as string}
                                                     use_text
                                                     should_hide_disabled_options={false}
-                                                    data-testid={field.name}
+                                                    data-testid={`dt_${field.name}`}
                                                 />
                                             </MobileWrapper>
                                         </React.Fragment>
@@ -172,7 +172,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                             </fieldset>
                             <fieldset className='additional-kyc-info-modal__form-field--info'>
                                 <FormInputField
-                                    data-testid='tax_identification_number'
+                                    data-testid='dt_tax_identification_number'
                                     {...fields.tax_identification_number}
                                 />
                                 <FormFieldInfo
@@ -209,7 +209,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                                         setFieldValue(field.name, value, true);
                                                     }}
                                                     list_height='8rem'
-                                                    data-testid={field.name}
+                                                    data-testid={`dt_${field.name}`}
                                                 />
                                             </DesktopWrapper>
                                             <MobileWrapper>
@@ -219,7 +219,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                                     error={(touched && error) as string}
                                                     use_text
                                                     should_hide_disabled_options={false}
-                                                    data-testid={field.name}
+                                                    data-testid={`dt_${field.name}`}
                                                 />
                                             </MobileWrapper>
                                         </React.Fragment>

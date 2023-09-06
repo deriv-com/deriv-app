@@ -1,6 +1,7 @@
+import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { getFormFieldsConfig, getFormConfig, TFields } from '../form-config';
 
-const mockAccountSettings = {
+const mockAccountSettings: GetSettings = {
     immutable_fields: ['place_of_birth'],
     place_of_birth: 'UK',
     tax_residence: 'UK',
@@ -8,7 +9,7 @@ const mockAccountSettings = {
     account_opening_reason: 'Hedging',
 };
 
-const mockResidenceList = [
+const mockResidenceList: ResidenceList = [
     { value: 'UK', text: 'United Kingdom' },
     { value: 'US', text: 'United States' },
 ];

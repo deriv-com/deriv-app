@@ -174,7 +174,7 @@ export default class UIStore extends BaseStore {
     sub_section_index = 0;
 
     is_additional_kyc_info_modal_open = false;
-    is_information_submitted_modal_open = false;
+    is_kyc_information_submitted_modal_open = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -206,7 +206,7 @@ export default class UIStore extends BaseStore {
 
         makeObservable(this, {
             is_additional_kyc_info_modal_open: observable,
-            is_information_submitted_modal_open: observable,
+            is_kyc_information_submitted_modal_open: observable,
             account_needed_modal_props: observable,
             account_switcher_disabled_message: observable,
             has_only_forward_starting_contracts: observable,
@@ -403,7 +403,7 @@ export default class UIStore extends BaseStore {
             toggleUnsupportedContractModal: action.bound,
             toggleUpdateEmailModal: action.bound,
             toggleAdditionalKycInfoModal: action.bound,
-            toggleInformationSubmittedModal: action.bound,
+            toggleKycInformationSubmittedModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -936,7 +936,7 @@ export default class UIStore extends BaseStore {
         this.is_additional_kyc_info_modal_open = !this.is_additional_kyc_info_modal_open;
     }
 
-    toggleInformationSubmittedModal() {
-        this.is_information_submitted_modal_open = !this.is_information_submitted_modal_open;
+    toggleKycInformationSubmittedModal() {
+        this.is_kyc_information_submitted_modal_open = !this.is_kyc_information_submitted_modal_open;
     }
 }

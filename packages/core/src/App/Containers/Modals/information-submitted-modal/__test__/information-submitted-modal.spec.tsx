@@ -3,13 +3,13 @@ import { screen, render } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import InformationSubmittedModal from '../information-submitted-modal';
 
-const mock_store = mockStore({
-    ui: {
-        is_information_submitted_modal_open: true,
-    },
-});
-
 describe('<InformationSubmittedModal/>', () => {
+    const mock_store = mockStore({
+        ui: {
+            is_kyc_information_submitted_modal_open: true,
+        },
+    });
+
     it('should render InformationSubmittedModal component', () => {
         render(
             <StoreProvider store={mock_store}>

@@ -13,6 +13,34 @@ import {
 import { Localize } from '@deriv/translations';
 import AdditionalKycInfoForm from './additional-kyc-info-form';
 
+const AdditionalKycInfoFormWithHintBox = ({
+    error,
+    setError,
+}: {
+    error: string;
+    setError: React.Dispatch<React.SetStateAction<string>>;
+}) => {
+    return (
+        <React.Fragment>
+            {error && (
+                <HintBox
+                    className='additional-kyc-info-modal__hintbox'
+                    icon='IcAlertDanger'
+                    icon_height={16}
+                    icon_width={16}
+                    message={
+                        <Text as='p' size='xxxs'>
+                            {error}
+                        </Text>
+                    }
+                    is_danger
+                />
+            )}
+            <AdditionalKycInfoForm setError={setError} />
+        </React.Fragment>
+    );
+};
+
 export const AdditionalKycInfoModal = observer(() => {
     const {
         ui: { is_additional_kyc_info_modal_open: is_open, toggleAdditionalKycInfoModal },
@@ -25,6 +53,7 @@ export const AdditionalKycInfoModal = observer(() => {
         if (target.tagName === 'A') e?.stopPropagation();
         toggleAdditionalKycInfoModal();
     };
+
     return (
         <React.Suspense fallback={<UILoader />}>
             <div className='additional-kyc-info-modal__container'>
@@ -41,21 +70,7 @@ export const AdditionalKycInfoModal = observer(() => {
                         height={error ? '52.8rem' : '49.6rem'}
                     >
                         <Modal.Body className='additional-kyc-info-modal__form'>
-                            {error && (
-                                <HintBox
-                                    className='additional-kyc-info-modal__hintbox'
-                                    icon='IcAlertDanger'
-                                    icon_height={16}
-                                    icon_width={16}
-                                    message={
-                                        <Text as='p' size='xxxs'>
-                                            {error}
-                                        </Text>
-                                    }
-                                    is_danger
-                                />
-                            )}
-                            <AdditionalKycInfoForm setError={setError} />
+                            <AdditionalKycInfoFormWithHintBox setError={setError} error={error} />
                         </Modal.Body>
                     </Modal>
                 </DesktopWrapper>
@@ -84,7 +99,7 @@ export const AdditionalKycInfoModal = observer(() => {
                                     is_danger
                                 />
                             )}
-                            <AdditionalKycInfoForm setError={setError} />
+                            <AdditionalKycInfoForm />
                         </Div100vhContainer>
                     </PageOverlay>
                 </MobileWrapper>

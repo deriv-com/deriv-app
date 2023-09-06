@@ -441,7 +441,7 @@ type TCommonStore = {
 
 type TUiStore = {
     is_additional_kyc_info_modal_open: boolean;
-    is_information_submitted_modal_open: boolean;
+    is_kyc_information_submitted_modal_open: boolean;
     addToast: (toast_config: TAddToastProps) => void;
     app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;
     current_focus: string | null;
@@ -527,7 +527,7 @@ type TUiStore = {
             | []
     ) => void;
     toggleAdditionalKycInfoModal: () => void;
-    toggleInformationSubmittedModal: () => void;
+    toggleKycInformationSubmittedModal: () => void;
 };
 
 type TPortfolioStore = {

@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useWalletAccountsList } from '@deriv/api';
 import AccountsList from '../AccountsList';
+import { ProgressBar } from '../ProgressBar';
 import { WalletCard } from '../WalletCard';
+import { WalletListCardIActions } from '../WalletListCardIActions';
 import './WalletsCarousel.scss';
 
 const WalletsCarousel = () => {
@@ -26,13 +28,24 @@ const WalletsCarousel = () => {
     return (
         <React.Fragment>
             <div className='wallets-carousel' ref={emblaRef}>
-                <section className='wallets-carousel__container'>
+                <div className='wallets-carousel__container'>
                     {wallet_accounts_list.map(wallet => (
-                        <WalletCard key={wallet.loginid} account={wallet} />
+                        <WalletCard key={`${wallet.loginid}`} account={wallet} />
                     ))}
-                </section>
+                </div>
+                <div className='wallets-carousel__progress-bar'>
+                    <ProgressBar
+                        step={active_index + 1}
+                        amount_of_steps={wallet_accounts_list.map((_, idx) => idx.toString())}
+                        setStep={setActiveIndex}
+                        is_transition={true}
+                    />
+                </div>
+                <div className='wallets-carousel__actions'>
+                    <WalletListCardIActions account={wallet_accounts_list} is_desktop_wallet={false} />
+                </div>
             </div>
-            <AccountsList data={wallet_accounts_list[active_index]} />
+            <AccountsList data={wallet_accounts_list?.[active_index]} />
         </React.Fragment>
     );
 };

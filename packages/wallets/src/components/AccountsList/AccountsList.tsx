@@ -6,7 +6,7 @@ type TAccountsListProps = {
 };
 
 const AccountsList = ({ data }: TAccountsListProps) => {
-    return <div className='wallets-accounts-list'>{data.loginid}</div>;
+    return <div className='wallets-accounts-list'>{data?.loginid}</div>;
 };
 
 export default AccountsList;

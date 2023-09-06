@@ -3,6 +3,7 @@
     width: 100vw;
     padding: 2rem;
     overflow: hidden;
+    gap: 1.6rem;
 
     &__container {
         height: 100%;
@@ -10,5 +11,21 @@
         align-items: center;
         justify-content: flex-start;
         gap: 2.4rem;
+    }
+
+    &__progress-bar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.6rem;
+    }
+
+    &__actions {
+        display: flex;
+        padding: 0rem 1.6rem;
+        justify-content: center;
+        align-items: center;
+        gap: 0.8rem;
+        align-self: stretch;
     }
 }

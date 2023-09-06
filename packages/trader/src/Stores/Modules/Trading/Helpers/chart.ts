@@ -70,10 +70,14 @@ export const getChartAnalyticsData = (state: keyof typeof STATE_TYPES, option: T
         symbol_category: tab_market_name = '',
         time_interval_name,
     } = option;
-    const open_close_action = is_open ? ACTION.OPEN : ACTION.CLOSE;
     const chart_event_type = 'ce_chart_types_form';
     const market_event_type = 'ce_market_types_form';
     const indicators_event_type = 'ce_indicators_types_form';
+    const indicators_subform = is_info_open ? SUBFORM_NAME.INDICATORS_INFO : SUBFORM_NAME.INDICATORS_TYPE;
+    const info_open_close_action = is_info_open ? ACTION.INFO_OPEN : ACTION.INFO_CLOSE;
+    const favorites_action = is_favorite ? ACTION.ADD_TO_FAVORITES : ACTION.DELETE_FROM_FAVORITES;
+    const open_close_action = is_open ? ACTION.OPEN : ACTION.CLOSE;
+    const search_event_type = state === STATE_TYPES.MARKET_SEARCH ? market_event_type : indicators_event_type;
 
     if (chart_type_name) {
         const payload = {
@@ -111,7 +115,7 @@ export const getChartAnalyticsData = (state: keyof typeof STATE_TYPES, option: T
             payload.data.action = ACTION.EDIT_ACTIVE;
             return payload;
         } else if (state === STATE_TYPES.INDICATOR_INFO_TOGGLE) {
-            payload.data.action = is_info_open ? ACTION.INFO_OPEN : ACTION.INFO_CLOSE;
+            payload.data.action = info_open_close_action;
             return payload;
         }
     }
@@ -127,7 +131,7 @@ export const getChartAnalyticsData = (state: keyof typeof STATE_TYPES, option: T
                 action: ACTION.ADD_ACTIVE,
                 indicator_type_name,
                 indicators_category_name,
-                subform_name: is_info_open ? SUBFORM_NAME.INDICATORS_INFO : SUBFORM_NAME.INDICATORS_TYPE,
+                subform_name: indicators_subform,
             },
             event_type: indicators_event_type,
         };
@@ -144,7 +148,7 @@ export const getChartAnalyticsData = (state: keyof typeof STATE_TYPES, option: T
                 action: ACTION.SEARCH,
                 search_string,
             },
-            event_type: state === STATE_TYPES.MARKET_SEARCH ? market_event_type : indicators_event_type,
+            event_type: search_event_type,
         };
     }
     if (state === STATE_TYPES.MARKETS_LIST_TOGGLE) {
@@ -178,7 +182,7 @@ export const getChartAnalyticsData = (state: keyof typeof STATE_TYPES, option: T
     if (state === STATE_TYPES.FAVORITE_MARKETS_TOGGLE && market_type_name) {
         return {
             data: {
-                action: is_favorite ? ACTION.ADD_TO_FAVORITES : ACTION.DELETE_FROM_FAVORITES,
+                action: favorites_action,
                 market_type_name,
             },
             event_type: market_event_type,

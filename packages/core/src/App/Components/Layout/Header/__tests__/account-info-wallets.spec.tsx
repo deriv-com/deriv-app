@@ -29,7 +29,6 @@ jest.mock('@deriv/api', () => ({
                                 loginid: 'CR123',
                             },
                         ],
-                        // loginid: 'CRW909900',
                         loginid: 'CR123',
                     },
                 },

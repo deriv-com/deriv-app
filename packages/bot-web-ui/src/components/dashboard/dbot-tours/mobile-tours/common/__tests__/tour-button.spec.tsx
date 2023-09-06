@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import TourButton from '../tour-button';
 
 const mocked_props = {
@@ -11,16 +11,17 @@ describe('<TourButton />', () => {
     it('should render TourButton with label', () => {
         render(<TourButton {...mocked_props} />);
         const button = screen.getByRole('button', { name: /Start Tour/i });
-        expect(button).toHaveTextContent('Start Tour');
+        expect(button).toBeInTheDocument();
     });
 
-    it('should npt render TourButton with label', () => {
+    it('should not render TourButton with label', () => {
         const mocked_null_props = {
             ...mocked_props,
             label: null,
         };
-        const { container } = render(<TourButton {...mocked_null_props} />);
-        expect(container).not.toHaveTextContent('Start Tour');
+        render(<TourButton {...mocked_null_props} />);
+        const button = screen.queryByRole('button', { name: /Start Tour/i });
+        expect(button).not.toBeInTheDocument();
     });
 
     it('should render TourButton with specified type', () => {
@@ -32,9 +33,7 @@ describe('<TourButton />', () => {
     it('should call onClick when the button is clicked', () => {
         render(<TourButton {...mocked_props} />);
         const button = screen.getByRole('button', { name: /Start Tour/i });
-        act(() => {
-            fireEvent.click(button);
-        });
+        fireEvent.click(button);
         expect(mocked_props.onClick).toHaveBeenCalledTimes(1);
     });
 });

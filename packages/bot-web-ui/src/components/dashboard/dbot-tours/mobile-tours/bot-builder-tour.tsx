@@ -33,7 +33,7 @@ const BotBuilderTour = observer(() => {
                     {
                         <ProgressBarOnboarding
                             step={tour_step}
-                            amount_of_steps={Object.keys(BOT_BUILDER_MOBILE)}
+                            amount_of_steps={BOT_BUILDER_MOBILE.map(v => v.tour_step_key.toString())}
                             setStep={setTourStep}
                         />
                     }

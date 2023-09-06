@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import Accordion from '../accordion';
 
 const mocked_props = {
@@ -49,9 +49,7 @@ describe('<Accordion />', () => {
     it('should close accordion', async () => {
         render(<Accordion {...mocked_props} />);
         const accordion = screen.getByTestId('test_string');
-        act(() => {
-            fireEvent.click(accordion);
-        });
+        fireEvent.click(accordion);
         await waitFor(() => {
             expect(screen.getByTestId('accordion-content')).not.toHaveClass('dbot-accordion__content--open');
         });

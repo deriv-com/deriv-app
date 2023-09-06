@@ -55,10 +55,8 @@ describe('<OnboardingTour />', () => {
         expect(mock_DBot_store?.dashboard.has_started_onboarding_tour).toBe(false);
     });
 
-    it('Check if next button is clicked', async () => {
+    it('should show prev button if next button is clicked', async () => {
         const nextButton = screen.getByTestId('next-onboard-tour');
-        const onClickMock = jest.fn();
-        nextButton.onclick = onClickMock;
         for (let i = 0; i < 3; i++) {
             userEvent.click(nextButton);
         }
@@ -68,10 +66,8 @@ describe('<OnboardingTour />', () => {
         });
     });
 
-    it('should check Previous button is clicked', async () => {
+    it('should not show prev button if we reach to step 1', async () => {
         const prevButton = screen.getByTestId('prev-onboard-tour');
-        const prevButtonOnClickMock = jest.fn();
-        prevButton.onclick = prevButtonOnClickMock;
         for (let i = 0; i < 2; i++) {
             userEvent.click(prevButton);
         }
@@ -80,13 +76,42 @@ describe('<OnboardingTour />', () => {
         });
     });
 
-    it('calls onCloseTour when Finish is clicked', () => {
+    it('should render step 3 on next button click', () => {
         const nextButton = screen.getByTestId('next-onboard-tour');
-        const nextButtonOnClickMock = jest.fn();
-        nextButton.onclick = nextButtonOnClickMock;
-        for (let i = 0; i < 6; i++) {
-            userEvent.click(nextButton);
-        }
+        userEvent.click(nextButton);
+        const navBar = screen.getByTestId('dbot-onboard-slider__navbar');
+        expect(navBar).toHaveTextContent('3/7');
+    });
+
+    it('should render step 4 on next button click', () => {
+        const nextButton = screen.getByTestId('next-onboard-tour');
+        userEvent.click(nextButton);
+        const navBar = screen.getByTestId('dbot-onboard-slider__navbar');
+        expect(navBar).toHaveTextContent('4/7');
+    });
+
+    it('should render step 5 on next button click', () => {
+        const nextButton = screen.getByTestId('next-onboard-tour');
+        userEvent.click(nextButton);
+        const navBar = screen.getByTestId('dbot-onboard-slider__navbar');
+        expect(navBar).toHaveTextContent('5/7');
+    });
+
+    it('should render step 6 on next button click', () => {
+        const nextButton = screen.getByTestId('next-onboard-tour');
+        userEvent.click(nextButton);
+        const navBar = screen.getByTestId('dbot-onboard-slider__navbar');
+        expect(navBar).toHaveTextContent('6/7');
+    });
+
+    it('should render step 7 on next button click', () => {
+        const nextButton = screen.getByTestId('next-onboard-tour');
+        userEvent.click(nextButton);
+        const navBar = screen.getByTestId('dbot-onboard-slider__navbar');
+        expect(navBar).toHaveTextContent('7/7');
+    });
+
+    it('calls onCloseTour when Finish is clicked', () => {
         const endTourButton = screen.getByTestId('finish-onboard-tour');
         userEvent.click(endTourButton);
         expect(mock_DBot_store?.dashboard.has_started_onboarding_tour).toBe(false);

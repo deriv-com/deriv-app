@@ -380,7 +380,7 @@ export const BOT_BUILDER_TOUR = [
 export type TStepMobile = {
     header: string;
     content: React.ReactElement | [];
-    tour_step_key?: number;
+    tour_step_key: number;
 };
 
 export const BOT_BUILDER_MOBILE: TStepMobile[] = [

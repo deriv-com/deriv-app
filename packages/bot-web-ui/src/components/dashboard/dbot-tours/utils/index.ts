@@ -17,7 +17,7 @@ export const tour_status_ended: TTourStatus = {
     type: `${tour_type.key}_status`,
 };
 
-let tour: { [key: string]: string } = {};
+let tour: Record<string, string> = {};
 let current_target: number | undefined;
 
 export const handleJoyrideCallback = (data: CallBackProps) => {

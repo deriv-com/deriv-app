@@ -1,6 +1,6 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
@@ -39,14 +39,12 @@ describe('<BotBuilderTour />', () => {
     });
 
     it('shows the tour content when tour starts', () => {
-        const tourElement = screen.getByTestId('botbuilder-tour-mobile');
-        expect(tourElement).toHaveClass('dbot-slider__bot-builder-tour');
+        const tourElement = screen.queryByTestId('botbuilder-tour-mobile');
+        expect(tourElement).toBeInTheDocument();
     });
 
-    it('Check if next button is clicked', async () => {
+    it('should show prev button if next button is clicked', async () => {
         const nextButton = screen.getByTestId('next-bot-builder-tour');
-        const onClickMock = jest.fn();
-        nextButton.onclick = onClickMock;
         userEvent.click(nextButton);
         await waitFor(() => {
             const prevButton = screen.getByTestId('prev-bot-builder-tour');
@@ -54,23 +52,29 @@ describe('<BotBuilderTour />', () => {
         });
     });
 
-    it('should check Previous button is clicked', async () => {
+    it('should not show prev button if we reach to step 1', async () => {
         const prevButton = screen.getByTestId('prev-bot-builder-tour');
-        const prevButtonOnClickMock = jest.fn();
-        prevButton.onclick = prevButtonOnClickMock;
         userEvent.click(prevButton);
         await waitFor(() => {
             expect(prevButton).not.toBeInTheDocument();
         });
     });
 
-    it('calls onCloseTour when Finish is clicked', () => {
+    it('should show step 2 on next button click', () => {
         const nextButton = screen.getByTestId('next-bot-builder-tour');
-        const nextButtonOnClickMock = jest.fn();
-        nextButton.onclick = nextButtonOnClickMock;
-        for (let i = 0; i < 2; i++) {
-            userEvent.click(nextButton);
-        }
+        userEvent.click(nextButton);
+        const navBar = screen.getByTestId('dbot-acc-id');
+        expect(navBar).toHaveTextContent('Step 2');
+    });
+
+    it('should show step 3 on next button click', () => {
+        const nextButton = screen.getByTestId('next-bot-builder-tour');
+        userEvent.click(nextButton);
+        const navBar = screen.getByTestId('dbot-acc-id');
+        expect(navBar).toHaveTextContent('Step 3');
+    });
+
+    it('calls onCloseTour when Finish is clicked', () => {
         const endTourButton = screen.getByTestId('finish-bot-builder-tour');
         userEvent.click(endTourButton);
         expect(mock_DBot_store?.dashboard.has_started_bot_builder_tour).toBe(false);

@@ -27,9 +27,10 @@ const OnboardingTour = observer(() => {
     const { content, header, img, tour_step_key } = tour_data;
     const tour_button_text = tour_step === 7 ? localize('Finish') : localize('Next');
     const steps_not_required = [1, 2];
+    const test_id = tour_step_key === 7 ? 'finish-onboard-tour' : 'next-onboard-tour';
 
     React.useEffect(() => {
-        Object.values(DBOT_ONBOARDING_MOBILE).forEach(data => {
+        DBOT_ONBOARDING_MOBILE.forEach(data => {
             if (data.tour_step_key === tour_step) setTourData(data);
         });
         setTourActiveStep(tour_step);
@@ -48,7 +49,8 @@ const OnboardingTour = observer(() => {
                         weight='less-prominent'
                         line_height='s'
                         size='xxs'
-                    >{`${tour_step_key}/6`}</Text>
+                        data-testid='dbot-onboard-slider__navbar'
+                    >{`${tour_step_key}/7`}</Text>
                     <Text
                         color='prominent'
                         weight='--text-less-prominent'
@@ -104,7 +106,7 @@ const OnboardingTour = observer(() => {
                     {!steps_not_required.includes(tour_step) && (
                         <ProgressBarOnboarding
                             step={tour_step}
-                            amount_of_steps={Object.keys(DBOT_ONBOARDING_MOBILE)}
+                            amount_of_steps={DBOT_ONBOARDING_MOBILE.map(v => v.tour_step_key.toString())}
                             setStep={setStep}
                         />
                     )}
@@ -135,7 +137,7 @@ const OnboardingTour = observer(() => {
                             onTourEnd(tour_step, true);
                         }}
                         label={tour_button_text}
-                        data-testid={tour_step_key === 7 ? 'finish-onboard-tour' : 'next-onboard-tour'}
+                        data-testid={test_id}
                     />
                 </div>
             </div>

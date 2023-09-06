@@ -7,7 +7,7 @@ import { TStepMobile } from '../../config';
 type TAccordion = {
     content_data: TStepMobile | null;
     expanded: boolean;
-    test_id: string;
+    test_id?: string;
 };
 
 const Accordion = ({ content_data, expanded = false, test_id = 'dbot-acc-id', ...props }: TAccordion) => {

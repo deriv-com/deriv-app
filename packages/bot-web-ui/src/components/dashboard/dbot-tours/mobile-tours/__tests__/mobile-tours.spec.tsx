@@ -32,14 +32,14 @@ describe('<MobileTours />', () => {
         render(<MobileTours />, {
             wrapper,
         });
-        expect(screen.queryByTestId('onboarding-tour-mobile')).toBeInTheDocument();
+        expect(screen.getByTestId('onboarding-tour-mobile')).toBeInTheDocument();
     });
 
-    it('should render BotBuilderTour tour', async () => {
+    it('should render BotBuilderTour tour', () => {
         mock_DBot_store?.dashboard.setOnBoardTourRunState(false);
         render(<MobileTours />, {
             wrapper,
         });
-        expect(screen.queryByTestId('botbuilder-tour-mobile')).toBeInTheDocument();
+        expect(screen.getByTestId('botbuilder-tour-mobile')).toBeInTheDocument();
     });
 });

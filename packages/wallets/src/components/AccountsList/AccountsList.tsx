@@ -1,8 +1,8 @@
 import React from 'react';
-import { useWalletAccountsList } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api';
 
 type TAccountsListProps = {
-    data: ReturnType<typeof useWalletAccountsList>['data'][number];
+    data: ReturnType<typeof useActiveWalletAccount>['data'];
 };
 
 const AccountsList = ({ data }: TAccountsListProps) => {

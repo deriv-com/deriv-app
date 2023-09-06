@@ -10,3 +10,4 @@ export * from './AccountsList';
 export * from './WalletsCarousel';
 export * from './WalletCard';
 export * from './ProgressBar';
+export * from './WalletsCarouselContent';

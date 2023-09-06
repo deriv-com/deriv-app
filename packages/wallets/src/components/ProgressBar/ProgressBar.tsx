@@ -8,7 +8,7 @@ type TProps = {
     is_transition?: boolean;
 };
 
-const ProgressBarOnboarding: React.FC<TProps> = ({ step, amount_of_steps, setStep, is_transition }) => {
+const ProgressBar: React.FC<TProps> = ({ step, amount_of_steps, setStep, is_transition }) => {
     return (
         <div className='wallets-progress-bar'>
             {amount_of_steps.map((st, index) => {
@@ -28,4 +28,4 @@ const ProgressBarOnboarding: React.FC<TProps> = ({ step, amount_of_steps, setSte
     );
 };
 
-export default ProgressBarOnboarding;
+export default ProgressBar;

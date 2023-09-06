@@ -18,7 +18,7 @@ const FilterModalHeader = ({ pageHeaderReturnFn }: TFilterModalHeaderProps) => {
             <React.Fragment>
                 <DesktopWrapper>
                     <PageReturn
-                        className='filter-modal__header'
+                        className='filter-modal-header'
                         onClick={pageHeaderReturnFn}
                         page_title={localize('Payment methods')}
                     />
@@ -26,7 +26,7 @@ const FilterModalHeader = ({ pageHeaderReturnFn }: TFilterModalHeaderProps) => {
                 <MobileWrapper>
                     <Text align='center' weight='bold'>
                         <Icon
-                            className='filter-modal__header-return-button'
+                            className='filter-modal-header__return-button'
                             icon='IcArrowLeftBold'
                             onClick={pageHeaderReturnFn}
                         />

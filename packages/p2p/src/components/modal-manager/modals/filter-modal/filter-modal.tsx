@@ -1,6 +1,5 @@
 import React from 'react';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal } from '@deriv/components';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
@@ -16,6 +15,9 @@ export type TPaymentMethod = {
 
 const FilterModal = () => {
     const { buy_sell_store, my_profile_store } = useStores();
+    const {
+        ui: { is_mobile },
+    } = useStore();
     const { hideModal, is_modal_open, showModal, useSavedState } = useModalManagerContext();
     const {
         onClickApply: onClickApplyFilter,
@@ -78,7 +80,7 @@ const FilterModal = () => {
                 key: 'LeavePageModal',
                 props: {
                     onLeavePage: () => {
-                        if (isMobile()) {
+                        if (is_mobile) {
                             setSelectedMethods(
                                 selected_methods.filter((selected_method: string) =>
                                     selected_payment_method_value.includes(selected_method)
@@ -144,7 +146,6 @@ const FilterModal = () => {
         return () => {
             clearSearchSection();
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const pageHeaderReturnFn = () => {

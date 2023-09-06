@@ -49,7 +49,7 @@ describe('<FilterModalBody />', () => {
     });
     it('should handle toggle button click', () => {
         render(<FilterModalBody {...mock_props} />);
-        userEvent.click(screen.getByRole('checkbox'));
+        userEvent.click(screen.getByRole('checkbox', { name: 'matching_ads_toggler' }));
         expect(mock_store_values.buy_sell_store.setShouldUseClientLimits).toHaveBeenCalledWith(true);
         expect(mock_props.setHasMadeChanges).toHaveBeenCalledWith(true);
     });

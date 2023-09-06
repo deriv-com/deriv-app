@@ -34,7 +34,7 @@ const FilterModalBody = ({
             {show_filter_payment_methods ? (
                 <React.Fragment>
                     <FilterModalSearch />
-                    <div className='filter-modal__checkbox-container'>
+                    <div className='filter-modal-body__checkbox-container'>
                         <ThemedScrollbars is_scrollbar_hidden>
                             <FilterModalResult selected_methods={selected_methods} onChange={onChange} />
                         </ThemedScrollbars>
@@ -43,10 +43,10 @@ const FilterModalBody = ({
             ) : (
                 <React.Fragment>
                     <div
-                        className='filter-modal__row filter-modal__select'
+                        className='filter-modal-body__row filter-modal-body__select'
                         onClick={() => setShowFilterPaymentMethods(true)}
                     >
-                        <div className='filter-modal__column'>
+                        <div className='filter-modal-body__column'>
                             <Text color='prominent' size='xs'>
                                 <Localize i18n_default_text='Payment methods' />
                             </Text>
@@ -56,7 +56,7 @@ const FilterModalBody = ({
                                 </Text>
                             ) : (
                                 <Text
-                                    className='filter-modal__selected-payment-methods'
+                                    className='filter-modal-body__selected-payment-methods'
                                     color='less-prominent'
                                     size='xs'
                                 >
@@ -64,10 +64,10 @@ const FilterModalBody = ({
                                 </Text>
                             )}
                         </div>
-                        <Icon className='filter-modal__arrow' icon='IcChevronRight' size={18} />
+                        <Icon className='filter-modal-body__arrow' icon='IcChevronRight' size={18} />
                     </div>
-                    <div className='filter-modal__row'>
-                        <div className='filter-modal__column'>
+                    <div className='filter-modal-body__row'>
+                        <div className='filter-modal-body__column'>
                             <Text color='prominent' size='xs'>
                                 <Localize i18n_default_text='Matching ads' />
                             </Text>
@@ -84,6 +84,7 @@ const FilterModalBody = ({
                                 setHasMadeChanges(true);
                             }}
                             is_enabled={should_use_client_limits}
+                            name='matching_ads_toggler'
                         />
                     </div>
                 </React.Fragment>

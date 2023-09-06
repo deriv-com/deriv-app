@@ -45,16 +45,16 @@ const FilterModalFooter = ({
                         primary
                         onClick={onClickConfirmPaymentMethods}
                     >
-                        {localize('Confirm')}
+                        <Localize i18n_default_text='Confirm' />
                     </Button>
                 </Button.Group>
             ) : (
                 <Button.Group className={class_name}>
                     <Button large secondary onClick={onClickReset}>
-                        {localize('Reset')}
+                        <Localize i18n_default_text='Reset' />
                     </Button>
                     <Button disabled={!has_made_changes} large primary onClick={onClickApply}>
-                        {localize('Apply')}
+                        <Localize i18n_default_text='Apply' />
                     </Button>
                 </Button.Group>
             )}

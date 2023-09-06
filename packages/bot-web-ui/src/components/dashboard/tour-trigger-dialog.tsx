@@ -22,9 +22,7 @@ const TourTriggrerDialog = observer(() => {
             } else {
                 setTourSettings(new Date().getTime(), `${current_tour_type_key}_token`);
             }
-            tour_type.key = current_tour_type_key;
         }
-
         setTourDialogVisibility(false);
     };
 

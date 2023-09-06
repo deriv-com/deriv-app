@@ -1,14 +1,14 @@
 import React from 'react';
 import './ProgressBar.scss';
 
-type TProgressBarOnboarding = {
+type TProps = {
     step: number;
     amount_of_steps: Array<string>;
     setStep: React.Dispatch<React.SetStateAction<number>>;
     is_transition?: boolean;
 };
 
-const ProgressBarOnboarding = ({ step, amount_of_steps, setStep, is_transition }: TProgressBarOnboarding) => {
+const ProgressBarOnboarding: React.FC<TProps> = ({ step, amount_of_steps, setStep, is_transition }) => {
     return (
         <div className='wallets-progress-bar'>
             {amount_of_steps.map((st, index) => {

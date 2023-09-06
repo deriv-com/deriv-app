@@ -61,7 +61,7 @@ const Dialog = ({ preClass, selected_time, end_times, start_times, onChange, cla
                         <strong>{localize('Hour')}</strong>
                     </div>
                     <div>
-                        {hours.map((h, key) => {
+                        {hours.map(h => {
                             to_compare_moment.hour(Number(h));
                             const start_times_reset_minute = start_times_moment.map(start_time =>
                                 start_time.clone().minute(0)
@@ -90,7 +90,7 @@ const Dialog = ({ preClass, selected_time, end_times, start_times, onChange, cla
                                         { [`${preClass}__selector-list-item--selected`]: hour === h },
                                         { [`${preClass}__selector-list-item--disabled`]: !is_enabled }
                                     )}
-                                    key={key}
+                                    key={h}
                                     onClick={() => {
                                         selectOption('h', h, selected_time, is_enabled);
                                     }}
@@ -106,7 +106,7 @@ const Dialog = ({ preClass, selected_time, end_times, start_times, onChange, cla
                         <strong>{localize('Minute')}</strong>
                     </div>
                     <div>
-                        {minutes.map((mm, key) => {
+                        {minutes.map(mm => {
                             to_compare_moment.hour(Number(hour)).minute(Number(mm));
                             const is_enabled = isBetween(
                                 to_compare_moment,
@@ -121,7 +121,7 @@ const Dialog = ({ preClass, selected_time, end_times, start_times, onChange, cla
                                         { [`${preClass}__selector-list-item--selected`]: minute === mm },
                                         { [`${preClass}__selector-list-item--disabled`]: !is_enabled }
                                     )}
-                                    key={key}
+                                    key={mm}
                                     onClick={() => {
                                         selectOption('m', mm, selected_time, is_enabled);
                                     }}

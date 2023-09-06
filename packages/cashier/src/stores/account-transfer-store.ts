@@ -586,7 +586,7 @@ export default class AccountTransferStore {
         setLoading(true);
         this.error.setErrorMessage({ code: '', message: '' });
 
-        const is_mt_transfer = this.selected_from.is_mt || this.selected_to.is_mt;
+        const is_mt_transfer = this.selected_from.is_mt ?? this.selected_to.is_mt;
 
         if (is_mt_transfer) this.setIsMT5TransferInProgress(true);
 
@@ -691,12 +691,12 @@ export default class AccountTransferStore {
         } else {
             const { is_ok, message } = validNumber(converter_from_amount, {
                 type: 'float',
-                decimals: getDecimalPlaces(this.selected_from.currency || ''),
+                decimals: getDecimalPlaces(this.selected_from.currency ?? ''),
                 min: Number(this.transfer_limit.min),
                 max: Number(this.transfer_limit.max),
             });
             if (!is_ok) {
-                setConverterFromError(message || '');
+                setConverterFromError(message ?? '');
             } else if (Number(this.selected_from.balance) < Number(converter_from_amount)) {
                 setConverterFromError(localize('Insufficient funds'));
             } else {

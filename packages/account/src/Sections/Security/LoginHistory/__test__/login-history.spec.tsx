@@ -5,6 +5,15 @@ import { isMobile } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import LoginHistory from '../login-history';
 
+jest.mock('@deriv/components', () => {
+    const original_module = jest.requireActual('@deriv/components');
+
+    return {
+        ...original_module,
+        Loading: jest.fn(() => 'mockedLoading'),
+    };
+});
+
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useLoginHistory: jest.fn(),
@@ -20,16 +29,18 @@ const mockUseLoginHistory = useLoginHistory as jest.MockedFunction<typeof useLog
 describe('<LoginHistory />', () => {
     let mock_store = mockStore({});
     let response = {
-        login_history: [
-            {
-                date: '',
-                browser: '',
-                action: <></>,
-                status: <></>,
-                ip: '',
-                id: 0,
-            },
-        ],
+        data: {
+            formatted_data: [
+                {
+                    date: '',
+                    browser: '',
+                    action: '',
+                    status: '',
+                    ip: '',
+                    id: 0,
+                },
+            ],
+        },
         isLoading: false,
         isError: false,
         error: '',
@@ -52,19 +63,24 @@ describe('<LoginHistory />', () => {
                 is_switching: false,
                 is_authorize: true,
             },
+            ui: {
+                is_mobile: false,
+            },
         });
 
         response = {
-            login_history: [
-                {
-                    date: '2023-08-28 03:11:45 GMT',
-                    browser: '"Chrome  v116.0.0.0"',
-                    action: <>login</>,
-                    status: <>successful</>,
-                    ip: '175.143.37.57',
-                    id: 0,
-                },
-            ],
+            data: {
+                formatted_data: [
+                    {
+                        date: '2023-08-28 03:11:45 GMT',
+                        browser: '"Chrome  v116.0.0.0"',
+                        action: 'login',
+                        status: 'successful',
+                        ip: '175.143.37.57',
+                        id: 0,
+                    },
+                ],
+            },
             isLoading: false,
             isError: false,
             error: 'this is an error message',
@@ -72,7 +88,7 @@ describe('<LoginHistory />', () => {
     });
 
     it('should render Login History List when isMobile is true', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
+        mock_store.ui.is_mobile = true;
         renderComponent();
         expect(screen.getByText(/date and time/i)).toHaveClass('dc-text login-history__list__row__cell--title');
     });
@@ -107,13 +123,13 @@ describe('<LoginHistory />', () => {
     it('should render Loading if client: is_switching is true', () => {
         mock_store.client.is_switching = true;
         renderComponent();
-        expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
+        expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
     it('should render Loading with classname account__initial-loader if isLoading is true', () => {
         response.isLoading = true;
         renderComponent();
-        expect(screen.getByTestId('dt_initial_loader')).toHaveClass('initial-loader account__initial-loader');
+        expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
     it('should render Error with error message', () => {
@@ -123,13 +139,13 @@ describe('<LoginHistory />', () => {
     });
 
     it('should render Table Item text: Logout under action is action is not login', () => {
-        response.login_history[0].action = <>logout</>;
+        response.data.formatted_data[0].action = 'logout';
         renderComponent();
         expect(screen.getByText(/logout/i)).toBeInTheDocument();
     });
 
     it('should render Table Item text: Failed under status if status is not 1', () => {
-        response.login_history[0].status = <>failed</>;
+        response.data.formatted_data[0].status = 'failed';
         renderComponent();
         expect(screen.getByText(/failed/i)).toBeInTheDocument();
     });

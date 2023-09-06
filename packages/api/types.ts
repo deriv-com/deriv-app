@@ -1082,17 +1082,3 @@ export type TSocketPaginateableEndpointNames = KeysMatching<
     TSocketEndpoints,
     { request: { limit?: number; offset?: number } }
 >;
-
-export type TData = TDataItem[];
-
-type TDataItem = TFields & {
-    id: number;
-};
-
-export type TFields = {
-    date: string;
-    action: JSX.Element;
-    browser: string | JSX.Element;
-    ip: string;
-    status: JSX.Element;
-};

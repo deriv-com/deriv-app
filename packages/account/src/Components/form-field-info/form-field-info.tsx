@@ -14,14 +14,17 @@ export const FormFieldInfo = (props: Omit<TPopoverProps, 'alignment'>) => {
     const ref = React.useRef<HTMLDivElement>(null);
 
     React.useEffect(() => {
+        // Close popover when clicking outside of it
         const handleClickOutside = (event: MouseEvent) => {
             const target = event.target as HTMLElement;
             if (ref.current && !ref.current.contains(target)) {
                 setIsOpen(false);
             }
         };
+        // Bind the event listener to the document so it can listen for events that happen outside of the component
         document.addEventListener('click', handleClickOutside, true);
         return () => {
+            // Unbind the event listener on clean up when component unmounts
             document.removeEventListener('click', handleClickOutside, true);
         };
     }, []);

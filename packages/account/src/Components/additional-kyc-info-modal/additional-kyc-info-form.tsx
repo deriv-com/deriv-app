@@ -13,7 +13,7 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 import { isMobile } from '@deriv/shared';
-import { Field, FieldProps, Form, Formik } from 'formik';
+import { Field, FieldProps, Form, Formik, FormikErrors } from 'formik';
 import FormFieldInfo from '../form-field-info';
 import { FormInputField } from '../forms/form-fields';
 import { TListItem, getFormConfig } from './form-config';
@@ -67,6 +67,19 @@ export const AdditionalKycInfoForm = observer(
             }
         }, [error, isError, setError]);
 
+        const onItemSelection =
+            (
+                field: string,
+                setFieldValue: (
+                    field: string,
+                    value: string,
+                    shouldValidate?: boolean | undefined
+                ) => Promise<void | FormikErrors<Record<string, unknown>>>
+            ) =>
+            ({ value, text }: TListItem) => {
+                setFieldValue(field, value ? text : '', true);
+            };
+
         return (
             <Formik
                 validateOnMount
@@ -85,7 +98,7 @@ export const AdditionalKycInfoForm = observer(
                                 <FormTitle />
                                 <fieldset className='additional-kyc-info-modal__form-field'>
                                     <Field name='place_of_birth'>
-                                        {({ field, meta: { touched, error } }: FieldProps) => (
+                                        {({ field, meta: { touched, error } }: FieldProps<typeof initialValues>) => (
                                             <React.Fragment>
                                                 <DesktopWrapper>
                                                     <Autocomplete
@@ -94,9 +107,7 @@ export const AdditionalKycInfoForm = observer(
                                                         data-lpignore='true'
                                                         autoComplete='off' // prevent chrome autocomplete
                                                         error={(touched && error) as string}
-                                                        onItemSelection={({ value, text }: TListItem) => {
-                                                            setFieldValue(field.name, value ? text : '', true);
-                                                        }}
+                                                        onItemSelection={onItemSelection(field.name, setFieldValue)}
                                                         data-testid={field.name}
                                                     />
                                                 </DesktopWrapper>
@@ -131,9 +142,7 @@ export const AdditionalKycInfoForm = observer(
                                                         autoComplete='off' // prevent chrome autocomplete
                                                         type='text'
                                                         error={(touched && error) as string}
-                                                        onItemSelection={({ value, text }: TListItem) => {
-                                                            setFieldValue(field.name, value ? text : '', true);
-                                                        }}
+                                                        onItemSelection={onItemSelection(field.name, setFieldValue)}
                                                         data-testid={field.name}
                                                     />
                                                 </DesktopWrapper>
@@ -169,6 +178,8 @@ export const AdditionalKycInfoForm = observer(
                                                     <a
                                                         key={0}
                                                         className='link'
+                                                        target='_blank'
+                                                        rel='noopener noreferrer'
                                                         href='https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
                                                     />,
                                                     <br key={1} />,
@@ -189,8 +200,8 @@ export const AdditionalKycInfoForm = observer(
                                                         autoComplete='off' // prevent chrome autocomplete
                                                         type='text'
                                                         error={(touched && error) as string}
-                                                        onItemSelection={({ value }: TListItem) => {
-                                                            setFieldValue(field.name, value ?? '', true);
+                                                        onItemSelection={({ value = '' }: TListItem) => {
+                                                            setFieldValue(field.name, value, true);
                                                         }}
                                                         list_height='8rem'
                                                         data-testid={field.name}

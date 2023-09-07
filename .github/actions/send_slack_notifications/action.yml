@@ -13,6 +13,7 @@ inputs:
   version:
     description: 'Version'
     required: true
+    default: test
 runs:
   using: composite
   steps:

@@ -20,7 +20,7 @@ const getSortedIndex = (type: string, index: number) => {
     }
 };
 
-const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) => {
+const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean }) => {
     const {
         portfolio: { active_positions },
         ui: { purchase_states: purchased_states_arr, is_mobile, setPurchaseState },

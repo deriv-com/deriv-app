@@ -19,7 +19,7 @@ type TPurchaseFieldset = {
     is_disabled: boolean;
     is_high_low: boolean;
     is_loading: boolean;
-    is_market_closed: boolean;
+    is_market_closed?: boolean;
     is_multiplier: boolean;
     is_proposal_empty: boolean;
     is_proposal_error: boolean;

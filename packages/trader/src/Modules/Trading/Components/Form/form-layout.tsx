@@ -11,7 +11,7 @@ const Screen = Loadable({
     loader: () =>
         isMobile()
             ? import(/* webpackChunkName: "screen-small" */ './screen-small')
-            : import(/* webpackChunkName: "screen-large" */ './screen-large.jsx'),
+            : import(/* webpackChunkName: "screen-large" */ './screen-large'),
     loading: () => null,
     render(loaded, props) {
         const Component = loaded.default;

@@ -59,18 +59,16 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
     };
 
     React.useEffect(() => {
-        if (!isLoading && isSuccess) {
+        if (isSuccess) {
             updateAccountStatus();
             notifications.refreshNotifications();
             ui.toggleAdditionalKycInfoModal();
             ui.toggleKycInformationSubmittedModal();
         }
-    }, [isLoading, isSuccess, notifications, ui, updateAccountStatus]);
+    }, [isSuccess, notifications, ui, updateAccountStatus]);
 
     React.useEffect(() => {
-        if (isError && setError) {
-            setError(error as string);
-        }
+        isError && setError?.(error as string);
     }, [error, isError, setError]);
 
     const onItemSelection =

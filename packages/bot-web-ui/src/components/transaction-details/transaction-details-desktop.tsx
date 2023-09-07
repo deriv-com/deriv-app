@@ -80,8 +80,8 @@ const TransactionDetailsDesktop = observer(() => {
                 transactions={transaction_list}
                 result_columns={result_columns}
                 result={statistics}
-                account={loginid || ''}
-                balance={balance || 0}
+                account={loginid ?? ''}
+                balance={balance ?? 0}
             />
         </Draggable>
     );

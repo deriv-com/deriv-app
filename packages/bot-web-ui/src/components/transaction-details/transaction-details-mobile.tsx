@@ -48,13 +48,13 @@ const TransactionDetailsMobile = observer(() => {
                     has_started_onboarding_tour={false}
                     currency={client?.currency}
                     is_mobile={true}
-                    lost_contracts={statistics?.lost_contracts || 0}
-                    number_of_runs={statistics?.number_of_runs || 0}
+                    lost_contracts={statistics?.lost_contracts ?? 0}
+                    number_of_runs={statistics?.number_of_runs ?? 0}
                     toggleStatisticsInfoModal={toggleStatisticsInfoModal}
-                    total_payout={statistics?.total_payout || 0}
-                    total_profit={statistics?.total_profit || 0}
-                    total_stake={statistics?.total_stake || 0}
-                    won_contracts={statistics?.won_contracts || 0}
+                    total_payout={statistics?.total_payout ?? 0}
+                    total_profit={statistics?.total_profit ?? 0}
+                    total_stake={statistics?.total_stake ?? 0}
+                    won_contracts={statistics?.won_contracts ?? 0}
                 />
             </div>
         </MobileFullPageModal>

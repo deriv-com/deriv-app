@@ -80,7 +80,7 @@ export default function DesktopTransactionTable({
                                         convertDateFormat(
                                             data?.date_start,
                                             'YYYY-M-D HH:mm:ss [GMT]',
-                                            'YYYY-MM-DD HH:mm:ss [GMT] ZZ'
+                                            'YYYY-MM-DD HH:mm:ss [GMT]'
                                         )
                                     }
                                     extra_classes={[`${PARENT_CLASS}__table-cell--grow-big`]}

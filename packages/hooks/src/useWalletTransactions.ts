@@ -1,10 +1,22 @@
+import { useCallback, useMemo } from 'react';
 import { useStore } from '@deriv/stores';
 import { getWalletCurrencyIcon } from '@deriv/utils';
+import useActiveWallet from './useActiveWallet';
 import useCurrencyConfig from './useCurrencyConfig';
 import usePlatformAccounts from './usePlatformAccounts';
 import useWalletsList from './useWalletsList';
-import useActiveWallet from './useActiveWallet';
-import { useMemo } from 'react';
+
+const trading_accounts_display_prefixes = {
+    standard: 'Deriv Apps',
+    mt5: 'MT5',
+    dxtrade: 'Deriv X',
+    binary: 'Binary',
+} as const;
+
+const landing_company_display_shortcodes = {
+    svg: 'SVG',
+    malta: 'Malta',
+} as const;
 
 const useWalletTransactions = (
     action_type: '' | 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer'
@@ -55,30 +67,24 @@ const useWalletTransactions = (
             icon: 'IcWalletCurrencyBtc',
             wallet_currency_type: 'BTC',
         });
-    const accounts = [demo_platform_account, ...real_platform_accounts];
+    const accounts = useMemo(
+        () => [demo_platform_account, ...real_platform_accounts],
+        [demo_platform_account, real_platform_accounts]
+    );
     const { getConfig } = useCurrencyConfig();
 
-    const trading_accounts_display_prefixes = {
-        standard: 'Deriv Apps',
-        mt5: 'MT5',
-        dxtrade: 'Deriv X',
-        binary: 'Binary',
-    } as const;
-
-    const landing_company_display_shortcodes = {
-        svg: 'SVG',
-        malta: 'Malta',
-    } as const;
-
-    const getTradingAccountName = (
-        account_type: 'standard' | 'mt5' | 'dxtrade' | 'binary',
-        is_virtual: boolean,
-        landing_company_shortcode: 'svg' | 'malta'
-    ) => {
-        return `${trading_accounts_display_prefixes[account_type]} ${
-            is_virtual ? 'Demo' : `(${landing_company_display_shortcodes[landing_company_shortcode]})`
-        } account`;
-    };
+    const getTradingAccountName = useCallback(
+        (
+            account_type: 'standard' | 'mt5' | 'dxtrade' | 'binary',
+            is_virtual: boolean,
+            landing_company_shortcode: 'svg' | 'malta'
+        ) => {
+            return `${trading_accounts_display_prefixes[account_type]} ${
+                is_virtual ? 'Demo' : `(${landing_company_display_shortcodes[landing_company_shortcode]})`
+            } account`;
+        },
+        []
+    );
 
     // TODO remove this mock when we're to switch to API data
     const mock_transactions = current_wallet?.is_virtual
@@ -245,6 +251,21 @@ const useWalletTransactions = (
         [action_type, mock_transactions]
     );
 
+    const getTransferAccountName = useCallback(
+        (other_account: Exclude<typeof accounts[number], undefined>) => {
+            if (other_account.account_category === 'wallet') {
+                const wallet = wallets?.find(el => el.loginid === other_account.loginid);
+                return `${wallet?.is_virtual ? 'Demo ' : ''}${wallet?.currency} ${'Wallet'}`;
+            }
+            return getTradingAccountName(
+                other_account.account_type as 'standard' | 'mt5' | 'dxtrade' | 'binary',
+                !!other_account.is_virtual,
+                other_account.landing_company_shortcode as 'svg' | 'malta'
+            );
+        },
+        [getTradingAccountName, wallets]
+    );
+
     const modified_transactions = useMemo(
         () =>
             wallets && current_wallet
@@ -274,32 +295,11 @@ const useWalletTransactions = (
                                       ? transaction.from?.loginid
                                       : transaction.to?.loginid;
                               if (!other_loginid) return null;
-                              const other_account = accounts.find(el => el.loginid === other_loginid);
-                              if (!other_account || !other_account.currency || !other_account.account_type) return null;
+                              const other_account = accounts.find(el => el?.loginid === other_loginid);
+                              if (!other_account?.currency || !other_account?.account_type) return null;
                               account_category = other_account.account_category || 'wallet';
                               account_currency = other_account.currency;
-                              account_name =
-                                  other_account.account_category === 'wallet'
-                                      ? `${
-                                            (
-                                                wallets.find(
-                                                    el => el.loginid === other_account.loginid
-                                                ) as typeof wallets[number]
-                                            ).is_virtual
-                                                ? 'Demo '
-                                                : ''
-                                        }${
-                                            (
-                                                wallets.find(
-                                                    el => el.loginid === other_account.loginid
-                                                ) as typeof wallets[number]
-                                            ).currency
-                                        } ${'Wallet'}`
-                                      : getTradingAccountName(
-                                            other_account.account_type as 'standard' | 'mt5' | 'dxtrade' | 'binary',
-                                            !!other_account.is_virtual,
-                                            other_account.landing_company_shortcode as 'svg' | 'malta'
-                                        );
+                              account_name = getTransferAccountName(other_account);
                               account_type = other_account.account_type;
                               gradient_class = `wallet-card__${
                                   other_account.is_virtual === 1 ? 'demo' : other_account?.currency?.toLowerCase()
@@ -327,7 +327,7 @@ const useWalletTransactions = (
                       })
                       .filter(<T>(value: T | null): value is T => value !== null)
                 : [],
-        [accounts, current_wallet, getConfig, getTradingAccountName, is_dark_mode_on, loginid, transactions, wallets]
+        [accounts, current_wallet, getConfig, getTransferAccountName, is_dark_mode_on, loginid, transactions, wallets]
     );
 
     return { transactions: modified_transactions, isLoading: false, isSuccess: true };

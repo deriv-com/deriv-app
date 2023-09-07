@@ -47,7 +47,7 @@
             align-items: baseline;
 
             @include desktop {
-                background: var(--appstore-banner-background);
+                background: var(--mt5-migration-banner);
                 &__text {
                     width: 50%;
                 }

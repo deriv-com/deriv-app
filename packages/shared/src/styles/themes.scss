@@ -198,9 +198,10 @@
         --badge-blue: #{$color-blue-4};
         --badge-violet: #{$color-blue-2};
         --badge-green: #{$color-green-3};
+        //MT5 Migration Banner
+        --mt5-migration-banner: #{$mt5-migration-banner};
         //Appstore Banner
         --appstore-banner-border-color: #{$color-grey-4};
-        --appstore-banner-background: #{$appstore-banner-background};
     }
     .theme--dark {
         // General

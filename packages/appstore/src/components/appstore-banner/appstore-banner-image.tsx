@@ -1,7 +1,12 @@
 import React from 'react';
 import SVGMigrateDesktopImage from 'Assets/svgs/banner/svg-migrate-desktop.svg';
 import SVGMigrateMobileImage from 'Assets/svgs/banner/svg-migrate-mobile.svg';
-import { BannerImageProps } from './banner_image_types';
+
+export type BannerImageProps<T> = {
+    image: T;
+    className?: string;
+    width?: number;
+};
 
 type TAppstoreBannerImageList = keyof typeof AppstoreBannerImageList;
 
@@ -14,7 +19,7 @@ const AppstoreBannerImage = ({ image, className, width }: BannerImageProps<TApps
     const Component = AppstoreBannerImageList[image] as React.ElementType;
     const data_testid = `dt_${image}`;
 
-    return <Component className={className} style={{ width }} data_testid={data_testid} />;
+    return <Component className={className} style={{ width }} data-testid={data_testid} />;
 };
 
 export default AppstoreBannerImage;

@@ -71,10 +71,10 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) 
         ? hasContractEntered(active_accu_contract.contract_info) && isOpen(active_accu_contract.contract_info)
         : false;
     const indicative =
-        (is_valid_to_sell && active_accu_contract && getIndicativePrice(active_accu_contract?.contract_info)) || null;
+        (is_valid_to_sell && active_accu_contract && getIndicativePrice(active_accu_contract.contract_info)) || null;
     const onClickSellButton = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-        if (active_accu_contract) {
-            onClickSell?.(active_accu_contract.contract_info.contract_id);
+        if (active_accu_contract && onClickSell) {
+            onClickSell(active_accu_contract.contract_info.contract_id);
             e.stopPropagation();
             e.preventDefault();
         }

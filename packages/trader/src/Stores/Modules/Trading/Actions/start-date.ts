@@ -1,19 +1,12 @@
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 import { TTradeStore } from 'Types';
 
-type TOnChangeStartDate = (
-    store: TTradeStore
-) => Promise<
-    Pick<
-        TTradeStore,
-        | 'contract_start_type'
-        | 'duration_units_list'
-        | 'duration_min_max'
-        | 'duration_unit'
-        | 'start_time'
-        | 'expiry_date'
-        | 'expiry_type'
-    > & { sessions?: TTradeStore['sessions'] }
+type TOnChangeStartDate = (store: TTradeStore) => Promise<
+    Pick<TTradeStore, 'contract_start_type' | 'duration_units_list' | 'start_time' | 'expiry_date' | 'expiry_type'> & {
+        sessions?: TTradeStore['sessions'];
+    } & {
+        duration_min_max: { [key: string]: { min: number; max: number } } | { min: number; max: number };
+    } & { duration_unit: string | number }
 >;
 type TOnChangeExpiry = (store: TTradeStore) => Promise<{
     expiry_time: TTradeStore['expiry_time'] | moment.Moment;

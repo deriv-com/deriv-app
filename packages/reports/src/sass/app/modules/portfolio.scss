@@ -79,7 +79,7 @@
         width: 100%;
     }
     &__icon {
-        @extend %inline-icon.disabled;
+        @extend %inline-icon-disabled;
         height: 4.8em;
         width: 4.8em;
         margin-bottom: 1.6em;

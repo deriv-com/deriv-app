@@ -5,10 +5,10 @@ import type {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
+    Portfolio1,
     GetSettings,
     LandingCompany,
     LogOutResponse,
-    Portfolio1,
     ProposalOpenContract,
     ResidenceList,
     SetFinancialAssessmentRequest,
@@ -166,6 +166,15 @@ type TTradingPlatformAvailableAccount = {
     sub_account_type: string;
 };
 
+type TAvailableCFDAccounts = {
+    availability: 'Non-EU' | 'EU' | 'All';
+    description: string;
+    icon: 'Derived' | 'Financial' | 'DerivX' | 'SwapFree';
+    market_type: 'synthetic' | 'financial' | 'all' | 'gaming';
+    name: string;
+    platform: 'mt5' | 'dxtrade';
+};
+
 type TAuthenticationStatus = { document_status: string; identity_status: string };
 
 type TMenuItem = {
@@ -276,6 +285,7 @@ type TClientStore = {
     has_residence: boolean;
     is_authorize: boolean;
     is_financial_account: boolean;
+    is_financial_assessment_needed: boolean;
     is_financial_information_incomplete: boolean;
     is_identity_verification_needed: boolean;
     is_landing_company_loaded: boolean;
@@ -447,6 +457,7 @@ type TUiStore = {
     is_app_disabled: boolean;
     is_link_expired_modal_visible: boolean;
     is_mobile: boolean;
+    is_positions_drawer_on: boolean;
     is_services_error_visible: boolean;
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
@@ -457,6 +468,7 @@ type TUiStore = {
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
+    setPurchaseState: (index: number) => void;
     setHasOnlyForwardingContracts: (has_only_forward_starting_contracts: boolean) => void;
     sub_section_index: number;
     setSubSectionIndex: (index: number) => void;
@@ -465,6 +477,7 @@ type TUiStore = {
     toggleCashier: () => void;
     toggleLanguageSettingsModal: () => void;
     toggleLinkExpiredModal: (state_change: boolean) => void;
+    togglePositionsDrawer: () => void;
     toggleReadyToDepositModal: () => void;
     toggleSetCurrencyModal: () => void;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
@@ -499,6 +512,7 @@ type TUiStore = {
     setResetTradingPasswordModalOpen: () => void;
     populateHeaderExtensions: (header_items: JSX.Element | null) => void;
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
+    purchase_states: boolean[];
     setShouldShowCooldownModal: (value: boolean) => void;
     setAppContentsScrollRef: (ref: React.MutableRefObject<null | HTMLDivElement>) => void;
     populateFooterExtensions: (
@@ -516,11 +530,12 @@ type TUiStore = {
 
 type TPortfolioStore = {
     active_positions: TPortfolioPosition[];
+    all_positions: TPortfolioPosition[];
     error: string;
     getPositionById: (id: number) => TPortfolioPosition;
-    is_accumulator: boolean;
     is_loading: boolean;
     is_multiplier: boolean;
+    is_accumulator: boolean;
     is_turbos: boolean;
     onClickCancel: (contract_id?: number) => void;
     onClickSell: (contract_id?: number) => void;
@@ -531,6 +546,11 @@ type TPortfolioStore = {
 
 type TContractStore = {
     getContractById: (id: number) => ProposalOpenContract;
+    contract_info: TPortfolioPosition['contract_info'];
+    contract_update_stop_loss: string;
+    contract_update_take_profit: string;
+    has_contract_update_stop_loss: boolean;
+    has_contract_update_take_profit: boolean;
 };
 
 type TMenuStore = {
@@ -600,10 +620,19 @@ type TTradersHubStore = {
     platform_demo_balance: TBalance;
     cfd_real_balance: TBalance;
     selectAccountType: (account_type: string) => void;
+    available_cfd_accounts: TAvailableCFDAccounts[];
+    available_dxtrade_accounts: TAvailableCFDAccounts[];
     toggleIsTourOpen: (is_tour_open: boolean) => void;
     is_demo_low_risk: boolean;
     is_mt5_notification_modal_visible: boolean;
     setMT5NotificationModal: (value: boolean) => void;
+    available_derivez_accounts: DetailsOfEachMT5Loginid[];
+    has_any_real_account: boolean;
+    startTrade: () => void;
+    getExistingAccounts: () => void;
+    getAccount: () => void;
+    toggleAccountTypeModalVisibility: () => void;
+    showTopUpModal: () => void;
 };
 
 /**

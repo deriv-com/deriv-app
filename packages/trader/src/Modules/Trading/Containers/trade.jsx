@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
 import { getDecimalPlaces, isDesktop, isMobile } from '@deriv/shared';
-import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
+import ChartLoader from 'App/Components/Elements/chart-loader';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
 import Test from './test.jsx';

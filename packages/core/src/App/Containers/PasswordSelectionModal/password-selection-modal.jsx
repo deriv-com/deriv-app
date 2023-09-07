@@ -39,6 +39,8 @@ const PasswordSelectionModal = observer(
                     is_anonymous: true,
                 }
             );
+
+            //eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
 
         return (

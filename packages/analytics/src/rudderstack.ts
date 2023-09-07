@@ -59,14 +59,14 @@ type TradeTypesFormAction =
           action: 'choose_trade_type';
           subform_name: 'info_old' | 'info_new';
           form_name: string;
-          trade_type_name: string | undefined;
+          trade_type_name?: string;
       }
     | {
           action: 'choose_trade_type';
           subform_name: 'trade_type';
           tab_name: string;
           form_name: string;
-          trade_type_name: string | undefined;
+          trade_type_name?: string;
       }
     | {
           action: 'search';
@@ -75,12 +75,12 @@ type TradeTypesFormAction =
     | {
           action: 'info_open';
           tab_name: string;
-          trade_type_name: string | undefined;
+          trade_type_name?: string;
       }
     | {
           action: 'info_switcher';
           info_switcher_mode: string;
-          trade_type_name: string | undefined;
+          trade_type_name?: string;
       };
 
 type IdentifyAction = {

@@ -3,16 +3,6 @@ import { WS } from '@deriv/shared';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AccountWizard from '../account-wizard';
-import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useIsClientHighRiskForMT5: jest.fn(),
-}));
-
-const mockUseIsClientHighRiskForMT5 = useIsClientHighRiskForMT5 as jest.MockedFunction<
-    typeof useIsClientHighRiskForMT5
->;
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -74,10 +64,6 @@ jest.mock('../account-wizard-form', () => ({
 }));
 
 describe('<AccountWizard />', () => {
-    beforeEach(() => {
-        mockUseIsClientHighRiskForMT5.mockReturnValue(false);
-    });
-
     const mock_props = {
         account_status: {
             currency_config: { usd: {} },

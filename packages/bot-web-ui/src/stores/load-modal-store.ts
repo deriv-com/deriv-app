@@ -1,13 +1,26 @@
 import React from 'react';
-import { action, computed, makeObservable, observable, reaction } from 'mobx';
-import { config, getSavedWorkspaces, load, removeExistingWorkspace, save_types, setColors } from '@deriv/bot-skeleton';
+import { action, autorun, computed, makeObservable, observable, reaction } from 'mobx';
+import {
+    config,
+    getSavedWorkspaces,
+    load,
+    observer as globalObserver,
+    removeExistingWorkspace,
+    save_types,
+    setColors,
+} from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { clearInjectionDiv, tabs_title } from 'Constants/load-modal';
-import { TStrategy } from 'Types';
 import RootStore from './root-store';
 
-const Blockly = window.Blockly;
+export type TWorkspace = {
+    id: string;
+    xml: string;
+    name: string;
+    timestamp: number;
+    save_type: string;
+};
 
 interface ILoadModalStore {
     active_index: number;
@@ -15,17 +28,17 @@ interface ILoadModalStore {
     is_explanation_expand: boolean;
     is_open_button_loading: boolean;
     is_strategy_loaded: boolean;
-    loaded_local_file: File | null;
+    loaded_local_file: boolean | null;
     recent_strategies: string[];
-    dashboard_strategies: Array<TStrategy>;
-    selected_strategy_id: string | undefined;
+    dashboard_strategies: Array<TWorkspace>;
+    selected_strategy_id: string[] | string | undefined;
     is_strategy_removed: boolean;
     is_delete_modal_open: boolean;
     current_workspace_id: string;
     getSelectedStrategyID: (current_workspace_id: string) => void;
     refreshStrategies: () => void;
-    loadStrategyToBuilder: (param: TStrategy) => void;
     refreshStrategiesTheme: () => void;
+    preview_workspace: () => void;
     handleFileChange: (
         event: React.MouseEvent | React.FormEvent<HTMLFormElement> | DragEvent,
         is_body: boolean
@@ -40,27 +53,25 @@ interface ILoadModalStore {
     onZoomInOutClick: (is_zoom_in: string) => void;
     previewRecentStrategy: (workspace_id: string) => void;
     setActiveTabIndex: (index: number) => void;
-    setLoadedLocalFile: (loaded_local_file: File | null) => void;
-    setDashboardStrategies: (strategies: Array<TStrategy>) => void;
+    setLoadedLocalFile: (loaded_local_file: boolean | null) => void;
     setRecentStrategies: (recent_strategies: string[]) => void;
-    setSelectedStrategyId: (selected_strategy_id: string) => void;
+    setSelectedStrategyId: (selected_strategy_id: string[] | undefined) => void;
+    setDashboardStrategies: (strategies: Array<TWorkspace>) => void;
     toggleExplanationExpand: () => void;
     toggleLoadModal: () => void;
     toggleTourLoadModal: (toggle: boolean) => void;
     readFile: (is_preview: boolean, drop_event: DragEvent, file: File) => void;
-    updateListStrategies: (workspaces: Array<TStrategy>) => void;
+    updateListStrategies: (workspaces: Array<TWorkspace>) => void;
     getRecentFileIcon: (save_type: { [key: string]: string } | string) => string;
     getSaveType: (save_type: { [key: string]: string } | string) => string;
 }
 
 export default class LoadModalStore implements ILoadModalStore {
     root_store: RootStore;
-    previewed_strategy_id = '';
 
     constructor(root_store: RootStore) {
         makeObservable(this, {
             active_index: observable,
-            previewed_strategy_id: observable,
             is_load_modal_open: observable,
             is_explanation_expand: observable,
             is_open_button_loading: observable,
@@ -75,10 +86,8 @@ export default class LoadModalStore implements ILoadModalStore {
             preview_workspace: computed,
             selected_strategy: computed,
             tab_name: computed,
-            setPreviewedStrategyId: action.bound,
             getSelectedStrategyID: action.bound,
             refreshStrategies: action.bound,
-            loadStrategyToBuilder: action.bound,
             refreshStrategiesTheme: action.bound,
             handleFileChange: action.bound,
             loadFileFromRecent: action.bound,
@@ -98,7 +107,6 @@ export default class LoadModalStore implements ILoadModalStore {
             toggleLoadModal: action.bound,
             toggleTourLoadModal: action.bound,
             readFile: action.bound,
-            resetBotBuilderStrategy: action.bound,
             setDashboardStrategies: action.bound,
             updateListStrategies: action.bound,
         });
@@ -121,33 +129,32 @@ export default class LoadModalStore implements ILoadModalStore {
         );
     }
 
-    recent_workspace: Blockly.WorkspaceSvg | null = null;
-    local_workspace: Blockly.WorkspaceSvg | null = null;
-    drop_zone: unknown;
+    recent_workspace;
+    local_workspace;
+    drop_zone;
 
     active_index = 0;
     is_load_modal_open = false;
     is_explanation_expand = false;
     is_open_button_loading = false;
-    loaded_local_file: File | null = null;
-    recent_strategies: Array<string> = [];
-    dashboard_strategies: Array<TStrategy> | [] = [];
-    selected_strategy_id = '';
+    loaded_local_file = null;
+    recent_strategies = [];
+    dashboard_strategies = [];
+    selected_strategy_id = undefined;
     is_strategy_loaded = false;
     is_delete_modal_open = false;
     is_strategy_removed = false;
     current_workspace_id = '';
 
-    get preview_workspace(): Blockly.WorkspaceSvg | null {
+    get preview_workspace() {
         if (this.tab_name === tabs_title.TAB_LOCAL) return this.local_workspace;
         if (this.tab_name === tabs_title.TAB_RECENT) return this.recent_workspace;
         return null;
     }
 
-    get selected_strategy(): TStrategy {
+    get selected_strategy() {
         return (
-            this.dashboard_strategies.find((ws: { id: string }) => ws.id === this.selected_strategy_id) ||
-            this.dashboard_strategies[0]
+            this.dashboard_strategies.find(ws => ws.id === this.selected_strategy_id) || this.dashboard_strategies[0]
         );
     }
 
@@ -162,18 +169,14 @@ export default class LoadModalStore implements ILoadModalStore {
         return '';
     }
 
-    setPreviewedStrategyId = (clicked_id: string) => {
-        this.previewed_strategy_id = clicked_id;
-    };
-
     getSelectedStrategyID = (current_workspace_id: string) => {
         this.current_workspace_id = current_workspace_id;
     };
 
-    setDashboardStrategies(strategies: Array<TStrategy>) {
+    setDashboardStrategies(strategies: Array<TWorkspace>) {
         this.dashboard_strategies = strategies;
         if (!strategies.length) {
-            this.selected_strategy_id = '';
+            this.selected_strategy_id = undefined;
         }
     }
 
@@ -210,44 +213,10 @@ export default class LoadModalStore implements ILoadModalStore {
         event.target.value = '';
         return true;
     };
-
-    resetBotBuilderStrategy = () => {
-        const workspace = Blockly.derivWorkspace;
-        if (workspace) {
-            Blockly.derivWorkspace.asyncClear();
-            Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.cached_xml.main), workspace);
-            Blockly.derivWorkspace.strategy_to_load = workspace.cached_xml.main;
-        }
+    refreshStrategiesTheme = (strategy = this.selected_strategy?.xml): void => {
+        if (strategy) load({ block_string: strategy, drop_event: {}, workspace: this.recent_workspace });
     };
-
-    loadStrategyToBuilder = async (strategy: TStrategy) => {
-        if (strategy?.id) {
-            await load({
-                block_string: strategy.xml,
-                strategy_id: strategy.id,
-                file_name: strategy.name,
-                workspace: Blockly?.derivWorkspace,
-                from: strategy.save_type,
-                drop_event: {},
-                showIncompatibleStrategyDialog: false,
-            });
-            Blockly.derivWorkspace.strategy_to_load = strategy.xml;
-        }
-    };
-
-    refreshStrategiesTheme = async () => {
-        await load({
-            block_string: this.selected_strategy?.xml,
-            drop_event: {},
-            workspace: this.recent_workspace,
-            file_name: this.selected_strategy?.name,
-            strategy_id: this.selected_strategy?.id,
-            from: this.selected_strategy?.save_type,
-            showIncompatibleStrategyDialog: false,
-        });
-    };
-
-    loadFileFromRecent = async () => {
+    loadFileFromRecent = async (): void => {
         this.is_open_button_loading = true;
         if (!this.selected_strategy) {
             Blockly.derivWorkspace.asyncClear();
@@ -260,17 +229,15 @@ export default class LoadModalStore implements ILoadModalStore {
         }
 
         removeExistingWorkspace(this.selected_strategy.id);
-        await load({
+        load({
             block_string: this.selected_strategy.xml,
             strategy_id: this.selected_strategy.id,
             file_name: this.selected_strategy.name,
             workspace: Blockly.derivWorkspace,
             from: this.selected_strategy.save_type,
-            drop_event: {},
-            showIncompatibleStrategyDialog: false,
         });
         const recent_files = await getSavedWorkspaces();
-        recent_files.map((strategy: TStrategy) => {
+        recent_files.map(strategy => {
             const { xml, id } = strategy;
             if (this.selected_strategy.id === id) {
                 Blockly.derivWorkspace.strategy_to_load = xml;
@@ -281,9 +248,7 @@ export default class LoadModalStore implements ILoadModalStore {
 
     loadFileFromLocal = (): void => {
         this.is_open_button_loading = true;
-        if (this.loaded_local_file) {
-            this.readFile(false, {} as DragEvent, this.loaded_local_file);
-        }
+        this.readFile(false, {}, this.loaded_local_file);
         this.is_open_button_loading = false;
     };
 
@@ -296,7 +261,7 @@ export default class LoadModalStore implements ILoadModalStore {
                 setTimeout(() => {
                     // Dispose of recent workspace when switching away from Recent tab.
                     // Process in next cycle so user doesn't have to wait.
-                    this.recent_workspace?.dispose();
+                    this.recent_workspace.dispose();
                     this.recent_workspace = null;
                 });
             }
@@ -315,7 +280,7 @@ export default class LoadModalStore implements ILoadModalStore {
             // eslint-disable-next-line no-lonely-if
             if (this.local_workspace) {
                 setTimeout(() => {
-                    this.local_workspace?.dispose();
+                    this.local_workspace.dispose();
                     this.local_workspace = null;
                     this.setLoadedLocalFile(null);
                 }, 0);
@@ -341,16 +306,7 @@ export default class LoadModalStore implements ILoadModalStore {
     async onDriveOpen() {
         const { loadFile } = this.root_store.google_drive;
         const { xml_doc, file_name } = await loadFile();
-        await load({
-            block_string: xml_doc,
-            file_name,
-            workspace: Blockly.derivWorkspace,
-            from: save_types.GOOGLE_DRIVE,
-            drop_event: null,
-            strategy_id: null,
-            showIncompatibleStrategyDialog: null,
-        });
-
+        load({ block_string: xml_doc, file_name, workspace: Blockly.derivWorkspace, from: save_types.GOOGLE_DRIVE });
         const { active_tab } = this.root_store.dashboard;
         if (active_tab === 1) this.toggleLoadModal();
 
@@ -380,8 +336,8 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     previewRecentStrategy = (workspace_id: string): void => {
+        this.setSelectedStrategyId(workspace_id);
         if (!workspace_id) this.setSelectedStrategyId(this.current_workspace_id);
-        else this.setSelectedStrategyId(workspace_id);
         if (!this.selected_strategy) {
             return;
         }
@@ -394,23 +350,20 @@ export default class LoadModalStore implements ILoadModalStore {
             this.recent_workspace = null;
             this.setLoadedLocalFile(null);
         }
-
-        const dark_mode = document.body.classList.contains('theme--dark');
-        setColors(dark_mode);
-
         //to load the bot on first load
-        const ref = document.getElementById('load-strategy__blockly-container');
-        if (!ref) {
-            // eslint-disable-next-line no-console
-            console.warn('Could not find preview workspace element.');
-            return;
-        }
         if (this.tab_name !== tabs_title.TAB_LOCAL && this.recent_workspace) {
-            clearInjectionDiv('store', ref);
+            clearInjectionDiv('store', document.getElementById('load-strategy__blockly-container'));
             this.recent_workspace.dispose();
             this.recent_workspace = null;
         }
-        if (!this.recent_workspace || !this.recent_workspace?.rendered) {
+        if (!this.recent_workspace || !this.recent_workspace.rendered) {
+            const ref = document.getElementById('load-strategy__blockly-container');
+            if (!ref) {
+                // eslint-disable-next-line no-console
+                console.warn('Could not find preview workspace element.');
+                return;
+            }
+
             this.recent_workspace = Blockly.inject(ref, {
                 media: `${__webpack_public_path__}media/`,
                 zoom: {
@@ -421,14 +374,20 @@ export default class LoadModalStore implements ILoadModalStore {
                 scrollbars: true,
             });
         }
+        const dark_mode = document.body.classList.contains('theme--dark');
+        setColors(dark_mode);
         this.refreshStrategiesTheme();
+        const {
+            save_modal: { updateBotName },
+        } = this.root_store;
+        updateBotName(this.selected_strategy.name);
     };
 
     setActiveTabIndex = (index: number): void => {
         this.active_index = index;
     };
 
-    setLoadedLocalFile = (loaded_local_file: File | null): void => {
+    setLoadedLocalFile = (loaded_local_file: boolean | null): void => {
         this.loaded_local_file = loaded_local_file;
     };
 
@@ -440,7 +399,7 @@ export default class LoadModalStore implements ILoadModalStore {
         this.setRecentStrategies(this.recent_strategies);
     };
 
-    setSelectedStrategyId = (selected_strategy_id: string): void => {
+    setSelectedStrategyId = (selected_strategy_id: string[] | undefined): void => {
         this.selected_strategy_id = selected_strategy_id;
     };
 
@@ -457,9 +416,9 @@ export default class LoadModalStore implements ILoadModalStore {
         this.is_load_modal_open = toggle;
     };
 
-    updateListStrategies = (workspaces: Array<TStrategy>): void => {
+    updateListStrategies = (workspaces: Array<TWorkspace>): void => {
         if (workspaces) {
-            (this.dashboard_strategies as Array<TStrategy>) = workspaces;
+            (this.dashboard_strategies as Array<TWorkspace>) = workspaces;
         }
     };
 
@@ -497,15 +456,7 @@ export default class LoadModalStore implements ILoadModalStore {
         const file_name = file && file.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();
         reader.onload = action(e => {
-            const load_options = {
-                block_string: e?.target?.result,
-                drop_event,
-                from: save_types.LOCAL,
-                workspace: null as Blockly.WorkspaceSvg | null,
-                file_name: '',
-                strategy_id: '',
-                showIncompatibleStrategyDialog: false,
-            };
+            const load_options = { block_string: e.target.result, drop_event, from: save_types.LOCAL };
             const ref = document.getElementById('load-strategy__blockly-container');
             if (is_preview && ref) {
                 this.local_workspace = Blockly.inject(ref, {

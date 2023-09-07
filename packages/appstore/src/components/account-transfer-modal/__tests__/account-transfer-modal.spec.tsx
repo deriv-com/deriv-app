@@ -25,7 +25,6 @@ describe('AccountTransferModal', () => {
                         is_transfer_confirm: false,
                         should_switch_account: false,
                     },
-                    general_store: { setActiveTab: jest.fn() },
                 },
             },
         });
@@ -51,7 +50,6 @@ describe('AccountTransferModal', () => {
                         is_transfer_confirm: false,
                         should_switch_account: false,
                     },
-                    general_store: { setActiveTab: jest.fn() },
                 },
             },
         });
@@ -78,7 +76,6 @@ describe('AccountTransferModal', () => {
                         is_transfer_confirm: false,
                         should_switch_account: true,
                     },
-                    general_store: { setActiveTab: jest.fn() },
                 },
             },
         });

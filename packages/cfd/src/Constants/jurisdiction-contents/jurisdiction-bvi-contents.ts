@@ -1,9 +1,7 @@
 import { localize } from '@deriv/translations';
-import { TJurisdictionCardItems, TJurisdictionCardParams } from 'Components/props.types';
+import { TJurisdictionCardItems } from 'Components/props.types';
 
-export const getJurisdictionBviContents = ({
-    toggleDynamicLeverage,
-}: TJurisdictionCardParams): TJurisdictionCardItems => ({
+export const getJurisdictionBviContents = (): TJurisdictionCardItems => ({
     is_over_header_available: false,
     header: localize('British Virgin Islands'),
     synthetic_contents: [
@@ -60,13 +58,6 @@ export const getJurisdictionBviContents = ({
                 display_text: localize('1:1000'),
                 display_text_skin_color: 'yellow-light',
             },
-            clickable_description: [
-                {
-                    type: 'link',
-                    text: localize('Dynamic Leverage'),
-                    onClick: toggleDynamicLeverage,
-                },
-            ],
         },
         {
             key: 'spreadsFrom',

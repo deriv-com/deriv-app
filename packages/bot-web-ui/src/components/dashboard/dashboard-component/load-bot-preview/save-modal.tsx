@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { Field, Form, Formik } from 'formik';
 import { config, save_types } from '@deriv/bot-skeleton';
@@ -165,31 +165,22 @@ const SaveModalForm = ({
     </Formik>
 );
 const SaveModal = observer(() => {
-    const { save_modal, google_drive, dashboard, load_modal } = useDBotStore();
+    const { save_modal, google_drive } = useDBotStore();
     const { ui } = useStore();
-    const { dashboard_strategies } = load_modal;
+
     const {
         button_status,
-        bot_name,
         is_save_modal_open,
         onConfirmSave,
         onDriveConnect,
         toggleSaveModal,
-        updateBotName,
         validateBotName,
+        bot_name,
     } = save_modal;
     const { is_authorised } = google_drive;
     const { is_onscreen_keyboard_active, setCurrentFocus } = ui;
-    const { active_tab } = dashboard;
 
     const is_mobile = isMobile();
-
-    useEffect(() => {
-        if (active_tab === 1) {
-            updateBotName(dashboard_strategies?.[0]?.name ?? '');
-        }
-    }, [active_tab, dashboard_strategies, updateBotName]);
-
     return is_mobile ? (
         <MobileFullPageModal
             is_modal_open={is_save_modal_open}

@@ -7,4 +7,3 @@ export { getSavedWorkspaces, saveWorkspaceToRecent, removeExistingWorkspace } fr
 export { timeSince } from './date-time-helper';
 export { setColors } from '../scratch/hooks/colours';
 export { blocksCoordinate } from '../scratch/hooks/block_svg';
-export { initErrorHandlingListener, removeErrorHandlingEventListener, handleError } from './error-handling';

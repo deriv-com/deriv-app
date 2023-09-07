@@ -45,5 +45,3 @@ export { default as useTotalAccountBalance } from './useTotalAccountBalance';
 export { default as useVerifyEmail } from './useVerifyEmail';
 export { default as useP2PAdvertList } from './useP2PAdvertList';
 export { useIsAccountStatusPresent } from './useIsAccountStatusPresent';
-export { default as useIsClientHighRiskForMT5 } from './useIsClientHighRiskForMT5';
-export { default as useCFDCanGetMoreMT5Accounts } from './useCFDCanGetMoreMT5Accounts';

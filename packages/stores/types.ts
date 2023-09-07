@@ -628,7 +628,6 @@ type TTradersHubStore = {
     getExistingAccounts: () => void;
     getAccount: () => void;
     toggleAccountTypeModalVisibility: () => void;
-    can_get_more_cfd_mt5_accounts: boolean;
     showTopUpModal: () => void;
 };
 

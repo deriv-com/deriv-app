@@ -27,9 +27,8 @@ jobs:
     container:
       image: node:18.16.0
     steps:
-
+    - uses: actions/checkout@v3.6.0
     - name: Send Slack notification
-    
       id: slack
       uses: "./.github/actions/send_slack_notifications"
       with:
@@ -38,8 +37,6 @@ jobs:
         release_type: test
         version: 222 
         # version: $(echo cat packages/core/dist/version | bash)
-
-    - uses: actions/checkout@v3.6.0
     - name: Checkout Repository
       uses: "./.github/actions/git_checkout_from_cache"
     - name: Install dependencies

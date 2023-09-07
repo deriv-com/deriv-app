@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
+import { updateWorkspaceName } from '@deriv/bot-skeleton';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { useFeatureFlags } from '@deriv/hooks';
@@ -33,7 +34,6 @@ const Dashboard = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy } = useDBotStore();
     const {
         active_tab,
-        has_file_loaded,
         has_tour_started,
         setTourActive,
         has_started_onboarding_tour,
@@ -46,8 +46,9 @@ const Dashboard = observer(() => {
         setActiveTab,
         setBotBuilderTokenCheck,
         setOnBoardingTokenCheck,
+        onCloseTour,
     } = dashboard;
-    const { onEntered } = load_modal;
+    const { onEntered, dashboard_strategies } = load_modal;
     const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
         run_panel;
     const { is_strategy_modal_open } = quick_strategy;
@@ -64,7 +65,7 @@ const Dashboard = observer(() => {
     const { url_hashed_values } = ui;
     const { is_server_side_bot_enabled } = useFeatureFlags();
 
-    let tab_value = active_tab;
+    let tab_value: number | string = active_tab;
     const GetHashedValue = (tab: number) => {
         tab_value = url_hashed_values?.split('#')[1];
         return Number(hash.indexOf(String(tab_value))) || tab;
@@ -100,16 +101,13 @@ const Dashboard = observer(() => {
     React.useEffect(() => {
         if (active_tab === BOT_BUILDER) {
             if (is_drawer_open) {
-                initTrashCan(400);
+                initTrashCan(400, -748);
             } else {
                 initTrashCan(20);
             }
             setTimeout(() => {
                 window.dispatchEvent(new Event('resize')); // make the trash can work again after resize
             }, 500);
-        }
-        if (active_tab === DASHBOARD && has_file_loaded) {
-            onEntered();
         }
         if (active_tab === DASHBOARD) {
             setTourType('onboard_tour');
@@ -129,10 +127,31 @@ const Dashboard = observer(() => {
         setTourStatus(tour_status);
     }, [active_tab, is_drawer_open, has_started_onboarding_tour, tour_status_ended, is_tour_dialog_visible]);
 
+    useEffect(() => {
+        let timer: ReturnType<typeof setTimeout>;
+        if (dashboard_strategies.length > 0) {
+            // Needed to pass this to the Callback Queue as on tab changes
+            // document title getting override by 'Bot | Deriv' only
+            timer = setTimeout(() => {
+                updateWorkspaceName();
+            });
+        }
+        return () => {
+            if (timer) clearTimeout(timer);
+        };
+    }, [dashboard_strategies, active_tab]);
+
     const botStorageSetting = () => {
         tour_status = getTourSettings('bot_builder_status');
-        if (tour_status_ended.key === 'finished' && !is_mobile) {
+        const joyride_status_finished = tour_status_ended.key === 'finished';
+        if (joyride_status_finished && !is_mobile) {
+            if (tour_type.key === 'onboard_tour') {
+                onCloseTour();
+                tour_status_ended.key = '';
+                return joyride_status_finished ?? null;
+            }
             setTourDialogVisibility(true);
+
             setHasTourEnded(true);
             is_tour_complete.current = false;
             window.removeEventListener('storage', botStorageSetting);
@@ -142,6 +161,7 @@ const Dashboard = observer(() => {
         if (active_tab === 1 && !storage.bot_builder_token && !has_started_onboarding_tour) {
             setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
         }
+        return botStorageSetting;
     };
     if (!bot_tour_token && !is_mobile && !has_started_onboarding_tour) {
         window.addEventListener('storage', botStorageSetting);

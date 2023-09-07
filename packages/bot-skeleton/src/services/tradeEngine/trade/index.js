@@ -21,7 +21,7 @@ const watchBefore = store =>
         store,
         stopScope: constants.DURING_PURCHASE,
         passScope: constants.BEFORE_PURCHASE,
-        passFlag: 'proposalsReady',
+        passFlag: '',
     });
 
 const watchDuring = store =>
@@ -48,7 +48,7 @@ const watchScope = ({ store, stopScope, passScope, passFlag }) => {
             if (newState.newTick === prevTick) return;
             prevTick = newState.newTick;
 
-            if (newState.scope === passScope && newState[passFlag]) {
+            if (newState.scope === passScope && (newState[passFlag] || !passFlag)) {
                 unsubscribe();
                 resolve(true);
             }

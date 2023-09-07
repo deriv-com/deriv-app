@@ -7,14 +7,13 @@ const dispatchIfScopeIs = ({ dispatch, getState, data, scope }) => {
     }
 };
 
-const dispatchIfScopeIsBeforePurchase = args => dispatchIfScopeIs({ ...args, scope: constants.BEFORE_PURCHASE });
-
 export const start = () => (dispatch, getState) =>
     dispatchIfScopeIs({ dispatch, getState, data: { type: constants.START }, scope: constants.STOP });
 
 const dispatchIfBeforePurchaseReady = args => {
-    dispatchIfScopeIsBeforePurchase(args);
+    dispatchIfScopeIs({ ...args, scope: constants.BEFORE_PURCHASE });
 };
+
 export const purchaseSuccessful = () => (dispatch, getState) =>
     dispatchIfBeforePurchaseReady({ dispatch, getState, data: { type: constants.PURCHASE_SUCCESSFUL } });
 

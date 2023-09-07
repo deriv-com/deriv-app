@@ -290,6 +290,12 @@
     }
 }
 
+#react-joyride-step-6 {
+    .onboard__label {
+        margin-bottom: 1.6rem;
+    }
+}
+
 .onboard {
     &__header {
         display: flex;
@@ -333,6 +339,9 @@
 
     &__content {
         text-align: left;
+        p {
+            font-size: 1.4rem;
+        }
 
         &__block {
             &:first-child {
@@ -370,7 +379,7 @@
         }
     }
 
-    img {
+    video {
         width: 100%;
         margin-top: 1rem;
     }
@@ -455,6 +464,11 @@
     }
 
     img {
+        height: 100%;
+    }
+
+    video {
+        width: 65%;
         height: 100%;
     }
 

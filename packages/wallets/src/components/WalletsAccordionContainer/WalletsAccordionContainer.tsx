@@ -27,7 +27,7 @@ const WalletsAccordionContainer: React.FC<TProps> = ({ wallets_list }) => {
                         account_info={account}
                         switchAccount={swithAccount}
                         header={<WalletListCard account={account} />}
-                        content={<AccountsList data={account} />}
+                        content={<AccountsList />}
                     />
                 );
             })}

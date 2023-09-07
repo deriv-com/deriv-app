@@ -3,6 +3,10 @@
     height: 100%;
     padding-top: 24px;
 
+    @include desktop {
+        border-top: 2px solid var(--system-light-7-secondary-background, #f2f3f4);
+    }
+
     &__header {
         padding-bottom: 24px;
 

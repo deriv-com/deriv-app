@@ -46,7 +46,7 @@ const WalletsCarousel = () => {
                     ))}
                 </section>
             </div>
-            <AccountsList data={wallet_accounts_list[active_index]} />
+            <AccountsList />
         </React.Fragment>
     );
 };

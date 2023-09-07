@@ -3,23 +3,11 @@
     width: 100%;
     background: var(--system-light-8-primary-background, #fff);
 
-    // desktop styles
-    border-radius: 0 0 16px 16px;
+    @include desktop {
+        border-radius: 0 0 16px 16px;
+    }
 
     &__content {
         margin-top: 24px;
-
-        // desktop styles
-        border-top: 2px solid var(--system-light-7-secondary-background, #f2f3f4);
-
-        & > h1 {
-            font-weight: bold;
-            font-size: 24px;
-            line-height: 36px;
-        }
-
-        & > p {
-            font-size: 16px;
-        }
     }
 }

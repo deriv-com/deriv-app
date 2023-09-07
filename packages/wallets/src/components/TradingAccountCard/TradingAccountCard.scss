@@ -1,9 +1,20 @@
-.wallets-trading-account {
+.wallets-trading-account-card {
     display: flex;
     align-items: center;
     gap: 16px;
     height: 88px;
-    padding-block: 16px;
+
+    &__content {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        flex-grow: 1;
+        height: 100%;
+
+        &--divider {
+            border-bottom: 1px solid var(--system-light-6-hover-background, #e6e9e9);
+        }
+    }
 
     &__icon {
         width: 48px;
@@ -13,13 +24,13 @@
     &__details {
         flex-grow: 1;
 
-        & > h3 {
+        &-title {
             font-weight: bold;
             font-size: 1.4rem;
             line-height: 20px;
         }
 
-        & > p {
+        &-description {
             font-size: 1.2rem;
             line-height: 14px;
         }

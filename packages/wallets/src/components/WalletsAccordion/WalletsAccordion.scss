@@ -40,12 +40,10 @@
         from {
             transform: translateY(-3rem);
             opacity: 0;
-            display: none;
         }
         to {
             transform: translateY(0);
             opacity: 1;
-            display: block;
         }
     }
 
@@ -53,12 +51,10 @@
         from {
             transform: translateY(0);
             opacity: 1;
-            display: block;
         }
         to {
             transform: translateY(-3rem);
             opacity: 0;
-            display: none;
         }
     }
 }

@@ -4,7 +4,7 @@ import IcAppstoreDerivBot from '../../public/images/ic-appstore-deriv-bot.svg';
 import IcAppstoreDerivGo from '../../public/images/ic-appstore-deriv-go.svg';
 import IcAppstoreDerivTrader from '../../public/images/ic-appstore-deriv-trader.svg';
 import IcAppstoreSmartTrader from '../../public/images/ic-appstore-smart-trader.svg';
-import { WalletsTradingAccount } from '..';
+import { TradingAccountCard } from '..';
 import './OptionsAndMultipliersListing.scss';
 
 const options_and_multipliers = [
@@ -12,16 +12,19 @@ const options_and_multipliers = [
         title: 'Deriv Trader',
         description: 'Options and multipliers trading platform',
         icon: <IcAppstoreDerivTrader />,
+        has_divider: true,
     },
     {
         title: 'Deriv Bot',
         description: 'Automated trading, no coding required',
         icon: <IcAppstoreDerivBot />,
+        has_divider: true,
     },
     {
         title: 'SmartTrader',
         description: 'Our legacy options trading platform',
         icon: <IcAppstoreSmartTrader />,
+        has_divider: true,
     },
     {
         title: 'Binary Bot',
@@ -58,7 +61,7 @@ const OptionsAndMultipliersListing = () => {
             </section>
             <div className='wallets-options-and-multipliers-listing__content'>
                 {options_and_multipliers.map(account => (
-                    <WalletsTradingAccount {...account} key={account.title} />
+                    <TradingAccountCard {...account} key={account.title} />
                 ))}
             </div>
         </div>

@@ -1,12 +1,15 @@
 import React from 'react';
-import WalletList from './components/WalletList';
-import WalletsCarousel from './components/WalletCarousel';
+import { DesktopWalletsList } from './components';
+// import WalletsCarousel from './components/WalletCarousel';
+import './AppContent.scss';
 
 const AppContent: React.FC = () => {
     return (
-        <div>
-            <WalletList />
-            <WalletsCarousel />
+        <div className='wallets-app'>
+            <div className='wallets-app__content'>
+                <DesktopWalletsList />
+            </div>
+            {/* <WalletsCarousel /> */}
         </div>
     );
 };

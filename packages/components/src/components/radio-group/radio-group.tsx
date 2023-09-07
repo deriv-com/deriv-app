@@ -52,9 +52,6 @@ const RadioGroup = ({
                             className={classNames('dc-radio-group__item', className, {
                                 'dc-radio-group__item--selected': selected_option === item.props.value,
                             })}
-                            // this is required for iOS
-                            // eslint-disable-next-line @typescript-eslint/no-empty-function
-                            onClick={() => {}}
                         >
                             <input
                                 id={item.props.id}

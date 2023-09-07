@@ -42,6 +42,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
         update,
         mutation: { isLoading, isSuccess, error, isError },
         data,
+        isLoading: isAccountSettingsLoading,
     } = useSettings();
 
     const { fields, initialValues, validate } = getFormConfig({
@@ -85,12 +86,16 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
             setFieldValue(field, value ? text : '', true);
         };
 
+    if (isAccountSettingsLoading) {
+        return <Loading is_fullscreen={false} />;
+    }
+
     return (
         <Formik
             validateOnMount
             validateOnBlur
             validateOnChange
-            enableReinitialize
+            // enableReinitialize
             initialValues={initialValues}
             onSubmit={onSubmit}
             validate={validate}

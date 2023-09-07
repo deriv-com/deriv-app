@@ -1,8 +1,8 @@
 {
     "skip_pending_checks": false,
     "skip_slack_integration": false,
-    "skip_updating_branch": true,
-    "merge_delay": 120000,
+    "skip_updating_branch": false,
+    "merge_delay": 1200000,
     "first_merge_delay": 1200000,
     "max_task_count": 15,
     "pull_request": {

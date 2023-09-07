@@ -4,7 +4,7 @@ import { formatDate, formatTime } from '@deriv/shared';
 import { Text } from '@deriv/components';
 
 const ContractAuditItem = ({ icon, id, label, timestamp, value, value2 }) => (
-    <div id={id} className='contract-audit__grid'>
+    <div id={id} className='contract-audit__grid' data-testid={id}>
         {icon && <div className='contract-audit__icon'>{icon}</div>}
         <div className='contract-audit__item'>
             <Text size='xxxs' styles={{ lineHeight: 'unset' }} className='contract-audit__label'>

@@ -51,6 +51,9 @@
 
     &__icon {
         margin-left: auto;
+        @include mobile {
+            display: block;
+        }
 
         @include mobile {
             display: block;

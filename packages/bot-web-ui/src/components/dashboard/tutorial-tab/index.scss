@@ -34,9 +34,9 @@
             text-align: center;
             flex-direction: column;
             margin-right: 2.4rem;
-            width: 21.5rem;
             @include mobile {
                 flex-direction: row;
+                width: auto;
                 span {
                     text-align: left;
                     padding-left: 0.8rem;
@@ -69,8 +69,9 @@
         }
         &__tours {
             height: 13.5rem;
-            background-position: center center;
+            background-size: contain;
             margin-bottom: 0.8rem;
+            width: 21.5rem;
             cursor: pointer;
             @include mobile {
                 height: 8.7rem;
@@ -137,6 +138,12 @@
                     justify-content: space-between;
                 }
                 &-content {
+                    .loss-control {
+                        width: 80%;
+                    }
+                    img {
+                        width: 45%;
+                    }
                     @include mobile {
                         width: 100%;
 

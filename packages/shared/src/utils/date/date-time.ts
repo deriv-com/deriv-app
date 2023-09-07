@@ -174,7 +174,8 @@ export const isDateValid = (date: moment.MomentInput) => moment(date, 'DD MMM YY
  * @param {String} date        date
  * @param {Number} num_of_days number of days to add
  */
-export const addDays = (date: moment.Moment, num_of_days: number) => toMoment(date).clone().add(num_of_days, 'day');
+export const addDays = (date: string | moment.Moment, num_of_days: number) =>
+    toMoment(date).clone().add(num_of_days, 'day');
 
 /**
  * add the specified number of weeks to the given date

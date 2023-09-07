@@ -49,7 +49,7 @@
         }
         &-row {
             padding: 1.6rem;
-            grid-template-columns: repeat(6, 1fr) 0.5fr;
+            grid-template-columns: 1fr 1fr 0.7fr 0.8fr 0.7fr 0.8fr 0.7fr 0.4fr;
             border: 0;
             @include mobile {
                 display: flex;
@@ -91,6 +91,9 @@
             a {
                 text-decoration: none;
             }
+        }
+        &-confirmations {
+            justify-content: center;
         }
         &-time {
             @include mobile {

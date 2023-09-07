@@ -35,14 +35,35 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
                     margin-right: 0.8rem;
                 }
             }
-            &-text {
-                max-width: 360px;
+            &-wrapper {
+                max-width: 35rem;
 
                 @include mobile {
-                    max-width: 175px;
-                    line-height: 1.4;
-                    letter-spacing: normal;
+                    max-width: 23.3rem;
+
+                    a {
+                        font-size: 1rem;
+                    }
+                }
+
+                a {
+                    color: var(--brand-red-coral);
+                }
+            }
+            &-text {
+                &--collapsed {
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 3;
+                    display: -webkit-box;
+                    line-clamp: 3;
+                    overflow: hidden;
+                }
+
+                @include mobile {
                     font-size: 1rem;
+                    letter-spacing: normal;
+                    line-height: 1.4;
+                    max-width: 23.3rem;
                     /* iPhone SE screen height fixes due to UI space restrictions */
                     @media only screen and (max-height: 480px) {
                         font-size: 0.8rem;

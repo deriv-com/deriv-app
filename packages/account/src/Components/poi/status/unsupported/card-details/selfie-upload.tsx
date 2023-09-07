@@ -4,7 +4,7 @@ import { Formik, Form, FormikProps, FormikValues } from 'formik';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { Button, Icon, Text } from '@deriv/components';
-import Uploader from './uploader.jsx';
+import Uploader from './uploader';
 import { setInitialValues, validateFields } from './utils';
 import { ROOT_CLASS, SELFIE_DOCUMENT } from '../constants';
 

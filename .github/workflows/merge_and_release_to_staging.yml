@@ -4,9 +4,9 @@ permissions:
 on:
   workflow_dispatch:
     inputs:
-      tag:
-        description: "Tag"
-        required: true
+      release_tag_task_url:
+          description: "Release Tag task URL(e.g. https://app.clickup.com/t/1**/W*-*)"
+          required: true
       skip_circleci_checks:
         description: "Skip checking CircleCI workflow"
         type: boolean
@@ -35,13 +35,10 @@ jobs:
         run: |
           sleep 10
       - name: Release issues in Deriv.app
-        uses: binary-com/fe-toolbox@production_V20230615_0
+        uses: binary-com/fe-toolbox@v0.0.2
         with:
-          tag: ${{ inputs.tag }}
+          release_tag_task_url: ${{ inputs.release_tag_task_url }}
           platform: 'Deriv.app'
-          list_id: ${{ secrets.LIST_ID }}
-          release_tags_list_id: ${{ secrets.RELEASE_TAGS_LIST_ID }}
-          regression_testing_template_id: ${{ secrets.REGRESSION_TESTING_TEMPLATE_ID }}
           config_path: ./.github/workflows/automationrc.json
           skip_circleci_checks: ${{ inputs.skip_circleci_checks }}
           skip_pending_checks: ${{ inputs.skip_pending_checks }}

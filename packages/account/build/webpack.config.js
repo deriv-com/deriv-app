@@ -16,7 +16,6 @@ module.exports = function (env) {
             'api-token': 'Components/api-token',
             'currency-selector': 'Components/currency-selector',
             'currency-selector-config': 'Configs/currency-selector-config',
-            'currency-selector-schema': 'Configs/currency-selector-schema',
             'currency-radio-button-group': 'Components/currency-selector/radio-button-group.tsx',
             'currency-radio-button': 'Components/currency-selector/radio-button.tsx',
             'demo-message': 'Components/demo-message',

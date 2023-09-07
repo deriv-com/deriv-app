@@ -13,6 +13,7 @@ const ALL_LANGUAGES = Object.freeze({
     FR: 'Français',
     ID: 'Indonesian',
     IT: 'Italiano',
+    KO: '한국어',
     PL: 'Polish',
     RU: 'Русский',
     VI: 'Tiếng Việt',
@@ -25,8 +26,10 @@ export const getAllowedLanguages = () => {
     const allowed_languages = {
         EN: 'English',
         ES: 'Español',
+        KO: '한국어',
         RU: 'Русский',
         FR: 'Français',
+        IT: 'Italiano',
         TH: 'ไทย',
         VI: 'Tiếng Việt',
     };
@@ -59,6 +62,12 @@ const isLanguageAvailable = (lang: string) => {
     if (is_ach) return isStaging() || isLocal();
 
     return Object.keys(getAllowedLanguages()).includes(selected_language);
+};
+
+export const getRedirectionLanguage = (preferred_language: string) => {
+    const language_query = new URLSearchParams(window.location.search).get('lang');
+    const is_language_query_valid = language_query && isLanguageAvailable(language_query);
+    return is_language_query_valid ? language_query : preferred_language ?? DEFAULT_LANGUAGE;
 };
 
 export const getAllLanguages = () => ALL_LANGUAGES;
@@ -135,7 +144,7 @@ export const changeLanguage = async (lang: string, cb: (arg0: string) => void) =
 // <Localize /> component wrapped with i18n
 export const Localize = withI18n(i18n);
 
-export const localize = <T extends object>(string: string, values?: T) => {
+export const localize = (string: string, values?: Record<string, unknown>) => {
     if (!string) return '';
 
     return i18n.t(crc32(string).toString(), { defaultValue: string, ...values });

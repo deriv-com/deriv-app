@@ -1,5 +1,5 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-import { blocksCoordinate, setColors } from '@deriv/bot-skeleton';
+import { setColors } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
 import { clearInjectionDiv } from 'Constants/load-modal';
 import { setTourSettings, tour_type, TTourType } from '../components/dashboard/joyride-config';
@@ -32,6 +32,7 @@ export interface IDashboardStore {
     setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => void;
     setOpenSettings: (toast_message: string, show_toast: boolean) => void;
     setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
+    setStrategySaveType: (param: string) => void;
     show_toast: boolean;
     showVideoDialog: (param: { [key: string]: string }) => void;
     strategy_save_type: string;
@@ -236,7 +237,7 @@ export default class DashboardStore implements IDashboardStore {
             this.setBotBuilderTourState(false);
         }
         if (this.active_tab === 1) {
-            blocksCoordinate();
+            Blockly.derivWorkspace?.cleanUp();
         }
     };
 
@@ -300,10 +301,9 @@ export default class DashboardStore implements IDashboardStore {
     };
 
     onTourEnd = (step: number, has_started_onboarding_tour: boolean): void => {
-        if (step === 7) {
+        if (step === 8) {
             this.onCloseTour();
             this.setTourEnd(tour_type);
-            this.setTourDialogVisibility(true);
         }
         if (!has_started_onboarding_tour && step === 3) {
             this.onCloseTour();

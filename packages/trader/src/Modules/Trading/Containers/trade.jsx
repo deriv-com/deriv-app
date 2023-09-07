@@ -1,13 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared';
-import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
+import { getDecimalPlaces, isDesktop, isMobile } from '@deriv/shared';
+import ChartLoader from 'App/Components/Elements/chart-loader';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
 import Test from './test.jsx';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
-import FormLayout from '../Components/Form/form-layout.jsx';
+import FormLayout from '../Components/Form/form-layout';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements.jsx';
 import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.jsx';
@@ -49,6 +49,7 @@ const Trade = observer(() => {
         symbol,
         is_synthetics_available,
         is_synthetics_trading_market_available,
+        is_turbos,
         is_vanilla,
     } = useTraderStore();
     const {
@@ -57,7 +58,7 @@ const Trade = observer(() => {
         should_show_multipliers_onboarding,
         is_dark_mode_on: is_dark_theme,
     } = ui;
-    const { is_eu, is_virtual } = client;
+    const { is_eu } = client;
     const { network_status } = common;
 
     const [digits, setDigits] = React.useState([]);
@@ -149,12 +150,17 @@ const Trade = observer(() => {
     );
 
     const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
+    const chart_height_offset = React.useMemo(() => {
+        if (is_accumulator) return '295px';
+        if (is_turbos) return '300px';
+        return '259px';
+    }, [is_turbos, is_accumulator]);
 
     return (
         <div
             id='trade_container'
             className={classNames('trade-container', {
-                'trade-container--accumulators': is_accumulator,
+                [`trade-container--${is_accumulator ? 'accumulators' : 'turbos'}`]: is_accumulator || is_turbos,
             })}
         >
             <DesktopWrapper>
@@ -167,7 +173,7 @@ const Trade = observer(() => {
                 id='chart_container'
                 className='chart-container'
                 is_disabled={isDesktop()}
-                height_offset={is_accumulator ? '295px' : '259px'}
+                height_offset={chart_height_offset}
             >
                 <NotificationMessages />
                 <React.Suspense
@@ -224,11 +230,7 @@ const Trade = observer(() => {
                 <FormLayout
                     is_market_closed={is_market_closed}
                     is_trade_enabled={
-                        is_trade_enabled &&
-                        form_components.length > 0 &&
-                        network_status.class === 'online' &&
-                        // TODO: delete the below line for releasing ACCU trade for real
-                        (is_virtual || !form_components.includes('accumulator'))
+                        is_trade_enabled && form_components.length > 0 && network_status.class === 'online'
                     }
                 />
             </div>
@@ -271,16 +273,17 @@ const ChartTrade = observer(props => {
     const { client, ui, common, contract_trade, portfolio } = useStore();
     const {
         accumulator_barriers_data,
-        granularity,
+        accumulator_contract_barriers_data,
         chart_type,
+        granularity,
+        has_crossed_accu_barriers,
         updateGranularity,
         updateChartType,
-        should_highlight_current_spot,
     } = contract_trade;
     const { all_positions } = portfolio;
     const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on } = ui;
     const { is_socket_opened, current_language } = common;
-    const { should_show_eu_content } = client;
+    const { currency, should_show_eu_content } = client;
     const {
         chartStateChange,
         is_trade_enabled,
@@ -309,7 +312,7 @@ const ChartTrade = observer(props => {
         theme: is_dark_mode_on ? 'dark' : 'light',
     };
 
-    const { current_spot, current_spot_time } = accumulator_barriers_data[symbol] || {};
+    const { current_spot, current_spot_time } = accumulator_barriers_data || {};
 
     const bottomWidgets = React.useCallback(
         ({ digits, tick }) => (
@@ -397,9 +400,13 @@ const ChartTrade = observer(props => {
             {is_accumulator && (
                 <AccumulatorsChartElements
                     all_positions={all_positions}
-                    current_symbol_spot={current_spot}
-                    current_symbol_spot_time={current_spot_time}
-                    should_highlight_current_spot={should_highlight_current_spot}
+                    current_spot={current_spot}
+                    current_spot_time={current_spot_time}
+                    has_crossed_accu_barriers={has_crossed_accu_barriers}
+                    should_show_profit_text={
+                        !!accumulator_contract_barriers_data.accumulators_high_barrier &&
+                        getDecimalPlaces(currency) <= 2
+                    }
                     symbol={symbol}
                 />
             )}

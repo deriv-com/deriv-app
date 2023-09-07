@@ -126,6 +126,8 @@ const ChartContent = () => {
 
     if (!show) return null;
 
+    const handleStateChange = state_property => setState(state_property);
+
     return (
         <SmartChart
             barriers={[]}
@@ -140,7 +142,7 @@ const ChartContent = () => {
             requestSubscribe={requestSubscribe}
             settings={{ language: getLanguage() }}
             symbol={state.symbol}
-            toolbarWidget={() => <ToolbarWidgets handleStateChange={setState} />}
+            toolbarWidget={() => <ToolbarWidgets handleStateChange={handleStateChange} />}
             topWidgets={renderTopWidgets}
         />
     );

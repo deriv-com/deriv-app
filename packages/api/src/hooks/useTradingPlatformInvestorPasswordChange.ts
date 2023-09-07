@@ -1,20 +1,20 @@
-import { useMemo } from 'react';
+import { useCallback } from 'react';
 import useRequest from '../useRequest';
+
+type TPayload = Parameters<
+    ReturnType<typeof useRequest<'trading_platform_investor_password_change'>>['mutate']
+>[0]['payload'];
 
 /** A custom hook that change the Trading Platform Investor Password. */
 const useTradingPlatformInvestorPasswordChange = () => {
-    const { data, ...rest } = useRequest('trading_platform_investor_password_change');
+    const { mutate: _mutate, ...rest } = useRequest('trading_platform_investor_password_change');
 
-    // Add additional information to the the Trading Platform Investor Password Change response.
-    const modified_data = useMemo(() => {
-        if (!data) return undefined;
-
-        return { ...data };
-    }, [data]);
+    /**  @param payload - The payload to be sent to the server */
+    const mutate = useCallback((payload: TPayload) => _mutate({ payload }), [_mutate]);
 
     return {
-        /** The response and the mutation of the Trading Platform Investor Password Change API request */
-        data: modified_data,
+        /** The mutation function that accepts a payload and sends it to the server */
+        mutate,
         ...rest,
     };
 };

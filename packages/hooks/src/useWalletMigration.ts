@@ -5,6 +5,8 @@ import { useStore } from '@deriv/stores';
 /** A custom hook to get the status of wallet_migration API and to start/reset the migration process */
 const useWalletMigration = () => {
     // TODO: delete it later, it's a temporary solution
+    // because we have to check for authorize from client store before doing API call
+    // This hook will be refactored later for subscribe when BE is ready
     const { client } = useStore();
     const { is_authorize } = client;
 

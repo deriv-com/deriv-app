@@ -1,12 +1,18 @@
 import React from 'react';
-import { useWalletAccountsList } from '@deriv/api';
 
 type TAccountsListProps = {
-    data: ReturnType<typeof useWalletAccountsList>['data'][number];
+    data: {
+        text: string;
+        background: string;
+    };
 };
 
 const AccountsList = ({ data }: TAccountsListProps) => {
-    return <div className='wallets-accounts-list'>{data.loginid}</div>;
+    return (
+        <div className='accounts-list' style={{ backgroundColor: data.background }}>
+            AccountsList
+        </div>
+    );
 };
 
 export default AccountsList;

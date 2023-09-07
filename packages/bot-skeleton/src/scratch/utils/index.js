@@ -7,66 +7,12 @@ import { removeLimitedBlocks } from '../../utils/workspace';
 import { saveWorkspaceToRecent } from '../../utils/local-storage';
 import DBotStore from '../dbot-store';
 import { log_types } from '../../constants/messages';
-import { error_message_map } from '../../utils/error-config';
-
-export const getSelectedTradeType = (workspace = Blockly.derivWorkspace) => {
-    const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
-    const selected_trade_type = trade_type_block?.getFieldValue('TRADETYPE_LIST');
-    const mandatory_tradeoptions_block =
-        selected_trade_type === 'multiplier' ? 'trade_definition_multiplier' : 'trade_definition_tradeoptions';
-    return mandatory_tradeoptions_block;
-};
-
-export const matchTranslateAttribute = translateString => {
-    const match = translateString.match(/translate\((-?\d*\.?\d+),(-?\d*\.?\d+)\)/);
-    if (match && match.length > 2) {
-        const x = parseFloat(match[1]);
-        const y = parseFloat(match[2]);
-        return { x, y };
-    }
-    return null; // Invalid or no match
-};
-
-export const extractTranslateValues = () => {
-    const transform_value = Blockly?.derivWorkspace?.trashcan.svgGroup_.getAttribute('transform');
-    const translate_xy = matchTranslateAttribute(transform_value);
-
-    if (!translate_xy) {
-        globalObserver.emit('Error', 'Invalid String');
-    }
-
-    return {
-        translate_X: translate_xy.x,
-        translate_Y: translate_xy.y,
-    };
-};
-
-export const validateErrorOnBlockDelete = () => {
-    // Get the bounding rectangle of the selected block
-    const { translate_X, translate_Y } = extractTranslateValues();
-    const blockRect = Blockly.selected?.getSvgRoot().getBoundingClientRect();
-    const translate_offset = 200;
-    // Extract coordinates from the bounding rectangles
-    const blockX = blockRect?.left || 0;
-    const blockY = blockRect?.top || 0;
-    const mandatory_trade_option_block = getSelectedTradeType();
-    const required_block_types = [mandatory_trade_option_block, 'trade_definition', 'purchase', 'before_purchase'];
-    if (required_block_types?.includes(Blockly?.selected?.type)) {
-        if (
-            blockY >= translate_Y - translate_offset &&
-            blockY <= translate_Y + translate_offset &&
-            blockX >= translate_X - translate_offset &&
-            blockX <= translate_X + translate_offset
-        ) {
-            globalObserver.emit('ui.log.error', error_message_map[Blockly.selected.category_]?.default);
-        }
-    }
-};
 
 export const updateWorkspaceName = () => {
-    if (!DBotStore?.instance) return;
-    const { load_modal } = DBotStore.instance;
-    const file_name = load_modal?.dashboard_strategies?.[0]?.name ?? config.default_file_name;
+    const { save_modal } = DBotStore.instance;
+
+    const file_name = save_modal.bot_name ?? config.default_file_name;
+
     if (document.title.indexOf('-') > -1) {
         const string_to_replace = document.title.substr(document.title.indexOf('-'));
         const new_document_title = document.title.replace(string_to_replace, `- ${file_name}`);
@@ -107,9 +53,7 @@ export const save = (filename = '@deriv/bot', collection = false, xmlDom) => {
     saveAs({ data, type: 'text/xml;charset=utf-8', filename: `${filename}.xml` });
 };
 
-const delayExecution = ms => new Promise(resolve => setTimeout(resolve, ms));
-
-export const load = async ({
+export const load = ({
     block_string,
     drop_event,
     file_name,
@@ -118,98 +62,102 @@ export const load = async ({
     workspace,
     showIncompatibleStrategyDialog,
 }) => {
-    if (!DBotStore?.instance || !workspace) return;
     const { setLoading } = DBotStore.instance;
     setLoading(true);
-    // Delay execution to allow fully previewing previous strategy if users quickly switch between strategies.
-    await delayExecution(100);
-    const showInvalidStrategyError = () => {
-        setLoading(false);
-        const error_message = localize('XML file contains unsupported elements. Please check or modify file.');
-        globalObserver.emit('ui.log.error', error_message);
-    };
 
-    // Check if XML can be parsed correctly.
-    try {
-        const xmlDoc = new DOMParser().parseFromString(block_string, 'application/xml');
+    setTimeout(async () => {
+        const showInvalidStrategyError = () => {
+            setLoading(false);
+            const error_message = localize('XML file contains unsupported elements. Please check or modify file.');
+            globalObserver.emit('ui.log.error', error_message);
+        };
 
-        if (xmlDoc.getElementsByTagName('parsererror').length) {
+        // Check if XML can be parsed correctly.
+        try {
+            const xmlDoc = new DOMParser().parseFromString(block_string, 'application/xml');
+
+            if (xmlDoc.getElementsByTagName('parsererror').length) {
+                return showInvalidStrategyError();
+            }
+        } catch (e) {
             return showInvalidStrategyError();
         }
-    } catch (e) {
-        return showInvalidStrategyError();
-    }
 
-    let xml;
-    // Check if XML can be parsed into a strategy.
-    try {
-        xml = Blockly.Xml.textToDom(block_string);
-    } catch (e) {
-        return showInvalidStrategyError();
-    }
+        let xml;
 
-    const blockConversion = new BlockConversion();
-    xml = blockConversion.convertStrategy(xml, showIncompatibleStrategyDialog);
-    const blockly_xml = xml.querySelectorAll('block');
-
-    // Check if there are any blocks in this strategy.
-    if (!blockly_xml.length) {
-        return showInvalidStrategyError();
-    }
-
-    // Check if all block types in XML are allowed.
-    const has_invalid_blocks = Array.from(blockly_xml).some(block => {
-        const block_type = block.getAttribute('type');
-        return !Object.keys(Blockly.Blocks).includes(block_type);
-    });
-
-    if (has_invalid_blocks) {
-        return showInvalidStrategyError();
-    }
-
-    try {
-        const is_collection = xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true';
-        const event_group = is_collection ? `load_collection${Date.now()}` : `dbot-load${Date.now()}`;
-
-        Blockly.Events.setGroup(event_group);
-        removeLimitedBlocks(
-            workspace,
-            Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type'))
-        );
-
-        if (is_collection) {
-            loadBlocks(xml, drop_event, event_group, workspace);
-        } else {
-            await loadWorkspace(xml, event_group, workspace);
-
-            const is_main_workspace = workspace === Blockly.derivWorkspace;
-            if (is_main_workspace) {
-                const { save_modal } = DBotStore.instance;
-
-                save_modal.updateBotName(file_name);
-                workspace.clearUndo();
-                workspace.current_strategy_id = strategy_id || Blockly.utils.genUid();
-                await saveWorkspaceToRecent(xml, from);
-            }
+        // Check if XML can be parsed into a strategy.
+        try {
+            xml = Blockly.Xml.textToDom(block_string);
+        } catch (e) {
+            return showInvalidStrategyError();
         }
 
-        // Set user disabled state on all disabled blocks. This ensures we don't change the disabled
-        // state through code, which was implemented for user experience.
-        workspace.getAllBlocks().forEach(block => {
-            if (block.disabled) {
-                block.is_user_disabled_state = true;
-            }
+        const blockConversion = new BlockConversion();
+        xml = blockConversion.convertStrategy(xml, showIncompatibleStrategyDialog);
+
+        const blockly_xml = xml.querySelectorAll('block');
+
+        // Check if there are any blocks in this strategy.
+        if (!blockly_xml.length) {
+            return showInvalidStrategyError();
+        }
+
+        // Check if all block types in XML are allowed.
+        const has_invalid_blocks = Array.from(blockly_xml).some(block => {
+            const block_type = block.getAttribute('type');
+            return !Object.keys(Blockly.Blocks).includes(block_type);
         });
 
-        if (workspace === Blockly.derivWorkspace) {
-            globalObserver.emit('ui.log.success', { log_type: log_types.LOAD_BLOCK });
+        if (has_invalid_blocks) {
+            return showInvalidStrategyError();
         }
-    } catch (e) {
-        console.error(e); // eslint-disable-line
-        return showInvalidStrategyError();
-    } finally {
-        setLoading(false);
-    }
+
+        try {
+            const is_collection = xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true';
+            const event_group = is_collection ? `load_collection${Date.now()}` : `dbot-load${Date.now()}`;
+
+            Blockly.Events.setGroup(event_group);
+            removeLimitedBlocks(
+                workspace,
+                Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type'))
+            );
+
+            if (is_collection) {
+                loadBlocks(xml, drop_event, event_group, workspace);
+            } else {
+                await loadWorkspace(xml, event_group, workspace);
+
+                const is_main_workspace = workspace === Blockly.derivWorkspace;
+                if (is_main_workspace) {
+                    const { save_modal } = DBotStore.instance;
+
+                    save_modal.updateBotName(file_name);
+                    workspace.clearUndo();
+                    workspace.current_strategy_id = strategy_id || Blockly.utils.genUid();
+                    await saveWorkspaceToRecent(xml, from);
+                }
+            }
+
+            // Set user disabled state on all disabled blocks. This ensures we don't change the disabled
+            // state through code, which was implemented for user experience.
+            workspace.getAllBlocks().forEach(block => {
+                if (block.disabled) {
+                    block.is_user_disabled_state = true;
+                }
+            });
+
+            if (workspace === Blockly.derivWorkspace) {
+                globalObserver.emit('ui.log.success', { log_type: log_types.LOAD_BLOCK });
+            }
+        } catch (e) {
+            console.error(e); // eslint-disable-line
+            return showInvalidStrategyError();
+        } finally {
+            setLoading(false);
+        }
+
+        return true;
+    }, 500);
 };
 
 export const loadBlocks = (xml, drop_event, event_group, workspace) => {
@@ -355,70 +303,35 @@ export const addDomAsBlock = (el_block, parent_block = null) => {
     return block;
 };
 
-const getAllRequiredBlocks = (workspace, required_block_types) => {
-    return workspace.getAllBlocks().filter(block => {
-        if (required_block_types.includes(block.type)) {
-            return (
-                (block.childBlocks_.length === 0 && required_block_types.includes(block.category_)) ||
-                block.parentBlock_ === null
-            );
-        }
-    });
-};
+export const hasAllRequiredBlocks = workspace => {
+    const blocks_in_workspace = workspace.getAllBlocks();
+    const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
+    if (!trade_type_block) return false;
+    const selected_trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
+    const mandatory_tradeoptions_block =
+        selected_trade_type === 'multiplier' ? 'trade_definition_multiplier' : 'trade_definition_tradeoptions';
+    const { mandatoryMainBlocks } = config;
+    const required_block_types = [mandatory_tradeoptions_block, ...mandatoryMainBlocks];
+    const all_block_types = blocks_in_workspace.map(block => block.type);
+    const has_all_required_blocks = required_block_types.every(block_type => all_block_types.includes(block_type));
 
-const getMissingBlocks = (workspace, required_block_types) => {
-    return required_block_types.filter(blockType => {
-        return !workspace.getAllBlocks().some(block => block.type === blockType);
-    });
-};
-
-const getDisabledBlocks = required_blocks_check => {
-    return required_blocks_check.filter(block => {
-        const hasDisabledChild =
-            block.childBlocks_ && block.childBlocks_.some(childBlock => childBlock.disabled === true);
-        return block.disabled === true || hasDisabledChild;
-    });
-};
-
-const throwNewErrorMessage = (error_blocks, key) => {
-    return error_blocks.forEach(block => {
-        if (key === 'misplaced' && block) globalObserver.emit('ui.log.error', error_message_map[block?.type]?.[key]);
-        else if (key === 'missing' && block) globalObserver.emit('ui.log.error', error_message_map[block]?.[key]);
-        else if (key === 'disabled' && block) {
-            let parent_block_error = false;
-            const parent_error_message = error_message_map[block.type]?.[key];
-            if (block.disabled && parent_error_message) {
-                globalObserver.emit('ui.log.error', parent_error_message);
-                parent_block_error = true;
-            } else if (!parent_block_error && block.childBlocks_) {
-                block.childBlocks_.forEach(childBlock => {
-                    const child_error_message = error_message_map[childBlock.type]?.[key];
-                    if (child_error_message) globalObserver.emit('ui.log.error', child_error_message);
-                });
-            }
-        }
-    });
+    return has_all_required_blocks;
 };
 
 export const isAllRequiredBlocksEnabled = workspace => {
-    if (!workspace) return false;
-
-    const mandatory_trade_option_block = getSelectedTradeType(workspace);
+    const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
+    const selected_trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
+    const mandatory_tradeoptions_block =
+        selected_trade_type === 'multiplier' ? 'trade_definition_multiplier' : 'trade_definition_tradeoptions';
     const { mandatoryMainBlocks } = config;
-    const required_block_types = [mandatory_trade_option_block, ...mandatoryMainBlocks];
+    const required_block_types = [mandatory_tradeoptions_block, ...mandatoryMainBlocks];
 
-    const required_blocks_check = getAllRequiredBlocks(workspace, required_block_types);
+    const enabled_blocks_types = workspace
+        .getAllBlocks()
+        .filter(block => !block.disabled)
+        .map(block => block.type);
 
-    const missing_blocks = getMissingBlocks(workspace, required_block_types);
-    const disabled_blocks = getDisabledBlocks(required_blocks_check);
-
-    if (missing_blocks) throwNewErrorMessage(missing_blocks, 'missing');
-    if (disabled_blocks) throwNewErrorMessage(disabled_blocks, 'disabled');
-
-    const error_blocks = [...missing_blocks, ...disabled_blocks];
-    const blocks_required = error_blocks.length === 0;
-
-    return blocks_required;
+    return required_block_types.every(required_type => enabled_blocks_types.includes(required_type));
 };
 
 export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chronological) => {

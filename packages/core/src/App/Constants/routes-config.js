@@ -5,7 +5,6 @@ import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Redirect from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
-import CFDCompareAccounts from '@deriv/cfd/src/Containers/cfd-compare-accounts';
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
@@ -104,11 +103,6 @@ const getModules = () => {
             path: routes.dxtrade,
             component: props => <CFD {...props} platform='dxtrade' />,
             getTitle: () => localize('Deriv X'),
-        },
-        {
-            path: routes.compare_cfds,
-            component: CFDCompareAccounts,
-            getTitle: () => localize('Compare CFD accounts'),
         },
         {
             path: routes.mt5,

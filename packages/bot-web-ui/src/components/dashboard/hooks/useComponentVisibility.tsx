@@ -1,6 +1,10 @@
 import React from 'react';
 
-export const useComponentVisibility = (ref: React.RefObject<HTMLInputElement>) => {
+type TComponentVisibility = {
+    ref?: React.RefObject<HTMLInputElement>;
+};
+
+export const useComponentVisibility = (ref: TComponentVisibility) => {
     const [is_dropdown_visible, setDropdownVisibility] = React.useState(false);
 
     const handleHideDropdown = (event: KeyboardEvent) => {

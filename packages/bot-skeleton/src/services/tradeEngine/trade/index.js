@@ -83,7 +83,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         this.options = options;
         this.startPromise = this.loginAndGetBalance(token);
 
-        if (!this.checkTicksPromiseExists()) this.watchTicks(symbol);
+        this.watchTicks(symbol);
     }
 
     start(tradeOptions) {
@@ -93,12 +93,10 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
         globalObserver.emit('bot.running');
 
-        const validated_trade_options = this.validateTradeOptions(tradeOptions);
-
-        this.tradeOptions = validated_trade_options;
+        this.tradeOptions = tradeOptions;
         this.store.dispatch(start());
-        this.checkLimits(validated_trade_options);
-        this.makeProposals({ ...this.options, ...validated_trade_options });
+        this.checkLimits(tradeOptions);
+        this.makeProposals({ ...this.options, ...tradeOptions });
         this.checkProposalReady();
     }
 

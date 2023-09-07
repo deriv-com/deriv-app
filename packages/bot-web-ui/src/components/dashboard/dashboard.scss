@@ -308,13 +308,6 @@
         }
     }
 
-    &__steps {
-        @media (max-height: 730px) {
-            max-height: 40vh;
-            overflow-y: auto;
-        }
-    }
-
     &__label {
         text-align: left;
         margin-bottom: 2.4rem;
@@ -352,11 +345,6 @@
 }
 
 .joyride-content {
-    font-size: 1.4rem;
-    @media (max-height: 790px) {
-        max-height: 46vh;
-        overflow-y: auto;
-    }
     &__left {
         text-align: left;
 

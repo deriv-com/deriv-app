@@ -64,12 +64,6 @@ const isLanguageAvailable = (lang: string) => {
     return Object.keys(getAllowedLanguages()).includes(selected_language);
 };
 
-export const getRedirectionLanguage = (preferred_language: string) => {
-    const language_query = new URLSearchParams(window.location.search).get('lang');
-    const is_language_query_valid = language_query && isLanguageAvailable(language_query);
-    return is_language_query_valid ? language_query : preferred_language ?? DEFAULT_LANGUAGE;
-};
-
 export const getAllLanguages = () => ALL_LANGUAGES;
 
 export const getInitialLanguage = () => {

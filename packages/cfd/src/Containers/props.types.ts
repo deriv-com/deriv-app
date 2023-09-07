@@ -250,11 +250,6 @@ export type TJurisdictionModalContentProps = {
     is_virtual: boolean;
 };
 
-export type TJurisdictionModalTitleProps = {
-    show_eu_related_content: boolean;
-    account_type: string;
-};
-
 type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
 
 export type TJurisdictionModalFootNoteProps = {
@@ -330,22 +325,4 @@ export type TCFDDbviOnboardingProps = {
     toggleCFDVerificationModal: () => void;
     updateAccountStatus: () => void;
     updateMT5Status: () => void;
-};
-
-type TDynamicLeverage = {
-    from: number;
-    to: number;
-    leverage: number;
-};
-
-export type TDynamicLeverageMarketCardProps = {
-    title: string;
-    description?: string;
-    leverage: string;
-    data: TDynamicLeverage[];
-};
-
-export type TDynamicLeverageTableColumnHeader = {
-    title: string;
-    subtitle: string;
 };

@@ -8,7 +8,6 @@ let balance_string = '';
 export default Engine =>
     class Balance extends Engine {
         observeBalance() {
-            if (!api_base.api) return;
             const subscription = api_base.api.onMessage().subscribe(({ data }) => {
                 if (data.msg_type === 'balance') {
                     const {
@@ -17,7 +16,7 @@ export default Engine =>
 
                     balance_string = getFormattedText(b, currency);
 
-                    if (this.accountInfo) info({ accountID: this.accountInfo.loginid, balance: balance_string });
+                    info({ accountID: this.accountInfo.loginid, balance: balance_string });
                 }
             });
             api_base.pushSubscription(subscription);

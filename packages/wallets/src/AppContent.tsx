@@ -1,15 +1,16 @@
 import React from 'react';
-import { DesktopWalletsList } from './components';
-// import WalletsCarousel from './components/WalletCarousel';
-import './AppContent.scss';
+import WalletList from './components/WalletList';
+import WalletsCarousel from './components/WalletCarousel';
+import IcBrandDerivGo from './public/ic-brand-derivgo.svg';
+import './app-content.scss';
 
 const AppContent: React.FC = () => {
     return (
-        <div className='wallets-app'>
-            <div className='wallets-app__content'>
-                <DesktopWalletsList />
-            </div>
-            {/* <WalletsCarousel /> */}
+        <div>
+            <div className='icon' />
+            <IcBrandDerivGo width={25} height={25} />
+            <WalletList />
+            <WalletsCarousel />
         </div>
     );
 };

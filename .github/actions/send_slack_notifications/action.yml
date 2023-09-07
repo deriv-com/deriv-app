@@ -17,6 +17,13 @@ inputs:
 runs:
   using: composite
   steps:
+  - name: check env vars
+    run: |
+      echo "SLACK_WEBHOOK_URL: ${{ inputs.SLACK_WEBHOOK_URL }}"
+      echo "status: ${{ inputs.status }}"
+      echo "release_type: ${{ inputs.release_type }}"
+      echo "version: ${{ inputs.version }}"
+    shell: bash
   - name: Send Slack Notification on Success
     if: ${{ inputs.status }} == 'success'
     run: |-
@@ -24,7 +31,7 @@ runs:
         --data '{
         "text": "'"${{ inputs.release_type }}"' Release succeeded for app.deriv.com with version *'"${{ inputs.version }}"'*"
         }' \
-          ${{ SLACK_WEBHOOK_URL }}
+          ${{ inputs.SLACK_WEBHOOK_URL }}
     shell: bash
   
   - name: Send Slack Notification on Failure
@@ -35,5 +42,5 @@ runs:
           --data '{
             "text": "'"${{ inputs.release_type }}"' Release failed for app.deriv.com with version *'"${{ inputs.version }}"'*"
           }' \
-          ${{ SLACK_WEBHOOK_URL }}
+          ${{ inputs.SLACK_WEBHOOK_URL }}
     shell: bash

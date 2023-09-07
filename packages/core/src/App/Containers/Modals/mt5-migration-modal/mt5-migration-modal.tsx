@@ -13,6 +13,7 @@ import {
 } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
+import { CFD_PLATFORMS } from '@deriv/shared';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 
 const MigrateAccount = ({ to, type }: { to: string; type: string }) => {
@@ -56,7 +57,12 @@ type TMT5MigrationModalProps = {
 };
 
 const MT5MigrationModal = observer(({ openPasswordModal }: TMT5MigrationModalProps) => {
-    const { ui } = useStore();
+    const { ui, common } = useStore();
+
+    const { disableApp, enableApp, is_mt5_migration_modal_open, toggleMT5MigrationModal, setMT5MigrationModalEnabled } =
+        ui;
+    const { setAppstorePlatform } = common;
+
     const {
         svg_accounts_to_migrate,
         no_of_svg_accounts_to_migrate,
@@ -66,8 +72,6 @@ const MT5MigrationModal = observer(({ openPasswordModal }: TMT5MigrationModalPro
         eligible_svg_to_vanuatu_derived_accounts,
         eligible_svg_to_vanuatu_financial_accounts,
     } = useMT5SVGEligibleToMigrate();
-
-    const { disableApp, enableApp, is_mt5_migration_modal_open, toggleMT5MigrationModal } = ui;
     const [show_modal_front_side, setShowModalFrontSide] = React.useState(true);
     const [is_checked, setIsChecked] = React.useState(false);
     const modal_title = <Localize i18n_default_text='Enhancing your trading experience' />;
@@ -186,6 +190,9 @@ const MT5MigrationModal = observer(({ openPasswordModal }: TMT5MigrationModalPro
 
     const onConfirmMigration = () => {
         toggleMT5MigrationModal();
+        setAppstorePlatform(CFD_PLATFORMS.MT5);
+        setJurisdictionSelectedShortcode(Jurisdiction.VANUATU);
+        setMT5MigrationModalEnabled(true);
         openPasswordModal({ category: 'real', type: 'financial' });
     };
 

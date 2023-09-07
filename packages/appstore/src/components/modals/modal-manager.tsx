@@ -90,7 +90,7 @@ const ModalManager = () => {
     };
 
     const openRealPasswordModal = (account_type: TOpenAccountTransferMeta) => {
-        setAccountType(account_type);
+        // setAccountType(account_type);
         enableCFDPasswordModal();
     };
 

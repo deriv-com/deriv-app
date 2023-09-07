@@ -76,6 +76,7 @@ const AppModals = ({
     setCFDScore,
     content_flag,
     is_mt5_notification_modal_visible,
+    is_mt5_migration_modal_open,
     active_account_landing_company,
     is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible,
@@ -167,6 +168,9 @@ const AppModals = ({
     if (is_need_real_account_for_cashier_modal_visible) {
         ComponentToLoad = <NeedRealAccountForCashierModal />;
     }
+    if (is_mt5_migration_modal_open) {
+        ComponentToLoad = <MT5Notification />;
+    }
 
     return (
         <>
@@ -186,6 +190,7 @@ export default connect(({ client, ui, traders_hub }) => ({
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     is_logged_in: client.is_logged_in,
+    is_mt5_migration_modal_open: ui.is_mt5_migration_modal_open,
     is_reality_check_visible: client.is_reality_check_visible,
     has_maltainvest_account: client.has_maltainvest_account,
     fetchFinancialAssessment: client.fetchFinancialAssessment,

@@ -494,6 +494,7 @@ type TUiStore = {
     closeSuccessTopUpModal: () => void;
     closeTopUpModal: () => void;
     is_cfd_reset_password_modal_enabled: boolean;
+    is_mt5_migration_modal_enabled: boolean;
     is_mt5_migration_modal_open: boolean;
     setCFDPasswordResetModal: (value: boolean) => void;
     openAccountNeededModal: () => void;
@@ -516,6 +517,7 @@ type TUiStore = {
               ]
             | []
     ) => void;
+    setMT5MigrationModalEnabled: (value: boolean) => void;
     toggleMT5MigrationModal: () => void;
 };
 

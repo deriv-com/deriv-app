@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api';
+import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api';
 import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
@@ -40,10 +40,11 @@ const getWalletHeaderButtons = (is_demo: boolean, handleAction?: () => void) => 
 };
 
 type TProps = {
+    account?: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
     is_desktop_wallet?: boolean;
 };
 
-const WalletListCardIActions: React.FC<TProps> = ({ is_desktop_wallet = 'true' }) => {
+const WalletListCardIActions: React.FC<TProps> = ({ account, is_desktop_wallet = 'true' }) => {
     const { data: active_wallet } = useActiveWalletAccount();
     const is_demo = !!active_wallet?.is_virtual;
 
@@ -69,7 +70,7 @@ const WalletListCardIActions: React.FC<TProps> = ({ is_desktop_wallet = 'true' }
 
     return (
         <div className='wallets-header__actions'>
-            {getWalletHeaderButtons(is_demo).map(button => (
+            {getWalletHeaderButtons(!!account?.is_virtual).map(button => (
                 <button key={button.name} className='wallets-header__button' onClick={button.action}>
                     {button.icon}
                 </button>

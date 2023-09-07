@@ -1,26 +1,16 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { useStores } from 'Stores';
-import OrderDetailsConfirmModal from '../order-details-confirm-modal.jsx';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useStores } from 'Stores';
+import OrderDetailsConfirmModal from '../order-details-confirm-modal';
+import userEvent from '@testing-library/user-event';
 
 const el_modal = document.createElement('div');
 
 jest.mock('Utils/websocket', () => ({
     ...jest.requireActual('Utils/websocket'),
     requestWS: jest.fn().mockResolvedValue({ error: { message: 'P2P Error' } }),
-}));
-
-jest.mock('@sendbird/chat', () => ({
-    SendbirdChat: jest.fn().mockReturnValue({}),
-}));
-
-jest.mock('@sendbird/chat/groupChannel', () => ({
-    SendbirdChat: jest.fn().mockReturnValue({}),
-}));
-
-jest.mock('@sendbird/chat/message', () => ({
-    SendbirdChat: jest.fn().mockReturnValue({}),
 }));
 
 jest.mock('Stores', () => ({
@@ -63,7 +53,9 @@ describe('<OrderDetailsConfirmModal/>', () => {
     });
 
     it('should render the modal', () => {
-        render(<OrderDetailsConfirmModal />);
+        render(<OrderDetailsConfirmModal />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('Payment confirmation')).toBeInTheDocument();
         expect(
@@ -78,11 +70,13 @@ describe('<OrderDetailsConfirmModal/>', () => {
     it('should handle GoBack Click', () => {
         const { hideModal } = useModalManagerContext();
 
-        render(<OrderDetailsConfirmModal />);
+        render(<OrderDetailsConfirmModal />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
 
         const cancel_button = screen.getByRole('button', { name: 'Go Back' });
         expect(cancel_button).toBeInTheDocument();
-        fireEvent.click(cancel_button);
+        userEvent.click(cancel_button);
         expect(hideModal).toHaveBeenCalled();
     });
     it('should send a request when confirm button is clicked', async () => {
@@ -90,19 +84,21 @@ describe('<OrderDetailsConfirmModal/>', () => {
         const { hideModal } = useModalManagerContext();
         const { confirmOrderRequest, order_information } = order_store;
 
-        render(<OrderDetailsConfirmModal />);
+        render(<OrderDetailsConfirmModal />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const input = screen.getByTestId('dt_file_upload_input');
-        fireEvent.change(input, { target: { files: [file] } });
+        const input: HTMLInputElement = screen.getByTestId('dt_file_upload_input');
+        userEvent.upload(input, file);
         await waitFor(() => {
-            expect(input.files[0]).toBe(file);
+            expect(input.files?.[0]).toBe(file);
             expect(input.files).toHaveLength(1);
         });
 
         const confirm_button = screen.getByRole('button', { name: 'Confirm' });
         expect(confirm_button).toBeInTheDocument();
         expect(confirm_button).toBeEnabled();
-        fireEvent.click(confirm_button);
+        userEvent.click(confirm_button);
         await waitFor(() => {
             expect(sendbird_store.sendFile).toHaveBeenCalled();
             expect(confirmOrderRequest).toHaveBeenCalledWith(order_information.id, true);

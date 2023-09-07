@@ -1,30 +1,62 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { FileDropzone, Icon, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { TFile } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { localize } from 'Components/i18next';
+import { getErrorMessage } from 'Utils/file-uploader';
+
+type TDocumentFile = {
+    files: TFile[];
+    error_message: string | null;
+};
+
+type TFileUploaderComponentProps = {
+    accept: string;
+    hover_message: string;
+    max_size: number;
+    multiple?: boolean;
+    setDocumentFile: React.Dispatch<React.SetStateAction<TDocumentFile>>;
+    upload_message: string;
+    validation_error_message: string | null;
+    value: File[];
+};
 
 const FileUploaderComponent = ({
     accept,
     hover_message,
     max_size,
     multiple = false,
-    onClickClose,
-    onDropAccepted,
-    onDropRejected,
+    setDocumentFile,
     upload_message,
     validation_error_message,
     value,
-}) => {
+}: TFileUploaderComponentProps) => {
+    const {
+        ui: { is_mobile },
+    } = useStore();
     const getUploadMessage = () => {
         return (
             <>
                 <Icon icon='IcCloudUpload' size={50} />
-                <Text as='div' line-height={isMobile() ? 'xl' : 'l'} size={isMobile() ? 'xxs' : 'xs'} weight='bold'>
+                <Text as='div' line-height={is_mobile ? 'xl' : 'l'} size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
                     {upload_message}
                 </Text>
             </>
         );
+    };
+
+    const handleAcceptedFiles = (files: TFile[]) => {
+        if (files.length > 0) {
+            setDocumentFile({ files, error_message: null });
+        }
+    };
+
+    const removeFile = () => {
+        setDocumentFile({ files: [], error_message: null });
+    };
+
+    const handleRejectedFiles = (files: TFile[]) => {
+        setDocumentFile({ files, error_message: getErrorMessage(files) });
     };
 
     return (
@@ -37,8 +69,8 @@ const FileUploaderComponent = ({
                 max_size={max_size}
                 message={getUploadMessage()}
                 multiple={multiple}
-                onDropAccepted={onDropAccepted}
-                onDropRejected={onDropRejected}
+                onDropAccepted={handleAcceptedFiles}
+                onDropRejected={handleRejectedFiles}
                 validation_error_message={validation_error_message}
                 value={value}
             />
@@ -46,27 +78,13 @@ const FileUploaderComponent = ({
                 <Icon
                     icon='IcCloseCircle'
                     className={'file-uploader-component__close-icon'}
-                    onClick={onClickClose}
+                    onClick={removeFile}
                     color='secondary'
                     data_testid='dt_remove_file_icon'
                 />
             )}
         </div>
     );
-};
-
-FileUploaderComponent.propTypes = {
-    accept: PropTypes.string,
-    hover_message: PropTypes.string,
-    error_messages: PropTypes.string,
-    max_size: PropTypes.number,
-    multiple: PropTypes.bool,
-    upload_message: PropTypes.string,
-    onClickClose: PropTypes.func,
-    onDropAccepted: PropTypes.func,
-    onDropRejected: PropTypes.func,
-    validation_error_message: PropTypes.string,
-    value: PropTypes.arrayOf(PropTypes.instanceOf(File)),
 };
 
 export default FileUploaderComponent;

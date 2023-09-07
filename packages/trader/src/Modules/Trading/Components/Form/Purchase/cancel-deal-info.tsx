@@ -10,7 +10,7 @@ import { TProposalTypeInfo } from 'Types';
 const CancelDealInfo = observer(({ proposal_info }: { proposal_info: TProposalTypeInfo }) => {
     const { currency, has_cancellation } = useTraderStore();
     const { id, cancellation, has_error } = proposal_info;
-    const error = has_error || !id;
+    const error = has_error ?? !id;
     const [is_row_layout, setIsRowLayout] = React.useState(false);
 
     const ref = React.useRef<HTMLDivElement>(null);

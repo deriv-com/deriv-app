@@ -1,8 +1,15 @@
 import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard, useHover } from '@deriv/components';
-import { isCryptoContract, isDesktop, getEndTime, getSymbolDisplayName, toMoment } from '@deriv/shared';
-import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
+import {
+    getEndTime,
+    getSymbolDisplayName,
+    getCardLabels,
+    getContractTypeDisplay,
+    isCryptoContract,
+    isDesktop,
+    toMoment,
+} from '@deriv/shared';
 import { getMarketInformation } from 'Utils/Helpers/market-underlying';
 import { SwipeableContractDrawer } from './swipeable-components';
 import MarketClosedContractOverlay from './market-closed-contract-overlay';
@@ -75,7 +82,7 @@ const ContractDrawerCard = observer(
         const is_sold = !!getEndTime(contract_info);
         const display_name = getSymbolDisplayName(
             active_symbols,
-            getMarketInformation(contract_info.shortcode).underlying
+            getMarketInformation(contract_info.shortcode || '').underlying
         );
 
         const is_crypto = isCryptoContract(contract_info.underlying);

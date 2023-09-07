@@ -2,10 +2,16 @@ import classNames from 'classnames';
 import React from 'react';
 import { toJS } from 'mobx';
 import { DesktopWrapper, MobileWrapper, Popover, Text } from '@deriv/components';
-import { isMobile, useIsMounted, isContractElapsed, TContractStore, TTickSpotData } from '@deriv/shared';
+import {
+    getMarketNamesMap,
+    isMobile,
+    useIsMounted,
+    isContractElapsed,
+    TContractStore,
+    TTickSpotData,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Bounce, SlideIn } from 'App/Components/Animations';
-import { getMarketNamesMap } from '../../../../Constants';
 import { DigitSpot, LastDigitPrediction } from '../LastDigitPrediction';
 import 'Sass/app/modules/contract/digits.scss';
 import { useTraderStore } from 'Stores/useTraderStores';

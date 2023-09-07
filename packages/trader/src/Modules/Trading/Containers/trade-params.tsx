@@ -18,10 +18,10 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 
 type TTradeParams = {
-    is_minimized: boolean;
+    is_minimized?: boolean;
 };
 
-const TradeParams = observer(({ is_minimized }: TTradeParams) => {
+const TradeParams = observer(({ is_minimized = false }: TTradeParams) => {
     const { form_components } = useTraderStore();
     const isVisible = (component_key: string) => {
         return form_components.includes(component_key);

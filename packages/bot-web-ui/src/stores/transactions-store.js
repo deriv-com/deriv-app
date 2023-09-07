@@ -84,7 +84,10 @@ export default class TransactionsStore {
         };
 
         if (!this.elements[this.loginid]) {
-            this.elements[this.loginid] = [];
+            this.elements = {
+                ...this.elements,
+                [this.loginid]: [],
+            };
         }
 
         const same_contract_index = this.elements[this.loginid]?.findIndex(

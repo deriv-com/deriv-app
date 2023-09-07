@@ -499,11 +499,6 @@ export default class TradersHubStore extends BaseStore {
         );
     }
 
-    hasCFDAccount(platform, category, type) {
-        const current_list_keys = Object.keys(this.root_store.modules.cfd.current_list);
-        return current_list_keys.some(key => key.startsWith(`${platform}.${category}.${type}`));
-    }
-
     getExistingAccounts(platform, market_type) {
         const { residence } = this.root_store.client;
         const current_list = this.root_store.modules?.cfd?.current_list || [];
@@ -641,25 +636,6 @@ export default class TradersHubStore extends BaseStore {
         } else {
             this.openRealAccount(account_type, platform);
         }
-    }
-
-    get can_get_more_cfd_mt5_accounts() {
-        const {
-            client: { isEligibleForMoreRealMt5 },
-        } = this.root_store;
-        const { is_high_risk_client_for_mt5 } = this.root_store.modules.cfd;
-
-        return (
-            this.is_real &&
-            !this.is_eu_user &&
-            (this.hasCFDAccount(CFD_PLATFORMS.MT5, 'real', 'synthetic') ||
-                this.hasCFDAccount(CFD_PLATFORMS.MT5, 'real', 'financial') ||
-                this.hasCFDAccount(CFD_PLATFORMS.MT5, 'real', 'all')) &&
-            (isEligibleForMoreRealMt5('synthetic') ||
-                isEligibleForMoreRealMt5('financial') ||
-                isEligibleForMoreRealMt5('all')) &&
-            !is_high_risk_client_for_mt5
-        );
     }
 
     getServerName = account => {

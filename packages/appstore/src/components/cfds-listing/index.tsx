@@ -13,6 +13,7 @@ import { Actions } from 'Components/containers/trading-app-card-actions';
 import { getHasDivider } from 'Constants/utils';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import './cfds-listing.scss';
+import { useCFDCanGetMoreMT5Accounts } from '@deriv/hooks';
 
 type TDetailedExistingAccount = AvailableAccount &
     TDetailsOfEachMT5Loginid &
@@ -39,7 +40,6 @@ const CFDsListing = observer(() => {
         getExistingAccounts,
         getAccount,
         toggleAccountTypeModalVisibility,
-        can_get_more_cfd_mt5_accounts,
         selected_account_type,
         is_eu_user,
         is_demo_low_risk,
@@ -62,6 +62,7 @@ const CFDsListing = observer(() => {
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
 
+    const can_get_more_cfd_mt5_accounts = useCFDCanGetMoreMT5Accounts();
     const {
         poi_pending_for_bvi_labuan_vanuatu,
         poi_resubmit_for_bvi_labuan_vanuatu,

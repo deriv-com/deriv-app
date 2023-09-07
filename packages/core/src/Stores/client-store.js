@@ -28,7 +28,7 @@ import { RudderStack } from '@deriv/analytics';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType, getAvailableAccount } from './Helpers/client';
-import { getLanguage, localize } from '@deriv/translations';
+import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 
 import BaseStore from './base-store';
@@ -40,7 +40,6 @@ import moment from 'moment';
 import { setDeviceDataCookie } from './Helpers/device';
 
 const LANGUAGE_KEY = 'i18n_language';
-const DEFAULT_LANGUAGE = 'EN';
 const storage_key = 'client.accounts';
 const store_name = 'client_store';
 const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
@@ -430,9 +429,11 @@ export default class ClientStore extends BaseStore {
         reaction(
             () => [this.account_settings],
             () => {
-                const lang_from_url = new URLSearchParams(window.location.search).get('lang') || DEFAULT_LANGUAGE;
-                this.setPreferredLanguage(lang_from_url);
-                LocalStore.set(LANGUAGE_KEY, lang_from_url);
+                const language = getRedirectionLanguage(this.account_settings?.preferred_language);
+                window.history.replaceState({}, document.title, urlForLanguage(language));
+
+                this.setPreferredLanguage(language);
+                LocalStore.set(LANGUAGE_KEY, language);
             }
         );
 
@@ -1688,7 +1689,7 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 this.is_populating_account_list = false;
             });
-            const language = authorize_response.authorize.preferred_language;
+            const language = getRedirectionLanguage(authorize_response.authorize.preferred_language);
             const stored_language = LocalStore.get(LANGUAGE_KEY);
             if (language !== 'EN' && stored_language && language !== stored_language) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));

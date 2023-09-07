@@ -1,12 +1,6 @@
 import React from 'react';
 import { Popover, Text } from '@deriv/components';
-import {
-    useCFDAccounts,
-    // useExchangeRate,
-    usePlatformAccounts,
-    useThrottle,
-    useTotalAccountBalance,
-} from '@deriv/hooks';
+import { useCFDAccounts, usePlatformAccounts, useThrottle, useTotalAccountBalance } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import BalanceText from 'Components/elements/text/balance-text';
@@ -25,27 +19,11 @@ const TotalAsset = observer(() => {
     const is_real = selected_account_type === 'real';
     const real_total_balance = platform_real_balance.balance + cfd_real_balance.balance;
     const demo_total_balance = (platform_demo_account?.balance || 0) + cfd_demo_balance.balance;
-    // const { last_update } = useExchangeRate();
 
     // for total asset first we need to check local storage if it's not set we can use the bellow code to set it
     const total_asset = is_real
         ? useThrottle(real_total_balance, 60 * 1000)
         : useThrottle(demo_total_balance, 60 * 1000);
-
-    // add a useEffect with empty dependency array wwhich show the updated total_asset for the first tim ewhen loading the page
-    // useEffect(() => {
-    //     if (flag) {
-    //         if (is_real) {
-    //             localStorage.setItem('total_asset', real_total_balance);
-    //         } else {
-    //             localStorage.setItem('total_asset', demo_total_balance);
-    //         }
-    //     }
-    // }, [flag]);
-
-    // const total_asset = localStorage.getItem('total_asset');
-
-    // const total_asset = is_real ? real_total_balance : demo_total_balance;
 
     //for the next times we can compare the storage data's date with the new calculated data and if the exchange_rate date is newer the we can update the storage data and use it to rerender the page
 

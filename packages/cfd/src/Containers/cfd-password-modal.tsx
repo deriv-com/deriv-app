@@ -135,6 +135,45 @@ const getAccountTitle = (
     return account_title;
 };
 
+// TODO: Update with other platforms and CFDs
+const getWalletAccountTitle = (type: string) => {
+    let account_title = '';
+    switch (type) {
+        case 'synthetic':
+            account_title = 'MT5 Derived';
+            break;
+        case 'all':
+            account_title = localize('MT5 SwapFree');
+            break;
+        case 'financial':
+            account_title = localize('MT5 Financial');
+            break;
+        default:
+            account_title = '';
+            break;
+    }
+
+    return account_title;
+};
+
+const getWalletHeader = (account_type: { category: string; type: string }) => {
+    const { type, category } = account_type;
+    return (
+        <React.Fragment>
+            {category === 'demo' ? (
+                <Localize
+                    i18n_default_text='Your {{account_title}} demo account is ready'
+                    values={{
+                        account_title: getWalletAccountTitle(type),
+                    }}
+                />
+            ) : (
+                <Localize i18n_default_text='Almost there' />
+            )}
+        </React.Fragment>
+    );
+};
+
 const PasswordModalHeader = ({
     should_set_trading_password,
     is_password_reset_error,
@@ -544,25 +583,23 @@ const CFDPasswordForm = ({
                                 has_error={!!(touched.password && errors.password)}
                                 custom_feedback_messages={getErrorMessages().password_warnings}
                             >
-                                {() => (
-                                    <PasswordInput
-                                        autoComplete='new-password'
-                                        label={localize('{{platform}} password', {
-                                            platform: getCFDPlatformLabel(platform),
-                                        })}
-                                        error={
-                                            (touched.password && errors.password) ||
-                                            (values.password.length === 0 ? error_message : '')
-                                        }
-                                        name='password'
-                                        value={values.password}
-                                        onBlur={handleBlur}
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                            handlePasswordInputChange(e, handleChange, validateForm, setFieldTouched);
-                                        }}
-                                        data_testId={`dt_${platform}_password`}
-                                    />
-                                )}
+                                <PasswordInput
+                                    autoComplete='new-password'
+                                    label={localize('{{platform}} password', {
+                                        platform: getCFDPlatformLabel(platform),
+                                    })}
+                                    error={
+                                        (touched.password && errors.password) ||
+                                        (values.password.length === 0 ? error_message : '')
+                                    }
+                                    name='password'
+                                    value={values.password}
+                                    onBlur={handleBlur}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        handlePasswordInputChange(e, handleChange, validateForm, setFieldTouched);
+                                    }}
+                                    data_testId={`dt_${platform}_password`}
+                                />
                             </PasswordMeter>
                         </div>
                         {is_real_financial_stp && (
@@ -840,7 +877,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         const mt5_platform_label = jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'Deriv MT5' : '';
 
         const wallet_platform_label =
-            jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'MT5' : 'MT5 CFDs';
+            jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'MT5 CFDs' : 'MT5';
 
         if (category === 'real') {
             let platformName = '';
@@ -978,32 +1015,12 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const { type, category } = account_type;
 
     const cfd_details = {
+        account_title: getWalletAccountTitle(type),
         currency: active_wallet?.currency,
         gradient_header_class: active_wallet?.gradient_header_class,
         icon: active_wallet?.icon,
         is_demo: active_wallet?.is_demo,
         type,
-    };
-
-    const getWalletHeader = () => {
-        const wallet_platform_label =
-            jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'MT5' : 'MT5 CFDs';
-        return (
-            <React.Fragment>
-                {category === 'demo' ? (
-                    <Localize
-                        i18n_default_text='Your {{wallet_platform_label}} {{account_title}} {{category}} account is ready'
-                        values={{
-                            wallet_platform_label,
-                            category,
-                            account_title: wallet_account_title(account_title),
-                        }}
-                    />
-                ) : (
-                    <Localize i18n_default_text='Almost there' />
-                )}
-            </React.Fragment>
-        );
     };
 
     return (
@@ -1013,7 +1030,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             {/* TODO: Remove this once development is completed */}
             {is_wallet_enabled && category === 'demo' && platform === CFD_PLATFORMS.MT5 ? (
                 <WalletCFDSuccessDialog
-                    header={getWalletHeader()}
+                    header={getWalletHeader(account_type)}
                     is_open={should_show_success}
                     message={getSubmitText()}
                     onSubmit={closeModal}

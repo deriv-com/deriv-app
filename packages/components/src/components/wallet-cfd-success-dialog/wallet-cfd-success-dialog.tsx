@@ -8,6 +8,7 @@ import { localize } from '@deriv/translations';
 import './wallet-cfd-success-dialog.scss';
 
 export type TWalletCFDCard = {
+    account_title: string;
     currency: string;
     gradient_header_class: string;
     icon: string;

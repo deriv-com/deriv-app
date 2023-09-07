@@ -2,12 +2,13 @@ import React from 'react';
 import classNames from 'classnames';
 import Text from '../text';
 import { isMobile } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { AppLinkedWithWalletIcon } from '../app-linked-with-wallet-icon';
 import { TWalletCFDCard } from './wallet-cfd-success-dialog';
 import './wallet-cfd-card.scss';
 
 const WalletCFDCard = ({ wallet }: { wallet: TWalletCFDCard }) => {
-    const { currency, gradient_header_class, icon, is_demo, type } = wallet;
+    const { account_title, currency, gradient_header_class, icon, is_demo, type } = wallet;
 
     // TODO: Update with other platform and CFDs
     let app_icon = '';
@@ -23,22 +24,6 @@ const WalletCFDCard = ({ wallet }: { wallet: TWalletCFDCard }) => {
             break;
         default:
             app_icon = '';
-            break;
-    }
-
-    let account_title = '';
-    switch (type) {
-        case 'synthetic':
-            account_title = 'MT5 Derived';
-            break;
-        case 'all':
-            account_title = 'MT5 SwapFree';
-            break;
-        case 'financial':
-            account_title = 'MT5 Financial';
-            break;
-        default:
-            account_title = '';
             break;
     }
 
@@ -68,7 +53,7 @@ const WalletCFDCard = ({ wallet }: { wallet: TWalletCFDCard }) => {
                         weight='bold'
                         size={isMobile() ? 'xxxxs' : 'xxxs'}
                     >
-                        {is_demo ? 'Demo' : 'Real'}
+                        {is_demo ? localize('Demo') : localize('Real')}
                     </Text>
                 </div>
                 <div className='wallet-cfd-card__details'>
@@ -78,9 +63,10 @@ const WalletCFDCard = ({ wallet }: { wallet: TWalletCFDCard }) => {
                     </Text>
                     {/* wallet currency */}
                     <Text color='less-prominent' weight='light' size={isMobile() ? 'xxxxs' : 'xxxs'}>
-                        {currency} Wallet
+                        {currency} {localize('Wallet')}
                     </Text>
                     {/* total balance */}
+                    {/* TODO: replace this with balance amount from the API */}
                     <Text color='prominent' weight='bold' size={isMobile() ? 'xxxs' : 'xxs'}>
                         {is_demo ? `10,000.00 ${currency}` : `0.00 ${currency}`}
                     </Text>

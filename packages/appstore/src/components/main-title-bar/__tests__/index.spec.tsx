@@ -31,12 +31,12 @@ describe('MainTitleBar', () => {
         expect(screen.getByText(/Trader's Hub/)).toBeInTheDocument();
     });
 
-    it('should shouw total assets loader when platforms are not yet loaded', async () => {
+    it('should shouw total assets loader when platforms are not yet loaded', () => {
         render_container();
         expect(screen.getByText(/Loading/)).toBeInTheDocument();
     });
 
-    it('should render the total assets text when platforms are loaded', async () => {
+    it('should render the total assets text when platforms are loaded', () => {
         mock.client.is_landing_company_loaded = true;
         render_container();
         expect(screen.getByText(/Total assets/)).toBeInTheDocument();

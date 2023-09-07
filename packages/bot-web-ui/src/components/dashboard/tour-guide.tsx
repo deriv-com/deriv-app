@@ -39,28 +39,30 @@ const TourGuide = observer(({ content, img, label, step_index }: TTourGuide) => 
                         {localize('Exit tour')}
                     </Text>
                 </div>
-                <div className='onboard__label'>
-                    <Text as='h' line_height='l' weight='bold'>
-                        {label}
-                    </Text>
-                </div>
-
-                {img && (
-                    <div className='onboard__container'>
-                        {has_image_loaded ? <img src={img} loading='eager' /> : <Loading />}
+                <div className='onboard__steps'>
+                    <div className='onboard__label'>
+                        <Text as='h' line_height='l' weight='bold'>
+                            {label}
+                        </Text>
                     </div>
-                )}
 
-                <div className='onboard__content'>
-                    {content.map(content_text => {
-                        return (
-                            <div className='onboard__content__block' key={content_text}>
-                                <Text align='left' as='h' size='xs' line_height='l'>
-                                    {content_text}
-                                </Text>
-                            </div>
-                        );
-                    })}
+                    {img && (
+                        <div className='onboard__container'>
+                            {has_image_loaded ? <img src={img} loading='eager' /> : <Loading />}
+                        </div>
+                    )}
+
+                    <div className='onboard__content'>
+                        {content.map(content_text => {
+                            return (
+                                <div className='onboard__content__block' key={content_text}>
+                                    <Text align='left' as='h' size='xs' line_height='l'>
+                                        {content_text}
+                                    </Text>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
         </React.Fragment>

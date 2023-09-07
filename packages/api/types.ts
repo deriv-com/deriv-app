@@ -229,6 +229,121 @@ import type {
 import type { useMutation, useQuery } from '@tanstack/react-query';
 
 type TPrivateSocketEndpoints = {
+    trading_platform_new_account: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            trading_platform_new_account: 1;
+            /**
+             * Account type.
+             */
+            account_type: 'demo' | 'real';
+            /**
+             * [Optional] Name of the client's company (For DerivEZ only)
+             */
+            company?: string;
+            /**
+             * [Optional] Trading account currency, the default value will be the qualified account currency.
+             */
+            currency?: string;
+            /**
+             * [Optional] If set to 1, only validation is performed.
+             */
+            dry_run?: 0 | 1;
+            /**
+             * Market type
+             */
+            market_type: 'financial' | 'synthetic' | 'all';
+            /**
+             * The master password of the account. For validation (Accepts any printable ASCII character. Must be within 8-25 characters, and include numbers, lowercase and uppercase letters. Must not be the same as the user's email address). Only for DXTrade.
+             */
+            password?: string;
+            /**
+             * Name of trading platform.
+             */
+            platform: 'dxtrade' | 'derivez' | 'ctrader';
+            /**
+             * [Optional] Sub account type.
+             */
+            sub_account_type?: 'financial' | 'financial_stp' | 'swap_free';
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            /**
+             * ID of Trading account.
+             */
+            account_id?: string;
+            /**
+             * Account type.
+             */
+            account_type?: 'demo' | 'real' | 'all';
+            /**
+             * Agent Details.
+             */
+            agent?: null | string;
+            /**
+             * Balance of the Trading account.
+             */
+            balance?: number;
+            /**
+             * Currency of the Trading account.
+             */
+            currency?: string;
+            /**
+             * Account balance, formatted to appropriate decimal places.
+             */
+            display_balance?: string;
+            /**
+             * Account enabled status
+             */
+            enabled?: number;
+            /**
+             * Landing company shortcode of the Trading account.
+             */
+            landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'svg' | 'vanuatu' | 'seychelles';
+            /**
+             * Login name used to log in into Trading platform.
+             */
+            login?: string;
+            /**
+             * Market type.
+             */
+            market_type?: 'financial' | 'synthetic' | 'all';
+            /**
+             * Name of trading platform.
+             */
+            platform?: 'dxtrade' | 'derivez' | 'ctrader';
+            /**
+             * Sub account type.
+             */
+            sub_account_type?: 'financial' | 'financial_stp' | 'swap_free';
+        };
+        /**
+         * Echo of the request made.
+         */
+        echo_req: {
+            [k: string]: unknown;
+        };
+        /**
+         * Action name of the request made.
+         */
+        msg_type: 'trading_platform_new_account';
+        /**
+         * Optional field sent in request to map to response, present only when request contains `req_id`.
+         */
+        req_id?: number;
+        [k: string]: unknown;
+    };
     trading_platform_available_accounts: {
         request: {
             /**

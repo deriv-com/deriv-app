@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
 import { AppLinkedWithWalletIcon, Text, WalletIcon } from '@deriv/components';
-import { getTradingAccountName, getWalletCurrencyIcon } from '@deriv/utils';
 import { useWalletTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
+import { getTradingAccountName } from '@deriv/utils';
+import { getWalletCurrencyIcon } from 'Constants/utils';
 
 type TNonPendingTransaction = {
     transaction: ReturnType<typeof useWalletTransactions>['transactions'][number];
@@ -33,7 +34,7 @@ const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
     );
 
     const icon = useMemo(
-        () => getWalletCurrencyIcon(is_virtual ? 'demo' : account_currency_config?.code || '', is_dark_mode_on, false),
+        () => getWalletCurrencyIcon(is_virtual ? 'Demo' : account_currency_config?.code || '', is_dark_mode_on),
         [is_virtual, account_currency_config, is_dark_mode_on]
     );
 
@@ -43,8 +44,10 @@ const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
     );
 
     const getAccountName = () => {
+        const demo_prefix = is_virtual ? 'Demo ' : '';
+
         return account_category === 'wallet'
-            ? `${is_virtual ? 'Demo ' : ''}${account_currency_config?.code} Wallet`
+            ? `${demo_prefix}${account_currency_config?.code} Wallet`
             : getTradingAccountName(
                   account_type as 'standard' | 'mt5' | 'dxtrade' | 'binary',
                   !!is_virtual,

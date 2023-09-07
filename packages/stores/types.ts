@@ -135,7 +135,7 @@ interface ExistingMT5Account {
     is_added: boolean;
     short_code_and_region: string;
     platform: 'derivez' | 'dtrade' | 'dwallet' | 'dxtrade' | 'mt5';
-    description?: string | undefined;
+    description?: string;
     name: string;
     shortcode: string;
     status: string | null;

@@ -13,7 +13,7 @@ export const hasCallPutEqual = (contract_type_list: THasDurationForCallPutEqual[
     if (isEmptyObject(contract_type_list)) return false;
 
     return !!getPropertyValue(contract_type_list, 'Ups & Downs')?.categories?.some(
-        (contract: THasDurationForCallPutEqual['contract_type_list']['Ups & Downs'][string]['categories'][0]) =>
+        (contract: THasDurationForCallPutEqual['contract_type_list']['Ups & Downs']['categories'][0]) =>
             contract.value === 'rise_fall_equal'
     );
 };
@@ -27,7 +27,7 @@ export const hasDurationForCallPutEqual = (
 
     const contract_list = Object.keys(contract_type_list || {}).reduce<string[]>((key, list) => {
         // @ts-expect-error the key always exists in the object, hence can ignore the TS error.
-        const item: THasDurationForCallPutEqual['contract_type_list']['Ups & Downs'][string] = contract_type_list[list];
+        const item: THasDurationForCallPutEqual['contract_type_list']['Ups & Downs'] = contract_type_list[list];
         return [...key, ...item.categories.map(contract => contract.value)];
     }, []);
 

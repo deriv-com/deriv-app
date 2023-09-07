@@ -2,6 +2,7 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Table } from '@deriv/components';
 import { TData } from '@deriv/api/src/hooks/useLoginHistory';
+import { fields } from '../../../../../utils/src/getLoginHistoryFormattedData';
 import LoginHistoryTableRow from './login-history-table-row';
 import LoginHistoryListRow from './login-history-list-row';
 
@@ -12,14 +13,6 @@ type TGetFields = {
 type TLoginHistoryContent = {
     data: TData;
     is_mobile: boolean;
-};
-
-const fields = {
-    date: 'Date and time',
-    action: 'Action',
-    browser: 'Browser',
-    ip: 'IP address',
-    status: 'Status',
 };
 
 const getFields = () =>

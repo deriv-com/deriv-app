@@ -2,17 +2,10 @@ import React from 'react';
 import { Table } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
+import { fields } from '../../../../../utils/src/getLoginHistoryFormattedData';
 import { TLoginHistoryItems } from './login-history-table-row';
 import classNames from 'classnames';
 import ListCell from './list-cell';
-
-const fields = {
-    date: 'Date and time',
-    action: 'Action',
-    browser: 'Browser',
-    ip: 'IP address',
-    status: 'Status',
-};
 
 const LoginHistoryListRow = (props: TLoginHistoryItems) => {
     const { id, date, action, browser, ip, status } = props;

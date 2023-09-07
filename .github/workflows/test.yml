@@ -58,7 +58,7 @@ jobs:
       run: npm test
     - name: Send Slack notification
       id: slack
-      uses: "./.github/actions/send-slack-notification"
+      uses: "./.github/actions/send_slack_notifications"
       with:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         status: ${{ job.status }}

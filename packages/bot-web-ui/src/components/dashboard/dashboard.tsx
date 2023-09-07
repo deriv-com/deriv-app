@@ -42,6 +42,7 @@ const Dashboard = observer(() => {
         setActiveTab,
         setBotBuilderTokenCheck,
         setOnBoardingTokenCheck,
+        onCloseTour,
     } = dashboard;
     const { onEntered, dashboard_strategies } = load_modal;
     const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
@@ -147,8 +148,15 @@ const Dashboard = observer(() => {
 
     const botStorageSetting = () => {
         tour_status = getTourSettings('bot_builder_status');
-        if (tour_status_ended.key === 'finished' && !is_mobile) {
+        const joyride_status_finished = tour_status_ended.key === 'finished';
+        if (joyride_status_finished && !is_mobile) {
+            if (tour_type.key === 'onboard_tour') {
+                onCloseTour();
+                tour_status_ended.key = '';
+                return joyride_status_finished ?? null;
+            }
             setTourDialogVisibility(true);
+
             setHasTourEnded(true);
             is_tour_complete.current = false;
             window.removeEventListener('storage', botStorageSetting);
@@ -158,6 +166,7 @@ const Dashboard = observer(() => {
         if (active_tab === 1 && !storage.bot_builder_token && !has_started_onboarding_tour) {
             setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
         }
+        return botStorageSetting;
     };
     if (!bot_tour_token && !is_mobile && !has_started_onboarding_tour) {
         window.addEventListener('storage', botStorageSetting);

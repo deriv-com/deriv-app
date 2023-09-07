@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useTransferMessageList, useWalletTransfer } from '@deriv/hooks';
+import { useTransferMessageList } from '@deriv/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import WalletTransferMessages from '../wallet-transfer-messages';
 
@@ -11,7 +11,7 @@ const mock_from_account = {
     loginid: 'CRW123',
     display_currency_code: 'USD',
     shortcode: 'svg',
-} as ReturnType<typeof useWalletTransfer>['from_account'];
+} as React.ComponentProps<typeof WalletTransferMessages>['from_account'];
 
 const mock_to_account = {
     account_type: 'trading',
@@ -20,7 +20,7 @@ const mock_to_account = {
     loginid: 'CR123',
     display_currency_code: 'USD',
     shortcode: 'svg',
-} as ReturnType<typeof useWalletTransfer>['to_account'];
+} as React.ComponentProps<typeof WalletTransferMessages>['to_account'];
 
 const mock_store = mockStore({});
 

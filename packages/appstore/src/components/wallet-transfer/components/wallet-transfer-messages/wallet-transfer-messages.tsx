@@ -5,6 +5,12 @@ import { AnimatedList, AlertMessage } from '@deriv/components';
 import { getAccountName } from 'Constants/utils';
 import { formatMoney } from '@deriv/shared';
 
+type TWalletTransferMessagesProps = {
+    from_account: ReturnType<typeof useWalletTransfer>['from_account'];
+    to_account: ReturnType<typeof useWalletTransfer>['to_account'];
+    // setMessageList: void;
+};
+
 type TMessageMapperParams = {
     currency: string;
     is_first_transfer: boolean;
@@ -13,13 +19,13 @@ type TMessageMapperParams = {
     to_name: string;
 };
 
-type TWalletTransferMessagesProps = {
-    from_account: ReturnType<typeof useWalletTransfer>['from_account'];
-    to_account: ReturnType<typeof useWalletTransfer>['to_account'];
-    // setMessageList: void;
+type TMessageCodes = 'WalletToTradingAppDailyLimit' | 'DemoWalletToTradingAppDailyLimit';
+
+type TMessageCodeToMessageMapper = {
+    [key in TMessageCodes]: (value: TMessageMapperParams) => string;
 };
 
-const message_code_to_message_mapper: any = {
+const message_code_to_message_mapper: TMessageCodeToMessageMapper = {
     WalletToTradingAppDailyLimit: (value: TMessageMapperParams) =>
         localize(
             'The{{remaining}} daily transfer limit between your {{wallet_name}} and {{trading_account_name}} is {{limit_value}} {{currency}}.',
@@ -56,14 +62,13 @@ const WalletTransferMessages = ({ from_account, to_account }: TWalletTransferMes
                                 ...msg,
                                 from_name: getAccountName({ ...from_account }),
                                 to_name: getAccountName({ ...to_account }),
-                            })}
+                            } as TMessageMapperParams)}
                             type={msg.type}
                         />
                     );
                 })}
         </AnimatedList>
     );
-    return null;
 };
 
 export default WalletTransferMessages;

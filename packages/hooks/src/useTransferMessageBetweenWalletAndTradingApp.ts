@@ -10,13 +10,6 @@ type TTransferMessageReturnType = {
     type: 'error' | 'info' | 'success';
 };
 
-const checkIsTradingAccount = (account_type = '') => {
-    if (account_type) {
-        const trading_account_types = ['ctrader', 'derivez', 'dxtrade', 'mt5', 'trading'];
-        return trading_account_types.includes(account_type);
-    }
-};
-
 const tradingAccountMapper = (account_type: string, currency_type: string): string => {
     if (account_type === 'trading')
         if (currency_type === 'demo') return 'virtual';
@@ -45,7 +38,7 @@ const useTransferMessageBetweenWalletAndTradingApp = (
     const { getRate } = useExchangeRate();
 
     if (from_account && to_account)
-        if (from_account.account_type === 'wallet' && checkIsTradingAccount(to_account.account_type)) {
+        if (from_account.account_type === 'wallet' && to_account.account_type !== 'wallet') {
             let limits;
             if (to_account.account_type)
                 limits = account_limits.daily_transfers[tradingAccountMapper(to_account.account_type, to_account.type)];

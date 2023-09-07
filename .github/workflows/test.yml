@@ -29,11 +29,8 @@ jobs:
     - uses: actions/checkout@v3.6.0
     - name: Checkout Repository
       uses: "./.github/actions/git_checkout_from_cache"
-    - name: Install dependencies
-      uses: "./.github/actions/npm_install_from_cache"
-    - name: Build
-      uses: "./.github/actions/build"
     - name: Send Slack notification
+    
       id: slack
       uses: "./.github/actions/send_slack_notifications"
       with:
@@ -41,6 +38,10 @@ jobs:
         status: ${{ job.status }}
         release_type: test
         version: $(echo cat packages/core/dist/version.json | bash)
+    - name: Install dependencies
+      uses: "./.github/actions/npm_install_from_cache"
+    - name: Build
+      uses: "./.github/actions/build"
     - name: Check TypeScript for @deriv/api
       run: npx tsc --project packages/api/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/hooks

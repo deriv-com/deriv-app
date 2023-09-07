@@ -13,7 +13,7 @@ type TSetSubmitting = (isSubmitting: boolean) => void;
 const CFDPersonalDetailsContainer = observer(({ onSubmit }: TCFDPersonalDetailsContainerProps) => {
     const { client } = useStore();
 
-    const { account_settings, getChangeableFields, landing_company, residence_list, setAccountSettings } = client;
+    const { account_settings, getChangeableFields, residence_list, setAccountSettings } = client;
 
     const [form_error, setFormError] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(false);
@@ -94,7 +94,7 @@ const CFDPersonalDetailsContainer = observer(({ onSubmit }: TCFDPersonalDetailsC
         onSubmit(index, value);
     };
 
-    const getPersonalDetailsForm = () => (
+    const PersonalDetailsForm = () => (
         <Div100vhContainer
             className='cfd-personal-details-modal'
             id='cfd-personal-details-modal'
@@ -111,7 +111,6 @@ const CFDPersonalDetailsContainer = observer(({ onSubmit }: TCFDPersonalDetailsC
                     form_error={form_error}
                     index={2}
                     is_loading={is_loading}
-                    landing_company={landing_company}
                     onSubmit={updateValue}
                     residence_list={residence_list}
                     changeable_fields={getChangeableFields()}
@@ -123,8 +122,12 @@ const CFDPersonalDetailsContainer = observer(({ onSubmit }: TCFDPersonalDetailsC
 
     return (
         <React.Fragment>
-            <DesktopWrapper>{getPersonalDetailsForm()}</DesktopWrapper>
-            <MobileWrapper>{getPersonalDetailsForm()}</MobileWrapper>
+            <DesktopWrapper>
+                <PersonalDetailsForm />
+            </DesktopWrapper>
+            <MobileWrapper>
+                <PersonalDetailsForm />
+            </MobileWrapper>
         </React.Fragment>
     );
 });

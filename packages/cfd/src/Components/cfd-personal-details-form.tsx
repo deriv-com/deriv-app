@@ -1,6 +1,6 @@
 import { Field, FieldProps, Formik, FormikHelpers as FormikActions, FormikProps } from 'formik';
 import React from 'react';
-import { LandingCompany, ResidenceList } from '@deriv/api-types';
+import { ResidenceList } from '@deriv/api-types';
 import {
     Autocomplete,
     AutoHeightWrapper,
@@ -25,7 +25,6 @@ type TCFDPersonalDetailsFormProps = {
     form_error?: string;
     index: number;
     is_loading: boolean;
-    landing_company: LandingCompany;
     onSubmit: TOnSubmit;
     residence_list: ResidenceList;
     value: TFormValues;
@@ -35,7 +34,6 @@ type TValidatePersonalDetailsParams = {
     values: TFormValues;
     residence_list: ResidenceList;
     account_opening_reason: TAccountOpeningReasonList;
-    is_tin_required: boolean;
 };
 
 type TFindDefaultValuesInResidenceList = (params: {
@@ -125,11 +123,8 @@ const validatePersonalDetails = ({
     values,
     residence_list,
     account_opening_reason,
-    is_tin_required,
 }: TValidatePersonalDetailsParams) => {
-    const [tax_residence_obj] = residence_list.filter(res => res.text === values.tax_residence && res.tin_format);
-
-    const tin_format = tax_residence_obj?.tin_format;
+    const tin_format = residence_list.find(res => res.text === values.tax_residence)?.tin_format;
 
     const tin_regex = tin_format || ['^[A-Za-z0-9./s-]{0,25}$']; // fallback to API's default rule check
 
@@ -137,8 +132,9 @@ const validatePersonalDetails = ({
         citizen: [(v: string) => !!v, (v: string) => residence_list.map(i => i.text).includes(v)],
         tax_residence: [(v: string) => !!v, (v: string) => residence_list.map(i => i.text).includes(v)],
         tax_identification_number: [
-            (v: string) => ((!values.tax_residence && is_tin_required) || tin_format ? !!v : true),
+            (v: string) => !!v,
             (v: string) => (tin_regex ? tin_regex?.some(regex => v.match(regex)) : true),
+            () => !!values.tax_residence,
         ],
         account_opening_reason: [
             (v: string) => !!v,
@@ -157,6 +153,7 @@ const validatePersonalDetails = ({
     const field_error_messages = (field_name: string): string[] => [
         localize('{{field_name}} is required', { field_name }),
         localize('{{field_name}} is not properly formatted.', { field_name }),
+        localize('Please fill in Tax residence.'),
     ];
 
     const errors: { [key: string]: React.ReactNode } = {};
@@ -212,7 +209,6 @@ const submitForm: TSubmitForm = (values, actions, idx, onSubmit, is_dirty, resid
 const CFDPersonalDetailsForm = ({
     changeable_fields,
     is_loading,
-    landing_company,
     residence_list,
     onSubmit,
     value,
@@ -220,7 +216,6 @@ const CFDPersonalDetailsForm = ({
     form_error,
 }: TCFDPersonalDetailsFormProps) => {
     const account_opening_reason = getAccountOpeningReasonList();
-    const is_tin_required = !!(landing_company?.config?.tax_details_required ?? false);
 
     const onSubmitForm = (values: TFormValues, actions: FormikActions<TFormValues>) =>
         submitForm(values, actions, index, onSubmit, !isDeepEqual(value, values), residence_list);
@@ -238,7 +233,6 @@ const CFDPersonalDetailsForm = ({
                     values,
                     residence_list,
                     account_opening_reason,
-                    is_tin_required,
                 })
             }
             onSubmit={onSubmitForm}
@@ -271,10 +265,6 @@ const CFDPersonalDetailsForm = ({
                     const item_value = item.value ? item.text : '';
                     setFieldValue(_field, item_value, true);
                 };
-                const tin_field_label = residence_list.find(res => res.text === values.tax_residence && res.tin_format)
-                    ?.tin_format
-                    ? localize('Tax identification number*')
-                    : localize('Tax identification number');
 
                 return (
                     <AutoHeightWrapper default_height={200} height_offset={isDesktop() ? 148 : null}>
@@ -428,8 +418,8 @@ const CFDPersonalDetailsForm = ({
                                                 <InputField
                                                     id='real_mt5_tax_identification_number'
                                                     name='tax_identification_number'
-                                                    label={tin_field_label}
-                                                    placeholder={tin_field_label}
+                                                    label={localize('Tax identification number*')}
+                                                    placeholder={localize('Tax identification number*')}
                                                     value={values.tax_identification_number}
                                                     onBlur={handleBlur}
                                                     disabled={

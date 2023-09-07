@@ -1543,26 +1543,21 @@ export default class TradeStore extends BaseStore {
     };
 
     chartStateChange(state, option) {
-        if (option) {
-            const market_close_prop = 'isClosed';
-            const device_type = isMobile() ? 'mobile' : 'desktop';
-            const form_name = 'default';
-            const rest_props = { device_type, form_name };
-            if (
-                state === STATE_TYPES.MARKET_STATE_CHANGE &&
-                market_close_prop in option &&
-                this.is_trade_component_mounted &&
-                option[market_close_prop] !== this.is_market_closed
-            ) {
-                this.prepareTradeStore(false);
-            }
-            const { data, event_type } = getChartAnalyticsData(state, option);
-            if (data) {
-                RudderStack.track(event_type, {
-                    ...data,
-                    ...rest_props,
-                });
-            }
+        if (
+            state === STATE_TYPES.MARKET_STATE_CHANGE &&
+            this.is_trade_component_mounted &&
+            option?.isClosed &&
+            option.isClosed !== this.is_market_closed
+        ) {
+            this.prepareTradeStore(false);
+        }
+        const { data, event_type } = getChartAnalyticsData(state, option);
+        if (data) {
+            RudderStack.track(event_type, {
+                ...data,
+                device_type: isMobile() ? 'mobile' : 'desktop',
+                form_name: 'default',
+            });
         }
     }
 

@@ -19,7 +19,7 @@ describe('getChartAnalyticsData', () => {
     const market_event_type = 'ce_market_types_form';
     const indicators_event_type = 'ce_indicators_types_form';
     it('should return empty object if args are empty', () => {
-        expect(getChartAnalyticsData('' as keyof typeof STATE_TYPES, {})).toEqual({});
+        expect(getChartAnalyticsData('' as keyof typeof STATE_TYPES)).toEqual({});
     });
     it('should return correct object with data and event_type for STATE_TYPES.CHART_MODE_TOGGLE', () => {
         expect(
@@ -50,7 +50,7 @@ describe('getChartAnalyticsData', () => {
             },
             event_type: chart_event_type,
         });
-        expect(getChartAnalyticsData(STATE_TYPES.CHART_MODE_TOGGLE, {})).toEqual({});
+        expect(getChartAnalyticsData(STATE_TYPES.CHART_MODE_TOGGLE)).toEqual({});
     });
     it('should return correct object with data and event_type for STATE_TYPES.CHART_TYPE_CHANGE', () => {
         expect(
@@ -66,7 +66,7 @@ describe('getChartAnalyticsData', () => {
             },
             event_type: chart_event_type,
         });
-        expect(getChartAnalyticsData(STATE_TYPES.CHART_TYPE_CHANGE, {})).toEqual({});
+        expect(getChartAnalyticsData(STATE_TYPES.CHART_TYPE_CHANGE)).toEqual({});
     });
     it('should return correct object with data and event_type for STATE_TYPES.CHART_INTERVAL_CHANGE', () => {
         expect(
@@ -82,7 +82,7 @@ describe('getChartAnalyticsData', () => {
             },
             event_type: chart_event_type,
         });
-        expect(getChartAnalyticsData(STATE_TYPES.CHART_INTERVAL_CHANGE, {})).toEqual({});
+        expect(getChartAnalyticsData(STATE_TYPES.CHART_INTERVAL_CHANGE)).toEqual({});
     });
     it('should return correct object with data and event_type for STATE_TYPES.INDICATOR_DELETED', () => {
         expect(
@@ -98,7 +98,7 @@ describe('getChartAnalyticsData', () => {
             },
             event_type: indicators_event_type,
         });
-        expect(getChartAnalyticsData(STATE_TYPES.INDICATOR_DELETED, {})).toEqual({});
+        expect(getChartAnalyticsData(STATE_TYPES.INDICATOR_DELETED)).toEqual({});
     });
     it('should return correct object with data and event_type for STATE_TYPES.INDICATOR_SETTINGS_OPEN', () => {
         expect(
@@ -114,7 +114,7 @@ describe('getChartAnalyticsData', () => {
             },
             event_type: indicators_event_type,
         });
-        expect(getChartAnalyticsData(STATE_TYPES.INDICATOR_SETTINGS_OPEN, {})).toEqual({});
+        expect(getChartAnalyticsData(STATE_TYPES.INDICATOR_SETTINGS_OPEN)).toEqual({});
     });
     it('should return correct object with data and event_type for STATE_TYPES.INDICATOR_INFO_TOGGLE', () => {
         expect(
@@ -144,7 +144,7 @@ describe('getChartAnalyticsData', () => {
             },
             event_type: indicators_event_type,
         });
-        expect(getChartAnalyticsData(STATE_TYPES.INDICATOR_INFO_TOGGLE, {})).toEqual({});
+        expect(getChartAnalyticsData(STATE_TYPES.INDICATOR_INFO_TOGGLE)).toEqual({});
     });
     it('should return correct object with data and event_type for STATE_TYPES.INDICATORS_MODAL_TOGGLE', () => {
         expect(
@@ -163,7 +163,7 @@ describe('getChartAnalyticsData', () => {
             data: { action: ACTION.CLOSE },
             event_type: indicators_event_type,
         });
-        expect(getChartAnalyticsData(STATE_TYPES.INDICATORS_MODAL_TOGGLE, {})).toEqual({
+        expect(getChartAnalyticsData(STATE_TYPES.INDICATORS_MODAL_TOGGLE)).toEqual({
             data: {
                 action: ACTION.CLOSE,
             },
@@ -201,18 +201,10 @@ describe('getChartAnalyticsData', () => {
             },
             event_type: indicators_event_type,
         });
-        expect(getChartAnalyticsData(STATE_TYPES.INDICATOR_ADDED, {})).toEqual({
-            data: {
-                action: ACTION.ADD_ACTIVE,
-                indicator_type_name: '',
-                indicators_category_name: '',
-                subform_name: SUBFORM_NAME.INDICATORS_TYPE,
-            },
-            event_type: indicators_event_type,
-        });
+        expect(getChartAnalyticsData(STATE_TYPES.INDICATOR_ADDED)).toEqual({});
     });
     it('should return correct object with data and event_type for STATE_TYPES.INDICATORS_CLEAR_ALL', () => {
-        expect(getChartAnalyticsData(STATE_TYPES.INDICATORS_CLEAR_ALL, {})).toEqual({
+        expect(getChartAnalyticsData(STATE_TYPES.INDICATORS_CLEAR_ALL)).toEqual({
             data: { action: ACTION.CLEAN_ALL_ACTIVE },
             event_type: indicators_event_type,
         });
@@ -230,7 +222,7 @@ describe('getChartAnalyticsData', () => {
             event_type: indicators_event_type,
         });
         expect(getChartAnalyticsData(STATE_TYPES.INDICATOR_SEARCH, { search_string: '' })).toEqual({});
-        expect(getChartAnalyticsData(STATE_TYPES.INDICATOR_SEARCH, {})).toEqual({});
+        expect(getChartAnalyticsData(STATE_TYPES.INDICATOR_SEARCH)).toEqual({});
     });
     it('should return correct object with data and event_type for STATE_TYPES.MARKET_SEARCH', () => {
         expect(
@@ -244,7 +236,7 @@ describe('getChartAnalyticsData', () => {
             },
             event_type: market_event_type,
         });
-        expect(getChartAnalyticsData(STATE_TYPES.MARKET_SEARCH, {})).toEqual({});
+        expect(getChartAnalyticsData(STATE_TYPES.MARKET_SEARCH)).toEqual({});
     });
     it('should return correct object with data and event_type for STATE_TYPES.MARKETS_LIST_TOGGLE', () => {
         expect(
@@ -271,7 +263,7 @@ describe('getChartAnalyticsData', () => {
             },
             event_type: market_event_type,
         });
-        expect(getChartAnalyticsData(STATE_TYPES.MARKETS_LIST_TOGGLE, {})).toEqual({
+        expect(getChartAnalyticsData(STATE_TYPES.MARKETS_LIST_TOGGLE)).toEqual({
             data: {
                 action: ACTION.CLOSE,
                 market_type_name: '',
@@ -293,7 +285,7 @@ describe('getChartAnalyticsData', () => {
             },
             event_type: market_event_type,
         });
-        expect(getChartAnalyticsData(STATE_TYPES.SYMBOL_CHANGE, {})).toEqual({
+        expect(getChartAnalyticsData(STATE_TYPES.SYMBOL_CHANGE)).toEqual({
             data: {
                 action: ACTION.CHOOSE_MARKET_TYPE,
                 market_type_name: '',
@@ -314,7 +306,7 @@ describe('getChartAnalyticsData', () => {
             },
             event_type: market_event_type,
         });
-        expect(getChartAnalyticsData(STATE_TYPES.MARKET_INFO_REDIRECT, {})).toEqual({
+        expect(getChartAnalyticsData(STATE_TYPES.MARKET_INFO_REDIRECT)).toEqual({
             data: {
                 action: ACTION.INFO_REDIRECT,
                 tab_market_name: '',
@@ -347,6 +339,6 @@ describe('getChartAnalyticsData', () => {
             },
             event_type: market_event_type,
         });
-        expect(getChartAnalyticsData(STATE_TYPES.FAVORITE_MARKETS_TOGGLE, {})).toEqual({});
+        expect(getChartAnalyticsData(STATE_TYPES.FAVORITE_MARKETS_TOGGLE)).toEqual({});
     });
 });

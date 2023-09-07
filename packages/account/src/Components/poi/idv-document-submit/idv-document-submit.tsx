@@ -175,27 +175,24 @@ const IdvDocumentSubmit = ({
                         <IDVForm hide_hint={false} selected_country={selected_country} class_name='idv-layout' />
 
                         <FormSubHeader title={localize('Details')} />
-                        <div
-                            className={classNames({
+                        <PersonalDetailsForm
+                            class_name={classNames({
                                 'account-form__poi-confirm-example_container': !shouldHideHelperImage(
                                     values?.document_type?.id
                                 ),
                             })}
-                        >
-                            <PersonalDetailsForm
-                                is_qualified_for_idv
-                                is_appstore
-                                side_note={side_note_image}
-                                should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
-                                editable_fields={changeable_fields}
-                                inline_note_text={
-                                    <Localize
-                                        i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
-                                        components={[<strong key={0} />]}
-                                    />
-                                }
-                            />
-                        </div>
+                            is_qualified_for_idv
+                            is_appstore
+                            should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
+                            editable_fields={changeable_fields}
+                            side_note={side_note_image}
+                            inline_note_text={
+                                <Localize
+                                    i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+                                    components={[<strong key={0} />]}
+                                />
+                            }
+                        />
                     </section>
                     <FormFooter className='proof-of-identity__footer'>
                         {isDesktop() && (

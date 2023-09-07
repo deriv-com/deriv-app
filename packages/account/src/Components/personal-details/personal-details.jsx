@@ -54,7 +54,6 @@ const PersonalDetails = ({
     const { account_status, account_settings, residence, real_account_signup_target } = props;
     const { is_appstore } = React.useContext(PlatformContext);
     const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
-    const [warning_items, setWarningItems] = React.useState({});
     const is_submit_disabled_ref = React.useRef(true);
 
     const isSubmitDisabled = errors => {
@@ -107,9 +106,8 @@ const PersonalDetails = ({
         if (is_qualified_for_idv) {
             idv_error = validateIDV(values);
         }
-        const { errors, warnings } = splitValidationResultTypes(validate(values));
+        const { errors } = splitValidationResultTypes(validate(values));
         const error_data = { ...idv_error, ...errors };
-        setWarningItems(warnings);
         checkSubmitStatus(error_data);
         return error_data;
     };
@@ -187,42 +185,34 @@ const PersonalDetails = ({
                                                 <FormSubHeader title={localize('Details')} />
                                             </React.Fragment>
                                         )}
-                                        <React.Fragment>
-                                            <div
-                                                className={classNames({
-                                                    'account-form__poi-confirm-example_container':
-                                                        is_qualified_for_idv &&
-                                                        !shouldHideHelperImage(values?.document_type?.id),
-                                                })}
-                                            >
-                                                <PersonalDetailsForm
-                                                    is_virtual={is_virtual}
-                                                    is_svg={is_svg}
-                                                    is_mf={is_mf}
-                                                    is_qualified_for_idv={is_qualified_for_idv}
-                                                    is_appstore={is_appstore}
-                                                    editable_fields={editable_fields}
-                                                    residence_list={residence_list}
-                                                    has_real_account={has_real_account}
-                                                    is_fully_authenticated={is_fully_authenticated}
-                                                    closeRealAccountSignup={closeRealAccountSignup}
-                                                    salutation_list={salutation_list}
-                                                    warning_items={warning_items}
-                                                    account_opening_reason_list={account_opening_reason_list}
-                                                    should_close_tooltip={should_close_tooltip}
-                                                    setShouldCloseTooltip={setShouldCloseTooltip}
-                                                    should_hide_helper_image={shouldHideHelperImage(
-                                                        values?.document_type?.id
-                                                    )}
-                                                    inline_note_text={
-                                                        <Localize
-                                                            i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
-                                                            components={[<strong key={0} />]}
-                                                        />
-                                                    }
+                                        <PersonalDetailsForm
+                                            class_name={classNames({
+                                                'account-form__poi-confirm-example_container':
+                                                    is_qualified_for_idv &&
+                                                    !shouldHideHelperImage(values?.document_type?.id),
+                                            })}
+                                            is_virtual={is_virtual}
+                                            is_svg={is_svg}
+                                            is_mf={is_mf}
+                                            is_qualified_for_idv={is_qualified_for_idv}
+                                            is_appstore={is_appstore}
+                                            editable_fields={editable_fields}
+                                            residence_list={residence_list}
+                                            has_real_account={has_real_account}
+                                            is_fully_authenticated={is_fully_authenticated}
+                                            closeRealAccountSignup={closeRealAccountSignup}
+                                            salutation_list={salutation_list}
+                                            account_opening_reason_list={account_opening_reason_list}
+                                            should_close_tooltip={should_close_tooltip}
+                                            setShouldCloseTooltip={setShouldCloseTooltip}
+                                            should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
+                                            inline_note_text={
+                                                <Localize
+                                                    i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+                                                    components={[<strong key={0} />]}
                                                 />
-                                            </div>
-                                        </React.Fragment>
+                                            }
+                                        />
                                     </div>
                                 </ThemedScrollbars>
                             </Div100vhContainer>

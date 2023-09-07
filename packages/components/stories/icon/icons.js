@@ -1045,3 +1045,4 @@ export const icons =
         'IcWalletZingpayLight'
     ]
 }
+

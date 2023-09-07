@@ -71,12 +71,19 @@ export const getAvailableContractTypes = (contract_types_list: TContractTypesLis
             return undefined;
         })
         .filter(Boolean) as {
-            key: string;
-            label: string;
-            contract_types: TContractType[];
-            icon: "IcUpsDowns" | "IcHighsLows" | "IcInsOuts" | "IcLookbacks" | "IcDigits" | "IcMultiplier" | "IcCatAccumulator";
-            component: JSX.Element | null;
-        }[];
+        key: string;
+        label: string;
+        contract_types: TContractType[];
+        icon:
+            | 'IcUpsDowns'
+            | 'IcHighsLows'
+            | 'IcInsOuts'
+            | 'IcLookbacks'
+            | 'IcDigits'
+            | 'IcMultiplier'
+            | 'IcCatAccumulator';
+        component: JSX.Element | null;
+    }[];
 };
 
 /**

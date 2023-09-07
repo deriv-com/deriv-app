@@ -1,10 +1,9 @@
 import React from 'react';
 import { MobileWrapper, usePrevious } from '@deriv/components';
-import { unsupported_contract_types_list } from '@deriv/shared';
+import { getMarketNamesMap, unsupported_contract_types_list } from '@deriv/shared';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import { localize } from '@deriv/translations';
-import { ToastPopup } from 'Modules/Trading/Containers/toast-popup';
-import { getMarketNamesMap } from '../../../Constants';
+import { ToastPopup } from 'Modules/Trading/Containers/toast-popup.jsx';
 import ContractTypeWidget from '../Components/Form/ContractType';
 import { getAvailableContractTypes } from '../Helpers/contract-type';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -22,7 +21,10 @@ const Contract = observer(() => {
         common: { current_language },
     } = useStore();
 
-    const list = getAvailableContractTypes(contract_types_list, unsupported_contract_types_list);
+    const list = getAvailableContractTypes(
+        contract_types_list as unknown as Parameters<typeof getAvailableContractTypes>[0],
+        unsupported_contract_types_list
+    );
     const digits_message = localize('Last digit stats for latest 1000 ticks for {{ underlying_name }}', {
         underlying_name: getMarketNamesMap()[symbol.toUpperCase() as keyof ReturnType<typeof getMarketNamesMap>],
     });

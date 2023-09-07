@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Popover, Text } from '@deriv/components';
 import {
     useCFDAccounts,
-    useExchangeRate,
+    // useExchangeRate,
     usePlatformAccounts,
     useThrottle,
     useTotalAccountBalance,
@@ -25,21 +25,12 @@ const TotalAsset = observer(() => {
     const is_real = selected_account_type === 'real';
     const real_total_balance = platform_real_balance.balance + cfd_real_balance.balance;
     const demo_total_balance = (platform_demo_account?.balance || 0) + cfd_demo_balance.balance;
-    const [flag, setFlag] = React.useState(false);
     // const { last_update } = useExchangeRate();
 
     // for total asset first we need to check local storage if it's not set we can use the bellow code to set it
     const total_asset = is_real
-        ? flag
-            ? useThrottle(real_total_balance, 60 * 1000)
-            : real_total_balance
-        : flag
-        ? useThrottle(demo_total_balance, 60 * 1000)
-        : demo_total_balance;
-
-    useEffect(() => {
-        setFlag(true);
-    }, []);
+        ? useThrottle(real_total_balance, 60 * 1000)
+        : useThrottle(demo_total_balance, 60 * 1000);
 
     // add a useEffect with empty dependency array wwhich show the updated total_asset for the first tim ewhen loading the page
     // useEffect(() => {

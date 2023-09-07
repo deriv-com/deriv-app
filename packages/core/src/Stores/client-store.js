@@ -1708,12 +1708,6 @@ export default class ClientStore extends BaseStore {
                 this.switchAccount(this.virtual_account_loginid);
             }
         }
-        this.loginid !== 'null' && RudderStack.setAccountType(this.loginid.substring(0, 2));
-        if (this.user_id) {
-            RudderStack.identifyEvent(this.user_id, {
-                language: getLanguage().toLowerCase(),
-            });
-        }
         this.selectCurrency('');
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
@@ -1737,6 +1731,12 @@ export default class ClientStore extends BaseStore {
             }
 
             if (this.account_settings) this.setPreferredLanguage(this.account_settings.preferred_language);
+            this.loginid !== 'null' && RudderStack.setAccountType(this.loginid.substring(0, 2));
+            if (this.user_id) {
+                RudderStack.identifyEvent(this.user_id, {
+                    language: getLanguage().toLowerCase(),
+                });
+            }
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
             if (this.account_settings && !this.account_settings.residence) {

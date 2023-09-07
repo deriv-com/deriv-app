@@ -106,7 +106,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                                             is_copied ? (
                                                 <Icon icon='IcCheckmarkCircle' custom_color='var(--status-success)' />
                                             ) : (
-                                                <Icon icon='IcShareLink' data_testid='dt-copy-link-icon' />
+                                                <Icon icon='IcShareLink' data_testid='dt_copy_link_icon' />
                                             )
                                         }
                                         secondary

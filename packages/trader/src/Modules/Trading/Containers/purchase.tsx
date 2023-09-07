@@ -5,7 +5,7 @@ import PurchaseButtonsOverlay from 'Modules/Trading/Components/Elements/purchase
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
-import { TProposalTypeInfo } from 'Types';
+import { TTradeStore } from 'Types';
 
 type TGetSupportedContractsKey = keyof ReturnType<typeof getSupportedContracts>;
 
@@ -41,14 +41,14 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) 
         proposal_info,
         purchase_info,
         symbol,
-        validation_errors,
+        validation_errors = {},
         vanilla_trade_type,
         trade_types,
         is_trade_enabled,
     } = useTraderStore();
 
     const is_high_low = /^high_low$/.test(contract_type.toLowerCase());
-    const isLoading = (info: TProposalTypeInfo | Record<string, never>) => {
+    const isLoading = (info: TTradeStore['proposal_info'][string] | Record<string, never>) => {
         const has_validation_error = Object.values(validation_errors).some(e => e.length);
         return !has_validation_error && !info?.has_error && !info.id;
     };

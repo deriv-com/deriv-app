@@ -1,5 +1,18 @@
 name: send_slack_notifications
 description: Send Slack notifications
+inputs:
+  SLACK_WEBHOOK_URL:
+    description: 'Slack webhook URL'
+    required: true
+  status:
+    description: 'Job status'
+    required: true
+  release_type:
+    description: 'Release type'
+    required: true
+  version:
+    description: 'Version'
+    required: true
 runs:
   using: composite
   steps:

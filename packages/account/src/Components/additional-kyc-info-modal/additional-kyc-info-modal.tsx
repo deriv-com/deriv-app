@@ -13,13 +13,12 @@ import {
 import { Localize } from '@deriv/translations';
 import AdditionalKycInfoForm from './additional-kyc-info-form';
 
-const AdditionalKycInfoFormWithHintBox = ({
-    error,
-    setError,
-}: {
+type TAdditionalKycInfoFormWithHintBox = {
     error: string;
     setError: React.Dispatch<React.SetStateAction<string>>;
-}) => {
+};
+
+const AdditionalKycInfoFormWithHintBox = ({ error, setError }: TAdditionalKycInfoFormWithHintBox) => {
     return (
         <React.Fragment>
             {error && (

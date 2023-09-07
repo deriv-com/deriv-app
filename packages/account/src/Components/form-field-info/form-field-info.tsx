@@ -2,6 +2,7 @@ import React from 'react';
 import { Popover } from '@deriv/components';
 import { TPopoverProps } from '@deriv/components/src/components/types';
 import { isMobile } from '@deriv/shared';
+import { useOnClickOutside } from '@deriv/hooks';
 
 /**
  * A component that renders a popover with an info icon.
@@ -11,23 +12,7 @@ import { isMobile } from '@deriv/shared';
  */
 export const FormFieldInfo = (props: Omit<TPopoverProps, 'alignment'>) => {
     const [is_open, setIsOpen] = React.useState(false);
-    const ref = React.useRef<HTMLDivElement>(null);
-
-    React.useEffect(() => {
-        // Close popover when clicking outside of it
-        const handleClickOutside = (event: MouseEvent) => {
-            const target = event.target as HTMLElement;
-            if (ref.current && !ref.current.contains(target)) {
-                setIsOpen(false);
-            }
-        };
-        // Bind the event listener to the document so it can listen for events that happen outside of the component
-        document.addEventListener('click', handleClickOutside, true);
-        return () => {
-            // Unbind the event listener on clean up when component unmounts
-            document.removeEventListener('click', handleClickOutside, true);
-        };
-    }, []);
+    const ref = useOnClickOutside(() => setIsOpen(false));
 
     return (
         <div ref={ref}>

@@ -1,5 +1,5 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-import { blocksCoordinate, setColors } from '@deriv/bot-skeleton';
+import { setColors } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
 import { clearInjectionDiv } from 'Constants/load-modal';
 import { setTourSettings, tour_type, TTourType } from '../components/dashboard/joyride-config';
@@ -237,7 +237,7 @@ export default class DashboardStore implements IDashboardStore {
             this.setBotBuilderTourState(false);
         }
         if (this.active_tab === 1) {
-            blocksCoordinate();
+            Blockly.derivWorkspace?.cleanUp();
         }
     };
 

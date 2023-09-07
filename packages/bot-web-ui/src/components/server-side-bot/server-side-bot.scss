@@ -1,0 +1,123 @@
+.server-side {
+    &__wrapper {
+        width: 100%;
+        background: var(--general-main-1);
+        padding: 0.8rem;
+    }
+
+    &__titles {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.8rem 0;
+        border-bottom: 2px solid var(--sidebar-tab);
+    }
+    &__workspace {
+        display: flex;
+        &__bot-list-wrapper {
+            width: 60rem;
+        }
+        &__list {
+            height: calc(100vh - 22rem);
+            overflow-y: auto;
+            @include mobile {
+                height: calc(100vh - 26rem);
+            }
+            &__item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 16px;
+                border-bottom: 1px solid var(--sidebar-tab);
+                border-left: 4px solid transparent;
+                &:first-child {
+                    margin-top: 8px;
+                }
+                &:last-child {
+                    margin-bottom: 0;
+                }
+                &:hover {
+                    cursor: pointer;
+                }
+                &--active {
+                    background-color: var(--general-active);
+                    border-left: 4px solid var(--primary-color);
+                }
+                &__stats {
+                    display: flex;
+                    align-items: flex-end;
+                    @include mobile {
+                    }
+                    p {
+                        width: 10rem;
+                    }
+                    padding-top: 8px;
+                    .runs {
+                        color: var(--text-info-blue);
+                    }
+
+                    .profit {
+                        color: var(--text-profit-success);
+                    }
+
+                    .loss {
+                        color: var(--text-loss-danger);
+                    }
+                }
+                &__actions {
+                    display: flex;
+                }
+            }
+        }
+    }
+}
+
+.ss-icon {
+    padding: 4px;
+    margin-right: 1.6rem;
+    align-items: center;
+    display: flex;
+    width: 3rem;
+    height: 3rem;
+    justify-content: center;
+    &:last-child {
+        margin-right: 0;
+    }
+    &:hover {
+        cursor: pointer;
+        background-color: var(--sidebar-tab);
+    }
+}
+
+.server-bot-form {
+    max-height: calc(100vh - 20rem);
+    height: auto;
+    padding: 2rem;
+    overflow-y: auto;
+    &__split {
+        display: flex;
+        justify-content: space-between;
+        &__section {
+            &__left {
+                width: 49%;
+            }
+            &__right {
+                width: 49%;
+            }
+        }
+    }
+    &__group {
+        margin-bottom: 3.2rem;
+    }
+    &__actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        button {
+            margin-right: 1.5rem;
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+}

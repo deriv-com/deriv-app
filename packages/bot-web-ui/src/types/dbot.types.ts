@@ -28,4 +28,6 @@ export type TDbot = {
     getStrategySounds: () => unknown[];
     handleDragOver?: (event: any) => void;
     handleDropOver?: (event: any, handleFileChange: () => void) => void;
+    getAPIBase: () => any;
+    getBotList: () => any;
 };

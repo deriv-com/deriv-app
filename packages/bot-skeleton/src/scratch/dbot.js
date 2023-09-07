@@ -540,6 +540,8 @@ class DBot {
             event.dataTransfer.dropEffect = 'none';
         }
     }
+
+    getAPIBase = () => api_base;
 }
 
 export default new DBot();

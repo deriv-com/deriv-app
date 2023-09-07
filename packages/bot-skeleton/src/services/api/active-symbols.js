@@ -48,7 +48,7 @@ export default class ActiveSymbols {
     }
 
     processActiveSymbols() {
-        return this.active_symbols.reduce((processed_symbols, symbol) => {
+        return this.active_symbols?.reduce((processed_symbols, symbol) => {
             if (
                 this.disabled_markets.includes(symbol.market) ||
                 this.disabled_symbols.includes(symbol.symbol) ||

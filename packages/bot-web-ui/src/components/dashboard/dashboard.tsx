@@ -2,10 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
+import { useFeatureFlags } from '@deriv/hooks';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
+import ServerSideBot from 'Components/server-side-bot';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import RunPanel from '../run-panel';
@@ -24,6 +26,8 @@ import StrategyNotification from './strategy-notification';
 import TourSlider from './tour-slider';
 import TourTriggrerDialog from './tour-trigger-dialog';
 import Tutorial from './tutorial-tab';
+
+const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial', 'server_side_bot'];
 
 const Dashboard = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy } = useDBotStore();
@@ -48,7 +52,7 @@ const Dashboard = observer(() => {
         run_panel;
     const { is_strategy_modal_open } = quick_strategy;
 
-    const { DASHBOARD, BOT_BUILDER, CHART, TUTORIAL } = DBOT_TABS;
+    const { DASHBOARD, BOT_BUILDER, CHART } = DBOT_TABS;
     const is_tour_complete = React.useRef(true);
     let bot_tour_token: string | number = '';
     let onboard_tour_token: string | number = '';
@@ -58,17 +62,12 @@ const Dashboard = observer(() => {
     const init_render = React.useRef(true);
     const { ui } = useStore();
     const { url_hashed_values } = ui;
+    const { is_server_side_bot_enabled } = useFeatureFlags();
 
     let tab_value = active_tab;
     const GetHashedValue = (tab: number) => {
         tab_value = url_hashed_values?.split('#')[1];
-        if (tab_value === 'dashboard') return DASHBOARD;
-        if (tab_value === 'bot_builder') return BOT_BUILDER;
-        if (tab_value === 'chart') return CHART;
-        if (tab_value === 'tutorial') return TUTORIAL;
-        if (isNaN(tab_value) || isNaN(tab)) return active_tab;
-        if (tab_value > 4 || tab > 4) return active_tab;
-        return tab_value;
+        return Number(hash.indexOf(String(tab_value))) || tab;
     };
     const active_hash_tab = GetHashedValue(active_tab);
 
@@ -78,12 +77,7 @@ const Dashboard = observer(() => {
             if (is_mobile) handleTabChange(Number(active_hash_tab));
             init_render.current = false;
         } else {
-            let active_tab_name = 'dashboard';
-            if (active_tab === 0) active_tab_name = 'dashboard';
-            if (active_tab === 1) active_tab_name = 'bot_builder';
-            if (active_tab === 2) active_tab_name = 'chart';
-            if (active_tab === 3) active_tab_name = 'tutorial';
-            window.location.hash = active_tab_name;
+            window.location.hash = hash[active_tab] || hash[0];
         }
     }, [active_tab]);
 
@@ -238,6 +232,13 @@ const Dashboard = observer(() => {
                                 <Tutorial />
                             </div>
                         </div>
+                        {is_server_side_bot_enabled ? (
+                            <div icon='IcBotBuilderTabIcon' label={localize('Server Side Bot')} id='id-tutorials'>
+                                <ServerSideBot />
+                            </div>
+                        ) : (
+                            <></>
+                        )}
                     </Tabs>
                 </div>
             </div>

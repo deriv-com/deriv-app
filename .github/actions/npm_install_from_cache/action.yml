@@ -14,14 +14,14 @@ runs:
       restore-keys: node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
   - name: Install npm packages
     run: |-
-      npm run bootstrap
-      # if [ -d "./node_modules" ]; then
-      #   echo "Found cache. Using cached node_modules."
-      #   node_modules/lerna/cli.js link
-      # else
-      #   echo "Could not find cache. Bootstrapping..."
-      #   npm run bootstrap
-      # fi
+      # npm run bootstrap
+      if [ -d "./node_modules" ]; then
+        echo "Found cache. Using cached node_modules."
+        node_modules/lerna/cli.js link
+      else
+        echo "Could not find cache. Bootstrapping..."
+        npm run bootstrap
+      fi
     shell: bash
   - name: save_cache
     uses: actions/cache@v3.3.1

@@ -18,21 +18,21 @@ runs:
   steps:
   - name: Send Slack Notification on Success
     if: ${{ inputs.status }} == 'success'
-    run: |
+    run: |-
         curl -X POST -H 'Content-type: application/json' \
         --data '{
         "text": "'"${{ inputs.release_type }}"' Release succeeded for app.deriv.com with version *'"${{ inputs.version }}"'*"
         }' \
-          ${{ inputs.SLACK_WEBHOOK_URL }}
+          $inputs.SLACK_WEBHOOK_URL
     shell: bash
   
   - name: Send Slack Notification on Failure
     if: ${{ inputs.status }} == 'failure'
 
-    run: |
+    run: |-
           curl -X POST -H 'Content-type: application/json' \
           --data '{
             "text": "'"${{ inputs.release_type }}"' Release failed for app.deriv.com with version *'"${{ inputs.version }}"'*"
           }' \
-          ${{ inputs.SLACK_WEBHOOK_URL }}
+          $inputs.SLACK_WEBHOOK_URL
     shell: bash

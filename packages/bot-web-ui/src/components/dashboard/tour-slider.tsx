@@ -37,7 +37,7 @@ const Accordion = ({ content_data, expanded = false, ...props }: TAccordion) => 
                 <div className='dbot-accordion__navbar' onClick={() => setOpen(!is_open)}>
                     <div className='dbot-accordion__header'>
                         <Text as='span' size='xs' weight='bold'>
-                            {localize(header)}
+                            {header}
                         </Text>
                     </div>
                     <div className='dbot-accordion__icon'>
@@ -50,7 +50,7 @@ const Accordion = ({ content_data, expanded = false, ...props }: TAccordion) => 
                     })}
                 >
                     <Text as='span' size='xxs' line_height='s'>
-                        {localize(content)}
+                        {content}
                     </Text>
                 </div>
             </div>
@@ -64,9 +64,10 @@ const TourSlider = observer(() => {
         dashboard;
     const { toggleTourLoadModal } = load_modal;
     const [step, setStep] = React.useState<number>(1);
-    const [slider_content, setContent] = React.useState<string | string[]>('');
-    const [slider_header, setheader] = React.useState<string>('');
-    const [slider_image, setimg] = React.useState<string>('');
+    const [slider_content, setContent] = React.useState<React.ReactElement[]>([]);
+    const [slider_header, setHeader] = React.useState<string>('');
+    const [slider_image, setImg] = React.useState<string>('');
+    const [slider_media, setMedia] = React.useState<string>('');
     const [step_key, setStepKey] = React.useState<number>(0);
 
     React.useEffect(() => {
@@ -74,9 +75,10 @@ const TourSlider = observer(() => {
         Object.values(!has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE).forEach(data => {
             if (data.key === step) {
                 setContent(data?.content);
-                setheader(data?.header);
-                setimg(data?.img);
-                setStepKey(data?.step_key);
+                setHeader(data?.header);
+                setImg(data?.img || '');
+                setMedia(data?.media || '');
+                setStepKey(data?.step_key || 0);
             }
         });
         const el_ref = document.querySelector('.toolbar__group-btn svg:nth-child(2)');
@@ -111,6 +113,9 @@ const TourSlider = observer(() => {
 
     const tour_button_text = has_started_onboarding_tour && step_key === 0 ? localize('Start') : bot_tour_text;
 
+    const onboarding_completed_text =
+        has_started_onboarding_tour && step === 8 ? localize('Got it, thanks!') : tour_button_text;
+
     return (
         <>
             <div
@@ -127,16 +132,10 @@ const TourSlider = observer(() => {
                             weight='less-prominent'
                             line_height='s'
                             size='xxs'
-                        >{`${step_key}/6`}</Text>
-                        <Text
-                            color='prominent'
-                            weight='--text-less-prominent'
-                            line_height='s'
-                            size='xxs'
-                            onClick={onCloseTour}
-                        >
-                            {localize('Exit Tour')}
-                        </Text>
+                        >{`${step_key}/7`}</Text>
+                        <span onClick={onCloseTour}>
+                            <Icon icon='IcCross' className='db-contract-card__result-icon' color='secondary' />
+                        </span>
                     </div>
                 )}
 
@@ -153,17 +152,32 @@ const TourSlider = observer(() => {
                         {localize(slider_header)}
                     </Text>
                 )}
-                {has_started_onboarding_tour && slider_image && (
-                    <div className='dbot-slider__image'>
-                        <img src={slider_image} />
-                    </div>
-                )}
+                {has_started_onboarding_tour &&
+                    // eslint-disable-next-line no-nested-ternary
+                    (slider_media ? (
+                        <div className='dbot-slider__image'>
+                            <video
+                                autoPlay={true}
+                                loop
+                                controls
+                                preload='auto'
+                                playsInline
+                                disablePictureInPicture
+                                controlsList='nodownload'
+                                src={slider_media}
+                            />
+                        </div>
+                    ) : slider_image ? (
+                        <div className='dbot-slider__image'>
+                            <img src={slider_image} />
+                        </div>
+                    ) : null)}
                 {has_started_onboarding_tour && slider_content && (
                     <>
-                        {slider_content.map(data => {
+                        {slider_content?.map((data, index) => {
                             return (
                                 <Text
-                                    key={data}
+                                    key={`${index}-tour-onboard`}
                                     align='center'
                                     color='prominent'
                                     className='dbot-slider__content'
@@ -171,7 +185,7 @@ const TourSlider = observer(() => {
                                     line_height='s'
                                     size='xxs'
                                 >
-                                    {localize(data)}
+                                    {data}
                                 </Text>
                             );
                         })}
@@ -200,7 +214,7 @@ const TourSlider = observer(() => {
                             />
                         )}
                         {((has_started_bot_builder_tour && step !== 1) ||
-                            (has_started_onboarding_tour && step !== 1 && step !== 2)) && (
+                            (has_started_onboarding_tour && step !== 1 && step !== 2 && step !== 8)) && (
                             <TourButton
                                 onClick={() => {
                                     onChange('dec');
@@ -208,7 +222,7 @@ const TourSlider = observer(() => {
                                 label={localize('Previous')}
                             />
                         )}
-                        <TourButton type='danger' onClick={onClickNext} label={tour_button_text} />
+                        <TourButton type='danger' onClick={onClickNext} label={onboarding_completed_text} />
                     </div>
                 </div>
             </div>

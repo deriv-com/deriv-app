@@ -13,14 +13,14 @@ const WalletCard: React.FC<TProps> = ({ account }) => {
             <div className='wallets-card__data'>
                 <div className='wallets-card__data__details'>
                     <div className='wallets-card__data__details-icon'>
-                        <h1>{account.currency}</h1>
+                        <p>{account.currency}</p>
                     </div>
 
                     <div className='wallets-card__data__details-balance'>
                         <p>{account.currency} Wallet</p>
-                        <h3>
+                        <p>
                             {account.display_balance} {account.currency}
-                        </h3>
+                        </p>
                     </div>
                     <div className='wallets-card__data__details-landing_company'>
                         {account?.landing_company_name && <WalletListCardBadge label={account?.landing_company_name} />}

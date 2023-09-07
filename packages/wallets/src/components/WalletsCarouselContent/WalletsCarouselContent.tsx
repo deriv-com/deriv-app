@@ -7,7 +7,7 @@ import { WalletListCardIActions } from '../WalletListCardIActions';
 import './WalletsCarouselContent.scss';
 
 const WalletsCarouselContent: React.FC = () => {
-    const [emblaRef, emblaApi] = useEmblaCarousel({ skipSnaps: true, containScroll: false });
+    const [wallet_embla_ref, emblaApi] = useEmblaCarousel({ skipSnaps: true, containScroll: false });
     const [active_index, setActiveIndex] = useState(0);
     const { data: wallet_accounts_list } = useWalletAccountsList();
 
@@ -21,9 +21,10 @@ const WalletsCarouselContent: React.FC = () => {
             setActiveIndex(scroll_snap_index);
         });
     }, [emblaApi]);
+    const amount_of_steps = Array.from({ length: wallet_accounts_list.length }, (_, idx) => idx + 1);
 
     return (
-        <div className='wallets-carousel-content' ref={emblaRef}>
+        <div className='wallets-carousel-content' ref={wallet_embla_ref}>
             <div className='wallets-carousel-content__container'>
                 {wallet_accounts_list.map(wallet => (
                     <WalletCard key={`${wallet.loginid}`} account={wallet} />
@@ -31,15 +32,13 @@ const WalletsCarouselContent: React.FC = () => {
             </div>
             <div className='wallets-carousel-content__progress-bar'>
                 <ProgressBar
-                    step={active_index + 1}
-                    amount_of_steps={wallet_accounts_list.map((_, idx) => idx.toString())}
-                    setStep={setActiveIndex}
+                    active_index={active_index + 1}
+                    indexes={amount_of_steps}
+                    setActiveIndex={setActiveIndex}
                     is_transition={true}
                 />
             </div>
-            <div className='wallets-carousel-content__actions'>
-                <WalletListCardIActions is_desktop_wallet={false} />
-            </div>
+            <WalletListCardIActions is_desktop_wallet={false} />
         </div>
     );
 };

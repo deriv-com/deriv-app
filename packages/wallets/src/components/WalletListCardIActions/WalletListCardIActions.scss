@@ -24,6 +24,15 @@
     cursor: pointer;
     min-width: 5.6rem;
 
+    &__container {
+        display: flex;
+        padding: 0rem 1.6rem;
+        justify-content: center;
+        align-items: center;
+        gap: 0.8rem;
+        align-self: stretch;
+    }
+
     &-content {
         display: flex;
         width: 7rem;

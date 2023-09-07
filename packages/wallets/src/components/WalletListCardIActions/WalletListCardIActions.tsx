@@ -50,21 +50,23 @@ const WalletListCardIActions: React.FC<TProps> = ({ account, is_desktop_wallet =
 
     if (!is_desktop_wallet)
         return (
-            <div className='wallets-mobile-actions'>
-                {getWalletHeaderButtons(is_demo).map(button => (
-                    <React.Fragment key={button.name}>
-                        <div className='wallets-mobile-actions-content'>
-                            <button
-                                key={button.name}
-                                className='wallets-mobile-actions-content-icon'
-                                onClick={button.action}
-                            >
-                                {button.icon}
-                            </button>
-                            <div className='wallets-mobile-actions-content-text'>{button.text}</div>
-                        </div>
-                    </React.Fragment>
-                ))}
+            <div className='wallets-mobile-actions__container'>
+                <div className='wallets-mobile-actions'>
+                    {getWalletHeaderButtons(is_demo).map(button => (
+                        <React.Fragment key={button.name}>
+                            <div className='wallets-mobile-actions-content'>
+                                <button
+                                    key={button.name}
+                                    className='wallets-mobile-actions-content-icon'
+                                    onClick={button.action}
+                                >
+                                    {button.icon}
+                                </button>
+                                <div className='wallets-mobile-actions-content-text'>{button.text}</div>
+                            </div>
+                        </React.Fragment>
+                    ))}
+                </div>
             </div>
         );
 

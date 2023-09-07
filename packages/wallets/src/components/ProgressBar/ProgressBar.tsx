@@ -2,24 +2,23 @@ import React from 'react';
 import './ProgressBar.scss';
 
 type TProps = {
-    step: number;
-    amount_of_steps: Array<string>;
-    setStep: React.Dispatch<React.SetStateAction<number>>;
     is_transition?: boolean;
+    active_index: number;
+    indexes: Array<number>;
+    setActiveIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const ProgressBar: React.FC<TProps> = ({ step, amount_of_steps, setStep, is_transition }) => {
+const ProgressBar: React.FC<TProps> = ({ is_transition, active_index, indexes, setActiveIndex }) => {
     return (
         <div className='wallets-progress-bar'>
-            {amount_of_steps.map((st, index) => {
-                const active = step === index + 1;
+            {indexes.map(st => {
+                const is_active = st === active_index;
 
-                const barClassName = active ? 'wallets-progress-bar-active' : 'wallets-progress-bar-inactive';
-
+                const barClassName = is_active ? 'wallets-progress-bar-active' : 'wallets-progress-bar-inactive';
                 return (
                     <div
-                        key={st}
-                        onClick={() => setStep(index + 1)}
+                        key={`progress-bar__${st}`}
+                        onClick={() => setActiveIndex(st)}
                         className={`${barClassName} ${is_transition ? 'wallets-progress-bar-transition' : ''}`}
                     />
                 );

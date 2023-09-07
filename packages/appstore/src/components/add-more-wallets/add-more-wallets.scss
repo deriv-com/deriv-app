@@ -6,9 +6,14 @@
     gap: 1.6rem;
     width: 100%;
 
+    @include mobile {
+        padding-top: 0;
+    }
+
     &__title {
         @include mobile {
             font-size: var(--text-size-m);
+            padding-left: 1.6rem;
         }
     }
     &__content {
@@ -25,7 +30,7 @@
         border: 0.1rem solid var(--general-active);
         background-color: var(--general-main-1);
         box-shadow: $wallet-box-shadow;
-        cursor: pointer;
+        user-select: none;
         &-description,
         &-wrapper {
             display: flex;
@@ -34,16 +39,6 @@
         &-description {
             align-items: flex-start;
             gap: 0.8rem;
-            &__header {
-                @include mobile {
-                    font-size: var(--text-size-xs);
-                }
-            }
-            &__text {
-                @include mobile {
-                    line-height: var(--text-lh-s);
-                }
-            }
         }
         &-wrapper {
             align-items: center;

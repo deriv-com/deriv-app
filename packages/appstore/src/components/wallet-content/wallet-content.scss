@@ -1,7 +1,9 @@
 .wallet-content {
     &__loader {
         padding: 2.4rem;
-
+        width: 100%;
+        height: auto;
+        max-width: 60rem;
         @include mobile {
             padding: 1.6rem 0;
         }
@@ -59,14 +61,14 @@
             padding: 2.4rem;
 
             @include mobile {
-                padding: 0;
+                padding-bottom: 4.8rem;
             }
 
             &-title {
                 padding: 2.4rem;
 
                 @include mobile {
-                    padding: 2.4rem 1.6rem;
+                    padding: 2.4rem 0;
                     text-align: center;
                 }
             }

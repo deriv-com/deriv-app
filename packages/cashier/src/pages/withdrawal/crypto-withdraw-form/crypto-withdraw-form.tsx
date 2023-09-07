@@ -1,15 +1,15 @@
 import React from 'react';
+import { Button, Input, InlineMessage, Loading, Text } from '@deriv/components';
+import { CryptoConfig, getCurrencyName, isCryptocurrency } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
 import classNames from 'classnames';
 import { Field, FieldProps, Formik, FormikProps } from 'formik';
-import { Button, Input, Loading, Text, InlineMessage } from '@deriv/components';
-import { CryptoConfig, getCurrencyName, isCryptocurrency } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import { useStore, observer } from '@deriv/stores';
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
+import { CryptoTransactionsSideNoteRecentTransaction } from '../../../modules/crypto-transactions/components/crypto-transactions-side-note-resent-transaction';
 import PercentageSelector from '../../../components/percentage-selector';
-import RecentTransaction from '../../../components/recent-transaction';
-import { TReactChangeEvent } from '../../../types';
 import { useCashierStore } from '../../../stores/useCashierStores';
+import { TReactChangeEvent } from '../../../types';
 import './crypto-withdraw-form.scss';
 
 type THeaderProps = {
@@ -77,7 +77,7 @@ const CryptoWithdrawForm = observer(({ is_wallet }: { is_wallet?: boolean }) => 
 
         return () => {
             percentageSelectorSelectionStatus(false);
-            resetWithdrawForm();
+            if (!is_wallet) resetWithdrawForm();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -204,7 +204,7 @@ const CryptoWithdrawForm = observer(({ is_wallet }: { is_wallet?: boolean }) => 
                 </Formik>
             </div>
 
-            {isCryptocurrency(currency) && <RecentTransaction is_wallet={is_wallet} />}
+            {isCryptocurrency(currency) && <CryptoTransactionsSideNoteRecentTransaction />}
         </div>
     );
 });

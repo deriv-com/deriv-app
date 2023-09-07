@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { APIProvider } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import WalletCardsCarousel from '..';
-import { APIProvider } from '@deriv/api';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -98,16 +98,18 @@ jest.mock('@deriv/api', () => ({
 jest.mock('./../cards-slider-swiper', () => jest.fn(() => <div>slider</div>));
 
 describe('<WalletCardsCarousel />', () => {
-    it('Should render slider', () => {
-        const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
+    const wrapper = (mock: ReturnType<typeof mockStore>) => {
+        const Component = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
                 <StoreProvider store={mock}>{children}</StoreProvider>
             </APIProvider>
         );
+        return Component;
+    };
+    it('Should render slider', () => {
+        const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
 
-        render(<WalletCardsCarousel />, { wrapper });
+        render(<WalletCardsCarousel />, { wrapper: wrapper(mock) });
         const slider = screen.queryByText('slider');
 
         expect(slider).toBeInTheDocument();
@@ -116,18 +118,12 @@ describe('<WalletCardsCarousel />', () => {
     it('Should render buttons for REAL', () => {
         const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
+        render(<WalletCardsCarousel />, { wrapper: wrapper(mock) });
 
-        render(<WalletCardsCarousel />, { wrapper });
-
-        const btn1 = screen.queryByText(/Deposit/i);
-        const btn2 = screen.queryByText(/Withdraw/i);
-        const btn3 = screen.queryByText(/Transfer/i);
-        const btn4 = screen.queryByText(/Transactions/i);
+        const btn1 = screen.getByRole('button', { name: /Deposit/i });
+        const btn2 = screen.getByRole('button', { name: /Withdraw/i });
+        const btn3 = screen.getByRole('button', { name: /Transfer/i });
+        const btn4 = screen.getByRole('button', { name: /Transactions/i });
 
         expect(btn1).toBeInTheDocument();
         expect(btn2).toBeInTheDocument();
@@ -138,17 +134,11 @@ describe('<WalletCardsCarousel />', () => {
     it('Should render buttons for DEMO', () => {
         const mock = mockStore({ client: { accounts: { VRW10001: { token: '12345' } }, loginid: 'VRW10001' } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
+        render(<WalletCardsCarousel />, { wrapper: wrapper(mock) });
 
-        render(<WalletCardsCarousel />, { wrapper });
-
-        const btn1 = screen.queryByText(/Transfer/i);
-        const btn2 = screen.queryByText(/Transactions/i);
-        const btn3 = screen.queryByText(/Reset balance/i);
+        const btn1 = screen.getByRole('button', { name: /Transfer/i });
+        const btn2 = screen.getByRole('button', { name: /Transactions/i });
+        const btn3 = screen.getByRole('button', { name: /Reset balance/i });
 
         expect(btn1).toBeInTheDocument();
         expect(btn2).toBeInTheDocument();

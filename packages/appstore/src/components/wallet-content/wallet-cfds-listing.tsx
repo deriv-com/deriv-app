@@ -1,27 +1,27 @@
 import React from 'react';
 import { Text, StaticUrl } from '@deriv/components';
+import { useActiveWallet } from '@deriv/hooks';
+import { useStore, observer } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import { isCryptocurrency } from '@deriv/shared';
-import { useStore, observer } from '@deriv/stores';
-import WalletFiatCFD from './wallet-fiat-cfd';
-import { useActiveWallet } from '@deriv/hooks';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import WalletCryptoCFD from './wallet-crypto-cfd';
+import WalletFiatCFD from './wallet-fiat-cfd';
+import './wallet-content.scss';
 
 const WalletCFDsListing = observer(() => {
     const {
+        client,
         modules: { cfd },
         ui,
-        client,
     } = useStore();
-    const wallet_account = useActiveWallet();
-
-    const currency = wallet_account?.currency;
 
     const { toggleCompareAccountsModal } = cfd;
-    const { is_mobile } = ui;
     const { is_landing_company_loaded, is_logging_in, is_switching } = client;
+    const { is_mobile } = ui;
+
+    const wallet_account = useActiveWallet();
 
     if (!wallet_account || !is_landing_company_loaded || is_switching || is_logging_in)
         return (
@@ -30,6 +30,7 @@ const WalletCFDsListing = observer(() => {
             </div>
         );
 
+    const { currency } = wallet_account;
     const accounts_sub_text =
         wallet_account.landing_company_name === 'svg' || wallet_account.is_virtual
             ? localize('Compare accounts')
@@ -43,7 +44,7 @@ const WalletCFDsListing = observer(() => {
             title={
                 !is_mobile && (
                     <div className='cfd-accounts__title'>
-                        <Text size='sm' line_height='m' weight='bold' color='prominent'>
+                        <Text size='sm' weight='bold' color='prominent'>
                             {localize('CFDs')}
                         </Text>
                         <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
@@ -66,6 +67,13 @@ const WalletCFDsListing = observer(() => {
             }
             is_outside_grid_container={!is_fiat}
         >
+            {is_mobile && (
+                <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
+                    <Text size='xs' color='red' weight='bold' line_height='s'>
+                        {accounts_sub_text}
+                    </Text>
+                </div>
+            )}
             {is_fiat ? <WalletFiatCFD wallet_account={wallet_account} /> : <WalletCryptoCFD />}
         </ListingContainer>
     );

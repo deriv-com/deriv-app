@@ -22,12 +22,14 @@ type TWalletCardProps = {
     };
     size?: 'small' | 'medium' | 'large';
     state?: 'active' | 'add' | 'added' | 'default' | 'disabled' | 'faded';
+    onClick?: () => void;
 };
 
 const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
     wallet,
     size = 'medium',
     state = 'default',
+    onClick,
 }) => {
     const IconComponent = () => {
         let icon_size: React.ComponentProps<typeof WalletIcon>['size'] = 'large';
@@ -87,6 +89,7 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
                                     }
                                     text={state === 'added' ? localize('Added') : localize('Add')}
                                     is_disabled={state === 'added'}
+                                    onClick={onClick}
                                 />
                             )}
                         </div>

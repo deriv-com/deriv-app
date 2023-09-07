@@ -122,10 +122,7 @@ const TransactionList = observer(({ contentScrollHandler, is_wallet_name_visible
                     className='transaction-list__filter'
                     is_align_text_left
                     list={filter_options}
-                    onChange={(e: { target: { value: typeof filter } }) => {
-                        reset();
-                        setFilter(e.target.value);
-                    }}
+                    onChange={onValueChange}
                     label={localize('Filter')}
                     suffix_icon='IcFilter'
                     value={filter}

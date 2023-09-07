@@ -5,10 +5,10 @@ import type {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
+    Portfolio1,
     GetSettings,
     LandingCompany,
     LogOutResponse,
-    Portfolio1,
     ProposalOpenContract,
     ResidenceList,
     SetFinancialAssessmentRequest,
@@ -104,7 +104,7 @@ type TIconTypes =
     | 'SmartTraderBlue'
     | 'CFDs';
 
-interface AvailableAccount {
+type AvailableAccount = {
     name: string;
     is_item_blurry?: boolean;
     has_applauncher_account?: boolean;
@@ -118,7 +118,7 @@ interface AvailableAccount {
     availability: TRegionAvailability;
     short_code_and_region?: string;
     login?: string;
-}
+};
 
 interface ExistingMT5Account {
     account_type: string;
@@ -244,6 +244,15 @@ type TTradingPlatformAvailableAccount = {
     sub_account_type: string;
 };
 
+type TAvailableCFDAccounts = {
+    availability: 'Non-EU' | 'EU' | 'All';
+    description: string;
+    icon: 'Derived' | 'Financial' | 'DerivX' | 'SwapFree';
+    market_type: 'synthetic' | 'financial' | 'all' | 'gaming';
+    name: string;
+    platform: 'mt5' | 'dxtrade';
+};
+
 type TAuthenticationStatus = { document_status: string; identity_status: string };
 
 type TAddToastProps = {
@@ -299,7 +308,7 @@ type IncrementedProperties<N extends number> = {
     [K in keyof LoginParams as `${string & K}${N}`]: string;
 };
 
-export type LoginURLParams<N extends number> = LoginParams & IncrementedProperties<N>;
+type LoginURLParams<N extends number> = LoginParams & IncrementedProperties<N>;
 type TStandPoint = {
     financial_company: string;
     gaming_company: string;
@@ -480,6 +489,11 @@ type TClientStore = {
         payload: SetFinancialAssessmentRequest
     ) => Promise<SetFinancialAssessmentResponse>;
     prev_account_type: string;
+    accountRealReaction: (response: {
+        new_account_real?: { oauth_token: string; client_id: string };
+        new_account_maltainvest?: { oauth_token: string; client_id: string };
+        new_account_wallet?: { oauth_token: string; client_id: string };
+    }) => Promise<void>;
 };
 
 type TCommonStoreError = {
@@ -548,6 +562,7 @@ type TUiStore = {
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
+    setPurchaseState: (index: number) => void;
     setHasOnlyForwardingContracts: (has_only_forward_starting_contracts: boolean) => void;
     sub_section_index: number;
     setSubSectionIndex: (index: number) => void;
@@ -591,6 +606,7 @@ type TUiStore = {
     setResetTradingPasswordModalOpen: () => void;
     populateHeaderExtensions: (header_items: JSX.Element | null) => void;
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
+    purchase_states: boolean[];
     setShouldShowCooldownModal: (value: boolean) => void;
     setAppContentsScrollRef: (ref: React.MutableRefObject<null | HTMLDivElement>) => void;
     populateFooterExtensions: (
@@ -604,15 +620,18 @@ type TUiStore = {
               ]
             | []
     ) => void;
+    is_wallet_creation_success_modal_open: boolean;
+    toggleIsWalletCreationSuccessModalOpen: (value: boolean) => void;
 };
 
 type TPortfolioStore = {
     active_positions: TPortfolioPosition[];
+    all_positions: TPortfolioPosition[];
     error: string;
     getPositionById: (id: number) => TPortfolioPosition;
-    is_accumulator: boolean;
     is_loading: boolean;
     is_multiplier: boolean;
+    is_accumulator: boolean;
     is_turbos: boolean;
     onClickCancel: (contract_id?: number) => void;
     onClickSell: (contract_id?: number) => void;
@@ -623,6 +642,11 @@ type TPortfolioStore = {
 
 type TContractStore = {
     getContractById: (id: number) => ProposalOpenContract;
+    contract_info: TPortfolioPosition['contract_info'];
+    contract_update_stop_loss: string;
+    contract_update_take_profit: string;
+    has_contract_update_stop_loss: boolean;
+    has_contract_update_take_profit: boolean;
 };
 
 type TNotificationStore = {
@@ -702,7 +726,6 @@ type TTradersHubStore = {
     available_platforms: BrandConfig[];
     selected_region: TRegionAvailability;
     getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
-    available_dxtrade_accounts: AvailableAccount[];
     is_wallet_tour_open: boolean;
     toggleIsWalletTourOpen: (value: boolean) => void;
     can_get_more_cfd_mt5_accounts: boolean;
@@ -717,6 +740,8 @@ type TTradersHubStore = {
     has_any_real_account: boolean;
     getShortCodeAndRegion: (account: Partial<ExistingMT5Account>) => string;
     is_mt5_notificaiton_modal_visible: boolean;
+    available_cfd_accounts: TAvailableCFDAccounts[];
+    available_dxtrade_accounts: TAvailableCFDAccounts[];
     toggleIsTourOpen: (is_tour_open: boolean) => void;
     is_demo_low_risk: boolean;
     is_mt5_notification_modal_visible: boolean;

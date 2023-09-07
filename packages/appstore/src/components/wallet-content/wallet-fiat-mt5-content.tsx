@@ -14,7 +14,11 @@ const WalletFiatMT5Content = observer(() => {
 
     return (
         <React.Fragment>
-            {!isFetchedAfterMount && is_authorize && <PlatformLoader />}
+            {!isFetchedAfterMount && is_authorize && (
+                <div className='wallet-content__loader'>
+                    <PlatformLoader />
+                </div>
+            )}
             {isFetchedAfterMount && <WalletMT5CardList />}
             {isFetchedAfterMount && can_get_more_cfd_mt5_accounts && (
                 <GetMoreAccounts

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { TWalletAccount } from 'Types';
-import { WalletCard, ProgressBarOnboarding } from '@deriv/components';
+import { WalletCard, ProgressBarTracker } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import useEmblaCarousel from 'embla-carousel-react';
@@ -64,18 +64,18 @@ const CardsSliderSwiper = observer(() => {
                     />
                 </div>
             )),
-        [data?.length]
+        [data]
     );
 
     return (
         <React.Fragment>
-            <div className='wallet-cards-carousel__viewport' ref={emblaRef}>
+            <div ref={emblaRef}>
                 <div className='wallet-cards-carousel__container'>{slider}</div>
             </div>
             <div className='wallet-cards-carousel__pagination'>
-                <ProgressBarOnboarding
+                <ProgressBarTracker
                     step={active_index}
-                    amount_of_steps={steps}
+                    steps_list={steps}
                     is_transition={true}
                     setStep={setActiveIndex}
                 />

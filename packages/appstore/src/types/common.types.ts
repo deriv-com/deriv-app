@@ -197,7 +197,7 @@ export type TTransferAccount = {
     currency?: string;
     display_currency_code: string | undefined;
     gradient_class?: `wallet-card__${string}`;
-    icon?: string | undefined;
+    icon?: string;
     is_demo: boolean;
     loginid?: string;
     mt5_market_type?: 'all' | 'financial' | 'synthetic';
@@ -226,4 +226,27 @@ export type TWalletButton = {
     text: string;
     icon: string;
     action: () => void;
+};
+
+export type TRealWalletsUpgrade = {
+    current_step: number;
+    handleBack: () => void;
+    handleClose: () => void;
+    handleNext: () => void;
+    is_disabled: boolean;
+    toggleCheckbox: () => void;
+    upgradeToWallets: (value: boolean) => void;
+};
+
+export type TwalletSteps = {
+    handleBack: () => void;
+    handleClose: () => void;
+    handleNext: () => void;
+    is_disabled: boolean;
+    toggleCheckbox: () => void;
+    upgradeToWallets: (value: boolean) => void;
+};
+
+export type TModalContentFooter = TwalletSteps & {
+    current_step: number;
 };

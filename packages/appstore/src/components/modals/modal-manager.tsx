@@ -21,6 +21,7 @@ import AccountTransferModal from 'Components/account-transfer-modal';
 import RealWalletsUpgrade from './real-wallets-upgrade/real-wallets-upgrade';
 import WalletsMigrationFailed from './wallets-migration-failed';
 import WalletModal from './wallet-modal';
+import WalletSuccessDialog from './wallet-success-dialog/wallet-success-dialog';
 
 type TCurrentList = DetailsOfEachMT5Loginid & {
     enabled: number;
@@ -56,7 +57,8 @@ const ModalManager = () => {
         is_reset_trading_password_modal_visible,
         setResetTradingPasswordModalOpen,
     } = ui;
-    const { is_demo, is_account_transfer_modal_open, toggleAccountTransferModal } = traders_hub;
+    const { is_demo, is_account_transfer_modal_open, toggleAccountTransferModal, is_real_wallets_upgrade_on } =
+        traders_hub;
 
     const [password_manager, setPasswordManager] = React.useState<{
         is_visible: boolean;
@@ -169,9 +171,10 @@ const ModalManager = () => {
                 toggleModal={toggleAccountTransferModal}
             />
             <FailedVerificationModal />
-            <RealWalletsUpgrade />
+            {is_real_wallets_upgrade_on && <RealWalletsUpgrade />}
             <WalletsMigrationFailed />
             <WalletModal />
+            <WalletSuccessDialog />
         </React.Fragment>
     );
 };

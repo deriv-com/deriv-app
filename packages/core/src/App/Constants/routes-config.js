@@ -5,6 +5,7 @@ import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Redirect from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
+import CFDCompareAccounts from '@deriv/cfd/src/Containers/cfd-compare-accounts';
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
@@ -103,6 +104,11 @@ const getModules = () => {
             path: routes.dxtrade,
             component: props => <CFD {...props} platform='dxtrade' />,
             getTitle: () => localize('Deriv X'),
+        },
+        {
+            path: routes.compare_cfds,
+            component: CFDCompareAccounts,
+            getTitle: () => localize('Compare CFD accounts'),
         },
         {
             path: routes.mt5,
@@ -320,14 +326,12 @@ const getModules = () => {
                             component: P2P,
                             getTitle: () => localize('My profile'),
                         },
+                        {
+                            path: routes.p2p_verification,
+                            component: P2P,
+                            getTitle: () => localize('P2P verification'),
+                        },
                     ],
-                },
-                {
-                    path: routes.p2p_verification,
-                    component: Cashier,
-                    getTitle: () => localize('P2P verification'),
-                    icon_component: 'IcDp2p',
-                    is_invisible: true,
                 },
                 {
                     id: 'gtm-onramp-tab',

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Loading, Text } from '@deriv/components';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { useDBotStore } from 'Stores/useDBotStore';
 
 type TTourGuide = {
     content: string[];
@@ -12,7 +12,10 @@ type TTourGuide = {
     step_index: number;
 };
 
-const TourGuide = ({ content, img, label, onCloseTour, step_index }: TTourGuide) => {
+const TourGuide = observer(({ content, img, label, step_index }: TTourGuide) => {
+    const { dashboard } = useDBotStore();
+    const { onCloseTour } = dashboard;
+
     const [has_image_loaded, setImageLoaded] = React.useState(false);
 
     React.useEffect(() => {
@@ -36,35 +39,34 @@ const TourGuide = ({ content, img, label, onCloseTour, step_index }: TTourGuide)
                         {localize('Exit tour')}
                     </Text>
                 </div>
-                <div className='onboard__label'>
-                    <Text as='h' line_height='l' weight='bold'>
-                        {label}
-                    </Text>
-                </div>
-
-                {img && (
-                    <div className='onboard__container'>
-                        {has_image_loaded ? <img src={img} loading='eager' /> : <Loading />}
+                <div className='onboard__steps'>
+                    <div className='onboard__label'>
+                        <Text as='h' line_height='l' weight='bold'>
+                            {label}
+                        </Text>
                     </div>
-                )}
 
-                <div className='onboard__content'>
-                    {content.map(content_text => {
-                        return (
-                            <div className='onboard__content__block' key={content_text}>
-                                <Text align='left' as='h' size='xs' line_height='l'>
-                                    {content_text}
-                                </Text>
-                            </div>
-                        );
-                    })}
+                    {img && (
+                        <div className='onboard__container'>
+                            {has_image_loaded ? <img src={img} loading='eager' /> : <Loading />}
+                        </div>
+                    )}
+
+                    <div className='onboard__content'>
+                        {content.map(content_text => {
+                            return (
+                                <div className='onboard__content__block' key={content_text}>
+                                    <Text align='left' as='h' size='xs' line_height='l'>
+                                        {content_text}
+                                    </Text>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
         </React.Fragment>
     );
-};
-export default connect(({ dashboard }: RootStore) => ({
-    setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
-    setTourActive: dashboard.setTourActive,
-    onCloseTour: dashboard.onCloseTour,
-}))(TourGuide);
+});
+
+export default TourGuide;

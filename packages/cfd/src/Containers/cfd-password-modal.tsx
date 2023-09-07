@@ -638,7 +638,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const is_password_reset = error_type === 'PasswordReset';
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
-    const { poi_verified_for_bvi_labuan, poi_verified_for_vanuatu_maltainvest, poa_verified, manual_status } =
+    const { poi_verified_for_bvi_labuan_vanuatu, poi_verified_for_maltainvest, poa_verified, manual_status } =
         getAuthenticationStatusInfo(account_status);
 
     const [is_selected_mt5_verified, setIsSelectedMT5Verified] = React.useState(false);
@@ -649,16 +649,14 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 setIsSelectedMT5Verified(true);
                 break;
             case Jurisdiction.BVI:
-                setIsSelectedMT5Verified(poi_verified_for_bvi_labuan);
-                break;
             case Jurisdiction.VANUATU:
-                setIsSelectedMT5Verified(poi_verified_for_vanuatu_maltainvest);
+                setIsSelectedMT5Verified(poi_verified_for_bvi_labuan_vanuatu);
                 break;
             case Jurisdiction.LABUAN:
-                setIsSelectedMT5Verified(poi_verified_for_bvi_labuan && poa_verified);
+                setIsSelectedMT5Verified(poi_verified_for_bvi_labuan_vanuatu && poa_verified);
                 break;
             case Jurisdiction.MALTA_INVEST:
-                setIsSelectedMT5Verified(poi_verified_for_vanuatu_maltainvest && poa_verified);
+                setIsSelectedMT5Verified(poi_verified_for_maltainvest && poa_verified);
                 break;
             default:
         }

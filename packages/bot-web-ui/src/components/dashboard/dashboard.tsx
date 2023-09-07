@@ -1,17 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
+import { updateWorkspaceName } from '@deriv/bot-skeleton';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { useDBotStore } from 'Stores/useDBotStore';
 import RunPanel from '../run-panel';
 import RunStrategy from './dashboard-component/run-strategy';
-import BotNotification from './bot-notification';
 import DashboardComponent from './dashboard-component';
 import {
     DBOT_ONBOARDING,
@@ -22,66 +21,32 @@ import {
     tour_type,
 } from './joyride-config';
 import ReactJoyrideWrapper from './react-joyride-wrapper';
+import StrategyNotification from './strategy-notification';
 import TourSlider from './tour-slider';
 import TourTriggrerDialog from './tour-trigger-dialog';
 import Tutorial from './tutorial-tab';
 
-type TDialogOptions = {
-    title: string;
-    message: string;
-    cancel_button_text?: string;
-    ok_button_text?: string;
-};
-
-type TDashboard = {
-    active_tab: number;
-    dialog_options: TDialogOptions;
-    has_started_bot_builder_tour: boolean;
-    has_file_loaded: boolean;
-    has_started_onboarding_tour: boolean;
-    has_tour_started: boolean;
-    is_dialog_open: boolean;
-    is_drawer_open: boolean;
-    is_tour_dialog_visible: boolean;
-    is_strategy_modal_open: boolean;
-    onCancelButtonClick: () => void;
-    onCloseDialog: () => void;
-    onEntered: () => void;
-    onOkButtonClick: () => void;
-    setActiveTab: (active_tab: number) => void;
-    setBotBuilderTourState: (param: boolean) => void;
-    setOnBoardTourRunState: (param: boolean) => void;
-    setBotBuilderTokenCheck: (param: string | number) => void;
-    setOnBoardingTokenCheck: (param: string | number) => void;
-    setTourActive: (param: boolean) => void;
-    setTourDialogVisibility: (param: boolean) => void;
-    setHasTourEnded: (param: boolean) => void;
-};
-
-const Dashboard = ({
-    active_tab,
-    is_drawer_open,
-    dialog_options,
-    has_file_loaded,
-    has_tour_started,
-    has_started_onboarding_tour,
-    has_started_bot_builder_tour,
-    is_dialog_open,
-    is_tour_dialog_visible,
-    is_strategy_modal_open,
-    onCancelButtonClick,
-    onCloseDialog,
-    onEntered,
-    onOkButtonClick,
-    setActiveTab,
-    setBotBuilderTokenCheck,
-    setBotBuilderTourState,
-    setOnBoardingTokenCheck,
-    setOnBoardTourRunState,
-    setTourActive,
-    setTourDialogVisibility,
-    setHasTourEnded,
-}: TDashboard) => {
+const Dashboard = observer(() => {
+    const { dashboard, load_modal, run_panel, quick_strategy } = useDBotStore();
+    const {
+        active_tab,
+        has_tour_started,
+        setTourActive,
+        has_started_onboarding_tour,
+        setOnBoardTourRunState,
+        setBotBuilderTourState,
+        setTourDialogVisibility,
+        setHasTourEnded,
+        has_started_bot_builder_tour,
+        is_tour_dialog_visible,
+        setActiveTab,
+        setBotBuilderTokenCheck,
+        setOnBoardingTokenCheck,
+    } = dashboard;
+    const { onEntered, dashboard_strategies } = load_modal;
+    const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
+        run_panel;
+    const { is_strategy_modal_open } = quick_strategy;
     const { DASHBOARD, BOT_BUILDER, CHART, TUTORIAL } = DBOT_TABS;
     const is_tour_complete = React.useRef(true);
     let bot_tour_token: string | number = '';
@@ -93,15 +58,15 @@ const Dashboard = ({
     const { ui } = useStore();
     const { url_hashed_values } = ui;
 
-    let tab_value = active_tab;
+    let tab_value: number | string = active_tab;
     const GetHashedValue = (tab: number) => {
         tab_value = url_hashed_values?.split('#')[1];
         if (tab_value === 'dashboard') return DASHBOARD;
         if (tab_value === 'bot_builder') return BOT_BUILDER;
         if (tab_value === 'chart') return CHART;
         if (tab_value === 'tutorial') return TUTORIAL;
-        if (isNaN(tab_value) || isNaN(tab)) return active_tab;
-        if (tab_value > 4 || tab > 4) return active_tab;
+        if (isNaN(Number(tab_value)) || isNaN(tab)) return active_tab;
+        if (Number(tab_value) > 4 || tab > 4) return active_tab;
         return tab_value;
     };
     const active_hash_tab = GetHashedValue(active_tab);
@@ -140,16 +105,13 @@ const Dashboard = ({
     React.useEffect(() => {
         if (active_tab === BOT_BUILDER) {
             if (is_drawer_open) {
-                initTrashCan(400);
+                initTrashCan(400, -748);
             } else {
                 initTrashCan(20);
             }
             setTimeout(() => {
                 window.dispatchEvent(new Event('resize')); // make the trash can work again after resize
             }, 500);
-        }
-        if (active_tab === DASHBOARD && has_file_loaded) {
-            onEntered();
         }
         if (active_tab === DASHBOARD) {
             setTourType('onboard_tour');
@@ -168,6 +130,20 @@ const Dashboard = ({
         tour_status = getTourSettings('onboard_tour_status');
         setTourStatus(tour_status);
     }, [active_tab, is_drawer_open, has_started_onboarding_tour, tour_status_ended, is_tour_dialog_visible]);
+
+    useEffect(() => {
+        let timer: ReturnType<typeof setTimeout>;
+        if (dashboard_strategies.length > 0) {
+            // Needed to pass this to the Callback Queue as on tab changes
+            // document title getting override by 'Bot | Deriv' only
+            timer = setTimeout(() => {
+                updateWorkspaceName();
+            });
+        }
+        return () => {
+            if (timer) clearTimeout(timer);
+        };
+    }, [dashboard_strategies, active_tab]);
 
     const botStorageSetting = () => {
         tour_status = getTourSettings('bot_builder_status');
@@ -203,11 +179,13 @@ const Dashboard = ({
                 setOnBoardTourRunState(true);
             } else {
                 setHasTourEnded(false);
-                if (show_tour_dialog_mobile || show_tour_dialog_desktop) {
-                    setTourDialogVisibility(true);
-                } else {
-                    setTourActive(true);
-                    setOnBoardTourRunState(true);
+                if (!is_strategy_modal_open) {
+                    if (show_tour_dialog_mobile || show_tour_dialog_desktop) {
+                        setTourDialogVisibility(true);
+                    } else {
+                        setTourActive(true);
+                        setOnBoardTourRunState(true);
+                    }
                 }
             }
         }
@@ -296,33 +274,9 @@ const Dashboard = ({
             >
                 {dialog_options.message}
             </Dialog>
-            <BotNotification />
+            <StrategyNotification />
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ dashboard, run_panel, load_modal, quick_strategy }: RootStore) => ({
-    active_tab: dashboard.active_tab,
-    has_file_loaded: dashboard.has_file_loaded,
-    has_tour_started: dashboard.has_tour_started,
-    setTourActive: dashboard.setTourActive,
-    has_started_onboarding_tour: dashboard.has_started_onboarding_tour,
-    setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
-    setBotBuilderTourState: dashboard.setBotBuilderTourState,
-    onEntered: load_modal.onEntered,
-    setTourDialogVisibility: dashboard.setTourDialogVisibility,
-    setHasTourEnded: dashboard.setHasTourEnded,
-    is_dialog_open: run_panel.is_dialog_open,
-    is_drawer_open: run_panel.is_drawer_open,
-    has_started_bot_builder_tour: dashboard.has_started_bot_builder_tour,
-    is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
-    dialog_options: run_panel.dialog_options,
-    onCancelButtonClick: run_panel.onCancelButtonClick,
-    onCloseDialog: run_panel.onCloseDialog,
-    onOkButtonClick: run_panel.onOkButtonClick,
-    setActiveTab: dashboard.setActiveTab,
-    setBotBuilderTokenCheck: dashboard.setBotBuilderTokenCheck,
-    setOnBoardingTokenCheck: dashboard.setOnBoardingTokenCheck,
-    has_tour_ended: dashboard.has_tour_ended,
-    is_strategy_modal_open: quick_strategy.is_strategy_modal_open,
-}))(Dashboard);
+export default Dashboard;

@@ -11,12 +11,6 @@ type TJoyrideConfig = Record<
     boolean
 >;
 
-type TStep = {
-    label?: string;
-    content: Array<string | React.ReactElement>;
-    type?: 'list' | 'text';
-};
-
 type TTourStatus = {
     key: string;
     toggle: string;
@@ -37,17 +31,6 @@ export const getTourSettings = (type: string) => {
         return getSetting(`${tour_type.key}_token`);
     }
     return getSetting(`${tour_type.key}_status`);
-};
-
-export const Step = ({ label, content }: TStep) => {
-    return (
-        <div className='db-tour'>
-            <Text line_height='xl' as='p' weight='bold'>
-                {label}
-            </Text>
-            {content.map(item => item)}
-        </div>
-    );
 };
 
 export const tour_type: TTourType = {
@@ -159,7 +142,7 @@ export const DBOT_ONBOARDING = [
         disableOverlay: false,
     },
     {
-        target: '[data-testid="drawer"]',
+        target: '.dc-drawer__container',
         content: (
             <TourGuide
                 label={localize('How is my bot doing?')}

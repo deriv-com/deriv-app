@@ -2,7 +2,7 @@ import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 import { TTradeStore } from 'Types';
 
 type TOnChangeContractTypeList = (store: TTradeStore) => {
-    contract_type: string;
+    contract_type: string | number;
 };
 
 type TContractValues = Pick<

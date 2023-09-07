@@ -9,10 +9,8 @@ type TTextValueStrings = {
 };
 
 type TContractTypesList = {
-    [key: string]: {
-        name: string;
-        categories: TTextValueStrings[];
-    };
+    name: string;
+    categories: TTextValueStrings[];
 };
 
 type TContractCategoriesList = {

@@ -16,7 +16,6 @@ env:
   RUDDERSTACK_PRODUCTION_KEY: ${{ secrets.RUDDERSTACK_PRODUCTION_KEY }}
   RUDDERSTACK_STAGING_KEY: ${{ secrets.RUDDERSTACK_STAGING_KEY }}
   RUDDERSTACK_URL: ${{ secrets.RUDDERSTACK_URL }}
-  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 jobs:
   build_and_test:
     name: Build And Test

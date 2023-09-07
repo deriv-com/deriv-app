@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, ProgressBarOnboarding, Text } from '@deriv/components';
+import { Icon, ProgressBarTracker, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -195,9 +195,9 @@ const TourSlider = observer(() => {
                 <div className='dbot-slider__status'>
                     <div className='dbot-slider__progress-bar'>
                         {(!has_started_onboarding_tour || (has_started_onboarding_tour && step !== 1)) && (
-                            <ProgressBarOnboarding
+                            <ProgressBarTracker
                                 step={step}
-                                amount_of_steps={Object.keys(
+                                steps_list={Object.keys(
                                     !has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE
                                 )}
                                 setStep={setStep}

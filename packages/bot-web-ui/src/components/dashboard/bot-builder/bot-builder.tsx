@@ -5,10 +5,10 @@ import { observer } from '@deriv/stores';
 import { useDBotStore } from '../../../stores/useDBotStore';
 import LoadModal from '../../load-modal';
 import SaveModal from '../dashboard-component/load-bot-preview/save-modal';
-import { BOT_BUILDER_TOUR } from '../joyride-config';
+import { BOT_BUILDER_TOUR } from '../dbot-tours/config';
+import MobileTours from '../dbot-tours/mobile-tours/mobile-tours';
 import QuickStrategy from '../quick-strategy';
 import ReactJoyrideWrapper from '../react-joyride-wrapper';
-import TourSlider from '../tour-slider';
 import WorkspaceWrapper from './workspace-wrapper';
 
 const BotBuilder = observer(() => {
@@ -49,7 +49,7 @@ const BotBuilder = observer(() => {
             {has_started_bot_builder_tour && active_tab === 1 && !has_started_onboarding_tour && (
                 <>
                     <MobileWrapper>
-                        <TourSlider />
+                        <MobileTours />
                     </MobileWrapper>
                     <DesktopWrapper>
                         <ReactJoyrideWrapper

@@ -1,75 +1,14 @@
-import { getImageLocation } from '../../public-path';
+import { getImageLocation } from '../../../../public-path';
 import React from 'react';
-import { CallBackProps } from 'react-joyride';
 import { Icon, Text } from '@deriv/components';
 import { getUrlBase } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { getSetting, storeSetting } from '../../utils/settings';
-import TourGuide from './tour-guide';
+import TourGuide from '../../tour-guide';
 
 type TJoyrideConfig = Record<
     'showProgress' | 'spotlightClicks' | 'disableBeacon' | 'disableOverlay' | 'disableCloseOnEsc',
     boolean
 >;
-
-type TTourStatus = {
-    key: string;
-    toggle: string;
-    type: string;
-};
-
-export type TTourType = Pick<TTourStatus, 'key'>;
-
-export const setTourSettings = (param: number | { [key: string]: string }, type: string) => {
-    if (type === `${tour_type.key}_token`) {
-        return storeSetting(`${tour_type.key}_token`, param);
-    }
-    return storeSetting(`${tour_type.key}_status`, param);
-};
-
-export const getTourSettings = (type: string) => {
-    if (type === 'token') {
-        return getSetting(`${tour_type.key}_token`);
-    }
-    return getSetting(`${tour_type.key}_status`);
-};
-
-export const tour_type: TTourType = {
-    key: 'onboard_tour',
-};
-
-export const setTourType = (param: string) => {
-    tour_type.key = param;
-};
-
-export const tour_status_ended: TTourStatus = {
-    key: '',
-    toggle: '',
-    type: `${tour_type.key}_status`,
-};
-
-let tour: { [key: string]: string } = {};
-let current_target: number | undefined;
-
-export const handleJoyrideCallback = (data: CallBackProps) => {
-    const { action, index, status } = data;
-    if (status === 'finished') {
-        tour_status_ended.key = status;
-    }
-    if (action === 'close') {
-        tour_status_ended.toggle = action;
-    }
-    if (current_target !== index) {
-        tour = {};
-        tour.status = status;
-        tour.action = action;
-    }
-    current_target = index;
-    setTourSettings(tour, 'tour');
-    //added trigger to create new listner on local storage
-    window.dispatchEvent(new Event('storage'));
-    setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
-};
 
 const joyride_props: TJoyrideConfig = {
     showProgress: false,
@@ -470,20 +409,20 @@ export const BOT_BUILDER_TOUR = [
     },
 ];
 
-export type TStepMobile = {
+export type TMobileTourConfig = {
     header: string;
-    content: React.ReactElement[];
-    key: number;
+    content: Array<React.ReactElement>;
+    tour_step_key: number;
     step_key?: number;
     img?: string;
     media?: string;
 };
 
-export const BOT_BUILDER_MOBILE: TStepMobile[] = [
+export const BOT_BUILDER_MOBILE: TMobileTourConfig[] = [
     {
         header: localize('Step 1'),
         content: [<Localize key='step-1' i18n_default_text={`First, click the Import icon on the tool bar.`} />],
-        key: 1,
+        tour_step_key: 1,
     },
     {
         header: localize('Step 2'),
@@ -493,7 +432,7 @@ export const BOT_BUILDER_MOBILE: TStepMobile[] = [
                 i18n_default_text={`Next, import your bot directly from your mobile device or from Google Drive.`}
             />,
         ],
-        key: 2,
+        tour_step_key: 2,
     },
     {
         header: localize('Step 3'),
@@ -503,11 +442,11 @@ export const BOT_BUILDER_MOBILE: TStepMobile[] = [
                 i18n_default_text={`Once imported, you will see a preview of the bot on the workspace. Click run to start trading with this bot.`}
             />,
         ],
-        key: 3,
+        tour_step_key: 3,
     },
 ];
 
-export const DBOT_ONBOARDING_MOBILE: TStepMobile[] = [
+export const DBOT_ONBOARDING_MOBILE: TMobileTourConfig[] = [
     {
         header: localize('Get started on Deriv Bot'),
         content: [
@@ -517,8 +456,7 @@ export const DBOT_ONBOARDING_MOBILE: TStepMobile[] = [
                 components={[<strong key={0} />]}
             />,
         ],
-        key: 1,
-        step_key: 0,
+        tour_step_key: 1,
     },
     {
         header: localize('Import or choose your bot'),
@@ -529,8 +467,7 @@ export const DBOT_ONBOARDING_MOBILE: TStepMobile[] = [
             />,
         ],
         media: getUrlBase('/public/videos/dbot-mobile-onboarding-step-1.mp4'),
-        key: 2,
-        step_key: 1,
+        tour_step_key: 2,
     },
     {
         header: localize('Monitor the market'),
@@ -538,20 +475,15 @@ export const DBOT_ONBOARDING_MOBILE: TStepMobile[] = [
             <Localize key='monitor-the-market' i18n_default_text='View the market price of your favourite assets.' />,
         ],
         media: getUrlBase('/public/videos/dbot-mobile-onboarding-step-2.mp4'),
-        key: 3,
-        step_key: 2,
+        tour_step_key: 3,
     },
     {
-        header: localize('Learn more with our tutorials'),
+        header: localize('Guides and FAQs to help you'),
         content: [
-            <Localize
-                key='learn-more-with-our-tutorials'
-                i18n_default_text='Explore the video guides and FAQs to build your bot in the tutorials tab.'
-            />,
+            <Localize key='import-or-choose-your-bot' i18n_default_text='Start with a video guide and the FAQs.' />,
         ],
         media: getUrlBase('/public/videos/dbot-mobile-onboarding-step-3.mp4'),
-        key: 4,
-        step_key: 3,
+        tour_step_key: 4,
     },
     {
         header: localize('Use these shortcuts'),
@@ -559,43 +491,32 @@ export const DBOT_ONBOARDING_MOBILE: TStepMobile[] = [
         content: [
             <Localize
                 key='use-these-shortcuts'
-                i18n_default_text='You can also import or build your bot using any of these shortcuts.'
+                i18n_default_text='You can also use these shortcuts to import or build your bot.'
             />,
         ],
-        key: 5,
-        step_key: 4,
+        tour_step_key: 5,
     },
     {
-        header: localize('Check your bot’s performance'),
-        content: [
-            <Localize
-                key='check-bot-performance'
-                i18n_default_text='See how your bot is doing in real-time.'
-                components={[<strong key={0} />]}
-            />,
-        ],
+        header: localize('How is my bot doing?'),
         media: getUrlBase('/public/videos/dbot-mobile-onboarding-step-5.mp4'),
-        key: 6,
-        step_key: 5,
+        content: [<Localize key='use-these-shortcuts' i18n_default_text="See your bot's performance in real-time." />],
+        tour_step_key: 6,
     },
     {
-        header: localize('Run your bot'),
+        header: localize('Run or stop your bot'),
         media: getUrlBase('/public/videos/dbot-mobile-onboarding-step-6.mp4'),
         content: [
             <Localize
-                key='run-your-bot'
-                i18n_default_text='Click <0>Run</0> when you want to start trading, and click <0>Stop</0> when you want to stop.'
-                components={[<strong key={0} />]}
+                key='use-these-shortcuts'
+                i18n_default_text='Click Run when you want to start trading, and click Stop when you want to stop.'
             />,
         ],
-        key: 7,
-        step_key: 6,
+        tour_step_key: 7,
     },
     {
         header: localize('Want to retake the tour?'),
         img: getImageLocation('dbot-mobile-onboarding-step-7.png'),
         content: [<Localize key='want-to-retake-the-tour' i18n_default_text='Head to the Tutorials tab to do so.' />],
-        key: 8,
-        step_key: 7,
+        tour_step_key: 8,
     },
 ];

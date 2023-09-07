@@ -1652,7 +1652,6 @@ export default class ClientStore extends BaseStore {
             // If this fails, it means the landing company check failed
             if (this.loginid === authorize_response.authorize.loginid) {
                 const { user_id } = authorize_response.authorize;
-                const account_type = authorize_response.authorize?.loginid.substring(0, 2);
 
                 BinarySocketGeneral.authorizeAccount(authorize_response);
 
@@ -1710,6 +1709,11 @@ export default class ClientStore extends BaseStore {
             }
         }
         this.loginid !== 'null' && RudderStack.setAccountType(this.loginid.substring(0, 2));
+        if (this.user_id) {
+            RudderStack.identifyEvent(this.user_id, {
+                language: getLanguage().toLowerCase(),
+            });
+        }
         this.selectCurrency('');
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());

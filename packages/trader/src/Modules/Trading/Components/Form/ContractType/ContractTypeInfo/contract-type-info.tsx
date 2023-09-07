@@ -39,9 +39,9 @@ const Info = ({ handleSelect, item, list }: TInfo) => {
 
     React.useEffect(() => {
         return () => {
-          RudderStack.track('ce_trade_types_form', {
-              action: 'info_close',
-          });
+            RudderStack.track('ce_trade_types_form', {
+                action: 'info_close',
+            });
         };
     }, []);
 

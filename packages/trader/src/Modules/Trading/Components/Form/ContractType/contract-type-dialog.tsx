@@ -12,7 +12,14 @@ type TContractTypeDialog = {
 
 type TContractTypeDialogProps = Pick<
     React.ComponentProps<typeof ContractTypeMenu>,
-    'selected' | 'categories' | 'onBackButtonClick' | 'onChangeInput' | 'onCategoryClick' | 'onSearchBlur' | 'show_loading' | 'item'
+    | 'selected'
+    | 'categories'
+    | 'onBackButtonClick'
+    | 'onChangeInput'
+    | 'onCategoryClick'
+    | 'onSearchBlur'
+    | 'show_loading'
+    | 'item'
 > &
     TContractTypeDialog;
 

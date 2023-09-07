@@ -64,7 +64,7 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
         if ('id' in e.target && e.target.id !== 'info-icon' && clicked_item) {
             const is_from_info_dialog = /_btn$/.test(e.target.id as string);
             const subform_name = is_from_info_dialog ? 'info_new' : 'trade_type';
-            
+
             setDialogVisibility(false);
             setInfoDialogVisibility(false);
             setItem(clicked_item);

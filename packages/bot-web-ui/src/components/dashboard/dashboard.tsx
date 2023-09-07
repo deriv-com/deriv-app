@@ -106,7 +106,7 @@ const Dashboard = observer(() => {
     React.useEffect(() => {
         if (active_tab === BOT_BUILDER) {
             if (is_drawer_open) {
-                initTrashCan(400);
+                initTrashCan(400, -748);
             } else {
                 initTrashCan(20);
             }

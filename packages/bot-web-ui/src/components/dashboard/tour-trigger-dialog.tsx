@@ -5,7 +5,7 @@ import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from '../../stores/useDBotStore';
-import { setTourSettings, tour_status_ended, tour_type } from './joyride-config';
+import { setTourSettings, tour_status_ended, tour_type } from './dbot-tours/utils';
 
 const TourTriggrerDialog = observer(() => {
     const { dashboard } = useDBotStore();
@@ -31,7 +31,7 @@ const TourTriggrerDialog = observer(() => {
             return (
                 <Localize
                     key={0}
-                    i18n_default_text={'Hi! Hit <0>Start</0> for a quick tour to help you get started.'}
+                    i18n_default_text='Hi! Hit <0>Start</0> for a quick tour.'
                     components={[<strong key={0} />]}
                 />
             );
@@ -152,7 +152,7 @@ const TourTriggrerDialog = observer(() => {
                     </Text>
                 </div>
                 <div className='dc-dialog__content__description'>
-                    <Text size={is_mobile ? 'xxs' : 's'} color='prominent'>
+                    <Text size={is_mobile ? 'xxs' : 'xs'} color='prominent'>
                         {is_tour_dialog_visible && getTourContent('content')}
                     </Text>
                 </div>

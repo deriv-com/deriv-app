@@ -1,9 +1,5 @@
 import { popover_zindex } from 'Constants/z-indexes';
-
-export type TCommonInputsProperties = {
-    className?: string;
-    zIndex?: number;
-};
+import { TCommonInputsProperties } from '../../quick-strategy.types';
 
 const common_inputs_properties: Readonly<TCommonInputsProperties> = {
     className: 'quick-strategy__input',

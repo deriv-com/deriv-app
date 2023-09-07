@@ -1,7 +1,15 @@
 import React from 'react';
 import { TDropdownItems, TDropdowns, TSelectedValuesSelect } from '../quick-strategy.types';
 import { TDropdownLists, TQuickStrategyFields, TSelectedValues } from './components.types';
-import { data_fields, data_uniq_input_obj, Description, DurationFields, Inputs, Selects } from '.';
+import {
+    dalembert_data_fields,
+    Description,
+    DurationFields,
+    Inputs,
+    martingale_data_fields,
+    oscars_grind_data_fields,
+    Selects,
+} from '.';
 
 const QuickStrategyFields = React.memo(
     ({
@@ -24,10 +32,11 @@ const QuickStrategyFields = React.memo(
         description,
         errors,
     }: TQuickStrategyFields) => {
-        const uniq_selected_input = React.useMemo(
-            () => data_uniq_input_obj.filter((_elem, index) => index === selected_type_strategy.index)[0],
-            [selected_type_strategy]
-        );
+        const data_fields = React.useMemo(() => {
+            if (selected_type_strategy.value === 'dalembert') return dalembert_data_fields;
+            if (selected_type_strategy.value === 'oscars_grind') return oscars_grind_data_fields;
+            return martingale_data_fields;
+        }, [selected_type_strategy]);
 
         const dropdown_lists: TDropdownLists = {
             symbol: symbol_dropdown,
@@ -112,7 +121,6 @@ const QuickStrategyFields = React.memo(
                                     is_uniq_strategy_field={is_uniq_strategy_field}
                                     trailing_icon_message={trailing_icon_message}
                                     zIndex={zIndex}
-                                    uniq_selected_input={uniq_selected_input}
                                     errors={errors}
                                     is_input_field={is_input_field}
                                 />

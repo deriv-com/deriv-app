@@ -30,10 +30,12 @@ const SelectField = React.memo(
                     {is_mobile ? (
                         <SelectNative
                             list_items={dropdown_list}
-                            value={typeof selected_value === 'string' ? selected_value : selected_value.value}
+                            value={
+                                typeof selected_value === 'string' ? selected_value : (selected_value.value as string)
+                            }
                             label={localize(label)}
                             should_show_empty_option={false}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                 onChangeDropdownItem(select_value, e.target.value, setFieldValue);
                             }}
                         />
@@ -41,7 +43,7 @@ const SelectField = React.memo(
                         <Autocomplete
                             {...field}
                             autoComplete='off'
-                            className={className}
+                            className={className ?? ''}
                             type='text'
                             label={localize(label)}
                             list_items={dropdown_list}

@@ -58,7 +58,6 @@ export default class QuickStrategyStore {
             initial_values: computed,
             types_strategies_dropdown: observable,
             onScrollStopDropdownList: action.bound,
-            getSizeDesc: action.bound,
             getFieldMap: action.bound,
             getFieldValue: action.bound,
             getQuickStrategyFields: action.bound,
@@ -356,7 +355,13 @@ export default class QuickStrategyStore {
         const symbols = active_symbols.getAllSymbols(/* should_be_open */ true);
 
         const symbol_options = symbols
-            .filter((symbol: TSymbol) => symbol.submarket_display !== 'Crash/Boom Indices')
+            // Until Crypto enabled for Dbot
+            // .filter((symbol: TSymbol) => symbol.submarket !== 'non_stable_coin')
+            .filter(
+                (symbol: TSymbol) =>
+                    !active_symbols.disabled_submarkets_for_quick_strategy.includes(symbol.submarket) &&
+                    !active_symbols.disabled_symbols_for_quick_strategy.includes(symbol.symbol)
+            )
             .map((symbol: TSymbol) => ({
                 group: symbol.submarket_display,
                 text: symbol.symbol_display,
@@ -441,7 +446,7 @@ export default class QuickStrategyStore {
         const types_strategies = Object.values(strategies as TStrategies).map(strategy => ({
             index: strategy.index,
             text: strategy.label,
-            value: strategy.label,
+            value: strategy.value,
             description: strategy.description,
         }));
 
@@ -517,19 +522,6 @@ export default class QuickStrategyStore {
 
     onScrollStopDropdownList = (type: TDropdownItems): void => {
         GTM.pushDataLayer({ event: `dbot_quick_strategy_scroll_${type}` });
-    };
-
-    getSizeDesc = (index: number): string => {
-        switch (index) {
-            case 0:
-                return 'The multiplier amount used to increase your stake if you’re losing a trade. Value must be higher than 2.';
-            case 1:
-                return 'The amount that you may add to your stake if you’re losing a trade.';
-            case 2:
-                return 'The amount that you may add to your stake after each successful trade.';
-            default:
-                return '';
-        }
     };
 
     getFieldMap = (type: TDropdownItems): TFieldMapData => {

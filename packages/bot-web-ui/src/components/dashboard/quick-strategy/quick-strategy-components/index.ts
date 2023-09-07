@@ -1,7 +1,8 @@
 export { default as QuickStrategyContainer } from './container';
 export { default as common_inputs_properties } from './data/common-input-properties';
-export { default as data_fields } from './data/data-fields';
-export { default as data_uniq_input_obj } from './data/data-uniq-input-obj';
+export { default as dalembert_data_fields } from './data/dalembert-data-fields';
+export { default as martingale_data_fields } from './data/martingale-data-fields';
+export { default as oscars_grind_data_fields } from './data/oscars-grind-data-fields';
 export { default as Description } from './description';
 export { default as DurationFields } from './duration-fields';
 export { default as QuickStrategyFields } from './fields';

@@ -6,7 +6,6 @@ import { TInputs } from './components.types';
 import { InputField } from '.';
 
 const Inputs = ({
-    idx,
     field_name,
     id,
     className,
@@ -16,7 +15,6 @@ const Inputs = ({
     is_uniq_strategy_field,
     trailing_icon_message,
     zIndex,
-    uniq_selected_input,
     errors,
     is_input_field,
     handleChange,
@@ -31,7 +29,6 @@ const Inputs = ({
             })}
         >
             <InputField
-                idx={idx}
                 handleChange={handleChange}
                 onChangeInputValue={onChangeInputValue}
                 setCurrentFocus={setCurrentFocus}
@@ -45,7 +42,6 @@ const Inputs = ({
                 is_uniq_strategy_field={is_uniq_strategy_field}
                 trailing_icon_message={trailing_icon_message}
                 zIndex={zIndex}
-                uniq_selected_input={uniq_selected_input}
                 errors={errors}
             />
         </div>

@@ -1,12 +1,13 @@
 import { FormikErrors, FormikProps } from 'formik';
 import {
+    TCommonInputsProperties,
     TCreateStrategy,
+    TDataFields,
     TDropdownItems,
     TDropdowns,
     TDurationOptions,
     TDurationUnitDropdown,
     TFormValues,
-    TGetSizeDesc,
     TInputBaseFields,
     TInputsFieldNames,
     TMarketOption,
@@ -25,8 +26,6 @@ import {
     TTypeStrategiesDropdown,
     TTypeStrategy,
 } from '../quick-strategy.types';
-import { TCommonInputsProperties } from './data/common-input-properties';
-import { TDataUniqInput } from './data/data-uniq-input-obj';
 
 export type TQuickStrategyForm = {
     active_index: number;
@@ -46,13 +45,11 @@ export type TQuickStrategyForm = {
     is_contract_dialog_open: boolean;
     is_stop_bot_dialog_open: boolean;
     createStrategy: TCreateStrategy;
-    getSizeDesc: TGetSizeDesc;
     onChangeDropdownItem: TOnChangeDropdownItem;
     onChangeInputValue: TOnChangeInputValue;
     onHideDropdownList: TOnHideDropdownList;
     onScrollStopDropdownList: TOnScrollStopDropdownList;
     setCurrentFocus: TSetCurrentFocus;
-    setActiveTab: (active_tab: number) => void;
     toggleStopBotDialog: () => void;
 };
 
@@ -124,7 +121,7 @@ export type TInputFieldProps = React.PropsWithChildren<
         placeholder?: string;
         is_uniq_strategy_field?: boolean;
         trailing_icon_message?: string;
-        uniq_selected_input?: TDataUniqInput;
+        uniq_selected_input?: TDataFields;
         errors: FormikErrors<TQuickStrategyFormValues>;
     } & TCommonInputsProperties
 >;

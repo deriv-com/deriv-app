@@ -78,9 +78,14 @@ export type TTradeTypeDropdown = Array<TTradeType>;
 
 export type TDropdownItems = 'symbol' | 'trade-type' | 'duration-unit' | 'type-strategy';
 
-export type TInputUniqFields = 'input_martingale_size' | 'input_alembert_unit' | 'input_oscar_unit';
-export type TInputBaseFields = 'input_duration_value' | 'input_stake' | 'input_loss' | 'input_profit';
-export type TInputCommonFields = TInputBaseFields | TInputUniqFields;
+export type TInputBaseFields =
+    | 'input_duration_value'
+    | 'input_stake'
+    | 'input_loss'
+    | 'input_profit'
+    | 'input_martingale_size'
+    | 'input_alembert_unit'
+    | 'input_oscar_unit';
 
 export type TSetFieldValue = (
     element: 'button' | 'quick-strategy__duration-unit' | 'quick-strategy__duration-value' | string,
@@ -98,7 +103,10 @@ export type TInputsFieldNames =
     | 'quick-strategy__duration-value'
     | 'quick-strategy__stake'
     | 'quick-strategy__loss'
-    | 'quick-strategy__profit';
+    | 'quick-strategy__profit'
+    | 'martingale-size'
+    | 'alembert-unit'
+    | 'oscar-unit';
 
 export type TSymbolDropdownValue = 'group' | 'text' | 'value';
 
@@ -129,18 +137,14 @@ export type TFieldMapData = {
 
 export type TFieldsMapData = Record<TDropdownItems, TFieldMapData>;
 
-type TInitialUniqKeys = 'martingale-size' | 'alembert-unit' | 'oscar-unit';
-
-type TInitialKeys = TSelectsFieldNames | TInputsFieldNames | TInitialUniqKeys;
+type TInitialKeys = TSelectsFieldNames | TInputsFieldNames;
 
 export type TInitialValues = Record<TInitialKeys, string>;
 export type TQuickStrategyFormValues = TInitialValues & Record<'button', 'run' | 'edit'>;
 
-export type TGetSizeDesc = (index: number) => string;
-
 export type TFormValues = { [key: string]: string };
 
-export type TOnChangeInputValue = (field: TInputCommonFields, event: React.ChangeEvent<HTMLInputElement>) => void;
+export type TOnChangeInputValue = (field: TInputBaseFields, event: React.ChangeEvent<HTMLInputElement>) => void;
 export type TSetCurrentFocus = (value: string | null) => void;
 export type TOnChangeDropdownItem = (type: TDropdownItems, value: string, setFieldValue: TSetFieldValue) => void;
 export type TOnHideDropdownList = (
@@ -173,7 +177,6 @@ export type TQuickStrategyProps = React.PropsWithChildren<{
     is_contract_dialog_open: boolean;
     is_stop_bot_dialog_open: boolean;
     createStrategy: TCreateStrategy;
-    getSizeDesc: TGetSizeDesc;
     onChangeDropdownItem: TOnChangeDropdownItem;
     onChangeInputValue: TOnChangeInputValue;
     onHideDropdownList: TOnHideDropdownList;
@@ -197,3 +200,22 @@ export type TQSCache = {
     selected_duration_unit?: TDurationOptions;
     input_duration_value?: number | string;
 };
+
+export type TCommonInputsProperties = {
+    className?: string;
+    zIndex?: number;
+};
+
+export type TDataFields = {
+    id: string;
+    field_name: TSelectsFieldNames | TInputsFieldNames;
+    className?: string;
+    input_value?: TInputBaseFields;
+    select_value?: TDropdownItems;
+    label: string;
+    placeholder?: string;
+    trailing_icon_message?: string;
+    is_able_disabled?: boolean;
+    is_uniq_strategy_field?: boolean;
+    group_by?: string;
+} & Readonly<TCommonInputsProperties>;

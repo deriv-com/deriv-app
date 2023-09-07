@@ -21,7 +21,6 @@ const QuickStrategyContainer = (props: TQuickStrategyProps) => {
         is_contract_dialog_open,
         is_stop_bot_dialog_open,
         createStrategy,
-        getSizeDesc,
         onChangeDropdownItem,
         onChangeInputValue,
         onHideDropdownList,
@@ -32,16 +31,10 @@ const QuickStrategyContainer = (props: TQuickStrategyProps) => {
 
     const symbol_dropdown_options = React.useMemo(
         () =>
-            symbol_dropdown
-                .map((symbol: TSymbolItem) => ({
-                    component: <MarketOption key={symbol.text} symbol={symbol} />,
-                    ...symbol,
-                }))
-                // Until Crypto enabled for Dbot
-                .filter(option => option.group !== 'Cryptocurrencies')
-                .filter(
-                    option => option.text !== 'Volatility 150 (1s) Index' && option.text !== 'Volatility 250 (1s) Index'
-                ),
+            symbol_dropdown.map((symbol: TSymbolItem) => ({
+                component: <MarketOption key={symbol.text} symbol={symbol} />,
+                ...symbol,
+            })),
         [symbol_dropdown]
     );
 
@@ -69,7 +62,6 @@ const QuickStrategyContainer = (props: TQuickStrategyProps) => {
             selected_trade_type={selected_trade_type}
             selected_duration_unit={selected_duration_unit}
             selected_type_strategy={selected_type_strategy}
-            getSizeDesc={getSizeDesc}
             createStrategy={createStrategy}
             onChangeDropdownItem={onChangeDropdownItem}
             onChangeInputValue={onChangeInputValue}

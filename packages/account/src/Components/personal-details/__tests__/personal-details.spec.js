@@ -361,7 +361,6 @@ describe('<PersonalDetails/>', () => {
         );
 
         expect(screen.getByText(/first name\*/i)).toBeInTheDocument();
-        expect(screen.getByText(/family name\*/i)).toBeInTheDocument();
         expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
         expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/phone number\*/i)).toBeInTheDocument();

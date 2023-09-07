@@ -20,7 +20,7 @@
     }
 
     .onfido-sdk-ui-Modal-inner {
-        border-radius: 0.8rem;
+        border-radius: $BORDER_RADIUS * 2;
     }
 
     @include mobile() {
@@ -225,23 +225,13 @@
             }
 
             &-note {
-                color: var(--text-prominent);
-                font-size: var(--text-size-xxs);
-                line-height: 1.5;
-                text-align: right;
                 min-width: 27.6rem;
                 max-width: 36.6rem;
                 height: 3.6rem;
 
                 @include mobile {
                     width: auto;
-                    text-align: center;
                     align-self: center;
-
-                    &--dashboard {
-                        margin: 0 1.6rem;
-                        text-align: left;
-                    }
                 }
             }
 

@@ -75,7 +75,7 @@ const PersonalDetails = ({
         onCancel(current_step, goToPreviousStep);
     };
 
-    const is_qualified_for_idv = shouldShowIdentityInformation({
+    const is_for_idv = shouldShowIdentityInformation({
         account_status,
         account_settings,
         residence,
@@ -103,7 +103,7 @@ const PersonalDetails = ({
 
     const handleValidate = values => {
         let idv_error = {};
-        if (is_qualified_for_idv) {
+        if (is_for_idv) {
             idv_error = validateIDV(values);
         }
         const { errors } = splitValidationResultTypes(validate(values));
@@ -146,7 +146,7 @@ const PersonalDetails = ({
                             data-testid='personal_details_form'
                         >
                             <Div100vhContainer className='details-form' height_offset='100px' is_disabled={isDesktop()}>
-                                {!is_qualified_for_idv && (
+                                {!is_for_idv && (
                                     <Text as='p' size='xxxs' align='center' className='details-form__description'>
                                         <Localize
                                             i18n_default_text={
@@ -160,7 +160,7 @@ const PersonalDetails = ({
                                     onScroll={closeToolTip}
                                     testId='dt_personal_details_container'
                                 >
-                                    {!is_qualified_for_idv && is_appstore && (
+                                    {!is_for_idv && is_appstore && (
                                         <div className='details-form__sub-header'>
                                             <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
                                                 {localize(
@@ -174,7 +174,7 @@ const PersonalDetails = ({
                                         className={classNames('details-form__elements', 'personal-details-form')}
                                         style={{ paddingBottom: isDesktop() ? 'unset' : null }}
                                     >
-                                        {is_qualified_for_idv && (
+                                        {is_for_idv && (
                                             <React.Fragment>
                                                 <FormSubHeader title={localize('Identity verification')} />
                                                 <IDVForm
@@ -188,14 +188,12 @@ const PersonalDetails = ({
                                         <PersonalDetailsForm
                                             class_name={classNames({
                                                 'account-form__poi-confirm-example_container':
-                                                    is_qualified_for_idv &&
-                                                    !shouldHideHelperImage(values?.document_type?.id),
+                                                    is_for_idv && !shouldHideHelperImage(values?.document_type?.id),
                                             })}
                                             is_virtual={is_virtual}
                                             is_svg={is_svg}
                                             is_mf={is_mf}
-                                            is_qualified_for_idv={is_qualified_for_idv}
-                                            is_appstore={is_appstore}
+                                            is_for_idv={is_for_idv}
                                             editable_fields={editable_fields}
                                             residence_list={residence_list}
                                             has_real_account={has_real_account}

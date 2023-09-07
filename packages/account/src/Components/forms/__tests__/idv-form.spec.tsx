@@ -1,5 +1,6 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import IDVForm from '../idv-form';
 import { Formik } from 'formik';
 
@@ -65,7 +66,7 @@ describe('<IDVForm/>', () => {
                                 format: 'A54321',
                             },
                         },
-                        has_visual_sample: '1',
+                        has_visual_sample: 1,
                     },
                 },
             },
@@ -109,9 +110,9 @@ describe('<IDVForm/>', () => {
 
         const document_type_input = screen.getByLabelText('Choose the document type');
 
-        fireEvent.click(document_type_input);
+        userEvent.click(document_type_input);
         expect(await screen.findByText('Test document 1 name')).toBeInTheDocument();
-        fireEvent.blur(document_type_input);
+        userEvent.tab();
         await waitFor(() => {
             expect(screen.queryByText('Test document 1 name')).not.toBeInTheDocument();
         });

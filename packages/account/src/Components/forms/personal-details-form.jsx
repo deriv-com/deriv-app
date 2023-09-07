@@ -28,9 +28,8 @@ const PersonalDetailsForm = props => {
         is_virtual,
         is_mf,
         is_svg,
-        is_qualified_for_idv,
+        is_for_idv,
         should_hide_helper_image,
-        is_appstore,
         editable_fields = [],
         has_real_account,
         residence_list,
@@ -38,7 +37,7 @@ const PersonalDetailsForm = props => {
         account_opening_reason_list,
         closeRealAccountSignup,
         salutation_list,
-        is_rendered_for_onfido,
+        is_for_onfido,
         should_close_tooltip,
         setShouldCloseTooltip,
         class_name,
@@ -59,11 +58,10 @@ const PersonalDetailsForm = props => {
     }, [should_close_tooltip, handleToolTipStatus, setShouldCloseTooltip]);
 
     const getNameAndDobLabels = () => {
-        const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_qualified_for_idv;
-        const first_name_label = is_appstore || is_asterisk_needed ? localize('First name*') : localize('First name');
-        const last_name_text = is_asterisk_needed ? localize('Last name*') : localize('Last name');
-        const last_name_label = is_appstore ? localize('Family name*') : last_name_text;
-        const dob_label = is_appstore || is_asterisk_needed ? localize('Date of birth*') : localize('Date of birth');
+        const is_asterisk_needed = is_svg || is_mf || is_for_onfido || is_for_idv;
+        const first_name_label = is_asterisk_needed ? localize('First name*') : localize('First name');
+        const last_name_label = is_asterisk_needed ? localize('Last name*') : localize('Last name');
+        const dob_label = is_asterisk_needed ? localize('Date of birth*') : localize('Date of birth');
 
         return {
             first_name_label,
@@ -72,8 +70,11 @@ const PersonalDetailsForm = props => {
         };
     };
 
+    const is_for_idv_or_onfido = is_for_idv || is_for_onfido;
+    const is_not_for_idv_and_onfido = !is_for_idv && !is_for_onfido;
+
     const getFieldHint = field_name =>
-        is_qualified_for_idv || is_rendered_for_onfido ? (
+        is_for_idv_or_onfido ? (
             <Localize
                 i18n_default_text={'Your {{ field_name }} as in your identity document'}
                 values={{ field_name }}
@@ -101,14 +102,14 @@ const PersonalDetailsForm = props => {
         <React.Fragment>
             <div
                 className={classNames(class_name, {
-                    'account-form__poi-confirm-example': is_qualified_for_idv,
+                    'account-form__poi-confirm-example': is_for_idv,
                 })}
             >
-                {(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image && (
+                {is_for_idv_or_onfido && !should_hide_helper_image && (
                     <InlineNoteWithIcon message={inline_note_text} font_size={isMobile() ? 'xxxs' : 'xs'} />
                 )}
                 <FormBodySection
-                    has_side_note={(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image}
+                    has_side_note={is_for_idv_or_onfido && !should_hide_helper_image}
                     side_note={side_note}
                 >
                     <fieldset className='account-form__fieldset'>
@@ -135,7 +136,7 @@ const PersonalDetailsForm = props => {
                                 </Text>
                             </div>
                         )}
-                        {!is_qualified_for_idv && !is_appstore && !is_rendered_for_onfido && (
+                        {is_not_for_idv_and_onfido && (
                             <FormSubHeader
                                 title={'salutation' in values ? localize('Title and name') : localize('Name')}
                             />
@@ -166,7 +167,7 @@ const PersonalDetailsForm = props => {
                         {'first_name' in values && (
                             <FormInputField
                                 name='first_name'
-                                required={is_svg || is_appstore}
+                                required={is_svg}
                                 label={getNameAndDobLabels().first_name_label}
                                 hint={getFieldHint(localize('first name'))}
                                 disabled={
@@ -180,7 +181,7 @@ const PersonalDetailsForm = props => {
                         {'last_name' in values && (
                             <FormInputField
                                 name='last_name'
-                                required={is_svg || is_appstore}
+                                required={is_svg}
                                 label={getNameAndDobLabels().last_name_label}
                                 hint={getFieldHint(localize('last name'))}
                                 disabled={
@@ -191,13 +192,11 @@ const PersonalDetailsForm = props => {
                                 data-testid='last_name'
                             />
                         )}
-                        {!is_appstore && !is_qualified_for_idv && !is_rendered_for_onfido && (
-                            <FormSubHeader title={localize('Other details')} />
-                        )}
+                        {is_not_for_idv_and_onfido && <FormSubHeader title={localize('Other details')} />}
                         {'date_of_birth' in values && (
                             <DateOfBirthField
                                 name='date_of_birth'
-                                required={is_svg || is_appstore}
+                                required={is_svg}
                                 label={getNameAndDobLabels().dob_label}
                                 hint={getFieldHint(localize('date of birth'))}
                                 disabled={
@@ -205,7 +204,7 @@ const PersonalDetailsForm = props => {
                                     (values?.date_of_birth && has_real_account)
                                 }
                                 placeholder={localize('01-07-1999')}
-                                portal_id={is_appstore ? '' : 'modal_root'}
+                                portal_id='modal_root'
                                 data_testid='date_of_birth'
                             />
                         )}

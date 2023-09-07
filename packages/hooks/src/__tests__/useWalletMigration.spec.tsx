@@ -13,20 +13,25 @@ jest.mock('@deriv/api', () => ({
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'wallet_migration'>>;
 // @ts-expect-error need to come up with a way to mock the return type of useRequest
 const mockUseRequest = useRequest as jest.MockedFunction<typeof useRequest<'wallet_migration'>>;
-const store = mockStore({});
 
 describe('useWalletMigration', () => {
+    const mock = mockStore({});
+    const wrapper = (mock: ReturnType<typeof mockStore>) => {
+        const Component = ({ children }: { children: JSX.Element }) => {
+            return (
+                <APIProvider>
+                    <StoreProvider store={mock}>{children}</StoreProvider>
+                </APIProvider>
+            );
+        };
+        return Component;
+    };
+
     test('should return wallet migration state', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({ data: { wallet_migration: { state: 'eligible' } } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={store}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        const { result } = renderHook(() => useWalletMigration(), { wrapper });
+        const { result } = renderHook(() => useWalletMigration(), { wrapper: wrapper(mock) });
 
         expect(result.current.state).toBe('eligible');
     });
@@ -35,13 +40,7 @@ describe('useWalletMigration', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
         mockUseRequest.mockReturnValue({ mutate: jest.fn() });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={store}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        const { result } = renderHook(() => useWalletMigration(), { wrapper });
+        const { result } = renderHook(() => useWalletMigration(), { wrapper: wrapper(mock) });
 
         result.current.start_migration();
 
@@ -52,13 +51,7 @@ describe('useWalletMigration', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
         mockUseRequest.mockReturnValue({ mutate: jest.fn() });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={store}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        const { result } = renderHook(() => useWalletMigration(), { wrapper });
+        const { result } = renderHook(() => useWalletMigration(), { wrapper: wrapper(mock) });
 
         result.current.reset_migration();
 

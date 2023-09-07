@@ -1,10 +1,16 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import MainTitleBar from '..';
 
 describe('MainTitleBar', () => {
-    const mock = mockStore({});
+    const mock = mockStore({
+        exchange_rates: {
+            data: {
+                date: 1631032849924,
+            },
+        },
+    });
     const render_container = () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
@@ -30,7 +36,7 @@ describe('MainTitleBar', () => {
         expect(screen.getByText(/Loading/)).toBeInTheDocument();
     });
 
-    it('should render the total assets textwhen platforms are loaded', async () => {
+    it('should render the total assets text when platforms are loaded', async () => {
         mock.client.is_landing_company_loaded = true;
         render_container();
         expect(screen.getByText(/Total assets/)).toBeInTheDocument();

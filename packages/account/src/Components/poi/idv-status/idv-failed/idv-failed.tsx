@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
 import {
     GetAccountStatus,
@@ -23,8 +24,10 @@ import PoiNameExample from 'Assets/ic-poi-name-example.svg';
 import PoiDobExample from 'Assets/ic-poi-dob-example.svg';
 import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
 import FormBody from 'Components/form-body';
+import IDVForm from 'Components/forms/idv-form';
+import FormFooter from 'Components/form-footer';
+import FormSubHeader from 'Components/form-sub-header';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
-import LoadErrorMessage from 'Components/load-error-message';
 import {
     getIDVDocumentType,
     isAdditionalDocumentValid,
@@ -35,11 +38,8 @@ import {
     validate,
     validateName,
 } from 'Helpers/utils';
+import LoadErrorMessage from 'Components/load-error-message';
 import { TIDVForm, TPersonalDetailsForm } from 'Types';
-import FormSubHeader from 'Components/form-sub-header';
-import IDVForm from 'Components/forms/idv-form';
-import classNames from 'classnames';
-import FormFooter from 'Components/form-footer';
 
 type TRestState = {
     api_error: string;
@@ -359,7 +359,7 @@ const IdvFailed = ({
                         )}
                         <PersonalDetailsForm
                             editable_fields={rest_state?.changeable_fields}
-                            is_qualified_for_idv
+                            is_for_idv
                             side_note={idv_failure?.side_note_image}
                             inline_note_text={idv_failure?.inline_note_text}
                         />

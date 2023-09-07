@@ -54,7 +54,6 @@ export const icons =
         'IcAppstoreWalletUsdLight',
         'IcAppstoreWalletUsdcLight',
         'IcAppstoreWalletUsdtLight',
-        'IcAppstoreWarning',
     ],
     'brand': [
         'IcBrandDerivEzWordmark',
@@ -64,7 +63,6 @@ export const icons =
         'IcBrandDmt5FinancialStp',
         'IcBrandDmt5Financial',
         'IcBrandDmt5Synthetics',
-        'IcBrandDxtradeWordmark',
     ],
     'cashier': [
         'IcCashierAdd',
@@ -238,7 +236,6 @@ export const icons =
         'IcCashierWyreLight',
         'IcCashierZenithbankDark',
         'IcCashierZenithbankLight',
-        'IcCashier',
     ],
     'common': [
         'IcAccountCross',
@@ -300,7 +297,6 @@ export const icons =
         'IcBotBuilderArrow',
         'IcBotBuilderTabIcon',
         'IcBotBuilder',
-        'IcBotStop',
         'IcBox',
         'IcButtonBack',
         'IcCalendarDatefrom',

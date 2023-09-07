@@ -5,18 +5,13 @@ type TProps = {
     description: string;
     icon: ReactElement;
     title: string;
-    has_divider?: boolean;
 };
 
-const TradingAccountCard: React.FC<TProps> = ({ description, icon, title, has_divider = false }) => {
+const TradingAccountCard: React.FC<TProps> = ({ description, icon, title }) => {
     return (
         <div className='wallets-trading-account-card'>
             {icon}
-            <div
-                className={`wallets-trading-account-card__content ${
-                    has_divider ? 'wallets-trading-account-card__content--divider' : ''
-                }`}
-            >
+            <div className='wallets-trading-account-card__content'>
                 <div className='wallets-trading-account-card__details'>
                     <p className='wallets-trading-account-card__details-title'>{title}</p>
                     <p className='wallets-trading-account-card__details-description'>{description}</p>

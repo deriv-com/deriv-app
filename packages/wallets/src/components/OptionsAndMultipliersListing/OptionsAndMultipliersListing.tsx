@@ -12,19 +12,16 @@ const options_and_multipliers = [
         title: 'Deriv Trader',
         description: 'Options and multipliers trading platform',
         icon: <IcAppstoreDerivTrader />,
-        has_divider: true,
     },
     {
         title: 'Deriv Bot',
         description: 'Automated trading, no coding required',
         icon: <IcAppstoreDerivBot />,
-        has_divider: true,
     },
     {
         title: 'SmartTrader',
         description: 'Our legacy options trading platform',
         icon: <IcAppstoreSmartTrader />,
-        has_divider: true,
     },
     {
         title: 'Binary Bot',

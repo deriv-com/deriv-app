@@ -52,6 +52,7 @@ const RadioGroup = ({
                             className={classNames('dc-radio-group__item', className, {
                                 'dc-radio-group__item--selected': selected_option === item.props.value,
                             })}
+                            onClick=''
                         >
                             <input
                                 id={item.props.id}

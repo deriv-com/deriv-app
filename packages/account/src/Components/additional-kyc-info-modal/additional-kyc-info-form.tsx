@@ -41,12 +41,12 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
     const {
         update,
         mutation: { isLoading, isSuccess, error, isError },
-        data,
+        data: account_settings,
         isLoading: isAccountSettingsLoading,
     } = useSettings();
 
     const { fields, initialValues, validate } = getFormConfig({
-        account_settings: data,
+        account_settings,
         residence_list,
         required_fields: ['place_of_birth', 'tax_residence', 'tax_identification_number', 'account_opening_reason'],
     });
@@ -93,7 +93,6 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
             validateOnMount
             validateOnBlur
             validateOnChange
-            // enableReinitialize
             initialValues={initialValues}
             onSubmit={onSubmit}
             validate={validate}

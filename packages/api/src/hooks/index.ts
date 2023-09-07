@@ -1,10 +1,13 @@
 export { default as useAccountsList } from './useAccountsList';
+export { default as useAccountTypes } from './useAccountTypes';
 export { default as useActiveAccount } from './useActiveAccount';
 export { default as useActiveTradingAccount } from './useActiveTradingAccount';
 export { default as useActiveWalletAccount } from './useActiveWalletAccount';
 export { default as useAllAvailableAccounts } from './useAllAvailableAccounts';
 export { default as useAuthorize } from './useAuthorize';
+export { default as useAvailableWallets } from './useAvailableWallets';
 export { default as useBalance } from './useBalance';
+export { default as useCloseDerivAccount } from './useCloseDerivAccount';
 export { default as useCurrencyConfig } from './useCurrencyConfig';
 export { default as useGetAccountStatus } from './useGetAccountStatus';
 export { default as useLandingCompany } from './useLandingCompany';

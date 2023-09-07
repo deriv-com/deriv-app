@@ -49,6 +49,7 @@ const Trade = observer(() => {
         symbol,
         is_synthetics_available,
         is_synthetics_trading_market_available,
+        is_turbos,
         is_vanilla,
     } = useTraderStore();
     const {
@@ -149,12 +150,17 @@ const Trade = observer(() => {
     );
 
     const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
+    const chart_height_offset = React.useMemo(() => {
+        if (is_accumulator) return '295px';
+        if (is_turbos) return '300px';
+        return '259px';
+    }, [is_turbos, is_accumulator]);
 
     return (
         <div
             id='trade_container'
             className={classNames('trade-container', {
-                'trade-container--accumulators': is_accumulator,
+                [`trade-container--${is_accumulator ? 'accumulators' : 'turbos'}`]: is_accumulator || is_turbos,
             })}
         >
             <DesktopWrapper>
@@ -167,7 +173,7 @@ const Trade = observer(() => {
                 id='chart_container'
                 className='chart-container'
                 is_disabled={isDesktop()}
-                height_offset={is_accumulator ? '295px' : '259px'}
+                height_offset={chart_height_offset}
             >
                 <NotificationMessages />
                 <React.Suspense

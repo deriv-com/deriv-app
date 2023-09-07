@@ -17,7 +17,9 @@ import IndicativeCell from '../Components/indicative-cell';
 import MarketSymbolIconRow from '../Components/market-symbol-icon-row';
 import ProfitLossCell from '../Components/profit_loss_cell';
 import CurrencyWrapper from '../Components/currency-wrapper';
-import { ITransformer } from 'mobx-utils';
+import { useStore } from '@deriv/stores';
+
+type TPortfolioStore = ReturnType<typeof useStore>['portfolio'];
 
 const map = {
     buy: 'success',
@@ -35,11 +37,15 @@ export type TKeys = keyof typeof map;
 
 const getModeFromValue = (key: TKeys) => map[key] || map.default;
 
-type TMultiplierOpenPositionstemplateProps = {
+type TAccumulatorOpenPositionstemplateProps = Omit<
+    TMultiplierOpenPositionstemplateProps,
+    'onClickCancel' | 'server_time'
+>;
+type TMultiplierOpenPositionstemplateProps = Pick<
+    TPortfolioStore,
+    'getPositionById' | 'onClickCancel' | 'onClickSell'
+> & {
     currency: string;
-    onClickCancel: () => void;
-    onClickSell: () => void;
-    getPositionById: (id: string) => ITransformer<any, any>;
     server_time: moment.Moment;
 };
 
@@ -179,15 +185,14 @@ export const getOpenPositionsColumnsTemplate = (currency: string) => [
         key: 'icon',
         title: isMobile() ? '' : localize('Type'),
         col_index: 'type',
-        renderCellContent: ({ row_obj, is_footer, is_vanilla }: TCellContentProps) => {
+        renderCellContent: ({ row_obj, is_footer, is_vanilla, is_turbos }: TCellContentProps) => {
             if (is_footer) return localize('Total');
 
             return (
                 <MarketSymbolIconRow
                     key={row_obj.id}
                     payload={row_obj.contract_info}
-                    show_description={is_vanilla}
-                    is_vanilla={is_vanilla}
+                    has_full_contract_title={is_vanilla || is_turbos}
                 />
             );
         },
@@ -436,7 +441,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
     currency,
     onClickSell,
     getPositionById,
-}: TMultiplierOpenPositionstemplateProps) => [
+}: TAccumulatorOpenPositionstemplateProps) => [
     {
         title: isMobile() ? '' : localize('Type'),
         col_index: 'type',
@@ -456,7 +461,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
     {
         title: localize('Growth rate'),
         col_index: 'growth_rate',
-        renderCellContent: ({ row_obj }) =>
+        renderCellContent: ({ row_obj }: TCellContentProps) =>
             row_obj.contract_info && row_obj.contract_info.growth_rate
                 ? `${getGrowthRatePercentage(row_obj.contract_info.growth_rate)}%`
                 : '',

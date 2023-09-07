@@ -1,11 +1,6 @@
 /* @define account-signup; weak */
 .account-signup {
     padding: 1.2rem 1.2rem 0;
-    form {
-        @include mobile {
-            max-height: 36.5rem;
-        }
-    }
     & .dc-select-native {
         &__placeholder {
             background-color: var(--general-main-2);
@@ -24,6 +19,9 @@
         .dc-dialog__content {
             margin-bottom: 0;
         }
+        .dc-dialog__dialog {
+            max-height: unset;
+        }
     }
     &__error-wrapper {
         display: grid;
@@ -36,6 +34,7 @@
         }
     }
     &__main {
+        margin: -1.2rem -1.2rem 0;
         @include mobile {
             padding: 9rem 1.6rem;
         }
@@ -118,6 +117,20 @@
             }
         }
     }
+    &__checkbox {
+        align-items: flex-start;
+        margin: 2.4rem 0 2.4rem -0.6rem;
+        @include mobile {
+            margin: 2.4rem 0 0 -0.6rem;
+        }
+    }
+    &__label {
+        line-height: var(--text-lh-m);
+        @include mobile {
+            line-height: var(--text-lh-l);
+            font-size: var(--text-size-xxs);
+        }
+    }
     &__footer {
         display: flex;
         justify-content: flex-end;
@@ -141,7 +154,7 @@
             left: 0;
             right: 0;
             position: absolute;
-            width: calc(100% - 8rem);
+            width: calc(100% - 4rem);
             margin: 0 auto;
         }
     }

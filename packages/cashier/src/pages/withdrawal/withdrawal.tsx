@@ -1,196 +1,148 @@
 import React from 'react';
-import { Loading } from '@deriv/components';
-import { Localize } from '@deriv/translations';
-import { isCryptocurrency, isDesktop } from '@deriv/shared';
-import { useStore, observer } from '@deriv/stores';
+import { Loading, SideNote } from '@deriv/components';
+import { useCurrentCurrencyConfig } from '@deriv/hooks';
+import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+import { PageContainer } from 'Components/page-container';
 import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
+import Error from '../../components/error';
+import NoBalance from '../../components/no-balance';
+import { DepositCryptoSideNotes } from '../../modules/deposit-crypto/components';
+import { useCashierStore } from '../../stores/useCashierStores';
 import CryptoWithdrawForm from './crypto-withdraw-form';
 import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
 import Withdraw from './withdraw';
 import WithdrawalLocked from './withdrawal-locked';
 import WithdrawalVerificationEmail from './withdrawal-verification-email';
-import CashierLocked from '../../components/cashier-locked';
-import Error from '../../components/error';
-import NoBalance from '../../components/no-balance';
-import RecentTransaction from '../../components/recent-transaction';
-import SideNote from '../../components/side-note';
-import USDTSideNote from '../../components/usdt-side-note';
-import { Virtual } from '../../components/cashier-container';
-import { useCashierStore } from '../../stores/useCashierStores';
-import { useCashierLocked, useIsSystemMaintenance } from '@deriv/hooks';
 
-type TWithdrawalSideNoteProps = {
-    currency: string;
-    is_mobile?: boolean;
-};
+const WithdrawalSideNotes = observer(() => {
+    const currency_config = useCurrentCurrencyConfig();
 
-type TWithdrawalProps = {
-    setSideNotes: (notes: (JSX.Element | JSX.Element[])[] | null) => void;
-};
+    return (
+        <>
+            {currency_config.is_crypto && <DepositCryptoSideNotes />}
+            <SideNote title={localize('Note')}>
+                <li>
+                    {localize(
+                        'Do not enter an address linked to an ICO purchase or crowdsale. If you do, the ICO tokens will not be credited into your account.'
+                    )}
+                </li>
+                <li>
+                    {localize(
+                        'Please note that your maximum and minimum withdrawal limits aren’t fixed. They change due to the high volatility of cryptocurrency.'
+                    )}
+                </li>
+                {currency_config.is_fiat && (
+                    <li>{localize("We'll send you an email once your transaction has been processed.")}</li>
+                )}
+            </SideNote>
+        </>
+    );
+});
 
-const WithdrawalSideNote = ({ is_mobile, currency }: TWithdrawalSideNoteProps) => {
-    const notes = [
-        <Localize
-            i18n_default_text='Do not enter an address linked to an ICO purchase or crowdsale. If you do, the ICO tokens will not be credited into your account.'
-            key={0}
-        />,
-        <Localize
-            i18n_default_text='Please note that your maximum and minimum withdrawal limits aren’t fixed. They change due to the high volatility of cryptocurrency.'
-            key={1}
-        />,
-    ];
+const WithdrawalPageContent = observer(() => {
+    const { client } = useStore();
+    const {
+        verification_code: { payment_withdraw: verification_code },
+    } = client;
+    const { iframe, withdraw } = useCashierStore();
+    const { iframe_url } = iframe;
+    const { is_withdraw_confirmed } = withdraw;
+    const currency_config = useCurrentCurrencyConfig();
 
-    if (!isCryptocurrency(currency)) {
-        notes.push(
-            <Localize i18n_default_text="We'll send you an email once your transaction has been processed." key={1} />
+    if (!currency_config.is_crypto && (verification_code || iframe_url))
+        return (
+            <PageContainer hide_breadcrumb>
+                <Withdraw />
+            </PageContainer>
         );
-    }
 
-    return <SideNote has_bullets is_mobile={is_mobile} side_notes={notes} className='outside-wrapper' />;
-};
+    if (verification_code && currency_config.is_crypto && !is_withdraw_confirmed)
+        return (
+            <PageContainer hide_breadcrumb right={<WithdrawalSideNotes />}>
+                <CryptoWithdrawForm />
+            </PageContainer>
+        );
 
-const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
+    if (is_withdraw_confirmed)
+        return (
+            <PageContainer hide_breadcrumb right={<WithdrawalSideNotes />}>
+                <CryptoWithdrawReceipt />
+            </PageContainer>
+        );
+
+    return (
+        <PageContainer hide_breadcrumb right={currency_config.is_crypto ? <WithdrawalSideNotes /> : undefined}>
+            <WithdrawalVerificationEmail />
+        </PageContainer>
+    );
+});
+
+const Withdrawal = observer(() => {
     const { client } = useStore();
     const {
         balance,
-        currency,
-        current_currency_type,
         is_switching,
-        is_virtual,
         verification_code: { payment_withdraw: verification_code },
+        setVerificationCode,
     } = client;
-    const { iframe, general_store, transaction_history, withdraw } = useCashierStore();
-    const { is_crypto, setActiveTab, cashier_route_tab_index: tab_index } = general_store;
-    const is_cashier_locked = useCashierLocked();
-    const is_system_maintenance = useIsSystemMaintenance();
-    const { iframe_url } = iframe;
-    const {
-        crypto_transactions,
-        is_crypto_transactions_visible,
-        onMount: recentTransactionOnMount,
-    } = transaction_history;
+    const { withdraw, transaction_history } = useCashierStore();
+    const { is_crypto_transactions_visible } = transaction_history;
+
     const {
         check10kLimit,
-        container,
-        error,
-        is_10k_withdrawal_limit_reached,
-        is_withdraw_confirmed,
-        is_withdrawal_locked,
         error: { setErrorMessage },
         willMountWithdraw,
+        error,
+        is_10k_withdrawal_limit_reached,
+        is_withdrawal_locked,
     } = withdraw;
 
     React.useEffect(() => {
-        if (!is_crypto_transactions_visible) {
-            recentTransactionOnMount();
-        }
-    }, [is_crypto_transactions_visible, is_switching, recentTransactionOnMount]);
-
-    React.useEffect(() => {
-        setActiveTab(container);
         return () => {
             setErrorMessage({ code: '', message: '' });
         };
-    }, [container, setActiveTab, setErrorMessage]);
+    }, [setErrorMessage]);
 
     React.useEffect(() => {
         check10kLimit();
     }, [check10kLimit]);
 
     React.useEffect(() => {
+        return () => setVerificationCode('', 'payment_withdraw');
+    }, [setVerificationCode]);
+
+    React.useEffect(() => {
         return () => willMountWithdraw(verification_code);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [willMountWithdraw]);
 
-    React.useEffect(() => {
-        if (isDesktop()) {
-            if (isCryptocurrency(currency) && typeof setSideNotes === 'function' && !is_switching) {
-                const side_notes = [
-                    <RecentTransaction key={2} />,
-                    <WithdrawalSideNote currency={currency} key={0} />,
-                    ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
-                    ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
-                ];
+    if (is_switching || is_10k_withdrawal_limit_reached === undefined) return <Loading is_fullscreen={false} />;
 
-                setSideNotes([
-                    ...side_notes.map((side_note, index) => (
-                        <SideNote has_title={false} key={index}>
-                            {side_note}
-                        </SideNote>
-                    )),
-                ]);
-            } else setSideNotes(null);
-        }
-
-        return () => {
-            setSideNotes?.([]);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, tab_index, crypto_transactions]);
-
-    // TODO: Fix if conditions, use else if and combine conditions when possible
-    if (is_system_maintenance) {
-        if (is_cashier_locked || (is_withdrawal_locked && current_currency_type === 'crypto')) {
-            return <CashierLocked />;
-        }
-    }
-
-    if (is_switching || is_10k_withdrawal_limit_reached === undefined) {
-        return <Loading is_fullscreen={false} />;
-    }
-
-    if (is_virtual) {
-        return <Virtual />;
-    }
-
-    if (is_cashier_locked) {
-        return <CashierLocked />;
-    }
-
-    if (is_withdrawal_locked || is_10k_withdrawal_limit_reached) {
-        return <WithdrawalLocked />;
-    }
-
-    if (!Number(balance)) {
+    if (is_withdrawal_locked || is_10k_withdrawal_limit_reached)
         return (
-            <>
+            <PageContainer hide_breadcrumb>
+                <WithdrawalLocked />
+            </PageContainer>
+        );
+
+    if (!Number(balance))
+        return (
+            <PageContainer hide_breadcrumb>
                 <NoBalance />
-                {is_crypto && <WithdrawalSideNote currency={currency} is_mobile />}
-            </>
+            </PageContainer>
         );
-    }
 
-    if (error.is_show_full_page && error.message) {
-        return <Error error={error} />;
-    }
-
-    if (!is_crypto && (verification_code || iframe_url)) {
-        return <Withdraw />;
-    }
-
-    if (verification_code && is_crypto && !is_withdraw_confirmed && !is_crypto_transactions_visible) {
+    if (error.is_show_full_page && error.message)
         return (
-            <>
-                <CryptoWithdrawForm />
-                {is_crypto && <WithdrawalSideNote currency={currency} is_mobile />}
-            </>
+            <PageContainer hide_breadcrumb>
+                <Error error={error} />
+            </PageContainer>
         );
-    }
 
-    if (is_withdraw_confirmed && !is_crypto_transactions_visible) {
-        return <CryptoWithdrawReceipt />;
-    }
+    if (is_crypto_transactions_visible) return <CryptoTransactionsHistory />;
 
-    if (is_crypto_transactions_visible) {
-        return <CryptoTransactionsHistory />;
-    }
-
-    return (
-        <>
-            <WithdrawalVerificationEmail />
-            {is_crypto && <WithdrawalSideNote currency={currency} is_mobile />}
-        </>
-    );
+    return <WithdrawalPageContent />;
 });
 
 export default Withdrawal;

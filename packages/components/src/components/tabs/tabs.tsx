@@ -74,17 +74,28 @@ const Tabs = ({
     const setActiveLineStyle = React.useCallback(() => {
         const tabs_wrapper_bounds = tabs_wrapper_ref?.current?.getBoundingClientRect();
         const active_tab_bounds = active_tab_ref?.current?.getBoundingClientRect();
+
         if (tabs_wrapper_bounds && active_tab_bounds) {
             updateActiveLineStyle({
                 left: active_tab_bounds.left - tabs_wrapper_bounds.left,
                 width: active_tab_bounds.width,
             });
-        } else {
-            setTimeout(() => {
-                setActiveLineStyle();
-            }, 500);
         }
     }, []);
+
+    React.useEffect(() => {
+        let timeoutId: NodeJS.Timeout;
+
+        if (!active_tab_ref.current || !tabs_wrapper_ref.current) {
+            timeoutId = setTimeout(setActiveLineStyle, 500);
+        } else {
+            setActiveLineStyle();
+        }
+
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, [setActiveLineStyle]);
 
     let initial_index_to_show = 0;
     let tab_width: string;
@@ -130,7 +141,7 @@ const Tabs = ({
             );
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [active_tab_index, setActiveLineStyle]);
+    }, [active_tab_index, setActiveLineStyle, should_scroll_tab_into_view]);
 
     React.useEffect(() => {
         if (active_index >= 0 && active_index !== active_tab_index) {

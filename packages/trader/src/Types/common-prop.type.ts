@@ -5,20 +5,7 @@ export type TTextValueStrings = {
     value: string;
 };
 
-export type TProposalTypeInfo = {
-    has_error?: boolean;
-    id: string;
-    has_increased?: boolean;
-    message?: string;
-    cancellation?: {
-        ask_price: number;
-        date_expiry: number;
-    };
-    growth_rate?: number;
-    obj_contract_basis?: Record<'text' | 'value', string>;
-    returns?: string;
-    stake: string;
-};
+export type TProposalTypeInfo = TTradeStore['proposal_info'][string];
 
 export type TError = {
     error?: {

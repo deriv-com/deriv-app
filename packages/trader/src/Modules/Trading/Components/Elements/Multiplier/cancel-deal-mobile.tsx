@@ -4,6 +4,7 @@ import { localize, Localize } from '@deriv/translations';
 import { onToggleCancellation, onChangeCancellationDuration } from 'Stores/Modules/Trading/Helpers/multiplier';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { observer, useStore } from '@deriv/stores';
+import { TTradeStore } from 'Types';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 type TDealCancellationWarningDialog = {
@@ -11,18 +12,23 @@ type TDealCancellationWarningDialog = {
     onConfirm: () => void;
     onCancel: () => void;
 };
+
 type TCancelDeal = {
     has_cancellation: boolean;
     has_take_profit: boolean;
     has_stop_loss: boolean;
     onChangeMultiple: (
-        props:
-            | 'stop_loss'
-            | 'take_profit'
-            | 'has_stop_loss'
-            | 'has_take_profit'
-            | 'has_cancellation'
-            | 'cancellation_duration'
+        props: Partial<
+            Pick<
+                TTradeStore,
+                | 'cancellation_duration'
+                | 'has_cancellation'
+                | 'has_stop_loss'
+                | 'has_take_profit'
+                | 'stop_loss'
+                | 'take_profit'
+            >
+        >
     ) => void;
     cancellation_duration: string;
 };

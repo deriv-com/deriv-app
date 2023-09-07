@@ -131,7 +131,11 @@ const RiskManagementDialog = observer(({ is_open, onClose, toggleDialog }: TRisk
                             has_stop_loss={state.has_stop_loss}
                             has_cancellation={state.has_cancellation}
                             cancellation_duration={state.cancellation_duration}
-                            onChangeMultiple={onChangeMultipleLocal}
+                            onChangeMultiple={
+                                onChangeMultipleLocal as unknown as React.ComponentProps<
+                                    typeof CancelDeal
+                                >['onChangeMultiple']
+                            }
                         />
                     )}
                     <div className='trade-params__multiplier-risk-management-dialog-bottom-separator' />

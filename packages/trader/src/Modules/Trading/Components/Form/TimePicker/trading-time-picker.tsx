@@ -36,7 +36,7 @@ const TradingTimePicker = observer(() => {
 
     return (
         <TimePicker
-            end_times={boundaries.end}
+            end_times={boundaries.end as moment.Moment[]}
             onChange={onChange}
             name='expiry_time'
             placeholder='12:00'

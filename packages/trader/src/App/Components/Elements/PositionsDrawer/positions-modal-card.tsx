@@ -5,23 +5,24 @@ import { CSSTransition } from 'react-transition-group';
 import { ContractCard, CurrencyBadge, Icon, Money, ProgressSliderMobile, Text } from '@deriv/components';
 import {
     getContractPath,
+    getContractTypeDisplay,
+    getCardLabels,
+    getSymbolDisplayName,
+    getEndTime,
+    getTotalProfit,
+    hasContractEntered,
     isAccumulatorContract,
     isCryptoContract,
     isMultiplierContract,
     isTurbosContract,
     isHighLow,
     isCryptocurrency,
-    hasContractEntered,
     isOpen,
-    getSymbolDisplayName,
-    getEndTime,
-    getTotalProfit,
     isVanillaContract,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
-import { getContractTypeDisplay, getCardLabels } from 'Constants/contract';
 import { getMarketInformation } from 'Utils/Helpers/market-underlying';
 import PositionsResultMobile from './positions-result-mobile';
 import { observer, useStore } from '@deriv/stores';
@@ -104,7 +105,7 @@ const PositionsModalCard = observer(
         const should_show_sell = hasContractEntered(contract_info) && isOpen(contract_info);
         const display_name = getSymbolDisplayName(
             active_symbols,
-            getMarketInformation(contract_info.shortcode).underlying
+            getMarketInformation(contract_info.shortcode || '').underlying
         );
 
         const contract_options_el = (

@@ -79,8 +79,8 @@ const AppWithoutTranslation = ({ root_store }) => {
             {is_translation_loaded ? (
                 <Router basename={has_base ? `/${base}` : null}>
                     <MobxContentProvider store={root_store}>
-                        <StoreProvider store={root_store}>
-                            <APIProvider>
+                        <APIProvider>
+                            <StoreProvider store={root_store}>
                                 <PlatformContainer>
                                     <Header />
                                     <ErrorBoundary>
@@ -99,8 +99,8 @@ const AppWithoutTranslation = ({ root_store }) => {
                                     <BinaryBotIFrame />
                                     <AppToastMessages />
                                 </PlatformContainer>
-                            </APIProvider>
-                        </StoreProvider>
+                            </StoreProvider>
+                        </APIProvider>
                     </MobxContentProvider>
                 </Router>
             ) : (

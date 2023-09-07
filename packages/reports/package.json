@@ -76,6 +76,7 @@
     },
     "dependencies": {
         "@deriv/components": "^1.0.0",
+        "@deriv/api": "^1.0.0",
         "@deriv/deriv-api": "^1.0.11",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",

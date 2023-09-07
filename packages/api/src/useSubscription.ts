@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useWS } from '@deriv/shared';
+import useAPI from './useAPI';
 import type {
     TSocketAcceptableProps,
     TSocketRequestPayload,
@@ -13,7 +13,7 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) =>
     const [error, setError] = useState<unknown>();
     const [data, setData] = useState<TSocketResponseData<T>>();
     const subscriber = useRef<{ unsubscribe?: VoidFunction }>();
-    const WS = useWS();
+    const { subscribe: _subscribe } = useAPI();
 
     const subscribe = useCallback(
         (...props: TSocketAcceptableProps<T>) => {
@@ -36,7 +36,7 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) =>
             };
 
             try {
-                subscriber.current = WS.subscribe({ [name]: 1, subscribe: 1, ...(payload || {}) }).subscribe(
+                subscriber.current = _subscribe({ [name]: 1, subscribe: 1, ...(payload || {}) }).subscribe(
                     onData,
                     onError
                 );
@@ -44,7 +44,7 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) =>
                 setError(e);
             }
         },
-        [WS, name]
+        [_subscribe, name]
     );
 
     const unsubscribe = useCallback(() => {

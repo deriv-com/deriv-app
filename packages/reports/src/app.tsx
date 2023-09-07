@@ -1,10 +1,11 @@
 import React from 'react';
+import { APIProvider } from '@deriv/api';
+import { StoreProvider } from '@deriv/stores';
+import type { TCoreStores } from '@deriv/stores/types';
 import Routes from 'Containers/routes';
 import { MobxContentProvider } from 'Stores/connect';
-import { StoreProvider } from '@deriv/stores';
-import 'Sass/app.scss';
 import initStore from './init-store';
-import type { TCoreStores } from '@deriv/stores/types';
+import 'Sass/app.scss';
 
 type TAppProps = {
     passthrough: {
@@ -18,9 +19,11 @@ const App = ({ passthrough }: TAppProps) => {
 
     return (
         <MobxContentProvider store={root_store}>
-            <StoreProvider store={passthrough.root_store}>
-                <Routes />
-            </StoreProvider>
+            <APIProvider>
+                <StoreProvider store={passthrough.root_store}>
+                    <Routes />
+                </StoreProvider>
+            </APIProvider>
         </MobxContentProvider>
     );
 };

@@ -3,7 +3,7 @@ import { APIProvider } from '@deriv/api';
 import AppContent from './AppContent';
 
 const App: React.FC = () => (
-    <APIProvider>
+    <APIProvider standalone>
         <AppContent />;
     </APIProvider>
 );

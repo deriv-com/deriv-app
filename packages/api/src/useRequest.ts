@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { send } from './utils';
+import useAPI from './useAPI';
 import type {
     TSocketAcceptableProps,
     TSocketEndpointNames,
@@ -10,6 +10,7 @@ import type {
 } from '../types';
 
 const useRequest = <T extends TSocketEndpointNames>(name: T, options?: TSocketRequestMutationOptions<T>) => {
+    const { send } = useAPI();
     const { mutate: _mutate, ...rest } = useMutation<TSocketResponseData<T>, unknown, TSocketAcceptableProps<T>>(
         props => {
             const prop = props?.[0];

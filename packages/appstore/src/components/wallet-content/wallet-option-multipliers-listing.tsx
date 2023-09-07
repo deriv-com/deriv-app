@@ -58,21 +58,42 @@ const ListingContainerDescription = ({ landing_company_name }: TProps) =>
 
 const WalletOptionsAndMultipliersListing = observer(() => {
     const { traders_hub, client, ui } = useStore();
-    const { is_mobile, setShouldShowCooldownModal, openRealAccountSignup } = ui;
-    const { is_landing_company_loaded, real_account_creation_unlock_date, is_logging_in, is_switching } = client;
-    const { available_platforms, no_MF_account } = traders_hub;
+    const { setShouldShowCooldownModal, openRealAccountSignup } = ui;
+    const {
+        is_landing_company_loaded,
+        has_maltainvest_account,
+        real_account_creation_unlock_date,
+        is_logging_in,
+        is_switching,
+    } = client;
+    const { available_platforms, is_eu_user, no_MF_account, no_CR_account, is_demo } = traders_hub;
 
     const wallet_account = useActiveWallet();
 
-    if (!wallet_account || is_switching || is_logging_in || !is_landing_company_loaded)
+    if (!wallet_account || is_switching || is_logging_in || !is_landing_company_loaded) {
         return (
             <div className='wallet-content__loader'>
                 <PlatformLoader />
             </div>
         );
+    }
+
+    const platforms_action_type =
+        is_demo || (!no_CR_account && !is_eu_user) || (has_maltainvest_account && is_eu_user) ? 'trade' : 'none';
+
+    const derivAccountAction = () => {
+        if (no_MF_account) {
+            if (real_account_creation_unlock_date) {
+                setShouldShowCooldownModal(true);
+            } else {
+                openRealAccountSignup('maltainvest');
+            }
+        } else {
+            openRealAccountSignup('svg');
+        }
+    };
 
     const is_trading_account_exists = wallet_account.linked_to?.some(acc => acc.platform === 'dtrade');
-    const is_svg_jurisdiction_text = wallet_account.landing_company_name === 'svg' || wallet_account.is_demo;
 
     const get_account_card_name = wallet_account.is_malta_wallet
         ? localize('Deriv Apps account')
@@ -98,17 +119,7 @@ const WalletOptionsAndMultipliersListing = observer(() => {
                         name={get_account_card_name}
                         description={get_account_card_description}
                         icon='Options'
-                        onAction={() => {
-                            if (no_MF_account) {
-                                if (real_account_creation_unlock_date) {
-                                    setShouldShowCooldownModal(true);
-                                } else {
-                                    openRealAccountSignup('maltainvest');
-                                }
-                            } else {
-                                openRealAccountSignup('svg');
-                            }
-                        }}
+                        onAction={derivAccountAction}
                     />
                 </div>
             )}
@@ -116,7 +127,7 @@ const WalletOptionsAndMultipliersListing = observer(() => {
                 <TradingAppCard
                     key={`trading_app_card_${available_platform.name}`}
                     {...available_platform}
-                    action_type={is_trading_account_exists ? 'trade' : 'none'}
+                    action_type={platforms_action_type}
                     is_deriv_platform
                     has_divider={getHasDivider(index, available_platforms.length, 3)}
                 />

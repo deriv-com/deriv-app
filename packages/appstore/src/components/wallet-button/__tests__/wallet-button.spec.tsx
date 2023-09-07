@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import WalletButton from '..';
-import { TWalletAccount } from 'Types';
 
 const mockedRootStore = mockStore({});
 
@@ -15,7 +14,7 @@ describe('<WalletButton />', () => {
         action: () => {
             return true;
         },
-    };
+    } as const;
 
     it('Should render right text', () => {
         render(

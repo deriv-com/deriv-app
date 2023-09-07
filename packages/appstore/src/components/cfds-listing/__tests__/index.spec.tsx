@@ -25,6 +25,7 @@ describe('CFDsListing', () => {
             cfd: {
                 toggleCompareAccountsModal: jest.fn(),
                 setAccountType: jest.fn(),
+                current_list: {},
             },
         },
     });

@@ -24,16 +24,18 @@ const OnboardingTour = observer(() => {
     const { onCloseTour, onTourEnd, setTourActiveStep } = dashboard;
     const [tour_step, setStep] = React.useState<number>(1);
     const [tour_data, setTourData] = React.useState<TTourData>(default_tour_data);
-    const { content, header, img, tour_step_key } = tour_data;
+    const { content, header, img, media, tour_step_key } = tour_data;
     const tour_button_text = tour_step === 7 ? localize('Finish') : localize('Next');
     const steps_not_required = [1, 2];
     const test_id = tour_step_key === 7 ? 'finish-onboard-tour' : 'next-onboard-tour';
 
     React.useEffect(() => {
         DBOT_ONBOARDING_MOBILE.forEach(data => {
-            if (data.tour_step_key === tour_step) setTourData(data);
+            if (data.tour_step_key === tour_step) {
+                setTourData(data);
+            }
+            setTourActiveStep(tour_step);
         });
-        setTourActiveStep(tour_step);
     }, [tour_step]);
     return (
         <div
@@ -63,7 +65,6 @@ const OnboardingTour = observer(() => {
                     </Text>
                 </div>
             )}
-
             {header && (
                 <Text
                     color='prominent'
@@ -77,11 +78,25 @@ const OnboardingTour = observer(() => {
                     {localize(header)}
                 </Text>
             )}
-            {img && (
+            {media ? (
+                <div className='dbot-slider__media'>
+                    <video
+                        autoPlay={true}
+                        loop
+                        controls
+                        preload='auto'
+                        playsInline
+                        disablePictureInPicture
+                        controlsList='nodownload'
+                        src={media}
+                    />
+                </div>
+            ) : (
                 <div className='dbot-slider__image'>
                     <img src={img} />
                 </div>
             )}
+
             {content && (
                 <>
                     {content.map(data => {
@@ -103,13 +118,13 @@ const OnboardingTour = observer(() => {
             )}
             <div className='dbot-slider__status'>
                 <div className='dbot-slider__progress-bar'>
-                    {!steps_not_required.includes(tour_step) && (
+                    {/* {!steps_not_required.includes(tour_step) && (
                         <ProgressBarOnboarding
                             step={tour_step}
                             amount_of_steps={DBOT_ONBOARDING_MOBILE.map(v => v.tour_step_key.toString())}
                             setStep={setStep}
                         />
-                    )}
+                    )} */}
                 </div>
                 <div className='dbot-slider__button-group'>
                     {tour_step === 1 && (

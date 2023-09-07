@@ -13,7 +13,9 @@ const BotBuilderTour = observer(() => {
     const { toggleTourLoadModal } = load_modal;
     const { onTourEnd, has_started_bot_builder_tour, setTourActiveStep } = dashboard;
     const [tour_step, setTourStep] = React.useState<number>(1);
-    const content_data = BOT_BUILDER_MOBILE.find(({ tour_step_key }) => tour_step_key === tour_step);
+    const content_data = BOT_BUILDER_MOBILE.find(({ tour_step_key }) => {
+        return tour_step_key === tour_step;
+    });
     const test_id = tour_step === 3 ? 'finish-bot-builder-tour' : 'next-bot-builder-tour';
 
     React.useEffect(() => {
@@ -25,19 +27,18 @@ const BotBuilderTour = observer(() => {
     }, [tour_step]);
 
     const tour_button_text = tour_step === 3 ? localize('Finish') : localize('Next');
-
     return (
         <div data-testid='botbuilder-tour-mobile' className='dbot-slider dbot-slider__bot-builder-tour'>
             {content_data && <Accordion data-testid='bot-builder-acc' content_data={content_data} expanded />}
             <div className='dbot-slider__status'>
                 <div className='dbot-slider__progress-bar'>
-                    {
+                    {/* {
                         <ProgressBarOnboarding
                             step={tour_step}
                             amount_of_steps={BOT_BUILDER_MOBILE.map(v => v.tour_step_key.toString())}
                             setStep={setTourStep}
                         />
-                    }
+                    } */}
                 </div>
                 <div className='dbot-slider__button-group'>
                     {tour_step !== 1 && (

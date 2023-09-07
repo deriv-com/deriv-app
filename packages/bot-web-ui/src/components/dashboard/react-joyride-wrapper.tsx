@@ -25,6 +25,7 @@ const ReactJoyrideWrapper = ({ steps, styles, ...props }: { steps: Step[]; style
                     primaryColor: 'var(--brand-red-coral)',
                     textColor: 'var(--text-general)',
                     spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
+                    width: 440,
                 },
                 buttonBack: {
                     border: '0.2rem solid var(--text-less-prominent)',

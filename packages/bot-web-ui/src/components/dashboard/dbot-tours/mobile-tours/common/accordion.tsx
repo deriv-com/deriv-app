@@ -33,9 +33,7 @@ const Accordion = ({ content_data, expanded = false, test_id = 'dbot-acc-id', ..
                     })}
                     data-testid='accordion-content'
                 >
-                    <Text as='span' size='xxs' line_height='s'>
-                        {localize(content)}
-                    </Text>
+                    {content}
                 </div>
             </div>
         </div>

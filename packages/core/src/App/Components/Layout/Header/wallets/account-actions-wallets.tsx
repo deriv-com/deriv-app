@@ -14,11 +14,11 @@ const AccountInfoWallets = React.lazy(() =>
     moduleLoader(() => import('App/Components/Layout/Header/wallets/account-info-wallets.tsx'))
 );
 
-type TAccointActionsWallets = {
+type TAccountActionsWallets = {
     is_deposit_button_disabled: boolean;
 };
 
-const AccountActionsWallets = observer(({ is_deposit_button_disabled }: TAccointActionsWallets) => {
+const AccountActionsWallets = observer(({ is_deposit_button_disabled }: TAccountActionsWallets) => {
     const { is_appstore } = React.useContext(PlatformContext);
 
     const { client, ui, notifications } = useStore();

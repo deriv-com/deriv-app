@@ -98,6 +98,17 @@ jest.mock('@deriv/api', () => ({
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize' | 'balance' | 'website_status'>>;
 
 describe('AccountInfoWallets component', () => {
+    const wrapper = (mock: ReturnType<typeof mockStore>) => {
+        const Component = ({ children }: { children: JSX.Element }) => {
+            return (
+                <APIProvider>
+                    <StoreProvider store={mock}>{children}</StoreProvider>
+                </APIProvider>
+            );
+        };
+        return Component;
+    };
+
     it('should show "disabled_message" when "is_disabled" property is "true"', () => {
         const mock = mockStore({
             ui: {
@@ -131,14 +142,8 @@ describe('AccountInfoWallets component', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
         const toggleDialog = jest.fn();
-        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper });
+        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
 
         const popover = screen.getByTestId('dt_popover_wrapper');
         userEvent.hover(popover);
@@ -179,14 +184,8 @@ describe('AccountInfoWallets component', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
         const toggleDialog = jest.fn();
-        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper });
+        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
 
         const div_element = screen.getByTestId('dt_acc_info');
         expect(div_element).toHaveClass('acc-info--is-disabled');
@@ -195,14 +194,8 @@ describe('AccountInfoWallets component', () => {
     it('should not have "acc-info--show" class when "is_dialog_on" property is "false"', () => {
         const mock = mockStore({});
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
         const toggleDialog = jest.fn();
-        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper });
+        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
 
         const div_element = screen.getByTestId('dt_acc_info');
         expect(div_element).not.toHaveClass('acc-info--show');
@@ -241,14 +234,8 @@ describe('AccountInfoWallets component', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
         const toggleDialog = jest.fn();
-        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper });
+        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
 
         const div_element = screen.getByTestId('dt_acc_info');
         userEvent.click(div_element);
@@ -262,14 +249,8 @@ describe('AccountInfoWallets component', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
         const toggleDialog = jest.fn();
-        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper });
+        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
 
         expect(screen.getByTestId('dt_ic_wallet_options')).toBeInTheDocument();
         expect(screen.getByTestId('dt_wallet_icon')).toBeInTheDocument();
@@ -282,14 +263,8 @@ describe('AccountInfoWallets component', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
         const toggleDialog = jest.fn();
-        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper });
+        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
 
         expect(screen.getByText(/demo/i)).toBeInTheDocument();
     });
@@ -329,14 +304,8 @@ describe('AccountInfoWallets component', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
         const toggleDialog = jest.fn();
-        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper });
+        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
 
         expect(screen.getByText('SVG')).toBeInTheDocument();
     });
@@ -376,14 +345,8 @@ describe('AccountInfoWallets component', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
         const toggleDialog = jest.fn();
-        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper });
+        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
 
         const icon = screen.getByTestId('dt_lock_icon');
         expect(icon).toBeInTheDocument();
@@ -424,14 +387,8 @@ describe('AccountInfoWallets component', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
         const toggleDialog = jest.fn();
-        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper });
+        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
 
         const icon = screen.getByTestId('dt_select_arrow');
         expect(icon).toBeInTheDocument();
@@ -472,14 +429,8 @@ describe('AccountInfoWallets component', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
         const toggleDialog = jest.fn();
-        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper });
+        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
 
         const balance_wrapper = screen.queryByTestId('dt_balance');
         expect(balance_wrapper).toBeInTheDocument();
@@ -539,14 +490,8 @@ describe('AccountInfoWallets component', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
         const toggleDialog = jest.fn();
-        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper });
+        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
 
         const text = screen.getByText('1,234.56 USD');
         expect(text).toBeInTheDocument();

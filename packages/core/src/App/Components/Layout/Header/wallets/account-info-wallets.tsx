@@ -28,15 +28,15 @@ type TDropdownArrow = {
 };
 
 type TBalanceLabel = {
-    balance?: number;
-    currency?: string;
-    is_virtual?: boolean;
-    display_code?: string;
+    balance: number;
+    currency: string;
+    is_virtual: boolean;
+    display_code: string;
 };
 
 type TMobileInfoIcon = {
-    currency?: string;
-    is_virtual?: boolean;
+    currency: string;
+    is_virtual: boolean;
 };
 
 type TDesktopInfoIcons = {
@@ -50,7 +50,7 @@ const DropdownArrow = ({ is_disabled = false }: TDropdownArrow) =>
         <Icon data_testid='dt_select_arrow' icon='IcChevronDownBold' className='acc-info__select-arrow' />
     );
 
-const BalanceLabel = ({ balance, currency, is_virtual, display_code }: TBalanceLabel) =>
+const BalanceLabel = ({ balance, currency, is_virtual, display_code }: Partial<TBalanceLabel>) =>
     (typeof balance !== 'undefined' || !currency) && (
         <div className='acc-info__wallets-account-type-and-balance'>
             <p
@@ -69,7 +69,7 @@ const BalanceLabel = ({ balance, currency, is_virtual, display_code }: TBalanceL
         </div>
     );
 
-const MobileInfoIcon = ({ currency, is_virtual }: TMobileInfoIcon) => (
+const MobileInfoIcon = ({ currency, is_virtual }: Partial<TMobileInfoIcon>) => (
     <span className='acc-info__id'>
         {(is_virtual || currency) && <AccountInfoIcon is_virtual={is_virtual} currency={currency?.toLowerCase()} />}
     </span>
@@ -104,7 +104,7 @@ const DesktopInfoIcons = observer(({ wallet_account }: TDesktopInfoIcons) => {
 const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInfoWallets) => {
     const { client, ui } = useStore();
     const { switchAccount, is_logged_in } = client;
-    const { is_mobile, account_switcher_disabled_message, disableApp, enableApp, is_dark_mode_on } = ui;
+    const { is_mobile, account_switcher_disabled_message, disableApp, enableApp } = ui;
 
     const active_account = useActiveAccount();
     const active_wallet = useActiveWalletAccount();

@@ -7,14 +7,7 @@ const { ConnectionManager } = require('./connection-manager');
  * reopen the closed connection and process the buffered requests
  */
 const BinarySocketBase = (() => {
-    const connection_manager = new ConnectionManager({
-        synchronize: active_connection => {
-            deriv_api = active_connection?.deriv_api;
-            binary_socket = active_connection?.connection;
-        },
-    });
-
-    let deriv_api, binary_socket, client_store;
+    let deriv_api, binary_socket, connection_manager;
 
     let config = {};
 
@@ -37,16 +30,18 @@ const BinarySocketBase = (() => {
     const init = ({ options, client }) => {
         if (typeof options === 'object' && config !== options) {
             config = options;
-            connection_manager.setConfig(config);
         }
-        connection_manager.setClientStore(client);
-        client_store = client;
+        connection_manager = new ConnectionManager({
+            onChangeActiveConnection: connection_instance => {
+                deriv_api = connection_instance.deriv_api;
+                binary_socket = connection_instance.connection;
+            },
+            config,
+            client_store: client,
+        });
     };
 
-    const openNewConnection = () => {
-        deriv_api = connection_manager.active_connection?.deriv_api;
-        binary_socket = connection_manager.active_connection?.connection;
-    };
+    const openNewConnection = () => {};
 
     const isSiteUp = status => /^up$/i.test(status);
 
@@ -62,9 +57,9 @@ const BinarySocketBase = (() => {
         availability.is_down = isSiteDown(status);
     };
 
-    const excludeAuthorize = type => !(type === 'authorize' && !client_store.is_logged_in);
-
-    const wait = (...responses) => deriv_api?.expectResponse(...responses.filter(excludeAuthorize));
+    const wait = (...responses) => {
+        return connection_manager.wait(responses);
+    };
 
     const subscribe = (request, cb) => deriv_api.subscribe(request).subscribe(cb, cb); // Delegate error handling to the callback
 
@@ -328,7 +323,7 @@ const BinarySocketBase = (() => {
             // do nothing.
         },
         getSocket: () => binary_socket,
-        get: () => deriv_api,
+        get: () => connection_manager?.active_connection?.deriv_api,
         getAvailability: () => availability,
         setOnDisconnect: onDisconnect => {
             config.onDisconnect = onDisconnect;

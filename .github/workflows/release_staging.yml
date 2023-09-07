@@ -13,7 +13,6 @@ env:
   GD_API_KEY: ${{ secrets.GD_API_KEY }}
   GD_APP_ID: ${{ secrets.GD_APP_ID }}
   GD_CLIENT_ID: ${{ secrets.GD_CLIENT_ID }}
-  JEST_MAX_WORKERS: 4
   RUDDERSTACK_PRODUCTION_KEY: ${{ secrets.RUDDERSTACK_PRODUCTION_KEY }}
   RUDDERSTACK_STAGING_KEY: ${{ secrets.RUDDERSTACK_STAGING_KEY }}
   RUDDERSTACK_URL: ${{ secrets.RUDDERSTACK_URL }}
@@ -45,20 +44,17 @@ jobs:
       with:
         path: packages/core/dist
 
-    - uses: ravsamhq/notify-slack-action@v2
-      if: always()
+    - name: Send custom JSON data to Slack workflow
+      id: slack
+      uses: slackapi/slack-github-action@v1.24.0
       with:
-        status: ${{ job.status }}
-        notification_title: "{workflow} has {status_message}"
-        message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>"
-        footer: "Linked Repo <{repo_url}|{repo}>"
-        notify_when: "failure"
-        mention_users: "U0160UUNH8S,U0080UUAA9N"
-        mention_users_when: "failure,warnings"
-        mention_groups: "SAZ94GDB8"
-        mention_groups_when: "failure,warnings"
+        # This data can be any valid JSON from a previous step in the GitHub Action
+        payload: |
+          {
+            "release_type": "Staging",
+          }
       env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}  
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} 
 
   publish_cloudflare_staging:
 #     if: # GitHub does not currently support regular expressions inside if conditions

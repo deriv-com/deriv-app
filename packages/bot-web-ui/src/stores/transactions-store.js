@@ -33,11 +33,11 @@ export default class TransactionsStore {
         this.root_store = root_store;
         this.core = core;
         this.disposeReactionsFn = this.registerReactions();
+        this.loginid = this.core?.client?.loginid;
     }
-
     TRANSACTION_CACHE = 'transaction_cache';
 
-    elements = getStoredItemsByUser(this.TRANSACTION_CACHE, this.core?.client.loginid, []);
+    elements = getStoredItemsByUser(this.TRANSACTION_CACHE, this.loginid, []);
     active_transaction_id = null;
     recovered_completed_transactions = [];
     recovered_transactions = [];
@@ -45,7 +45,7 @@ export default class TransactionsStore {
     is_transaction_details_modal_open = false;
 
     get transactions() {
-        return this.elements.filter(element => element.type === transaction_elements.CONTRACT);
+        return this.elements[this.loginid]?.filter(element => element.type === transaction_elements.CONTRACT) || [];
     }
 
     toggleTransactionDetailsModal(is_open) {
@@ -83,7 +83,11 @@ export default class TransactionsStore {
             underlying: data.underlying,
         };
 
-        const same_contract_index = this.elements.findIndex(
+        if (!this.elements[this.loginid]) {
+            this.elements[this.loginid] = [];
+        }
+
+        const same_contract_index = this.elements[this.loginid]?.findIndex(
             c =>
                 c.type === transaction_elements.CONTRACT &&
                 c.data.transaction_ids &&
@@ -92,32 +96,32 @@ export default class TransactionsStore {
 
         if (same_contract_index === -1) {
             // Render a divider if the "run_id" for this contract is different.
-            if (this.elements.length > 0) {
+            if (this.elements[this.loginid]?.length > 0) {
                 const is_new_run =
-                    this.elements[0].type === transaction_elements.CONTRACT &&
-                    contract.run_id !== this.elements[0].data.run_id;
+                    this.elements[this.loginid]?.[0].type === transaction_elements.CONTRACT &&
+                    contract.run_id !== this.elements[this.loginid]?.[0].data.run_id;
 
                 if (is_new_run) {
-                    this.elements.unshift({
+                    this.elements[this.loginid]?.unshift({
                         type: transaction_elements.DIVIDER,
                         data: contract.run_id,
                     });
                 }
             }
 
-            this.elements.unshift({
+            this.elements[this.loginid]?.unshift({
                 type: transaction_elements.CONTRACT,
                 data: contract,
             });
         } else {
             // If data belongs to existing contract in memory, update it.
-            this.elements.splice(same_contract_index, 1, {
+            this.elements[this.loginid]?.splice(same_contract_index, 1, {
                 type: transaction_elements.CONTRACT,
                 data: contract,
             });
         }
 
-        this.elements = this.elements.slice(); // force array update
+        this.elements = { ...this.elements }; // force update
     }
 
     setActiveTransactionId(transaction_id) {
@@ -149,7 +153,7 @@ export default class TransactionsStore {
     }
 
     clear() {
-        this.elements = this.elements.slice(0, 0);
+        this.elements[this.loginid] = [];
         this.recovered_completed_transactions = this.recovered_completed_transactions.slice(0, 0);
         this.recovered_transactions = this.recovered_transactions.slice(0, 0);
         this.is_transaction_details_modal_open = false;
@@ -162,8 +166,9 @@ export default class TransactionsStore {
         const disposeTransactionElementsListener = reaction(
             () => this.elements,
             elements => {
+                const trx = elements[this.loginid];
                 const stored_transactions = getStoredItemsByKey(this.TRANSACTION_CACHE, {});
-                stored_transactions[client.loginid] = elements.slice(0, 5000);
+                stored_transactions[client.loginid] = trx.slice(0, 5000);
                 setStoredItemsByKey(this.TRANSACTION_CACHE, stored_transactions);
             }
         );
@@ -176,17 +181,9 @@ export default class TransactionsStore {
             () => this.recoverPendingContracts()
         );
 
-        const disposeSwitchAcountListener = reaction(
-            () => client.loginid,
-            () => this.clear()
-        );
-
         return () => {
             disposeTransactionElementsListener();
             disposeRecoverContracts();
-            if (typeof this.disposeSwitchAcountListener === 'function') {
-                disposeSwitchAcountListener();
-            }
         };
     }
 
@@ -245,11 +242,11 @@ export default class TransactionsStore {
         }
 
         if (!this.is_called_proposal_open_contract) {
-            if (!this.elements.length) {
+            if (!this.elements[this.loginid]?.length) {
                 this.sortOutPositionsBeforeAction(positions);
             }
-            if (this.elements.length && !this.elements[0].data.profit) {
-                const element_id = this.elements[0].data.contract_id;
+            if (this.elements[this.loginid]?.length && !this.elements[this.loginid]?.[0]?.data?.profit) {
+                const element_id = this.elements[this.loginid]?.[0].data.contract_id;
                 this.sortOutPositionsBeforeAction(positions, element_id);
             }
         }

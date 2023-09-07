@@ -57,6 +57,8 @@ export default function DesktopTransactionTable({
     result_columns,
     transactions,
     transaction_columns,
+    account,
+    balance,
 }: TDesktopTransactionTable) {
     return (
         <div data-testid='transaction_details_tables'>
@@ -135,6 +137,7 @@ export default function DesktopTransactionTable({
             <div className={classNames(`${PARENT_CLASS}__table-container`)}>
                 <TableHeader columns={result_columns} />
                 <div className={`${PARENT_CLASS}__table-row`}>
+                    <TableCell label={account} />
                     <TableCell label={result?.number_of_runs} />
                     <TableCell label={Math.abs(result?.total_stake ?? 0).toFixed(2)} />
                     <TableCell label={Math.abs(result?.total_payout ?? 0).toFixed(2)} />
@@ -155,6 +158,7 @@ export default function DesktopTransactionTable({
                             </div>
                         }
                     />
+                    <TableCell label={balance} />
                 </div>
             </div>
         </div>

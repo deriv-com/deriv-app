@@ -7,23 +7,30 @@ import {
     save,
     save_types,
     saveWorkspaceToRecent,
-    updateWorkspaceName,
 } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
 import { MAX_STRATEGIES } from 'Constants/bot-contents';
 import { button_status } from 'Constants/button-status';
+import { TStrategy } from 'Types';
 import RootStore from './root-store';
 
+type IOnConfirmProps = {
+    is_local: boolean;
+    save_as_collection: boolean;
+    bot_name: string;
+};
 interface ISaveModalStore {
     is_save_modal_open: boolean;
     button_status: { [key: string]: string } | number;
     bot_name: { [key: string]: string } | string;
     toggleSaveModal: () => void;
     validateBotName: (values: string) => { [key: string]: string };
-    onConfirmSave: () => void;
-    updateBotName: (bot_name: { [key: string]: string } | string) => void;
+    onConfirmSave: ({ is_local, save_as_collection, bot_name }: IOnConfirmProps) => void;
+    updateBotName: (bot_name: string) => void;
     setButtonStatus: (status: { [key: string]: string } | string | number) => void;
 }
+
+const Blockly = window.Blockly;
 
 export default class SaveModalStore implements ISaveModalStore {
     root_store: RootStore;
@@ -74,7 +81,7 @@ export default class SaveModalStore implements ISaveModalStore {
     ) => {
         try {
             const workspace = await getSavedWorkspaces();
-            const current_workspace_index = workspace.findIndex(strategy => strategy.id === workspace_id);
+            const current_workspace_index = workspace.findIndex((strategy: TStrategy) => strategy.id === workspace_id);
             const {
                 load_modal: { getSaveType },
             } = this.root_store;
@@ -100,7 +107,7 @@ export default class SaveModalStore implements ISaveModalStore {
             }
 
             workspace
-                .sort((a, b) => {
+                .sort((a: TStrategy, b: TStrategy) => {
                     return new Date(a.timestamp) - new Date(b.timestamp);
                 })
                 .reverse();
@@ -108,9 +115,8 @@ export default class SaveModalStore implements ISaveModalStore {
             if (workspace.length > MAX_STRATEGIES) {
                 workspace.pop();
             }
-            const {
-                load_modal: { setRecentStrategies },
-            } = this.root_store;
+            const { load_modal } = this.root_store;
+            const { setRecentStrategies } = load_modal;
             localForage.setItem('saved_workspaces', LZString.compress(JSON.stringify(workspace)));
             const updated_strategies = await getSavedWorkspaces();
             setRecentStrategies(updated_strategies);
@@ -123,46 +129,50 @@ export default class SaveModalStore implements ISaveModalStore {
         }
     };
 
-    async onConfirmSave({ is_local, save_as_collection, bot_name }) {
+    async onConfirmSave({ is_local, save_as_collection, bot_name }: IOnConfirmProps) {
+        const { load_modal, dashboard, google_drive } = this.root_store;
+        const { loadStrategyToBuilder, selected_strategy } = load_modal;
+        const { active_tab } = dashboard;
         this.setButtonStatus(button_status.LOADING);
-
-        const { saveFile } = this.root_store.google_drive;
-        const xml = Blockly.Xml.workspaceToDom(Blockly.derivWorkspace);
-
-        xml.setAttribute('is_dbot', 'true');
-        xml.setAttribute('collection', save_as_collection ? 'true' : 'false');
+        const { saveFile } = google_drive;
+        let xml;
+        let main_strategy = null;
+        if (active_tab === 1) {
+            xml = Blockly?.Xml?.workspaceToDom(Blockly?.derivWorkspace);
+        } else {
+            const recent_files = await getSavedWorkspaces();
+            main_strategy = recent_files.filter((strategy: TStrategy) => strategy.id === selected_strategy.id)?.[0];
+            main_strategy.name = bot_name;
+            main_strategy.save_type = is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE;
+            xml = Blockly?.Xml?.textToDom(main_strategy.xml);
+        }
+        xml?.setAttribute('is_dbot', 'true');
+        xml?.setAttribute('collection', save_as_collection ? 'true' : 'false');
 
         if (is_local) {
             save(bot_name, save_as_collection, xml);
         } else {
             await saveFile({
                 name: bot_name,
-                content: Blockly.Xml.domToPrettyText(xml),
+                content: Blockly?.Xml?.domToPrettyText(xml),
                 mimeType: 'application/xml',
             });
-
             this.setButtonStatus(button_status.COMPLETED);
         }
-        const {
-            dashboard: { active_tab },
-        } = this.root_store;
-        const {
-            load_modal: { selected_strategy_id },
-        } = this.root_store;
 
         if (active_tab === 0) {
-            const workspace_id = selected_strategy_id || Blockly.utils.genUid();
-            this.addStrategyToWorkspace(workspace_id, is_local, save_as_collection, bot_name, xml);
+            const workspace_id = selected_strategy.id || Blockly?.utils?.genUid();
+            await this.addStrategyToWorkspace(workspace_id, is_local, save_as_collection, bot_name, xml);
+            if (main_strategy) await loadStrategyToBuilder(main_strategy);
         } else {
-            saveWorkspaceToRecent(xml, is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
+            await saveWorkspaceToRecent(xml, is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
         }
         this.updateBotName(bot_name);
         this.toggleSaveModal();
     }
 
-    updateBotName = (bot_name: { [key: string]: string } | string): void => {
+    updateBotName = (bot_name: string): void => {
         this.bot_name = bot_name;
-        updateWorkspaceName();
     };
 
     async onDriveConnect() {

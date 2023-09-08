@@ -23,7 +23,6 @@ export default class PaymentAgentStore {
         makeObservable(this, {
             list: observable,
             agents: observable,
-            container: observable,
             error: observable,
             filtered_list: observable,
             is_name_selected: observable,
@@ -75,7 +74,6 @@ export default class PaymentAgentStore {
 
     list: TPartialPaymentAgentList[] = [];
     agents: TAgent[] = [];
-    container = Constants.containers.payment_agent;
     error = new ErrorStore();
     filtered_list: TPartialPaymentAgentList[] = [];
     is_name_selected = true;
@@ -97,6 +95,10 @@ export default class PaymentAgentStore {
     }
 
     setActiveTab(index: number) {
+        if (this.active_tab_index === 1 && index === 0) {
+            this.resetPaymentAgent();
+        }
+
         this.setActiveTabIndex(index);
     }
 
@@ -364,11 +366,8 @@ export default class PaymentAgentStore {
     }
 
     resetPaymentAgent = () => {
-        const { client, modules } = this.root_store;
-        const { active_container } = modules.cashier.general_store;
-        const container = Constants.map_action[active_container as 'withdraw' | 'payment_agent'];
-
-        client.setVerificationCode('', container);
+        const { client } = this.root_store;
+        client.setVerificationCode('', 'payment_agent_withdraw');
         this.error.setErrorMessage({ code: '', message: '' });
         this.setIsWithdraw(false);
         this.setIsWithdrawSuccessful(false);

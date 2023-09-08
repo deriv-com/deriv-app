@@ -25,6 +25,9 @@ describe('proof-of-ownership.jsx', () => {
                         ownership: { requests: [], status: 'none' },
                     },
                 },
+                account_settings: {
+                    citizen: 'id',
+                },
             },
         });
         render(<ProofOfOwnershipScreen />);
@@ -39,6 +42,9 @@ describe('proof-of-ownership.jsx', () => {
                     authentication: {
                         ownership: { requests: [], status: 'verified' },
                     },
+                },
+                account_settings: {
+                    citizen: 'id',
                 },
             },
         });
@@ -55,6 +61,9 @@ describe('proof-of-ownership.jsx', () => {
                         ownership: { requests: [], status: 'pending' },
                     },
                 },
+                account_settings: {
+                    citizen: 'id',
+                },
             },
         });
         render(<ProofOfOwnershipScreen />);
@@ -69,6 +78,9 @@ describe('proof-of-ownership.jsx', () => {
                     authentication: {
                         ownership: { requests: [], status: 'rejected' },
                     },
+                },
+                account_settings: {
+                    citizen: 'id',
                 },
             },
         });
@@ -85,6 +97,9 @@ describe('proof-of-ownership.jsx', () => {
                         ownership: { requests: ownership_temp.requests, status: ownership_temp.status },
                         needs_verification: ['ownership'],
                     },
+                },
+                account_settings: {
+                    citizen: 'id',
                 },
             },
         });

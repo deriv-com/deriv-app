@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import * as React from 'react';
 import { StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
@@ -27,10 +26,6 @@ const AccountLimitsArticle = ({ is_from_derivgo }: TAccountLimitsArticle) => {
     };
 
     return <AccountArticle title={localize('Account limits')} descriptions={getDescription()} />;
-};
-
-AccountLimitsArticle.propTypes = {
-    is_from_derivgo: PropTypes.bool,
 };
 
 export default AccountLimitsArticle;

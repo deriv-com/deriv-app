@@ -54,8 +54,14 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
     const onSubmit = (values: typeof initialValues) => {
         const tax_residence = residence_list.find(item => item.text === values.tax_residence)?.value;
         const place_of_birth = residence_list.find(item => item.text === values.place_of_birth)?.value;
+        const payload: Record<string, string | undefined> = {
+            tax_residence,
+            place_of_birth,
+            tax_identification_number: values.tax_identification_number,
+            account_opening_reason: values.account_opening_reason,
+        };
 
-        update({ ...values, tax_residence, place_of_birth });
+        update(payload);
     };
 
     React.useEffect(() => {
@@ -106,12 +112,12 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                             <FormTitle />
                             <fieldset className='additional-kyc-info-modal__form-field'>
                                 <Field name='place_of_birth'>
-                                    {({ field, meta: { touched, error } }: FieldProps<typeof initialValues>) => (
+                                    {({ field, meta: { touched, error } }: FieldProps<string>) => (
                                         <React.Fragment>
                                             <DesktopWrapper>
                                                 <Autocomplete
                                                     {...field}
-                                                    {...fields[field.name as keyof typeof fields]}
+                                                    {...fields.place_of_birth}
                                                     data-lpignore='true'
                                                     autoComplete='off' // prevent chrome autocomplete
                                                     error={touched ? error : undefined}
@@ -122,7 +128,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                             <MobileWrapper>
                                                 <SelectNative
                                                     {...field}
-                                                    {...fields[field.name as keyof typeof fields]}
+                                                    {...fields.place_of_birth}
                                                     error={touched ? error : undefined}
                                                     use_text
                                                     should_hide_disabled_options={false}
@@ -140,12 +146,12 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                 )}
                             >
                                 <Field name='tax_residence'>
-                                    {({ field, meta: { touched, error } }: FieldProps<typeof initialValues>) => (
+                                    {({ field, meta: { touched, error } }: FieldProps<string>) => (
                                         <React.Fragment>
                                             <DesktopWrapper>
                                                 <Autocomplete
                                                     {...field}
-                                                    {...fields[field.name as keyof typeof fields]}
+                                                    {...fields.tax_residence}
                                                     data-lpignore='true'
                                                     autoComplete='off' // prevent chrome autocomplete
                                                     type='text'
@@ -157,7 +163,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                             <MobileWrapper>
                                                 <SelectNative
                                                     {...field}
-                                                    {...fields[field.name as keyof typeof fields]}
+                                                    {...fields.tax_residence}
                                                     error={touched ? error : undefined}
                                                     use_text
                                                     should_hide_disabled_options={false}
@@ -198,12 +204,12 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                             </fieldset>
                             <fieldset className='additional-kyc-info-modal__form-field'>
                                 <Field name='account_opening_reason'>
-                                    {({ field, meta: { touched, error } }: FieldProps) => (
+                                    {({ field, meta: { touched, error } }: FieldProps<string>) => (
                                         <React.Fragment>
                                             <DesktopWrapper>
                                                 <Autocomplete
                                                     {...field}
-                                                    {...fields[field.name as keyof typeof fields]}
+                                                    {...fields.account_opening_reason}
                                                     data-lpignore='true'
                                                     autoComplete='off' // prevent chrome autocomplete
                                                     type='text'
@@ -218,7 +224,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                             <MobileWrapper>
                                                 <SelectNative
                                                     {...field}
-                                                    {...fields[field.name as keyof typeof fields]}
+                                                    {...fields.account_opening_reason}
                                                     error={touched ? error : undefined}
                                                     use_text
                                                     should_hide_disabled_options={false}

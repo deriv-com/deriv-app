@@ -246,9 +246,9 @@ export const getFormFieldsConfig = (
  * @returns Record<string, unknown> - initial values for form
  */
 const generateInitialValues = (fields: TFormFieldsConfig) => {
-    const initial_values: Record<string, unknown> = {};
-    Object.keys(fields).forEach(field => {
-        initial_values[field] = fields[field as TFields].initial_value;
+    const initial_values: Record<TFields, string> = {} as Record<TFields, string>;
+    (Object.keys(fields) as TFields[]).forEach(field => {
+        initial_values[field] = fields[field].initial_value;
     });
     return initial_values;
 };
@@ -293,8 +293,8 @@ export const getFormConfig = (options: {
     const { account_settings, residence_list, required_fields, with_input_types = false } = options;
     const fields_config = getFormFieldsConfig(account_settings, residence_list, required_fields);
     const inputs: Record<TFields, TGetField> = {} as Record<TFields, TGetField>;
-    Object.keys(fields_config).forEach(field => {
-        inputs[field as TFields] = getField(fields_config, field as TFields, with_input_types);
+    (Object.keys(fields_config) as TFields[]).forEach(field => {
+        inputs[field] = getField(fields_config, field, with_input_types);
     });
     return {
         fields: inputs,

@@ -1,3 +1,3 @@
-import { POOVerified } from './verified.jsx';
+import { POOVerified } from './verified';
 
 export default POOVerified;

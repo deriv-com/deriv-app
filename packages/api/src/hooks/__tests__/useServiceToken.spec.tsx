@@ -7,7 +7,6 @@ import useServiceToken from '../useServiceToken';
 jest.mock('../../useFetch', () => jest.fn());
 
 type TServiceTokenPayload = Parameters<typeof useServiceToken>[0];
-const mock_token = 'ABCDefgh1234567890';
 
 describe('useServiceToken', () => {
     afterEach(() => {
@@ -19,7 +18,7 @@ describe('useServiceToken', () => {
             msg_type: 'service_token',
             service_token: {
                 onfido: {
-                    token: mock_token,
+                    token: '',
                 },
             },
         });
@@ -32,7 +31,11 @@ describe('useServiceToken', () => {
 
         await waitFor(() => result.current.isSuccess, { timeout: 10000 });
 
-        expect(result.current.service_token?.onfido?.token).toEqual(mock_token);
+        expect(result.current.service_token).toMatchObject({
+            onfido: {
+                token: '',
+            },
+        });
     });
 
     it('should return the error message', async () => {

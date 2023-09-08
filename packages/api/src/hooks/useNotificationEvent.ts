@@ -9,10 +9,9 @@ const useNotificationEvent = () => {
     const invalidate = useInvalidateQuery();
     const { data, mutate, ...rest } = useRequest('notification_event', {
         onSuccess: () => {
-            invalidate('mt5_login_list');
+            invalidate('notification_event');
         },
     });
-
     const send = React.useCallback((payload: TNotificationEventPayload) => mutate({ payload }), [mutate]);
 
     return {

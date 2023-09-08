@@ -17,8 +17,6 @@ const CreateAdAddPaymentMethodModal = () => {
         if (selected_payment_method.length > 0 || is_form_modified) {
             showModal({
                 key: 'CancelAddPaymentMethodModal',
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore TODO: fix typings in CancelAddPaymentMethodModal component and make them optional and remove this comment
                 props: {
                     should_hide_all_modals_on_cancel: true,
                 },

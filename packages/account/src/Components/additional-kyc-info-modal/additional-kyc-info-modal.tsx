@@ -15,7 +15,7 @@ import AdditionalKycInfoForm from './additional-kyc-info-form';
 
 type TAdditionalKycInfoFormWithHintBox = {
     error?: unknown;
-    setError?: React.Dispatch<React.SetStateAction<unknown | string>>;
+    setError?: React.Dispatch<React.SetStateAction<unknown>>;
 };
 
 const AdditionalKycInfoFormWithHintBox = ({ error, setError }: TAdditionalKycInfoFormWithHintBox) => {

@@ -147,43 +147,48 @@ export default class AccountTransferStore {
         // various issues happen when loading from cache
         // e.g. new account may have been created, transfer may have been done elsewhere, etc
         // so on load of this page just call it again
-        if (is_logged_in) {
-            const transfer_between_accounts = await this.WS.authorized.transferBetweenAccounts();
+        if (!is_logged_in) {
+            setLoading(false);
 
-            if (transfer_between_accounts.error) {
-                this.error.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
-                setLoading(false);
-                return;
-            }
+            return;
+        }
 
-            if (!is_from_derivgo) {
-                transfer_between_accounts.accounts = transfer_between_accounts.accounts?.filter(
-                    account => account.account_type !== CFD_PLATFORMS.DERIVEZ
-                );
-            }
+        const transfer_between_accounts = await this.WS.authorized.transferBetweenAccounts();
 
-            if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
-                return;
-            }
+        if (transfer_between_accounts.error) {
+            this.error.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
+            setLoading(false);
+            return;
+        }
 
-            await this.sortAccountsTransfer(transfer_between_accounts, is_from_derivgo);
-            this.setTransferFee();
-            this.setMinimumFee();
-            this.setTransferLimit();
+        if (!is_from_derivgo) {
+            transfer_between_accounts.accounts = transfer_between_accounts.accounts?.filter(
+                account => account.account_type !== CFD_PLATFORMS.DERIVEZ
+            );
+        }
 
-            if (this.accounts_list?.length > 0) {
-                const cfd_transfer_to_login_id = sessionStorage.getItem('cfd_transfer_to_login_id');
-                sessionStorage.removeItem('cfd_transfer_to_login_id');
-                const obj_values = this.accounts_list.find(account => account.value === cfd_transfer_to_login_id);
-                if (obj_values) {
-                    if (hasTransferNotAllowedLoginid(obj_values.value)) {
-                        // check if selected to is not allowed account
-                        obj_values.error = AccountTransferGetSelectedError(obj_values.value);
-                    }
-                    this.setSelectedTo(obj_values);
+        if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
+            return;
+        }
+
+        await this.sortAccountsTransfer(transfer_between_accounts, is_from_derivgo);
+        this.setTransferFee();
+        this.setMinimumFee();
+        this.setTransferLimit();
+
+        if (this.accounts_list?.length > 0) {
+            const cfd_transfer_to_login_id = sessionStorage.getItem('cfd_transfer_to_login_id');
+            sessionStorage.removeItem('cfd_transfer_to_login_id');
+            const obj_values = this.accounts_list.find(account => account.value === cfd_transfer_to_login_id);
+            if (obj_values) {
+                if (hasTransferNotAllowedLoginid(obj_values.value)) {
+                    // check if selected to is not allowed account
+                    obj_values.error = AccountTransferGetSelectedError(obj_values.value);
                 }
+                this.setSelectedTo(obj_values);
             }
         }
+
         setLoading(false);
     }
 

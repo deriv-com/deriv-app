@@ -281,41 +281,6 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                             </Text>
                         ))}
                 </Table.Cell>
-                {!is_transaction_clicked && (
-                    <Table.Cell className='crypto-transactions-history__table-confirmations'>
-                        <Text as='p' size='xs' color='red'>
-                            {status?.confirmation_label}
-                        </Text>
-                    </Table.Cell>
-                )}
-                {!is_transaction_clicked && (
-                    <Table.Cell>
-                        <Text as='p' size='xs'>
-                            {formatted_submit_date}
-                        </Text>
-                    </Table.Cell>
-                )}
-                {!is_transaction_clicked && (
-                    <Table.Cell className='crypto-transactions-history__table-status'>
-                        {status && (
-                            <Popover
-                                alignment='left'
-                                className='crypto-transactions-history__table-popover'
-                                message={status.description}
-                            >
-                                <div
-                                    className={classNames(
-                                        'crypto-transactions-history__table-status-code',
-                                        `crypto-transactions-history__table-status-code-${status.renderer}`
-                                    )}
-                                />
-                                <Text as='p' size='xs'>
-                                    {status.name}
-                                </Text>
-                            </Popover>
-                        )}
-                    </Table.Cell>
-                )}
                 {is_transaction_clicked ? (
                     <Table.Cell className='crypto-transactions-history__table-confirm'>
                         <div>
@@ -327,19 +292,50 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                         </div>
                     </Table.Cell>
                 ) : (
-                    <Table.Cell className='crypto-transactions-history__table-action'>
-                        {is_valid_to_cancel === 1 && (
-                            <div onClick={onClickCancel} data-testid='dt_crypto_transactions_history_table_button'>
+                    <>
+                        <Table.Cell className='crypto-transactions-history__table-confirmations'>
+                            <Text as='p' size='xs' color='red'>
+                                {status?.confirmation_label}
+                            </Text>
+                        </Table.Cell>
+                        <Table.Cell>
+                            <Text as='p' size='xs'>
+                                {formatted_submit_date}
+                            </Text>
+                        </Table.Cell>
+                        <Table.Cell className='crypto-transactions-history__table-status'>
+                            {status && (
                                 <Popover
                                     alignment='left'
                                     className='crypto-transactions-history__table-popover'
-                                    message={localize('Cancel transaction')}
+                                    message={status.description}
                                 >
-                                    <Icon icon='IcCrossLight' size={10} />
+                                    <div
+                                        className={classNames(
+                                            'crypto-transactions-history__table-status-code',
+                                            `crypto-transactions-history__table-status-code-${status.renderer}`
+                                        )}
+                                    />
+                                    <Text as='p' size='xs'>
+                                        {status.name}
+                                    </Text>
                                 </Popover>
-                            </div>
-                        )}
-                    </Table.Cell>
+                            )}
+                        </Table.Cell>
+                        <Table.Cell className='crypto-transactions-history__table-action'>
+                            {is_valid_to_cancel === 1 && (
+                                <div onClick={onClickCancel} data-testid='dt_crypto_transactions_history_table_button'>
+                                    <Popover
+                                        alignment='left'
+                                        className='crypto-transactions-history__table-popover'
+                                        message={localize('Cancel transaction')}
+                                    >
+                                        <Icon icon='IcCrossLight' size={10} />
+                                    </Popover>
+                                </div>
+                            )}
+                        </Table.Cell>
+                    </>
                 )}
             </Table.Row>
         </div>

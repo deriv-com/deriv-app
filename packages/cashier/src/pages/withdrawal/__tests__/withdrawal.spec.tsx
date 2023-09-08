@@ -25,9 +25,9 @@ jest.mock('../withdrawal-locked', () => jest.fn(() => 'WithdrawalLocked'));
 jest.mock('Components/no-balance', () => jest.fn(() => 'NoBalance'));
 jest.mock('Components/error', () => jest.fn(() => 'Error'));
 jest.mock('../withdraw', () => jest.fn(() => 'Withdraw'));
-jest.mock('../crypto-withdraw-form', () => jest.fn(() => 'CryptoWithdrawForm'));
-jest.mock('../crypto-withdraw-receipt', () => jest.fn(() => 'CryptoWithdrawReceipt'));
-jest.mock('Components/crypto-transactions-history', () => jest.fn(() => 'CryptoTransactionsHistory'));
+jest.mock('../withdrawal-crypto-form', () => jest.fn(() => 'WithdrawalCryptoForm'));
+jest.mock('../withdrawal-crypto-receipt', () => jest.fn(() => 'WithdrawalCryptoReceipt'));
+jest.mock('Components/transactions-crypto-history', () => jest.fn(() => 'TransactionsCryptoHistory'));
 jest.mock('../withdrawal-verification-email', () => jest.fn(() => 'WithdrawalVerificationEmail'));
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -43,7 +43,7 @@ const cashier_mock = {
         iframe_url: '',
     },
     transaction_history: {
-        is_crypto_transactions_visible: false,
+        is_transactions_crypto_visible: false,
     },
     withdraw: {
         check10kLimit: jest.fn(),
@@ -185,7 +185,7 @@ describe('<Withdrawal />', () => {
         expect(screen.getByText('Withdraw')).toBeInTheDocument();
     });
 
-    it('should render <CryptoWithdrawForm /> component', () => {
+    it('should render <WithdrawalCryptoForm /> component', () => {
         const mock_root_store = mockStore({
             client: {
                 balance: '1000',
@@ -205,10 +205,10 @@ describe('<Withdrawal />', () => {
         });
         render(mockWithdrawal(mock_root_store));
 
-        expect(screen.getByText('CryptoWithdrawForm')).toBeInTheDocument();
+        expect(screen.getByText('WithdrawalCryptoForm')).toBeInTheDocument();
     });
 
-    it('should render <CryptoWithdrawReceipt /> component', () => {
+    it('should render <WithdrawalCryptoReceipt /> component', () => {
         const mock_root_store = mockStore({
             client: {
                 balance: '1000',
@@ -227,10 +227,10 @@ describe('<Withdrawal />', () => {
         });
         render(mockWithdrawal(mock_root_store));
 
-        expect(screen.getByText('CryptoWithdrawReceipt')).toBeInTheDocument();
+        expect(screen.getByText('WithdrawalCryptoReceipt')).toBeInTheDocument();
     });
 
-    it('should render <CryptoTransactionsHistory /> component', () => {
+    it('should render <TransactionsCryptoHistory /> component', () => {
         const mock_root_store = mockStore({
             client: {
                 balance: '1000',
@@ -241,14 +241,14 @@ describe('<Withdrawal />', () => {
                 cashier: {
                     ...cashier_mock,
                     transaction_history: {
-                        is_crypto_transactions_visible: true,
+                        is_transactions_crypto_visible: true,
                     },
                 },
             },
         });
         render(mockWithdrawal(mock_root_store));
 
-        expect(screen.getByText('CryptoTransactionsHistory')).toBeInTheDocument();
+        expect(screen.getByText('TransactionsCryptoHistory')).toBeInTheDocument();
     });
 
     it('should render <WithdrawalVerificationEmail /> component', () => {

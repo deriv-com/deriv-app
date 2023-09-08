@@ -341,7 +341,7 @@ const getModules = () => {
                     icon_component: 'IcCashierOnRamp',
                 },
                 {
-                    path: routes.cashier_crypto_transactions,
+                    path: routes.cashier_transactions_crypto,
                     component: Cashier,
                     is_invisible: true,
                 },

@@ -99,7 +99,7 @@ export const getStatus = (
                 name: localize('In process'),
                 description: localize("We're processing your withdrawal."),
                 renderer: 'in-process',
-                transaction_hash: formatted_transaction_hash,
+                transaction_hash: localize('NA'),
             },
             SENT: {
                 name: localize('Successful'),

@@ -103,7 +103,7 @@ const cryptoTransactionMapper = (
         PROCESSING: transaction_hash_obscure,
         REJECTED: localize('NA'),
         REVERTED: localize('NA'),
-        REVERTING: transaction_hash_obscure,
+        REVERTING: localize('NA'),
         SENT: transaction_hash_obscure,
         VERIFIED: transaction_hash_obscure,
     } as const;

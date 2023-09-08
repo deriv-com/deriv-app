@@ -48,6 +48,7 @@ describe('useP2PAdvertInfo', () => {
                     amount: 50,
                     id: '101',
                     price: 13500,
+                    type: 'buy',
                 },
             },
         });
@@ -69,5 +70,7 @@ describe('useP2PAdvertInfo', () => {
         expect(result.current.data?.amount).toBe(50);
         expect(result.current.data?.id).toBe('101');
         expect(result.current.data?.price).toBe(13500);
+        expect(result.current.data?.is_buy).toBeTruthy;
+        expect(result.current.data?.is_sell).toBeFalsy;
     });
 });

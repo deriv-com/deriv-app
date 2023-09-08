@@ -21,7 +21,6 @@ import BlockUserOverlay from './block-user/block-user-overlay';
 import classNames from 'classnames';
 import { OnlineStatusIcon, OnlineStatusLabel } from 'Components/online-status';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import { buy_sell } from 'Constants/buy-sell';
 import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
@@ -79,8 +78,8 @@ const AdvertiserPage = () => {
     const setShowAdvertInfo = React.useCallback(
         () => {
             if (has_p2p_advert_info && is_advertiser && !is_barred) {
-                const { is_active, is_visible } = p2p_advert_info || {};
-                const advert_type = p2p_advert_info?.type === buy_sell.BUY ? 1 : 0;
+                const { is_active, is_buy, is_visible } = p2p_advert_info || {};
+                const advert_type = is_buy ? 1 : 0;
 
                 if (is_active && is_visible) {
                     advertiser_page_store.setActiveIndex(advert_type);

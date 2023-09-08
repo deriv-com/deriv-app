@@ -219,8 +219,16 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                 }
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [history, is_p2p_enabled, is_p2p_enabled_success]);
+    }, [
+        currency,
+        error,
+        history,
+        is_p2p_enabled,
+        is_p2p_enabled_success,
+        is_svg,
+        is_virtual,
+        toggleReadyToDepositModal,
+    ]);
 
     if (
         ((!is_logged_in || isMobile()) && is_logging_in) ||

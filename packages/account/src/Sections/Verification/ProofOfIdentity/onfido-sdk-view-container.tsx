@@ -56,7 +56,7 @@ const OnfidoSdkViewContainer = observer(
         const [is_onfido_initialized, setIsOnfidoInitialized] = React.useState(false);
 
         const { common } = useStore();
-        const { current_language } = common;
+        const { current_language, is_language_changing } = common;
 
         // IDV country code - Alpha ISO2. Onfido country code - Alpha ISO3
         // Ensures that any form of country code passed here is supported.
@@ -74,8 +74,6 @@ const OnfidoSdkViewContainer = observer(
             : Object.keys(documents_supported).map(d => documents_supported[d].display_name);
 
         const onfido_init = React.useRef<SdkHandle>();
-        // To capture reference of service token
-        const api_key = React.useRef<string>();
 
         // pass is_default_enabled to enable onfido immediately if personal detail component is not required
         // so no user prompt will be there so submit the details in i.e. in case of flow for nigerian clients ATM
@@ -112,7 +110,7 @@ const OnfidoSdkViewContainer = observer(
                         language: {
                             locale:
                                 (`${current_language?.toLowerCase()}_${current_language?.toUpperCase()}` as SupportedLanguages) ||
-                                'en_EN',
+                                'en_US',
                             phrases: getOnfidoPhrases(),
                             mobilePhrases: getOnfidoPhrases(),
                         },
@@ -209,10 +207,15 @@ const OnfidoSdkViewContainer = observer(
         }, []);
 
         React.useEffect(() => {
+            /**
+             * Need to re-initialize Onfido SDK when language changes
+             */
+            if (is_language_changing) {
+                onfido_init.current = undefined;
+            }
             const fetchServiceToken = () => {
                 if (onfido_init.current) return;
                 getOnfidoServiceToken().then(response_token => {
-                    api_key.current = response_token as string;
                     if (typeof response_token !== 'string' && response_token?.error) {
                         handleError(response_token.error);
                         setStatusLoading(false);
@@ -239,18 +242,7 @@ const OnfidoSdkViewContainer = observer(
             return () => {
                 clearTimeout(token_timeout_ref.current);
             };
-        }, [getOnfidoServiceToken, initOnfido, retry_count]);
-
-        React.useEffect(() => {
-            /**
-             * Re-initialize Onfido SDK when language changes
-             */
-            if (api_key.current) {
-                initOnfido(api_key.current as string).then(() => {
-                    setStatusLoading(false);
-                });
-            }
-        }, [initOnfido, current_language]);
+        }, [getOnfidoServiceToken, initOnfido, retry_count, is_language_changing]);
 
         let component_to_load;
 

@@ -71,7 +71,6 @@ const PersonalDetailsForm = props => {
     };
 
     const is_for_idv_or_onfido = is_for_idv || is_for_onfido;
-    const is_not_for_idv_and_onfido = !is_for_idv && !is_for_onfido;
 
     const getFieldHint = field_name =>
         is_for_idv_or_onfido ? (
@@ -136,7 +135,7 @@ const PersonalDetailsForm = props => {
                                 </Text>
                             </div>
                         )}
-                        {is_not_for_idv_and_onfido && (
+                        {!is_for_idv_or_onfido && (
                             <FormSubHeader
                                 title={'salutation' in values ? localize('Title and name') : localize('Name')}
                             />
@@ -192,7 +191,7 @@ const PersonalDetailsForm = props => {
                                 data-testid='last_name'
                             />
                         )}
-                        {is_not_for_idv_and_onfido && <FormSubHeader title={localize('Other details')} />}
+                        {!is_for_idv_or_onfido && <FormSubHeader title={localize('Other details')} />}
                         {'date_of_birth' in values && (
                             <DateOfBirthField
                                 name='date_of_birth'

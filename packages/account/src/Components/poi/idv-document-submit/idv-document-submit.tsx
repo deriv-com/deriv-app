@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Form, Formik, FormikHelpers } from 'formik';
+import { Form, Formik, FormikErrors, FormikHelpers } from 'formik';
 import { GetSettings, ResidenceList, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
 import { Button, HintBox, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
@@ -72,7 +72,7 @@ const IdvDocumentSubmit = ({
     };
 
     const validateFields = (values: TIdvDocumentSubmitForm) => {
-        const errors: Record<string, unknown> = {};
+        const errors: FormikErrors<TIdvDocumentSubmitForm> = {};
         const { document_type, document_number, document_additional } = values;
         const needs_additional_document = !!document_type.additional;
 
@@ -172,7 +172,7 @@ const IdvDocumentSubmit = ({
                     )}
                     <section className='form-body'>
                         <FormSubHeader title={localize('Identity verification')} />
-                        <IDVForm hide_hint={false} selected_country={selected_country} class_name='idv-layout' />
+                        <IDVForm selected_country={selected_country} class_name='idv-layout' />
 
                         <FormSubHeader title={localize('Details')} />
                         <PersonalDetailsForm

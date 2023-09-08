@@ -98,7 +98,7 @@ export const generatePlaceholderText = (selected_doc: string) => {
     }
 };
 
-export const validate = <T>(errors: Record<string, unknown>, values: T) => {
+export const validate = <T>(errors: Record<string, string>, values: T) => {
     return (fn: (value: string) => string, arr: string[], err_msg: string) => {
         arr.forEach(field => {
             const value = values[field as keyof typeof values] as string;

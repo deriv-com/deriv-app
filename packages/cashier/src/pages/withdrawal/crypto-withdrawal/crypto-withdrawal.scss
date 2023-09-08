@@ -1,0 +1,28 @@
+.crypto-withdrawal {
+    display: flex;
+    gap: 2.4rem;
+
+    &__sidebar {
+        max-width: 28.8rem;
+        width: 100%;
+
+        @include mobile {
+            display: none;
+        }
+    }
+
+    &__content {
+        flex: 1;
+    }
+
+    &__fiat-container {
+        display: flex;
+        max-width: 70.8rem;
+        margin: 0 auto;
+
+        .cashier__content {
+            width: 100%;
+            flex: 1;
+        }
+    }
+}

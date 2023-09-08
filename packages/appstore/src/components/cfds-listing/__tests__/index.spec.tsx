@@ -14,7 +14,6 @@ describe('CFDsListing', () => {
             selected_region: 'Non-EU',
             has_any_real_account: true,
             is_real: true,
-            can_get_more_cfd_mt5_accounts: true,
             no_MF_account: true,
             is_demo_low_risk: true,
         },
@@ -26,6 +25,7 @@ describe('CFDsListing', () => {
             cfd: {
                 toggleCompareAccountsModal: jest.fn(),
                 setAccountType: jest.fn(),
+                current_list: {},
             },
         },
     });

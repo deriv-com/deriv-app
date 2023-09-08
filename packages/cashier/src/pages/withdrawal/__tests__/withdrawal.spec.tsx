@@ -204,51 +204,7 @@ describe('<Withdrawal />', () => {
             },
         });
         render(mockWithdrawal(mock_root_store));
-
         expect(screen.getByText('CryptoWithdrawal')).toBeInTheDocument();
-    });
-
-    it('should render <CryptoWithdrawReceipt /> component', () => {
-        const mock_root_store = mockStore({
-            client: {
-                balance: '1000',
-                currency: 'USD',
-                is_authorize: true,
-            },
-            modules: {
-                cashier: {
-                    ...cashier_mock,
-                    withdraw: {
-                        ...cashier_mock.withdraw,
-                        is_withdraw_confirmed: true,
-                    },
-                },
-            },
-        });
-        render(mockWithdrawal(mock_root_store));
-
-        expect(screen.getByText('CryptoWithdrawReceipt')).toBeInTheDocument();
-    });
-
-    it('should render <CryptoTransactionsHistory /> component', () => {
-        const mock_root_store = mockStore({
-            client: {
-                balance: '1000',
-                currency: 'USD',
-                is_authorize: true,
-            },
-            modules: {
-                cashier: {
-                    ...cashier_mock,
-                    transaction_history: {
-                        is_crypto_transactions_visible: true,
-                    },
-                },
-            },
-        });
-        render(mockWithdrawal(mock_root_store));
-
-        expect(screen.getByText('CryptoTransactionsHistory')).toBeInTheDocument();
     });
 
     it('should render <WithdrawalVerificationEmail /> component', () => {

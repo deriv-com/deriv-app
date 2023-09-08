@@ -65,7 +65,7 @@ type TInputConfig = {
     /**
      * Whether the input field is required or not
      */
-    required: boolean;
+    required?: boolean;
     /**
      * Whether the input field is disabled
      */
@@ -84,7 +84,7 @@ type TInputConfig = {
     rules?: Array<Rule>;
 };
 
-type TGetField = Omit<TInputConfig, 'initial_value'> & { name: string };
+export type TGetField = Omit<TInputConfig, 'initial_value'> & { name: string };
 
 export type TFormFieldsConfig = {
     [key in TFields]: TInputConfig;
@@ -105,7 +105,7 @@ export const getFormFieldsConfig = (
     account_settings: GetSettings,
     residence_list: ResidenceList,
     required_fields: TFields[]
-): TFormFieldsConfig => {
+) => {
     /**
      * Check if the field is disabled based on the immutable_fields from API
      * @param field - string - name of the field
@@ -245,7 +245,7 @@ export const getFormFieldsConfig = (
  * @param fields - TFormFieldsConfig
  * @returns Record<string, unknown> - initial values for form
  */
-const generateInitialValues = (fields: TFormFieldsConfig) => {
+const generateInitialValues = (fields: ReturnType<typeof getFormFieldsConfig>) => {
     const initial_values: Record<TFields, string> = {} as Record<TFields, string>;
     (Object.keys(fields) as TFields[]).forEach(field => {
         initial_values[field] = fields[field].initial_value;
@@ -293,8 +293,9 @@ export const getFormConfig = (options: {
     const { account_settings, residence_list, required_fields, with_input_types = false } = options;
     const fields_config = getFormFieldsConfig(account_settings, residence_list, required_fields);
     const inputs: Record<TFields, TGetField> = {} as Record<TFields, TGetField>;
-    (Object.keys(fields_config) as TFields[]).forEach(field => {
-        inputs[field] = getField(fields_config, field, with_input_types);
+    Object.keys(fields_config).forEach(field_key => {
+        // @ts-expect-error `field_key` is always a key of `fields_config`, Hence can ignore the TS error.
+        inputs[field_key] = getField(fields_config, field_key, with_input_types);
     });
     return {
         fields: inputs,

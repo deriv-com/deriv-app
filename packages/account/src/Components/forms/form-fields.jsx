@@ -30,6 +30,7 @@ export const FormInputField = ({ name, optional = false, ...rest }) => (
                 autoComplete='off'
                 error={touched[field.name] && errors[field.name]}
                 warn={rest.warn}
+                data_testId={`dt_${name}`}
                 {...field}
                 {...rest}
             />

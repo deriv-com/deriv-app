@@ -1,23 +1,15 @@
-import React from 'react';
-import {
-    Autocomplete,
-    Button,
-    DesktopWrapper,
-    Loading,
-    MobileWrapper,
-    Modal,
-    SelectNative,
-    Text,
-} from '@deriv/components';
+import { Button, Loading, Modal, Text } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
-import { isMobile } from '@deriv/shared';
-import { Field, FieldProps, Form, Formik, FormikErrors } from 'formik';
+import { Form, Formik } from 'formik';
+import React from 'react';
+import { useSettings } from '../../../../api/src/hooks';
 import FormFieldInfo from '../form-field-info';
 import { FormInputField } from '../forms/form-fields';
+import FormSelectField from '../forms/form-select-field';
 import { TListItem, getFormConfig } from './form-config';
-import { useSettings } from '../../../../api/src/hooks';
 
 const FormTitle = () => (
     <Text
@@ -32,7 +24,7 @@ const FormTitle = () => (
 );
 
 type TAdditionalKycInfoFormProps = {
-    setError?: React.Dispatch<React.SetStateAction<unknown | string>>;
+    setError?: React.Dispatch<React.SetStateAction<unknown>>;
 };
 
 export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoFormProps) => {
@@ -40,7 +32,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
     const { residence_list, updateAccountStatus } = client;
     const {
         update,
-        mutation: { isLoading, isSuccess, error, isError },
+        mutation: { isLoading, error, status },
         data: account_settings,
         isLoading: isAccountSettingsLoading,
     } = useSettings();
@@ -65,30 +57,15 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
     };
 
     React.useEffect(() => {
-        if (isSuccess) {
+        if (status === 'success') {
             updateAccountStatus();
             notifications.refreshNotifications();
             ui.toggleAdditionalKycInfoModal();
             ui.toggleKycInformationSubmittedModal();
+        } else if (status === 'error') {
+            setError?.(error);
         }
-    }, [isSuccess, notifications, ui, updateAccountStatus]);
-
-    React.useEffect(() => {
-        isError && setError?.(error);
-    }, [error, isError, setError]);
-
-    const onItemSelection =
-        (
-            field: string,
-            setFieldValue: (
-                field: string,
-                value: string,
-                shouldValidate?: boolean | undefined
-            ) => Promise<void | FormikErrors<Record<string, unknown>>>
-        ) =>
-        ({ value, text }: TListItem) => {
-            setFieldValue(field, value ? text : '', true);
-        };
+    }, [error, notifications, setError, status, ui, updateAccountStatus]);
 
     if (isAccountSettingsLoading) {
         return <Loading is_fullscreen={false} />;
@@ -111,33 +88,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                         <section className='additional-kyc-info-modal__form-layout--fields'>
                             <FormTitle />
                             <fieldset className='additional-kyc-info-modal__form-field'>
-                                <Field name='place_of_birth'>
-                                    {({ field, meta: { touched, error } }: FieldProps<string>) => (
-                                        <React.Fragment>
-                                            <DesktopWrapper>
-                                                <Autocomplete
-                                                    {...field}
-                                                    {...fields.place_of_birth}
-                                                    data-lpignore='true'
-                                                    autoComplete='off' // prevent chrome autocomplete
-                                                    error={touched ? error : undefined}
-                                                    onItemSelection={onItemSelection(field.name, setFieldValue)}
-                                                    data-testid={`dt_${field.name}`}
-                                                />
-                                            </DesktopWrapper>
-                                            <MobileWrapper>
-                                                <SelectNative
-                                                    {...field}
-                                                    {...fields.place_of_birth}
-                                                    error={touched ? error : undefined}
-                                                    use_text
-                                                    should_hide_disabled_options={false}
-                                                    data-testid={`dt_${field.name}`}
-                                                />
-                                            </MobileWrapper>
-                                        </React.Fragment>
-                                    )}
-                                </Field>
+                                <FormSelectField {...fields.place_of_birth} />
                             </fieldset>
                             <fieldset
                                 className={classNames(
@@ -145,34 +96,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                     'additional-kyc-info-modal__form-field--info'
                                 )}
                             >
-                                <Field name='tax_residence'>
-                                    {({ field, meta: { touched, error } }: FieldProps<string>) => (
-                                        <React.Fragment>
-                                            <DesktopWrapper>
-                                                <Autocomplete
-                                                    {...field}
-                                                    {...fields.tax_residence}
-                                                    data-lpignore='true'
-                                                    autoComplete='off' // prevent chrome autocomplete
-                                                    type='text'
-                                                    error={touched ? error : undefined}
-                                                    onItemSelection={onItemSelection(field.name, setFieldValue)}
-                                                    data-testid={`dt_${field.name}`}
-                                                />
-                                            </DesktopWrapper>
-                                            <MobileWrapper>
-                                                <SelectNative
-                                                    {...field}
-                                                    {...fields.tax_residence}
-                                                    error={touched ? error : undefined}
-                                                    use_text
-                                                    should_hide_disabled_options={false}
-                                                    data-testid={`dt_${field.name}`}
-                                                />
-                                            </MobileWrapper>
-                                        </React.Fragment>
-                                    )}
-                                </Field>
+                                <FormSelectField {...fields.tax_residence} />
                                 <FormFieldInfo
                                     message={
                                         <Localize i18n_default_text='The country in which you meet the criteria for paying taxes. Usually the country in which you physically reside.' />
@@ -180,14 +104,11 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                 />
                             </fieldset>
                             <fieldset className='additional-kyc-info-modal__form-field--info'>
-                                <FormInputField
-                                    data-testid='dt_tax_identification_number'
-                                    {...fields.tax_identification_number}
-                                />
+                                <FormInputField {...fields.tax_identification_number} />
                                 <FormFieldInfo
                                     message={
                                         <Localize
-                                            i18n_default_text="Don't know your tax identification number? <1></1>Click <0>here</0> to learn more."
+                                            i18n_default_text="Don't know your tax identification number? <1 />Click <0>here</0> to learn more."
                                             components={[
                                                 <a
                                                     key={0}
@@ -203,37 +124,13 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                 />
                             </fieldset>
                             <fieldset className='additional-kyc-info-modal__form-field'>
-                                <Field name='account_opening_reason'>
-                                    {({ field, meta: { touched, error } }: FieldProps<string>) => (
-                                        <React.Fragment>
-                                            <DesktopWrapper>
-                                                <Autocomplete
-                                                    {...field}
-                                                    {...fields.account_opening_reason}
-                                                    data-lpignore='true'
-                                                    autoComplete='off' // prevent chrome autocomplete
-                                                    type='text'
-                                                    error={touched ? error : undefined}
-                                                    onItemSelection={({ value = '' }: TListItem) => {
-                                                        setFieldValue(field.name, value, true);
-                                                    }}
-                                                    list_height='8rem'
-                                                    data-testid={`dt_${field.name}`}
-                                                />
-                                            </DesktopWrapper>
-                                            <MobileWrapper>
-                                                <SelectNative
-                                                    {...field}
-                                                    {...fields.account_opening_reason}
-                                                    error={touched ? error : undefined}
-                                                    use_text
-                                                    should_hide_disabled_options={false}
-                                                    data-testid={`dt_${field.name}`}
-                                                />
-                                            </MobileWrapper>
-                                        </React.Fragment>
-                                    )}
-                                </Field>
+                                <FormSelectField
+                                    onItemSelection={({ value = '' }: TListItem) => {
+                                        setFieldValue('account_opening_reason', value, true);
+                                    }}
+                                    list_height='6rem'
+                                    {...fields.account_opening_reason}
+                                />
                             </fieldset>
                         </section>
                     )}

@@ -14,14 +14,26 @@ import { Localize } from '@deriv/translations';
 import AdditionalKycInfoForm from './additional-kyc-info-form';
 
 type TAdditionalKycInfoFormWithHintBox = {
-    error?: unknown | string;
+    error?: unknown;
     setError?: React.Dispatch<React.SetStateAction<unknown | string>>;
 };
 
 const AdditionalKycInfoFormWithHintBox = ({ error, setError }: TAdditionalKycInfoFormWithHintBox) => {
     return (
         <React.Fragment>
-            {!!error && <InlineMessage size='sm' message={String(error)} type='error' />}
+            {!!error && (
+                <InlineMessage
+                    size='sm'
+                    message={
+                        error &&
+                        typeof error === 'object' &&
+                        'message' in error &&
+                        typeof error.message === 'string' &&
+                        error.message
+                    }
+                    type='error'
+                />
+            )}
             <AdditionalKycInfoForm setError={setError} />
         </React.Fragment>
     );
@@ -31,7 +43,7 @@ export const AdditionalKycInfoModal = observer(() => {
     const {
         ui: { is_additional_kyc_info_modal_open: is_open, toggleAdditionalKycInfoModal },
     } = useStore();
-    const [error, setError] = React.useState<unknown | string>('abc');
+    const [error, setError] = React.useState<unknown>('');
 
     const toggleModal = (e?: React.MouseEvent<HTMLElement, MouseEvent> | undefined) => {
         // if e.target is anchor tag, don't close modal for link click within modal

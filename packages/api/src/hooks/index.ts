@@ -18,3 +18,5 @@ export { default as useTradingPlatformAvailableAccounts } from './useTradingPlat
 export { default as useWalletAccountsList } from './useWalletAccountsList';
 export { default as useCreateMT5Account } from './useCreateMT5Account';
 export { default as useCreateOtherCFDAccount } from './useCreateOtherCFDAccount';
+export { default as useNotificationEvent } from './useNotificationEvent';
+export { default as useServiceToken } from './useServiceToken';

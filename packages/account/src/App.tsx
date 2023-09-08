@@ -4,6 +4,7 @@ import ResetTradingPassword from './Containers/reset-trading-password';
 import { setWebsocket } from '@deriv/shared';
 import { StoreProvider } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
+import { APIProvider } from '@deriv/api';
 
 // TODO: add correct types for WS after implementing them
 type TAppProps = {
@@ -21,9 +22,11 @@ const App = ({ passthrough }: TAppProps) => {
 
     return (
         <StoreProvider store={root_store}>
-            {Notifications && <Notifications />}
-            <Routes />
-            <ResetTradingPassword />
+            <APIProvider>
+                {Notifications && <Notifications />}
+                <Routes />
+                <ResetTradingPassword />
+            </APIProvider>
         </StoreProvider>
     );
 };

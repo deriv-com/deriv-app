@@ -1,17 +1,16 @@
 import React, { useCallback } from 'react';
 import countries from 'i18n-iso-countries';
-import * as Cookies from 'js-cookie';
 import { init, SdkHandle, SdkResponse, SupportedLanguages } from 'onfido-sdk-ui';
 import { CSSTransition } from 'react-transition-group';
-import { GetSettings, ResidenceList } from '@deriv/api-types';
+import { useNotificationEvent, useServiceToken, useSettings } from '@deriv/api';
+import { ResidenceList } from '@deriv/api-types';
 import { Loading, ThemedScrollbars } from '@deriv/components';
-import { cryptoMathRandom, isMobile, WS } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import ErrorMessage from 'Components/error-component';
-import getOnfidoPhrases from 'Constants/onfido-phrases';
 import MissingPersonalDetails from 'Components/poi/missing-personal-details';
 import PoiConfirmWithExampleFormContainer from 'Components/poi/poi-confirm-with-example-form-container';
+import getOnfidoPhrases from 'Constants/onfido-phrases';
 import OnfidoSdkView from 'Sections/Verification/ProofOfIdentity/onfido-sdk-view';
-import { observer, useStore } from '@deriv/stores';
 
 type TAPIError = {
     code?: string;
@@ -19,13 +18,7 @@ type TAPIError = {
     type?: string;
 };
 
-type TServiceToken = {
-    error?: TAPIError;
-    service_token?: { onfido?: { token: string } };
-};
-
 type TOnfidoSdkViewContainer = {
-    account_settings: GetSettings;
     country_code: string;
     documents_supported:
         | string[]
@@ -38,7 +31,6 @@ type TOnfidoSdkViewContainer = {
 
 const OnfidoSdkViewContainer = observer(
     ({
-        account_settings,
         country_code,
         documents_supported,
         getChangeableFields,
@@ -46,17 +38,15 @@ const OnfidoSdkViewContainer = observer(
         height,
         is_default_enabled,
     }: TOnfidoSdkViewContainer) => {
-        const [api_error, setAPIError] = React.useState<TAPIError>();
+        const [api_error, setAPIError] = React.useState<string>();
         const [missing_personal_details, setMissingPersonalDetails] = React.useState('');
-        const [is_status_loading, setStatusLoading] = React.useState(true);
-        const [retry_count, setRetryCount] = React.useState(0);
         const [is_onfido_disabled, setIsOnfidoDisabled] = React.useState(true);
-        const token_timeout_ref = React.useRef<ReturnType<typeof setTimeout>>();
         const [is_confirmed, setIsConfirmed] = React.useState(false);
         const [is_onfido_initialized, setIsOnfidoInitialized] = React.useState(false);
 
-        const { common } = useStore();
-        const { current_language, is_language_changing } = common;
+        const { common, ui } = useStore();
+        const { current_language } = common;
+        const { is_mobile } = ui;
 
         // IDV country code - Alpha ISO2. Onfido country code - Alpha ISO3
         // Ensures that any form of country code passed here is supported.
@@ -73,33 +63,31 @@ const OnfidoSdkViewContainer = observer(
             ? documents_supported
             : Object.keys(documents_supported).map(d => documents_supported[d].display_name);
 
+        const { data: account_settings } = useSettings();
+
+        const { send, isSuccess: isNotified } = useNotificationEvent();
+
+        const { service_token, isSuccess, isError, error, isFetched, isLoading } = useServiceToken({
+            service: 'onfido',
+            country: token_country_code,
+        });
+        let component_to_load: React.ReactNode;
+
         const onfido_init = React.useRef<SdkHandle>();
 
-        // pass is_default_enabled to enable onfido immediately if personal detail component is not required
-        // so no user prompt will be there so submit the details in i.e. in case of flow for nigerian clients ATM
-        React.useEffect(() => {
-            if (is_default_enabled) {
-                setIsOnfidoDisabled(false);
-            }
-        }, [is_default_enabled]);
-
-        const onComplete = React.useCallback(
-            (data: Omit<SdkResponse, 'data'> & { data?: { id?: string } }) => {
-                onfido_init?.current?.tearDown();
-                const document_ids = Object.keys(data).map(key => data[key as keyof SdkResponse]?.id);
-                WS.notificationEvent({
-                    notification_event: 1,
+        const onComplete = (data: Omit<SdkResponse, 'data'> & { data?: { id?: string } }) => {
+            onfido_init?.current?.tearDown();
+            const document_ids = Object.keys(data).map(key => data[key as keyof SdkResponse]?.id);
+            if (document_ids?.length) {
+                send({
                     category: 'authentication',
                     event: 'poi_documents_uploaded',
                     args: {
-                        documents: document_ids,
+                        documents: document_ids as Array<string>,
                     },
-                }).then(() => {
-                    handleViewComplete();
                 });
-            },
-            [handleViewComplete]
-        );
+            }
+        };
 
         const initOnfido = React.useCallback(
             async (service_token: string) => {
@@ -145,46 +133,16 @@ const OnfidoSdkViewContainer = observer(
                     });
                     setIsOnfidoInitialized(true);
                 } catch (err) {
-                    setAPIError(err as TAPIError);
+                    if (typeof err === 'string') {
+                        setAPIError(err as string);
+                    } else {
+                        setAPIError(err?.message);
+                    }
                     setIsOnfidoDisabled(true);
                     onfido_init.current = undefined;
                 }
             },
             [onComplete, onfido_documents, onfido_country_code, current_language]
-        );
-
-        const getOnfidoServiceToken = React.useCallback(
-            (): Promise<string | { error: TAPIError }> =>
-                new Promise(resolve => {
-                    const onfido_cookie_name = 'onfido_token';
-                    const onfido_cookie = Cookies.get(onfido_cookie_name);
-
-                    if (!onfido_cookie) {
-                        WS.serviceToken({
-                            service_token: 1,
-                            service: 'onfido',
-                            country: token_country_code,
-                        }).then((response: TServiceToken) => {
-                            if (response.error) {
-                                resolve({ error: response.error });
-                                return;
-                            }
-                            if (response.service_token?.onfido) {
-                                const { token } = response.service_token.onfido;
-                                const in_90_minutes = 1 / 16;
-                                Cookies.set(onfido_cookie_name, token, {
-                                    expires: in_90_minutes,
-                                    secure: true,
-                                    sameSite: 'strict',
-                                });
-                                resolve(token);
-                            }
-                        });
-                    } else {
-                        resolve(onfido_cookie);
-                    }
-                }),
-            [token_country_code]
         );
 
         const handleError = (error: TAPIError) => {
@@ -196,7 +154,7 @@ const OnfidoSdkViewContainer = observer(
                     setMissingPersonalDetails('postal_code');
                     break;
                 default:
-                    setAPIError(error);
+                    setAPIError(error.message);
                     break;
             }
         };
@@ -208,45 +166,38 @@ const OnfidoSdkViewContainer = observer(
 
         React.useEffect(() => {
             /**
-             * Need to re-initialize Onfido SDK when language changes
+             * Handled re-initialization of onfido sdk when language is changed
              */
-            if (is_language_changing) {
-                onfido_init.current = undefined;
+            if (current_language) {
+                if (isSuccess && service_token?.onfido?.token) {
+                    initOnfido(service_token?.onfido?.token);
+                } else if (isError) {
+                    handleError(error as TAPIError);
+                }
             }
-            const fetchServiceToken = () => {
-                if (onfido_init.current) return;
-                getOnfidoServiceToken().then(response_token => {
-                    if (typeof response_token !== 'string' && response_token?.error) {
-                        handleError(response_token.error);
-                        setStatusLoading(false);
-                        setRetryCount(retry_count + 1);
-                        onfido_init.current = undefined;
-                    } else if (typeof response_token === 'string') {
-                        initOnfido(response_token).then(() => {
-                            setStatusLoading(false);
-                        });
-                    }
-                    if (token_timeout_ref.current) clearTimeout(token_timeout_ref.current);
-                });
-            };
+        }, [current_language, isFetched]);
 
-            // retry state will re-run the token fetching
-            if (retry_count === 0) {
-                fetchServiceToken();
-            } else if (retry_count !== 0 && retry_count < 3) {
-                // Incorporating Exponential_backoff algo to prevent immediate throttling
-                token_timeout_ref.current = setTimeout(() => {
-                    fetchServiceToken();
-                }, Math.pow(2, retry_count) + cryptoMathRandom() * 1000);
+        React.useEffect(() => {
+            /**
+             * Enables onfido sdk
+             * Pass is_default_enabled to enable onfido immediately if personal detail component is not required
+             * so no user prompt will be there so submit the details in i.e. in case of flow for nigerian clients ATM
+             */
+            if (is_default_enabled) {
+                setIsOnfidoDisabled(false);
             }
-            return () => {
-                clearTimeout(token_timeout_ref.current);
-            };
-        }, [getOnfidoServiceToken, initOnfido, retry_count, is_language_changing]);
+        }, [is_default_enabled]);
 
-        let component_to_load;
+        React.useEffect(() => {
+            /**
+             * Handles cleanup operations when document submission is completed
+             */
+            if (isNotified) {
+                handleViewComplete();
+            }
+        }, [isNotified]);
 
-        if (is_status_loading) {
+        if (isLoading) {
             component_to_load = <Loading is_fullscreen={false} />;
         } else if (missing_personal_details) {
             component_to_load = (
@@ -255,13 +206,13 @@ const OnfidoSdkViewContainer = observer(
                     from='proof_of_identity'
                 />
             );
-        } else if (retry_count >= 3 && api_error) {
+        } else if (api_error) {
             // Error message will only display if retry count exceeds 3
-            component_to_load = <ErrorMessage error_message={(api_error as TAPIError)?.message ?? api_error} />;
+            component_to_load = <ErrorMessage message={api_error} />;
         }
 
         return (
-            <ThemedScrollbars is_bypassed={isMobile()} height={height}>
+            <ThemedScrollbars is_bypassed={is_mobile} height={height}>
                 <div className={'onfido-container'}>
                     {component_to_load || (
                         <CSSTransition

@@ -142,7 +142,6 @@ const POISubmission = ({
 
                     return (
                         <OnfidoUpload
-                            account_settings={account_settings}
                             country_code={country_code}
                             documents_supported={documents_supported}
                             getChangeableFields={getChangeableFields}

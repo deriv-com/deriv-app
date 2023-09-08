@@ -1,0 +1,50 @@
+.crypto-withdraw-receipt-wallet {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    max-width: 588px;
+    gap: 0.8rem;
+    margin: 0 auto;
+
+    @include mobile {
+        max-width: 100%;
+    }
+
+    &__address-header {
+        margin-bottom: -0.4rem;
+    }
+
+    &__account-info {
+        &-address {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 0.8rem;
+            gap: 0.8rem;
+            background-color: $color-grey-2;
+            border-radius: 0.4rem;
+        }
+
+        &-clipboard {
+            display: block;
+        }
+    }
+
+    &__amount-wrapper {
+        margin: 1.2rem 0;
+    }
+
+    &__button-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+
+        .dc-btn {
+            height: 4rem;
+        }
+    }
+}

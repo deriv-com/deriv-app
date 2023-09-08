@@ -4,8 +4,8 @@ import { Dialog, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { useDBotStore } from '../../stores/useDBotStore';
-import { setTourSettings, tour_status_ended, tour_type } from './dbot-tours/utils';
+import { useDBotStore } from '../../../../stores/useDBotStore';
+import { setTourSettings, tour_status_ended, tour_type } from '../utils';
 
 const TourTriggrerDialog = observer(() => {
     const { dashboard } = useDBotStore();

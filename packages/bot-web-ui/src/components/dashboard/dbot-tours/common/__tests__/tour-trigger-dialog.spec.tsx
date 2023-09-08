@@ -2,10 +2,10 @@ import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { act, fireEvent, render, screen } from '@testing-library/react';
-import RootStore from '../../stores/root-store';
-import { DBotStoreProvider, mockDBotStore } from '../../stores/useDBotStore';
-import { setTourType } from './dbot-tours/utils';
-import TourTriggrerDialog from './tour-trigger-dialog';
+import RootStore from '../../../../../stores/root-store';
+import { DBotStoreProvider, mockDBotStore } from '../../../../../stores/useDBotStore';
+import { setTourType } from '../../utils';
+import TourTriggrerDialog from '../tour-trigger-dialog';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProgressBarOnboarding } from '@deriv/components';
+import { ProgressBarTracker } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -32,13 +32,13 @@ const BotBuilderTour = observer(() => {
             {content_data && <Accordion data-testid='bot-builder-acc' content_data={content_data} expanded />}
             <div className='dbot-slider__status'>
                 <div className='dbot-slider__progress-bar'>
-                    {/* {
-                        <ProgressBarOnboarding
+                    {
+                        <ProgressBarTracker
                             step={tour_step}
-                            amount_of_steps={BOT_BUILDER_MOBILE.map(v => v.tour_step_key.toString())}
+                            steps_list={BOT_BUILDER_MOBILE.map(v => v.tour_step_key.toString())}
                             setStep={setTourStep}
                         />
-                    } */}
+                    }
                 </div>
                 <div className='dbot-slider__button-group'>
                     {tour_step !== 1 && (

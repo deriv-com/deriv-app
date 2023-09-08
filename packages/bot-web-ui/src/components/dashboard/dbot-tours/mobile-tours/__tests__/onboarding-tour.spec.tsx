@@ -43,12 +43,6 @@ describe('<OnboardingTour />', () => {
         expect(tourElement).toHaveClass('dbot-slider--active');
     });
 
-    it('calls onCloseTour when Exit Tour is clicked', () => {
-        const exitTourButton = screen.getByTestId('exit-onboard-tour');
-        userEvent.click(exitTourButton);
-        expect(mock_DBot_store?.dashboard.has_started_onboarding_tour).toBe(false);
-    });
-
     it('calls onCloseTour when Skip is clicked', () => {
         const skipTourButton = screen.getByTestId('skip-onboard-tour');
         userEvent.click(skipTourButton);
@@ -57,9 +51,7 @@ describe('<OnboardingTour />', () => {
 
     it('should show prev button if next button is clicked', async () => {
         const nextButton = screen.getByTestId('next-onboard-tour');
-        for (let i = 0; i < 3; i++) {
-            userEvent.click(nextButton);
-        }
+        userEvent.click(nextButton);
         await waitFor(() => {
             const prevButton = screen.getByTestId('prev-onboard-tour');
             expect(prevButton).toBeInTheDocument();
@@ -68,12 +60,25 @@ describe('<OnboardingTour />', () => {
 
     it('should not show prev button if we reach to step 1', async () => {
         const prevButton = screen.getByTestId('prev-onboard-tour');
-        for (let i = 0; i < 2; i++) {
-            userEvent.click(prevButton);
-        }
+        userEvent.click(prevButton);
         await waitFor(() => {
             expect(prevButton).not.toBeInTheDocument();
         });
+    });
+
+    it('calls onCloseTour when Exit Tour is clicked', () => {
+        const nextButton = screen.getByTestId('next-onboard-tour');
+        userEvent.click(nextButton);
+        const exitTourButton = screen.getByTestId('exit-onboard-tour');
+        userEvent.click(exitTourButton);
+        expect(mock_DBot_store?.dashboard.has_started_onboarding_tour).toBe(false);
+    });
+
+    it('should render step 2 on next button click', () => {
+        const nextButton = screen.getByTestId('next-onboard-tour');
+        userEvent.click(nextButton);
+        const navBar = screen.getByTestId('dbot-onboard-slider__navbar');
+        expect(navBar).toHaveTextContent('2/7');
     });
 
     it('should render step 3 on next button click', () => {

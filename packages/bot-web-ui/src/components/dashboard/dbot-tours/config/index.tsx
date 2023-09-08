@@ -3,7 +3,7 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { getUrlBase } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import TourGuide from '../../tour-guide';
+import TourSteps from '../desktop-tours/common/tour-steps';
 
 type TJoyrideConfig = Record<
     'showProgress' | 'spotlightClicks' | 'disableBeacon' | 'disableOverlay' | 'disableCloseOnEsc',
@@ -22,7 +22,7 @@ export const DBOT_ONBOARDING = [
     {
         target: '#id-bot-builder',
         content: (
-            <TourGuide
+            <TourSteps
                 label={localize('Build from scratch')}
                 content={[
                     localize(
@@ -42,7 +42,7 @@ export const DBOT_ONBOARDING = [
     {
         target: '#id-charts',
         content: (
-            <TourGuide
+            <TourSteps
                 label={localize('Monitor the market')}
                 content={[localize('View the market price of your favourite assets.')]}
                 media={getUrlBase('/public/videos/dbot-onboarding-tour-step-2.mp4')}
@@ -55,7 +55,7 @@ export const DBOT_ONBOARDING = [
     {
         target: '#id-tutorials',
         content: (
-            <TourGuide
+            <TourSteps
                 label={localize('Learn more with our tutorials')}
                 content={[localize('Explore the video guides and FAQs to build your bot in the tutorials tab.')]}
                 media={getUrlBase('/public/videos/dbot-onboarding-tour-step-3.mp4')}
@@ -68,7 +68,7 @@ export const DBOT_ONBOARDING = [
     {
         target: '#tab__dashboard__table__tiles',
         content: (
-            <TourGuide
+            <TourSteps
                 label={localize('Use these shortcuts')}
                 content={[localize('You can also import or build your bot using any of these shortcuts.')]}
                 step_index={4}
@@ -81,7 +81,7 @@ export const DBOT_ONBOARDING = [
     {
         target: '.dc-drawer__container',
         content: (
-            <TourGuide
+            <TourSteps
                 label={localize('Check your bot’s performance')}
                 content={[localize('See how your bot is doing in real-time.')]}
                 media={getUrlBase('/public/videos/dbot-onboarding-tour-step-5.mp4')}
@@ -95,7 +95,7 @@ export const DBOT_ONBOARDING = [
     {
         target: '.animation__wrapper',
         content: (
-            <TourGuide
+            <TourSteps
                 label={localize('Run your bot')}
                 content={[
                     <Localize
@@ -114,7 +114,7 @@ export const DBOT_ONBOARDING = [
     {
         target: '#id-tutorials',
         content: (
-            <TourGuide
+            <TourSteps
                 label={localize('Want to retake the tour?')}
                 content={[
                     <Text key={`${0}-id-tutorials`} as='p'>
@@ -413,7 +413,6 @@ export type TMobileTourConfig = {
     header: string;
     content: Array<React.ReactElement>;
     tour_step_key: number;
-    step_key?: number;
     img?: string;
     media?: string;
 };
@@ -478,9 +477,12 @@ export const DBOT_ONBOARDING_MOBILE: TMobileTourConfig[] = [
         tour_step_key: 3,
     },
     {
-        header: localize('Guides and FAQs to help you'),
+        header: localize('Learn more with our tutorials'),
         content: [
-            <Localize key='import-or-choose-your-bot' i18n_default_text='Start with a video guide and the FAQs.' />,
+            <Localize
+                key='import-or-choose-your-bot'
+                i18n_default_text='Explore the video guides and FAQs to build your bot in the tutorials tab.'
+            />,
         ],
         media: getUrlBase('/public/videos/dbot-mobile-onboarding-step-3.mp4'),
         tour_step_key: 4,
@@ -491,24 +493,25 @@ export const DBOT_ONBOARDING_MOBILE: TMobileTourConfig[] = [
         content: [
             <Localize
                 key='use-these-shortcuts'
-                i18n_default_text='You can also use these shortcuts to import or build your bot.'
+                i18n_default_text='You can also import or build your bot using any of these shortcuts.'
             />,
         ],
         tour_step_key: 5,
     },
     {
-        header: localize('How is my bot doing?'),
+        header: localize('Check your bot’s performance'),
         media: getUrlBase('/public/videos/dbot-mobile-onboarding-step-5.mp4'),
-        content: [<Localize key='use-these-shortcuts' i18n_default_text="See your bot's performance in real-time." />],
+        content: [<Localize key='use-these-shortcuts' i18n_default_text='See how your bot is doing in real-time.' />],
         tour_step_key: 6,
     },
     {
-        header: localize('Run or stop your bot'),
+        header: localize('Run your bot'),
         media: getUrlBase('/public/videos/dbot-mobile-onboarding-step-6.mp4'),
         content: [
             <Localize
                 key='use-these-shortcuts'
-                i18n_default_text='Click Run when you want to start trading, and click Stop when you want to stop.'
+                i18n_default_text='Click <0>Run</0> when you want to start trading, and click <0>Stop</0> when you want to stop.'
+                components={[<strong key={0} />]}
             />,
         ],
         tour_step_key: 7,

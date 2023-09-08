@@ -1,20 +1,7 @@
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 import { TTradeStore } from 'Types';
 
-type TOnChangeStartDate = (store: TTradeStore) => Promise<
-    Pick<TTradeStore, 'contract_start_type' | 'duration_units_list' | 'start_time' | 'expiry_date' | 'expiry_type'> & {
-        sessions?: TTradeStore['sessions'];
-    } & {
-        duration_min_max: { [key: string]: { min: number; max: number } } | { min: number; max: number };
-    } & { duration_unit: string | number }
->;
-type TOnChangeExpiry = (store: TTradeStore) => Promise<{
-    expiry_time: TTradeStore['expiry_time'] | moment.Moment;
-    market_open_times?: TTradeStore['market_open_times'] | { open: string[]; close: string[] };
-    market_close_times?: TTradeStore['market_close_times'] | { open: string[]; close: string[] };
-}>;
-
-export const onChangeStartDate: TOnChangeStartDate = async store => {
+export const onChangeStartDate = async (store: TTradeStore) => {
     const { contract_type, duration_unit, start_date } = store;
     const server_time = store.root_store?.common.server_time;
     let { start_time, expiry_type } = store;
@@ -49,7 +36,7 @@ export const onChangeStartDate: TOnChangeStartDate = async store => {
     };
 };
 
-export const onChangeExpiry: TOnChangeExpiry = async store => {
+export const onChangeExpiry = async (store: TTradeStore) => {
     const { start_time, expiry_date, expiry_type, expiry_time, start_date, symbol, sessions } = store;
 
     const trading_times = await ContractType.getTradingTimes(expiry_date, symbol);

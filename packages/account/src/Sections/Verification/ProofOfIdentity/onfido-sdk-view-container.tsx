@@ -133,11 +133,7 @@ const OnfidoSdkViewContainer = observer(
                     });
                     setIsOnfidoInitialized(true);
                 } catch (err) {
-                    if (typeof err === 'string') {
-                        setAPIError(err as string);
-                    } else {
-                        setAPIError(err?.message);
-                    }
+                    setAPIError(err?.message ?? err);
                     setIsOnfidoDisabled(true);
                     onfido_init.current = undefined;
                 }

@@ -1,9 +1,11 @@
 import React from 'react';
+import classNames from 'classnames';
+
 import { ButtonToggle, DesktopWrapper, Div100vhContainer, MobileWrapper, Text } from '@deriv/components';
 import { ContentFlag, isDesktop, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import classNames from 'classnames';
+
 import CFDsListing from 'Components/cfds-listing';
 import MainTitleBar from 'Components/main-title-bar';
 import ModalManager from 'Components/modals/modal-manager';

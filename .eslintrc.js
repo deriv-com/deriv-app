@@ -11,7 +11,11 @@ module.exports = {
                     {
                         groups: [
                             // Packages `react` related packages come first.
-                            ['^react', '^moment', '^@?\\w'],
+                            ['^react', '^[a-z]'],
+                            // Packages from a "@deriv" scope come second.
+                            ['^@\\w'],
+                            // Absolute imports and other imports from aliases like 'Components/...'
+                            ['^[A-Z]'],
                             // Internal packages.
                             ['^(@|components)(/.*|$)'],
                             // Side effect imports.

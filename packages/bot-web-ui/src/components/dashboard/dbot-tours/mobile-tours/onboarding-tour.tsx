@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import { ProgressBarOnboarding, Text } from '@deriv/components';
+import { ProgressBarTracker, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { DBOT_ONBOARDING_MOBILE, TStepMobile } from '../config';
+import { DBOT_ONBOARDING_MOBILE, TMobileTourConfig } from '../config';
 import TourButton from './common/tour-button';
 
 const default_tour_data = {
@@ -14,7 +14,7 @@ const default_tour_data = {
     tour_step_key: 1,
 };
 
-type TTourData = TStepMobile & {
+type TTourData = TMobileTourConfig & {
     img: string;
     tour_step_key: number;
 };
@@ -25,9 +25,9 @@ const OnboardingTour = observer(() => {
     const [tour_step, setStep] = React.useState<number>(1);
     const [tour_data, setTourData] = React.useState<TTourData>(default_tour_data);
     const { content, header, img, media, tour_step_key } = tour_data;
-    const tour_button_text = tour_step === 7 ? localize('Finish') : localize('Next');
-    const steps_not_required = [1, 2];
-    const test_id = tour_step_key === 7 ? 'finish-onboard-tour' : 'next-onboard-tour';
+    const start_button = tour_step === 1 ? localize('Start') : localize('Next');
+    const tour_button_text = tour_step === 8 ? localize('Finish') : start_button;
+    const test_id = tour_step_key === 8 ? 'finish-onboard-tour' : 'next-onboard-tour';
 
     React.useEffect(() => {
         DBOT_ONBOARDING_MOBILE.forEach(data => {
@@ -44,7 +44,7 @@ const OnboardingTour = observer(() => {
             })}
             data-testid='onboarding-tour-mobile'
         >
-            {tour_step_key !== 0 && (
+            {tour_step_key !== 1 && (
                 <div className='dbot-slider__navbar'>
                     <Text
                         color='less-prominent'
@@ -52,7 +52,7 @@ const OnboardingTour = observer(() => {
                         line_height='s'
                         size='xxs'
                         data-testid='dbot-onboard-slider__navbar'
-                    >{`${tour_step_key}/7`}</Text>
+                    >{`${tour_step_key - 1}/7`}</Text>
                     <Text
                         color='prominent'
                         weight='--text-less-prominent'
@@ -78,7 +78,7 @@ const OnboardingTour = observer(() => {
                     {localize(header)}
                 </Text>
             )}
-            {media ? (
+            {media && (
                 <div className='dbot-slider__media'>
                     <video
                         autoPlay={true}
@@ -91,7 +91,8 @@ const OnboardingTour = observer(() => {
                         src={media}
                     />
                 </div>
-            ) : (
+            )}
+            {img && (
                 <div className='dbot-slider__image'>
                     <img src={img} />
                 </div>
@@ -118,13 +119,11 @@ const OnboardingTour = observer(() => {
             )}
             <div className='dbot-slider__status'>
                 <div className='dbot-slider__progress-bar'>
-                    {/* {!steps_not_required.includes(tour_step) && (
-                        <ProgressBarOnboarding
-                            step={tour_step}
-                            amount_of_steps={DBOT_ONBOARDING_MOBILE.map(v => v.tour_step_key.toString())}
-                            setStep={setStep}
-                        />
-                    )} */}
+                    <ProgressBarTracker
+                        step={tour_step}
+                        steps_list={DBOT_ONBOARDING_MOBILE.map(v => v.tour_step_key.toString())}
+                        setStep={setStep}
+                    />
                 </div>
                 <div className='dbot-slider__button-group'>
                     {tour_step === 1 && (
@@ -136,7 +135,7 @@ const OnboardingTour = observer(() => {
                             data-testid='skip-onboard-tour'
                         />
                     )}
-                    {!steps_not_required.includes(tour_step) && (
+                    {tour_step !== 1 && (
                         <TourButton
                             onClick={() => {
                                 setStep(tour_step - 1);

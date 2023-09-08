@@ -11,13 +11,13 @@ import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import RunPanel from '../run-panel';
 import RunStrategy from './dashboard-component/run-strategy';
-import { DBOT_ONBOARDING } from './dbot-tours/config';
+import TourEndDialog from './dbot-tours/common/tour-end-dialog';
+import TourStartDialog from './dbot-tours/common/tour-start-dialog';
+import DesktopTours from './dbot-tours/desktop-tours';
 import MobileTours from './dbot-tours/mobile-tours';
 import { getTourSettings, setTourSettings, setTourType, tour_status_ended, tour_type } from './dbot-tours/utils';
 import DashboardComponent from './dashboard-component';
-import ReactJoyrideWrapper from './react-joyride-wrapper';
 import StrategyNotification from './strategy-notification';
-import TourTriggrerDialog from './tour-trigger-dialog';
 import Tutorial from './tutorial-tab';
 
 const Dashboard = observer(() => {
@@ -33,6 +33,7 @@ const Dashboard = observer(() => {
         setHasTourEnded,
         has_started_bot_builder_tour,
         is_tour_dialog_visible,
+        has_tour_ended,
         setActiveTab,
         setBotBuilderTokenCheck,
         setOnBoardingTokenCheck,
@@ -223,15 +224,13 @@ const Dashboard = observer(() => {
                         'dashboard__container--active': has_tour_started && active_tab === DASHBOARD && is_mobile,
                     })}
                 >
-                    {(active_tab === DASHBOARD || active_tab === BOT_BUILDER) && <TourTriggrerDialog />}
+                    {!has_tour_ended && (active_tab === DASHBOARD || active_tab === BOT_BUILDER) ? (
+                        <TourStartDialog />
+                    ) : (
+                        <TourEndDialog />
+                    )}
 
-                    {has_tour_started &&
-                        active_tab === DASHBOARD &&
-                        (is_mobile ? (
-                            <MobileTours />
-                        ) : (
-                            <ReactJoyrideWrapper steps={DBOT_ONBOARDING} spotlightClicks hideCloseButton />
-                        ))}
+                    {has_tour_started && active_tab === DASHBOARD && (is_mobile ? <MobileTours /> : <DesktopTours />)}
                     <Tabs
                         active_index={active_tab}
                         className='dashboard__tabs'

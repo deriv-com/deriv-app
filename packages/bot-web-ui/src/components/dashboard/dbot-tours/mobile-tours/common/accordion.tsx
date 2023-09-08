@@ -33,7 +33,9 @@ const Accordion = ({ content_data, expanded = false, test_id = 'dbot-acc-id', ..
                     })}
                     data-testid='accordion-content'
                 >
-                    {content}
+                    <Text as='span' line_height='s' size='xxs'>
+                        {content}
+                    </Text>
                 </div>
             </div>
         </div>

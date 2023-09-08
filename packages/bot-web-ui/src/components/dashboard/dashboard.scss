@@ -454,12 +454,12 @@
         }
     }
 
-    &__image {
+    &__image,
+    &__media {
         background: var(--general-section-1);
         text-align: center;
         padding: 0.8rem;
         width: 100%;
-        margin-bottom: auto;
     }
 
     img {
@@ -543,10 +543,6 @@
                 }
             }
 
-            &__content {
-                color: $color-white;
-            }
-
             &__status {
                 height: 5rem;
                 display: flex;
@@ -619,7 +615,6 @@
         opacity: 0;
         color: var(--text-prominent);
         padding: 1rem 0;
-        font-size: 1.2rem;
 
         &--open {
             opacity: 1;

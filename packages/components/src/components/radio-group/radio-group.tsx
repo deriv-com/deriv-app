@@ -42,10 +42,6 @@ const RadioGroup = ({
         onToggle(e);
     };
 
-    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-        console.log('>>>', event);
-    };
-
     return (
         <div className={classNames('dc-radio-group', className)}>
             {Array.isArray(children) &&
@@ -56,7 +52,6 @@ const RadioGroup = ({
                             className={classNames('dc-radio-group__item', className, {
                                 'dc-radio-group__item--selected': selected_option === item.props.value,
                             })}
-                            onClick={handleClick}
                         >
                             <input
                                 id={item.props.id}

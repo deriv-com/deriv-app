@@ -31,9 +31,9 @@ jest.mock('../../real-account-signup/helpers/utils.ts', () => ({
 
 jest.mock('Helpers/utils', () => ({
     ...jest.requireActual('Helpers/utils'),
-    isDocumentTypeValid: jest.fn(() => undefined),
+    isDocumentTypeValid: jest.fn(),
     shouldShowIdentityInformation: jest.fn(() => false),
-    isAdditionalDocumentValid: jest.fn(() => undefined),
+    isAdditionalDocumentValid: jest.fn(),
 }));
 
 const mock_warnings = {};

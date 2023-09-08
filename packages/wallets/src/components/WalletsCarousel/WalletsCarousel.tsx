@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
-import { useWalletAccountsList } from '@deriv/api';
+import { useAuthorize, useWalletAccountsList } from '@deriv/api';
 import AccountsList from '../AccountsList';
 
 const WalletsCarousel = () => {
+    const { switchAccount } = useAuthorize();
     const [emblaRef, emblaApi] = useEmblaCarousel({ skipSnaps: true, containScroll: false });
     const [active_index, setActiveIndex] = useState(0);
     const { data: wallet_accounts_list } = useWalletAccountsList();
@@ -11,6 +12,14 @@ const WalletsCarousel = () => {
     React.useEffect(() => {
         emblaApi?.scrollTo(active_index);
     }, [active_index, emblaApi]);
+
+    React.useEffect(() => {
+        const loginid = wallet_accounts_list[active_index]?.loginid;
+
+        if (loginid) {
+            switchAccount(loginid);
+        }
+    }, [active_index, switchAccount, wallet_accounts_list]);
 
     React.useEffect(() => {
         emblaApi?.on('select', () => {

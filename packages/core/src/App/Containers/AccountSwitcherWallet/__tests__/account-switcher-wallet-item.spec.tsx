@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { TStores } from '@deriv/stores/types';
 import { AccountSwitcherWalletItem } from '../account-switcher-wallet-item';
 
 jest.mock('@deriv/hooks', () => ({
@@ -12,7 +11,6 @@ jest.mock('@deriv/hooks', () => ({
 
 const account: React.ComponentProps<typeof AccountSwitcherWalletItem>['account'] = {
     currency: 'USD',
-    // @ts-expect-error partial currency_config
     currency_config: { type: 'fiat', name: 'US dollar', display_code: 'USD' },
     dtrade_balance: 100,
     dtrade_loginid: 'CR007',
@@ -25,6 +23,20 @@ const account: React.ComponentProps<typeof AccountSwitcherWalletItem>['account']
     is_virtual: false,
     landing_company_name: 'svg',
     linked_to: [{ loginid: 'CR007' }],
+    wallet_currency_type: '',
+    is_malta_wallet: false,
+    is_demo: false,
+    is_selected: false,
+    gradient_header_class: 'wallet-header__usd-bg',
+    gradient_card_class: 'wallet-card__usd-bg',
+    icon: '',
+    balance: 0,
+    created_at: undefined,
+    excluded_until: undefined,
+    is_disabled: false,
+    is_trading: false,
+    is_wallet: false,
+    loginid: '',
 };
 
 const props: React.ComponentProps<typeof AccountSwitcherWalletItem> = {
@@ -37,7 +49,7 @@ const AccountSwitcherWalletItemComponent = ({
     store,
 }: {
     props: React.ComponentProps<typeof AccountSwitcherWalletItem>;
-    store: TStores;
+    store: ReturnType<typeof mockStore>;
 }) => {
     return (
         <StoreProvider store={store}>

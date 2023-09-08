@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { useActiveAccount, useWalletMigration } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import { routes, getDecimalPlaces, platforms } from '@deriv/shared';
+import { routes, platforms } from '@deriv/shared';
 import { MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import { AccountActionsWallets } from 'App/Components/Layout/Header/wallets/account-actions-wallets';
 import platform_config from 'App/Constants/platform-config';
@@ -91,7 +91,8 @@ const MenuRight = observer(() => {
                     id='dt_core_header_acc-info-preloader'
                     className={classNames('acc-info__preloader__dtrader acc-info__preloader__dtrader--wallets', {
                         'acc-info__preloader__dtrader--no-currency': !currency,
-                        'acc-info__preloader__dtrader--is-crypto': getDecimalPlaces(currency) > 2,
+                        'acc-info__preloader__dtrader--is-crypto':
+                            active_account?.currency_config?.fractional_digits > 2,
                     })}
                 >
                     <AccountsInfoLoaderWallets is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />

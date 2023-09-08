@@ -35,7 +35,7 @@ export const AccountSwitcherWalletItem = observer(
         const active_account = useActiveAccount();
 
         const theme = is_dark_mode_on ? 'dark' : 'light';
-        const appIcon = is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight';
+        const app_icon = is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight';
         const icon_type = is_virtual ? 'demo' : currency_config?.type;
         const is_selected = is_active || linked_to?.some(account => account.loginid === active_account?.loginid);
 
@@ -55,7 +55,7 @@ export const AccountSwitcherWalletItem = observer(
             >
                 <div>
                     <AppLinkedWithWalletIcon
-                        app_icon={appIcon}
+                        app_icon={app_icon}
                         gradient_class={gradients.card[theme]}
                         type={icon_type}
                         wallet_icon={icons[theme]}

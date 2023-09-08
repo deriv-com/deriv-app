@@ -115,6 +115,8 @@ jest.mock('@deriv/api', () => ({
 
 jest.mock('./../cards-slider-swiper', () => jest.fn(() => <div>slider</div>));
 
+const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
+
 describe('<WalletCardsCarousel />', () => {
     const wrapper = (mock: ReturnType<typeof mockStore>) => {
         const Component = ({ children }: { children: JSX.Element }) => (
@@ -124,6 +126,7 @@ describe('<WalletCardsCarousel />', () => {
         );
         return Component;
     };
+
     it('Should render slider', () => {
         const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
 
@@ -135,8 +138,6 @@ describe('<WalletCardsCarousel />', () => {
 
     it('Should render buttons for REAL', () => {
         const mock = mockStore({});
-
-        const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
@@ -171,8 +172,6 @@ describe('<WalletCardsCarousel />', () => {
 
     it('Should render buttons for DEMO', () => {
         const mock = mockStore({ client: { accounts: { VRW10001: { token: '12345' } }, loginid: 'VRW10001' } });
-
-        const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({

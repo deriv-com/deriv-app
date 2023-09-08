@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, WalletIcon } from '@deriv/components';
+import { Icon, WalletIcon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { formatMoney } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
@@ -53,7 +53,8 @@ const DropdownArrow = ({ is_disabled = false }: TDropdownArrow) =>
 const BalanceLabel = ({ balance, currency, is_virtual, display_code }: Partial<TBalanceLabel>) =>
     (typeof balance !== 'undefined' || !currency) && (
         <div className='acc-info__wallets-account-type-and-balance'>
-            <p
+            <Text
+                as='p'
                 data-testid='dt_balance'
                 className={classNames('acc-info__balance', {
                     'acc-info__balance--no-currency': !currency && !is_virtual,
@@ -65,7 +66,7 @@ const BalanceLabel = ({ balance, currency, is_virtual, display_code }: Partial<T
                 ) : (
                     `${formatMoney(currency, balance ?? 0, true)} ${display_code}`
                 )}
-            </p>
+            </Text>
         </div>
     );
 

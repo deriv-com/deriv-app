@@ -1,14 +1,14 @@
 import React from 'react';
-import { useStores } from 'Stores';
 import { Button, Modal, Text } from '@deriv/components';
 import { formatMoney, TFile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import FileUploaderComponent from 'Components/file-uploader-component';
 //TODO: update the below line before merging to feature branch "p2p-modal-test" branch
 import FormError from 'Components/form/error.jsx';
+import FileUploaderComponent from 'Components/file-uploader-component';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useStores } from 'Stores';
 import { accepted_file_types, max_pot_file_size } from 'Utils/file-uploader';
 import { removeTrailingZeros, roundOffDecimal, setDecimalPlaces } from 'Utils/format-value';
 

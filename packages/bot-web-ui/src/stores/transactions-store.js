@@ -33,11 +33,10 @@ export default class TransactionsStore {
         this.root_store = root_store;
         this.core = core;
         this.disposeReactionsFn = this.registerReactions();
-        this.loginid = this.core?.client?.loginid;
     }
     TRANSACTION_CACHE = 'transaction_cache';
 
-    elements = getStoredItemsByUser(this.TRANSACTION_CACHE, this.loginid, []);
+    elements = getStoredItemsByUser(this.TRANSACTION_CACHE, this.core?.client?.loginid, []);
     active_transaction_id = null;
     recovered_completed_transactions = [];
     recovered_transactions = [];
@@ -45,7 +44,11 @@ export default class TransactionsStore {
     is_transaction_details_modal_open = false;
 
     get transactions() {
-        return this.elements[this.loginid]?.filter(element => element.type === transaction_elements.CONTRACT) || [];
+        return (
+            this.elements[this.core?.client?.loginid]?.filter(
+                element => element.type === transaction_elements.CONTRACT
+            ) ?? []
+        );
     }
 
     toggleTransactionDetailsModal(is_open) {
@@ -59,6 +62,7 @@ export default class TransactionsStore {
     pushTransaction(data) {
         const is_completed = isEnded(data);
         const { run_id } = this.root_store.run_panel;
+        const current_account = this.core?.client?.loginid;
         const contract = {
             barrier: data.barrier,
             buy_price: data.buy_price,
@@ -83,14 +87,14 @@ export default class TransactionsStore {
             underlying: data.underlying,
         };
 
-        if (!this.elements[this.loginid]) {
+        if (!this.elements[current_account]) {
             this.elements = {
                 ...this.elements,
-                [this.loginid]: [],
+                [current_account]: [],
             };
         }
 
-        const same_contract_index = this.elements[this.loginid]?.findIndex(
+        const same_contract_index = this.elements[current_account]?.findIndex(
             c =>
                 c.type === transaction_elements.CONTRACT &&
                 c.data.transaction_ids &&
@@ -99,26 +103,26 @@ export default class TransactionsStore {
 
         if (same_contract_index === -1) {
             // Render a divider if the "run_id" for this contract is different.
-            if (this.elements[this.loginid]?.length > 0) {
+            if (this.elements[current_account]?.length > 0) {
                 const is_new_run =
-                    this.elements[this.loginid]?.[0].type === transaction_elements.CONTRACT &&
-                    contract.run_id !== this.elements[this.loginid]?.[0].data.run_id;
+                    this.elements[current_account]?.[0].type === transaction_elements.CONTRACT &&
+                    contract.run_id !== this.elements[current_account]?.[0].data.run_id;
 
                 if (is_new_run) {
-                    this.elements[this.loginid]?.unshift({
+                    this.elements[current_account]?.unshift({
                         type: transaction_elements.DIVIDER,
                         data: contract.run_id,
                     });
                 }
             }
 
-            this.elements[this.loginid]?.unshift({
+            this.elements[current_account]?.unshift({
                 type: transaction_elements.CONTRACT,
                 data: contract,
             });
         } else {
             // If data belongs to existing contract in memory, update it.
-            this.elements[this.loginid]?.splice(same_contract_index, 1, {
+            this.elements[current_account]?.splice(same_contract_index, 1, {
                 type: transaction_elements.CONTRACT,
                 data: contract,
             });
@@ -156,9 +160,9 @@ export default class TransactionsStore {
     }
 
     clear() {
-        this.elements[this.loginid] = [];
-        this.recovered_completed_transactions = this.recovered_completed_transactions.slice(0, 0);
-        this.recovered_transactions = this.recovered_transactions.slice(0, 0);
+        this.elements[this.core?.client?.loginid] = [];
+        this.recovered_completed_transactions = this.recovered_completed_transactions?.slice(0, 0);
+        this.recovered_transactions = this.recovered_transactions?.slice(0, 0);
         this.is_transaction_details_modal_open = false;
     }
 
@@ -167,11 +171,10 @@ export default class TransactionsStore {
 
         // Write transactions to session storage on each change in transaction elements.
         const disposeTransactionElementsListener = reaction(
-            () => this.elements,
+            () => this.elements[client?.loginid],
             elements => {
-                const trx = elements[this.loginid];
                 const stored_transactions = getStoredItemsByKey(this.TRANSACTION_CACHE, {});
-                stored_transactions[client.loginid] = trx.slice(0, 5000);
+                stored_transactions[client.loginid] = elements?.slice(0, 5000) ?? [];
                 setStoredItemsByKey(this.TRANSACTION_CACHE, stored_transactions);
             }
         );
@@ -245,11 +248,12 @@ export default class TransactionsStore {
         }
 
         if (!this.is_called_proposal_open_contract) {
-            if (!this.elements[this.loginid]?.length) {
+            const current_account = this.core?.client?.loginid;
+            if (!this.elements[current_account]?.length) {
                 this.sortOutPositionsBeforeAction(positions);
             }
-            if (this.elements[this.loginid]?.length && !this.elements[this.loginid]?.[0]?.data?.profit) {
-                const element_id = this.elements[this.loginid]?.[0].data.contract_id;
+            if (this.elements[current_account]?.length && !this.elements[current_account]?.[0]?.data?.profit) {
+                const element_id = this.elements[current_account]?.[0].data.contract_id;
                 this.sortOutPositionsBeforeAction(positions, element_id);
             }
         }

@@ -21,6 +21,23 @@ type TFileUploaderComponentProps = {
     value: File[];
 };
 
+type TUploadMessageProps = {
+    upload_message: string;
+};
+
+const UploadMessage = ({ upload_message }: TUploadMessageProps) => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
+    return (
+        <React.Fragment>
+            <Icon icon='IcCloudUpload' size={50} />
+            <Text as='div' line-height={is_mobile ? 'xl' : 'l'} size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
+                {upload_message}
+            </Text>
+        </React.Fragment>
+    );
+};
+
 const FileUploaderComponent = ({
     accept,
     hover_message,
@@ -31,20 +48,6 @@ const FileUploaderComponent = ({
     validation_error_message,
     value,
 }: TFileUploaderComponentProps) => {
-    const {
-        ui: { is_mobile },
-    } = useStore();
-    const getUploadMessage = () => {
-        return (
-            <>
-                <Icon icon='IcCloudUpload' size={50} />
-                <Text as='div' line-height={is_mobile ? 'xl' : 'l'} size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
-                    {upload_message}
-                </Text>
-            </>
-        );
-    };
-
     const handleAcceptedFiles = (files: TFile[]) => {
         if (files.length > 0) {
             setDocumentFile({ files, error_message: null });
@@ -67,7 +70,7 @@ const FileUploaderComponent = ({
                 filename_limit={26}
                 hover_message={hover_message}
                 max_size={max_size}
-                message={getUploadMessage()}
+                message={<UploadMessage upload_message={upload_message} />}
                 multiple={multiple}
                 onDropAccepted={handleAcceptedFiles}
                 onDropRejected={handleRejectedFiles}

@@ -5,7 +5,7 @@ import { formatMoney, TFile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import FileUploaderComponent from 'Components/file-uploader-component';
-//Todo: change the below line when changing the base branch
+//TODO: update the below line before merging to feature branch "p2p-modal-test" branch
 import FormError from 'Components/form/error.jsx';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -20,9 +20,8 @@ type TDocumentFile = {
 const OrderDetailsConfirmModal = () => {
     const { hideModal, is_modal_open } = useModalManagerContext();
     const { order_details_store, order_store, sendbird_store } = useStores();
-    const {
-        ui: { is_mobile },
-    } = useStore();
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const { error_message } = order_details_store;
     const { confirmOrderRequest, order_information } = order_store;
     const { sendFile } = sendbird_store;

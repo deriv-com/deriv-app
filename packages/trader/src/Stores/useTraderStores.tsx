@@ -111,7 +111,7 @@ type TOverrideTradeStore = Omit<
     setIsTradeParamsExpanded: (value: boolean) => void;
     short_barriers: Record<string, never> | { barrier: string; barrier_choices: string[] };
     start_dates_list: Array<{ text: string; value: number }>;
-    start_time: string | null;
+    start_time?: string | null;
     symbol: string;
     take_profit?: string;
     ticks_history_stats: {

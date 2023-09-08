@@ -192,7 +192,7 @@ const ScreenSmall = observer(({ is_trade_enabled }: { is_trade_enabled: boolean 
 
     const has_callputequal_duration = hasDurationForCallPutEqual(
         contract_types_list,
-        duration_unit as 's' | 'd' | 'm' | 'h' | 't',
+        duration_unit,
         contract_start_type
     );
 

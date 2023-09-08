@@ -5,7 +5,7 @@ import { TTradeStore } from 'Types';
 
 type THasDurationForCallPutEqual = {
     contract_type_list: TTradeStore['contract_types_list'];
-    duration_unit: PriceProposalRequest['duration_unit'];
+    duration_unit: string;
     contract_start_type: string;
 };
 

@@ -381,7 +381,7 @@ export const ContractType = (() => {
     const getStartTime = (
         sessions: ReturnType<typeof getSessions>['sessions'],
         start_date: number,
-        start_time: string | null
+        start_time?: string | null
     ) => ({
         start_time: start_date ? getValidTime(sessions, buildMoment(start_date, start_time)) : null,
     });
@@ -516,17 +516,17 @@ export const ContractType = (() => {
         expiry_date: string | null,
         expiry_time: string | null,
         expiry_type: string | null,
-        market_close_times: string[] | undefined,
+        market_close_times: string[] | undefined | TTimes,
         sessions: TTradeStore['sessions'],
         start_date: number,
-        start_time: string | null
+        start_time?: string | null
     ) => {
         let end_time: moment.Moment | string | null = null;
 
         if (expiry_type === 'endtime') {
             let market_close_time = '23:59:59';
 
-            if (market_close_times?.length && market_close_times[0] !== '--') {
+            if (Array.isArray(market_close_times) && market_close_times?.length && market_close_times[0] !== '--') {
                 // Some of underlyings (e.g. Australian Index) have two close time during a day so we always select the further one as the end time of the contract.
                 market_close_time = market_close_times.slice(-1)[0];
             }

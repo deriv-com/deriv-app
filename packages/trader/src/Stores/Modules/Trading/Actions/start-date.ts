@@ -19,7 +19,7 @@ export const onChangeStartDate: TOnChangeStartDate = async store => {
     const server_time = store.root_store?.common.server_time;
     let { start_time, expiry_type } = store;
 
-    start_time = start_time || server_time?.clone().add(6, 'minute').format('HH:mm') || null; // when there is not a default value for start_time, it should be set more than 5 min after server_time
+    start_time = start_time || server_time?.clone().add(6, 'minute').format('HH:mm'); // when there is not a default value for start_time, it should be set more than 5 min after server_time
 
     const obj_contract_start_type = ContractType.getStartType(start_date);
     const contract_start_type = obj_contract_start_type.contract_start_type;
@@ -56,7 +56,7 @@ export const onChangeExpiry: TOnChangeExpiry = async store => {
     const obj_market_open_times = { market_open_times: trading_times.open };
     const obj_market_close_times = { market_close_times: trading_times.close };
 
-    const market_close_times = obj_market_close_times.market_close_times as string[];
+    const market_close_times = obj_market_close_times.market_close_times;
     const obj_expiry_time = ContractType.getExpiryTime(
         expiry_date,
         expiry_time,

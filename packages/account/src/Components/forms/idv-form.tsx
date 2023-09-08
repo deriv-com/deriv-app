@@ -82,7 +82,7 @@ const IDVForm = ({ class_name, selected_country, hide_hint, can_skip_document_ve
     const onKeyUp = (e: { target: HTMLInputElement }, document_name: string) => {
         const example_format =
             document_name === 'document_number'
-                ? values?.document_type.example_format
+                ? values?.document_type?.example_format
                 : values?.document_type?.additional?.example_format;
         let current_input: string | null = null;
         current_input = example_format?.includes('-')

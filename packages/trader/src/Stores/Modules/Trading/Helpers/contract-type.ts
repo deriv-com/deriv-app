@@ -422,9 +422,9 @@ export const ContractType = (() => {
     const getTradingTimes = async (
         date: string | null,
         underlying: string | null = null
-    ): Promise<Record<string, never> | TTimes | Record<string, TTimes>> => {
+    ): Promise<[] | TTimes | Record<string, TTimes>> => {
         if (!date) {
-            return {};
+            return [];
         }
 
         if (!(date in trading_times)) {

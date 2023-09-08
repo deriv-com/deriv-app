@@ -7,6 +7,12 @@
         padding: 1.6rem 0 0;
         margin: unset;
     }
+
+    .inline-message {
+        margin: 0.8rem 1.6rem;
+        width: calc(100% - 3.2rem);
+        justify-content: flex-start;
+    }
 }
 
 .dc-page-overlay {
@@ -84,11 +90,5 @@
                 }
             }
         }
-    }
-
-    &__hintbox {
-        margin: 0 1.6rem;
-        width: calc(100% - 3.2rem);
-        justify-content: flex-start;
     }
 }

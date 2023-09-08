@@ -7,34 +7,21 @@ import {
     UILoader,
     PageOverlay,
     Div100vhContainer,
-    HintBox,
     Text,
+    InlineMessage,
 } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import AdditionalKycInfoForm from './additional-kyc-info-form';
 
 type TAdditionalKycInfoFormWithHintBox = {
-    error: string;
-    setError: React.Dispatch<React.SetStateAction<string>>;
+    error?: unknown | string;
+    setError?: React.Dispatch<React.SetStateAction<unknown | string>>;
 };
 
 const AdditionalKycInfoFormWithHintBox = ({ error, setError }: TAdditionalKycInfoFormWithHintBox) => {
     return (
         <React.Fragment>
-            {error && (
-                <HintBox
-                    className='additional-kyc-info-modal__hintbox'
-                    icon='IcAlertDanger'
-                    icon_height={16}
-                    icon_width={16}
-                    message={
-                        <Text as='p' size='xxxs'>
-                            {error}
-                        </Text>
-                    }
-                    is_danger
-                />
-            )}
+            {!!error && <InlineMessage size='sm' message={String(error)} type='error' />}
             <AdditionalKycInfoForm setError={setError} />
         </React.Fragment>
     );
@@ -44,7 +31,7 @@ export const AdditionalKycInfoModal = observer(() => {
     const {
         ui: { is_additional_kyc_info_modal_open: is_open, toggleAdditionalKycInfoModal },
     } = useStore();
-    const [error, setError] = React.useState('');
+    const [error, setError] = React.useState<unknown | string>('abc');
 
     const toggleModal = (e?: React.MouseEvent<HTMLElement, MouseEvent> | undefined) => {
         // if e.target is anchor tag, don't close modal for link click within modal
@@ -66,7 +53,7 @@ export const AdditionalKycInfoModal = observer(() => {
                         toggleModal={toggleModal}
                         className='additional-kyc-info'
                         width='90.4rem'
-                        height={error ? '52.8rem' : '49.6rem'}
+                        height={error ? '54.4rem' : '49.6rem'}
                     >
                         <Modal.Body className='additional-kyc-info-modal__form'>
                             <AdditionalKycInfoFormWithHintBox setError={setError} error={error} />
@@ -86,21 +73,7 @@ export const AdditionalKycInfoModal = observer(() => {
                         header_classname='additional-kyc-info-modal__portal-header'
                     >
                         <Div100vhContainer className='additional-kyc-info-modal__form' height_offset='100px'>
-                            {error && (
-                                <HintBox
-                                    className='additional-kyc-info-modal__hintbox'
-                                    icon='IcAlertDanger'
-                                    icon_height={16}
-                                    icon_width={16}
-                                    message={
-                                        <Text as='p' size='xxxs'>
-                                            {error}
-                                        </Text>
-                                    }
-                                    is_danger
-                                />
-                            )}
-                            <AdditionalKycInfoForm />
+                            <AdditionalKycInfoFormWithHintBox />
                         </Div100vhContainer>
                     </PageOverlay>
                 </MobileWrapper>

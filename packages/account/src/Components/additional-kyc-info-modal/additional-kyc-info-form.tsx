@@ -32,7 +32,7 @@ const FormTitle = () => (
 );
 
 type TAdditionalKycInfoFormProps = {
-    setError?: React.Dispatch<React.SetStateAction<string>>;
+    setError?: React.Dispatch<React.SetStateAction<unknown | string>>;
 };
 
 export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoFormProps) => {
@@ -68,7 +68,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
     }, [isSuccess, notifications, ui, updateAccountStatus]);
 
     React.useEffect(() => {
-        isError && setError?.(error as string);
+        isError && setError?.(error);
     }, [error, isError, setError]);
 
     const onItemSelection =
@@ -114,7 +114,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                                     {...fields[field.name as keyof typeof fields]}
                                                     data-lpignore='true'
                                                     autoComplete='off' // prevent chrome autocomplete
-                                                    error={(touched && error) as string}
+                                                    error={touched ? error : undefined}
                                                     onItemSelection={onItemSelection(field.name, setFieldValue)}
                                                     data-testid={`dt_${field.name}`}
                                                 />
@@ -123,7 +123,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                                 <SelectNative
                                                     {...field}
                                                     {...fields[field.name as keyof typeof fields]}
-                                                    error={(touched && error) as string}
+                                                    error={touched ? error : undefined}
                                                     use_text
                                                     should_hide_disabled_options={false}
                                                     data-testid={`dt_${field.name}`}
@@ -140,7 +140,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                 )}
                             >
                                 <Field name='tax_residence'>
-                                    {({ field, meta: { touched, error } }: FieldProps) => (
+                                    {({ field, meta: { touched, error } }: FieldProps<typeof initialValues>) => (
                                         <React.Fragment>
                                             <DesktopWrapper>
                                                 <Autocomplete
@@ -149,7 +149,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                                     data-lpignore='true'
                                                     autoComplete='off' // prevent chrome autocomplete
                                                     type='text'
-                                                    error={(touched && error) as string}
+                                                    error={touched ? error : undefined}
                                                     onItemSelection={onItemSelection(field.name, setFieldValue)}
                                                     data-testid={`dt_${field.name}`}
                                                 />
@@ -158,7 +158,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                                 <SelectNative
                                                     {...field}
                                                     {...fields[field.name as keyof typeof fields]}
-                                                    error={(touched && error) as string}
+                                                    error={touched ? error : undefined}
                                                     use_text
                                                     should_hide_disabled_options={false}
                                                     data-testid={`dt_${field.name}`}
@@ -207,7 +207,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                                     data-lpignore='true'
                                                     autoComplete='off' // prevent chrome autocomplete
                                                     type='text'
-                                                    error={(touched && error) as string}
+                                                    error={touched ? error : undefined}
                                                     onItemSelection={({ value = '' }: TListItem) => {
                                                         setFieldValue(field.name, value, true);
                                                     }}
@@ -219,7 +219,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                                 <SelectNative
                                                     {...field}
                                                     {...fields[field.name as keyof typeof fields]}
-                                                    error={(touched && error) as string}
+                                                    error={touched ? error : undefined}
                                                     use_text
                                                     should_hide_disabled_options={false}
                                                     data-testid={`dt_${field.name}`}

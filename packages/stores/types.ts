@@ -629,6 +629,7 @@ type TTradersHubStore = {
     selectAccountType: (account_type: string) => void;
     available_cfd_accounts: TAvailableCFDAccounts[];
     available_dxtrade_accounts: TAvailableCFDAccounts[];
+    available_ctrader_accounts: TAvailableCFDAccounts[];
     toggleIsTourOpen: (is_tour_open: boolean) => void;
     is_demo_low_risk: boolean;
     is_mt5_notification_modal_visible: boolean;

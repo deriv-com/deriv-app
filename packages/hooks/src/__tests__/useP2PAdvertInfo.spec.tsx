@@ -11,18 +11,16 @@ jest.mock('@deriv/api', () => ({
 
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'p2p_advert_info'>>;
 
+const wrapper = ({ children }: { children: JSX.Element }) => (
+    <APIProvider>
+        <StoreProvider store={mockStore({})}>{children}</StoreProvider>
+    </APIProvider>
+);
+
 describe('useP2PAdvertInfo', () => {
     it('should return undefined if there is no response', () => {
-        const mock = mockStore({});
-
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({ data: {} });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
 
         const { result } = renderHook(() => useP2PAdvertInfo('1', { enabled: true }), { wrapper });
 
@@ -30,8 +28,6 @@ describe('useP2PAdvertInfo', () => {
     });
 
     it('should return advert info if id and enabled option has been passed', () => {
-        const mock = mockStore({});
-
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
             data: {
@@ -55,12 +51,6 @@ describe('useP2PAdvertInfo', () => {
                 },
             },
         });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
 
         const { result } = renderHook(() => useP2PAdvertInfo('1', { enabled: true }), { wrapper });
         const advertiser_details = result.current.data?.advertiser_details;

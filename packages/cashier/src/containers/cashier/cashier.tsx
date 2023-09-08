@@ -49,7 +49,7 @@ type TCashierOptions = {
 };
 
 const Cashier = observer(({ history, location, routes: routes_config }: TCashierProps) => {
-    const { common, ui, client, traders_hub } = useStore();
+    const { common, ui, client } = useStore();
     const { withdraw, general_store, payment_agent } = useCashierStore();
     const { error } = withdraw;
     const {
@@ -68,9 +68,8 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     } = usePaymentAgentTransferVisible();
     const { is_payment_agent_visible } = payment_agent;
     const { is_from_derivgo } = common;
-    const { is_demo } = traders_hub;
     const { is_cashier_visible: is_visible, toggleCashier, toggleReadyToDepositModal } = ui;
-    const { currency, is_account_setting_loaded, is_logged_in, is_logging_in, is_svg } = client;
+    const { currency, is_account_setting_loaded, is_logged_in, is_logging_in, is_svg, is_virtual } = client;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
     const p2p_notification_count = useP2PNotificationCount();
@@ -207,7 +206,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
             history.push(routes.cashier_deposit);
 
             if (advert_id) {
-                if (is_demo) {
+                if (is_virtual) {
                     toggleReadyToDepositModal();
                 } else {
                     error.setErrorMessage({

@@ -78,7 +78,6 @@ export default class CFDStore extends BaseStore {
             current_list: computed,
             has_created_account_for_selected_jurisdiction: computed,
             has_submitted_cfd_personal_details: computed,
-            is_high_risk_client_for_mt5: computed,
             onMount: action.bound,
             onUnmount: override,
             checkShouldOpenAccount: action.bound,
@@ -836,23 +835,5 @@ export default class CFDStore extends BaseStore {
 
     toggleCFDVerificationModal() {
         this.is_cfd_verification_modal_visible = !this.is_cfd_verification_modal_visible;
-    }
-
-    get is_high_risk_client_for_mt5() {
-        const { trading_platform_available_accounts } = this.root_store.client;
-        const financial_available_accounts = trading_platform_available_accounts.filter(
-            available_account => available_account.market_type === 'financial'
-        );
-
-        const synthetic_available_accounts = trading_platform_available_accounts.filter(
-            available_account => available_account.market_type === 'gaming'
-        );
-
-        return (
-            financial_available_accounts.length === 1 &&
-            financial_available_accounts.every(acc => acc.shortcode === 'svg') &&
-            synthetic_available_accounts.length === 1 &&
-            synthetic_available_accounts.every(acc => acc.shortcode === 'svg')
-        );
     }
 }

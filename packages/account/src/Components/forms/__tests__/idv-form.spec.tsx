@@ -86,7 +86,7 @@ describe('<IDVForm/>', () => {
     it('should render IDVForm component', () => {
         render(<IDVForm {...mock_props} />, {
             wrapper: ({ children }) => (
-                <Formik initialValues={mock_values} onSubmit={() => undefined}>
+                <Formik initialValues={mock_values} onSubmit={jest.fn()}>
                     {() => children}
                 </Formik>
             ),
@@ -102,7 +102,7 @@ describe('<IDVForm/>', () => {
     it('Should change the document type value when document type is changed', async () => {
         render(<IDVForm {...mock_props} />, {
             wrapper: ({ children }) => (
-                <Formik initialValues={mock_values} onSubmit={() => undefined}>
+                <Formik initialValues={mock_values} onSubmit={jest.fn()}>
                     {() => children}
                 </Formik>
             ),

@@ -8,6 +8,7 @@ import {
     TDurationOptions,
     TDurationUnitDropdown,
     TFormValues,
+    TInitialValues,
     TInputBaseFields,
     TInputsFieldNames,
     TMarketOption,
@@ -69,7 +70,7 @@ export type TQuickStrategyFields = {
     handleChange: FormikProps<TFormValues>['handleChange'];
     onChangeInputValue: TOnChangeInputValue;
     setCurrentFocus: TSetCurrentFocus;
-    values: TFormValues;
+    values: TInitialValues | TFormValues;
     description: string;
     errors: FormikErrors<TQuickStrategyFormValues>;
 };
@@ -99,7 +100,7 @@ export type TSelectFieldProps = React.PropsWithChildren<{
     setFieldValue: TSetFieldValue;
     className?: string;
     is_able_disabled?: boolean;
-    values: TFormValues;
+    values: TFormValues | TInitialValues;
     onChangeDropdownItem: TOnChangeDropdownItem;
     onHideDropdownList: TOnHideDropdownList;
     onScrollStopDropdownList: TOnScrollStopDropdownList;
@@ -119,7 +120,6 @@ export type TInputFieldProps = React.PropsWithChildren<
         label?: string;
         input_value?: TInputBaseFields;
         placeholder?: string;
-        is_uniq_strategy_field?: boolean;
         trailing_icon_message?: string;
         uniq_selected_input?: TDataFields;
         errors: FormikErrors<TQuickStrategyFormValues>;

@@ -10,7 +10,7 @@ export const MARTINGALE_SIZE: TDataFields = {
     placeholder: '2',
     trailing_icon_message:
         'The multiplier amount used to increase your stake if you’re losing a trade. Value must be higher than 2.',
-    group_by: 'strategy',
+    group_by: 'trade-type',
     ...common_inputs_properties,
 };
 
@@ -21,7 +21,7 @@ export const ALEMBERT_UNIT: TDataFields = {
     label: localize('Units'),
     placeholder: '2',
     trailing_icon_message: 'The amount that you may add to your stake if you’re losing a trade.',
-    group_by: 'strategy',
+    group_by: 'trade-type',
     ...common_inputs_properties,
 };
 
@@ -32,6 +32,6 @@ export const OSCARS_UNIT: TDataFields = {
     label: localize('Units'),
     placeholder: '2',
     trailing_icon_message: 'The amount that you may add to your stake after each successful trade.',
-    group_by: 'strategy',
+    group_by: 'trade-type',
     ...common_inputs_properties,
 };

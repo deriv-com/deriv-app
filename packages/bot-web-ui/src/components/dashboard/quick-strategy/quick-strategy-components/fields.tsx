@@ -1,5 +1,5 @@
 import React from 'react';
-import { TDropdownItems, TDropdowns, TSelectedValuesSelect } from '../quick-strategy.types';
+import { TDropdownItems, TSelectedValuesSelect } from '../quick-strategy.types';
 import { TDropdownLists, TQuickStrategyFields, TSelectedValues } from './components.types';
 import {
     dalembert_data_fields,
@@ -68,17 +68,12 @@ const QuickStrategyFields = React.memo(
                         is_able_disabled,
                     } = item;
 
-                    const is_uniq_strategy_field = item?.is_uniq_strategy_field;
-                    const is_input_field = is_uniq_strategy_field || !!input_value;
+                    const is_input_field = !!input_value;
                     const is_select_field = !!select_value;
 
-                    const dropdown_list: TDropdowns = !is_uniq_strategy_field
-                        ? dropdown_lists[id as TDropdownItems]
-                        : [];
+                    const dropdown_list = dropdown_lists[id as TDropdownItems];
 
-                    const selected_value: Partial<TSelectedValuesSelect> = !is_uniq_strategy_field
-                        ? selected_values[id as TDropdownItems]
-                        : {};
+                    const selected_value: Partial<TSelectedValuesSelect> = selected_values[id as TDropdownItems];
 
                     return (
                         <React.Fragment key={id}>
@@ -118,7 +113,6 @@ const QuickStrategyFields = React.memo(
                                     label={label}
                                     input_value={input_value}
                                     placeholder={placeholder}
-                                    is_uniq_strategy_field={is_uniq_strategy_field}
                                     trailing_icon_message={trailing_icon_message}
                                     zIndex={zIndex}
                                     errors={errors}

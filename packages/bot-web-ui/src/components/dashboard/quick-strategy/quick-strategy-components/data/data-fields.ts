@@ -17,6 +17,7 @@ export const SYMBOL: TDataFields = {
     className: 'quick-strategy__dropdown quick-strategy__leading',
     select_value: 'symbol',
     label: localize('Asset'),
+    group_by: 'asset-type',
 };
 export const TRADE_TYPE: TDataFields = {
     id: 'trade-type',
@@ -24,6 +25,7 @@ export const TRADE_TYPE: TDataFields = {
     className: 'quick-strategy__dropdown quick-strategy__leading',
     select_value: 'trade-type',
     label: localize('Trade type'),
+    group_by: 'asset-type',
 };
 export const DURATION_UNIT: TDataFields = {
     id: 'duration-unit',
@@ -32,7 +34,7 @@ export const DURATION_UNIT: TDataFields = {
     select_value: 'duration-unit',
     label: localize('Duration unit'),
     is_able_disabled: true,
-    group_by: 'trade_type',
+    group_by: 'asset-type',
 };
 export const DURATION_VALUE: TDataFields = {
     id: 'duration-value',
@@ -41,7 +43,7 @@ export const DURATION_VALUE: TDataFields = {
     label: localize('Duration value'),
     placeholder: '5',
     trailing_icon_message: 'The trade length of your purchased contract.',
-    group_by: 'trade_type',
+    group_by: 'asset-type',
     ...common_inputs_properties,
 };
 export const STAKE: TDataFields = {
@@ -51,7 +53,7 @@ export const STAKE: TDataFields = {
     label: localize('Initial stake'),
     placeholder: '10',
     trailing_icon_message: 'The amount that you pay to enter a trade.',
-    group_by: 'trade_type',
+    group_by: 'trade-type',
     ...common_inputs_properties,
 };
 export const LOSS: TDataFields = {
@@ -61,14 +63,8 @@ export const LOSS: TDataFields = {
     label: localize('Loss threshold'),
     placeholder: '5000',
     trailing_icon_message: getMessage('loss'),
-    group_by: 'trade_type',
+    group_by: 'trade-type',
     ...common_inputs_properties,
-};
-export const STRATEGY_DATA: TDataFields = {
-    id: 'strategy-data',
-    is_uniq_strategy_field: true,
-    label: '',
-    field_name: '',
 };
 export const PROFIT: TDataFields = {
     id: 'profit',
@@ -77,6 +73,6 @@ export const PROFIT: TDataFields = {
     label: localize('Profit threshold'),
     placeholder: '5000',
     trailing_icon_message: getMessage('profit'),
-    group_by: 'trade_type',
+    group_by: 'trade-type',
     ...common_inputs_properties,
 };

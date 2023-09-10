@@ -12,7 +12,6 @@ const Inputs = ({
     label,
     input_value,
     placeholder,
-    is_uniq_strategy_field,
     trailing_icon_message,
     zIndex,
     errors,
@@ -39,7 +38,6 @@ const Inputs = ({
                 label={label}
                 input_value={input_value}
                 placeholder={placeholder}
-                is_uniq_strategy_field={is_uniq_strategy_field}
                 trailing_icon_message={trailing_icon_message}
                 zIndex={zIndex}
                 errors={errors}

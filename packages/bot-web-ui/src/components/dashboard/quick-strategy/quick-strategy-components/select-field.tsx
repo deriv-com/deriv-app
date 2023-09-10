@@ -51,7 +51,7 @@ const SelectField = React.memo(
                             onHideDropdownList={() => {
                                 onHideDropdownList(
                                     select_value,
-                                    values[field.name] as TSelectsFieldNames,
+                                    (values as TFormValues)[field.name] as TSelectsFieldNames,
                                     setFieldValue
                                 );
                             }}

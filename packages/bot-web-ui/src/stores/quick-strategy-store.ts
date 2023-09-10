@@ -5,6 +5,7 @@ import { localize } from '@deriv/translations';
 import GTM from 'Utils/gtm';
 import { getSetting, storeSetting } from 'Utils/settings';
 import {
+    TCreateStrategy,
     TDropdownItems,
     TDropdowns,
     TDurationOptions,
@@ -12,7 +13,7 @@ import {
     TDurationUnitDropdown,
     TFieldMapData,
     TFieldsToUpdate,
-    TInputCommonFields,
+    TInputBaseFields,
     TKeysStrategies,
     TMarketOption,
     TQSCache,
@@ -116,7 +117,7 @@ export default class QuickStrategyStore {
                 this.getFieldValue(this.trade_type_dropdown, this.selected_trade_type.value) || '',
             'quick-strategy__duration-unit':
                 this.getFieldValue(this.duration_unit_dropdown, this.selected_duration_unit.value) || '',
-            'quick-strategy__duration-value': this.input_duration_value || '',
+            'quick-strategy__duration-value': this.input_duration_value || 0,
             'quick-strategy__stake': this.input_stake,
             ...(this.active_index === 0 && { 'martingale-size': this.input_martingale_size || '' }),
             ...(this.active_index === 1 && { 'alembert-unit': this.input_alembert_unit || '' }),
@@ -228,7 +229,7 @@ export default class QuickStrategyStore {
         }
     }
 
-    onChangeInputValue(field: TInputCommonFields, event: React.ChangeEvent<HTMLInputElement>): void {
+    onChangeInputValue(field: TInputBaseFields, event: React.ChangeEvent<HTMLInputElement>): void {
         this.qs_cache[field] = event.currentTarget.value;
         this[field] = event.currentTarget.value;
         storeSetting('quick_strategy', this.qs_cache);
@@ -263,7 +264,7 @@ export default class QuickStrategyStore {
         }
     }
 
-    async createStrategy({ button }: Record<'button', 'run' | 'edit'>) {
+    async createStrategy({ button }: { button: 'run' | 'edit' }) {
         const symbol = this.selected_symbol.value;
         const trade_type = this.selected_trade_type.value;
         const duration_unit = this.selected_duration_unit.value;

@@ -96,8 +96,7 @@ export type TSelectsFieldNames =
     | 'quick-strategy__type-strategy'
     | 'quick-strategy__symbol'
     | 'quick-strategy__trade-type'
-    | 'quick-strategy__duration-unit'
-    | '';
+    | 'quick-strategy__duration-unit';
 
 export type TInputsFieldNames =
     | 'quick-strategy__duration-value'
@@ -139,13 +138,18 @@ export type TFieldsMapData = Record<TDropdownItems, TFieldMapData>;
 
 type TInitialKeys = TSelectsFieldNames | TInputsFieldNames;
 
-export type TInitialValues = Record<TInitialKeys, string>;
-export type TQuickStrategyFormValues = TInitialValues & Record<'button', 'run' | 'edit'>;
+export type TGenericInitialValues<T extends PropertyKey, Value> = {
+    [Key in T]?: Value;
+};
+
+export type TInitialValues = TGenericInitialValues<TInitialKeys, string | number | undefined>;
+
+export type TQuickStrategyFormValues = TInitialValues;
 
 export type TFormValues = { [key: string]: string };
 
 export type TOnChangeInputValue = (field: TInputBaseFields, event: React.ChangeEvent<HTMLInputElement>) => void;
-export type TSetCurrentFocus = (value: string | null) => void;
+export type TSetCurrentFocus = (value: string) => void;
 export type TOnChangeDropdownItem = (type: TDropdownItems, value: string, setFieldValue: TSetFieldValue) => void;
 export type TOnHideDropdownList = (
     type: TDropdownItems,
@@ -166,7 +170,7 @@ export type TQuickStrategyProps = React.PropsWithChildren<{
     initial_values: TQuickStrategyFormValues;
     is_onscreen_keyboard_active: boolean;
     is_stop_button_visible: boolean;
-    is_strategy_modal_open: boolean;
+    is_strategy_modal_open?: boolean;
     selected_symbol: TMarketOption;
     selected_trade_type: TTradeType;
     selected_duration_unit: TDurationOptions;
@@ -181,10 +185,10 @@ export type TQuickStrategyProps = React.PropsWithChildren<{
     onChangeInputValue: TOnChangeInputValue;
     onHideDropdownList: TOnHideDropdownList;
     onScrollStopDropdownList: TOnScrollStopDropdownList;
-    setActiveTypeStrategyIndex: (index: number) => void;
+    setActiveTypeStrategyIndex?: (index: number) => void;
     setCurrentFocus: TSetCurrentFocus;
     toggleStopBotDialog: () => void;
-    loadDataStrategy: () => void;
+    loadDataStrategy?: () => void;
 }>;
 
 export type TQSCache = {
@@ -216,6 +220,5 @@ export type TDataFields = {
     placeholder?: string;
     trailing_icon_message?: string;
     is_able_disabled?: boolean;
-    is_uniq_strategy_field?: boolean;
     group_by?: string;
 } & Readonly<TCommonInputsProperties>;

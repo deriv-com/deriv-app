@@ -98,7 +98,7 @@ export const getActiveLoginID = () => {
 
 export const getActiveLoginIDType = (): keyof typeof websocket_servers => {
     const active_loginid = getActiveLoginID();
-    if (active_loginid && !/^(VRT|VRW)/.test(active_loginid)) {
+    if (active_loginid && active_loginid !== 'null' && !/^(VRT|VRW)/.test(active_loginid)) {
         return 'real';
     }
     return 'demo';

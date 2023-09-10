@@ -10,10 +10,11 @@ export type DerivAPIConstructorArgs = {
 export interface DerivAPIBasic {
     (args: DerivAPIConstructorArgs): void;
     authorize: (token: string) => void;
-    expectResponse: (responses: string[]) => void;
+    expectResponse: (responses: any) => void;
     onOpen?: () => Subject<GenericResponse>;
     onMessage?: () => Subject<GenericResponse>;
     onClose?: () => Subject<GenericResponse>;
+    send: (payload: Record<string, any>) => Promise<Record<string, any> | void>;
 }
 
 export type ConnectionInstance = {
@@ -23,11 +24,11 @@ export type ConnectionInstance = {
 };
 
 export type ConnectionConfig = {
-    wsEvent?: (event: string) => void;
-    onOpen?: (arg?: unknown) => void;
-    onMessage?: (arg?: unknown) => void;
-    onReconnect?: (arg?: unknown) => void;
-    onDisconnect?: (arg?: unknown) => void;
+    wsEvent: (event: string) => void;
+    onOpen: (arg?: unknown) => void;
+    onMessage: (arg?: unknown) => void;
+    onReconnect: (arg?: unknown) => void;
+    onDisconnect: (arg?: unknown) => void;
 };
 
 export interface GenericResponse extends Record<string, unknown> {

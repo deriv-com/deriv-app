@@ -57,7 +57,7 @@ const BinarySocketBase = (() => {
         availability.is_down = isSiteDown(status);
     };
 
-    const wait = (...responses) => {
+    const wait = responses => {
         return connection_manager.wait(responses);
     };
 

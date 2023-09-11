@@ -33,7 +33,7 @@ const FormSelectField: React.FC<TFormSelectField> = ({
         ({ value, text }: TListItem) => {
             setFieldValue(field, value ? text : '', true);
         };
-
+    // TODO: remove the following ts-expect-error comments once the issue is fixed within the components
     return (
         <Field name={name}>
             {({ field, meta: { touched, error }, form: { setFieldValue } }: FieldProps<string>) => (

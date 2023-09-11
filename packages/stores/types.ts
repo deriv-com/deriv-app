@@ -507,6 +507,7 @@ type TUiStore = {
     setRealAccountSignupEnd: (status: boolean) => void;
     setHasOnlyForwardingContracts: (has_only_forward_starting_contracts: boolean) => void;
     setMobileLanguageMenuOpen: (is_mobile_language_menu_open: boolean) => void;
+    setPurchaseState: (index: number) => void;
     setResetTradingPasswordModalOpen: () => void;
     setReportsTabIndex: (value: number) => void;
     setShouldShowCooldownModal: (value: boolean) => void;
@@ -531,6 +532,7 @@ type TUiStore = {
 
 type TPortfolioStore = {
     active_positions: TPortfolioPosition[];
+    all_positions: TPortfolioPosition[];
     error: string;
     getPositionById: (id: number) => TPortfolioPosition;
     is_accumulator: boolean;
@@ -546,6 +548,11 @@ type TPortfolioStore = {
 
 type TContractStore = {
     getContractById: (id: number) => ProposalOpenContract;
+    contract_info: TPortfolioPosition['contract_info'];
+    contract_update_stop_loss: string;
+    contract_update_take_profit: string;
+    has_contract_update_stop_loss: boolean;
+    has_contract_update_take_profit: boolean;
 };
 
 type TMenuStore = {

@@ -998,6 +998,7 @@ import './underlying/ic-underlying-WLDUSD.svg';
 import './underlying/ic-underlying-WLDXAU.svg';
 import './wallet/ic-wallet-bitcoin-dark.svg';
 import './wallet/ic-wallet-bitcoin-light.svg';
+import './wallet/ic-wallet-clipboard.svg';
 import './wallet/ic-wallet-currency-aud.svg';
 import './wallet/ic-wallet-currency-eur.svg';
 import './wallet/ic-wallet-currency-gbp.svg';

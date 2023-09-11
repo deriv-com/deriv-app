@@ -194,7 +194,7 @@ const Interpreter = () => {
                 globalObserver.emit('bot.stop');
                 const { ticksService } = $scope;
                 // Unsubscribe previous ticks_history subscription
-                // Unsubscribe the subscriptions from Proposal, Balance and OpenContract
+                // Unsubscribe the subscriptions from Balance and OpenContract
                 api_base.clearSubscriptions();
 
                 ticksService.unsubscribeFromTicksService().then(() => {

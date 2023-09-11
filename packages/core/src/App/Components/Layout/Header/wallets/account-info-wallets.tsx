@@ -11,11 +11,9 @@ import {
     useLinkedWalletsAccounts,
     useWalletAccountsList,
 } from '@deriv/hooks';
-import { AccountSwitcherWallet } from 'App/Containers/AccountSwitcherWallet';
+import { AccountSwitcherWallet, AccountSwitcherWalletMobile } from 'App/Containers/AccountSwitcherWallet';
 import { AccountsInfoLoader } from '../Components/Preloader';
-import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile';
 import AccountInfoWrapper from '../account-info-wrapper';
-import AccountInfoIcon from '../account-info-icon';
 import WalletBadge from './wallet-badge';
 
 type TAccountInfoWallets = {
@@ -34,11 +32,6 @@ type TBalanceLabel = {
     display_code: string;
 };
 
-type TMobileInfoIcon = {
-    currency: string;
-    is_virtual: boolean;
-};
-
 type TDesktopInfoIcons = {
     wallet_account: ReturnType<typeof useWalletAccountsList>['data'][number];
 };
@@ -51,7 +44,7 @@ const DropdownArrow = ({ is_disabled = false }: TDropdownArrow) =>
     );
 
 const BalanceLabel = ({ balance, currency, is_virtual, display_code }: Partial<TBalanceLabel>) =>
-    (typeof balance !== 'undefined' || !currency) && (
+    typeof balance !== 'undefined' || !currency ? (
         <div className='acc-info__wallets-account-type-and-balance'>
             <Text
                 as='p'
@@ -68,13 +61,7 @@ const BalanceLabel = ({ balance, currency, is_virtual, display_code }: Partial<T
                 )}
             </Text>
         </div>
-    );
-
-const MobileInfoIcon = ({ currency, is_virtual }: Partial<TMobileInfoIcon>) => (
-    <span className='acc-info__id'>
-        {(is_virtual || currency) && <AccountInfoIcon is_virtual={is_virtual} currency={currency?.toLowerCase()} />}
-    </span>
-);
+    ) : null;
 
 const DesktopInfoIcons = observer(({ wallet_account }: TDesktopInfoIcons) => {
     const { ui } = useStore();
@@ -105,7 +92,7 @@ const DesktopInfoIcons = observer(({ wallet_account }: TDesktopInfoIcons) => {
 const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInfoWallets) => {
     const { client, ui } = useStore();
     const { switchAccount, is_logged_in } = client;
-    const { is_mobile, account_switcher_disabled_message, disableApp, enableApp } = ui;
+    const { is_mobile, account_switcher_disabled_message } = ui;
 
     const active_account = useActiveAccount();
     const active_wallet = useActiveWalletAccount();
@@ -135,7 +122,7 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
 
     return (
         <div className='acc-info__wrapper'>
-            <div className='acc-info__separator' />
+            <div className='acc-info__wallets-separator' />
             <AccountInfoWrapper
                 is_disabled={active_account?.is_disabled}
                 disabled_message={account_switcher_disabled_message}
@@ -149,27 +136,26 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                     })}
                     onClick={active_account?.is_disabled ? undefined : () => toggleDialog()}
                 >
-                    {is_mobile ? (
-                        <MobileInfoIcon currency={active_account?.currency} is_virtual={active_account?.is_virtual} />
-                    ) : (
-                        <DesktopInfoIcons wallet_account={linked_wallet} />
-                    )}
+                    {!is_mobile && <DesktopInfoIcons wallet_account={linked_wallet} />}
                     <BalanceLabel
                         balance={active_account?.balance}
                         currency={active_account?.currency}
                         is_virtual={active_account?.is_virtual}
                         display_code={active_account?.currency_config?.display_code}
                     />
+                    {is_mobile && (
+                        <div className='acc-info__wallets-container'>
+                            <WalletBadge
+                                is_demo={linked_wallet?.is_virtual}
+                                label={linked_wallet?.landing_company_name}
+                            />
+                        </div>
+                    )}
                     <DropdownArrow is_disabled={active_account?.is_disabled} />
                 </div>
             </AccountInfoWrapper>
             {is_mobile ? (
-                <AccountSwitcherMobile
-                    is_visible={is_dialog_on}
-                    disableApp={disableApp}
-                    enableApp={enableApp}
-                    toggle={toggleDialog}
-                />
+                <AccountSwitcherWalletMobile is_visible={is_dialog_on} toggle={toggleDialog} />
             ) : (
                 <CSSTransition
                     in={is_dialog_on}

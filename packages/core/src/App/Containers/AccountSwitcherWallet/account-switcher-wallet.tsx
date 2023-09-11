@@ -4,7 +4,7 @@ import { Button, Text, useOnClickOutside } from '@deriv/components';
 import { useWalletAccountsList } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { AccountSwitcherWalletItem } from './account-switcher-wallet-item';
+import { AccountSwitcherWalletList } from './account-switcher-wallet-list';
 import './account-switcher-wallet.scss';
 
 type TAccountSwitcherWalletProps = {
@@ -41,15 +41,7 @@ export const AccountSwitcherWallet = ({ is_visible, toggle }: TAccountSwitcherWa
                     <Localize i18n_default_text='Deriv Apps accounts' />
                 </Text>
             </div>
-            <div className='account-switcher-wallet__list'>
-                {dtrade_account_wallets?.map(account => (
-                    <AccountSwitcherWalletItem
-                        key={account.dtrade_loginid}
-                        account={account}
-                        closeAccountsDialog={closeAccountsDialog}
-                    />
-                ))}
-            </div>
+            <AccountSwitcherWalletList wallets={dtrade_account_wallets} closeAccountsDialog={closeAccountsDialog} />
             <Button
                 className='account-switcher-wallet__button'
                 has_effect

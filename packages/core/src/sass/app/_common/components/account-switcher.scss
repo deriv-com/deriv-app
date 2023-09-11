@@ -190,9 +190,15 @@
     &__wallets {
         padding: 1.2rem 1.6rem;
 
+        &-separator {
+            border-right: 1px solid var(--general-section-1);
+            width: 1rem;
+            height: 3.2rem;
+            margin-right: -0.1rem;
+        }
+
         &-container {
             align-items: center;
-            -webkit-box-align: center;
             display: flex;
             gap: 0.8rem;
             margin-right: 0.8rem;

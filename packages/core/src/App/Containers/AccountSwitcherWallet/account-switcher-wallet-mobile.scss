@@ -1,0 +1,15 @@
+.account-switcher-wallet-mobile {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    &__footer {
+        justify-content: center;
+        position: sticky;
+        bottom: 0;
+
+        &-button {
+            width: 100%;
+        }
+    }
+}

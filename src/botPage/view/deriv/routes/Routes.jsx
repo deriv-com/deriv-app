@@ -14,17 +14,15 @@ const generateBaseName = () => {
     return '/';
 };
 
-const Routes = () => {
-    return (
-        <BrowserRouter basename={generateBaseName()}>
-            <Switch>
-                <RouteWrapper exact path='/' component={Main} />
-                <RouteWrapper path='/endpoint' component={Endpoint} />
-                <Redirect from='/endpoint.html' to='/endpoint' />
-                <Route path='*' component={NotFound} />
-            </Switch>
-        </BrowserRouter>
-    );
-};
+const Routes = () => (
+    <BrowserRouter basename={generateBaseName()}>
+        <Switch>
+            <RouteWrapper exact path='/' component={Main} />
+            <RouteWrapper path='/endpoint' component={Endpoint} />
+            <Redirect from='/endpoint.html' to='/endpoint' />
+            <Route path='*' component={NotFound} />
+        </Switch>
+    </BrowserRouter>
+);
 
 export default Routes;

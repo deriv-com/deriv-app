@@ -1,6 +1,4 @@
-import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { StoreProvider, mockStore } from '@deriv/stores';
 import useTransferMessageList from '../useTransferMessageList';
 import useWalletTransfer from '../useWalletTransfer';
 

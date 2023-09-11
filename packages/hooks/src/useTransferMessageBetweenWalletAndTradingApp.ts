@@ -30,8 +30,8 @@ const tradingAccountMapper = (account_type: string, currency_type: string): stri
  * @param to_account - Information of the destination account received from the useWalletsList hook.
  */
 const useTransferMessageBetweenWalletAndTradingApp = (
-    from_account: ReturnType<typeof useWalletTransfer>['from_account'],
-    to_account: ReturnType<typeof useWalletTransfer>['to_account'],
+    from_account: Partial<ReturnType<typeof useWalletTransfer>['from_account']>,
+    to_account: Partial<ReturnType<typeof useWalletTransfer>['to_account']>,
     account_limits: any // TODO: add type of account_limits when the new schema is ready.
 ) => {
     /*
@@ -47,7 +47,7 @@ const useTransferMessageBetweenWalletAndTradingApp = (
     if (from_account && to_account)
         if (from_account.account_type === 'wallet' && to_account.account_type !== 'wallet') {
             let limits;
-            if (to_account.account_type)
+            if (to_account.account_type && to_account.type)
                 limits = account_limits.daily_transfers[tradingAccountMapper(to_account.account_type, to_account.type)];
             if (from_account.currency)
                 if (from_account.is_demo)

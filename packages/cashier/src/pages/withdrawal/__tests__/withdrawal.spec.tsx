@@ -177,12 +177,12 @@ describe('<Withdrawal />', () => {
         });
 
         const { rerender } = render(mockWithdrawal(mock_root_store));
-        expect(screen.getByText('Withdraw')).toBeInTheDocument();
+        expect(screen.getByText('WithdrawalFiat')).toBeInTheDocument();
 
         mock_root_store.modules.cashier.iframe.iframe_url = 'coiframe_urlde';
         rerender(mockWithdrawal(mock_root_store));
 
-        expect(screen.getByText('Withdraw')).toBeInTheDocument();
+        expect(screen.getByText('WithdrawalFiat')).toBeInTheDocument();
     });
 
     it('should render <WithdrawalCryptoForm /> component', () => {

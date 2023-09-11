@@ -1,15 +1,16 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { AppLinkedWithWalletIcon, Text, WalletIcon } from '@deriv/components';
 import { useWalletTransactions } from '@deriv/hooks';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
 import { getTradingAccountName } from '@deriv/utils';
 import { getWalletCurrencyIcon } from 'Constants/utils';
 
-type TNonPendingTransaction = {
+type TCompletedTransaction = {
     transaction: ReturnType<typeof useWalletTransactions>['transactions'][number];
 };
 
-const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
+const CompletedTransaction = observer(({ transaction }: TCompletedTransaction) => {
     const {
         ui: { is_dark_mode_on, is_mobile },
     } = useStore();
@@ -25,7 +26,7 @@ const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
         landing_company_shortcode,
     } = transaction;
 
-    const gradient_card_class = useMemo(
+    const gradient_card_class = React.useMemo(
         () =>
             `wallet-card__${is_virtual === 1 ? 'demo' : account_currency_config?.code?.toLowerCase()}-bg${
                 is_dark_mode_on ? '--dark' : ''
@@ -33,12 +34,12 @@ const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
         [is_virtual, account_currency_config, is_dark_mode_on]
     );
 
-    const icon = useMemo(
+    const icon = React.useMemo(
         () => getWalletCurrencyIcon(is_virtual ? 'Demo' : account_currency_config?.code || '', is_dark_mode_on),
         [is_virtual, account_currency_config, is_dark_mode_on]
     );
 
-    const icon_type = useMemo(
+    const icon_type = React.useMemo(
         () => (is_virtual ? 'demo' : account_currency_config?.type),
         [is_virtual, account_currency_config]
     );
@@ -55,7 +56,8 @@ const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
               );
     };
 
-    const formatAmount = (value: number) => value.toLocaleString(undefined, { minimumFractionDigits: 2 });
+    const formatAmount = (value: number) =>
+        value.toLocaleString(undefined, { minimumFractionDigits: account_currency_config?.fractional_digits });
 
     const formatActionType = (value: string) => value[0].toUpperCase() + value.substring(1).replace(/_/, ' ');
 
@@ -75,7 +77,7 @@ const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
     };
 
     return (
-        <div className='transaction-list__item'>
+        <div className='transaction-list__item' data-testid='dt_completed_transaction'>
             <div className='transaction-list__item__left'>
                 {account_category === 'trading' ? (
                     <AppLinkedWithWalletIcon
@@ -129,11 +131,14 @@ const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
                     weight='lighter'
                     line_height={is_mobile ? 'm' : 's'}
                 >
-                    Balance: {formatAmount(balance_after)} {account_currency_config?.code}
+                    <Localize
+                        i18n_default_text='Balance: {{amount}} {{currency_code}}'
+                        values={{ amount: formatAmount(balance_after), currency_code: account_currency_config?.code }}
+                    />
                 </Text>
             </div>
         </div>
     );
-};
+});
 
-export default NonPendingTransaction;
+export default CompletedTransaction;

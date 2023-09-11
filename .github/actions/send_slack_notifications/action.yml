@@ -29,7 +29,6 @@ runs:
   
   - name: Send Slack Notification on Failure
     if: ${{ inputs.status }} == 'failure'
-
     run: |-
           curl -X POST -H 'Content-type: application/json' \
           --data '{

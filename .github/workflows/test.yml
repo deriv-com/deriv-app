@@ -20,9 +20,6 @@ env:
 jobs:
   build_and_test:
     name: Build And Test
-
-#     if: # GitHub does not currently support regular expressions inside if conditions
-# #         github.ref != 'refs/heads/master' && github.ref != 'refs/heads/gh-pages' && github.ref != 'refs/tags//.*/'
     runs-on: Runner_16cores
     container:
       image: node:18.16.0

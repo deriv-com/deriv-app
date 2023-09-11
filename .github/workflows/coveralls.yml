@@ -6,7 +6,7 @@ jobs:
 
   build:
     name: Reporter
-    runs-on: ubuntu-latest
+    runs-on: Runner_16cores
     steps:
 
       - uses: actions/checkout@v3

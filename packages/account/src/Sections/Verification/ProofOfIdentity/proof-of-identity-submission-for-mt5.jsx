@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { WS, isVerificationServiceSupported, formatIDVFormValues } from '@deriv/shared';
 import Unsupported from 'Components/poi/status/unsupported';

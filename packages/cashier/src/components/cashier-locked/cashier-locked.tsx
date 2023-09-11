@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { useStore, observer } from '@deriv/stores';
+import { EmptyState } from '@deriv/components';
 import { useCashierLocked, useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
-import EmptyState from 'Components/empty-state';
 import getMessage from './cashier-locked-provider';
 import './cashier-locked.scss';
 

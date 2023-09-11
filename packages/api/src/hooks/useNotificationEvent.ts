@@ -25,7 +25,7 @@ const useNotificationEvent = () => {
     const send = React.useCallback((payload: TNotificationEventPayload) => mutate({ payload }), [mutate]);
 
     return {
-        notification_event_status: data?.notification_event,
+        notification_event: data?.notification_event,
         send,
         ...rest,
     };

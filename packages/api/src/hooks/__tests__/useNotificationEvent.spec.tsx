@@ -36,6 +36,6 @@ describe('useNotificationEvent', () => {
 
         await waitFor(() => result.current.isSuccess, { timeout: 10000 });
 
-        expect(result.current.notification_event_status).toEqual(1);
+        expect(result.current.notification_event).toEqual(1);
     });
 });

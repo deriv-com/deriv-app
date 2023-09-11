@@ -5,7 +5,7 @@ import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
 import IdvUploadComplete from 'Components/poi/idv-status/idv-submit-complete';
 import Unsupported from 'Components/poi/status/unsupported';
 import UploadComplete from 'Components/poi/status/upload-complete';
-import OnfidoUpload from './onfido-sdk-view-container';
+import OnfidoSdkViewContainer from './onfido-sdk-view-container';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
 
 const POISubmission = ({
@@ -141,7 +141,7 @@ const POISubmission = ({
                     const documents_supported = Object.keys(doc_obj).map(d => doc_obj[d].display_name);
 
                     return (
-                        <OnfidoUpload
+                        <OnfidoSdkViewContainer
                             country_code={country_code}
                             documents_supported={documents_supported}
                             getChangeableFields={getChangeableFields}

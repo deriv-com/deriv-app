@@ -10,11 +10,12 @@ export type DerivAPIConstructorArgs = {
 export interface DerivAPIBasic {
     (args: DerivAPIConstructorArgs): void;
     authorize: (token: string) => void;
-    expectResponse: (responses: any) => void;
+    expectResponse: (responses: unknown) => void;
     onOpen?: () => Subject<GenericResponse>;
     onMessage?: () => Subject<GenericResponse>;
     onClose?: () => Subject<GenericResponse>;
-    send: (payload: Record<string, any>) => Promise<Record<string, any> | void>;
+    send: (payload: Record<string, unknown>) => Promise<Record<string, unknown> | void>;
+    subscribe: (payload: Record<string, unknown>) => Subject<Record<string, unknown>>;
 }
 
 export type ConnectionInstance = {

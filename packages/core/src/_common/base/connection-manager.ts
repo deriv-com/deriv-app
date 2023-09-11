@@ -23,7 +23,7 @@ import type { ConnectionConfig, ConnectionInstance, DerivAPIConstructorArgs, Gen
  */
 export class ConnectionManager {
     client_store?: TClientStore;
-    connections: ConnectionInstance[];
+    connections: ConnectionInstance[] = [];
     active_connection?: ConnectionInstance;
     has_connected_before: boolean;
     is_switching_socket: boolean;
@@ -50,30 +50,29 @@ export class ConnectionManager {
         this.is_disconnect_called = false;
         this.has_connected_before = false;
         const language = getLanguage();
-        this.connections = Object.keys(websocket_servers).map(env => {
-            return this.createConnectionInstance({
-                id: env,
-                url: websocket_servers[env as keyof typeof websocket_servers],
-                language,
-            });
-        });
 
         const endpoint_url = window.localStorage.getItem('config.server_url');
         if (endpoint_url) {
-            const instance = this.createConnectionInstance({ id: 'endpoint', url: endpoint_url, language });
+            const instance = this.createConnectionInstance({ id: 'development', url: endpoint_url, language });
             this.connections.push(instance);
             this.active_connection = instance;
             this.attachEventHandlers();
-            return;
-        }
-
-        const matching_connection = this.getActiveConnection();
-        this.active_connection = matching_connection;
-        this.attachEventHandlers();
-        if (this.active_connection) {
-            this.onChangeActiveConnection(this.active_connection);
-            if (typeof this.config.wsEvent === 'function') {
-                this.config.wsEvent('init');
+        } else {
+            this.connections = Object.keys(websocket_servers).map(env => {
+                return this.createConnectionInstance({
+                    id: env,
+                    url: websocket_servers[env as keyof typeof websocket_servers],
+                    language,
+                });
+            });
+            const matching_connection = this.getActiveConnection();
+            this.active_connection = matching_connection;
+            this.attachEventHandlers();
+            if (this.active_connection) {
+                this.onChangeActiveConnection(this.active_connection);
+                if (typeof this.config.wsEvent === 'function') {
+                    this.config.wsEvent('init');
+                }
             }
         }
     }
@@ -87,10 +86,26 @@ export class ConnectionManager {
      * @returns {Promise<void>} A promise that resolves when all specified responses are received.
      */
     async wait(...responses: string[]) {
-        await this.active_connection?.deriv_api.expectResponse(
+        return this.active_connection?.deriv_api.expectResponse(
             // @ts-expect-error Deriv API implementation
             ...responses.filter(type => !(type === 'authorize' && !this.client_store?.is_logged_in))
         );
+    }
+
+    /**
+     * Subscribes to a specific WebSocket request and specifies a callback function to handle the response.
+     *
+     * This method subscribes to a WebSocket request using the active connection's `deriv_api` instance.
+     * It specifies a callback function to handle the response data when the WebSocket server sends a response.
+     *
+     * @method
+     * @memberof ConnectionManager
+     * @param {Record<string, unknown>} request - The WebSocket request to subscribe to.
+     * @param {(args: unknown) => unknown} cb - A callback function to process the response data.
+     * @returns {unknown} An unknown value returned by the subscription, which can typically be used for cleanup.
+     */
+    subscribe(request: Record<string, unknown>, cb: (args: unknown) => unknown) {
+        return this.active_connection?.deriv_api.subscribe(request).subscribe(cb, cb);
     }
 
     /**
@@ -201,7 +216,7 @@ export class ConnectionManager {
      * Note: Due to limitations in the WebSocket API, this function closes the current connection
      * and creates a new connection with the specified language.
      *
-     * @param {string} new_language - The ISO code for the new language.
+     * @param {string} new_language - The ISO 2 letter language code for the new language.
      * @returns {void}
      */
     handleLanguageChange(new_language: string) {
@@ -247,6 +262,17 @@ export class ConnectionManager {
         this.active_connection.deriv_api.onClose().subscribe(this.onCloseHandler);
     }
 
+    /**
+     * Event handler for WebSocket 'open' event.
+     *
+     * This function is called when the WebSocket connection is successfully opened.
+     * It performs various actions such as notifying about the connection status, waiting for 'website_status'
+     * response, sending the authorize call if the client is logged in, and handling reconnect events.
+     *
+     * @callback onOpenHandler
+     * @memberof ConnectionManager
+     * @returns {void}
+     */
     onOpenHandler = () => {
         this.is_disconnect_called = false;
 
@@ -274,6 +300,18 @@ export class ConnectionManager {
         }
     };
 
+    /**
+     * Event handler for WebSocket 'message' event.
+     *
+     * This function is called when a message is received over the WebSocket connection.
+     * It processes the received message, sets it in the application state, and triggers
+     * appropriate callbacks if defined.
+     *
+     * @callback onMessageHandler
+     * @memberof ConnectionManager
+     * @param {GenericResponse} response - The WebSocket message response.
+     * @returns {void}
+     */
     onMessageHandler = ({ data: response }: GenericResponse) => {
         const msg_type = response.msg_type;
         State.set(['response', msg_type], cloneObject(response));
@@ -291,6 +329,17 @@ export class ConnectionManager {
         }
     };
 
+    /**
+     * Event handler for WebSocket 'close' event.
+     *
+     * This function is called when the WebSocket connection is closed.
+     * It handles WebSocket connection close events, including notifying about the close event,
+     * managing the 'is_switching_socket' flag, and executing the 'onDisconnect' callback if defined.
+     *
+     * @callback onCloseHandler
+     * @memberof ConnectionManager
+     * @returns {void}
+     */
     onCloseHandler = () => {
         if (!this.is_switching_socket && typeof this.config.wsEvent === 'function') {
             this.config.wsEvent('close');
@@ -307,4 +356,27 @@ export class ConnectionManager {
             this.is_disconnect_called = true;
         }
     };
+
+    /**
+     * Detaches WebSocket event handlers from the active connection instance.
+     *
+     * This function removes the event handlers previously attached to the WebSocket connection.
+     * It unsubscribes from the 'open', 'message', and 'close' events to prevent memory leaks and unwanted
+     * event processing.
+     *
+     * @returns {void}
+     */
+    detachEventHandlers() {
+        if (
+            !this.active_connection?.deriv_api ||
+            typeof this.active_connection?.deriv_api.onClose !== 'function' ||
+            typeof this.active_connection?.deriv_api.onOpen !== 'function' ||
+            typeof this.active_connection?.deriv_api.onMessage !== 'function'
+        )
+            return;
+
+        this.active_connection.deriv_api.onOpen().unsubscribe();
+        this.active_connection.deriv_api.onMessage().unsubscribe;
+        this.active_connection.deriv_api.onClose().unsubscribe;
+    }
 }

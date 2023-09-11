@@ -63,6 +63,7 @@ jobs:
   send_slack_notification:
       name: Send Slack notification
       runs-on: Runner_16cores
+      if: always()
       needs: [build_test_and_upload_artifact, publish_cloudflare_production]
       steps:
       - uses: technote-space/workflow-conclusion-action@v3

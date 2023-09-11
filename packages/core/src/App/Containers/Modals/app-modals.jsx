@@ -59,6 +59,9 @@ const WarningCloseCreateRealAccountModal = React.lazy(() =>
     import(/* webpackChunkName: "warning-close-create-real-account" */ '../WarningCloseCreateRealAccountModal')
 );
 
+// const MT5MigrationModal = React.lazy(() =>
+//     import(/* webpackChunkName: "warning-close-create-real-account" */ './mt5-migration-modal')
+// );
 const AppModals = ({
     is_account_needed_modal_on,
     is_acuity_modal_open,

@@ -19,6 +19,7 @@ module.exports = function (env) {
             CFDTopUpDemoModal: 'Containers/cfd-top-up-demo-modal.tsx',
             MT5TradeModal: 'Containers/mt5-trade-modal.tsx',
             TradeModal: 'Containers/trade-modal.tsx',
+            MT5MigrationModal: 'Containers/mt5-migration-modal.tsx',
             CFDPasswordManagerModal: 'Containers/cfd-password-manager-modal.tsx',
             CFDFinancialStpRealAccountSignup: 'Containers/cfd-financial-stp-real-account-signup.tsx',
             getDXTradeWebTerminalLink: 'Helpers/constants.ts',

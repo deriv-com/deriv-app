@@ -14,9 +14,8 @@ const useMT5SVGEligibleToMigrate = () => {
     );
 
     const is_eligible_for_svg_to_vanuatu_migration = svg_accounts_to_migrate.some(account => {
-        account.eligible_to_migrate['synthetic' || 'financial'] === 'vanuatu';
+        account => account.eligible_to_migrate['synthetic' || 'financial'] === 'vanuatu';
     });
-
     const eligible_account_to_migrate = is_eligible_for_svg_to_bvi_migration
         ? 'BVI'
         : is_eligible_for_svg_to_vanuatu_migration

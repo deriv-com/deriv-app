@@ -222,7 +222,7 @@ export type TJurisdictionCheckBoxProps = {
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
 };
-type TOpenAccountTransferMeta = {
+export type TOpenAccountTransferMeta = {
     category: string;
     type?: string;
 };
@@ -248,6 +248,11 @@ export type TJurisdictionModalContentProps = {
     real_financial_accounts_existing_data: TExistingData;
     real_swapfree_accounts_existing_data: TExistingData;
     is_virtual: boolean;
+};
+
+export type TJurisdictionModalTitleProps = {
+    show_eu_related_content: boolean;
+    account_type: string;
 };
 
 type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
@@ -325,4 +330,22 @@ export type TCFDDbviOnboardingProps = {
     toggleCFDVerificationModal: () => void;
     updateAccountStatus: () => void;
     updateMT5Status: () => void;
+};
+
+type TDynamicLeverage = {
+    from: number;
+    to: number;
+    leverage: number;
+};
+
+export type TDynamicLeverageMarketCardProps = {
+    title: string;
+    description?: string;
+    leverage: string;
+    data: TDynamicLeverage[];
+};
+
+export type TDynamicLeverageTableColumnHeader = {
+    title: string;
+    subtitle: string;
 };

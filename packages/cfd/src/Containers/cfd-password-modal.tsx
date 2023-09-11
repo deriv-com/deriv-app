@@ -465,6 +465,42 @@ const CFDPasswordForm = ({
         );
     }
 
+    const getPasswordModalTitle = () => {
+        if (is_mt5_migration_modal_enabled) {
+            return (
+                <Localize
+                    i18n_default_text='Enter your {{platform}} password to move your account(s).'
+                    values={{
+                        platform: getCFDPlatformLabel(platform),
+                    }}
+                />
+            );
+        } else if (account_type.category === 'real')
+            return (
+                <Localize
+                    i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} {{jurisdiction_shortcode}} account.'
+                    values={{
+                        platform: getCFDPlatformLabel(platform),
+                        platform_name: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
+                        account: !show_eu_related_content ? getAccountTitle(platform, account_type, account_title) : '',
+                        jurisdiction_shortcode: showJuristiction(),
+                    }}
+                />
+            );
+        else if (account_type.category === 'demo') {
+            return (
+                <Localize
+                    i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} account.'
+                    values={{
+                        platform: getCFDPlatformLabel(platform),
+                        platform_name: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
+                        account: getAccountTitle(platform, account_type, account_title),
+                    }}
+                />
+            );
+        }
+    };
+
     if (should_set_trading_password) {
         return (
             <CFDCreatePasswordForm
@@ -511,41 +547,7 @@ const CFDPasswordForm = ({
                     <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
                         {!should_set_trading_password && (
                             <Text size='xs' className='dc-modal__container_cfd-password-modal__account-title'>
-                                {is_mt5_migration_modal_enabled && (
-                                    <Localize
-                                        i18n_default_text='Enter your {{platform}} password to move your account(s)..'
-                                        values={{
-                                            platform: getCFDPlatformLabel(platform),
-                                        }}
-                                    />
-                                )}
-                                {account_type.category === 'real' && (
-                                    <Localize
-                                        i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} {{jurisdiction_shortcode}} account.'
-                                        values={{
-                                            platform: getCFDPlatformLabel(platform),
-                                            // account: !show_eu_related_content ? account_title : '',
-                                            platform_name:
-                                                platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
-                                            account: !show_eu_related_content
-                                                ? getAccountTitle(platform, account_type, account_title)
-                                                : '',
-                                            jurisdiction_shortcode: showJuristiction(),
-                                        }}
-                                    />
-                                )}
-                                {account_type.category === 'demo' && (
-                                    <Localize
-                                        i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} account.'
-                                        values={{
-                                            platform: getCFDPlatformLabel(platform),
-                                            // account: account_title,
-                                            platform_name:
-                                                platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
-                                            account: getAccountTitle(platform, account_type, account_title),
-                                        }}
-                                    />
-                                )}
+                                {getPasswordModalTitle()}
                             </Text>
                         )}
                         <div className='input-element'>

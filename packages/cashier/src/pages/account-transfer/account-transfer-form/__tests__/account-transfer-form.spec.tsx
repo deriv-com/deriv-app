@@ -84,9 +84,6 @@ describe('<AccountTransferForm />', () => {
                     crypto_fiat_converter: {
                         resetConverter: jest.fn(),
                     },
-                    transaction_history: {
-                        onMount: jest.fn(),
-                    },
                 },
             },
             common: {
@@ -280,6 +277,33 @@ describe('<AccountTransferForm />', () => {
         renderAccountTransferForm();
 
         expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
+    });
+
+    it('should show proper hint when transferring amount to a migrated svg account', () => {
+        mockRootStore.client.account_limits = {
+            daily_transfers: {
+                dxtrade: {},
+                internal: {
+                    available: 1,
+                },
+                mt5: {},
+            },
+        };
+        mockRootStore.client.mt5_login_list = [
+            {
+                account_type: 'real',
+                balance: 1233,
+                currency: 'USD',
+                display_balance: '1233.00',
+                login: 'TEST_LOGIN_ID',
+                open_order_position_status: true,
+            },
+        ];
+        mockRootStore.modules.cashier.account_transfer.selected_to.value = 'TEST_LOGIN_ID';
+
+        renderAccountTransferForm();
+
+        expect(screen.getByText('You can no longer open new positions with this account.')).toBeInTheDocument();
     });
 
     describe('<Dropdown />', () => {

@@ -14,11 +14,11 @@ import CFDTopUpDemoModal from '@deriv/cfd/src/Containers/cfd-top-up-demo-modal';
 import MT5TradeModal from '@deriv/cfd/src/Containers/mt5-trade-modal';
 import CFDPasswordManagerModal from '@deriv/cfd/src/Containers/cfd-password-manager-modal';
 import CompareAccountsModal from '@deriv/cfd/src/Containers/compare-accounts-modal';
+import MT5MigrationModal from '@deriv/cfd/src/Containers/mt5-migration-modal';
 import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import FailedVerificationModal from './failed-veriification-modal';
 import AccountTransferModal from 'Components/account-transfer-modal';
-import MT5MigrationModal from './mt5-migration-modal';
 
 type TCurrentList = DetailsOfEachMT5Loginid & {
     enabled: number;
@@ -90,7 +90,7 @@ const ModalManager = () => {
     };
 
     const openRealPasswordModal = (account_type: TOpenAccountTransferMeta) => {
-        // setAccountType(account_type);
+        setAccountType(account_type);
         enableCFDPasswordModal();
     };
 

@@ -64,6 +64,12 @@ const isLanguageAvailable = (lang: string) => {
     return Object.keys(getAllowedLanguages()).includes(selected_language);
 };
 
+export const getRedirectionLanguage = (preferred_language: string) => {
+    const language_query = new URLSearchParams(window.location.search).get('lang');
+    const is_language_query_valid = language_query && isLanguageAvailable(language_query);
+    return is_language_query_valid ? language_query : preferred_language ?? DEFAULT_LANGUAGE;
+};
+
 export const getAllLanguages = () => ALL_LANGUAGES;
 
 export const getInitialLanguage = () => {
@@ -138,7 +144,7 @@ export const changeLanguage = async (lang: string, cb: (arg0: string) => void) =
 // <Localize /> component wrapped with i18n
 export const Localize = withI18n(i18n);
 
-export const localize = <T extends object>(string: string, values?: T): string => {
+export const localize = (string: string, values?: Record<string, unknown>) => {
     if (!string) return '';
 
     return i18n.t(crc32(string).toString(), { defaultValue: string, ...values });

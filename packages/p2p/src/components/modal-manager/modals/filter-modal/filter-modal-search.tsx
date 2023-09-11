@@ -9,6 +9,7 @@ import { useStores } from 'Stores';
 import './filter-modal-search.scss';
 
 const FilterModalSearch = () => {
+    let typing_timer: NodeJS.Timeout | undefined;
     const { buy_sell_store, my_profile_store } = useStores();
     const { setIsFilterModalLoading } = buy_sell_store;
     const { getPaymentMethodsList, setSearchResults, setSearchTerm } = my_profile_store;
@@ -36,8 +37,6 @@ const FilterModalSearch = () => {
     };
 
     const onSearchKeyUp = (submitForm: VoidFunction) => {
-        let typing_timer: NodeJS.Timeout | undefined;
-
         clearTimeout(typing_timer);
 
         typing_timer = setTimeout(() => {

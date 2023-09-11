@@ -4,12 +4,18 @@ import { Field, FieldProps, FormikErrors } from 'formik';
 import React from 'react';
 import { TGetField, TListItem } from '../additional-kyc-info-modal/form-config';
 
-type TProps = TGetField & {
+type TFormSelectField = TGetField & {
     onItemSelection?: (item: TListItem) => void;
     list_height?: string;
 };
 
-const FormSelectField: React.FC<TProps> = ({
+type TSetFieldValue = (
+    field: string,
+    value: string,
+    shouldValidate?: boolean
+) => Promise<void | FormikErrors<Record<string, string>>>;
+
+const FormSelectField: React.FC<TFormSelectField> = ({
     label,
     name,
     required = false,
@@ -23,22 +29,29 @@ const FormSelectField: React.FC<TProps> = ({
     const { is_mobile } = ui;
 
     const onSelect =
-        (
-            field: string,
-            setFieldValue: (
-                field: string,
-                value: string,
-                shouldValidate?: boolean
-            ) => Promise<void | FormikErrors<Record<string, string>>>
-        ) =>
+        (field: string, setFieldValue: TSetFieldValue) =>
         ({ value, text }: TListItem) => {
             setFieldValue(field, value ? text : '', true);
         };
+
     return (
         <Field name={name}>
             {({ field, meta: { touched, error }, form: { setFieldValue } }: FieldProps<string>) => (
                 <React.Fragment>
-                    {!is_mobile && (
+                    {is_mobile ? (
+                        <SelectNative
+                            {...field}
+                            // @ts-expect-error This needs to fixed in SelectNative component
+                            list_items={list_items}
+                            // @ts-expect-error This needs to fixed in SelectNative component
+                            label={label}
+                            required={required}
+                            disabled={disabled}
+                            error={touched ? error : undefined}
+                            use_text
+                            data-testid={`dt_${field.name}`}
+                        />
+                    ) : (
                         <Autocomplete
                             {...field}
                             disabled={disabled}
@@ -56,21 +69,6 @@ const FormSelectField: React.FC<TProps> = ({
                             data-testid={`dt_${field.name}`}
                             // @ts-expect-error This needs to fixed in AutoComplete component
                             list_height={list_height}
-                        />
-                    )}
-
-                    {is_mobile && (
-                        <SelectNative
-                            {...field}
-                            // @ts-expect-error This needs to fixed in SelectNative component
-                            list_items={list_items}
-                            // @ts-expect-error This needs to fixed in SelectNative component
-                            label={label}
-                            required={required}
-                            disabled={disabled}
-                            error={touched ? error : undefined}
-                            use_text
-                            data-testid={`dt_${field.name}`}
                         />
                     )}
                 </React.Fragment>

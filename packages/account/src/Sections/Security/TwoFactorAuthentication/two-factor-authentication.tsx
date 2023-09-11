@@ -10,12 +10,12 @@ import {
     Loading,
     Text,
 } from '@deriv/components';
-import { getPropertyValue, isMobile, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { getPropertyValue, isMobile, WS } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import LoadErrorMessage from 'Components/load-error-message';
 import DigitForm from './digit-form';
 import TwoFactorAuthenticationArticle from './two-factor-authentication-article';
-import { observer, useStore } from '@deriv/stores';
 
 const TwoFactorAuthentication = observer(() => {
     const { client, common } = useStore();

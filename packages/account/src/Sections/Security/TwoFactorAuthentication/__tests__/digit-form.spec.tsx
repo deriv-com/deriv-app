@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import DigitForm, { TDigitForm } from '../digit-form';
 import userEvent from '@testing-library/user-event';
 import { WS } from '@deriv/shared';
+import DigitForm from '../digit-form';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -16,7 +16,7 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<DigitForm />', () => {
-    const mock_props: TDigitForm = {
+    const mock_props: React.ComponentProps<typeof DigitForm> = {
         is_enabled: false,
         setTwoFAStatus: jest.fn(),
         setTwoFAChangedStatus: jest.fn(),
@@ -25,7 +25,7 @@ describe('<DigitForm />', () => {
 
     it('should render the DigitForm component', () => {
         render(<DigitForm {...mock_props} />);
-        const digit_form_label = screen.getByText('Authentication code');
+        const digit_form_label = screen.getByText(/Authentication code/i);
         expect(digit_form_label).toBeInTheDocument();
     });
 
@@ -106,9 +106,9 @@ describe('<DigitForm />', () => {
         });
     });
 
-    it('should display error if response error object does not contain error code', async () => {
+    it('should display error if response error object error code is not equal to InvalidOTP ', async () => {
         WS.authorized.accountSecurity.mockResolvedValue({
-            error: { message: '', code: '' },
+            error: { message: 'Code not provided', code: '' },
         });
 
         render(<DigitForm {...mock_props} />);
@@ -121,13 +121,13 @@ describe('<DigitForm />', () => {
         const submitButton = screen.getByRole('button', { name: /Enable/i });
         userEvent.click(submitButton);
 
-        await waitFor(async () => {
-            const error = screen.queryByText(/That's not the right code. Please try again./i);
-            expect(error).not.toBeInTheDocument();
+        await waitFor(() => {
+            const error = screen.getByText(/Code not provided/i);
+            expect(error).toBeInTheDocument();
         });
     });
 
-    it('should display error if response error object does not contain error code', async () => {
+    it('should not display error if response object does not contain error object', async () => {
         WS.authorized.accountSecurity.mockResolvedValue({
             success: { message: '', code: '' },
         });
@@ -142,7 +142,7 @@ describe('<DigitForm />', () => {
         const submitButton = screen.getByRole('button', { name: /Enable/i });
         userEvent.click(submitButton);
 
-        await waitFor(async () => {
+        await waitFor(() => {
             const error = screen.queryByText(/That's not the right code. Please try again./i);
             expect(error).not.toBeInTheDocument();
         });

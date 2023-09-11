@@ -117,6 +117,43 @@ const runCommonFormfieldsTests = is_svg => {
 };
 
 describe('<PersonalDetails/>', () => {
+    const idv_document_data = {
+        document_type: {
+            value: 'national_id',
+            text: 'National ID',
+        },
+        document_number: '123456789',
+    };
+
+    const default_IDV_config = {
+        documents_supported: {},
+        has_visual_sample: 0,
+        is_country_supported: 0,
+    };
+
+    const default_residence_details = [
+        {
+            value: 'tc',
+            identity: {
+                services: {
+                    idv: {
+                        documents_supported: {
+                            document_1: {
+                                display_name: 'Test document 1 name',
+                                format: '5436454364243',
+                            },
+                            document_2: {
+                                display_name: 'Test document 2 name',
+                                format: 'A54321',
+                            },
+                        },
+                        has_visual_sample: true,
+                    },
+                },
+            },
+        },
+    ];
+
     const props = {
         is_svg: true,
         is_high_risk: false,
@@ -150,11 +187,7 @@ describe('<PersonalDetails/>', () => {
             {
                 identity: {
                     services: {
-                        idv: {
-                            documents_supported: {},
-                            has_visual_sample: 0,
-                            is_country_supported: 0,
-                        },
+                        idv: default_IDV_config,
                         onfido: {
                             documents_supported: {
                                 passport: {
@@ -172,11 +205,7 @@ describe('<PersonalDetails/>', () => {
             {
                 identity: {
                     services: {
-                        idv: {
-                            documents_supported: {},
-                            has_visual_sample: 0,
-                            is_country_supported: 0,
-                        },
+                        idv: default_IDV_config,
                         onfido: {
                             documents_supported: {},
                             is_country_supported: 0,
@@ -710,34 +739,9 @@ describe('<PersonalDetails/>', () => {
             is_mf: false,
             value: {
                 ...props.value,
-                document_type: {
-                    value: 'national_id',
-                    text: 'National ID',
-                },
-                document_number: '123456789',
+                ...idv_document_data,
             },
-            residence_list: [
-                {
-                    value: 'tc',
-                    identity: {
-                        services: {
-                            idv: {
-                                documents_supported: {
-                                    document_1: {
-                                        display_name: 'Test document 1 name',
-                                        format: '5436454364243',
-                                    },
-                                    document_2: {
-                                        display_name: 'Test document 2 name',
-                                        format: 'A54321',
-                                    },
-                                },
-                                has_visual_sample: true,
-                            },
-                        },
-                    },
-                },
-            ],
+            residence_list: default_residence_details,
         };
         renderwithRouter(<PersonalDetails {...new_props} />);
 
@@ -749,40 +753,20 @@ describe('<PersonalDetails/>', () => {
 
     it('should validate idv values along with additional document number when a document type is selected', async () => {
         shouldShowIdentityInformation.mockReturnValue(true);
+
+        const new_document_data = {
+            ...idv_document_data,
+            document_type: { ...idv_document_data.document_type, additional: '12345' },
+        };
+
         const new_props = {
             ...props,
             is_mf: false,
             value: {
                 ...props.value,
-                document_type: {
-                    value: 'national_id',
-                    text: 'National ID',
-                    additional: '12345',
-                },
-                document_number: '123456789',
+                ...new_document_data,
             },
-            residence_list: [
-                {
-                    value: 'tc',
-                    identity: {
-                        services: {
-                            idv: {
-                                documents_supported: {
-                                    document_1: {
-                                        display_name: 'Test document 1 name',
-                                        format: '5436454364243',
-                                    },
-                                    document_2: {
-                                        display_name: 'Test document 2 name',
-                                        format: 'A54321',
-                                    },
-                                },
-                                has_visual_sample: true,
-                            },
-                        },
-                    },
-                },
-            ],
+            residence_list: default_residence_details,
         };
         renderwithRouter(<PersonalDetails {...new_props} />);
 
@@ -800,10 +784,7 @@ describe('<PersonalDetails/>', () => {
             value: {
                 ...props.value,
                 tax_residence: 'France',
-                document_type: {
-                    value: 'national_id',
-                    text: 'National ID',
-                },
+                document_type: idv_document_data,
             },
             disabled_items: ['salutation', 'first_name', 'last_name', 'date_of_birth', 'tax_residence'],
         };

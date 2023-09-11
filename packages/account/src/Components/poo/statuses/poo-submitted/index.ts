@@ -1,3 +1,3 @@
-import { POOSubmitted } from './submitted';
+import POOSubmitted from './submitted';
 
 export default POOSubmitted;

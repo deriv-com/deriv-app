@@ -28,15 +28,6 @@ jobs:
       image: node:18.16.0
     steps:
     - uses: actions/checkout@v3.6.0
-    - name: Send Slack notification
-      id: slack
-      uses: "./.github/actions/send_slack_notifications"
-      with:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        status: ${{ job.status }}
-        release_type: test
-        version: 222 
-        # version: $(echo cat packages/core/dist/version | bash)
     - name: Checkout Repository
       uses: "./.github/actions/git_checkout_from_cache"
     - name: Install dependencies

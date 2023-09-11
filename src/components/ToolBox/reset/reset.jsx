@@ -13,7 +13,7 @@ const Reset = ({ blockly, onCloseModal }) => {
     return (
         <>
             <div className='reset_component'>
-                {blockly.hasStarted() ? (
+                {blockly?.hasStarted() ? (
                     <>
                         <p>
                             {translate(

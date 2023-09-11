@@ -535,5 +535,5 @@ export default class _Blockly {
         Blockly.mainWorkspace.undo(true);
     }
 
-    hasStarted = () => this?.interpreter.hasStarted();
+    hasStarted = () => this?.interpreter?.hasStarted();
 }

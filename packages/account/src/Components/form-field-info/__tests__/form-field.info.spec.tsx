@@ -1,6 +1,7 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { FormFieldInfo } from '../form-field-info';
+import userEvent from '@testing-library/user-event';
 
 describe('FormFieldInfo', () => {
     it('should render the component', () => {
@@ -16,7 +17,7 @@ describe('FormFieldInfo', () => {
 
         const popover = screen.getByTestId('dt_form-field-info__popover');
 
-        fireEvent.click(popover);
+        userEvent.click(popover);
 
         const content = screen.getByText('Info content');
         expect(content).toBeInTheDocument();
@@ -29,13 +30,13 @@ describe('FormFieldInfo', () => {
 
         const popover = screen.getByTestId('dt_form-field-info__popover');
 
-        fireEvent.click(popover);
+        userEvent.click(popover);
 
         const content = screen.getByText('Info content');
 
         expect(content).toBeInTheDocument();
 
-        fireEvent.click(document);
+        userEvent.click(document.body);
 
         expect(content).not.toBeVisible();
     });

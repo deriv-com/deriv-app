@@ -29,7 +29,7 @@ const FormSelectField: React.FC<TProps> = ({
                 field: string,
                 value: string,
                 shouldValidate?: boolean
-            ) => Promise<void | FormikErrors<Record<string, unknown>>>
+            ) => Promise<void | FormikErrors<Record<string, string>>>
         ) =>
         ({ value, text }: TListItem) => {
             setFieldValue(field, value ? text : '', true);

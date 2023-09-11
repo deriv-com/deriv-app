@@ -12,6 +12,7 @@ type TPageOverlay = {
     onClickClose: (event: MouseEvent) => void;
     portal_id?: string;
     header_classname?: string;
+    content_classname?: string;
 };
 
 const PageOverlay = ({
@@ -23,6 +24,7 @@ const PageOverlay = ({
     onClickClose,
     portal_id,
     header_classname,
+    content_classname,
 }: React.PropsWithChildren<TPageOverlay>) => {
     const page_overlay_ref = React.useRef<HTMLDivElement>(null);
 
@@ -53,7 +55,7 @@ const PageOverlay = ({
                     </div>
                 </div>
             )}
-            <div className='dc-page-overlay__content'>{children}</div>
+            <div className={classNames('dc-page-overlay__content', content_classname)}>{children}</div>
         </div>
     );
 

@@ -197,7 +197,7 @@ const ApiToken = () => {
                                                                 data-lpignore='true'
                                                                 type='text'
                                                                 className='da-api-token__input dc-input__input-group'
-                                                                label={<Localize i18n_default_text='Token name' />}
+                                                                label={localize('Token name')}
                                                                 value={values.token_name}
                                                                 onChange={e => {
                                                                     setFieldTouched('token_name', true);

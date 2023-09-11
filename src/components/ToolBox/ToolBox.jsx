@@ -10,6 +10,7 @@ import Modal from '@components/common/modal';
 import Popover from '@components/common/popover';
 import { setIsBotRunning } from '@redux-store/ui-slice';
 import { observer as globalObserver } from '@utilities/observer';
+import { getActiveToken } from '@storage';
 import Load from './load';
 import Save from './save';
 import Reset from './reset';
@@ -63,12 +64,16 @@ ToolboxButton.propTypes = {
 const ToolBox = ({ blockly, is_workspace_rendered }) => {
     const [should_show_modal, setShowModal] = React.useState(false);
     const [selected_modal, updateSelectedModal] = React.useState('');
-    const [is_loading_balance, setIsLoadingBalance] = React.useState(true);
-    const has_active_token = useSelector(state => !!state.client?.active_token);
+    const [has_active_token, setHasActiveToken] = React.useState(false);
 
     const dispatch = useDispatch();
-    const { is_gd_ready, is_bot_running, account_switcher_loader } = useSelector(state => state.ui);
-    const { is_gd_logged_in } = useSelector(state => state.client);
+    const { is_gd_ready, is_bot_running } = useSelector(state => state.ui);
+    const { is_gd_logged_in, login_id } = useSelector(state => state.client);
+
+    React.useEffect(() => {
+        const token = !!getActiveToken();
+        if (token) setHasActiveToken(true);
+    }, [login_id]);
 
     React.useEffect(() => {
         globalObserver.register('bot.running', () => dispatch(setIsBotRunning(true)));
@@ -91,13 +96,6 @@ const ToolBox = ({ blockly, is_workspace_rendered }) => {
             }
         });
     }, []);
-
-    React.useEffect(() => {
-        setIsLoadingBalance(true);
-        if (!account_switcher_loader) {
-            setIsLoadingBalance(false);
-        }
-    });
 
     const onCloseModal = () => {
         setShowModal(false);
@@ -212,7 +210,7 @@ const ToolBox = ({ blockly, is_workspace_rendered }) => {
                 position={'bottom'}
                 onClick={() => showSummary()}
                 classes={classNames('toolbox-button icon-summary', {
-                    'toolbox-hide': !has_active_token || is_loading_balance,
+                    'toolbox-hide': !has_active_token,
                 })}
             />
             <ToolboxButton
@@ -221,7 +219,7 @@ const ToolBox = ({ blockly, is_workspace_rendered }) => {
                 position='bottom'
                 onClick={() => globalObserver.emit('blockly.start')}
                 classes={classNames('toolbox-button icon-run', {
-                    'toolbox-hide': is_loading_balance || !is_workspace_rendered,
+                    'toolbox-hide': !is_workspace_rendered,
                 })}
                 is_bot_running={is_bot_running}
             />

@@ -3,7 +3,6 @@ import { createSlice, current } from '@reduxjs/toolkit';
 const initial_state = {
     account_list: [],
     account_balance: {},
-    token_list: [],
     balance: 0,
     currency: 'USD',
     is_virtual: false,

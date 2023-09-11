@@ -37,10 +37,6 @@ const eu_countries = [
 // check if client is from EU
 export const isEu = country => eu_countries.includes(country);
 
-/**
- * @param {*} token_list list of the tokens from the local storage
- * @returns
- */
 export const isEuByAccount = (account = {}) => {
     const { loginInfo = {} } = account;
     return eu_countries.includes(loginInfo.country);

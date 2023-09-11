@@ -10,7 +10,7 @@ runs:
     uses: actions/cache@v3.3.1
     with:
       key: node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
-      path: UPDATE_ME
+      path: '**/node_modules'
       restore-keys: node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
   - name: Install npm packages
     run: |-

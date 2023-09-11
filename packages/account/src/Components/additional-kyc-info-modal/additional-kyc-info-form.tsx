@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { Form, Formik } from 'formik';
 import React from 'react';
 import { useSettings } from '../../../../api/src/hooks';
+import { OECD_TIN_FORMAT_URL } from '../../Constants/external-urls';
 import FormFieldInfo from '../form-field-info';
 import { FormInputField } from '../forms/form-fields';
 import FormSelectField from '../forms/form-select-field';
@@ -115,7 +116,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                                     className='link'
                                                     target='_blank'
                                                     rel='noopener noreferrer'
-                                                    href='https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
+                                                    href={OECD_TIN_FORMAT_URL}
                                                 />,
                                                 <br key={1} />,
                                             ]}

@@ -4,7 +4,8 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import { AdditionalKycInfoForm } from '../additional-kyc-info-form';
 import userEvent from '@testing-library/user-event';
 
-jest.mock('../../../../../api/src/hooks', () => ({
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
     useSettings: () => ({
         update: jest.fn(),
         mutation: { isLoading: false, isSuccess: false, error: null, isError: false },

@@ -5,7 +5,7 @@ import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 import { Form, Formik } from 'formik';
 import React from 'react';
-import { useSettings } from '../../../../api/src/hooks';
+import { useSettings } from '@deriv/api';
 import { OECD_TIN_FORMAT_URL } from '../../Constants/external-urls';
 import FormFieldInfo from '../form-field-info';
 import { FormInputField } from '../forms/form-fields';

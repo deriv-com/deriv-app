@@ -69,14 +69,14 @@ describe('<BuySellModalTitle />', () => {
 
         render(<BuySellModalTitle />);
 
-        expect(screen.getByTestId('dt-buy-sell-modal-back-icon')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_buy_sell_modal_back_icon')).toBeInTheDocument();
         expect(screen.getByText('Add payment method')).toBeInTheDocument();
     });
 
     it('should call setShouldShowAddPaymentMethodForm when clicking the icon, if is_form_modified is false', () => {
         render(<BuySellModalTitle />);
 
-        const back_icon = screen.getByTestId('dt-buy-sell-modal-back-icon');
+        const back_icon = screen.getByTestId('dt_buy_sell_modal_back_icon');
         userEvent.click(back_icon);
 
         expect(mock_store.my_profile_store.setShouldShowAddPaymentMethodForm).toHaveBeenCalledWith(false);
@@ -87,7 +87,7 @@ describe('<BuySellModalTitle />', () => {
 
         render(<BuySellModalTitle />);
 
-        const back_icon = screen.getByTestId('dt-buy-sell-modal-back-icon');
+        const back_icon = screen.getByTestId('dt_buy_sell_modal_back_icon');
         userEvent.click(back_icon);
 
         expect(mock_modal_manager.showModal).toHaveBeenCalledWith({ key: 'CancelAddPaymentMethodModal', props: {} });

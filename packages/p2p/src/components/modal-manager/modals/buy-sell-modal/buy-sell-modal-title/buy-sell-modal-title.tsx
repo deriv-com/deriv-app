@@ -1,10 +1,11 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
+import { observer } from '@deriv/stores';
 import { isDesktop } from '@deriv/shared';
+import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { buy_sell } from 'Constants/buy-sell';
-import { useStores } from 'Stores';
 
 const BuySellModalTitle = () => {
     const { general_store, buy_sell_store, advertiser_page_store, my_profile_store } = useStores();
@@ -18,16 +19,14 @@ const BuySellModalTitle = () => {
         if (my_profile_store.should_show_add_payment_method_form) {
             if (isDesktop()) {
                 return (
-                    <React.Fragment>
+                    <div className='buy-sell-modal-title'>
                         <Icon
                             icon='IcArrowLeftBold'
-                            data_testid='dt-buy-sell-modal-back-icon'
+                            data_testid='dt_buy_sell_modal_back_icon'
                             onClick={() => {
                                 if (general_store.is_form_modified) {
                                     showModal({
                                         key: 'CancelAddPaymentMethodModal',
-                                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                        // @ts-ignore TODO: fix typings in CancelAddPaymentMethodModal and make them optional and remove this comment
                                         props: {},
                                     });
                                 } else {
@@ -37,7 +36,7 @@ const BuySellModalTitle = () => {
                             className='buy-sell-modal-title__icon'
                         />
                         <Localize i18n_default_text='Add payment method' />
-                    </React.Fragment>
+                    </div>
                 );
             }
             return <Localize i18n_default_text='Add payment method' />;
@@ -49,10 +48,10 @@ const BuySellModalTitle = () => {
     };
 
     return (
-        <Text as='p' color='prominent' line_height='m' size='s' weight='bold'>
+        <Text as='p' color='prominent' weight='bold'>
             {getModalTitle()}
         </Text>
     );
 };
 
-export default BuySellModalTitle;
+export default observer(BuySellModalTitle);

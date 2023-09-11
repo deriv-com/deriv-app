@@ -37,8 +37,6 @@ const BuySellModal = () => {
             if (general_store.is_form_modified) {
                 showModal({
                     key: 'CancelAddPaymentMethodModal',
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore TODO: fix typings in CancelAddPaymentMethodModal and make them optional and remove this comment
                     props: {},
                 });
             } else {

@@ -66,6 +66,7 @@ describe('<CancelAddPaymentMethodModal />', () => {
         expect(mock_on_cancel).toHaveBeenCalled();
         expect(mock_modal_manager_context.hideModal).toHaveBeenCalledWith({
             should_save_form_history: false,
+            should_restore_local_state: false,
             should_hide_all_modals: true,
         });
     });
@@ -77,6 +78,7 @@ describe('<CancelAddPaymentMethodModal />', () => {
 
         expect(mock_modal_manager_context.hideModal).toHaveBeenCalledWith({
             should_save_form_history: false,
+            should_restore_local_state: false,
             should_hide_all_modals: false,
         });
     });
@@ -87,6 +89,7 @@ describe('<CancelAddPaymentMethodModal />', () => {
         userEvent.click(go_back_button);
 
         expect(mock_modal_manager_context.hideModal).toHaveBeenCalledWith({
+            should_restore_local_state: true,
             should_save_form_history: true,
         });
     });

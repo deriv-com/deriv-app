@@ -53,6 +53,7 @@ describe('<BuySellModal />', () => {
                 fetchAdvertiserAdverts: jest.fn(),
                 is_buy_advert: true,
                 setFormErrorCode: jest.fn(),
+                unsubscribeAdvertInfo: jest.fn(),
             },
             floating_rate_store: {
                 setIsMarketRateChanged: jest.fn(),

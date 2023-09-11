@@ -6,7 +6,7 @@ import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from '../../../../stores/useDBotStore';
-import { getTourHeaders, tourDialogAction, tourDialogInfo } from '../config';
+import { bot_builder_tour_header, onboarding_tour_header, tourDialogAction, tourDialogInfo } from '../config';
 import { setTourSettings, tour_type } from '../utils';
 
 const TourStartDialog = observer(() => {
@@ -31,7 +31,6 @@ const TourStartDialog = observer(() => {
     };
 
     const onboard_tour = active_tab === DBOT_TABS.DASHBOARD;
-    const bot_builder_tour = active_tab === DBOT_TABS.BOT_BUILDER;
 
     const getTourContent = () => {
         return (
@@ -68,6 +67,8 @@ const TourStartDialog = observer(() => {
     const header_text_size = is_mobile ? 'xs' : 's';
     const content_text_size = is_mobile ? 'xxs' : 'xs';
 
+    const tour_headers = active_tab === 0 ? onboarding_tour_header : bot_builder_tour_header;
+
     return (
         <div>
             <Dialog
@@ -84,7 +85,7 @@ const TourStartDialog = observer(() => {
             >
                 <div className='dc-dialog__content__header'>
                     <Text weight='bold' color='prominent' size={header_text_size}>
-                        {getTourHeaders(bot_builder_tour)}
+                        {tour_headers}
                     </Text>
                 </div>
                 <div className='dc-dialog__content__description'>

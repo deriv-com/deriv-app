@@ -550,10 +550,12 @@ export const tourDialogAction = is_mobile ? (
     />
 );
 
-export const getTourHeaders = bot_builder_tour => {
-    let tour_header = localize('Get started on Deriv Bot');
-    if (bot_builder_tour) {
-        is_mobile ? (tour_header = localize('Bot Builder guide')) : (tour_header = localize("Let's build a Bot!"));
-    }
-    return tour_header;
-};
+export const onboarding_tour_header = (
+    <Localize key='tour-dialog-action-desktop' i18n_default_text='Get started on Deriv Bot' />
+);
+
+export const bot_builder_tour_header = is_mobile ? (
+    <Localize key='tour_header-mobile' i18n_default_text='Bot Builder guide' />
+) : (
+    <Localize key='tour_header-desktop' i18n_default_text="Let's build a Bot!" />
+);

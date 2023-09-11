@@ -181,7 +181,7 @@ const IdvDocumentSubmit = ({
                                     values?.document_type?.id
                                 ),
                             })}
-                            is_for_idv
+                            is_rendered_for_idv
                             should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
                             editable_fields={changeable_fields}
                             side_note={side_note_image}

@@ -157,7 +157,7 @@ const PoiConfirmWithExampleFormContainer = ({
                     <FormBody>
                         <PersonalDetailsForm
                             editable_fields={rest_state.changeable_fields}
-                            is_for_onfido
+                            is_rendered_for_onfido
                             side_note={side_note_image}
                             inline_note_text={
                                 <Localize

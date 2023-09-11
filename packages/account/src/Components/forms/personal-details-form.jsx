@@ -28,7 +28,7 @@ const PersonalDetailsForm = props => {
         is_virtual,
         is_mf,
         is_svg,
-        is_for_idv,
+        is_rendered_for_idv,
         should_hide_helper_image,
         editable_fields = [],
         has_real_account,
@@ -37,7 +37,7 @@ const PersonalDetailsForm = props => {
         account_opening_reason_list,
         closeRealAccountSignup,
         salutation_list,
-        is_for_onfido,
+        is_rendered_for_onfido,
         should_close_tooltip,
         setShouldCloseTooltip,
         class_name,
@@ -58,7 +58,7 @@ const PersonalDetailsForm = props => {
     }, [should_close_tooltip, handleToolTipStatus, setShouldCloseTooltip]);
 
     const getNameAndDobLabels = () => {
-        const is_asterisk_needed = is_svg || is_mf || is_for_onfido || is_for_idv;
+        const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_rendered_for_idv;
         const first_name_label = is_asterisk_needed ? localize('First name*') : localize('First name');
         const last_name_label = is_asterisk_needed ? localize('Last name*') : localize('Last name');
         const dob_label = is_asterisk_needed ? localize('Date of birth*') : localize('Date of birth');
@@ -70,10 +70,10 @@ const PersonalDetailsForm = props => {
         };
     };
 
-    const is_for_idv_or_onfido = is_for_idv || is_for_onfido;
+    const is_rendered_for_idv_or_onfido = is_rendered_for_idv || is_rendered_for_onfido;
 
     const getFieldHint = field_name =>
-        is_for_idv_or_onfido ? (
+        is_rendered_for_idv_or_onfido ? (
             <Localize
                 i18n_default_text={'Your {{ field_name }} as in your identity document'}
                 values={{ field_name }}
@@ -101,14 +101,14 @@ const PersonalDetailsForm = props => {
         <React.Fragment>
             <div
                 className={classNames(class_name, {
-                    'account-form__poi-confirm-example': is_for_idv,
+                    'account-form__poi-confirm-example': is_rendered_for_idv,
                 })}
             >
-                {is_for_idv_or_onfido && !should_hide_helper_image && (
+                {is_rendered_for_idv_or_onfido && !should_hide_helper_image && (
                     <InlineNoteWithIcon message={inline_note_text} font_size={isMobile() ? 'xxxs' : 'xs'} />
                 )}
                 <FormBodySection
-                    has_side_note={is_for_idv_or_onfido && !should_hide_helper_image}
+                    has_side_note={is_rendered_for_idv_or_onfido && !should_hide_helper_image}
                     side_note={side_note}
                 >
                     <fieldset className='account-form__fieldset'>
@@ -135,7 +135,7 @@ const PersonalDetailsForm = props => {
                                 </Text>
                             </div>
                         )}
-                        {!is_for_idv_or_onfido && (
+                        {!is_rendered_for_idv_or_onfido && (
                             <FormSubHeader
                                 title={'salutation' in values ? localize('Title and name') : localize('Name')}
                             />
@@ -191,7 +191,7 @@ const PersonalDetailsForm = props => {
                                 data-testid='last_name'
                             />
                         )}
-                        {!is_for_idv_or_onfido && <FormSubHeader title={localize('Other details')} />}
+                        {!is_rendered_for_idv_or_onfido && <FormSubHeader title={localize('Other details')} />}
                         {'date_of_birth' in values && (
                             <DateOfBirthField
                                 name='date_of_birth'

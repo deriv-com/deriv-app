@@ -359,7 +359,7 @@ const IdvFailed = ({
                         )}
                         <PersonalDetailsForm
                             editable_fields={rest_state?.changeable_fields}
-                            is_for_idv
+                            is_rendered_for_idv
                             side_note={idv_failure?.side_note_image}
                             inline_note_text={idv_failure?.inline_note_text}
                         />

@@ -45,7 +45,6 @@ export const tour_step_config: Step[] = [
                 />
             </Text>
         ),
-
         target: isMobile() ? '.main-title-bar-mobile--regulator' : '.regulators-switcher__container',
         disableBeacon: true,
         disableOverlayClose: true,
@@ -156,7 +155,11 @@ export const tour_styles_dark_mode: Styles = {
 };
 
 export const getTourStepLocale = (): Locale => ({
-    back: <SpanButton has_effect text={<Localize i18n_default_text='Back' />} secondary medium />,
+    back: (
+        <SpanButton has_effect secondary medium>
+            <Localize i18n_default_text='Back' />
+        </SpanButton>
+    ),
     close: <Localize i18n_default_text='Close' />,
     last: <Localize i18n_default_text='OK' />,
     next: <Localize i18n_default_text='Next' />,

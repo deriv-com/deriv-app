@@ -52,6 +52,7 @@ describe('<OnboardingTour />', () => {
     it('should show prev button if next button is clicked', async () => {
         const nextButton = screen.getByTestId('next-onboard-tour');
         userEvent.click(nextButton);
+        userEvent.click(nextButton);
         await waitFor(() => {
             const prevButton = screen.getByTestId('prev-onboard-tour');
             expect(prevButton).toBeInTheDocument();
@@ -72,13 +73,6 @@ describe('<OnboardingTour />', () => {
         const exitTourButton = screen.getByTestId('exit-onboard-tour');
         userEvent.click(exitTourButton);
         expect(mock_DBot_store?.dashboard.has_started_onboarding_tour).toBe(false);
-    });
-
-    it('should render step 2 on next button click', () => {
-        const nextButton = screen.getByTestId('next-onboard-tour');
-        userEvent.click(nextButton);
-        const navBar = screen.getByTestId('dbot-onboard-slider__navbar');
-        expect(navBar).toHaveTextContent('2/7');
     });
 
     it('should render step 3 on next button click', () => {

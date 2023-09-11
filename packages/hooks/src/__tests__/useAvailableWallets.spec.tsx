@@ -42,6 +42,14 @@ jest.mock('@deriv/api', () => ({
 }));
 
 describe('useAvailableWallets', () => {
+    const createWrapper = (mock: ReturnType<typeof mockStore>) => {
+        const Component = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
+        );
+        return Component;
+    };
     it('should return available wallets', () => {
         const mock = mockStore({
             client: {
@@ -51,13 +59,7 @@ describe('useAvailableWallets', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        const { result } = renderHook(() => useAvailableWallets(), { wrapper });
+        const { result } = renderHook(() => useAvailableWallets(), { wrapper: createWrapper(mock) });
 
         expect(result.current?.data).toEqual(
             ['AUD', 'EUR', 'BTC', 'ETH', 'LTC', 'USD'].map(currency => ({
@@ -78,13 +80,7 @@ describe('useAvailableWallets', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        const { result } = renderHook(() => useAvailableWallets(), { wrapper });
+        const { result } = renderHook(() => useAvailableWallets(), { wrapper: createWrapper(mock) });
 
         expect(result.current?.data).not.toEqual([
             {

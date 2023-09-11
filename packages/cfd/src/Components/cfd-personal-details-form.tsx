@@ -153,6 +153,7 @@ const validatePersonalDetails = ({
     const field_error_messages = (field_name: string): string[] => [
         localize('{{field_name}} is required', { field_name }),
         localize('{{field_name}} is not properly formatted.', { field_name }),
+        // this rule is specifically for tax_identification_number when tax_residence is empty
         localize('Please fill in Tax residence.'),
     ];
 

@@ -1,16 +1,17 @@
-import React from 'react';
-import { observer, useStore } from '@deriv/stores';
 import {
-    Modal,
     DesktopWrapper,
-    MobileWrapper,
-    UILoader,
-    PageOverlay,
     Div100vhContainer,
-    Text,
     InlineMessage,
+    MobileWrapper,
+    Modal,
+    PageOverlay,
+    Text,
+    UILoader,
 } from '@deriv/components';
+import { getPlatformSettings } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import React from 'react';
 import AdditionalKycInfoForm from './additional-kyc-info-form';
 
 type TAdditionalKycInfoFormWithHintBox = {
@@ -52,6 +53,17 @@ export const AdditionalKycInfoModal = observer(() => {
         toggleAdditionalKycInfoModal();
     };
 
+    const mt5_platform_settings = getPlatformSettings('mt5');
+
+    const ModalTitle = () => (
+        <Localize
+            i18n_default_text='Additional information required for {{platform}} account(s)'
+            values={{
+                platform: mt5_platform_settings.name,
+            }}
+        />
+    );
+
     return (
         <React.Suspense fallback={<UILoader />}>
             <div className='additional-kyc-info-modal__container'>
@@ -59,9 +71,7 @@ export const AdditionalKycInfoModal = observer(() => {
                     <Modal
                         has_close_icon
                         is_open={is_open}
-                        title={
-                            <Localize i18n_default_text='Additional information required for Deriv MT5 account(s)' />
-                        }
+                        title={<ModalTitle />}
                         toggleModal={toggleModal}
                         className='additional-kyc-info'
                         width='90.4rem'
@@ -78,7 +88,7 @@ export const AdditionalKycInfoModal = observer(() => {
                         portal_id='deriv_app'
                         header={
                             <Text size='xs' align='left'>
-                                <Localize i18n_default_text='Additional information required for Deriv MT5 account(s)' />
+                                <ModalTitle />
                             </Text>
                         }
                         onClickClose={toggleAdditionalKycInfoModal}

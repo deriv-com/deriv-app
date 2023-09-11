@@ -92,18 +92,7 @@ export const IdvDocSubmitOnSignup = ({
             validateOnChange
             validateOnBlur
         >
-            {({
-                errors,
-                handleBlur,
-                handleChange,
-                isSubmitting,
-                isValid,
-                setFieldValue,
-                setFieldTouched,
-                touched,
-                dirty,
-                values,
-            }) => (
+            {({ errors, handleBlur, handleChange, isSubmitting, isValid, setFieldValue, touched, dirty, values }) => (
                 <Form className='proof-of-identity__container proof-of-identity__container--reset mt5-layout'>
                     <section className='mt5-layout__container'>
                         <FormSubHeader title={localize('Identity verification')} />
@@ -119,27 +108,17 @@ export const IdvDocSubmitOnSignup = ({
                             class_name='idv-layout'
                         />
                         <FormSubHeader title={localize('Identity verification')} />
-                        <div
-                            className={classNames({
+                        <PersonalDetailsForm
+                            class_name={classNames({
                                 'account-form__poi-confirm-example_container': !shouldHideHelperImage(
                                     values?.document_type?.id
                                 ),
                             })}
-                        >
-                            <PersonalDetailsForm
-                                errors={errors}
-                                touched={touched}
-                                values={values}
-                                handleChange={handleChange}
-                                handleBlur={handleBlur}
-                                setFieldValue={setFieldValue}
-                                setFieldTouched={setFieldTouched}
-                                is_qualified_for_idv={true}
-                                is_appstore
-                                should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
-                                editable_fields={changeable_fields}
-                            />
-                        </div>
+                            is_qualified_for_idv
+                            is_appstore
+                            should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
+                            editable_fields={changeable_fields}
+                        />
                     </section>
                     <FormFooter className='proof-of-identity__footer'>
                         <Button

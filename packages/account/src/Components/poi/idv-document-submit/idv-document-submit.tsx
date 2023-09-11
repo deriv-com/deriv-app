@@ -167,7 +167,6 @@ const IdvDocumentSubmit = ({
                 isSubmitting,
                 isValid,
                 setFieldValue,
-                setFieldTouched,
                 touched,
                 values,
             }) => (
@@ -187,26 +186,16 @@ const IdvDocumentSubmit = ({
                         />
 
                         <FormSubHeader title={localize('Details')} />
-                        <div
-                            className={classNames({
+                        <PersonalDetailsForm
+                            class_name={classNames({
                                 'account-form__poi-confirm-example_container': !shouldHideHelperImage(
                                     values?.document_type?.id
                                 ),
                             })}
-                        >
-                            <PersonalDetailsForm
-                                errors={errors}
-                                touched={touched}
-                                values={values}
-                                handleChange={handleChange}
-                                handleBlur={handleBlur}
-                                setFieldValue={setFieldValue}
-                                setFieldTouched={setFieldTouched}
-                                is_qualified_for_idv
-                                should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
-                                editable_fields={changeable_fields}
-                            />
-                        </div>
+                            is_qualified_for_idv
+                            should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
+                            editable_fields={changeable_fields}
+                        />
                     </section>
                     <FormFooter className='proof-of-identity__footer'>
                         {isDesktop() && (

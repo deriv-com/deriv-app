@@ -54,7 +54,7 @@ const useTransferMessageBetweenWalletAndTradingApp = (
                     message_list.push({
                         code: 'DemoWalletToTradingAppDailyLimit',
                         is_first_transfer: parseFloat(limits?.allowed) === parseFloat(limits?.available),
-                        limit: parseFloat(limits?.available) * getRate(from_account.currency),
+                        limit: parseFloat(limits?.available),
                         currency: from_account.currency,
                         type: 'success',
                     });
@@ -62,7 +62,7 @@ const useTransferMessageBetweenWalletAndTradingApp = (
                     message_list.push({
                         code: 'WalletToTradingAppDailyLimit',
                         is_first_transfer: parseFloat(limits?.allowed) === parseFloat(limits?.available),
-                        limit: parseFloat(limits?.available),
+                        limit: parseFloat(limits?.available) * getRate(from_account.currency),
                         currency: from_account.currency,
                         type: 'success',
                     });

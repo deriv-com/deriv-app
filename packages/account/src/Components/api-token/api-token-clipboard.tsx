@@ -1,14 +1,14 @@
 import React from 'react';
 import { useIsMounted } from '@deriv/shared';
 import { Button, Icon, Modal, Text, Popover, useCopyToClipboard } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { TPopoverAlignment } from 'Types';
 
 type TApiTokenClipboard = {
     scopes: string[];
     text_copy: string;
-    info_message: string;
-    success_message: string;
+    info_message: string | JSX.Element;
+    success_message: string | JSX.Element;
     popover_alignment?: TPopoverAlignment;
 };
 
@@ -96,20 +96,15 @@ const ApiTokenClipboard = ({
     }, [timeout_clipboard, timeout_clipboard_2]);
 
     return (
-        <>
+        <React.Fragment>
             <Modal is_open={is_modal_open} small>
                 <Modal.Body>
                     <WarningDialogMessage />
                 </Modal.Body>
                 <Modal.Footer className='da-api-token__modal-footer'>
-                    <Button
-                        className='dc-dialog__button'
-                        has_effect
-                        text={localize('OK')}
-                        onClick={onClick}
-                        primary
-                        large
-                    />
+                    <Button className='dc-dialog__button' has_effect onClick={onClick} primary large>
+                        <Localize i18n_default_text='OK' />
+                    </Button>
                 </Modal.Footer>
             </Modal>
             <Popover
@@ -130,7 +125,7 @@ const ApiTokenClipboard = ({
                     onMouseLeave={onMouseLeaveHandler}
                 />
             </Popover>
-        </>
+        </React.Fragment>
     );
 };
 

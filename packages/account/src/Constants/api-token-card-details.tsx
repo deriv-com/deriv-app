@@ -38,3 +38,8 @@ export const getApiTokenCardDetails = () => [
         ),
     },
 ];
+
+export const TOKEN_LIMITS = {
+    MIN: 2,
+    MAX: 32,
+};

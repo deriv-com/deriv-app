@@ -4,7 +4,7 @@ import { CompositeCheckbox } from '@deriv/components';
 
 type TApiTokenCard = {
     description: JSX.Element;
-    display_name: string;
+    display_name: JSX.Element;
     name: string;
 };
 

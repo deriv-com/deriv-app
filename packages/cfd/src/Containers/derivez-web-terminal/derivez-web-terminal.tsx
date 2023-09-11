@@ -3,7 +3,7 @@ import { routes } from '@deriv/shared';
 import { useHistory } from 'react-router-dom';
 import { PageOverlay } from '@deriv/components';
 
-const CFDDerivez = () => {
+const DerivezWebTerminal = () => {
     const history = useHistory();
     const routeToPrevious = () => history.push(routes.traders_hub);
 
@@ -18,4 +18,4 @@ const CFDDerivez = () => {
     );
 };
 
-export default CFDDerivez;
+export default DerivezWebTerminal;

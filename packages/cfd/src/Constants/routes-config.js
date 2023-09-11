@@ -3,7 +3,7 @@ import CFD from '../Containers';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import CFDCompareAccounts from 'Containers/cfd-compare-accounts';
-import CFDDerivez from 'Containers/derivez';
+import DerivezWebTerminal from 'Containers/derivez-web-terminal';
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ '../Modules/Page404'));
 
@@ -34,7 +34,7 @@ const initRoutesConfig = () => {
         },
         {
             path: routes.derivez,
-            component: <CFDDerivez />,
+            component: <DerivezWebTerminal />,
             is_authenticated: false,
         },
     ];

@@ -496,6 +496,7 @@ type TUiStore = {
     ) => void;
     populateHeaderExtensions: (header_items: JSX.Element | null) => void;
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
+    purchase_states: boolean[];
     reports_route_tab_index: number;
     should_show_cancellation_warning: boolean;
     setAppContentsScrollRef: (ref: React.MutableRefObject<null | HTMLDivElement>) => void;
@@ -582,7 +583,6 @@ type TTradersHubStore = {
     available_cfd_accounts: TAvailableCFDAccounts[];
     available_dxtrade_accounts: DetailsOfEachMT5Loginid[];
     available_derivez_accounts: DetailsOfEachMT5Loginid[];
-    can_get_more_cfd_mt5_accounts: boolean;
     CFDs_restricted_countries: boolean;
     cfd_demo_balance: TBalance;
     cfd_real_balance: TBalance;

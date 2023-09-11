@@ -18,7 +18,10 @@ const WalletListCard: React.FC<TProps> = ({ account }) => {
     };
 
     return (
-        <div className='wallets-list-header__card_container'>
+        <div
+            className='wallets-list-header__card_container'
+            style={{ backgroundColor: account.is_active ? 'red' : 'blue' }}
+        >
             <div className='wallets-list-header__content'>
                 <div className='wallets-list-header__details-container'>
                     <WalletListCardIcon />

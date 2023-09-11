@@ -1,12 +1,14 @@
-import { useCallback, useMemo, useState } from 'react';
-import { getAccountsFromLocalStorage, getActiveAuthTokenIDFromLocalStorage } from '@deriv/utils';
+import { useCallback, useMemo } from 'react';
+import { getActiveAuthTokenIDFromLocalStorage, getActiveLoginIDFromLocalStorage } from '@deriv/utils';
 import useFetch from '../useFetch';
+import useInvalidateQuery from '../useInvalidateQuery';
 
 /** A custom hook that authorize the user with the given token. If no token is given,
  * it will use the current token from localStorage.
  */
 const useAuthorize = () => {
-    const [current_token, setCurrentToken] = useState(getActiveAuthTokenIDFromLocalStorage());
+    const current_token = getActiveAuthTokenIDFromLocalStorage();
+    const invalidate = useInvalidateQuery();
 
     const { data, ...rest } = useFetch('authorize', {
         payload: { authorize: current_token || '' },
@@ -14,19 +16,18 @@ const useAuthorize = () => {
     });
 
     // Add additional information to the authorize response.
-    const modified_authorize = useMemo(() => ({ ...data?.authorize }), [data?.authorize]);
+    const modified_authorize = useMemo(() => ({ ...data?.authorize }), [data]);
 
     const switchAccount = useCallback(
         (loginid: string) => {
-            const accounts = getAccountsFromLocalStorage();
-            const token = accounts?.[loginid]?.token;
+            const active_loginid = getActiveLoginIDFromLocalStorage();
+            if (active_loginid !== loginid) {
+                localStorage.setItem('active_loginid', loginid);
 
-            if (!token || token === current_token) return;
-
-            setCurrentToken(token);
-            localStorage.setItem('active_loginid', loginid);
+                invalidate('authorize');
+            }
         },
-        [current_token]
+        [invalidate]
     );
 
     return {

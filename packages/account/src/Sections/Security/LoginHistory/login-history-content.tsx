@@ -1,7 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Table } from '@deriv/components';
-import { TData } from '@deriv/api/src/hooks/useLoginHistory';
+import { TLoginHistoryData } from '@deriv/api/types';
 import { fields } from '../../../../../utils/src/getLoginHistoryFormattedData';
 import LoginHistoryTableRow from './login-history-table-row';
 import LoginHistoryListRow from './login-history-list-row';
@@ -11,7 +11,7 @@ type TGetFields = {
 };
 
 type TLoginHistoryContent = {
-    data: TData;
+    data: TLoginHistoryData;
     is_mobile: boolean;
 };
 
@@ -30,7 +30,7 @@ const LoginHistoryContent = ({ data, is_mobile }: TLoginHistoryContent) => {
     return renderTable(getFields(), data);
 };
 
-const renderTable = (fields: TGetFields, login_history: TData) => (
+const renderTable = (fields: TGetFields, login_history: TLoginHistoryData) => (
     <Table fixed className='login-history__table'>
         <Table.Header>
             <Table.Row className='login-history__table__header'>
@@ -47,7 +47,7 @@ const renderTable = (fields: TGetFields, login_history: TData) => (
     </Table>
 );
 
-const renderList = (login_history: TData) => {
+const renderList = (login_history: TLoginHistoryData) => {
     return (
         <Table className='login-history__list'>
             <Table.Body>

@@ -3,15 +3,6 @@ import { getLoginHistoryFormattedData } from '@deriv/utils';
 import useAuthorize from './useAuthorize';
 import useFetch from '../useFetch';
 
-export type TData = {
-    id: number;
-    date: string;
-    action: string;
-    browser: string;
-    ip: string;
-    status: string;
-}[];
-
 /** A custom hook to retrieve a summary of login history for user.*/
 const useLoginHistory = () => {
     const { isSuccess } = useAuthorize();

@@ -29,7 +29,7 @@ jobs:
       DATADOG_APPLICATION_ID: ${{ secrets.DATADOG_APPLICATION_ID }}
       DATADOG_CLIENT_TOKEN: ${{ secrets.DATADOG_CLIENT_TOKEN }}
       SERVICEACCOUNT_TOKEN: ${{ secrets.SERVICEACCOUNT_TOKEN }}
-      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}\
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
     steps:
     - uses: actions/checkout@v3.6.0
     - uses: "./.github/actions/git_checkout_from_cache"
@@ -41,15 +41,6 @@ jobs:
     - uses: actions/upload-artifact@v3.1.1
       with:
         path: packages/core/dist
-
-    - name: Send Slack notification
-      id: slack
-      uses: "./.github/actions/send_slack_notifications"
-      with:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        status: ${{ job.status }}
-        release_type: test 
-        version: $(echo cat packages/core/dist/version | bash)
 
   publish_cloudflare_staging:
     runs-on: Runner_16cores
@@ -70,3 +61,16 @@ jobs:
       with:
         path: packages
     - uses: "./.github/actions/publish_to_pages_staging"
+
+  send_slack_notification:
+      name: Send Slack notification
+      runs-on: Runner_16cores
+      needs: [build_test_and_upload_artifact, publish_cloudflare_staging]
+      steps:
+      - uses: technote-space/workflow-conclusion-action@v3
+      - uses: "./.github/actions/send_slack_notifications"
+        with:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          status: ${{ env.WORKFLOW_CONCLUSION }}
+          release_type: Production 
+          version: $(echo cat packages/core/dist/version | bash)

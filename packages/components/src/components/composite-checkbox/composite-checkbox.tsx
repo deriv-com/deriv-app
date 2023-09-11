@@ -9,7 +9,7 @@ type TCompositeCheckbox = {
     onChange: React.FormEventHandler<HTMLInputElement> &
         ((e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement>) => void);
     className?: string;
-    label: string;
+    label: JSX.Element;
     id?: string;
     description: JSX.Element;
 };

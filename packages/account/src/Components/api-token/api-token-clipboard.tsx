@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIsMounted } from '@deriv/shared';
 import { Button, Icon, Modal, Text, Popover, useCopyToClipboard } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { TPopoverAlignment } from 'Types';
 
 type TApiTokenClipboard = {
@@ -13,7 +13,7 @@ type TApiTokenClipboard = {
 };
 
 type TWarningNoteBullet = {
-    message: string;
+    message: string | JSX.Element;
 };
 
 const WarningNoteBullet = ({ message }: TWarningNoteBullet) => (
@@ -28,14 +28,14 @@ const WarningNoteBullet = ({ message }: TWarningNoteBullet) => (
 const WarningDialogMessage = () => (
     <React.Fragment>
         <Text as='p' color='prominent ' size='xs' line_height='m'>
-            {localize(
-                'Be careful who you share this token with. Anyone with this token can perform the following actions on your account behalf'
-            )}
+            <Localize i18n_default_text='Be careful who you share this token with. Anyone with this token can perform the following actions on your account behalf' />
         </Text>
         <div className='da-api-token__bullet-container'>
-            <WarningNoteBullet message={localize('Add accounts')} />
-            <WarningNoteBullet message={localize('Create or delete API tokens for trading and withdrawals')} />
-            <WarningNoteBullet message={localize('Modify account settings')} />
+            <WarningNoteBullet message={<Localize i18n_default_text='Add accounts' />} />
+            <WarningNoteBullet
+                message={<Localize i18n_default_text='Create or delete API tokens for trading and withdrawals' />}
+            />
+            <WarningNoteBullet message={<Localize i18n_default_text='Modify account settings' />} />
         </div>
     </React.Fragment>
 );

@@ -18,7 +18,7 @@ runs:
   using: composite
   steps:
   - name: Send Slack Notification on Success
-    if: ${{ inputs.status }} == 'success'
+    if: inputs.status == 'success'
     run: |-
         curl -X POST -H 'Content-type: application/json' \
         --data '{
@@ -28,7 +28,7 @@ runs:
     shell: bash
   
   - name: Send Slack Notification on Failure
-    if: ${{ inputs.status }} == 'failure'
+    if: inputs.status == 'failure'
     run: |-
           curl -X POST -H 'Content-type: application/json' \
           --data '{

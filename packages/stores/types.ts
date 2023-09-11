@@ -175,10 +175,10 @@ type TTradingPlatformAvailableAccount = {
 type TAvailableCFDAccounts = {
     availability: 'Non-EU' | 'EU' | 'All';
     description: string;
-    icon: 'Derived' | 'Financial' | 'DerivX' | 'SwapFree';
+    icon: 'Derived' | 'Financial' | 'DerivX' | 'SwapFree' | 'Ctrader';
     market_type: 'synthetic' | 'financial' | 'all' | 'gaming';
     name: string;
-    platform: 'mt5' | 'dxtrade';
+    platform: 'mt5' | 'dxtrade' | 'ctrader';
 };
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };

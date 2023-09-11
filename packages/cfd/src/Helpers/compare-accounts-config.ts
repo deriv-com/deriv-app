@@ -439,6 +439,10 @@ const getDxtradeDemoData = (available_accounts: TModifiedTradingPlatformAvailabl
     return available_accounts.filter(item => item.platform === CFD_PLATFORMS.DXTRADE);
 };
 
+const getCtraderDemoData = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
+    return available_accounts.filter(item => item.platform === CFD_PLATFORMS.CTRADER);
+};
+
 export {
     getHighlightedIconLabel,
     getJuridisctionDescription,
@@ -458,4 +462,5 @@ export {
     isCTraderAccountAdded,
     getMT5DemoData,
     getDxtradeDemoData,
+    getCtraderDemoData,
 };

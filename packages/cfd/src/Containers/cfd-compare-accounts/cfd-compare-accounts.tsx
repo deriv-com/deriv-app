@@ -11,6 +11,7 @@ import {
     getEUAvailableAccounts,
     getMT5DemoData,
     getDxtradeDemoData,
+    getCtraderDemoData,
     dxtrade_data,
     ctrader_data,
 } from '../../Helpers/compare-accounts-config';
@@ -44,6 +45,7 @@ const CompareCFDs = observer(() => {
     const demo_cfd_available_accounts = [
         ...getMT5DemoData(all_real_sorted_cfd_available_accounts),
         ...getDxtradeDemoData(all_real_sorted_cfd_available_accounts),
+        ...getCtraderDemoData(all_real_sorted_cfd_available_accounts),
     ];
 
     const all_cfd_available_accounts =

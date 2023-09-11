@@ -93,8 +93,8 @@ describe('JurisdictionModal', () => {
 
     it('should render JurisdictionModal with dynamic leverage modal', async () => {
         render(<JurisdictionModalComponent {...mock_props} />);
-        const toggle_button = screen.getByText('Dynamic Leverage');
-        userEvent.click(toggle_button);
+        const toggle_button = screen.getAllByText('Dynamic Leverage');
+        userEvent.click(toggle_button[0]);
 
         const title = screen.getByRole('heading');
         const back_button = screen.getByTestId('back_icon');

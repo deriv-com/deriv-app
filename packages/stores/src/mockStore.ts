@@ -406,6 +406,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleAccountTransferModal: jest.fn(),
             selectAccountType: jest.fn(),
             available_dxtrade_accounts: [],
+            available_ctrader_accounts: [],
             toggleIsTourOpen: jest.fn(),
             is_demo_low_risk: false,
             is_mt5_notification_modal_visible: false,

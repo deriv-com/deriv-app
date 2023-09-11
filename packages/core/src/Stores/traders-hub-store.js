@@ -10,7 +10,7 @@ export default class TradersHubStore extends BaseStore {
     available_cfd_accounts = [];
     available_mt5_accounts = [];
     available_dxtrade_accounts = [];
-    availabe_ctrader_accounts = [];
+    available_ctrader_accounts = [];
     available_derivez_accounts = [];
     combined_cfd_mt5_accounts = [];
     selected_account_type;
@@ -38,7 +38,7 @@ export default class TradersHubStore extends BaseStore {
             account_type_card: observable,
             available_cfd_accounts: observable,
             available_dxtrade_accounts: observable,
-            availabe_ctrader_accounts: observable,
+            available_ctrader_accounts: observable,
             available_derivez_accounts: observable,
             available_mt5_accounts: observable,
             available_platforms: observable,

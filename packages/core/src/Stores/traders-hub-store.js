@@ -63,7 +63,6 @@ export default class TradersHubStore extends BaseStore {
             open_failed_verification_for: observable,
             is_real_wallets_upgrade_on: observable,
             is_wallet_migration_failed: observable,
-            can_get_more_cfd_mt5_accounts: computed,
             closeModal: action.bound,
             content_flag: computed,
             getAccount: action.bound,

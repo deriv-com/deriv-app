@@ -7,4 +7,9 @@
     @include mobile {
         gap: 1.6rem;
     }
+
+    &__list {
+        list-style: disc;
+        margin-left: 1rem;
+    }
 }

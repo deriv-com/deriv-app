@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@deriv/components';
-import { localize, Localize } from 'Components/i18next';
+import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
 type TFilterModalFooterProps = {

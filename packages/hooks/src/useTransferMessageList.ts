@@ -1,13 +1,5 @@
 import useTransferMessageBetweenWalletAndTradingApp from './useTransferMessageBetweenWalletAndTradingApp';
-
-type TTransferMessageReturnType = {
-    code: 'WalletToTradingAppDailyLimit' | 'DemoWalletToTradingAppDailyLimit';
-    cta?: string;
-    is_first_transfer: boolean;
-    limit?: number;
-    currency?: string;
-    type: 'error' | 'info' | 'success';
-};
+import useWalletTransfer from './useWalletTransfer';
 
 /**
  * Returns the list of all the messages to be shown for transfer between accounts.
@@ -15,7 +7,10 @@ type TTransferMessageReturnType = {
  * @param to_account - Information of the destination account received from the useWalletsList hook.
  */
 
-const useTransferMessageList = (from_account: any, to_account: any): { data: Array<TTransferMessageReturnType> } => {
+const useTransferMessageList = (
+    from_account: ReturnType<typeof useWalletTransfer>['from_account'],
+    to_account: ReturnType<typeof useWalletTransfer>['to_account']
+) => {
     // TODO: fetch the new get_limits call here and return its response new schema is available.
     const account_limits = mock_get_limits_response;
 
@@ -57,7 +52,7 @@ const mock_get_limits_response = {
         },
         virtual: {
             allowed: '10000.00',
-            available: '700.00',
+            available: '10000.00',
             minimum: '0.01',
         },
     },

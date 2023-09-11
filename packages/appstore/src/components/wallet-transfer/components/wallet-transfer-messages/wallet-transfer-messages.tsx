@@ -4,29 +4,25 @@ import { localize } from '@deriv/translations';
 import { AnimatedList, AlertMessage } from '@deriv/components';
 import { getAccountName } from 'Constants/utils';
 import { formatMoney } from '@deriv/shared';
+import { ArrayElement } from 'Types';
+import useTransferMessageBetweenWalletAndTradingApp from '@deriv/hooks/src/useTransferMessageBetweenWalletAndTradingApp';
 
 type TWalletTransferMessagesProps = {
     from_account: ReturnType<typeof useWalletTransfer>['from_account'];
     to_account: ReturnType<typeof useWalletTransfer>['to_account'];
-    // setMessageList: void;
 };
 
 type TMessageMapperParams = {
-    currency: string;
-    is_first_transfer: boolean;
-    limit: number;
     from_name: string;
     to_name: string;
-};
-
-type TMessageCodes = 'WalletToTradingAppDailyLimit' | 'DemoWalletToTradingAppDailyLimit';
+} & ArrayElement<ReturnType<typeof useTransferMessageBetweenWalletAndTradingApp>>;
 
 type TMessageCodeToMessageMapper = {
-    [key in TMessageCodes]: (value: TMessageMapperParams) => string;
+    [key in ReturnType<typeof useTransferMessageList>['data'][number]['code']]: (value: TMessageMapperParams) => string;
 };
 
 const message_code_to_message_mapper: TMessageCodeToMessageMapper = {
-    WalletToTradingAppDailyLimit: (value: TMessageMapperParams) =>
+    WalletToTradingAppDailyLimit: value =>
         localize(
             'The{{remaining}} daily transfer limit between your {{wallet_name}} and {{trading_account_name}} is {{limit_value}} {{currency}}.',
             {
@@ -57,7 +53,7 @@ const WalletTransferMessages = ({ from_account, to_account }: TWalletTransferMes
                     return (
                         <AlertMessage
                             key={msg.code}
-                            variant={msg.cta ? 'with-action-button' : 'base'}
+                            variant={'base'}
                             message={message_code_to_message_mapper[msg.code]({
                                 ...msg,
                                 from_name: getAccountName({ ...from_account }),

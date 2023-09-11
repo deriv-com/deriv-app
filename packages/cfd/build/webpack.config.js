@@ -12,7 +12,7 @@ module.exports = function (env) {
             CFDStore: 'Stores/Modules/CFD/cfd-store',
             CompareAccountsModal: 'Containers/compare-accounts-modal.tsx',
             JurisdictionModal: 'Containers/jurisdiction-modal/jurisdiction-modal.tsx',
-            CFDPasswordModal: 'Containers/cfd-password-modal.tsx',
+            CFDPasswordModal: 'Containers/cfd-password-modal/cfd-password-modal.tsx',
             CFDDbviOnBoarding: 'Containers/cfd-dbvi-onboarding.tsx',
             CFDResetPasswordModal: 'Containers/cfd-reset-password-modal.tsx',
             CFDServerErrorDialog: 'Containers/cfd-server-error-dialog.tsx',

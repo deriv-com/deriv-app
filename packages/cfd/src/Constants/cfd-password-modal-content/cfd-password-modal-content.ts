@@ -1,12 +1,12 @@
 // TODO: Update with other platform and CFDs
-export const getAppIcon = type => {
+export const getWalletAppIcon = (type: string) => {
     switch (type) {
         case 'synthetic':
-            return 'IcAppstoreDerived';
+            return 'IcRebrandingMt5DerivedDashboard';
         case 'all':
-            return 'IcAppstoreSwapFree';
+            return 'IcRebrandingMt5SwapFree';
         case 'financial':
-            return 'IcAppstoreFinancial';
+            return 'IcRebrandingMt5FinancialDashboard';
         default:
             return '';
     }

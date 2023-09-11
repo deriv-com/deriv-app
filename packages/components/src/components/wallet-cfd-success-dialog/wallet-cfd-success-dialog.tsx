@@ -20,7 +20,7 @@ type TWalletCFDSuccessDialog = {
     header: string;
     is_demo?: boolean;
     is_open: boolean;
-    message: string;
+    message: React.ReactNode;
     onSubmit?: () => void;
     submit_button_text?: string;
     toggleModal?: () => void;

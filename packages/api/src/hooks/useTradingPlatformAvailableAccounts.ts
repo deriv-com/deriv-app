@@ -1,8 +1,11 @@
 import { useMemo } from 'react';
 import useFetch from '../useFetch';
+import useActiveAccount from './useActiveAccount';
 
 /** @description This hook is used to get all the available MT5 accounts. */
 const useTradingPlatformAvailableAccounts = () => {
+    const { data: active_account } = useActiveAccount();
+
     const { data: mt5_available_accounts, ...rest } = useFetch('trading_platform_available_accounts', {
         payload: { platform: 'mt5' },
     });
@@ -12,9 +15,10 @@ const useTradingPlatformAvailableAccounts = () => {
             mt5_available_accounts?.trading_platform_available_accounts?.map(account => {
                 return {
                     ...account,
+                    account_type: active_account?.is_virtual ? 'demo' : account.market_type,
                 };
             }),
-        [mt5_available_accounts?.trading_platform_available_accounts]
+        [active_account?.is_virtual, mt5_available_accounts?.trading_platform_available_accounts]
     );
 
     /** This function is used to group the available MT5 accounts by market type. */

@@ -48,6 +48,13 @@ type TGetCFDAccountKey = TGetAccount & {
     shortcode?: TShortcode;
 };
 
+export const getCategoryText = (category: string) => {
+    if (category === 'real') {
+        return localize('Real');
+    }
+    return localize('Demo');
+};
+
 // * mt5_login_list returns these:
 // market_type: "financial" | "gaming"
 // sub_account_type: "financial" | "financial_stp" | "swap_free"

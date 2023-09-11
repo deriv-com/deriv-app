@@ -3,8 +3,8 @@ import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { WS, getErrorMessages, validPassword, Jurisdiction } from '@deriv/shared';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import CFDPasswordModal from '../cfd-password-modal';
-import CFDProviders from '../../cfd-providers';
+import CFDPasswordModal from '../cfd-password-modal/cfd-password-modal.tsx';
+import CFDProviders from '../../cfd-providers.tsx';
 import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/account', () => ({

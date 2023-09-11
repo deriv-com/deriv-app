@@ -7,7 +7,7 @@ import RegulatorsCompareModal from './regulators-compare-modal';
 import { useStores } from 'Stores';
 import CFDServerErrorDialog from '@deriv/cfd/src/Containers/cfd-server-error-dialog';
 import JurisdictionModal from '@deriv/cfd/src/Containers/jurisdiction-modal/jurisdiction-modal';
-import CFDPasswordModal from '@deriv/cfd/src/Containers/cfd-password-modal';
+import CFDPasswordModal from '@deriv/cfd/src/Containers/cfd-password-modal/cfd-password-modal';
 import CFDDbviOnBoarding from '@deriv/cfd/src/Containers/cfd-dbvi-onboarding';
 import CFDResetPasswordModal from '@deriv/cfd/src/Containers/cfd-reset-password-modal';
 import CFDTopUpDemoModal from '@deriv/cfd/src/Containers/cfd-top-up-demo-modal';

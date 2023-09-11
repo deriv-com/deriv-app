@@ -6,8 +6,7 @@ import {
     ResidenceList,
     VerifyEmailResponse,
 } from '@deriv/api-types';
-import { FormikHelpers as FormikActions } from 'formik';
-import { TCFDPasswordFormValues } from './cfd-password-modal';
+import { FormikHelpers as FormikActions, FormikErrors } from 'formik';
 import {
     TTradingPlatformAvailableAccount,
     TExistingData,
@@ -21,6 +20,19 @@ import RootStore from '../Stores/index';
 
 export type TCFDPersonalDetailsContainerProps = {
     onSubmit: (index: number, value: { [key: string]: string }) => void;
+};
+
+export type TCFDPasswordFormValues = { password: string };
+
+export type TOnSubmitPassword = (
+    values: TCFDPasswordFormValues,
+    actions: FormikActions<TCFDPasswordFormValues>
+) => void;
+
+export type TCFDPasswordFormReusedProps = {
+    platform: string;
+    error_message: string;
+    validatePassword: (values: TCFDPasswordFormValues) => FormikErrors<TCFDPasswordFormValues>;
 };
 
 type CFD_Platform = 'dxtrade' | 'mt5';

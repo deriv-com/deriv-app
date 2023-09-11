@@ -72,4 +72,3 @@ jobs:
           status: ${{ env.WORKFLOW_CONCLUSION }}
           release_type: Production 
           version: $(echo cat packages/core/dist/version | bash)
-    

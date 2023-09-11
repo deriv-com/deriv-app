@@ -60,3 +60,13 @@
         margin-bottom: 1rem;
     }
 }
+
+.account-type-modal {
+    &--footer {
+        @include mobile {
+            position: sticky;
+            bottom: 0;
+            background-color: var(--general-main-2);
+        }
+    }
+}

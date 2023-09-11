@@ -237,7 +237,7 @@ export default class DashboardStore implements IDashboardStore {
             this.setBotBuilderTourState(false);
         }
         if (this.active_tab === 1) {
-            Blockly.derivWorkspace?.cleanUp();
+            window.Blockly?.derivWorkspace?.cleanUp();
         }
     };
 

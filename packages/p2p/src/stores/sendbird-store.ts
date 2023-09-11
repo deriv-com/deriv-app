@@ -49,6 +49,7 @@ export default class SendbirdStore extends BaseStore {
             addChannelMessage: action.bound,
             createChatForNewOrder: action.bound,
             replaceChannelMessage: action.bound,
+            sendFile: action.bound,
             setActiveChatChannel: action.bound,
             setChatChannelUrl: action.bound,
             setChatInfo: action.bound,

@@ -12,32 +12,19 @@ describe('FormFieldInfo', () => {
 
     it('should toggle popover on click', () => {
         render(<FormFieldInfo message='Info content' />);
-        const message = screen.queryByText('Info content');
-        expect(message).not.toBeInTheDocument();
-
-        const popover = screen.getByTestId('dt_form-field-info__popover');
-
-        userEvent.click(popover);
-
-        const content = screen.getByText('Info content');
-        expect(content).toBeInTheDocument();
+        expect(screen.queryByText('Info content')).not.toBeInTheDocument();
+        userEvent.click(screen.getByTestId('dt_form-field-info__popover'));
+        expect(screen.getByText('Info content')).toBeInTheDocument();
     });
 
     it('should close popover when clicking outside', () => {
         render(<FormFieldInfo message='Info content' />);
-        const message = screen.queryByText('Info content');
-        expect(message).not.toBeInTheDocument();
-
-        const popover = screen.getByTestId('dt_form-field-info__popover');
-
-        userEvent.click(popover);
+        expect(screen.queryByText('Info content')).not.toBeInTheDocument();
+        userEvent.click(screen.getByTestId('dt_form-field-info__popover'));
 
         const content = screen.getByText('Info content');
-
         expect(content).toBeInTheDocument();
-
         userEvent.click(document.body);
-
         expect(content).not.toBeVisible();
     });
 });

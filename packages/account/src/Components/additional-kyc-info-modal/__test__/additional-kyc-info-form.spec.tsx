@@ -3,20 +3,25 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { AdditionalKycInfoForm } from '../additional-kyc-info-form';
 import userEvent from '@testing-library/user-event';
+import { useSettings } from '@deriv/api';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useSettings: () => ({
-        update: jest.fn(),
-        mutation: { isLoading: false, isSuccess: false, error: null, isError: false },
-        data: {
-            tax_identification_number: '',
-            tax_residence: '',
-            place_of_birth: '',
-            account_opening_reason: '',
-        },
-    }),
+    useSettings: jest.fn(),
 }));
+
+const mockedUseSettings = useSettings as jest.MockedFunction<typeof useSettings>;
+
+const mock_settings: ReturnType<typeof useSettings> = {
+    update: jest.fn(),
+    mutation: { isLoading: false, isSuccess: false, error: null, isError: false },
+    data: {
+        tax_identification_number: '',
+        tax_residence: '',
+        place_of_birth: '',
+        account_opening_reason: '',
+    },
+};
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -28,6 +33,7 @@ describe('AdditionalKycInfoForm', () => {
     const mock_store = mockStore({});
 
     it('should render the form fields', () => {
+        mockedUseSettings.mockReturnValue(mock_settings);
         render(
             <StoreProvider store={mock_store}>
                 <AdditionalKycInfoForm setError={setError} />
@@ -40,7 +46,19 @@ describe('AdditionalKycInfoForm', () => {
         expect(screen.getByTestId('dt_account_opening_reason')).toBeInTheDocument();
     });
 
+    it('should render loading state upon fetching data', () => {
+        mockedUseSettings.mockReturnValue({ ...mock_settings, isLoading: true });
+        render(
+            <StoreProvider store={mock_store}>
+                <AdditionalKycInfoForm setError={setError} />
+            </StoreProvider>
+        );
+
+        expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
+    });
+
     it('should submit the form when all fields are valid', async () => {
+        mockedUseSettings.mockReturnValue(mock_settings);
         render(
             <StoreProvider store={mock_store}>
                 <AdditionalKycInfoForm setError={setError} />
@@ -59,9 +77,22 @@ describe('AdditionalKycInfoForm', () => {
             expect(submit_btn).toBeEnabled();
         });
         userEvent.click(screen.getByRole('button', { name: 'Submit' }));
+
+        expect(mockedUseSettings).toHaveBeenCalled();
     });
 
     it('should show an error message if form validation fails', async () => {
+        mockedUseSettings.mockReturnValue({
+            ...mock_settings,
+            mutation: {
+                ...mock_settings.mutation,
+                isError: true,
+                status: 'error',
+                error: {
+                    message: 'Invalid TIN format',
+                },
+            },
+        });
         render(
             <StoreProvider store={mock_store}>
                 <AdditionalKycInfoForm setError={setError} />
@@ -76,6 +107,9 @@ describe('AdditionalKycInfoForm', () => {
         userEvent.type(screen.getByTestId('dt_tax_identification_number'), 'GHA-00000000');
         userEvent.type(screen.getByTestId('dt_account_opening_reason'), 'Speculative');
 
-        userEvent.click(screen.getByRole('button', { name: 'Submit' }));
+        userEvent.click(submit_btn);
+
+        expect(mockedUseSettings).toHaveBeenCalled();
+        expect(setError).toHaveBeenCalled();
     });
 });

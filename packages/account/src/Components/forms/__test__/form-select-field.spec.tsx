@@ -43,11 +43,11 @@ describe('FormSelectField', () => {
             </StoreProvider>
         );
 
-        const selectElement = screen.getByLabelText('Test Label');
-        userEvent.type(selectElement, '{arrowdown}{arrowdown}{enter}');
+        const select_element = screen.getByLabelText('Test Label');
+        userEvent.type(select_element, '{arrowdown}{arrowdown}{enter}');
 
         // Verify that Option 2 is selected
-        expect(selectElement).toHaveValue('Option 2');
+        expect(select_element).toHaveValue('Option 2');
     });
 
     it('should render error message for invalid input', async () => {
@@ -70,7 +70,6 @@ describe('FormSelectField', () => {
             </StoreProvider>
         );
 
-        const errorElement = screen.getByText('This field is required');
-        expect(errorElement).toBeInTheDocument();
+        expect(screen.getByText('This field is required')).toBeInTheDocument();
     });
 });

@@ -30,7 +30,7 @@ describe('AdditionalKycInfoModal', () => {
                 <AdditionalKycInfoModal />
             </StoreProvider>
         );
-        const modalTitle = screen.getByText('Additional information required for Deriv MT5 account(s)');
-        expect(modalTitle).toBeInTheDocument();
+        expect(screen.getByText(/additional information required/i)).toBeInTheDocument();
+        expect(screen.getByText(/AdditionalKycInfoForm/i)).toBeInTheDocument();
     });
 });

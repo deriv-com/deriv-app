@@ -12,7 +12,14 @@ import { isMobile } from '@deriv/shared';
 export const FormFieldInfo = (props: Omit<TPopoverProps, 'alignment'>) => {
     const [is_open, setIsOpen] = React.useState(false);
     const ref = React.useRef<HTMLDivElement>(null);
-    const validateClickOutside = (event: MouseEvent) => !ref.current?.contains(event.target as Node);
+    const validateClickOutside = (event: MouseEvent) => {
+        const target = event?.target as HTMLElement;
+        if (target.tagName === 'A') {
+            event?.stopPropagation();
+            return false;
+        }
+        return !ref.current?.contains(target);
+    };
 
     useOnClickOutside(ref, () => setIsOpen(false), validateClickOutside);
     return (

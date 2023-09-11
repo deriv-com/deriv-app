@@ -3,11 +3,11 @@ import React from 'react';
 import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes, Text } from '@deriv/components';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info';
 import { getContractTypeDisplay, getGrowthRatePercentage } from '@deriv/shared';
-import { TProposalTypeInfo } from 'Types';
+import { TProposalTypeInfo, TTradeStore } from 'Types';
 
 type TPurchaseButton = {
     basis: string;
-    buy_info: { error?: string };
+    buy_info: TTradeStore['purchase_info'];
     currency: string;
     growth_rate: number;
     has_deal_cancellation: boolean;
@@ -166,6 +166,7 @@ const PurchaseButton = ({
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}
                             is_turbos={is_turbos}
+                            is_vanilla={is_vanilla}
                             should_fade={should_fade}
                             proposal_info={info}
                             type={type}

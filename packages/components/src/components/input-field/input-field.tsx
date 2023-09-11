@@ -14,7 +14,7 @@ export type TButtonType = 'button' | 'submit' | 'reset';
 // supports more than two different types of 'value' as a prop.
 // Quick Solution - Pass two different props to input field.
 type TInputField = {
-    ariaLabel: string;
+    ariaLabel?: string;
     checked?: boolean;
     className?: string;
     classNameDynamicSuffix?: string;
@@ -22,8 +22,8 @@ type TInputField = {
     classNameInput?: string;
     classNamePrefix?: string;
     classNameWrapper?: string; // CSS class for the component wrapper
-    currency: string;
-    current_focus: string;
+    currency?: string;
+    current_focus: string | null;
     data_testid?: string;
     data_tip?: string;
     data_value?: string;
@@ -31,38 +31,38 @@ type TInputField = {
     error_message_alignment?: string;
     error_messages?: string[];
     format?: (new_value?: string) => string;
-    fractional_digits: number;
+    fractional_digits?: number;
     helper?: string;
     icon?: React.ElementType;
     id?: string;
     increment_button_type?: TButtonType;
     inline_prefix?: string;
     inputmode?: TInputMode;
-    is_autocomplete_disabled: boolean;
+    is_autocomplete_disabled?: boolean;
     is_disabled?: boolean;
-    is_error_tooltip_hidden: boolean;
-    is_float: boolean;
-    is_hj_whitelisted: boolean;
+    is_error_tooltip_hidden?: boolean;
+    is_float?: boolean;
+    is_hj_whitelisted?: boolean;
     is_incrementable_on_long_press?: boolean;
-    is_incrementable: boolean;
-    is_negative_disabled: boolean;
+    is_incrementable?: boolean;
+    is_negative_disabled?: boolean;
     is_read_only?: boolean;
     is_signed?: boolean;
     is_unit_at_right?: boolean;
     label?: string;
-    max_length: number;
+    max_length?: number;
     max_value?: number;
     min_value?: number;
-    name: string;
+    name?: string;
     onBlur?: React.FocusEventHandler<HTMLInputElement>;
-    onChange: (e: TChangeEvent) => void;
+    onChange?: (e: TChangeEvent) => void;
     onClick?: React.MouseEventHandler<HTMLInputElement>;
     onClickInputWrapper?: React.MouseEventHandler<HTMLDivElement>;
     placeholder?: string;
     prefix?: string;
     required?: boolean;
     setCurrentFocus: (name: string | null) => void;
-    type: string;
+    type?: string;
     unit?: string;
     value: number | string;
 };
@@ -105,7 +105,7 @@ const InputField = ({
     max_length,
     max_value,
     min_value,
-    name,
+    name = '',
     format,
     onBlur,
     onChange,
@@ -115,7 +115,7 @@ const InputField = ({
     prefix,
     required,
     setCurrentFocus,
-    type,
+    type = '',
     unit,
     value,
     data_testid,
@@ -170,7 +170,7 @@ const InputField = ({
             }
         }
 
-        onChange(e);
+        onChange?.(e);
         if (callback) {
             callback(e);
         }
@@ -269,7 +269,7 @@ const InputField = ({
             if (is_signed && /^\d+/.test(formatted_value) && +formatted_value > 0) {
                 formatted_value = `+${formatted_value}`;
             }
-            onChange({ target: { value: formatted_value, name } });
+            onChange?.({ target: { value: formatted_value, name } });
         }
     };
 

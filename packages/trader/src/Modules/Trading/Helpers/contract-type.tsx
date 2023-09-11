@@ -5,7 +5,7 @@ import { TContractType, TContractCategory, TList } from '../Components/Form/Cont
 type TContractTypesList = {
     [key: string]: {
         name: string;
-        categories: TContractType[];
+        categories: DeepRequired<TContractType[]>;
     };
 };
 

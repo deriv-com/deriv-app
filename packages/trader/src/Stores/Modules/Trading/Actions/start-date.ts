@@ -1,27 +1,7 @@
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 import { TTradeStore } from 'Types';
 
-type TOnChangeStartDate = (
-    store: TTradeStore
-) => Promise<
-    Pick<
-        TTradeStore,
-        | 'contract_start_type'
-        | 'duration_units_list'
-        | 'duration_min_max'
-        | 'duration_unit'
-        | 'start_time'
-        | 'expiry_date'
-        | 'expiry_type'
-    > & { sessions?: TTradeStore['sessions'] }
->;
-type TOnChangeExpiry = (store: TTradeStore) => Promise<{
-    expiry_time: TTradeStore['expiry_time'];
-    market_open_times?: TTradeStore['market_open_times'];
-    market_close_times?: TTradeStore['market_close_times'];
-}>;
-
-export const onChangeStartDate: TOnChangeStartDate = async store => {
+export const onChangeStartDate = async (store: TTradeStore) => {
     const { contract_type, duration_unit, start_date } = store;
     const server_time = store.root_store.common.server_time;
     let { start_time, expiry_type } = store;
@@ -56,9 +36,9 @@ export const onChangeStartDate: TOnChangeStartDate = async store => {
     };
 };
 
-export const onChangeExpiry: TOnChangeExpiry = async store => {
+export const onChangeExpiry = async (store: TTradeStore) => {
     const { start_time, expiry_date, expiry_type, expiry_time, start_date, symbol, sessions } = store;
-
+    // @ts-expect-error TODO: check if TS error is gone after ContractType is migrated to TS
     const trading_times = await ContractType.getTradingTimes(expiry_date, symbol);
     const obj_market_open_times = { market_open_times: trading_times.open };
     const obj_market_close_times = { market_close_times: trading_times.close };

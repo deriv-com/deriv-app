@@ -2,11 +2,11 @@ import React from 'react';
 import { Money, Text } from '@deriv/components';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer } from '@deriv/stores';
-import MultiplierAmountModal from 'Modules/Trading/Containers/Multiplier/multiplier-amount-modal.jsx';
+import MultiplierAmountModal from 'Modules/Trading/Containers/Multiplier/multiplier-amount-modal';
 import RadioGroupOptionsModal from 'Modules/Trading/Containers/radio-group-options-modal.jsx';
 import MultipliersExpiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration.jsx';
 import MultipliersExpirationModal from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration-modal.jsx';
-import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info.jsx';
+import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info';
 import { localize } from '@deriv/translations';
 import { getGrowthRatePercentage } from '@deriv/shared';
 

@@ -1,4 +1,4 @@
-import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers/positions-helper.js';
+import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers/positions-helper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import AccumulatorsProfitLossTooltip from './accumulators-profit-loss-tooltip.jsx';

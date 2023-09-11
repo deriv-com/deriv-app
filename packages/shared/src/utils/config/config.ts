@@ -93,7 +93,7 @@ export const getActiveLoginID = () => {
         active_loginid_from_url = params.get('acct1');
     }
 
-    return window.localStorage.getItem('active_loginid') || active_loginid_from_url;
+    return window.localStorage.getItem('active_loginid') ?? active_loginid_from_url;
 };
 
 export const getActiveLoginIDType = (): keyof typeof websocket_servers => {

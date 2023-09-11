@@ -13,7 +13,7 @@ import { getLanguage } from '@deriv/translations';
 import { TClientStore } from '@deriv/stores/types';
 import APIMiddleware from './api_middleware';
 import SocketCache from './socket_cache';
-import type { ConnectionConfig, ConnectionInstance, DerivAPIConstructorArgs } from './socket.types';
+import type { ConnectionConfig, ConnectionInstance, DerivAPIConstructorArgs, GenericResponse } from './socket.types';
 
 /**
  * Manages WebSocket connections and provides methods for handling various caveats
@@ -182,8 +182,6 @@ export class ConnectionManager {
                 this.config.wsEvent('open');
             }
 
-            this.active_connection.deriv_api.send({ website_status: 1 });
-
             this.wait('website_status');
 
             if (this.client_store?.is_logged_in) {
@@ -238,71 +236,75 @@ export class ConnectionManager {
     attachEventHandlers() {
         if (
             !this.active_connection?.deriv_api ||
-            !(typeof this.active_connection?.deriv_api.onClose === 'function') ||
-            !(typeof this.active_connection?.deriv_api.onOpen === 'function') ||
-            !(typeof this.active_connection?.deriv_api.onMessage === 'function')
+            typeof this.active_connection?.deriv_api.onClose !== 'function' ||
+            typeof this.active_connection?.deriv_api.onOpen !== 'function' ||
+            typeof this.active_connection?.deriv_api.onMessage !== 'function'
         )
             return;
 
-        this.active_connection?.deriv_api.onOpen().subscribe(() => {
-            this.is_disconnect_called = false;
-
-            if (typeof this.config.wsEvent === 'function') {
-                this.config.wsEvent('open');
-            }
-
-            this.wait('website_status');
-
-            if (this.client_store?.is_logged_in) {
-                const authorize_token = this.client_store.getToken();
-                this.active_connection?.deriv_api.authorize(authorize_token);
-            }
-
-            if (typeof this.config.onOpen === 'function') {
-                this.config.onOpen(this.hasReadyState(1));
-            }
-
-            if (typeof this.config.onReconnect === 'function' && this.has_connected_before) {
-                this.config.onReconnect();
-            }
-
-            if (!this.has_connected_before) {
-                this.has_connected_before = true;
-            }
-        });
-
-        this.active_connection?.deriv_api.onMessage().subscribe(({ data: response }) => {
-            const msg_type = response.msg_type;
-            State.set(['response', msg_type], cloneObject(response));
-
-            if (typeof this.config.wsEvent === 'function') {
-                this.config.wsEvent('message');
-            }
-
-            if (getPropertyValue(response, ['error', 'code']) === 'InvalidAppID') {
-                this.invalid_app_id = getAppId();
-            }
-
-            if (typeof this.config.onMessage === 'function') {
-                this.config.onMessage(response);
-            }
-        });
-
-        this.active_connection?.deriv_api.onClose().subscribe(() => {
-            if (!this.is_switching_socket && typeof this.config.wsEvent === 'function') {
-                this.config.wsEvent('close');
-            } else {
-                this.is_switching_socket = false;
-            }
-
-            if (
-                this.invalid_app_id !== getAppId() &&
-                typeof this.config.onDisconnect === 'function' &&
-                !this.is_disconnect_called
-            ) {
-                this.config.onDisconnect();
-                this.is_disconnect_called = true;
-            }
-        });
+        this.active_connection.deriv_api.onOpen().subscribe(this.onOpenHandler);
+        this.active_connection.deriv_api.onMessage().subscribe(this.onMessageHandler);
+        this.active_connection.deriv_api.onClose().subscribe(this.onCloseHandler);
     }
+
+    onOpenHandler = () => {
+        this.is_disconnect_called = false;
+
+        if (typeof this.config.wsEvent === 'function') {
+            this.config.wsEvent('open');
+        }
+
+        this.wait('website_status');
+
+        if (this.client_store?.is_logged_in) {
+            const authorize_token = this.client_store.getToken();
+            this.active_connection?.deriv_api.authorize(authorize_token);
+        }
+
+        if (typeof this.config.onOpen === 'function') {
+            this.config.onOpen(this.hasReadyState(1));
+        }
+
+        if (typeof this.config.onReconnect === 'function' && this.has_connected_before) {
+            this.config.onReconnect();
+        }
+
+        if (!this.has_connected_before) {
+            this.has_connected_before = true;
+        }
+    };
+
+    onMessageHandler = ({ data: response }: GenericResponse) => {
+        const msg_type = response.msg_type;
+        State.set(['response', msg_type], cloneObject(response));
+
+        if (typeof this.config.wsEvent === 'function') {
+            this.config.wsEvent('message');
+        }
+
+        if (getPropertyValue(response, ['error', 'code']) === 'InvalidAppID') {
+            this.invalid_app_id = getAppId();
+        }
+
+        if (typeof this.config.onMessage === 'function') {
+            this.config.onMessage(response);
+        }
+    };
+
+    onCloseHandler = () => {
+        if (!this.is_switching_socket && typeof this.config.wsEvent === 'function') {
+            this.config.wsEvent('close');
+        } else {
+            this.is_switching_socket = false;
+        }
+
+        if (
+            this.invalid_app_id !== getAppId() &&
+            typeof this.config.onDisconnect === 'function' &&
+            !this.is_disconnect_called
+        ) {
+            this.config.onDisconnect();
+            this.is_disconnect_called = true;
+        }
+    };
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
 import TradingPlatformIcon from 'Assets/svgs/trading-platform';
-import { TAccountsList } from 'Types';
+import { TAccountsList } from '../../types';
 
 type TAccountPlatformIcon = {
     size: number;

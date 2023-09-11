@@ -1,29 +1,129 @@
-import { action, reaction, makeObservable } from 'mobx';
-import { isEuResidenceWithOnlyVRTC, showDigitalOptionsUnavailableError, routes } from '@deriv/shared';
+import { action, makeObservable, reaction, when } from 'mobx';
+import { ApiHelpers, DBot, runIrreversibleEvents } from '@deriv/bot-skeleton';
+import { ContentFlag, isEuResidenceWithOnlyVRTC, routes, showDigitalOptionsUnavailableError } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { runIrreversibleEvents, ApiHelpers, DBot } from '@deriv/bot-skeleton';
 
 export default class AppStore {
-    constructor(root_store) {
+    constructor(root_store, core) {
         makeObservable(this, {
             onMount: action.bound,
             onUnmount: action.bound,
+            onBeforeUnload: action.bound,
+            registerReloadOnLanguageChange: action.bound,
+            registerCurrencyReaction: action.bound,
+            registerOnAccountSwitch: action.bound,
+            registerLandingCompanyChangeReaction: action.bound,
+            registerResidenceChangeReaction: action.bound,
+            setDBotEngineStores: action.bound,
+            onClickOutsideBlockly: action.bound,
+            showDigitalOptionsMaltainvestError: action.bound,
         });
 
         this.root_store = root_store;
+        this.core = core;
         this.dbot_store = null;
         this.api_helpers_store = null;
+        this.timer = null;
     }
 
-    onMount() {
-        const { blockly_store, core, main_content } = this.root_store;
-        const { client, common, ui } = core;
-        this.showDigitalOptionsMaltainvestError(client, common);
+    getErrorForNonEuClients = () => ({
+        text: localize(
+            'Unfortunately, this trading platform is not available for EU Deriv account. Please switch to a non-EU account to continue trading.'
+        ),
+        title: localize('Deriv Bot is unavailable for this account'),
+        link: localize('Switch to another account'),
+    });
 
-        blockly_store.startLoading();
+    getErrorForEuClients = (is_logged_in = false) => {
+        return {
+            text: ' ',
+            title: is_logged_in
+                ? localize('Deriv Bot is not available for EU clients')
+                : localize('Deriv Bot is unavailable in the EU'),
+            link: is_logged_in && localize("Back to Trader's Hub"),
+            route: routes.traders_hub,
+        };
+    };
+
+    handleErrorForEu = (show_default_error = false) => {
+        const { client, common, ui, traders_hub } = this.core;
+        const toggleAccountsDialog = ui?.toggleAccountsDialog;
+
+        if (!client?.is_logged_in && client?.is_eu_country) {
+            return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
+        }
+
+        if (!client.is_landing_company_loaded) {
+            return false;
+        }
+
+        if (window.location.pathname === routes.bot) {
+            if (client.should_show_eu_error) {
+                return showDigitalOptionsUnavailableError(
+                    common.showError,
+                    this.getErrorForEuClients(client.is_logged_in)
+                );
+            }
+
+            if (traders_hub.content_flag === ContentFlag.HIGH_RISK_CR) {
+                return false;
+            }
+
+            if (traders_hub.content_flag === ContentFlag.LOW_RISK_CR_EU && toggleAccountsDialog) {
+                return showDigitalOptionsUnavailableError(
+                    common.showError,
+                    this.getErrorForNonEuClients(),
+                    toggleAccountsDialog,
+                    false,
+                    false
+                );
+            }
+
+            if (
+                ((!client.is_bot_allowed && client.is_eu && client.should_show_eu_error) ||
+                    isEuResidenceWithOnlyVRTC(client.active_accounts) ||
+                    client.is_options_blocked) &&
+                toggleAccountsDialog
+            ) {
+                return showDigitalOptionsUnavailableError(
+                    common.showError,
+                    this.getErrorForNonEuClients(),
+                    toggleAccountsDialog,
+                    false,
+                    false
+                );
+            }
+        }
+
+        if (show_default_error && common.has_error) {
+            common.setError(false, null);
+        }
+        return false;
+    };
+
+    onMount() {
+        const { blockly_store, run_panel } = this.root_store;
+        const { client, ui, traders_hub } = this.core;
+        this.showDigitalOptionsMaltainvestError();
+
+        let timer_counter = 1;
+
+        this.timer = setInterval(() => {
+            if (window.sendRequestsStatistic) {
+                window.sendRequestsStatistic(false);
+                performance.clearMeasures();
+                if (timer_counter === 6 || run_panel?.is_running) {
+                    clearInterval(this.timer);
+                } else {
+                    timer_counter++;
+                }
+            }
+        }, 10000);
+
+        blockly_store.setLoading(true);
         DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store, ui.is_mobile).then(() => {
-            main_content.setContainerSize();
-            blockly_store.endLoading();
+            blockly_store.setContainerSize();
+            blockly_store.setLoading(false);
         });
         this.registerReloadOnLanguageChange(this);
         this.registerCurrencyReaction.call(this);
@@ -34,7 +134,17 @@ export default class AppStore {
         window.addEventListener('click', this.onClickOutsideBlockly);
         window.addEventListener('beforeunload', this.onBeforeUnload);
 
-        main_content.getCachedActiveTab();
+        blockly_store.getCachedActiveTab();
+
+        when(
+            () => [client?.should_show_eu_error, client?.is_landing_company_loaded],
+            () => this.showDigitalOptionsMaltainvestError()
+        );
+
+        reaction(
+            () => traders_hub?.content_flag,
+            () => this.showDigitalOptionsMaltainvestError()
+        );
     }
 
     onUnmount() {
@@ -64,10 +174,13 @@ export default class AppStore {
         window.removeEventListener('beforeunload', this.onBeforeUnload);
 
         // Ensure account switch is re-enabled.
-        const { ui } = this.root_store.core;
+        const { ui } = this.core;
 
         ui.setAccountSwitcherDisabledMessage(false);
         ui.setPromptHandler(false);
+
+        if (this.timer) clearInterval(this.timer);
+        performance.clearMeasures();
     }
 
     onBeforeUnload = event => {
@@ -79,7 +192,7 @@ export default class AppStore {
     };
     registerReloadOnLanguageChange() {
         this.disposeReloadOnLanguageChangeReaction = reaction(
-            () => this.root_store.common.current_language,
+            () => this.core.common.current_language,
             () => {
                 // temporarily added this to refresh just dbot in case of changing language,
                 // otherwise it should change language without refresh.
@@ -93,7 +206,7 @@ export default class AppStore {
     registerCurrencyReaction() {
         // Syncs all trade options blocks' currency with the client's active currency.
         this.disposeCurrencyReaction = reaction(
-            () => this.root_store.core.client.currency,
+            () => this.core.client.currency,
             currency => {
                 if (!Blockly.derivWorkspace) return;
 
@@ -112,13 +225,13 @@ export default class AppStore {
     }
 
     registerOnAccountSwitch() {
-        const { client, common } = this.root_store.core;
+        const { client } = this.core;
 
         this.disposeSwitchAccountListener = reaction(
             () => client.switch_broadcast,
             switch_broadcast => {
                 if (!switch_broadcast) return;
-                this.showDigitalOptionsMaltainvestError(client, common);
+                this.showDigitalOptionsMaltainvestError();
 
                 const { active_symbols, contracts_for } = ApiHelpers.instance;
 
@@ -141,85 +254,48 @@ export default class AppStore {
     }
 
     registerLandingCompanyChangeReaction() {
-        const { client, common } = this.root_store.core;
+        const { client } = this.core;
 
         this.disposeLandingCompanyChangeReaction = reaction(
             () => client.landing_company_shortcode,
-            () => {
-                if (
-                    (!client.is_logged_in && client.is_eu_country) ||
-                    (client.is_eu && window.location.pathname === routes.bot) ||
-                    isEuResidenceWithOnlyVRTC(client.active_accounts) ||
-                    client.is_options_blocked
-                ) {
-                    showDigitalOptionsUnavailableError(common.showError, {
-                        text: localize(
-                            'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a Deriv MT5 Financial.'
-                        ),
-                        title: localize('DBot is not available for this account'),
-                        link: localize('Go to Deriv MT5 dashboard'),
-                    });
-                }
-            }
+            () => this.handleErrorForEu()
         );
     }
 
     registerResidenceChangeReaction() {
-        const { client, common } = this.root_store.core;
+        const { client } = this.core;
 
         this.disposeResidenceChangeReaction = reaction(
             () => client.account_settings.country_code,
-            () => {
-                if (
-                    (!client.is_logged_in && client.is_eu_country) ||
-                    (client.is_eu && window.location.pathname === routes.bot) ||
-                    isEuResidenceWithOnlyVRTC(client.active_accounts) ||
-                    client.is_options_blocked
-                ) {
-                    showDigitalOptionsUnavailableError(common.showError, {
-                        text: localize(
-                            'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a Deriv MT5 Financial.'
-                        ),
-                        title: localize('DBot is not available for this account'),
-                        link: localize('Go to Deriv MT5 dashboard'),
-                    });
-                }
-            }
+            () => this.handleErrorForEu()
         );
     }
 
     setDBotEngineStores() {
         // DO NOT pass the rootstore in, if you need a prop define it in dbot-skeleton-store ans pass it through.
-        const {
-            core: { client },
-            flyout,
-            toolbar,
-            save_modal,
-            quick_strategy,
-            load_modal,
-            blockly_store,
-            summary_card,
-        } = this.root_store;
+        const { flyout, toolbar, save_modal, dashboard, quick_strategy, load_modal, blockly_store, summary_card } =
+            this.root_store;
+        const { client } = this.core;
         const { handleFileChange } = load_modal;
-        const { toggleStrategyModal } = quick_strategy;
-        const { startLoading, endLoading } = blockly_store;
+        const { loadDataStrategy } = quick_strategy;
+        const { setLoading } = blockly_store;
         const { setContractUpdateConfig } = summary_card;
 
         this.dbot_store = {
-            is_mobile: false,
             client,
             flyout,
             toolbar,
             save_modal,
-            startLoading,
+            dashboard,
+            load_modal,
+            setLoading,
             setContractUpdateConfig,
-            endLoading,
-            toggleStrategyModal,
+            loadDataStrategy,
             handleFileChange,
         };
 
         this.api_helpers_store = {
-            server_time: this.root_store.server_time,
+            server_time: this.core.common.server_time,
             ws: this.root_store.ws,
         };
     }
@@ -235,22 +311,7 @@ export default class AppStore {
         }
     };
 
-    showDigitalOptionsMaltainvestError = (client, common) => {
-        if (
-            (!client.is_logged_in && client.is_eu_country) ||
-            (client.is_eu && window.location.pathname === routes.bot) ||
-            isEuResidenceWithOnlyVRTC(client.active_accounts) ||
-            client.is_options_blocked
-        ) {
-            showDigitalOptionsUnavailableError(common.showError, {
-                text: localize(
-                    'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a Deriv MT5 Financial.'
-                ),
-                title: localize('DBot is not available for this account'),
-                link: localize('Go to Deriv MT5 dashboard'),
-            });
-        } else if (common.has_error) {
-            common.setError(false, null);
-        }
+    showDigitalOptionsMaltainvestError = () => {
+        this.handleErrorForEu(true);
     };
 }

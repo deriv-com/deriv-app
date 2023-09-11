@@ -1,13 +1,18 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
 import { useHasSetCurrency } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-
+import { observer, useStore } from '@deriv/stores';
 import 'Sass/set-currency-modal.scss';
 
-const SetAccountCurrencyModal = ({ is_visible, is_virtual, setCurrency, toggleModal }) => {
+const SetAccountCurrencyModal = observer(() => {
+    const { client, ui } = useStore();
+    const { is_virtual } = client;
+    const {
+        is_set_currency_modal_visible: is_visible,
+        openRealAccountSignup: setCurrency,
+        toggleSetCurrencyModal: toggleModal,
+    } = ui;
     const has_set_currency = useHasSetCurrency();
 
     return (
@@ -49,18 +54,6 @@ const SetAccountCurrencyModal = ({ is_visible, is_virtual, setCurrency, toggleMo
             </Modal.Footer>
         </Modal>
     );
-};
+});
 
-SetAccountCurrencyModal.propTypes = {
-    is_virtual: PropTypes.bool,
-    is_visible: PropTypes.bool,
-    setCurrency: PropTypes.func,
-    toggleModal: PropTypes.func,
-};
-
-export default connect(({ client, ui }) => ({
-    is_virtual: client.is_virtual,
-    is_visible: ui.is_set_currency_modal_visible,
-    setCurrency: ui.openRealAccountSignup,
-    toggleModal: ui.toggleSetCurrencyModal,
-}))(SetAccountCurrencyModal);
+export default SetAccountCurrencyModal;

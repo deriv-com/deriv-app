@@ -16,8 +16,8 @@
     left: 250px;
     top: 0;
     background-color: var(--general-main-2);
-    height: calc(100% - 40px);
-    max-height: calc(100% - 40px);
+    height: calc(100vh - 232px);
+    max-height: calc(100vh - 232px);
     z-index: 11;
     border-radius: $BORDER_RADIUS;
     font-size: 2em;
@@ -66,6 +66,9 @@
 
         &--center {
             margin-top: 0.6em;
+            .injectionDiv {
+                height: 100%;
+            }
         }
         &__header {
             display: flex;

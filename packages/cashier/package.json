@@ -12,7 +12,7 @@
         "test": "__tests__"
     },
     "engines": {
-        "node": "^16.16.0"
+        "node": "18.x"
     },
     "files": [
         "lib"
@@ -27,16 +27,16 @@
     "scripts": {
         "test": "echo \"No test specified\"",
         "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
-        "serve": "echo \"Serving...\" && webpack --progress --watch --config \"./build/webpack.config.js\"",
+        "serve": "echo \"Serving...\" && NODE_OPTIONS='-r ts-node/register' webpack --progress --watch --config \"./build/webpack.config.js\"",
         "build:travis": "rimraf dist && webpack --config \"./build/webpack.config.js\"  --mode=production",
-        "build": "f () { webpack --config \"./build/webpack.config.js\" --env base=$1;}; f"
+        "build": "f () { NODE_OPTIONS='-r ts-node/register' webpack --config \"./build/webpack.config.js\" --env base=$1;}; f"
     },
     "bugs": {
         "url": "https://github.com/binary-com/deriv-app/issues"
     },
     "dependencies": {
         "@deriv/api": "^1.0.0",
-        "@deriv/api-types": "^1.0.94",
+        "@deriv/api-types": "^1.0.118",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.11",
         "@deriv/hooks": "^1.0.0",
@@ -88,7 +88,7 @@
         "file-loader": "^6.2.0",
         "history": "^5.0.0",
         "mini-css-extract-plugin": "^1.3.4",
-        "node-sass": "^7.0.1",
+        "sass": "^1.62.1",
         "postcss-loader": "^6.2.1",
         "postcss-preset-env": "^7.4.3",
         "postcss-scss": "^4.0.6",

@@ -1,12 +1,12 @@
 import React from 'react';
-import { useVerifyEmail, TEmailVerificationType } from '@deriv/hooks';
+import { EmptyState } from '@deriv/components';
+import { useVerifyEmail } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
-import EmptyState from 'Components/empty-state';
 import EmailVerificationResendEmptyState from './email-verification-resend-empty-state';
 import './email-verification-empty-state.scss';
 
 type TEmailVerificationEmptyStateProps = {
-    type: TEmailVerificationType;
+    type: Parameters<typeof useVerifyEmail>[0];
 };
 
 const EmailVerificationEmptyState = ({ type }: TEmailVerificationEmptyStateProps) => {
@@ -14,7 +14,7 @@ const EmailVerificationEmptyState = ({ type }: TEmailVerificationEmptyStateProps
 
     const action = {
         label: localize("Didn't receive the email?"),
-        onClick: verify.send,
+        onClick: () => verify.send(),
         tertiary: true,
     };
 
@@ -30,7 +30,7 @@ const EmailVerificationEmptyState = ({ type }: TEmailVerificationEmptyStateProps
                 <EmailVerificationResendEmptyState
                     is_counter_running={verify.is_counter_running}
                     counter={verify.counter}
-                    resend={verify.send}
+                    resend={() => verify.send()}
                 />
             )}
         </div>

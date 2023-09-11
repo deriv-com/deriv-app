@@ -1,7 +1,7 @@
 import React from 'react';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
-import { get, init, timePromise } from '../../../cashier/src/utils/server_time';
-import { isEmptyObject, isMobile, toMoment } from '@deriv/shared';
+import { get, init, timePromise } from '../utils/server_time';
+import { isEmptyObject, isMobile, routes, toMoment } from '@deriv/shared';
 import BaseStore from 'Stores/base_store';
 import { localize, Localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
@@ -23,12 +23,15 @@ export default class GeneralStore extends BaseStore {
     balance;
     cancels_remaining = null;
     contact_info = '';
+    counterparty_advertiser_id = null;
+    error_code = '';
     external_stores = {};
     feature_level = null;
     formik_ref = null;
     inactive_notification_count = 0;
     is_advertiser = false;
     is_advertiser_blocked = null;
+    is_advertiser_info_subscribed = false;
     is_blocked = false;
     is_block_unblock_user_loading = false;
     is_block_user_modal_open = false;
@@ -83,12 +86,15 @@ export default class GeneralStore extends BaseStore {
             advertiser_relations_response: observable, //TODO: Remove this when backend has fixed is_blocked flag issue
             block_unblock_user_error: observable,
             balance: observable,
+            counterparty_advertiser_id: observable,
             external_stores: observable,
             feature_level: observable,
             formik_ref: observable,
+            error_code: observable,
             inactive_notification_count: observable,
             is_advertiser: observable,
             is_advertiser_blocked: observable,
+            is_advertiser_info_subscribed: observable,
             is_blocked: observable,
             is_block_unblock_user_loading: observable,
             is_block_user_modal_open: observable,
@@ -110,6 +116,7 @@ export default class GeneralStore extends BaseStore {
             user_blocked_count: observable,
             user_blocked_until: observable,
             is_modal_open: observable,
+            active_tab_route: computed,
             blocked_until_date_time: computed,
             is_active_tab: computed,
             is_barred: computed,
@@ -118,9 +125,10 @@ export default class GeneralStore extends BaseStore {
             should_show_dp2p_blocked: computed,
             blockUnblockUser: action.bound,
             createAdvertiser: action.bound,
+            setCounterpartyAdvertiserId: action.bound,
             getWebsiteStatus: action.bound,
             handleNotifications: action.bound,
-            redirectToOrderDetails: action.bound,
+            setP2POrderTab: action.bound,
             showCompletedOrderNotification: action.bound,
             handleTabClick: action.bound,
             onMount: action.bound,
@@ -134,6 +142,8 @@ export default class GeneralStore extends BaseStore {
             setAdvertiserId: action.bound,
             setAdvertiserBuyLimit: action.bound,
             setAdvertiserSellLimit: action.bound,
+            setAdvertiserRelationsResponse: action.bound, //TODO: Remove this when backend has fixed is_blocked flag issue
+            setErrorCode: action.bound,
             setExternalStores: action.bound,
             setFeatureLevel: action.bound,
             setFormikRef: action.bound,
@@ -141,6 +151,7 @@ export default class GeneralStore extends BaseStore {
             saveFormState: action.bound,
             setInactiveNotificationCount: action.bound,
             setIsAdvertiser: action.bound,
+            setIsAdvertiserInfoSubscribed: action.bound,
             setIsBlocked: action.bound,
             setIsHighRisk: action.bound,
             setIsListed: action.bound,
@@ -171,6 +182,19 @@ export default class GeneralStore extends BaseStore {
         });
     }
 
+    get active_tab_route() {
+        switch (this.active_index) {
+            case 1:
+                return routes.p2p_orders;
+            case 2:
+                return routes.p2p_my_ads;
+            case 3:
+                return routes.p2p_my_profile;
+            default:
+                return routes.p2p_buy_sell;
+        }
+    }
+
     get blocked_until_date_time() {
         return getFormattedDateString(new Date(convertToMillis(this.user_blocked_until)), false, true);
     }
@@ -196,7 +220,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     blockUnblockUser(should_block, advertiser_id, should_set_is_counterparty_blocked = true) {
-        const { advertiser_page_store, general_store } = this.root_store;
+        const { advertiser_page_store } = this.root_store;
         this.setIsBlockUnblockUserLoading(true);
         requestWS({
             p2p_advertiser_relations: 1,
@@ -204,7 +228,7 @@ export default class GeneralStore extends BaseStore {
         }).then(response => {
             if (response) {
                 if (!response.error) {
-                    general_store.hideModal();
+                    this.hideModal();
                     if (should_set_is_counterparty_blocked) {
                         const { p2p_advertiser_relations } = response;
 
@@ -216,18 +240,9 @@ export default class GeneralStore extends BaseStore {
                         );
                     }
                 } else {
-                    this.setBlockUnblockUserError(response.error.message);
-                    if (!general_store.is_barred && !general_store.isCurrentModal('ErrorModal')) {
-                        general_store.showModal({
-                            key: 'ErrorModal',
-                            props: {
-                                error_message: response.error.message,
-                                error_modal_title: 'Unable to block advertiser',
-                                has_close_icon: false,
-                                width: isMobile() ? '90rem' : '40rem',
-                            },
-                        });
-                    }
+                    const { code, message } = response.error;
+                    this.setErrorCode(code);
+                    this.setBlockUnblockUserError(message);
                 }
             }
             this.setIsBlockUnblockUserLoading(false);
@@ -239,7 +254,7 @@ export default class GeneralStore extends BaseStore {
             p2p_advertiser_create: 1,
             name,
         }).then(response => {
-            const { sendbird_store, buy_sell_store } = this.root_store;
+            const { sendbird_store } = this.root_store;
             const { error, p2p_advertiser_create } = response;
             const {
                 daily_buy,
@@ -263,7 +278,6 @@ export default class GeneralStore extends BaseStore {
                 this.setNicknameError(undefined);
                 sendbird_store.handleP2pAdvertiserInfo(response);
                 this.toggleNicknamePopup();
-                buy_sell_store.hideVerification();
             }
         });
     }
@@ -273,7 +287,7 @@ export default class GeneralStore extends BaseStore {
     };
 
     getLocalStorageSettingsForLoginId() {
-        const local_storage_settings = this.getLocalStorageSettings()[this.external_stores.client.loginid];
+        const local_storage_settings = this.getLocalStorageSettings()[this.external_stores?.client?.loginid];
 
         if (isEmptyObject(local_storage_settings)) {
             return { is_cached: false, notifications: [] };
@@ -300,7 +314,7 @@ export default class GeneralStore extends BaseStore {
         const { order_store } = this.root_store;
         const { is_cached, notifications } = this.getLocalStorageSettingsForLoginId();
 
-        new_orders.forEach(new_order => {
+        new_orders?.forEach(new_order => {
             const order_info = createExtendedOrderDetails(
                 new_order,
                 this.external_stores.client.loginid,
@@ -365,7 +379,7 @@ export default class GeneralStore extends BaseStore {
         this.updateP2pNotifications(notifications);
     }
 
-    redirectToOrderDetails(order_id) {
+    setP2POrderTab(order_id) {
         const { order_store } = this.root_store;
         this.redirectTo('orders');
         this.setOrderTableType(order_list.INACTIVE);
@@ -385,7 +399,7 @@ export default class GeneralStore extends BaseStore {
                     if (order_store.order_id === order_id) {
                         order_store.setIsRatingModalOpen(true);
                     }
-                    this.redirectToOrderDetails(order_id);
+                    this.setP2POrderTab(order_id);
                 },
                 text: localize('Give feedback'),
             },
@@ -520,10 +534,6 @@ export default class GeneralStore extends BaseStore {
             if (this.ws_subscriptions) {
                 this.setIsLoading(false);
             }
-
-            this.external_stores.notifications.setP2PRedirectTo({
-                redirectTo: this.redirectTo,
-            });
         });
     }
 
@@ -628,8 +638,16 @@ export default class GeneralStore extends BaseStore {
         this.contact_info = contact_info;
     }
 
+    setCounterpartyAdvertiserId(counterparty_advertiser_id) {
+        this.counterparty_advertiser_id = counterparty_advertiser_id;
+    }
+
     setDefaultAdvertDescription(default_advert_description) {
         this.default_advert_description = default_advert_description;
+    }
+
+    setErrorCode(error_code) {
+        this.error_code = error_code;
     }
 
     setExternalStores(external_stores) {
@@ -662,6 +680,10 @@ export default class GeneralStore extends BaseStore {
 
     setIsAdvertiserBlocked(is_advertiser_blocked) {
         this.is_advertiser_blocked = is_advertiser_blocked;
+    }
+
+    setIsAdvertiserInfoSubscribed(is_advertiser_info_subscribed) {
+        this.is_advertiser_info_subscribed = is_advertiser_info_subscribed;
     }
 
     setIsBlocked(is_blocked) {
@@ -739,14 +761,14 @@ export default class GeneralStore extends BaseStore {
             return;
         }
 
-        const { p2p_order_list = [], p2p_order_info = {} } = order_response;
+        const { p2p_order_list, p2p_order_info } = order_response ?? {};
         const { order_store } = this.root_store;
 
         if (p2p_order_list) {
             const { list } = p2p_order_list;
             // it's an array of orders from p2p_order_list
             this.handleNotifications(order_store.orders, list);
-            list.forEach(order => order_store.syncOrder(order));
+            list?.forEach(order => order_store.syncOrder(order));
         } else if (p2p_order_info) {
             // it's a single order from p2p_order_info
             const idx_order_to_update = order_store.orders.findIndex(order => order.id === p2p_order_info.id);
@@ -841,6 +863,7 @@ export default class GeneralStore extends BaseStore {
             this.setPaymentInfo(payment_info);
             this.setShouldShowRealName(!!show_name);
             this.setIsRestricted(false);
+            this.setIsAdvertiserInfoSubscribed(true);
 
             if (upgradable_daily_limits) this.showDailyLimitIncreaseNotification();
         } else {
@@ -865,10 +888,13 @@ export default class GeneralStore extends BaseStore {
             requestWS({ get_account_status: 1 }).then(account_response => {
                 if (!account_response.error) {
                     const { get_account_status } = account_response;
-                    const { authentication } = get_account_status;
+                    const { authentication, status } = get_account_status;
                     const { identity } = authentication;
 
-                    this.setPoiStatus(identity.status);
+                    if (status.includes('cashier_locked')) {
+                        this.setIsBlocked(true);
+                        this.hideModal();
+                    } else this.setPoiStatus(identity.status);
                 }
             });
         }
@@ -886,7 +912,7 @@ export default class GeneralStore extends BaseStore {
         user_settings.notifications = notifications;
 
         const p2p_settings = this.getLocalStorageSettings();
-        p2p_settings[this.external_stores.client.loginid] = user_settings;
+        p2p_settings[this.external_stores?.client?.loginid] = user_settings;
 
         localStorage.setItem('p2p_settings', JSON.stringify(p2p_settings));
         window.dispatchEvent(new Event('storage'));

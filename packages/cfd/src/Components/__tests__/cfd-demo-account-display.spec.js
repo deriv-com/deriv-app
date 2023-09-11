@@ -1,21 +1,23 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { CFDDemoAccountDisplay } from '../cfd-demo-account-display';
+import CFDProviders from '../../cfd-providers';
+import { mockStore } from '@deriv/stores';
 
 const mock_connect_props = {
-    dxtrade_tokens: {
-        demo: '',
-        real: '',
+    modules: {
+        cfd: {
+            dxtrade_tokens: {
+                demo: '',
+                real: '',
+            },
+            setMT5TradeAccount: jest.fn(),
+        },
     },
-    setMT5TradeAccount: jest.fn(),
-    isEligibleForMoreDemoMt5Svg: () => true,
+    client: {
+        isEligibleForMoreDemoMt5Svg: () => true,
+    },
 };
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => props => Component({ ...props, ...mock_connect_props }),
-}));
 
 describe('<CFDDemoAccountDisplay />', () => {
     const TESTED_CASES = {
@@ -125,7 +127,9 @@ describe('<CFDDemoAccountDisplay />', () => {
     };
 
     it('should render Derived & Financial cards with enabled buttons on Deriv MT5 when non-EU, non-IoM, is_logged_in=true & has_maltainvest_account=false', () => {
-        render(<CFDDemoAccountDisplay {...props} />);
+        render(<CFDDemoAccountDisplay {...props} />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>,
+        });
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         const add_demo_account_buttons = screen.getAllByRole('button', { name: /add demo account/i });
@@ -139,7 +143,9 @@ describe('<CFDDemoAccountDisplay />', () => {
     });
 
     it('should render Derived & Financial cards without "Add demo account" buttons on Deriv MT5 when is_logged_in=false & is_eu_country=false', () => {
-        render(<CFDDemoAccountDisplay {...props} is_logged_in={false} />);
+        render(<CFDDemoAccountDisplay {...props} is_logged_in={false} />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>,
+        });
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         expect(screen.queryAllByRole('button', { name: /add demo account/i }).length).toBe(0);
@@ -148,7 +154,9 @@ describe('<CFDDemoAccountDisplay />', () => {
     it('should render a CFDs card only with enabled "Add demo account" button on Deriv MT5 when EU, is_logged_in=true, standpoint.iom=true & has_maltainvest_account=false', () => {
         props.standpoint.iom = true;
         props.isSyntheticCardVisible = jest.fn(() => false);
-        render(<CFDDemoAccountDisplay {...props} is_eu />);
+        render(<CFDDemoAccountDisplay {...props} is_eu />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>,
+        });
 
         checkAccountCardsRendering(TESTED_CASES.EU);
         const add_demo_account_button = screen.getByRole('button', { name: /add demo account/i });
@@ -160,14 +168,18 @@ describe('<CFDDemoAccountDisplay />', () => {
 
     it('should render a CFDs card only without "Add demo account" button on Deriv MT5 when is_logged_in=false & is_eu_country=true (also when redirected from Deriv X platform)', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
-        render(<CFDDemoAccountDisplay {...props} is_logged_in={false} is_eu_country />);
+        render(<CFDDemoAccountDisplay {...props} is_logged_in={false} is_eu_country />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>,
+        });
 
         checkAccountCardsRendering(TESTED_CASES.EU);
         expect(screen.queryAllByRole('button', { name: /add demo account/i }).length).toBe(0);
     });
 
     it('should render Derived & Financial cards with enabled buttons on Deriv X when is_logged_in=true & is_eu=false', () => {
-        render(<CFDDemoAccountDisplay {...props} platform='dxtrade' />);
+        render(<CFDDemoAccountDisplay {...props} platform='dxtrade' />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>,
+        });
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
         const add_demo_account_buttons = screen.getAllByRole('button', { name: /add demo account/i });
@@ -189,14 +201,18 @@ describe('<CFDDemoAccountDisplay />', () => {
     });
 
     it('should render Derived & Financial cards without "Add demo account" buttons on Deriv X when is_logged_in=false & is_eu_country=false', () => {
-        render(<CFDDemoAccountDisplay {...props} is_logged_in={false} platform='dxtrade' />);
+        render(<CFDDemoAccountDisplay {...props} is_logged_in={false} platform='dxtrade' />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>,
+        });
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
         expect(screen.queryAllByRole('button', { name: /add demo account/i }).length).toBe(0);
     });
 
     it('should disable all "Add demo account" buttons when has_cfd_account_error=true', () => {
-        render(<CFDDemoAccountDisplay {...props} has_cfd_account_error />);
+        render(<CFDDemoAccountDisplay {...props} has_cfd_account_error />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>,
+        });
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         const add_demo_account_buttons = screen.getAllByRole('button', { name: /add demo account/i });
@@ -205,7 +221,9 @@ describe('<CFDDemoAccountDisplay />', () => {
     });
 
     it('should show loading when is_loading=true', () => {
-        render(<CFDDemoAccountDisplay {...props} is_loading />);
+        render(<CFDDemoAccountDisplay {...props} is_loading />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>,
+        });
 
         expect(screen.getByTestId('dt_barspinner')).toBeInTheDocument();
         checkAccountCardsRendering(TESTED_CASES.LOADING);

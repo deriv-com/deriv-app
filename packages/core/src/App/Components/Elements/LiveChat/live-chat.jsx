@@ -4,8 +4,8 @@ import { Popover, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 
-const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
-    const liveChat = useLiveChat(has_cookie_account);
+const LiveChat = ({ is_mobile_drawer, has_cookie_account, loginid }) => {
+    const liveChat = useLiveChat(has_cookie_account, loginid);
 
     if (!liveChat.isReady) return null;
 
@@ -36,4 +36,5 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
 
 export default connect(({ client }) => ({
     has_cookie_account: client.has_cookie_account,
+    loginid: client.loginid,
 }))(LiveChat);

@@ -1,37 +1,30 @@
 import React from 'react';
 import classNames from 'classnames';
+import { ContractCard, Text } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { ContractCard } from '@deriv/components';
 import ContractCardLoader from 'Components/contract-card-loading';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
-import { connect } from 'Stores/connect';
-import { connectWithContractUpdate } from 'Utils/multiplier';
-import RootStore from 'Stores/index';
+import { useDBotStore } from 'Stores/useDBotStore';
 import { TSummaryCardProps } from './summary-card.types';
 
-const SummaryCard = ({
-    addToast,
-    contract_info,
-    contract_store,
-    current_focus,
-    is_contract_completed,
-    is_contract_loading,
-    is_contract_inactive,
-    is_mobile,
-    is_multiplier,
-    onClickSell,
-    is_sell_requested,
-    removeToast,
-    server_time,
-    setCurrentFocus,
-}: TSummaryCardProps) => {
+const SummaryCard = observer(({ contract_info, is_contract_loading }: TSummaryCardProps) => {
+    const { summary_card, run_panel } = useDBotStore();
+    const { ui, common } = useStore();
+    const { is_contract_completed, is_contract_inactive, is_multiplier } = summary_card;
+    const { onClickSell, is_sell_requested } = run_panel;
+    const { addToast, current_focus, removeToast, setCurrentFocus } = ui;
+    const { server_time } = common;
+
+    const is_mobile = isMobile();
+
     const card_header = (
         <ContractCard.Header
             contract_info={contract_info}
             getCardLabels={getCardLabels}
             getContractTypeDisplay={getContractTypeDisplay}
             has_progress_slider={!is_multiplier}
-            is_mobile={is_mobile}
             is_sold={is_contract_completed}
             server_time={server_time}
         />
@@ -40,13 +33,12 @@ const SummaryCard = ({
     const card_body = (
         <ContractCard.Body
             addToast={addToast}
-            connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
             currency={contract_info && contract_info.currency}
             current_focus={current_focus}
             error_message_alignment='left'
             getCardLabels={getCardLabels}
-            getContractById={() => contract_store}
+            getContractById={() => summary_card}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
             is_sold={is_contract_completed}
@@ -78,7 +70,7 @@ const SummaryCard = ({
         <div
             className={classNames('db-summary-card', {
                 'db-summary-card--mobile': is_mobile,
-                'db-summary-card--inactive': is_contract_inactive,
+                'db-summary-card--inactive': is_contract_inactive && !is_contract_loading && !contract_info,
                 'db-summary-card--is-loading': is_contract_loading,
                 'db-summary-card--completed': is_contract_completed,
                 'db-summary-card--completed-mobile': is_contract_completed && is_mobile,
@@ -104,27 +96,14 @@ const SummaryCard = ({
                 </ContractCard>
             )}
             {!is_contract_loading && !contract_info && (
-                <React.Fragment>
-                    {localize('Build a bot from the start menu then hit the run button to run the bot.')}
-                </React.Fragment>
+                <Text as='p' line_height='s' size='xs'>
+                    {localize('When you’re ready to trade, hit ')}
+                    <strong>{localize('Run')}</strong>
+                    {localize('. You’ll be able to track your bot’s performance here.')}
+                </Text>
             )}
         </div>
     );
-};
+});
 
-export default connect(({ summary_card, common, run_panel, ui }: RootStore) => ({
-    addToast: ui.addToast,
-    contract_info: summary_card.contract_info,
-    contract_store: summary_card,
-    current_focus: ui.current_focus,
-    is_contract_completed: summary_card.is_contract_completed,
-    is_contract_inactive: summary_card.is_contract_inactive,
-    is_contract_loading: summary_card.is_contract_loading,
-    is_mobile: ui.is_mobile,
-    is_multiplier: summary_card.is_multiplier,
-    onClickSell: run_panel.onClickSell,
-    is_sell_requested: run_panel.is_sell_requested,
-    removeToast: ui.removeToast,
-    server_time: common.server_time,
-    setCurrentFocus: ui.setCurrentFocus,
-}))(SummaryCard);
+export default SummaryCard;

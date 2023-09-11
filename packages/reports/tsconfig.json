@@ -11,10 +11,11 @@
             "Stores/*": ["./src/Stores/*"],
             "templates/*": ["./src/templates/*"],
             "Utils/*": ["./src/Utils/*"],
+            "Types": ["./src/Types"],
             "@deriv/*": ["../*/src"]
         },
         "outDir": "./dist",
         "baseUrl": "./"
     },
-    "include": ["src", "../../utils.d.ts"]
+    "include": ["src"]
 }

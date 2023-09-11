@@ -6,6 +6,8 @@ import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
 import PersonalDetails from '../personal-details';
 
+jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
+
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Popover: jest.fn(props => props.is_open && <span>{props.message}</span>),
@@ -17,7 +19,7 @@ jest.mock('@deriv/shared', () => ({
     isDesktop: jest.fn(() => true),
 }));
 
-jest.mock('../../real-account-signup/helpers/utils.js', () => ({
+jest.mock('../../real-account-signup/helpers/utils.ts', () => ({
     splitValidationResultTypes: jest.fn(() => ({
         warnings: mock_warnings,
         errors: mock_errors,
@@ -46,7 +48,7 @@ const tax_residence_pop_over_text =
     /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i;
 const tin_pop_over_text = /don't know your tax identification number\?/i;
 
-const runCommonFormfieldsTests = () => {
+const runCommonFormfieldsTests = is_svg => {
     expect(screen.getByRole('radio', { name: /mr/i })).toBeInTheDocument();
     expect(screen.getByRole('radio', { name: /ms/i })).toBeInTheDocument();
     expect(screen.getByTestId('first_name')).toBeInTheDocument();
@@ -60,24 +62,17 @@ const runCommonFormfieldsTests = () => {
     expect(screen.queryByTestId('tax_residence')).toBeInTheDocument();
     expect(screen.queryByTestId('tax_residence_mobile')).not.toBeInTheDocument();
 
-    expect(screen.getByPlaceholderText(/john/i)).toBeInTheDocument();
     expect(
         screen.getByText(/Please enter your first name as in your official identity documents./i)
     ).toBeInTheDocument();
 
-    expect(screen.getByPlaceholderText('Doe')).toBeInTheDocument();
     expect(
         screen.getByText(/Please enter your last name as in your official identity documents./i)
     ).toBeInTheDocument();
 
-    expect(screen.getByPlaceholderText(/01-07-1999/i)).toBeInTheDocument();
     expect(
         screen.getByText(/Please enter your date of birth as in your official identity documents./i)
     ).toBeInTheDocument();
-
-    expect(screen.getByText('Place of birth')).toBeInTheDocument();
-    expect(screen.getByText('Citizenship')).toBeInTheDocument();
-    expect(screen.getByText('Tax residence')).toBeInTheDocument();
 
     const tax_residence_pop_over = screen.queryByTestId('tax_residence_pop_over');
     expect(tax_residence_pop_over).toBeInTheDocument();
@@ -86,7 +81,7 @@ const runCommonFormfieldsTests = () => {
 
     expect(screen.getByText(tax_residence_pop_over_text)).toBeInTheDocument();
 
-    expect(screen.getByPlaceholderText(/tax identification number/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/tax identification number/i)).toBeInTheDocument();
     const tax_identification_number_pop_over = screen.queryByTestId('tax_identification_number_pop_over');
     expect(tax_identification_number_pop_over).toBeInTheDocument();
 
@@ -99,7 +94,12 @@ const runCommonFormfieldsTests = () => {
         'https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
     );
 
-    expect(screen.getByRole('heading', { name: /account opening reason/i })).toBeInTheDocument();
+    if (is_svg)
+        expect(
+            screen.getByRole('heading', {
+                name: /additional information/i,
+            })
+        ).toBeInTheDocument();
     expect(screen.queryByTestId('dti_dropdown_display')).toBeInTheDocument();
     expect(screen.queryByTestId('account_opening_reason_mobile')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: /previous/i })).toBeInTheDocument();
@@ -109,6 +109,7 @@ const runCommonFormfieldsTests = () => {
 describe('<PersonalDetails/>', () => {
     const props = {
         is_svg: true,
+        is_high_risk: false,
         account_opening_reason_list: [
             {
                 text: 'Hedging',
@@ -229,6 +230,7 @@ describe('<PersonalDetails/>', () => {
         getCurrentStep: jest.fn(() => 1),
         onSave: jest.fn(),
         onCancel: jest.fn(),
+        account_settings: {},
     };
 
     beforeAll(() => (ReactDOM.createPortal = jest.fn(component => component)));
@@ -238,6 +240,24 @@ describe('<PersonalDetails/>', () => {
     const renderwithRouter = component => {
         render(<BrowserRouter>{component}</BrowserRouter>);
     };
+
+    it('should autopopulate tax_residence for MF clients', () => {
+        const new_props = {
+            ...props,
+            is_svg: false,
+            is_mf: true,
+            value: {
+                ...props.value,
+                tax_residence: 'Malta',
+            },
+        };
+        renderwithRouter(<PersonalDetails {...new_props} />);
+        expect(
+            screen.getByRole('textbox', {
+                name: /tax residence\*/i,
+            })
+        ).toHaveValue('Malta');
+    });
 
     it('should render PersonalDetails component', () => {
         renderwithRouter(<PersonalDetails {...props} />);
@@ -253,6 +273,7 @@ describe('<PersonalDetails/>', () => {
 
         expect(screen.getByText(fake_alert_messaget)).toBeInTheDocument();
     });
+
     it('should not show fake_alert_message when is_appstore is false ', () => {
         renderwithRouter(
             <PlatformContext.Provider value={{ is_appstore: false }}>
@@ -298,6 +319,7 @@ describe('<PersonalDetails/>', () => {
             })
         ).toBeInTheDocument();
     });
+
     it('should show Name label when salutation is not passed', () => {
         const newprops = { ...props, value: {} };
         renderwithRouter(<PersonalDetails {...newprops} />);
@@ -324,7 +346,7 @@ describe('<PersonalDetails/>', () => {
     it('should display the correct field details when is_appstore is true ', () => {
         renderwithRouter(
             <PlatformContext.Provider value={{ is_appstore: true }}>
-                <PersonalDetails {...props} is_svg={false} />
+                <PersonalDetails {...props} />
             </PlatformContext.Provider>
         );
 
@@ -332,9 +354,9 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText(/family name\*/i)).toBeInTheDocument();
         expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
         expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/phone number\*/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/phone number\*/i)).toBeInTheDocument();
 
-        runCommonFormfieldsTests();
+        runCommonFormfieldsTests(props.is_svg);
     });
 
     it('should display the correct field details when is_appstore is false and is_svg is true ', () => {
@@ -350,9 +372,9 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText(/last name\*/i)).toBeInTheDocument();
         expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
         expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/phone number\*/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/phone number\*/i)).toBeInTheDocument();
 
-        runCommonFormfieldsTests();
+        runCommonFormfieldsTests(props.is_svg);
     });
 
     it('should display the correct field details when is_appstore is false and is_svg is false ', () => {
@@ -368,10 +390,8 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText('First name')).toBeInTheDocument();
         expect(screen.getByText('Last name')).toBeInTheDocument();
         expect(screen.getByText('Date of birth')).toBeInTheDocument();
-        expect(screen.getByText('Phone number')).toBeInTheDocument();
-        expect(screen.getByPlaceholderText('Phone number')).toBeInTheDocument();
 
-        runCommonFormfieldsTests();
+        runCommonFormfieldsTests(false);
     });
 
     it('should not enable fields which are disabled and empty', () => {
@@ -438,7 +458,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.queryByTestId('tax_residence_mobile')).toBeInTheDocument();
         expect(screen.queryByTestId('tax_residence')).not.toBeInTheDocument();
         expect(screen.getByText(/tax identification number/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/tax identification number/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/tax identification number/i)).toBeInTheDocument();
         expect(screen.getByRole('heading', { name: /account opening reason/i })).toBeInTheDocument();
         expect(screen.queryByTestId('dti_dropdown_display')).not.toBeInTheDocument();
         expect(screen.queryByTestId('account_opening_reason_mobile')).toBeInTheDocument();
@@ -520,27 +540,25 @@ describe('<PersonalDetails/>', () => {
         ).toBeInTheDocument();
     });
 
-    it('should show warning', async () => {
+    it('should show error for invalid TIN', async () => {
         const newvalidate = {
-            warnings: {
-                tax_identification_number:
-                    'This Tax Identification Number (TIN) is invalid. You may continue using it, but to facilitate future payment processes, valid tax information will be required.',
+            errors: {
+                ...mock_errors,
+                tax_identification_number: 'Tax Identification Number is not properly formatted.',
             },
-            errors: { ...mock_errors },
         };
         splitValidationResultTypes.mockReturnValue(newvalidate);
         renderwithRouter(
             <PlatformContext.Provider value={{ is_appstore: false }}>
-                (<PersonalDetails {...props} />
-                );
+                <PersonalDetails {...props} />
             </PlatformContext.Provider>
         );
+        const tax_identification_number = screen.getByTestId('tax_identification_number');
 
-        expect(
-            await screen.findByText(
-                /this tax identification number \(tin\) is invalid\. you may continue using it, but to facilitate future payment processes, valid tax information will be required\./i
-            )
-        ).toBeInTheDocument();
+        fireEvent.blur(tax_identification_number);
+        fireEvent.change(tax_identification_number, { target: { value: '123456789012345678901234567890' } });
+
+        expect(await screen.findByText(/tax identification number is not properly formatted/i)).toBeInTheDocument();
     });
 
     it('should submit the form if there is no validation error on desktop', async () => {
@@ -584,6 +602,7 @@ describe('<PersonalDetails/>', () => {
         splitValidationResultTypes.mockReturnValue({ warnings: {}, errors: {} });
         const new_props = {
             ...props,
+            is_svg: false,
             value: {
                 account_opening_reason: '',
                 citizen: '',
@@ -664,7 +683,7 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should close tax_residence pop-over when clicked outside', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
+        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
 
         const tax_residence_pop_over = screen.getByTestId('tax_residence_pop_over');
         expect(tax_residence_pop_over).toBeInTheDocument();
@@ -678,7 +697,7 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should close tax_identification_number_pop_over when clicked outside', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
+        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
 
         const tin_pop_over = screen.getByTestId('tax_identification_number_pop_over');
         expect(tin_pop_over).toBeInTheDocument();
@@ -726,17 +745,19 @@ describe('<PersonalDetails/>', () => {
         expect(screen.queryByRole('link', { name: 'here' })).not.toBeInTheDocument();
     });
 
-    it('should autopopulate tax_residence for MF clients', () => {
+    it('should disable tax_residence field if it is immutable from BE', () => {
+        isMobile.mockReturnValue(false);
+        isDesktop.mockReturnValue(true);
         const new_props = {
             ...props,
             is_mf: true,
             value: {
                 ...props.value,
-                tax_residence: 'Malta',
+                tax_residence: 'France',
             },
+            disabled_items: ['salutation', 'first_name', 'last_name', 'date_of_birth', 'tax_residence'],
         };
         renderwithRouter(<PersonalDetails {...new_props} />);
-        const el_tax_residence = screen.getByTestId('selected_value');
-        expect(el_tax_residence).toHaveTextContent('Malta');
+        expect(screen.getByTestId('tax_residence')).toBeDisabled();
     });
 });

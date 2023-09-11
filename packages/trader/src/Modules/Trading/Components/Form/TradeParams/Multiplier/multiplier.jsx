@@ -1,10 +1,10 @@
-import { PropTypes as MobxPropTypes } from 'mobx-react';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Dropdown } from '@deriv/components';
-import { connect } from 'Stores/connect';
+import { useTraderStore } from 'Stores/useTraderStores';
+import { observer } from '@deriv/stores';
 
-const Multiplier = ({ multiplier, multiplier_range_list, onChange }) => {
+const Multiplier = observer(() => {
+    const { multiplier, multiplier_range_list, onChange } = useTraderStore();
     return (
         <Dropdown
             id='multiplier'
@@ -18,16 +18,6 @@ const Multiplier = ({ multiplier, multiplier_range_list, onChange }) => {
             onChange={onChange}
         />
     );
-};
+});
 
-Multiplier.propTypes = {
-    multiplier: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    multiplier_range_list: MobxPropTypes.arrayOrObservableArray,
-    onChange: PropTypes.func,
-};
-
-export default connect(({ modules }) => ({
-    multiplier: modules.trade.multiplier,
-    multiplier_range_list: modules.trade.multiplier_range_list,
-    onChange: modules.trade.onChange,
-}))(Multiplier);
+export default Multiplier;

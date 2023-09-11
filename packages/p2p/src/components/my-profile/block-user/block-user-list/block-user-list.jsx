@@ -8,6 +8,7 @@ import BlockUserTable from '../block-user-table';
 import BlockUserTableError from '../block-user-table/block-user-table-error';
 import debounce from 'lodash.debounce';
 import { localize } from 'Components/i18next';
+import { api_error_codes } from 'Constants/api-error-codes';
 import './block-user-list.scss';
 
 const BlockUserList = observer(() => {
@@ -26,7 +27,11 @@ const BlockUserList = observer(() => {
         }
     };
 
-    if (general_store.is_barred && general_store.block_unblock_user_error) {
+    if (
+        (general_store?.error_code === api_error_codes.TEMPORARY_BAR ||
+            general_store?.error_code === api_error_codes.PERMISSION_DENIED) &&
+        general_store.block_unblock_user_error
+    ) {
         return <BlockUserTableError error_message={general_store.block_unblock_user_error} />;
     }
 

@@ -1,10 +1,10 @@
+import React from 'react';
+import { CSSTransition } from 'react-transition-group';
 import { DesktopWrapper, Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import Download from 'Components/download';
-import React from 'react';
-import { CSSTransition } from 'react-transition-group';
-import { FilterDialog } from '.';
 import { TJournalToolsProps } from '../journal.types';
+import { FilterDialog } from '.';
 
 const JournalTools = ({
     checked_filters,

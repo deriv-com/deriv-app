@@ -1,8 +1,8 @@
-import React from 'react';
+import { useContext } from 'react';
 import StoreContext from './storeContext';
 
 const useStore = () => {
-    const store = React.useContext(StoreContext);
+    const store = useContext(StoreContext);
 
     if (!store) {
         throw new Error('useStore must be used within StoreProvider');

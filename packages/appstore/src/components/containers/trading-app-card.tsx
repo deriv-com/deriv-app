@@ -2,15 +2,20 @@ import React from 'react';
 import classNames from 'classnames';
 import { getStatusBadgeConfig } from '@deriv/account';
 import { Text, StatusBadge } from '@deriv/components';
-import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
-import { getAppstorePlatforms, getMFAppstorePlatforms, BrandConfig } from 'Constants/platform-config';
+import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
+import {
+    getAppstorePlatforms,
+    getMFAppstorePlatforms,
+    BrandConfig,
+    DERIV_PLATFORM_NAMES,
+} from 'Constants/platform-config';
 import './trading-app-card.scss';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
 import { localize } from '@deriv/translations';
-import { CFD_PLATFORMS, ContentFlag, getStaticUrl } from '@deriv/shared';
+import { CFD_PLATFORMS, ContentFlag, getStaticUrl, getUrlSmartTrader, getUrlBinaryBot } from '@deriv/shared';
 
 const TradingAppCard = ({
     availability,
@@ -29,9 +34,14 @@ const TradingAppCard = ({
     selected_mt5_jurisdiction,
     openFailedVerificationModal,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
-    const { common, traders_hub } = useStores();
+    const {
+        common,
+        traders_hub,
+        modules: { cfd },
+    } = useStores();
     const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
     const { current_language } = common;
+    const { is_account_being_created } = cfd;
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
@@ -50,10 +60,31 @@ const TradingAppCard = ({
     );
 
     const openStaticPage = () => {
+        if (is_deriv_platform) {
+            switch (name) {
+                case DERIV_PLATFORM_NAMES.TRADER:
+                    window.open(getStaticUrl(`/dtrader`));
+                    break;
+                case DERIV_PLATFORM_NAMES.DBOT:
+                    window.open(getStaticUrl(`/dbot`));
+                    break;
+                case DERIV_PLATFORM_NAMES.SMARTTRADER:
+                    window.open(getUrlSmartTrader());
+                    break;
+                case DERIV_PLATFORM_NAMES.BBOT:
+                    window.open(getUrlBinaryBot());
+                    break;
+                case DERIV_PLATFORM_NAMES.GO:
+                    window.open(getStaticUrl('/deriv-go'));
+                    break;
+                default:
+            }
+        }
         if (platform === CFD_PLATFORMS.MT5 && availability === 'EU')
             window.open(getStaticUrl(`/dmt5`, {}, false, true));
         else if (platform === CFD_PLATFORMS.MT5 && availability !== 'EU') window.open(getStaticUrl(`/dmt5`));
         else if (platform === CFD_PLATFORMS.DXTRADE) window.open(getStaticUrl(`/derivx`));
+        else if (platform === CFD_PLATFORMS.DERIVEZ) window.open(getStaticUrl(`/derivez`));
         else if (icon === 'Options' && !is_eu_user) window.open(getStaticUrl(`/trade-types/options/`));
         else;
     };
@@ -65,7 +96,7 @@ const TradingAppCard = ({
                     'trading-app-card__icon--container__clickable': clickable_icon,
                 })}
             >
-                <TradigPlatformIconProps icon={icon} onClick={clickable_icon ? openStaticPage : undefined} size={48} />
+                <TradingPlatformIconProps icon={icon} onClick={clickable_icon ? openStaticPage : undefined} size={48} />
             </div>
             <div className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}>
                 <div className='trading-app-card__details'>
@@ -113,6 +144,7 @@ const TradingAppCard = ({
                         is_external={is_external}
                         new_tab={new_tab}
                         is_buttons_disabled={!!mt5_acc_auth_status}
+                        is_account_being_created={!!is_account_being_created}
                         is_real={is_real}
                     />
                 </div>

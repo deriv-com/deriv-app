@@ -9,38 +9,48 @@ import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/fo
 const EmailLinkVerifiedModal = () => {
     const { hideModal, is_modal_open } = useModalManagerContext();
     const { order_store } = useStores();
-    const { amount_display, is_buy_order_for_user, local_currency, rate } = order_store.order_information;
+    const { amount_display, is_buy_order_for_user, local_currency, rate } = order_store.order_information || {};
     const amount = removeTrailingZeros(
         formatMoney(local_currency, amount_display * roundOffDecimal(rate, setDecimalPlaces(rate, 6)), true)
     );
 
     return (
-        <Modal has_close_icon is_open={is_modal_open} renderTitle={() => <></>} toggleModal={hideModal} width='440px'>
-            <Modal.Body className='email-verified-modal'>
-                <Icon icon='IcEmailVerificationLinkValid' size='128' />
-                <Text className='email-verified-modal--text' color='prominent' size='s' weight='bold'>
-                    <Localize i18n_default_text="We've verified your order" />
-                </Text>
-                <Text align='center' color='prominent' size='s'>
-                    <Localize
-                        i18n_default_text="Please ensure you've received {{amount}} {{local_currency}} in your account and hit Confirm to complete the transaction."
-                        values={{ amount, local_currency }}
-                    />
-                </Text>
-            </Modal.Body>
-            <Modal.Footer className='email-verified-modal--footer'>
-                <Button
-                    large
-                    primary
-                    onClick={() => {
-                        hideModal({ should_hide_all_modals: true });
-                        order_store.confirmOrder(is_buy_order_for_user);
-                    }}
+        <React.Fragment>
+            {order_store.order_information && (
+                <Modal
+                    has_close_icon={order_store.order_information}
+                    is_open={is_modal_open}
+                    renderTitle={() => <></>}
+                    toggleModal={hideModal}
+                    width='440px'
                 >
-                    <Localize i18n_default_text='Confirm' />
-                </Button>
-            </Modal.Footer>
-        </Modal>
+                    <Modal.Body className='email-verified-modal'>
+                        <Icon icon='IcEmailVerificationLinkValid' size='128' />
+                        <Text className='email-verified-modal--text' color='prominent' size='s' weight='bold'>
+                            <Localize i18n_default_text="We've verified your order" />
+                        </Text>
+                        <Text align='center' color='prominent' size='s'>
+                            <Localize
+                                i18n_default_text="Please ensure you've received {{amount}} {{local_currency}} in your account and hit Confirm to complete the transaction."
+                                values={{ amount, local_currency }}
+                            />
+                        </Text>
+                    </Modal.Body>
+                    <Modal.Footer className='email-verified-modal--footer'>
+                        <Button
+                            large
+                            primary
+                            onClick={() => {
+                                hideModal({ should_hide_all_modals: true });
+                                order_store.confirmOrder(is_buy_order_for_user);
+                            }}
+                        >
+                            <Localize i18n_default_text='Confirm' />
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            )}
+        </React.Fragment>
     );
 };
 

@@ -89,6 +89,7 @@ const RealAccountSignup = ({
     currency,
     deposit_real_account_signup_target,
     deposit_target,
+    redirectToLegacyPlatform,
     fetchAccountSettings,
     has_fiat,
     has_real_account,
@@ -212,7 +213,7 @@ const RealAccountSignup = ({
                         local_props.state_value.error_message || local_props.state_value.error_code?.message_to_client
                     }
                     code={local_props.state_value.error_code}
-                    onConfirm={onErrorConfirm}
+                    onConfirm={() => onErrorConfirm(local_props.state_value.error_code)}
                 />
             ),
             title: () => localize('Add a real account'),
@@ -231,6 +232,7 @@ const RealAccountSignup = ({
         {
             body: local_props => (
                 <FinishedAddCurrency
+                    redirectToLegacyPlatform={redirectToLegacyPlatform}
                     prev={local_props.state_value.previous_currency}
                     current={local_props.state_value.current_currency}
                     onSubmit={closeModalThenOpenCashier}
@@ -302,7 +304,6 @@ const RealAccountSignup = ({
             currency: curr,
         });
     };
-
     const closeModalthenOpenWelcomeModal = curr => {
         closeRealAccountSignup();
         setParams({
@@ -400,6 +401,7 @@ const RealAccountSignup = ({
     const closeModal = e => {
         // Do not close modal on external link and popover click event
         if (
+            !e ||
             e?.target.getAttribute('rel') === 'noopener noreferrer' ||
             e?.target.closest('.redirect-notice') ||
             e?.target.closest('.dc-popover__bubble')
@@ -416,12 +418,13 @@ const RealAccountSignup = ({
             return;
         }
         closeRealAccountSignup();
+        redirectToLegacyPlatform();
     };
 
-    const onErrorConfirm = () => {
+    const onErrorConfirm = err_code => {
         setParams({
             active_modal_index:
-                current_action === 'multi'
+                current_action === 'multi' || err_code === 'CurrencyTypeNotAllowed'
                     ? modal_pages_indices.add_or_manage_account
                     : modal_pages_indices.account_wizard,
         });
@@ -672,6 +675,7 @@ export default connect(({ ui, client, traders_hub, modules }) => ({
     currency: client.currency,
     deposit_real_account_signup_target: ui.deposit_real_account_signup_target,
     deposit_target: modules.cashier.general_store.deposit_target,
+    redirectToLegacyPlatform: client.redirectToLegacyPlatform,
     fetchAccountSettings: client.fetchAccountSettings,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     has_fiat: client.has_fiat,

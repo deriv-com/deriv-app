@@ -13,7 +13,11 @@ To run the End to End test you need to first install playwright on your machine 
 
 then
 
-`npx plauwright test` to start the tests to run. (You also can pass `--debug` option to this command to it to run them in headless browser and check them visually separated by different browsers eg. Chromium, Firefox or Edge)
+`npx playwright test` to start the tests to run. (You also can pass `--debug` option to this command to it to run them in headless browser and check them visually separated by different browsers eg. Chromium, Firefox or Edge)
+
+`npm run test:e2e` to run the tests from within the root `directory`.
+
+`npm run test:e2e-dev` to run the tests from within the root `directory` with trace enabled and show the test report.
 
 ## Project structure
 
@@ -30,8 +34,12 @@ It's mandatory to create this file to pass the needed environment variables to t
 | 5   | `ENDPOINT`                           | Endpoint of qabox server                                                                                                                                                                | String  | \*       |
 | 6   | `APP_URL`                            | App URL which tests should run on. Local machine URL is `localhost.binary.sx`                                                                                                           | String  | \*       |
 | 7   | `QA_EMAIL_INBOX_USER_NAME`           | Username of qabox events page to retrive the signup email and enable the created account (You can find it in the LP under shared-fe folder with the `QA emails login creds` entry name) | String  | \*       |
-| 8   | QA_EMAIL_INBOX_PASSWORD              | Password of qabox events page to retrive the signup email and enable the created account (You can find it in the LP under shared-fe folder with the `QA emails login creds` entry name) | String  | \*       |
-| 9   | ACCOUNT_RESIDENCE                    | Account residence to create account using it                                                                                                                                            | String  | \*       |
+| 8   | `QA_EMAIL_INBOX_PASSWORD`            | Password of qabox events page to retrive the signup email and enable the created account (You can find it in the LP under shared-fe folder with the `QA emails login creds` entry name) | String  | \*       |
+| 9   | `ACCOUNT_RESIDENCE_HIGH_RISK`        | Account residence to use when creating high risk accounts it                                                                                                                            | String  | \*       |
+| 10  | `ACCOUNT_RESIDENCE_LOW_RISK`         | Account residence to use when creating low risk accounts                                                                                                                                | String  | \*       |
+| 11  | `ACCOUNT_CITIZENSHIP_HIGH_RISK`      | Account citizenship to use when creating high risk accounts                                                                                                                             | String  | \*       |
+| 12  | `ACCOUNT_CITIZENSHIP_LOW_RISK`       | Account citizenship to use when creating low risk accounts                                                                                                                              | String  | \*       |
+| 13  | `RISK_LEVEL`                         | Risk level for the particular account i.e. high risk or low risk                                                                                                                        | String  | \*       |
 
 ### `onboarding.ts` file
 

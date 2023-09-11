@@ -1,9 +1,9 @@
+import React from 'react';
+import classnames from 'classnames';
 import { log_types } from '@deriv/bot-skeleton';
 import { Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import classnames from 'classnames';
-import React from 'react';
+import { Localize, localize } from '@deriv/translations';
 import { TFormatMessageProps } from '../journal.types';
 
 const FormatMessage = ({ logType, className, extra }: TFormatMessageProps) => {

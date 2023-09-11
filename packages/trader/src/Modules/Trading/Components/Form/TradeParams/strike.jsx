@@ -1,26 +1,28 @@
 import React from 'react';
 import classNames from 'classnames';
-import { DesktopWrapper, InputField, MobileWrapper, Dropdown, Text, Icon } from '@deriv/components';
+import BarriersList from './barriers-list';
+import { DesktopWrapper, InputField, MobileWrapper, Dropdown, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import { connect } from 'Stores/connect';
 import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';
-import './strike-field.scss';
+import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const Strike = ({
-    barrier_1,
-    current_focus,
-    onChange,
-    validation_errors,
-    setCurrentFocus,
-    advanced_duration_unit,
-    strike_price_choices,
-    expiry_type,
-    expiry_date,
-    server_time,
-    vanilla_trade_type,
-}) => {
+const Strike = observer(() => {
+    const { ui, common } = useStore();
+    const {
+        barrier_1,
+        onChange,
+        validation_errors,
+        barrier_choices: strike_price_choices,
+        expiry_type,
+        expiry_date,
+        vanilla_trade_type,
+    } = useTraderStore();
+    const { current_focus, setCurrentFocus, advanced_duration_unit } = ui;
+    const { server_time } = common;
+
     const [is_open, setIsOpen] = React.useState(false);
     const [should_open_dropdown, setShouldOpenDropdown] = React.useState(false);
     const [selected_value, setSelectedValue] = React.useState(barrier_1);
@@ -36,39 +38,10 @@ const Strike = ({
     const is_relative_strike_applicable =
         expiry_type === 'endtime' ? is_24_hours_contract : advanced_duration_unit !== 'd';
 
-    const strike_price_list = strike_price_choices.map(strike_price => ({ text: strike_price, value: strike_price }));
-
-    if (should_open_dropdown) {
-        return (
-            <section className='strike-field'>
-                <div className='strike-field--header'>
-                    <Text weight='bold' size='xs'>
-                        {localize('Strike Prices')}
-                    </Text>
-                    <Icon icon='IcCross' onClick={() => setShouldOpenDropdown(false)} />
-                </div>
-                <div className='strike-field--body'>
-                    {strike_price_list.map(strike => (
-                        <Text
-                            size='xs'
-                            line_height='xl'
-                            key={strike.key}
-                            className={classNames('strike-field--body-item', {
-                                'dc-list__item--selected': selected_value === strike.value,
-                            })}
-                            onClick={() => {
-                                setSelectedValue(strike.value);
-                                setShouldOpenDropdown(false);
-                                onChange({ target: { name: 'barrier_1', value: strike.value } });
-                            }}
-                        >
-                            {strike.value}
-                        </Text>
-                    ))}
-                </div>
-            </section>
-        );
-    }
+    const strike_price_list = strike_price_choices.map(strike_price => ({
+        text: strike_price,
+        value: strike_price,
+    }));
 
     return (
         <React.Fragment>
@@ -78,13 +51,11 @@ const Strike = ({
                     header={localize('Strike price')}
                     header_tooltip={
                         <Localize
-                            i18n_default_text='<0>{{trade_type}}:</0> You will get a payout if the market price is {{payout_status}} this price <0>at the expiry time.</0> Otherwise, your payout will be zero.'
+                            i18n_default_text='If you buy a "<0>{{trade_type}}</0>" option, you receive a payout at expiry if the final price is {{payout_status}} the strike price. Otherwise, your “<0>{{trade_type}}</0>” option will expire worthless.'
                             components={[<strong key={0} />]}
                             values={{
                                 trade_type:
-                                    vanilla_trade_type === 'VANILLALONGCALL'
-                                        ? localize('For Call')
-                                        : localize('For Put'),
+                                    vanilla_trade_type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
                                 payout_status:
                                     vanilla_trade_type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
                             }}
@@ -130,6 +101,21 @@ const Strike = ({
                         </div>
                     )}
                 </Fieldset>
+                {should_open_dropdown && (
+                    <BarriersList
+                        className='trade-container__barriers-table'
+                        header={localize('Strike Prices')}
+                        barriers_list={strike_price_choices}
+                        selected_item={selected_value}
+                        show_table={should_open_dropdown}
+                        onClick={strike => {
+                            setSelectedValue(strike);
+                            setShouldOpenDropdown(false);
+                            onChange({ target: { name: 'barrier_1', value: strike } });
+                        }}
+                        onClickCross={() => setShouldOpenDropdown(false)}
+                    />
+                )}
             </DesktopWrapper>
             <MobileWrapper>
                 <div className='mobile-widget__wrapper'>
@@ -151,19 +137,6 @@ const Strike = ({
             </MobileWrapper>
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ modules, ui, common }) => ({
-    barrier_1: modules.trade.barrier_1,
-    current_focus: ui.current_focus,
-    setCurrentFocus: ui.setCurrentFocus,
-    onChange: modules.trade.onChange,
-    validation_errors: modules.trade.validation_errors,
-    advanced_duration_unit: ui.advanced_duration_unit,
-    strike_price_choices: modules.trade.strike_price_choices,
-    expiry_type: modules.trade.expiry_type,
-    start_date: modules.trade.start_date,
-    expiry_date: modules.trade.expiry_date,
-    server_time: common.server_time,
-    vanilla_trade_type: ui.vanilla_trade_type,
-}))(Strike);
+export default Strike;

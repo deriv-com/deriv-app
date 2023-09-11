@@ -1,10 +1,29 @@
-import { reaction } from 'mobx';
 import crc32 from 'crc-32/crc32';
-import { isProduction, cloneObject } from '@deriv/shared';
+import { action, makeObservable, observable, reaction } from 'mobx';
 import { DBot } from '@deriv/bot-skeleton';
+import { cloneObject, isProduction } from '@deriv/shared';
 
 export default class DataCollectionStore {
-    constructor(root_store) {
+    constructor(root_store, core) {
+        makeObservable(this, {
+            IS_PENDING: observable,
+            IS_PROCESSED: observable,
+            endpoint: observable,
+            run_id: observable,
+            run_start: observable,
+            should_post_xml: observable,
+            strategy_content: observable,
+            transaction_ids: observable,
+            trackRun: action.bound,
+            trackTransaction: action.bound,
+            setRunId: action.bound,
+            setRunStart: action.bound,
+            setStrategyContent: action.bound,
+            cleanXmlDom: action.bound,
+            getHash: action.bound,
+        });
+        this.root_store = root_store;
+        this.core = core;
         if (isProduction() || /(.*?)\.binary.sx$/.test(window.location.hostname)) {
             this.root_store = root_store;
 
@@ -25,7 +44,7 @@ export default class DataCollectionStore {
     IS_PENDING = false;
     IS_PROCESSED = true;
 
-    endpoint = 'https://dbot-conf-dot-business-intelligence-240201.df.r.appspot.com/dbotconf';
+    endpoint = 'https://dbot-conf-dot-deriv-bi-reporting.as.r.appspot.com/dbotconf';
     run_id = '';
     run_start = 0;
     should_post_xml = true;
@@ -42,8 +61,8 @@ export default class DataCollectionStore {
             this.setStrategyContent(xml_string);
         }
 
-        this.setRunId(this.getHash(xml_hash + this.root_store.core.client.loginid + Math.random()));
-        this.setRunStart(this.root_store.common.server_time.unix());
+        this.setRunId(this.getHash(xml_hash + this.core.client.loginid + Math.random()));
+        this.setRunStart(this.core.common.server_time.unix());
     }
 
     async trackTransaction(contracts) {

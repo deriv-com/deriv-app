@@ -1,9 +1,11 @@
 import { getImageLocation } from '../../../../public-path';
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
-import { getUrlBase } from '@deriv/shared';
+import { getUrlBase, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import TourSteps from '../desktop-tours/common/tour-steps';
+
+const is_mobile = isMobile();
 
 type TJoyrideConfig = Record<
     'showProgress' | 'spotlightClicks' | 'disableBeacon' | 'disableOverlay' | 'disableCloseOnEsc',
@@ -523,3 +525,35 @@ export const DBOT_ONBOARDING_MOBILE: TMobileTourConfig[] = [
         tour_step_key: 8,
     },
 ];
+
+export const tourDialogInfo = is_mobile ? (
+    <Localize
+        key='tour-dialog-info-mobile'
+        i18n_default_text='Here’s a quick guide on how to use Deriv Bot on the go.'
+    />
+) : (
+    <Localize
+        key='tour-dialog-info-desktop'
+        i18n_default_text='Learn how to build your bot from scratch using a simple strategy.'
+    />
+);
+
+export const tourDialogAction = is_mobile ? (
+    <Localize
+        key='tour-dialog-action-mobile'
+        i18n_default_text='You can import a bot from your mobile device or from Google drive, see a preview in the bot builder, and start trading by running the bot.'
+    />
+) : (
+    <Localize
+        key='tour-dialog-action-desktop'
+        i18n_default_text='Hit the <0>Start</0> button to begin and follow the tutorial.'
+    />
+);
+
+export const getTourHeaders = bot_builder_tour => {
+    let tour_header = localize('Get started on Deriv Bot');
+    if (bot_builder_tour) {
+        is_mobile ? (tour_header = localize('Bot Builder guide')) : (tour_header = localize("Let's build a Bot!"));
+    }
+    return tour_header;
+};

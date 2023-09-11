@@ -78,7 +78,7 @@ export class ConnectionManager {
     }
 
     /**
-     * Asynchronously waits for specific WebSocket responses to arrive.
+     * Asynchronously waits for specific WebSocket responses to be resolved.
      *
      * @async
      * @param {...string} responses - An array of response types to wait for.

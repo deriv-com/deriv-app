@@ -19,9 +19,7 @@ env:
 jobs:
   release_staging:
     name: Release Staging
-#     if: # GitHub does not currently support regular expressions inside if conditions
-# #         github.ref == 'refs/heads//^master$/'
-    runs-on: ubuntu-latest
+    runs-on: Runner_16cores
     container:
       image: node:18.16.0
     env:
@@ -54,9 +52,7 @@ jobs:
         version: $(echo cat packages/core/dist/version | bash)
 
   publish_cloudflare_staging:
-#     if: # GitHub does not currently support regular expressions inside if conditions
-# #         github.ref == 'refs/heads//^master$/'
-    runs-on: ubuntu-latest
+    runs-on: Runner_16cores
     container:
       image: node:18.16.0
     needs:

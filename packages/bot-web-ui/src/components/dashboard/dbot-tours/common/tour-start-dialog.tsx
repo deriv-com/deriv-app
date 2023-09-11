@@ -22,31 +22,32 @@ const TourStartDialog = observer(() => {
     } = dashboard;
 
     const is_mobile = isMobile();
-
+    const current_tour_type_key = tour_type?.key;
     const toggleTour = (value: boolean, type: string) => {
-        const current_tour_type_key = tour_type.key;
-
-        if (current_tour_type_key === 'onboard_tour' || current_tour_type_key === 'bot_builder') {
-            if (type === 'onConfirm') {
-                toggleOnConfirm(active_tab, value);
-            } else {
-                setTourSettings(new Date().getTime(), `${current_tour_type_key}_token`);
-            }
+        const tour_type = ['onboard_tour', 'bot_builder'];
+        const handleTour = (type: string) => {
+            if (type === 'onConfirm') toggleOnConfirm(active_tab, value);
+            setTourSettings(new Date().getTime(), `${current_tour_type_key}_token`);
+        };
+        if (tour_type.includes(current_tour_type_key)) {
+            handleTour(type);
         }
         setTourDialogVisibility(false);
     };
 
+    const onboard_tour = active_tab === DBOT_TABS.DASHBOARD;
+    const bot_builder_tour = active_tab === DBOT_TABS.BOTBUILDER;
+
     const getTourHeaders = () => {
-        if (active_tab === DBOT_TABS.BOTBUILDER) {
-            return is_mobile ? localize('Bot Builder guide') : localize("Let's build a Bot!");
-        }
+        const bot_builder_header = is_mobile && bot_builder_tour;
+        bot_builder_header ? localize('Bot Builder guide') : localize("Let's build a Bot!");
         return localize('Get started on Deriv Bot');
     };
 
     const getTourContent = () => {
         return (
             <>
-                {active_tab === DBOT_TABS.DASHBOARD ? (
+                {onboard_tour ? (
                     <Localize
                         key={0}
                         i18n_default_text='Hi! Hit <0>Start</0> for a quick tour.'
@@ -84,14 +85,13 @@ const TourStartDialog = observer(() => {
         : localize('Hit the <0>Start</0> button to begin and follow the tutorial.');
 
     const onHandleConfirm = () => {
-        if (active_tab === DBOT_TABS.DASHBOARD) {
-            setTourActive(true);
-            setOnBoardTourRunState(true);
-        } else {
-            setBotBuilderTourState(true);
-        }
+        setTourActive(true);
+        if (onboard_tour) setOnBoardTourRunState(true);
+        else setBotBuilderTourState(true);
         setTourDialogVisibility(false);
     };
+    const header_text_size = is_mobile ? 'xs' : 's';
+    const content_text_size = is_mobile ? 'xxs' : 'xs';
 
     return (
         <div>
@@ -108,12 +108,12 @@ const TourStartDialog = observer(() => {
                 has_close_icon={false}
             >
                 <div className='dc-dialog__content__header'>
-                    <Text weight='bold' color='prominent' size={is_mobile ? 'xs' : 's'}>
+                    <Text weight='bold' color='prominent' size={header_text_size}>
                         {getTourHeaders()}
                     </Text>
                 </div>
                 <div className='dc-dialog__content__description'>
-                    <Text size={is_mobile ? 'xxs' : 'xs'} color='prominent'>
+                    <Text size={content_text_size} color='prominent'>
                         {getTourContent()}
                     </Text>
                 </div>

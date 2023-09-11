@@ -15,23 +15,15 @@ export type TListItem = {
     value: string;
 };
 
-// Type for the 'name' of the field
 export type TFields = 'place_of_birth' | 'tax_residence' | 'tax_identification_number' | 'account_opening_reason';
 
-// Type for the 'req' rule
 type ReqRule = ['req', React.ReactNode];
 
-// Type for the 'length' rule
 type LengthRule = ['length', React.ReactNode, { min: number; max: number }];
 
-// Type for the 'regular' rule
 type RegularRule = ['regular', React.ReactNode, { regex: RegExp }];
 
-// Type for a custom validation function
 type CustomValidator = (
-    /**
-     * The value of the field
-     */
     value: string,
     /**
      * The options passed to the validation function
@@ -43,36 +35,19 @@ type CustomValidator = (
     values: Record<string, unknown>
 ) => React.ReactNode;
 
-// Type for a rule with a custom validation function
 type CustomRule = [CustomValidator, React.ReactNode];
 
-// Type for any rule in the 'rules' array
 type Rule = ReqRule | LengthRule | RegularRule | CustomRule;
 
 type TInputConfig = {
-    /**
-     * The label of the input field (e.g. 'First name', 'Last name', etc.)
-     */
     label: React.ReactNode;
     /**
      * The type of the input field (e.g. 'text', 'password', 'select', etc.)
      */
     type?: string;
-    /**
-     * The initial value of the input field (e.g. 'John', 'Doe', etc.)
-     */
     initial_value: string;
-    /**
-     * Whether the input field is required or not
-     */
     required?: boolean;
-    /**
-     * Whether the input field is disabled
-     */
     disabled?: boolean;
-    /**
-     * The placeholder text of the input field (e.g. 'John', 'Doe', etc.)
-     */
     placeholder?: string;
     /**
      * The list of items for the dropdown or select
@@ -95,10 +70,6 @@ export type TFormFieldsConfig = {
  *  every field should have label, type, initial_value, disabled, required, placeholder, list_items, rules
  *
  *  `list_items` is used for dropdowns and select
- *
- * @param account_settings - GetSettings
- * @param residence_list - ResidenceList
- * @param required_fields - TFields[] - name of the fields that are required
  * @returns TFormFieldsConfig
  */
 export const getFormFieldsConfig = (
@@ -108,15 +79,11 @@ export const getFormFieldsConfig = (
 ) => {
     /**
      * Check if the field is disabled based on the immutable_fields from API
-     * @param field - string - name of the field
-     * @returns boolean - whether the field is disabled or not
      */
     const isFieldDisabled = (field: string) => account_settings?.immutable_fields?.includes(field);
 
     /**
      * Check if the field is required based on the required_fields from passed
-     * @param field - string - name of the field
-     * @returns boolean - whether the field is required or not
      */
     const isFieldRequired = (field: TFields) => required_fields.includes(field);
 
@@ -240,10 +207,7 @@ export const getFormFieldsConfig = (
 };
 
 /**
- * Generate initial values for form
- *
- * @param fields - TFormFieldsConfig
- * @returns Record<string, unknown> - initial values for form
+ * Generate initial values for form fields
  */
 const generateInitialValues = (fields: ReturnType<typeof getFormFieldsConfig>) => {
     const initial_values: Record<TFields, string> = {} as Record<TFields, string>;
@@ -255,11 +219,6 @@ const generateInitialValues = (fields: ReturnType<typeof getFormFieldsConfig>) =
 
 /**
  * This function is used to transform form fields config to the format that is used in Formik or Formik Field
- *
- * @param fields - TFormFieldsConfig
- * @param name - TFields
- * @param with_input_types - boolean
- * @returns - TGetField
  */
 const getField = (fields: TFormFieldsConfig, name: TFields, with_input_types: boolean): TGetField => {
     const { label, placeholder, required, disabled, type, list_items } = fields[name];
@@ -277,12 +236,6 @@ const getField = (fields: TFormFieldsConfig, name: TFields, with_input_types: bo
 
 /**
  * Function to transform and return form config that can be used within the component that renders the form
- *
- * @param options.account_settings - GetSettings - account settings from API
- * @param options.residence_list - ResidenceList - residence list from API
- * @param options.required_fields - TFields[] - required fields
- * @param options.with_input_types - boolean - to include input types in the form config or not
- * @returns
  */
 export const getFormConfig = (options: {
     account_settings: GetSettings;

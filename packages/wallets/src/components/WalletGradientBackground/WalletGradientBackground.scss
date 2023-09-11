@@ -1080,46 +1080,45 @@
                         #fbdddd;
                 }
             }
-
-            &-mobile {
-                &-card {
-                    &-light {
-                        background: radial-gradient(
-                                100% 277.78% at 0% 100%,
-                                rgba(255, 100, 68, 0.24) 0%,
-                                rgba(255, 68, 79, 0.48) 100%
-                            )
-                            #212329;
-                    }
-                    &-dark {
-                        background: radial-gradient(
-                                100% 277.78% at 0% 100%,
-                                rgba(255, 100, 68, 0.24) 0%,
-                                rgba(255, 68, 79, 0.48) 100%
-                            )
-                            #fbdddd;
-                    }
+        }
+        &-mobile {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(255, 100, 68, 0.24) 0%,
+                            rgba(255, 68, 79, 0.48) 100%
+                        )
+                        #212329;
                 }
+                &-dark {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(255, 100, 68, 0.24) 0%,
+                            rgba(255, 68, 79, 0.48) 100%
+                        )
+                        #fbdddd;
+                }
+            }
 
-                &-header {
-                    &-light {
-                        background: radial-gradient(
-                                100% 4130.74% at 0% 100%,
-                                rgba(255, 100, 68, 0.4) 0%,
-                                rgba(255, 100, 68, 0.16) 50.52%,
-                                rgba(255, 68, 79, 0.4) 100%
-                            )
-                            #212329;
-                    }
-                    &-dark {
-                        background: radial-gradient(
-                                100% 4130.74% at 0% 100%,
-                                rgba(255, 100, 68, 0.4) 0%,
-                                rgba(255, 100, 68, 0.16) 50.52%,
-                                rgba(255, 68, 79, 0.4) 100%
-                            )
-                            #fbdddd;
-                    }
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(255, 100, 68, 0.4) 0%,
+                            rgba(255, 100, 68, 0.16) 50.52%,
+                            rgba(255, 68, 79, 0.4) 100%
+                        )
+                        #212329;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(255, 100, 68, 0.4) 0%,
+                            rgba(255, 100, 68, 0.16) 50.52%,
+                            rgba(255, 68, 79, 0.4) 100%
+                        )
+                        #fbdddd;
                 }
             }
         }

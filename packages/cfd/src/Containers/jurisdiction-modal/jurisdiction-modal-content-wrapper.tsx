@@ -228,8 +228,21 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
                         />
                     </div>
                 </div>
+                <Modal.Footer className='jurisdiction-modal__footer-button' has_separator>
+                    <Button
+                        disabled={isNextButtonDisabled()}
+                        primary
+                        style={{ width: isMobile() ? '100%' : 'unset' }}
+                        onClick={() => {
+                            toggleJurisdictionModal();
+                            onSelectRealAccount();
+                        }}
+                    >
+                        {localize('Next')}
+                    </Button>
+                </Modal.Footer>
             </div>
-            <Modal.Footer className='jurisdiction-modal__footer-button' has_separator>
+            {/* <Modal.Footer className='jurisdiction-modal__footer-button' has_separator>
                 <Button
                     disabled={isNextButtonDisabled()}
                     primary
@@ -241,7 +254,7 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
                 >
                     {localize('Next')}
                 </Button>
-            </Modal.Footer>
+            </Modal.Footer> */}
         </div>
     );
 });

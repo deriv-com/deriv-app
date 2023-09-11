@@ -59,3 +59,17 @@ jobs:
       with:
         path: packages
     - uses: "./.github/actions/publish_to_pages_production"
+
+  send_slack_notification:
+      name: Send Slack notification
+      runs-on: Runner_16cores
+      needs: [build_test_and_upload_artifact, publish_cloudflare_production]
+      steps:
+      - uses: technote-space/workflow-conclusion-action@v3
+      - uses: "./.github/actions/send_slack_notifications"
+        with:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          status: ${{ env.WORKFLOW_CONCLUSION }}
+          release_type: Production 
+          version: $(echo cat packages/core/dist/version | bash)
+    

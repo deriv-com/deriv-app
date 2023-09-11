@@ -191,7 +191,7 @@ export type TVerificationStatus = Readonly<
 >;
 
 export type TIDVFormValues = {
-    document_type: TDocumentList[0];
+    document_type: TDocumentList;
     document_number: string;
     document_additional?: string;
     error_message?: string;

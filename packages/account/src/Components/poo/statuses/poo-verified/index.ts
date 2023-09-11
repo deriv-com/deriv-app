@@ -1,3 +1,3 @@
-import { POOVerified } from './verified';
+import POOVerified from './verified';
 
 export default POOVerified;

@@ -376,7 +376,7 @@ export class ConnectionManager {
             return;
 
         this.active_connection.deriv_api.onOpen().unsubscribe();
-        this.active_connection.deriv_api.onMessage().unsubscribe;
-        this.active_connection.deriv_api.onClose().unsubscribe;
+        this.active_connection.deriv_api.onMessage().unsubscribe();
+        this.active_connection.deriv_api.onClose().unsubscribe();
     }
 }

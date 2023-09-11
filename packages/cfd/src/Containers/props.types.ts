@@ -7,7 +7,7 @@ import {
     VerifyEmailResponse,
 } from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
-import { TCFDPasswordFormValues } from './cfd-password-modal';
+import { TCFDPasswordFormValues } from './cfd-password-modal/cfd-password-modal';
 import {
     TTradingPlatformAvailableAccount,
     TExistingData,

@@ -174,7 +174,10 @@ export class ConnectionManager {
      * @returns {ConnectionInstance|null} The active connection instance, or null if not found.
      */
     getActiveConnection() {
-        return this.connections.find(c => c.id === getActiveLoginIDType());
+        const endpoint_url = window.localStorage.getItem('config.server_url');
+        return this.connections.find(c => {
+            return c.id === endpoint_url ? 'development' : getActiveLoginIDType();
+        });
     }
 
     /**

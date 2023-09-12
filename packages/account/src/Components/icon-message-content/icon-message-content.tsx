@@ -7,6 +7,7 @@ type TIconMessageContent = {
     className?: string;
     full_width?: boolean;
     icon: React.ReactElement;
+    is_disabled?: boolean;
     message: React.ReactNode;
     text?: string | React.ReactElement;
 };
@@ -16,6 +17,7 @@ const IconMessageContent = ({
     className,
     full_width,
     icon,
+    is_disabled = false,
     message,
     text,
 }: React.PropsWithChildren<TIconMessageContent>) => (
@@ -23,7 +25,7 @@ const IconMessageContent = ({
         className={classNames('account-management__message-wrapper', {
             'account-management__message-wrapper-full-width': full_width,
         })}
-        is_disabled={isDesktop()}
+        is_disabled={is_disabled || isDesktop()}
         height_offset='110px'
     >
         <div

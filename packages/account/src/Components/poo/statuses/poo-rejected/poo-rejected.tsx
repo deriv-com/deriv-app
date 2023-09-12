@@ -12,6 +12,7 @@ const POORejected = ({ onTryAgain }: TPOORejected) => (
         <div className='proof-of-ownership__container--content'>
             <IconMessageContent
                 icon={<Icon icon='IcPooRejected' size={128} />}
+                is_disabled
                 message={<Localize i18n_default_text='Proof of ownership verification failed' />}
                 text={<Localize i18n_default_text='We were unable to verify your proof of ownership.' />}
             />

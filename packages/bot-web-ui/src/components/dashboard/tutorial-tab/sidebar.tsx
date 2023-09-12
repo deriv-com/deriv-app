@@ -34,20 +34,29 @@ const Sidebar = observer(() => {
             search_input.current.value = '';
             setsearchFAQList([]);
         }
-
         setsearchFilteredList(guide_tab_content);
         setsearchFAQList(faq_content);
     }, [active_tab_tutorials, active_tab]);
 
     React.useEffect(() => {
-        const content_list = active_tab_tutorials === 0 ? guide_tab_content : faq_content;
-        const filtered_list = content_list.filter(data => {
-            return content_list === guide_tab_content
-                ? data.content.toLowerCase().includes(faq_search_value)
-                : data.title.toLowerCase().includes(faq_search_value);
-        });
-        return active_tab_tutorials === 0 ? setsearchFilteredList(filtered_list) : setsearchFAQList(filtered_list);
-    }, [faq_search_value]);
+        const is_faq = active_tab_tutorials === 1;
+        const search = faq_search_value?.toLowerCase();
+
+        if (is_faq) {
+            const filtered_list = faq_content?.filter(({ title, description = [] }) => {
+                const match = description?.map(item => (item.type === 'text' ? item.content : '')).join(' ');
+                const title_has_match = title?.toLowerCase()?.includes(search);
+                const description_has_match = match?.toLowerCase()?.includes(search);
+                return title_has_match || description_has_match;
+            });
+            setsearchFAQList(filtered_list);
+        } else {
+            const filtered_list = guide_tab_content?.filter(({ content = '' }) =>
+                content?.toLowerCase()?.includes(search)
+            );
+            setsearchFilteredList(filtered_list);
+        }
+    }, [faq_search_value, active_tab_tutorials]);
 
     const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;

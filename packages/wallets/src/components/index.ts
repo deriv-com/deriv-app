@@ -1,7 +1,5 @@
 export * from './AccountsList';
 export * from './DesktopWalletsList';
-export * from './DesktopWrapper';
-export * from './MobileWrapper';
 export * from './WalletListCard';
 export * from './WalletListCardBadge';
 export * from './WalletListCardIActions';

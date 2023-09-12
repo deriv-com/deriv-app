@@ -490,6 +490,7 @@ export const icons =
         'IcPaymentAgent',
         'IcPaymentMethodsWallet',
         'IcPc',
+        'IcPdf',
         'IcPercentSolid',
         'IcPhone',
         'IcPixDark',

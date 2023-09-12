@@ -26,9 +26,9 @@ const OnboardingTour = observer(() => {
     const [tour_data, setTourData] = React.useState<TTourData>(default_tour_data);
     const { content, header, img, media, tour_step_key } = tour_data;
     const start_button = tour_step === 1 ? localize('Start') : localize('Next');
-    const tour_button_text = tour_step === 8 ? localize('Finish') : start_button;
+    const tour_button_text = tour_step === 8 ? localize('Got it, thanks!') : start_button;
     const test_id = tour_step_key === 8 ? 'finish-onboard-tour' : 'next-onboard-tour';
-    const hide_prev_button = [1, 2];
+    const hide_prev_button = [1, 2, 8];
 
     React.useEffect(() => {
         DBOT_ONBOARDING_MOBILE.forEach(data => {

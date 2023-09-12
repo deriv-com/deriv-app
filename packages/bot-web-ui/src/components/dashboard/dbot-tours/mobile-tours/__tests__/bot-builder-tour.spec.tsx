@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen, waitFor } from '@testing-library/react';
@@ -6,7 +7,6 @@ import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import BotBuilderTour from '../bot-builder-tour';
-// eslint-disable-next-line import/no-unresolved
 import '@testing-library/react/dont-cleanup-after-each';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());

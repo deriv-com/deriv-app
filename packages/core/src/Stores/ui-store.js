@@ -935,7 +935,7 @@ export default class UIStore extends BaseStore {
         this.is_mt5_migration_modal_enabled = !!val;
     }
 
-    toggleMT5MigrationModal() {
-        this.is_mt5_migration_modal_open = !this.is_mt5_migration_modal_open;
+    toggleMT5MigrationModal(value) {
+        this.is_mt5_migration_modal_open = !!value;
     }
 }

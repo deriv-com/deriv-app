@@ -530,7 +530,7 @@ type TUiStore = {
             | []
     ) => void;
     setMT5MigrationModalEnabled: (value: boolean) => void;
-    toggleMT5MigrationModal: () => void;
+    toggleMT5MigrationModal: (value: boolean) => void;
 };
 
 type TPortfolioStore = {

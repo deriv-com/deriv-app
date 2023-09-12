@@ -21,6 +21,7 @@ export default class RunPanelStore {
             is_sell_requested: observable,
             run_id: observable,
             error_type: observable,
+            show_bot_stop_message: observable,
             statistics: computed,
             is_stop_button_visible: computed,
             is_stop_button_disabled: computed,
@@ -42,6 +43,7 @@ export default class RunPanelStore {
             showContractUpdateErrorDialog: action.bound,
             onBotSellEvent: action.bound,
             onBotStopEvent: action.bound,
+            onBotReadyEvent: action.bound,
             onBotTradeAgain: action.bound,
             onContractStatusEvent: action.bound,
             onClickSell: action.bound,
@@ -52,6 +54,7 @@ export default class RunPanelStore {
             setContractStage: action.bound,
             setHasOpenContract: action.bound,
             setIsRunning: action.bound,
+            setShowBotStopMessage: action.bound,
             onMount: action.bound,
             onUnmount: action.bound,
             handleInvalidToken: action.bound,
@@ -70,6 +73,7 @@ export default class RunPanelStore {
         this.dbot = this.root_store.dbot;
         this.core = core;
         this.disposeReactionsFn = this.registerReactions();
+        this.timer = null;
     }
 
     active_index = 0;
@@ -81,6 +85,7 @@ export default class RunPanelStore {
     is_drawer_open = true;
     is_dialog_open = false;
     is_sell_requested = false;
+    show_bot_stop_message = false;
 
     run_id = '';
 
@@ -118,7 +123,6 @@ export default class RunPanelStore {
                 won_contracts: 0,
             }
         );
-
         statistics.number_of_runs = total_runs;
         return statistics;
     }
@@ -141,17 +145,30 @@ export default class RunPanelStore {
         );
     }
 
+    setShowBotStopMessage(value) {
+        this.show_bot_stop_message = value;
+    }
+
     async performSelfExclusionCheck() {
         const { self_exclusion } = this.root_store;
         await self_exclusion.checkRestriction();
     }
 
     async onRunButtonClick() {
+        let timer_counter = 1;
         if (window.sendRequestsStatistic) {
-            performance.mark('bot-start');
-
-            window.sendRequestsStatistic(false);
             performance.clearMeasures();
+            performance.mark('bot-start');
+            // Log is sent every 10 seconds for 5 minutes
+            this.timer = setInterval(() => {
+                window.sendRequestsStatistic(true);
+                performance.clearMeasures();
+                if (timer_counter === 12) {
+                    clearInterval(this.timer);
+                } else {
+                    timer_counter++;
+                }
+            }, 10000);
         }
         const { summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = this.core;
@@ -198,15 +215,19 @@ export default class RunPanelStore {
             this.setContractStage(contract_stages.STARTING);
             this.dbot.runBot();
         });
+        this.setShowBotStopMessage(false);
     }
 
     onStopButtonClick() {
         const { is_multiplier } = this.root_store.summary_card;
+        const { summary_card } = this.root_store;
 
         if (is_multiplier) {
             this.showStopMultiplierContractDialog();
         } else {
             this.stopBot();
+            summary_card.clear();
+            this.setShowBotStopMessage(true);
         }
     }
 
@@ -235,6 +256,10 @@ export default class RunPanelStore {
 
         if (this.error_type) {
             this.error_type = undefined;
+        }
+
+        if (this.timer) {
+            clearInterval(this.timer);
         }
         if (window.sendRequestsStatistic) {
             window.sendRequestsStatistic(true);
@@ -288,6 +313,13 @@ export default class RunPanelStore {
         this.onCloseDialog();
         summary_card.clear();
         toggleStopBotDialog();
+        if (this.timer) {
+            clearInterval(this.timer);
+        }
+        if (window.sendRequestsStatistic) {
+            window.sendRequestsStatistic(true);
+            performance.clearMeasures();
+        }
     }
 
     closeMultiplierContract() {
@@ -307,6 +339,13 @@ export default class RunPanelStore {
         this.onOkButtonClick = () => {
             ui.setPromptHandler(false);
             this.dbot.terminateBot();
+            if (this.timer) {
+                clearInterval(this.timer);
+            }
+            if (window.sendRequestsStatistic) {
+                window.sendRequestsStatistic(true);
+                performance.clearMeasures();
+            }
             this.onCloseDialog();
             summary_card.clear();
         };
@@ -398,6 +437,7 @@ export default class RunPanelStore {
         observer.register('bot.running', this.onBotRunningEvent);
         observer.register('bot.sell', this.onBotSellEvent);
         observer.register('bot.stop', this.onBotStopEvent);
+        observer.register('bot.bot_ready', this.onBotReadyEvent);
         observer.register('bot.click_stop', this.onStopButtonClick);
         observer.register('bot.trade_again', this.onBotTradeAgain);
         observer.register('contract.status', this.onContractStatusEvent);
@@ -481,7 +521,6 @@ export default class RunPanelStore {
         const { ui } = this.core;
         const indicateBotStopped = () => {
             this.error_type = undefined;
-            this.setIsRunning(false);
             this.setContractStage(contract_stages.NOT_RUNNING);
             ui.setAccountSwitcherDisabledMessage(false);
             this.unregisterBotListeners();
@@ -497,17 +536,18 @@ export default class RunPanelStore {
                 this.error_type = undefined;
                 this.setContractStage(contract_stages.PURCHASE_SENT);
             } else {
+                this.setIsRunning(false);
                 indicateBotStopped();
             }
         } else if (this.error_type === error_types.UNRECOVERABLE_ERRORS) {
             // Bot should indicate it stopped in below cases:
             // - When error happens and it's an unrecoverable error
+            this.setIsRunning(false);
             indicateBotStopped();
         } else if (this.has_open_contract) {
             // Bot should indicate the contract is closed in below cases:
             // - When bot was running and an error happens
             this.error_type = undefined;
-            this.setIsRunning(false);
             this.is_sell_requested = false;
             this.setContractStage(contract_stages.CONTRACT_CLOSED);
             ui.setAccountSwitcherDisabledMessage(false);
@@ -524,9 +564,14 @@ export default class RunPanelStore {
         document.dispatchEvent(listen_new_version);
     }
 
+    onBotReadyEvent() {
+        this.setIsRunning(false);
+        observer.unregisterAll('bot.bot_ready');
+    }
+
     onBotTradeAgain(is_trade_again) {
         if (!is_trade_again) {
-            this.onStopButtonClick();
+            this.stopBot();
         }
     }
 

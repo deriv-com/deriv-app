@@ -16,7 +16,7 @@ import {
 } from '@deriv/components';
 import { routes, isMobile, isDesktop, platforms, PlatformContext, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 import LeaveConfirm from 'Components/leave-confirm';
 import IconMessageContent from 'Components/icon-message-content';
 import DemoMessage from 'Components/demo-message';
@@ -59,21 +59,6 @@ type TConfirmationModal = {
 type TSubmittedPage = {
     platform: keyof typeof platforms;
     routeBackInApp: TCoreStores['common']['routeBackInApp'];
-};
-
-type TFinancialAssessmentProps = {
-    is_authentication_needed: boolean;
-    is_financial_account: boolean;
-    is_mf: boolean;
-    is_svg: boolean;
-    is_trading_experience_incomplete: boolean;
-    is_financial_information_incomplete: boolean;
-    is_virtual: boolean;
-    platform: keyof typeof platforms;
-    refreshNotifications: TCoreStores['notifications']['refreshNotifications'];
-    routeBackInApp: TCoreStores['common']['routeBackInApp'];
-    setFinancialAndTradingAssessment: TCoreStores['client']['setFinancialAndTradingAssessment'];
-    updateAccountStatus: TCoreStores['client']['updateAccountStatus'];
 };
 
 const ConfirmationContent = ({ className }: { className?: string }) => {
@@ -204,20 +189,22 @@ const SubmittedPage = ({ platform, routeBackInApp }: TSubmittedPage) => {
     );
 };
 
-const FinancialAssessment = ({
-    is_authentication_needed,
-    is_financial_account,
-    is_mf,
-    is_svg,
-    is_trading_experience_incomplete,
-    is_financial_information_incomplete,
-    is_virtual,
-    platform,
-    refreshNotifications,
-    routeBackInApp,
-    setFinancialAndTradingAssessment,
-    updateAccountStatus,
-}: TFinancialAssessmentProps) => {
+const FinancialAssessment = observer(() => {
+    const { client, common, notifications } = useStore();
+    const {
+        landing_company_shortcode,
+        is_virtual,
+        is_financial_account,
+        is_trading_experience_incomplete,
+        is_svg,
+        setFinancialAndTradingAssessment,
+        updateAccountStatus,
+        is_authentication_needed,
+        is_financial_information_incomplete,
+    } = client;
+    const { platform, routeBackInApp } = common;
+    const { refreshNotifications } = notifications;
+    const is_mf = landing_company_shortcode === 'maltainvest';
     const history = useHistory();
     const { is_appstore } = React.useContext(PlatformContext);
     const [is_loading, setIsLoading] = React.useState(true);
@@ -1070,19 +1057,6 @@ const FinancialAssessment = ({
             </Formik>
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ client, common, notifications }) => ({
-    is_authentication_needed: client.is_authentication_needed,
-    is_financial_account: client.is_financial_account,
-    is_mf: client.landing_company_shortcode === 'maltainvest',
-    is_svg: client.is_svg,
-    is_financial_information_incomplete: client.is_financial_information_incomplete,
-    is_trading_experience_incomplete: client.is_trading_experience_incomplete,
-    is_virtual: client.is_virtual,
-    platform: common.platform,
-    refreshNotifications: notifications.refreshNotifications,
-    routeBackInApp: common.routeBackInApp,
-    setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
-    updateAccountStatus: client.updateAccountStatus,
-}))(withRouter(FinancialAssessment));
+export default withRouter(FinancialAssessment);

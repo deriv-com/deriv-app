@@ -11,8 +11,8 @@ export default class CFDStore extends BaseStore {
     jurisdiction_selected_shortcode = '';
 
     account_type = {
-        category: undefined,
-        type: undefined,
+        category: '',
+        type: '',
     };
 
     mt5_trade_account = {};
@@ -72,7 +72,6 @@ export default class CFDStore extends BaseStore {
             current_list: computed,
             has_created_account_for_selected_jurisdiction: computed,
             has_submitted_cfd_personal_details: computed,
-            is_high_risk_client_for_mt5: computed,
             onMount: action.bound,
             onUnmount: override,
             checkShouldOpenAccount: action.bound,
@@ -94,7 +93,6 @@ export default class CFDStore extends BaseStore {
             setError: action.bound,
             setCFDNewAccount: action.bound,
             setCFDSuccessDialog: action.bound,
-            storeProofOfAddress: action.bound,
             getAccountStatus: action.bound,
             creatMT5Password: action.bound,
             submitMt5Password: action.bound,
@@ -429,41 +427,6 @@ export default class CFDStore extends BaseStore {
         this.is_cfd_success_dialog_enabled = !!value;
     }
 
-    storeProofOfAddress(file_uploader_ref, values, { setStatus }) {
-        return new Promise((resolve, reject) => {
-            setStatus({ msg: '' });
-            this.setState({ is_btn_loading: true });
-
-            WS.setSettings(values).then(data => {
-                if (data.error) {
-                    setStatus({ msg: data.error.message });
-                    reject(data);
-                } else {
-                    this.root_store.fetchAccountSettings();
-                    // force request to update settings cache since settings have been updated
-                    file_uploader_ref.current.upload().then(api_response => {
-                        if (api_response.warning) {
-                            setStatus({ msg: api_response.message });
-                            reject(api_response);
-                        } else {
-                            WS.authorized.storage.getAccountStatus().then(({ error, get_account_status }) => {
-                                if (error) {
-                                    reject(error);
-                                }
-                                const { identity } = get_account_status.authentication;
-                                const has_poi = !(identity && identity.status === 'none');
-                                resolve({
-                                    identity,
-                                    has_poi,
-                                });
-                            });
-                        }
-                    });
-                }
-            });
-        });
-    }
-
     async getAccountStatus(platform) {
         const should_load_account_status =
             (platform === CFD_PLATFORMS.MT5 && this.root_store.client.is_mt5_password_not_set) ||
@@ -549,6 +512,7 @@ export default class CFDStore extends BaseStore {
             actions.resetForm({});
             actions.setSubmitting(false);
             actions.setStatus({ success: false });
+            return;
         }
 
         actions.setStatus({ success: true });
@@ -748,23 +712,5 @@ export default class CFDStore extends BaseStore {
 
     toggleCFDVerificationModal() {
         this.is_cfd_verification_modal_visible = !this.is_cfd_verification_modal_visible;
-    }
-
-    get is_high_risk_client_for_mt5() {
-        const { trading_platform_available_accounts } = this.root_store.client;
-        const financial_available_accounts = trading_platform_available_accounts.filter(
-            available_account => available_account.market_type === 'financial'
-        );
-
-        const synthetic_available_accounts = trading_platform_available_accounts.filter(
-            available_account => available_account.market_type === 'gaming'
-        );
-
-        return (
-            financial_available_accounts.length === 1 &&
-            financial_available_accounts.every(acc => acc.shortcode === 'svg') &&
-            synthetic_available_accounts.length === 1 &&
-            synthetic_available_accounts.every(acc => acc.shortcode === 'svg')
-        );
     }
 }

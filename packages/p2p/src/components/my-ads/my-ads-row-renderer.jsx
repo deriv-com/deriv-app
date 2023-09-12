@@ -53,8 +53,9 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         market_rate: effective_rate,
     });
 
-    const is_ads_listed = general_store.is_listed && !general_store.is_barred;
-    const ad_pause_color = is_ads_listed ? 'general' : 'less-prominent';
+    const is_advert_listed = general_store.is_listed && !general_store.is_barred;
+    const ad_pause_color = is_advert_listed ? 'general' : 'less-prominent';
+
     const icon_disabled_color =
         (!general_store.is_listed || general_store.is_barred || !is_advert_active) && 'disabled';
     const is_activate_ad_disabled = floating_rate_store.reached_target_date && enable_action_point;
@@ -66,7 +67,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
     };
 
     const onClickAdd = () => {
-        if (is_ads_listed) {
+        if (is_advert_listed) {
             my_ads_store.showQuickAddModal(advert);
         }
     };
@@ -91,7 +92,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
 
     const getErrorCodes = () => {
         let updated_visibility_status = [...visibility_status];
-        if (!is_ads_listed && !updated_visibility_status.includes('advertiser_ads_paused'))
+        if (!is_advert_listed && !updated_visibility_status.includes('advertiser_ads_paused'))
             updated_visibility_status = [...updated_visibility_status, 'advertiser_ads_paused'];
         if (!enable_action_point && updated_visibility_status.includes('advert_inactive'))
             updated_visibility_status = updated_visibility_status.filter(status => status !== 'advert_inactive');
@@ -178,7 +179,11 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                             )}
                         </div>
                         <div className='p2p-my-ads__table-row-details'>
-                            <Text color='profit-success' line_height='m' size='xxs'>
+                            <Text
+                                color={is_advert_listed ? 'profit-success' : 'less-prominent'}
+                                line_height='m'
+                                size='xxs'
+                            >
                                 {`${formatMoney(account_currency, amount_dealt, true)}`} {account_currency}&nbsp;
                                 {is_buy_advert ? localize('Bought') : localize('Sold')}
                             </Text>
@@ -207,7 +212,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                                 {min_order_amount_display} - {max_order_amount_display} {account_currency}
                             </Text>
                             <Text
-                                color={is_ads_listed ? 'profit-success' : 'disabled'}
+                                color={is_advert_listed ? 'profit-success' : 'disabled'}
                                 line_height='m'
                                 size='xs'
                                 weight='bold'

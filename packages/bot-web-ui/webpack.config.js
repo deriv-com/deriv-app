@@ -124,7 +124,9 @@ module.exports = function (env) {
                 'process.env.DATADOG_SESSION_REPLAY_SAMPLE_RATE': JSON.stringify(
                     process.env.DATADOG_SESSION_REPLAY_SAMPLE_RATE
                 ),
-                'process.env.DATADOG_SESSION_SAMPLE_RATE': JSON.stringify(process.env.DATADOG_SESSION_SAMPLE_RATE),
+                'process.env.DATADOG_SESSION_SAMPLE_RATE_LOGS': JSON.stringify(
+                    process.env.DATADOG_SESSION_SAMPLE_RATE_LOGS
+                ),
                 'process.env.CIRCLE_TAG': JSON.stringify(process.env.CIRCLE_TAG),
                 'process.env.CIRCLE_JOB': JSON.stringify(process.env.CIRCLE_JOB),
             }),

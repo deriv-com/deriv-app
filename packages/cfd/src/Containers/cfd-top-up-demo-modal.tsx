@@ -3,47 +3,28 @@ import SuccessDialog from '../Components/success-dialog.jsx';
 import { Icon, Modal, Button, Money, Text } from '@deriv/components';
 import { getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import RootStore from '../Stores/index';
-import { connect } from '../Stores/connect';
 import { TDxCompanies, TMtCompanies, TDerivezCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { getTopUpConfig } from '../Helpers/constants';
-
-type TExtendedCurrentAccount = DetailsOfEachMT5Loginid & {
-    display_login: string;
-    category: string;
-    type: string;
-};
+import { observer, useStore } from '@deriv/stores';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
 type TCFDTopUpDemoModalProps = {
-    dxtrade_companies: TDxCompanies;
-    derivez_companies: TDerivezCompanies;
-    mt5_companies: TMtCompanies;
-    current_account?: TExtendedCurrentAccount;
-    closeSuccessTopUpModal: () => void;
-    closeTopUpModal: () => void;
-    is_top_up_virtual_open: boolean;
-    is_top_up_virtual_in_progress: boolean;
-    is_top_up_virtual_success: boolean;
-    context: RootStore;
     platform: string;
-    topUpVirtual: (platform: string) => void;
 };
 
-const CFDTopUpDemoModal = ({
-    dxtrade_companies,
-    derivez_companies,
-    mt5_companies,
-    current_account,
-    closeSuccessTopUpModal,
-    closeTopUpModal,
-    is_top_up_virtual_open,
-    is_top_up_virtual_in_progress,
-    is_top_up_virtual_success,
-    platform,
-    context,
-    topUpVirtual,
-}: TCFDTopUpDemoModalProps) => {
+const CFDTopUpDemoModal = observer(({ platform }: TCFDTopUpDemoModalProps) => {
+    const { ui } = useStore();
+
+    const {
+        is_top_up_virtual_open,
+        is_top_up_virtual_in_progress,
+        is_top_up_virtual_success,
+        closeTopUpModal,
+        closeSuccessTopUpModal,
+    } = ui;
+
+    const { current_account, dxtrade_companies, derivez_companies, mt5_companies, topUpVirtual } = useCfdStore();
+
     const getAccountTitle = React.useCallback(() => {
         let title = '';
         if ((!mt5_companies && !dxtrade_companies && !derivez_companies) || !current_account) return '';
@@ -88,7 +69,6 @@ const CFDTopUpDemoModal = ({
             <Modal
                 toggleModal={closeTopUpModal}
                 is_open={is_top_up_virtual_open}
-                context={context}
                 className='top-up-virtual'
                 title={localize('Fund top up')}
                 width='384px'
@@ -206,17 +186,6 @@ const CFDTopUpDemoModal = ({
             />
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ ui, modules }: RootStore) => ({
-    is_top_up_virtual_open: ui.is_top_up_virtual_open,
-    is_top_up_virtual_in_progress: ui.is_top_up_virtual_in_progress,
-    is_top_up_virtual_success: ui.is_top_up_virtual_success,
-    closeTopUpModal: ui.closeTopUpModal,
-    closeSuccessTopUpModal: ui.closeSuccessTopUpModal,
-    current_account: modules.cfd.current_account,
-    dxtrade_companies: modules.cfd.dxtrade_companies,
-    mt5_companies: modules.cfd.mt5_companies,
-    derivez_companies: modules.cfd.derivez_companies,
-    topUpVirtual: modules.cfd.topUpVirtual,
-}))(CFDTopUpDemoModal);
+export default CFDTopUpDemoModal;

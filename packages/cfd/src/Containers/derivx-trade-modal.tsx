@@ -18,6 +18,7 @@ import {
     getPlatformDXTradeDownloadLink,
     getPlatformMt5DownloadLink,
 } from '../Helpers/constants';
+import { TCFDPasswordReset } from './props.types';
 
 type TDxTradeModalProps = {
     mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
@@ -25,7 +26,7 @@ type TDxTradeModalProps = {
     onPasswordManager: (
         arg1: string | undefined,
         arg2: string,
-        arg3: string,
+        group: TCFDPasswordReset['account_group'],
         arg4: string,
         arg5: string | undefined
     ) => void;

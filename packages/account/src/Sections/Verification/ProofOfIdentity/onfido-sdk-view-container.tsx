@@ -33,6 +33,7 @@ type TOnfidoSdkViewContainer = {
     getChangeableFields: () => string[];
     handleViewComplete: () => void;
     height?: number | string;
+    is_default_enabled?: boolean;
 };
 
 const OnfidoSdkViewContainer = ({
@@ -42,6 +43,7 @@ const OnfidoSdkViewContainer = ({
     getChangeableFields,
     handleViewComplete,
     height,
+    is_default_enabled,
 }: TOnfidoSdkViewContainer) => {
     const [api_error, setAPIError] = React.useState<TAPIError>();
     const [missing_personal_details, setMissingPersonalDetails] = React.useState('');
@@ -67,6 +69,14 @@ const OnfidoSdkViewContainer = ({
         : Object.keys(documents_supported).map(d => documents_supported[d].display_name);
 
     const onfido_init = React.useRef<SdkHandle>();
+
+    // pass is_default_enabled to enable onfido immediately if personal detail component is not required
+    // so no user prompt will be there so submit the details in i.e. in case of flow for nigerian clients ATM
+    React.useEffect(() => {
+        if (is_default_enabled) {
+            setIsOnfidoDisabled(false);
+        }
+    }, [is_default_enabled]);
 
     const onComplete = React.useCallback(
         (data: Omit<SdkResponse, 'data'> & { data?: { id?: string } }) => {

@@ -1,5 +1,5 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import { isCryptocurrency } from '@deriv/shared';
 import Input from '../input/input';
 import Button from '../button/button';
@@ -10,7 +10,7 @@ type TStepInput = {
     min: number;
     value: string | number;
     onChange: (increment_value: string | number, pip_size: number) => void;
-    render?: (props: { string_value: string; className: string }) => React.ReactNode;
+    render?: (props: { value: string; className: string }) => React.ReactNode;
     pip_size: number;
     currency: string;
     label?: string;
@@ -24,9 +24,9 @@ const getDecimals = (val: number | string) => {
 const StepInput = ({ className, max, min, value, onChange, render, pip_size = 0, currency }: TStepInput) => {
     const getSmallestScale = () => {
         const is_crypto = !!currency && isCryptocurrency(currency);
-        const decimal_places = Number.isFinite(+string_value) ? getDecimals(string_value) : '0';
+        const decimal_places = Number.isFinite(+value) ? getDecimals(value) : 0;
         if (is_crypto || (!currency && decimal_places)) {
-            return parseFloat((1 * 10 ** (0 - +decimal_places)).toString());
+            return parseFloat(String(1 * 10 ** (0 - decimal_places)));
         }
         return 1;
     };
@@ -34,12 +34,11 @@ const StepInput = ({ className, max, min, value, onChange, render, pip_size = 0,
     const smallest_scale = getSmallestScale();
     const is_gt_max = Number.isFinite(+max) && +value + smallest_scale > +max;
     const is_lt_min = Number.isFinite(+min) && +value - smallest_scale < +min;
-    const string_value = typeof value === 'number' ? value.toString() : value;
 
     const increment = () => {
         if (is_gt_max) return;
 
-        const parsed_value = parseFloat(string_value);
+        const parsed_value = parseFloat(value.toString());
 
         let increment_value;
         if (Number.isNaN(parsed_value)) {
@@ -49,7 +48,7 @@ const StepInput = ({ className, max, min, value, onChange, render, pip_size = 0,
             const is_crypto = !!currency && isCryptocurrency(currency);
 
             if (is_crypto || (!currency && decimal_places)) {
-                const new_value = parseFloat(string_value) + parseFloat((1 * 10 ** (0 - +decimal_places)).toString());
+                const new_value = parseFloat(value.toString()) + parseFloat(String(1 * 10 ** (0 - decimal_places)));
                 increment_value = parseFloat(new_value.toString()).toFixed(decimal_places);
             } else {
                 increment_value = parsed_value + 1;
@@ -62,17 +61,17 @@ const StepInput = ({ className, max, min, value, onChange, render, pip_size = 0,
     const decrement = () => {
         if (is_lt_min) return;
 
-        const parsed_value = parseFloat(string_value);
+        const parsed_value = parseFloat(value.toString());
 
         let increment_value;
         if (Number.isNaN(parsed_value)) {
             increment_value = min;
         } else {
-            const decimal_places = Number.isFinite(+string_value) ? getDecimals(value) : 0;
+            const decimal_places = Number.isFinite(+value) ? getDecimals(value) : 0;
             const is_crypto = !!currency && isCryptocurrency(currency);
 
             if (is_crypto || (!currency && decimal_places)) {
-                const new_value = parseFloat(string_value) - parseFloat((1 * 10 ** (0 - +decimal_places)).toString());
+                const new_value = parseFloat(value.toString()) - parseFloat(String(1 * 10 ** (0 - decimal_places)));
                 increment_value = parseFloat(new_value.toString()).toFixed(decimal_places);
             } else {
                 increment_value = parsed_value - 1;
@@ -88,7 +87,7 @@ const StepInput = ({ className, max, min, value, onChange, render, pip_size = 0,
             <React.Fragment>
                 {render &&
                     render({
-                        string_value,
+                        value: value.toString(),
                         className: classNames('dc-numpad__input-field', className),
                     })}
             </React.Fragment>

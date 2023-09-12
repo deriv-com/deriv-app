@@ -228,6 +228,690 @@ import type {
 } from '@deriv/api-types';
 import type { useMutation, useQuery } from '@tanstack/react-query';
 
+type TPrivateSocketEndpoints = {
+    trading_platform_new_account: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            trading_platform_new_account: 1;
+            /**
+             * Account type.
+             */
+            account_type: 'demo' | 'real';
+            /**
+             * [Optional] Name of the client's company (For DerivEZ only)
+             */
+            company?: string;
+            /**
+             * [Optional] Trading account currency, the default value will be the qualified account currency.
+             */
+            currency?: string;
+            /**
+             * [Optional] If set to 1, only validation is performed.
+             */
+            dry_run?: 0 | 1;
+            /**
+             * Market type
+             */
+            market_type: 'financial' | 'synthetic' | 'all';
+            /**
+             * The master password of the account. For validation (Accepts any printable ASCII character. Must be within 8-25 characters, and include numbers, lowercase and uppercase letters. Must not be the same as the user's email address). Only for DXTrade.
+             */
+            password?: string;
+            /**
+             * Name of trading platform.
+             */
+            platform: 'dxtrade' | 'derivez' | 'ctrader';
+            /**
+             * [Optional] Sub account type.
+             */
+            sub_account_type?: 'financial' | 'financial_stp' | 'swap_free';
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            /**
+             * ID of Trading account.
+             */
+            account_id?: string;
+            /**
+             * Account type.
+             */
+            account_type?: 'demo' | 'real' | 'all';
+            /**
+             * Agent Details.
+             */
+            agent?: null | string;
+            /**
+             * Balance of the Trading account.
+             */
+            balance?: number;
+            /**
+             * Currency of the Trading account.
+             */
+            currency?: string;
+            /**
+             * Account balance, formatted to appropriate decimal places.
+             */
+            display_balance?: string;
+            /**
+             * Account enabled status
+             */
+            enabled?: number;
+            /**
+             * Landing company shortcode of the Trading account.
+             */
+            landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'svg' | 'vanuatu' | 'seychelles';
+            /**
+             * Login name used to log in into Trading platform.
+             */
+            login?: string;
+            /**
+             * Market type.
+             */
+            market_type?: 'financial' | 'synthetic' | 'all';
+            /**
+             * Name of trading platform.
+             */
+            platform?: 'dxtrade' | 'derivez' | 'ctrader';
+            /**
+             * Sub account type.
+             */
+            sub_account_type?: 'financial' | 'financial_stp' | 'swap_free';
+        };
+        /**
+         * Echo of the request made.
+         */
+        echo_req: {
+            [k: string]: unknown;
+        };
+        /**
+         * Action name of the request made.
+         */
+        msg_type: 'trading_platform_new_account';
+        /**
+         * Optional field sent in request to map to response, present only when request contains `req_id`.
+         */
+        req_id?: number;
+        [k: string]: unknown;
+    };
+    trading_platform_available_accounts: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            trading_platform_available_accounts: 1;
+            /**
+             * Name of trading platform.
+             */
+            platform: 'mt5' | 'ctrader';
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            /**
+             * Available Trading Accounts
+             */
+            trading_platform_available_accounts?:
+                | {
+                      /**
+                       * A list of Deriv landing companies that can work with this account type
+                       */
+                      linkable_landing_companies?: ('svg' | 'maltainvest')[];
+                      /**
+                       * The type of market tradable by this account
+                       */
+                      market_type?: 'financial' | 'gaming' | 'all';
+                      /**
+                       * Landing Company legal name
+                       */
+                      name?: string;
+                      /**
+                       * Legal requirements for the Landing Company
+                       */
+                      requirements?: {
+                          /**
+                           * After first deposit requirements
+                           */
+                          after_first_deposit?: {
+                              /**
+                               * Financial assessment requirements
+                               */
+                              financial_assessment?: string[];
+                          };
+                          /**
+                           * Compliance requirements
+                           */
+                          compliance?: {
+                              /**
+                               * Compliance MT5 requirements
+                               */
+                              mt5?: string[];
+                              /**
+                               * Compliance tax information requirements
+                               */
+                              tax_information?: string[];
+                          };
+                          /**
+                           * Sign up requirements
+                           */
+                          signup?: string[];
+                          /**
+                           * Withdrawal requirements
+                           */
+                          withdrawal?: string[];
+                      };
+                      /**
+                       * Landing Company short code
+                       */
+                      shortcode?: string;
+                      /**
+                       * Sub account type
+                       */
+                      sub_account_type?: 'standard' | 'swap_free' | 'stp';
+                  }[]
+                | null;
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**z
+             * Action name of the request made.
+             */
+            msg_type: 'trading_platform_available_accounts';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
+    trading_platform_accounts: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            trading_platform_accounts: 1;
+            /**
+             * Trading platform name
+             */
+            platform: 'dxtrade' | 'mt5' | 'derivez';
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            /**
+             * Array containing Trading account objects.
+             */
+            trading_platform_accounts?: {
+                /**
+                 * ID of Trading account.
+                 */
+                account_id?: string;
+                /**
+                 * Account type.
+                 */
+                account_type?: 'demo' | 'real';
+                /**
+                 * Balance of the Trading account.
+                 */
+                balance?: null | number;
+                /**
+                 * Residence of the MT5 account.
+                 */
+                country?: string;
+                /**
+                 * Currency of the Trading account.
+                 */
+                currency?: string;
+                /**
+                 * Account balance, formatted to appropriate decimal places.
+                 */
+                display_balance?: null | string;
+                /**
+                 * Email address of the MT5 account.
+                 */
+                email?: string;
+                /**
+                 * Account enabled status
+                 */
+                enabled?: number;
+                /**
+                 * Error in MT5 account details.
+                 */
+                error?: {
+                    /**
+                     * Error code string.
+                     */
+                    code?: string;
+                    /**
+                     * Extra information about the error.
+                     */
+                    details?: {
+                        /**
+                         * MT5 account type.
+                         */
+                        account_type?: string;
+                        /**
+                         * MT5 account login ID.
+                         */
+                        login?: string;
+                        /**
+                         * Trade server name of the MT5 account.
+                         */
+                        server?: string;
+                        /**
+                         * Trade server information.
+                         */
+                        server_info?: {
+                            /**
+                             * The environment. E.g. Deriv-Server.
+                             */
+                            environment?: 'Deriv-Demo' | 'Deriv-Server' | 'Deriv-Server-02';
+                            /**
+                             * Geographical location of the server.
+                             */
+                            geolocation?: {
+                                /**
+                                 * Internal server grouping.
+                                 */
+                                group?: string;
+                                /**
+                                 * Sever location.
+                                 */
+                                location?: string;
+                                /**
+                                 * Sever region.
+                                 */
+                                region?: string;
+                                /**
+                                 * Sever sequence.
+                                 */
+                                sequence?: number;
+                            };
+                            /**
+                             * Server id.
+                             */
+                            id?: string;
+                        };
+                    };
+                    /**
+                     * Error message.
+                     */
+                    message_to_client?: string;
+                };
+                /**
+                 * Group type of the MT5 account, e.g. `demo\svg_financial`
+                 */
+                group?: string;
+                /**
+                 * Landing company shortcode of the Trading account.
+                 */
+                landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'svg' | 'vanuatu' | 'seychelles';
+                /**
+                 * Leverage of the MT5 account (1 to 1000).
+                 */
+                leverage?: number;
+                /**
+                 * Login name used to log in into Trading platform
+                 */
+                login?: string;
+                /**
+                 * Market type
+                 */
+                market_type?: 'financial' | 'synthetic' | 'all';
+                /**
+                 * Name of the owner of the MT5 account.
+                 */
+                name?: string;
+                /**
+                 * Name of trading platform.
+                 */
+                platform?: 'dxtrade' | 'mt5';
+                /**
+                 * Trade server name of the MT5 account.
+                 */
+                server?: string;
+                /**
+                 * Trade server information.
+                 */
+                server_info?: {
+                    /**
+                     * The environment. E.g. Deriv-Server.
+                     */
+                    environment?: 'Deriv-Demo' | 'Deriv-Server' | 'Deriv-Server-02';
+                    /**
+                     * Geographical location of the server.
+                     */
+                    geolocation?: {
+                        /**
+                         * Internal server grouping.
+                         */
+                        group?: string;
+                        /**
+                         * Sever location.
+                         */
+                        location?: string;
+                        /**
+                         * Sever region.
+                         */
+                        region?: string;
+                        /**
+                         * Sever sequence.
+                         */
+                        sequence?: number;
+                    };
+                    /**
+                     * Server id.
+                     */
+                    id?: string;
+                };
+                /**
+                 * Sub account type
+                 */
+                sub_account_type?: 'financial' | 'financial_stp';
+            }[];
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'trading_platform_accounts';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
+    cashier_payments: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            cashier_payments: 1;
+            /**
+             * [Optional] Cashier provider. `crypto` will be default option for crypto currency accounts.
+             */
+            provider?: 'crypto';
+            /**
+             * [Optional] If set to 1, will send updates whenever there is update to crypto payments.
+             */
+            subscribe?: 0 | 1;
+            /**
+             * [Optional] Type of transactions to receive.
+             */
+            transaction_type?: 'all' | 'deposit' | 'withdrawal';
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            cashier_payments?: {
+                /**
+                 * Response for provider `crypto'.
+                 */
+                crypto: {
+                    /**
+                     * The destination crypto address.
+                     */
+                    address_hash: string;
+                    /**
+                     * The URL of the address on blockchain.
+                     */
+                    address_url: string;
+                    /**
+                     * [Optional] The transaction amount. Not present when deposit transaction still unconfirmed.
+                     */
+                    amount?: number;
+                    /**
+                     * [Optional] The number of confirmations for pending deposits or withdrawals.
+                     */
+                    confirmations?: number;
+                    /**
+                     * The unique identifier for the transaction.
+                     */
+                    id: string;
+                    /**
+                     * [Optional] Boolean value: 1 or 0, indicating whether the transaction can be cancelled. Only applicable for `withdrawal` transactions.
+                     */
+                    is_valid_to_cancel?: 1 | 0;
+                    /**
+                     * The status code of the transaction.
+                     * Possible values for **deposit:** `PENDING|CONFIRMED|ERROR`,
+                     * possible values for **withdrawal:** `LOCKED|VERIFIED|REJECTED|PERFORMING_BLOCKCHAIN_TXN|PROCESSING|SENT|ERROR|CANCELLED`.
+                     */
+                    status_code:
+                        | 'CANCELLED'
+                        | 'CONFIRMED'
+                        | 'ERROR'
+                        | 'LOCKED'
+                        | 'PENDING'
+                        | 'PERFORMING_BLOCKCHAIN_TXN'
+                        | 'PROCESSING'
+                        | 'REJECTED'
+                        | 'SENT'
+                        | 'VERIFIED';
+                    /**
+                     * The status message of the transaction
+                     */
+                    status_message: string;
+                    /**
+                     * The epoch of the transaction date
+                     */
+                    submit_date: number;
+                    /**
+                     * [Optional] The transaction hash when available.
+                     */
+                    transaction_hash?: string;
+                    /**
+                     * The type of the transaction.
+                     */
+                    transaction_type: 'deposit' | 'withdrawal';
+                    /**
+                     * [Optional] The URL of the transaction on blockchain if `transaction_hash` is available.
+                     */
+                    transaction_url?: string;
+                }[];
+            };
+            subscription?: {
+                /**
+                 * A per-connection unique identifier. Can be passed to the `forget` API call to unsubscribe.
+                 */
+                id: string;
+            };
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'cashier_payments';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
+    get_account_types: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            get_account_types: 1;
+            /**
+             * [Optional] Set to landing company to get relevant account types. If not set, this defaults to current account landing company
+             */
+            company?: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            get_account_types?: {
+                /**
+                 * Trading account types that are available to create or link to
+                 */
+                trading: {
+                    /**
+                     * Details for trading account types
+                     *
+                     * This interface was referenced by `undefined`'s JSON-Schema definition
+                     * via the `patternProperty` "^(binary|dxtrade|mt5|standard|derivez)$".
+                     */
+                    [k: string]: {
+                        /**
+                         * Wallet currencies allowed for this trading account
+                         */
+                        allowed_wallet_currencies: string[];
+                        /**
+                         * Can this trading account linked to another currency after opening
+                         */
+                        linkable_to_different_currency: 0 | 1;
+                        /**
+                         * Wallet types that this trading account can be linked to.
+                         */
+                        linkable_wallet_types: string[];
+                    };
+                };
+                /**
+                 * Wallet accounts types that are available to create or link to
+                 */
+                wallet: {
+                    /**
+                     * Details for wallets account types
+                     *
+                     * This interface was referenced by `undefined`'s JSON-Schema definition
+                     * via the `patternProperty` "^(affiliate|crypto|doughflow|p2p|paymentagent|paymentagent_client|virtual)$".
+                     */
+                    [k: string]: {
+                        /**
+                         * Allowed currencies for creating accounts of this type; used or disallowed currencies are not listed.
+                         */
+                        currencies: string[];
+                    };
+                };
+            };
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'get_account_types';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
+    trading_platform_investor_password_change: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            trading_platform_investor_password_change: 1;
+            /**
+             * Trading account ID.
+             */
+            account_id: string;
+            /**
+             * New investor password. Accepts any printable ASCII character. Must be within 8-25 characters, and include numbers, lowercase and uppercase letters. Must not be the same as the user's email address.
+             */
+            new_password: string;
+            /**
+             * Old investor password for validation (non-empty string, accepts any printable ASCII character)
+             */
+            old_password: string;
+            /**
+             * Name of trading platform.
+             */
+            platform: 'mt5';
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            trading_platform_password_change?: 0 | 1;
+        };
+        /**
+         * Echo of the request made.
+         */
+        echo_req: {
+            [k: string]: unknown;
+        };
+        /**
+         * Action name of the request made.
+         */
+        msg_type: 'trading_platform_investor_password_change';
+        /**
+         * Optional field sent in request to map to response, present only when request contains `req_id`.
+         */
+        req_id?: number;
+        [k: string]: unknown;
+    };
+};
+
 type TSocketEndpoints = {
     active_symbols: {
         request: ActiveSymbolsRequest;
@@ -374,7 +1058,11 @@ type TSocketEndpoints = {
         response: LandingCompanyDetailsResponse;
     };
     landing_company: {
-        request: LandingCompanyRequest;
+        // TODO: Fix typings of this endpoint, because landing_company payload should be a string instead of LandingCompany interface
+        request: Omit<LandingCompanyRequest, 'landing_company'> & {
+            /** Client's 2-letter country code (obtained from `residence_list` call). */
+            landing_company: string;
+        };
         response: LandingCompanyResponse;
     };
     login_history: {
@@ -681,7 +1369,7 @@ type TSocketEndpoints = {
         request: ServerStatusRequest;
         response: ServerStatusResponse;
     };
-};
+} & TPrivateSocketEndpoints;
 
 export type TSocketEndpointNames = keyof TSocketEndpoints;
 
@@ -740,3 +1428,8 @@ export type TSocketAcceptableProps<T extends TSocketEndpointNames, O extends boo
     : Partial<TSocketRequestProps<T, O>> extends TSocketRequestProps<T, O>
     ? [TSocketRequestProps<T, O>?]
     : [TSocketRequestProps<T, O>];
+
+export type TSocketPaginateableEndpointNames = KeysMatching<
+    TSocketEndpoints,
+    { request: { limit?: number; offset?: number } }
+>;

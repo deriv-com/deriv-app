@@ -22,9 +22,8 @@ describe('<WalletButton />', () => {
                 <WalletButton button={button} />
             </StoreProvider>
         );
-        const button_text = screen.queryByText('Transfer');
 
-        expect(button_text).toBeInTheDocument();
+        expect(screen.getByText('Transfer')).toBeInTheDocument();
     });
 
     it('Should render desktop class', () => {

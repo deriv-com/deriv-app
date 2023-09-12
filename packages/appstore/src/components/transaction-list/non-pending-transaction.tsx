@@ -2,6 +2,7 @@ import React from 'react';
 import { AppLinkedWithWalletIcon, Text, WalletIcon } from '@deriv/components';
 import { useWalletTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
 
 type TNonPendingTransaction = {
     transaction: ReturnType<typeof useWalletTransactions>['transactions'][number];
@@ -99,7 +100,13 @@ const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
                     weight='lighter'
                     line_height={is_mobile ? 'm' : 's'}
                 >
-                    Balance: {formatAmount(balance_after)} {account_currency}
+                    <Localize
+                        i18n_default_text='Balance: {{balance}} {{currency}}'
+                        values={{
+                            balance: formatAmount(balance_after),
+                            currency: account_currency,
+                        }}
+                    />
                 </Text>
             </div>
         </div>

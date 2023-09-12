@@ -57,6 +57,12 @@ export class ConnectionManager {
             this.connections.push(instance);
             this.active_connection = instance;
             this.attachEventHandlers();
+            if (this.active_connection) {
+                this.onChangeActiveConnection(this.active_connection);
+                if (typeof this.config.wsEvent === 'function') {
+                    this.config.wsEvent('init');
+                }
+            }
         } else {
             this.connections = Object.keys(websocket_servers).map(env => {
                 return this.createConnectionInstance({

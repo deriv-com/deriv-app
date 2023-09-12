@@ -30,7 +30,7 @@ const MT5MigrationModal = observer(({ openPasswordModal }: TMT5MigrationModalPro
 
     React.useEffect(() => {
         if (has_svg_accounts_to_migrate) {
-            toggleMT5MigrationModal(true);
+            toggleMT5MigrationModal();
         }
     }, [has_svg_accounts_to_migrate, toggleMT5MigrationModal]);
 
@@ -42,7 +42,7 @@ const MT5MigrationModal = observer(({ openPasswordModal }: TMT5MigrationModalPro
     };
 
     const onConfirmMigration = () => {
-        toggleMT5MigrationModal(false);
+        toggleMT5MigrationModal();
         setAppstorePlatform(CFD_PLATFORMS.MT5);
         setJurisdictionSelectedShortcode(
             eligible_account_to_migrate === 'BVI' ? Jurisdiction.BVI : Jurisdiction.VANUATU
@@ -61,7 +61,7 @@ const MT5MigrationModal = observer(({ openPasswordModal }: TMT5MigrationModalPro
                     exit_classname='cfd-modal--custom-exit'
                     is_open={is_mt5_migration_modal_open}
                     title={modal_title}
-                    toggleModal={() => toggleMT5MigrationModal(false)}
+                    toggleModal={toggleMT5MigrationModal}
                     width='58.8rem'
                     height={getModalHeight()}
                 >

@@ -10,6 +10,7 @@ import {
     Text,
 } from '@deriv/components';
 import {
+    firstPropertyObject,
     isDesktop,
     isMobile,
     PlatformContext,
@@ -28,6 +29,7 @@ import { splitValidationResultTypes } from '../real-account-signup/helpers/utils
 import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
 import FormSubHeader from '../form-sub-header';
+import { ScrollToFieldWithError } from '../forms/scroll-to-field-with-error';
 
 const PersonalDetails = ({
     getCurrentStep,
@@ -109,7 +111,8 @@ const PersonalDetails = ({
         const { errors } = splitValidationResultTypes(validate(values));
         const error_data = { ...idv_error, ...errors };
         checkSubmitStatus(error_data);
-        return error_data;
+        // return error_data with only first error field name for highlighting only one field in a moment;
+        return firstPropertyObject(error_data);
     };
 
     const closeToolTip = () => setShouldCloseTooltip(true);
@@ -130,7 +133,6 @@ const PersonalDetails = ({
             innerRef={selected_step_ref}
             initialValues={{ ...props.value }}
             validate={handleValidate}
-            validateOnMount
             onSubmit={(values, actions) => {
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
@@ -139,12 +141,14 @@ const PersonalDetails = ({
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef, height }) => (
                         <Form
+                            noValidate
                             ref={setRef}
                             onSubmit={handleSubmit}
                             autoComplete='off'
                             onClick={closeToolTip}
                             data-testid='personal_details_form'
                         >
+                            <ScrollToFieldWithError />
                             <Div100vhContainer className='details-form' height_offset='100px' is_disabled={isDesktop()}>
                                 {!is_qualified_for_idv && (
                                     <Text as='p' size='xxxs' align='center' className='details-form__description'>
@@ -220,7 +224,7 @@ const PersonalDetails = ({
                                 <FormSubmitButton
                                     cancel_label={localize('Previous')}
                                     has_cancel
-                                    is_disabled={isSubmitDisabled(errors)}
+                                    // is_disabled={isSubmitDisabled(errors)}
                                     is_absolute={isMobile()}
                                     label={localize('Next')}
                                     onCancel={() => handleCancel(values)}

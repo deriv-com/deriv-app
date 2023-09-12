@@ -120,7 +120,7 @@ export const deepFreeze = (obj: any) => {
     return Object.freeze(obj);
 };
 
-const firstPropertyObject = (obj: any) => {
+export const firstPropertyObject = (obj: any) => {
     const keys = Object.keys(obj);
     if (!keys.length) return {};
     let first_key = keys[0];

@@ -4,11 +4,11 @@ import { useFormikContext } from 'formik';
 export function ScrollToFieldWithError() {
     const formik = useFormikContext();
     const submitting = formik?.isSubmitting;
-
+    const error_field_name = Object.keys(formik.errors)[0];
     React.useEffect(() => {
-        const el = document.querySelector('.dc-input--error');
-        (el?.parentElement ?? el)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        // (el?.parentElement ?? el)?.focus();
+        const el = document.querySelector(`input[name="${error_field_name}"]`) as HTMLInputElement;
+        el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el?.focus();
     }, [submitting]);
     return null;
 }

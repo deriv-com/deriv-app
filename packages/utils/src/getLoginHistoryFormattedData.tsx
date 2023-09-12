@@ -17,14 +17,6 @@ type TUserAgent =
       })
     | undefined;
 
-export const fields = {
-    date: 'Date and time',
-    action: 'Action',
-    browser: 'Browser',
-    ip: 'IP address',
-    status: 'Status',
-};
-
 /** Format API login_history value to a better ones */
 const getLoginHistoryFormattedData = (login_history: LoginHistory) => {
     const data: TData = [];

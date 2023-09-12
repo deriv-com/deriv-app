@@ -1,18 +1,9 @@
 import React from 'react';
 import { Table, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { TLoginHistoryItems } from 'Types';
 
-export type TLoginHistoryItems = {
-    id: number;
-    date: string;
-    action: string;
-    browser: string;
-    ip: string;
-    status: string;
-};
-
-const LoginHistoryTableRow = (props: TLoginHistoryItems) => {
-    const { id, date, action, browser, ip, status } = props;
+const LoginHistoryTableRow = ({ id, date, action, browser, ip, status }: TLoginHistoryItems) => {
     return (
         <Table.Row className='login-history__table__row' key={id}>
             <Table.Cell>

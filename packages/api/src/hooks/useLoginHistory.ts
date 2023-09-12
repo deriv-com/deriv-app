@@ -4,10 +4,10 @@ import useAuthorize from './useAuthorize';
 import useFetch from '../useFetch';
 
 /** A custom hook to retrieve a summary of login history for user.*/
-const useLoginHistory = () => {
+const useLoginHistory = (limit = 50) => {
     const { isSuccess } = useAuthorize();
     const { data, ...rest } = useFetch('login_history', {
-        payload: { limit: 50 },
+        payload: { limit },
         options: { enabled: isSuccess },
     });
 

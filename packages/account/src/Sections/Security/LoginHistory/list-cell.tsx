@@ -1,30 +1,24 @@
 import React from 'react';
-import { Text } from '@deriv/components';
 import classNames from 'classnames';
-import { Localize } from '@deriv/translations';
+import { Text } from '@deriv/components';
 
 type TListCell = {
     title: JSX.Element | string;
     text: JSX.Element | string;
     className?: string;
-    is_align_right?: boolean;
+    align?: 'left' | 'right';
 };
 
-const ListCell = ({ title, text, className, is_align_right }: TListCell) => (
+const ListCell = ({ title, text, className, align }: TListCell) => (
     <React.Fragment>
-        <Text
-            as='h3'
-            align={is_align_right ? 'right' : 'left'}
-            weight='bold'
-            className='login-history__list__row__cell--title'
-        >
-            <Localize i18n_default_text='{{title}}' values={{ title }} />
+        <Text as='h3' align={align} weight='bold' className='login-history__list__row__cell--title'>
+            {title}
         </Text>
         <Text
-            className={classNames(className, { 'login-history__list__row__cell--right': is_align_right })}
+            className={classNames(className, { 'login-history__list__row__cell--right': align === 'right' })}
             line_height='xs'
             size='xs'
-            align={is_align_right ? 'right' : 'left'}
+            align={align}
         >
             {text}
         </Text>

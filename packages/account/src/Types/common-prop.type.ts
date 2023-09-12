@@ -252,3 +252,12 @@ type TPendingAccountDetails = {
 export type TDetailsOfDerivAccount = TAccounts & TPendingAccountDetails;
 export type TDetailsOfMT5Account = DetailsOfEachMT5Loginid & TPendingAccountDetails;
 export type TDetailsOfDerivXAccount = TDetailsOfMT5Account & { account_id?: string };
+
+export type TLoginHistoryItems = {
+    id: number;
+    date: string;
+    action: string;
+    browser: string;
+    ip: string;
+    status: string;
+};

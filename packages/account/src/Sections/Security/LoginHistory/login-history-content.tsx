@@ -1,8 +1,9 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Table } from '@deriv/components';
+import { useStore } from '@deriv/stores';
 import { TLoginHistoryData } from '@deriv/api/types';
-import { fields } from '../../../../../utils/src/getLoginHistoryFormattedData';
+import LoginHistoryTableTitle from 'Constants/login-history-table-title';
 import LoginHistoryTableRow from './login-history-table-row';
 import LoginHistoryListRow from './login-history-list-row';
 
@@ -12,22 +13,13 @@ type TGetFields = {
 
 type TLoginHistoryContent = {
     data: TLoginHistoryData;
-    is_mobile: boolean;
 };
 
-const getFields = () =>
-    Object.fromEntries(
-        Object.entries(fields).map(([key, value]) => [
-            key,
-            <Localize i18n_default_text='{{value}}' values={{ value }} key={key} />,
-        ])
-    );
+const LoginHistoryContent = ({ data }: TLoginHistoryContent) => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
 
-const LoginHistoryContent = ({ data, is_mobile }: TLoginHistoryContent) => {
-    if (is_mobile) {
-        return renderList(data);
-    }
-    return renderTable(getFields(), data);
+    return is_mobile ? renderList(data) : renderTable(LoginHistoryTableTitle(), data);
 };
 
 const renderTable = (fields: TGetFields, login_history: TLoginHistoryData) => (
@@ -47,16 +39,14 @@ const renderTable = (fields: TGetFields, login_history: TLoginHistoryData) => (
     </Table>
 );
 
-const renderList = (login_history: TLoginHistoryData) => {
-    return (
-        <Table className='login-history__list'>
-            <Table.Body>
-                {login_history.map(item => {
-                    return <LoginHistoryListRow key={item.id} {...item} />;
-                })}
-            </Table.Body>
-        </Table>
-    );
-};
+const renderList = (login_history: TLoginHistoryData) => (
+    <Table className='login-history__list'>
+        <Table.Body>
+            {login_history.map(item => (
+                <LoginHistoryListRow key={item.id} {...item} />
+            ))}
+        </Table.Body>
+    </Table>
+);
 
 export default LoginHistoryContent;

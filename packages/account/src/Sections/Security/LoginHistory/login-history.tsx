@@ -2,8 +2,8 @@ import React from 'react';
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { useLoginHistory } from '@deriv/api';
-import LoginHistoryContent from './login-history-content';
 import LoadErrorMessage from 'Components/load-error-message';
+import LoginHistoryContent from './login-history-content';
 
 const LoginHistory = observer(() => {
     const {
@@ -22,7 +22,7 @@ const LoginHistory = observer(() => {
 
     return (
         <ThemedScrollbars is_bypassed={is_mobile} className='login-history'>
-            {login_history.length && <LoginHistoryContent data={login_history} is_mobile={is_mobile} />}
+            {login_history.length && <LoginHistoryContent data={login_history} />}
         </ThemedScrollbars>
     );
 });

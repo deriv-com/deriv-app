@@ -26,6 +26,7 @@ module.exports = {
     overrides: [
         {
             files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.jsx'],
+            excludedFiles: ['**/*.spec.js'],
             rules: {
                 'simple-import-sort/imports': [
                     'warn',

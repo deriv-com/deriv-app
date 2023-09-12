@@ -10,6 +10,7 @@ import {
     FormikHandlers,
     FormikState,
 } from 'formik';
+import { StatesList } from '@deriv/api-types';
 import {
     Modal,
     Autocomplete,
@@ -39,6 +40,8 @@ export type TAddressDetailFormProps = {
 };
 
 type TAddressDetails = {
+    disabled_items: string[];
+    states_list: StatesList;
     getCurrentStep?: () => number;
     onSave: (current_step: number, values: TAddressDetailFormProps) => void;
     onCancel: (current_step: number, goToPreviousStep: () => void) => void;
@@ -54,8 +57,8 @@ type TAddressDetails = {
     is_gb_residence: boolean | string;
     selected_step_ref?: React.RefObject<FormikProps<TAddressDetailFormProps>>;
     value: TAddressDetailFormProps;
-    disabled_items: string[];
     has_real_account: boolean;
+    fetchStatesList: () => Promise<unknown>;
 };
 
 type TAutoComplete = {
@@ -67,6 +70,7 @@ type TAutoComplete = {
  * Component to display address details form
  * @name AddressDetails
  * @param getCurrentStep - function to get current step
+ * @param states_list - array of states for the selected residence country
  * @param onSave - function to save form values
  * @param onCancel - function to cancel form values
  * @param goToNextStep - function to go to next step
@@ -78,7 +82,7 @@ type TAutoComplete = {
  * @param fetchStatesList - function to fetch states list
  * @param value - form values
  * @param disabled_items - array of disabled fields
- * @param as_real_account - has real account
+ * @param has_real_account - has real account
  * @returns react node
  */
 const AddressDetails = observer(

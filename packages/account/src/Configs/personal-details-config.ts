@@ -10,6 +10,7 @@ import {
 import { localize } from '@deriv/translations';
 import { shouldShowIdentityInformation } from 'Helpers/utils';
 import { TUpgradeInfo } from 'Types';
+import { PHONE_NUMBER_LENGTH } from 'Constants/personal-details';
 
 type TPersonalDetailsConfig = {
     upgrade_info?: TUpgradeInfo;
@@ -21,24 +22,22 @@ type TPersonalDetailsConfig = {
     };
     residence: string;
     account_status: GetAccountStatus;
+    is_high_risk_client_for_mt5?: boolean;
 };
 
 export const personal_details_config = ({
     residence_list,
     account_settings,
     real_account_signup_target,
+    is_high_risk_client_for_mt5,
 }: TPersonalDetailsConfig) => {
     if (!residence_list || !account_settings) {
         return {};
     }
 
-    // minimum characters required is 9 numbers (excluding +- signs or space)
-    const min_phone_number = 9;
-    const max_phone_number = 35;
-
     const default_residence = (real_account_signup_target === 'maltainvest' && account_settings?.residence) || '';
 
-    const config: TSchema = {
+    const config = {
         account_opening_reason: {
             supported_in: ['iom', 'malta', 'maltainvest'],
             default_value: account_settings.account_opening_reason ?? '',
@@ -106,11 +105,12 @@ export const personal_details_config = ({
                     (value: string) => {
                         // phone_trim uses regex that trims non-digits
                         const phone_trim = value.replace(/\D/g, '');
-                        return validLength(phone_trim, { min: min_phone_number, max: max_phone_number });
+                        // minimum characters required is 9 numbers (excluding +- signs or space)
+                        return validLength(phone_trim, { min: PHONE_NUMBER_LENGTH.MIN, max: PHONE_NUMBER_LENGTH.MAX });
                     },
                     localize('You should enter {{min}}-{{max}} numbers.', {
-                        min: min_phone_number,
-                        max: max_phone_number,
+                        min: PHONE_NUMBER_LENGTH.MIN,
+                        max: PHONE_NUMBER_LENGTH.MAX,
                     }),
                 ],
             ],
@@ -149,16 +149,12 @@ export const personal_details_config = ({
                 ],
                 [
                     (value: string, options: Record<string, unknown>, { tax_residence }: { tax_residence: string }) => {
-                        const from_list = residence_list.filter(res => res.text === tax_residence && res.tin_format);
-                        const tax_regex = from_list[0]?.tin_format?.[0];
-                        return tax_regex ? new RegExp(tax_regex).test(value) : true;
+                        const tin_format = residence_list.find(
+                            res => res.text === tax_residence && res.tin_format
+                        )?.tin_format;
+                        return tin_format ? tin_format.some(regex => new RegExp(regex).test(value)) : true;
                     },
-                    [
-                        'warn',
-                        localize(
-                            'This Tax Identification Number (TIN) is invalid. You may continue with account creation, but to facilitate future payment processes, valid tax information will be required.'
-                        ),
-                    ],
+                    localize('Tax Identification Number is not properly formatted.'),
                 ],
             ],
         },
@@ -190,6 +186,20 @@ export const personal_details_config = ({
         },
     };
 
+    // Need to check if client is high risk (only have SVG i.e. China & Russia)
+    // No need to get additinal details when client is high risk
+    if (!is_high_risk_client_for_mt5) {
+        const properties_to_update: (keyof typeof config)[] = [
+            'place_of_birth',
+            'tax_residence',
+            'tax_identification_number',
+            'account_opening_reason',
+        ];
+
+        properties_to_update.forEach(key => {
+            config[key].supported_in.push('svg');
+        });
+    }
     return config;
 };
 
@@ -201,8 +211,10 @@ const personalDetailsConfig = <T>(
         account_settings,
         account_status,
         residence,
+        is_high_risk_client_for_mt5,
     }: TPersonalDetailsConfig,
-    PersonalDetails: T
+    PersonalDetails: T,
+    is_appstore = false
 ) => {
     const config = personal_details_config({
         residence_list,
@@ -210,12 +222,13 @@ const personalDetailsConfig = <T>(
         real_account_signup_target,
         residence,
         account_status,
+        is_high_risk_client_for_mt5,
     });
     const disabled_items = account_settings.immutable_fields;
     return {
         header: {
-            active_title: localize('Complete your personal details'),
-            title: localize('Personal details'),
+            active_title: is_appstore ? localize('A few personal details') : localize('Complete your personal details'),
+            title: is_appstore ? localize('PERSONAL') : localize('Personal details'),
         },
         body: PersonalDetails,
         form_value: getDefaultFields(real_account_signup_target, config),
@@ -276,7 +289,7 @@ const transformConfig = (
     if (['malta', 'iom'].includes(real_account_signup_target) && config.tax_residence) {
         config?.tax_residence?.rules?.shift();
     }
-    // Remove IDV for non-supporting SVG countries
+    // Remove IDV for non supporting SVG countries
     if (
         !shouldShowIdentityInformation({
             account_status,

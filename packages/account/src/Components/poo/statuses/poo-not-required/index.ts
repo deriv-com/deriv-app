@@ -1,3 +1,3 @@
-import POONotRequired from './not-required';
+import POONotRequired from './poo-not-required';
 
 export default POONotRequired;

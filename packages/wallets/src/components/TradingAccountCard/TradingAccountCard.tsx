@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { Localize } from '@deriv/translations';
 import './TradingAccountCard.scss';
 
 type TProps = {
@@ -13,11 +14,17 @@ const TradingAccountCard: React.FC<TProps> = ({ description, icon, title }) => {
             {icon}
             <div className='wallets-trading-account-card__content'>
                 <div className='wallets-trading-account-card__details'>
-                    <p className='wallets-trading-account-card__details-title'>{title}</p>
-                    <p className='wallets-trading-account-card__details-description'>{description}</p>
+                    <p className='wallets-trading-account-card__details-title'>
+                        <Localize i18n_default_text={title} />
+                    </p>
+                    <p className='wallets-trading-account-card__details-description'>
+                        <Localize i18n_default_text={description} />
+                    </p>
                 </div>
                 <div className='wallets-trading-account-card__actions'>
-                    <button className='wallets-trading-account-card__action'>Open</button>
+                    <button className='wallets-trading-account-card__action'>
+                        <Localize i18n_default_text='Open' />
+                    </button>
                 </div>
             </div>
         </div>

@@ -2,23 +2,23 @@ import { renderHook } from '@testing-library/react-hooks';
 import useTransferMessageList from '../useTransferMessageList';
 import useWalletTransfer from '../useWalletTransfer';
 
-const mock_from_account = {
+const mock_from_account: Partial<ReturnType<typeof useWalletTransfer>['from_account']> = {
     account_type: 'wallet',
     balance: 0,
     currency: 'USD',
     loginid: 'CRW123',
     display_currency_code: 'USD',
     shortcode: 'svg',
-} as ReturnType<typeof useWalletTransfer>['from_account'];
+};
 
-const mock_to_account = {
+const mock_to_account: Partial<ReturnType<typeof useWalletTransfer>['to_account']> = {
     account_type: 'trading',
     balance: 0,
     currency: 'USD',
     loginid: 'CR123',
     display_currency_code: 'USD',
     shortcode: 'svg',
-} as ReturnType<typeof useWalletTransfer>['to_account'];
+};
 
 jest.mock('../useTransferMessageBetweenWalletAndTradingApp', () =>
     jest.fn(() => [

@@ -18,9 +18,10 @@ type TTransferMessageBetweenWalletAndTradingApp =
       };
 
 const tradingAccountMapper = (account_type: string, currency_type: string): string => {
-    if (account_type === 'trading')
+    if (account_type === 'trading') {
         if (currency_type === 'demo') return 'virtual';
-        else return 'dtrade';
+        return 'dtrade';
+    }
     return account_type;
 };
 
@@ -44,7 +45,7 @@ const useTransferMessageBetweenWalletAndTradingApp = (
 
     const { getRate } = useExchangeRate();
 
-    if (from_account && to_account)
+    if (from_account && to_account) {
         if (from_account.account_type === 'wallet' && to_account.account_type !== 'wallet') {
             let limits;
             if (to_account.account_type && to_account.type)
@@ -67,7 +68,7 @@ const useTransferMessageBetweenWalletAndTradingApp = (
                         type: 'success',
                     });
         }
-
+    }
     return message_list;
 };
 

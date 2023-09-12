@@ -8,8 +8,8 @@ import useWalletTransfer from './useWalletTransfer';
  */
 
 const useTransferMessageList = (
-    from_account: ReturnType<typeof useWalletTransfer>['from_account'],
-    to_account: ReturnType<typeof useWalletTransfer>['to_account']
+    from_account: Partial<ReturnType<typeof useWalletTransfer>['from_account']>,
+    to_account: Partial<ReturnType<typeof useWalletTransfer>['to_account']>
 ) => {
     // TODO: fetch the new get_limits call here and return its response new schema is available.
     const account_limits = mock_get_limits_response;

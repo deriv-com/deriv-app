@@ -4,23 +4,23 @@ import { useTransferMessageList } from '@deriv/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import WalletTransferMessages from '../wallet-transfer-messages';
 
-const mock_from_account = {
+const mock_from_account: Partial<React.ComponentProps<typeof WalletTransferMessages>['from_account']> = {
     account_type: 'wallet',
     balance: 0,
     currency: 'USD',
     loginid: 'CRW123',
     display_currency_code: 'USD',
     shortcode: 'svg',
-} as React.ComponentProps<typeof WalletTransferMessages>['from_account'];
+};
 
-const mock_to_account = {
+const mock_to_account: Partial<React.ComponentProps<typeof WalletTransferMessages>['to_account']> = {
     account_type: 'trading',
     balance: 0,
     currency: 'USD',
     loginid: 'CR123',
     display_currency_code: 'USD',
     shortcode: 'svg',
-} as React.ComponentProps<typeof WalletTransferMessages>['to_account'];
+};
 
 const mock_store = mockStore({});
 

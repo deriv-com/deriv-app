@@ -8,8 +8,8 @@ import { ArrayElement } from 'Types';
 import useTransferMessageBetweenWalletAndTradingApp from '@deriv/hooks/src/useTransferMessageBetweenWalletAndTradingApp';
 
 type TWalletTransferMessagesProps = {
-    from_account: ReturnType<typeof useWalletTransfer>['from_account'];
-    to_account: ReturnType<typeof useWalletTransfer>['to_account'];
+    from_account: Partial<ReturnType<typeof useWalletTransfer>['from_account']>;
+    to_account: Partial<ReturnType<typeof useWalletTransfer>['to_account']>;
 };
 
 type TMessageMapperParams = {

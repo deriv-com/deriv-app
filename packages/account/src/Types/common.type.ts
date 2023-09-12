@@ -3,7 +3,6 @@ import React from 'react';
 import { FormikHandlers, FormikProps, FormikValues } from 'formik';
 import { Redirect } from 'react-router-dom';
 import { Authorize, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
-import { useVerifyEmail } from '@deriv/api';
 
 export type TToken = {
     display_name: string;

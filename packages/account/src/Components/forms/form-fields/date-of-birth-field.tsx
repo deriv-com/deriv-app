@@ -1,18 +1,12 @@
 import React from 'react';
-import { Field, FieldInputProps, FormikHelpers, FormikState } from 'formik';
-import { DateOfBirthPicker, TDatePickerOnChangeEvent } from '@deriv/components';
+import { Field, FieldProps } from 'formik';
+import { DateOfBirthPicker } from '@deriv/components';
 import { toMoment } from '@deriv/shared';
 
 type TDateOfBirthFieldProps = {
     name: string;
     portal_id: string;
 } & Omit<React.ComponentProps<typeof DateOfBirthPicker>, 'onBlur' | 'onChange' | 'error'>;
-
-type TDateOfBirthFieldHelpers = {
-    field: FieldInputProps<string | moment.Moment>;
-    form: FormikHelpers<{ date_of_birth: string | moment.Moment }> &
-        FormikState<{ date_of_birth: string | moment.Moment }>;
-};
 
 /**
  * DateOfBirthField is a wrapper around DateOfBirthPicker that can be used with Formik.
@@ -24,19 +18,15 @@ type TDateOfBirthFieldHelpers = {
  */
 const DateOfBirthField = ({ name, portal_id, ...rest }: TDateOfBirthFieldProps) => (
     <Field name={name}>
-        {({
-            field: { value },
-            form: { setFieldValue, errors, touched, setFieldTouched },
-        }: TDateOfBirthFieldHelpers) => (
+        {({ field, form: { setFieldValue }, meta: { error, touched } }: FieldProps<string | moment.Moment>) => (
             <DateOfBirthPicker
                 {...rest}
-                error={touched.date_of_birth && errors.date_of_birth ? errors.date_of_birth : undefined}
+                {...field}
+                error={touched ? error : undefined}
                 name={name}
-                onBlur={() => setFieldTouched(name)}
-                onChange={({ target }: TDatePickerOnChangeEvent) =>
+                onChange={({ target }: any) =>
                     setFieldValue(name, target?.value ? toMoment(target.value).format('YYYY-MM-DD') : '', true)
                 }
-                value={value}
                 portal_id={portal_id}
             />
         )}

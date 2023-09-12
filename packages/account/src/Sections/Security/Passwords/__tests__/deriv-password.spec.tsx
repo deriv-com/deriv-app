@@ -1,15 +1,14 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import DerivPassword from '../deriv-password';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, useVerifyEmail } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { useVerifyEmail } from '@deriv/hooks';
 
 jest.mock('Assets/ic-brand-deriv-red.svg', () => () => 'BrandDerivRed');
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useVerifyEmail: jest.fn(() => ({ send: jest.fn() })),
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useVerifyEmail: jest.fn(() => ({ mutate: jest.fn() })),
 }));
 
 describe('<DerivPassword />', () => {

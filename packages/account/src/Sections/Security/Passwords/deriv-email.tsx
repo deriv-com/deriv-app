@@ -1,12 +1,14 @@
 import React from 'react';
 import { Button, Text, Input } from '@deriv/components';
-import { useVerifyEmail } from '@deriv/hooks';
+import { useVerifyEmail } from '@deriv/api';
 import { toTitleCase } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
 import UnlinkAccountModal from 'Components/unlink-account-modal';
+
+type TVerifyEmailPayload = Parameters<ReturnType<typeof useVerifyEmail>['mutate']>[0];
 
 /**
  * Display the user's email address and a button to change it.
@@ -18,21 +20,23 @@ const DerivEmail = observer(() => {
         common: { is_from_derivgo },
         client: { social_identity_provider, is_social_signup, email },
     } = useStore();
-    const { send } = useVerifyEmail('request_email');
+    const { mutate } = useVerifyEmail();
     const [is_unlink_account_modal_open, setIsUnlinkAccountModalOpen] = React.useState(false);
     const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
+
+    const payload: TVerifyEmailPayload = { verify_email: email, type: 'request_email' };
 
     const onClickChangeEmail = () => {
         if (is_social_signup) {
             setIsUnlinkAccountModalOpen(true);
         } else {
-            send(email);
+            mutate(payload);
             setIsSendEmailModalOpen(true);
         }
     };
 
     const onClickSendEmail = () => {
-        send(email);
+        mutate(payload);
         setIsUnlinkAccountModalOpen(false);
         setIsSendEmailModalOpen(true);
     };
@@ -81,7 +85,7 @@ const DerivEmail = observer(() => {
                     is_open={is_send_email_modal_open}
                     onClose={() => setIsSendEmailModalOpen(false)}
                     identifier_title={'Change_Email'}
-                    onClickSendEmail={() => send(email)}
+                    onClickSendEmail={() => mutate({ verify_email: email, type: 'request_email' })}
                     has_live_chat={true}
                     is_modal_when_mobile={true}
                 />

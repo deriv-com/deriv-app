@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, Popover, Text } from '@deriv/components';
-import { useVerifyEmail } from '@deriv/hooks';
+import { useVerifyEmail } from '@deriv/api';
 import { getBrandWebsiteName, getPlatformSettings, toTitleCase } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -18,16 +18,15 @@ const DerivPassword = observer(() => {
         traders_hub: { is_eu_user, financial_restricted_countries },
         client: { social_identity_provider, is_social_signup, email },
     } = useStore();
-    const { send: requestEmail } = useVerifyEmail('request_email');
-    const { send: resetPassword } = useVerifyEmail('reset_password');
+    const { mutate } = useVerifyEmail();
 
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
     const onClickSendEmail = () => {
         if (social_identity_provider === 'apple') {
-            requestEmail(email);
+            mutate({ verify_email: email, type: 'request_email' });
         } else {
-            resetPassword(email);
+            mutate({ verify_email: email, type: 'reset_password' });
         }
         setIsSentEmailModalOpen(true);
     };

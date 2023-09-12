@@ -46,7 +46,7 @@ const MT5MigrationBackSideContent = ({
                     <div className='mt5-migration-modal__existing-accounts-card-content'>
                         <Checkbox
                             value={is_checked}
-                            onChange={() => setIsChecked(true)}
+                            onChange={() => setIsChecked(!is_checked)}
                             label={
                                 <Text as='p' size='xs' line_height='xs'>
                                     <Localize
@@ -67,7 +67,7 @@ const MT5MigrationBackSideContent = ({
                     <Localize i18n_default_text='Back' />
                 </Button>
 
-                <Button type='button' large primary onClick={onConfirmMigration}>
+                <Button type='button' large primary onClick={onConfirmMigration} disabled={!is_checked}>
                     <Localize i18n_default_text='Next' />
                 </Button>
             </Modal.Footer>

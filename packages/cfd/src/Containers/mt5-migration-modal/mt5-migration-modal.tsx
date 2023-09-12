@@ -74,24 +74,6 @@ const MT5MigrationModal = observer(({ openPasswordModal }: TMT5MigrationModalPro
                             onConfirmMigration={onConfirmMigration}
                         />
                     )}
-
-                    {/* <Modal.Footer has_separator>
-                        {show_modal_front_side ? (
-                            <Button type='button' has_effect large primary onClick={() => setShowModalFrontSide(false)}>
-                                <Localize i18n_default_text='Next' />
-                            </Button>
-                        ) : (
-                            <React.Fragment>
-                                <Button type='button' large secondary onClick={() => setShowModalFrontSide(true)}>
-                                    <Localize i18n_default_text='Back' />
-                                </Button>
-
-                                <Button type='button' large primary onClick={onConfirmMigration}>
-                                    <Localize i18n_default_text='Next' />
-                                </Button>
-                            </React.Fragment>
-                        )}
-                    </Modal.Footer> */}
                 </Modal>
             </React.Suspense>
         </div>

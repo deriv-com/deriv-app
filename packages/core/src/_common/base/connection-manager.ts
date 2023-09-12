@@ -176,7 +176,7 @@ export class ConnectionManager {
     getActiveConnection() {
         const endpoint_url = window.localStorage.getItem('config.server_url');
         return this.connections.find(c => {
-            return c.id === endpoint_url ? 'development' : getActiveLoginIDType();
+            return c.id === (endpoint_url ? 'development' : getActiveLoginIDType());
         });
     }
 
@@ -188,6 +188,7 @@ export class ConnectionManager {
      */
     handleLoginIDChange() {
         if (window.localStorage.getItem('config.server_url')) return;
+        this.detachEventHandlers();
         const matching_connection = this.getActiveConnection();
         if (matching_connection && this.active_connection?.id !== matching_connection.id) {
             if (typeof this.config.wsEvent === 'function') {

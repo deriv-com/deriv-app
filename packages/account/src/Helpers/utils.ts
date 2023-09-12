@@ -1,8 +1,10 @@
+import React from 'react';
 import { filterObjProperties, toMoment, validLength, validName, getIDVNotApplicableOption } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
 import { FormikValues } from 'formik';
-import { getIDVDocuments } from '../Constants/idv-document-config';
+import { getIDVDocumentConfig } from '../Constants/idv-document-config';
+import { TServerError } from '../Types';
 
 export const documentAdditionalError = (document_additional: string, document_additional_format: string) => {
     let error_message = null;
@@ -59,7 +61,7 @@ export const getDocumentData = (country_code: string, document_type: string) => 
         example_format: '',
         sample_image: '',
     };
-    const IDV_DOCUMENT_DATA: any = getIDVDocuments(country_code);
+    const IDV_DOCUMENT_DATA: any = getIDVDocumentConfig(country_code);
     return IDV_DOCUMENT_DATA[document_type] ?? DEFAULT_CONFIG;
 };
 
@@ -82,7 +84,7 @@ export const getRegex = (target_regex: string) => {
  * @param {string} selected_doc  - Could be one of the following: 'drivers_license', 'ssnit', 'id_card', 'passport'
  * @returns {string} - Returns the placeholder text for the document number input
  */
-export const generatePlaceholderText = (selected_doc: string) => {
+export const generatePlaceholderText = (selected_doc: string): string => {
     switch (selected_doc) {
         case 'drivers_license':
             return localize('Enter Driver License Reference number');
@@ -164,3 +166,6 @@ export const isDocumentNumberValid = (document_number: string, document_type: Fo
 };
 
 export const shouldHideHelperImage = (document_id: string) => document_id === IDV_NOT_APPLICABLE_OPTION.id;
+
+export const isServerError = (error: unknown): error is TServerError =>
+    typeof error === 'object' && error !== null && 'code' in error;

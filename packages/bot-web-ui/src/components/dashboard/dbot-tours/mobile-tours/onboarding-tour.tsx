@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { ProgressBarTracker, Text } from '@deriv/components';
+import { Icon, ProgressBarTracker, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -42,6 +42,7 @@ const OnboardingTour = observer(() => {
         <div
             className={classNames('dbot-slider', {
                 'dbot-slider--active': tour_step === 1,
+                'dbot-slider--tour-position': tour_step !== 1,
             })}
             data-testid='onboarding-tour-mobile'
         >
@@ -54,16 +55,9 @@ const OnboardingTour = observer(() => {
                         size='xxs'
                         data-testid='dbot-onboard-slider__navbar'
                     >{`${tour_step_key - 1}/7`}</Text>
-                    <Text
-                        color='prominent'
-                        weight='--text-less-prominent'
-                        line_height='s'
-                        size='xxs'
-                        onClick={onCloseTour}
-                        data-testid='exit-onboard-tour'
-                    >
-                        {localize('Exit Tour')}
-                    </Text>
+                    <span onClick={onCloseTour}>
+                        <Icon icon='IcCross' className='db-contract-card__result-icon' color='secondary' />
+                    </span>
                 </div>
             )}
             {header && (

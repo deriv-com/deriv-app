@@ -1,10 +1,10 @@
 import React from 'react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { WS, getErrorMessages, validPassword, Jurisdiction } from '@deriv/shared';
+import { WS, validPassword, Jurisdiction } from '@deriv/shared';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import CFDPasswordModal from '../cfd-password-modal';
-import CFDProviders from '../../cfd-providers';
+import CFDProviders from '../../../cfd-providers';
 import { mockStore } from '@deriv/stores';
 import { APIProvider } from '@deriv/api';
 
@@ -43,7 +43,7 @@ describe('<CFDPasswordModal/>', () => {
     const history = createBrowserHistory();
     let modal_root_el;
 
-    let mockRootStore = {
+    const mockRootStore = {
         client: {
             email: '',
             account_status: {},
@@ -83,7 +83,7 @@ describe('<CFDPasswordModal/>', () => {
 
     const mock_props = {
         form_error: '',
-        history: history,
+        history,
         platform: 'mt5',
     };
 

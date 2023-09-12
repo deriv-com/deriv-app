@@ -1,3 +1,3 @@
-import POORejected from './rejected';
+import POORejected from './poo-rejected';
 
 export default POORejected;

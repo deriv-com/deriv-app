@@ -1,5 +1,4 @@
 /* eslint-disable import/order */
-
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen, waitFor } from '@testing-library/react';

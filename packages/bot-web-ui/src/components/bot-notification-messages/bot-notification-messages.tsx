@@ -1,6 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { observer, useStore } from '@deriv/stores';
+
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 

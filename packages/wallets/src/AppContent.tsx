@@ -1,6 +1,8 @@
-import React from 'react';
-import { DesktopWalletsList } from './components';
 // import WalletsCarousel from './components/WalletCarousel';
+import React from 'react';
+
+import { DesktopWalletsList } from './components';
+
 import './AppContent.scss';
 
 const AppContent: React.FC = () => {

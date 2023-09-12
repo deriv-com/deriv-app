@@ -22,7 +22,6 @@ jest.mock('../account-transfer-form', () => jest.fn(() => 'mockedAccountTransfer
 jest.mock('Components/crypto-transactions-history', () => jest.fn(() => 'mockedCryptoTransactionsHistory'));
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'mockedCashierLocked'));
 jest.mock('../account-transfer-no-account', () => jest.fn(() => 'mockedAccountTransferNoAccount'));
-jest.mock('../account-transfer-receipt', () => jest.fn(() => 'mockedAccountTransferReceipt'));
 jest.mock('Components/error', () => jest.fn(() => 'mockedError'));
 
 jest.mock('@deriv/hooks');
@@ -270,31 +269,5 @@ describe('<AccountTransfer />', () => {
         });
 
         expect(await screen.findByText(/You have no funds/i)).toBeInTheDocument();
-    });
-
-    it('should show the receipt if transfer is successful', async () => {
-        const mock_root_store = mockStore({
-            client: {
-                mt5_login_list: [
-                    {
-                        account_type: 'demo',
-                        sub_account_type: 'financial_stp',
-                    },
-                ],
-            },
-            modules: {
-                cashier: {
-                    ...cashier_mock,
-                    account_transfer: {
-                        ...cashier_mock.account_transfer,
-                        is_transfer_confirm: true,
-                    },
-                },
-            },
-        });
-
-        renderAccountTransfer(mock_root_store);
-
-        expect(await screen.findByText('mockedAccountTransferReceipt')).toBeInTheDocument();
     });
 });

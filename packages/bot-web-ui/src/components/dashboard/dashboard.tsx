@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
+import { updateWorkspaceName } from '@deriv/bot-skeleton';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
@@ -12,7 +13,6 @@ import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import RunPanel from '../run-panel';
 import RunStrategy from './dashboard-component/run-strategy';
-import BotNotification from './bot-notification';
 import DashboardComponent from './dashboard-component';
 import {
     DBOT_ONBOARDING,
@@ -23,6 +23,7 @@ import {
     tour_type,
 } from './joyride-config';
 import ReactJoyrideWrapper from './react-joyride-wrapper';
+import StrategyNotification from './strategy-notification';
 import TourSlider from './tour-slider';
 import TourTriggrerDialog from './tour-trigger-dialog';
 import Tutorial from './tutorial-tab';
@@ -31,7 +32,6 @@ const Dashboard = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useDBotStore();
     const {
         active_tab,
-        has_file_loaded,
         has_tour_started,
         setTourActive,
         has_started_onboarding_tour,
@@ -45,13 +45,13 @@ const Dashboard = observer(() => {
         setBotBuilderTokenCheck,
         setOnBoardingTokenCheck,
         setWebSocketState,
+        onCloseTour,
     } = dashboard;
-    const { onEntered } = load_modal;
+    const { onEntered, dashboard_strategies } = load_modal;
     const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
         run_panel;
     const { is_strategy_modal_open } = quick_strategy;
     const { clear } = summary_card;
-
     const { DASHBOARD, BOT_BUILDER, CHART, TUTORIAL } = DBOT_TABS;
     const is_tour_complete = React.useRef(true);
     let bot_tour_token: string | number = '';
@@ -63,15 +63,15 @@ const Dashboard = observer(() => {
     const { ui } = useStore();
     const { url_hashed_values } = ui;
 
-    let tab_value = active_tab;
+    let tab_value: number | string = active_tab;
     const GetHashedValue = (tab: number) => {
         tab_value = url_hashed_values?.split('#')[1];
         if (tab_value === 'dashboard') return DASHBOARD;
         if (tab_value === 'bot_builder') return BOT_BUILDER;
         if (tab_value === 'chart') return CHART;
         if (tab_value === 'tutorial') return TUTORIAL;
-        if (isNaN(tab_value) || isNaN(tab)) return active_tab;
-        if (tab_value > 4 || tab > 4) return active_tab;
+        if (isNaN(Number(tab_value)) || isNaN(tab)) return active_tab;
+        if (Number(tab_value) > 4 || tab > 4) return active_tab;
         return tab_value;
     };
     const active_hash_tab = GetHashedValue(active_tab);
@@ -125,16 +125,13 @@ const Dashboard = observer(() => {
     React.useEffect(() => {
         if (active_tab === BOT_BUILDER) {
             if (is_drawer_open) {
-                initTrashCan(400);
+                initTrashCan(400, -748);
             } else {
                 initTrashCan(20);
             }
             setTimeout(() => {
                 window.dispatchEvent(new Event('resize')); // make the trash can work again after resize
             }, 500);
-        }
-        if (active_tab === DASHBOARD && has_file_loaded) {
-            onEntered();
         }
         if (active_tab === DASHBOARD) {
             setTourType('onboard_tour');
@@ -154,10 +151,31 @@ const Dashboard = observer(() => {
         setTourStatus(tour_status);
     }, [active_tab, is_drawer_open, has_started_onboarding_tour, tour_status_ended, is_tour_dialog_visible]);
 
+    useEffect(() => {
+        let timer: ReturnType<typeof setTimeout>;
+        if (dashboard_strategies.length > 0) {
+            // Needed to pass this to the Callback Queue as on tab changes
+            // document title getting override by 'Bot | Deriv' only
+            timer = setTimeout(() => {
+                updateWorkspaceName();
+            });
+        }
+        return () => {
+            if (timer) clearTimeout(timer);
+        };
+    }, [dashboard_strategies, active_tab]);
+
     const botStorageSetting = () => {
         tour_status = getTourSettings('bot_builder_status');
-        if (tour_status_ended.key === 'finished' && !is_mobile) {
+        const joyride_status_finished = tour_status_ended.key === 'finished';
+        if (joyride_status_finished && !is_mobile) {
+            if (tour_type.key === 'onboard_tour') {
+                onCloseTour();
+                tour_status_ended.key = '';
+                return joyride_status_finished ?? null;
+            }
             setTourDialogVisibility(true);
+
             setHasTourEnded(true);
             is_tour_complete.current = false;
             window.removeEventListener('storage', botStorageSetting);
@@ -167,6 +185,7 @@ const Dashboard = observer(() => {
         if (active_tab === 1 && !storage.bot_builder_token && !has_started_onboarding_tour) {
             setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
         }
+        return botStorageSetting;
     };
     if (!bot_tour_token && !is_mobile && !has_started_onboarding_tour) {
         window.addEventListener('storage', botStorageSetting);
@@ -283,7 +302,7 @@ const Dashboard = observer(() => {
             >
                 {dialog_options.message}
             </Dialog>
-            <BotNotification />
+            <StrategyNotification />
         </React.Fragment>
     );
 });

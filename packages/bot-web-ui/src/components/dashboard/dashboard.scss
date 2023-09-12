@@ -327,6 +327,12 @@
     }
 }
 
+#react-joyride-step-6 {
+    .onboard__label {
+        margin-bottom: 1.6rem;
+    }
+}
+
 .onboard {
     &__header {
         display: flex;
@@ -336,6 +342,13 @@
 
         &--close {
             cursor: pointer;
+        }
+    }
+
+    &__steps {
+        @media (max-height: 730px) {
+            max-height: 40vh;
+            overflow-y: auto;
         }
     }
 
@@ -363,6 +376,9 @@
 
     &__content {
         text-align: left;
+        p {
+            font-size: 1.4rem;
+        }
 
         &__block {
             &:first-child {
@@ -373,6 +389,11 @@
 }
 
 .joyride-content {
+    font-size: 1.4rem;
+    @media (max-height: 790px) {
+        max-height: 46vh;
+        overflow-y: auto;
+    }
     &__left {
         text-align: left;
 
@@ -395,7 +416,7 @@
         }
     }
 
-    img {
+    video {
         width: 100%;
         margin-top: 1rem;
     }
@@ -480,6 +501,11 @@
     }
 
     img {
+        height: 100%;
+    }
+
+    video {
+        width: 65%;
         height: 100%;
     }
 
@@ -684,10 +710,18 @@
     position: fixed;
     z-index: 1;
     left: 0;
+    right: 0;
     bottom: 7rem;
 
-    .dc-toast__message {
-        background: var(--text-general);
-        color: var(--general-main-1);
+    .dc-toast {
+        width: 100%;
+        &__message {
+            background: var(--text-prominent);
+            color: var(--general-main-1);
+        }
+    }
+
+    @include mobile {
+        bottom: 10rem;
     }
 }

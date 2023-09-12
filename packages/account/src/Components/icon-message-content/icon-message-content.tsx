@@ -25,7 +25,7 @@ const IconMessageContent = ({
         className={classNames('account-management__message-wrapper', {
             'account-management__message-wrapper-full-width': full_width,
         })}
-        is_disabled={isDesktop() || is_disabled_for_mobile}
+        is_disabled={isDesktop() || is_disabled_for_mobile} // isDesktop() needs to be replaced with is_desktop from ui store once available in master branch.
         height_offset='110px'
     >
         <div

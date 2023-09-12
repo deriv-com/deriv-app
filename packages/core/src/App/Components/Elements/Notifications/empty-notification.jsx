@@ -23,7 +23,7 @@ const EmptyNotification = () => (
                 >
                     {localize('No notifications')}
                 </Text>
-                <Text size='xxs' color='less-prominent'>
+                <Text size='xxs' color='less-prominent' align='center'>
                     {localize('You have yet to receive any notifications')}
                 </Text>
             </div>

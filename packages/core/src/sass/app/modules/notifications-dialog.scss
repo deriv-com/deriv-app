@@ -157,7 +157,9 @@
             justify-content: center;
         }
         &__content {
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         &__icon {
             width: 64px;

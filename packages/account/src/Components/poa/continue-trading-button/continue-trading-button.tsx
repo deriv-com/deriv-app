@@ -9,7 +9,7 @@ type TContinueTradingButtonProps = { className?: string };
  * Renders a button that redirects to the trading platform
  * @name ContinueTradingButton
  * @param className - Styles to be applied to the button
- * @returns  JXS Element
+ * @returns React Element
  */
 export const ContinueTradingButton = ({ className }: TContinueTradingButtonProps) => (
     <ButtonLink className={classNames('account-management__button', className)} to='/'>

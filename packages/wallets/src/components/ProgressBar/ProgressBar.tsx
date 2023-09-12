@@ -14,12 +14,12 @@ const ProgressBar: React.FC<TProps> = ({ is_transition = 'true', active_index, i
             {indexes.map(idx => {
                 const is_active = idx === active_index;
 
-                const barClassName = is_active ? 'wallets-progress-bar-active' : 'wallets-progress-bar-inactive';
+                const bar_classname = is_active ? 'wallets-progress-bar-active' : 'wallets-progress-bar-inactive';
                 return (
                     <div
                         key={`progress-bar__${idx}`}
                         onClick={() => setActiveIndex(idx)}
-                        className={`${barClassName} ${is_transition ? 'wallets-progress-bar-transition' : ''}`}
+                        className={`${bar_classname} ${is_transition ? 'wallets-progress-bar-transition' : ''}`}
                     />
                 );
             })}

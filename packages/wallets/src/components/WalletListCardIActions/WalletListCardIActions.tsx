@@ -44,7 +44,7 @@ type TProps = {
     is_desktop_wallet?: boolean;
 };
 
-const WalletListCardIActions: React.FC<TProps> = ({ account, is_desktop_wallet = 'true' }) => {
+const WalletListCardIActions: React.FC<TProps> = ({ account, is_desktop_wallet = true }) => {
     const { data: active_wallet } = useActiveWalletAccount();
     const is_demo = !!active_wallet?.is_virtual;
 

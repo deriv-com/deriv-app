@@ -43,5 +43,21 @@
 
     &__payment-method-field {
         margin: 3.8rem 0;
+
+        &--text-area {
+            height: auto;
+
+            & .dc-input {
+                &__container {
+                    height: 9.6rem;
+                }
+
+                &__field {
+                    height: 100% !important;
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+            }
+        }
     }
 }

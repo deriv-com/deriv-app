@@ -7,6 +7,8 @@ const useMT5SVGEligibleToMigrate = () => {
     const svg_accounts_to_migrate = mt5_login_list.filter(
         account => account.landing_company_short === 'svg' && !!account.eligible_to_migrate
     );
+
+    const has_svg_accounts_to_migrate = !!svg_accounts_to_migrate.length;
     const no_of_svg_accounts_to_migrate = svg_accounts_to_migrate.length;
 
     const is_eligible_for_svg_to_vanuatu_migration = !!svg_accounts_to_migrate.filter(
@@ -46,7 +48,7 @@ const useMT5SVGEligibleToMigrate = () => {
     return {
         svg_accounts_to_migrate,
         no_of_svg_accounts_to_migrate,
-
+        has_svg_accounts_to_migrate,
         eligible_account_to_migrate,
         eligible_svg_to_bvi_derived_accounts,
         eligible_svg_to_bvi_financial_accounts,

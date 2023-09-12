@@ -21,17 +21,18 @@ const MT5MigrationModal = observer(({ openPasswordModal }: TMT5MigrationModalPro
     const { setAppstorePlatform } = common;
     const { setJurisdictionSelectedShortcode } = useCfdStore();
 
-    const { svg_accounts_to_migrate, no_of_svg_accounts_to_migrate, eligible_account_to_migrate } =
+    const { no_of_svg_accounts_to_migrate, eligible_account_to_migrate, has_svg_accounts_to_migrate } =
         useMT5SVGEligibleToMigrate();
+
     const [show_modal_front_side, setShowModalFrontSide] = React.useState(true);
 
     const modal_title = <Localize i18n_default_text='Enhancing your trading experience' />;
 
     React.useEffect(() => {
-        if (svg_accounts_to_migrate.length && !is_mt5_migration_modal_open) {
+        if (has_svg_accounts_to_migrate) {
             toggleMT5MigrationModal(true);
         }
-    }, []);
+    }, [has_svg_accounts_to_migrate, toggleMT5MigrationModal]);
 
     const getModalHeight = () => {
         if (show_modal_front_side) {

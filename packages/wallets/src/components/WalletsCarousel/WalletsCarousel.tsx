@@ -1,6 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
-import AccountsList from '../AccountsList';
+import { AccountsList } from '../AccountsList';
 import { WalletsCarouselContent } from '../WalletsCarouselContent';
 
 const WalletsCarousel: React.FC = () => {

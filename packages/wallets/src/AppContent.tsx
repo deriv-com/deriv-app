@@ -1,12 +1,11 @@
 import React from 'react';
+import useDevice from './hooks/useDevice';
 import { DesktopWalletsList, WalletsCarousel } from './components';
 import './AppContent.scss';
 
 const AppContent: React.FC = () => {
-    const mobile_width = 768;
+    const { is_mobile } = useDevice();
 
-    //Temporary solution until we have a proper mobile view
-    const is_mobile = window.innerWidth <= mobile_width;
     if (is_mobile) return <WalletsCarousel />;
 
     return (

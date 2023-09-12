@@ -313,6 +313,7 @@ export default class UIStore extends BaseStore {
             init: action.bound,
             installWithDeferredPrompt: action.bound,
             is_account_switcher_disabled: computed,
+            is_desktop: computed,
             is_mobile: computed,
             is_tablet: computed,
             is_warning_scam_message_modal_visible: computed,
@@ -489,6 +490,10 @@ export default class UIStore extends BaseStore {
 
     showCloseUKAccountPopup(is_open) {
         this.is_close_uk_account_modal_visible = is_open;
+    }
+
+    get is_desktop() {
+        return this.screen_width > MAX_MOBILE_WIDTH;
     }
 
     get is_mobile() {

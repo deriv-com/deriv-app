@@ -295,7 +295,7 @@ const AccountLimits = observer(
                                                                                 color='colored-background'
                                                                                 size={isMobile() ? 'xxxs' : 'xxs'}
                                                                             >
-                                                                                {localize('Verify')}
+                                                                                <Localize i18n_default_text='Verify' />
                                                                             </Text>
                                                                         </ButtonLink>
                                                                     </React.Fragment>

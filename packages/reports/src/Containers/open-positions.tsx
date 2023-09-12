@@ -138,7 +138,6 @@ type TOpenPositions = Pick<
     currency: string;
     is_accumulator: boolean;
     is_eu: boolean;
-    is_virtual: boolean;
     NotificationMessages: () => JSX.Element;
     server_time: moment.Moment;
     addToast: (obj: TAddToastProps) => void;
@@ -467,7 +466,6 @@ const OpenPositions = ({
     is_eu,
     is_loading,
     is_multiplier,
-    is_virtual,
     NotificationMessages,
     onClickCancel,
     onClickSell,
@@ -490,7 +488,7 @@ const OpenPositions = ({
     const [accumulator_rate, setAccumulatorRate] = React.useState(accumulator_rates[0]);
     const is_accumulator_selected = contract_type_value === contract_types[2].text;
     const is_multiplier_selected = contract_type_value === contract_types[1].text;
-    const show_accu_in_dropdown = !is_eu && is_virtual;
+    const show_accu_in_dropdown = !is_eu;
     const contract_types_list = contract_types
         .filter(contract_type => contract_type.text !== localize('Accumulators') || show_accu_in_dropdown)
         .map(({ text }) => ({ text, value: text }));
@@ -698,7 +696,6 @@ export default withRouter(
         active_positions: portfolio.active_positions,
         currency: client.currency,
         is_eu: client.is_eu,
-        is_virtual: client.is_virtual,
         error: portfolio.error,
         getPositionById: portfolio.getPositionById,
         is_accumulator: portfolio.is_accumulator,

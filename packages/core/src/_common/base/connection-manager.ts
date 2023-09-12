@@ -8,6 +8,7 @@ import {
     cloneObject,
     getPropertyValue,
     getActiveLoginIDType,
+    getActiveLoginID,
 } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import { TClientStore } from '@deriv/stores/types';
@@ -31,6 +32,7 @@ export class ConnectionManager {
     invalid_app_id: number | string;
     onChangeActiveConnection: (active_connection: ConnectionInstance) => void;
     config: ConnectionConfig;
+    mode: 'loginid' | 'default' = 'loginid';
 
     /**
      * Constructs a new ConnectionManager instance.
@@ -64,13 +66,37 @@ export class ConnectionManager {
                 }
             }
         } else {
-            this.connections = Object.keys(websocket_servers).map(env => {
-                return this.createConnectionInstance({
-                    id: env,
-                    url: websocket_servers[env as keyof typeof websocket_servers],
-                    language,
+            if (this.mode === 'default') {
+                this.connections = Object.keys(websocket_servers).map(env => {
+                    return this.createConnectionInstance({
+                        id: env,
+                        url: websocket_servers[env as keyof typeof websocket_servers],
+                        language,
+                    });
                 });
-            });
+            } else {
+                const account_list = localStorage.getItem('client.accounts');
+                if (account_list) {
+                    const parsed_account_list = JSON.parse(account_list);
+                    const account_ids = Object.keys(parsed_account_list as string[]);
+                    this.connections = account_ids.map(id => {
+                        const instance = this.createConnectionInstance({
+                            id,
+                            url: websocket_servers[
+                                (/VRTC|VRW/.test(id) ? 'demo' : 'real') as keyof typeof websocket_servers
+                            ],
+                            language,
+                        });
+
+                        const token = parsed_account_list[id]?.token;
+                        if (token) {
+                            instance.deriv_api.authorize(token);
+                        }
+                        return instance;
+                    });
+                }
+            }
+
             const matching_connection = this.getActiveConnection();
             this.active_connection = matching_connection;
             this.attachEventHandlers();
@@ -181,6 +207,9 @@ export class ConnectionManager {
      */
     getActiveConnection() {
         const endpoint_url = window.localStorage.getItem('config.server_url');
+        if (this.mode === 'loginid' && !endpoint_url) {
+            return this.connections.find(c => c.id === getActiveLoginID());
+        }
         return this.connections.find(c => {
             return c.id === (endpoint_url ? 'development' : getActiveLoginIDType());
         });

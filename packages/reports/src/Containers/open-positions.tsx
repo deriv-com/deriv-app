@@ -463,7 +463,7 @@ const OpenPositions = ({
     error,
     getPositionById,
     is_accumulator,
-    is_eu,
+    is_eu: show_accu_in_dropdown,
     is_loading,
     is_multiplier,
     NotificationMessages,
@@ -488,7 +488,6 @@ const OpenPositions = ({
     const [accumulator_rate, setAccumulatorRate] = React.useState(accumulator_rates[0]);
     const is_accumulator_selected = contract_type_value === contract_types[2].text;
     const is_multiplier_selected = contract_type_value === contract_types[1].text;
-    const show_accu_in_dropdown = !is_eu;
     const contract_types_list = contract_types
         .filter(contract_type => contract_type.text !== localize('Accumulators') || show_accu_in_dropdown)
         .map(({ text }) => ({ text, value: text }));

@@ -19,14 +19,12 @@ module.exports = {
     },
     plugins: ['simple-import-sort'],
     rules: {
-        'simple-import-sort/imports': 'error',
-        'simple-import-sort/exports': 'error',
-        'import/order': 'error',
+        'simple-import-sort/imports': 'warn',
+        'simple-import-sort/exports': 'warn',
     },
     overrides: [
         {
             files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.jsx'],
-            excludedFiles: ['**/*.spec.js'],
             rules: {
                 'simple-import-sort/imports': [
                     'warn',

@@ -8,7 +8,7 @@ type TProps = {
     setActiveIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const ProgressBar: React.FC<TProps> = ({ is_transition, active_index, indexes, setActiveIndex }) => {
+const ProgressBar: React.FC<TProps> = ({ is_transition = 'true', active_index, indexes, setActiveIndex }) => {
     return (
         <div className='wallets-progress-bar'>
             {indexes.map(idx => {

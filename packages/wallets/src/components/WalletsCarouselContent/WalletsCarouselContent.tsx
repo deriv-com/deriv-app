@@ -35,7 +35,7 @@ const WalletsCarouselContent: React.FC = () => {
                     active_index={active_index + 1}
                     indexes={amount_of_steps}
                     setActiveIndex={setActiveIndex}
-                    is_transition={true}
+                    is_transition
                 />
             </div>
             <WalletListCardIActions is_desktop_wallet={false} />

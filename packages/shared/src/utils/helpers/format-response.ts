@@ -3,7 +3,7 @@ import { getUnsupportedContracts } from '../constants';
 import { getSymbolDisplayName, TActiveSymbols } from './active-symbols';
 import { getMarketInformation } from './market-underlying';
 import { TContractInfo } from '../contract';
-import { idv_error_statuses } from '../constants/error';
+import { idv_error_statuses } from '../constants/idv-failure-codes';
 
 type TIsUnSupportedContract = {
     contract_type?: string;

@@ -53,7 +53,7 @@ const DepositCryptoDisclaimers: React.FC = observer(() => {
             </InlineMessage>
             <Text align='center' size={is_mobile ? 'xxxs' : 'xxs'}>
                 <Localize
-                    i18n_default_text='<0>Note:</0> You’ll receive an email when your deposit start being processed.'
+                    i18n_default_text='<0>Note:</0> You’ll receive an email when your deposit starts being processed.'
                     components={[<Text key={0} size={is_mobile ? 'xxxs' : 'xxs'} weight='bold' />]}
                 />
             </Text>

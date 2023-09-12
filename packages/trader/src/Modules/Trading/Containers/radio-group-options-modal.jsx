@@ -3,7 +3,7 @@ import { Div100vhContainer, Modal, usePreventIOSZoom } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getGrowthRatePercentage, getTickSizeBarrierPercentage, isEmptyObject } from '@deriv/shared';
-import MultiplierOptions from 'Modules/Trading/Containers/Multiplier/multiplier-options.jsx';
+import MultiplierOptions from 'Modules/Trading/Containers/Multiplier/multiplier-options';
 import RadioGroupWithInfoMobile from 'Modules/Trading/Components/Form/RadioGroupWithInfoMobile';
 import { observer, useStore } from '@deriv/stores';
 

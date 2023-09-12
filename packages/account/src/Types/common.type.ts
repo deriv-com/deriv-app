@@ -1,6 +1,7 @@
 /** Add types that are shared between components */
-import { FormikHandlers, FormikProps } from 'formik';
-import { Authorize, ResidenceList } from '@deriv/api-types';
+import React from 'react';
+import { FormikHandlers, FormikProps, FormikValues } from 'formik';
+import { Authorize, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
 
 export type TToken = {
@@ -128,15 +129,17 @@ export type TPOIStatus = {
     is_manual_upload?: boolean;
 };
 
-export type TInputFieldValues = Record<string, string>;
-
 export type TPersonalDetailsForm = {
     first_name: string;
     last_name: string;
     date_of_birth: string;
 };
 
-export type TDocument = {
+export type TInputFieldValues = Record<string, string>;
+
+export type TIDVVerificationResponse = IdentityVerificationAddDocumentResponse & { error: { message: string } };
+
+export type TDocumentList = {
     id: string;
     text: string;
     value?: string;
@@ -146,10 +149,10 @@ export type TDocument = {
         display_name?: string;
         example_format?: string;
     };
-};
+}[];
 
-export type TFormProps = {
-    document_type: TDocument;
+type TFormProps = {
+    document_type: TDocumentList[0];
     document_number: string;
     document_additional?: string;
     error_message?: string;
@@ -170,8 +173,15 @@ export type TVerificationStatus = Readonly<
 >;
 
 export type TIDVFormValues = {
-    document_type: TDocument;
+    document_type: TDocumentList[0];
     document_number: string;
     document_additional?: string;
     error_message?: string;
+};
+
+export type TServerError = {
+    code: string;
+    message: string;
+    details?: { [key: string]: string };
+    fields?: string[];
 };

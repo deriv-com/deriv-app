@@ -22,10 +22,7 @@ import {
 type TIdvDocSubmitOnSignup = {
     citizen_data: FormikValues;
     onPrevious: (values: FormikValues) => void;
-    onNext: (
-        values: FormikValues,
-        action: FormikHelpers<{ document_type: FormikValues; document_number: FormikValues }>
-    ) => void;
+    onNext: (values: FormikValues, action: FormikHelpers<FormikValues>) => void;
     value: FormikValues;
     account_settings: GetSettings;
     getChangeableFields: () => string[];

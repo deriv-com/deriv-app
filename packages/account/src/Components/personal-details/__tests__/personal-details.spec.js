@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
-import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
 import PersonalDetails from '../personal-details';
 import { shouldShowIdentityInformation, isDocumentTypeValid, isAdditionalDocumentValid } from 'Helpers/utils';
@@ -402,6 +402,8 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText('First name')).toBeInTheDocument();
         expect(screen.getByText('Last name')).toBeInTheDocument();
         expect(screen.getByText('Date of birth')).toBeInTheDocument();
+        expect(screen.getByText('Phone number*')).toBeInTheDocument();
+        expect(screen.getByLabelText('Phone number*')).toBeInTheDocument();
 
         runCommonFormfieldsTests(false);
     });

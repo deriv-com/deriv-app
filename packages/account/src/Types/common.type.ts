@@ -1,6 +1,6 @@
 /** Add types that are shared between components */
 import React from 'react';
-import { FormikHandlers, FormikProps, FormikValues } from 'formik';
+import { FormikHandlers, FormikProps } from 'formik';
 import { Authorize, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
 

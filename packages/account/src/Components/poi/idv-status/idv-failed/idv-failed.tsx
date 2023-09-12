@@ -330,8 +330,6 @@ const IdvFailed = ({
                         </Text>
                         <HintBox
                             icon='IcAlertDanger'
-                            icon_height={16}
-                            icon_width={16}
                             message={
                                 <Text as='p' size={isMobile() ? 'xxs' : 'xs'} data-testid={mismatch_status}>
                                     {idv_failure?.failure_message}

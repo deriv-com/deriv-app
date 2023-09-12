@@ -159,8 +159,6 @@ const IdvDocumentSubmit = ({
                         <div className='account-form__poi-confirm-example--generic-error-msg'>
                             <HintBox
                                 icon='IcAlertDanger'
-                                icon_height={16}
-                                icon_width={16}
                                 message={
                                     <Text as='p' size='xxxs'>
                                         {status.error_message}

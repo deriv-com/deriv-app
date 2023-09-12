@@ -42,21 +42,15 @@ const RadioGroup = ({
         onToggle(e);
     };
 
-    const handleClick = (selected_option: string) => {
-        setSelectedOption(selected_option);
-    };
-
     return (
         <div className={classNames('dc-radio-group', className)}>
             {Array.isArray(children) &&
                 children.map(item => (
                     <ItemWrapper key={item.props.value} should_wrap_items={should_wrap_items}>
                         <label
-                            htmlFor={item.props.id}
                             className={classNames('dc-radio-group__item', className, {
                                 'dc-radio-group__item--selected': selected_option === item.props.value,
                             })}
-                            onClick={() => handleClick(item.props.value)}
                         >
                             <input
                                 id={item.props.id}

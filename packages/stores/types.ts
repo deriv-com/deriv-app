@@ -5,10 +5,10 @@ import type {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
+    Portfolio1,
     GetSettings,
     LandingCompany,
     LogOutResponse,
-    Portfolio1,
     ProposalOpenContract,
     ResidenceList,
     SetFinancialAssessmentRequest,
@@ -274,6 +274,7 @@ type TClientStore = {
     has_active_real_account: boolean;
     has_logged_out: boolean;
     has_maltainvest_account: boolean;
+    has_restricted_mt5_account: boolean;
     initialized_broadcast: boolean;
     is_account_setting_loaded: boolean;
     is_deposit_lock: boolean;
@@ -469,6 +470,7 @@ type TUiStore = {
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
+    setPurchaseState: (index: number) => void;
     setHasOnlyForwardingContracts: (has_only_forward_starting_contracts: boolean) => void;
     sub_section_index: number;
     setSubSectionIndex: (index: number) => void;
@@ -513,6 +515,7 @@ type TUiStore = {
     setResetTradingPasswordModalOpen: () => void;
     populateHeaderExtensions: (header_items: JSX.Element | null) => void;
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
+    purchase_states: boolean[];
     setShouldShowCooldownModal: (value: boolean) => void;
     setAppContentsScrollRef: (ref: React.MutableRefObject<null | HTMLDivElement>) => void;
     populateFooterExtensions: (
@@ -530,11 +533,12 @@ type TUiStore = {
 
 type TPortfolioStore = {
     active_positions: TPortfolioPosition[];
+    all_positions: TPortfolioPosition[];
     error: string;
     getPositionById: (id: number) => TPortfolioPosition;
-    is_accumulator: boolean;
     is_loading: boolean;
     is_multiplier: boolean;
+    is_accumulator: boolean;
     is_turbos: boolean;
     onClickCancel: (contract_id?: number) => void;
     onClickSell: (contract_id?: number) => void;
@@ -545,6 +549,11 @@ type TPortfolioStore = {
 
 type TContractStore = {
     getContractById: (id: number) => ProposalOpenContract;
+    contract_info: TPortfolioPosition['contract_info'];
+    contract_update_stop_loss: string;
+    contract_update_take_profit: string;
+    has_contract_update_stop_loss: boolean;
+    has_contract_update_take_profit: boolean;
 };
 
 type TMenuStore = {
@@ -558,8 +567,8 @@ type TNotificationStore = {
     client_notifications: object;
     filterNotificationMessages: () => void;
     refreshNotifications: () => void;
-    removeNotificationByKey: (key: string) => void;
-    removeNotificationMessage: (key: string, should_show_again?: boolean) => void;
+    removeNotificationByKey: ({ key }: { key: string }) => void;
+    removeNotificationMessage: ({ key, should_show_again }: { key: string; should_show_again?: boolean }) => void;
     setP2POrderProps: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setP2PRedirectTo: () => void;
@@ -626,7 +635,6 @@ type TTradersHubStore = {
     getExistingAccounts: () => void;
     getAccount: () => void;
     toggleAccountTypeModalVisibility: () => void;
-    can_get_more_cfd_mt5_accounts: boolean;
     showTopUpModal: () => void;
 };
 

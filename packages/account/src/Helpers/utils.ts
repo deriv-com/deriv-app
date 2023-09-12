@@ -1,8 +1,10 @@
+import React from 'react';
 import { filterObjProperties, toMoment, validLength, validName, getIDVNotApplicableOption } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
 import { FormikValues } from 'formik';
 import { getIDVDocumentConfig } from '../Constants/idv-document-config';
+import { TServerError } from '../Types';
 
 export const documentAdditionalError = (document_additional: string, document_additional_format: string) => {
     let error_message = null;
@@ -84,7 +86,7 @@ export const getRegex = (target_regex: string) => {
  * @param {string} selected_doc  - Could be one of the following: 'drivers_license', 'ssnit', 'id_card', 'passport'
  * @returns {string} - Returns the placeholder text for the document number input
  */
-export const generatePlaceholderText = (selected_doc: string) => {
+export const generatePlaceholderText = (selected_doc: string): string => {
     switch (selected_doc) {
         case 'drivers_license':
             return localize('Enter Driver License Reference number');
@@ -169,3 +171,6 @@ export const shouldHideHelperImage = (document_id: string) => document_id === ID
 
 // @ts-expect-error as the generic is a Array
 export const flatten = <T extends Array<unknown>>(arr: T) => [].concat(...arr);
+
+export const isServerError = (error: unknown): error is TServerError =>
+    typeof error === 'object' && error !== null && 'code' in error;

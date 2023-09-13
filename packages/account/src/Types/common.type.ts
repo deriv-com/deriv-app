@@ -1,4 +1,5 @@
 /** Add types that are shared between components */
+import React from 'react';
 import { FormikHandlers, FormikProps, FormikValues } from 'formik';
 import { Authorize, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
@@ -162,10 +163,10 @@ export type TDocumentList = {
         display_name?: string;
         example_format?: string;
     };
-};
+}[];
 
 type TFormProps = {
-    document_type: TDocumentList;
+    document_type: TDocumentList[0];
     document_number: string;
     document_additional?: string;
     error_message?: string;
@@ -183,21 +184,16 @@ export type TVerificationStatus = Readonly<
     Record<'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected', string>
 >;
 
-type TDocumentList = Array<{
-    id: string;
-    text: string;
-    value?: string;
-    sample_image?: string;
-    example_format?: string;
-    additional?: {
-        display_name: string;
-        format: string;
-    };
-}>;
-
 export type TIDVFormValues = {
     document_type: TDocumentList[0];
     document_number: string;
     document_additional?: string;
     error_message?: string;
+};
+
+export type TServerError = {
+    code: string;
+    message: string;
+    details?: { [key: string]: string };
+    fields?: string[];
 };

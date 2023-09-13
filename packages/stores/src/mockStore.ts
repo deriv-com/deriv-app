@@ -105,6 +105,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_active_real_account: false,
             has_logged_out: false,
             has_maltainvest_account: false,
+            has_restricted_mt5_account: false,
             initialized_broadcast: false,
             is_account_setting_loaded: false,
             is_authorize: false,

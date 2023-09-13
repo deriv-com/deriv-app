@@ -1,6 +1,5 @@
 import React from 'react';
 import { ThemedScrollbars } from '@deriv/components';
-import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -14,10 +13,9 @@ const SellAdPaymentMethodsList = ({
     is_scrollable = isMobile(),
     onClickAdd,
     onClickPaymentMethodCard,
+    p2p_advertiser_payment_methods,
     selected_methods,
 }) => {
-    const { data: p2p_advertiser_payment_methods } = useP2PAdvertiserPaymentMethods();
-
     const style = {
         borderColor: 'var(--brand-secondary)',
         borderWidth: '2px',
@@ -60,6 +58,7 @@ SellAdPaymentMethodsList.propTypes = {
     is_scrollable: PropTypes.bool,
     onClickAdd: PropTypes.func,
     onClickPaymentMethodCard: PropTypes.func,
+    p2p_advertiser_payment_methods: PropTypes.array,
     selected_methods: PropTypes.array,
 };
 

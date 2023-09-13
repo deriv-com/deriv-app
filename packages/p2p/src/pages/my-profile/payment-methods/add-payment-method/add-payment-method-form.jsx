@@ -30,6 +30,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
     React.useEffect(() => {
         if (mutation_status === 'success') {
             my_profile_store.setShouldShowAddPaymentMethodForm(false);
+            my_profile_store.setSelectedPaymentMethod('');
 
             if (isCurrentModal('CreateAdAddPaymentMethodModal')) {
                 hideModal();

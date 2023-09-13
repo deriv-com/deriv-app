@@ -36,9 +36,11 @@ const type_to_size_mapper = {
     Demo: { mobile: 45, desktop: 90 },
 };
 
-const WalletListCardIcon: React.FC<{
+type TProps = {
     type: keyof typeof type_to_icon_mapper | Omit<string, keyof typeof type_to_icon_mapper>;
-}> = ({ type }) => {
+};
+
+const WalletListCardIcon: React.FC<TProps> = ({ type }) => {
     const { is_mobile } = useDevice();
     const Icon = type_to_icon_mapper[type as keyof typeof type_to_icon_mapper];
     const size = type_to_size_mapper[type as keyof typeof type_to_icon_mapper][is_mobile ? 'mobile' : 'desktop'];

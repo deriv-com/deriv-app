@@ -81,6 +81,10 @@ describe('JurisdictionModal', () => {
     };
 
     it('should render JurisdictionModal', () => {
+        store = mockStore({
+            ...mock_store,
+            common: { platform: 'mt5' },
+        });
         render(<JurisdictionModalComponent {...mock_props} />);
 
         const title = screen.getByRole('heading');
@@ -92,7 +96,11 @@ describe('JurisdictionModal', () => {
     });
 
     it('should render JurisdictionModal with show_eu_related_content', () => {
-        store = mockStore({ ...mock_store, traders_hub: { show_eu_related_content: true } });
+        store = mockStore({
+            ...mock_store,
+            traders_hub: { show_eu_related_content: true },
+            common: { platform: 'mt5' },
+        });
 
         render(<JurisdictionModalComponent {...mock_props} />);
 

@@ -1,8 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { getMT5Title, CFD_PLATFORMS } from '@deriv/shared';
 import { TJurisdictionModalProps } from '../props.types';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
@@ -20,17 +18,6 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
 
     const { account_type, is_jurisdiction_modal_visible, toggleJurisdictionModal } = useCfdStore();
 
-    const modalTitle = () => {
-        if (platform === CFD_PLATFORMS.MT5) {
-            return show_eu_related_content
-                ? localize('Choose a jurisdiction for your Deriv MT5 CFDs account')
-                : localize('Choose a jurisdiction for your Deriv MT5 {{account_type}} account', {
-                      account_type: localize(getMT5Title(account_type.type)),
-                  });
-        } else if (platform === CFD_PLATFORMS.CTRADER) {
-            return localize('');
-        }
-    };
     const [is_dynamic_leverage_visible, setIsDynamicLeverageVisible] = React.useState(false);
 
     const toggleDynamicLeverage: React.MouseEventHandler<HTMLSpanElement> = event => {

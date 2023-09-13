@@ -3,7 +3,7 @@ import { TCFDPasswordReset } from '../Containers/props.types';
 
 export type TMobilePlatforms = 'ios' | 'android' | 'huawei';
 
-export type TCFDPlatform = 'dxtrade' | 'mt5';
+export type TCFDPlatform = 'dxtrade' | 'mt5' | 'ctrader' | 'derivez';
 
 export type TCFDsPlatformType = 'dxtrade' | 'derivez' | 'mt5' | 'ctrader' | '';
 

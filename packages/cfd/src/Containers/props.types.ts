@@ -24,7 +24,7 @@ export type TCFDPersonalDetailsContainerProps = {
     onSubmit: (index: number, value: { [key: string]: string }) => void;
 };
 
-type CFD_Platform = 'dxtrade' | 'mt5';
+type CFD_Platform = 'dxtrade' | 'mt5' | 'derivez' | 'ctrader';
 
 export type TCFDChangePasswordConfirmationProps = {
     confirm_label?: string;

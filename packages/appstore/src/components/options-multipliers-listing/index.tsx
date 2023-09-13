@@ -10,7 +10,7 @@ import TradingAppCard from 'Components/containers/trading-app-card';
 import { BrandConfig } from 'Constants/platform-config';
 import { getHasDivider } from 'Constants/utils';
 
-const OptionsAndMultipliersListing = () => {
+const OptionsAndMultipliersListing = observer(() => {
     const { traders_hub, client, ui } = useStore();
     const { available_platforms, is_eu_user, is_real, no_MF_account, no_CR_account, is_demo, content_flag } =
         traders_hub;
@@ -113,6 +113,6 @@ const OptionsAndMultipliersListing = () => {
             )}
         </ListingContainer>
     );
-};
+});
 
-export default observer(OptionsAndMultipliersListing);
+export default OptionsAndMultipliersListing;

@@ -25,8 +25,9 @@ const renderTable = (fields: TGetFields, login_history: TLoginHistoryData) => (
     <Table fixed className='login-history__table'>
         <Table.Header>
             <Table.Row className='login-history__table__header'>
-                {Object.values(fields).map((field, index) => (
-                    <Table.Head key={index}>{field}</Table.Head>
+                {/* Getting values of key as string, field as JSX.Element from getLoginHistoryTableHeaders */}
+                {Object.entries(fields).map(([key, field]) => (
+                    <Table.Head key={key}>{field}</Table.Head>
                 ))}
             </Table.Row>
         </Table.Header>

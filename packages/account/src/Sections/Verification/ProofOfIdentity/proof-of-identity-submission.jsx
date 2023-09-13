@@ -135,6 +135,7 @@ const POISubmission = ({
                 />
             );
         }
+
         case submission_status_code.submitting: {
             switch (submission_service) {
                 case service_code.idv:
@@ -146,6 +147,7 @@ const POISubmission = ({
                             residence_list={residence_list}
                             handleSubmit={handleViewComplete}
                             latest_status={identity_last_attempt}
+                            chosen_country={selected_country}
                         />
                     ) : (
                         <IdvDocumentSubmit

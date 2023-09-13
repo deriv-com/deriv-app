@@ -11,6 +11,7 @@ import { Button, DesktopWrapper, HintBox, Loading, Text } from '@deriv/component
 import {
     filterObjProperties,
     getIDVNotApplicableOption,
+    getPropertyValue,
     idv_error_statuses,
     isEmptyObject,
     isMobile,
@@ -39,7 +40,7 @@ import {
     validateName,
 } from 'Helpers/utils';
 import LoadErrorMessage from 'Components/load-error-message';
-import { TIDVForm, TPersonalDetailsForm } from 'Types';
+import { TIDVFormValues, TPersonalDetailsForm } from 'Types';
 
 type TRestState = {
     api_error: string;
@@ -56,6 +57,7 @@ type TIdvFailed = {
     mismatch_status: TIDVErrorStatus;
     residence_list: ResidenceList;
     latest_status: DeepRequired<GetAccountStatus>['authentication']['attempts']['latest'];
+    chosen_country?: ResidenceList[0];
 };
 
 type TIDVFailureConfig = {
@@ -65,7 +67,7 @@ type TIDVFailureConfig = {
     inline_note_text: React.ReactNode;
 };
 
-type TIdvFailedForm = Partial<TIDVForm> & Partial<TPersonalDetailsForm>;
+type TIdvFailedForm = Partial<TIDVFormValues> & Partial<TPersonalDetailsForm>;
 
 const IdvFailed = ({
     getChangeableFields,
@@ -74,6 +76,7 @@ const IdvFailed = ({
     account_settings,
     handleSubmit,
     mismatch_status = idv_error_statuses.poi_failed,
+    chosen_country,
     latest_status,
 }: TIdvFailed) => {
     const [idv_failure, setIdvFailure] = React.useState<TIDVFailureConfig>({
@@ -96,14 +99,20 @@ const IdvFailed = ({
     );
 
     const selected_country = React.useMemo(
-        () => residence_list.find(residence_data => residence_data.value === latest_status?.country_code) ?? {},
-        [latest_status, residence_list]
+        () =>
+            is_document_upload_required
+                ? chosen_country ?? {}
+                : residence_list.find(residence_data => residence_data.value === latest_status?.country_code) ?? {},
+        [chosen_country, is_document_upload_required, latest_status?.country_code, residence_list]
     );
 
     const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
 
+    const document_name = is_document_upload_required
+        ? getPropertyValue(selected_country, ['identity', 'services', 'idv', 'documents_supported'])
+        : getIDVDocumentType(latest_status, selected_country);
+
     const generateIDVError = React.useCallback(() => {
-        const document_name = getIDVDocumentType(latest_status, selected_country);
         switch (mismatch_status) {
             case idv_error_statuses.poi_name_dob_mismatch:
                 return {
@@ -183,7 +192,7 @@ const IdvFailed = ({
                     ),
                 };
         }
-    }, [latest_status, mismatch_status, selected_country]);
+    }, [document_name, mismatch_status]);
 
     React.useEffect(() => {
         const initializeFormValues = async (required_fields: string[]) => {

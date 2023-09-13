@@ -27,7 +27,7 @@ import {
     isAdditionalDocumentValid,
     isDocumentNumberValid,
 } from 'Helpers/utils';
-import { TIDVForm, TPersonalDetailsForm } from 'Types';
+import { TIDVFormValues, TPersonalDetailsForm } from 'Types';
 
 type TIDVDocumentSubmitProps = {
     handleBack: () => void;
@@ -37,7 +37,7 @@ type TIDVDocumentSubmitProps = {
     getChangeableFields: () => Array<string>;
 };
 
-type TIdvDocumentSubmitForm = TIDVForm & TPersonalDetailsForm;
+type TIdvDocumentSubmitForm = TIDVFormValues & TPersonalDetailsForm;
 
 const IdvDocumentSubmit = ({
     handleBack,

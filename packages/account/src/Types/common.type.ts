@@ -1,7 +1,6 @@
 /** Add types that are shared between components */
 import React from 'react';
-import { FormikHandlers, FormikProps } from 'formik';
-import { Authorize, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
+import { Authorize, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
 
 export type TToken = {
@@ -139,7 +138,7 @@ export type TInputFieldValues = Record<string, string>;
 
 export type TIDVVerificationResponse = IdentityVerificationAddDocumentResponse & { error: { message: string } };
 
-export type TDocumentList = {
+export type TDocument = {
     id: string;
     text: string;
     value?: string;
@@ -149,31 +148,14 @@ export type TDocumentList = {
         display_name?: string;
         example_format?: string;
     };
-}[];
-
-type TFormProps = {
-    document_type: TDocumentList[0];
-    document_number: string;
-    document_additional?: string;
-    error_message?: string;
 };
-
-export type TIDVForm =
-    | {
-          selected_country: ResidenceList[0];
-          hide_hint?: boolean;
-          class_name?: string;
-          can_skip_document_verification?: boolean;
-      }
-    | Partial<FormikHandlers>
-    | FormikProps<TFormProps>;
 
 export type TVerificationStatus = Readonly<
     Record<'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected', string>
 >;
 
 export type TIDVFormValues = {
-    document_type: TDocumentList[0];
+    document_type: TDocument;
     document_number: string;
     document_additional?: string;
     error_message?: string;

@@ -1,20 +1,33 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field, FormikProps, FieldProps, useFormikContext } from 'formik';
-import { localize } from '@deriv/translations';
-import { formatInput, getIDVNotApplicableOption } from '@deriv/shared';
+import { ResidenceList } from '@deriv/api-types';
 import { Autocomplete, DesktopWrapper, Input, MobileWrapper, SelectNative, Text } from '@deriv/components';
+import { formatInput, getIDVNotApplicableOption } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { getDocumentData, preventEmptyClipboardPaste, generatePlaceholderText, getExampleFormat } from 'Helpers/utils';
-import { TDocument, TFormProps, TIDVForm } from 'Types';
+import { TDocument, TIDVFormValues } from 'Types';
 
-const IDVForm = ({ class_name, selected_country, hide_hint, can_skip_document_verification = false }: TIDVForm) => {
-    const [document_list, setDocumentList] = React.useState<TDocument[]>([]);
+type TIDVFormProps = {
+    selected_country: ResidenceList[0];
+    hide_hint?: boolean;
+    class_name?: string;
+    can_skip_document_verification?: boolean;
+};
+
+const IDVForm = ({
+    class_name,
+    selected_country,
+    hide_hint,
+    can_skip_document_verification = false,
+}: TIDVFormProps) => {
+    const [document_list, setDocumentList] = React.useState<Array<TDocument>>([]);
     const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [selected_doc, setSelectedDoc] = React.useState('');
 
     const { documents_supported: document_data, has_visual_sample } = selected_country?.identity?.services?.idv ?? {};
 
-    const { errors, touched, values, handleBlur, handleChange, setFieldValue }: FormikProps<TFormProps> =
+    const { errors, touched, values, handleBlur, handleChange, setFieldValue }: FormikProps<TIDVFormValues> =
         useFormikContext();
     const default_document = {
         id: '',

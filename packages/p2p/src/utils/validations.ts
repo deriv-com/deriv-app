@@ -32,12 +32,11 @@ export const textValidator = (value: string) => /^[\p{L}\p{Nd}\s'.,:;()@#+/-]*$/
 export const rangeValidator = (input: number, limit: number) => input >= limit * -1 && input <= limit;
 
 /**
- * Validates floating-point integers in input box that do not contain scientific notation (e, E, -, +)
- * such as 12.2e+2 or 12.2e-2 and no negative numbers
+ * Validates floating-point integers in input box and checks if the string contains only
+ * digits and at most one decimal point.
  *
  * @param {String} value - The value to validate as a floating-point integer.
  * @returns {boolean} A boolean indicating if the value is a valid floating-point integer.
  */
 export const floatingPointValidator = (value: string) =>
-    ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', '.'].includes(value) ||
-    /^[0-9]*[.]?[0-9]+$(?:[eE\-+]*$)/.test(value);
+    ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', '.'].includes(value) || /^\d*\.?\d+$/.test(value);

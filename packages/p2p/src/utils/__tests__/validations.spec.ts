@@ -69,15 +69,10 @@ describe('floatingPointValidator', () => {
     });
     it('should return false if the value is not a valid floating-point integer', () => {
         expect(floatingPointValidator('1.')).toBeFalsy();
-        expect(floatingPointValidator('1.2e')).toBeFalsy();
-        expect(floatingPointValidator('1.2e+')).toBeFalsy();
-        expect(floatingPointValidator('1.2e-')).toBeFalsy();
-        expect(floatingPointValidator('1.2e+2e')).toBeFalsy();
-        expect(floatingPointValidator('1.2e-2e')).toBeFalsy();
-        expect(floatingPointValidator('-1')).toBeFalsy();
-        expect(floatingPointValidator('-1.')).toBeFalsy();
-        expect(floatingPointValidator('-1.2')).toBeFalsy();
-        expect(floatingPointValidator('-1.2e+2')).toBeFalsy();
-        expect(floatingPointValidator('-1.2e-2')).toBeFalsy();
+        expect(floatingPointValidator('1.2.3')).toBeFalsy();
+        expect(floatingPointValidator('1.2.')).toBeFalsy();
+        expect(floatingPointValidator('a')).toBeFalsy();
+        expect(floatingPointValidator('1a')).toBeFalsy();
+        expect(floatingPointValidator('1.a')).toBeFalsy();
     });
 });

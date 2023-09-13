@@ -1,16 +1,18 @@
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
+import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
 import { useStores } from 'Stores';
-import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
 import { localize } from 'Components/i18next';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
 import BuyAdPaymentMethodsList from './buy-ad-payment-methods-list.jsx';
 import SellAdPaymentMethodsList from './sell-ad-payment-methods-list.jsx';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) => {
-    const { my_ads_store, my_profile_store } = useStores();
+    const { my_ads_store } = useStores();
     const [selected_buy_methods, setSelectedBuyMethods] = React.useState([]);
     const [selected_sell_methods, setSelectedSellMethods] = React.useState([]);
+    const { data: advertiser_payment_methods } = useP2PAdvertiserPaymentMethods();
     const { showModal } = useModalManagerContext();
 
     const onClickPaymentMethodCard = payment_method => {
@@ -47,7 +49,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
     }, [is_sell_advert, selected_buy_methods, selected_sell_methods]);
 
     if (is_sell_advert) {
-        if (my_profile_store.advertiser_has_payment_methods) {
+        if (advertiser_payment_methods) {
             return (
                 <SellAdPaymentMethodsList
                     selected_methods={selected_sell_methods}

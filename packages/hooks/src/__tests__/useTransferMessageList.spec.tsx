@@ -20,7 +20,7 @@ const mock_to_account: Partial<ReturnType<typeof useWalletTransfer>['to_account'
     shortcode: 'svg',
 };
 
-jest.mock('../useTransferMessageBetweenWalletAndTradingApp', () =>
+jest.mock('../useTransferMessageListBetweenWalletAndTradingApp', () =>
     jest.fn(() => [
         {
             code: 'WalletToTradingAppDailyLimit',

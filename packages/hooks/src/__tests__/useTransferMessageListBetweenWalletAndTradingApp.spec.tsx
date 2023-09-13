@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import useTransferMessageBetweenWalletAndTradingApp from '../useTransferMessageBetweenWalletAndTradingApp';
+import useTransferMessageListBetweenWalletAndTradingApp from '../useTransferMessageListBetweenWalletAndTradingApp';
 import useWalletTransfer from '../useWalletTransfer';
 
 const mock_from_account: Partial<ReturnType<typeof useWalletTransfer>['from_account']> = {
@@ -53,14 +53,18 @@ jest.mock('../useExchangeRate', () =>
 describe('useTransferMessageBetweenWalletAndTradingApp', () => {
     it('should check whether the hook returns the correct data for transfer between fiat wallet and its linked trading account', () => {
         const { result } = renderHook(() =>
-            useTransferMessageBetweenWalletAndTradingApp(mock_from_account, mock_to_account, mock_get_limits_response)
+            useTransferMessageListBetweenWalletAndTradingApp(
+                mock_from_account,
+                mock_to_account,
+                mock_get_limits_response
+            )
         );
         expect(result.current[0].code).toBe('WalletToTradingAppDailyLimit');
     });
 
     it('should check whether the it returns the correct message data for transfer between demo wallet and its linked trading account', () => {
         const { result } = renderHook(() =>
-            useTransferMessageBetweenWalletAndTradingApp(
+            useTransferMessageListBetweenWalletAndTradingApp(
                 { ...mock_from_account, demo_account: 1, is_demo: true, type: 'demo' } as typeof mock_from_account,
                 { ...mock_to_account, demo_account: 1, is_demo: true, type: 'demo' } as typeof mock_to_account,
                 mock_get_limits_response
@@ -72,7 +76,7 @@ describe('useTransferMessageBetweenWalletAndTradingApp', () => {
 
     it('should check whether the hook returns the correct data for transfer between crypto wallet and its linked trading account', () => {
         const { result } = renderHook(() =>
-            useTransferMessageBetweenWalletAndTradingApp(
+            useTransferMessageListBetweenWalletAndTradingApp(
                 { ...mock_from_account, currency: 'BTC', display_currency_code: 'BTC' } as typeof mock_from_account,
                 { ...mock_to_account, currency: 'BTC', display_currency_code: 'BTC' } as typeof mock_to_account,
                 mock_get_limits_response

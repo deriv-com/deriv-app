@@ -1,11 +1,14 @@
 import React from 'react';
-import { useWalletTransfer, useTransferMessageList } from '@deriv/hooks';
+import {
+    useWalletTransfer,
+    useTransferMessageList,
+    useTransferMessageListBetweenWalletAndTradingApp,
+} from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import { AnimatedList, AlertMessage } from '@deriv/components';
 import { getAccountName } from 'Constants/utils';
 import { formatMoney } from '@deriv/shared';
 import { ArrayElement } from 'Types';
-import useTransferMessageBetweenWalletAndTradingApp from '@deriv/hooks/src/useTransferMessageBetweenWalletAndTradingApp';
 
 type TWalletTransferMessagesProps = {
     from_account: Partial<ReturnType<typeof useWalletTransfer>['from_account']>;
@@ -15,7 +18,7 @@ type TWalletTransferMessagesProps = {
 type TMessageMapperParams = {
     from_name: string;
     to_name: string;
-} & ArrayElement<ReturnType<typeof useTransferMessageBetweenWalletAndTradingApp>>;
+} & ArrayElement<ReturnType<typeof useTransferMessageListBetweenWalletAndTradingApp>>;
 
 type TMessageCodeToMessageMapper = {
     [key in ReturnType<typeof useTransferMessageList>['data'][number]['code']]: (value: TMessageMapperParams) => string;

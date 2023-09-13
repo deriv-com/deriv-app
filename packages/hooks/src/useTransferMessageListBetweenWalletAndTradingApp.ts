@@ -1,7 +1,7 @@
 import useExchangeRate from './useExchangeRate';
 import useWalletTransfer from './useWalletTransfer';
 
-type TTransferMessageBetweenWalletAndTradingApp =
+type TTransferMessageListBetweenWalletAndTradingApp =
     | {
           code: 'WalletToTradingAppDailyLimit';
           is_first_transfer: boolean;
@@ -30,7 +30,7 @@ const tradingAccountMapper = (account_type: string, currency_type: string): stri
  * @param from_account - Information of the source account received from the useWalletsList hook.
  * @param to_account - Information of the destination account received from the useWalletsList hook.
  */
-const useTransferMessageBetweenWalletAndTradingApp = (
+const useTransferMessageListBetweenWalletAndTradingApp = (
     from_account: Partial<ReturnType<typeof useWalletTransfer>['from_account']>,
     to_account: Partial<ReturnType<typeof useWalletTransfer>['to_account']>,
     account_limits: any // TODO: add type of account_limits when the new schema is ready.
@@ -41,7 +41,7 @@ const useTransferMessageBetweenWalletAndTradingApp = (
                 DemoTradingApp-DemoWallet
     */
 
-    const message_list: TTransferMessageBetweenWalletAndTradingApp[] = [];
+    const message_list: TTransferMessageListBetweenWalletAndTradingApp[] = [];
 
     const { getRate } = useExchangeRate();
 
@@ -72,4 +72,4 @@ const useTransferMessageBetweenWalletAndTradingApp = (
     return message_list;
 };
 
-export default useTransferMessageBetweenWalletAndTradingApp;
+export default useTransferMessageListBetweenWalletAndTradingApp;

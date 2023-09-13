@@ -1,4 +1,4 @@
-import useTransferMessageBetweenWalletAndTradingApp from './useTransferMessageBetweenWalletAndTradingApp';
+import useTransferMessageListBetweenWalletAndTradingApp from './useTransferMessageListBetweenWalletAndTradingApp';
 import useWalletTransfer from './useWalletTransfer';
 
 /**
@@ -14,7 +14,7 @@ const useTransferMessageList = (
     // TODO: fetch the new get_limits call here and return its response new schema is available.
     const account_limits = mock_get_limits_response;
 
-    const between_wallet_and_trading_app = useTransferMessageBetweenWalletAndTradingApp(
+    const between_wallet_and_trading_app = useTransferMessageListBetweenWalletAndTradingApp(
         from_account,
         to_account,
         account_limits

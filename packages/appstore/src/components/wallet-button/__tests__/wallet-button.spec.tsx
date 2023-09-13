@@ -29,7 +29,7 @@ describe('<WalletButton />', () => {
     it('Should render desktop class', () => {
         const { container } = render(
             <StoreProvider store={mockedRootStore}>
-                <WalletButton button={button} is_desktop_wallet={true} />
+                <WalletButton button={button} is_desktop_wallet />
             </StoreProvider>
         );
 
@@ -51,7 +51,7 @@ describe('<WalletButton />', () => {
     it('Should add disabled class', () => {
         const { container } = render(
             <StoreProvider store={mockedRootStore}>
-                <WalletButton button={button} is_desktop_wallet={true} is_disabled={true} />
+                <WalletButton button={button} is_desktop_wallet is_disabled />
             </StoreProvider>
         );
 

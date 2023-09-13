@@ -27,13 +27,14 @@ const OptionsAndMultipliersListing = observer(() => {
     const cr_demo = content_flag === ContentFlag.CR_DEMO;
 
     const OptionsTitle = () => {
-        if ((low_risk_cr_non_eu || high_risk_cr || cr_demo) && !is_mobile) {
+        if (is_mobile) return null;
+        if (low_risk_cr_non_eu || high_risk_cr || cr_demo) {
             return (
                 <Text size='sm' weight='bold'>
                     <Localize i18n_default_text='Options & Multipliers' />
                 </Text>
             );
-        } else if ((low_risk_cr_eu || is_eu) && !is_mobile) {
+        } else if (low_risk_cr_eu || is_eu) {
             return (
                 <Text size='sm' weight='bold' color='prominent'>
                     <Localize i18n_default_text='Multipliers' />

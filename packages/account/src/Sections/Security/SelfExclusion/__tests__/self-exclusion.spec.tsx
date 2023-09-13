@@ -5,6 +5,7 @@ import SelfExclusion from '../self-exclusion';
 import { FormikValues } from 'formik';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { WS } from '@deriv/shared';
+import userEvent from '@testing-library/user-event';
 
 const portal_root = document.createElement('div');
 document.body.appendChild(portal_root);
@@ -153,8 +154,7 @@ describe('<SelfExclusion />', () => {
         );
 
         await act(async () => {
-            if (session_duration_limit_input)
-                fireEvent.change(session_duration_limit_input, { target: { value: '60481' } });
+            if (session_duration_limit_input) userEvent.type(session_duration_limit_input, '60481');
         });
 
         expect(
@@ -162,8 +162,7 @@ describe('<SelfExclusion />', () => {
         ).toBeInTheDocument();
 
         await act(async () => {
-            if (session_duration_limit_input)
-                fireEvent.change(session_duration_limit_input, { target: { value: '60479' } });
+            if (session_duration_limit_input) userEvent.type(session_duration_limit_input, '60479');
         });
 
         expect(
@@ -189,18 +188,18 @@ describe('<SelfExclusion />', () => {
         const exclude_until_input = inputs.find((input: FormikValues) => input.name === 'exclude_until');
 
         await act(async () => {
-            if (exclude_until_input) fireEvent.change(exclude_until_input, { target: { value: '2021-04-13' } });
+            if (exclude_until_input) userEvent.type(exclude_until_input, '2021-04-13');
         });
 
         expect(screen.getByText('Exclude time must be after today.')).toBeInTheDocument();
 
         await act(async () => {
-            if (exclude_until_input) fireEvent.change(exclude_until_input, { target: { value: '2022-04-13' } });
+            if (exclude_until_input) userEvent.type(exclude_until_input, '2022-04-13');
         });
         expect(screen.getByText('Exclude time cannot be less than 6 months.')).toBeInTheDocument();
 
         await act(async () => {
-            if (exclude_until_input) fireEvent.change(exclude_until_input, { target: { value: '2028-04-13' } });
+            if (exclude_until_input) userEvent.type(exclude_until_input, '2028-04-13');
         });
         expect(screen.getByText('Exclude time cannot be for more than five years.')).toBeInTheDocument();
     });
@@ -236,12 +235,12 @@ describe('<SelfExclusion />', () => {
         const max_open_bets_input = inputs_1.find((input: FormikValues) => input.name === 'max_open_bets');
 
         act(() => {
-            if (max_turnover_input) fireEvent.change(max_turnover_input, { target: { value: '1700' } });
-            if (max_open_bets_input) fireEvent.change(max_open_bets_input, { target: { value: '999' } });
+            if (max_turnover_input) userEvent.type(max_turnover_input, '1700');
+            if (max_open_bets_input) userEvent.type(max_open_bets_input, '999');
         });
 
         await waitFor(() => {
-            fireEvent.click(next_btn_1);
+            userEvent.click(next_btn_1);
         });
 
         expect(screen.getByText('You have set the following limits:')).toBeInTheDocument();
@@ -253,7 +252,7 @@ describe('<SelfExclusion />', () => {
         expect(back_btn_1).toBeInTheDocument();
 
         await waitFor(() => {
-            fireEvent.click(back_btn_1);
+            userEvent.click(back_btn_1);
         });
 
         expect(screen.getByText('Your stake and loss limits')).toBeInTheDocument();
@@ -266,11 +265,11 @@ describe('<SelfExclusion />', () => {
         const max_balance_input = inputs_1.find((input: FormikValues) => input.name === 'max_balance');
 
         act(() => {
-            if (max_balance_input) fireEvent.change(max_balance_input, { target: { value: '10000' } });
+            if (max_balance_input) userEvent.type(max_balance_input, '10000');
         });
 
         await waitFor(() => {
-            fireEvent.click(next_btn_2);
+            userEvent.click(next_btn_2);
         });
 
         expect(screen.getByText('You have set the following limits:')).toBeInTheDocument();
@@ -279,7 +278,7 @@ describe('<SelfExclusion />', () => {
         expect(accept_btn_2).toHaveTextContent('Accept');
 
         await waitFor(() => {
-            fireEvent.click(accept_btn_2);
+            userEvent.click(accept_btn_2);
         });
 
         expect(screen.getByText('You have set the following limits:')).toBeInTheDocument();
@@ -327,20 +326,19 @@ describe('<SelfExclusion />', () => {
         );
 
         act(() => {
-            if (exclude_until_input) fireEvent.change(exclude_until_input, { target: { value: '2023-02-03' } });
-            if (max_open_bets_input) fireEvent.change(max_open_bets_input, { target: { value: '99' } });
-            if (max_losses_input) fireEvent.change(max_losses_input, { target: { value: '1000' } });
-            if (max_turnover_input) fireEvent.change(max_turnover_input, { target: { value: '1700' } });
-            if (max_7day_losses_input) fireEvent.change(max_7day_losses_input, { target: { value: '700' } });
-            if (max_7day_turnover_input) fireEvent.change(max_7day_turnover_input, { target: { value: '700' } });
-            if (max_30day_losses_input) fireEvent.change(max_30day_losses_input, { target: { value: '3000' } });
-            if (max_30day_turnover_input) fireEvent.change(max_30day_turnover_input, { target: { value: '5000' } });
-            if (session_duration_limit_input)
-                fireEvent.change(session_duration_limit_input, { target: { value: '60399' } });
+            if (exclude_until_input) userEvent.type(exclude_until_input, '2023-02-03');
+            if (max_open_bets_input) userEvent.type(max_open_bets_input, '99');
+            if (max_losses_input) userEvent.type(max_losses_input, '1000');
+            if (max_turnover_input) userEvent.type(max_turnover_input, '1700');
+            if (max_7day_losses_input) userEvent.type(max_7day_losses_input, '700');
+            if (max_7day_turnover_input) userEvent.type(max_7day_turnover_input, '700');
+            if (max_30day_losses_input) userEvent.type(max_30day_losses_input, '3000');
+            if (max_30day_turnover_input) userEvent.type(max_30day_turnover_input, '5000');
+            if (session_duration_limit_input) userEvent.type(session_duration_limit_input, '60399');
         });
 
         await waitFor(() => {
-            fireEvent.click(next_btn_1);
+            userEvent.click(next_btn_1);
         });
 
         expect(screen.getByText('You have set the following limits:')).toBeInTheDocument();
@@ -350,7 +348,7 @@ describe('<SelfExclusion />', () => {
         expect(accept_btn_1).toHaveTextContent('Accept');
 
         await waitFor(() => {
-            fireEvent.click(accept_btn_1);
+            userEvent.click(accept_btn_1);
         });
 
         expect(accept_btn_1).not.toBeInTheDocument();
@@ -360,7 +358,7 @@ describe('<SelfExclusion />', () => {
         expect(screen.getByText('Yes, log me out immediately')).toBeInTheDocument();
 
         await waitFor(() => {
-            fireEvent.click(review_btn);
+            userEvent.click(review_btn);
         });
 
         expect(screen.queryByText('Yes, log me out immediately')).not.toBeInTheDocument();
@@ -371,7 +369,7 @@ describe('<SelfExclusion />', () => {
         expect(accept_btn_2).toHaveTextContent('Accept');
 
         await waitFor(() => {
-            fireEvent.click(accept_btn_2);
+            userEvent.click(accept_btn_2);
         });
 
         expect(screen.getByText('No, review my limits')).toBeInTheDocument();
@@ -379,7 +377,7 @@ describe('<SelfExclusion />', () => {
         expect(logout_btn).toBeInTheDocument();
 
         await waitFor(() => {
-            fireEvent.click(logout_btn);
+            userEvent.click(logout_btn);
         });
 
         expect(logout).toHaveBeenCalled();

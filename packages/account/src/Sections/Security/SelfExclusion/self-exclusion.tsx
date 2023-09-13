@@ -455,12 +455,10 @@ const SelfExclusion = observer(({ overlay_ref, setIsOverlayShown }: TSelfExclusi
     return (
         <SelfExclusionContext.Provider value={context_value}>
             <SelfExclusionWrapper>
-                {/* Only show the modal in non-"<AppSettings>" views, others will
-                    use the overlay provided by <AppSettings> */}
-                {<SelfExclusionModal />}
+                <SelfExclusionModal />
                 <SelfExclusionForm />
             </SelfExclusionWrapper>
-            {overlay_ref && state.show_article && <SelfExclusionArticleContent is_in_overlay />}
+            <SelfExclusionArticleContent is_in_overlay />
         </SelfExclusionContext.Provider>
     );
 });

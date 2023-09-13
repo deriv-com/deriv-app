@@ -38,7 +38,7 @@ const WalletsCarouselContent: React.FC = () => {
                     is_transition
                 />
             </div>
-            <WalletListCardIActions is_desktop_wallet={false} />
+            <WalletListCardIActions />
         </div>
     );
 };

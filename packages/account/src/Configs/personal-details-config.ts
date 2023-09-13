@@ -136,15 +136,17 @@ export const personal_details_config = ({
                     { min: 0, max: 25 },
                 ],
                 [
-                    (value: string) => {
-                        if (!value) return true;
-                        return RegExp(/^(?!^$|\s+)[A-Za-z0-9./\s-]{0,25}$/).test(value);
-                    },
+                    // check if the TIN value is available, then perform the regex test
+                    // else return true (to pass the test)
+                    // this is to allow empty string to pass the test in case of optioal TIN field
+                    (value: string) => (value ? RegExp(/^(?!^$|\s+)[A-Za-z0-9./\s-]{0,25}$/).test(value) : true),
                     localize('Letters, numbers, spaces, periods, hyphens and forward slashes only.'),
                 ],
                 [
                     (value: string, options: Record<string, unknown>, { tax_residence }: { tax_residence: string }) => {
-                        return real_account_signup_target === 'maltainvest' ? !!tax_residence : true;
+                        // check if  TIN value is available,
+                        // only then ask client to fill in tax residence
+                        return value ? !!tax_residence : true;
                     },
                     localize('Please fill in Tax residence.'),
                 ],

@@ -14,9 +14,7 @@ const WalletCard: React.FC<TProps> = ({ account }) => {
             <div className='wallets-card__data'>
                 <div className='wallets-card__data__details'>
                     <div className='wallets-card__data__details-container'>
-                        <div className='wallets-card__data__details-icon'>
-                            <WalletListCardIcon type={account.wallet_currency_type} />
-                        </div>
+                        <WalletListCardIcon type={account.wallet_currency_type} />
                         <div className='wallets-card__data__details-landing_company'>
                             {account?.landing_company_name && (
                                 <WalletListCardBadge label={account?.landing_company_name} />

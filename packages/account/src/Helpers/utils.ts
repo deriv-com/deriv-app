@@ -3,7 +3,7 @@ import { filterObjProperties, toMoment, validLength, validName, getIDVNotApplica
 import { localize } from '@deriv/translations';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
 import { FormikValues } from 'formik';
-import { getIDVDocumentConfig } from '../Constants/idv-document-config';
+import { getIDVDocuments } from '../Constants/idv-document-config';
 import { TServerError } from '../Types';
 
 export const documentAdditionalError = (document_additional: string, document_additional_format: string) => {
@@ -61,7 +61,7 @@ export const getDocumentData = (country_code: string, document_type: string) => 
         example_format: '',
         sample_image: '',
     };
-    const IDV_DOCUMENT_DATA: any = getIDVDocumentConfig(country_code);
+    const IDV_DOCUMENT_DATA: any = getIDVDocuments(country_code);
     return IDV_DOCUMENT_DATA[document_type] ?? DEFAULT_CONFIG;
 };
 

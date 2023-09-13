@@ -18,7 +18,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 
 type TTradeParams = {
-    is_minimized: boolean;
+    is_minimized?: boolean;
 };
 
 const TradeParams = observer(({ is_minimized }: TTradeParams) => {
@@ -29,10 +29,7 @@ const TradeParams = observer(({ is_minimized }: TTradeParams) => {
 
     return (
         <React.Fragment>
-            {isVisible('duration') && (
-                // @ts-expect-error: TODO: check if TS error is gone after <Duration /> is migrated to TS
-                <Duration key={'duration'} is_minimized={is_minimized} />
-            )}
+            {isVisible('duration') && <Duration key={'duration'} />}
             {isVisible('barrier') && <Barrier key={'barrier'} is_minimized={is_minimized} />}
             {isVisible('last_digit') && <LastDigit key={'last_digit'} is_minimized={is_minimized} />}
             {isVisible('accumulator') && <Accumulator key={'accumulator'} />}
@@ -43,7 +40,7 @@ const TradeParams = observer(({ is_minimized }: TTradeParams) => {
                     {isVisible('barrier_selector') && <BarrierSelector key={'barrier_selector'} />}
                 </Fieldset>
             )}
-            {isVisible('amount') && <Amount key={'amount'} is_minimized={is_minimized} />}
+            {isVisible('amount') && <Amount key={'amount'} is_minimized={is_minimized as boolean} />}
             {isVisible('take_profit') && <TakeProfit key={'take_profit'} />}
             {isVisible('stop_loss') && <StopLoss key={'stop_loss'} />}
             {isVisible('cancellation') && <CancelDeal key={'cancellation'} />}

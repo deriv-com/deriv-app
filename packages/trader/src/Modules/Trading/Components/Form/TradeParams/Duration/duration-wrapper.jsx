@@ -203,7 +203,6 @@ DurationWrapper.propTypes = {
     duration_unit: PropTypes.string,
     duration_units_list: MobxPropTypes.arrayOrObservableArray,
     getDurationFromUnit: PropTypes.func,
-    is_minimized: PropTypes.bool,
     sessions: MobxPropTypes.arrayOrObservableArray,
     start_time: PropTypes.string,
     symbol: PropTypes.string,

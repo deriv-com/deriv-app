@@ -200,6 +200,7 @@ export const personal_details_config = ({
 
             properties_to_update.forEach(key => {
                 config[key].supported_in.push('svg');
+                // Remove required rule for TIN and Tax residence from the config to make the fields optional
                 if (key === 'tax_identification_number' || key === 'tax_residence') {
                     config[key].rules = config[key].rules.filter(rule => rule[0] !== 'req');
                 }

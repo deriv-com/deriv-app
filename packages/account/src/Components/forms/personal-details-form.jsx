@@ -48,6 +48,7 @@ const PersonalDetailsForm = props => {
 
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
+    const [selected_salutation, setSelectedSalutation] = React.useState('');
 
     const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched } = useFormikContext();
 
@@ -93,6 +94,12 @@ const PersonalDetailsForm = props => {
             setIsTinPopoverOpen(false);
         }
     }, [is_tax_residence_popover_open, is_tin_popover_open]);
+
+    const handleSalutationSelection = event => {
+        if (event.target?.type === 'radio') {
+            setSelectedSalutation(event.target?.value);
+        }
+    };
 
     const name_dob_clarification_message = (
         <Localize
@@ -151,27 +158,29 @@ const PersonalDetailsForm = props => {
                             />
                         )}
                         {'salutation' in values && (
-                            <RadioGroup
-                                className='dc-radio__input'
-                                name='salutation'
-                                selected={values.salutation}
-                                onToggle={e => {
-                                    e.persist();
-                                    setFieldValue('salutation', e.target.value);
-                                }}
-                                required
-                            >
-                                {salutation_list.map(item => (
-                                    <RadioGroup.Item
-                                        key={item.value}
-                                        label={item.label}
-                                        value={item.value}
-                                        disabled={
-                                            !!values.salutation && isFieldImmutable('salutation', editable_fields)
-                                        }
-                                    />
-                                ))}
-                            </RadioGroup>
+                            <span onClick={handleSalutationSelection}>
+                                <RadioGroup
+                                    className='dc-radio__input'
+                                    name='salutation'
+                                    selected={selected_salutation}
+                                    onToggle={e => {
+                                        e.persist();
+                                        setFieldValue('salutation', e.target.value);
+                                    }}
+                                    required
+                                >
+                                    {salutation_list.map(item => (
+                                        <RadioGroup.Item
+                                            key={item.value}
+                                            label={item.label}
+                                            value={item.value}
+                                            disabled={
+                                                !!selected_salutation && isFieldImmutable('salutation', editable_fields)
+                                            }
+                                        />
+                                    ))}
+                                </RadioGroup>
+                            </span>
                         )}
                         {'first_name' in values && (
                             <FormInputField

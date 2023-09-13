@@ -9,7 +9,7 @@ const useAuthorize = (token?: string) => {
 
     const { data, ...rest } = useFetch('authorize', {
         payload: { authorize: auth_token },
-        options: { keepPreviousData: true, enabled: Boolean(auth_token) },
+        options: { enabled: Boolean(auth_token) },
     });
 
     // Add additional information to the authorize response.

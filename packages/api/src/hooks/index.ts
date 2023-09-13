@@ -21,3 +21,4 @@ export { default as useCreateMT5Account } from './useCreateMT5Account';
 export { default as useCreateOtherCFDAccount } from './useCreateOtherCFDAccount';
 export { default as useNotificationEvent } from './useNotificationEvent';
 export { default as useServiceToken } from './useServiceToken';
+export { default as useTradingPlatformPasswordChange } from './useTradingPlatformPasswordChange';

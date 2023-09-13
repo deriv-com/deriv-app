@@ -76,8 +76,8 @@ const IdvFailed = ({
     account_settings,
     handleSubmit,
     mismatch_status = idv_error_statuses.poi_failed,
-    chosen_country,
     latest_status,
+    chosen_country,
 }: TIdvFailed) => {
     const [idv_failure, setIdvFailure] = React.useState<TIDVFailureConfig>({
         required_fields: [],
@@ -108,11 +108,10 @@ const IdvFailed = ({
 
     const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
 
-    const document_name = is_document_upload_required
-        ? getPropertyValue(selected_country, ['identity', 'services', 'idv', 'documents_supported'])
-        : getIDVDocumentType(latest_status, selected_country);
-
     const generateIDVError = React.useCallback(() => {
+        const document_name = is_document_upload_required
+            ? getPropertyValue(selected_country, ['identity', 'services', 'idv', 'documents_supported'])
+            : getIDVDocumentType(latest_status, selected_country);
         switch (mismatch_status) {
             case idv_error_statuses.poi_name_dob_mismatch:
                 return {
@@ -192,7 +191,7 @@ const IdvFailed = ({
                     ),
                 };
         }
-    }, [document_name, mismatch_status]);
+    }, [latest_status, mismatch_status, selected_country]);
 
     React.useEffect(() => {
         const initializeFormValues = async (required_fields: string[]) => {

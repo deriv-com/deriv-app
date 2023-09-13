@@ -37,7 +37,7 @@ const CancelDeal = observer(() => {
             id='dt_cancellation-checkbox_input'
             onChange={() => onToggleCancellation({ has_cancellation, onChangeMultiple })}
             name='has_cancellation'
-            label={localize('Deal cancellation')}
+            label={<Localize i18n_default_text='Deal cancellation' />}
             defaultChecked={has_cancellation}
         />
     );
@@ -54,7 +54,7 @@ const CancelDeal = observer(() => {
                         message={
                             <PopoverMessageCheckbox
                                 defaultChecked={is_do_not_show_selected}
-                                checkboxLabel={localize("Don't show this again")}
+                                checkboxLabel={<Localize i18n_default_text="Don't show this again" />}
                                 message={localize(
                                     'Take profit and/or stop loss are not available while deal cancellation is active.'
                                 )}

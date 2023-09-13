@@ -1,5 +1,5 @@
 import React from 'react';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { formatDuration, getDiffDuration, getDateFromNow } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
@@ -39,7 +39,7 @@ const Expiration = observer(({ is_text_only, text_size }: TExpirationProps) => {
         <Fieldset
             className='trade-container__fieldset trade-container__fieldset__multiplier'
             is_center
-            header={localize('Expires on')}
+            header={<Localize i18n_default_text='Expires on' />}
             header_tooltip={
                 expiration ? (
                     <Localize

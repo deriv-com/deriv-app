@@ -18,7 +18,7 @@ const MultipliersExpirationModal = observer(({ is_open, toggleModal }: TMultipli
             should_header_stick_body={false}
             height='auto'
             width='calc(100vw - 3.2rem)'
-            title={localize('Expiration')}
+            title={<Localize i18n_default_text='Expiration' />}
         >
             <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='48px'>
                 <div style={{ minHeight: '120px', padding: '1.6rem' }}>

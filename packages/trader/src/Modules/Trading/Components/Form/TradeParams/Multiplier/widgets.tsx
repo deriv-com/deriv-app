@@ -7,7 +7,7 @@ import RadioGroupOptionsModal from 'Modules/Trading/Containers/radio-group-optio
 import MultipliersExpiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration';
 import MultipliersExpirationModal from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration-modal';
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { getGrowthRatePercentage } from '@deriv/shared';
 
 type TAmountWidgetProps = {
@@ -19,7 +19,7 @@ type TAmountWidgetProps = {
 
 type TRadioGroupOptionsWidgetProps = {
     displayed_trade_param: string;
-    modal_title: string;
+    modal_title: React.ReactNode;
 };
 
 const AmountWidget = ({ amount, currency, expiration, is_crypto_multiplier }: TAmountWidgetProps) => {
@@ -54,7 +54,9 @@ const AmountWidget = ({ amount, currency, expiration, is_crypto_multiplier }: TA
             {is_crypto_multiplier && (
                 <div className='mobile-widget' onClick={expiration ? toggleExpirationModal : undefined}>
                     <div className='mobile-widget__multiplier-expiration'>
-                        <Text size='xxs'>{localize('Expires on')}</Text>
+                        <Text size='xxs'>
+                            <Localize i18n_default_text='Expires on' />
+                        </Text>
                         <MultipliersExpiration is_text_only text_size='xxs' />
                     </div>
                     <MultipliersExpirationModal
@@ -100,14 +102,20 @@ const RadioGroupOptionsWidget = ({ displayed_trade_param, modal_title }: TRadioG
 
 export const MultiplierOptionsWidget = observer(() => {
     const { multiplier } = useTraderStore();
-    const displayed_trade_param = `x${multiplier}`;
-    const modal_title = localize('Multiplier');
-    return <RadioGroupOptionsWidget displayed_trade_param={displayed_trade_param} modal_title={modal_title} />;
+    return (
+        <RadioGroupOptionsWidget
+            displayed_trade_param={`x${multiplier}`}
+            modal_title={<Localize i18n_default_text='Multiplier' />}
+        />
+    );
 });
 
 export const AccumulatorOptionsWidget = observer(() => {
     const { growth_rate } = useTraderStore();
-    const displayed_trade_param = `${getGrowthRatePercentage(growth_rate)}%`;
-    const modal_title = localize('Growth rate');
-    return <RadioGroupOptionsWidget displayed_trade_param={displayed_trade_param} modal_title={modal_title} />;
+    return (
+        <RadioGroupOptionsWidget
+            displayed_trade_param={`${getGrowthRatePercentage(growth_rate)}%`}
+            modal_title={<Localize i18n_default_text='Growth rate' />}
+        />
+    );
 });

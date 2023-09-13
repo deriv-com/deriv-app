@@ -1,6 +1,5 @@
 /**
  * Gets the formatted date string in the format "DD MMM YYYY HH:mm:ss". e.g.: "01 Jan 1970 21:01:11"
- *
  * @param {Date} date_obj - The date object to format.
  * @param {boolean} is_local - Whether to use local time or UTC time.
  * @param {boolean} has_seconds - Whether to include seconds in the time.

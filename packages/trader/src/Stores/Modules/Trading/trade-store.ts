@@ -41,7 +41,7 @@ import { action, computed, makeObservable, observable, override, reaction, runIn
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
 import { getHoveredColor } from './Helpers/barrier-utils';
 import BaseStore from '../../base-store';
-import { TTextValueStrings } from 'Types';
+import { TTextValueStrings, TTextValueNumber } from 'Types';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import debounce from 'lodash.debounce';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
@@ -273,7 +273,7 @@ export default class TradeStore extends BaseStore {
 
     // Multiplier trade params
     multiplier = 0;
-    multiplier_range_list: number[] = [];
+    multiplier_range_list: TTextValueNumber[] = [];
     stop_loss?: string;
     take_profit?: string;
     has_stop_loss = false;

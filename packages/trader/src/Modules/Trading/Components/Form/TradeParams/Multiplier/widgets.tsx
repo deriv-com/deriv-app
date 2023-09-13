@@ -4,13 +4,25 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { observer } from '@deriv/stores';
 import MultiplierAmountModal from 'Modules/Trading/Containers/Multiplier/multiplier-amount-modal';
 import RadioGroupOptionsModal from 'Modules/Trading/Containers/radio-group-options-modal.jsx';
-import MultipliersExpiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration.jsx';
-import MultipliersExpirationModal from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration-modal.jsx';
+import MultipliersExpiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration';
+import MultipliersExpirationModal from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration-modal';
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info';
 import { localize } from '@deriv/translations';
 import { getGrowthRatePercentage } from '@deriv/shared';
 
-const AmountWidget = ({ amount, currency, expiration, is_crypto_multiplier }) => {
+type TAmountWidgetProps = {
+    amount: number;
+    currency: string;
+    expiration?: number;
+    is_crypto_multiplier: boolean;
+};
+
+type TRadioGroupOptionsWidgetProps = {
+    displayed_trade_param: string;
+    modal_title: string;
+};
+
+const AmountWidget = ({ amount, currency, expiration, is_crypto_multiplier }: TAmountWidgetProps) => {
     const [is_open, setIsOpen] = React.useState(false);
     const [is_expiration_modal_open, setIsExpirationModalOpen] = React.useState(false);
 
@@ -40,7 +52,7 @@ const AmountWidget = ({ amount, currency, expiration, is_crypto_multiplier }) =>
                 />
             </div>
             {is_crypto_multiplier && (
-                <div className='mobile-widget' onClick={expiration ? toggleExpirationModal : null}>
+                <div className='mobile-widget' onClick={expiration ? toggleExpirationModal : undefined}>
                     <div className='mobile-widget__multiplier-expiration'>
                         <Text size='xxs'>{localize('Expires on')}</Text>
                         <MultipliersExpiration is_text_only text_size='xxs' />
@@ -56,18 +68,17 @@ const AmountWidget = ({ amount, currency, expiration, is_crypto_multiplier }) =>
 };
 
 export const MultiplierAmountWidget = observer(() => {
-    const { amount, expiration, currency, is_crypto_multiplier, multiplier } = useTraderStore();
+    const { amount, expiration, currency, is_crypto_multiplier } = useTraderStore();
     const amount_widget_props = {
         amount,
         expiration,
         currency,
         is_crypto_multiplier,
-        multiplier,
     };
     return <AmountWidget {...amount_widget_props} />;
 });
 
-const RadioGroupOptionsWidget = ({ displayed_trade_param, modal_title }) => {
+const RadioGroupOptionsWidget = ({ displayed_trade_param, modal_title }: TRadioGroupOptionsWidgetProps) => {
     const [is_open, setIsOpen] = React.useState(false);
 
     const toggleModal = () => {
@@ -76,6 +87,7 @@ const RadioGroupOptionsWidget = ({ displayed_trade_param, modal_title }) => {
 
     return (
         <React.Fragment>
+            {/* @ts-expect-error TODO: check if TS error is gone after RadioGroupOptionsModal is migrated to TS */}
             <RadioGroupOptionsModal is_open={is_open} toggleModal={toggleModal} modal_title={modal_title} />
             <div className='mobile-widget mobile-widget__multiplier-options' onClick={toggleModal}>
                 <div className='mobile-widget__item'>

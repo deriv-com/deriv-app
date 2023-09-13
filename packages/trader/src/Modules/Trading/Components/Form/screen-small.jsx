@@ -11,7 +11,7 @@ import {
 import {
     AccumulatorOptionsWidget,
     MultiplierOptionsWidget,
-} from 'Modules/Trading/Components/Form/TradeParams/Multiplier/widgets.jsx';
+} from 'Modules/Trading/Components/Form/TradeParams/Multiplier/widgets';
 import AccumulatorsAmountMobile from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-amount-mobile.jsx';
 import AccumulatorsInfoDisplay from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-info-display.jsx';
 import { BarrierMobile, LastDigitMobile } from 'Modules/Trading/Containers/trade-params-mobile';
@@ -19,7 +19,7 @@ import ContractType from 'Modules/Trading/Containers/contract-type.jsx';
 import MobileWidget from 'Modules/Trading/Components/Elements/mobile-widget.jsx';
 import Purchase from 'Modules/Trading/Containers/purchase';
 import RiskManagementInfo from 'Modules/Trading/Components/Elements/Multiplier/risk-management-info.jsx';
-import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit.jsx';
+import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit';
 import 'Sass/app/_common/mobile-widget.scss';
 import classNames from 'classnames';
 import AccumulatorsStats from 'Modules/Contract/Components/AccumulatorsStats';

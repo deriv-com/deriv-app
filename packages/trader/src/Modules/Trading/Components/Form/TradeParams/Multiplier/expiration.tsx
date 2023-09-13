@@ -1,17 +1,24 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { formatDuration, getDiffDuration, getDateFromNow } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
-const Expiration = observer(({ is_text_only, text_size }) => {
+type TExpirationProps = {
+    is_text_only?: boolean;
+    text_size?: string;
+};
+
+const Expiration = observer(({ is_text_only, text_size }: TExpirationProps) => {
     const { expiration } = useTraderStore();
     const { common } = useStore();
     const { server_time: start_time } = common;
-    const { days, timestamp } = formatDuration(getDiffDuration(start_time.unix(), expiration), 'HH:mm');
+    const { days, timestamp } = formatDuration(
+        getDiffDuration(Number(start_time?.unix()), Number(expiration)),
+        'HH:mm'
+    );
     const date = getDateFromNow(days, 'day', 'DD MMM YYYY');
 
     if (is_text_only) {
@@ -34,12 +41,12 @@ const Expiration = observer(({ is_text_only, text_size }) => {
             is_center
             header={localize('Expires on')}
             header_tooltip={
-                expiration
-                    ? localize(
-                          'Your contract will be closed automatically at the next available asset price on {{date}} at {{timestamp}}.',
-                          { date, timestamp }
-                      )
-                    : null
+                expiration ? (
+                    <Localize
+                        i18n_default_text='Your contract will be closed automatically at the next available asset price on {{date}} at {{timestamp}}.'
+                        values={{ date, timestamp }}
+                    />
+                ) : null
             }
         >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1.6rem' }}>
@@ -54,10 +61,5 @@ const Expiration = observer(({ is_text_only, text_size }) => {
         </Fieldset>
     );
 });
-
-Expiration.propTypes = {
-    is_text_only: PropTypes.bool,
-    text_size: PropTypes.string,
-};
 
 export default Expiration;

@@ -13,7 +13,7 @@ type TOnToggleCancellation = {
 };
 
 type TOnChangeCancellationDuration = {
-    event: React.ChangeEvent<HTMLInputElement>;
+    event: { target: { name: string; value: string } };
     onChangeMultiple: (data: TData) => void;
 };
 

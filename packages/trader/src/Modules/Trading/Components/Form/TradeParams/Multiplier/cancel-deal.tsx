@@ -1,6 +1,6 @@
 import React from 'react';
 import { Checkbox, Dropdown, Popover, PopoverMessageCheckbox } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { onToggleCancellation, onChangeCancellationDuration } from 'Stores/Modules/Trading/Helpers/multiplier';
 import { observer, useStore } from '@deriv/stores';
@@ -75,9 +75,9 @@ const CancelDeal = observer(() => {
                     icon='info'
                     id='dt_cancellation-checkbox__tooltip'
                     is_bubble_hover_enabled
-                    message={localize(
-                        'Cancel your trade anytime within a chosen time-frame. Triggered automatically if your trade reaches the stop out level within the chosen time-frame.'
-                    )}
+                    message={
+                        <Localize i18n_default_text='Cancel your trade anytime within a chosen time-frame. Triggered automatically if your trade reaches the stop out level within the chosen time-frame.' />
+                    }
                     classNameBubble='trade-container__deal-cancellation-popover'
                     margin={216}
                     relative_render
@@ -85,7 +85,7 @@ const CancelDeal = observer(() => {
             </div>
             {has_cancellation && (
                 <Dropdown
-                    id='dt_cancellation_range'
+                    test_id='dt_cancellation_range'
                     className='trade-container__multiplier-dropdown'
                     is_alignment_left
                     is_nativepicker={false}

@@ -7,13 +7,12 @@ const Multiplier = observer(() => {
     const { multiplier, multiplier_range_list, onChange } = useTraderStore();
     return (
         <Dropdown
-            id='multiplier'
+            test_id='multiplier'
             className='trade-container__multiplier-dropdown'
             is_alignment_left
-            is_nativepicker={false}
-            list={multiplier_range_list}
+            list={multiplier_range_list as unknown as React.ComponentProps<typeof Dropdown>['list']}
             name='multiplier'
-            no_border={true}
+            no_border
             value={multiplier}
             onChange={onChange}
         />

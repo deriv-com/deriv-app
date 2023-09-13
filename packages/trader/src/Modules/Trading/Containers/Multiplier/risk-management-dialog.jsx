@@ -5,8 +5,8 @@ import { isDeepEqual, pick } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import StopLoss from 'Modules/Trading/Components/Form/TradeParams/Multiplier/stop-loss.jsx';
-import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit.jsx';
+import StopLoss from 'Modules/Trading/Components/Form/TradeParams/Multiplier/stop-loss';
+import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit';
 import CancelDeal from 'Modules/Trading/Components/Elements/Multiplier/cancel-deal-mobile.jsx';
 
 const RiskManagementDialog = observer(({ is_open, onClose, toggleDialog }) => {

@@ -4,7 +4,7 @@ import { Localize, localize } from '@deriv/translations';
 
 import AllowEquals from './allow-equals.jsx';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import Multiplier from './Multiplier/multiplier.jsx';
+import Multiplier from './Multiplier/multiplier';
 import MultipliersInfo from './Multiplier/info';
 import MinMaxStakeInfo from './min-max-stake-info';
 import PropTypes from 'prop-types';

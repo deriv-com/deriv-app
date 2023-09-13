@@ -30,40 +30,42 @@ const TourGuide = observer(
                             </span>
                         </div>
                     )}
-                    <div className='onboard__label'>
-                        <Text as='h' line_height='l' weight='bold'>
-                            {label}
-                        </Text>
-                    </div>
+                    <div className='onboard__steps'>
+                        <div className='onboard__label'>
+                            <Text as='h' line_height='l' weight='bold'>
+                                {label}
+                            </Text>
+                        </div>
 
-                    {media && (
-                        <video
-                            autoPlay={true}
-                            loop
-                            controls
-                            preload='auto'
-                            playsInline
-                            disablePictureInPicture
-                            controlsList='nodownload'
-                            style={{ width: '100%' }}
-                            src={media}
-                        />
-                    )}
+                        {media && (
+                            <video
+                                autoPlay={true}
+                                loop
+                                controls
+                                preload='auto'
+                                playsInline
+                                disablePictureInPicture
+                                controlsList='nodownload'
+                                style={{ width: '100%' }}
+                                src={media}
+                            />
+                        )}
 
-                    <div className='onboard__content'>
-                        <>
-                            {content.map((content_data, index) => {
-                                return has_localize_component ? (
-                                    content_data
-                                ) : (
-                                    <div className='onboard__content__block' key={`onboard--${index}`}>
-                                        <Text align='left' as='h' size='xs' line_height='l'>
-                                            {content_data}
-                                        </Text>
-                                    </div>
-                                );
-                            })}
-                        </>
+                        <div className='onboard__content'>
+                            <>
+                                {content.map((content_data, index) => {
+                                    return has_localize_component ? (
+                                        content_data
+                                    ) : (
+                                        <div className='onboard__content__block' key={`onboard--${index}`}>
+                                            <Text align='left' as='h' size='xs' line_height='l'>
+                                                {content_data}
+                                            </Text>
+                                        </div>
+                                    );
+                                })}
+                            </>
+                        </div>
                     </div>
                 </div>
             </React.Fragment>

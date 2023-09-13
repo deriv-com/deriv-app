@@ -41,6 +41,7 @@ const useP2PAdvertList = (
         payload?.payment_method,
         payload?.use_client_limits,
         payload?.local_currency,
+        payload?.sort_by,
         invalidate,
     ]);
 

@@ -4,7 +4,7 @@ import React from 'react';
 import { DesktopWrapper, Icon, MobileWrapper, Money, Popover, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { getContractSubtype, getCurrencyDisplayCode, getLocalizedBasis, getGrowthRatePercentage } from '@deriv/shared';
-import CancelDealInfo from './cancel-deal-info.jsx';
+import CancelDealInfo from './cancel-deal-info';
 
 export const ValueMovement = ({
     has_error_or_not_loaded,

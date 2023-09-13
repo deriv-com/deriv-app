@@ -1,8 +1,8 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Text } from '@deriv/components';
-import { PlatformContext, isMobile } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
+import classNames from 'classnames';
+import { Localize } from '@deriv/translations';
 
 export type TFormBodySection = {
     /**
@@ -33,14 +33,11 @@ const FormBodySection = ({
     side_note,
     side_note_position = 'left',
 }: React.PropsWithChildren<TFormBodySection>): JSX.Element => {
-    const { is_appstore } = React.useContext(PlatformContext);
-
     if (has_side_note) {
         return (
             <div
                 data-testid='dt_side_note_container'
                 className={classNames('account-form__section', {
-                    'account-form__section--dashboard': is_appstore,
                     'account-form__section--reversed': side_note_position === 'right',
                 })}
             >
@@ -56,7 +53,7 @@ const FormBodySection = ({
                     ) : (
                         <React.Fragment>
                             <Text as='p' size={isMobile() ? 'xxs' : 'xs'} weight='bold'>
-                                {localize('Example:')}
+                                <Localize i18n_default_text='Example' />
                             </Text>
                             <div className='account-form__section-side-note__example-image'>{side_note}</div>
                         </React.Fragment>

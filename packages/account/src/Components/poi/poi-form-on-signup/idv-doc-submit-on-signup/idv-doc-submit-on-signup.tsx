@@ -17,15 +17,11 @@ import IDVForm from 'Components/forms/idv-form';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
 import FormFooter from 'Components/form-footer';
 import { GetSettings } from '@deriv/api-types';
-import ConfirmationCheckbox from '../../../forms/confirmation-checkbox';
 
 type TIdvDocSubmitOnSignup = {
     citizen_data: FormikValues;
     onPrevious: (values: FormikValues) => void;
-    onNext: (
-        values: FormikValues,
-        action: FormikHelpers<{ document_type: FormikValues; document_number: FormikValues }>
-    ) => void;
+    onNext: (values: FormikValues, action: FormikHelpers<FormikValues>) => void;
     value: FormikValues;
     has_idv_error?: boolean;
     account_settings: GetSettings;
@@ -38,7 +34,6 @@ export const IdvDocSubmitOnSignup = ({
     account_settings,
     getChangeableFields,
 }: TIdvDocSubmitOnSignup) => {
-    const [is_confirmed, setIsConfirmed] = React.useState(false);
     const validateFields = (values: FormikValues) => {
         const errors: FormikErrors<FormikValues> = {};
         const { document_type, document_number, document_additional } = values;
@@ -72,7 +67,7 @@ export const IdvDocSubmitOnSignup = ({
         form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format('YYYY-MM-DD');
     }
 
-    const changeable_fields = is_confirmed ? [] : getChangeableFields();
+    const changeable_fields = getChangeableFields();
 
     const initial_values = {
         document_type: {
@@ -96,6 +91,9 @@ export const IdvDocSubmitOnSignup = ({
             validateOnMount
             validateOnChange
             validateOnBlur
+            initialStatus={{
+                is_confirmed: false,
+            }}
         >
             {({
                 errors,
@@ -104,10 +102,10 @@ export const IdvDocSubmitOnSignup = ({
                 isSubmitting,
                 isValid,
                 setFieldValue,
-                setFieldTouched,
                 touched,
                 dirty,
                 values,
+                status,
             }) => (
                 <Form className='proof-of-identity__container proof-of-identity__container--reset mt5-layout'>
                     <section className='mt5-layout__container'>
@@ -124,41 +122,24 @@ export const IdvDocSubmitOnSignup = ({
                             class_name='idv-layout'
                         />
                         <FormSubHeader title={localize('Identity verification')} />
-                        <div
-                            className={classNames({
+                        <PersonalDetailsForm
+                            class_name={classNames({
                                 'account-form__poi-confirm-example_container': !shouldHideHelperImage(
                                     values?.document_type?.id
                                 ),
                             })}
-                        >
-                            <PersonalDetailsForm
-                                errors={errors}
-                                touched={touched}
-                                values={values}
-                                handleChange={handleChange}
-                                handleBlur={handleBlur}
-                                setFieldValue={setFieldValue}
-                                setFieldTouched={setFieldTouched}
-                                is_qualified_for_idv={true}
-                                is_appstore
-                                should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
-                                editable_fields={changeable_fields}
-                            />
-                            <ConfirmationCheckbox
-                                confirmed={is_confirmed}
-                                setConfirmed={setIsConfirmed}
-                                label={localize(
-                                    'I confirm that the name and date of birth above match my chosen identity document'
-                                )}
-                            />
-                        </div>
+                            is_qualified_for_idv
+                            is_appstore
+                            should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
+                            editable_fields={status?.is_confirmed ? [] : changeable_fields}
+                        />
                     </section>
                     <FormFooter className='proof-of-identity__footer'>
                         <Button
                             className='proof-of-identity__submit-button'
                             type='submit'
                             has_effect
-                            is_disabled={!dirty || isSubmitting || !isValid || !is_confirmed}
+                            is_disabled={!dirty || isSubmitting || !isValid || !status?.is_confirmed}
                             text={localize('Next')}
                             large
                             primary

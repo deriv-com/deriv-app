@@ -8,17 +8,9 @@ import { useFormikContext } from 'formik';
  */
 type TConfirmationCheckboxProps = {
     /**
-     * A boolean value indicating whether the checkbox is confirmed or not.
-     */
-    confirmed: boolean;
-    /**
-     * A React.SetStateAction function to set the confirmed state of the checkbox.
-     */
-    setConfirmed: React.Dispatch<React.SetStateAction<boolean>>;
-    /**
      * The label of the checkbox.
      */
-    label: string;
+    label: React.ReactNode;
     /**
      * The size of the checkbox label.
      */
@@ -32,30 +24,31 @@ type TConfirmationCheckboxProps = {
  * and conditions. It also allows displaying an optional description next to the checkbox.
  *
  * **Note**: This component is meant to be used with Formik forms.
+ * To use this component, you must set initialStatus in the Formik form to { is_confirmed: false }.
  *
  * @name ConfirmationCheckbox
  * @returns {JSX.Element} React component that renders a checkbox with a label
  */
-export const ConfirmationCheckbox = ({
-    confirmed,
-    setConfirmed,
-    label,
-    label_size,
-}: TConfirmationCheckboxProps): JSX.Element => {
+export const ConfirmationCheckbox = ({ label, label_size }: TConfirmationCheckboxProps): JSX.Element => {
     /**
      * The formik context for the current form.
      *
      * This context provides information about the form's state and helps in managing form behavior.
      */
-    const { isSubmitting, isValid } = useFormikContext();
+    const { isSubmitting, isValid, setStatus, status } = useFormikContext();
+
+    const handleChange = () => {
+        // check if status is an object to avoid overwriting the status if it is a string
+        if (typeof status === 'object') setStatus({ ...status, is_confirmed: !status?.is_confirmed });
+    };
 
     return (
         <Checkbox
             className='formik__confirmation-checkbox'
-            value={confirmed}
+            value={status?.is_confirmed ?? false}
             label={<Text size={label_size ?? (isMobile() ? 'xxs' : 'xs')}>{label}</Text>}
             disabled={isSubmitting || !isValid}
-            onChange={() => setConfirmed(prev_is_confirmed => !prev_is_confirmed)}
+            onChange={handleChange}
         />
     );
 };

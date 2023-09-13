@@ -136,11 +136,11 @@ export const personal_details_config = ({
                     { min: 0, max: 25 },
                 ],
                 [
-                    'regular',
-                    localize('Letters, numbers, spaces, periods, hyphens and forward slashes only.'),
-                    {
-                        regex: /^[A-Za-z0-9./-]{0,25}$/,
+                    (value: string) => {
+                        if (!value) return true;
+                        return RegExp(/^(?!^$|\s+)[A-Za-z0-9./\s-]{0,25}$/).test(value);
                     },
+                    localize('Letters, numbers, spaces, periods, hyphens and forward slashes only.'),
                 ],
                 [
                     (value: string, options: Record<string, unknown>, { tax_residence }: { tax_residence: string }) => {

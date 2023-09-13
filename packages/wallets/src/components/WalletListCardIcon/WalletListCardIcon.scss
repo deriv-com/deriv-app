@@ -1,11 +1,9 @@
 .wallets-card {
     &__icon {
-        display: flex;
-        width: 128px;
-        height: 80px;
-        justify-content: center;
-        align-items: center;
-        flex-shrink: 0;
-        border-radius: 4px;
+        height: 48px;
+
+        @include mobile {
+            height: 32px;
+        }
     }
 }

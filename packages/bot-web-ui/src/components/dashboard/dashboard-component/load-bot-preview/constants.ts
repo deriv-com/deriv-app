@@ -6,6 +6,7 @@ export const STRATEGY = {
     DELETE: 'delete',
     PREVIEW: 'preview',
     PREVIEW_LIST: 'list',
+    INIT: 'init',
 };
 
 export const MENU_DESKTOP = [

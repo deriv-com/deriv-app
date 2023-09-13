@@ -1,0 +1,17 @@
+{
+    "name": "@deriv/wallets",
+    "private": true,
+    "version": "1.0.0",
+    "main": "src/index.tsx",
+    "dependencies": {
+        "@deriv/api": "^1.0.0",
+        "@deriv/translations": "^1.0.0",
+        "embla-carousel-react": "^8.0.0-rc12",
+        "react": "^17.0.2",
+        "usehooks-ts": "^2.7.0"
+    },
+    "devDependencies": {
+        "eslint-plugin-simple-import-sort": "^10.0.0",
+        "typescript": "^4.6.3"
+    }
+}

@@ -5,10 +5,10 @@ import type {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
+    Portfolio1,
     GetSettings,
     LandingCompany,
     LogOutResponse,
-    Portfolio1,
     ProposalOpenContract,
     ResidenceList,
     SetFinancialAssessmentRequest,
@@ -166,6 +166,15 @@ type TTradingPlatformAvailableAccount = {
     sub_account_type: string;
 };
 
+type TAvailableCFDAccounts = {
+    availability: 'Non-EU' | 'EU' | 'All';
+    description: string;
+    icon: 'Derived' | 'Financial' | 'DerivX' | 'SwapFree';
+    market_type: 'synthetic' | 'financial' | 'all' | 'gaming';
+    name: string;
+    platform: 'mt5' | 'dxtrade';
+};
+
 type TAuthenticationStatus = { document_status: string; identity_status: string };
 
 type TMenuItem = {
@@ -265,6 +274,7 @@ type TClientStore = {
     has_active_real_account: boolean;
     has_logged_out: boolean;
     has_maltainvest_account: boolean;
+    has_restricted_mt5_account: boolean;
     initialized_broadcast: boolean;
     is_account_setting_loaded: boolean;
     is_deposit_lock: boolean;
@@ -276,6 +286,7 @@ type TClientStore = {
     has_residence: boolean;
     is_authorize: boolean;
     is_financial_account: boolean;
+    is_financial_assessment_needed: boolean;
     is_financial_information_incomplete: boolean;
     is_identity_verification_needed: boolean;
     is_landing_company_loaded: boolean;
@@ -410,6 +421,7 @@ type TCommonStoreError = {
 type TCommonStore = {
     isCurrentLanguage(language_code: string): boolean;
     error: TCommonStoreError;
+    services_error: { code: string; message: string; type: string } | Record<string, never>;
     has_error: boolean;
     is_from_derivgo: boolean;
     is_network_online: boolean;
@@ -435,16 +447,19 @@ type TUiStore = {
     disableApp: () => void;
     enableApp: () => void;
     has_real_account_signup_ended: boolean;
+    is_loading: boolean;
     is_cashier_visible: boolean;
     is_closing_create_real_account_modal: boolean;
+    is_unsupported_contract_modal_visible: boolean;
+    has_only_forward_starting_contracts: boolean;
     is_dark_mode_on: boolean;
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
     is_app_disabled: boolean;
     is_link_expired_modal_visible: boolean;
     is_mobile: boolean;
-    sub_section_index: number;
-    toggleShouldShowRealAccountsList: (value: boolean) => void;
+    is_positions_drawer_on: boolean;
+    is_services_error_visible: boolean;
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;
@@ -454,14 +469,20 @@ type TUiStore = {
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
+    setPurchaseState: (index: number) => void;
+    setHasOnlyForwardingContracts: (has_only_forward_starting_contracts: boolean) => void;
+    sub_section_index: number;
     setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: Omit<string, TRoutes> | TRoutes) => void;
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
     toggleLanguageSettingsModal: () => void;
     toggleLinkExpiredModal: (state_change: boolean) => void;
+    togglePositionsDrawer: () => void;
     toggleReadyToDepositModal: () => void;
     toggleSetCurrencyModal: () => void;
+    toggleShouldShowRealAccountsList: (value: boolean) => void;
+    toggleServicesErrorModal: () => void;
     is_tablet: boolean;
     removeToast: (key: string) => void;
     is_ready_to_deposit_modal_visible: boolean;
@@ -492,6 +513,7 @@ type TUiStore = {
     setResetTradingPasswordModalOpen: () => void;
     populateHeaderExtensions: (header_items: JSX.Element | null) => void;
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
+    purchase_states: boolean[];
     setShouldShowCooldownModal: (value: boolean) => void;
     setAppContentsScrollRef: (ref: React.MutableRefObject<null | HTMLDivElement>) => void;
     populateFooterExtensions: (
@@ -509,11 +531,12 @@ type TUiStore = {
 
 type TPortfolioStore = {
     active_positions: TPortfolioPosition[];
+    all_positions: TPortfolioPosition[];
     error: string;
     getPositionById: (id: number) => TPortfolioPosition;
-    is_accumulator: boolean;
     is_loading: boolean;
     is_multiplier: boolean;
+    is_accumulator: boolean;
     is_turbos: boolean;
     onClickCancel: (contract_id?: number) => void;
     onClickSell: (contract_id?: number) => void;
@@ -524,6 +547,11 @@ type TPortfolioStore = {
 
 type TContractStore = {
     getContractById: (id: number) => ProposalOpenContract;
+    contract_info: TPortfolioPosition['contract_info'];
+    contract_update_stop_loss: string;
+    contract_update_take_profit: string;
+    has_contract_update_stop_loss: boolean;
+    has_contract_update_take_profit: boolean;
 };
 
 type TMenuStore = {
@@ -537,8 +565,8 @@ type TNotificationStore = {
     client_notifications: object;
     filterNotificationMessages: () => void;
     refreshNotifications: () => void;
-    removeNotificationByKey: (key: string) => void;
-    removeNotificationMessage: (key: string, should_show_again?: boolean) => void;
+    removeNotificationByKey: ({ key }: { key: string }) => void;
+    removeNotificationMessage: ({ key, should_show_again }: { key: string; should_show_again?: boolean }) => void;
     setP2POrderProps: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setP2PRedirectTo: () => void;
@@ -593,10 +621,19 @@ type TTradersHubStore = {
     platform_demo_balance: TBalance;
     cfd_real_balance: TBalance;
     selectAccountType: (account_type: string) => void;
+    available_cfd_accounts: TAvailableCFDAccounts[];
+    available_dxtrade_accounts: TAvailableCFDAccounts[];
     toggleIsTourOpen: (is_tour_open: boolean) => void;
     is_demo_low_risk: boolean;
     is_mt5_notification_modal_visible: boolean;
     setMT5NotificationModal: (value: boolean) => void;
+    available_derivez_accounts: DetailsOfEachMT5Loginid[];
+    has_any_real_account: boolean;
+    startTrade: () => void;
+    getExistingAccounts: () => void;
+    getAccount: () => void;
+    toggleAccountTypeModalVisibility: () => void;
+    showTopUpModal: () => void;
 };
 
 /**

@@ -1,0 +1,28 @@
+.wallets-list-header {
+    &__card_container {
+        flex: 1;
+        display: flex;
+        align-items: flex-start;
+        width: 100%;
+        border-radius: 16px;
+        background: inherit;
+    }
+
+    &__content {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 24px;
+        align-self: stretch;
+    }
+
+    &__details-container {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        gap: 24px;
+        align-self: stretch;
+        border-radius: 16px;
+    }
+}

@@ -1,16 +1,26 @@
 import React from 'react';
 import { useWalletAccountsList } from '@deriv/api';
-import { WalletsAccordionContainer } from '..';
+import { AccountsList, WalletListCard, WalletsAccordion } from '..';
+import './DesktopWalletsList.scss';
 
 const DesktopWalletsList: React.FC = () => {
-    const { data } = useWalletAccountsList();
+    const { data: wallet_accounts_list } = useWalletAccountsList();
 
-    if (!data.length) return <h1>No wallets found</h1>;
+    if (!wallet_accounts_list.length) return <h1>No wallets found</h1>;
 
     return (
-        <React.Fragment>
-            <WalletsAccordionContainer wallets_list={data} />
-        </React.Fragment>
+        <div className='wallets-desktop-wallets-list'>
+            {wallet_accounts_list.map(account => {
+                return (
+                    <WalletsAccordion
+                        key={account.loginid}
+                        account={account}
+                        content={<AccountsList />}
+                        header={<WalletListCard account={account} />}
+                    />
+                );
+            })}
+        </div>
     );
 };
 

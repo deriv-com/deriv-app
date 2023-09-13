@@ -48,10 +48,9 @@ const PersonalDetails = ({
     const { account_status, account_settings, residence, real_account_signup_target } = props;
     const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
     const is_submit_disabled_ref = React.useRef(true);
-    const [is_confirmed, setIsConfirmed] = React.useState(false);
 
     const isSubmitDisabled = errors => {
-        return !is_confirmed || selected_step_ref?.current?.isSubmitting || Object.keys(errors).length > 0;
+        return selected_step_ref?.current?.isSubmitting || Object.keys(errors).length > 0;
     };
 
     const checkSubmitStatus = errors => {
@@ -108,12 +107,6 @@ const PersonalDetails = ({
 
     const closeToolTip = () => setShouldCloseTooltip(true);
 
-    React.useEffect(() => {
-        if (!is_qualified_for_idv) {
-            setIsConfirmed(true);
-        }
-    }, [is_qualified_for_idv]);
-
     /*
     In most modern browsers, setting autocomplete to "off" will not prevent a password manager from asking the user if they would like to save username and password information, or from automatically filling in those values in a site's login form.
     check this link https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion#the_autocomplete_attribute_and_login_fields
@@ -127,7 +120,7 @@ const PersonalDetails = ({
         const editable_fields = Object.keys(props.value).filter(field => !disabled_items.includes(field)) || [];
 
         if (is_confirmed && is_qualified_for_idv) {
-            return editable_fields.filter(field => field !== 'first_name', 'last_name', 'date_of_birth');
+            return editable_fields.filter(field => !['first_name', 'last_name', 'date_of_birth'].includes(field));
         }
 
         return editable_fields;
@@ -140,7 +133,7 @@ const PersonalDetails = ({
             validate={handleValidate}
             validateOnMount
             enableReinitialize
-            initialStatus={{ is_confirmed }}
+            initialStatus={{ is_confirmed: !is_qualified_for_idv }}
             onSubmit={(values, actions) => {
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
@@ -219,7 +212,7 @@ const PersonalDetails = ({
                                 <FormSubmitButton
                                     cancel_label={localize('Previous')}
                                     has_cancel
-                                    is_disabled={isSubmitDisabled(errors)}
+                                    is_disabled={!status?.is_confirmed || isSubmitDisabled(errors)}
                                     is_absolute={isMobile()}
                                     label={localize('Next')}
                                     onCancel={() => handleCancel(values)}

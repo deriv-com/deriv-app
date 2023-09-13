@@ -529,6 +529,8 @@ const PersonalDetailsForm = props => {
                 </FormBodySection>
                 {is_qualified_for_idv && (
                     <ConfirmationCheckbox
+                        // we need to disable the checkbox if the user has not filled in the name and dob fields initially
+                        disabled={!(values.first_name && values.last_name && values.date_of_birth)}
                         label={
                             <Localize i18n_default_text='I confirm that the name and date of birth above match my chosen identity document' />
                         }

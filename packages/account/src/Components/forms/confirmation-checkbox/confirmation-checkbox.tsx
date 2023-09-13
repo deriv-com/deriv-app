@@ -15,6 +15,7 @@ type TConfirmationCheckboxProps = {
      * The size of the checkbox label.
      */
     label_size?: 'xxxxs' | 'xxxs' | 'xxs' | 'xs' | 's' | 'sm' | 'm' | 'l' | 'xl' | 'xxl';
+    disabled?: boolean;
 };
 
 /**
@@ -29,13 +30,17 @@ type TConfirmationCheckboxProps = {
  * @name ConfirmationCheckbox
  * @returns {JSX.Element} React component that renders a checkbox with a label
  */
-export const ConfirmationCheckbox = ({ label, label_size }: TConfirmationCheckboxProps): JSX.Element => {
+export const ConfirmationCheckbox = ({
+    label,
+    label_size,
+    disabled = false,
+}: TConfirmationCheckboxProps): JSX.Element => {
     /**
      * The formik context for the current form.
      *
      * This context provides information about the form's state and helps in managing form behavior.
      */
-    const { isSubmitting, isValid, setStatus, status } = useFormikContext();
+    const { setStatus, status } = useFormikContext();
 
     const handleChange = () => {
         // check if status is an object to avoid overwriting the status if it is a string
@@ -47,7 +52,7 @@ export const ConfirmationCheckbox = ({ label, label_size }: TConfirmationCheckbo
             className='formik__confirmation-checkbox'
             value={status?.is_confirmed ?? false}
             label={<Text size={label_size ?? (isMobile() ? 'xxs' : 'xs')}>{label}</Text>}
-            disabled={isSubmitting || !isValid}
+            disabled={disabled}
             onChange={handleChange}
         />
     );

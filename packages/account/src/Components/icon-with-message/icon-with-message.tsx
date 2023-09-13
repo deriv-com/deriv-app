@@ -1,9 +1,8 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Icon, Text, Button } from '@deriv/components';
-import { isMobile, PlatformContext } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 
 type TIconWithMessage = {
     icon: string;
@@ -15,10 +14,9 @@ const IconWithMessage = observer(({ has_button, icon, message }: TIconWithMessag
     const { client, ui } = useStore();
     const { has_any_real_account: has_real_account } = client;
     const { toggleAccountsDialog, toggleShouldShowRealAccountsList } = ui;
-    const { is_appstore } = React.useContext(PlatformContext);
 
     return (
-        <div className={classNames('da-icon-with-message', { 'da-icon-with-message-full-width': is_appstore })}>
+        <div className='da-icon-with-message'>
             <Icon icon={icon} size={128} />
             <Text
                 className='da-icon-with-message__text'

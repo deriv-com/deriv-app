@@ -32,7 +32,6 @@ describe('TradersHub', () => {
 
     it('should display the component', () => {
         const { container } = render_container();
-        mock_store_override.client.is_logged_in = true;
         expect(container).toBeInTheDocument();
     });
 

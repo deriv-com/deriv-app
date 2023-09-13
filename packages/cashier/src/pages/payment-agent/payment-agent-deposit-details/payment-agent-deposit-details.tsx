@@ -10,19 +10,15 @@ type TPaymentAgentDepositDetails = {
     payment_agent: TPaymentAgent;
 };
 
-const PaymentAgentPhonesDetails = (props: {
-    phone_numbers: {
-        phone_number?: string;
-    }[];
-}) => {
+const PaymentAgentPhonesDetails = ({ phone_numbers }: Pick<TPaymentAgent, 'phone_numbers'>) => {
     return (
         <PaymentAgentDetail action='tel' icon='IcPhone' title={localize('Phone number')}>
-            {props.phone_numbers.map(phone => phone.phone_number)}
+            {phone_numbers.map(phone => phone.phone_number)}
         </PaymentAgentDetail>
     );
 };
 
-const PaymentAgentEmailDetails = (props: { email: string }) => {
+const PaymentAgentEmailDetails = ({ email }: Pick<TPaymentAgent, 'email'>) => {
     return (
         <PaymentAgentDetail
             action='mailto'
@@ -32,47 +28,55 @@ const PaymentAgentEmailDetails = (props: { email: string }) => {
             has_red_color
             title={localize('Email')}
         >
-            {props.email}
+            {email}
         </PaymentAgentDetail>
     );
 };
 
-const PaymentAgentMinimumWithdrawalDetails = (props: { min_withdrawal: string; currency?: string }) => {
+const PaymentAgentMinimumWithdrawalDetails = ({
+    min_withdrawal,
+    currency,
+}: Pick<TPaymentAgent, 'min_withdrawal' | 'currency'>) => {
     return (
         <PaymentAgentDetail icon='IcCashierMinimumWithdrawal' title={localize('Minimum withdrawal')}>
-            <Money amount={props.min_withdrawal || ''} currency={props.currency} show_currency />
+            <Money amount={min_withdrawal || ''} currency={currency} show_currency />
         </PaymentAgentDetail>
     );
 };
 
-const PaymentAgentMaximumWithdrawalDetails = (props: { max_withdrawal: string; currency?: string }) => {
+const PaymentAgentMaximumWithdrawalDetails = ({
+    max_withdrawal,
+    currency,
+}: Pick<TPaymentAgent, 'max_withdrawal' | 'currency'>) => {
     return (
         <PaymentAgentDetail icon='IcCashierMaximumWithdrawal' title={localize('Maximum withdrawal')}>
-            <Money amount={props.max_withdrawal || ''} currency={props.currency} show_currency />
+            <Money amount={max_withdrawal || ''} currency={currency} show_currency />
         </PaymentAgentDetail>
     );
 };
 
-const PaymentAgentDepositComissionDetails = (props: { deposit_commission: string }) => {
+const PaymentAgentDepositComissionDetails = ({ deposit_commission }: Pick<TPaymentAgent, 'deposit_commission'>) => {
     return (
         <PaymentAgentDetail
             icon='IcCashierCommissionDeposit'
             className='deposit-commission'
             title={localize('Commission on deposits')}
         >
-            {`${props.deposit_commission}%`}
+            {`${deposit_commission}%`}
         </PaymentAgentDetail>
     );
 };
 
-const PaymentAgentWithdrawalComissionDetails = (props: { withdrawal_commission: string }) => {
+const PaymentAgentWithdrawalComissionDetails = ({
+    withdrawal_commission,
+}: Pick<TPaymentAgent, 'withdrawal_commission'>) => {
     return (
         <PaymentAgentDetail
             icon='IcCashierCommissionWithdrawal'
             className='withdrawal_commission'
             title={localize('Commission on withdrawal')}
         >
-            {`${props.withdrawal_commission}%`}
+            {`${withdrawal_commission}%`}
         </PaymentAgentDetail>
     );
 };

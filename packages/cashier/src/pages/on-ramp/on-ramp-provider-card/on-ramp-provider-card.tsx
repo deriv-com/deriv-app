@@ -43,7 +43,7 @@ const OnRampProviderCard = observer(({ provider }: TOnRampProviderCardProps) => 
 
                         return (
                             <Icon
-                                data_testid={is_dark_mode_on ? 'dti_payment_icon_dark' : 'dti_payment_icon_light'}
+                                data_testid={is_dark_mode_on ? 'dt_payment_icon_dark' : 'dt_payment_icon_light'}
                                 icon={icon}
                                 key={icon}
                                 size={40}

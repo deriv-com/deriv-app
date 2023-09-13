@@ -28,8 +28,8 @@ type TCryptoFiatConverterProps = {
     ) => void;
     onChangeConverterToAmount: (
         event: TReactChangeEvent,
-        to_currency: string,
         from_currency: string,
+        to_currency: string,
         converted_amount?: number
     ) => void;
     resetConverter: VoidFunction;

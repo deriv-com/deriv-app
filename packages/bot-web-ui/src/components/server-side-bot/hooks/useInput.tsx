@@ -8,12 +8,18 @@ type TUseInput = {
     trailing_icon_message?: string;
     zIndex?: number;
     type: string;
+    dispatch?: React.Dispatch<any>;
 };
 
-const useInput = ({ label, trailing_icon_message, type }: TUseInput) => {
+const useInput = ({ label, trailing_icon_message, type, dispatch }: TUseInput) => {
     const [value, setValue] = React.useState('');
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value);
-    const get_value = () => value;
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setValue(value);
+        if (dispatch) {
+            dispatch({ name: label, value });
+        }
+    };
     const reset_value = () => setValue('');
     const is_mobile = isMobile();
     return [
@@ -33,7 +39,6 @@ const useInput = ({ label, trailing_icon_message, type }: TUseInput) => {
                 </Popover>
             }
         />,
-        get_value,
         reset_value,
     ];
 };

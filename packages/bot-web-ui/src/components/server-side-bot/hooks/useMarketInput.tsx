@@ -3,7 +3,12 @@ import { ApiHelpers } from '@deriv/bot-skeleton';
 import { SelectNative } from '@deriv/components';
 import { TSymbol } from 'Components/dashboard/quick-strategy/quick-strategy.types';
 
-const useMarketInput = () => {
+type TUseMarketInput = {
+    dispatch: React.Dispatch<any>;
+    name?: string;
+};
+
+const useMarketInput = ({ dispatch, name = 'symbol' }: TUseMarketInput) => {
     const { active_symbols } = ApiHelpers.instance;
     const symbols = active_symbols.getAllSymbols(/* should_be_open */ true);
     const [value, setValue] = React.useState('');
@@ -21,7 +26,12 @@ const useMarketInput = () => {
             value: symbol.symbol,
         }));
 
-    const get_value = () => value;
+    const onChange = e => {
+        const { value } = e.target;
+        setValue(value);
+        dispatch({ name, value });
+    };
+
     const reset_value = () => setValue('');
 
     return [
@@ -30,11 +40,10 @@ const useMarketInput = () => {
                 list_items={symbol_options}
                 value={value}
                 should_show_empty_option={false}
-                onChange={e => setValue(e.target.value)}
+                onChange={onChange}
                 label={'Asset'}
             />
         </>,
-        get_value,
         reset_value,
     ];
 };

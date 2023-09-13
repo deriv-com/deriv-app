@@ -47,3 +47,5 @@ export { default as useRealSTPAccount } from './useRealSTPAccount';
 export { default as useTotalAccountBalance } from './useTotalAccountBalance';
 export { default as useVerifyEmail } from './useVerifyEmail';
 export { useIsAccountStatusPresent } from './useIsAccountStatusPresent';
+export { default as useIsClientHighRiskForMT5 } from './useIsClientHighRiskForMT5';
+export { default as useCFDCanGetMoreMT5Accounts } from './useCFDCanGetMoreMT5Accounts';

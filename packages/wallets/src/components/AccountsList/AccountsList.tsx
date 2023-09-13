@@ -1,5 +1,6 @@
 import React from 'react';
 import { useWalletAccountsList } from '@deriv/api';
+import './AccountsList.scss';
 
 type TAccountsListProps = {
     data: ReturnType<typeof useWalletAccountsList>['data'][number];

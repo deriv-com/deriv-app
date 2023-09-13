@@ -9,13 +9,7 @@ import {
     ThemedScrollbars,
     Text,
 } from '@deriv/components';
-import {
-    isDesktop,
-    isMobile,
-    PlatformContext,
-    getIDVNotApplicableOption,
-    removeEmptyPropertiesFromObject,
-} from '@deriv/shared';
+import { isDesktop, isMobile, getIDVNotApplicableOption, removeEmptyPropertiesFromObject } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import {
     shouldShowIdentityInformation,
@@ -52,9 +46,7 @@ const PersonalDetails = ({
     ...props
 }) => {
     const { account_status, account_settings, residence, real_account_signup_target } = props;
-    const { is_appstore } = React.useContext(PlatformContext);
     const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
-    const [warning_items, setWarningItems] = React.useState({});
     const is_submit_disabled_ref = React.useRef(true);
 
     const isSubmitDisabled = errors => {
@@ -107,9 +99,8 @@ const PersonalDetails = ({
         if (is_qualified_for_idv) {
             idv_error = validateIDV(values);
         }
-        const { errors, warnings } = splitValidationResultTypes(validate(values));
+        const { errors } = splitValidationResultTypes(validate(values));
         const error_data = { ...idv_error, ...errors };
-        setWarningItems(warnings);
         checkSubmitStatus(error_data);
         return error_data;
     };
@@ -137,7 +128,7 @@ const PersonalDetails = ({
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({ handleSubmit, errors, setFieldValue, setFieldTouched, touched, values, handleChange, handleBlur }) => (
+            {({ handleSubmit, errors, setFieldValue, touched, values, handleChange, handleBlur }) => (
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef, height }) => (
                         <Form
@@ -162,7 +153,7 @@ const PersonalDetails = ({
                                     onScroll={closeToolTip}
                                     testId='dt_personal_details_container'
                                 >
-                                    {!is_qualified_for_idv && is_appstore && (
+                                    {!is_qualified_for_idv && (
                                         <div className='details-form__sub-header'>
                                             <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
                                                 {localize(
@@ -193,43 +184,27 @@ const PersonalDetails = ({
                                                 <FormSubHeader title={localize('Details')} />
                                             </React.Fragment>
                                         )}
-                                        <React.Fragment>
-                                            <div
-                                                className={classNames({
-                                                    'account-form__poi-confirm-example_container':
-                                                        is_qualified_for_idv &&
-                                                        !shouldHideHelperImage(values?.document_type?.id),
-                                                })}
-                                            >
-                                                <PersonalDetailsForm
-                                                    errors={errors}
-                                                    touched={touched}
-                                                    values={values}
-                                                    handleChange={handleChange}
-                                                    handleBlur={handleBlur}
-                                                    setFieldValue={setFieldValue}
-                                                    setFieldTouched={setFieldTouched}
-                                                    is_virtual={is_virtual}
-                                                    is_svg={is_svg}
-                                                    is_mf={is_mf}
-                                                    is_qualified_for_idv={is_qualified_for_idv}
-                                                    is_appstore={is_appstore}
-                                                    editable_fields={editable_fields}
-                                                    residence_list={residence_list}
-                                                    has_real_account={has_real_account}
-                                                    is_fully_authenticated={is_fully_authenticated}
-                                                    closeRealAccountSignup={closeRealAccountSignup}
-                                                    salutation_list={salutation_list}
-                                                    warning_items={warning_items}
-                                                    account_opening_reason_list={account_opening_reason_list}
-                                                    should_close_tooltip={should_close_tooltip}
-                                                    setShouldCloseTooltip={setShouldCloseTooltip}
-                                                    should_hide_helper_image={shouldHideHelperImage(
-                                                        values?.document_type?.id
-                                                    )}
-                                                />
-                                            </div>
-                                        </React.Fragment>
+                                        <PersonalDetailsForm
+                                            class_name={classNames({
+                                                'account-form__poi-confirm-example_container':
+                                                    is_qualified_for_idv &&
+                                                    !shouldHideHelperImage(values?.document_type?.id),
+                                            })}
+                                            is_virtual={is_virtual}
+                                            is_svg={is_svg}
+                                            is_mf={is_mf}
+                                            is_qualified_for_idv={is_qualified_for_idv}
+                                            editable_fields={editable_fields}
+                                            residence_list={residence_list}
+                                            has_real_account={has_real_account}
+                                            is_fully_authenticated={is_fully_authenticated}
+                                            closeRealAccountSignup={closeRealAccountSignup}
+                                            salutation_list={salutation_list}
+                                            account_opening_reason_list={account_opening_reason_list}
+                                            should_close_tooltip={should_close_tooltip}
+                                            setShouldCloseTooltip={setShouldCloseTooltip}
+                                            should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
+                                        />
                                     </div>
                                 </ThemedScrollbars>
                             </Div100vhContainer>

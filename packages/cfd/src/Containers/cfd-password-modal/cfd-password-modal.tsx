@@ -77,7 +77,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const { is_wallet_enabled } = useFeatureFlags();
     const { mutate: changePlatformPassword } = useTradingPlatformPasswordChange();
     const { mutate: createMT5Account, data: newly_created_mt5_account, error } = useCreateMT5Account();
-    const { mutate: createOtherCFDAccount } = useCreateOtherCFDAccount();
+    const { mutate: createOtherCFDAccount, data: newly_created_cfd_account } = useCreateOtherCFDAccount();
     const active_wallet = useActiveWallet();
 
     const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);
@@ -291,7 +291,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         is_cfd_success_dialog_enabled &&
         is_cfd_password_modal_enabled &&
         is_password_modal_exited &&
-        newly_created_mt5_account;
+        (newly_created_mt5_account || newly_created_cfd_account);
 
     const should_show_sent_email_modal = is_sent_email_modal_open && is_password_modal_exited;
 

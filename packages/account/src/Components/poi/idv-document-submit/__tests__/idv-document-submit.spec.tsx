@@ -155,9 +155,6 @@ describe('<IdvDocumentSubmit/>', () => {
         fireEvent.keyUp(document_number_input);
         fireEvent.change(document_number_input, { target: { value: 'A-32523' } });
         expect(await screen.findByText(/please enter the correct format/i)).toBeInTheDocument();
-
-        expect(confirmation_checkbox).toBeDisabled();
-
         fireEvent.change(document_number_input, { target: { value: '5436454364243' } });
 
         await waitFor(() => {

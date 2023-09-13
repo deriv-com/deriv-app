@@ -68,7 +68,6 @@ type TBarriers = Array<
         isSingleBarrier?: boolean;
     }
 >;
-
 type TChartLayout = {
     adj: boolean;
     aggregationType: string;
@@ -142,7 +141,6 @@ type TResponse<Req, Res extends { [key: string]: unknown }, K extends string> = 
         details?: Res[K] & { field: string };
     };
 };
-
 type TProposalInfo = {
     [key: string]: ReturnType<typeof getProposalInfo>;
 };
@@ -830,16 +828,13 @@ export default class TradeStore extends BaseStore {
             barriers: this.root_store.portfolio.barriers,
             is_over,
             contract_type,
-            contract_info: this.proposal_info[contract_type ?? ''] as unknown as Parameters<
-                typeof setLimitOrderBarriers
-            >[0]['contract_info'],
+            contract_info: this.proposal_info[contract_type ?? ''],
         });
     }
 
     clearLimitOrderBarriers() {
         this.hovered_contract_type = null;
         const { barriers } = this;
-        //@ts-expect-error: TODO: check if type error is gone after limit-orders.js is migrated to ts
         setLimitOrderBarriers({
             barriers,
             is_over: false,
@@ -863,7 +858,7 @@ export default class TradeStore extends BaseStore {
         if (!proposal_info) {
             return;
         }
-        const { contract_type, barrier = '', barrier2 } = proposal_info;
+        const { contract_type, barrier, barrier2 } = proposal_info;
         if (isBarrierSupported(contract_type)) {
             const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
 
@@ -1300,9 +1295,7 @@ export default class TradeStore extends BaseStore {
         if (this.hovered_contract_type === contract_type) {
             setLimitOrderBarriers({
                 barriers: this.root_store.portfolio.barriers,
-                contract_info: this.proposal_info[this.hovered_contract_type ?? ''] as unknown as Parameters<
-                    typeof setLimitOrderBarriers
-                >[0]['contract_info'],
+                contract_info: this.proposal_info[this.hovered_contract_type ?? ''],
                 contract_type,
                 is_over: true,
             });

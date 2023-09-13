@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import { Field, Formik, Form } from 'formik';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import {
@@ -49,52 +48,9 @@ import LoadErrorMessage from 'Components/load-error-message';
 import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 import { validateName, validate } from 'Helpers/utils';
-
-const InputGroup = ({ children, className }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
-    if (is_appstore) {
-        return React.Children.map(children, child => <fieldset className='account-form__fieldset'>{child}</fieldset>);
-    }
-    return (
-        <fieldset className='account-form__fieldset'>
-            <div className={className}>{children}</div>
-        </fieldset>
-    );
-};
-
-const TaxResidenceSelect = ({ field, errors, setFieldValue, values, is_changeable, residence_list }) => (
-    <React.Fragment>
-        <DesktopWrapper>
-            <Autocomplete
-                {...field}
-                data-lpignore='true'
-                autoComplete='new-password' // prevent chrome autocomplete
-                type='text'
-                label={localize('Tax residence*')}
-                error={errors.tax_residence}
-                disabled={!is_changeable}
-                id='tax_residence'
-                list_items={residence_list}
-                onItemSelection={({ value, text }) => setFieldValue('tax_residence', value ? text : '', true)}
-                required
-            />
-        </DesktopWrapper>
-        <MobileWrapper>
-            <SelectNative
-                placeholder={localize('Tax residence*')}
-                label={localize('Tax residence*')}
-                value={values.tax_residence}
-                list_items={residence_list}
-                id={'tax_residence_mobile'}
-                error={errors.tax_residence}
-                disabled={!is_changeable}
-                use_text={true}
-                onChange={e => setFieldValue('tax_residence', e.target.value, true)}
-                required
-            />
-        </MobileWrapper>
-    </React.Fragment>
-);
+import { salutation_list } from './constants';
+import TaxResidenceSelect from './tax-residence-select';
+import InputGroup from './input-group';
 
 export const PersonalDetailsForm = observer(({ history }) => {
     const [is_loading, setIsLoading] = React.useState(true);
@@ -155,7 +111,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                 // waits for residence to be populated
                 await WS.wait('get_settings');
 
-                fetchResidenceList();
+                fetchResidenceList?.();
 
                 if (has_residence) {
                     if (!is_language_changing) {
@@ -292,7 +248,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
     // TODO: standardize validations and refactor this
     const validateFields = values => {
         setIsSubmitSuccess(false);
-        const errors = {};
+        const errors: { [key: string]: string | JSX.Element } = {};
         const validateValues = validate(errors, values);
 
         if (is_virtual) return errors;
@@ -431,7 +387,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
         return warnings;
     };
 
-    const showForm = show_form => setRestState({ show_form });
+    const showForm = (show_form: boolean) => setRestState({ show_form });
 
     const isChangeableField = name => {
         return rest_state.changeable_fields?.some(field => field === name);
@@ -465,13 +421,6 @@ export const PersonalDetailsForm = observer(({ history }) => {
             setIsLoading(false);
         });
     };
-
-    const salutation_list = [
-        { text: localize('Mr'), value: 'Mr' },
-        { text: localize('Mrs'), value: 'Mrs' },
-        { text: localize('Ms'), value: 'Ms' },
-        { text: localize('Miss'), value: 'Miss' },
-    ];
 
     const {
         form_initial_values: { ...form_initial_values },
@@ -1286,9 +1235,5 @@ export const PersonalDetailsForm = observer(({ history }) => {
         </Formik>
     );
 });
-
-PersonalDetailsForm.propTypes = {
-    history: PropTypes.object,
-};
 
 export default withRouter(PersonalDetailsForm);

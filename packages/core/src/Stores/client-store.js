@@ -1646,7 +1646,7 @@ export default class ClientStore extends BaseStore {
 
         if (action_param === 'payment_withdraw' && loginid_param) this.setLoginId(loginid_param);
         else this.setLoginId(LocalStore.get('active_loginid'));
-        this.user_id = JSON.parse(LocalStore.get('active_user_id'));
+        this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
         const client = this.accounts[this.loginid];

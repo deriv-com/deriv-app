@@ -328,6 +328,7 @@ type TClientStore = {
     has_active_real_account: boolean;
     has_logged_out: boolean;
     has_maltainvest_account: boolean;
+    has_restricted_mt5_account: boolean;
     initialized_broadcast: boolean;
     is_account_setting_loaded: boolean;
     is_deposit_lock: boolean;
@@ -620,8 +621,8 @@ type TNotificationStore = {
     filterNotificationMessages: () => void;
     refreshNotifications: () => void;
     removeAllNotificationMessages: (should_close_persistent: boolean) => void;
-    removeNotificationByKey: (key: string) => void;
-    removeNotificationMessage: (key: string, should_show_again?: boolean) => void;
+    removeNotificationByKey: ({ key }: { key: string }) => void;
+    removeNotificationMessage: ({ key, should_show_again }: { key: string; should_show_again?: boolean }) => void;
     setP2POrderProps: () => void;
     setP2PRedirectTo: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;

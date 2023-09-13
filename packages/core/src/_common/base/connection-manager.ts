@@ -51,8 +51,26 @@ export class ConnectionManager {
         this.is_switching_socket = false;
         this.is_disconnect_called = false;
         this.has_connected_before = false;
+        this.initializeConnections();
+    }
+
+    /**
+     * Initializes WebSocket connections based on application configuration and user settings.
+     *
+     * This method sets up WebSocket connections based on the application's configuration and user preferences.
+     * It initializes connections to real and demo WebSocket endpoints and handles switching between them.
+     * The method also attaches event handlers and triggers appropriate callbacks upon initialization.
+     *
+     * @async
+     * @method
+     * @memberof ConnectionManager
+     * @throws {Error} Throws an error if any connection initialization fails.
+     * @returns {Promise<void>} A promise that resolves when WebSocket connections are successfully initialized.
+     */
+    async initializeConnections() {
         const language = getLanguage();
 
+        // Initialize a connection for the development environment if config.server_url is set
         const endpoint_url = window.localStorage.getItem('config.server_url');
         if (endpoint_url) {
             const instance = this.createConnectionInstance({ id: 'development', url: endpoint_url, language });
@@ -66,6 +84,7 @@ export class ConnectionManager {
                 }
             }
         } else {
+            // Initialize only 2 connections - real & demo if predefined mode flag is set to `default`
             if (this.mode === 'default') {
                 this.connections = Object.keys(websocket_servers).map(env => {
                     return this.createConnectionInstance({
@@ -75,6 +94,7 @@ export class ConnectionManager {
                     });
                 });
             } else {
+                // Initialize connections based on user loginids (1 for each) and perform authorize on connect
                 const account_list = localStorage.getItem('client.accounts');
                 if (account_list) {
                     const parsed_account_list = JSON.parse(account_list);

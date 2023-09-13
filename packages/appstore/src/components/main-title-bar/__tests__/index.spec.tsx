@@ -10,6 +10,12 @@ describe('MainTitleBar', () => {
                 date: 1631032849924,
             },
         },
+        modules: {
+            cashier: {
+                account_transfer: { is_transfer_confirm: false },
+                general_store: { is_loading: false },
+            },
+        },
     });
     const render_container = () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (

@@ -14,8 +14,9 @@ const AssetSummary = observer(() => {
     const { traders_hub, client, common, modules } = useStore();
     const { selected_account_type, is_eu_user, no_CR_account, no_MF_account } = traders_hub;
     const { is_logging_in, is_switching, default_currency, is_landing_company_loaded } = client;
-    const { is_transfer_confirm } = modules.cashier.account_transfer;
-    const { is_loading } = modules.cashier.general_store;
+    const { account_transfer, general_store } = modules.cashier;
+    const { is_transfer_confirm } = account_transfer;
+    const { is_loading } = general_store;
     const { current_language } = common;
     const { real: platform_real_accounts, demo: platform_demo_account } = usePlatformAccounts();
     const { real: cfd_real_accounts, demo: cfd_demo_accounts } = useCFDAccounts();

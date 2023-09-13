@@ -1,0 +1,82 @@
+.wallets-add-more {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-top: 2.4rem;
+
+    @media (max-width: 375px) {
+        padding-top: 0;
+        gap: 0.8rem;
+    }
+
+    &__header {
+        font-size: 3.2rem;
+        font-weight: 700;
+        margin-bottom: 1.6rem;
+
+        @media (max-width: 375px) {
+            font-size: 2.8rem;
+            padding-left: 1.6rem;
+            margin-bottom: 0;
+        }
+    }
+    &__carousel {
+        overflow: hidden;
+        background-color: #fff;
+        padding: 3.2rem 0 3.2rem 1.6rem;
+        border-radius: 0.8rem;
+        position: relative;
+        border: 0.1rem solid #d6dadb;
+        height: 100%;
+
+        @media (max-width: 375px) {
+            padding: 1.6rem 0 2.4rem 1.6rem;
+            border-radius: unset;
+        }
+
+        &-wrapper {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 2.4rem;
+
+            @media (max-width: 375px) {
+                gap: 1.6rem;
+            }
+        }
+
+        &-btn {
+            z-index: 1;
+            position: absolute;
+            height: 4rem;
+            width: 4rem;
+            border-radius: 50%;
+            cursor: pointer;
+            top: 45%;
+
+            &--prev {
+                left: 1.6rem;
+            }
+            &--next {
+                right: 1.6rem;
+            }
+            &:disabled {
+                opacity: 0.3;
+                display: none;
+            }
+        }
+    }
+    &__card {
+        width: 23.2rem;
+        height: 28.2rem;
+        border-radius: 1.6rem;
+        flex-shrink: 0;
+        border: 0.1rem solid #d6dadb;
+
+        @media (max-width: 375px) {
+            height: 29.2rem;
+            width: 19.2rem;
+        }
+    }
+}

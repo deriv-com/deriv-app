@@ -39,7 +39,6 @@ export default class AdvertiserPageStore extends BaseStore {
             advertiser_details: computed,
             advertiser_details_id: computed,
             advertiser_details_name: computed,
-            getCounterpartyAdvertiserList: action.bound,
             handleTabItemClick: action.bound,
             onAdvertiserIdUpdate: action.bound,
             onCancel: action.bound,
@@ -174,7 +173,6 @@ export default class AdvertiserPageStore extends BaseStore {
             !this.is_counterparty_advertiser_blocked,
             this.advertiser_details_id
         );
-        if (this.is_counterparty_advertiser_blocked) this.getCounterpartyAdvertiserList(this.advertiser_details_id);
         this.setIsDropdownMenuVisible(false);
     }
 

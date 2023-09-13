@@ -11,7 +11,6 @@ type TRowProps = {
     item_key?: string | number;
     label: string | string[];
     value: string | string[] | JSX.Element;
-    key: string | number;
 };
 
 type WarningBulletProps = {
@@ -119,13 +118,13 @@ const TransferConfirm = ({
             <div className='transfer-confirm__column-wrapper'>
                 <div className='transfer-confirm__column'>
                     {data.map((d, key) => (
-                        <Row item_key={key} label={d.label} value={d.value} key={key} />
+                        <Row item_key={key} label={d.label} value={d.value} key={d.item_key} />
                     ))}
                 </div>
             </div>
             <div className='transfer-confirm__warnings'>
-                {warning_messages.map((warning, key) => (
-                    <WarningBullet key={key}>
+                {warning_messages.map(warning => (
+                    <WarningBullet key={warning.key}>
                         <Text as='p' size='xxs' line_height='m' color='loss-danger' align='left'>
                             {warning}
                         </Text>

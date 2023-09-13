@@ -150,10 +150,10 @@ const PaymentAgentContainer = observer(({ is_deposit }: TPaymentAgentContainer) 
                     {has_payment_agent_search_warning ? (
                         <PaymentAgentSearchWarning />
                     ) : (
-                        payment_agent_list.map((payment_agent, idx) => {
+                        payment_agent_list.map(payment_agent => {
                             return (
                                 <PaymentAgentCard
-                                    key={idx}
+                                    key={`${payment_agent.name}-${payment_agent.email}-${payment_agent.currency}`}
                                     is_dark_mode_on={is_dark_mode_on}
                                     is_deposit={is_deposit}
                                     payment_agent={payment_agent}

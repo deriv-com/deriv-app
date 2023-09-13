@@ -391,7 +391,7 @@ export default class AccountTransferStore {
                     sub_account_type: account.sub_account_type,
                     platform: account.account_type,
                     is_eu: this.root_store.client.is_eu,
-                }) || ''
+                }) ?? ''
             }`;
 
             const non_eu_accounts =

@@ -190,28 +190,27 @@ export const getValidationRules = () => ({
     ...getMultiplierValidationRules(),
 });
 
-export const getMultiplierValidationRules = () =>
-    ({
-        stop_loss: {
-            rules: [
-                [
-                    'req',
-                    {
-                        condition: (store: TTradeStore) => store.has_stop_loss && !store.stop_loss,
-                        message: localize('Please enter a stop loss amount.'),
-                    },
-                ],
+export const getMultiplierValidationRules = () => ({
+    stop_loss: {
+        rules: [
+            [
+                'req',
+                {
+                    condition: (store: TTradeStore) => store.has_stop_loss && !store.stop_loss,
+                    message: localize('Please enter a stop loss amount.'),
+                },
             ],
-        },
-        take_profit: {
-            rules: [
-                [
-                    'req',
-                    {
-                        condition: (store: TTradeStore) => store.has_take_profit && !store.take_profit,
-                        message: localize('Please enter a take profit amount.'),
-                    },
-                ],
+        ],
+    },
+    take_profit: {
+        rules: [
+            [
+                'req',
+                {
+                    condition: (store: TTradeStore) => store.has_take_profit && !store.take_profit,
+                    message: localize('Please enter a take profit amount.'),
+                },
             ],
-        },
-    } as const);
+        ],
+    },
+});

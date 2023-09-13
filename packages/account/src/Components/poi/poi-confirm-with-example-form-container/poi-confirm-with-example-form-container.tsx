@@ -134,32 +134,10 @@ const PoiConfirmWithExampleFormContainer = ({
 
     return (
         <Formik initialValues={form_initial_values} enableReinitialize onSubmit={onSubmit} validate={validateFields}>
-            {({
-                values,
-                errors,
-                touched,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                isSubmitting,
-                setFieldValue,
-                setFieldTouched,
-                status,
-            }) => (
+            {({ errors, handleSubmit, isSubmitting, status }) => (
                 <Form className='account-form__poi-confirm-example' onSubmit={handleSubmit}>
                     <FormBody>
-                        <PersonalDetailsForm
-                            errors={errors}
-                            touched={touched}
-                            values={values}
-                            handleChange={handleChange}
-                            handleBlur={handleBlur}
-                            setFieldValue={setFieldValue}
-                            setFieldTouched={setFieldTouched}
-                            editable_fields={rest_state.changeable_fields}
-                            is_rendered_for_onfido
-                            warning_items={undefined}
-                        />
+                        <PersonalDetailsForm editable_fields={rest_state.changeable_fields} is_rendered_for_onfido />
                         <button
                             type='submit'
                             className={classNames('account-form__poi-confirm-example--button', {

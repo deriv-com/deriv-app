@@ -107,7 +107,6 @@ export default class BuySellStore extends BaseStore {
             setIsLoading: action.bound,
             setIsSortDropdownOpen: action.bound,
             setIsSubmitDisabled: action.bound,
-            setItems: action.bound,
             setLocalCurrency: action.bound,
             setLocalCurrencies: action.bound,
             setInitialReceiveAmount: action.bound,

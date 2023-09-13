@@ -14,6 +14,7 @@ export type TWalletCFDCard = {
     icon: string;
     is_demo: boolean;
     type: string;
+    balance: string;
 };
 
 type TWalletCFDSuccessDialog = {

@@ -7,8 +7,8 @@ import {
     CFD_PLATFORMS,
     getAuthenticationStatusInfo,
     getErrorMessages,
-    isMobile,
     isDesktop,
+    isMobile,
     Jurisdiction,
     routes,
     validLength,
@@ -18,12 +18,20 @@ import {
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
+import { getMtCompanies, TMtCompanies } from '../../Stores/Modules/CFD/Helpers/cfd-config';
 import { useActiveWallet, useFeatureFlags } from '@deriv/hooks';
 import CFDPasswordForm from './cfd-password-form/cfd-password-form';
 import PasswordModalHeader from './modal-elements/password-modal-header';
+import {
+    useCreateMT5Account,
+    useCreateOtherCFDAccount,
+    useMT5LoginList,
+    useSettings,
+    useTradingPlatformPasswordChange,
+} from '@deriv/api';
 import PasswordModalMessage from './modal-elements/password-modal-message';
-import SuccessDialog from '../../Components/success-dialog.jsx';
 import SuccessModalIcons from './modal-elements/success-modal-icons';
+import SuccessDialog from '../../Components/success-dialog.jsx';
 import '../../sass/cfd.scss';
 
 export type TCFDPasswordFormValues = { password: string };
@@ -48,51 +56,74 @@ type TCFDPasswordModalProps = {
 const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalProps) => {
     const { client, traders_hub } = useStore();
 
-    const {
-        account_status,
-        email,
-        is_dxtrade_allowed,
-        is_logged_in,
-        landing_companies,
-        mt5_login_list,
-        updateAccountStatus,
-    } = client;
+    const { account_status, email, is_dxtrade_allowed, is_logged_in, landing_companies, updateAccountStatus } = client;
     const { show_eu_related_content } = traders_hub;
 
     const {
         account_title,
         account_type,
         disableCFDPasswordModal,
-        error_message,
-        error_type,
         getAccountStatus,
-        has_cfd_error,
         is_cfd_password_modal_enabled,
         is_cfd_success_dialog_enabled,
         jurisdiction_selected_shortcode,
         new_account_response,
         setCFDSuccessDialog,
-        setError,
-        submitCFDPassword,
-        submitMt5Password,
     } = useCfdStore();
 
     const history = useHistory();
+    const { data: mt5_login_list } = useMT5LoginList();
+    const { data: settings_data } = useSettings();
     const { is_wallet_enabled } = useFeatureFlags();
+    const { mutate: changePlatformPassword } = useTradingPlatformPasswordChange();
+    const { mutate: createMT5Account, data: newly_created_mt5_account, error } = useCreateMT5Account();
+    const { mutate: createOtherCFDAccount } = useCreateOtherCFDAccount();
     const active_wallet = useActiveWallet();
-    const { type, category } = account_type;
 
     const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);
     const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
-    const has_mt5_account = Boolean(mt5_login_list?.length);
+    const has_mt5_account = React.useMemo(() => {
+        return Boolean(mt5_login_list?.length);
+    }, [mt5_login_list]);
+
     const should_set_trading_password =
         Array.isArray(account_status?.status) &&
         account_status.status.includes(
             platform === CFD_PLATFORMS.MT5 ? 'mt5_password_not_set' : 'dxtrade_password_not_set'
         );
-    const is_password_error = error_type === 'PasswordError';
-    const is_password_reset = error_type === 'PasswordReset';
+    const has_cfd_error = !!error;
+    const error_type = error && error.code;
+    const error_message = error && error.message;
+    const is_password_error = !!error && error.code === 'PasswordError';
+    const is_password_reset = !!error && error.code === 'PasswordReset';
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
+
+    let market_type_account: 'all' | 'financial' | 'gaming' | 'demo';
+    if (account_type.category === 'real') {
+        switch (account_type.type) {
+            case 'synthetic':
+                market_type_account = 'gaming';
+                break;
+            case 'all':
+                market_type_account = 'all';
+                break;
+            case 'financial':
+                market_type_account = 'financial';
+                break;
+            default:
+                market_type_account = 'demo';
+                break;
+        }
+    } else market_type_account = 'demo';
+
+    const { country_code, first_name, last_name, email: user_email } = settings_data;
+    const name = `${first_name} ${last_name}`;
+    const leverage =
+        account_type.type &&
+        account_type.category &&
+        getMtCompanies(show_eu_related_content)[account_type.category as keyof TMtCompanies][
+            account_type.type as keyof TMtCompanies['demo' | 'real']
+        ].leverage;
 
     const { poi_verified_for_bvi_labuan_vanuatu, poi_verified_for_maltainvest, poa_verified, manual_status } =
         getAuthenticationStatusInfo(account_status);
@@ -130,6 +161,63 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [jurisdiction_selected_shortcode, account_status]);
 
+    const submitPassword: TOnSubmitPassword = async (values, actions) => {
+        if (platform === CFD_PLATFORMS.MT5) {
+            if (has_mt5_account) {
+                createMT5Account({
+                    payload: {
+                        account_type: market_type_account,
+                        email: user_email,
+                        leverage,
+                        mainPassword: values.password,
+                        name,
+                        country: country_code,
+                        ...(account_type.type === 'financial' && { mt5_account_type: 'financial' }),
+                        ...(account_type.type === 'all' && { sub_account_category: 'swap_free' }),
+                    },
+                });
+            } else {
+                changePlatformPassword({
+                    new_password: values.password,
+                    platform,
+                });
+                createMT5Account({
+                    payload: {
+                        account_type: market_type_account,
+                        country: country_code,
+                        email: user_email,
+                        leverage,
+                        mainPassword: values.password,
+                        name,
+                        ...(account_type.type === 'financial' && { mt5_account_type: 'financial' }),
+                        ...(account_type.type === 'all' && { sub_account_category: 'swap_free' }),
+                    },
+                });
+            }
+        } else {
+            createOtherCFDAccount({
+                payload: {
+                    account_type: account_type.category,
+                    password: values.password,
+                    platform,
+                    market_type: 'all',
+                },
+            });
+        }
+
+        if (!has_cfd_error) {
+            actions.setStatus({ success: true });
+            actions.setSubmitting(false);
+            setCFDSuccessDialog(true);
+            await getAccountStatus(CFD_PLATFORMS.MT5);
+        } else {
+            await getAccountStatus(CFD_PLATFORMS.MT5);
+            actions.resetForm({});
+            actions.setSubmitting(false);
+            actions.setStatus({ success: false });
+        }
+    };
+
     const validatePassword = (values: TCFDPasswordFormValues) => {
         const errors: FormikErrors<TCFDPasswordFormValues> = {};
         if (
@@ -153,7 +241,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const closeDialogs = () => {
         setCFDSuccessDialog(false);
-        setError(false);
     };
 
     const closeModal = () => {
@@ -194,27 +281,17 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         setIsSentEmailModalOpen(true);
     };
 
-    const submitPassword: TOnSubmitPassword = (values, actions) => {
-        if (platform === CFD_PLATFORMS.MT5) {
-            submitMt5Password(
-                {
-                    ...values,
-                },
-                actions
-            );
-        } else {
-            (values as TCFDPasswordFormValues & { platform: string }).platform = platform;
-            submitCFDPassword(values, actions);
-        }
-    };
-
     const should_show_password =
         is_cfd_password_modal_enabled &&
         !is_cfd_success_dialog_enabled &&
         (!has_cfd_error || is_password_error || is_password_reset);
 
     const should_show_success =
-        !has_cfd_error && is_cfd_success_dialog_enabled && is_cfd_password_modal_enabled && is_password_modal_exited;
+        !has_cfd_error &&
+        is_cfd_success_dialog_enabled &&
+        is_cfd_password_modal_enabled &&
+        is_password_modal_exited &&
+        newly_created_mt5_account;
 
     const should_show_sent_email_modal = is_sent_email_modal_open && is_password_modal_exited;
 
@@ -331,14 +408,13 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     };
 
     const getWalletHeader = (account_type: { category: string; type: string }) => {
-        const { type, category } = account_type;
         return (
             <React.Fragment>
-                {category === 'demo' ? (
+                {account_type.category === 'demo' ? (
                     <Localize
                         i18n_default_text='Your {{account_title}} demo account is ready'
                         values={{
-                            account_title: getWalletAccountTitle(type),
+                            account_title: getWalletAccountTitle(account_type.type),
                         }}
                     />
                 ) : (
@@ -349,12 +425,13 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     };
 
     const cfd_details = {
-        account_title: getWalletAccountTitle(type),
+        account_title: getWalletAccountTitle(account_type.type),
         currency: active_wallet?.currency,
         gradient_header_class: active_wallet?.gradient_header_class,
         icon: active_wallet?.icon,
         is_demo: active_wallet?.is_demo,
-        type,
+        type: account_type.type,
+        balance: newly_created_mt5_account?.display_balance,
     };
 
     return (
@@ -362,21 +439,21 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             {password_modal}
             {password_dialog}
             {/* TODO: Remove this once development is completed */}
-            {is_wallet_enabled && category === 'demo' && platform === CFD_PLATFORMS.MT5 ? (
+            {is_wallet_enabled && account_type.category === 'demo' && platform === CFD_PLATFORMS.MT5 ? (
                 <WalletCFDSuccessDialog
                     header={getWalletHeader(account_type)}
                     is_open={should_show_success}
                     message={
                         <PasswordModalMessage
-                            category={category}
+                            category={account_type.category}
                             is_selected_mt5_verified={is_selected_mt5_verified}
                             jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                             manual_status={manual_status}
                             platform={platform}
                             show_eu_related_content={show_eu_related_content}
-                            type={type}
+                            type={account_type.type}
                             is_wallet_enabled={is_wallet_enabled}
-                            wallet_account_title={getWalletAccountTitle(type)}
+                            wallet_account_title={getWalletAccountTitle(account_type.type)}
                         />
                     }
                     onSubmit={closeModal}
@@ -395,15 +472,15 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     classNameMessage='cfd-password-modal__message'
                     message={
                         <PasswordModalMessage
-                            category={category}
+                            category={account_type.category}
                             is_selected_mt5_verified={is_selected_mt5_verified}
                             jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                             manual_status={manual_status}
                             platform={platform}
                             show_eu_related_content={show_eu_related_content}
-                            type={type}
+                            type={account_type.type}
                             is_wallet_enabled={is_wallet_enabled}
-                            wallet_account_title={getWalletAccountTitle(type)}
+                            wallet_account_title={getWalletAccountTitle(account_type.type)}
                         />
                     }
                     icon={

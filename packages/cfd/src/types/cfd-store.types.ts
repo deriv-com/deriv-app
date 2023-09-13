@@ -31,8 +31,8 @@ export type TCFDStore = {
     real_swapfree_accounts_existing_data: DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
     real_financial_accounts_existing_data: DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
     account_type: {
-        type: string;
-        category: string;
+        type: 'synthetic' | 'financial' | 'all';
+        category: 'demo' | 'real';
     };
     jurisdiction_selected_shortcode: string;
     toggleJurisdictionModal: () => void;

@@ -8,7 +8,7 @@ import { TWalletCFDCard } from './wallet-cfd-success-dialog';
 import './wallet-cfd-card.scss';
 
 const WalletCFDCard = ({ wallet }: { wallet: TWalletCFDCard }) => {
-    const { account_title, currency, gradient_header_class, icon, is_demo, type } = wallet;
+    const { account_title, currency, gradient_header_class, icon, is_demo, type, balance } = wallet;
 
     // TODO: Update with other platform and CFDs
     let app_icon = '';
@@ -39,6 +39,7 @@ const WalletCFDCard = ({ wallet }: { wallet: TWalletCFDCard }) => {
                         hide_watermark
                         type={is_demo ? 'demo' : 'fiat'}
                         wallet_icon={icon}
+                        size={isMobile() ? 'small' : 'medium'}
                     />
                 </div>
                 <div
@@ -66,9 +67,8 @@ const WalletCFDCard = ({ wallet }: { wallet: TWalletCFDCard }) => {
                         {currency} {localize('Wallet')}
                     </Text>
                     {/* total balance */}
-                    {/* TODO: replace this with balance amount from the API */}
                     <Text color='prominent' weight='bold' size={isMobile() ? 'xxxs' : 'xxs'}>
-                        {is_demo ? `10,000.00 ${currency}` : `0.00 ${currency}`}
+                        {balance} {currency}
                     </Text>
                 </div>
             </div>

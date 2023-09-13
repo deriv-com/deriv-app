@@ -41,7 +41,7 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) 
         proposal_info,
         purchase_info,
         symbol,
-        validation_errors,
+        validation_errors = {},
         vanilla_trade_type,
         trade_types,
         is_trade_enabled,

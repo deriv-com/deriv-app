@@ -17,6 +17,7 @@ type TTradeStore = Pick<
     | 'expiry_type'
     | 'has_equals_only'
 >;
+type TDurationUnit = Parameters<typeof hasDurationForCallPutEqual>[1];
 
 type TAllowEquals = TTradeStore & {
     onChange: (e: { target: { name: string; value: number } }) => Promise<void>;
@@ -35,7 +36,7 @@ const AllowEquals = ({
 }: TAllowEquals) => {
     const has_callputequal_duration = hasDurationForCallPutEqual(
         contract_types_list,
-        duration_unit,
+        duration_unit as TDurationUnit,
         contract_start_type
     );
     const has_callputequal = hasCallPutEqual(contract_types_list);

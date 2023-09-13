@@ -13,14 +13,14 @@ import { localize } from 'Components/i18next';
 import RatingCellRenderer from 'Components/rating-cell-renderer';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
-const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) => {
+const Title = ({ send_amount, currency, order_type, purchase_time }) => {
     return (
         <React.Fragment>
             <Text size='sm' color='prominent' line_height='xxs' weight='bold' as='p'>
                 {order_type} {formatMoney(currency, send_amount, true)} {currency}
             </Text>
             <Text color='less-prominent' as='p' line_height='xxs' size='xxs' align='left'>
-                {order_purchase_datetime}
+                {purchase_time}
             </Text>
         </React.Fragment>
     );
@@ -56,9 +56,9 @@ const OrderRow = ({ row: order }) => {
         is_user_recommended_previously,
         local_currency,
         order_expiry_milliseconds,
-        order_purchase_datetime,
         other_user_details,
         price_display,
+        purchase_time,
         rating,
         should_highlight_alert,
         should_highlight_danger,
@@ -264,8 +264,8 @@ const OrderRow = ({ row: order }) => {
                             <Title
                                 send_amount={amount_display}
                                 currency={account_currency}
-                                order_purchase_datetime={order_purchase_datetime}
                                 order_type={order_type}
+                                purchase_time={purchase_time}
                             />
                         </Table.Cell>
                     </Table.Row>

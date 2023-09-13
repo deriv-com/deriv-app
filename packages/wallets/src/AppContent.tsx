@@ -1,4 +1,5 @@
 import React from 'react';
+import WalletsAddMore from './components/WalletsAddMoreCarousel';
 import useDevice from './hooks/useDevice';
 import { DesktopWalletsList, WalletsCarousel } from './components';
 import './AppContent.scss';
@@ -8,7 +9,10 @@ const AppContent: React.FC = () => {
 
     return (
         <div className='wallets-app'>
-            <div className='wallets-app__content'>{is_mobile ? <WalletsCarousel /> : <DesktopWalletsList />}</div>
+            <div className='wallets-app__content'>
+                {is_mobile ? <WalletsCarousel /> : <DesktopWalletsList />}
+                <WalletsAddMore />
+            </div>
         </div>
     );
 };

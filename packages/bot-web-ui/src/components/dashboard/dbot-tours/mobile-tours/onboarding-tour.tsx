@@ -56,7 +56,12 @@ const OnboardingTour = observer(() => {
                         data-testid='dbot-onboard-slider__navbar'
                     >{`${tour_step_key - 1}/7`}</Text>
                     <span onClick={onCloseTour}>
-                        <Icon icon='IcCross' className='db-contract-card__result-icon' color='secondary' />
+                        <Icon
+                            icon='IcCross'
+                            data_testid='exit-onboard-tour'
+                            className='db-contract-card__result-icon'
+                            color='secondary'
+                        />
                     </span>
                 </div>
             )}

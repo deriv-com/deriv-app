@@ -40,7 +40,13 @@ const useWalletTransactions = (action_type?: 'deposit' | 'withdrawal' | 'virtual
     // Add new transactions to the list of transactions when `usePaginatedFetch` returns new ones.
     useEffect(() => {
         const new_transactions = data?.statement?.transactions;
-        if (new_transactions) setTransactions(prev => [...prev, ...(new_transactions || [])]);
+        if (new_transactions)
+            setTransactions(prev =>
+                [...prev, ...(new_transactions || [])]
+                    .sort((a, b) => (b.transaction_id || 0) - (a.transaction_id || 0))
+                    .filter((item, pos, arr) => !pos || item.transaction_id != arr[pos - 1].transaction_id)
+                    .sort((a, b) => (b.transaction_time || 0) - (a.transaction_time || 0))
+            );
         if (new_transactions?.length === 0) setIsEndOfTransactionList(true);
     }, [data?.statement?.transactions]);
 

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import useEmblaCarousel from 'embla-carousel-react';
 import { TWalletAccount } from 'Types';
 import { WalletCard, ProgressBarTracker } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import useEmblaCarousel from 'embla-carousel-react';
-import { getAccountName } from 'Constants/utils';
 import { useWalletsList } from '@deriv/hooks';
+import { getAccountName } from 'Constants/utils';
 import './wallet-cards-carousel.scss';
 
 const CardsSliderSwiper = observer(() => {
@@ -25,19 +25,16 @@ const CardsSliderSwiper = observer(() => {
             const index = emblaApi?.selectedScrollSnap() || 0;
             setActiveIndex(index + 1);
         });
-    }, [emblaApi]);
+
+        emblaApi?.on('settle', () => {
+            const index = emblaApi?.selectedScrollSnap() || 0;
+            if (!data[index]?.is_selected) switchAccount(data[index]?.loginid);
+        });
+    }, [active_index, data, emblaApi, switchAccount]);
 
     useEffect(() => {
         emblaApi?.scrollTo(active_index - 1);
     }, [active_index, emblaApi]);
-
-    useEffect(() => {
-        const timeout_id = setTimeout(() => {
-            if (!data[active_index - 1]?.is_selected) switchAccount(data[active_index - 1]?.loginid);
-        }, 1000);
-
-        return () => clearTimeout(timeout_id);
-    }, [active_index, data, switchAccount]);
 
     useEffect(() => {
         setActiveIndex(active_wallet_index + 1);

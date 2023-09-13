@@ -591,7 +591,7 @@ export default class AccountTransferStore {
         setLoading(true);
         this.error.setErrorMessage({ code: '', message: '' });
 
-        const is_mt_transfer = this.selected_from.is_mt ?? this.selected_to.is_mt;
+        const is_mt_transfer = this.selected_from.is_mt || this.selected_to.is_mt;
 
         if (is_mt_transfer) this.setIsMT5TransferInProgress(true);
 

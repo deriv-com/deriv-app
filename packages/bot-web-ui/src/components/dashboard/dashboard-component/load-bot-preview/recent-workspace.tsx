@@ -47,8 +47,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     React.useEffect(() => {
         let timer: ReturnType<typeof setTimeout>;
 
-        const recent_bots_div =
-            dashboard_strategies && dashboard_strategies.length && index === 0 && !is_div_triggered_once.current;
+        const recent_bots_div = dashboard_strategies?.length && index === 0 && !is_div_triggered_once.current;
 
         if (recent_bots_div) {
             timer = setTimeout(() => {

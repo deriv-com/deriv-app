@@ -1,6 +1,6 @@
 import React from 'react';
-import { useStores } from 'Stores';
 import { ThemedScrollbars } from '@deriv/components';
+import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -16,7 +16,7 @@ const SellAdPaymentMethodsList = ({
     onClickPaymentMethodCard,
     selected_methods,
 }) => {
-    const { my_profile_store } = useStores();
+    const { data: p2p_advertiser_payment_methods } = useP2PAdvertiserPaymentMethods();
 
     const style = {
         borderColor: 'var(--brand-secondary)',
@@ -39,16 +39,17 @@ const SellAdPaymentMethodsList = ({
             is_scrollable={is_scrollable}
             is_only_horizontal={is_only_horizontal}
         >
-            {sortPaymentMethods([...my_profile_store.advertiser_payment_methods_list]).map((payment_method, key) => (
-                <PaymentMethodCard
-                    is_vertical_ellipsis_visible={false}
-                    key={key}
-                    medium
-                    onClick={() => onClickPaymentMethodCard(payment_method)}
-                    payment_method={payment_method}
-                    style={selected_methods.includes(payment_method.ID) ? style : {}}
-                />
-            ))}
+            {p2p_advertiser_payment_methods &&
+                sortPaymentMethods(p2p_advertiser_payment_methods).map((payment_method, key) => (
+                    <PaymentMethodCard
+                        is_vertical_ellipsis_visible={false}
+                        key={key}
+                        medium
+                        onClick={() => onClickPaymentMethodCard(payment_method)}
+                        payment_method={payment_method}
+                        style={selected_methods.includes(payment_method.id) ? style : {}}
+                    />
+                ))}
             <PaymentMethodCard is_add label={localize('Payment method')} medium onClickAdd={onClickAdd} />
         </ThemedScrollbars>
     );

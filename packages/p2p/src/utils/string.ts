@@ -51,4 +51,4 @@ export const generateHexColourFromNickname = (nickname: string): string => {
  * @param {String} nickname - The nickname to get the short nickname from.
  * @returns {String} The short nickname.
  */
-export const getShortNickname = (nickname: string): string => nickname && nickname.substring(0, 2).toUpperCase();
+export const getShortNickname = (nickname: string): string => nickname?.substring(0, 2).toUpperCase();

@@ -269,7 +269,7 @@ describe('AccountInfoWallets component', () => {
         expect(screen.getByText(/demo/i)).toBeInTheDocument();
     });
 
-    it('should render "SVG" label', () => {
+    it('should NOT render "SVG" label', () => {
         const mock = mockStore({
             ui: {
                 is_mobile: false,
@@ -307,7 +307,48 @@ describe('AccountInfoWallets component', () => {
         const toggleDialog = jest.fn();
         render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
 
-        expect(screen.getByText('SVG')).toBeInTheDocument();
+        expect(screen.queryByText('SVG')).not.toBeInTheDocument();
+    });
+
+    it('should render "MALTA" label', () => {
+        const mock = mockStore({
+            ui: {
+                is_mobile: false,
+            },
+        });
+
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockUseFetch.mockReturnValue({
+            data: {
+                authorize: {
+                    account_list: [
+                        {
+                            account_category: 'wallet',
+                            currency: 'USD',
+                            is_virtual: 0,
+                            is_disabled: 0,
+                            loginid: 'CRW909900',
+                            landing_company_name: 'maltainvest',
+                            linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
+                        },
+                        {
+                            account_category: 'trading',
+                            currency: 'USD',
+                            is_virtual: 0,
+                            is_disabled: 0,
+                            loginid: 'CR123',
+                            landing_company_name: 'maltainvest',
+                        },
+                    ],
+                    loginid: 'CR123',
+                },
+            },
+        });
+
+        const toggleDialog = jest.fn();
+        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
+
+        expect(screen.queryByText('MALTA')).toBeInTheDocument();
     });
 
     it('should render "IcLock" icon when "is_disabled" property is "true"', () => {

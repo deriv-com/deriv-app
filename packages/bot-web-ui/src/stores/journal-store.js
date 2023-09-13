@@ -26,6 +26,7 @@ export default class JournalStore {
             filterMessage: action.bound,
             clear: action.bound,
             welcomeBackUser: action.bound,
+            welcomeUser: action.bound,
             registerReactions: action.bound,
         });
 
@@ -39,6 +40,9 @@ export default class JournalStore {
             () => {
                 if (this.unfiltered_messages.length > 0) {
                     this.welcomeBackUser();
+                }
+                if (this.unfiltered_messages.length === 0) {
+                    this.welcomeUser();
                 }
             }
         );
@@ -101,6 +105,10 @@ export default class JournalStore {
     }
 
     pushMessage(message, message_type, className, extra = {}) {
+        const { client } = this.core;
+        if (!client?.loginid) return;
+        extra.current_currency = client?.current_currency_type === 'virtual' ? 'Demo' : client?.currency;
+
         const date = formatDate(this.getServerTime());
         const time = formatDate(this.getServerTime(), 'HH:mm:ss [GMT]');
         const unique_id = Blockly.utils.genUid();
@@ -143,6 +151,10 @@ export default class JournalStore {
         this.pushMessage(log_types.WELCOME_BACK, message_types.SUCCESS, 'journal__text');
     }
 
+    welcomeUser() {
+        this.pushMessage(log_types.WELCOME, message_types.SUCCESS, 'journal__text');
+    }
+
     registerReactions() {
         const { client } = this.core;
 
@@ -172,6 +184,10 @@ export default class JournalStore {
 
                 if (this.unfiltered_messages.length > 0) {
                     this.welcomeBackUser();
+                }
+
+                if (this.unfiltered_messages.length === 0) {
+                    this.welcomeUser();
                 }
             }
         );

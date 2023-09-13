@@ -1,9 +1,8 @@
 import React from 'react';
-import { Localize } from '@deriv/translations';
 import { Table } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { TLoginHistoryData } from '@deriv/api/types';
-import LoginHistoryTableTitle from 'Constants/login-history-table-title';
+import getLoginHistoryTableHeaders from 'Constants/get-login-history-table-headers';
 import LoginHistoryTableRow from './login-history-table-row';
 import LoginHistoryListRow from './login-history-list-row';
 
@@ -19,7 +18,7 @@ const LoginHistoryContent = ({ data }: TLoginHistoryContent) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
 
-    return is_mobile ? renderList(data) : renderTable(LoginHistoryTableTitle(), data);
+    return is_mobile ? renderList(data) : renderTable(getLoginHistoryTableHeaders(), data);
 };
 
 const renderTable = (fields: TGetFields, login_history: TLoginHistoryData) => (

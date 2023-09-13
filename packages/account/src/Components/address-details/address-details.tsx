@@ -16,9 +16,17 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, isMobile, getLocation, makeCancellablePromise, PlatformContext } from '@deriv/shared';
+import {
+    isDesktop,
+    isMobile,
+    getLocation,
+    makeCancellablePromise,
+    PlatformContext,
+    firstPropertyObject,
+} from '@deriv/shared';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import classNames from 'classnames';
+import { ScrollToFieldWithError } from 'Components/forms/scroll-to-field-with-error';
 
 type TAddressDetails = {
     disabled_items: string[];
@@ -140,7 +148,7 @@ const AddressDetails = ({
     const handleValidate = (values: FormikValues) => {
         const { errors } = splitValidationResultTypes(validate(values));
         checkSubmitStatus(errors);
-        return errors;
+        return firstPropertyObject(errors);
     };
 
     return (
@@ -161,12 +169,13 @@ const AddressDetails = ({
             {({ handleSubmit, errors, values, setFieldValue, handleChange, setFieldTouched }: FormikValues) => (
                 <AutoHeightWrapper default_height={350} height_offset={isDesktop() ? 80 : null}>
                     {({ setRef, height }: { setRef: (instance: HTMLFormElement) => void; height: number | string }) => (
-                        <form ref={setRef} onSubmit={handleSubmit}>
+                        <form ref={setRef} onSubmit={handleSubmit} noValidate>
                             <Div100vhContainer
                                 className='details-form'
                                 height_offset={is_appstore ? '222px' : '90px'}
                                 is_disabled={isDesktop()}
                             >
+                                <ScrollToFieldWithError />
                                 {!is_appstore && (
                                     <Text
                                         as='p'
@@ -328,7 +337,7 @@ const AddressDetails = ({
                             </Div100vhContainer>
                             <Modal.Footer has_separator is_bypassed={isMobile()}>
                                 <FormSubmitButton
-                                    is_disabled={isSubmitDisabled(errors)}
+                                    // is_disabled={isSubmitDisabled(errors)}
                                     label={localize('Next')}
                                     is_absolute={isMobile()}
                                     has_cancel

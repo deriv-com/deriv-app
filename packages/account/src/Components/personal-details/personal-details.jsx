@@ -131,6 +131,7 @@ const PersonalDetails = ({
             innerRef={selected_step_ref}
             initialValues={{ ...props.value }}
             validate={handleValidate}
+            validateOnMount
             onSubmit={(values, actions) => {
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}

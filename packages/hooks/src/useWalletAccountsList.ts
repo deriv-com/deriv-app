@@ -93,7 +93,7 @@ const useWalletAccountsList = () => {
                 /** Landing company shortcode the account belongs to. */
                 landing_company_name: wallet.landing_company_name?.replace('maltainvest', 'malta'),
                 /** Indicating whether the wallet is a maltainvest wallet. */
-                is_malta_wallet: wallet.landing_company_name === 'malta',
+                is_malta_wallet: wallet.landing_company_name === 'maltainvest',
                 /** The gradient class names for the wallet header and card background. */
                 gradients,
                 /** Local asset names for the wallet icon. ex: `IcWalletCurrencyUsd` for `USD`  */

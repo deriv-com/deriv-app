@@ -5,6 +5,7 @@ import { useActiveAccount, useWalletAccountsList } from '@deriv/hooks';
 import { formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import WalletBadge from 'App/Components/Layout/Header/wallets/wallet-badge';
+import { Localize } from '@deriv/translations';
 import './account-switcher-wallet-item.scss';
 
 type TAccountSwitcherWalletItemProps = {
@@ -25,6 +26,7 @@ export const AccountSwitcherWalletItem = observer(
             is_virtual,
             landing_company_name,
             linked_to,
+            is_malta_wallet,
         } = account;
 
         const {
@@ -38,6 +40,8 @@ export const AccountSwitcherWalletItem = observer(
         const app_icon = is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight';
         const icon_type = is_virtual ? 'demo' : currency_config?.type;
         const is_selected = is_active || linked_to?.some(account => account.loginid === active_account?.loginid);
+
+        const show_badge = is_malta_wallet || is_virtual;
 
         const onAccountSwitch = async () => {
             closeAccountsDialog();
@@ -63,12 +67,20 @@ export const AccountSwitcherWalletItem = observer(
                     />
                 </div>
                 <div className='acc-switcher-wallet-item__content'>
-                    <Text size='xxs'>{currency_config?.name}</Text>
+                    <Text size='xxxs'>
+                        <Localize i18n_default_text='Deriv Apps' />
+                    </Text>
+                    <Text size='xxxs'>
+                        <Localize
+                            i18n_default_text='{{currency}} Wallet'
+                            values={{ currency: currency_config?.display_code }}
+                        />
+                    </Text>
                     <Text size='xs' weight='bold'>
                         {`${formatMoney(currency || '', dtrade_balance || 0, true)} ${currency_config?.display_code}`}
                     </Text>
                 </div>
-                <WalletBadge is_demo={is_virtual} label={landing_company_name} />
+                {show_badge && <WalletBadge is_demo={is_virtual} label={landing_company_name} />}
             </div>
         );
     }

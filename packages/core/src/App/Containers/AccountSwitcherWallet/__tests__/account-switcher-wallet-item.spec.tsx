@@ -62,16 +62,28 @@ describe('AccountSwitcherWalletItem', () => {
     it('should render the component', () => {
         const store = mockStore({});
         render(<AccountSwitcherWalletItemComponent props={props} store={store} />);
-        expect(screen.getByText('US dollar')).toBeInTheDocument();
+        expect(screen.getByText('USD Wallet')).toBeInTheDocument();
         expect(screen.getByText('100.00 USD')).toBeInTheDocument();
-        expect(screen.getByText('SVG')).toBeInTheDocument();
+    });
+
+    it('should NOT show SVG badge', () => {
+        const store = mockStore({});
+        render(<AccountSwitcherWalletItemComponent props={props} store={store} />);
+        expect(screen.queryByText('SVG')).not.toBeInTheDocument();
+    });
+
+    it('should show MALTA badge', () => {
+        const store = mockStore({});
+        const tempProps = { ...props, account: { ...account, is_malta_wallet: true, landing_company_name: 'malta' } };
+        render(<AccountSwitcherWalletItemComponent props={tempProps} store={store} />);
+        expect(screen.getByText('MALTA')).toBeInTheDocument();
     });
 
     it('should render Demo Badge if is_virtual flag true', () => {
         const store = mockStore({});
         const tempProps = { ...props, account: { ...account, is_virtual: true } };
         render(<AccountSwitcherWalletItemComponent props={tempProps} store={store} />);
-        expect(screen.getByText('US dollar')).toBeInTheDocument();
+        expect(screen.getByText('USD Wallet')).toBeInTheDocument();
         expect(screen.getByText('100.00 USD')).toBeInTheDocument();
         expect(screen.getByText('Demo')).toBeInTheDocument();
     });

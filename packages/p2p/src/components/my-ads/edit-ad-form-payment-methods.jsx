@@ -9,9 +9,9 @@ import BuyAdPaymentMethodsList from './buy-ad-payment-methods-list.jsx';
 import SellAdPaymentMethodsList from './sell-ad-payment-methods-list.jsx';
 
 const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelectedMethods, touched }) => {
-    const { my_ads_store } = useStores();
-    const { data: advertiser_payment_methods } = useP2PAdvertiserPaymentMethods();
     const { showModal } = useModalManagerContext();
+    const { data: p2p_advertiser_payment_methods } = useP2PAdvertiserPaymentMethods();
+    const { my_ads_store } = useStores();
 
     const onClickPaymentMethodCard = payment_method => {
         if (!my_ads_store.payment_method_ids.includes(payment_method.id)) {
@@ -38,7 +38,7 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
     }, []);
 
     if (is_sell_advert) {
-        if (advertiser_payment_methods) {
+        if (p2p_advertiser_payment_methods.length) {
             return (
                 <SellAdPaymentMethodsList
                     selected_methods={selected_methods}
@@ -48,6 +48,7 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
                         })
                     }
                     onClickPaymentMethodCard={onClickPaymentMethodCard}
+                    p2p_advertiser_payment_methods={p2p_advertiser_payment_methods}
                 />
             );
         }

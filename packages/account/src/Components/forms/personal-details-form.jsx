@@ -556,7 +556,6 @@ const PersonalDetailsForm = props => {
                                     (values?.tax_residence && has_real_account)
                                 }
                                 residence_list={residence_list}
-                                required
                                 setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                                 setIsTinPopoverOpen={setIsTinPopoverOpen}
                                 is_tax_residence_popover_open={is_tax_residence_popover_open}
@@ -571,7 +570,6 @@ const PersonalDetailsForm = props => {
                                     isFieldImmutable('tax_identification_number', editable_fields) ||
                                     (values?.tax_identification_number && has_real_account)
                                 }
-                                required
                             />
                         )}
                         {'account_opening_reason' in values && (

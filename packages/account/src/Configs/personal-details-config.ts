@@ -44,6 +44,11 @@ export const personal_details_config = ({
 
     //the order of fields should be the same as on the page for proper highlighting fields errors
     const config = {
+        salutation: {
+            supported_in: ['iom', 'malta', 'maltainvest'],
+            default_value: account_settings.salutation ?? '',
+            rules: [['req', localize('Salutation is required.')]],
+        },
         document_type: {
             default_value: account_settings.document_type ?? {
                 id: '',
@@ -91,6 +96,20 @@ export const personal_details_config = ({
                 ],
             ],
         },
+        place_of_birth: {
+            supported_in: ['maltainvest', 'iom', 'malta'],
+            default_value: account_settings.place_of_birth
+                ? residence_list.find(item => item.value === account_settings.place_of_birth)?.text
+                : '',
+            rules: [['req', localize('Place of birth is required.')]],
+        },
+        citizen: {
+            supported_in: ['iom', 'malta', 'maltainvest'],
+            default_value: account_settings.citizen
+                ? residence_list.find(item => item.value === account_settings.citizen)?.text
+                : '',
+            rules: [['req', localize('Citizenship is required')]],
+        },
         phone: {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.phone ?? '',
@@ -110,13 +129,7 @@ export const personal_details_config = ({
                 ],
             ],
         },
-        place_of_birth: {
-            supported_in: ['maltainvest', 'iom', 'malta'],
-            default_value: account_settings.place_of_birth
-                ? residence_list.find(item => item.value === account_settings.place_of_birth)?.text
-                : '',
-            rules: [['req', localize('Place of birth is required.')]],
-        },
+
         tax_residence: {
             //if tax_residence is already set, we will use it as default value else for mf clients we will use residence as default value
             default_value: account_settings?.tax_residence
@@ -159,23 +172,6 @@ export const personal_details_config = ({
                 ],
             ],
         },
-        account_opening_reason: {
-            supported_in: ['iom', 'malta', 'maltainvest'],
-            default_value: account_settings.account_opening_reason ?? '',
-            rules: [['req', localize('Account opening reason is required.')]],
-        },
-        salutation: {
-            supported_in: ['iom', 'malta', 'maltainvest'],
-            default_value: account_settings.salutation ?? '',
-            rules: [['req', localize('Salutation is required.')]],
-        },
-        citizen: {
-            supported_in: ['iom', 'malta', 'maltainvest'],
-            default_value: account_settings.citizen
-                ? residence_list.find(item => item.value === account_settings.citizen)?.text
-                : '',
-            rules: [['req', localize('Citizenship is required')]],
-        },
         employment_status: {
             default_value: account_settings.employment_status ?? '',
             supported_in: ['maltainvest'],
@@ -185,6 +181,11 @@ export const personal_details_config = ({
             default_value: false,
             supported_in: ['maltainvest'],
             rules: [['confirm', localize('Please confirm your tax information.')]],
+        },
+        account_opening_reason: {
+            supported_in: ['iom', 'malta', 'maltainvest'],
+            default_value: account_settings.account_opening_reason ?? '',
+            rules: [['req', localize('Account opening reason is required.')]],
         },
     };
 

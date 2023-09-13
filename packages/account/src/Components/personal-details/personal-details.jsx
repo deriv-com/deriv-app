@@ -9,13 +9,7 @@ import {
     ThemedScrollbars,
     Text,
 } from '@deriv/components';
-import {
-    isDesktop,
-    isMobile,
-    PlatformContext,
-    getIDVNotApplicableOption,
-    removeEmptyPropertiesFromObject,
-} from '@deriv/shared';
+import { isDesktop, isMobile, getIDVNotApplicableOption, removeEmptyPropertiesFromObject } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import {
     shouldShowIdentityInformation,
@@ -52,7 +46,6 @@ const PersonalDetails = ({
     ...props
 }) => {
     const { account_status, account_settings, residence, real_account_signup_target } = props;
-    const { is_appstore } = React.useContext(PlatformContext);
     const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
     const is_submit_disabled_ref = React.useRef(true);
 
@@ -160,7 +153,7 @@ const PersonalDetails = ({
                                     onScroll={closeToolTip}
                                     testId='dt_personal_details_container'
                                 >
-                                    {!is_qualified_for_idv && is_appstore && (
+                                    {!is_qualified_for_idv && (
                                         <div className='details-form__sub-header'>
                                             <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
                                                 {localize(
@@ -201,7 +194,6 @@ const PersonalDetails = ({
                                             is_svg={is_svg}
                                             is_mf={is_mf}
                                             is_qualified_for_idv={is_qualified_for_idv}
-                                            is_appstore={is_appstore}
                                             editable_fields={editable_fields}
                                             residence_list={residence_list}
                                             has_real_account={has_real_account}

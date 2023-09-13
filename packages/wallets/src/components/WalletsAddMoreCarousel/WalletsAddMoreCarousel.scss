@@ -1,8 +1,7 @@
-.add-wallets {
+.wallets-add-more {
     display: flex;
     flex-direction: column;
-    background-color: #d6d6d6;
-    width: 100vw;
+    width: 100%;
     padding-top: 2.4rem;
 
     @media (max-width: 375px) {
@@ -61,6 +60,10 @@
             }
             &--next {
                 right: 1.6rem;
+            }
+            &:disabled {
+                opacity: 0.3;
+                display: none;
             }
         }
     }

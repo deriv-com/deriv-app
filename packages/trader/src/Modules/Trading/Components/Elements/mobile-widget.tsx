@@ -2,7 +2,7 @@ import React from 'react';
 import { Money } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getExpiryType, getDurationMinMaxValues, getLocalizedBasis } from '@deriv/shared';
-import { MultiplierAmountWidget } from 'Modules/Trading/Components/Form/TradeParams/Multiplier/widgets.jsx';
+import { MultiplierAmountWidget } from 'Modules/Trading/Components/Form/TradeParams/Multiplier/widgets';
 import TradeParamsModal from '../../Containers/trade-params-mobile';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';

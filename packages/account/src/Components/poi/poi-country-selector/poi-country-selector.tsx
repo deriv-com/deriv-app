@@ -98,8 +98,6 @@ const CountrySelector = ({
                                 </Text>
                                 <HintBox
                                     icon='IcCloseCircleRed'
-                                    icon_height={16}
-                                    icon_width={16}
                                     message={
                                         <Text as='p' size={isMobile() ? 'xxs' : 'xs'}>
                                             {failed_message}

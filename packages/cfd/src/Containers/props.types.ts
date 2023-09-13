@@ -16,6 +16,7 @@ import {
     TClickableDescription,
     TJurisdictionCardItems,
     TJurisdictionCardItemVerification,
+    TCFDsPlatformType,
 } from '../Components/props.types';
 import RootStore from '../Stores/index';
 
@@ -258,6 +259,7 @@ export type TJurisdictionModalContentProps = {
 export type TJurisdictionModalTitleProps = {
     show_eu_related_content: boolean;
     account_type: string;
+    platform: TCFDsPlatformType;
 };
 
 type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;

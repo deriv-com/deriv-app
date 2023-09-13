@@ -28,7 +28,7 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
                       account_type: localize(getMT5Title(account_type.type)),
                   });
         } else if (platform === CFD_PLATFORMS.CTRADER) {
-            return localize('Choose a jurisdiction for your cTrader account');
+            return localize('');
         }
     };
     const [is_dynamic_leverage_visible, setIsDynamicLeverageVisible] = React.useState(false);
@@ -58,31 +58,6 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
     return (
         <div>
             <React.Suspense fallback={<UILoader />}>
-                <DesktopWrapper>
-                    <Modal
-                        className='jurisdiction-modal'
-                        disableApp={disableApp}
-                        enableApp={enableApp}
-                        exit_classname='cfd-modal--custom-exit'
-                        is_open={is_jurisdiction_modal_visible}
-                        title={modalTitle()}
-                        toggleModal={toggleJurisdictionModal}
-                        type='button'
-                        width={account_type.type === 'financial' ? '1200px' : '1040px'}
-                    >
-                        <JurisdictionModalContentWrapper openPasswordModal={openPasswordModal} />
-                    </Modal>
-                </DesktopWrapper>
-                <MobileWrapper>
-                    <MobileDialog
-                        portal_element_id='deriv_app'
-                        title={modalTitle()}
-                        visible={is_jurisdiction_modal_visible}
-                        onClose={toggleJurisdictionModal}
-                    >
-                        <JurisdictionModalContentWrapper openPasswordModal={openPasswordModal} />
-                    </MobileDialog>
-                </MobileWrapper>
                 <DynamicLeverageContext.Provider value={{ is_dynamic_leverage_visible, toggleDynamicLeverage }}>
                     <DesktopWrapper>
                         <Modal
@@ -99,6 +74,7 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
                                 <JurisdictionModalTitle
                                     show_eu_related_content={show_eu_related_content}
                                     account_type={account_type.type}
+                                    platform={platform}
                                 />
                             }
                         >
@@ -115,6 +91,7 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
                                 <JurisdictionModalTitle
                                     show_eu_related_content={show_eu_related_content}
                                     account_type={account_type.type}
+                                    platform={platform}
                                 />
                             }
                         >

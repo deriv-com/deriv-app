@@ -6,6 +6,7 @@ import { reaction } from 'mobx';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
+import { useP2PRenderedAdverts } from 'Hooks';
 import { useStores } from 'Stores';
 import BuySellRow from './buy-sell-row.jsx';
 import NoAds from './no-ads/no-ads.jsx';
@@ -31,6 +32,8 @@ const BuySellTable = ({ onScroll }) => {
         client: { currency },
     } = useStore();
 
+    const { rendered_adverts, has_more_items_to_load, loadMore, isLoading, error } = useP2PRenderedAdverts();
+
     React.useEffect(
         () => {
             my_profile_store.getPaymentMethodsList();
@@ -44,15 +47,15 @@ const BuySellTable = ({ onScroll }) => {
         []
     );
 
-    if (buy_sell_store.is_loading) {
+    if (isLoading) {
         return <Loading is_fullscreen={false} />;
     }
 
-    if (buy_sell_store.api_error_message) {
-        return <TableError message={buy_sell_store.api_error_message} />;
+    if (error) {
+        return <TableError message={error.message} />;
     }
 
-    if (buy_sell_store.items.length) {
+    if (rendered_adverts.length) {
         return (
             <>
                 <Table className='buy-sell__table'>
@@ -108,11 +111,16 @@ const BuySellTable = ({ onScroll }) => {
                     <Table.Body className='buy-sell__table-body'>
                         <InfiniteDataList
                             data_list_className='buy-sell__data-list'
-                            items={buy_sell_store.rendered_items}
+                            items={rendered_adverts}
                             rowRenderer={props => <BuySellRowRenderer {...props} />}
-                            loadMoreRowsFn={buy_sell_store.loadMoreItems}
+                            loadMoreRowsFn={() => {
+                                return new Promise(resolve => {
+                                    loadMore();
+                                    resolve();
+                                });
+                            }}
                             has_filler
-                            has_more_items_to_load={buy_sell_store.has_more_items_to_load}
+                            has_more_items_to_load={has_more_items_to_load}
                             keyMapperFn={item => item.id}
                             onScroll={onScroll}
                         />

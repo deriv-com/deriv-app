@@ -65,6 +65,13 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(() => mocked_store_values),
 }));
 
+jest.mock('Hooks', () => ({
+    ...jest.requireActual('Hooks'),
+    useP2PAdvertiserAdverts: jest.fn(() => ({
+        isLoading: false,
+    })),
+}));
+
 describe('<AdvertiserPage />', () => {
     it('should render advertiser page', () => {
         render(<AdvertiserPage />);

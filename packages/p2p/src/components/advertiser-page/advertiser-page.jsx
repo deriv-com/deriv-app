@@ -4,10 +4,11 @@ import { daysSince, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useHistory } from 'react-router-dom';
-import { useStores } from 'Stores';
+import { api_error_codes } from 'Constants/api-error-codes';
 import { Localize, localize } from 'Components/i18next';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
-import { api_error_codes } from 'Constants/api-error-codes';
+import { useP2PAdvertiserAdverts } from 'Hooks';
+import { useStores } from 'Stores';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import RecommendedBy from 'Components/recommended-by';
 import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
@@ -31,6 +32,8 @@ const AdvertiserPage = () => {
     const info = is_my_advert ? general_store.advertiser_info : advertiser_page_store.counterparty_advertiser_info;
 
     const history = useHistory();
+
+    const { isLoading } = useP2PAdvertiserAdverts();
 
     const {
         basic_verification,
@@ -81,7 +84,6 @@ const AdvertiserPage = () => {
         reaction(
             () => [advertiser_page_store.active_index, general_store.block_unblock_user_error],
             () => {
-                advertiser_page_store.onTabChange();
                 if (general_store.block_unblock_user_error && buy_sell_store.show_advertiser_page) {
                     showModal({
                         key: 'ErrorModal',
@@ -135,7 +137,7 @@ const AdvertiserPage = () => {
         },
     });
 
-    if (advertiser_page_store.is_loading || general_store.is_block_unblock_user_loading) {
+    if (isLoading || general_store.is_block_unblock_user_loading) {
         return <Loading is_fullscreen={false} />;
     }
 

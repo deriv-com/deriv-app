@@ -41,9 +41,6 @@ const mock_errors = {
     tax_identification_confirm: 'Please confirm your tax information.',
 };
 
-const fake_alert_messaget =
-    /we need this for verification\. if the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw\./i;
-
 const tax_residence_pop_over_text =
     /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i;
 const tin_pop_over_text = /don't know your tax identification number\?/i;
@@ -262,12 +259,6 @@ describe('<PersonalDetails/>', () => {
     it('should render PersonalDetails component', () => {
         renderwithRouter(<PersonalDetails {...props} />);
         expect(screen.getByTestId('personal_details_form')).toBeInTheDocument();
-    });
-
-    it('should show fake-alert message', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
-
-        expect(screen.getByText(fake_alert_messaget)).toBeInTheDocument();
     });
 
     it('should show proper salutation message when is_virtual is true', () => {

@@ -1,26 +1,26 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useTransferMessageList, useWalletTransfer } from '@deriv/hooks';
+import { useTransferMessageList } from '@deriv/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import WalletTransferMessages from '../wallet-transfer-messages';
 
-const mock_from_account = {
+const mock_from_account: Partial<React.ComponentProps<typeof WalletTransferMessages>['from_account']> = {
     account_type: 'wallet',
     balance: 0,
     currency: 'USD',
     loginid: 'CRW123',
     display_currency_code: 'USD',
     shortcode: 'svg',
-} as ReturnType<typeof useWalletTransfer>['from_account'];
+};
 
-const mock_to_account = {
+const mock_to_account: Partial<React.ComponentProps<typeof WalletTransferMessages>['to_account']> = {
     account_type: 'trading',
     balance: 0,
     currency: 'USD',
     loginid: 'CR123',
     display_currency_code: 'USD',
     shortcode: 'svg',
-} as ReturnType<typeof useWalletTransfer>['to_account'];
+};
 
 const mock_store = mockStore({});
 
@@ -48,7 +48,7 @@ describe('<WalletTransferMessages />', () => {
                     code: 'WalletToTradingAppDailyLimit',
                     is_first_transfer: true,
                     limit: 10000,
-                    currency: mock_from_account?.currency,
+                    currency: mock_from_account?.currency || '',
                     type: 'success',
                 },
             ],
@@ -64,7 +64,7 @@ describe('<WalletTransferMessages />', () => {
                     code: 'WalletToTradingAppDailyLimit',
                     is_first_transfer: false,
                     limit: 9000,
-                    currency: mock_from_account?.currency,
+                    currency: mock_from_account?.currency || '',
                     type: 'success',
                 },
             ],
@@ -84,7 +84,7 @@ describe('<WalletTransferMessages />', () => {
                     code: 'DemoWalletToTradingAppDailyLimit',
                     is_first_transfer: true,
                     limit: 10000,
-                    currency: mock_from_account?.currency,
+                    currency: mock_from_account?.currency || '',
                     type: 'success',
                 },
             ],
@@ -100,7 +100,7 @@ describe('<WalletTransferMessages />', () => {
                     code: 'DemoWalletToTradingAppDailyLimit',
                     is_first_transfer: false,
                     limit: 9000,
-                    currency: mock_from_account?.currency,
+                    currency: mock_from_account?.currency || '',
                     type: 'success',
                 },
             ],

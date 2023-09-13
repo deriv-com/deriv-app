@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Field, FieldProps, Formik, Form, FormikHelpers } from 'formik';
 import { AmountInput, Button, Loading } from '@deriv/components';
 import { useCurrencyConfig, useWalletTransfer } from '@deriv/hooks';
@@ -36,8 +35,6 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         setFromAccount,
         setToAccount,
     } = useWalletTransfer();
-
-    const [message_list, setMessageList] = React.useState<any[]>([]);
 
     const portal_id = is_mobile ? 'mobile_list_modal_root' : 'modal_root';
 
@@ -111,11 +108,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                 {({ setValues, values, resetForm }) => (
                     <Form noValidate>
                         <div className='wallet-transfer__tiles-container'>
-                            <div
-                                className={classNames('wallet-transfer__tile', {
-                                    'wallet-transfer__tile-disable-margin-bottom': message_list.length > 0,
-                                })}
-                            >
+                            <div className='wallet-transfer__tile'>
                                 <Field name='from_amount'>
                                     {({ field }: FieldProps<number>) => (
                                         <AmountInput

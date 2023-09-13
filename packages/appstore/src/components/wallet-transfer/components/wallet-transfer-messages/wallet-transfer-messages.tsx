@@ -4,23 +4,25 @@ import { localize } from '@deriv/translations';
 import { AnimatedList, AlertMessage } from '@deriv/components';
 import { getAccountName } from 'Constants/utils';
 import { formatMoney } from '@deriv/shared';
-
-type TMessageMapperParams = {
-    currency: string;
-    is_first_transfer: boolean;
-    limit: number;
-    from_name: string;
-    to_name: string;
-};
+import { ArrayElement } from 'Types';
+import useTransferMessageBetweenWalletAndTradingApp from '@deriv/hooks/src/useTransferMessageBetweenWalletAndTradingApp';
 
 type TWalletTransferMessagesProps = {
-    from_account: ReturnType<typeof useWalletTransfer>['from_account'];
-    to_account: ReturnType<typeof useWalletTransfer>['to_account'];
-    // setMessageList: void;
+    from_account: Partial<ReturnType<typeof useWalletTransfer>['from_account']>;
+    to_account: Partial<ReturnType<typeof useWalletTransfer>['to_account']>;
 };
 
-const message_code_to_message_mapper: any = {
-    WalletToTradingAppDailyLimit: (value: TMessageMapperParams) =>
+type TMessageMapperParams = {
+    from_name: string;
+    to_name: string;
+} & ArrayElement<ReturnType<typeof useTransferMessageBetweenWalletAndTradingApp>>;
+
+type TMessageCodeToMessageMapper = {
+    [key in ReturnType<typeof useTransferMessageList>['data'][number]['code']]: (value: TMessageMapperParams) => string;
+};
+
+const message_code_to_message_mapper: TMessageCodeToMessageMapper = {
+    WalletToTradingAppDailyLimit: value =>
         localize(
             'The{{remaining}} daily transfer limit between your {{wallet_name}} and {{trading_account_name}} is {{limit_value}} {{currency}}.',
             {
@@ -51,19 +53,18 @@ const WalletTransferMessages = ({ from_account, to_account }: TWalletTransferMes
                     return (
                         <AlertMessage
                             key={msg.code}
-                            variant={msg.cta ? 'with-action-button' : 'base'}
+                            variant={'base'}
                             message={message_code_to_message_mapper[msg.code]({
                                 ...msg,
                                 from_name: getAccountName({ ...from_account }),
                                 to_name: getAccountName({ ...to_account }),
-                            })}
+                            } as TMessageMapperParams)}
                             type={msg.type}
                         />
                     );
                 })}
         </AnimatedList>
     );
-    return null;
 };
 
 export default WalletTransferMessages;

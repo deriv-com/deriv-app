@@ -1,11 +1,8 @@
-import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { StoreProvider, mockStore } from '@deriv/stores';
-import useExchangeRate from '../useExchangeRate';
 import useTransferMessageBetweenWalletAndTradingApp from '../useTransferMessageBetweenWalletAndTradingApp';
 import useWalletTransfer from '../useWalletTransfer';
 
-const mock_from_account = {
+const mock_from_account: Partial<ReturnType<typeof useWalletTransfer>['from_account']> = {
     account_type: 'wallet',
     balance: 0,
     currency: 'USD',
@@ -16,9 +13,9 @@ const mock_from_account = {
     is_demo: false,
     shortcode: 'svg',
     type: 'fiat',
-} as ReturnType<typeof useWalletTransfer>['from_account'];
+};
 
-const mock_to_account = {
+const mock_to_account: Partial<ReturnType<typeof useWalletTransfer>['to_account']> = {
     account_type: 'trading',
     balance: 0,
     currency: 'USD',
@@ -28,7 +25,7 @@ const mock_to_account = {
     is_demo: false,
     shortcode: 'svg',
     type: 'fiat',
-} as ReturnType<typeof useWalletTransfer>['to_account'];
+};
 
 const mock_get_limits_response = {
     daily_transfers: {

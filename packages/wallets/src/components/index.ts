@@ -8,3 +8,6 @@ export * from './WalletListCardIDetails';
 export * from './WalletListCardIcon';
 export * from './WalletListCardTitle';
 export * from './WalletsCarousel';
+export * from './WalletCard';
+export * from './ProgressBar';
+export * from './WalletsCarouselContent';

@@ -7,15 +7,15 @@ import { observer, useStore } from '@deriv/stores';
 import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
 import { useTotalAccountBalance, useCFDAccounts, usePlatformAccounts, useExchangeRate } from '@deriv/hooks';
-import { useCashierStore } from '../../../../cashier/src/stores/useCashierStores';
 
 const AssetSummary = observer(() => {
     const { last_update } = useExchangeRate();
-    const { account_transfer, general_store } = useCashierStore();
-    const { traders_hub, client, common } = useStore();
+
+    const { traders_hub, client, common, modules } = useStore();
     const { selected_account_type, is_eu_user, no_CR_account, no_MF_account } = traders_hub;
     const { is_logging_in, is_switching, default_currency, is_landing_company_loaded } = client;
-    const { is_transfer_confirm } = account_transfer;
+    const { is_transfer_confirm } = modules.cashier.account_transfer;
+    const { is_loading } = modules.cashier.general_store;
     const { current_language } = common;
     const { real: platform_real_accounts, demo: platform_demo_account } = usePlatformAccounts();
     const { real: cfd_real_accounts, demo: cfd_demo_accounts } = useCFDAccounts();
@@ -25,7 +25,6 @@ const AssetSummary = observer(() => {
     const is_real = selected_account_type === 'real';
     const real_total_balance = platform_real_balance.balance + cfd_real_balance.balance;
     const demo_total_balance = (platform_demo_account?.balance || 0) + cfd_demo_balance.balance;
-    const { is_loading } = general_store;
 
     const has_active_related_deriv_account = !((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)); // if selected region is non-eu, check active cr accounts, if selected region is eu- check active mf accounts
     const eu_account = is_eu_user && !no_MF_account;

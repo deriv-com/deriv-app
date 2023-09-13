@@ -761,7 +761,7 @@ export default class GeneralStore extends BaseStore {
         const { p2p_order_info } = order_response ?? {};
         const { order_store } = this.root_store;
 
-        if (this.p2p_order_list_response.length && this.p2p_order_list_response.length > 0) {
+        if (this.p2p_order_list_response) {
             const { list } = this.p2p_order_list_response;
             // it's an array of orders from p2p_order_list
             this.handleNotifications(order_store.orders, list);

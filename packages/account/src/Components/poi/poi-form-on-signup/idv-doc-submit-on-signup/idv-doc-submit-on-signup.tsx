@@ -21,10 +21,7 @@ import { GetSettings } from '@deriv/api-types';
 type TIdvDocSubmitOnSignup = {
     citizen_data: FormikValues;
     onPrevious: (values: FormikValues) => void;
-    onNext: (
-        values: FormikValues,
-        action: FormikHelpers<{ document_type: FormikValues; document_number: FormikValues }>
-    ) => void;
+    onNext: (values: FormikValues, action: FormikHelpers<FormikValues>) => void;
     value: FormikValues;
     has_idv_error?: boolean;
     account_settings: GetSettings;

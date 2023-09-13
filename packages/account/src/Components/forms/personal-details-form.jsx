@@ -1,6 +1,7 @@
 import React from 'react';
-import { Field, useFormikContext } from 'formik';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
+import { Field, useFormikContext } from 'formik';
 import {
     Autocomplete,
     Checkbox,
@@ -14,14 +15,13 @@ import {
 } from '@deriv/components';
 import { getLegalEntityName, isDesktop, isMobile, routes, validPhone } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import FormSubHeader from 'Components/form-sub-header';
-import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
-import InlineNoteWithIcon from 'Components/inline-note-with-icon';
-import FormBodySection from 'Components/form-body-section';
-import { DateOfBirthField, FormInputField } from 'Components/forms/form-fields';
-import { Link } from 'react-router-dom';
-import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
-import { isFieldImmutable } from 'Helpers/utils';
+import InlineNoteWithIcon from '../inline-note-with-icon';
+import { DateOfBirthField, FormInputField } from "./form-fields.jsx";
+import FormBodySection from '../form-body-section';
+import FormSubHeader from '../form-sub-header';
+import PoiNameDobExample from '../../Assets/ic-poi-name-dob-example.svg';
+import { isFieldImmutable } from '../../Helpers/utils';
+import { getEmploymentStatusList } from '../../Sections/Assessment/FinancialAssessment/financial-information-list';
 
 const PersonalDetailsForm = props => {
     const {
@@ -30,7 +30,6 @@ const PersonalDetailsForm = props => {
         is_svg,
         is_qualified_for_idv,
         should_hide_helper_image,
-        is_appstore,
         editable_fields = [],
         has_real_account,
         residence_list,
@@ -39,9 +38,11 @@ const PersonalDetailsForm = props => {
         closeRealAccountSignup,
         salutation_list,
         is_rendered_for_onfido,
+        is_qualified_for_poa,
         should_close_tooltip,
         setShouldCloseTooltip,
         class_name,
+        states_list,
     } = props;
     const autocomplete_value = 'none';
     const PoiNameDobExampleIcon = PoiNameDobExample;
@@ -60,10 +61,9 @@ const PersonalDetailsForm = props => {
 
     const getNameAndDobLabels = () => {
         const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_qualified_for_idv;
-        const first_name_label = is_appstore || is_asterisk_needed ? localize('First name*') : localize('First name');
-        const last_name_text = is_asterisk_needed ? localize('Last name*') : localize('Last name');
-        const last_name_label = is_appstore ? localize('Family name*') : last_name_text;
-        const dob_label = is_appstore || is_asterisk_needed ? localize('Date of birth*') : localize('Date of birth');
+        const first_name_label = is_asterisk_needed ? localize('First name*') : localize('First name');
+        const last_name_label = is_asterisk_needed ? localize('Last name*') : localize('Last name');
+        const dob_label = is_asterisk_needed ? localize('Date of birth*') : localize('Date of birth');
 
         return {
             first_name_label,
@@ -101,6 +101,10 @@ const PersonalDetailsForm = props => {
         />
     );
 
+    const poa_clarification_message = (
+        <Localize i18n_default_text='For faster verification, input the same address here as in your proof of address document (see section below)' />
+    );
+
     // need to put this check related to DIEL clients
     const is_svg_only = is_svg && !is_mf;
 
@@ -114,6 +118,13 @@ const PersonalDetailsForm = props => {
                 {(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image && (
                     <InlineNoteWithIcon
                         message={name_dob_clarification_message}
+                        font_size={isMobile() ? 'xxxs' : 'xs'}
+                    />
+                )}
+                {is_qualified_for_poa && (
+                    <InlineNoteWithIcon
+                        icon='IcAlertWarning'
+                        message={poa_clarification_message}
                         font_size={isMobile() ? 'xxxs' : 'xs'}
                     />
                 )}
@@ -145,7 +156,7 @@ const PersonalDetailsForm = props => {
                                 </Text>
                             </div>
                         )}
-                        {!is_qualified_for_idv && !is_appstore && !is_rendered_for_onfido && (
+                        {!is_qualified_for_idv && !is_rendered_for_onfido && !is_qualified_for_poa && (
                             <FormSubHeader
                                 title={'salutation' in values ? localize('Title and name') : localize('Name')}
                             />
@@ -176,7 +187,7 @@ const PersonalDetailsForm = props => {
                         {'first_name' in values && (
                             <FormInputField
                                 name='first_name'
-                                required={is_svg || is_appstore}
+                                required={is_svg}
                                 label={getNameAndDobLabels().first_name_label}
                                 hint={getFieldHint(localize('first name'))}
                                 disabled={
@@ -190,7 +201,7 @@ const PersonalDetailsForm = props => {
                         {'last_name' in values && (
                             <FormInputField
                                 name='last_name'
-                                required={is_svg || is_appstore}
+                                required={is_svg}
                                 label={getNameAndDobLabels().last_name_label}
                                 hint={getFieldHint(localize('last name'))}
                                 disabled={
@@ -201,13 +212,13 @@ const PersonalDetailsForm = props => {
                                 data-testid='last_name'
                             />
                         )}
-                        {!is_appstore && !is_qualified_for_idv && !is_rendered_for_onfido && (
+                        {!is_qualified_for_idv && !is_rendered_for_onfido && !is_qualified_for_poa && (
                             <FormSubHeader title={localize('Other details')} />
                         )}
                         {'date_of_birth' in values && (
                             <DateOfBirthField
                                 name='date_of_birth'
-                                required={is_svg || is_appstore}
+                                required={is_svg}
                                 label={getNameAndDobLabels().dob_label}
                                 hint={getFieldHint(localize('date of birth'))}
                                 disabled={
@@ -215,8 +226,120 @@ const PersonalDetailsForm = props => {
                                     (values?.date_of_birth && has_real_account)
                                 }
                                 placeholder={localize('01-07-1999')}
-                                portal_id={is_appstore ? '' : 'modal_root'}
+                                portal_id='modal_root'
                                 data_testid='date_of_birth'
+                            />
+                        )}
+                        {'address_line_1' in values && (
+                            <FormInputField
+                                name='address_line_1'
+                                label={localize('First line of address*')}
+                                disabled={isFieldImmutable('address_line_1', editable_fields)}
+                                data-testid='address_line_1'
+                                autoComplete='off'
+                                data-lpignore='true'
+                                type='text'
+                                maxLength={70}
+                                required
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={touched.address_line_1 && errors.address_line_1}
+                                value={values.address_line_1}
+                            />
+                        )}
+                        {'address_line_2' in values && (
+                            <FormInputField
+                                name='address_line_2'
+                                label={localize('Second line of address (optional)')}
+                                disabled={isFieldImmutable('address_line_2', editable_fields)}
+                                data-testid='address_line_2'
+                                autoComplete='off'
+                                data-lpignore='true'
+                                type='text'
+                                maxLength={70}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={touched.address_line_2 && errors.address_line_2}
+                                value={values.address_line_2}
+                            />
+                        )}
+                        {'address_city' in values && (
+                            <FormInputField
+                                name='address_city'
+                                label={localize('Town/City*')}
+                                disabled={isFieldImmutable('address_city', editable_fields)}
+                                data-testid='address_city'
+                                autoComplete='off'
+                                data-lpignore='true'
+                                type='text'
+                                maxLength={70}
+                                required
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={touched.address_city && errors.address_city}
+                                value={values.address_city}
+                            />
+                        )}
+                        {'address_state' in values &&
+                            (states_list?.length ? (
+                                <React.Fragment>
+                                    <DesktopWrapper>
+                                        <Field name='address_state'>
+                                            {({ field }) => (
+                                                <Autocomplete
+                                                    {...field}
+                                                    data-lpignore='true'
+                                                    autoComplete='new-password' // prevent chrome autocomplete
+                                                    type='text'
+                                                    label={localize('State/Province')}
+                                                    error={touched.address_state && errors.address_state}
+                                                    list_items={states_list}
+                                                    onItemSelection={({ value, text }) =>
+                                                        setFieldValue('address_state', value ? text : '', true)
+                                                    }
+                                                />
+                                            )}
+                                        </Field>
+                                    </DesktopWrapper>
+                                    <MobileWrapper>
+                                        <SelectNative
+                                            placeholder={localize('Please select')}
+                                            label={localize('State/Province')}
+                                            value={values.address_state}
+                                            list_items={states_list}
+                                            error={touched.address_state && errors.address_state}
+                                            use_text
+                                            onChange={e => setFieldValue('address_state', e.target.value, true)}
+                                        />
+                                    </MobileWrapper>
+                                </React.Fragment>
+                            ) : (
+                                <FormInputField
+                                    data-lpignore='true'
+                                    autoComplete='off'
+                                    type='text'
+                                    name='address_state'
+                                    label={localize('State/Province')}
+                                    value={values.address_state}
+                                    error={touched.address_state && errors.address_state}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                            ))}
+                        {'address_postcode' in values && (
+                            <FormInputField
+                                name='address_postcode'
+                                label={localize('Postal/ZIP code')}
+                                disabled={isFieldImmutable('address_postcode', editable_fields)}
+                                data-testid='address_postcode'
+                                autoComplete='off'
+                                data-lpignore='true'
+                                type='text'
+                                maxLength={70}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={touched.address_postcode && errors.address_postcode}
+                                value={values.address_postcode}
                             />
                         )}
                         {!is_svg_only && 'place_of_birth' in values && (
@@ -266,7 +389,7 @@ const PersonalDetailsForm = props => {
                                                 label={is_mf ? localize('Citizenship*') : localize('Citizenship')}
                                                 list_items={residence_list}
                                                 value={values.citizen}
-                                                use_text={true}
+                                                use_text
                                                 error={touched.citizen && errors.citizen}
                                                 onChange={e => {
                                                     handleChange(e);
@@ -513,7 +636,7 @@ const PlaceOfBirthField = ({ handleChange, setFieldValue, disabled, residence_li
                         label={required ? localize('Place of birth*') : localize('Place of birth')}
                         list_items={residence_list}
                         value={field.value}
-                        use_text={true}
+                        use_text
                         error={meta.touched && meta.error}
                         onChange={e => {
                             handleChange(e);
@@ -565,7 +688,7 @@ const TaxResidenceField = ({
                         label={required ? localize('Tax residence*') : localize('Tax residence')}
                         list_items={residence_list}
                         value={field.value}
-                        use_text={true}
+                        use_text
                         error={meta.touched && meta.error}
                         onChange={e => {
                             field.onChange(e);

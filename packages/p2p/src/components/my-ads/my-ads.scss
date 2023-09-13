@@ -773,3 +773,9 @@
 .p2p-my-ads__modal-icon {
     margin-right: 0.8rem;
 }
+
+.dc-modal__container_p2p-my-ads__modal-error {
+    .ad-create-edit-error-modal__message {
+        white-space: pre-wrap;
+    }
+}

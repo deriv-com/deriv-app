@@ -1,20 +1,18 @@
 /**
  * A function that counts the number of decimal places in a number.
- * @param value - The number to count the decimal places of.
- * @returns The number of decimal places in the number.
+ * @param {Number | String} value - The number to count the decimal places of.
+ * @returns {Number} The number of decimal places in the number.
  */
-export const countDecimalPlaces = (value: number | string) => {
-    return (value.toString().split('.')?.[1] ?? '').length;
-};
+export const countDecimalPlaces = (value: number | string): number => (value.toString().split('.')?.[1] ?? '').length;
 
 /**
  * A function that generates a colour from a nickname.
  *
  * @deprecated This will be removed once design has provided the correct colour for the user avatar.
- * @param nickname - The nickname to generate a colour from.
- * @returns A colour derived from nickname that is in our colours array.
+ * @param {String} nickname - The nickname to generate a colour from.
+ * @returns {String} A colour derived from nickname that is in our colours array.
  */
-export const generateHexColourFromNickname = (nickname: string) => {
+export const generateHexColourFromNickname = (nickname: string): string => {
     if (!nickname) {
         return '??';
     }
@@ -50,7 +48,7 @@ export const generateHexColourFromNickname = (nickname: string) => {
 /**
  * A function that gets the short nickname from a nickname.
  *
- * @param nickname - The nickname to get the short nickname from.
- * @returns The short nickname.
+ * @param {String} nickname - The nickname to get the short nickname from.
+ * @returns {String} The short nickname.
  */
-export const getShortNickname = (nickname: string) => nickname && nickname.substr(0, 2).toUpperCase();
+export const getShortNickname = (nickname: string): string => nickname && nickname.substring(0, 2).toUpperCase();

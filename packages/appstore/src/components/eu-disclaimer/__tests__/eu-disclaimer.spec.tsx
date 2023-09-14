@@ -22,7 +22,7 @@ describe('<EUDisclaimer />', () => {
     it('Check disclaimer for wallets exists', () => {
         render(
             <StoreProvider store={mockedRootStore}>
-                <EUDisclaimer is_wallet={true} />
+                <EUDisclaimer is_wallet />
             </StoreProvider>
         );
 

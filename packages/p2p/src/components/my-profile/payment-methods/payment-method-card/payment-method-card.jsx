@@ -3,7 +3,8 @@ import classNames from 'classnames';
 import { Checkbox, Dropdown, Icon, Text } from '@deriv/components';
 import { isEmptyObject } from '@deriv/shared';
 import { localize } from 'Components/i18next';
-import { getPaymentMethodIcon } from 'Utils/payment-method';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import PaymentMethodIcon from 'Components/payment-method-icon';
 import { useStores } from 'Stores';
 import PropTypes from 'prop-types';
 
@@ -23,13 +24,29 @@ const PaymentMethodCard = ({
     style,
 }) => {
     const { general_store, my_ads_store, my_profile_store } = useStores();
-    const method = !is_add && payment_method?.display_name.replace(/\s|-/gm, '');
-    const payment_account = payment_method?.fields?.account?.value;
-    const payment_account_name = payment_method?.display_name;
-    const payment_bank_name = payment_method?.fields?.bank_name?.value;
-    const payment_name = payment_method?.fields?.name?.value;
-    const payment_method_name = payment_method?.display_name.replace(/\s|-/gm, '');
-    const payment_method_icon = getPaymentMethodIcon(payment_method_name);
+    const { showModal } = useModalManagerContext();
+    const { display_name, fields, icon, id } = payment_method || {};
+    const method = !is_add && display_name.replace(/\s|-/gm, '');
+    const payment_account = fields?.account?.value;
+    const payment_account_name = display_name;
+    const payment_bank_name = fields?.bank_name?.value;
+    const payment_name = fields?.name?.value;
+
+    const handleEditDeletPaymentMethod = e => {
+        if (e.target.value === 'delete') {
+            showModal({
+                key: 'DeletePaymentMethodConfirmationModal',
+                props: {
+                    payment_method_id: id,
+                    payment_method_name: payment_bank_name || payment_name || display_name,
+                },
+            });
+        } else if (e.target.value === 'edit') {
+            my_profile_store.setPaymentMethodToEdit(payment_method);
+            my_profile_store.setSelectedPaymentMethodDisplayName(payment_method?.display_name);
+            my_profile_store.setShouldShowEditPaymentMethodForm(true);
+        }
+    };
 
     if (is_add) {
         return (
@@ -66,11 +83,16 @@ const PaymentMethodCard = ({
             style={style}
         >
             <div className='payment-method-card__header'>
-                <Icon
-                    className='payment-method-card__icon'
-                    icon={payment_method_icon}
-                    size={medium || small ? 16 : 24}
-                />
+                {icon ? (
+                    <Icon className='payment-method-card__icon' icon={icon} size={medium || small ? 16 : 24} />
+                ) : (
+                    <PaymentMethodIcon
+                        className='payment-method-card__icon'
+                        display_name={display_name}
+                        size={medium || small ? 16 : 24}
+                    />
+                )}
+
                 {is_vertical_ellipsis_visible && (
                     <Dropdown
                         list={[
@@ -83,7 +105,7 @@ const PaymentMethodCard = ({
                                 value: 'delete',
                             },
                         ]}
-                        onChange={e => my_profile_store.onEditDeletePaymentMethodCard(e, payment_method)}
+                        onChange={handleEditDeletPaymentMethod}
                         suffix_icon='IcCashierVerticalEllipsis'
                         is_align_text_left
                     />
@@ -93,7 +115,7 @@ const PaymentMethodCard = ({
                         className='payment-method-card__checkbox'
                         disabled={
                             my_ads_store.payment_method_ids.length === 3 &&
-                            !my_ads_store.payment_method_ids.includes(payment_method.ID)
+                            !my_ads_store.payment_method_ids.includes(payment_method.id)
                         }
                         onChange={onClick}
                         value={!isEmptyObject(style)}

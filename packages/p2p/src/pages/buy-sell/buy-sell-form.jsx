@@ -1,9 +1,9 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { HintBox, Input, Text } from '@deriv/components';
-import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
+import { useP2PAdvertiserPaymentMethods, useExchangeRate } from '@deriv/hooks';
 import { getDecimalPlaces, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer, Observer } from 'mobx-react-lite';
@@ -21,7 +21,7 @@ import './buy-sell-form.scss';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
-    const { advertiser_page_store, buy_sell_store, floating_rate_store, general_store, my_profile_store } = useStores();
+    const { advertiser_page_store, buy_sell_store, general_store, my_profile_store } = useStores();
     const [selected_methods, setSelectedMethods] = React.useState([]);
     buy_sell_store.setFormProps(props);
     const { showModal } = useModalManagerContext();
@@ -42,6 +42,10 @@ const BuySellForm = props => {
         rate_type,
     } = buy_sell_store?.advert || {};
 
+    const { getRate } = useExchangeRate();
+    const exchange_rate = getRate(local_currency);
+
+    const [previous_rate, setPreviousRate] = React.useState(exchange_rate);
     const [input_amount, setInputAmount] = React.useState(min_order_amount_limit);
 
     const { advertiser_buy_limit, advertiser_sell_limit, balance } = general_store;
@@ -60,7 +64,7 @@ const BuySellForm = props => {
         rate_type,
         rate,
         local_currency,
-        exchange_rate: floating_rate_store.exchange_rate,
+        exchange_rate,
         market_rate,
     });
 
@@ -87,25 +91,11 @@ const BuySellForm = props => {
             }
 
             advertiser_page_store.setFormErrorMessage('');
-            const disposeRateChangeModal = reaction(
-                () => floating_rate_store.is_market_rate_changed,
-                is_market_rate_changed => {
-                    if (is_market_rate_changed && rate_type === ad_type.FLOAT) {
-                        showModal({
-                            key: 'RateChangeModal',
-                            props: {
-                                currency: buy_sell_store.local_currency,
-                            },
-                        });
-                    }
-                }
-            );
             buy_sell_store.setInitialReceiveAmount(calculated_rate);
 
             return () => {
                 buy_sell_store.payment_method_ids = [];
                 disposeReceiveAmountReaction();
-                disposeRateChangeModal();
             };
         },
         [] // eslint-disable-line react-hooks/exhaustive-deps
@@ -116,6 +106,18 @@ const BuySellForm = props => {
         buy_sell_store.setReceiveAmount(receive_amount);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [input_amount, effective_rate]);
+
+    React.useEffect(() => {
+        if (exchange_rate !== previous_rate && rate_type === ad_type.FLOAT) {
+            setPreviousRate(exchange_rate);
+            showModal({
+                key: 'RateChangeModal',
+                props: {
+                    currency: buy_sell_store.local_currency,
+                },
+            });
+        }
+    }, [exchange_rate, previous_rate]);
 
     const onClickPaymentMethodCard = payment_method => {
         if (!should_disable_field) {

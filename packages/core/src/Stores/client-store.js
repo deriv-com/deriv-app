@@ -28,7 +28,7 @@ import { RudderStack } from '@deriv/analytics';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType, getAvailableAccount } from './Helpers/client';
-import { getLanguage, localize } from '@deriv/translations';
+import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 
 import BaseStore from './base-store';
@@ -40,7 +40,6 @@ import moment from 'moment';
 import { setDeviceDataCookie } from './Helpers/device';
 
 const LANGUAGE_KEY = 'i18n_language';
-const DEFAULT_LANGUAGE = 'EN';
 const storage_key = 'client.accounts';
 const store_name = 'client_store';
 const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
@@ -260,6 +259,7 @@ export default class ClientStore extends BaseStore {
             default_currency: computed,
             should_allow_authentication: computed,
             is_financial_assessment_incomplete: computed,
+            is_financial_assessment_needed: computed,
             is_authentication_needed: computed,
             is_identity_verification_needed: computed,
             real_account_creation_unlock_date: computed,
@@ -429,9 +429,11 @@ export default class ClientStore extends BaseStore {
         reaction(
             () => [this.account_settings],
             () => {
-                const lang_from_url = new URLSearchParams(window.location.search).get('lang') || DEFAULT_LANGUAGE;
-                this.setPreferredLanguage(lang_from_url);
-                LocalStore.set(LANGUAGE_KEY, lang_from_url);
+                const language = getRedirectionLanguage(this.account_settings?.preferred_language);
+                window.history.replaceState({}, document.title, urlForLanguage(language));
+
+                this.setPreferredLanguage(language);
+                LocalStore.set(LANGUAGE_KEY, language);
             }
         );
 
@@ -716,6 +718,10 @@ export default class ClientStore extends BaseStore {
         return this.account_status?.status?.includes('financial_assessment_not_complete');
     }
 
+    get is_financial_assessment_needed() {
+        return this.account_status?.status?.includes('financial_assessment_notification');
+    }
+
     get is_authentication_needed() {
         return !this.is_fully_authenticated && !!this.account_status?.authentication?.needs_verification?.length;
     }
@@ -810,7 +816,7 @@ export default class ClientStore extends BaseStore {
 
     get is_valid_login() {
         if (!this.is_logged_in) return true;
-        const valid_login_ids_regex = new RegExp('^(MX|MF|VRTC|MLT|CR|FOG)[0-9]+$', 'i');
+        const valid_login_ids_regex = new RegExp('^(MX|MF|MFW|VRTC|VRW|MLT|CR|CRW|FOG)[0-9]+$', 'i');
         return this.all_loginids.every(id => valid_login_ids_regex.test(id));
     }
 
@@ -1556,7 +1562,7 @@ export default class ClientStore extends BaseStore {
         this.setIsLoggingIn(true);
         this.root_store.notifications.removeNotifications(true);
         this.root_store.notifications.removeAllNotificationMessages(true);
-        if (!this.is_virtual && /VRTC/.test(loginid)) {
+        if (!this.is_virtual && /VRTC|VRW/.test(loginid)) {
             this.setPrevRealAccountLoginid(this.loginid);
         }
         this.setSwitched(loginid);
@@ -1683,7 +1689,7 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 this.is_populating_account_list = false;
             });
-            const language = authorize_response.authorize.preferred_language;
+            const language = getRedirectionLanguage(authorize_response.authorize.preferred_language);
             const stored_language = LocalStore.get(LANGUAGE_KEY);
             if (language !== 'EN' && stored_language && language !== stored_language) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));
@@ -1771,19 +1777,6 @@ export default class ClientStore extends BaseStore {
 
     responseWebsiteStatus(response) {
         this.website_status = response.website_status;
-        if (this.website_status.message && this.website_status.message.length) {
-            this.root_store.notifications.addNotificationMessage({
-                key: 'maintenance',
-                header: localize('Site is being updated'),
-                message: localize(this.website_status.message),
-                type: 'warning',
-                is_persistent: true,
-            });
-        } else {
-            this.root_store.notifications.removeNotificationMessage({
-                key: 'maintenance',
-            });
-        }
     }
 
     responseLandingCompany(response) {
@@ -2115,6 +2108,7 @@ export default class ClientStore extends BaseStore {
         this.landing_companies = {};
         localStorage.removeItem('readScamMessage');
         localStorage.removeItem('isNewAccount');
+        LocalStore.set('marked_notifications', JSON.stringify([]));
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 

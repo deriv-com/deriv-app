@@ -20,12 +20,11 @@ jobs:
   release_staging:
     name: Release Staging
     runs-on: Runner_16cores
+    environment: Staging
     container:
       image: node:18.16.0
     env:
       NODE_ENV: staging
-      CA: ${{ secrets.CA }}
-      CA_CRT: ${{ secrets.CA_CRT }}
       DATADOG_APPLICATION_ID: ${{ secrets.DATADOG_APPLICATION_ID }}
       DATADOG_CLIENT_TOKEN: ${{ secrets.DATADOG_CLIENT_TOKEN }}
       SERVICEACCOUNT_TOKEN: ${{ secrets.SERVICEACCOUNT_TOKEN }}
@@ -44,6 +43,7 @@ jobs:
 
   publish_cloudflare_staging:
     runs-on: Runner_16cores
+    environment: Common
     container:
       image: node:18.16.0
     needs:
@@ -64,6 +64,7 @@ jobs:
 
   send_slack_notification:
       name: Send Slack notification
+      environment: Common
       runs-on: Runner_16cores
       if: always()
       needs: [build_test_and_upload_artifact, publish_cloudflare_staging]

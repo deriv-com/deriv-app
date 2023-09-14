@@ -5,7 +5,7 @@ runs:
   steps:
   - name: Cache node modules
     id: cache-nodemodules
-    uses: actions/cache@v2
+    uses: actions/cache/restore@v3
     env:
       cache-name: cache-node-modules
     with:
@@ -47,4 +47,4 @@ runs:
         packages/utils/node_modules
         packages/analytics/node_modules
         packages/wallets/node_modules
-      key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      key: ${{ steps.cache-nodemodules.outputs.cache-primary-key }}

@@ -1,0 +1,30 @@
+.wallets-tabs {
+    &-list {
+        display: grid;
+        grid-auto-columns: 1fr;
+        position: relative;
+        background-color: #f2f3f4;
+        height: 5rem;
+        margin: 2rem;
+        border-radius: 7px;
+
+        &-item {
+            grid-row: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+
+            &--active {
+                font-weight: var(--text-weight-bold);
+                background-color: var(--general-main-1);
+                margin: 0.6rem;
+                border-radius: 5px;
+            }
+
+            &--disabled {
+                color: var(--text-disabled);
+            }
+        }
+    }
+}

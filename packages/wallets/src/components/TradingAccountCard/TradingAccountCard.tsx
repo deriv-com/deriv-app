@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import { Localize } from '@deriv/translations';
+import useDevice from '../../hooks/useDevice';
 import './TradingAccountCard.scss';
 
 type TProps = {
@@ -9,6 +10,8 @@ type TProps = {
 };
 
 const TradingAccountCard: React.FC<TProps> = ({ description, icon, title }) => {
+    const { is_mobile } = useDevice();
+
     return (
         <div className='wallets-trading-account-card'>
             {icon}
@@ -21,11 +24,13 @@ const TradingAccountCard: React.FC<TProps> = ({ description, icon, title }) => {
                         <Localize i18n_default_text={description} />
                     </p>
                 </div>
-                <div className='wallets-trading-account-card__actions'>
-                    <button className='wallets-trading-account-card__action'>
-                        <Localize i18n_default_text='Open' />
-                    </button>
-                </div>
+                {!is_mobile && (
+                    <div className='wallets-trading-account-card__actions'>
+                        <button className='wallets-trading-account-card__action'>
+                            <Localize i18n_default_text='Open' />
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );

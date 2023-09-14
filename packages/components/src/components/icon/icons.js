@@ -291,6 +291,7 @@ import './common/ic-boleto-d24-voucher-light.svg';
 import './common/ic-bot-builder-arrow.svg';
 import './common/ic-bot-builder-tab-icon.svg';
 import './common/ic-bot-builder.svg';
+import './common/ic-bot-stop.svg';
 import './common/ic-box.svg';
 import './common/ic-button-back.svg';
 import './common/ic-calendar-datefrom.svg';

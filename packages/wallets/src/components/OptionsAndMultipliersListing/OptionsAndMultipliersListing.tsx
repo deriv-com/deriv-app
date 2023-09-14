@@ -1,10 +1,12 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
+import useDevice from '../../hooks/useDevice';
 import IcAppstoreBinaryBot from '../../public/images/ic-appstore-binary-bot.svg';
 import IcAppstoreDerivBot from '../../public/images/ic-appstore-deriv-bot.svg';
 import IcAppstoreDerivGo from '../../public/images/ic-appstore-deriv-go.svg';
 import IcAppstoreDerivTrader from '../../public/images/ic-appstore-deriv-trader.svg';
 import IcAppstoreSmartTrader from '../../public/images/ic-appstore-smart-trader.svg';
+import { TabList, TabPanel, TabPanels, Tabs } from '../Tabs';
 import { TradingAccountCard } from '..';
 import './OptionsAndMultipliersListing.scss';
 
@@ -37,12 +39,16 @@ const options_and_multipliers = [
 ];
 
 const OptionsAndMultipliersListing = () => {
+    const { is_mobile } = useDevice();
+
     return (
         <div className='wallets-options-and-multipliers-listing'>
             <section className='wallets-options-and-multipliers-listing__header'>
-                <div className='wallets-options-and-multipliers-listing__header-title'>
-                    <Localize i18n_default_text='Options & Multipliers' />
-                </div>
+                {!is_mobile && (
+                    <div className='wallets-options-and-multipliers-listing__header-title'>
+                        <Localize i18n_default_text='Options & Multipliers' />
+                    </div>
+                )}
                 <div className='wallets-options-and-multipliers-listing__header-subtitle'>
                     <Localize
                         i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the

@@ -7,6 +7,12 @@
         border-radius: 0 0 16px 16px;
     }
 
+    @include mobile {
+        margin: auto 1.8rem;
+        width: auto;
+        height: auto;
+    }
+
     &__content {
         margin-top: 24px;
     }

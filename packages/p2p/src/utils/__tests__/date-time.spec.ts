@@ -1,7 +1,7 @@
 import { getFormattedDateString, convertToMillis, getDateAfterHours, millisecondsToTimer } from '../date-time';
 
 describe('getFormattedDateString', () => {
-    const date = new Date('2/2/2022');
+    const date = new Date('2/2/2022 00:00:00');
 
     it('should return the date in the format "DD MMM YYYY, HH:mm"', () => {
         expect(getFormattedDateString(date)).toEqual('01 Feb 2022, 16:00');

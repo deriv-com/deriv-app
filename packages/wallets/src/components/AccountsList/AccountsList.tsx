@@ -10,6 +10,7 @@ const AccountsList = () => {
     if (is_mobile) {
         return (
             <Tabs className='wallets-accounts-list'>
+                {/* TODO: Localization needed on tab headers */}
                 <TabList list={['CFDs', 'Options & multipliers']} />
                 <TabPanels>
                     <TabPanel>

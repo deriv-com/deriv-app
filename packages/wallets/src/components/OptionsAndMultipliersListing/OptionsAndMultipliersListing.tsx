@@ -44,10 +44,12 @@ const OptionsAndMultipliersListing = () => {
             <section className='wallets-options-and-multipliers-listing__header'>
                 {!is_mobile && (
                     <div className='wallets-options-and-multipliers-listing__header-title'>
+                        {/* TODO: Localization needed*/}
                         <h1>Options & Multipliers</h1>
                     </div>
                 )}
                 <div className='wallets-options-and-multipliers-listing__header-subtitle'>
+                    {/* TODO: Localization needed*/}
                     <h1>
                         Earn a range of payouts by correctly predicting market price movements with{' '}
                         <a key={0} href='#' className='wallets-options-and-multipliers-listing__header-subtitle__link'>

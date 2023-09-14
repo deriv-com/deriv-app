@@ -12,6 +12,19 @@ runs:
       path: '**/node_modules'
       key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
+  - name: Clear master cache
+    if: ${{ steps.restore-master-cache.outputs.cache-hit == 'true' }}
+    run: |
+        owner="binary-com"
+        repo="deriv-app"
+        cache_key="${{ steps.restore-master-cache.outputs.cache-matched-key }}"
+        curl \
+          -X DELETE \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: token ${{ github.token }}" \
+          https://api.github.com/repos/$owner/$repo/actions/caches?key=$cache_key
+    shell: bash
+
   - name: Install npm packages
     if: steps.cache-nodemodules.outputs.cache-hit != 'true'
     run: npm ci

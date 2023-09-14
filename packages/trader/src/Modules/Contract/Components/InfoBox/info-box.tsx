@@ -2,7 +2,7 @@ import React from 'react';
 import { SlideIn } from 'App/Components/Animations';
 import InfoBoxLongcode from './info-box-longcode';
 import ContractError from '../contract-error';
-import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
+import { TContractInfo } from '@deriv/shared';
 
 type TInfoBox = {
     contract_info: TContractInfo;

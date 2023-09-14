@@ -84,38 +84,12 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            gap: 1.4rem;
+            margin: 1.4rem 0;
 
             @include mobile {
                 flex-direction: column;
                 gap: 0.6rem;
-            }
-
-            &:before,
-            &:after {
-                content: '';
-                display: inline-block;
-                background: var(--brand-red-coral);
-            }
-
-            &:before {
-                width: 48px;
-                height: 1px;
-
-                @include mobile {
-                    width: 1px;
-                    height: 16px;
-                }
-            }
-
-            &:after {
-                width: 63px;
-                height: 1px;
-
-                @include mobile {
-                    width: 1px;
-                    height: 24px;
-                }
+                margin: 0 0.6rem;
             }
         }
     }

@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { Div100vhContainer, Icon, Text, WalletCard, Clipboard, Button } from '@deriv/components';
 import { useCashierStore } from '../../../stores/useCashierStores';
-import './crypto-withdraw-receipt-wallet.scss';
 import { Localize, localize } from '@deriv/translations';
 import { useActiveWallet } from '@deriv/hooks';
+import './crypto-withdraw-receipt-wallet.scss';
 
 const CryptoWithdrawReceiptWallet = observer(() => {
     const active_wallet = useActiveWallet();
@@ -53,7 +53,7 @@ const CryptoWithdrawReceiptWallet = observer(() => {
         <Div100vhContainer height_offset='344px'>
             <div className='crypto-withdraw-receipt-wallet'>
                 <WalletCard wallet={wallet} size='medium' />
-                <Icon className='crypto-withdraw-receipt-wallet__icon' icon='IcArrowDown' size={16} />
+                <Icon className='crypto-withdraw-receipt-wallet__icon' icon='IcArrowDownBold' size={16} />
                 <Text
                     as='p'
                     color='less-prominent'
@@ -111,7 +111,7 @@ const CryptoWithdrawReceiptWallet = observer(() => {
                         text={localize('View transactions')}
                         onClick={() => openTransactionsTab()}
                         secondary
-                        medium
+                        large
                     />
                     <Button
                         id='crypto-withdraw-receipt-close'
@@ -119,7 +119,7 @@ const CryptoWithdrawReceiptWallet = observer(() => {
                         text={localize('Close')}
                         onClick={() => closeWithdrawForm()}
                         primary
-                        medium
+                        large
                     />
                 </div>
             </div>

@@ -32,7 +32,7 @@ const BuySellTable = ({ onScroll }) => {
         client: { currency },
     } = useStore();
 
-    const { error, has_more_items_to_load, isLoading, isError, loadMore, rendered_adverts } = useP2PRenderedAdverts();
+    const { error, has_more_items_to_load, isError, isLoading, loadMore, rendered_adverts } = useP2PRenderedAdverts();
 
     React.useEffect(
         () => {

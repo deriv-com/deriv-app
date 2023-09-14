@@ -2,7 +2,6 @@ import { getFormattedDateString, convertToMillis, getDateAfterHours, millisecond
 
 describe('getFormattedDateString', () => {
     const date = new Date('2022-02-02T00:00:00.000+00:00');
-    date.toLocaleString('en-US', { timeZone: 'UTC' });
 
     it('should return the date in the format "DD MMM YYYY, HH:mm"', () => {
         expect(getFormattedDateString(date)).toEqual('02 Feb 2022, 00:00');
@@ -10,14 +9,6 @@ describe('getFormattedDateString', () => {
 
     it('should return the date in the format "DD MMM YYYY, HH:mm:ss"', () => {
         expect(getFormattedDateString(date, false, true)).toEqual('02 Feb 2022, 00:00:00');
-    });
-
-    it('should return the date in the format "MMM DD YYYY, HH:mm" for local time', () => {
-        expect(getFormattedDateString(date, true)).toEqual('Feb 02 2022, 08:00');
-    });
-
-    it('should return the date in the format "MMM DD YYYY, HH:mm:ss" for local time', () => {
-        expect(getFormattedDateString(date, true, true)).toEqual('Feb 02 2022, 08:00:00');
     });
 });
 

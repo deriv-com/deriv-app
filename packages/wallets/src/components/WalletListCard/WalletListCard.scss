@@ -2,11 +2,10 @@
     &__card_container {
         flex: 1;
         display: flex;
-        padding: 24px;
         align-items: flex-start;
         width: 100%;
         border-radius: 16px;
-        background: var(--system-light-8-primary-background, #fff);
+        background: inherit;
     }
 
     &__content {
@@ -25,9 +24,16 @@
         gap: 24px;
         align-self: stretch;
         border-radius: 16px;
-    }
 
-    &__dropdown {
-        cursor: pointer;
+        &-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            border-radius: 4px;
+            padding: 10px 16px;
+            min-width: 122px;
+            min-height: 75px;
+        }
     }
 }

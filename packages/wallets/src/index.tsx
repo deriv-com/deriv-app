@@ -5,7 +5,7 @@ import './index.scss';
 
 const App: React.FC = () => (
     <APIProvider standalone>
-        <AppContent />;
+        <AppContent />
     </APIProvider>
 );
 

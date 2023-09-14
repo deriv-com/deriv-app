@@ -1,13 +1,12 @@
+import classNames from 'classnames';
 import * as React from 'react';
-import { APIProvider } from '@deriv/api';
+import { setWebsocket, routes } from '@deriv/shared';
+import { StoreProvider, observer } from '@deriv/stores';
 import CashierStoreProvider from '@deriv/cashier/src/cashier-providers';
 import CFDStoreProvider from '@deriv/cfd/src/cfd-providers';
-import { routes, setWebsocket } from '@deriv/shared';
-import { StoreProvider, observer } from '@deriv/stores';
 import Routes from 'Components/routes/routes';
-import { initContext, useStores } from 'Stores';
+import { useStores, initContext } from 'Stores';
 import { TRootStore } from 'Types';
-import classNames from 'classnames';
 import './app.scss';
 
 type TAppProps = {
@@ -25,21 +24,19 @@ const App = ({ passthrough: { WS, root_store } }: TAppProps) => {
     return (
         <CashierStoreProvider store={root_store as any}>
             <CFDStoreProvider store={root_store as any}>
-                <APIProvider>
-                    <StoreProvider store={root_store as any}>
-                        <main
-                            className={classNames('dashboard', {
-                                'theme--light': !ui.is_dark_mode_on,
-                                'theme--dark': ui.is_dark_mode_on,
-                                'dashboard-onboarding': window.location.pathname === routes.onboarding,
-                            })}
-                        >
-                            <div className='dw-dashboard'>
-                                <Routes />
-                            </div>
-                        </main>
-                    </StoreProvider>
-                </APIProvider>
+                <StoreProvider store={root_store as any}>
+                    <main
+                        className={classNames('dashboard', {
+                            'theme--light': !ui.is_dark_mode_on,
+                            'theme--dark': ui.is_dark_mode_on,
+                            'dashboard-onboarding': window.location.pathname === routes.onboarding,
+                        })}
+                    >
+                        <div className='dw-dashboard'>
+                            <Routes />
+                        </div>
+                    </main>
+                </StoreProvider>
             </CFDStoreProvider>
         </CashierStoreProvider>
     );

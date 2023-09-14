@@ -21,12 +21,11 @@ export const DateOfBirthField = ({ name, portal_id, ...rest }) => (
     </Field>
 );
 
-export const FormInputField = ({ name, optional = false, ...rest }) => (
+export const FormInputField = ({ name, ...rest }) => (
     <Field name={name}>
         {({ field, form: { errors, touched } }) => (
             <Input
                 type='text'
-                required={!optional}
                 autoComplete='off'
                 error={touched[field.name] && errors[field.name]}
                 warn={rest.warn}

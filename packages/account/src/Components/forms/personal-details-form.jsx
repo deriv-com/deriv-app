@@ -98,6 +98,7 @@ const PersonalDetailsForm = props => {
     const handleSalutationSelection = event => {
         if (event.target?.type === 'radio') {
             setSelectedSalutation(event.target?.value);
+            setFieldValue('salutation', event.target?.value);
         }
     };
 

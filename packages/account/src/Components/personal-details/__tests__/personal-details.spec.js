@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
-import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
 import PersonalDetails from '../personal-details';
 
@@ -40,9 +40,6 @@ const mock_errors = {
     tax_identification_number: 'Tax Identification Number is required.',
     tax_identification_confirm: 'Please confirm your tax information.',
 };
-
-const fake_alert_messaget =
-    /we need this for verification\. if the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw\./i;
 
 const tax_residence_pop_over_text =
     /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i;
@@ -264,26 +261,6 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByTestId('personal_details_form')).toBeInTheDocument();
     });
 
-    it('should show fake-alert message when is_appstore is true', () => {
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: true }}>
-                <PersonalDetails {...props} />
-            </PlatformContext.Provider>
-        );
-
-        expect(screen.getByText(fake_alert_messaget)).toBeInTheDocument();
-    });
-
-    it('should not show fake_alert_message when is_appstore is false ', () => {
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
-                <PersonalDetails {...props} />
-            </PlatformContext.Provider>
-        );
-
-        expect(screen.queryByText(fake_alert_messaget)).not.toBeInTheDocument();
-    });
-
     it('should show proper salutation message when is_virtual is true', () => {
         renderwithRouter(<PersonalDetails {...props} is_virtual />);
 
@@ -343,15 +320,10 @@ describe('<PersonalDetails/>', () => {
         expect(mrs_radio_btn.checked).toEqual(false);
     });
 
-    it('should display the correct field details when is_appstore is true ', () => {
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: true }}>
-                <PersonalDetails {...props} />
-            </PlatformContext.Provider>
-        );
+    it('should display the correct field details ', () => {
+        renderwithRouter(<PersonalDetails {...props} />);
 
         expect(screen.getByText(/first name\*/i)).toBeInTheDocument();
-        expect(screen.getByText(/family name\*/i)).toBeInTheDocument();
         expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
         expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/phone number\*/i)).toBeInTheDocument();
@@ -359,12 +331,8 @@ describe('<PersonalDetails/>', () => {
         runCommonFormfieldsTests(props.is_svg);
     });
 
-    it('should display the correct field details when is_appstore is false and is_svg is true ', () => {
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
-                <PersonalDetails {...props} />
-            </PlatformContext.Provider>
-        );
+    it('should display the correct field details when is_svg is true ', () => {
+        renderwithRouter(<PersonalDetails {...props} />);
 
         expect(screen.getByRole('heading', { name: /title and name/i })).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: 'name' })).not.toBeInTheDocument();
@@ -377,12 +345,8 @@ describe('<PersonalDetails/>', () => {
         runCommonFormfieldsTests(props.is_svg);
     });
 
-    it('should display the correct field details when is_appstore is false and is_svg is false ', () => {
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
-                <PersonalDetails {...props} is_svg={false} />
-            </PlatformContext.Provider>
-        );
+    it('should display the correct field details when is_svg is false ', () => {
+        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
 
         expect(screen.getByRole('heading', { name: 'Title and name' })).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: 'name' })).not.toBeInTheDocument();
@@ -390,24 +354,18 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText('First name')).toBeInTheDocument();
         expect(screen.getByText('Last name')).toBeInTheDocument();
         expect(screen.getByText('Date of birth')).toBeInTheDocument();
+        expect(screen.getByText('Phone number*')).toBeInTheDocument();
+        expect(screen.getByLabelText('Phone number*')).toBeInTheDocument();
 
         runCommonFormfieldsTests(false);
     });
 
     it('should not enable fields which are disabled and empty', () => {
         renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
-                <PersonalDetails
-                    {...props}
-                    disabled_items={[
-                        'salutation',
-                        'first_name',
-                        'last_name',
-                        'date_of_birth',
-                        'account_opening_reason',
-                    ]}
-                />
-            </PlatformContext.Provider>
+            <PersonalDetails
+                {...props}
+                disabled_items={['salutation', 'first_name', 'last_name', 'date_of_birth', 'account_opening_reason']}
+            />
         );
         expect(screen.getByRole('radio', { name: /mr/i })).not.toBeDisabled();
         expect(screen.getByRole('radio', { name: /ms/i })).not.toBeDisabled();
@@ -426,12 +384,7 @@ describe('<PersonalDetails/>', () => {
                 citizen: 'france',
             },
         };
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
-                (<PersonalDetails {...new_props} is_fully_authenticated={true} />
-                );
-            </PlatformContext.Provider>
-        );
+        renderwithRouter(<PersonalDetails {...new_props} is_fully_authenticated={true} />);
 
         expect(screen.getByTestId('citizenship')).toBeDisabled();
     });
@@ -439,11 +392,7 @@ describe('<PersonalDetails/>', () => {
     it('should display proper data in mobile mode', () => {
         isMobile.mockReturnValue(true);
         isDesktop.mockReturnValue(false);
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
-                <PersonalDetails {...props} is_svg={false} />
-            </PlatformContext.Provider>
-        );
+        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
 
         expect(screen.getByRole('radio', { name: /mr/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /ms/i })).toBeInTheDocument();
@@ -470,11 +419,7 @@ describe('<PersonalDetails/>', () => {
         isMobile.mockReturnValue(true);
         isDesktop.mockReturnValue(false);
 
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
-                <PersonalDetails {...props} is_svg={false} />
-            </PlatformContext.Provider>
-        );
+        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
         const place_of_birth_mobile = screen.queryByTestId('place_of_birth_mobile');
 
         expect(place_of_birth_mobile).toBeInTheDocument();
@@ -548,11 +493,7 @@ describe('<PersonalDetails/>', () => {
             },
         };
         splitValidationResultTypes.mockReturnValue(newvalidate);
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
-                <PersonalDetails {...props} />
-            </PlatformContext.Provider>
-        );
+        renderwithRouter(<PersonalDetails {...props} />);
         const tax_identification_number = screen.getByTestId('tax_identification_number');
 
         fireEvent.blur(tax_identification_number);

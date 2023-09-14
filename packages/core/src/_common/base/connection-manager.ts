@@ -32,6 +32,12 @@ export class ConnectionManager {
     invalid_app_id: number | string;
     onChangeActiveConnection: (active_connection: ConnectionInstance) => void;
     config: ConnectionConfig;
+
+    /**
+     * Feature toggling constant
+     * `default` - only 2 connections are maintained (real/demo env)
+     * `loginid` - will maintain connections equivalent to how many loginid the user has
+     */
     mode: 'loginid' | 'default' = 'loginid';
 
     /**

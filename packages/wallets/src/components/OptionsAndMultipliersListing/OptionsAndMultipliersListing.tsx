@@ -1,12 +1,10 @@
 import React from 'react';
-import { Localize } from '@deriv/translations';
 import useDevice from '../../hooks/useDevice';
 import IcAppstoreBinaryBot from '../../public/images/ic-appstore-binary-bot.svg';
 import IcAppstoreDerivBot from '../../public/images/ic-appstore-deriv-bot.svg';
 import IcAppstoreDerivGo from '../../public/images/ic-appstore-deriv-go.svg';
 import IcAppstoreDerivTrader from '../../public/images/ic-appstore-deriv-trader.svg';
 import IcAppstoreSmartTrader from '../../public/images/ic-appstore-smart-trader.svg';
-import { TabList, TabPanel, TabPanels, Tabs } from '../Tabs';
 import { TradingAccountCard } from '..';
 import './OptionsAndMultipliersListing.scss';
 
@@ -46,26 +44,20 @@ const OptionsAndMultipliersListing = () => {
             <section className='wallets-options-and-multipliers-listing__header'>
                 {!is_mobile && (
                     <div className='wallets-options-and-multipliers-listing__header-title'>
-                        <Localize i18n_default_text='Options & Multipliers' />
+                        <h1>Options & Multipliers</h1>
                     </div>
                 )}
                 <div className='wallets-options-and-multipliers-listing__header-subtitle'>
-                    <Localize
-                        i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the
-                        upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
-                        components={[
-                            <a
-                                key={0}
-                                href='#'
-                                className='wallets-options-and-multipliers-listing__header-subtitle__link'
-                            />,
-                            <a
-                                key={1}
-                                href='#'
-                                className='wallets-options-and-multipliers-listing__header-subtitle__link'
-                            />,
-                        ]}
-                    />
+                    <h1>
+                        Earn a range of payouts by correctly predicting market price movements with{' '}
+                        <a key={0} href='#' className='wallets-options-and-multipliers-listing__header-subtitle__link'>
+                            options
+                        </a>
+                        , or get the upside of CFDs without risking more than your initial stake with{' '}
+                        <a key={1} href='#' className='wallets-options-and-multipliers-listing__header-subtitle__link'>
+                            multipliers
+                        </a>
+                    </h1>
                 </div>
             </section>
             <div className='wallets-options-and-multipliers-listing__content'>

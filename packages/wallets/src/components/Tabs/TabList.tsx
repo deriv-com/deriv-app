@@ -4,7 +4,7 @@ import './TabList.scss';
 
 type TTabListProps = {
     list: string[];
-    text_size: string;
+    text_size?: string;
 };
 
 export const TabList = ({ list, text_size = 's' }: TTabListProps) => {

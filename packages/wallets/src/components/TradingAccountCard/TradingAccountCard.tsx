@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { Localize } from '@deriv/translations';
 import useDevice from '../../hooks/useDevice';
 import './TradingAccountCard.scss';
 
@@ -17,18 +16,12 @@ const TradingAccountCard: React.FC<TProps> = ({ description, icon, title }) => {
             {icon}
             <div className='wallets-trading-account-card__content'>
                 <div className='wallets-trading-account-card__details'>
-                    <p className='wallets-trading-account-card__details-title'>
-                        <Localize i18n_default_text={title} />
-                    </p>
-                    <p className='wallets-trading-account-card__details-description'>
-                        <Localize i18n_default_text={description} />
-                    </p>
+                    <p className='wallets-trading-account-card__details-title'>{title}</p>
+                    <p className='wallets-trading-account-card__details-description'>{description}</p>
                 </div>
                 {!is_mobile && (
                     <div className='wallets-trading-account-card__actions'>
-                        <button className='wallets-trading-account-card__action'>
-                            <Localize i18n_default_text='Open' />
-                        </button>
+                        <button className='wallets-trading-account-card__action'>Open</button>
                     </div>
                 )}
             </div>

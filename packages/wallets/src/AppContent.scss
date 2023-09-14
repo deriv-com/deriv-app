@@ -12,10 +12,6 @@
         padding: 40px;
     }
 
-    @include mobile {
-        overflow-y: auto;
-    }
-
     &__content {
         width: 100%;
         display: flex;

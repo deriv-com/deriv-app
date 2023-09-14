@@ -16,7 +16,7 @@ const AdvertiserPageAdverts = () => {
     } = useStore();
 
     const { advertiser_page_store } = useStores();
-    const { adverts, loadMoreAdvertiserAdverts, has_more_adverts_to_load, isLoading } = useP2PAdvertiserAdverts();
+    const { adverts, has_more_adverts_to_load, isLoading, loadMoreAdvertiserAdverts } = useP2PAdvertiserAdverts();
     const AdvertiserPageRowRenderer = row_props => (
         <AdvertiserPageRow {...row_props} showAdPopup={advertiser_page_store.showAdPopup} />
     );

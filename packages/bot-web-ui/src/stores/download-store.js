@@ -45,7 +45,7 @@ export default class DownloadStore {
             case log_types.WELCOME: {
                 if (current_currency)
                     return localize('You are using your {{current_currency}} account.', { current_currency });
-                return localize('Welcome!');
+                break;
             }
             default:
                 return null;

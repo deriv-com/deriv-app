@@ -85,7 +85,7 @@ const FormatMessage = ({ logType, className, extra }: TFormatMessageProps) => {
                             }}
                         />
                     );
-                return <Localize i18n_default_text='Welcome!' />;
+                break;
             }
             default:
                 return null;

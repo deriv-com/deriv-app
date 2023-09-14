@@ -50,8 +50,10 @@ export default class JournalStore {
     unfiltered_messages = [];
 
     restoreStoredJournals() {
+        const { loginid } = this.core?.client;
+
         this.journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
-        this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, this.core?.client.loginid, []);
+        this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, loginid, []);
 
         if (this.unfiltered_messages.length > 0) {
             this.welcomeBackUser();
@@ -107,8 +109,13 @@ export default class JournalStore {
 
     pushMessage(message, message_type, className, extra = {}) {
         const { client } = this.core;
-        if (!client?.loginid) return;
-        extra.current_currency = client?.current_currency_type === 'virtual' ? 'Demo' : client?.currency;
+        const { loginid, current_currency_type, currency } = client;
+
+        if (loginid) {
+            extra.current_currency = current_currency_type === 'virtual' ? 'Demo' : currency;
+        } else if (message === log_types.WELCOME) {
+            return;
+        }
 
         const date = formatDate(this.getServerTime());
         const time = formatDate(this.getServerTime(), 'HH:mm:ss [GMT]');

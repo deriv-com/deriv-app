@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Div100vhContainer, Dropdown, Loading, ThemedScrollbars } from '@deriv/components';
+import React from 'react';
+import classNames from 'classnames';
+import { Div100vhContainer, Dropdown, Loading, Text, ThemedScrollbars, ToggleSwitch } from '@deriv/components';
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { groupTransactionsByDay } from '@deriv/utils';
-import { TransactionsForADay } from './transaction-for-day';
+import DailyTransactions from './daily-transactions';
 import './transaction-list.scss';
 
 type TTransactionList = {
@@ -12,51 +13,64 @@ type TTransactionList = {
     is_wallet_name_visible?: boolean;
 };
 
-const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTransactionList) => {
+const TransactionList = observer(({ contentScrollHandler, is_wallet_name_visible }: TTransactionList) => {
     const {
         ui: { is_mobile },
     } = useStore();
 
     const wallet = useActiveWallet();
 
-    const filter_options = [
-        {
-            text: localize('All'),
-            value: '',
-        },
-        ...(wallet?.is_virtual
-            ? ([
-                  {
-                      text: localize('Reset balance'),
-                      value: 'virtual_credit',
-                  },
-              ] as const)
-            : ([
-                  {
-                      text: localize('Deposit'),
-                      value: 'deposit',
-                  },
-                  {
-                      text: localize('Withdrawal'),
-                      value: 'withdrawal',
-                  },
-              ] as const)),
-        {
-            text: localize('Transfer'),
-            value: 'transfer',
-        },
-    ] as const;
+    const [should_show_pending_crypto_transactions, setShouldShowPendingCryptoTransactions] = React.useState(false);
 
-    const [filter, setFilter] = useState<typeof filter_options[number]['value']>('');
+    const filter_options = React.useMemo(
+        () =>
+            [
+                {
+                    text: localize('All'),
+                    value: '',
+                },
+                ...(wallet?.is_virtual
+                    ? ([
+                          {
+                              text: localize('Reset balance'),
+                              value: 'virtual_credit',
+                          },
+                      ] as const)
+                    : ([
+                          {
+                              text: localize('Deposit'),
+                              value: 'deposit',
+                          },
+                          {
+                              text: localize('Withdrawal'),
+                              value: 'withdrawal',
+                          },
+                      ] as const)),
+                ...(!should_show_pending_crypto_transactions
+                    ? ([
+                          {
+                              text: localize('Transfer'),
+                              value: 'transfer',
+                          },
+                      ] as const)
+                    : []),
+            ] as const,
+        [wallet?.is_virtual, should_show_pending_crypto_transactions]
+    );
+
+    const [filter, setFilter] = React.useState<typeof filter_options[number]['value']>('');
 
     const { transactions, isComplete, isLoading, loadMore, reset } = useWalletTransactions(filter || undefined);
 
     const grouped_transactions = groupTransactionsByDay(transactions);
 
-    const onValueChange = (e: { target: { name: string; value: string } }) => {
-        reset();
-        setFilter(e.target.value as typeof filter);
-    };
+    const scrollContainerRef = React.useRef(null);
+
+    React.useEffect(() => {
+        if (scrollContainerRef.current) {
+            (scrollContainerRef.current as HTMLDivElement).scrollTop = 0;
+        }
+    }, [filter]);
 
     const getHeightOffset = React.useCallback(() => {
         const header_height = is_mobile ? '16.2rem' : '(24.4rem + 7.8rem)';
@@ -64,7 +78,7 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
         return !is_mobile || is_wallet_name_visible ? header_height : collapsed_header_height;
     }, [is_mobile, is_wallet_name_visible]);
 
-    const [should_load_more, setShouldLoadMore] = useState(false);
+    const [should_load_more, setShouldLoadMore] = React.useState(false);
 
     const onScrollHandler: React.UIEventHandler<HTMLDivElement> = e => {
         if (is_mobile) contentScrollHandler?.(e);
@@ -78,18 +92,33 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
         }
     };
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (should_load_more) loadMore();
     }, [should_load_more, loadMore]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         setShouldLoadMore(false);
     }, [transactions.length]);
 
     return (
         <>
             <div className='transaction-list__filter__wrapper transaction-list__container'>
+                {wallet?.currency_config?.is_crypto && (
+                    <div className='transaction-list__toggle__container'>
+                        <Text className='transaction-list__toggle__label'>{localize('Pending transactions')}</Text>
+                        <ToggleSwitch
+                            classNameLabel='transaction-list__toggle__label'
+                            id='toggle-pending-crypto-transactions'
+                            is_enabled={should_show_pending_crypto_transactions}
+                            handleToggle={() => {
+                                if (filter === 'transfer') setFilter('');
+                                setShouldShowPendingCryptoTransactions(prev => !prev);
+                            }}
+                        />
+                    </div>
+                )}
                 <Dropdown
+                    key={should_show_pending_crypto_transactions}
                     className='transaction-list__filter'
                     is_align_text_left
                     list={filter_options}
@@ -100,7 +129,10 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
                 />
             </div>
             <ThemedScrollbars
-                className='transaction-list__scroll'
+                className={classNames('transaction-list__scroll', {
+                    'transaction-list__scroll__crypto': wallet?.currency_config?.is_crypto,
+                })}
+                refSetter={scrollContainerRef}
                 is_scrollbar_hidden={is_mobile}
                 onScroll={onScrollHandler}
             >
@@ -109,7 +141,7 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
                         {!isLoading ? (
                             <React.Fragment>
                                 {Object.entries(grouped_transactions).map(([day, transaction_list]) => (
-                                    <TransactionsForADay
+                                    <DailyTransactions
                                         key={
                                             // eslint-disable-next-line react/prop-types
                                             day + transaction_list.length.toString()
@@ -117,7 +149,7 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
                                         day={day}
                                         transaction_list={
                                             transaction_list as React.ComponentProps<
-                                                typeof TransactionsForADay
+                                                typeof DailyTransactions
                                             >['transaction_list']
                                         }
                                     />
@@ -134,6 +166,6 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
             </ThemedScrollbars>
         </>
     );
-};
+});
 
 export default TransactionList;

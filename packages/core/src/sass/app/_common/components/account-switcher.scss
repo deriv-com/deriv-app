@@ -212,8 +212,9 @@
             pointer-events: none;
         }
 
-        &-is-virtual-balance {
-            color: var(--text-info-blue);
+        &-balance {
+            color: var(--text-general);
+            margin-right: 0;
         }
     }
 }

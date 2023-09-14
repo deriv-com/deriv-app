@@ -56,10 +56,12 @@ jest.mock('@deriv/api', () => ({
 }));
 
 describe('useAvailableWallets', () => {
+    const createWrapper = () => {
+        const Component = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+        return Component;
+    };
     it('should return available wallets', () => {
-        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
-
-        const { result } = renderHook(() => useAvailableWallets(), { wrapper });
+        const { result } = renderHook(() => useAvailableWallets(), { wrapper: createWrapper() });
 
         const expected = ['AUD', 'EUR', 'BTC', 'ETH', 'LTC', 'USD'].map(currency => ({
             currency,
@@ -72,9 +74,7 @@ describe('useAvailableWallets', () => {
     });
 
     it('should not return unavailable wallets', () => {
-        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
-
-        const { result } = renderHook(() => useAvailableWallets(), { wrapper });
+        const { result } = renderHook(() => useAvailableWallets(), { wrapper: createWrapper() });
 
         expect(result.current?.data).not.toEqual([
             {

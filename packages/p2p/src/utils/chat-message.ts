@@ -9,6 +9,7 @@ type TChatMessageArgs = {
     message_type: string;
     name?: string;
     sender_user_id: string;
+    size?: number;
     status?: number;
     url?: string;
 };
@@ -22,6 +23,7 @@ export default class ChatMessage {
     message_type: string;
     name?: string;
     sender_user_id: string;
+    size?: number;
     status?: number;
     url?: string;
 
@@ -34,6 +36,7 @@ export default class ChatMessage {
         message_type,
         name,
         sender_user_id,
+        size,
         status,
         url,
     }: TChatMessageArgs) {
@@ -45,6 +48,7 @@ export default class ChatMessage {
         this.message_type = message_type;
         this.name = name;
         this.sender_user_id = sender_user_id;
+        this.size = size;
         this.status = status;
         this.url = url;
     }
@@ -72,6 +76,7 @@ export const convertFromChannelMessage = (channel_message: UserMessage | FileMes
         message_type: channel_message.messageType,
         name: channel_message.isFileMessage() ? channel_message.name : undefined,
         sender_user_id: channel_message.sender.userId,
+        size: channel_message.isFileMessage() ? channel_message.size : undefined,
         url: channel_message.isFileMessage() ? channel_message.url : undefined,
     });
 };

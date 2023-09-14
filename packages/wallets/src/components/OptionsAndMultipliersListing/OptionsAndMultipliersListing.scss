@@ -5,8 +5,6 @@
 
     @include mobile {
         padding-top: unset;
-        height: calc(100vh - 400px);
-        overflow-y: auto;
     }
 
     @include desktop {

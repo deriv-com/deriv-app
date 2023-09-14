@@ -1,0 +1,6 @@
+.wallets-carousel {
+    @include mobile {
+        height: 100%;
+        overflow-y: auto;
+    }
+}

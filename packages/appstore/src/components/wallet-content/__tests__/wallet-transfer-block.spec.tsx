@@ -36,7 +36,7 @@ describe('<WalletTransferBlock />', () => {
         );
         const { currency } = wallet_account;
 
-        const balance_title = screen.queryByText(`10,415.24 ${currency}`);
+        const balance_title = screen.getByText(`10,415.24 ${currency}`);
 
         expect(balance_title).toBeInTheDocument();
     });
@@ -49,7 +49,7 @@ describe('<WalletTransferBlock />', () => {
         );
         const { loginid } = wallet_account;
 
-        const loginid_title = screen.queryByText(String(loginid));
+        const loginid_title = screen.getByText(loginid!);
 
         expect(loginid_title).toBeInTheDocument();
     });

@@ -31,7 +31,7 @@ describe('<DemoResetBalance />', () => {
         expect(
             screen.getByText('Reset your virtual balance if it falls below 10,000.00 USD or exceeds 10,000.00 USD.')
         ).toBeInTheDocument();
-        expect(screen.getByText('Reset balance')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Reset balance' })).toBeInTheDocument();
     });
 
     it('should disable reset balance button if the balance is equal to 10000 usd', () => {
@@ -130,6 +130,6 @@ describe('<DemoResetBalance />', () => {
         });
 
         expect(screen.getByText('Your balance has been reset to 10,000.00 USD.')).toBeInTheDocument();
-        expect(screen.getByText('Transfer funds')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Transfer funds/i })).toBeInTheDocument();
     });
 });

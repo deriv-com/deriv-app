@@ -9,7 +9,7 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
 import { useStore, observer } from '@deriv/stores';
 import GetMoreAccounts from 'Components/get-more-accounts';
-import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
+import { TDetailsOfEachMT5Loginid } from 'Types';
 import './wallet-content.scss';
 
 type TProps = {
@@ -48,7 +48,7 @@ const CryptoCFDs = observer(({ fiat_wallet_currency }: TProps) => {
                 className='wallet-content__cfd-crypto-button'
                 primary_light
             >
-                {localize('Transfer')}
+                <Localize i18n_default_text='Transfer' />
             </Button>
         </div>
     );
@@ -83,33 +83,43 @@ const FiatCFDs = observer(() => {
         <React.Fragment>
             <div className='cfd-full-row'>
                 <Text weight='bold' color='prominent'>
-                    {localize('Deriv MT5')}
+                    <Localize i18n_default_text='Deriv MT5' />
                 </Text>
             </div>
             {combined_cfd_mt5_accounts.map((existing_account, index) => {
+                const {
+                    action_type,
+                    description,
+                    icon,
+                    key,
+                    landing_company_short,
+                    market_type,
+                    name,
+                    platform,
+                    status,
+                    sub_title,
+                } = existing_account;
                 const list_size = combined_cfd_mt5_accounts.length;
-                const has_mt5_account_status = existing_account.status
-                    ? getMT5AccountAuthStatus(existing_account.status)
-                    : null;
+                const has_mt5_account_status = status ? getMT5AccountAuthStatus(status) : null;
                 return (
                     <TradingAppCard
-                        action_type={existing_account.action_type}
+                        action_type={action_type}
                         availability={selected_region}
                         clickable_icon
-                        icon={existing_account.icon}
-                        sub_title={existing_account?.sub_title}
-                        name={!has_mt5_account_status ? existing_account?.name : ''}
+                        icon={icon}
+                        sub_title={sub_title}
+                        name={!has_mt5_account_status ? name : ''}
                         short_code_and_region={wallet_account.landing_company_name}
-                        platform={existing_account.platform}
-                        description={existing_account.description}
-                        key={existing_account.key}
+                        platform={platform}
+                        description={description}
+                        key={key}
                         has_divider={getHasDivider(index, list_size, 3)}
                         mt5_acc_auth_status={has_mt5_account_status}
                         selected_mt5_jurisdiction={{
-                            platform: existing_account.platform,
+                            platform,
                             category: selected_account_type,
-                            type: existing_account.market_type,
-                            jurisdiction: existing_account.landing_company_short,
+                            type: market_type,
+                            jurisdiction: landing_company_short,
                         }}
                         wallet_account={wallet_account}
                     />
@@ -126,11 +136,11 @@ const FiatCFDs = observer(() => {
             {available_dxtrade_accounts?.length > 0 && (
                 <div className='cfd-full-row'>
                     <Text weight='bold' color='prominent'>
-                        {localize('Other CFDs')}
+                        <Localize i18n_default_text='Other CFDs' />
                     </Text>
                 </div>
             )}
-            {available_dxtrade_accounts?.map((account: AvailableAccount) => {
+            {available_dxtrade_accounts?.map(account => {
                 const existing_accounts = getExistingAccounts(account.platform ?? '', account.market_type ?? '');
                 const has_existing_accounts = existing_accounts.length > 0;
                 return has_existing_accounts ? (
@@ -188,11 +198,13 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
             </div>
         );
 
-    const { currency } = wallet_account;
+    const { currency, landing_company_name, is_virtual } = wallet_account;
     const accounts_sub_text =
-        wallet_account.landing_company_name === 'svg' || wallet_account.is_virtual
-            ? localize('Compare accounts')
-            : localize('Account information');
+        landing_company_name === 'svg' || is_virtual ? (
+            <Localize i18n_default_text='Compare accounts' />
+        ) : (
+            <Localize i18n_default_text='Account information' />
+        );
 
     const is_fiat = !isCryptocurrency(currency) && currency !== 'USDT';
 
@@ -203,7 +215,7 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
                 !is_mobile && (
                     <div className='cfd-accounts__title'>
                         <Text size='sm' weight='bold' color='prominent'>
-                            {localize('CFDs')}
+                            <Localize i18n_default_text='CFDs' />
                         </Text>
                         <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
                             <Text key={0} color='red' size='xxs' weight='bold' styles={{ marginLeft: '1rem' }}>

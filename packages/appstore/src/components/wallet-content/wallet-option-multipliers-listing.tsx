@@ -23,13 +23,13 @@ const OptionsTitle = observer(({ landing_company_name }: TProps) => {
     if (is_svg_wallet && !is_mobile) {
         return (
             <Text size='sm' weight='bold' color='prominent'>
-                {localize('Options & multipliers')}
+                <Localize i18n_default_text='Options & multipliers' />
             </Text>
         );
     } else if (!is_svg_wallet && !is_mobile) {
         return (
             <Text size='sm' weight='bold' color='prominent'>
-                {localize('Multipliers')}
+                <Localize i18n_default_text='Multipliers' />
             </Text>
         );
     }

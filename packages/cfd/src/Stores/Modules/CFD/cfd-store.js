@@ -93,7 +93,6 @@ export default class CFDStore extends BaseStore {
             setError: action.bound,
             setCFDNewAccount: action.bound,
             setCFDSuccessDialog: action.bound,
-            storeProofOfAddress: action.bound,
             getAccountStatus: action.bound,
             creatMT5Password: action.bound,
             submitMt5Password: action.bound,
@@ -426,41 +425,6 @@ export default class CFDStore extends BaseStore {
 
     setCFDSuccessDialog(value) {
         this.is_cfd_success_dialog_enabled = !!value;
-    }
-
-    storeProofOfAddress(file_uploader_ref, values, { setStatus }) {
-        return new Promise((resolve, reject) => {
-            setStatus({ msg: '' });
-            this.setState({ is_btn_loading: true });
-
-            WS.setSettings(values).then(data => {
-                if (data.error) {
-                    setStatus({ msg: data.error.message });
-                    reject(data);
-                } else {
-                    this.root_store.fetchAccountSettings();
-                    // force request to update settings cache since settings have been updated
-                    file_uploader_ref.current.upload().then(api_response => {
-                        if (api_response.warning) {
-                            setStatus({ msg: api_response.message });
-                            reject(api_response);
-                        } else {
-                            WS.authorized.storage.getAccountStatus().then(({ error, get_account_status }) => {
-                                if (error) {
-                                    reject(error);
-                                }
-                                const { identity } = get_account_status.authentication;
-                                const has_poi = !(identity && identity.status === 'none');
-                                resolve({
-                                    identity,
-                                    has_poi,
-                                });
-                            });
-                        }
-                    });
-                }
-            });
-        });
     }
 
     async getAccountStatus(platform) {

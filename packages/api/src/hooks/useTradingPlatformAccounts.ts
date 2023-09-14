@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
-import useFetch from '../useFetch';
+import useQuery from '../useQuery';
 
 /** A custom hook that gets the list of created other CFD accounts. */
 const useTradingPlatformAccounts = () => {
-    const { data: derivez_accounts, ...derivez_rest } = useFetch('trading_platform_accounts', {
+    const { data: derivez_accounts, ...derivez_rest } = useQuery('trading_platform_accounts', {
         payload: { platform: 'derivez' },
     });
-    const { data: dxtrade_accounts, ...dxtrade_rest } = useFetch('trading_platform_accounts', {
+    const { data: dxtrade_accounts, ...dxtrade_rest } = useQuery('trading_platform_accounts', {
         payload: { platform: 'dxtrade' },
     });
 

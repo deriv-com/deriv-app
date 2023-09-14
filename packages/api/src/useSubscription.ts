@@ -8,8 +8,8 @@ import type {
 } from '../types';
 
 const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) => {
-    const [is_loading, setIsLoading] = useState(false);
-    const [is_subscribed, setSubscribed] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isSubscribed, setSubscribed] = useState(false);
     const [error, setError] = useState<unknown>();
     const [data, setData] = useState<TSocketResponseData<T>>();
     const subscriber = useRef<{ unsubscribe?: VoidFunction }>();
@@ -23,22 +23,16 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) =>
             setIsLoading(true);
             setSubscribed(true);
 
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const onData = (response: any) => {
-                setData(response);
-                setIsLoading(false);
-            };
-
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const onError = (response: any) => {
-                setError(response.error);
-                setIsLoading(false);
-            };
-
             try {
-                subscriber.current = _subscribe({ [name]: 1, subscribe: 1, ...(payload || {}) }).subscribe(
-                    onData,
-                    onError
+                subscriber.current = _subscribe(name, payload).subscribe(
+                    response => {
+                        setData(response);
+                        setIsLoading(false);
+                    },
+                    response => {
+                        setError(response.error);
+                        setIsLoading(false);
+                    }
                 );
             } catch (e) {
                 setError(e);
@@ -58,7 +52,14 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) =>
         };
     }, [unsubscribe]);
 
-    return { subscribe, unsubscribe, is_loading, is_subscribed, error, data };
+    return {
+        subscribe,
+        unsubscribe,
+        isLoading,
+        isSubscribed,
+        error,
+        data,
+    };
 };
 
 export default useSubscription;

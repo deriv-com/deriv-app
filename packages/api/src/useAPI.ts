@@ -1,8 +1,12 @@
-import { useCallback, useContext } from 'react';
 import { useWS } from '@deriv/shared';
+import { useCallback, useContext, useMemo } from 'react';
 import APIContext from './APIContext';
-import { send as legacy_send } from './utils';
-import type { TSocketEndpointNames, TSocketRequestPayload, TSocketResponseData } from '../types';
+import type {
+    TSocketEndpointNames,
+    TSocketRequestPayload,
+    TSocketResponseData,
+    TSocketSubscribableEndpointNames,
+} from '../types';
 
 const useAPI = () => {
     const api = useContext(APIContext);
@@ -12,12 +16,14 @@ const useAPI = () => {
         throw new Error('useAPI must be used within APIProvider');
     }
 
+    const server = useMemo(() => (api.is_standalone ? api.deriv_api : WS), [WS, api.deriv_api, api.is_standalone]);
+
     const send = useCallback(
         async <T extends TSocketEndpointNames>(
             name: T,
             payload?: TSocketRequestPayload<T>
         ): Promise<TSocketResponseData<T>> => {
-            const response = await api.deriv_api.send({ [name]: 1, ...(payload || {}) });
+            const response = await server.send({ [name]: 1, ...(payload || {}) });
 
             if (response.error) {
                 throw response.error;
@@ -25,12 +31,29 @@ const useAPI = () => {
 
             return response;
         },
-        [api]
+        [server]
+    );
+
+    const subscribe = useCallback(
+        <T extends TSocketSubscribableEndpointNames>(
+            name: T,
+            payload?: TSocketRequestPayload<T>
+        ): {
+            subscribe: (
+                // The type will be handled by the `useSubscription` hook.
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                onData: (response: any) => void,
+                // The type will be handled by the `useSubscription` hook.
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                onError: (response: any) => void
+            ) => { unsubscribe?: VoidFunction };
+        } => server.subscribe({ [name]: 1, subscribe: 1, ...(payload || {}) }),
+        [server]
     );
 
     return {
-        send: api.is_standalone ? send : legacy_send,
-        subscribe: api.is_standalone ? api.deriv_api.subscribe : WS.subscribe,
+        send,
+        subscribe,
     };
 };
 

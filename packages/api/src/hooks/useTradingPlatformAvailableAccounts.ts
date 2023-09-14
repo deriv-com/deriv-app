@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
-import useFetch from '../useFetch';
+import useQuery from '../useQuery';
 
 /** @description This hook is used to get all the available MT5 accounts. */
 const useTradingPlatformAvailableAccounts = () => {
-    const { data: mt5_available_accounts, ...rest } = useFetch('trading_platform_available_accounts', {
+    const { data: mt5_available_accounts, ...rest } = useQuery('trading_platform_available_accounts', {
         payload: { platform: 'mt5' },
     });
 

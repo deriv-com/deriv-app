@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
-import useRequest from '../useRequest';
+import useMutation from '../useMutation';
 import useInvalidateQuery from '../useInvalidateQuery';
 
 /** A custom hook that creates the Other CFD account. */
 const useCreateOtherCFDAccount = () => {
     const invalidate = useInvalidateQuery();
-    const { data, ...rest } = useRequest('trading_platform_new_account', {
+    const { data, ...rest } = useMutation('trading_platform_new_account', {
         onSuccess: () => {
             invalidate('trading_platform_accounts');
         },

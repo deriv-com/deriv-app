@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation as _useMutation } from '@tanstack/react-query';
 import useAPI from './useAPI';
 import type {
     TSocketAcceptableProps,
@@ -9,9 +9,9 @@ import type {
     TSocketResponseData,
 } from '../types';
 
-const useRequest = <T extends TSocketEndpointNames>(name: T, options?: TSocketRequestMutationOptions<T>) => {
+const useMutation = <T extends TSocketEndpointNames>(name: T, options?: TSocketRequestMutationOptions<T>) => {
     const { send } = useAPI();
-    const { mutate: _mutate, ...rest } = useMutation<TSocketResponseData<T>, unknown, TSocketAcceptableProps<T>>(
+    const { mutate: _mutate, ...rest } = _useMutation<TSocketResponseData<T>, unknown, TSocketAcceptableProps<T>>(
         props => {
             const prop = props?.[0];
             const payload = prop && 'payload' in prop ? (prop.payload as TSocketRequestPayload<T>) : undefined;
@@ -29,4 +29,4 @@ const useRequest = <T extends TSocketEndpointNames>(name: T, options?: TSocketRe
     };
 };
 
-export default useRequest;
+export default useMutation;

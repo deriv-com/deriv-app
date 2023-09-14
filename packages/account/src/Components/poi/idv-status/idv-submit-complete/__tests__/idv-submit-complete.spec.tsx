@@ -3,23 +3,47 @@ import { BrowserRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import { idv_error_statuses } from '@deriv/shared';
 import IdvSubmitComplete from '../idv-submit-complete';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('Assets/ic-idv-document-pending.svg', () => jest.fn(() => 'IdvDocumentPending'));
 
-describe('<IdvSubmitComplete/>', () => {
-    let mock_props: React.ComponentProps<typeof IdvSubmitComplete>;
+type TIdvSubmitCompleteProps = React.ComponentProps<typeof IdvSubmitComplete>;
 
-    beforeEach(() => {
-        mock_props = {
-            needs_poa: false,
-            is_from_external: false,
-            redirect_button: '',
-        };
+describe('<IdvSubmitComplete/>', () => {
+    const mock_props: TIdvSubmitCompleteProps = {
+        needs_poa: false,
+        is_from_external: false,
+        redirect_button: '',
+    };
+
+    const store = mockStore({
+        client: {
+            account_status: {
+                authentication: {
+                    attempts: {
+                        count: 0,
+                        history: [],
+                    },
+                },
+            },
+        },
     });
 
+    const renderComponent = ({ props = mock_props, store_config = store }) =>
+        render(
+            <StoreProvider store={store_config}>
+                <BrowserRouter>
+                    <IdvSubmitComplete {...props} />
+                </BrowserRouter>
+            </StoreProvider>
+        );
+
     it('should render IdvSubmitComplete component external, no needs_poa, without mismatch_status', () => {
-        mock_props.redirect_button = 'Mock Redirect Button';
-        render(<IdvSubmitComplete {...mock_props} />);
+        const new_props: TIdvSubmitCompleteProps = {
+            ...mock_props,
+            redirect_button: 'Mock Redirect Button',
+        };
+        renderComponent({ props: new_props });
 
         expect(screen.getByText('IdvDocumentPending')).toBeInTheDocument();
         expect(screen.getByText('Mock Redirect Button')).toBeInTheDocument();
@@ -36,14 +60,14 @@ describe('<IdvSubmitComplete/>', () => {
         ).not.toBeInTheDocument();
         expect(screen.queryByText("Next, we'll need your proof of address.")).not.toBeInTheDocument();
     });
-    it('should render IdvSubmitComplete component needs_poa not external, without mismatch_status and redirect_button', () => {
-        mock_props.needs_poa = true;
 
-        render(
-            <BrowserRouter>
-                <IdvSubmitComplete {...mock_props} />
-            </BrowserRouter>
-        );
+    it('should render IdvSubmitComplete component needs_poa not external, without mismatch_status and redirect_button', () => {
+        const new_props: TIdvSubmitCompleteProps = {
+            ...mock_props,
+            needs_poa: true,
+        };
+
+        renderComponent({ props: new_props });
 
         expect(screen.getByText('IdvDocumentPending')).toBeInTheDocument();
         expect(screen.getByText('Your documents were submitted successfully')).toBeInTheDocument();
@@ -57,9 +81,26 @@ describe('<IdvSubmitComplete/>', () => {
             )
         ).not.toBeInTheDocument();
     });
+
     it('should render IdvSubmitComplete component with mismatch_status ', () => {
-        const mismatch_status = idv_error_statuses.poi_name_dob_mismatch;
-        render(<IdvSubmitComplete {...mock_props} mismatch_status={mismatch_status} />);
+        const new_store = mockStore({
+            client: {
+                account_status: {
+                    authentication: {
+                        attempts: {
+                            count: 2,
+                            history: [{ status: 'pending' }],
+                        },
+                    },
+                },
+            },
+        });
+
+        const new_props: TIdvSubmitCompleteProps = {
+            ...mock_props,
+            mismatch_status: idv_error_statuses.poi_name_dob_mismatch,
+        };
+        renderComponent({ props: new_props, store_config: new_store });
 
         expect(screen.getByText('IdvDocumentPending')).toBeInTheDocument();
         expect(screen.getByText('Your profile is updated')).toBeInTheDocument();
@@ -75,9 +116,26 @@ describe('<IdvSubmitComplete/>', () => {
         expect(screen.queryByText('Your document has been submitted')).not.toBeInTheDocument();
         expect(screen.queryByText("Next, we'll need your proof of address.")).not.toBeInTheDocument();
     });
+
     it('should render IdvSubmitComplete component with mismatch_status', () => {
-        const mismatch_status = idv_error_statuses.poi_expired;
-        render(<IdvSubmitComplete {...mock_props} mismatch_status={mismatch_status} />);
+        const new_store = mockStore({
+            client: {
+                account_status: {
+                    authentication: {
+                        attempts: {
+                            count: 2,
+                            history: [{ status: 'pending' }],
+                        },
+                    },
+                },
+            },
+        });
+
+        const new_props: TIdvSubmitCompleteProps = {
+            ...mock_props,
+            mismatch_status: idv_error_statuses.poi_expired,
+        };
+        renderComponent({ props: new_props, store_config: new_store });
 
         expect(screen.getByText('IdvDocumentPending')).toBeInTheDocument();
         expect(screen.getByText('Your document has been submitted')).toBeInTheDocument();

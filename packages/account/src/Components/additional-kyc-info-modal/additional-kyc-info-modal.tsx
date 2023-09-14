@@ -87,7 +87,7 @@ export const AdditionalKycInfoModal = observer(() => {
                         is_open
                         portal_id='deriv_app'
                         header={
-                            <Text size='xs' align='left'>
+                            <Text size='xs' align='left' weight='bold'>
                                 <ModalTitle />
                             </Text>
                         }

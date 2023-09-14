@@ -17,7 +17,7 @@ describe('rudderstack', () => {
     beforeAll(() => {
         process.env = {
             ...originalEnv,
-            NODE_ENV: 'staging',
+            CIRCLE_JOB: 'release_staging',
             RUDDERSTACK_PRODUCTION_KEY: '123456789',
             RUDDERSTACK_STAGING_KEY: '123456789',
             RUDDERSTACK_URL: 'http://example.com',

@@ -1,24 +1,15 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, ProgressBarOnboarding, Text } from '@deriv/components';
+import { Icon, ProgressBarTracker, Text } from '@deriv/components';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { useDBotStore } from 'Stores/useDBotStore';
 import { BOT_BUILDER_MOBILE, DBOT_ONBOARDING_MOBILE, TStepMobile } from './joyride-config';
 
 type TTourButton = {
     type?: string;
     onClick: () => void;
     label: string;
-};
-
-type TTourSlider = {
-    has_started_bot_builder_tour: boolean;
-    has_started_onboarding_tour: boolean;
-    onCloseTour: () => void;
-    onTourEnd: (step: number, has_started_onboarding_tour: boolean) => void;
-    setTourActiveStep: (param: number) => void;
-    toggleTourLoadModal: (toggle: boolean) => void;
 };
 
 type TAccordion = {
@@ -46,7 +37,7 @@ const Accordion = ({ content_data, expanded = false, ...props }: TAccordion) => 
                 <div className='dbot-accordion__navbar' onClick={() => setOpen(!is_open)}>
                     <div className='dbot-accordion__header'>
                         <Text as='span' size='xs' weight='bold'>
-                            {localize(header)}
+                            {header}
                         </Text>
                     </div>
                     <div className='dbot-accordion__icon'>
@@ -58,8 +49,8 @@ const Accordion = ({ content_data, expanded = false, ...props }: TAccordion) => 
                         'dbot-accordion__content--open': is_open,
                     })}
                 >
-                    <Text as='span' size='xxs' line_height='s' color='colored-background'>
-                        {localize(content)}
+                    <Text as='span' size='xxs' line_height='s'>
+                        {content}
                     </Text>
                 </div>
             </div>
@@ -67,18 +58,16 @@ const Accordion = ({ content_data, expanded = false, ...props }: TAccordion) => 
     );
 };
 
-const TourSlider = ({
-    onCloseTour,
-    onTourEnd,
-    has_started_onboarding_tour,
-    has_started_bot_builder_tour,
-    setTourActiveStep,
-    toggleTourLoadModal,
-}: TTourSlider) => {
+const TourSlider = observer(() => {
+    const { dashboard, load_modal } = useDBotStore();
+    const { has_started_bot_builder_tour, has_started_onboarding_tour, onCloseTour, onTourEnd, setTourActiveStep } =
+        dashboard;
+    const { toggleTourLoadModal } = load_modal;
     const [step, setStep] = React.useState<number>(1);
-    const [slider_content, setContent] = React.useState<string | string[]>('');
-    const [slider_header, setheader] = React.useState<string>('');
-    const [slider_image, setimg] = React.useState<string>('');
+    const [slider_content, setContent] = React.useState<React.ReactElement[]>([]);
+    const [slider_header, setHeader] = React.useState<string>('');
+    const [slider_image, setImg] = React.useState<string>('');
+    const [slider_media, setMedia] = React.useState<string>('');
     const [step_key, setStepKey] = React.useState<number>(0);
 
     React.useEffect(() => {
@@ -86,9 +75,10 @@ const TourSlider = ({
         Object.values(!has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE).forEach(data => {
             if (data.key === step) {
                 setContent(data?.content);
-                setheader(data?.header);
-                setimg(data?.img);
-                setStepKey(data?.step_key);
+                setHeader(data?.header);
+                setImg(data?.img || '');
+                setMedia(data?.media || '');
+                setStepKey(data?.step_key || 0);
             }
         });
         const el_ref = document.querySelector('.toolbar__group-btn svg:nth-child(2)');
@@ -123,6 +113,9 @@ const TourSlider = ({
 
     const tour_button_text = has_started_onboarding_tour && step_key === 0 ? localize('Start') : bot_tour_text;
 
+    const onboarding_completed_text =
+        has_started_onboarding_tour && step === 8 ? localize('Got it, thanks!') : tour_button_text;
+
     return (
         <>
             <div
@@ -139,16 +132,10 @@ const TourSlider = ({
                             weight='less-prominent'
                             line_height='s'
                             size='xxs'
-                        >{`${step_key}/6`}</Text>
-                        <Text
-                            color='prominent'
-                            weight='--text-less-prominent'
-                            line_height='s'
-                            size='xxs'
-                            onClick={onCloseTour}
-                        >
-                            {localize('Exit Tour')}
-                        </Text>
+                        >{`${step_key}/7`}</Text>
+                        <span onClick={onCloseTour}>
+                            <Icon icon='IcCross' className='db-contract-card__result-icon' color='secondary' />
+                        </span>
                     </div>
                 )}
 
@@ -165,17 +152,32 @@ const TourSlider = ({
                         {localize(slider_header)}
                     </Text>
                 )}
-                {has_started_onboarding_tour && slider_image && (
-                    <div className='dbot-slider__image'>
-                        <img src={slider_image} />
-                    </div>
-                )}
+                {has_started_onboarding_tour &&
+                    // eslint-disable-next-line no-nested-ternary
+                    (slider_media ? (
+                        <div className='dbot-slider__image'>
+                            <video
+                                autoPlay={true}
+                                loop
+                                controls
+                                preload='auto'
+                                playsInline
+                                disablePictureInPicture
+                                controlsList='nodownload'
+                                src={slider_media}
+                            />
+                        </div>
+                    ) : slider_image ? (
+                        <div className='dbot-slider__image'>
+                            <img src={slider_image} />
+                        </div>
+                    ) : null)}
                 {has_started_onboarding_tour && slider_content && (
                     <>
-                        {slider_content.map(data => {
+                        {slider_content?.map((data, index) => {
                             return (
                                 <Text
-                                    key={data}
+                                    key={`${index}-tour-onboard`}
                                     align='center'
                                     color='prominent'
                                     className='dbot-slider__content'
@@ -183,7 +185,7 @@ const TourSlider = ({
                                     line_height='s'
                                     size='xxs'
                                 >
-                                    {localize(data)}
+                                    {data}
                                 </Text>
                             );
                         })}
@@ -193,9 +195,9 @@ const TourSlider = ({
                 <div className='dbot-slider__status'>
                     <div className='dbot-slider__progress-bar'>
                         {(!has_started_onboarding_tour || (has_started_onboarding_tour && step !== 1)) && (
-                            <ProgressBarOnboarding
+                            <ProgressBarTracker
                                 step={step}
-                                amount_of_steps={Object.keys(
+                                steps_list={Object.keys(
                                     !has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE
                                 )}
                                 setStep={setStep}
@@ -212,7 +214,7 @@ const TourSlider = ({
                             />
                         )}
                         {((has_started_bot_builder_tour && step !== 1) ||
-                            (has_started_onboarding_tour && step !== 1 && step !== 2)) && (
+                            (has_started_onboarding_tour && step !== 1 && step !== 2 && step !== 8)) && (
                             <TourButton
                                 onClick={() => {
                                     onChange('dec');
@@ -220,21 +222,12 @@ const TourSlider = ({
                                 label={localize('Previous')}
                             />
                         )}
-                        <TourButton type='danger' onClick={onClickNext} label={tour_button_text} />
+                        <TourButton type='danger' onClick={onClickNext} label={onboarding_completed_text} />
                     </div>
                 </div>
             </div>
         </>
     );
-};
+});
 
-export default connect(({ dashboard, load_modal }: RootStore) => ({
-    active_tab: dashboard.active_tab,
-    has_started_bot_builder_tour: dashboard.has_started_bot_builder_tour,
-    has_started_onboarding_tour: dashboard.has_started_onboarding_tour,
-    onCloseTour: dashboard.onCloseTour,
-    onTourEnd: dashboard.onTourEnd,
-    setActiveTab: dashboard.setActiveTab,
-    setTourActiveStep: dashboard.setTourActiveStep,
-    toggleTourLoadModal: load_modal.toggleTourLoadModal,
-}))(TourSlider);
+export default TourSlider;

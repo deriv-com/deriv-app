@@ -1,6 +1,8 @@
 declare global {
     interface Window {
+        clipboardData: DataTransfer;
         LiveChatWidget: {
+            init: () => void;
             on: (key: string, callback: VoidFunction) => void;
             get: (key: string) => any;
             call: (key: string, value?: any) => void;
@@ -10,6 +12,7 @@ declare global {
             open_chat_window: VoidFunction;
         };
         TrackJS: { console: { log: (arg0: unknown[]) => void }; track: (arg0: object) => void };
+        Blockly;
     }
 }
 

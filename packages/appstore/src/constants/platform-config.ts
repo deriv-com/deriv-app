@@ -41,6 +41,7 @@ export const getAppstorePlatforms = (): PlatformConfig[] => [
         name: getPlatformSettingsAppstore('dbot').name,
         app_desc: localize('Automate your trading, no coding needed.'),
         link_to: routes.bot,
+        is_external: true,
     },
     {
         name: getPlatformSettingsAppstore('smarttrader').name,

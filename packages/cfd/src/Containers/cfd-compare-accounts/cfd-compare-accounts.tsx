@@ -119,7 +119,7 @@ const CompareCFDs = observer(() => {
                                     />
                                 )}
                                 {/* Renders cTrader data */}
-                                {all_cfd_available_accounts.length > 0 && has_ctrader_account_available && false && (
+                                {all_cfd_available_accounts.length === -2 && has_ctrader_account_available && (
                                     <CFDCompareAccountsCard
                                         trading_platforms={ctrader_data}
                                         is_eu_user={is_eu_user}

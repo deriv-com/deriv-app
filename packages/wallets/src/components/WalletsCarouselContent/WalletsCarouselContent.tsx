@@ -29,7 +29,7 @@ const WalletsCarouselContent: React.FC = () => {
             <div className='wallets-carousel-content__container'>
                 {wallet_accounts_list.map(wallet => (
                     <WalletGradientBackground
-                        key={`${wallet.loginid}`}
+                        key={`wallet_gradient_background_${wallet.loginid}`}
                         currency={wallet?.currency_config?.display_code || 'USD'}
                         is_demo={wallet.is_virtual}
                     >

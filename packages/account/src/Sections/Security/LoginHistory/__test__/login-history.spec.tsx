@@ -126,7 +126,7 @@ describe('<LoginHistory />', () => {
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
-    it('should render Loading with classname account__initial-loader if isLoading is true', () => {
+    it('should render Loading isLoading is true', () => {
         response.isLoading = true;
         renderComponent();
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
@@ -138,7 +138,7 @@ describe('<LoginHistory />', () => {
         expect(screen.getByText(/this is an error message/i)).toBeInTheDocument();
     });
 
-    it('should render Table Item text: Logout under action is action is not login', () => {
+    it('should render Table Item text: Logout if action is not login', () => {
         response.data.formatted_data[0].action = 'logout';
         renderComponent();
         expect(screen.getByText(/logout/i)).toBeInTheDocument();

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { TLoginHistoryData } from '@deriv/api/types';
 import getLoginHistoryTableHeaders from 'Constants/get-login-history-table-headers';
 import LoginHistoryTableRow from './login-history-table-row';
@@ -14,12 +14,12 @@ type TLoginHistoryContent = {
     data: TLoginHistoryData;
 };
 
-const LoginHistoryContent = ({ data }: TLoginHistoryContent) => {
+const LoginHistoryContent = observer(({ data }: TLoginHistoryContent) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
 
     return is_mobile ? renderList(data) : renderTable(getLoginHistoryTableHeaders(), data);
-};
+});
 
 const renderTable = (fields: TGetFields, login_history: TLoginHistoryData) => (
     <Table fixed className='login-history__table'>

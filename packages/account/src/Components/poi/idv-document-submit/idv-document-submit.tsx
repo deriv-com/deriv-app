@@ -11,9 +11,11 @@ import {
     isDesktop,
     removeEmptyPropertiesFromObject,
     formatIDVFormValues,
+    isMobile,
 } from '@deriv/shared';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
+import FormBody from 'Components/form-body';
 import FormFooter from 'Components/form-footer';
 import IDVForm from 'Components/forms/idv-form';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
@@ -168,7 +170,7 @@ const IdvDocumentSubmit = ({
                             />
                         </div>
                     )}
-                    <section className='form-body'>
+                    <FormBody className='form-body' scroll_offset={isMobile() ? '180px' : '80px'}>
                         <FormSubHeader title={localize('Identity verification')} />
                         <IDVForm selected_country={selected_country} class_name='idv-layout' />
 
@@ -190,7 +192,7 @@ const IdvDocumentSubmit = ({
                                 />
                             }
                         />
-                    </section>
+                    </FormBody>
                     <FormFooter className='proof-of-identity__footer'>
                         {isDesktop() && (
                             <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>

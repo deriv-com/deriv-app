@@ -337,18 +337,14 @@ const IdvFailed = ({
                         'upload-layout': is_document_upload_required,
                     })}
                 >
-                    <FormBody className='form-body'>
-                        <Text
-                            size={isMobile() ? 'xs' : 's'}
-                            weight='bold'
-                            className='proof-of-identity__failed-warning'
-                            align='center'
-                        >
+                    <FormBody className='form-body' scroll_offset={isMobile() ? '200px' : '80px'}>
+                        <Text size={isMobile() ? 'xs' : 's'} weight='bold' align='center'>
                             <Localize i18n_default_text='Your identity verification failed because:' />
                         </Text>
                         {(status?.error_msg || idv_failure?.failure_message) && (
                             <HintBox
-                                icon='IcAlertDanger'
+                                className='proof-of-identity__failed-message'
+                                icon='IcCloseCircleRed'
                                 message={
                                     <Text as='p' size={isMobile() ? 'xxs' : 'xs'} data-testid={mismatch_status}>
                                         {status?.error_msg ?? idv_failure?.failure_message}
@@ -359,23 +355,16 @@ const IdvFailed = ({
                         )}
                         {is_document_upload_required && (
                             <React.Fragment>
-                                <Text
-                                    size='xs'
-                                    className='proof-of-identity__failed-warning'
-                                    align={isMobile() ? 'left' : 'center'}
-                                >
+                                <Text size='xs' align={isMobile() ? 'left' : 'center'}>
                                     <Localize i18n_default_text='Let’s try again. Choose another document and enter the corresponding details.' />
                                 </Text>
                                 <FormSubHeader title={localize('Identity verification')} />
-                                <IDVForm
-                                    selected_country={chosen_country}
-                                    hide_hint={true}
-                                    class_name='idv-layout idv-resubmit'
-                                />
+                                <IDVForm selected_country={chosen_country} class_name='idv-layout idv-resubmit' />
                                 <FormSubHeader title={localize('Details')} />
                             </React.Fragment>
                         )}
                         <PersonalDetailsForm
+                            class_name='account-form__poi-confirm-example_container'
                             editable_fields={rest_state?.changeable_fields}
                             is_rendered_for_idv
                             side_note={idv_failure?.side_note_image}

@@ -97,6 +97,7 @@ const CountrySelector = ({
                                     <Localize i18n_default_text='Your identity verification failed because:' />
                                 </Text>
                                 <HintBox
+                                    className='proof-of-identity__failed-message'
                                     icon='IcCloseCircleRed'
                                     message={
                                         <Text as='p' size={isMobile() ? 'xxs' : 'xs'}>

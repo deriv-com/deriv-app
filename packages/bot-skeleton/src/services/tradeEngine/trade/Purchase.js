@@ -44,7 +44,7 @@ export default Engine =>
                 return allBlocks.some(block => block.type === targetType);
             }
 
-            const workspace = Blockly.derivWorkspace();
+            const workspace = Blockly.derivWorkspace;
             const hasPayoutBlock = hasBlockOfType('payout', workspace);
             // Since basis : '${block.type === 'trade_definition_tradeoptions' ? 'stake' : 'payout'}'
             const isBasisPayout = !hasBlockOfType('trade_definition_tradeoptions', workspace);

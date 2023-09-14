@@ -1,32 +1,29 @@
 .dc-modal {
-    &-header {
-        border-bottom: 2px solid var(--general-section-1);
-    }
+    &__container {
+        &_additional-kyc-info {
+            &-header {
+                border-bottom: 2px solid var(--general-section-1);
+            }
 
-    &-footer {
-        padding: 1.6rem 0 0;
-        margin: unset;
-    }
+            &-footer {
+                padding: 1.6rem 0 0;
+                margin: unset;
+            }
 
-    .inline-message {
-        margin: 0.8rem 1.6rem;
-        width: calc(100% - 3.2rem);
-        justify-content: flex-start;
-    }
-}
-
-.dc-page-overlay {
-    &__header {
-        padding: 2.5rem 2rem;
-
-        &-close {
-            position: inherit;
-            right: 0;
+            .inline-message {
+                margin: 0.8rem 1.6rem;
+                width: calc(100% - 3.2rem);
+                justify-content: flex-start;
+            }
         }
     }
 }
 
 .additional-kyc-info-modal {
+    &__portal-header {
+        padding: 2.5rem 2rem;
+    }
+
     &__form {
         padding: unset;
         height: 100%;
@@ -40,7 +37,7 @@
             margin: 1.6rem 0 2.4rem;
 
             @include mobile {
-                padding: 0 1.8rem;
+                padding: 0;
             }
         }
 

@@ -9,6 +9,7 @@ module.exports = {
         },
         {
             files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+            excludedFiles: '**/integration-tests/**/*.[jt]s?(x)',
             extends: ['plugin:testing-library/react'],
         },
         {
@@ -16,8 +17,8 @@ module.exports = {
             parser: '@typescript-eslint/parser',
             plugins: ['@typescript-eslint'],
             extends: [
-                'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
-                'prettier/@typescript-eslint', // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
+                'plugin:@typescript-eslint/recommended',
+                'prettier/@typescript-eslint',
                 'plugin:react/recommended',
                 'plugin:@typescript-eslint/recommended',
                 'plugin:prettier/recommended',

@@ -7,13 +7,13 @@ import { CashierStoreProvider } from './stores/useCashierStores';
 type TProps = { store: React.ComponentProps<typeof StoreProvider>['store'] };
 
 const CashierProviders: React.FC<React.PropsWithChildren<TProps>> = ({ children, store }) => (
-    <APIProvider>
-        <StoreProvider store={store}>
-            <CashierStoreProvider>
+    <StoreProvider store={store}>
+        <CashierStoreProvider>
+            <APIProvider>
                 <ThemeProvider>{children}</ThemeProvider>
-            </CashierStoreProvider>
-        </StoreProvider>
-    </APIProvider>
+            </APIProvider>
+        </CashierStoreProvider>
+    </StoreProvider>
 );
 
 export default CashierProviders;

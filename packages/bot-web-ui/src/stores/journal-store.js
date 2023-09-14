@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable, reaction, when } from 'mobx';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { log_types, message_types } from '@deriv/bot-skeleton';
 import { config } from '@deriv/bot-skeleton/src/constants/config';
 import { formatDate } from '@deriv/shared';
@@ -11,9 +11,9 @@ export default class JournalStore {
     constructor(root_store, core) {
         makeObservable(this, {
             is_filter_dialog_visible: observable,
-            journal_filters: observable.shallow,
+            journal_filters: observable,
             filters: observable.shallow,
-            unfiltered_messages: observable.shallow,
+            unfiltered_messages: observable,
             toggleFilterDialog: action.bound,
             onLogSuccess: action.bound,
             onError: action.bound,
@@ -28,38 +28,37 @@ export default class JournalStore {
             welcomeBackUser: action.bound,
             welcomeUser: action.bound,
             registerReactions: action.bound,
+            restoreStoredJournals: action.bound,
         });
 
         this.root_store = root_store;
         this.core = core;
         this.disposeReactionsFn = this.registerReactions();
-
-        // Add a "Welcome back!" message when messages were restored.
-        when(
-            () => this.unfiltered_messages,
-            () => {
-                if (this.unfiltered_messages.length > 0) {
-                    this.welcomeBackUser();
-                }
-                if (this.unfiltered_messages.length === 0) {
-                    this.welcomeUser();
-                }
-            }
-        );
+        this.restoreStoredJournals();
     }
 
     JOURNAL_CACHE = 'journal_cache';
-
     is_filter_dialog_visible = false;
-
     filters = [
         { id: message_types.ERROR, label: localize('Errors') },
         { id: message_types.NOTIFY, label: localize('Notifications') },
         { id: message_types.SUCCESS, label: localize('System') },
     ];
+    journal_filters = [];
+    unfiltered_messages = [];
 
-    journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
-    unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, this.core?.client.loginid, []);
+    restoreStoredJournals() {
+        this.journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
+        this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, this.core?.client.loginid, []);
+
+        if (this.unfiltered_messages.length > 0) {
+            this.welcomeBackUser();
+        }
+
+        if (this.unfiltered_messages.length === 0) {
+            this.welcomeUser();
+        }
+    }
 
     getServerTime() {
         return this.core?.common.server_time.get();
@@ -163,15 +162,8 @@ export default class JournalStore {
             () => this.unfiltered_messages,
             unfiltered_messages => {
                 const stored_journals = getStoredItemsByKey(this.JOURNAL_CACHE, {});
+                stored_journals[client.loginid] = unfiltered_messages.slice(0, 5000);
 
-                stored_journals[client.loginid] = unfiltered_messages.slice(0, 5000).filter(unfiltered_message => {
-                    // Filter out "Welcome back!" message. This can be extended.
-                    const is_welcome_back =
-                        unfiltered_message.message_type === message_types.SUCCESS &&
-                        unfiltered_message.message === log_types.WELCOME_BACK;
-
-                    return !is_welcome_back;
-                });
                 setStoredItemsByKey(this.JOURNAL_CACHE, stored_journals);
             }
         );

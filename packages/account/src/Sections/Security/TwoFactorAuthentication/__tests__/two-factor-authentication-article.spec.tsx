@@ -6,7 +6,7 @@ describe('<TwoFactorAuthenticationArticle />', () => {
     it('should render TwoFactorAuthenticationArticle component', () => {
         render(<TwoFactorAuthenticationArticle />);
 
-        const two_factor_authentication_article = screen.getByText('Two-factor authentication (2FA)');
+        const two_factor_authentication_article = screen.getByText(/Two-factor authentication \(2FA\)/i);
         expect(two_factor_authentication_article).toBeInTheDocument();
     });
 

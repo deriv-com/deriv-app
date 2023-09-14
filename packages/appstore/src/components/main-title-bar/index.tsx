@@ -3,13 +3,13 @@ import { Text, DesktopWrapper, MobileWrapper, Tabs, Icon } from '@deriv/componen
 import { useFeatureFlags } from '@deriv/hooks';
 import { ContentFlag } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
+import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
+import WalletsBanner from 'Components/wallets-banner';
 import AccountTypeDropdown from './account-type-dropdown';
 import AssetSummary from './asset-summary';
 import RegulatorSwitcher from './regulators-switcher';
-import { localize } from '@deriv/translations';
 import './main-title-bar.scss';
-import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
-import WalletsBanner from 'Components/wallets-banner';
 
 const MainTitleBar = () => {
     const { traders_hub, client, notifications } = useStore();
@@ -36,12 +36,12 @@ const MainTitleBar = () => {
 
     return (
         <React.Fragment>
+            {is_wallet_enabled && <WalletsBanner />}
             <DesktopWrapper>
-                {is_wallet_enabled && <WalletsBanner />}
                 <div className='main-title-bar'>
                     <div className='main-title-bar__right'>
                         <Text size='m' weight='bold' color='prominent'>
-                            {localize("Trader's Hub")}
+                            <Localize i18n_default_text="Trader's Hub" />
                         </Text>
                         <AccountTypeDropdown />
                     </div>
@@ -50,9 +50,8 @@ const MainTitleBar = () => {
                 </div>
             </DesktopWrapper>
             <MobileWrapper>
-                {is_wallet_enabled && <WalletsBanner />}
                 <Text weight='bold' className='main-title-bar__text' color='prominent'>
-                    {localize("Trader's Hub")}
+                    <Localize i18n_default_text="Trader's Hub" />
                 </Text>
                 <div className='main-title-bar-mobile'>
                     <div className='main-title-bar-mobile--account-type-dropdown'>

@@ -3,16 +3,14 @@ import { Formik, FormikErrors } from 'formik';
 import { getLegalEntityName, getErrorMessages, getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
 import { Text, FormSubmitButton, PasswordMeter, PasswordInput } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import {
-    TDxCompanies,
-    getDxCompanies,
-    getFormattedJurisdictionCode,
-} from '../../../Stores/Modules/CFD/Helpers/cfd-config';
 import { observer, useStore } from '@deriv/stores';
 import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from '../../props.types';
 import {
+    getAccountTitle,
     getButtonLabel,
     getCancelButtonLabel,
+    hasCancelButton,
+    showJurisdiction,
 } from '../../../Constants/cfd-password-modal-content/cfd-password-modal-content';
 import PasswordStep from './password-step';
 
@@ -35,23 +33,6 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     should_set_trading_password: boolean;
     show_eu_related_content: boolean;
     submitPassword: TOnSubmitPassword;
-};
-
-const getAccountTitle = (
-    platform: string,
-    account_type: {
-        category?: string;
-        type?: string;
-    },
-    account_title: string
-) => {
-    if (platform === CFD_PLATFORMS.DXTRADE) {
-        return getDxCompanies()[account_type.category as keyof TDxCompanies][
-            account_type.type as keyof TDxCompanies['demo' | 'real']
-        ].short_title;
-    }
-
-    return account_title;
 };
 
 const handlePasswordInputChange = (
@@ -89,7 +70,7 @@ const CFDPasswordForm = observer(
         const { is_mobile } = ui;
 
         const button_label = getButtonLabel(error_type);
-        const has_cancel_button = (!is_mobile ? !should_set_trading_password : true) || error_type === 'PasswordReset';
+        const has_cancel_button = hasCancelButton({ should_set_trading_password, error_type, is_mobile });
         const cancel_button_label = getCancelButtonLabel({ should_set_trading_password, error_type, is_mobile });
 
         const handleCancel = () => {
@@ -144,15 +125,6 @@ const CFDPasswordForm = observer(
             );
         }
 
-        const showJuristiction = () => {
-            if (platform === CFD_PLATFORMS.DXTRADE) {
-                return '';
-            } else if (!show_eu_related_content) {
-                return getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
-            }
-            return 'CFDs';
-        };
-
         return (
             <Formik
                 initialValues={{
@@ -189,7 +161,11 @@ const CFDPasswordForm = observer(
                                                 account: !show_eu_related_content
                                                     ? getAccountTitle(platform, account_type, account_title)
                                                     : '',
-                                                jurisdiction_shortcode: showJuristiction(),
+                                                jurisdiction_shortcode: showJurisdiction(
+                                                    platform,
+                                                    show_eu_related_content,
+                                                    jurisdiction_selected_shortcode
+                                                ),
                                             }}
                                         />
                                     )}
@@ -208,7 +184,6 @@ const CFDPasswordForm = observer(
                                     )}
                                 </Text>
                             )}
-                            {/* TODO: Check if do we have to add 'PasswordMeter' in production aswell. */}
                             <div className='input-element'>
                                 <PasswordMeter
                                     input={values.password}

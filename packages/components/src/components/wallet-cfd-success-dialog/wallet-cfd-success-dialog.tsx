@@ -9,12 +9,12 @@ import './wallet-cfd-success-dialog.scss';
 
 export type TWalletCFDCard = {
     account_title: string;
+    app_icon: string;
+    balance: string;
     currency: string;
     gradient_header_class: string;
     icon: string;
     is_demo: boolean;
-    type: string;
-    balance: string;
 };
 
 type TWalletCFDSuccessDialog = {

@@ -9,7 +9,7 @@ type TWalletIconProps = {
     gradient_class?: string;
     icon: string;
     size?: TWalletIconSizes;
-    type?: 'demo' | 'fiat' | 'crypto' | 'app' | 'cfd';
+    type?: 'demo' | 'fiat' | 'crypto' | 'app';
     has_bg?: boolean;
     hide_watermark?: boolean;
 };
@@ -66,7 +66,7 @@ const WalletIcon = ({ gradient_class, icon, size = 'medium', type, has_bg, hide_
             })}
             data-testid='dt_wallet_icon'
         >
-            {(type === 'fiat' || type === 'app' || type === 'cfd') && <Icon icon={icon} size={sizes.square[size]} />}
+            {(type === 'fiat' || type === 'app') && <Icon icon={icon} size={sizes.square[size]} />}
             {(type === 'demo' || type === 'crypto') && (
                 <Icon icon={icon} width={sizes.box[size].width} height={sizes.box[size].height} />
             )}

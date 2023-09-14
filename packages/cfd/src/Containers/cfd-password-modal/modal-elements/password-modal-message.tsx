@@ -1,15 +1,8 @@
 import React from 'react';
 import { CFD_PLATFORMS, getCFDPlatformLabel, Jurisdiction } from '@deriv/shared';
-import {
-    getDerivezCompanies,
-    getDxCompanies,
-    getFormattedJurisdictionCode,
-    getMtCompanies,
-    TDerivezCompanies,
-    TDxCompanies,
-    TMtCompanies,
-} from '../../../Stores/Modules/CFD/Helpers/cfd-config';
-import { Localize, localize } from '@deriv/translations';
+import { getFormattedJurisdictionCode } from '../../../Stores/Modules/CFD/Helpers/cfd-config';
+import { Localize } from '@deriv/translations';
+import { getCategoryLabel, getTypeLabel } from 'Constants/cfd-password-modal-content/cfd-password-modal-content';
 
 type TReviewMsgForMT5 = {
     is_selected_mt5_verified: boolean;
@@ -59,30 +52,7 @@ const PasswordModalMessage = ({
 }: TPasswordModalMessage) => {
     if (!category && !type) return null;
 
-    const category_label = category === 'real' ? localize('real') : localize('demo');
-    let type_label = '';
-    switch (platform) {
-        case CFD_PLATFORMS.MT5:
-            type_label =
-                getMtCompanies(show_eu_related_content)[category as keyof TMtCompanies][
-                    type as keyof TMtCompanies['demo' | 'real']
-                ].short_title;
-            break;
-        case CFD_PLATFORMS.DXTRADE:
-            type_label =
-                getDxCompanies()[category as keyof TDxCompanies][type as keyof TDxCompanies['demo' | 'real']]
-                    .short_title;
-            break;
-        case CFD_PLATFORMS.DERIVEZ:
-            type_label =
-                getDerivezCompanies()[category as keyof TDerivezCompanies][
-                    type as keyof TDerivezCompanies['demo' | 'real']
-                ].short_title;
-            break;
-        default:
-            type_label = '';
-            break;
-    }
+    const category_label = getCategoryLabel(category);
 
     const jurisdiction_label =
         jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
@@ -107,7 +77,7 @@ const PasswordModalMessage = ({
                 <Localize
                     i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}} {{jurisdiction_selected_shortcode}}</1> account. '
                     values={{
-                        type: type_label,
+                        type: getTypeLabel(type, platform, show_eu_related_content, category),
                         platform: platform === CFD_PLATFORMS.MT5 ? mt5_platform_label : getCFDPlatformLabel(platform),
                         category: category_label,
                         jurisdiction_selected_shortcode:
@@ -142,7 +112,7 @@ const PasswordModalMessage = ({
                 <Localize
                     i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account. '
                     values={{
-                        type: type_label,
+                        type: getTypeLabel(type, platform, show_eu_related_content, category),
                         platform: getCFDPlatformLabel(platform),
                         category: category_label,
                     }}

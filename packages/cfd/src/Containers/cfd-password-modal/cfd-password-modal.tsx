@@ -32,8 +32,12 @@ import {
 import PasswordModalMessage from './modal-elements/password-modal-message';
 import SuccessModalIcons from './modal-elements/success-modal-icons';
 import SuccessDialog from '../../Components/success-dialog.jsx';
-import '../../sass/cfd.scss';
+import {
+    getWalletAppIcon,
+    getWalletAccountTitle,
+} from '../../Constants/cfd-password-modal-content/cfd-password-modal-content';
 import { TCFDPasswordFormValues, TOnSubmitPassword } from '../props.types';
+import '../../sass/cfd.scss';
 
 type TCFDPasswordModalProps = {
     error_type?: string;
@@ -375,27 +379,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         </MobileDialog>
     );
 
-    // TODO: Update with other platforms and CFDs
-    const getWalletAccountTitle = (type: string) => {
-        let account_title = '';
-        switch (type) {
-            case 'synthetic':
-                account_title = 'MT5 Derived';
-                break;
-            case 'all':
-                account_title = localize('MT5 SwapFree');
-                break;
-            case 'financial':
-                account_title = localize('MT5 Financial');
-                break;
-            default:
-                account_title = '';
-                break;
-        }
-
-        return account_title;
-    };
-
     const getWalletHeader = (account_type: { category: string; type: string }) => {
         return (
             <React.Fragment>
@@ -415,12 +398,12 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const cfd_details = {
         account_title: getWalletAccountTitle(account_type.type),
+        app_icon: getWalletAppIcon(account_type.type),
+        balance: newly_created_mt5_account?.display_balance,
         currency: active_wallet?.currency,
         gradient_header_class: active_wallet?.gradient_header_class,
         icon: active_wallet?.icon,
         is_demo: active_wallet?.is_demo,
-        type: account_type.type,
-        balance: newly_created_mt5_account?.display_balance,
     };
 
     return (

@@ -2,9 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
-import { HintBox, Icon, Input, Text } from '@deriv/components';
+import { HintBox, Input, Text } from '@deriv/components';
+import { useP2PAdvertiserPaymentMethods , useExchangeRate } from '@deriv/hooks';
 import { getDecimalPlaces, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
-import { useExchangeRate } from '@deriv/hooks';
 import { reaction } from 'mobx';
 import { observer, Observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
@@ -16,6 +16,7 @@ import { floatingPointValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
 import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import PaymentMethodIcon from 'Components/payment-method-icon';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
@@ -23,6 +24,7 @@ const BuySellForm = props => {
     const [selected_methods, setSelectedMethods] = React.useState([]);
     buy_sell_store.setFormProps(props);
     const { showModal } = useModalManagerContext();
+    const { data: p2p_advertiser_payment_methods } = useP2PAdvertiserPaymentMethods();
 
     const { setPageFooterParent } = props;
     const {
@@ -118,16 +120,16 @@ const BuySellForm = props => {
 
     const onClickPaymentMethodCard = payment_method => {
         if (!should_disable_field) {
-            if (!buy_sell_store.payment_method_ids.includes(payment_method.ID)) {
+            if (!buy_sell_store.payment_method_ids.includes(payment_method.id)) {
                 if (buy_sell_store.payment_method_ids.length < 3) {
-                    buy_sell_store.payment_method_ids.push(payment_method.ID);
-                    setSelectedMethods([...selected_methods, payment_method.ID]);
+                    buy_sell_store.payment_method_ids.push(payment_method.id);
+                    setSelectedMethods([...selected_methods, payment_method.id]);
                 }
             } else {
                 buy_sell_store.payment_method_ids = buy_sell_store.payment_method_ids.filter(
-                    payment_method_id => payment_method_id !== payment_method.ID
+                    payment_method_id => payment_method_id !== payment_method.id
                 );
-                setSelectedMethods(selected_methods.filter(i => i !== payment_method.ID));
+                setSelectedMethods(selected_methods.filter(i => i !== payment_method.id));
             }
         }
     };
@@ -217,37 +219,17 @@ const BuySellForm = props => {
                                         </Text>
                                     )}
                                     {payment_method_names &&
-                                        payment_method_names.map((payment_method, key) => {
-                                            const method = payment_method.replace(/\s|-/gm, '');
-
-                                            if (method === 'BankTransfer' || method === 'Other') {
-                                                return (
-                                                    <div className='buy-sell__modal-payment-method--row' key={key}>
-                                                        <Icon
-                                                            className='buy-sell__modal-payment-method--icon'
-                                                            icon={`IcCashier${method}`}
-                                                            size={16}
-                                                        />
-                                                        <Text as='p' color='general' line_height='m' size='xs'>
-                                                            {payment_method}
-                                                        </Text>
-                                                    </div>
-                                                );
-                                            }
-
-                                            return (
-                                                <div className='buy-sell__modal-payment-method--row' key={key}>
-                                                    <Icon
-                                                        className='buy-sell__modal-payment-method--icon'
-                                                        icon='IcCashierEwallet'
-                                                        size={16}
-                                                    />
-                                                    <Text as='p' color='general' line_height='m' size='xs'>
-                                                        {payment_method}
-                                                    </Text>
-                                                </div>
-                                            );
-                                        })}
+                                        payment_method_names.map((payment_method, key) => (
+                                            <div className='buy-sell__modal-payment-method--row' key={key}>
+                                                <PaymentMethodIcon
+                                                    className='buy-sell__modal-payment-method--icon'
+                                                    display_name={payment_method}
+                                                />
+                                                <Text as='p' color='general' line_height='m' size='xs'>
+                                                    {payment_method}
+                                                </Text>
+                                            </div>
+                                        ))}
                                 </div>
                                 <div className='buy-sell__modal-field-wrapper'>
                                     <div className='buy-sell__modal-field'>
@@ -300,17 +282,17 @@ const BuySellForm = props => {
                                                         {payment_method_names
                                                             ?.map((add_payment_method, key) => {
                                                                 const {
-                                                                    advertiser_payment_methods_list,
                                                                     setSelectedPaymentMethodDisplayName,
                                                                     setShouldShowAddPaymentMethodForm,
                                                                 } = my_profile_store;
                                                                 const matching_payment_methods =
-                                                                    advertiser_payment_methods_list.filter(
+                                                                    p2p_advertiser_payment_methods?.filter(
                                                                         advertiser_payment_method =>
                                                                             advertiser_payment_method.display_name ===
                                                                             add_payment_method
                                                                     );
-                                                                return matching_payment_methods.length > 0 ? (
+
+                                                                return matching_payment_methods?.length > 0 ? (
                                                                     matching_payment_methods.map(payment_method => (
                                                                         <PaymentMethodCard
                                                                             is_vertical_ellipsis_visible={false}
@@ -325,7 +307,7 @@ const BuySellForm = props => {
                                                                             payment_method={payment_method}
                                                                             style={
                                                                                 selected_methods.includes(
-                                                                                    payment_method.ID
+                                                                                    payment_method.id
                                                                                 )
                                                                                     ? style
                                                                                     : {}

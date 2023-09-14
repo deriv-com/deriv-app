@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Checkbox, Modal, Text, StaticUrl } from '@deriv/components';
+import { Button, Checkbox, Modal, Text, StaticUrl, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import getMigrationModalDetails from '../../Constants/mt5-migration-modal-content';
 
@@ -33,9 +33,10 @@ const MT5MigrationBackSideContent = ({
                                         {item.title}
                                     </Text>
                                     {item.description.map((desc, idx) => (
-                                        <Text key={idx} as='div' size='xs'>
-                                            {desc}
-                                        </Text>
+                                        <div key={idx}>
+                                            <Icon icon='IcGreenArrowCheck' height={16} width={16} />
+                                            <Text size='xs'>{desc}</Text>
+                                        </div>
                                     ))}
                                 </div>
                             </div>
@@ -57,7 +58,6 @@ const MT5MigrationBackSideContent = ({
                                     />
                                 </Text>
                             }
-                            defaultChecked={!!is_checked}
                         />
                     </div>
                 </div>

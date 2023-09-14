@@ -9,9 +9,10 @@ type TDownloadProps = {
 };
 
 const Download = observer(({ tab }: TDownloadProps) => {
-    const { download, run_panel } = useDBotStore();
+    const { download, run_panel, transactions } = useDBotStore();
     const { is_clear_stat_disabled } = run_panel;
     const { onClickDownloadTransaction, onClickDownloadJournal } = download;
+    const { elements } = transactions;
 
     let clickFunction, popover_message;
     if (tab === 'transactions') {
@@ -27,14 +28,18 @@ const Download = observer(({ tab }: TDownloadProps) => {
             classNameBubble='run-panel__info--bubble'
             alignment='bottom'
             message={popover_message}
-            zIndex={5}
+            zIndex='5'
         >
             <Button
                 id='download-button'
-                is_disabled={is_clear_stat_disabled}
+                is_disabled={!elements.length}
                 className='download__button'
                 icon={
-                    <Icon icon='IcDownload' color={is_clear_stat_disabled && 'disabled'} className='download__icon' />
+                    <Icon
+                        icon='IcDownload'
+                        color={is_clear_stat_disabled ? 'disabled' : undefined}
+                        className='download__icon'
+                    />
                 }
                 onClick={clickFunction}
             />

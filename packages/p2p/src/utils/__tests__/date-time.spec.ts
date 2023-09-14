@@ -1,22 +1,22 @@
 import { getFormattedDateString, convertToMillis, getDateAfterHours, millisecondsToTimer } from '../date-time';
 
 describe('getFormattedDateString', () => {
-    const date = new Date('2/2/2022 00:00:00');
+    const date = new Date('2/2/2022 12:00:00');
 
     it('should return the date in the format "DD MMM YYYY, HH:mm"', () => {
-        expect(getFormattedDateString(date)).toEqual('01 Feb 2022, 16:00');
+        expect(getFormattedDateString(date)).toEqual('02 Feb 2022, 04:00');
     });
 
     it('should return the date in the format "DD MMM YYYY, HH:mm:ss"', () => {
-        expect(getFormattedDateString(date, false, true)).toEqual('01 Feb 2022, 16:00:00');
+        expect(getFormattedDateString(date, false, true)).toEqual('02 Feb 2022, 04:00:00');
     });
 
     it('should return the date in the format "MMM DD YYYY, HH:mm" for local time', () => {
-        expect(getFormattedDateString(date, true)).toEqual('Feb 02 2022, 00:00');
+        expect(getFormattedDateString(date, true)).toEqual('Feb 02 2022, 12:00');
     });
 
     it('should return the date in the format "MMM DD YYYY, HH:mm:ss" for local time', () => {
-        expect(getFormattedDateString(date, true, true)).toEqual('Feb 02 2022, 00:00:00');
+        expect(getFormattedDateString(date, true, true)).toEqual('Feb 02 2022, 12:00:00');
     });
 });
 

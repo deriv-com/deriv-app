@@ -57,7 +57,7 @@ type TIdvFailed = {
     mismatch_status: TIDVErrorStatus;
     residence_list: ResidenceList;
     latest_status: DeepRequired<GetAccountStatus>['authentication']['attempts']['latest'];
-    chosen_country?: ResidenceList[0];
+    selected_country?: ResidenceList[0];
 };
 
 type TIDVFailureConfig = {
@@ -77,7 +77,7 @@ const IdvFailed = ({
     handleSubmit,
     mismatch_status = idv_error_statuses.poi_failed,
     latest_status,
-    chosen_country,
+    selected_country,
 }: TIdvFailed) => {
     const [idv_failure, setIdvFailure] = React.useState<TIDVFailureConfig>({
         required_fields: [],
@@ -98,20 +98,24 @@ const IdvFailed = ({
         [mismatch_status]
     );
 
-    const selected_country = React.useMemo(
+    /**
+     * If user needs to resubmit IDV document, the country should be the new selected country
+     * If user needs to update Personal info, the country should be the country of the latest status
+     */
+    const chosen_country = React.useMemo(
         () =>
             is_document_upload_required
-                ? chosen_country ?? {}
+                ? selected_country ?? {}
                 : residence_list.find(residence_data => residence_data.value === latest_status?.country_code) ?? {},
-        [chosen_country, is_document_upload_required, latest_status?.country_code, residence_list]
+        [selected_country, is_document_upload_required, latest_status?.country_code, residence_list]
     );
 
     const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
 
     const generateIDVError = React.useCallback(() => {
         const document_name = is_document_upload_required
-            ? getPropertyValue(selected_country, ['identity', 'services', 'idv', 'documents_supported'])
-            : getIDVDocumentType(latest_status, selected_country);
+            ? getPropertyValue(chosen_country, ['identity', 'services', 'idv', 'documents_supported'])
+            : getIDVDocumentType(latest_status, chosen_country);
         switch (mismatch_status) {
             case idv_error_statuses.poi_name_dob_mismatch:
                 return {
@@ -191,7 +195,7 @@ const IdvFailed = ({
                     ),
                 };
         }
-    }, [latest_status, mismatch_status, selected_country]);
+    }, [latest_status, mismatch_status, chosen_country]);
 
     React.useEffect(() => {
         const initializeFormValues = async (required_fields: string[]) => {
@@ -257,7 +261,7 @@ const IdvFailed = ({
                 identity_verification_document_add: 1,
                 document_number,
                 document_type: document_type?.id,
-                issuing_country: selected_country.value,
+                issuing_country: chosen_country.value,
             };
 
             if (!submit_data.document_type || submit_data.document_type === IDV_NOT_APPLICABLE_OPTION.id) {
@@ -356,7 +360,7 @@ const IdvFailed = ({
                                 </Text>
                                 <FormSubHeader title={localize('Identity verification')} />
                                 <IDVForm
-                                    selected_country={selected_country}
+                                    selected_country={chosen_country}
                                     hide_hint={true}
                                     class_name='idv-layout idv-resubmit'
                                 />

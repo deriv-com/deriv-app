@@ -25,7 +25,7 @@ type TMessageCodeToMessageMapper = {
 };
 
 const message_code_to_message_mapper: TMessageCodeToMessageMapper = {
-    WalletToTradingAppDailyLimit: value =>
+    WalletAndTradingAppDailyLimit: value =>
         localize(
             'The{{remaining}} daily transfer limit between your {{wallet_name}} and {{trading_account_name}} is {{limit_value}} {{currency}}.',
             {
@@ -36,7 +36,7 @@ const message_code_to_message_mapper: TMessageCodeToMessageMapper = {
                 currency: value.currency,
             }
         ),
-    DemoWalletToTradingAppDailyLimit: (value: TMessageMapperParams) =>
+    DemoWalletAndTradingAppDailyLimit: (value: TMessageMapperParams) =>
         localize('Your{{remaining}} daily transfer limit for virtual funds is {{limit_value}} {{currency}}.', {
             remaining: !value.is_first_transfer ? ' remaining' : '',
             wallet_name: value.from_name,

@@ -1,5 +1,5 @@
 import { GetSettings, ResidenceList } from '@deriv/api-types';
-import { getUnsupportedContracts } from '../constants';
+import { STATUS_CODES, getUnsupportedContracts } from '../constants';
 import { getSymbolDisplayName, TActiveSymbols } from './active-symbols';
 import { getMarketInformation } from './market-underlying';
 import { TContractInfo } from '../contract';
@@ -47,13 +47,16 @@ export type TIDVErrorStatus = typeof idv_error_statuses[keyof typeof idv_error_s
 
 //formatIDVError is parsing errors messages from BE (strings) and returns error codes for using it on FE
 export const formatIDVError = (errors: string[], status_code: string) => {
-    if (errors.length === 0 && status_code === 'none') return null;
+    /**
+     * Check required incase of DIEL client
+     */
+    if (errors.length === 0 && [STATUS_CODES.NONE, STATUS_CODES.VERIFIED].includes(status_code)) return null;
     const error_keys: Record<string, TIDVErrorStatus> = {
         name: 'POI_NAME_MISMATCH',
         birth: 'POI_DOB_MISMATCH',
         rejected: 'POI_FAILED',
     };
-    if (status_code === 'expired') {
+    if (status_code === STATUS_CODES.EXPIRED) {
         return 'POI_EXPIRED';
     }
     const status: TIDVErrorStatus[] = [];

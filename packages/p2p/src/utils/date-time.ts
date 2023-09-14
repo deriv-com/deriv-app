@@ -57,7 +57,7 @@ const toDoubleDigits = (number: number): string => number.toString().padStart(2,
  * @param {Number} distance - The distance in milliseconds.
  * @returns {String} The timer string.
  */
-export const secondsToTimer = (distance: number): string => {
+export const millisecondsToTimer = (distance: number): string => {
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);

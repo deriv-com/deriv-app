@@ -3,7 +3,7 @@ import { useStore, observer } from '@deriv/stores';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
-import { secondsToTimer } from 'Utils/date-time';
+import { millisecondsToTimer } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import ServerTime from 'Utils/server-time';
 import { useStores } from 'Stores';
@@ -31,7 +31,7 @@ const OrderRow = ({ row: order }) => {
         const distance = ServerTime.getDistanceToServerTime(time);
         return {
             distance,
-            label: distance < 0 ? localize('expired') : secondsToTimer(distance),
+            label: distance < 0 ? localize('expired') : millisecondsToTimer(distance),
         };
     };
     const { general_store, order_store, sendbird_store } = useStores();

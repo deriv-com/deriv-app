@@ -7,7 +7,7 @@ type TWalletsAddMoreCard = NonNullable<ReturnType<typeof useAvailableWallets>['d
 
 const WalletsAddMoreCard = ({ currency, is_added, landing_company_name }: TWalletsAddMoreCard) => {
     return (
-        <div className='wallets-add-more__card' key={currency}>
+        <div className='wallets-add-more__card'>
             <WalletsAddMoreCardBanner is_added={is_added} landing_company_name={landing_company_name ?? ''} />
             <WalletsAddMoreCardContent currency={currency ?? ''} />
         </div>

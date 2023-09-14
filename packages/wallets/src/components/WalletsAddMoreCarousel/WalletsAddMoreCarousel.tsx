@@ -47,15 +47,17 @@ const WalletsAddMoreCarousel = () => {
                     onMouseLeave={() => !is_mobile && setIsHovered(false)}
                 >
                     <div className='wallets-add-more__carousel-wrapper'>
-                        {available_wallets?.map(item => (
-                            <React.Fragment key={item.currency}>
+                        {available_wallets?.map(item => {
+                            const { currency, is_added, landing_company_name } = item;
+                            return (
                                 <WalletsAddMoreCard
-                                    currency={item.currency}
-                                    is_added={item.is_added}
-                                    landing_company_name={item.landing_company_name}
+                                    key={`${currency}${landing_company_name}`}
+                                    currency={currency}
+                                    is_added={is_added}
+                                    landing_company_name={landing_company_name}
                                 />
-                            </React.Fragment>
-                        ))}
+                            );
+                        })}
                     </div>
                     {!is_mobile && is_hovered && (
                         <React.Fragment>

@@ -68,6 +68,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
 
     const handleInit = () => {
         setPreviewedStrategyId(workspace?.id);
+        // Fires for desktop
         if (active_tab === 0) {
             previewRecentStrategy(workspace.id);
         }
@@ -75,6 +76,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
 
     const handlePreviewList = () => {
         setPreviewedStrategyId(workspace.id);
+        // Fires for mobile on clicking preview button
         if (is_mobile) {
             setPreviewOnDialog(true);
             const dashboard_tab_dom_element = document.getElementsByClassName('tab__dashboard')?.[0];

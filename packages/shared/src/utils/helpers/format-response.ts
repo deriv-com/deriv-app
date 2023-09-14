@@ -50,7 +50,8 @@ export const formatIDVError = (errors: string[], status_code: string) => {
     /**
      * Check required incase of DIEL client
      */
-    if (errors.length === 0 && [STATUS_CODES.NONE, STATUS_CODES.VERIFIED].includes(status_code)) return null;
+    if (errors.length === 0 && (status_code === STATUS_CODES.NONE || status_code === STATUS_CODES.VERIFIED))
+        return null;
     const error_keys: Record<string, TIDVErrorStatus> = {
         name: 'POI_NAME_MISMATCH',
         birth: 'POI_DOB_MISMATCH',

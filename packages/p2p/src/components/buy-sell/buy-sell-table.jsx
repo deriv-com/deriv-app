@@ -32,7 +32,7 @@ const BuySellTable = ({ onScroll }) => {
         client: { currency },
     } = useStore();
 
-    const { rendered_adverts, has_more_items_to_load, loadMore, isLoading, error } = useP2PRenderedAdverts();
+    const { error, has_more_items_to_load, isLoading, isError, loadMore, rendered_adverts } = useP2PRenderedAdverts();
 
     React.useEffect(
         () => {
@@ -51,7 +51,7 @@ const BuySellTable = ({ onScroll }) => {
         return <Loading is_fullscreen={false} />;
     }
 
-    if (error) {
+    if (isError) {
         return <TableError message={error.message} />;
     }
 

@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { DynamicLeverageContext } from '../../dynamic-leverage/dynamic-leverage-context';
 import JurisdictionModalTitle from '../jurisdiction-modal-title';
-import { TCFDsPlatformType } from 'Components/props.types';
 
 type TMockProps = {
     is_dynamic_leverage_visible: boolean;

@@ -31,7 +31,7 @@ const CompareCFDs = observer(() => {
     // Check if dxtrade data is available
     const has_dxtrade_account_available = available_dxtrade_accounts.length > 0;
 
-    const has_ctrader_account_available = is_demo && available_ctrader_accounts.length > 0;
+    const has_ctrader_account_available = available_ctrader_accounts.length > 0;
 
     const sorted_cfd_available_eu_accounts =
         is_eu_user && sorted_available_accounts.length ? [...sorted_available_accounts] : [];
@@ -119,7 +119,7 @@ const CompareCFDs = observer(() => {
                                     />
                                 )}
                                 {/* Renders cTrader data */}
-                                {all_cfd_available_accounts.length > 0 && has_ctrader_account_available && (
+                                {all_cfd_available_accounts.length > 0 && has_ctrader_account_available && false && (
                                     <CFDCompareAccountsCard
                                         trading_platforms={ctrader_data}
                                         is_eu_user={is_eu_user}

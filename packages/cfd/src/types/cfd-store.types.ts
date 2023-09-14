@@ -15,7 +15,7 @@ export type TCFDStore = {
     setMT5TradeAccount: <T>(arg: T) => void;
     toggleCFDVerificationModal: () => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
-    setAccountType: (account_type: { category: string; type?: string }) => void;
+    setAccountType: (account_type: { category: 'real' | 'demo'; type?: 'synthetic' | 'financial' | 'all' }) => void;
     dxtrade_tokens: {
         demo: string;
         real: string;

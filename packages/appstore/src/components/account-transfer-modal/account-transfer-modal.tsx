@@ -16,6 +16,7 @@ const AccountTransferModal = observer(({ is_modal_open, toggleModal }: TAccountT
         modules: {
             cashier: {
                 account_transfer: { is_transfer_confirm, should_switch_account, setShouldSwitchAccount },
+                general_store: { setActiveTab },
             },
         },
         traders_hub: { closeModal, setSelectedAccount },
@@ -24,13 +25,18 @@ const AccountTransferModal = observer(({ is_modal_open, toggleModal }: TAccountT
     const history = useHistory();
 
     React.useEffect(() => {
+        if (is_modal_open) setActiveTab('account_transfer');
+
         return () => {
-            setShouldSwitchAccount(false);
-            setSelectedAccount({});
-            closeModal();
+            if (is_modal_open) {
+                setShouldSwitchAccount(false);
+                setSelectedAccount({});
+                setActiveTab('deposit');
+                closeModal();
+            }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [is_modal_open]);
 
     const modal_title = !is_transfer_confirm && <Localize i18n_default_text={'Transfer funds to your accounts'} />;
 

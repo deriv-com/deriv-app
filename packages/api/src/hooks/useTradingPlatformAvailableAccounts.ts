@@ -1,13 +1,10 @@
 import { useMemo } from 'react';
-import useAuthorize from './useAuthorize';
 import useFetch from '../useFetch';
 
 /** @description This hook is used to get all the available MT5 accounts. */
 const useTradingPlatformAvailableAccounts = () => {
-    const { isSuccess } = useAuthorize();
     const { data: mt5_available_accounts, ...rest } = useFetch('trading_platform_available_accounts', {
         payload: { platform: 'mt5' },
-        options: { enabled: isSuccess },
     });
 
     const modified_mt5_available_accounts = useMemo(

@@ -6,6 +6,14 @@ type TProps = {
 };
 
 const WalletListCardBadge: React.FC<TProps> = ({ label }) => {
+    if (label === 'virtual') {
+        return (
+            <div className='wallets-list-card__badge__virtual'>
+                <p>Demo</p>
+            </div>
+        );
+    }
+
     return (
         <div className='wallets-list-card__badge'>
             <div className='wallets-list-card__name'>

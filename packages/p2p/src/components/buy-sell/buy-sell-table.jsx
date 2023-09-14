@@ -55,7 +55,10 @@ const BuySellTable = ({ onScroll }) => {
         return <TableError message={error.message} />;
     }
 
-    if (rendered_adverts.length) {
+    // Need to cater for the extra element added to the list for mobile i.e. the "WATCH_THIS_SPACE".
+    // Otherwise, the "No ads for this currency" message won't be displayed for mobile, when there are no ads for the selected currency.
+    const rendered_adverts_count = isDesktop() ? rendered_adverts.length : rendered_adverts.length - 1;
+    if (rendered_adverts_count > 0) {
         return (
             <>
                 <Table className='buy-sell__table'>

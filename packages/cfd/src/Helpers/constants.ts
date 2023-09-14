@@ -43,7 +43,7 @@ const getTitle = (market_type: string, is_eu_user: boolean) => {
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
-const DERIVEZ_URL = 'https://dqwsqxuu0r6t9.cloudfront.net/';
+const DERIVEZ_URL = 'https://dqwsqxuu0r6t9.cloudfront.net/?lang=en&token=#/';
 const DERIVEZ_IOS_APP_URL = 'https://apps.apple.com/my/app/deriv-go/id1550561298';
 const DERIVEZ_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.app&pli=1';
 const DERIVEZ_HUAWEI_APP_URL = 'https://appgallery.huawei.com/#/app/C103801913';

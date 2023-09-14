@@ -439,12 +439,14 @@
         }
     }
 
-    &__dxtrade-button {
+    &__web-terminal-button {
         display: flex;
         background: var(--brand-dark-grey);
         align-items: center;
         text-decoration: none;
         border-radius: $BORDER_RADIUS;
+        padding: 0 0.5rem;
+        cursor: pointer;
 
         &-text {
             padding: 0.5rem;

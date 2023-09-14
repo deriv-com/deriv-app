@@ -1,22 +1,15 @@
 import React from 'react';
 import { QRCode } from 'react-qrcode';
 import { TCFDsPlatformType } from 'Components/props.types';
-import {
-    getDXTradeWebTerminalLink,
-    getDerivEzWebTerminalLink,
-    platformsText,
-    platformsIcons,
-    mobileDownloadLink,
-} from './constants';
+import { getDXTradeWebTerminalLink, platformsText, platformsIcons } from './constants';
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { isMobile, OSDetect, isDesktopOs } from '@deriv/shared';
+import { isMobile, routes } from '@deriv/shared';
 import { TCFDDashboardContainer } from 'Containers/props.types';
+import { useHistory } from 'react-router-dom';
 
 export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
     const qr_code_width = isMobile() ? '100%' : '80%';
-    const os = OSDetect();
-    const checkForDesktop = isDesktopOs() ? (os === 'mac' ? 'ios' : 'android') : os;
 
     return (
         <React.Fragment>
@@ -38,52 +31,51 @@ export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
 type TPlatformsDesktopDownload = {
     platform: TCFDsPlatformType;
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
-    derivez_tokens: TCFDDashboardContainer['derivez_tokens'];
     is_demo: string;
 };
 
-export const PlatformsDesktopDownload = ({
-    platform,
-    dxtrade_tokens,
-    derivez_tokens,
-    is_demo,
-}: TPlatformsDesktopDownload) => {
-    const PlatformsDesktopDownloadLinks = () => {
-        switch (platform) {
-            case 'derivez':
-                return getDerivEzWebTerminalLink(
-                    is_demo ? 'demo' : 'real',
-                    derivez_tokens && derivez_tokens[is_demo ? 'demo' : 'real']
-                );
-            case 'dxtrade':
-                return getDXTradeWebTerminalLink(
-                    is_demo ? 'demo' : 'real',
-                    dxtrade_tokens && dxtrade_tokens[is_demo ? 'demo' : 'real']
-                );
-            default:
-                return '';
-        }
-    };
+export const PlatformsDesktopDownload = ({ platform, dxtrade_tokens, is_demo }: TPlatformsDesktopDownload) => {
+    const history = useHistory();
 
-    return (
+    const getIconAndText = () => (
         <React.Fragment>
-            <a
-                className='cfd-trade-modal__dxtrade-button'
-                href={PlatformsDesktopDownloadLinks()}
-                target='_blank'
-                rel='noopener noreferrer'
-            >
-                <Icon
-                    className='cfd-trade-modal__dxtrade-button-icon'
-                    icon={`IcBrand${platformsIcons(platform)}Wordmark`}
-                    size={36}
-                />
-                <div className='cfd-trade-modal__dxtrade-button-text'>
-                    <Text color='colored-background' size='xxs' weight='bold'>
-                        <Localize i18n_default_text='Web terminal' />
-                    </Text>
-                </div>
-            </a>
+            <Icon
+                className='cfd-trade-modal__dxtrade-button-icon'
+                icon={`IcBrand${platformsIcons(platform)}Wordmark`}
+                size={36}
+            />
+            <div className='cfd-trade-modal__dxtrade-button-text'>
+                <Text color='colored-background' size='xxs' weight='bold'>
+                    <Localize i18n_default_text='Web terminal' />
+                </Text>
+            </div>
         </React.Fragment>
     );
+
+    const derivxWebTerminal = () => (
+        <a
+            className='cfd-trade-modal__web-terminal-button'
+            href={getDXTradeWebTerminalLink(
+                is_demo ? 'demo' : 'real',
+                dxtrade_tokens && dxtrade_tokens[is_demo ? 'demo' : 'real']
+            )}
+            target='_blank'
+            rel='noopener noreferrer'
+        >
+            {getIconAndText()}
+        </a>
+    );
+
+    const derivezWebTerminal = () => (
+        <div className='cfd-trade-modal__web-terminal-button' onClick={() => history.push(routes.derivez)}>
+            {getIconAndText()}
+        </div>
+    );
+
+    switch (platform) {
+        case 'dxtrade':
+            return derivxWebTerminal();
+        default:
+            return derivezWebTerminal();
+    }
 };

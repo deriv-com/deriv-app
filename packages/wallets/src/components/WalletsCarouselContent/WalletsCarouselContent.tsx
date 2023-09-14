@@ -3,7 +3,6 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { useWalletAccountsList } from '@deriv/api';
 import { ProgressBar } from '../ProgressBar';
 import { WalletCard } from '../WalletCard';
-import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletListCardIActions } from '../WalletListCardIActions';
 import './WalletsCarouselContent.scss';
 

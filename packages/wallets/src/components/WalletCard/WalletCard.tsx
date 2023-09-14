@@ -10,12 +10,13 @@ type TProps = {
 };
 
 const WalletCard: React.FC<TProps> = ({ account }) => {
-    const { currency, display_balance, is_virtual, landing_company_name, wallet_currency_type } = account || {};
+    const { currency, currency_config, display_balance, is_virtual, landing_company_name, wallet_currency_type } =
+        account || {};
     return (
         <div className='wallets-card'>
             <WalletGradientBackground
                 is_demo={is_virtual}
-                currency={currency || 'USD'}
+                currency={currency_config?.display_code || 'USD'}
                 type='card'
                 device='mobile'
                 has_shine

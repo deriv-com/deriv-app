@@ -7,19 +7,6 @@
         gap: 4px;
         border-radius: 2px;
         border: 1px solid var(--system-light-1-prominent-text, #333);
-
-        &__virtual {
-            display: flex;
-            padding: 4px;
-            justify-content: center;
-            align-items: center;
-            gap: 4px;
-            border-radius: 2px;
-            color: #ffffff;
-            font-weight: 700;
-            background: var(--status-light-information, #377cfc);
-            border: none;
-        }
     }
     &__name {
         color: var(--system-light-1-prominent-text, #333);

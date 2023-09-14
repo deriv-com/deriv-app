@@ -11,9 +11,9 @@ export default class JournalStore {
     constructor(root_store, core) {
         makeObservable(this, {
             is_filter_dialog_visible: observable,
-            journal_filters: observable,
+            journal_filters: observable.shallow,
             filters: observable.shallow,
-            unfiltered_messages: observable,
+            unfiltered_messages: observable.shallow,
             toggleFilterDialog: action.bound,
             onLogSuccess: action.bound,
             onError: action.bound,
@@ -38,7 +38,9 @@ export default class JournalStore {
     }
 
     JOURNAL_CACHE = 'journal_cache';
+
     is_filter_dialog_visible = false;
+
     filters = [
         { id: message_types.ERROR, label: localize('Errors') },
         { id: message_types.NOTIFY, label: localize('Notifications') },

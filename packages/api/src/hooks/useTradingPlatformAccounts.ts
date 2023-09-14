@@ -1,13 +1,17 @@
 import { useMemo } from 'react';
+import useAuthorize from './useAuthorize';
 import useFetch from '../useFetch';
 
 /** A custom hook that gets the list of created other CFD accounts. */
 const useTradingPlatformAccounts = () => {
+    const { isSuccess } = useAuthorize();
     const { data: derivez_accounts, ...derivez_rest } = useFetch('trading_platform_accounts', {
         payload: { platform: 'derivez' },
+        options: { enabled: isSuccess },
     });
     const { data: dxtrade_accounts, ...dxtrade_rest } = useFetch('trading_platform_accounts', {
         payload: { platform: 'dxtrade' },
+        options: { enabled: isSuccess },
     });
 
     /** Adding neccesary properties to derivez accounts */

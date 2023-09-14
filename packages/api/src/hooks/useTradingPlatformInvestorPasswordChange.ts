@@ -9,7 +9,6 @@ type TPayload = Parameters<
 const useTradingPlatformInvestorPasswordChange = () => {
     const { mutate: _mutate, ...rest } = useRequest('trading_platform_investor_password_change');
 
-    /**  @param payload - The payload to be sent to the server */
     const mutate = useCallback((payload: TPayload) => _mutate({ payload }), [_mutate]);
 
     return {

@@ -7,7 +7,7 @@ jest.mock('App/Components/Elements/ContentLoader', () => ({
     TradeParamsLoader: jest.fn(() => 'MockedLoader'),
 }));
 jest.mock('../../../Containers/contract-type.jsx', () => jest.fn(() => 'MockedContractType'));
-jest.mock('../../../Containers/purchase.jsx', () => jest.fn(() => 'MockedPurchase'));
+jest.mock('../../../Containers/purchase', () => jest.fn(() => 'MockedPurchase'));
 jest.mock('../../../Containers/trade-params.jsx', () => jest.fn(() => 'MockedTradeParams'));
 
 const mock_props = {
@@ -21,9 +21,8 @@ describe('ScreenLarge', () => {
 
         expect(screen.getByText('MockedLoader')).toBeInTheDocument();
     });
-    it('should render ContractType, TradeParams and Purchase component if is_market_closed is true', () => {
-        mock_props.is_trade_enabled = true;
-        render(<ScreenLarge {...mock_props} />);
+    it('should render ContractType, TradeParams and Purchase component if is_trade_enabled is true', () => {
+        render(<ScreenLarge is_trade_enabled />);
 
         expect(screen.getByText('MockedContractType')).toBeInTheDocument();
         expect(screen.getByText('MockedPurchase')).toBeInTheDocument();

@@ -14,7 +14,7 @@ jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isMobile: jest.fn(() => false),
 }));
-jest.mock('../screen-large.jsx', () => jest.fn(() => 'ScreenLarge'));
+jest.mock('../screen-large', () => jest.fn(() => 'ScreenLarge'));
 
 describe('FormLayout', () => {
     it('should render the componet', () => {

@@ -11,6 +11,7 @@
     "include": [
         "src",
         "./@types/react-div-100vh/react-div-100vh-config.d.ts",
-        "../../utils.d.ts"
+        "./@types/@enykeev/react-virtualized/dist/es/AutoSizer.d.ts",
+        "./@types/react-drag-drawer/react-drag-drawer-config.d.ts"
     ]
 }

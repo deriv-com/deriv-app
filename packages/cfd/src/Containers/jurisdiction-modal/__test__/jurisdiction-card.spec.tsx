@@ -38,6 +38,7 @@ describe('JurisdictionCard', () => {
         account_type: 'financial' | 'synthetic';
         disabled: boolean;
         is_non_idv_design: boolean;
+        toggleDynamicLeverage: React.MouseEventHandler<HTMLSpanElement>;
         jurisdiction_selected_shortcode: string;
         setJurisdictionSelectedShortcode: jest.Mock;
         type_of_card: 'svg' | 'bvi' | 'labuan' | 'maltainvest' | 'vanuatu';
@@ -75,6 +76,7 @@ describe('JurisdictionCard', () => {
             account_type: 'financial',
             disabled: false,
             is_non_idv_design: false,
+            toggleDynamicLeverage: jest.fn(),
             jurisdiction_selected_shortcode: '',
             setJurisdictionSelectedShortcode: jest.fn(),
             swapfree_available_accounts: [],
@@ -185,7 +187,7 @@ describe('JurisdictionCard', () => {
         expect(screen.getByText('St. Vincent & Grenadines')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
         expect(screen.getByText('40+')).toBeInTheDocument();
-        expect(screen.getByText('Synthetics, Basket indices and Derived FX')).toBeInTheDocument();
+        expect(screen.getByText('Synthetics, Baskets and Derived FX')).toBeInTheDocument();
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:1000')).toBeInTheDocument();
         expect(screen.getByText('Verifications')).toBeInTheDocument();

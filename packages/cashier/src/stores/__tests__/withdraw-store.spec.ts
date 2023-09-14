@@ -283,11 +283,11 @@ describe('WithdrawStore', () => {
         const { percentageSelectorSelectionStatus } = withdraw_store.root_store.modules.cashier.general_store;
         const spyValidateWithdrawFromAmount = jest.spyOn(withdraw_store, 'validateWithdrawFromAmount');
 
-        withdraw_store.setWithdrawPercentageSelectorResult('100');
+        withdraw_store.setWithdrawPercentageSelectorResult('100', 1000);
         expect(setConverterFromAmount).toHaveBeenCalledWith('100');
         expect(spyValidateWithdrawFromAmount).toHaveBeenCalled();
 
-        withdraw_store.setWithdrawPercentageSelectorResult('0');
+        withdraw_store.setWithdrawPercentageSelectorResult('0', 0);
         expect(resetConverter).toHaveBeenCalled();
         expect(setIsTimerVisible).toHaveBeenCalledWith(false);
         expect(percentageSelectorSelectionStatus).toHaveBeenCalledWith(false);
@@ -327,9 +327,5 @@ describe('WithdrawStore', () => {
 
         withdraw_store.validateWithdrawToAmount();
         expect(setConverterToError).toHaveBeenCalledWith(error_message);
-    });
-
-    it('should get account_platform_icon', () => {
-        expect(withdraw_store.account_platform_icon).toBe('icon');
     });
 });

@@ -1,7 +1,7 @@
-import { computed, observable, action, runInAction, makeObservable } from 'mobx';
-import { localize } from '@deriv/translations';
+import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { ApiHelpers, config, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
+import { localize } from '@deriv/translations';
 import GTM from 'Utils/gtm';
 import { getSetting, storeSetting } from 'Utils/settings';
 import {
@@ -29,6 +29,8 @@ import {
     TTypeStrategy,
 } from '../components/dashboard/quick-strategy/quick-strategy.types';
 import RootStore from './root-store';
+
+const Blockly = window.Blockly;
 
 export default class QuickStrategyStore {
     root_store: RootStore;
@@ -333,8 +335,6 @@ export default class QuickStrategyStore {
 
         const { derivWorkspace: workspace } = Blockly;
 
-        load({ block_string: Blockly.Xml.domToText(strategy_dom), file_name, workspace, from: save_types.UNSAVED });
-
         if (button === 'run') {
             workspace
                 .waitForBlockEvent({
@@ -346,20 +346,33 @@ export default class QuickStrategyStore {
                     this.root_store.run_panel.onRunButtonClick();
                 });
         }
+
         if (this.is_strategy_modal_open) {
             this.loadDataStrategy();
         }
+
+        await load({
+            block_string: Blockly.Xml.domToText(strategy_dom),
+            file_name,
+            workspace,
+            from: save_types.UNSAVED,
+            drop_event: null,
+            strategy_id: null,
+            showIncompatibleStrategyDialog: null,
+        });
     }
 
     async updateSymbolDropdown() {
         const { active_symbols } = ApiHelpers.instance;
         const symbols = active_symbols.getAllSymbols(/* should_be_open */ true);
 
-        const symbol_options = symbols.map((symbol: TSymbol) => ({
-            group: symbol.submarket_display,
-            text: symbol.symbol_display,
-            value: symbol.symbol,
-        }));
+        const symbol_options = symbols
+            .filter((symbol: TSymbol) => symbol.submarket_display !== 'Crash/Boom Indices')
+            .map((symbol: TSymbol) => ({
+                group: symbol.submarket_display,
+                text: symbol.symbol_display,
+                value: symbol.symbol,
+            }));
 
         this.setSymbolDropdown(symbol_options);
 

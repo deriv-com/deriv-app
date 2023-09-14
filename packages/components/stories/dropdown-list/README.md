@@ -2,7 +2,6 @@
 
 A list of selectable items for a DropDown.
 
-
 #### Supported Gestures:
 
 -   Click
@@ -16,7 +15,7 @@ import DropdownList from 'deriv-components';
 
 const DummyComponent = props => (
     <DropdownList
-        ref={{ dropdown_ref }}
+        dropdown_refs={{ dropdown_ref }}
         is_visible={visibility}
         list_items={items}
         onItemSelection={selectItem}
@@ -26,20 +25,18 @@ const DummyComponent = props => (
 
 ## Props
 
-
-| Name              | Type         | Default     | Description                                                              |
-| ----------------- | ------------ | ----------- | ------------------------------------------------------------------------ |
-| is_visible        | {boolean}    | null        | Define the visibility of the DropdownList                                |
-| list_items        | [string] \| [object<text, value>]           | null        | List of the items                         |
-| onItemSelection   | {function}   | null        | Function returns the selected item                                       |
-| list_height       | {string}     | `220px`     | Height of the list                                                       |
-| active_index      | {number}     | null        | Index of the active index                                                |
-| setActiveIndex    | {function}   | null        | Function returns the active index when it changes                        |
-| style             | {object}     | null        | Style object for the main wrapper                                        |
-| ref               | {object}     | null        | `ref` for the main DropdownList and inner elements. An object of {dropdown_ref, list\_item\_ref, list\_wrapper\_ref} |
-| onScrollStop      | {function}   | null        | Function triggers when the user stops scrolling                          |
-| not\_found\_text  | {string}     | null        | For AutoComplete if the entered text is not found in the list of items  |
-
+| Name            | Type                              | Default | Description                                                                                                                |
+| --------------- | --------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------- |
+| is_visible      | {boolean}                         | null    | Define the visibility of the DropdownList                                                                                  |
+| list_items      | [string] \| [object<text, value>] | null    | List of the items                                                                                                          |
+| onItemSelection | {function}                        | null    | Function returns the selected item                                                                                         |
+| list_height     | {string}                          | `220px` | Height of the list                                                                                                         |
+| active_index    | {number}                          | null    | Index of the active index                                                                                                  |
+| setActiveIndex  | {function}                        | null    | Function returns the active index when it changes                                                                          |
+| style           | {object}                          | null    | Style object for the main wrapper                                                                                          |
+| dropdown_refs   | {object}                          | null    | `dropdown_refs` for the main DropdownList and inner elements. An object of {dropdown_ref, list_item_ref, list_wrapper_ref} |
+| onScrollStop    | {function}                        | null    | Function triggers when the user stops scrolling                                                                            |
+| not_found_text  | {string}                          | null    | For AutoComplete if the entered text is not found in the list of items                                                     |
 
 # Full example:
 
@@ -72,7 +69,7 @@ const DummyComponent = props => {
                 {selected || 'Choose from the list'}
             </div>
             <DropdownList
-                ref={{ dropdown_ref }}
+                dropdown_refs={{ dropdown_ref }}
                 active_index={2}
                 style={{ width: '240px', marginTop:'40px' }}
                 is_visible={visibility}

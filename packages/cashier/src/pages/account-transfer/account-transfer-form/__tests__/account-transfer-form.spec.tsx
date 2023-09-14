@@ -84,9 +84,6 @@ describe('<AccountTransferForm />', () => {
                     crypto_fiat_converter: {
                         resetConverter: jest.fn(),
                     },
-                    transaction_history: {
-                        onMount: jest.fn(),
-                    },
                 },
             },
             common: {
@@ -304,7 +301,7 @@ describe('<AccountTransferForm />', () => {
             },
             {
                 currency: 'USD',
-                platform_icon: 'IcDerivez',
+                platform_icon: 'IcRebrandingDerivEz',
                 is_mt: false,
                 is_dxtrade: false,
                 is_derivez: true,
@@ -318,7 +315,7 @@ describe('<AccountTransferForm />', () => {
                 is_dxtrade: true,
                 is_derivez: false,
                 is_crypto: false,
-                platform_icon: 'IcDeriv X',
+                platform_icon: 'IcRebrandingDeriv X',
                 text: 'Deriv X',
                 value: 'DXR1029',
             },
@@ -417,7 +414,7 @@ describe('<AccountTransferForm />', () => {
                     .mockReturnValue(100.0);
 
                 renderAccountTransferForm();
-                expect(screen.getByTestId('dt_account_platform_icon_IcDerivez')).toBeInTheDocument();
+                expect(screen.getByTestId('dt_account_platform_icon_IcRebrandingDerivEz')).toBeInTheDocument();
             });
 
             it('should check for MT5 icon when MT5 is selected in from_dropdown', () => {
@@ -439,7 +436,7 @@ describe('<AccountTransferForm />', () => {
                     .mockReturnValue(100.0);
 
                 renderAccountTransferForm();
-                expect(screen.getByTestId('dt_account_platform_icon_IcDeriv X')).toBeInTheDocument();
+                expect(screen.getByTestId('dt_account_platform_icon_IcRebrandingDeriv X')).toBeInTheDocument();
             });
         });
     });

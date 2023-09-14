@@ -1,12 +1,15 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { useHistory } from 'react-router-dom';
 import { Button, Icon, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import { routes } from '@deriv/shared';
 import './no-ads.scss';
 
 const NoAds = () => {
     const { buy_sell_store, general_store, my_ads_store } = useStores();
+    const history = useHistory();
 
     const is_default_currency = buy_sell_store.local_currencies.filter(
         currency =>
@@ -41,6 +44,7 @@ const NoAds = () => {
                                 general_store.handleTabClick(2);
                                 if (buy_sell_store.is_buy) buy_sell_store.setCreateSellAdFromNoAds(true);
                                 my_ads_store.setShowAdForm(true);
+                                history.push(routes.p2p_my_ads);
                             }
                         }}
                     >

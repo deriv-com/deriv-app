@@ -12,7 +12,7 @@
         "url": "git+https://github.com/binary-com/deriv-app.git"
     },
     "engines": {
-        "node": "^16.16.0"
+        "node": "18.x"
     },
     "scripts": {
         "start": "echo \"No start specified\"",
@@ -40,7 +40,7 @@
         "typescript": "^4.6.3"
     },
     "dependencies": {
-        "@deriv/api-types": "^1.0.94",
+        "@deriv/api-types": "^1.0.118",
         "@deriv/translations": "^1.0.0",
         "@types/js-cookie": "^3.0.1",
         "@types/react-loadable": "^5.5.6",

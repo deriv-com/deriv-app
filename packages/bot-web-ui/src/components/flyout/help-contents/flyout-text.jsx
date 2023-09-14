@@ -13,7 +13,7 @@ const FlyoutText = props => {
 };
 
 FlyoutText.propTypes = {
-    text: PropTypes.oneOfType(PropTypes.string, PropTypes.object),
+    text: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
 export default FlyoutText;

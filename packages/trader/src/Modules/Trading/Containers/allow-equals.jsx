@@ -1,9 +1,10 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { useTraderStore } from 'Stores/useTraderStores';
+import { observer } from '@deriv/stores';
 import React from 'react';
 import { Checkbox, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 
 const AllowEquals = ({ onChange, is_allow_equal, has_equals_only, className }) => {
     const handleOnChange = e => {
@@ -35,8 +36,12 @@ AllowEquals.propTypes = {
     onChange: PropTypes.func,
 };
 
-export default connect(({ modules }) => ({
-    is_allow_equal: !!modules.trade.is_equal,
-    has_equals_only: modules.trade.has_equals_only,
-    onChange: modules.trade.onChange,
-}))(AllowEquals);
+export default observer(() => {
+    const { is_equal, has_equals_only, onChange } = useTraderStore();
+    const allow_equals_props = {
+        is_allow_equal: !!is_equal,
+        has_equals_only,
+        onChange,
+    };
+    return <AllowEquals {...allow_equals_props} />;
+});

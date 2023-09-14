@@ -3,30 +3,33 @@ import { Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { TReactMouseEvent } from '../../types';
+import { useExchangeRate } from '@deriv/hooks';
 
 type TPercentageSelectorProps = {
     amount: number;
-    currency: string;
     from_account?: string;
-    getCalculatedAmount: (amount: string) => void;
+    getCalculatedAmount: (amount: string, converted_amount: number) => void;
     percentage: number;
     should_percentage_reset: boolean;
     to_account?: string;
+    from_currency: string;
+    to_currency: string;
 };
 
 type TCalculateAmountInputEvent = { target: { id: number } };
 
 const PercentageSelector = ({
     amount,
-    currency,
     from_account,
     getCalculatedAmount,
     percentage,
     should_percentage_reset,
     to_account,
+    from_currency,
+    to_currency,
 }: TPercentageSelectorProps) => {
     const [selected_percentage, setSelectedPercentage] = React.useState<number | string>('0');
-
+    const { getRate } = useExchangeRate();
     React.useEffect(() => {
         if (should_percentage_reset) {
             for (let i = 1; i <= 4; i++) {
@@ -48,11 +51,17 @@ const PercentageSelector = ({
 
     const calculateAmount = (e: TCalculateAmountInputEvent | TReactMouseEvent, percent: number) => {
         let new_percentage = percent;
-        const is_percentage_selected = percent > 0 && percent <= selected_percentage;
+        const is_percentage_selected = percent > 0 && percent <= Number(selected_percentage);
         if (is_percentage_selected) new_percentage -= 25;
 
         setSelectedPercentage(new_percentage || 0);
-        getCalculatedAmount((amount * (new_percentage / 100)).toFixed(getDecimalPlaces(currency)));
+        const from_rate = getRate(from_currency || '');
+        const to_rate = getRate(to_currency || '');
+        const converted_amount = (amount * (new_percentage / 100) * to_rate) / from_rate;
+        getCalculatedAmount(
+            (amount * (new_percentage / 100)).toFixed(getDecimalPlaces(from_currency)),
+            converted_amount
+        );
 
         for (let i = 1; i <= 4; i++) {
             const percentage_selector_block = document.getElementById(String(i));
@@ -68,8 +77,8 @@ const PercentageSelector = ({
             }
         }
     };
-    const format_amount = formatMoney(currency, amount, true);
-    const currency__display_code = getCurrencyDisplayCode(currency);
+    const format_amount = formatMoney(from_currency, amount, true);
+    const currency__display_code = getCurrencyDisplayCode(from_currency);
     return (
         <React.Fragment>
             <div className='percentage-selector' data-testid='dt_percentage_selector_id'>

@@ -3,7 +3,6 @@ import React from 'react';
 import { Collapsible } from '@deriv/components';
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
 import AllowEqualsMobile from 'Modules/Trading/Containers/allow-equals.jsx';
-import { connect } from 'Stores/connect';
 import {
     hasCallPutEqual,
     hasDurationForCallPutEqual,
@@ -18,14 +17,18 @@ import AccumulatorsInfoDisplay from 'Modules/Trading/Components/Form/TradeParams
 import { BarrierMobile, LastDigitMobile } from 'Modules/Trading/Containers/trade-params-mobile.jsx';
 import ContractType from 'Modules/Trading/Containers/contract-type.jsx';
 import MobileWidget from 'Modules/Trading/Components/Elements/mobile-widget.jsx';
-import Purchase from 'Modules/Trading/Containers/purchase.jsx';
+import Purchase from 'Modules/Trading/Containers/purchase';
 import RiskManagementInfo from 'Modules/Trading/Components/Elements/Multiplier/risk-management-info.jsx';
 import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit.jsx';
 import 'Sass/app/_common/mobile-widget.scss';
 import classNames from 'classnames';
 import AccumulatorsStats from 'Modules/Contract/Components/AccumulatorsStats';
 import Strike from 'Modules/Trading/Components/Form/TradeParams/strike.jsx';
-import VanillaTradeTypes from 'Modules/Trading/Components/Form/TradeParams/vanilla-trade-types.jsx';
+import BarrierSelector from 'Modules/Trading/Components/Form/TradeParams/Turbos/barrier-selector';
+import PayoutPerPointMobile from 'Modules/Trading/Components/Elements/payout-per-point-mobile';
+import TradeTypeTabs from 'Modules/Trading/Components/Form/TradeParams/trade-type-tabs';
+import { observer } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
 const CollapsibleTradeParams = ({
     form_components,
@@ -34,8 +37,9 @@ const CollapsibleTradeParams = ({
     previous_symbol,
     is_allow_equal,
     is_accumulator,
-    is_trade_params_expanded,
     is_multiplier,
+    is_trade_params_expanded,
+    is_turbos,
     is_vanilla,
     onChange,
     take_profit,
@@ -64,8 +68,8 @@ const CollapsibleTradeParams = ({
             <div className='trade-params__contract-type-container'>
                 <ContractType />
                 {is_multiplier && <MultiplierOptionsWidget />}
+                {isVisible('trade_type_tabs') && <TradeTypeTabs />}
                 {is_accumulator && <AccumulatorOptionsWidget />}
-                {is_vanilla && <VanillaTradeTypes />}
             </div>
             {isVisible('last_digit') && (
                 <div data-collapsible='true'>
@@ -77,6 +81,11 @@ const CollapsibleTradeParams = ({
                     <BarrierMobile />
                 </div>
             )}
+            {isVisible('barrier_selector') && (
+                <div data-collapsible='true'>
+                    <BarrierSelector />
+                </div>
+            )}
             {isVisible('strike') && (
                 <div data-collapsible='true'>
                     <Strike />
@@ -84,8 +93,12 @@ const CollapsibleTradeParams = ({
             )}
 
             {!is_accumulator && <MobileWidget is_collapsed={is_collapsed} toggleDigitsWidget={toggleDigitsWidget} />}
-            {has_allow_equals && <AllowEqualsMobile data-collapsible='true' />}
-            {is_multiplier && (
+            {has_allow_equals && (
+                <div data-collapsible='true'>
+                    <AllowEqualsMobile />
+                </div>
+            )}
+            {(is_multiplier || is_turbos) && (
                 <div data-collapsible='true'>
                     <RiskManagementInfo />
                 </div>
@@ -108,26 +121,56 @@ const CollapsibleTradeParams = ({
                     <AccumulatorsInfoDisplay />
                 </div>,
             ]}
-            {is_vanilla ? (
+            {(is_turbos || is_vanilla) && <PayoutPerPointMobile />}
+            <div
+                className={classNames({
+                    'purchase-container': !is_vanilla,
+                    [`purchase-container__${is_accumulator ? 'accumulator' : 'turbos'}`]: is_accumulator || is_turbos,
+                })}
+            >
                 <Purchase />
-            ) : (
-                <div className={`purchase-container${is_accumulator ? '--accumulator' : ''}`}>
-                    <Purchase />
-                </div>
-            )}
+            </div>
         </Collapsible>
     );
 };
 
-const ScreenSmall = ({
-    is_trade_enabled,
-    duration_unit,
-    contract_types_list,
-    contract_type,
-    expiry_type,
-    contract_start_type,
-    ...props
-}) => {
+const ScreenSmall = observer(({ is_trade_enabled }) => {
+    const trade_store = useTraderStore();
+    const {
+        is_accumulator,
+        is_multiplier,
+        is_turbos,
+        is_vanilla,
+        duration_unit,
+        contract_types_list,
+        contract_type,
+        expiry_type,
+        contract_start_type,
+        form_components,
+        has_take_profit,
+        onChange,
+        previous_symbol,
+        is_trade_params_expanded,
+        setIsTradeParamsExpanded,
+        take_profit,
+    } = trade_store;
+    const is_allow_equal = !!trade_store.is_equal;
+
+    const collapsible_trade_params_props = {
+        is_accumulator,
+        is_multiplier,
+        is_turbos,
+        is_vanilla,
+        form_components,
+        has_take_profit,
+        onChange,
+        previous_symbol,
+        is_trade_params_expanded,
+        setIsTradeParamsExpanded,
+        take_profit,
+        is_allow_equal,
+    };
+
     const has_callputequal_duration = hasDurationForCallPutEqual(
         contract_types_list,
         duration_unit,
@@ -143,34 +186,12 @@ const ScreenSmall = ({
             <TradeParamsLoader speed={2} />
         </div>
     ) : (
-        <CollapsibleTradeParams has_allow_equals={has_allow_equals} {...props} />
+        <CollapsibleTradeParams has_allow_equals={has_allow_equals} {...collapsible_trade_params_props} />
     );
-};
+});
 
 ScreenSmall.propTypes = {
-    contract_start_type: PropTypes.string,
-    contract_type: PropTypes.string,
-    contract_types_list: PropTypes.object,
-    duration_unit: PropTypes.string,
-    expiry_type: PropTypes.string,
     is_trade_enabled: PropTypes.bool,
 };
 
-export default connect(({ modules }) => ({
-    is_accumulator: modules.trade.is_accumulator,
-    is_allow_equal: !!modules.trade.is_equal,
-    is_multiplier: modules.trade.is_multiplier,
-    is_vanilla: modules.trade.is_vanilla,
-    duration_unit: modules.trade.duration_unit,
-    contract_types_list: modules.trade.contract_types_list,
-    contract_type: modules.trade.contract_type,
-    expiry_type: modules.trade.expiry_type,
-    contract_start_type: modules.trade.contract_start_type,
-    form_components: modules.trade.form_components,
-    has_take_profit: modules.trade.has_take_profit,
-    onChange: modules.trade.onChange,
-    previous_symbol: modules.trade.previous_symbol,
-    is_trade_params_expanded: modules.trade.is_trade_params_expanded,
-    setIsTradeParamsExpanded: modules.trade.setIsTradeParamsExpanded,
-    take_profit: modules.trade.take_profit,
-}))(ScreenSmall);
+export default ScreenSmall;

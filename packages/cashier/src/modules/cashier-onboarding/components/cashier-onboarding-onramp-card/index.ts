@@ -1,3 +1,1 @@
-import CashierOnboardingOnrampCard from './cashier-onboarding-onramp-card';
-
-export { CashierOnboardingOnrampCard };
+export { default as CashierOnboardingOnrampCard } from './cashier-onboarding-onramp-card';

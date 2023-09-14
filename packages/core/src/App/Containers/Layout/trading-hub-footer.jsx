@@ -21,6 +21,7 @@ import { routes } from '@deriv/shared';
 import DarkModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-light-theme.svg';
 import LightModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-dark-theme.svg';
 import { Popover } from '@deriv/components';
+import { localize } from '@deriv/translations';
 
 const FooterIconSeparator = () => <div className='footer-icon-separator' />;
 
@@ -99,7 +100,7 @@ const TradingHubFooter = ({
                     />
                 )}
                 <div className='footer__links--dark-mode'>
-                    <Popover alignment='top' message='Change theme' zIndex={9999}>
+                    <Popover alignment='top' message={localize('Change theme')} zIndex={9999}>
                         {is_dark_mode ? (
                             <LightModeToggleIcon onClick={changeTheme} />
                         ) : (

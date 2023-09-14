@@ -1,5 +1,5 @@
 import React from 'react';
-import { Popover, Icon } from '@deriv/components';
+import { Icon, Popover } from '@deriv/components';
 import { popover_zindex } from 'Constants/z-indexes';
 
 type TIconButton = {

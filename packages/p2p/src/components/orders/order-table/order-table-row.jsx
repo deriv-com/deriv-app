@@ -2,7 +2,7 @@ import React from 'react';
 import { useStore, observer } from '@deriv/stores';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { secondsToTimer } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import ServerTime from 'Utils/server-time';
@@ -43,7 +43,7 @@ const OrderRow = ({ row: order }) => {
     const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
     const [is_timer_visible, setIsTimerVisible] = React.useState();
     const should_show_order_details = React.useRef(true);
-    const { showModal, hideModal } = useModalManagerContext();
+    const { showModal, hideModal } = useModalManagerContext() || {};
 
     const {
         account_currency,
@@ -75,6 +75,7 @@ const OrderRow = ({ row: order }) => {
     const interval = React.useRef(null);
 
     const history = useHistory();
+    const location = useLocation();
 
     const isOrderSeen = order_id => {
         const { notifications } = general_store.getLocalStorageSettingsForLoginId();
@@ -88,7 +89,7 @@ const OrderRow = ({ row: order }) => {
             current_query_params.append('order', order.id);
 
             history.replace({
-                pathname: routes.cashier_p2p,
+                pathname: routes.p2p_orders,
                 search: current_query_params.toString(),
                 hash: location.hash,
             });
@@ -181,7 +182,7 @@ const OrderRow = ({ row: order }) => {
                                 is_completed_order && (
                                     <RatingCellRenderer
                                         has_review_details={has_review_details}
-                                        is_reviewable={is_order_reviewable}
+                                        is_reviewable={!!is_order_reviewable}
                                         rating={rating}
                                         onClickUserRatingButton={() => {
                                             should_show_order_details.current = false;
@@ -248,7 +249,7 @@ const OrderRow = ({ row: order }) => {
                                     {is_completed_order && (
                                         <RatingCellRenderer
                                             has_review_details={has_review_details}
-                                            is_reviewable={is_order_reviewable}
+                                            is_reviewable={!!is_order_reviewable}
                                             rating={rating}
                                             onClickUserRatingButton={() => {
                                                 should_show_order_details.current = false;

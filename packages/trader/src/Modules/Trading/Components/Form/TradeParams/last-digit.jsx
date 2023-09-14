@@ -4,9 +4,11 @@ import { isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import NumberSelector from 'App/Components/Form/number-selector.jsx';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import { connect } from 'Stores/connect';
+import { observer } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const LastDigit = ({ is_minimized, last_digit, onChange }) => {
+const LastDigit = observer(({ is_minimized }) => {
+    const { onChange, last_digit } = useTraderStore();
     if (is_minimized) {
         return <div className='fieldset-minimized'>{`${localize('Last Digit')}: ${last_digit}`}</div>;
     }
@@ -25,7 +27,7 @@ const LastDigit = ({ is_minimized, last_digit, onChange }) => {
             />
         </Fieldset>
     );
-};
+});
 
 LastDigit.propTypes = {
     is_minimized: PropTypes.bool,
@@ -33,7 +35,4 @@ LastDigit.propTypes = {
     onChange: PropTypes.func,
 };
 
-export default connect(({ modules }) => ({
-    last_digit: modules.trade.last_digit,
-    onChange: modules.trade.onChange,
-}))(LastDigit);
+export default LastDigit;

@@ -31,14 +31,14 @@ const AssetSummary = observer(() => {
     const eu_account = is_eu_user && !no_MF_account;
     const cr_account = !is_eu_user && !no_CR_account;
 
-    //dont show loader if user has no respective regional account
-    if (
+    const shouldShowLoader =
         ((is_switching || is_logging_in) && (eu_account || cr_account)) ||
         !is_landing_company_loaded ||
         !last_update ||
         is_loading ||
-        is_transfer_confirm
-    ) {
+        is_transfer_confirm;
+
+    if (shouldShowLoader) {
         return (
             <React.Fragment>
                 <div className='asset-summary__container content-loader'>

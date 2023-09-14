@@ -34,7 +34,6 @@ const IdvDocumentSubmit = ({
     handleBack,
     handleViewComplete,
     selected_country,
-    is_from_external,
     account_settings,
     getChangeableFields,
 }: TIDVDocumentSubmitProps) => {
@@ -183,7 +182,6 @@ const IdvDocumentSubmit = ({
                             setFieldValue={setFieldValue}
                             hide_hint={false}
                             selected_country={selected_country}
-                            is_from_external={is_from_external}
                             class_name='idv-layout'
                         />
 
@@ -195,7 +193,6 @@ const IdvDocumentSubmit = ({
                                 ),
                             })}
                             is_qualified_for_idv
-                            is_appstore
                             should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
                             editable_fields={changeable_fields}
                         />

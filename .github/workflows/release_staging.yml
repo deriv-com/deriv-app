@@ -31,7 +31,6 @@ jobs:
       SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
     steps:
     - uses: actions/checkout@v3.6.0
-    - uses: "./.github/actions/git_checkout_from_cache"
     - uses: "./.github/actions/npm_install_from_cache"
     - uses: "./.github/actions/build"
     - uses: "./.github/actions/versioning"

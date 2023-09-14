@@ -10,6 +10,10 @@ type TProps = {
 
 const WalletCard: React.FC<TProps> = ({ account }) => {
     const { wallet_currency_type, landing_company_name, currency, display_balance } = account || {};
+
+    const formattedLandingCompany =
+        landing_company_name === 'virtual' ? 'Demo' : landing_company_name?.toUpperCase() || 'SVG';
+
     return (
         <div className='wallets-card' key={account.loginid}>
             <div className='wallets-card__data'>
@@ -17,7 +21,9 @@ const WalletCard: React.FC<TProps> = ({ account }) => {
                     <div className='wallets-card__data__details-container'>
                         <WalletListCardIcon type={wallet_currency_type} />
                         <div className='wallets-card__data__details-landing_company'>
-                            {landing_company_name && <WalletListCardBadge label={landing_company_name} />}
+                            {landing_company_name && (
+                                <WalletListCardBadge label={formattedLandingCompany} is_demo={account?.is_virtual} />
+                            )}
                         </div>
                     </div>
                     <div className='wallets-card__data__details-balance'>

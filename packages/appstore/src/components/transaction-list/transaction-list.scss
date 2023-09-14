@@ -7,13 +7,13 @@
     &__scroll {
         position: absolute;
         inset: 0;
-        padding-top: 7.8rem;
+        padding-top: 7.2rem;
 
         @include mobile() {
-            padding-top: 7rem;
+            padding-top: 6.4rem;
 
             &__crypto {
-                padding-top: 10.72rem;
+                padding-top: 10.52rem;
             }
         }
     }

@@ -85,7 +85,7 @@ npm run storybook:deploy br_storybook
 
 You can import individual components with ES6 named imports.
 
-```tsx
+```jsx
 import { Button } from '@deriv/components';
 
 const SomeComponent = () => (
@@ -95,5 +95,5 @@ const SomeComponent = () => (
 );
 ```
 
-> NOTE: While developing new components, be mindful that import the direct `.tsx` file, instead of referencing `../component/index.ts`. This will make sure there won't be a style bleed
+> NOTE: While developing new components, be mindful that import the direct `.jsx` file, instead of referencing `../component/index.js`. This will make sure there won't be a style bleed
 > When it is imported from other packages.

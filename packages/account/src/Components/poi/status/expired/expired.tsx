@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import IconMessageContent from '../../../icon-message-content';
+import IconMessageContent from 'Components/icon-message-content';
 
 type TExpired = {
     handleRequireSubmission: () => void;

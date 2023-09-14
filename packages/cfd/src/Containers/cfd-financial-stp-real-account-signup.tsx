@@ -2,12 +2,12 @@ import React from 'react';
 import { Div100vhContainer } from '@deriv/components';
 import { useIsAccountStatusPresent } from '@deriv/hooks';
 import { isDesktop, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
-import type { TCoreStores } from '@deriv/stores/types';
 import CFDPOA from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
 import CFDPersonalDetailsContainer from './cfd-personal-details-container';
+import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { TCoreStores } from '@deriv/stores/types';
 
 type TCFDFinancialStpRealAccountSignupProps = {
     onFinish: () => void;
@@ -29,6 +29,7 @@ type TItem = {
     states_list: TCoreStores['client']['states_list'];
     fetchStatesList: TCoreStores['client']['fetchStatesList'];
     account_status: TCoreStores['client']['account_status'];
+    storeProofOfAddress: TCoreStores['modules']['cfd']['storeProofOfAddress'];
     jurisdiction_selected_shortcode: TCoreStores['modules']['cfd']['jurisdiction_selected_shortcode'];
     has_submitted_cfd_personal_details: TCoreStores['modules']['cfd']['has_submitted_cfd_personal_details'];
     onFinish: TCFDFinancialStpRealAccountSignupProps['onFinish'];
@@ -58,7 +59,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
         account_status,
     } = client;
 
-    const { jurisdiction_selected_shortcode, has_submitted_cfd_personal_details } = useCfdStore();
+    const { storeProofOfAddress, jurisdiction_selected_shortcode, has_submitted_cfd_personal_details } = useCfdStore();
 
     const passthroughProps = {
         refreshNotifications,
@@ -74,6 +75,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
         states_list,
         fetchStatesList,
         account_status,
+        storeProofOfAddress,
         jurisdiction_selected_shortcode,
         has_submitted_cfd_personal_details,
         onFinish,
@@ -105,8 +107,21 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
 
     const poa_config: TItemsState<typeof passthroughProps> = {
         body: CFDPOA,
-        form_value: {},
-        forwarded_props: [],
+        form_value: {
+            address_line_1: account_settings.address_line_1,
+            address_line_2: account_settings.address_line_2,
+            address_city: account_settings.address_city,
+            address_state: account_settings.address_state,
+            address_postcode: account_settings.address_postcode,
+            upload_file: '',
+        },
+        forwarded_props: [
+            'states_list',
+            'account_settings',
+            'storeProofOfAddress',
+            'refreshNotifications',
+            'jurisdiction_selected_shortcode',
+        ],
     };
 
     const personal_details_config: TItemsState<typeof passthroughProps> = {

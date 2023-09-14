@@ -26,7 +26,7 @@ import {
     urlFor,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import ChartLoader from 'App/Components/Elements/chart-loader';
+import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
 import { SmartChart } from 'Modules/SmartChart';

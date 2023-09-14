@@ -45,11 +45,6 @@ export const modals = {
             /* webpackChunkName: "create-ad-add-payment-method-modal" */ 'Components/modal-manager/modals/create-ad-add-payment-method-modal'
         )
     ),
-    DeletePaymentMethodConfirmationModal: React.lazy(() =>
-        import(
-            /* webpackChunkName: "delete-payment-method-confirmation-modal" */ 'Components/modal-manager/modals/delete-payment-method-confirmation-modal'
-        )
-    ),
     DeletePaymentMethodErrorModal: React.lazy(() =>
         import(
             /* webpackChunkName: "delete-payment-method-error-modal" */ 'Components/modal-manager/modals/delete-payment-method-error-modal'

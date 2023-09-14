@@ -87,7 +87,7 @@ describe('LeaveConfirm', () => {
     it('should show proper icon', () => {
         get_leave_confirm_states();
         render(<LeaveConfirmComponent />);
-        expect(screen.getByTestId('dt_unsaved_changes_icon')).toBeInTheDocument();
+        expect(screen.getByTestId('unsaved_changes_icon')).toBeInTheDocument();
         expect(screen.getByText('Unsaved changes')).toBeInTheDocument();
         expect(
             screen.getByText('You have unsaved changes. Are you sure you want to discard changes and leave this page?')

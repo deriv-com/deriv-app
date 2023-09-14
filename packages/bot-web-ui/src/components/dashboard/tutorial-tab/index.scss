@@ -69,7 +69,7 @@
         }
         &__tours {
             height: 13.5rem;
-            background-size: contain;
+            background-position: center center;
             margin-bottom: 0.8rem;
             width: 21.5rem;
             cursor: pointer;
@@ -138,12 +138,6 @@
                     justify-content: space-between;
                 }
                 &-content {
-                    .loss-control {
-                        width: 80%;
-                    }
-                    img {
-                        width: 45%;
-                    }
                     @include mobile {
                         width: 100%;
 

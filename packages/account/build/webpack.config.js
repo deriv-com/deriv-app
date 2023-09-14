@@ -44,7 +44,7 @@ module.exports = function (env) {
             'poi-unsupported': 'Components/poi/status/unsupported',
             'poi-upload-complete': 'Components/poi/status/upload-complete',
             'poi-verified': 'Components/poi/status/verified',
-            'proof-of-address-container': 'Sections/Verification/ProofOfAddress/proof-of-address-container',
+            'proof-of-address-container': 'Sections/Verification/ProofOfAddress/proof-of-address-container.jsx',
             'proof-of-identity': 'Sections/Verification/ProofOfIdentity/proof-of-identity.jsx',
             'proof-of-identity-container': 'Sections/Verification/ProofOfIdentity/proof-of-identity-container.jsx',
             'proof-of-identity-config': 'Configs/proof-of-identity-config',

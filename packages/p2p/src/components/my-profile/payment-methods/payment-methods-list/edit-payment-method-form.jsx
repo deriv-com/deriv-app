@@ -11,14 +11,8 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import ModalForm from 'Components/modal-manager/modal-form';
 
 const EditPaymentMethodForm = () => {
-    const { showModal } = useModalManagerContext();
     const { general_store, my_profile_store } = useStores();
-    const { payment_method_to_edit } = my_profile_store;
-
-    const fields_initial_values = {};
-    Object.keys(payment_method_to_edit.fields).forEach(key => {
-        fields_initial_values[key] = payment_method_to_edit.fields[key].value;
-    });
+    const { showModal } = useModalManagerContext();
 
     React.useEffect(() => {
         return () => {
@@ -28,7 +22,7 @@ const EditPaymentMethodForm = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (!payment_method_to_edit) {
+    if (!my_profile_store.payment_method_info) {
         return <Loading is_fullscreen={false} />;
     }
 
@@ -36,7 +30,7 @@ const EditPaymentMethodForm = () => {
         <React.Fragment>
             <ModalForm
                 enableReinitialize
-                initialValues={fields_initial_values}
+                initialValues={my_profile_store.initial_values}
                 onSubmit={my_profile_store.updatePaymentMethod}
                 validate={my_profile_store.validatePaymentMethodFields}
             >
@@ -75,42 +69,40 @@ const EditPaymentMethodForm = () => {
                                             />
                                         )}
                                     </Field>
-                                    {Object.keys(payment_method_to_edit.fields).map(payment_method_key => {
-                                        const current_field = payment_method_to_edit.fields[payment_method_key];
-
-                                        return (
-                                            <Field
-                                                name={payment_method_key}
-                                                id={payment_method_key}
-                                                key={payment_method_key}
-                                            >
-                                                {({ field }) => {
-                                                    return (
+                                    {Object.values(my_profile_store.selected_payment_method_fields).map(
+                                        (payment_method_field, key) => {
+                                            return (
+                                                <Field
+                                                    name={payment_method_field[0]}
+                                                    id={payment_method_field[0]}
+                                                    key={key}
+                                                >
+                                                    {({ field }) => (
                                                         <Input
                                                             {...field}
                                                             data-lpignore='true'
-                                                            error={errors[payment_method_key]}
+                                                            error={errors[payment_method_field[0]]}
                                                             type={
-                                                                payment_method_key === 'instructions'
+                                                                payment_method_field[0] === 'instructions'
                                                                     ? 'textarea'
-                                                                    : current_field.type
+                                                                    : payment_method_field[1].type
                                                             }
-                                                            label={current_field.display_name}
+                                                            label={payment_method_field[1].display_name}
                                                             className={classNames({
                                                                 'add-payment-method-form__payment-method-field':
-                                                                    !errors[payment_method_key]?.length,
+                                                                    !errors[payment_method_field[0]]?.length,
                                                                 'add-payment-method-form__payment-method-field--text-area':
-                                                                    payment_method_key === 'instructions',
+                                                                    payment_method_field[0] === 'instructions',
                                                             })}
                                                             onChange={handleChange}
-                                                            name={payment_method_key}
-                                                            required={!!current_field.required}
+                                                            name={payment_method_field[0]}
+                                                            required={!!payment_method_field[1].required}
                                                         />
-                                                    );
-                                                }}
-                                            </Field>
-                                        );
-                                    })}
+                                                    )}
+                                                </Field>
+                                            );
+                                        }
+                                    )}
                                 </div>
                                 <div
                                     className={classNames('add-payment-method-form__buttons', {

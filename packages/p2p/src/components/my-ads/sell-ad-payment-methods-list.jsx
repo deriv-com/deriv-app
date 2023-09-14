@@ -1,4 +1,5 @@
 import React from 'react';
+import { useStores } from 'Stores';
 import { ThemedScrollbars } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
@@ -13,9 +14,10 @@ const SellAdPaymentMethodsList = ({
     is_scrollable = isMobile(),
     onClickAdd,
     onClickPaymentMethodCard,
-    p2p_advertiser_payment_methods,
     selected_methods,
 }) => {
+    const { my_profile_store } = useStores();
+
     const style = {
         borderColor: 'var(--brand-secondary)',
         borderWidth: '2px',
@@ -37,17 +39,16 @@ const SellAdPaymentMethodsList = ({
             is_scrollable={is_scrollable}
             is_only_horizontal={is_only_horizontal}
         >
-            {p2p_advertiser_payment_methods &&
-                sortPaymentMethods(p2p_advertiser_payment_methods).map((payment_method, key) => (
-                    <PaymentMethodCard
-                        is_vertical_ellipsis_visible={false}
-                        key={key}
-                        medium
-                        onClick={() => onClickPaymentMethodCard(payment_method)}
-                        payment_method={payment_method}
-                        style={selected_methods.includes(payment_method.id) ? style : {}}
-                    />
-                ))}
+            {sortPaymentMethods([...my_profile_store.advertiser_payment_methods_list]).map((payment_method, key) => (
+                <PaymentMethodCard
+                    is_vertical_ellipsis_visible={false}
+                    key={key}
+                    medium
+                    onClick={() => onClickPaymentMethodCard(payment_method)}
+                    payment_method={payment_method}
+                    style={selected_methods.includes(payment_method.ID) ? style : {}}
+                />
+            ))}
             <PaymentMethodCard is_add label={localize('Payment method')} medium onClickAdd={onClickAdd} />
         </ThemedScrollbars>
     );
@@ -58,7 +59,6 @@ SellAdPaymentMethodsList.propTypes = {
     is_scrollable: PropTypes.bool,
     onClickAdd: PropTypes.func,
     onClickPaymentMethodCard: PropTypes.func,
-    p2p_advertiser_payment_methods: PropTypes.array,
     selected_methods: PropTypes.array,
 };
 

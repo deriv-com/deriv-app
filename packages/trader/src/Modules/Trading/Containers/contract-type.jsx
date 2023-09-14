@@ -1,9 +1,10 @@
 import React from 'react';
 import { MobileWrapper, usePrevious } from '@deriv/components';
-import { getMarketNamesMap, unsupported_contract_types_list } from '@deriv/shared';
+import { unsupported_contract_types_list } from '@deriv/shared';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import { localize } from '@deriv/translations';
 import { ToastPopup } from 'Modules/Trading/Containers/toast-popup.jsx';
+import { getMarketNamesMap } from '../../../Constants';
 import ContractTypeWidget from '../Components/Form/ContractType';
 import { getAvailableContractTypes } from '../Helpers/contract-type';
 import { useTraderStore } from 'Stores/useTraderStores';

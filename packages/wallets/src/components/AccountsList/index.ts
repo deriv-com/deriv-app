@@ -1,1 +1,4 @@
-export { default as AccountsList } from './AccountsList';
+import AccountsList from './AccountsList';
+import './AccountsList.scss';
+
+export default AccountsList;

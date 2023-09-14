@@ -30,7 +30,6 @@ describe('Proposal', () => {
                 commission: undefined,
                 error_code: undefined,
                 error_field: undefined,
-                growth_rate: undefined,
                 limit_order: undefined,
                 id: '',
                 message: 'This is error',
@@ -41,7 +40,6 @@ describe('Proposal', () => {
                     text: 'Stake',
                     value: '',
                 },
-                spot: undefined,
             });
         });
 

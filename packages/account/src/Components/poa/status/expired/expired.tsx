@@ -1,7 +1,7 @@
 import { Button, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import React from 'react';
-import IconMessageContent from '../../../icon-message-content';
+import IconMessageContent from 'Components/icon-message-content';
 
 type TExpired = {
     onClick: () => void;

@@ -146,7 +146,7 @@ const AccountTransferForm = observer(
             });
             if (!is_ok) return message;
 
-            if (typeof selected_from.balance !== 'undefined' && Number(selected_from.balance) < Number(amount))
+            if (selected_from.balance && Number(selected_from.balance) < Number(amount))
                 return localize('Insufficient balance');
 
             return undefined;

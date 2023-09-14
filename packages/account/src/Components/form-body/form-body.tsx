@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollbarsContainer } from '../scrollbars-container/scrollbars-container';
+import { ScrollbarsContainer } from 'Components/scrollbars-container/scrollbars-container';
 import { Div100vhContainer, DesktopWrapper, MobileWrapper } from '@deriv/components';
 
 type TFormBody = {

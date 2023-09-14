@@ -92,7 +92,6 @@ export default Engine =>
         }
 
         observeProposals() {
-            if (!api_base.api) return;
             const subscription = api_base.api.onMessage().subscribe(response => {
                 if (response.data.msg_type === 'proposal') {
                     const { passthrough, proposal } = response.data;
@@ -111,7 +110,7 @@ export default Engine =>
             // we've requested from the API, we determine this by checking the passthrough of the response.
             const { proposals } = this.data;
 
-            if (proposals.length > 0 && this.proposal_templates) {
+            if (proposals.length > 0) {
                 const has_equal_proposals = this.proposal_templates.every(template => {
                     return (
                         proposals.findIndex(proposal => {

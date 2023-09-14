@@ -1,11 +1,12 @@
-import React from 'react';
 import { Icon, Text } from '@deriv/components';
-import { isNavigationFromP2P, isNavigationFromDerivGO } from '@deriv/shared';
+
+import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
+import IconMessageContent from 'Components/icon-message-content';
+import PoiButton from 'Components/poi/poi-button';
+import React from 'react';
+import { TPoaStatusProps } from 'Types';
 import { localize } from '@deriv/translations';
-import ContinueTradingButton from '../../continue-trading-button';
-import IconMessageContent from '../../../icon-message-content';
-import PoiButton from '../../../poi/poi-button';
-import { TPoaStatusProps } from '../../../../Types';
+import { isNavigationFromP2P, isNavigationFromDerivGO } from '@deriv/shared';
 
 export const NeedsReview = ({ needs_poi, redirect_button }: TPoaStatusProps) => {
     const message = localize('Your proof of address was submitted successfully');

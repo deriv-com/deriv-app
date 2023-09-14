@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { Button, Icon, MobileFullPageModal, Modal, Text } from '@deriv/components';
-import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
@@ -13,9 +12,8 @@ import BuyAdPaymentMethodsList from 'Components/my-ads/buy-ad-payment-methods-li
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const QuickAddModal = ({ advert }) => {
-    const { is_modal_open, showModal, useSavedState } = useModalManagerContext();
     const { my_ads_store, my_profile_store } = useStores();
-    const { data: p2p_advertiser_payment_methods } = useP2PAdvertiserPaymentMethods();
+    const { is_modal_open, showModal, useSavedState } = useModalManagerContext();
 
     const type = advert ? advert.type : null;
 
@@ -29,16 +27,16 @@ const QuickAddModal = ({ advert }) => {
         is_sell_ad_add_payment_methods_selected || is_buy_ad_add_payment_methods_selected;
 
     const onClickPaymentMethodCard = payment_method => {
-        if (!my_ads_store.payment_method_ids.includes(payment_method.id)) {
+        if (!my_ads_store.payment_method_ids.includes(payment_method.ID)) {
             if (my_ads_store.payment_method_ids.length < 3) {
-                my_ads_store.payment_method_ids.push(payment_method.id);
-                setSelectedMethods([...selected_methods, payment_method.id]);
+                my_ads_store.payment_method_ids.push(payment_method.ID);
+                setSelectedMethods([...selected_methods, payment_method.ID]);
             }
         } else {
             my_ads_store.payment_method_ids = my_ads_store.payment_method_ids.filter(
-                payment_method_id => payment_method_id !== payment_method.id
+                payment_method_id => payment_method_id !== payment_method.ID
             );
-            setSelectedMethods(selected_methods.filter(i => i !== payment_method.id));
+            setSelectedMethods(selected_methods.filter(i => i !== payment_method.ID));
         }
     };
 
@@ -166,9 +164,8 @@ const QuickAddModal = ({ advert }) => {
                         </Text>
                         <SellAdPaymentMethodsList
                             onClickPaymentMethodCard={onClickPaymentMethodCard}
-                            onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethod(true)}
-                            p2p_advertiser_payment_methods={p2p_advertiser_payment_methods}
                             selected_methods={selected_methods}
+                            onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethod(true)}
                         />
                     </>
                 )}
@@ -267,9 +264,8 @@ const QuickAddModal = ({ advert }) => {
                             is_only_horizontal
                             is_scrollable
                             onClickPaymentMethodCard={onClickPaymentMethodCard}
-                            onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethod(true)}
-                            p2p_advertiser_payment_methods={p2p_advertiser_payment_methods}
                             selected_methods={selected_methods}
+                            onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethod(true)}
                         />
                     </>
                 )}

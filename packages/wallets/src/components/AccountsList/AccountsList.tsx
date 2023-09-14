@@ -1,13 +1,16 @@
 import React from 'react';
-import { OptionsAndMultipliersListing } from '..';
-import './AccountsList.scss';
 
-const AccountsList = () => {
+type TAccountsListProps = {
+    data: {
+        text: string;
+        background: string;
+    };
+};
+
+const AccountsList = ({ data }: TAccountsListProps) => {
     return (
-        <div className='wallets-accounts-list'>
-            <div className='wallets-accounts-list__content'>
-                <OptionsAndMultipliersListing />
-            </div>
+        <div className='accounts-list' style={{ backgroundColor: data.background }}>
+            AccountsList
         </div>
     );
 };

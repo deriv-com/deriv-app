@@ -1,4 +1,4 @@
-import { TJurisdictionCardItems, TJurisdictionCardParams } from 'Components/props.types';
+import { TJurisdictionCardItems } from 'Components/props.types';
 import { getJurisdictionBviContents } from './jurisdiction-bvi-contents';
 import { getJurisdictionLabuanContents } from './jurisdiction-labuan-contents';
 import { getJurisdictionSvgContents } from './jurisdiction-svg-contents';
@@ -13,10 +13,10 @@ type TJurisdictionContent = {
     bvi: TJurisdictionCardItems;
 };
 
-export const getJurisdictionContents = (params: TJurisdictionCardParams): TJurisdictionContent => ({
-    svg: getJurisdictionSvgContents(params),
-    bvi: getJurisdictionBviContents(params),
-    vanuatu: getJurisdictionVanuatuContents(params),
+export const getJurisdictionContents = (): TJurisdictionContent => ({
+    svg: getJurisdictionSvgContents(),
+    bvi: getJurisdictionBviContents(),
+    vanuatu: getJurisdictionVanuatuContents(),
     labuan: getJurisdictionLabuanContents(),
     maltainvest: getJurisdictionMaltainvestContents(),
 });

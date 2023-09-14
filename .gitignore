@@ -23,6 +23,4 @@ packages/appstore/lib/
 packages/appstore/.out
 .env
 nx-cloud.env
-test-results/
-playwright-report/
-playwright/.cache/
+

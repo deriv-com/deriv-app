@@ -2,9 +2,9 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import PropTypes from 'prop-types';
 
-const ChatMessageText = React.memo(({ children, color }) => (
+const ChatMessageText = React.memo(({ children, colour }) => (
     <div className={`order-chat__messages-item-message`}>
-        <Text as='div' color={color} line_height='m' size='xs'>
+        <Text as='p' color={colour} line_height='m' size='xs'>
             {children}
         </Text>
     </div>
@@ -13,7 +13,7 @@ const ChatMessageText = React.memo(({ children, color }) => (
 ChatMessageText.displayName = 'ChatMessageText';
 ChatMessageText.propTypes = {
     children: PropTypes.any,
-    color: PropTypes.string,
+    colour: PropTypes.string,
 };
 
 export default ChatMessageText;

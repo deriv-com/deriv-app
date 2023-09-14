@@ -7,13 +7,11 @@ import ListingContainer from 'Components/containers/listing-container';
 import AddOptionsAccount from 'Components/add-options-account';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
-import CompareAccount from 'Components/compare-account';
 import GetMoreAccounts from 'Components/get-more-accounts';
 import { Actions } from 'Components/containers/trading-app-card-actions';
 import { getHasDivider } from 'Constants/utils';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import './cfds-listing.scss';
-import { useCFDCanGetMoreMT5Accounts } from '@deriv/hooks';
 
 type TDetailedExistingAccount = AvailableAccount &
     TDetailsOfEachMT5Loginid &
@@ -40,6 +38,7 @@ const CFDsListing = observer(() => {
         getExistingAccounts,
         getAccount,
         toggleAccountTypeModalVisibility,
+        can_get_more_cfd_mt5_accounts,
         selected_account_type,
         is_eu_user,
         is_demo_low_risk,
@@ -54,7 +53,7 @@ const CFDsListing = observer(() => {
         financial_restricted_countries,
     } = traders_hub;
 
-    const { setAccountType } = cfd;
+    const { toggleCompareAccountsModal, setAccountType } = cfd;
     const { is_landing_company_loaded, real_account_creation_unlock_date, account_status } = client;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal, setShouldShowCooldownModal } = ui;
@@ -62,7 +61,6 @@ const CFDsListing = observer(() => {
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
 
-    const can_get_more_cfd_mt5_accounts = useCFDCanGetMoreMT5Accounts();
     const {
         poi_pending_for_bvi_labuan_vanuatu,
         poi_resubmit_for_bvi_labuan_vanuatu,
@@ -156,7 +154,11 @@ const CFDsListing = observer(() => {
                         <Text size='sm' line_height='m' weight='bold' color='prominent'>
                             {localize('CFDs')}
                         </Text>
-                        <CompareAccount accounts_sub_text={accounts_sub_text} is_desktop={!isMobile()} />
+                        <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
+                            <Text key={0} color='red' size='xxs' weight='bold' styles={{ marginLeft: '1rem' }}>
+                                <Localize i18n_default_text={accounts_sub_text} />
+                            </Text>
+                        </div>
                     </div>
                 )
             }
@@ -171,7 +173,13 @@ const CFDsListing = observer(() => {
                 </Text>
             }
         >
-            {isMobile() && <CompareAccount accounts_sub_text={accounts_sub_text} />}
+            {isMobile() && (
+                <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
+                    <Text size='xs' color='red' weight='bold' line_height='s'>
+                        <Localize i18n_default_text={accounts_sub_text} />
+                    </Text>
+                </div>
+            )}
 
             <AddDerivAccount />
 

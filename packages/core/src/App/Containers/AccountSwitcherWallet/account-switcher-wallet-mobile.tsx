@@ -1,11 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { MobileDialog, Button, Modal } from '@deriv/components';
-import { useActiveAccount, useWalletAccountsList } from '@deriv/hooks';
+import { Button, Icon, MobileDialog, Text } from '@deriv/components';
+import { useWalletAccountsList } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { AccountSwitcherWalletList } from './account-switcher-wallet-list';
-import { AccountSwitcherSelectedWalletMobile } from './account-switcher-selected-wallet-mobile';
 import './account-switcher-wallet-mobile.scss';
 
 type TAccountSwitcherWalletMobile = {
@@ -27,50 +26,31 @@ export const AccountSwitcherWalletMobile = ({ is_visible, toggle }: TAccountSwit
         history.push(routes.traders_hub);
     };
 
-    const active_account = useActiveAccount();
-
-    const selected_account = React.useMemo(
-        () =>
-            wallets?.find(
-                wallet =>
-                    wallet.is_active || wallet.linked_to?.some(account => account.loginid === active_account?.loginid)
-            ),
-        [wallets, active_account]
-    );
-
-    const filtered_list = React.useMemo(
-        () => dtrade_account_wallets?.filter(wallet => wallet.loginid !== selected_account?.loginid),
-        [dtrade_account_wallets, selected_account?.loginid]
-    );
-
-    const content = (
-        <div className='account-switcher-wallet-mobile'>
-            <AccountSwitcherSelectedWalletMobile selected_account={selected_account} />
-            <AccountSwitcherWalletList wallets={filtered_list} closeAccountsDialog={closeAccountsDialog} />
-            <Modal.Footer className='account-switcher-wallet-mobile__footer-button' has_separator>
-                <Button
-                    className='account-switcher-wallet-mobile__footer-button'
-                    has_effect
-                    onClick={handleTradersHubRedirect}
-                    secondary
-                    small
-                >
-                    <Localize i18n_default_text='Looking for CFDs? Go to Trader’s hub' />
-                </Button>
-            </Modal.Footer>
+    const footer = (
+        <div onClick={handleTradersHubRedirect} className='account-switcher-wallet-mobile__footer'>
+            <Text weight='bold' size='xs'>
+                <Localize i18n_default_text='Looking for CFDs? Go to Trader’s hub' />
+            </Text>
+            <Icon icon='IcChevronRightBold' />
         </div>
     );
 
     return (
         <MobileDialog
             portal_element_id='deriv_app'
+            footer={footer}
             visible={is_visible}
             onClose={closeAccountsDialog}
             has_close_icon
-            has_full_height
+            has_full_height={false}
             title={<Localize i18n_default_text='Deriv Apps accounts' />}
         >
-            {content}
+            <div className='account-switcher-wallet-mobile'>
+                <AccountSwitcherWalletList wallets={dtrade_account_wallets} closeAccountsDialog={closeAccountsDialog} />
+                <Button className='account-switcher-wallet-mobile__button' has_effect primary large>
+                    <Localize i18n_default_text='Manage funds' />
+                </Button>
+            </div>
         </MobileDialog>
     );
 };

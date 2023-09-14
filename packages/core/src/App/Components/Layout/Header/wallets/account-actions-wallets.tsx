@@ -35,15 +35,17 @@ const AccountActionsWallets = observer(({ is_deposit_button_disabled }: TAccount
     if (is_logged_in) {
         return is_mobile ? (
             <React.Fragment>
-                <ToggleNotifications
-                    count={notifications_count}
-                    is_visible={is_notifications_visible}
-                    toggleDialog={toggleNotificationsModal}
-                    tooltip_message={undefined}
-                />
                 <React.Suspense fallback={<div />}>
                     <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
                 </React.Suspense>
+                <div className='acc-info__wallets-notification-icon'>
+                    <ToggleNotifications
+                        count={notifications_count}
+                        is_visible={is_notifications_visible}
+                        toggleDialog={toggleNotificationsModal}
+                        tooltip_message={undefined}
+                    />
+                </div>
             </React.Fragment>
         ) : (
             <React.Fragment>

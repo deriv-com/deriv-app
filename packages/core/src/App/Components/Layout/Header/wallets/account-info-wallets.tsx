@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, WalletIcon, Text } from '@deriv/components';
+import { Icon, WalletIcon, Text, AppLinkedWithWalletIcon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { formatMoney } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
@@ -34,7 +34,10 @@ type TBalanceLabel = {
 
 type TDesktopInfoIcons = {
     wallet_account: ReturnType<typeof useWalletAccountsList>['data'][number];
-    active_account: ReturnType<typeof useActiveAccount>;
+};
+
+type TMobileInfoIcons = {
+    wallet_account: ReturnType<typeof useWalletAccountsList>['data'][number];
 };
 
 const DropdownArrow = ({ is_disabled = false }: TDropdownArrow) =>
@@ -63,11 +66,9 @@ const BalanceLabel = ({ balance, currency, is_virtual, display_code }: Partial<T
         </div>
     ) : null;
 
-const DesktopInfoIcons = observer(({ wallet_account, active_account }: TDesktopInfoIcons) => {
+const DesktopInfoIcons = observer(({ wallet_account }: TDesktopInfoIcons) => {
     const { ui } = useStore();
     const { is_dark_mode_on } = ui;
-
-    const show_badge = wallet_account?.is_malta_wallet || wallet_account?.is_virtual;
 
     return (
         <div className='acc-info__wallets-container'>
@@ -86,15 +87,30 @@ const DesktopInfoIcons = observer(({ wallet_account, active_account }: TDesktopI
                 has_bg
                 hide_watermark
             />
-            <BalanceLabel
-                balance={active_account?.balance}
-                currency={active_account?.currency}
-                is_virtual={active_account?.is_virtual}
-                display_code={active_account?.currency_config?.display_code}
+        </div>
+    );
+});
+
+const MobileInfoIcons = observer(({ wallet_account }: TMobileInfoIcons) => {
+    const {
+        ui: { is_dark_mode_on },
+    } = useStore();
+
+    const { gradients, icons, is_virtual, currency_config } = wallet_account;
+    const theme = is_dark_mode_on ? 'dark' : 'light';
+    const app_icon = is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight';
+    const icon_type = is_virtual ? 'demo' : currency_config?.type;
+
+    return (
+        <div className='acc-info__wallets-container'>
+            <AppLinkedWithWalletIcon
+                app_icon={app_icon}
+                gradient_class={gradients.card[theme]}
+                size='small'
+                type={icon_type}
+                wallet_icon={icons[theme]}
+                hide_watermark
             />
-            {show_badge && (
-                <WalletBadge is_demo={wallet_account?.is_virtual} label={wallet_account?.landing_company_name} />
-            )}
         </div>
     );
 });
@@ -130,9 +146,11 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
 
     if (!linked_wallet) return <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />;
 
+    const show_badge = linked_wallet?.is_malta_wallet || linked_wallet?.is_virtual;
+
     return (
         <div className='acc-info__wrapper'>
-            <div className='acc-info__wallets-separator' />
+            <div className='acc-info__separator' />
             <AccountInfoWrapper
                 is_disabled={active_account?.is_disabled}
                 disabled_message={account_switcher_disabled_message}
@@ -146,7 +164,20 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                     })}
                     onClick={active_account?.is_disabled ? undefined : () => toggleDialog()}
                 >
-                    {!is_mobile && <DesktopInfoIcons wallet_account={linked_wallet} active_account={active_account} />}
+                    {is_mobile ? (
+                        <MobileInfoIcons wallet_account={linked_wallet} />
+                    ) : (
+                        <DesktopInfoIcons wallet_account={linked_wallet} />
+                    )}
+                    <BalanceLabel
+                        balance={active_account?.balance}
+                        currency={active_account?.currency}
+                        is_virtual={active_account?.is_virtual}
+                        display_code={active_account?.currency_config?.display_code}
+                    />
+                    {show_badge && (
+                        <WalletBadge is_demo={linked_wallet?.is_virtual} label={linked_wallet?.landing_company_name} />
+                    )}
                     <DropdownArrow is_disabled={active_account?.is_disabled} />
                 </div>
             </AccountInfoWrapper>

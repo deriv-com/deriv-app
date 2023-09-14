@@ -40,6 +40,8 @@ import {
     validateName,
 } from 'Helpers/utils';
 import LoadErrorMessage from 'Components/load-error-message';
+import { GENERIC_ERROR_MESSAGE, DUPLICATE_ACCOUNT_ERROR_MESSAGE } from 'Configs/poi-error-config';
+import { API_ERROR_CODES } from 'Constants/api-error-codes';
 import { TIDVFormValues, TPersonalDetailsForm } from 'Types';
 
 type TRestState = {
@@ -239,7 +241,7 @@ const IdvFailed = ({
 
     const onSubmit = async (values: TIdvFailedForm, { setStatus, setSubmitting }: FormikHelpers<TIdvFailedForm>) => {
         setSubmitting(true);
-        setStatus({ error_msg: '' });
+        setStatus({ error_msg: null });
         const { document_number, document_type } = values;
         const request = makeSettingsRequest(
             values,
@@ -248,7 +250,11 @@ const IdvFailed = ({
         const data = await WS.setSettings(request);
 
         if (data.error) {
-            setStatus({ error_msg: data.error.message });
+            const response_error =
+                data.error?.code === API_ERROR_CODES.DUPLICATE_ACCOUNT
+                    ? DUPLICATE_ACCOUNT_ERROR_MESSAGE
+                    : GENERIC_ERROR_MESSAGE;
+            setStatus({ error_msg: response_error });
             setSubmitting(false);
         } else {
             const response = await WS.authorized.storage.getSettings();
@@ -325,7 +331,7 @@ const IdvFailed = ({
             validate={validateFields}
             className='proof-of-identity__container'
         >
-            {({ isSubmitting, isValid, dirty }) => (
+            {({ isSubmitting, isValid, dirty, status }) => (
                 <Form
                     className={classNames('proof-of-identity__mismatch-container', {
                         'upload-layout': is_document_upload_required,
@@ -340,15 +346,17 @@ const IdvFailed = ({
                         >
                             <Localize i18n_default_text='Your identity verification failed because:' />
                         </Text>
-                        <HintBox
-                            icon='IcAlertDanger'
-                            message={
-                                <Text as='p' size={isMobile() ? 'xxs' : 'xs'} data-testid={mismatch_status}>
-                                    {idv_failure?.failure_message}
-                                </Text>
-                            }
-                            is_danger
-                        />
+                        {(status?.error_msg || idv_failure?.failure_message) && (
+                            <HintBox
+                                icon='IcAlertDanger'
+                                message={
+                                    <Text as='p' size={isMobile() ? 'xxs' : 'xs'} data-testid={mismatch_status}>
+                                        {status?.error_msg ?? idv_failure?.failure_message}
+                                    </Text>
+                                }
+                                is_danger
+                            />
+                        )}
                         {is_document_upload_required && (
                             <React.Fragment>
                                 <Text

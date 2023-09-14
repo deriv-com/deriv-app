@@ -16,6 +16,8 @@ import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
 import FormBody from 'Components/form-body';
 import LoadErrorMessage from 'Components/load-error-message';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
+import { GENERIC_ERROR_MESSAGE, DUPLICATE_ACCOUNT_ERROR_MESSAGE } from 'Configs/poi-error-config';
+import { API_ERROR_CODES } from 'Constants/api-error-codes';
 import { makeSettingsRequest, validate, validateName } from 'Helpers/utils';
 import { TInputFieldValues } from 'Types';
 
@@ -84,22 +86,11 @@ const PoiConfirmWithExampleFormContainer = ({
         );
         const data = await WS.setSettings(request);
 
-        const generic_error_message = (
-            <Localize i18n_default_text='Sorry, an internal error occurred. Hit the above checkbox to try again.' />
-        );
-
-        const duplicated_account_error_message = (
-            <Localize
-                i18n_default_text='An account with these details already exists. Please make sure the details you entered are corrrect as only one real account is allowed per client. If this is a mistake, contact us via <0>live chat</0>.'
-                components={[
-                    <span key={0} className='link link--orange' onClick={() => window.LC_API.open_chat_window()} />,
-                ]}
-            />
-        );
-
         if (data?.error) {
             const response_error =
-                data.error?.code === 'DuplicateAccount' ? duplicated_account_error_message : generic_error_message;
+                data.error?.code === API_ERROR_CODES.DUPLICATE_ACCOUNT
+                    ? DUPLICATE_ACCOUNT_ERROR_MESSAGE
+                    : GENERIC_ERROR_MESSAGE;
             setStatus({ error_msg: response_error });
             setSubmitting(false);
         } else {

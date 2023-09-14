@@ -1,0 +1,87 @@
+.wallets-text {
+    font-family: 'IBM Plex Sans', sans-serif;
+
+    &-size-xxxxs {
+        font-size: 0.8rem;
+    }
+
+    &-size-xxxs {
+        font-size: 1rem;
+    }
+
+    &-size-xxs {
+        font-size: 1.2rem;
+    }
+
+    &-size-xs {
+        font-size: 1.4rem;
+    }
+
+    &-size-s {
+        font-size: 1.6rem;
+    }
+
+    &-size-sm {
+        font-size: 2rem;
+    }
+
+    &-size-m {
+        font-size: 2.4rem;
+    }
+
+    &-size-l {
+        font-size: 3.2rem;
+    }
+
+    &-weight-normal {
+        font-weight: normal;
+    }
+
+    &-weight-bold {
+        font-weight: bold;
+    }
+
+    &-weight-bolder {
+        font-weight: bolder;
+    }
+
+    &-align-left {
+        text-align: left;
+    }
+
+    &-align-center {
+        text-align: center;
+    }
+
+    &-align-right {
+        text-align: right;
+    }
+
+    &-color-general {
+        color: #333333;
+    }
+
+    &-color-primary {
+        color: #999999;
+    }
+
+    &-color-success {
+        color: #4bb4b3;
+    }
+
+    &-color-warning {
+        color: #ffad3a;
+    }
+
+    &-color-error {
+        color: #ec3f3f;
+    }
+
+    &-color-white {
+        color: #ffffff;
+    }
+
+    &-color-black {
+        color: #000000;
+    }
+}

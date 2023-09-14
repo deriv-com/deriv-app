@@ -1,12 +1,16 @@
 import React from 'react';
-import './WalletListCardTitle.scss';
+import { Text } from '../Text';
 
 type TProps = {
     currency: string;
 };
 
 const WalletListCardTitle: React.FC<TProps> = ({ currency }) => {
-    return <div className='wallets-currency__title'>{currency} Wallet</div>;
+    return (
+        <Text size='sm' weight='bold' align='center'>
+            {currency} Wallet
+        </Text>
+    );
 };
 
 export default WalletListCardTitle;

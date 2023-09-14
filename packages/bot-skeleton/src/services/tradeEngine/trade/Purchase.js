@@ -41,7 +41,7 @@ export default Engine =>
 
             function hasBlockOfType(targetType, workspace) {
                 const allBlocks = workspace.getAllBlocks();
-                return allBlocks.some(block => block.type === targetType);
+                return allBlocks.some(block => block.type === targetType && !!block.parentBlock_);
             }
 
             const workspace = Blockly.derivWorkspace;

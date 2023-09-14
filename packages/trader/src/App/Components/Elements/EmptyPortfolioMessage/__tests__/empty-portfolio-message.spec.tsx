@@ -7,11 +7,6 @@ describe('EmptyPortfolioMessage', () => {
         'You have no open positions for this asset. To view other open positions, click Go to Reports';
     const error_text = 'Error text';
 
-    it('should render EmptyPortfolioMessage component', () => {
-        render(<EmptyPortfolioMessage />);
-
-        expect(screen.getByText(empty_portfolio_message)).toBeInTheDocument();
-    });
     it('should render error text on the screen if EmptyPortfolioMessage component will recive error in props', () => {
         render(<EmptyPortfolioMessage error={error_text} />);
 

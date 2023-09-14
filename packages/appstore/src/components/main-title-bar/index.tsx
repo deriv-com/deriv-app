@@ -8,6 +8,7 @@ import RegulatorSwitcher from './regulators-switcher';
 import { localize } from '@deriv/translations';
 import './main-title-bar.scss';
 import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
+import AppstoreBanner from 'Components/appstore-banner';
 
 const MainTitleBar = () => {
     const { traders_hub, client } = useStore();
@@ -24,6 +25,7 @@ const MainTitleBar = () => {
     return (
         <React.Fragment>
             <DesktopWrapper>
+                <AppstoreBanner />
                 <div className='main-title-bar'>
                     <div className='main-title-bar__right'>
                         <Text size='m' weight='bold' color='prominent'>
@@ -36,6 +38,7 @@ const MainTitleBar = () => {
                 </div>
             </DesktopWrapper>
             <MobileWrapper>
+                <AppstoreBanner />
                 <Text weight='bold' className='main-title-bar__text' color='prominent'>
                     {localize("Trader's Hub")}
                 </Text>

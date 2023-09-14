@@ -1,0 +1,11 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "paths": {
+            "Mocks/*": ["src/mocks/*"],
+            "Utils/*": ["src/utils/*"]
+        },
+        "baseUrl": "./"
+    },
+    "include": ["src"]
+}

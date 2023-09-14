@@ -38,7 +38,7 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
     }, []);
 
     if (is_sell_advert) {
-        if (p2p_advertiser_payment_methods.length) {
+        if (p2p_advertiser_payment_methods?.length) {
             return (
                 <SellAdPaymentMethodsList
                     selected_methods={selected_methods}

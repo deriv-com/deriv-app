@@ -49,7 +49,7 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
     }, [is_sell_advert, selected_buy_methods, selected_sell_methods]);
 
     if (is_sell_advert) {
-        if (p2p_advertiser_payment_methods.length) {
+        if (p2p_advertiser_payment_methods?.length) {
             return (
                 <SellAdPaymentMethodsList
                     selected_methods={selected_sell_methods}

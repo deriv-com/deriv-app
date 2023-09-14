@@ -12,8 +12,6 @@ jobs:
       image: node:18.16.0
     steps:
     - uses: actions/checkout@v3.6.0
-    - name: Checkout Repository
-      uses: "./.github/actions/git_checkout_from_cache"
     - name: Install dependencies
       uses: "./.github/actions/npm_install_from_cache"
     - name: Build

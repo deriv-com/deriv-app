@@ -1,11 +1,11 @@
+import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { InputField, Text } from '@deriv/components';
 import { formatMoney, isMobile, mobileOSDetect } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { useExchangeRate, useP2PConfig } from '@deriv/hooks';
 import { localize } from 'Components/i18next';
-import { useStores } from 'Stores';
 import { setDecimalPlaces, removeTrailingZeros, percentOf, roundOffDecimal } from 'Utils/format-value';
 import './floating-rate.scss';
 
@@ -24,10 +24,13 @@ const FloatingRate = ({
         ui: { current_focus, setCurrentFocus },
     } = useStore();
 
-    const { floating_rate_store } = useStores();
+    const { data: p2p_config } = useP2PConfig();
+    const { getRate } = useExchangeRate();
+    const override_exchange_rate = p2p_config?.override_exchange_rate;
+    const market_rate = override_exchange_rate ? Number(override_exchange_rate) : getRate(local_currency);
     const os = mobileOSDetect();
     const { name, value, required } = props;
-    const market_feed = value ? percentOf(floating_rate_store.market_rate, value) : floating_rate_store.market_rate;
+    const market_feed = value ? percentOf(market_rate, value) : market_rate;
     const decimal_place = setDecimalPlaces(market_feed, 6);
 
     // Input mask for formatting value on blur of floating rate field
@@ -95,8 +98,7 @@ const FloatingRate = ({
                         line_height='xs'
                         className='floating-rate__mkt-rate--msg'
                     >
-                        1 {fiat_currency} ={' '}
-                        {removeTrailingZeros(formatMoney(local_currency, floating_rate_store.market_rate, true, 6))}
+                        1 {fiat_currency} = {removeTrailingZeros(formatMoney(local_currency, market_rate, true, 6))}
                     </Text>
                 </div>
             </section>

@@ -34,6 +34,7 @@
         "@deriv/hooks": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
+        "@deriv/api": "^1.0.0",
         "@deriv/translations": "^1.0.0",
         "@deriv/api-types": "^1.0.118",
         "@testing-library/react": "^12.0.0",

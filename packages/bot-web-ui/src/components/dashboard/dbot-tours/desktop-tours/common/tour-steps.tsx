@@ -1,9 +1,10 @@
 import React from 'react';
+import { getUUID } from '@deriv/bot-skeleton/src/services/tradeEngine/utils/helpers';
 import { Icon, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 
-type TTourGuide = {
+type TTourSteps = {
     content: string[] | React.ReactElement[];
     media?: string;
     label: string | boolean;
@@ -12,8 +13,8 @@ type TTourGuide = {
     has_localize_component?: boolean;
 };
 
-const TourGuide = observer(
-    ({ content, media, label, step_index, has_localize_component = false, show_actions = true }: TTourGuide) => {
+const TourSteps = observer(
+    ({ content, media, label, step_index, has_localize_component = false, show_actions = true }: TTourSteps) => {
         const { dashboard } = useDBotStore();
         const { onCloseTour } = dashboard;
 
@@ -57,7 +58,7 @@ const TourGuide = observer(
                                     return has_localize_component ? (
                                         content_data
                                     ) : (
-                                        <div className='onboard__content__block' key={`onboard--${index}`}>
+                                        <div className='onboard__content__block' key={`onboard--${getUUID()}`}>
                                             <Text align='left' as='h' size='xs' line_height='l'>
                                                 {content_data}
                                             </Text>
@@ -73,4 +74,4 @@ const TourGuide = observer(
     }
 );
 
-export default TourGuide;
+export default TourSteps;

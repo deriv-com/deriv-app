@@ -1,6 +1,6 @@
 import React from 'react';
 import { useWalletAccountsList } from '@deriv/api';
-import WalletListCard from '../WalletListCard/WalletListCard';
+import { WalletsAccordionContainer } from '..';
 
 const DesktopWalletsList: React.FC = () => {
     const { data } = useWalletAccountsList();
@@ -9,9 +9,7 @@ const DesktopWalletsList: React.FC = () => {
 
     return (
         <React.Fragment>
-            {data?.map(account => {
-                return <WalletListCard account={account} key={account.loginid} />;
-            })}
+            <WalletsAccordionContainer wallets_list={data} />
         </React.Fragment>
     );
 };

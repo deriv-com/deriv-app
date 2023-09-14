@@ -5,6 +5,7 @@ import APIProvider from '../APIProvider';
 import useQuery from '../useQuery';
 
 jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
     useWS: () => ({
         send: jest.fn(() =>
             Promise.resolve<TSocketResponse<'ping'>>({
@@ -13,6 +14,7 @@ jest.mock('@deriv/shared', () => ({
                 echo_req: {},
             })
         ),
+        subscribe: jest.fn(),
     }),
 }));
 

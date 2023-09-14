@@ -5,6 +5,7 @@ import APIProvider from '../APIProvider';
 import useMutation from '../useMutation';
 
 jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
     useWS: () => ({
         send: jest.fn(() =>
             Promise.resolve<TSocketResponse<'verify_email'>>({

@@ -173,7 +173,7 @@ describe('ContractUpdateForm', () => {
         expect(new_props.contract.onChange).toHaveBeenCalled();
     });
     it(`should render unchecked Take profit & Stop loss inputs with checkboxes and disabled Apply button
-        for Multipliers when neither take profit, nor stop loss is not selected or applied`, () => {
+        for Multipliers when neither take profit, nor stop loss is selected or applied`, () => {
         const new_props = {
             ...mock_props,
             contract: {

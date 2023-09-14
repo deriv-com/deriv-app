@@ -3,13 +3,14 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { DynamicLeverageContext } from '../../dynamic-leverage/dynamic-leverage-context';
 import JurisdictionModalTitle from '../jurisdiction-modal-title';
+import { TCFDsPlatformType } from 'Components/props.types';
 
 type TMockProps = {
     is_dynamic_leverage_visible: boolean;
     toggleDynamicLeverage: React.MouseEventHandler<HTMLSpanElement>;
     account_type: string;
     show_eu_related_content: boolean;
-    platform: string;
+    platform: any;
 };
 
 const mock_props = {

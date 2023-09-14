@@ -50,7 +50,8 @@ const PersonalDetailsForm = props => {
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
 
-    const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched } = useFormikContext();
+    const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched, initialValues } =
+        useFormikContext();
 
     React.useEffect(() => {
         if (should_close_tooltip) {
@@ -413,7 +414,7 @@ const PersonalDetailsForm = props => {
                                         setFieldValue={setFieldValue}
                                         disabled={
                                             isFieldImmutable('tax_residence', editable_fields) ||
-                                            (values?.tax_residence && has_real_account)
+                                            (initialValues?.tax_residence && has_real_account)
                                         }
                                         residence_list={residence_list}
                                         required
@@ -429,7 +430,7 @@ const PersonalDetailsForm = props => {
                                         setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                                         disabled={
                                             isFieldImmutable('tax_identification_number', editable_fields) ||
-                                            (values?.tax_identification_number && has_real_account)
+                                            (initialValues?.tax_identification_number && has_real_account)
                                         }
                                         required
                                     />

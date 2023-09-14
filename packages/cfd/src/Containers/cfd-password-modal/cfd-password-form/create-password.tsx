@@ -3,7 +3,7 @@ import { Formik, FormikErrors } from 'formik';
 import { Icon, Text, PasswordMeter, PasswordInput, FormSubmitButton } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { CFD_PLATFORMS, getErrorMessages, getCFDPlatformLabel } from '@deriv/shared';
-import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from '../cfd-password-modal';
+import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from '../../props.types';
 
 type TCreatePasswordProps = TCFDPasswordFormReusedProps & {
     password: string;

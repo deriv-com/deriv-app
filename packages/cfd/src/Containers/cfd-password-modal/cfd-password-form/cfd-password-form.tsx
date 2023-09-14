@@ -8,9 +8,13 @@ import {
     getDxCompanies,
     getFormattedJurisdictionCode,
 } from '../../../Stores/Modules/CFD/Helpers/cfd-config';
-import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from '../cfd-password-modal';
-import PasswordStep from './password-step';
 import { observer, useStore } from '@deriv/stores';
+import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from '../../props.types';
+import {
+    getButtonLabel,
+    getCancelButtonLabel,
+} from '../../../Constants/cfd-password-modal-content/cfd-password-modal-content';
+import PasswordStep from './password-step';
 
 type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     account_title: string;
@@ -83,27 +87,10 @@ const CFDPasswordForm = observer(
     }: TCFDPasswordFormProps) => {
         const { ui } = useStore();
         const { is_mobile } = ui;
-        const button_label = React.useMemo(() => {
-            if (error_type === 'PasswordReset') {
-                return localize('Try later');
-            }
-            return localize('Add account');
-        }, [error_type]);
 
-        const getCancelButtonLabel = ({
-            should_set_trading_password,
-            error_type,
-        }: Pick<TCFDPasswordFormProps, 'should_set_trading_password' | 'error_type'>) => {
-            if (should_set_trading_password && error_type !== 'PasswordReset') {
-                return !is_mobile ? null : localize('Cancel');
-            }
-
-            return localize('Forgot password?');
-        };
-
+        const button_label = getButtonLabel(error_type);
         const has_cancel_button = (!is_mobile ? !should_set_trading_password : true) || error_type === 'PasswordReset';
-
-        const cancel_button_label = getCancelButtonLabel({ should_set_trading_password, error_type });
+        const cancel_button_label = getCancelButtonLabel({ should_set_trading_password, error_type, is_mobile });
 
         const handleCancel = () => {
             if (!has_cancel_button) {
@@ -195,7 +182,6 @@ const CFDPasswordForm = observer(
                                             i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} {{jurisdiction_shortcode}} account.'
                                             values={{
                                                 platform: getCFDPlatformLabel(platform),
-                                                // account: !show_eu_related_content ? account_title : '',
                                                 platform_name:
                                                     platform === CFD_PLATFORMS.MT5
                                                         ? 'MT5'
@@ -212,7 +198,6 @@ const CFDPasswordForm = observer(
                                             i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} account.'
                                             values={{
                                                 platform: getCFDPlatformLabel(platform),
-                                                // account: account_title,
                                                 platform_name:
                                                     platform === CFD_PLATFORMS.MT5
                                                         ? 'MT5'

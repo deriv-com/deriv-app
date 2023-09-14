@@ -2,9 +2,9 @@ import React from 'react';
 import { FormikErrors, FormikHelpers } from 'formik';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import { MultiStep } from '@deriv/components';
-import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from '../cfd-password-modal';
 import ChangePasswordConfirmation from '../../cfd-change-password-confirmation';
 import CreatePassword from './create-password';
+import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from '../../props.types';
 
 type TPasswordStepProps = TCFDPasswordFormReusedProps & {
     has_mt5_account: boolean;

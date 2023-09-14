@@ -10,17 +10,16 @@ import './wallet-cfd-card.scss';
 const WalletCFDCard = ({ wallet }: { wallet: TWalletCFDCard }) => {
     const { account_title, currency, gradient_header_class, icon, is_demo, type, balance } = wallet;
 
-    // TODO: Update with other platform and CFDs
     let app_icon = '';
     switch (type) {
         case 'synthetic':
-            app_icon = 'IcAppstoreDerived';
+            app_icon = 'IcRebrandingMt5DerivedDashboard';
             break;
         case 'all':
-            app_icon = 'IcAppstoreSwapFree';
+            app_icon = 'IcRebrandingMt5SwapFree';
             break;
         case 'financial':
-            app_icon = 'IcAppstoreFinancial';
+            app_icon = 'IcRebrandingMt5FinancialDashboard';
             break;
         default:
             app_icon = '';

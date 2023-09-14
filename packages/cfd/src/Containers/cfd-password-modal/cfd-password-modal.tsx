@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { FormikErrors, FormikHelpers } from 'formik';
+import { FormikErrors } from 'formik';
 import { SentEmailModal } from '@deriv/account';
 import { MobileDialog, Modal, WalletCFDSuccessDialog } from '@deriv/components';
 import {
@@ -33,19 +33,7 @@ import PasswordModalMessage from './modal-elements/password-modal-message';
 import SuccessModalIcons from './modal-elements/success-modal-icons';
 import SuccessDialog from '../../Components/success-dialog.jsx';
 import '../../sass/cfd.scss';
-
-export type TCFDPasswordFormValues = { password: string };
-
-export type TOnSubmitPassword = (
-    values: TCFDPasswordFormValues,
-    actions: FormikHelpers<TCFDPasswordFormValues>
-) => void;
-
-export type TCFDPasswordFormReusedProps = {
-    platform: string;
-    error_message: string;
-    validatePassword: (values: TCFDPasswordFormValues) => FormikErrors<TCFDPasswordFormValues>;
-};
+import { TCFDPasswordFormValues, TOnSubmitPassword } from '../props.types';
 
 type TCFDPasswordModalProps = {
     error_type?: string;
@@ -96,6 +84,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const error_message = error && error.message;
     const is_password_error = !!error && error.code === 'PasswordError';
     const is_password_reset = !!error && error.code === 'PasswordReset';
+
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
     let market_type_account: 'all' | 'financial' | 'gaming' | 'demo';

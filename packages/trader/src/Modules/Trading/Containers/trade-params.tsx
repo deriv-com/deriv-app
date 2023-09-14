@@ -40,7 +40,7 @@ const TradeParams = observer(({ is_minimized }: TTradeParams) => {
                     {isVisible('barrier_selector') && <BarrierSelector key={'barrier_selector'} />}
                 </Fieldset>
             )}
-            {isVisible('amount') && <Amount key={'amount'} is_minimized={is_minimized as boolean} />}
+            {isVisible('amount') && <Amount key={'amount'} is_minimized={is_minimized} />}
             {isVisible('take_profit') && <TakeProfit key={'take_profit'} />}
             {isVisible('stop_loss') && <StopLoss key={'stop_loss'} />}
             {isVisible('cancellation') && <CancelDeal key={'cancellation'} />}

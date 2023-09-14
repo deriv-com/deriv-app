@@ -55,7 +55,7 @@ export const Input = ({
     />
 );
 
-const Amount = observer(({ is_minimized }: { is_minimized: boolean }) => {
+const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) => {
     const { ui, client } = useStore();
     const { currencies_list, is_single_currency } = client;
     const { setCurrentFocus, current_focus } = ui;

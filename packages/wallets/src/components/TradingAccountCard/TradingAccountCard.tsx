@@ -11,7 +11,7 @@ type TProps = {
 const TradingAccountCard: React.FC<TProps> = ({ description, icon, title }) => {
     return (
         <div className='wallets-trading-account-card'>
-            {icon}
+            <div className='wallets-trading-account-card__icon'>{icon}</div>
             <div className='wallets-trading-account-card__content'>
                 <div className='wallets-trading-account-card__details'>
                     <p className='wallets-trading-account-card__details-title'>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { MT5List } from '../MT5List';
 import './CFDList.scss';
 
 const CFDList = () => {
@@ -6,7 +7,7 @@ const CFDList = () => {
         <div className='wallets-cfd-list'>
             <section className='wallets-cfd-list__header'>
                 <div className='wallets-cfd-list__header-title'>
-                    <h1> CFDs</h1>
+                    <h1>CFDs</h1>
                 </div>
                 <div className='wallets-cfd-list__header-description'>
                     <h1>
@@ -17,6 +18,7 @@ const CFDList = () => {
                     </h1>
                 </div>
             </section>
+            <MT5List />
         </div>
     );
 };

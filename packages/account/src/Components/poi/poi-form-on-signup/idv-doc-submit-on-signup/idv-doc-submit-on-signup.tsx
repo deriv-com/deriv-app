@@ -8,7 +8,7 @@ import { filterObjProperties, toMoment, removeEmptyPropertiesFromObject } from '
 import PoiNameDobExample from '../../../../Assets/ic-poi-name-dob-example.svg';
 import FormSubHeader from '../../../form-sub-header';
 import IDVForm from '../../../forms/idv-form';
-import PersonalDetailsForm from '../../../forms/personal-details-form';
+import PersonalDetailsForm from '../../../forms/personal-details-form.jsx';
 import FormFooter from '../../../form-footer';
 import {
     validate,

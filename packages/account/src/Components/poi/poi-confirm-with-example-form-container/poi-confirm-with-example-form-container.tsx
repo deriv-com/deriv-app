@@ -15,7 +15,7 @@ import {
 import PoiNameDobExample from '../../../Assets/ic-poi-name-dob-example.svg';
 import FormBody from '../../form-body';
 import LoadErrorMessage from '../../load-error-message';
-import PersonalDetailsForm from '../../forms/personal-details-form';
+import PersonalDetailsForm from '../../forms/personal-details-form.jsx';
 import { GENERIC_ERROR_MESSAGE, DUPLICATE_ACCOUNT_ERROR_MESSAGE } from '../../../Configs/poi-error-config';
 import { API_ERROR_CODES } from '../../../Constants/api-error-codes';
 import { makeSettingsRequest, validate, validateName } from '../../../Helpers/utils';

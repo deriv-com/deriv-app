@@ -28,7 +28,7 @@ import FormBody from '../../../form-body';
 import IDVForm from '../../../forms/idv-form';
 import FormFooter from '../../../form-footer';
 import FormSubHeader from '../../../form-sub-header';
-import PersonalDetailsForm from '../../../forms/personal-details-form';
+import PersonalDetailsForm from '../../../forms/personal-details-form.jsx';
 import {
     getIDVDocumentType,
     isAdditionalDocumentValid,

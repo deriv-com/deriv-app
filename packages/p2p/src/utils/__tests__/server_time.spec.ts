@@ -35,8 +35,8 @@ describe('server_time', () => {
 
     it('should call requestTime every 30 seconds when calling init', () => {
         init();
-        jest.advanceTimersByTime(30000);
-        expect(WS.send).toHaveBeenCalledTimes(1);
+        jest.advanceTimersByTime(60000);
+        expect(WS.send).toHaveBeenCalledTimes(2);
     });
 
     it('should return server_time when calling get', () => {

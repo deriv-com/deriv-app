@@ -32,7 +32,8 @@ const BuySellTable = ({ onScroll }) => {
         client: { currency },
     } = useStore();
 
-    const { error, has_more_items_to_load, isError, isLoading, loadMore, rendered_adverts } = useP2PRenderedAdverts();
+    const { error, has_more_items_to_load, isError, isLoading, loadMoreAdverts, rendered_adverts } =
+        useP2PRenderedAdverts();
 
     React.useEffect(
         () => {
@@ -116,9 +117,9 @@ const BuySellTable = ({ onScroll }) => {
                             data_list_className='buy-sell__data-list'
                             items={rendered_adverts}
                             rowRenderer={props => <BuySellRowRenderer {...props} />}
-                            loadMoreRowsFn={() => {
+                            loadMoreRowsFn={({ startIndex }) => {
                                 return new Promise(resolve => {
-                                    loadMore();
+                                    loadMoreAdverts(startIndex);
                                     resolve();
                                 });
                             }}

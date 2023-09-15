@@ -16,7 +16,7 @@ const useP2PAdvertiserAdverts = () => {
 
     const {
         data: adverts = [],
-        loadMore: loadMoreAdvertiserAdverts,
+        loadMoreAdverts: loadMoreAdvertiserAdverts,
         ...rest
     } = useP2PAdvertList({
         counterparty_type: advertiser_page_store.counterparty_type,

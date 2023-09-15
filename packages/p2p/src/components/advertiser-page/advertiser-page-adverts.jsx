@@ -64,9 +64,9 @@ const AdvertiserPageAdverts = () => {
                                     items={adverts}
                                     keyMapperFn={item => item.id}
                                     rowRenderer={AdvertiserPageRowRenderer}
-                                    loadMoreRowsFn={() => {
+                                    loadMoreRowsFn={({ startIndex }) => {
                                         return new Promise(resolve => {
-                                            loadMoreAdvertiserAdverts();
+                                            loadMoreAdvertiserAdverts(startIndex);
                                             resolve();
                                         });
                                     }}

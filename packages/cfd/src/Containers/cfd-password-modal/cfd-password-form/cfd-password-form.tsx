@@ -5,13 +5,14 @@ import { Text, FormSubmitButton, PasswordMeter, PasswordInput } from '@deriv/com
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from '../../props.types';
+import { getAccountTitle } from '../../../Constants/cfd-password-modal-content/cfd-password-modal-content';
 import {
-    getAccountTitle,
     getButtonLabel,
     getCancelButtonLabel,
-    hasCancelButton,
-    showJurisdiction,
-} from '../../../Constants/cfd-password-modal-content/cfd-password-modal-content';
+} from '../../../Constants/cfd-password-modal-content/cfd-password-modal-strings';
+
+import { getFormattedJurisdictionCode } from '../../../Stores/Modules/CFD/Helpers/cfd-config';
+
 import PasswordStep from './password-step';
 
 type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
@@ -70,8 +71,17 @@ const CFDPasswordForm = observer(
         const { is_mobile } = ui;
 
         const button_label = getButtonLabel(error_type);
-        const has_cancel_button = hasCancelButton({ should_set_trading_password, error_type, is_mobile });
+        const has_cancel_button = (!is_mobile ? !should_set_trading_password : true) || error_type === 'PasswordReset';
         const cancel_button_label = getCancelButtonLabel({ should_set_trading_password, error_type, is_mobile });
+
+        const showJurisdiction = () => {
+            if (platform === CFD_PLATFORMS.DXTRADE) {
+                return '';
+            } else if (!show_eu_related_content) {
+                return getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
+            }
+            return 'CFDs';
+        };
 
         const handleCancel = () => {
             if (!has_cancel_button) {
@@ -161,11 +171,7 @@ const CFDPasswordForm = observer(
                                                 account: !show_eu_related_content
                                                     ? getAccountTitle(platform, account_type, account_title)
                                                     : '',
-                                                jurisdiction_shortcode: showJurisdiction(
-                                                    platform,
-                                                    show_eu_related_content,
-                                                    jurisdiction_selected_shortcode
-                                                ),
+                                                jurisdiction_shortcode: showJurisdiction(),
                                             }}
                                         />
                                     )}

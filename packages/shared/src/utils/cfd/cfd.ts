@@ -236,6 +236,13 @@ export const getCFDPlatformLabel = (platform: TPlatform) => {
     }
 };
 
+export const getCategoryText = (category: 'real' | 'demo') => {
+    if (category === 'real') {
+        return localize('real');
+    }
+    return localize('demo');
+};
+
 type TIsLandingCompanyEnabled = {
     landing_companies: LandingCompany;
     platform: TPlatform;

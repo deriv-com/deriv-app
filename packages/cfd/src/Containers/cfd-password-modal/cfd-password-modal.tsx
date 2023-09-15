@@ -32,10 +32,8 @@ import {
 import PasswordModalMessage from './modal-elements/password-modal-message';
 import SuccessModalIcons from './modal-elements/success-modal-icons';
 import SuccessDialog from '../../Components/success-dialog.jsx';
-import {
-    getWalletAppIcon,
-    getWalletAccountTitle,
-} from '../../Constants/cfd-password-modal-content/cfd-password-modal-content';
+import { getWalletAppIcon } from '../../Constants/cfd-password-modal-content/cfd-password-modal-content';
+import { getWalletAccountTitle } from '../../Constants/cfd-password-modal-content/cfd-password-modal-strings';
 import { TCFDPasswordFormValues, TOnSubmitPassword } from '../props.types';
 import '../../sass/cfd.scss';
 

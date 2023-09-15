@@ -5,7 +5,8 @@
         align-items: flex-start;
         width: 100%;
         border-radius: 16px;
-        background: inherit;
+        background: none;
+        z-index: 10;
     }
 
     &__content {

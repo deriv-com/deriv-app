@@ -43,7 +43,7 @@ const MobileWidget = observer(
                 onChangeUiStore({ name: `duration_${duration_unit}`, value: min_value });
                 onChange({ target: { name: 'duration', value: min_value } });
             }
-            if (!(duration < Number(min_value)) && duration > Number(max_value)) {
+            if (duration >= Number(min_value) && duration > Number(max_value)) {
                 onChangeUiStore({ name: `duration_${duration_unit}`, value: max_value });
                 onChange({ target: { name: 'duration', value: max_value } });
             }

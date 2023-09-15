@@ -1,10 +1,14 @@
 import React from 'react';
 import { CFD_PLATFORMS, getCFDPlatformLabel, Jurisdiction, getCategoryText } from '@deriv/shared';
-import { getFormattedJurisdictionCode } from '../../../Stores/Modules/CFD/Helpers/cfd-config';
 import {
-    getMt5PlatformLabel,
-    getTypeLabel,
-} from '../../../Constants/cfd-password-modal-content/cfd-password-modal-strings';
+    getDerivezCompanies,
+    getDxCompanies,
+    getFormattedJurisdictionCode,
+    getMtCompanies,
+    TDerivezCompanies,
+    TDxCompanies,
+    TMtCompanies,
+} from '../../../Stores/Modules/CFD/Helpers/cfd-config';
 import { Localize } from '@deriv/translations';
 
 type TReviewMsgForMT5 = {
@@ -55,17 +59,34 @@ const PasswordModalMessage = ({
 }: TPasswordModalMessage) => {
     if (!category && !type) return null;
 
-    const category_label = category && getCategoryText(category);
-    const type_label =
-        platform &&
-        category &&
-        type &&
-        show_eu_related_content &&
-        getTypeLabel({ platform, category, is_eu: show_eu_related_content, type });
+    const category_label = getCategoryText(category);
+    let type_label = '';
+    switch (platform) {
+        case CFD_PLATFORMS.MT5:
+            type_label =
+                getMtCompanies(show_eu_related_content)[category as keyof TMtCompanies][
+                    type as keyof TMtCompanies['demo' | 'real']
+                ].short_title;
+            break;
+        case CFD_PLATFORMS.DXTRADE:
+            type_label =
+                getDxCompanies()[category as keyof TDxCompanies][type as keyof TDxCompanies['demo' | 'real']]
+                    .short_title;
+            break;
+        case CFD_PLATFORMS.DERIVEZ:
+            type_label =
+                getDerivezCompanies()[category as keyof TDerivezCompanies][
+                    type as keyof TDerivezCompanies['demo' | 'real']
+                ].short_title;
+            break;
+        default:
+            type_label = '';
+            break;
+    }
 
     const jurisdiction_label =
         jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
-    const mt5_platform_label = jurisdiction_selected_shortcode && getMt5PlatformLabel(jurisdiction_selected_shortcode);
+    const mt5_platform_label = jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'Deriv MT5' : '';
 
     if (category === 'real') {
         return (

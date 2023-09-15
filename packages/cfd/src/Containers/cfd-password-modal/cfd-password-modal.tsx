@@ -22,8 +22,7 @@ import PasswordModalHeader from './modal-elements/password-modal-header';
 import PasswordModalMessage from './modal-elements/password-modal-message';
 import SuccessDialog from '../../Components/success-dialog.jsx';
 import SuccessModalIcons from './modal-elements/success-modal-icons';
-import { getWalletCFDTitle } from '../../Constants/cfd-password-modal-content/cfd-password-modal-strings';
-import { getWalletAppIcon } from '../../Constants/cfd-password-modal-content/cfd-password-modal-content';
+import { PASSWORD_ERRORS, getWalletCFDInfo } from '../../Constants/cfd-password-modal-constants';
 import { useInvalidateQuery } from '@deriv/api';
 import { TCFDPasswordFormValues, TOnSubmitPassword } from '../props.types';
 import '../../sass/cfd.scss';
@@ -80,8 +79,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         account_status.status.includes(
             platform === CFD_PLATFORMS.MT5 ? 'mt5_password_not_set' : 'dxtrade_password_not_set'
         );
-    const is_password_error = error_type === 'PasswordError';
-    const is_password_reset = error_type === 'PasswordReset';
+    const is_password_error = error_type === PASSWORD_ERRORS.ERROR;
+    const is_password_reset = error_type === PASSWORD_ERRORS.RESET;
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
     const { poi_verified_for_bvi_labuan_vanuatu, poi_verified_for_maltainvest, poa_verified, manual_status } =
@@ -308,7 +307,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     <Localize
                         i18n_default_text='Your {{account_title}} demo account is ready'
                         values={{
-                            account_title: getWalletCFDTitle(account_type.type),
+                            account_title: getWalletCFDInfo(account_type.type).title,
                         }}
                     />
                 ) : (
@@ -319,8 +318,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     };
 
     const cfd_details = {
-        app_icon: getWalletAppIcon(account_type.type),
-        account_title: getWalletCFDTitle(account_type.type),
+        app_icon: getWalletCFDInfo(account_type.type).icon,
+        account_title: getWalletCFDInfo(account_type.type).title,
         currency: active_wallet?.currency,
         gradient_header_class: active_wallet?.gradient_header_class,
         icon: active_wallet?.icon,
@@ -346,7 +345,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                             show_eu_related_content={show_eu_related_content}
                             type={account_type.type}
                             is_wallet_enabled={is_wallet_enabled}
-                            wallet_account_title={getWalletCFDTitle(account_type.type)}
+                            wallet_account_title={getWalletCFDInfo(account_type.type).title}
                         />
                     }
                     onSubmit={closeModal}
@@ -373,7 +372,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                             show_eu_related_content={show_eu_related_content}
                             type={account_type.type}
                             is_wallet_enabled={is_wallet_enabled}
-                            wallet_account_title={getWalletCFDTitle(account_type.type)}
+                            wallet_account_title={getWalletCFDInfo(account_type.type).title}
                         />
                     }
                     icon={

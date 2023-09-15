@@ -3,16 +3,15 @@ import { Formik, FormikErrors } from 'formik';
 import { getLegalEntityName, getErrorMessages, getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
 import { Text, FormSubmitButton, PasswordMeter, PasswordInput } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { getFormattedJurisdictionCode } from '../../../Stores/Modules/CFD/Helpers/cfd-config';
+import {
+    TDxCompanies,
+    getDxCompanies,
+    getFormattedJurisdictionCode,
+} from '../../../Stores/Modules/CFD/Helpers/cfd-config';
 import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from '../../props.types';
+import { PASSWORD_ERRORS } from '../../../Constants/cfd-password-modal-constants';
 import PasswordStep from './password-step';
 import { observer, useStore } from '@deriv/stores';
-import {
-    getAccountTitle,
-    getButtonLabel,
-    getCancelButtonLabel,
-} from '../../../Constants/cfd-password-modal-content/cfd-password-modal-strings';
-import { hasCancelButton } from '../../../Constants/cfd-password-modal-content/cfd-password-modal-content';
 
 type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     account_title: string;
@@ -33,6 +32,23 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     should_set_trading_password: boolean;
     show_eu_related_content: boolean;
     submitPassword: TOnSubmitPassword;
+};
+
+const getAccountTitle = (
+    platform: string,
+    account_type: {
+        category?: string;
+        type?: string;
+    },
+    account_title: string
+) => {
+    if (platform === CFD_PLATFORMS.DXTRADE) {
+        return getDxCompanies()[account_type.category as keyof TDxCompanies][
+            account_type.type as keyof TDxCompanies['demo' | 'real']
+        ].short_title;
+    }
+
+    return account_title;
 };
 
 const handlePasswordInputChange = (
@@ -69,11 +85,27 @@ const CFDPasswordForm = observer(
         const { ui } = useStore();
         const { is_mobile } = ui;
 
-        const button_label = getButtonLabel(error_type);
+        const button_label = React.useMemo(() => {
+            if (error_type === PASSWORD_ERRORS.RESET) {
+                return localize('Try later');
+            }
+            return localize('Add account');
+        }, [error_type]);
 
-        const has_cancel_button = hasCancelButton({ should_set_trading_password, error_type, is_mobile });
+        const getCancelButtonLabel = ({
+            should_set_trading_password,
+            error_type,
+        }: Pick<TCFDPasswordFormProps, 'should_set_trading_password' | 'error_type'>) => {
+            if (should_set_trading_password && error_type !== PASSWORD_ERRORS.RESET) {
+                return !is_mobile ? null : localize('Cancel');
+            }
 
-        const cancel_button_label = getCancelButtonLabel({ should_set_trading_password, error_type, is_mobile });
+            return localize('Forgot password?');
+        };
+
+        const has_cancel_button = !is_mobile && (!should_set_trading_password || error_type !== 'trading_password');
+
+        const cancel_button_label = getCancelButtonLabel({ should_set_trading_password, error_type });
 
         const handleCancel = () => {
             if (!has_cancel_button) {
@@ -86,7 +118,7 @@ const CFDPasswordForm = observer(
             return onForgotPassword();
         };
 
-        if (error_type === 'PasswordReset') {
+        if (error_type === PASSWORD_ERRORS.RESET) {
             return (
                 <React.Fragment>
                     <div className='cfd-password-reset'>
@@ -127,7 +159,7 @@ const CFDPasswordForm = observer(
             );
         }
 
-        const showJuristiction = () => {
+        const showJurisdiction = () => {
             if (platform === CFD_PLATFORMS.DXTRADE) {
                 return '';
             } else if (!show_eu_related_content) {
@@ -173,7 +205,7 @@ const CFDPasswordForm = observer(
                                                 account: !show_eu_related_content
                                                     ? getAccountTitle(platform, account_type, account_title)
                                                     : '',
-                                                jurisdiction_shortcode: showJuristiction(),
+                                                jurisdiction_shortcode: showJurisdiction(),
                                             }}
                                         />
                                     )}

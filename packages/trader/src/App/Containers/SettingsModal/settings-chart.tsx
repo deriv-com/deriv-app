@@ -31,7 +31,9 @@ const ChartSettings = observer(() => {
                 </MediaHeading>
                 <MediaDescription>
                     <MediaIcon
+                        //@ts-expect-error MediaIcon needs to be ts migrated
                         disabled={is_dark_mode ? IntervalDurationDisabledDarkIcon : IntervalDurationDisabledLightIcon}
+                        //@ts-expect-error MediaIcon needs to be ts migrated
                         enabled={is_dark_mode ? IntervalDurationEnabledDarkIcon : IntervalDurationEnabledLightIcon}
                         id='dt_settings_interval_image'
                         is_enabled={is_countdown_visible}
@@ -42,7 +44,9 @@ const ChartSettings = observer(() => {
                             defaultChecked={is_countdown_visible}
                             label={localize('Display remaining time for each interval')}
                             onChange={e => {
-                                setCountdown(e.target.checked);
+                                if ('checked' in e.target) {
+                                    setCountdown(e.target.checked);
+                                }
                             }}
                         />
                     </div>

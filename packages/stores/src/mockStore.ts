@@ -303,6 +303,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             notification_messages_ui: jest.fn(),
             openRealAccountSignup: jest.fn(),
             onChangeUiStore: jest.fn(),
+            setChartCountdown: jest.fn(),
             setHasOnlyForwardingContracts: jest.fn(),
             setIsClosingCreateRealAccountModal: jest.fn(),
             setRealAccountSignupEnd: jest.fn(),
@@ -353,6 +354,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_reset_trading_password_modal_visible: false,
             setResetTradingPasswordModalOpen: jest.fn(),
             vanilla_trade_type: 'VANILLALONGCALL',
+            is_chart_countdown_visible: false,
         },
         traders_hub: {
             getAccount: jest.fn(),

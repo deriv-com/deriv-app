@@ -643,7 +643,7 @@ const PlaceOfBirthField = ({ handleChange, setFieldValue, disabled, residence_li
 const TaxResidenceField = ({
     setFieldValue,
     residence_list,
-    required,
+    required = false,
     setIsTaxResidencePopoverOpen,
     setIsTinPopoverOpen,
     is_tax_residence_popover_open,
@@ -665,6 +665,7 @@ const TaxResidenceField = ({
                         list_portal_id='modal_root'
                         data-testid='tax_residence'
                         disabled={disabled}
+                        required={required}
                     />
                 </DesktopWrapper>
                 <MobileWrapper>
@@ -681,7 +682,7 @@ const TaxResidenceField = ({
                             setFieldValue('tax_residence', e.target.value, true);
                         }}
                         {...field}
-                        required
+                        required={required}
                         data_testid='tax_residence_mobile'
                         disabled={disabled}
                     />
@@ -715,7 +716,7 @@ const TaxIdentificationNumberField = ({
     setIsTinPopoverOpen,
     setIsTaxResidencePopoverOpen,
     disabled,
-    required,
+    required = false,
 }) => (
     <div className='details-form__tax'>
         <FormInputField
@@ -724,6 +725,7 @@ const TaxIdentificationNumberField = ({
             placeholder={localize('Tax Identification Number')}
             data-testid='tax_identification_number'
             disabled={disabled}
+            required={required}
         />
         <div
             data-testid='tax_identification_number_pop_over'

@@ -1,6 +1,6 @@
 import { DetailsOfEachMT5Loginid, Mt5NewAccount, VerifyEmailResponse } from '@deriv/api-types';
 import { TTradingPlatformAvailableAccount } from 'Components/props.types';
-import { TCFDPasswordFormValues } from 'Containers/cfd-password-modal/cfd-password-modal';
+import { TCFDPasswordFormValues } from 'Containers/props.types';
 import { TDerivezCompanies, TDxCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 import { FormikHelpers } from 'formik';
 

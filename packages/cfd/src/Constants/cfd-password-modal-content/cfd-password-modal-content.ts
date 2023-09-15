@@ -11,3 +11,7 @@ export const getWalletAppIcon = (type: string) => {
             return '';
     }
 };
+
+export const hasCancelButton = (is_mobile: boolean, should_set_trading_password: boolean, error_type: string) => {
+    return !is_mobile && (!should_set_trading_password || error_type !== 'trading_password');
+};

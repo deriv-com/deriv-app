@@ -1,14 +1,12 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { FormikErrors, FormikHelpers } from 'formik';
+import { FormikErrors } from 'formik';
 import { SentEmailModal } from '@deriv/account';
 import { MobileDialog, Modal, WalletCFDSuccessDialog } from '@deriv/components';
 import {
     CFD_PLATFORMS,
     getAuthenticationStatusInfo,
     getErrorMessages,
-    isMobile,
-    isDesktop,
     Jurisdiction,
     routes,
     validLength,
@@ -37,7 +35,7 @@ type TCFDPasswordModalProps = {
 };
 
 const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalProps) => {
-    const { client, traders_hub } = useStore();
+    const { client, traders_hub, ui } = useStore();
 
     const {
         account_status,
@@ -49,6 +47,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         updateAccountStatus,
     } = client;
     const { show_eu_related_content } = traders_hub;
+    const { is_mobile } = ui;
 
     const {
         account_title,
@@ -72,7 +71,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const { is_wallet_enabled } = useFeatureFlags();
     const active_wallet = useActiveWallet();
     const invalidate = useInvalidateQuery();
-    const { type, category } = account_type;
 
     const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);
     const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
@@ -215,17 +213,17 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const should_show_password_modal = React.useMemo(() => {
         if (should_show_password) {
-            return should_set_trading_password ? true : isDesktop();
+            return should_set_trading_password ? true : !is_mobile;
         }
         return false;
-    }, [should_set_trading_password, should_show_password]);
+    }, [is_mobile, should_set_trading_password, should_show_password]);
 
     const should_show_password_dialog = React.useMemo(() => {
         if (should_show_password) {
-            if (!should_set_trading_password) return isMobile();
+            if (!should_set_trading_password) return is_mobile;
         }
         return false;
-    }, [should_set_trading_password, should_show_password]);
+    }, [is_mobile, should_set_trading_password, should_show_password]);
 
     const success_modal_submit_label = React.useMemo(() => {
         if (account_type.category === 'real') {
@@ -277,7 +275,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             onUnmount={() => getAccountStatus(platform)}
             onExited={() => setPasswordModalExited(true)}
             onEntered={() => setPasswordModalExited(false)}
-            width={isMobile() ? '32.8rem' : 'auto'}
+            width={is_mobile ? '32.8rem' : 'auto'}
         >
             {cfd_password_form}
         </Modal>
@@ -302,15 +300,14 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         </MobileDialog>
     );
 
-    const getWalletHeader = (account_type: { category: string; type: string }) => {
-        const { type, category } = account_type;
+    const getWalletHeader = () => {
         return (
             <React.Fragment>
-                {category === 'demo' ? (
+                {account_type.category === 'demo' ? (
                     <Localize
                         i18n_default_text='Your {{account_title}} demo account is ready'
                         values={{
-                            account_title: getWalletCFDTitle(type),
+                            account_title: getWalletCFDTitle(account_type.type),
                         }}
                     />
                 ) : (
@@ -321,13 +318,12 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     };
 
     const cfd_details = {
-        app_icon: getWalletAppIcon(type),
-        account_title: getWalletCFDTitle(type),
+        app_icon: getWalletAppIcon(account_type.type),
+        account_title: getWalletCFDTitle(account_type.type),
         currency: active_wallet?.currency,
         gradient_header_class: active_wallet?.gradient_header_class,
         icon: active_wallet?.icon,
         is_demo: active_wallet?.is_demo,
-        type,
     };
 
     return (
@@ -335,21 +331,21 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             {password_modal}
             {password_dialog}
             {/* TODO: Remove this once development is completed */}
-            {is_wallet_enabled && category === 'demo' && platform === CFD_PLATFORMS.MT5 ? (
+            {is_wallet_enabled && account_type.category === 'demo' && platform === CFD_PLATFORMS.MT5 ? (
                 <WalletCFDSuccessDialog
-                    header={getWalletHeader(account_type)}
+                    header={getWalletHeader()}
                     is_open={should_show_success}
                     message={
                         <PasswordModalMessage
-                            category={category}
+                            category={account_type.category}
                             is_selected_mt5_verified={is_selected_mt5_verified}
                             jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                             manual_status={manual_status}
                             platform={platform}
                             show_eu_related_content={show_eu_related_content}
-                            type={type}
+                            type={account_type.type}
                             is_wallet_enabled={is_wallet_enabled}
-                            wallet_account_title={getWalletCFDTitle(type)}
+                            wallet_account_title={getWalletCFDTitle(account_type.type)}
                         />
                     }
                     onSubmit={closeModal}
@@ -368,15 +364,15 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     classNameMessage='cfd-password-modal__message'
                     message={
                         <PasswordModalMessage
-                            category={category}
+                            category={account_type.category}
                             is_selected_mt5_verified={is_selected_mt5_verified}
                             jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                             manual_status={manual_status}
                             platform={platform}
                             show_eu_related_content={show_eu_related_content}
-                            type={type}
+                            type={account_type.type}
                             is_wallet_enabled={is_wallet_enabled}
-                            wallet_account_title={getWalletCFDTitle(type)}
+                            wallet_account_title={getWalletCFDTitle(account_type.type)}
                         />
                     }
                     icon={
@@ -394,8 +390,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                             : account_type.category === 'real'
                     }
                     has_close_icon={false}
-                    width={isMobile() ? '32.8rem' : 'auto'}
-                    is_medium_button={isMobile()}
+                    width={is_mobile ? '32.8rem' : 'auto'}
+                    is_medium_button={is_mobile}
                 />
             )}
             <SentEmailModal

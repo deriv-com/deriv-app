@@ -14,16 +14,17 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
+            font-size: 1.6rem;
 
             &--active {
-                font-weight: var(--text-weight-bold);
-                background-color: var(--general-main-1);
+                font-weight: bold;
+                background-color: #ffffff;
                 margin: 0.6rem;
                 border-radius: 5px;
             }
 
             &--disabled {
-                color: var(--text-disabled);
+                color: #999999;
             }
         }
     }

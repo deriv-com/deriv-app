@@ -4,10 +4,9 @@ import './TabList.scss';
 
 type TTabListProps = {
     list: string[];
-    text_size?: string;
 };
 
-export const TabList = ({ list, text_size = 's' }: TTabListProps) => {
+export const TabList = ({ list }: TTabListProps) => {
     const { active_tab_index, setActiveTabIndex } = useTabs();
 
     return (
@@ -19,9 +18,6 @@ export const TabList = ({ list, text_size = 's' }: TTabListProps) => {
                     }`}
                     key={i}
                     onClick={() => setActiveTabIndex(i)}
-                    style={{
-                        fontSize: `var(--text-size-${text_size})`,
-                    }}
                 >
                     {tab}
                 </div>

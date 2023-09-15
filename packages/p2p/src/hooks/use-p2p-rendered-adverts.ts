@@ -1,0 +1,82 @@
+import React from 'react';
+import { isMobile } from '@deriv/shared';
+import { useP2PAdvertList } from '@deriv/hooks';
+import { buy_sell } from 'Constants/buy-sell';
+import { useStores } from 'Stores/index';
+
+/**
+ * @name useP2PRenderedAdverts
+ *
+ * @description This custom hook returns paginated available adverts in a format that's ready to be rendered by calling 'p2p_advert_list' endpoint
+ * @returns {object} The returned object contains many fields, some of which are explained below:
+ * object.loadMore - A function to load more adverts.  (used by the InfiniteLoader @see https://github.com/bvaughn/react-virtualized/blob/master/docs/InfiniteLoader.md).
+ * object.has_more_adverts_to_load - Whether there are more adverts to load (used by the InfiniteLoader @see https://github.com/bvaughn/react-virtualized/blob/master/docs/InfiniteLoader.md).
+ * @example const { rendered_adverts, has_more_items_to_load, loadMore, ...rest } = useP2PRenderedAdverts();
+ *
+ * */
+const useP2PRenderedAdverts = () => {
+    const { general_store, buy_sell_store } = useStores();
+    const counterparty_type = buy_sell_store.is_buy ? buy_sell.BUY : buy_sell.SELL;
+
+    const { data: items = [], ...rest } = useP2PAdvertList({
+        counterparty_type,
+        limit: general_store.list_item_limit,
+        offset: 0,
+        sort_by: buy_sell_store.sort_by,
+        use_client_limits: buy_sell_store.should_use_client_limits ? 1 : 0,
+        ...(buy_sell_store.selected_payment_method_value.length > 0
+            ? { payment_method: buy_sell_store.selected_payment_method_value }
+            : {}),
+        ...(buy_sell_store.selected_local_currency ? { local_currency: buy_sell_store.selected_local_currency } : {}),
+    });
+
+    const has_more_items_to_load = items ? items?.length >= general_store.list_item_limit : false;
+    let rendered_adverts: DeepPartial<typeof items> = [];
+
+    // Filter out adverts based on the Buy/Sell toggle. If the toggle is set to Buy, only show Sell adverts and vice versa.
+    const filtered_items = React.useMemo(() => {
+        return items.filter(item =>
+            buy_sell_store.table_type === buy_sell.BUY ? item.type === buy_sell.SELL : item.type === buy_sell.BUY
+        );
+    }, [items, buy_sell_store.table_type]);
+
+    // Filter out adverts based on the search term. Btw, this causes a bug that's in production as well.
+    // If a user doesn't scroll to the bottom before searching, the items that fall outside of the limit won't be part of the search results.
+    // I think the searching should be done from BE side. :D
+    const search_results = React.useMemo(() => {
+        if (buy_sell_store.search_term) {
+            return items.filter(item =>
+                item.advertiser_details.name.toLowerCase().includes(buy_sell_store.search_term.toLowerCase().trim())
+            );
+        }
+    }, [buy_sell_store.search_term, items]);
+
+    if (isMobile()) {
+        if (buy_sell_store.search_term) {
+            rendered_adverts = [{ id: 'WATCH_THIS_SPACE' }, { id: 'NO_MATCH_ROW' }];
+            if (search_results && search_results.length > 0) {
+                rendered_adverts = [{ id: 'WATCH_THIS_SPACE' }, ...search_results];
+            }
+        } else {
+            // This allows for the sliding animation on the Buy/Sell toggle as it pushes
+            // an empty item with an item that holds the same height of the toggle container.
+            // Also see: buy-sell-row.jsx
+            rendered_adverts = [{ id: 'WATCH_THIS_SPACE' }, ...filtered_items];
+        }
+    } else {
+        rendered_adverts = filtered_items;
+        if (buy_sell_store.search_term) {
+            rendered_adverts = [{ id: 'NO_MATCH_ROW' }];
+            if (search_results && search_results.length > 0) {
+                rendered_adverts = search_results;
+            }
+        }
+    }
+    return {
+        rendered_adverts,
+        has_more_items_to_load,
+        ...rest,
+    };
+};
+
+export default useP2PRenderedAdverts;

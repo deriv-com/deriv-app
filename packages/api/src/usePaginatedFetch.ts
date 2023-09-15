@@ -17,11 +17,10 @@ const usePaginatedFetch = <T extends TSocketPaginateableEndpointNames>(
 
     // @ts-expect-error The `limit` parameter is always present in
     // the `payload` for the paginateable endpoints.
-    const limit: number = payload?.payload?.limit || 10;
+    const limit: number = payload?.limit || 10;
     // @ts-expect-error The `offset` parameter is always present in
     // the `payload` for the paginateable endpoints.
-    const [offset, setOffset] = useState<number>(payload?.payload?.offset || 0);
-
+    const [offset, setOffset] = useState<number>(payload?.offset || 0);
     // @ts-expect-error It's safe to ignore the TS error here since the
     // exact type of the payload is not determined at this point.
     const { remove, ...rest } = useFetch(name, {

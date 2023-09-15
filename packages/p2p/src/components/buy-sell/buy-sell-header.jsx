@@ -1,6 +1,5 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import debounce from 'lodash.debounce';
 import { ButtonToggle, Icon, SearchBox } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
@@ -26,36 +25,20 @@ const getBuySellFilters = () => [
 
 const BuySellHeader = ({ table_type }) => {
     const { buy_sell_store, general_store } = useStores();
-    const is_currency_selector_visible = general_store.feature_level >= 2;
 
-    const returnedFunction = debounce(() => {
-        buy_sell_store.loadMoreItems({ startIndex: 0 });
-    }, 1000);
+    const is_currency_selector_visible = general_store.feature_level >= 2;
 
     const onClear = () => {
         buy_sell_store.setSearchTerm('');
-        buy_sell_store.setSearchResults([]);
     };
 
     const onSearch = search => {
         buy_sell_store.setSearchTerm(search.trim());
-
-        if (!search.trim()) {
-            buy_sell_store.setSearchResults([]);
-            return;
-        }
-
-        buy_sell_store.setIsLoading(true);
-        returnedFunction();
     };
 
     React.useEffect(
         () => {
             buy_sell_store.setSearchTerm('');
-            buy_sell_store.setItems([]);
-            buy_sell_store.setIsLoading(true);
-            buy_sell_store.loadMoreItems({ startIndex: 0 });
-
             const interval = setInterval(() => {
                 buy_sell_store.getWebsiteStatus();
             }, 60000);

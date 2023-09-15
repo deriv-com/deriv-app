@@ -1,5 +1,5 @@
-import React from 'react';
-import { usePaginatedFetch } from '@deriv/api';
+import React, { useEffect, useState, useRef } from 'react';
+import { usePaginatedFetch, useInvalidateQuery } from '@deriv/api';
 import useExchangeRate from './useExchangeRate';
 
 /**
@@ -8,6 +8,7 @@ import useExchangeRate from './useExchangeRate';
 const useP2PAdvertList = (
     payload?: NonNullable<Parameters<typeof usePaginatedFetch<'p2p_advert_list'>>[1]>['payload']
 ) => {
+    const invalidate = useInvalidateQuery();
     const { getRate } = useExchangeRate();
     const { data, ...rest } = usePaginatedFetch('p2p_advert_list', { payload });
 
@@ -28,9 +29,43 @@ const useP2PAdvertList = (
         }));
     }, [data?.p2p_advert_list?.list, getRate]);
 
+    const [combined_data, setCombinedData] = useState(modified_data);
+    const previous_data_ref = useRef<typeof modified_data>([]);
+
+    useEffect(() => {
+        previous_data_ref.current = [];
+        invalidate('p2p_advert_list');
+    }, [
+        payload?.advertiser_id,
+        payload?.counterparty_type,
+        payload?.payment_method,
+        payload?.use_client_limits,
+        payload?.local_currency,
+        payload?.sort_by,
+        invalidate,
+    ]);
+
+    useEffect(() => {
+        // This preserves the previous data when loadMore is called.
+        if (Array.isArray(previous_data_ref.current) && Array.isArray(modified_data)) {
+            const old_adverts = [...previous_data_ref.current];
+            const new_items: typeof modified_data = [];
+            modified_data?.forEach(new_item => {
+                const old_item_idx = old_adverts.findIndex(old_item => old_item.id === new_item.id);
+                if (old_item_idx > -1) {
+                    old_adverts[old_item_idx] = new_item;
+                } else {
+                    new_items.push(new_item);
+                }
+            });
+            previous_data_ref.current = [...old_adverts, ...new_items];
+            setCombinedData([...old_adverts, ...new_items]);
+        }
+    }, [modified_data]);
+
     return {
         /** The 'p2p_advert_list' response. */
-        data: modified_data,
+        data: combined_data,
         ...rest,
     };
 };

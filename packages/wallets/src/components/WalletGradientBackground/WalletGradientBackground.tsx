@@ -25,7 +25,7 @@ const WalletGradientBackground: React.FC<WalletGradientBackground> = ({
         : `wallets-gradient--${currency}-${device}-${type}-${theme}`;
 
     return (
-        <div className={className}>
+        <div className={`wallets-gradient ${className}`}>
             {has_shine && !is_demo && <span className='wallets-gradient__shine' />}
             {children}
         </div>

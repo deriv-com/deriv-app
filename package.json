@@ -62,7 +62,6 @@
         "test:eslint-one": "f () { nx test @deriv/$1 --target=test:eslint ;}; f",
         "test:eslint-since": "f () { nx affected --target=eslint ;}; f",
         "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --hoist --strict && lerna link ;}; f",
-        "bootstrap:ci": "f () { lerna link && lerna bootstrap --ci --hoist --strict && lerna link ;}; f",
         "bootstrap:dev": "f () { npm ci && lerna link && lerna bootstrap --hoist --strict && lerna link ;}; f",
         "build:publish": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run build:publish $2 ;}; f",
         "build:local": "f () { nx run-many --target=build --projects=@deriv/bot-web-ui,@deriv/trader --parallel=2 ;}; f",

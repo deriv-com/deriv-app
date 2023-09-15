@@ -3,7 +3,6 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { useWalletAccountsList } from '@deriv/api';
 import { ProgressBar } from '../ProgressBar';
 import { WalletCard } from '../WalletCard';
-import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletListCardIActions } from '../WalletListCardIActions';
 import './WalletsCarouselContent.scss';
 
@@ -28,13 +27,7 @@ const WalletsCarouselContent: React.FC = () => {
         <div className='wallets-carousel-content' ref={wallet_embla_ref}>
             <div className='wallets-carousel-content__container'>
                 {wallet_accounts_list.map(wallet => (
-                    <WalletGradientBackground
-                        key={`wallet_gradient_background_${wallet.loginid}`}
-                        currency={wallet?.currency_config?.display_code || 'USD'}
-                        is_demo={wallet.is_virtual}
-                    >
-                        <WalletCard key={`${wallet.loginid}`} account={wallet} />
-                    </WalletGradientBackground>
+                    <WalletCard key={`wallet-card_${wallet.loginid}`} account={wallet} />
                 ))}
             </div>
             <div className='wallets-carousel-content__progress-bar'>

@@ -9,7 +9,7 @@ type TProps = {
     header: ReactElement;
 };
 
-const WalletsAccordion: React.FC<TProps> = ({ account: { is_active, loginid }, content, header }) => {
+const WalletsAccordion: React.FC<TProps> = ({ account: { is_active, is_virtual, loginid }, content, header }) => {
     const { switchAccount } = useAuthorize();
     const accordionRef = React.useRef<HTMLDivElement>(null);
 
@@ -21,8 +21,8 @@ const WalletsAccordion: React.FC<TProps> = ({ account: { is_active, loginid }, c
     }, [is_active]);
 
     return (
-        <div ref={accordionRef} className='wallets-accordion'>
-            <div className='wallets-accordion__header'>
+        <div className={`wallets-accordion wallets-accordion${is_virtual ? '--virtual' : ''}`}>
+            <div className={`wallets-accordion__header wallets-accordion__header${is_virtual ? '--virtual' : ''}`}>
                 {header}
                 <div
                     className={`wallets-accordion__dropdown${is_active ? '--open' : ''}`}

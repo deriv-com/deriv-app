@@ -20,8 +20,11 @@ const WalletListCard: React.FC<TProps> = ({ account }) => {
                         currency={account?.currency_config?.display_code || 'USD'}
                         type='card'
                     >
-                        <WalletListCardIcon />
+                        <div className='wallets-list-header__details-container-icon'>
+                            <WalletListCardIcon type={account?.wallet_currency_type} />
+                        </div>
                     </WalletGradientBackground>
+
                     <WalletListCardIDetails account={account} />
                 </div>
                 <WalletListCardIBalance account={account} />

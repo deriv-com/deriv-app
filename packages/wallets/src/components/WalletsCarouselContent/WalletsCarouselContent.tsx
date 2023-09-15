@@ -38,7 +38,7 @@ const WalletsCarouselContent: React.FC = () => {
         <div className='wallets-carousel-content' ref={wallet_embla_ref}>
             <div className='wallets-carousel-content__container'>
                 {wallet_accounts_list.map(account => (
-                    <WalletCard key={`${account.loginid}`} account={account} />
+                    <WalletCard key={`wallet-card-${account.loginid}`} account={account} />
                 ))}
             </div>
             <div className='wallets-carousel-content__progress-bar'>

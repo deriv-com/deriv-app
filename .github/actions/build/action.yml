@@ -1,8 +1,60 @@
 name: build
 description: Build all packages
+inputs:
+  NODE_ENV:
+    description: 'Node environment'
+    required: true
+  DATADOG_CLIENT_TOKEN:
+    description: 'Datadog client token'
+    required: true
+  DATADOG_APPLICATION_ID:
+    description: 'Datadog application id'
+    required: true
+  DATADOG_CLIENT_TOKEN_LOGS:
+    description: 'Datadog client token for logs'
+    required: true
+  DATADOG_SESSION_REPLAY_SAMPLE_RATE:
+    description: 'Datadog session replay sample rate'
+    required: true
+  DATADOG_SESSION_SAMPLE_RATE: 
+    description: 'Datadog session sample rate'
+    required: true
+  GD_API_KEY:
+    description: 'Google drive api key'
+    required: true
+  GD_APP_ID:
+    description: 'Google drive app id'
+    required: true
+  GD_CLIENT_ID: 
+    description: 'Google drive client id'
+    required: true
+  RUDDERSTACK_STAGING_KEY:
+    description: 'Rudderstack staging key'
+    required: false
+  RUDDERSTACK_PRODUCTION_KEY:
+    description: 'Rudderstack production key'
+    required: false
+  RUDDERSTACK_URL:
+    description: 'Rudderstack url'
+    required: true
+
 runs:
   using: composite
   steps:
   - name: Build all packages
+    env:
+      NODE_ENV: staging
+      DATADOG_APPLICATION_ID: ${{ inputs.DATADOG_APPLICATION_ID }} 
+      DATADOG_CLIENT_TOKEN: ${{ inputs.DATADOG_CLIENT_TOKEN }}
+      DATADOG_CLIENT_TOKEN_LOGS: ${{ inputs.DATADOG_CLIENT_TOKEN_LOGS }}
+      DATADOG_SESSION_REPLAY_SAMPLE_RATE: ${{ inputs.DATADOG_SESSION_REPLAY_SAMPLE_RATE }}
+      DATADOG_SESSION_SAMPLE_RATE: ${{ inputs.DATADOG_SESSION_SAMPLE_RATE }}
+      DATADOG_SESSION_SAMPLE_RATE_LOGS: ${{ inputs.DATADOG_SESSION_SAMPLE_RATE_LOGS }}
+      GD_API_KEY: ${{ inputs.GD_API_KEY }}
+      GD_APP_ID: ${{ inputs.GD_APP_ID }}
+      GD_CLIENT_ID: ${{ inputs.GD_CLIENT_ID }}
+      RUDDERSTACK_STAGING_KEY: ${{ inputs.RUDDERSTACK_STAGING_KEY }}
+      RUDDERSTACK_URL: ${{ inputs.RUDDERSTACK_URL }}
+
     run: npm run build:all
     shell: bash

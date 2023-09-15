@@ -51,7 +51,7 @@ const WalletsAddMoreCarousel = () => {
                             const { currency, is_added, landing_company_name } = item;
                             return (
                                 <WalletsAddMoreCard
-                                    key={`${currency}${landing_company_name}`}
+                                    key={`wallets_add_more_${currency}-${landing_company_name}`}
                                     currency={currency}
                                     is_added={is_added}
                                     landing_company_name={landing_company_name}

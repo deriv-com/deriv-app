@@ -10,8 +10,12 @@ type TProps = {
 };
 
 const WalletCard: React.FC<TProps> = ({ account }) => {
-    const { currency, currency_config, display_balance, is_virtual, landing_company_name, wallet_currency_type } =
+    const { wallet_currency_type, landing_company_name, currency, display_balance, is_virtual, currency_config } =
         account || {};
+
+    const formattedLandingCompany =
+        landing_company_name === 'virtual' ? 'Demo' : landing_company_name?.toUpperCase() || 'SVG';
+
     return (
         <div className='wallets-card'>
             <WalletGradientBackground
@@ -25,7 +29,9 @@ const WalletCard: React.FC<TProps> = ({ account }) => {
                     <div className='wallets-card__details__top'>
                         <WalletListCardIcon type={wallet_currency_type} />
                         <div className='wallets-card__details-landing_company'>
-                            {landing_company_name && <WalletListCardBadge label={landing_company_name} />}
+                            {landing_company_name && (
+                                <WalletListCardBadge label={formattedLandingCompany} is_demo={account?.is_virtual} />
+                            )}
                         </div>
                     </div>
                     <div className={`wallets-card__details__bottom${is_virtual ? '--virtual' : ''}`}>

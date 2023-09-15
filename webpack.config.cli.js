@@ -3,8 +3,8 @@ const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const BlocklyConcatPlugin = require('./customPlugins/blockly-concat-plugin');
-const BlocklyTranslationsPlugin = require('./customPlugins/blockly-translation-plugin');
+const BlocklyConcatPlugin = require('./plugins/blockly-concat-plugin');
+const BlocklyTranslationsPlugin = require('./plugins/blockly-translation-plugin');
 
 module.exports = {
     mode: 'production',

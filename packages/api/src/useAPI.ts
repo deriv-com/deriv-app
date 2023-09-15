@@ -1,5 +1,4 @@
-import { useWS } from '@deriv/shared';
-import { useCallback, useContext, useMemo } from 'react';
+import { useCallback, useContext } from 'react';
 import APIContext from './APIContext';
 import type {
     TSocketEndpointNames,
@@ -10,20 +9,17 @@ import type {
 
 const useAPI = () => {
     const api = useContext(APIContext);
-    const WS = useWS();
 
     if (!api) {
         throw new Error('useAPI must be used within APIProvider');
     }
-
-    const server = useMemo(() => (api.is_standalone ? api.deriv_api : WS), [WS, api.deriv_api, api.is_standalone]);
 
     const send = useCallback(
         async <T extends TSocketEndpointNames>(
             name: T,
             payload?: TSocketRequestPayload<T>
         ): Promise<TSocketResponseData<T>> => {
-            const response = await server.send({ [name]: 1, ...(payload || {}) });
+            const response = await api.send({ [name]: 1, ...(payload || {}) });
 
             if (response.error) {
                 throw response.error;
@@ -31,7 +27,7 @@ const useAPI = () => {
 
             return response;
         },
-        [server]
+        [api]
     );
 
     const subscribe = useCallback(
@@ -47,8 +43,8 @@ const useAPI = () => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 onError: (response: any) => void
             ) => { unsubscribe?: VoidFunction };
-        } => server.subscribe({ [name]: 1, subscribe: 1, ...(payload || {}) }),
-        [server]
+        } => api.subscribe({ [name]: 1, subscribe: 1, ...(payload || {}) }),
+        [api]
     );
 
     return {

@@ -64,7 +64,7 @@ const OptionsAndMultipliersListing = () => {
             </section>
             <div className='wallets-options-and-multipliers-listing__content'>
                 {options_and_multipliers.map(account => (
-                    <TradingAccountCard {...account} key={account.title} />
+                    <TradingAccountCard {...account} key={`trading-account-card-${account.title}`} />
                 ))}
             </div>
         </div>

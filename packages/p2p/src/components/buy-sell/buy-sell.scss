@@ -79,7 +79,7 @@
 
     &__table-header {
         display: grid;
-        grid-template-columns: 2fr 1.5fr 1fr 1.5fr 1fr;
+        grid-template-columns: 2fr 1.5fr 1fr 1.2fr 1fr;
 
         > .dc-table__head:first-child {
             margin-left: 1.6rem;
@@ -88,7 +88,7 @@
 
     &__table-row {
         padding: 1.6rem;
-        grid-template-columns: 2fr 1.5fr 1fr 1.5fr 1fr;
+        grid-template-columns: 2fr 1.5fr 1fr 1.2fr 1fr;
 
         &:hover {
             background-color: var(--general-hover);

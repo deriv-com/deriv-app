@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React from 'react';
 import { useFetch } from '@deriv/api';
 import useExchangeRate from './useExchangeRate';
 
@@ -9,7 +9,7 @@ const useP2PAdvertList = (payload?: NonNullable<Parameters<typeof useFetch<'p2p_
     const { getRate } = useExchangeRate();
 
     const limit: number = payload?.limit || 10;
-    const [offset, setOffset] = useState<number>(payload?.offset || 0);
+    const [offset, setOffset] = React.useState<number>(payload?.offset || 0);
 
     const { data, ...rest } = useFetch('p2p_advert_list', {
         payload: { ...payload, offset, limit },
@@ -37,10 +37,10 @@ const useP2PAdvertList = (payload?: NonNullable<Parameters<typeof useFetch<'p2p_
         setOffset(startIndex);
     }, []);
 
-    const [combined_data, setCombinedData] = useState(modified_data);
-    const previous_data_ref = useRef<typeof modified_data>([]);
+    const [combined_data, setCombinedData] = React.useState(modified_data);
+    const previous_data_ref = React.useRef<typeof modified_data>([]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         previous_data_ref.current = [];
         setOffset(0);
     }, [
@@ -52,7 +52,7 @@ const useP2PAdvertList = (payload?: NonNullable<Parameters<typeof useFetch<'p2p_
         payload?.sort_by,
     ]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         // This preserves the previous data when loadMore is called.
         if (Array.isArray(previous_data_ref.current) && Array.isArray(modified_data)) {
             const old_adverts = [...previous_data_ref.current];

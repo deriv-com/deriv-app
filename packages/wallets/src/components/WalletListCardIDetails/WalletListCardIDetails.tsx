@@ -10,13 +10,15 @@ type TProps = {
 };
 
 const WalletListCardIDetails: React.FC<TProps> = ({ account }) => {
-    const { currency_config, landing_company_name } = account;
+    const { currency_config, landing_company_name, is_virtual } = account;
 
     return (
         <div className='wallets-list-details__action-container'>
             <div className='wallets-list-details__elements'>
                 {currency_config?.display_code && <WalletListCardTitle currency={currency_config?.display_code} />}
-                {landing_company_name && <WalletListCardBadge label={landing_company_name} />}
+                {landing_company_name && !is_virtual && (
+                    <WalletListCardBadge label={landing_company_name.toUpperCase()} />
+                )}
             </div>
             <WalletListCardIActions account={account} />
         </div>

@@ -273,6 +273,14 @@
             }
         }
     }
+
+    .additional-field {
+        margin-top: 1.6rem;
+
+        @include mobile {
+            margin-top: 1rem;
+        }
+    }
 }
 
 .account-form_poa {

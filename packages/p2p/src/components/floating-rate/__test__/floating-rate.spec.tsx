@@ -38,7 +38,7 @@ describe('<FloatingRate/>', () => {
     it('should render market rate feed based on the floating rate value passed', () => {
         render(<FloatingRate {...floating_rate_props} value='+2' />, { wrapper });
 
-        expect(screen.getByText('Your rate is = 1.02')).toBeInTheDocument();
+        expect(screen.getByText('Your rate is = 1.02 INR')).toBeInTheDocument();
     });
 
     it('should render the exchange rate in hint', () => {

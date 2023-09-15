@@ -5,7 +5,7 @@ import { PlatformContext } from '@deriv/shared';
 import { UploadComplete } from '../upload-complete';
 import { BrowserRouter } from 'react-router-dom';
 
-jest.mock('Components/poa/poa-button', () => jest.fn(() => <div data-testid='dt_poa_button' />));
+jest.mock('../../../../poa/poa-button', () => jest.fn(() => <div data-testid='dt_poa_button' />));
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');

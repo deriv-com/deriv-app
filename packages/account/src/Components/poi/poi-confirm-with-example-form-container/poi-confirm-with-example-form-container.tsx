@@ -12,7 +12,7 @@ import {
     toMoment,
     WS,
 } from '@deriv/shared';
-import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
+import PoiNameDobExample from '../../../Assets/ic-poi-name-dob-example.svg';
 import FormBody from '../../form-body';
 import LoadErrorMessage from '../../load-error-message';
 import PersonalDetailsForm from '../../forms/personal-details-form';

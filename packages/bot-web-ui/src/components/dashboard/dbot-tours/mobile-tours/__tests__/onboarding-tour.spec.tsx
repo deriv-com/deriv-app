@@ -1,12 +1,12 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
+import '@testing-library/react/dont-cleanup-after-each';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import OnboardingTour from '../onboarding-tour';
-import '@testing-library/react/dont-cleanup-after-each';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());

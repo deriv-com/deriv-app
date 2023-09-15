@@ -111,7 +111,7 @@ const OnboardingTour = observer(() => {
                                 line_height='s'
                                 size='xxs'
                             >
-                                {localize(data)}
+                                {data}
                             </Text>
                         );
                     })}

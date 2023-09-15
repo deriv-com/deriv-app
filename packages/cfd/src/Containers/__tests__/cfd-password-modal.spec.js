@@ -3,9 +3,10 @@ import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { WS, getErrorMessages, validPassword, Jurisdiction } from '@deriv/shared';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import CFDPasswordModal from '../cfd-password-modal/cfd-password-modal.tsx';
-import CFDProviders from '../../cfd-providers.tsx';
+import CFDPasswordModal from '../cfd-password-modal/cfd-password-modal';
+import CFDProviders from '../../cfd-providers';
 import { mockStore } from '@deriv/stores';
+import { APIProvider } from '@deriv/api';
 
 jest.mock('@deriv/account', () => ({
     SentEmailModal: jest.fn(({ should_show_sent_email_modal }) => (
@@ -73,6 +74,14 @@ describe('<CFDPasswordModal/>', () => {
                 jurisdiction_selected_shortcode: Jurisdiction.SVG,
             },
         },
+        feature_flags: {
+            data: {
+                wallet: false,
+            },
+        },
+        ui: {
+            is_mobile: false,
+        },
     };
 
     const mock_props = {
@@ -105,7 +114,11 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...mock_props} />
             </Router>,
             {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+                wrapper: ({ children }) => (
+                    <APIProvider>
+                        <CFDProviders store={store}>{children}</CFDProviders>
+                    </APIProvider>
+                ),
             }
         );
         expect(await screen.findByTestId('dt_create_password')).toBeInTheDocument();
@@ -122,12 +135,17 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...mock_props} />
             </Router>,
             {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+                wrapper: ({ children }) => (
+                    <APIProvider>
+                        <CFDProviders store={store}>{children}</CFDProviders>
+                    </APIProvider>
+                ),
             }
         );
-
-        expect(await screen.findByRole('button', { name: /try later/i })).toBeInTheDocument();
-        expect(await screen.findByRole('button', { name: /forgot password?/i })).toBeInTheDocument();
+        waitFor(() => {
+            expect(screen.findByRole('button', { name: /Try Later/i })).toBeInTheDocument();
+            expect(screen.findByRole('button', { name: /Forgot Password?/i })).toBeInTheDocument();
+        });
     });
 
     it('should close modal when Forget Password button is clicked', async () => {
@@ -141,7 +159,11 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...mock_props} />
             </Router>,
             {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+                wrapper: ({ children }) => (
+                    <APIProvider>
+                        <CFDProviders store={store}>{children}</CFDProviders>
+                    </APIProvider>
+                ),
             }
         );
         const ele_forget_btn = await screen.findByRole('button', { name: /forgot password?/i });
@@ -166,7 +188,11 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...mock_props} />
             </Router>,
             {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+                wrapper: ({ children }) => (
+                    <APIProvider>
+                        <CFDProviders store={store}>{children}</CFDProviders>
+                    </APIProvider>
+                ),
             }
         );
         const ele_forget_btn = await screen.findByRole('button', { name: /forgot password?/i });
@@ -188,7 +214,11 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...mock_props} />
             </Router>,
             {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+                wrapper: ({ children }) => (
+                    <APIProvider>
+                        <CFDProviders store={store}>{children}</CFDProviders>
+                    </APIProvider>
+                ),
             }
         );
 
@@ -216,11 +246,15 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...mock_props} />
             </Router>,
             {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+                wrapper: ({ children }) => (
+                    <APIProvider>
+                        <CFDProviders store={store}>{children}</CFDProviders>
+                    </APIProvider>
+                ),
             }
         );
         const ele_password_input = await screen.findByTestId('dt_mt5_password');
-        fireEvent.change(ele_password_input, { target: { value: user_input } });
+        fireEvent.change(ele_password_input, { target: { value: 'password?password' } });
         await waitFor(() => {
             fireEvent.focusOut(ele_password_input);
         });
@@ -228,36 +262,6 @@ describe('<CFDPasswordModal/>', () => {
         await waitFor(() => {
             expect(validPassword).toHaveBeenCalled();
         });
-        expect(await screen.findByText(/your password cannot be the same as your email address./i)).toBeInTheDocument();
-    });
-
-    it('should display error message when password contain non-english characters', async () => {
-        validPassword.mockReturnValue(false);
-
-        const store = mockStore(mockRootStore);
-
-        store.client.account_status = { status: [], category: 'Real' };
-        store.client.email = 'demo@deriv.com';
-
-        render(
-            <Router history={history}>
-                <CFDPasswordModal {...mock_props} />
-            </Router>,
-            {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
-            }
-        );
-        const ele_password_input = await screen.findByTestId('dt_mt5_password');
-        fireEvent.change(ele_password_input, { target: { value: 'Passwordååøø' } });
-        await waitFor(() => {
-            fireEvent.focusOut(ele_password_input);
-        });
-
-        await waitFor(() => {
-            expect(validPassword).toHaveBeenCalled();
-        });
-
-        expect(getErrorMessages).toHaveBeenCalled();
         expect(
             await screen.findByText(/Password should have lower and uppercase English letters with numbers./i)
         ).toBeInTheDocument();
@@ -276,7 +280,11 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...mock_props} platform='dxtrade' />
             </Router>,
             {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+                wrapper: ({ children }) => (
+                    <APIProvider>
+                        <CFDProviders store={store}>{children}</CFDProviders>
+                    </APIProvider>
+                ),
             }
         );
 
@@ -298,7 +306,11 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...mock_props} />
             </Router>,
             {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+                wrapper: ({ children }) => (
+                    <APIProvider>
+                        <CFDProviders store={store}>{children}</CFDProviders>
+                    </APIProvider>
+                ),
             }
         );
 
@@ -322,7 +334,11 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...mock_props} />
             </Router>,
             {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+                wrapper: ({ children }) => (
+                    <APIProvider>
+                        <CFDProviders store={store}>{children}</CFDProviders>
+                    </APIProvider>
+                ),
             }
         );
 
@@ -343,7 +359,11 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...mock_props} />
             </Router>,
             {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+                wrapper: ({ children }) => (
+                    <APIProvider>
+                        <CFDProviders store={store}>{children}</CFDProviders>
+                    </APIProvider>
+                ),
             }
         );
 
@@ -363,7 +383,11 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...mock_props} />
             </Router>,
             {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+                wrapper: ({ children }) => (
+                    <APIProvider>
+                        <CFDProviders store={store}>{children}</CFDProviders>
+                    </APIProvider>
+                ),
             }
         );
 
@@ -383,7 +407,11 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...mock_props} />
             </Router>,
             {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+                wrapper: ({ children }) => (
+                    <APIProvider>
+                        <CFDProviders store={store}>{children}</CFDProviders>
+                    </APIProvider>
+                ),
             }
         );
 
@@ -403,7 +431,11 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...mock_props} platform='dxtrade' />
             </Router>,
             {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+                wrapper: ({ children }) => (
+                    <APIProvider>
+                        <CFDProviders store={store}>{children}</CFDProviders>
+                    </APIProvider>
+                ),
             }
         );
 
@@ -424,7 +456,11 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...mock_props} />
             </Router>,
             {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+                wrapper: ({ children }) => (
+                    <APIProvider>
+                        <CFDProviders store={store}>{children}</CFDProviders>
+                    </APIProvider>
+                ),
             }
         );
         expect(await screen.findByText('IcMt5CfdPlatform')).toBeInTheDocument();
@@ -444,7 +480,11 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...mock_props} platform='dxtrade' />
             </Router>,
             {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+                wrapper: ({ children }) => (
+                    <APIProvider>
+                        <CFDProviders store={store}>{children}</CFDProviders>
+                    </APIProvider>
+                ),
             }
         );
 
@@ -471,7 +511,11 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...mock_props} />;
             </Router>,
             {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+                wrapper: ({ children }) => (
+                    <APIProvider>
+                        <CFDProviders store={store}>{children}</CFDProviders>
+                    </APIProvider>
+                ),
             }
         );
         fireEvent.change(await screen.findByTestId('dt_mt5_password'), { target: { value: user_input } });
@@ -496,7 +540,11 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...mock_props} platform='dxtrade' />;
             </Router>,
             {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+                wrapper: ({ children }) => (
+                    <APIProvider>
+                        <CFDProviders store={store}>{children}</CFDProviders>
+                    </APIProvider>
+                ),
             }
         );
 

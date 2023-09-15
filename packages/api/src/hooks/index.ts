@@ -22,3 +22,4 @@ export { default as useCreateOtherCFDAccount } from './useCreateOtherCFDAccount'
 export { default as useNotificationEvent } from './useNotificationEvent';
 export { default as useServiceToken } from './useServiceToken';
 export { default as useTradingPlatformPasswordChange } from './useTradingPlatformPasswordChange';
+export { default as useTradingPlatformInvestorPasswordReset } from './useTradingPlatformInvestorPasswordReset';

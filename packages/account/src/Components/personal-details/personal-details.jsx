@@ -153,16 +153,6 @@ const PersonalDetails = ({
                                     onScroll={closeToolTip}
                                     testId='dt_personal_details_container'
                                 >
-                                    {!is_qualified_for_idv && (
-                                        <div className='details-form__sub-header'>
-                                            <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
-                                                {localize(
-                                                    'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.'
-                                                )}
-                                            </Text>
-                                        </div>
-                                    )}
-
                                     <div
                                         className={classNames('details-form__elements', 'personal-details-form')}
                                         style={{ paddingBottom: isDesktop() ? 'unset' : null }}

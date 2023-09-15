@@ -436,28 +436,33 @@ class ExtendedOrderDetails {
         }
 
         if (this.is_pending_order) {
-            const wait_for_payment = localize('Wait for payment');
-            const pay_now = localize('Pay now');
-
-            if (this.is_my_ad) {
-                return this.is_buy_order ? wait_for_payment : pay_now;
-            }
-
-            return this.is_buy_order ? pay_now : wait_for_payment;
+            return this.getStatusForPendingOrder();
         }
 
         if (this.is_buyer_confirmed_order) {
-            const confirm_payment = localize('Confirm payment');
-            const wait_for_release = localize('Waiting for the seller to confirm');
-
-            if (this.is_my_ad) {
-                return this.is_buy_order ? confirm_payment : wait_for_release;
-            }
-
-            return this.is_buy_order ? wait_for_release : confirm_payment;
+            return this.getStatusForBuyerConfirmedOrder();
         }
 
         return localize('Unknown');
+    }
+
+    getStatusForPendingOrder() {
+        const wait_message = localize('Wait for payment');
+        const pay_message = localize('Pay now');
+
+        if (this.is_my_ad) {
+            return this.is_buy_order ? wait_message : pay_message;
+        }
+        return this.is_buy_order ? pay_message : wait_message;
+    }
+
+    getStatusForBuyerConfirmedOrder() {
+        const confirm_message = localize('Confirm payment');
+        const wait_message = localize('Waiting for the seller to confirm');
+        if (this.is_my_ad) {
+            return this.is_buy_order ? confirm_message : wait_message;
+        }
+        return this.is_buy_order ? wait_message : confirm_message;
     }
 
     /**

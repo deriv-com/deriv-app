@@ -5,15 +5,17 @@ import { useActiveAccount, useWalletAccountsList } from '@deriv/hooks';
 import { formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import WalletBadge from 'App/Components/Layout/Header/wallets/wallet-badge';
+import { Localize } from '@deriv/translations';
 import './account-switcher-wallet-item.scss';
 
 type TAccountSwitcherWalletItemProps = {
     account: ReturnType<typeof useWalletAccountsList>['data'][number];
     closeAccountsDialog: () => void;
+    show_badge?: boolean;
 };
 
 export const AccountSwitcherWalletItem = observer(
-    ({ closeAccountsDialog, account }: TAccountSwitcherWalletItemProps) => {
+    ({ closeAccountsDialog, account, show_badge = false }: TAccountSwitcherWalletItemProps) => {
         const {
             currency,
             currency_config,
@@ -63,12 +65,20 @@ export const AccountSwitcherWalletItem = observer(
                     />
                 </div>
                 <div className='acc-switcher-wallet-item__content'>
-                    <Text size='xxs'>{currency_config?.name}</Text>
+                    <Text size='xxxs'>
+                        <Localize i18n_default_text='Deriv Apps' />
+                    </Text>
+                    <Text size='xxxs'>
+                        <Localize
+                            i18n_default_text='{{currency}} Wallet'
+                            values={{ currency: currency_config?.display_code }}
+                        />
+                    </Text>
                     <Text size='xs' weight='bold'>
                         {`${formatMoney(currency || '', dtrade_balance || 0, true)} ${currency_config?.display_code}`}
                     </Text>
                 </div>
-                <WalletBadge is_demo={is_virtual} label={landing_company_name} />
+                {show_badge && <WalletBadge is_demo={is_virtual} label={landing_company_name} />}
             </div>
         );
     }

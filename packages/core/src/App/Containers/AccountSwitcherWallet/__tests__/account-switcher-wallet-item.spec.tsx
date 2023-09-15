@@ -42,6 +42,7 @@ const account: React.ComponentProps<typeof AccountSwitcherWalletItem>['account']
 const props: React.ComponentProps<typeof AccountSwitcherWalletItem> = {
     closeAccountsDialog: jest.fn(),
     account,
+    show_badge: false,
 };
 
 const AccountSwitcherWalletItemComponent = ({
@@ -62,16 +63,32 @@ describe('AccountSwitcherWalletItem', () => {
     it('should render the component', () => {
         const store = mockStore({});
         render(<AccountSwitcherWalletItemComponent props={props} store={store} />);
-        expect(screen.getByText('US dollar')).toBeInTheDocument();
+        expect(screen.getByText('USD Wallet')).toBeInTheDocument();
         expect(screen.getByText('100.00 USD')).toBeInTheDocument();
-        expect(screen.getByText('SVG')).toBeInTheDocument();
     });
 
-    it('should render Demo Badge if is_virtual flag true', () => {
+    it('should NOT show SVG badge', () => {
         const store = mockStore({});
-        const tempProps = { ...props, account: { ...account, is_virtual: true } };
+        render(<AccountSwitcherWalletItemComponent props={props} store={store} />);
+        expect(screen.queryByText('SVG')).not.toBeInTheDocument();
+    });
+
+    it('should show MALTA badge if show_badge is true', () => {
+        const store = mockStore({});
+        const tempProps = {
+            ...props,
+            account: { ...account, is_malta_wallet: true, landing_company_name: 'malta' },
+            show_badge: true,
+        };
         render(<AccountSwitcherWalletItemComponent props={tempProps} store={store} />);
-        expect(screen.getByText('US dollar')).toBeInTheDocument();
+        expect(screen.getByText('MALTA')).toBeInTheDocument();
+    });
+
+    it('should render Demo Badge if show_badge is true', () => {
+        const store = mockStore({});
+        const tempProps = { ...props, account: { ...account, is_virtual: true }, show_badge: true };
+        render(<AccountSwitcherWalletItemComponent props={tempProps} store={store} />);
+        expect(screen.getByText('USD Wallet')).toBeInTheDocument();
         expect(screen.getByText('100.00 USD')).toBeInTheDocument();
         expect(screen.getByText('Demo')).toBeInTheDocument();
     });

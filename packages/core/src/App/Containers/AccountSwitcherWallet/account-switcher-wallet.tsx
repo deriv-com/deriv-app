@@ -21,7 +21,7 @@ export const AccountSwitcherWallet = ({ is_visible, toggle }: TAccountSwitcherWa
     const wrapper_ref = React.useRef<HTMLDivElement>(null);
 
     const validateClickOutside = (event: MouseEvent) =>
-        is_visible && !(event.target as HTMLElement).classList.contains('acc-info');
+        is_visible && !(event.target as unknown as HTMLElement).classList.contains('acc-info');
 
     const closeAccountsDialog = React.useCallback(() => {
         toggle(false);
@@ -42,13 +42,18 @@ export const AccountSwitcherWallet = ({ is_visible, toggle }: TAccountSwitcherWa
                 </Text>
             </div>
             <div className='account-switcher-wallet__list'>
-                {dtrade_account_wallets?.map(account => (
-                    <AccountSwitcherWalletItem
-                        key={account.dtrade_loginid}
-                        account={account}
-                        closeAccountsDialog={closeAccountsDialog}
-                    />
-                ))}
+                {dtrade_account_wallets?.map(account => {
+                    const show_badge = account?.is_malta_wallet || account?.is_virtual;
+
+                    return (
+                        <AccountSwitcherWalletItem
+                            key={account.dtrade_loginid}
+                            account={account}
+                            closeAccountsDialog={closeAccountsDialog}
+                            show_badge={show_badge}
+                        />
+                    );
+                })}
             </div>
             <Button
                 className='account-switcher-wallet__button'

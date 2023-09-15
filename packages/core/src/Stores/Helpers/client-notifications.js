@@ -72,6 +72,10 @@ export const priority_toast_messages = [
     'p2p_daily_limit_increase',
     'authenticate',
     'notify_financial_assessment',
+    'svg_needs_poi_poa',
+    'svg_needs_poa',
+    'svg_needs_poi',
+    'svg_poi_expired',
     'mt5_notification',
     ...maintenance_notifications,
 ];

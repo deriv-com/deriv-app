@@ -13,7 +13,7 @@ import {
     isDesktop,
     isMobile,
     getIDVNotApplicableOption,
-    firstPropertyObject,
+    // firstPropertyObject,
     removeEmptyPropertiesFromObject,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -28,7 +28,40 @@ import { splitValidationResultTypes } from '../real-account-signup/helpers/utils
 import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
 import FormSubHeader from '../form-sub-header';
-import { ScrollToFieldWithError } from '../forms/scroll-to-field-with-error';
+// import { ScrollToFieldWithError } from '../forms/scroll-to-field-with-error';
+
+const useGetFirstInputError = () => {
+    const [all_page_inputs_names, setAllPageInputsNames] = React.useState([]);
+    const [current_error_field_name, setCurrentErrorFieldName] = React.useState('');
+
+    React.useEffect(() => {
+        const collectInputs = () => {
+            const inputs = [...document.querySelectorAll('input')];
+            setAllPageInputsNames(inputs.map(input => input.name));
+        };
+        collectInputs();
+    }, []);
+
+    React.useEffect(() => {
+        const el = document.querySelector(`[name="${current_error_field_name}"]`);
+        (el?.parentElement ?? el)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el?.focus();
+    }, [current_error_field_name]);
+
+    const getFirstError = error_data => {
+        let current_error = {};
+        for (let i = 0; i <= all_page_inputs_names.length; i++) {
+            if (Object.hasOwn(error_data, all_page_inputs_names[i])) {
+                current_error = { [all_page_inputs_names[i]]: error_data[[all_page_inputs_names[i]]] };
+                setCurrentErrorFieldName([all_page_inputs_names[i]]);
+                break;
+            }
+        }
+        return current_error;
+    };
+
+    return getFirstError;
+};
 
 const PersonalDetails = ({
     getCurrentStep,
@@ -56,6 +89,8 @@ const PersonalDetails = ({
     const { account_status, account_settings, residence, real_account_signup_target } = props;
     const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
     const is_submit_disabled_ref = React.useRef(true);
+
+    const getCurrentError = useGetFirstInputError();
 
     const isSubmitDisabled = errors => {
         return selected_step_ref?.current?.isSubmitting || Object.keys(errors).length > 0;
@@ -110,8 +145,9 @@ const PersonalDetails = ({
         const { errors } = splitValidationResultTypes(validate(values));
         const error_data = { ...idv_error, ...errors };
         checkSubmitStatus(error_data);
-        // return error_data with only first error field name for highlighting only one field in a moment;
-        return should_scroll_to_error_field ? firstPropertyObject(error_data) : error_data;
+        // if should_scroll_to_error_field - return error_data with only first error field name for highlighting only one field in a moment;
+        // return should_scroll_to_error_field ? firstPropertyObject(error_data) : error_data;
+        return should_scroll_to_error_field ? getCurrentError(error_data) : error_data;
     };
 
     const closeToolTip = () => setShouldCloseTooltip(true);
@@ -148,7 +184,7 @@ const PersonalDetails = ({
                             onClick={closeToolTip}
                             data-testid='personal_details_form'
                         >
-                            {should_scroll_to_error_field && <ScrollToFieldWithError />}
+                            {/*{should_scroll_to_error_field && <ScrollToFieldWithError />}*/}
                             <Div100vhContainer className='details-form' height_offset='100px' is_disabled={isDesktop()}>
                                 {!is_qualified_for_idv && (
                                     <Text as='p' size='xxxs' align='center' className='details-form__description'>

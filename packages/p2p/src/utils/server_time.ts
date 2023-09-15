@@ -48,7 +48,7 @@ export const init = (fncTimeUpdated?: VoidFunction) => {
  * Update the server time
  * @param {Object} response - The response from the server.
  */
-export const timeCounter = (response: { error: unknown; time: number }) => {
+const timeCounter = (response: { error?: unknown; time: number }) => {
     if (response.error) return;
 
     if (!clock_started) {
@@ -85,10 +85,10 @@ export const get = (): object | undefined => (server_time ? server_time.clone() 
 
 /**
  * Get the distance to the server time.
- * @param {Object} compare_time - The time to compare to the server time.
+ * @param {Number} compare_time - The time to compare to the server time.
  * @returns {Number} The distance to the server time.
  */
-export const getDistanceToServerTime = (compare_time: moment.Moment): number => {
+export const getDistanceToServerTime = (compare_time: number): number => {
     const time = moment(compare_time);
     const now_time = get();
     const distance = time.diff(now_time, 'milliseconds');

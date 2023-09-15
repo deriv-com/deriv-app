@@ -6,7 +6,7 @@ jest.mock('App/Components/Elements/PositionsDrawer/helpers/positions-helper', ()
     filterByContractType: jest.fn(() => true),
 }));
 jest.mock('../accumulators-profit-loss-tooltip.jsx', () => () => <div>AccumulatorsProfitLossTooltip</div>);
-jest.mock('../marker.jsx', () => () => <div>Spot-emphasizing ChartMarker</div>);
+jest.mock('../marker', () => () => <div>Spot-emphasizing ChartMarker</div>);
 
 describe('AccumulatorsChartElements', () => {
     const mock_props = {

@@ -2,7 +2,7 @@ import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/he
 import PropTypes from 'prop-types';
 import React from 'react';
 import AccumulatorsProfitLossTooltip from './accumulators-profit-loss-tooltip.jsx';
-import ChartMarker from './marker.jsx';
+import ChartMarker from './marker';
 
 const AccumulatorsChartElements = ({
     all_positions,

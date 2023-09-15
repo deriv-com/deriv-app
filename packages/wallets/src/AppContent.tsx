@@ -1,16 +1,16 @@
 import React from 'react';
-import WalletList from './components/WalletList';
-import WalletsCarousel from './components/WalletCarousel';
-import IcBrandDerivGo from './public/ic-brand-derivgo.svg';
-import './app-content.scss';
+import WalletsAddMore from './components/WalletsAddMoreCarousel';
+import useDevice from './hooks/useDevice';
+import { DesktopWalletsList, WalletsCarousel } from './components';
+import './AppContent.scss';
 
 const AppContent: React.FC = () => {
+    const { is_mobile } = useDevice();
+
     return (
-        <div>
-            <div className='wallet-app-content-icon' />
-            <IcBrandDerivGo width={25} height={25} />
-            <WalletList />
-            <WalletsCarousel />
+        <div className='wallets-app'>
+            <div className='wallets-app__content'>{is_mobile ? <WalletsCarousel /> : <DesktopWalletsList />}</div>\
+            <WalletsAddMore />
         </div>
     );
 };

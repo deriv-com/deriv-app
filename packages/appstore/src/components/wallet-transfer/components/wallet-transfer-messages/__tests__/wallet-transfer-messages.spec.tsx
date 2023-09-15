@@ -45,7 +45,7 @@ describe('<WalletTransferMessages />', () => {
         mockUseTransferMessageList.mockReturnValue({
             data: [
                 {
-                    code: 'WalletToTradingAppDailyLimit',
+                    code: 'WalletAndTradingAppDailyLimit',
                     is_first_transfer: true,
                     limit: 10000,
                     currency: mock_from_account?.currency || '',
@@ -61,7 +61,7 @@ describe('<WalletTransferMessages />', () => {
         mockUseTransferMessageList.mockReturnValue({
             data: [
                 {
-                    code: 'WalletToTradingAppDailyLimit',
+                    code: 'WalletAndTradingAppDailyLimit',
                     is_first_transfer: false,
                     limit: 9000,
                     currency: mock_from_account?.currency || '',
@@ -81,7 +81,7 @@ describe('<WalletTransferMessages />', () => {
         mockUseTransferMessageList.mockReturnValue({
             data: [
                 {
-                    code: 'DemoWalletToTradingAppDailyLimit',
+                    code: 'DemoWalletAndTradingAppDailyLimit',
                     is_first_transfer: true,
                     limit: 10000,
                     currency: mock_from_account?.currency || '',
@@ -97,7 +97,7 @@ describe('<WalletTransferMessages />', () => {
         mockUseTransferMessageList.mockReturnValue({
             data: [
                 {
-                    code: 'DemoWalletToTradingAppDailyLimit',
+                    code: 'DemoWalletAndTradingAppDailyLimit',
                     is_first_transfer: false,
                     limit: 9000,
                     currency: mock_from_account?.currency || '',

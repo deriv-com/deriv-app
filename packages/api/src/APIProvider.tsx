@@ -23,10 +23,12 @@ const getSharedQueryClientContext = (): QueryClient => {
     return window.ReactQueryClient;
 };
 
+// This is a temporary workaround to share a single `DerivAPIBasic` instance for every unique URL.
+// Later once we have each package separated we won't need this anymore and can remove this.
 const getDerivAPIInstance = (): DerivAPIBasic => {
     const endpoint = getSocketURL();
     const app_id = getAppId();
-    const language = 'EN';
+    const language = 'EN'; // Need to use the language from the app context.
     const brand = 'deriv';
     const wss = `wss://${endpoint}/websockets/v3?app_id=${app_id}&l=${language}&brand=${brand}`;
 
@@ -52,10 +54,10 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TProps>
     const WS = useWS();
     // Use the new API instance if the `standalone` prop is set to true,
     // else use the legacy socket connection.
-    const api = standalone ? getDerivAPIInstance() : WS;
+    const active_connection = standalone ? getDerivAPIInstance() : WS;
 
     return (
-        <APIContext.Provider value={{ ...api }}>
+        <APIContext.Provider value={active_connection}>
             <QueryClientProvider client={queryClient}>
                 {children}
                 <ReactQueryDevtools />

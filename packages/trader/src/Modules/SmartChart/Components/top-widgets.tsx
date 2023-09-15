@@ -29,7 +29,7 @@ const RecentTradeInfo = observer(() => {
 
     const latest_tick_contract = markers_array[markers_array.length - 1];
     if (
-        !latest_tick_contract.contract_info?.tick_stream ||
+        !latest_tick_contract?.contract_info.tick_stream ||
         isAccumulatorContract(latest_tick_contract.contract_info.contract_type)
     )
         return null;

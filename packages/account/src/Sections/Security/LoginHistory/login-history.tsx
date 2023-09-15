@@ -12,7 +12,7 @@ const LoginHistory = observer(() => {
     } = useStore();
     const { is_switching } = client;
 
-    const { data, isError, isLoading, error } = useLoginHistory();
+    const { data, isError, isLoading, error } = useLoginHistory({ limit: 50 });
 
     const login_history = data?.formatted_data;
 

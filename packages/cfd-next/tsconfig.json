@@ -1,12 +1,12 @@
 {
     "extends": "../../tsconfig.json",
+    "include": ["src"],
     "compilerOptions": {
         "paths": {
-            "Components/*": ["./src/Components/*"]
+            "Components/*": ["./src/Components/*"],
+            "Containers/*": ["./src/Containers/*"]
         },
         "outDir": "./dist",
         "baseUrl": "./"
-    },
-    "include": ["src", "globals.d.ts"],
-    "exclude": ["**/__tests__/**/*"]
+    }
 }

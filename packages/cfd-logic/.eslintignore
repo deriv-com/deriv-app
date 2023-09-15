@@ -1,5 +1,0 @@
-build/*.js
-src/**/__tests__/*.js
-src/_common/lib/**/*.js
-.eslintrc.js
-.stylelintrc.js

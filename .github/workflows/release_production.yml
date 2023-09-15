@@ -1,4 +1,4 @@
-name: binary-com/deriv-app/release_production
+name: Deriv App Production Workflow
 on:
   push:
     tags:
@@ -35,7 +35,7 @@ jobs:
         path: packages/core
 
   publish_cloudflare_production:
-    name: Publish to cloudflare production server
+    name: Publish to cloudflare Pages Production
     environment: Common
     runs-on: Runner_16cores
     container:

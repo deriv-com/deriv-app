@@ -3,31 +3,31 @@ description: Build all packages
 inputs:
   NODE_ENV:
     description: 'Node environment'
-    required: true
+    required: false
   DATADOG_CLIENT_TOKEN:
     description: 'Datadog client token'
-    required: true
+    required: false
   DATADOG_APPLICATION_ID:
     description: 'Datadog application id'
-    required: true
+    required: false
   DATADOG_CLIENT_TOKEN_LOGS:
     description: 'Datadog client token for logs'
-    required: true
+    required: false
   DATADOG_SESSION_REPLAY_SAMPLE_RATE:
     description: 'Datadog session replay sample rate'
-    required: true
+    required: false
   DATADOG_SESSION_SAMPLE_RATE: 
     description: 'Datadog session sample rate'
-    required: true
+    required: false
   GD_API_KEY:
     description: 'Google drive api key'
-    required: true
+    required: false
   GD_APP_ID:
     description: 'Google drive app id'
-    required: true
+    required: false
   GD_CLIENT_ID: 
     description: 'Google drive client id'
-    required: true
+    required: false
   RUDDERSTACK_STAGING_KEY:
     description: 'Rudderstack staging key'
     required: false
@@ -36,7 +36,7 @@ inputs:
     required: false
   RUDDERSTACK_URL:
     description: 'Rudderstack url'
-    required: true
+    required: false
 
 runs:
   using: composite

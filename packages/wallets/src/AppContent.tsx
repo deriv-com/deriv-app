@@ -9,7 +9,7 @@ const AppContent: React.FC = () => {
 
     return (
         <div className='wallets-app'>
-            <div className='wallets-app__content'>{is_mobile ? <WalletsCarousel /> : <DesktopWalletsList />}</div>
+            <div className='wallets-app__content'>{is_mobile ? <WalletsCarousel /> : <DesktopWalletsList />}</div>\
             <WalletsAddMore />
         </div>
     );

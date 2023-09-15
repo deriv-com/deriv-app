@@ -42,7 +42,7 @@ export const AccountSwitcherWalletMobile = ({ is_visible, toggle }: TAccountSwit
             visible={is_visible}
             onClose={closeAccountsDialog}
             has_close_icon
-            has_full_height={false}
+            has_full_height
             title={<Localize i18n_default_text='Deriv Apps accounts' />}
         >
             <div className='account-switcher-wallet-mobile'>

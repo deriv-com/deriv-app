@@ -31,27 +31,11 @@ runs:
         packages/wallets/node_modules
       key: ${{ runner.os }}-build-${{ hashFiles('./package-lock.json') }}
 
-  - name: Clear master cache
-    if: ${{ steps.cache-nodemodules.outputs.cache-hit == 'true' }}
-    run: |
-        owner="binary-com"
-        repo="deriv-app"
-        cache_key="${{ steps.cache-nodemodules.outputs.cache-matched-key }}"
-        curl \
-          -X DELETE \
-          -H "Accept: application/vnd.github.v3+json" \
-          -H "Authorization: token ${{ github.token }}" \
-          https://api.github.com/repos/$owner/$repo/actions/caches?key=$cache_key
-    shell: bash
-
   - name: Install npm packages
     if: steps.cache-nodemodules.outputs.cache-hit != 'true'
-    run: npm ci
+    run: npm run bootstrap
     shell: bash
 
-  - name: Bootstrap
-    run: npm run bootstrap:ci
-    shell: bash
   - name: save_cache
     uses: actions/cache/save@v3
     with:

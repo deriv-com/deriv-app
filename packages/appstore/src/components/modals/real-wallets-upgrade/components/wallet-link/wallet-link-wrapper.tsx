@@ -23,29 +23,7 @@ const WalletLinkWrapper = observer(({ wallet_details, account_list, center }: TW
     const { is_mobile } = ui;
     return (
         <div className='wallet-link-wrapper'>
-            <ContentWithLink is_right_forked fork_margin={24}>
-                {account_list.map(account => {
-                    return (
-                        <WalletAccount
-                            key={`${account.account_name}-${account.currency}}`}
-                            balance={account.balance}
-                            currency={account.currency}
-                            icon={account.icon}
-                            name={account.account_name}
-                        />
-                    );
-                })}
-            </ContentWithLink>
-            <div className='wallet-link-wrapper__center'>
-                <div className='wallet-link-wrapper__link-icon'>
-                    <Icon icon='IcAppstoreWalletsLink' size={40} />
-                </div>
-                {center}
-            </div>
-            <ContentWithLink hide_fork fork_margin={24}>
-                <WalletCard wallet={wallet_details} size='large' state='default' />
-            </ContentWithLink>
-            {/* <div className='wallet-link-wrapper-left'>
+            <div className='wallet-link-wrapper-left'>
                 <div className='wallet-link-wrapper__accounts'>
                     {is_mobile && (
                         <Text
@@ -57,31 +35,31 @@ const WalletLinkWrapper = observer(({ wallet_details, account_list, center }: TW
                             {localize('Your current trading account(s)')}
                         </Text>
                     )}
-                    {account_list.map(account => {
-                        return (
-                            <WalletAccount
-                                key={`${account.account_name}-${account.currency}}`}
-                                balance={account.balance}
-                                currency={account.currency}
-                                icon={account.icon}
-                                name={account.account_name}
-                            />
-                        );
-                    })}
+                    <ContentWithLink is_mobile={is_mobile} is_right_forked fork_margin={24}>
+                        {account_list.map(account => {
+                            return (
+                                <WalletAccount
+                                    key={`${account.account_name}-${account.currency}}`}
+                                    balance={account.balance}
+                                    currency={account.currency}
+                                    icon={account.icon}
+                                    name={account.account_name}
+                                />
+                            );
+                        })}
+                    </ContentWithLink>
                 </div>
             </div>
-            <div className='wallet-link-wrapper__link'>
-                <div
-                    className={classNames('wallet-link-wrapper__link-bracket', {
-                        'wallet-link-wrapper__link-bracket--single': account_list.length === 1,
-                    })}
-                />
+            <div className='wallet-link-wrapper__center'>
                 <div className='wallet-link-wrapper__link-icon'>
                     <Icon icon='IcAppstoreWalletsLink' size={40} />
                 </div>
+                {center}
             </div>
-            <div className='wallet-link-wrapper__card-wrapper'>
-                <WalletCard wallet={wallet_details} size='large' state='default' />
+            <div className='wallet-link-wrapper__right'>
+                <ContentWithLink is_mobile={is_mobile} hide_fork fork_margin={24}>
+                    <WalletCard wallet={wallet_details} size='large' state='default' />
+                </ContentWithLink>
                 {is_mobile && (
                     <Text
                         className='wallet-link-wrapper__title-text wallet-link-wrapper__card-wrapper-title'
@@ -91,7 +69,7 @@ const WalletLinkWrapper = observer(({ wallet_details, account_list, center }: TW
                         {localize('Your new Wallet')}
                     </Text>
                 )}
-            </div> */}
+            </div>
         </div>
     );
 });

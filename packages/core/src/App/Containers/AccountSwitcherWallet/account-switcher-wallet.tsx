@@ -21,7 +21,7 @@ export const AccountSwitcherWallet = ({ is_visible, toggle }: TAccountSwitcherWa
     const wrapper_ref = React.useRef<HTMLDivElement>(null);
 
     const validateClickOutside = (event: MouseEvent) =>
-        is_visible && !(event.target as HTMLElement).classList.contains('acc-info');
+        is_visible && !(event.target as unknown as HTMLElement).classList.contains('acc-info');
 
     const closeAccountsDialog = React.useCallback(() => {
         toggle(false);

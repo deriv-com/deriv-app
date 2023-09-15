@@ -11,10 +11,11 @@ import './account-switcher-wallet-item.scss';
 type TAccountSwitcherWalletItemProps = {
     account: ReturnType<typeof useWalletAccountsList>['data'][number];
     closeAccountsDialog: () => void;
+    show_badge?: boolean;
 };
 
 export const AccountSwitcherWalletItem = observer(
-    ({ closeAccountsDialog, account }: TAccountSwitcherWalletItemProps) => {
+    ({ closeAccountsDialog, account, show_badge = false }: TAccountSwitcherWalletItemProps) => {
         const {
             currency,
             currency_config,
@@ -26,7 +27,6 @@ export const AccountSwitcherWalletItem = observer(
             is_virtual,
             landing_company_name,
             linked_to,
-            is_malta_wallet,
         } = account;
 
         const {
@@ -40,8 +40,6 @@ export const AccountSwitcherWalletItem = observer(
         const app_icon = is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight';
         const icon_type = is_virtual ? 'demo' : currency_config?.type;
         const is_selected = is_active || linked_to?.some(account => account.loginid === active_account?.loginid);
-
-        const show_badge = is_malta_wallet || is_virtual;
 
         const onAccountSwitch = async () => {
             closeAccountsDialog();

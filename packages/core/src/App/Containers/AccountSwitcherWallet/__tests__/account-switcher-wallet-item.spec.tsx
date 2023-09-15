@@ -42,6 +42,7 @@ const account: React.ComponentProps<typeof AccountSwitcherWalletItem>['account']
 const props: React.ComponentProps<typeof AccountSwitcherWalletItem> = {
     closeAccountsDialog: jest.fn(),
     account,
+    show_badge: false,
 };
 
 const AccountSwitcherWalletItemComponent = ({
@@ -72,16 +73,20 @@ describe('AccountSwitcherWalletItem', () => {
         expect(screen.queryByText('SVG')).not.toBeInTheDocument();
     });
 
-    it('should show MALTA badge', () => {
+    it('should show MALTA badge if show_badge is true', () => {
         const store = mockStore({});
-        const tempProps = { ...props, account: { ...account, is_malta_wallet: true, landing_company_name: 'malta' } };
+        const tempProps = {
+            ...props,
+            account: { ...account, is_malta_wallet: true, landing_company_name: 'malta' },
+            show_badge: true,
+        };
         render(<AccountSwitcherWalletItemComponent props={tempProps} store={store} />);
         expect(screen.getByText('MALTA')).toBeInTheDocument();
     });
 
-    it('should render Demo Badge if is_virtual flag true', () => {
+    it('should render Demo Badge if show_badge is true', () => {
         const store = mockStore({});
-        const tempProps = { ...props, account: { ...account, is_virtual: true } };
+        const tempProps = { ...props, account: { ...account, is_virtual: true }, show_badge: true };
         render(<AccountSwitcherWalletItemComponent props={tempProps} store={store} />);
         expect(screen.getByText('USD Wallet')).toBeInTheDocument();
         expect(screen.getByText('100.00 USD')).toBeInTheDocument();

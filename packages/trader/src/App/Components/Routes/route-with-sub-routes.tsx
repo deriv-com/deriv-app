@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
 import {
     alternateLinkTagChange,
     canonicalLinkTagChange,
@@ -11,9 +11,12 @@ import {
 } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import Page404 from 'Modules/Page404';
+import { TBinaryRoutesProps, TRouteConfig } from 'Types';
 
-const RouteWithSubRoutes = route => {
-    const validateRoute = pathname => {
+type TRouteWithSubRoutesProps = TRouteConfig & TBinaryRoutesProps;
+
+const RouteWithSubRoutes = (route: TRouteWithSubRoutesProps) => {
+    const validateRoute = (pathname: string) => {
         if (pathname === '') return true;
         if (route.path?.includes(':')) {
             const static_pathname = pathname.substring(0, pathname.lastIndexOf('/') + 1);
@@ -22,7 +25,7 @@ const RouteWithSubRoutes = route => {
         return route.path === pathname || !!(route.routes && route.routes.find(r => pathname === r.path));
     };
 
-    const renderFactory = props => {
+    const renderFactory = (props: RouteComponentProps) => {
         let result = null;
 
         const pathname = removeBranchName(location.pathname).replace(/\/$/, '');
@@ -42,16 +45,15 @@ const RouteWithSubRoutes = route => {
         } else {
             const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
             const has_default_subroute = !isEmptyObject(default_subroute);
-
+            const RouteComponent = route.component as React.ElementType;
             result = (
                 <React.Fragment>
-                    {has_default_subroute && pathname === route.path && <Redirect to={default_subroute.path} />}
-                    {is_valid_route ? <route.component {...props} routes={route.routes} /> : <Page404 />}
+                    {has_default_subroute && pathname === route.path && <Redirect to={default_subroute?.path} />}
+                    {is_valid_route ? <RouteComponent {...props} routes={route.routes} /> : <Page404 />}
                 </React.Fragment>
             );
         }
 
-        // eslint-disable-next-line no-nested-ternary
         const title = route.getTitle?.() || '';
         document.title = `${title} | ${default_title}`;
 

@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter, matchPath } from 'react-router';
+import { withRouter, matchPath, RouteComponentProps } from 'react-router';
 import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
 import { routes } from '@deriv/shared';
@@ -9,11 +8,29 @@ import getRoutesConfig from 'App/Constants/routes-config';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
-const checkRoutingMatch = (route_list, path) => {
+type TMatchPattern = { from: Array<string | undefined>; to: Array<string> };
+
+type TRoutesProps = RouteComponentProps & { passthrough?: React.ComponentProps<typeof BinaryRoutes>['passthrough'] };
+
+type TTradePageMountingMiddlewareParams = {
+    action: string;
+    callback: (has_match: boolean) => void;
+    match_patterns: TMatchPattern[];
+    path_from: string;
+    path_to: string;
+};
+
+const checkRoutingMatch = (route_list: Array<string | undefined>, path = '') => {
     return route_list.some(route => !!matchPath(path, { path: route, exact: true }));
 };
 
-const tradePageMountingMiddleware = ({ path_from, path_to, action, match_patterns, callback }) => {
+const tradePageMountingMiddleware = ({
+    path_from,
+    path_to,
+    action,
+    match_patterns,
+    callback,
+}: TTradePageMountingMiddlewareParams) => {
     if (action === 'PUSH' || action === 'POP') {
         // We use matchPath here because on route, there will be extra
         // parameters which matchPath takes into account.
@@ -29,14 +46,14 @@ const tradePageMountingMiddleware = ({ path_from, path_to, action, match_pattern
 
 const Error = Loadable({
     loader: () => import(/* webpackChunkName: "error-component" */ 'App/Components/Elements/Errors'),
-    loading: UILoader,
+    loading: () => <UILoader />,
     render(loaded, props) {
         const Component = loaded.default;
         return <Component {...props} />;
     },
 });
 
-const Routes = observer(({ history, passthrough }) => {
+const Routes = observer(({ history, passthrough }: TRoutesProps) => {
     const { client, common, ui, portfolio } = useStore();
     const { setSkipPrePostLifecycle: setTradeMountingPolicy } = useTraderStore();
     const { error, has_error } = common;
@@ -46,7 +63,7 @@ const Routes = observer(({ history, passthrough }) => {
 
     React.useEffect(() => {
         if (setPromptHandler) {
-            setPromptHandler(true, (route_to, action) => {
+            setPromptHandler(true, (route_to: RouteComponentProps['location'], action: string) => {
                 // clears portfolio when we navigate to mt5 dashboard
                 tradePageMountingMiddleware({
                     path_from: history.location.pathname,
@@ -65,7 +82,7 @@ const Routes = observer(({ history, passthrough }) => {
                         },
                     ],
                     action,
-                    callback: has_match => {
+                    callback: (has_match: boolean) => {
                         if (has_match) {
                             onUnmountPortfolio();
                         }
@@ -99,10 +116,5 @@ const Routes = observer(({ history, passthrough }) => {
 
     return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;
 });
-
-Routes.propTypes = {
-    history: PropTypes.object,
-    passthrough: PropTypes.object,
-};
 
 export default withRouter(Routes);

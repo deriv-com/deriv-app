@@ -1,6 +1,6 @@
 import React from 'react';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
-import { get, init, timePromise } from '../utils/server_time';
+import { get, init } from 'Utils/server_time';
 import { isEmptyObject, isMobile, routes, toMoment } from '@deriv/shared';
 import BaseStore from 'Stores/base_store';
 import { localize, Localize } from 'Components/i18next';
@@ -69,7 +69,6 @@ export default class GeneralStore extends BaseStore {
     server_time = {
         get,
         init,
-        timePromise,
     };
 
     constructor(root_store) {

@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import { secondsToTimer } from 'Utils/date-time';
-import ServerTime from 'Utils/server-time';
+import { getDistanceToServerTime } from 'Utils/server_time';
 import { useStores } from 'Stores';
 
 const OrderDetailsTimer = observer(() => {
     const getTimeLeft = time => {
-        const distance = ServerTime.getDistanceToServerTime(time);
+        const distance = getDistanceToServerTime(time);
         return {
             distance,
             label: secondsToTimer(Math.max(0, distance)),

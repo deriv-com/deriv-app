@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
 import { secondsToTimer } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
-import ServerTime from 'Utils/server-time';
+import { getDistanceToServerTime } from 'Utils/server_time';
 import { useStores } from 'Stores';
 import { DesktopWrapper, Icon, MobileWrapper, Table, Text } from '@deriv/components';
 import { formatMoney, routes } from '@deriv/shared';
@@ -28,7 +28,7 @@ const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) =
 
 const OrderRow = ({ row: order }) => {
     const getTimeLeft = time => {
-        const distance = ServerTime.getDistanceToServerTime(time);
+        const distance = getDistanceToServerTime(time);
         return {
             distance,
             label: distance < 0 ? localize('expired') : secondsToTimer(distance),

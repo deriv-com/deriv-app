@@ -1,7 +1,4 @@
 import { observable, action, makeObservable } from 'mobx';
-import { secondsToTimer } from 'Utils/date-time';
-import ServerTime from 'Utils/server-time';
-import { localize } from 'Components/i18next';
 
 export default class OrderDetailsStore {
     constructor(root_store) {
@@ -11,7 +8,6 @@ export default class OrderDetailsStore {
             popup_options: observable,
             remaining_time: observable,
             should_show_popup: observable,
-            countDownTimer: action.bound,
             handleShowPopup: action.bound,
             onCancelClick: action.bound,
             setErrorMessage: action.bound,
@@ -29,20 +25,6 @@ export default class OrderDetailsStore {
     popup_options = {};
     remaining_time;
     should_show_popup = false;
-
-    countDownTimer() {
-        const distance = ServerTime.getDistanceToServerTime(
-            this.root_store.order_store.order_information.order_expiry_milliseconds
-        );
-        const timer = secondsToTimer(distance);
-
-        if (distance < 0) {
-            this.setRemainingTime(localize('expired'));
-            clearInterval(this.interval);
-        } else {
-            this.setRemainingTime(timer);
-        }
-    }
 
     handleShowPopup(options) {
         this.setPopupOptions(options);

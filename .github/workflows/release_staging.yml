@@ -27,6 +27,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3.6.0
     - uses: "./.github/actions/npm_install_from_cache"
+    - uses: "./.github/actions/invalidate_master_cache"
     - uses: "./.github/actions/build"
     - uses: "./.github/actions/versioning"
       with:

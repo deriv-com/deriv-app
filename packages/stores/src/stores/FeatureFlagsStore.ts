@@ -1,6 +1,7 @@
 import BaseStore from './BaseStore';
 
 const FLAGS = {
+    next_wallet: false,
     trade_sharkfin: false,
     // Add your flag here 🚀 Note: Trade feature flags should start with 'trade_' prefix.
 } satisfies Record<string, boolean>;
@@ -25,5 +26,7 @@ export default class FeatureFlagsStore extends BaseStore<{ [k in keyof typeof FL
                 });
             }
         });
+
+        this.data = FLAGS;
     }
 }

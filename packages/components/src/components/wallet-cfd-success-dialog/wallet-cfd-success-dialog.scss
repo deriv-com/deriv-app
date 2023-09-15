@@ -1,0 +1,23 @@
+.wallet-cfd-dialog {
+    &__card {
+        display: flex;
+        justify-content: center;
+    }
+    &__wrapper-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+        margin-top: 2.4rem;
+    }
+    &__btn {
+        min-width: 100%;
+    }
+}
+
+.dc-modal-footer {
+    @include desktop {
+        padding: 2.4rem;
+    }
+}

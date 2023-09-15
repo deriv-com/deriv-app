@@ -1,4 +1,4 @@
-import { getIDVNotApplicableOption } from '../constants/idv-options';
+import { getIDVNotApplicableOption } from '../constants/default-options';
 
 type TDocumentList = Array<{
     id: string;

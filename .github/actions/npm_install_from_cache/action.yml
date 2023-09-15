@@ -8,7 +8,7 @@ runs:
     uses: actions/cache/restore@v3
     with:
       path: '**/node_modules'
-      key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
+      key: ${{ runner.os }}-build-${{ hashFiles('./package-lock.json') }}
 
   - name: Clear master cache
     if: ${{ steps.cache-nodemodules.outputs.cache-hit == 'true' }}

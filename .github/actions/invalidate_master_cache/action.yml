@@ -1,0 +1,32 @@
+name: invalidate_npm_cache
+description: Invalidate the Master NPM cache
+runs:
+  using: composite
+  steps:
+
+  - name: save_cache
+    uses: actions/cache/save@v3
+    with:
+      path: |-
+        node_modules
+        packages/account/node_modules
+        packages/api/node_modules
+        packages/appstore/node_modules
+        packages/bot-skeleton/node_modules
+        packages/bot-web-ui/node_modules
+        packages/cashier/node_modules
+        packages/components/node_modules
+        packages/core/node_modules
+        packages/hooks/node_modules
+        packages/cfd/node_modules
+        packages/indicators/node_modules
+        packages/p2p/node_modules
+        packages/reports/node_modules
+        packages/shared/node_modules
+        packages/stores/node_modules
+        packages/trader/node_modules
+        packages/translations/node_modules
+        packages/utils/node_modules
+        packages/analytics/node_modules
+        packages/wallets/node_modules
+      key: ${{ runner.os }}-build-master-cache-${{ hashFiles('./package-lock.json') }}

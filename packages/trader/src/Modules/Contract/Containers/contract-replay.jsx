@@ -83,15 +83,15 @@ const ContractReplay = observer(({ contract_id }) => {
         // don't open Contract details page for trade types with disabled feature flag:
         if (feature_flags.data && contract_info.contract_type) {
             const trade_feature_flag_prefix = 'trade_';
-            const trade_display_name =
+            const trade_type_name =
                 contract_info.contract_type &&
-                getContractTypeDisplay(contract_info.contract_type, isHighLow({ shortcode: contract_info.shortcode }))
-                    .props?.i18n_default_text;
+                getContractTypeDisplay(contract_info.contract_type, isHighLow({ shortcode: contract_info.shortcode }));
+            const trade_type_display_name = trade_type_name.props?.i18n_default_text ?? trade_type_name;
             const is_trade_type_disabled = !!Object.entries(feature_flags.data).find(
                 ([key, value]) =>
                     !value &&
                     key.startsWith(trade_feature_flag_prefix) &&
-                    (key.includes(trade_display_name?.slice(0, 4).toLowerCase()) ||
+                    (key.includes(trade_type_display_name?.slice(0, 4).toLowerCase()) ||
                         contract_info.contract_type.toLowerCase().includes(key.replace(trade_feature_flag_prefix, '')))
             );
             if (is_trade_type_disabled && is_visible) {

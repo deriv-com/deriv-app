@@ -59,6 +59,8 @@ export const icons =
         'IcAppstoreWarning',
     ],
     'brand': [
+        'IcBrandCtraderWordmark',
+        'IcBrandCtrader',
         'IcBrandDerivEzWordmark',
         'IcBrandDerivEz',
         'IcBrandDeriv',
@@ -749,6 +751,7 @@ export const icons =
     ],
     'rebranding': [
         'IcRebrandingBinaryBot',
+        'IcRebrandingCtraderDashboard',
         'IcRebrandingDerivBotDashboard',
         'IcRebrandingDerivBot',
         'IcRebrandingDerivEzWordmark',

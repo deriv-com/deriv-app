@@ -62,6 +62,15 @@ const TradingAppCard = ({
         link_to: '',
     };
 
+    const appDescription = () => {
+        if (
+            platform !== CFD_PLATFORMS.CTRADER ||
+            (platform === CFD_PLATFORMS.CTRADER && action_type !== 'multi-action')
+        ) {
+            return app_desc;
+        }
+    };
+
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
         mt5_acc_auth_status,
         openFailedVerificationModal,
@@ -134,7 +143,7 @@ const TradingAppCard = ({
                         {!is_real_account && !sub_title && !is_deriv_platform ? `${name} ${demo_label}` : name}
                     </Text>
                     <Text className='description' color={'general'} size='xxs' line_height='m'>
-                        {app_desc}
+                        {appDescription()}
                     </Text>
                     {mt5_acc_auth_status && (
                         <StatusBadge

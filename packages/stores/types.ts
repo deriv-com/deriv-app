@@ -161,6 +161,11 @@ type TAccount = NonNullable<Authorize['account_list']>[0] & {
     account_category?: 'wallet' | 'trading';
 };
 
+type TCtraderAccountsList = DetailsOfEachMT5Loginid & {
+    display_balance?: string;
+    platform?: string;
+};
+
 type TAccountsList = {
     account?: {
         balance?: string | number;
@@ -186,6 +191,7 @@ type TAccountsList = {
     is_dark_mode_on?: boolean;
     is_virtual?: boolean | number;
     loginid?: string;
+    trader_accounts_list?: DetailsOfEachMT5Loginid[];
     mt5_login_list?: DetailsOfEachMT5Loginid[];
     title?: string;
 }[];
@@ -220,10 +226,10 @@ type TTradingPlatformAvailableAccount = {
 type TAvailableCFDAccounts = {
     availability: 'Non-EU' | 'EU' | 'All';
     description: string;
-    icon: 'Derived' | 'Financial' | 'DerivX' | 'SwapFree';
+    icon: 'Derived' | 'Financial' | 'DerivX' | 'SwapFree' | 'Ctrader';
     market_type: 'synthetic' | 'financial' | 'all' | 'gaming';
     name: string;
-    platform: 'mt5' | 'dxtrade';
+    platform: 'mt5' | 'dxtrade' | 'ctrader';
 };
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };
@@ -443,6 +449,7 @@ type TClientStore = {
     states_list: StatesList;
     /** @deprecated Use `useCurrencyConfig` or `useCurrentCurrencyConfig` from `@deriv/hooks` package instead. */
     is_crypto: (currency?: string) => boolean;
+    ctrader_accounts_list: TCtraderAccountsList[];
     dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
     derivez_accounts_list: DetailsOfEachMT5Loginid[];
     default_currency: string;
@@ -699,6 +706,7 @@ type TTradersHubStore = {
     setWalletModalActiveWalletID: (wallet_id?: string) => void;
     available_cfd_accounts: TAvailableCFDAccounts[];
     available_dxtrade_accounts: TAvailableCFDAccounts[];
+    available_ctrader_accounts: TAvailableCFDAccounts[];
     toggleIsTourOpen: (is_tour_open: boolean) => void;
     is_demo_low_risk: boolean;
     is_mt5_notification_modal_visible: boolean;

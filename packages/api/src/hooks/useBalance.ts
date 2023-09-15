@@ -4,11 +4,11 @@ import useAuthorize from './useAuthorize';
 
 /** A custom hook that gets the balance for all the user accounts. */
 const useBalance = () => {
-    const { data: authorize_data } = useAuthorize();
+    const { isSuccess } = useAuthorize();
     const { data: balance_data, ...rest } = useFetch('balance', {
         payload: { account: 'all' },
         options: {
-            enabled: Boolean(authorize_data),
+            enabled: isSuccess,
             refetchInterval: 30000, // Refetch every 30 seconds to simulate subscription.
         },
     });

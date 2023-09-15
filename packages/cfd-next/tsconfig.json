@@ -1,0 +1,12 @@
+{
+    "extends": "../../tsconfig.json",
+    "include": ["src"],
+    "compilerOptions": {
+        "paths": {
+            "Components/*": ["./src/Components/*"],
+            "Containers/*": ["./src/Containers/*"]
+        },
+        "outDir": "./dist",
+        "baseUrl": "./"
+    }
+}

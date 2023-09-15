@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text, WalletCard } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import WalletAccount from '../wallet-account/wallet-account';
 import { observer, useStore } from '@deriv/stores';
 import './wallet-link-wrapper.scss';
@@ -88,7 +88,7 @@ const WalletLinkWrapper = observer(({ wallet_details, account_list, center }: TW
                         color='prominent'
                         size='xxxs'
                     >
-                        {localize('Your new Wallet')}
+                        <Localize i18n_default_text='Your new Wallet' />
                     </Text>
                 )}
             </div> */}

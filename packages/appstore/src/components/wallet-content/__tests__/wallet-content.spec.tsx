@@ -38,7 +38,7 @@ describe('<WalletContent />', () => {
     it('Check class for demo', () => {
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent is_demo={true} is_malta_wallet={false} />
+                <WalletContent is_demo is_malta_wallet={false} />
             </StoreProvider>
         );
 
@@ -50,7 +50,7 @@ describe('<WalletContent />', () => {
     it('Check there is NOT disclaimer for demo', () => {
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent is_demo={true} is_malta_wallet={false} />
+                <WalletContent is_demo is_malta_wallet={false} />
             </StoreProvider>
         );
 
@@ -74,7 +74,7 @@ describe('<WalletContent />', () => {
     it('Check there is disclaimer for EU and not demo', () => {
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent is_demo={false} is_malta_wallet={true} />
+                <WalletContent is_demo={false} is_malta_wallet />
             </StoreProvider>
         );
 

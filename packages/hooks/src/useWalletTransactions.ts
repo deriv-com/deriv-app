@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { usePaginatedFetch } from '@deriv/api';
-import useCurrencyConfig from './useCurrencyConfig';
+import { usePaginatedFetch, useCurrencyConfig } from '@deriv/api';
 import useActiveWalletAccount from './useActiveWalletAccount';
 import useWalletAccountsList from './useWalletAccountsList';
 import useAccountsList from './useAccountsList';

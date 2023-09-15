@@ -1,20 +1,24 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { getStatusBadgeConfig } from '@deriv/account';
-import { Text, StatusBadge } from '@deriv/components';
+import { StatusBadge, Text } from '@deriv/components';
+import { useActiveWallet } from '@deriv/hooks';
+import { CFD_PLATFORMS, ContentFlag, getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import {
-    getAppstorePlatforms,
-    getMFAppstorePlatforms,
     BrandConfig,
     DERIV_PLATFORM_NAMES,
+    getAppstorePlatforms,
+    getMFAppstorePlatforms,
 } from 'Constants/platform-config';
-import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
-import { useStore, observer } from '@deriv/stores';
-import { localize } from '@deriv/translations';
-import { CFD_PLATFORMS, ContentFlag, getStaticUrl, getUrlSmartTrader, getUrlBinaryBot } from '@deriv/shared';
-import { useActiveWallet } from '@deriv/hooks';
+
+import TradingAppCardActions, { Actions } from './trading-app-card-actions';
+
 import './trading-app-card.scss';
 
 type TWalletsProps = {
@@ -115,7 +119,7 @@ const TradingAppCard = observer(
                     className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}
                 >
                     <div className='trading-app-card__details'>
-                        <div>
+                        <div className='trading-app-card__details-title'>
                             <Text className='title' size='xs' line_height='s' color='prominent'>
                                 {!is_real_account && sub_title ? `${sub_title} ${demo_label}` : sub_title}
                             </Text>
@@ -124,7 +128,7 @@ const TradingAppCard = observer(
                                     weight='bolder'
                                     size='xxxs'
                                     line_height='s'
-                                    className='trading-app-card__details__short-code'
+                                    className='trading-app-card__details-short-code'
                                 >
                                     {short_code_and_region}
                                 </Text>

@@ -189,76 +189,74 @@ const IDVForm = ({
                                             )}
                                         </Field>
                                     </fieldset>
-                                    <fieldset
-                                        className={classNames({
-                                            'proof-of-identity__fieldset-input': !hide_hint,
-                                        })}
-                                    >
-                                        <Field name='document_number'>
-                                            {({ field }: FieldProps) => (
-                                                <React.Fragment>
-                                                    <Input
-                                                        {...field}
-                                                        name='document_number'
-                                                        bottom_label={
-                                                            values.document_type &&
-                                                            getExampleFormat(values.document_type.example_format ?? '')
-                                                        }
-                                                        disabled={
-                                                            !values.document_type.id ||
-                                                            values.document_type.id === IDV_NOT_APPLICABLE_OPTION.id
-                                                        }
-                                                        error={
-                                                            (touched.document_number && errors.document_number) ||
-                                                            errors.error_message
-                                                        }
-                                                        autoComplete='off'
-                                                        placeholder={generatePlaceholderText(selected_doc)}
-                                                        value={values.document_number}
-                                                        onPaste={preventEmptyClipboardPaste}
-                                                        onBlur={handleBlur}
-                                                        onChange={handleChange}
-                                                        onKeyUp={(e: { target: HTMLInputElement }) =>
-                                                            onKeyUp(e, 'document_number')
-                                                        }
-                                                        required
-                                                        label={generatePlaceholderText(selected_doc)}
-                                                    />
-                                                    {values.document_type.additional?.display_name && (
+                                    {values.document_type.id !== IDV_NOT_APPLICABLE_OPTION.id && (
+                                        <fieldset
+                                            className={classNames({
+                                                'proof-of-identity__fieldset-input': !hide_hint,
+                                            })}
+                                        >
+                                            <Field name='document_number'>
+                                                {({ field }: FieldProps) => (
+                                                    <React.Fragment>
                                                         <Input
                                                             {...field}
-                                                            name='document_additional'
+                                                            name='document_number'
                                                             bottom_label={
-                                                                values.document_type.additional &&
+                                                                values.document_type &&
                                                                 getExampleFormat(
-                                                                    values.document_type.additional?.example_format
+                                                                    values.document_type.example_format ?? ''
                                                                 )
                                                             }
-                                                            disabled={
-                                                                !values.document_type.id ||
-                                                                values.document_type.id === IDV_NOT_APPLICABLE_OPTION.id
-                                                            }
+                                                            disabled={!values.document_type.id}
                                                             error={
-                                                                (touched.document_additional &&
-                                                                    errors.document_additional) ||
+                                                                (touched.document_number && errors.document_number) ||
                                                                 errors.error_message
                                                             }
                                                             autoComplete='off'
-                                                            placeholder={`Enter your ${values.document_type.additional?.display_name.toLowerCase()}`}
-                                                            value={values.document_additional}
+                                                            placeholder={generatePlaceholderText(selected_doc)}
+                                                            value={values.document_number}
                                                             onPaste={preventEmptyClipboardPaste}
                                                             onBlur={handleBlur}
                                                             onChange={handleChange}
                                                             onKeyUp={(e: { target: HTMLInputElement }) =>
-                                                                onKeyUp(e, 'document_additional')
+                                                                onKeyUp(e, 'document_number')
                                                             }
                                                             required
+                                                            label={generatePlaceholderText(selected_doc)}
                                                         />
-                                                    )}
-                                                </React.Fragment>
-                                            )}
-                                        </Field>
-                                    </fieldset>
+                                                        {values.document_type.additional?.display_name && (
+                                                            <Input
+                                                                {...field}
+                                                                name='document_additional'
+                                                                bottom_label={
+                                                                    values.document_type.additional &&
+                                                                    getExampleFormat(
+                                                                        values.document_type.additional?.example_format
+                                                                    )
+                                                                }
+                                                                disabled={!values.document_type.id}
+                                                                error={
+                                                                    (touched.document_additional &&
+                                                                        errors.document_additional) ||
+                                                                    errors.error_message
+                                                                }
+                                                                autoComplete='off'
+                                                                placeholder={`Enter your ${values.document_type.additional?.display_name.toLowerCase()}`}
+                                                                value={values.document_additional}
+                                                                onPaste={preventEmptyClipboardPaste}
+                                                                onBlur={handleBlur}
+                                                                onChange={handleChange}
+                                                                onKeyUp={(e: { target: HTMLInputElement }) =>
+                                                                    onKeyUp(e, 'document_additional')
+                                                                }
+                                                                required
+                                                            />
+                                                        )}
+                                                    </React.Fragment>
+                                                )}
+                                            </Field>
+                                        </fieldset>
+                                    )}
                                 </div>
                                 {document_image && (
                                     <div className='proof-of-identity__sample-container'>

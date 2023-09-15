@@ -41,12 +41,10 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TProps>
     const deriv_api = useRef<any>(new DerivAPIBasic({ connection: websocket.current }));
 
     useEffect(() => {
-        const socket = websocket.current;
         const api = deriv_api.current;
 
         // Disconnect the connection when this component unmounts.
         return () => {
-            socket?.close();
             api?.disconnect();
         };
     }, []);

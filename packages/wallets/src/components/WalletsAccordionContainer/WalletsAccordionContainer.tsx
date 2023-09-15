@@ -22,7 +22,7 @@ const WalletsAccordionContainer: React.FC<TProps> = ({ wallets_list }) => {
             {wallets_list.map(account => {
                 return (
                     <WalletsAccordion
-                        key={account.loginid}
+                        key={`wallets-accordion-${account.loginid}`}
                         active_account={active_account}
                         account_info={account}
                         switchAccount={swithAccount}

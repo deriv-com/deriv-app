@@ -1,19 +1,21 @@
 import React from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import { routes } from '@deriv/shared';
-import { useHistory } from 'react-router-dom';
 import { getDerivEzWebTerminalLink } from '../../Helpers/constants';
 import { observer, useStore } from '@deriv/stores';
 import { Icon } from '@deriv/components';
 
 const DerivezWebTerminal = () => {
     const history = useHistory();
+    const location = useLocation();
     const routeToPrevious = () => history.push(routes.traders_hub);
-    const { traders_hub, modules } = useStore();
+    const { traders_hub } = useStore();
     const { is_real } = traders_hub;
-    const { derivez_tokens } = modules.cfd;
     const account_type = is_real ? 'real' : 'demo';
 
-    const derivezWebTraderUrl = getDerivEzWebTerminalLink(account_type, derivez_tokens[account_type]);
+    const derivez_token = location.state.derivez_token || '';
+
+    const derivezWebTraderUrl = getDerivEzWebTerminalLink(account_type, derivez_token);
 
     return (
         <div className='derivez-web-terminal'>

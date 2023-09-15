@@ -36,8 +36,8 @@ export default class CFDStore extends BaseStore {
         real: '',
     };
     derivez_tokens = {
-        demo: '',
-        real: '',
+        demo: 'asdf-demo',
+        real: 'qwer-real',
     };
 
     real_synthetic_accounts_existing_data = [];

@@ -31,10 +31,16 @@ export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
 type TPlatformsDesktopDownload = {
     platform: TCFDsPlatformType;
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
+    derivez_tokens: TCFDDashboardContainer['derivez_tokens'];
     is_demo: string;
 };
 
-export const PlatformsDesktopDownload = ({ platform, dxtrade_tokens, is_demo }: TPlatformsDesktopDownload) => {
+export const PlatformsDesktopDownload = ({
+    platform,
+    dxtrade_tokens,
+    derivez_tokens,
+    is_demo,
+}: TPlatformsDesktopDownload) => {
     const history = useHistory();
 
     const getIconAndText = () => (
@@ -67,7 +73,15 @@ export const PlatformsDesktopDownload = ({ platform, dxtrade_tokens, is_demo }: 
     );
 
     const derivezWebTerminal = () => (
-        <div className='cfd-trade-modal__web-terminal-button' onClick={() => history.push(routes.derivez)}>
+        <div
+            className='cfd-trade-modal__web-terminal-button'
+            onClick={() => {
+                history.push({
+                    pathname: routes.derivez,
+                    state: { derivez_token: derivez_tokens[is_demo ? 'demo' : 'real'] },
+                });
+            }}
+        >
             {getIconAndText()}
         </div>
     );

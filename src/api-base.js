@@ -92,7 +92,7 @@ class APIBase {
     }
 
     async getAllBalances() {
-        const { balance = {} } = await this.api.send({ balance: 1, account: 'all' });
+        const { balance = {} } = await this.api.send({ balance: 1, account: 'all', subscribe: 1 });
         if (balance?.accounts) {
             const { accounts = {} } = balance;
 

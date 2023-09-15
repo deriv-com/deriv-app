@@ -72,12 +72,21 @@ const Header = () => {
 
     React.useEffect(() => {
         api_base.api.expectResponse('balance').then(({ balance }) => {
-            // this is required to updated the accounts in the account switcher
             dispatch(client_slice.updateBalance(balance));
             globalObserver.setState({
                 balance: Number(balance.balance),
                 currency: balance.currency,
             });
+        });
+
+        api_base.api.onMessage().subscribe(({ data }) => {
+            if (data.msg_type === 'balance') {
+                dispatch(client_slice.updateBalance(data.balance));
+                globalObserver.setState({
+                    balance: Number(data.balance.balance),
+                    currency: data.balance.currency,
+                });
+            }
         });
 
         const mountSwitcher = () => {

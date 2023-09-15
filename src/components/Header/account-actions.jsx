@@ -29,6 +29,8 @@ const AccountMenu = ({ is_open }) => {
     const account_icon = is_bot_running ? 'ic-lock' : 'ic-chevron-down-bold';
     const currency_icon = is_virtual ? 'virtual' : currency.toLowerCase() || 'unknown';
 
+    console.log(balance, 'balance');
+
     return (
         <div className={classNames('header__acc-info', { disabled: is_bot_running })}>
             <img

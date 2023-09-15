@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { HorizontalSwipe, Icon, Popover, ProgressIndicator, Table, Text } from '@deriv/components';
 import { isMobile, formatMoney } from '@deriv/shared';
+import { useExchangeRate } from '@deriv/hooks';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
@@ -40,13 +41,14 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
     const amount_dealt = amount - remaining_amount;
     const enable_action_point = floating_rate_store.change_ad_alert && floating_rate_store.rate_type !== rate_type;
     const is_buy_advert = type === buy_sell.BUY;
+    const { getRate } = useExchangeRate();
 
     const { display_effective_rate } = generateEffectiveRate({
         price: price_display,
         rate_type,
         rate: rate_display,
         local_currency,
-        exchange_rate: floating_rate_store.exchange_rate,
+        exchange_rate: getRate(local_currency),
         market_rate: effective_rate,
     });
 

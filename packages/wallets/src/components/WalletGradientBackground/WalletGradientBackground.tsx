@@ -6,14 +6,14 @@ type WalletGradientBackground = {
     currency: string;
     device?: 'desktop' | 'mobile';
     has_shine?: boolean;
-    is_demo: boolean;
+    is_demo?: boolean;
     theme?: 'dark' | 'light';
     type?: 'card' | 'header';
 };
 
 const WalletGradientBackground: React.FC<WalletGradientBackground> = ({
     has_shine = false,
-    is_demo,
+    is_demo = false,
     currency,
     theme = 'light',
     type = 'card',
@@ -25,7 +25,7 @@ const WalletGradientBackground: React.FC<WalletGradientBackground> = ({
         : `wallets-gradient--${currency}-${device}-${type}-${theme}`;
 
     return (
-        <div className={className}>
+        <div className={`wallets-gradient ${className}`}>
             {has_shine && !is_demo && <span className='wallets-gradient__shine' />}
             {children}
         </div>

@@ -58,7 +58,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
         // the account transferred to is a Deriv MT5 account that can't be switched to and from account is your logged in account
         if (
             selected_to.value === loginid ||
-            ((selected_to.is_mt || selected_to.is_dxtrade) && selected_from.value === loginid)
+            ((selected_to.is_mt || selected_to.is_dxtrade || selected_to.is_ctrader) && selected_from.value === loginid)
         ) {
             openStatement();
         } else {

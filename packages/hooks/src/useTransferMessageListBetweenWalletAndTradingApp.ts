@@ -46,13 +46,32 @@ const useTransferMessageListBetweenWalletAndTradingApp = (
     const { getRate } = useExchangeRate();
 
     if (from_account && to_account) {
-        if (
-            (from_account.account_type === 'wallet' && to_account.account_type !== 'wallet') ||
-            (from_account.account_type !== 'wallet' && to_account.account_type === 'wallet')
-        ) {
-            let limits;
+        let limits;
+        if (from_account.account_type === 'wallet' && to_account.account_type !== 'wallet') {
             if (to_account.account_type && to_account.type)
                 limits = account_limits.daily_transfers[tradingAccountMapper(to_account.account_type, to_account.type)];
+            if (from_account.currency)
+                if (from_account.is_demo)
+                    message_list.push({
+                        code: 'DemoWalletAndTradingAppDailyLimit',
+                        is_first_transfer: parseFloat(limits?.allowed) === parseFloat(limits?.available),
+                        limit: parseFloat(limits?.available),
+                        currency: from_account.currency,
+                        type: 'success',
+                    });
+                else
+                    message_list.push({
+                        code: 'WalletAndTradingAppDailyLimit',
+                        is_first_transfer: parseFloat(limits?.allowed) === parseFloat(limits?.available),
+                        limit: parseFloat(limits?.available) * getRate(from_account.currency),
+                        currency: from_account.currency,
+                        type: 'success',
+                    });
+        }
+        if (from_account.account_type !== 'wallet' && to_account.account_type === 'wallet') {
+            if (from_account.account_type && from_account.type)
+                limits =
+                    account_limits.daily_transfers[tradingAccountMapper(from_account.account_type, from_account.type)];
             if (from_account.currency)
                 if (from_account.is_demo)
                     message_list.push({

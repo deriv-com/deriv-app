@@ -153,7 +153,7 @@ const IDVForm = ({
                                                                     }
                                                                 }}
                                                                 onChange={handleChange}
-                                                                onItemSelection={(item: TDocumentList) => {
+                                                                onItemSelection={(item: TDocument) => {
                                                                     if (
                                                                         item.text === 'No results found' ||
                                                                         !item.text

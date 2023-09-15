@@ -88,7 +88,7 @@ describe('AccountSwitcherWalletItem', () => {
         const store = mockStore({});
         const tempProps = { ...props, account: { ...account, is_virtual: true }, show_badge: true };
         render(<AccountSwitcherWalletItemComponent props={tempProps} store={store} />);
-        expect(screen.getByText('USD Wallet')).toBeInTheDocument();
+        expect(screen.getByText('Demo Wallet')).toBeInTheDocument();
         expect(screen.getByText('100.00 USD')).toBeInTheDocument();
         expect(screen.getByText('Demo')).toBeInTheDocument();
     });

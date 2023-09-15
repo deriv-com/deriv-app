@@ -1,24 +1,8 @@
+import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { getUnsupportedContracts } from '../constants';
 import { getSymbolDisplayName, TActiveSymbols } from './active-symbols';
 import { getMarketInformation } from './market-underlying';
-
-type TPortfolioPos = {
-    buy_price: number;
-    contract_id?: number;
-    contract_type?: string;
-    longcode: string;
-    payout: number;
-    shortcode: string;
-    transaction_id?: number;
-    transaction_ids?: {
-        buy: number;
-        sell: number;
-    };
-    limit_order?: {
-        stop_loss?: null | number;
-        take_profit?: null | number;
-    };
-};
+import { TContractInfo } from '../contract';
 
 type TIsUnSupportedContract = {
     contract_type?: string;
@@ -30,19 +14,22 @@ const isUnSupportedContract = (portfolio_pos: TIsUnSupportedContract) =>
     !!portfolio_pos.is_forward_starting; // for forward start contracts
 
 export const formatPortfolioPosition = (
-    portfolio_pos: TPortfolioPos,
+    portfolio_pos: TContractInfo,
     active_symbols: TActiveSymbols = [],
     indicative?: number
 ) => {
     const purchase = portfolio_pos.buy_price;
     const payout = portfolio_pos.payout;
-    const display_name = getSymbolDisplayName(active_symbols, getMarketInformation(portfolio_pos.shortcode).underlying);
+    const display_name = getSymbolDisplayName(
+        active_symbols,
+        getMarketInformation(portfolio_pos.shortcode || '').underlying
+    );
     const transaction_id =
         portfolio_pos.transaction_id || (portfolio_pos.transaction_ids && portfolio_pos.transaction_ids.buy);
 
     return {
         contract_info: portfolio_pos,
-        details: portfolio_pos.longcode.replace(/\n/g, '<br />'),
+        details: portfolio_pos.longcode?.replace(/\n/g, '<br />'),
         display_name,
         id: portfolio_pos.contract_id,
         indicative: (indicative && isNaN(indicative)) || !indicative ? 0 : indicative,
@@ -53,4 +40,16 @@ export const formatPortfolioPosition = (
         is_unsupported: isUnSupportedContract(portfolio_pos),
         contract_update: portfolio_pos.limit_order,
     };
+};
+
+export const isVerificationServiceSupported = (
+    residence_list: ResidenceList,
+    account_settings: GetSettings,
+    service: 'idv' | 'onfido'
+): boolean => {
+    const citizen = account_settings?.citizen || account_settings?.country_code;
+    if (!citizen) return false;
+    const citizen_data = residence_list.find(item => item.value === citizen);
+
+    return !!citizen_data?.identity?.services?.[service]?.is_country_supported;
 };

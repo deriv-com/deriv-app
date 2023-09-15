@@ -1,37 +1,30 @@
 import React from 'react';
 import { Dialog } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { useDBotStore } from 'Stores/useDBotStore';
 import ToolbarButton from './toolbar-button';
 import WorkspaceGroup from './workspace-group';
 
-type TToolbar = {
-    active_tab: string;
-    file_name: string;
-    has_redo_stack: boolean;
-    has_undo_stack: boolean;
-    is_dialog_open: boolean;
-    is_drawer_open: boolean;
-    is_running: boolean;
-    is_stop_button_disabled: boolean;
-    is_stop_button_visible: boolean;
-    closeResetDialog: () => void;
-    onOkButtonClick: () => void;
-    onResetClick: () => void;
-    onRunButtonClick: () => void;
-    onSortClick: () => void;
-    onUndoClick: () => void;
-    onZoomInOutClick: () => void;
-    toggleSaveLoadModal: () => void;
-    toggleLoadModal: () => void;
-    toggleSaveModal: () => void;
-    loadDataStrategy: () => void;
-};
+const Toolbar = observer(() => {
+    const { run_panel, save_modal, load_modal, toolbar, quick_strategy } = useDBotStore();
+    const {
+        has_redo_stack,
+        has_undo_stack,
+        is_dialog_open,
+        closeResetDialog,
+        onResetOkButtonClick: onOkButtonClick,
+        onResetClick,
+        onSortClick,
+        onUndoClick,
+        onZoomInOutClick,
+    } = toolbar;
+    const { toggleSaveModal } = save_modal;
+    const { toggleLoadModal } = load_modal;
+    const { loadDataStrategy } = quick_strategy;
+    const { is_running } = run_panel;
 
-const Toolbar = (props: TToolbar) => {
-    const { is_running, is_dialog_open, onOkButtonClick, closeResetDialog } = props;
     const confirm_button_text = is_running ? localize('Yes') : localize('OK');
     const cancel_button_text = is_running ? localize('No') : localize('Cancel');
 
@@ -44,11 +37,20 @@ const Toolbar = (props: TToolbar) => {
                             popover_message={localize('Click here to start building your Deriv Bot.')}
                             button_id='db-toolbar__get-started-button'
                             button_classname='toolbar__btn toolbar__btn--icon toolbar__btn--start'
-                            buttonOnClick={props.loadDataStrategy}
+                            buttonOnClick={loadDataStrategy}
                             button_text={localize('Quick strategy')}
                         />
                     )}
-                    <WorkspaceGroup {...props} />
+                    <WorkspaceGroup
+                        has_redo_stack={has_redo_stack}
+                        has_undo_stack={has_undo_stack}
+                        onResetClick={onResetClick}
+                        onSortClick={onSortClick}
+                        onUndoClick={onUndoClick}
+                        onZoomInOutClick={onZoomInOutClick}
+                        toggleLoadModal={toggleLoadModal}
+                        toggleSaveModal={toggleSaveModal}
+                    />
                 </div>
             </div>
             <Dialog
@@ -80,26 +82,6 @@ const Toolbar = (props: TToolbar) => {
             </Dialog>
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ blockly_store, run_panel, save_modal, load_modal, toolbar, quick_strategy }: RootStore) => ({
-    active_tab: blockly_store.active_tab,
-    file_name: toolbar.file_name,
-    has_redo_stack: toolbar.has_redo_stack,
-    has_undo_stack: toolbar.has_undo_stack,
-    is_dialog_open: toolbar.is_dialog_open,
-    is_drawer_open: run_panel.is_drawer_open,
-    is_running: run_panel.is_running,
-    is_stop_button_disabled: run_panel.is_stop_button_disabled,
-    is_stop_button_visible: run_panel.is_stop_button_visible,
-    closeResetDialog: toolbar.closeResetDialog,
-    onOkButtonClick: toolbar.onResetOkButtonClick,
-    onResetClick: toolbar.onResetClick,
-    onRunButtonClick: run_panel.onRunButtonClick,
-    onSortClick: toolbar.onSortClick,
-    onUndoClick: toolbar.onUndoClick,
-    onZoomInOutClick: toolbar.onZoomInOutClick,
-    toggleLoadModal: load_modal.toggleLoadModal,
-    toggleSaveModal: save_modal.toggleSaveModal,
-    loadDataStrategy: quick_strategy.loadDataStrategy,
-}))(Toolbar);
+export default Toolbar;

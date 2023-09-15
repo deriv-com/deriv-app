@@ -3,6 +3,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
+    scroll-behavior: smooth;
     /* Firefox only */
     scrollbar-color: var(--state-active) var(--general-main-1);
     scrollbar-width: thin;

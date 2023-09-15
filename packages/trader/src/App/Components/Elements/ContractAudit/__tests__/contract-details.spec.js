@@ -35,7 +35,7 @@ describe('ContractDetails', () => {
         is_valid_to_cancel: 0,
         is_valid_to_sell: 1,
         longcode: 'Your payout will be 0.04958 for each point above 1460.00 at expiry time',
-        number_of_contracts: 0.04958,
+        display_number_of_contracts: '0.04958',
         profit: -0.1,
         profit_percentage: -5,
         purchase_time: 1686895542,
@@ -50,12 +50,10 @@ describe('ContractDetails', () => {
             <ContractDetails
                 contract_end_time={123456789}
                 contract_info={contract_info}
-                currency={'USD'}
                 duration_unit={'day'}
                 duration={1}
                 exit_spot={123}
                 is_vanilla={true}
-                number_of_contracts={10}
             />
         );
         expect(wrapper.queryAllByTestId('dt_bt_label')).toHaveLength(2);
@@ -66,12 +64,10 @@ describe('ContractDetails', () => {
             <ContractDetails
                 contract_end_time={123456789}
                 contract_info={contract_info}
-                currency={'USD'}
                 duration_unit={'day'}
                 duration={1}
                 exit_spot={123}
                 is_vanilla={true}
-                number_of_contracts={10}
             />
         );
 

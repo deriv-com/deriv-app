@@ -2,48 +2,33 @@ import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { useDBotStore } from '../../../../stores/useDBotStore';
 import ToolbarButton from '../toolbar/toolbar-button';
 import SearchBox from './search-box';
 import { ToolboxItems } from './toolbox-items';
 
-type TToolbox = {
-    hasSubCategory: (param: HTMLCollection) => boolean;
-    is_search_loading: boolean;
-    is_toolbox_open: boolean;
-    onMount: (param?: React.RefObject<typeof ToolboxItems>) => void;
-    onSearch: () => void;
-    onSearchBlur: () => void;
-    onSearchClear: () => void;
-    onSearchKeyUp: () => void;
-    onToolboxItemClick: (category: ChildNode) => void;
-    onToolboxItemExpand: (index: number) => void;
-    onUnmount: () => void;
-    setVisibility: (param: boolean) => void;
-    sub_category_index: number[];
-    toggleDrawer: () => void;
-    toolbox_dom: HTMLElement;
-    loadDataStrategy: () => void;
-};
+const Toolbox = observer(() => {
+    const { toolbox, flyout, quick_strategy } = useDBotStore();
+    const {
+        hasSubCategory,
+        is_search_loading,
+        onMount,
+        onSearch,
+        onSearchBlur,
+        onSearchClear,
+        onSearchKeyUp,
+        onToolboxItemClick,
+        onToolboxItemExpand,
+        onUnmount,
+        sub_category_index,
+        toolbox_dom,
+    } = toolbox;
 
-const Toolbox = ({
-    hasSubCategory,
-    is_search_loading,
-    onMount,
-    onSearch,
-    onSearchBlur,
-    onSearchClear,
-    onSearchKeyUp,
-    onToolboxItemClick,
-    onToolboxItemExpand,
-    onUnmount,
-    setVisibility,
-    sub_category_index,
-    toolbox_dom,
-    loadDataStrategy,
-}: TToolbox) => {
+    const { setVisibility } = flyout;
+    const { loadDataStrategy } = quick_strategy;
+
     const toolbox_ref = React.useRef(ToolboxItems);
     const [is_open, setOpen] = React.useState(true);
 
@@ -164,23 +149,6 @@ const Toolbox = ({
         );
     }
     return null;
-};
+});
 
-export default connect(({ toolbox, flyout, quick_strategy }: RootStore) => ({
-    hasSubCategory: toolbox.hasSubCategory,
-    is_search_loading: toolbox.is_search_loading,
-    is_toolbox_open: toolbox.is_toolbox_open,
-    onMount: toolbox.onMount,
-    onSearch: toolbox.onSearch,
-    onSearchBlur: toolbox.onSearchBlur,
-    onSearchClear: toolbox.onSearchClear,
-    onSearchKeyUp: toolbox.onSearchKeyUp,
-    onToolboxItemClick: toolbox.onToolboxItemClick,
-    onToolboxItemExpand: toolbox.onToolboxItemExpand,
-    onUnmount: toolbox.onUnmount,
-    setVisibility: flyout.setVisibility,
-    sub_category_index: toolbox.sub_category_index,
-    toggleDrawer: toolbox.toggleDrawer,
-    toolbox_dom: toolbox.toolbox_dom,
-    loadDataStrategy: quick_strategy.loadDataStrategy,
-}))(Toolbox);
+export default Toolbox;

@@ -55,7 +55,7 @@ const PasswordModalMessage = ({
 }: TPasswordModalMessage) => {
     if (!category && !type) return null;
 
-    const category_label = getCategoryText(category);
+    const category_label = category && getCategoryText(category);
     const type_label =
         platform &&
         category &&

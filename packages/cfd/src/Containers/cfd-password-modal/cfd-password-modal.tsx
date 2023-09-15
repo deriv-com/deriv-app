@@ -159,6 +159,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             sessionStorage.setItem('cfd_transfer_to_login_id', new_account_response.login || '');
             history.push(routes.cashier_acc_transfer);
         }
+        invalidate('mt5_login_list');
     };
 
     const handleForgotPassword = () => {

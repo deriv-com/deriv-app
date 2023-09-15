@@ -8,13 +8,18 @@ import {
     getDxCompanies,
     getMtCompanies,
 } from '../../Stores/Modules/CFD/Helpers/cfd-config';
-import { TCFDPasswordFormReusedProps } from '../../Containers/props.types';
 
 type TGetTypeLabel = {
     platform: string;
     is_eu: boolean;
     category: string;
     type: string;
+};
+
+type TCancelButtonProps = {
+    should_set_trading_password: boolean;
+    error_type?: string;
+    is_mobile: boolean;
 };
 
 // TODO: Update with other platform and CFDs
@@ -55,11 +60,7 @@ export const getTypeLabel = ({ platform, is_eu, category, type }: TGetTypeLabel)
     }
 };
 
-export const getCancelButtonLabel = ({
-    should_set_trading_password,
-    error_type,
-    is_mobile,
-}: Pick<TCFDPasswordFormReusedProps, 'should_set_trading_password' | 'error_type' | 'is_mobile'>) => {
+export const getCancelButtonLabel = ({ should_set_trading_password, error_type, is_mobile }: TCancelButtonProps) => {
     if (should_set_trading_password && error_type !== 'PasswordReset') {
         return !is_mobile ? null : localize('Cancel');
     }

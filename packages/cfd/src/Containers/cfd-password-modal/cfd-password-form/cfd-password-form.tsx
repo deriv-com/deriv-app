@@ -3,11 +3,7 @@ import { Formik, FormikErrors } from 'formik';
 import { getLegalEntityName, getErrorMessages, getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
 import { Text, FormSubmitButton, PasswordMeter, PasswordInput } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import {
-    TDxCompanies,
-    getDxCompanies,
-    getFormattedJurisdictionCode,
-} from '../../../Stores/Modules/CFD/Helpers/cfd-config';
+import { getFormattedJurisdictionCode } from '../../../Stores/Modules/CFD/Helpers/cfd-config';
 import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from '../../props.types';
 import PasswordStep from './password-step';
 import { observer, useStore } from '@deriv/stores';
@@ -75,7 +71,7 @@ const CFDPasswordForm = observer(
 
         const button_label = getButtonLabel(error_type);
 
-        const has_cancel_button = hasCancelButton(should_set_trading_password, error_type, is_mobile);
+        const has_cancel_button = hasCancelButton({ should_set_trading_password, error_type, is_mobile });
 
         const cancel_button_label = getCancelButtonLabel({ should_set_trading_password, error_type, is_mobile });
 

@@ -5,7 +5,7 @@ import './app-content.scss';
 const AppContent: React.FC = () => {
     return (
         <div>
-            <div className='wallet-app-content-icon' />
+            <div className='cfd-app' />
             <ModalManager />
         </div>
     );

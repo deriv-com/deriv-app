@@ -15,8 +15,12 @@ const WalletsAccordion: React.FC<TProps> = ({ active_account, account_info, swit
     const is_open = useMemo(() => active_account === account_info?.loginid, [active_account]);
 
     return (
-        <div className='wallets-accordion'>
-            <div className='wallets-accordion__header'>
+        <div className={`wallets-accordion wallets-accordion${account_info?.is_virtual ? '--virtual' : ''}`}>
+            <div
+                className={`wallets-accordion__header wallets-accordion__header${
+                    account_info?.is_virtual ? '--virtual' : ''
+                }`}
+            >
                 {header}
                 <div
                     className={`wallets-accordion__dropdown${is_open ? '--open' : ''}`}

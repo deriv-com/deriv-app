@@ -5,30 +5,30 @@ on:
     - master
 
 jobs:
-  release_staging:
+  build_test_and_upload_artifact:
     name: Build, Test and upload artifacts 
     runs-on: Runner_16cores
     environment: Staging
     container:
       image: node:18.16.0
-    env:
-      NODE_ENV: staging
-      DATADOG_APPLICATION_ID: ${{ env.DATADOG_APPLICATION_ID }} 
-      DATADOG_CLIENT_TOKEN: ${{ env.DATADOG_CLIENT_TOKEN }}
-      DATADOG_CLIENT_TOKEN_LOGS: ${{ env.DATADOG_CLIENT_TOKEN_LOGS }}
-      DATADOG_SESSION_REPLAY_SAMPLE_RATE: ${{ env.DATADOG_SESSION_REPLAY_SAMPLE_RATE }}
-      DATADOG_SESSION_SAMPLE_RATE: ${{ env.DATADOG_SESSION_SAMPLE_RATE }}
-      DATADOG_SESSION_SAMPLE_RATE_LOGS: ${{ env.DATADOG_SESSION_SAMPLE_RATE_LOGS }}
-      GD_API_KEY: ${{ secrets.GD_API_KEY }}
-      GD_APP_ID: ${{ secrets.GD_APP_ID }}
-      GD_CLIENT_ID: ${{ secrets.GD_CLIENT_ID }}
-      RUDDERSTACK_STAGING_KEY: ${{ env.RUDDERSTACK_STAGING_KEY }}
-      RUDDERSTACK_URL: ${{ env.RUDDERSTACK_URL }}
     steps:
     - uses: actions/checkout@v3.6.0
     - uses: "./.github/actions/npm_install_from_cache"
     - uses: "./.github/actions/invalidate_master_cache"
     - uses: "./.github/actions/build"
+      with:
+        NODE_ENV: staging
+        DATADOG_APPLICATION_ID: ${{ vars.DATADOG_APPLICATION_ID }} 
+        DATADOG_CLIENT_TOKEN: ${{ vars.DATADOG_CLIENT_TOKEN }}
+        DATADOG_CLIENT_TOKEN_LOGS: ${{ vars.DATADOG_CLIENT_TOKEN_LOGS }}
+        DATADOG_SESSION_REPLAY_SAMPLE_RATE: ${{ vars.DATADOG_SESSION_REPLAY_SAMPLE_RATE }}
+        DATADOG_SESSION_SAMPLE_RATE: ${{ vars.DATADOG_SESSION_SAMPLE_RATE }}
+        DATADOG_SESSION_SAMPLE_RATE_LOGS: ${{ vars.DATADOG_SESSION_SAMPLE_RATE_LOGS }}
+        GD_API_KEY: ${{ secrets.GD_API_KEY }}
+        GD_APP_ID: ${{ secrets.GD_APP_ID }}
+        GD_CLIENT_ID: ${{ secrets.GD_CLIENT_ID }}
+        RUDDERSTACK_STAGING_KEY: ${{ vars.RUDDERSTACK_STAGING_KEY }}
+        RUDDERSTACK_URL: ${{ vars.RUDDERSTACK_URL }}
     - uses: "./.github/actions/versioning"
       with:
         version_name: staging
@@ -43,17 +43,18 @@ jobs:
     container:
       image: node:18.16.0
     needs:
-    - release_staging
-    env:
-      NODE_ENV: staging
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    - build_test_and_upload_artifact
     steps:
     - uses: actions/checkout@v3.6.0
     - uses: actions/download-artifact@v3.0.1
       with:
         path: packages
     - uses: "./.github/actions/publish_to_pages_staging"
+      with:       
+        NODE_ENV: staging
+        CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
 
   send_slack_notification:
       name: Send Slack notification

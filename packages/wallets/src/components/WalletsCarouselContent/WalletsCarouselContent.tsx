@@ -17,6 +17,7 @@ const WalletsCarouselContent: React.FC = () => {
             0,
         [wallet_accounts_list, walletsCarouselEmblaApi]
     );
+    const [progress_bar_active_index, setProgressBarActiveIndex] = React.useState(active_wallet_index + 1);
 
     useEffect(() => {
         walletsCarouselEmblaApi?.scrollTo(active_wallet_index);
@@ -24,9 +25,14 @@ const WalletsCarouselContent: React.FC = () => {
 
     useEffect(() => {
         walletsCarouselEmblaApi?.on('settle', () => {
+            // const scroll_snap_index = walletsCarouselEmblaApi?.selectedScrollSnap();
+            // const loginid = wallet_accounts_list[scroll_snap_index]?.loginid;
+            // switchAccount(loginid);
+        });
+
+        walletsCarouselEmblaApi?.on('select', () => {
             const scroll_snap_index = walletsCarouselEmblaApi?.selectedScrollSnap();
-            const loginid = wallet_accounts_list[scroll_snap_index]?.loginid;
-            switchAccount(loginid);
+            setProgressBarActiveIndex(scroll_snap_index + 1);
         });
     }, [walletsCarouselEmblaApi, switchAccount, wallet_accounts_list]);
 
@@ -43,7 +49,7 @@ const WalletsCarouselContent: React.FC = () => {
             </div>
             <div className='wallets-carousel-content__progress-bar'>
                 <ProgressBar
-                    active_index={active_wallet_index + 1}
+                    active_index={progress_bar_active_index}
                     indexes={amount_of_steps}
                     setActiveIndex={switchAccount}
                     is_transition

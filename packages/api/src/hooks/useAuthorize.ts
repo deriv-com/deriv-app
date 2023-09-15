@@ -16,7 +16,7 @@ const useAuthorize = () => {
     });
 
     // Add additional information to the authorize response.
-    const modified_authorize = useMemo(() => ({ ...data?.authorize }), [data]);
+    const modified_authorize = useMemo(() => ({ ...data?.authorize }), [data?.authorize]);
 
     const switchAccount = useCallback(
         (loginid: string) => {

@@ -8,9 +8,9 @@ import './AppContent.scss';
 const AppContent: React.FC = () => {
     const { is_mobile } = useDevice();
     const { isLoading: is_authorize_loading } = useAuthorize();
-    const { isLoading: is_current_currency_loading } = useCurrencyConfig();
+    const { isLoading: is_currency_config_loading } = useCurrencyConfig();
 
-    if (is_authorize_loading || is_current_currency_loading) return <h1>Loading...</h1>;
+    if (is_authorize_loading || is_currency_config_loading) return <h1>Loading...</h1>;
 
     return (
         <div className='wallets-app'>

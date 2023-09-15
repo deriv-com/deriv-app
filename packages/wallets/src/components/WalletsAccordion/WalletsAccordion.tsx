@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useMemo } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { useAuthorize, useWalletAccountsList } from '@deriv/api';
 import IcDropdown from '../../public/images/ic-dropdown.svg';
 import './WalletsAccordion.scss';

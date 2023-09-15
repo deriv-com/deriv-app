@@ -8,7 +8,6 @@ import { generateDerivLink } from '@utils';
 import { setActiveLoginId, getClientAccounts, syncWithDerivApp } from '@storage';
 import { translate } from '@i18n';
 import Modal from '@components/common/modal';
-import Popover from '@components/common/popover';
 import Tour, { TourTargets } from '@components/common/tour';
 import {
     setAccountSwitcherLoader,
@@ -68,6 +67,7 @@ const AccountActions = () => {
     const [is_acc_dropdown_open, setIsAccDropdownOpen] = React.useState(false);
     const dropdownRef = React.useRef();
     const dispatch = useDispatch();
+    const [show_popover, setShowPopover] = React.useState(false);
 
     useEffect(() => {
         dispatch(setIsHeaderLoaded(true));
@@ -112,22 +112,24 @@ const AccountActions = () => {
                 />
             </a>
             <div className='header__divider mobile-hide'></div>
+
             <div
                 id='acc_switcher'
-                className={classNames('header__menu-item header__menu-acc', { disabled: is_bot_running })}
-                onClick={() => !is_bot_running && setIsAccDropdownOpen(!is_acc_dropdown_open)}
+                onMouseEnter={() => is_bot_running && setShowPopover(true)}
+                onMouseLeave={() => setShowPopover(false)}
             >
-                {is_bot_running ? (
-                    <Popover
-                        content={translate(
+                <span
+                    className={classNames('header__menu-item header__menu-acc', { disabled: is_bot_running })}
+                    onClick={() => !is_bot_running && setIsAccDropdownOpen(!is_acc_dropdown_open)}
+                >
+                    <AccountMenu is_open={is_acc_dropdown_open} />
+                </span>
+                {is_bot_running && show_popover && (
+                    <span className='header__menu-acc__popover'>
+                        {translate(
                             'Account switching is disabled while your bot is running. Please stop your bot before switching accounts.'
                         )}
-                        position='bottom'
-                    >
-                        <AccountMenu is_open={is_acc_dropdown_open} />
-                    </Popover>
-                ) : (
-                    <AccountMenu is_open={is_acc_dropdown_open} />
+                    </span>
                 )}
             </div>
 

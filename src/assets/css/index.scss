@@ -359,6 +359,17 @@ ul.bullet {
                     margin: 0;
                 }
             }
+            &__popover {
+                position: absolute;
+                z-index: 1;
+                font-size: 12px;
+                line-height: 16px;
+                background: var(--general-active);
+                color: var(--text-prominent);
+                padding: 8px;
+                border-radius: 4px;
+                width: 264px;
+            }
         }
 
         &-items {
@@ -1647,4 +1658,8 @@ ul.bullet {
         align-items: flex-start;
         margin-bottom: 2.4em;
     }
+}
+
+#acc_switcher {
+    height: 100%;
 }

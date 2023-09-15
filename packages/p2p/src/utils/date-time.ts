@@ -10,7 +10,8 @@
  */
 export const getFormattedDateString = (date_obj: Date, is_local = false, has_seconds = false): string => {
     const date_string = is_local ? date_obj.toString().split(' ') : date_obj.toUTCString().split(' ');
-    const [, day, month, year, time] = date_string;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, day, month, year, time] = date_string;
     const times = time.split(':');
 
     // Return time in the format "HH:mm:ss". e.g.: "01 Jan 1970 21:01:11"

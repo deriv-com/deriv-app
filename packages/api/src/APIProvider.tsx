@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect } from 'react';
+import React, { PropsWithChildren } from 'react';
 // @ts-expect-error `@deriv/deriv-api` is not in TypeScript, Hence we ignore the TS error.
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import { getAppId, getSocketURL, useWS } from '@deriv/shared';
@@ -49,17 +49,10 @@ type TProps = {
 };
 
 const APIProvider = ({ children, standalone = false }: PropsWithChildren<TProps>) => {
-    const ws = useWS();
+    const WS = useWS();
     // Use the new API instance if the `standalone` prop is set to true,
     // else use the legacy socket connection.
-    const api = standalone ? getDerivAPIInstance() : ws;
-
-    useEffect(() => {
-        // Disconnect the connection when this component unmounts.
-        return () => {
-            api?.disconnect();
-        };
-    }, [api]);
+    const api = standalone ? getDerivAPIInstance() : WS;
 
     return (
         <APIContext.Provider value={{ ...api }}>

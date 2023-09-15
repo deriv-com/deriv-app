@@ -17,7 +17,7 @@ const ProgressBar: React.FC<TProps> = ({ is_transition = 'true', active_index, i
                 const bar_classname = is_active ? 'wallets-progress-bar-active' : 'wallets-progress-bar-inactive';
                 return (
                     <div
-                        key={`progress-bar__${idx}`}
+                        key={`progress-bar-${idx}`}
                         onClick={() => setActiveIndex(idx)}
                         className={`${bar_classname} ${is_transition ? 'wallets-progress-bar-transition' : ''}`}
                     />

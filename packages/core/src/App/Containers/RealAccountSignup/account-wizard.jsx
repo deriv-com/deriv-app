@@ -351,6 +351,7 @@ const AccountWizard = props => {
                     form_error={form_error}
                     {...passthrough}
                     key={step_index}
+                    should_scroll_to_error_field
                 />
             );
         });

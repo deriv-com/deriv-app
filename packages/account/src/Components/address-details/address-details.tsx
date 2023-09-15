@@ -51,6 +51,7 @@ type TAddressDetails = {
     selected_step_ref?: React.RefObject<FormikProps<FormikValues>>;
     fetchStatesList: () => Promise<unknown>;
     value: FormikValues;
+    should_scroll_to_error_field: boolean;
 };
 
 type TInputField = {
@@ -103,6 +104,7 @@ const AddressDetails = ({
     selected_step_ref,
     disabled_items,
     has_real_account,
+    should_scroll_to_error_field = false,
     ...props
 }: TAddressDetails) => {
     const { is_appstore } = React.useContext(PlatformContext);
@@ -148,7 +150,7 @@ const AddressDetails = ({
     const handleValidate = (values: FormikValues) => {
         const { errors } = splitValidationResultTypes(validate(values));
         checkSubmitStatus(errors);
-        return firstPropertyObject(errors);
+        return should_scroll_to_error_field ? firstPropertyObject(errors) : errors;
     };
 
     return (
@@ -175,7 +177,7 @@ const AddressDetails = ({
                                 height_offset={is_appstore ? '222px' : '90px'}
                                 is_disabled={isDesktop()}
                             >
-                                <ScrollToFieldWithError />
+                                {should_scroll_to_error_field && <ScrollToFieldWithError />}
                                 {!is_appstore && (
                                     <Text
                                         as='p'
@@ -337,7 +339,7 @@ const AddressDetails = ({
                             </Div100vhContainer>
                             <Modal.Footer has_separator is_bypassed={isMobile()}>
                                 <FormSubmitButton
-                                    // is_disabled={isSubmitDisabled(errors)}
+                                    is_disabled={should_scroll_to_error_field ? false : isSubmitDisabled(errors)}
                                     label={localize('Next')}
                                     is_absolute={isMobile()}
                                     has_cancel

@@ -50,6 +50,7 @@ const PersonalDetails = ({
     selected_step_ref,
     closeRealAccountSignup,
     has_real_account,
+    should_scroll_to_error_field = false,
     ...props
 }) => {
     const { account_status, account_settings, residence, real_account_signup_target } = props;
@@ -110,7 +111,7 @@ const PersonalDetails = ({
         const error_data = { ...idv_error, ...errors };
         checkSubmitStatus(error_data);
         // return error_data with only first error field name for highlighting only one field in a moment;
-        return firstPropertyObject(error_data);
+        return should_scroll_to_error_field ? firstPropertyObject(error_data) : error_data;
     };
 
     const closeToolTip = () => setShouldCloseTooltip(true);
@@ -147,7 +148,7 @@ const PersonalDetails = ({
                             onClick={closeToolTip}
                             data-testid='personal_details_form'
                         >
-                            <ScrollToFieldWithError />
+                            {should_scroll_to_error_field && <ScrollToFieldWithError />}
                             <Div100vhContainer className='details-form' height_offset='100px' is_disabled={isDesktop()}>
                                 {!is_qualified_for_idv && (
                                     <Text as='p' size='xxxs' align='center' className='details-form__description'>
@@ -212,7 +213,7 @@ const PersonalDetails = ({
                                 <FormSubmitButton
                                     cancel_label={localize('Previous')}
                                     has_cancel
-                                    // is_disabled={isSubmitDisabled(errors)}
+                                    is_disabled={should_scroll_to_error_field ? false : isSubmitDisabled(errors)}
                                     is_absolute={isMobile()}
                                     label={localize('Next')}
                                     onCancel={() => handleCancel(values)}

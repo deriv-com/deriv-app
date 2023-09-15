@@ -3,18 +3,6 @@ on:
   push:
     tags:
     - production.*
-env:
-  CACHE_VERSION: ${{ secrets.CACHE_VERSION }}
-  DATADOG_CLIENT_TOKEN_LOGS: ${{ env.DATADOG_CLIENT_TOKEN_LOGS }}
-  DATADOG_SESSION_REPLAY_SAMPLE_RATE: ${{ env.DATADOG_SESSION_REPLAY_SAMPLE_RATE }}
-  DATADOG_SESSION_SAMPLE_RATE: ${{ env.DATADOG_SESSION_SAMPLE_RATE }}
-  DATADOG_SESSION_SAMPLE_RATE_LOGS: ${{ env.DATADOG_SESSION_SAMPLE_RATE_LOGS }}
-  GD_API_KEY: ${{ secrets.GD_API_KEY }}
-  GD_APP_ID: ${{ secrets.GD_APP_ID }}
-  GD_CLIENT_ID: ${{ secrets.GD_CLIENT_ID }}
-  RUDDERSTACK_PRODUCTION_KEY: ${{ env.RUDDERSTACK_PRODUCTION_KEY }}
-  RUDDERSTACK_STAGING_KEY: ${{ env.RUDDERSTACK_STAGING_KEY }}
-  RUDDERSTACK_URL: ${{ env.RUDDERSTACK_URL }}
 jobs:
   build_test_and_upload_artifact:
     name: Build, Test and upload artifacts 
@@ -24,10 +12,17 @@ jobs:
       image: node:18.16.0
     env:
       NODE_ENV: production
-      CA: ${{ secrets.CA }}
-      CA_CRT: ${{ secrets.CA_CRT }}
-      SERVICEACCOUNT_TOKEN: ${{ secrets.SERVICEACCOUNT_TOKEN }}
-      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      DATADOG_APPLICATION_ID: ${{ env.DATADOG_APPLICATION_ID }}
+      DATADOG_CLIENT_TOKEN: ${{ env.DATADOG_CLIENT_TOKEN }}
+      DATADOG_CLIENT_TOKEN_LOGS: ${{ env.DATADOG_CLIENT_TOKEN_LOGS }}
+      DATADOG_SESSION_REPLAY_SAMPLE_RATE: ${{ env.DATADOG_SESSION_REPLAY_SAMPLE_RATE }}
+      DATADOG_SESSION_SAMPLE_RATE: ${{ env.DATADOG_SESSION_SAMPLE_RATE }}
+      DATADOG_SESSION_SAMPLE_RATE_LOGS: ${{ env.DATADOG_SESSION_SAMPLE_RATE_LOGS }}
+      GD_API_KEY: ${{ secrets.GD_API_KEY }}
+      GD_APP_ID: ${{ secrets.GD_APP_ID }}
+      GD_CLIENT_ID: ${{ secrets.GD_CLIENT_ID }}
+      RUDDERSTACK_PRODUCTION_KEY: ${{ env.RUDDERSTACK_PRODUCTION_KEY }}
+      RUDDERSTACK_URL: ${{ env.RUDDERSTACK_URL }}
     steps:
     - uses: actions/checkout@v3.6.0
     - uses: "./.github/actions/npm_install_from_cache"

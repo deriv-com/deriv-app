@@ -2,7 +2,7 @@ import React from 'react';
 import './WalletGradientBackground.scss';
 
 type WalletGradientBackground = {
-    is_demo: boolean;
+    is_demo?: boolean;
     currency: string;
     type?: 'card' | 'header';
     theme?: 'dark' | 'light';
@@ -11,7 +11,7 @@ type WalletGradientBackground = {
 };
 
 const WalletGradientBackground: React.FC<WalletGradientBackground> = ({
-    is_demo,
+    is_demo = false,
     currency,
     theme = 'light',
     type = 'card',

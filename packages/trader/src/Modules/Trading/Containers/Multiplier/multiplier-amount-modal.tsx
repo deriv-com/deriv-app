@@ -69,7 +69,7 @@ const TradeParamsMobile = observer(({ toggleModal }: { toggleModal: TToggleModal
                 WS.forget(subscription.id);
             }
         };
-        const dispose = requestPreviewProposal(trade_store, { amount: stake_value }, onProposalResponse);
+        const dispose = requestPreviewProposal(trade_store, onProposalResponse, { amount: stake_value });
 
         return () => {
             dispose?.();

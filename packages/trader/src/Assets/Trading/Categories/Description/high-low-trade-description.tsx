@@ -17,7 +17,7 @@ const HighLowTradeDescription = () => {
     return (
         <React.Fragment>
             {content.map(paragraph => (
-                <Text as='p' key={paragraph.props.key}>
+                <Text as='p' key={paragraph.props.i18n_default_text}>
                     {paragraph}
                 </Text>
             ))}

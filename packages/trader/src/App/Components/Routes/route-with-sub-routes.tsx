@@ -22,7 +22,7 @@ const RouteWithSubRoutes = (route: TRouteWithSubRoutesProps) => {
             const static_pathname = pathname.substring(0, pathname.lastIndexOf('/') + 1);
             return static_pathname === route.path.substring(0, route.path.indexOf(':'));
         }
-        return route.path === pathname || !!(route.routes && route.routes.find(r => pathname === r.path));
+        return route.path === pathname || !!route.routes?.find(r => pathname === r.path);
     };
 
     const renderFactory = (props: RouteComponentProps) => {

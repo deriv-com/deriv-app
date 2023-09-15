@@ -77,32 +77,32 @@ const MultiplierTradeDescription = () => {
     return (
         <React.Fragment>
             {about_section.map(paragraph => (
-                <Text as='p' key={paragraph.props.key}>
+                <Text as='p' key={paragraph.props.i18n_default_text}>
                     {paragraph}
                 </Text>
             ))}
             <ul>
                 {multipliers_params_section.map(({ type, text }) =>
                     type === 'list_item' ? (
-                        <Text as='li' key={text.props.key}>
+                        <Text as='li' key={text.props.i18n_default_text}>
                             {text}
                         </Text>
                     ) : (
-                        <Text as='p' key={text.props.key}>
+                        <Text as='p' key={text.props.i18n_default_text}>
                             {text}
                         </Text>
                     )
                 )}
                 <ul>
                     {deal_cancellation_section.map(paragraph => (
-                        <Text as='li' key={paragraph.props.key}>
+                        <Text as='li' key={paragraph.props.i18n_default_text}>
                             {paragraph}
                         </Text>
                     ))}
                 </ul>
             </ul>
             {closing_section.map(paragraph => (
-                <Text as='p' key={paragraph.props.key}>
+                <Text as='p' key={paragraph.props.i18n_default_text}>
                     {paragraph}
                 </Text>
             ))}

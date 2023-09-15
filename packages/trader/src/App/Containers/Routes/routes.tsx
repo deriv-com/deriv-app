@@ -44,7 +44,7 @@ const tradePageMountingMiddleware = ({
     return true;
 };
 
-const Error = Loadable({
+const ErrorComponent = Loadable({
     loader: () => import(/* webpackChunkName: "error-component" */ 'App/Components/Elements/Errors'),
     loading: () => <UILoader />,
     render(loaded, props) {
@@ -112,7 +112,7 @@ const Routes = observer(({ history, passthrough }: TRoutesProps) => {
         return () => onUnmountPortfolio();
     }, [onUnmountPortfolio]);
 
-    if (has_error) return <Error {...error} />;
+    if (has_error) return <ErrorComponent {...error} />;
 
     return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;
 });

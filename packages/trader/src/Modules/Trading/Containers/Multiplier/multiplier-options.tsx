@@ -30,7 +30,7 @@ const MultiplierOptions = observer(({ toggleModal }: TMultiplierOptions) => {
                 WS.forget(subscription.id);
             }
         };
-        const dispose = requestPreviewProposal(trade_store, { amount }, onProposalResponse);
+        const dispose = requestPreviewProposal(trade_store, onProposalResponse, { amount });
 
         return () => {
             dispose?.();

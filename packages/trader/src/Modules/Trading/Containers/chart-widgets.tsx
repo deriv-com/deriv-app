@@ -57,7 +57,7 @@ export const ChartTopWidgets = observer(
         const { is_dark_mode_on } = ui;
         const theme = is_dark_mode_on ? 'dark' : 'light';
         let yAxiswidth;
-        if (charts_ref && charts_ref.chart) {
+        if (charts_ref?.chart) {
             yAxiswidth = charts_ref.chart.yAxiswidth;
         }
         return (

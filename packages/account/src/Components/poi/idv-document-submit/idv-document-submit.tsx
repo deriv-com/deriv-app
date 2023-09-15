@@ -74,7 +74,7 @@ const IdvDocumentSubmit = ({
     };
 
     const validateFields = (values: TIdvDocumentSubmitForm) => {
-        const errors: FormikErrors<TIdvDocumentSubmitForm> = {};
+        const errors: FormikErrors<Record<keyof TIdvDocumentSubmitForm, string>> = {};
         const { document_type, document_number, document_additional } = values;
         const needs_additional_document = !!document_type.additional;
 

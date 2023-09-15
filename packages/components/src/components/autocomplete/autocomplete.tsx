@@ -1,6 +1,6 @@
-import classNames from 'classnames';
 import React from 'react';
-import { matchStringByChar, getPosition } from '@deriv/shared';
+import classNames from 'classnames';
+import { matchStringByChar, getPosition, getSearchNotFoundOption } from '@deriv/shared';
 import Icon from '../icon';
 import Input from '../input';
 import DropdownList, { TItem } from '../dropdown-list';
@@ -22,7 +22,7 @@ type TAutocompleteProps = {
     list_height: string;
     list_items: TItem[];
     list_portal_id: string;
-    not_found_text?: string;
+    not_found_text: string;
     onBlur?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     onHideDropdownList: () => void;
     onItemSelection: (item: TItem) => void;
@@ -34,7 +34,6 @@ type TAutocompleteProps = {
     value: string;
     onSearch?: (value: string, items: TItem[]) => [];
     data_testid: string;
-    name: string;
 };
 
 const KEY_CODE = {
@@ -60,20 +59,22 @@ const getFilteredItems = (val: string, list: TItem[], should_filter_by_char = fa
     );
 };
 const Autocomplete = React.memo((props: TAutocompleteProps) => {
+    const NO_SEARCH_RESULT = getSearchNotFoundOption();
     const {
         autoComplete,
-        data_testid,
         className,
+        data_testid,
         dropdown_offset,
-        historyValue,
         error,
         has_updating_list = true,
         hide_list = false,
+        historyValue,
         input_id,
         is_alignment_top,
         is_list_visible = false,
         list_items,
         list_portal_id,
+        not_found_text = NO_SEARCH_RESULT,
         onHideDropdownList,
         onItemSelection,
         onScrollStop,
@@ -81,8 +82,6 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
         should_filter_by_char,
         show_list = false,
         value,
-        name,
-        not_found_text = 'No results found',
         ...other_props
     } = props;
 
@@ -106,8 +105,8 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
             let new_filtered_items = [];
 
             if (is_list_visible) {
-                if (typeof props.onSearch === 'function') {
-                    new_filtered_items = props.onSearch(value.toLowerCase(), list_items);
+                if (typeof other_props.onSearch === 'function') {
+                    new_filtered_items = other_props.onSearch(value.toLowerCase(), list_items);
                 } else {
                     new_filtered_items = getFilteredItems(value.toLowerCase(), list_items);
                 }
@@ -158,11 +157,11 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
 
             setStyle(position_style.style);
         }
-    }, [should_show_list, is_alignment_top, list_portal_id, filtered_items.length]);
+    }, [should_show_list, is_alignment_top, list_portal_id, filtered_items?.length]);
 
     const handleScrollStop = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
         // pass onScrollStop func callback when scrolling stops
-        if (!props.onScrollStop) return;
+        if (!onScrollStop) return;
 
         const element = e.currentTarget;
         scroll_top_position = element.scrollTop;
@@ -170,7 +169,7 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
             clearTimeout(scroll_timeout);
         }
         scroll_timeout = setTimeout(() => {
-            props.onScrollStop?.();
+            onScrollStop?.();
         }, 150);
     };
 
@@ -269,13 +268,13 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
         if (!is_list_visible) setFilteredItems(list_items);
 
         if (input_value === '') {
-            props.onItemSelection?.({
-                text: props.not_found_text,
+            onItemSelection?.({
+                text: not_found_text,
                 value: '',
             });
         }
-        if (typeof props.onBlur === 'function') {
-            props.onBlur(e);
+        if (typeof other_props.onBlur === 'function') {
+            other_props.onBlur(e);
         }
     };
 
@@ -284,29 +283,29 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
 
         setInputValue((typeof item === 'object' ? item.text : item) || '');
 
-        props.onItemSelection?.(item);
+        onItemSelection?.(item);
     };
 
     const showDropdownList = () => {
         setShouldShowList(true);
 
-        props.onShowDropdownList?.();
+        onShowDropdownList?.();
     };
 
     const hideDropdownList = () => {
         setShouldShowList(false);
 
-        props.onHideDropdownList?.();
+        onHideDropdownList?.();
     };
 
     const filterList = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const val = (e.target as HTMLInputElement).value.toLowerCase();
         let new_filtered_items = [];
 
-        if (typeof props.onSearch === 'function') {
-            new_filtered_items = props.onSearch(val, props.list_items);
+        if (typeof other_props.onSearch === 'function') {
+            new_filtered_items = other_props.onSearch(val, list_items);
         } else {
-            new_filtered_items = getFilteredItems(val, props.list_items, should_filter_by_char);
+            new_filtered_items = getFilteredItems(val, list_items, should_filter_by_char);
         }
 
         if (!new_filtered_items.length) {
@@ -322,7 +321,6 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
                     {...other_props}
                     className='dc-autocomplete__field'
                     error={error}
-                    name={name}
                     autoComplete={autoComplete}
                     onKeyDown={onKeyPressed}
                     onInput={filterList}
@@ -370,12 +368,12 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
                 }}
                 is_visible={should_show_list || is_list_visible}
                 list_items={filtered_items}
-                list_height={props.list_height}
+                list_height={other_props.list_height}
                 // Autocomplete must use the `text` property and not the `value`, however DropdownList provides access to both
                 onItemSelection={onSelectItem}
                 setActiveIndex={setActiveIndex}
                 onScrollStop={handleScrollStop}
-                not_found_text={props.not_found_text}
+                not_found_text={not_found_text}
                 portal_id={list_portal_id}
             />
         </div>

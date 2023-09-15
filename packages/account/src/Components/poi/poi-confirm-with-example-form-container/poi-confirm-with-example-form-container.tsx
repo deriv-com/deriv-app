@@ -13,13 +13,13 @@ import {
     WS,
 } from '@deriv/shared';
 import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
-import FormBody from 'Components/form-body';
-import LoadErrorMessage from 'Components/load-error-message';
-import PersonalDetailsForm from 'Components/forms/personal-details-form';
-import { GENERIC_ERROR_MESSAGE, DUPLICATE_ACCOUNT_ERROR_MESSAGE } from 'Configs/poi-error-config';
-import { API_ERROR_CODES } from 'Constants/api-error-codes';
-import { makeSettingsRequest, validate, validateName } from 'Helpers/utils';
-import { TInputFieldValues } from 'Types';
+import FormBody from '../../form-body';
+import LoadErrorMessage from '../../load-error-message';
+import PersonalDetailsForm from '../../forms/personal-details-form';
+import { GENERIC_ERROR_MESSAGE, DUPLICATE_ACCOUNT_ERROR_MESSAGE } from '../../../Configs/poi-error-config';
+import { API_ERROR_CODES } from '../../../Constants/api-error-codes';
+import { makeSettingsRequest, validate, validateName } from '../../../Helpers/utils';
+import { TInputFieldValues } from '../../../Types';
 
 type TRestState = {
     api_error: string;

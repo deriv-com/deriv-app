@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { Field, useFormikContext } from 'formik';
+import { Link } from 'react-router-dom';
 import {
     Autocomplete,
     Checkbox,
@@ -15,12 +15,12 @@ import {
 } from '@deriv/components';
 import { getLegalEntityName, isDesktop, isMobile, routes, validPhone } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import InlineNoteWithIcon from '../inline-note-with-icon';
-import { DateOfBirthField, FormInputField } from './form-fields.jsx';
-import FormBodySection from '../form-body-section';
 import FormSubHeader from '../form-sub-header';
-import { isFieldImmutable } from '../../Helpers/utils';
+import InlineNoteWithIcon from '../inline-note-with-icon';
+import FormBodySection from '../form-body-section';
+import { DateOfBirthField, FormInputField } from './form-fields.jsx';
 import { getEmploymentStatusList } from '../../Sections/Assessment/FinancialAssessment/financial-information-list';
+import { isFieldImmutable } from '../../Helpers/utils';
 
 const PersonalDetailsForm = props => {
     const {

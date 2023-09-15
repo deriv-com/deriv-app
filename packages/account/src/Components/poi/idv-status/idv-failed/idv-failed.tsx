@@ -21,14 +21,14 @@ import {
     WS,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import PoiNameExample from 'Assets/ic-poi-name-example.svg';
-import PoiDobExample from 'Assets/ic-poi-dob-example.svg';
-import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
-import FormBody from 'Components/form-body';
-import IDVForm from 'Components/forms/idv-form';
-import FormFooter from 'Components/form-footer';
-import FormSubHeader from 'Components/form-sub-header';
-import PersonalDetailsForm from 'Components/forms/personal-details-form';
+import PoiNameExample from '../../../../Assets/ic-poi-name-example.svg';
+import PoiDobExample from '../../../../Assets/ic-poi-dob-example.svg';
+import PoiNameDobExample from '../../../../Assets/ic-poi-name-dob-example.svg';
+import FormBody from '../../../form-body';
+import IDVForm from '../../../forms/idv-form';
+import FormFooter from '../../../form-footer';
+import FormSubHeader from '../../../form-sub-header';
+import PersonalDetailsForm from '../../../forms/personal-details-form';
 import {
     getIDVDocumentType,
     isAdditionalDocumentValid,
@@ -38,11 +38,11 @@ import {
     shouldHideHelperImage,
     validate,
     validateName,
-} from 'Helpers/utils';
-import LoadErrorMessage from 'Components/load-error-message';
-import { GENERIC_ERROR_MESSAGE, DUPLICATE_ACCOUNT_ERROR_MESSAGE } from 'Configs/poi-error-config';
-import { API_ERROR_CODES } from 'Constants/api-error-codes';
-import { TIDVFormValues, TPersonalDetailsForm } from 'Types';
+} from '../../../../Helpers/utils';
+import { GENERIC_ERROR_MESSAGE, DUPLICATE_ACCOUNT_ERROR_MESSAGE } from '../../../../Configs/poi-error-config';
+import { API_ERROR_CODES } from '../../../../Constants/api-error-codes';
+import { TIDVFormValues, TPersonalDetailsForm } from '../../../../Types';
+import LoadErrorMessage from '../../../load-error-message';
 
 type TRestState = {
     api_error: string;

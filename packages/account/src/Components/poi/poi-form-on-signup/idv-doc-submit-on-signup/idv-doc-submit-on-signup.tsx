@@ -1,15 +1,15 @@
 import React from 'react';
 import { Formik, FormikValues, FormikHelpers, FormikErrors, Form } from 'formik';
 import classNames from 'classnames';
-import { GetSettings } from '@deriv/api-types';
 import { Localize, localize } from '@deriv/translations';
+import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button } from '@deriv/components';
-import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
 import { filterObjProperties, toMoment, removeEmptyPropertiesFromObject } from '@deriv/shared';
-import FormSubHeader from 'Components/form-sub-header';
-import IDVForm from 'Components/forms/idv-form';
-import PersonalDetailsForm from 'Components/forms/personal-details-form';
-import FormFooter from 'Components/form-footer';
+import PoiNameDobExample from '../../../../Assets/ic-poi-name-dob-example.svg';
+import FormSubHeader from '../../../form-sub-header';
+import IDVForm from '../../../forms/idv-form';
+import PersonalDetailsForm from '../../../forms/personal-details-form';
+import FormFooter from '../../../form-footer';
 import {
     validate,
     validateName,
@@ -17,7 +17,7 @@ import {
     isAdditionalDocumentValid,
     isDocumentNumberValid,
     shouldHideHelperImage,
-} from 'Helpers/utils';
+} from '../../../../Helpers/utils';
 
 type TIdvDocSubmitOnSignup = {
     citizen_data: FormikValues;
@@ -26,6 +26,7 @@ type TIdvDocSubmitOnSignup = {
     value: FormikValues;
     account_settings: GetSettings;
     getChangeableFields: () => string[];
+    residence_list: ResidenceList;
 };
 
 export const IdvDocSubmitOnSignup = ({
@@ -33,6 +34,7 @@ export const IdvDocSubmitOnSignup = ({
     onNext,
     account_settings,
     getChangeableFields,
+    residence_list,
 }: TIdvDocSubmitOnSignup) => {
     const side_note_image = <PoiNameDobExample />;
     const validateFields = (values: FormikValues) => {
@@ -115,6 +117,7 @@ export const IdvDocSubmitOnSignup = ({
                                     components={[<strong key={0} />]}
                                 />
                             }
+                            residence_list={residence_list}
                         />
                     </section>
                     <FormFooter className='proof-of-identity__footer'>

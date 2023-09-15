@@ -5,7 +5,7 @@ import { idv_error_statuses } from '@deriv/shared';
 import IdvSubmitComplete from '../idv-submit-complete';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
-jest.mock('Assets/ic-idv-document-pending.svg', () => jest.fn(() => 'IdvDocumentPending'));
+jest.mock('../../../../../Assets/ic-idv-document-pending.svg', () => jest.fn(() => 'IdvDocumentPending'));
 
 type TIdvSubmitCompleteProps = React.ComponentProps<typeof IdvSubmitComplete>;
 

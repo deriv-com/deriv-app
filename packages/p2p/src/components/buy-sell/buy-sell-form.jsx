@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { HintBox, Input, Text } from '@deriv/components';
-import { useP2PAdvertiserPaymentMethods , useExchangeRate } from '@deriv/hooks';
+import { useP2PAdvertiserPaymentMethods, useExchangeRate } from '@deriv/hooks';
 import { getDecimalPlaces, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer, Observer } from 'mobx-react-lite';

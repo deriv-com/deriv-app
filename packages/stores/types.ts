@@ -115,6 +115,11 @@ type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: number;
 };
 
+type TCtraderAccountsList = DetailsOfEachMT5Loginid & {
+    display_balance?: string;
+    platform?: string;
+};
+
 type TAccountsList = {
     account?: {
         balance?: string | number;
@@ -140,6 +145,7 @@ type TAccountsList = {
     is_dark_mode_on?: boolean;
     is_virtual?: boolean | number;
     loginid?: string;
+    trader_accounts_list?: DetailsOfEachMT5Loginid[];
     mt5_login_list?: DetailsOfEachMT5Loginid[];
     title?: string;
 }[];
@@ -170,10 +176,10 @@ type TTradingPlatformAvailableAccount = {
 type TAvailableCFDAccounts = {
     availability: 'Non-EU' | 'EU' | 'All';
     description: string;
-    icon: 'Derived' | 'Financial' | 'DerivX' | 'SwapFree';
+    icon: 'Derived' | 'Financial' | 'DerivX' | 'SwapFree' | 'Ctrader';
     market_type: 'synthetic' | 'financial' | 'all' | 'gaming';
     name: string;
-    platform: 'mt5' | 'dxtrade';
+    platform: 'mt5' | 'dxtrade' | 'ctrader';
 };
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };
@@ -269,6 +275,7 @@ type TClientStore = {
     balance?: string | number;
     can_change_fiat_currency: boolean;
     cfd_score: number;
+    ctrader_accounts_list: TCtraderAccountsList[];
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
@@ -582,6 +589,7 @@ type TBalance = {
 
 type TTradersHubStore = {
     available_cfd_accounts: TAvailableCFDAccounts[];
+    available_ctrader_accounts: TAvailableCFDAccounts[];
     available_dxtrade_accounts: DetailsOfEachMT5Loginid[];
     available_derivez_accounts: DetailsOfEachMT5Loginid[];
     CFDs_restricted_countries: boolean;

@@ -1,14 +1,15 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { Localize } from '@deriv/translations';
 import './TradingAccountCard.scss';
 
 type TProps = {
     description: string;
-    icon: ReactElement;
+    icon: React.ReactNode;
     title: string;
+    renderActions?: () => React.ReactNode;
 };
 
-const TradingAccountCard: React.FC<TProps> = ({ description, icon, title }) => {
+const TradingAccountCard: React.FC<TProps> = ({ description, icon, title, renderActions }) => {
     return (
         <div className='wallets-trading-account-card'>
             <div className='wallets-trading-account-card__icon'>{icon}</div>
@@ -21,11 +22,7 @@ const TradingAccountCard: React.FC<TProps> = ({ description, icon, title }) => {
                         <Localize i18n_default_text={description} />
                     </p>
                 </div>
-                <div className='wallets-trading-account-card__actions'>
-                    <button className='wallets-trading-account-card__action'>
-                        <Localize i18n_default_text='Open' />
-                    </button>
-                </div>
+                {renderActions?.()}
             </div>
         </div>
     );

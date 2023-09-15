@@ -17,3 +17,5 @@ export * from './WalletsCarousel';
 export * from './WalletCard';
 export * from './ProgressBar';
 export * from './WalletsCarouselContent';
+export * from './OtherCFDPlatformsList';
+export * from './SecondaryActionButton';

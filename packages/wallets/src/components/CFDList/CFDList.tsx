@@ -1,5 +1,6 @@
 import React from 'react';
 import { MT5List } from '../MT5List';
+import { OtherCFDPlatformsList } from '../OtherCFDPlatformsList';
 import './CFDList.scss';
 
 const CFDList = () => {
@@ -19,6 +20,7 @@ const CFDList = () => {
                 </div>
             </section>
             <MT5List />
+            <OtherCFDPlatformsList />
         </div>
     );
 };

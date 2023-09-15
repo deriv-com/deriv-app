@@ -2,10 +2,11 @@ import React from 'react';
 import DerivedMT5 from '../../public/images/mt5-derived.svg';
 import FinancialMT5 from '../../public/images/mt5-financial.svg';
 import SwapFreeMT5 from '../../public/images/mt5-swap-free.svg';
+import { SecondaryActionButton } from '../SecondaryActionButton';
 import { TradingAccountCard } from '../TradingAccountCard';
 import './MT5List.scss';
 
-const options_and_multipliers = [
+const mt5_mapper = [
     {
         title: 'Derived',
         description: 'This account offers CFDs on derived instruments.',
@@ -33,8 +34,16 @@ const MT5List: React.FC = () => {
                 </div>
             </section>
             <div className='wallets-mt5-list__content'>
-                {options_and_multipliers.map(account => (
-                    <TradingAccountCard {...account} key={account.title} />
+                {mt5_mapper.map(account => (
+                    <TradingAccountCard
+                        {...account}
+                        key={account.title}
+                        renderActions={() => (
+                            <SecondaryActionButton>
+                                <p className='wallets-other-cfd__text'>Get</p>
+                            </SecondaryActionButton>
+                        )}
+                    />
                 ))}
             </div>
         </>

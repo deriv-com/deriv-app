@@ -154,11 +154,6 @@ const CFDsListing = observer(() => {
         return null;
     };
 
-    const compareAccountsModalHandle = () => {
-        if (is_in_progress) setWalletsMigrationInProgressPopup(true);
-        else toggleCompareAccountsModal();
-    };
-
     return (
         <ListingContainer
             title={

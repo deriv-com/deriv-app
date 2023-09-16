@@ -6,7 +6,10 @@ const getPaymentMethodsConfig = () => ({
         icon_light: 'IcAdvcashLight',
         icon_dark: 'IcAdvcashDark',
         instructions: [
-            localize('Upload a screenshot of your name and email address from the personal information section.'),
+            <Localize
+                key={0}
+                i18n_default_text='Upload a screenshot of your name and email address from the personal information section.'
+            />,
         ],
         input_label: localize('Email address'),
         identifier_type: 'email_address',
@@ -35,14 +38,21 @@ const getPaymentMethodsConfig = () => ({
     beyonic: {
         icon_light: 'IcBeyonic',
         icon_dark: 'IcBeyonic',
-        instructions: [localize('Upload your mobile bill statement showing your name and phone number.')],
+        instructions: [
+            <Localize
+                key={0}
+                i18n_default_text='Upload your mobile bill statement showing your name and phone number.'
+            />,
+        ],
         input_label: localize('Mobile number'),
         identifier_type: 'mobile_number',
     },
     'boleto (d24 voucher)': {
         icon_light: 'IcBoletoD24VoucherLight',
         icon_dark: 'IcBoletoD24VoucherDark',
-        instructions: [localize('Upload your bank statement showing your name and account details.')],
+        instructions: [
+            <Localize key={0} i18n_default_text='Upload your bank statement showing your name and account details.' />,
+        ],
         input_label: localize('Bank account number'),
         identifier_type: 'bank_account_number',
     },
@@ -50,9 +60,10 @@ const getPaymentMethodsConfig = () => ({
         icon_light: 'IcVisaLight',
         icon_dark: 'IcVisaDark',
         instructions: [
-            localize(
-                'Upload a photo showing your name and the first six and last four digits of your card number. If the card does not display your name, upload the bank statement showing your name and card number in the transaction history.'
-            ),
+            <Localize
+                key={0}
+                i18n_default_text='Upload a photo showing your name and the first six and last four digits of your card number. If the card does not display your name, upload the bank statement showing your name and card number in the transaction history.'
+            />,
         ],
         input_label: localize('Card number'),
         identifier_type: 'card_number',
@@ -61,9 +72,10 @@ const getPaymentMethodsConfig = () => ({
         icon_light: 'IcMasterCardLight',
         icon_dark: 'IcMasterCardDark',
         instructions: [
-            localize(
-                'Upload a photo showing your name and the first six and last four digits of your card number. If the card does not display your name, upload the bank statement showing your name and card number in the transaction history.'
-            ),
+            <Localize
+                key={0}
+                i18n_default_text='Upload a photo showing your name and the first six and last four digits of your card number. If the card does not display your name, upload the bank statement showing your name and card number in the transaction history.'
+            />,
         ],
         input_label: localize('Card number'),
         identifier_type: 'card_number',
@@ -72,10 +84,13 @@ const getPaymentMethodsConfig = () => ({
         icon_light: 'IcPixLight',
         icon_dark: 'IcPixDark',
         instructions: [
-            localize('Upload a screenshot of either of the following to process the transaction:'),
-            localize('- your account profile section on the website'),
-            localize('- the Account Information page on the app'),
-            localize('- your account details of the bank linked to your account'),
+            <Localize
+                key={0}
+                i18n_default_text='Upload a screenshot of either of the following to process the transaction:'
+            />,
+            <Localize key={1} i18n_default_text='- your account profile section on the website' />,
+            <Localize key={2} i18n_default_text='- the Account Information page on the app' />,
+            <Localize key={3} i18n_default_text='- your account details of the bank linked to your account' />,
         ],
         input_label: localize('User ID'),
         identifier_type: 'user_id',
@@ -84,9 +99,10 @@ const getPaymentMethodsConfig = () => ({
         icon_light: 'IcSkrillLight',
         icon_dark: 'IcSkrillDark',
         instructions: [
-            localize(
-                'Upload a screenshot of your name, account number, and email address from the personal details section of the app or profile section of your account on the website.'
-            ),
+            <Localize
+                key={0}
+                i18n_default_text='Upload a screenshot of your name, account number, and email address from the personal details section of the app or profile section of your account on the website.'
+            />,
         ],
         input_label: localize('Email address'),
         identifier_type: 'email_address',
@@ -140,9 +156,10 @@ const getPaymentMethodsConfig = () => ({
         icon_light: 'IcWebMoneyLight',
         icon_dark: 'IcWebMoneyDark',
         instructions: [
-            localize(
-                'Upload a screenshot of your account and personal details page with your name, account number, phone number, and email address.'
-            ),
+            <Localize
+                key={0}
+                i18n_default_text='Upload a screenshot of your account and personal details page with your name, account number, phone number, and email address.'
+            />,
         ],
         input_label: localize('Account number'),
         identifier_type: 'account_number',
@@ -151,7 +168,10 @@ const getPaymentMethodsConfig = () => ({
         icon_light: 'IcZingpay',
         icon_dark: 'IcZingpay',
         instructions: [
-            localize('Upload your bank statement showing your name, account number, and transaction history.'),
+            <Localize
+                key={0}
+                i18n_default_text='Upload your bank statement showing your name, account number, and transaction history.'
+            />,
         ],
         input_label: localize('Bank account number'),
         identifier_type: 'bank_account_number',
@@ -160,7 +180,10 @@ const getPaymentMethodsConfig = () => ({
         icon_light: 'IcSticpayLight',
         icon_dark: 'IcSticpayDark',
         instructions: [
-            localize('Upload a screenshot of your name and email address from the personal details section.'),
+            <Localize
+                key={0}
+                i18n_default_text='Upload a screenshot of your name and email address from the personal details section.'
+            />,
         ],
         input_label: localize('Email address'),
         identifier_type: 'email_address',
@@ -169,7 +192,10 @@ const getPaymentMethodsConfig = () => ({
         icon_light: 'IcJetonLight',
         icon_dark: 'IcJetonDark',
         instructions: [
-            localize('Upload a screenshot of your name and account number from the personal details section.'),
+            <Localize
+                key={0}
+                i18n_default_text='Upload a screenshot of your name and account number from the personal details section.'
+            />,
         ],
         input_label: localize('Account number'),
         identifier_type: 'account_number',
@@ -177,7 +203,12 @@ const getPaymentMethodsConfig = () => ({
     other: {
         icon_light: 'IcOtherPaymentMethod',
         icon_dark: 'IcOtherPaymentMethod',
-        instructions: [localize('Upload a document showing your name and bank account number or account details.')],
+        instructions: [
+            <Localize
+                key={0}
+                i18n_default_text='Upload a document showing your name and bank account number or account details.'
+            />,
+        ],
         input_label: null,
         identifier_type: 'none',
     },

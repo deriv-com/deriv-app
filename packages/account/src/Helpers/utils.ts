@@ -3,7 +3,7 @@ import { filterObjProperties, toMoment, validLength, validName, getIDVNotApplica
 import { localize } from '@deriv/translations';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
 import { FormikValues } from 'formik';
-import { getIDVDocuments } from '../Constants/idv-document-config';
+import { getIDVDocuments } from '../Configs/idv-document-config';
 import { TServerError } from '../Types';
 
 export const documentAdditionalError = (document_additional: string, document_additional_format: string) => {

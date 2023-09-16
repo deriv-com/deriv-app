@@ -1,8 +1,9 @@
 /** Add types that are shared between components */
 import React from 'react';
 import { FormikHandlers, FormikProps, FormikValues } from 'formik';
-import { Authorize, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
+import { Authorize, GetAccountStatus, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
+import { IDENTIFIER_TYPES } from '../Constants/poo-identifier';
 
 export type TToken = {
     display_name: string;
@@ -189,4 +190,17 @@ export type TServerError = {
     message: string;
     details?: { [key: string]: string };
     fields?: string[];
+};
+
+export type TPaymentMethodIdentifier = typeof IDENTIFIER_TYPES[keyof typeof IDENTIFIER_TYPES];
+
+export type TPaymentMethodInfo = {
+    documents_required: number;
+    icon: string;
+    payment_method: string;
+    items: NonNullable<NonNullable<GetAccountStatus['authentication']>['ownership']>['requests'];
+    instructions: string;
+    input_label: string;
+    identifier_type: TPaymentMethodIdentifier;
+    is_generic_pm: boolean;
 };

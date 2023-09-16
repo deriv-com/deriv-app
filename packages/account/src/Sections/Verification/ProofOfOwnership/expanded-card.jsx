@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import FileUploader from './file-uploader';
 import { Input, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import SampleCreditCardModal from 'Components/sample-credit-card-modal';
+import SampleCreditCardModal from '../../../Components/sample-credit-card-modal';
 import classNames from 'classnames';
 import { IDENTIFIER_TYPES, VALIDATIONS } from './constants/constants.js';
 

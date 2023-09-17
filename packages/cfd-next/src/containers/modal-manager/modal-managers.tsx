@@ -1,5 +1,7 @@
-import CFDPasswordModal from '../../components/cfd-pasword-modal/cfd-password-modal';
+import React from 'react';
 
-export default {
-    CFDPasswordModal,
+const ModalManager = () => {
+    return <p>Abcd</p>;
 };
+
+export default ModalManager;

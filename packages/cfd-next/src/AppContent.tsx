@@ -1,5 +1,5 @@
 import React from 'react';
-import ModalManager from 'Containers/modal-manager/ModalManager';
+import ModalManager from './containers/modal-manager/modal-managers';
 import './app-content.scss';
 
 const AppContent: React.FC = () => {

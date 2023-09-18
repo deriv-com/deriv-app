@@ -28,7 +28,7 @@ const OtherCFDPlatformsList: React.FC = () => {
                 {other_cfd_mapper.map(account => (
                     <TradingAccountCard
                         {...account}
-                        key={account.title}
+                        key={`cfd_other_platform_list--${account.title}`}
                         renderActions={() => (
                             <SecondaryActionButton>
                                 <p className='wallets-other-cfd__text'>Get</p>

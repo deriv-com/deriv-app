@@ -3,12 +3,7 @@ import { screen, render } from '@testing-library/react';
 import { formatMoney, isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import AccountLimits from '../account-limits';
 import { BrowserRouter } from 'react-router-dom';
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => (Component: React.ReactElement) => Component,
-}));
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -18,6 +13,11 @@ jest.mock('@deriv/components', () => {
         Loading: jest.fn(() => 'mockedLoading'),
     };
 });
+jest.mock('@deriv/shared/src/services/ws-methods', () => ({
+    __esModule: true, // this property makes it work,
+    default: 'mockedDefaultExport',
+    useWS: () => undefined,
+}));
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -31,110 +31,136 @@ jest.mock('Components/load-error-message', () => jest.fn(() => 'mockedLoadErrorM
 jest.mock('../account-limits-footer', () => jest.fn(() => 'mockedAccountLimitsFooter'));
 
 describe('<AccountLimits/>', () => {
-    const props: React.ComponentProps<typeof AccountLimits> = {
-        currency: 'AUD',
-        is_fully_authenticated: true,
-        is_switching: false,
-        is_virtual: false,
+    let store = mockStore({});
+    const props = {
         overlay_ref: document.createElement('div'),
-        getLimits: jest.fn(() => Promise.resolve({ data: {} })),
-        account_limits: {
-            account_balance: 300000,
-            daily_transfers: {
-                dxtrade: {
-                    allowed: 12,
-                    available: 12,
+    };
+    const mock = {
+        client: {
+            currency: 'AUD',
+            is_fully_authenticated: true,
+            is_switching: false,
+            is_virtual: false,
+            getLimits: jest.fn(() => Promise.resolve({ get_limits: {} })),
+            account_limits: {
+                account_balance: 300000,
+                daily_transfers: {
+                    dxtrade: {
+                        allowed: 12,
+                        available: 12,
+                    },
+                    internal: {
+                        allowed: 10,
+                        available: 10,
+                    },
+                    mt5: {
+                        allowed: 10,
+                        available: 10,
+                    },
                 },
-                internal: {
-                    allowed: 10,
-                    available: 10,
+                lifetime_limit: 13907.43,
+                market_specific: {
+                    commodities: [
+                        {
+                            name: 'Commodities',
+                            payout_limit: 5000,
+                            profile_name: 'moderate_risk',
+                            turnover_limit: 50000,
+                        },
+                    ],
+                    cryptocurrency: [
+                        {
+                            name: 'Cryptocurrencies',
+                            payout_limit: 100.0,
+                            profile_name: 'extreme_risk',
+                            turnover_limit: 1000.0,
+                        },
+                    ],
+                    forex: [
+                        {
+                            name: 'Smart FX',
+                            payout_limit: 5000,
+                            profile_name: 'moderate_risk',
+                            turnover_limit: 50000,
+                        },
+                        {
+                            name: 'Major Pairs',
+                            payout_limit: 20000,
+                            profile_name: 'medium_risk',
+                            turnover_limit: 100000,
+                        },
+                        {
+                            name: 'Minor Pairs',
+                            payout_limit: 5000,
+                            profile_name: 'moderate_risk',
+                            turnover_limit: 50000,
+                        },
+                    ],
+                    indices: [
+                        {
+                            name: 'Stock Indices',
+                            payout_limit: 20000,
+                            profile_name: 'medium_risk',
+                            turnover_limit: 100000,
+                        },
+                    ],
+                    synthetic_index: [
+                        {
+                            name: 'Synthetic Indices',
+                            payout_limit: 50000,
+                            profile_name: 'low_risk',
+                            turnover_limit: 500000,
+                        },
+                    ],
                 },
-                mt5: {
-                    allowed: 10,
-                    available: 10,
-                },
+                num_of_days: 30,
+                num_of_days_limit: 13907.43,
+                open_positions: 100,
+                payout: 50000,
+                remainder: 13907.43,
+                withdrawal_for_x_days_monetary: 0,
+                withdrawal_since_inception_monetary: 0,
             },
-            lifetime_limit: 13907.43,
-            market_specific: {
-                commodities: [
-                    {
-                        name: 'Commodities',
-                        payout_limit: 5000,
-                        profile_name: 'moderate_risk',
-                        turnover_limit: 50000,
-                    },
-                ],
-                cryptocurrency: [
-                    {
-                        name: 'Cryptocurrencies',
-                        payout_limit: 100.0,
-                        profile_name: 'extreme_risk',
-                        turnover_limit: 1000.0,
-                    },
-                ],
-                forex: [
-                    {
-                        name: 'Smart FX',
-                        payout_limit: 5000,
-                        profile_name: 'moderate_risk',
-                        turnover_limit: 50000,
-                    },
-                    {
-                        name: 'Major Pairs',
-                        payout_limit: 20000,
-                        profile_name: 'medium_risk',
-                        turnover_limit: 100000,
-                    },
-                    {
-                        name: 'Minor Pairs',
-                        payout_limit: 5000,
-                        profile_name: 'moderate_risk',
-                        turnover_limit: 50000,
-                    },
-                ],
-                indices: [
-                    {
-                        name: 'Stock Indices',
-                        payout_limit: 20000,
-                        profile_name: 'medium_risk',
-                        turnover_limit: 100000,
-                    },
-                ],
-                synthetic_index: [
-                    {
-                        name: 'Synthetic Indices',
-                        payout_limit: 50000,
-                        profile_name: 'low_risk',
-                        turnover_limit: 500000,
-                    },
-                ],
-            },
-            num_of_days: 30,
-            num_of_days_limit: 13907.43,
-            open_positions: 100,
-            payout: 50000,
-            remainder: 13907.43,
-            withdrawal_for_x_days_monetary: 0,
-            withdrawal_since_inception_monetary: 0,
         },
     };
-
+    store = mockStore(mock);
     it('should render the Loading component if is_switching is true', () => {
-        render(<AccountLimits {...props} is_switching />);
+        store = mockStore({
+            client: {
+                ...mock.client,
+                is_switching: true,
+            },
+        });
+        render(
+            <StoreProvider store={store}>
+                <AccountLimits {...props} />
+            </StoreProvider>
+        );
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
     it('should render DemoMessage component if is_virtual is true', () => {
-        render(<AccountLimits {...props} is_virtual />);
+        store = mockStore({
+            client: {
+                ...mock.client,
+                is_switching: false,
+                is_virtual: true,
+            },
+        });
+        render(
+            <StoreProvider store={store}>
+                <AccountLimits {...props} />
+            </StoreProvider>
+        );
         expect(screen.queryByTestId('dt_account_demo_message_wrapper')).toHaveClass('account__demo-message-wrapper');
         expect(screen.getByText('mockedDemoMessage')).toBeInTheDocument();
     });
 
     it('should render LoadErrorMessage component if there is api_initial_load_error', () => {
-        render(
-            <AccountLimits
-                {...props}
-                account_limits={{
+        store = mockStore({
+            client: {
+                ...mock.client,
+                account_limits: {
                     api_initial_load_error: 'error in fetching data from API',
                     account_balance: '',
                     payout: '',
@@ -148,31 +174,56 @@ describe('<AccountLimits/>', () => {
                     num_of_days_limit: '',
                     remainder: '',
                     withdrawal_since_inception_monetary: '',
-                }}
-            />
+                },
+                is_switching: false,
+                is_virtual: false,
+            },
+        });
+        render(
+            <StoreProvider store={store}>
+                <AccountLimits {...props} />
+            </StoreProvider>
         );
         expect(screen.getByText('mockedLoadErrorMessage')).toBeInTheDocument();
     });
 
     it('should render AccountLimits component', () => {
-        render(<AccountLimits {...props} />);
+        store = mockStore(mock);
+        render(
+            <StoreProvider store={store}>
+                <AccountLimits {...props} />
+            </StoreProvider>
+        );
         expect(screen.queryByTestId('account_limits_data')).toBeInTheDocument();
     });
     it('should call setIsPopupOverlayShown fn ', () => {
+        store = mockStore(mock);
         const setIsPopupOverlayShown = jest.fn();
-        render(<AccountLimits {...props} setIsOverlayShown={setIsPopupOverlayShown} />);
+        render(
+            <StoreProvider store={store}>
+                <AccountLimits {...props} setIsOverlayShown={setIsPopupOverlayShown} />
+            </StoreProvider>
+        );
         expect(setIsPopupOverlayShown).toHaveBeenCalledTimes(1);
     });
 
     it('should render Loading component if is_loading is true', () => {
-        render(<AccountLimits {...props} />);
+        render(
+            <StoreProvider store={store}>
+                <AccountLimits {...props} />
+            </StoreProvider>
+        );
         expect(screen.queryByTestId('account_limits_data')).toBeInTheDocument();
     });
 
     it('should render AccountLimitsArticle component if should_show_article is true  and is_from_derivgo is false  in mobile mode', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         (isDesktop as jest.Mock).mockReturnValue(false);
-        render(<AccountLimits {...props} should_show_article />);
+        render(
+            <StoreProvider store={store}>
+                <AccountLimits {...props} should_show_article />
+            </StoreProvider>
+        );
         expect(screen.getByRole('heading', { name: /account limits/i })).toBeInTheDocument();
         expect(
             screen.queryByText(/to learn more about trading limits and how they apply, please go to the/i)
@@ -180,9 +231,19 @@ describe('<AccountLimits/>', () => {
     });
 
     it('should render AccountLimitsArticle component if should_show_article is true and is_from_derivgo is true in mobile mode', () => {
+        store = mockStore({
+            ...mock,
+            common: {
+                is_from_derivgo: true,
+            },
+        });
         (isMobile as jest.Mock).mockReturnValue(true);
         (isDesktop as jest.Mock).mockReturnValue(false);
-        render(<AccountLimits {...props} should_show_article is_from_derivgo />);
+        render(
+            <StoreProvider store={store}>
+                <AccountLimits {...props} should_show_article />
+            </StoreProvider>
+        );
         expect(screen.getByRole('heading', { name: /account limits/i })).toBeInTheDocument();
         expect(
             screen.queryByText(/to learn more about trading limits and how they apply, please go to the/i)
@@ -190,14 +251,23 @@ describe('<AccountLimits/>', () => {
     });
 
     it('should not render AccountLimitsArticle component if should_show_article is false', () => {
+        store = mockStore(mock);
         (isMobile as jest.Mock).mockReturnValue(true);
         (isDesktop as jest.Mock).mockReturnValue(false);
-        render(<AccountLimits {...props} should_show_article={false} />);
+        render(
+            <StoreProvider store={store}>
+                <AccountLimits {...props} should_show_article={false} />
+            </StoreProvider>
+        );
         expect(screen.queryByText('/account limits/i')).not.toBeInTheDocument();
     });
 
     it('should render Trading limits table and its trading limits contents properly', () => {
-        render(<AccountLimits {...props} />);
+        render(
+            <StoreProvider store={store}>
+                <AccountLimits {...props} />
+            </StoreProvider>
+        );
         expect(screen.queryByTestId('account_limits_data')).toBeInTheDocument();
 
         expect(
@@ -218,13 +288,17 @@ describe('<AccountLimits/>', () => {
     });
 
     it('should render Maximum number of open positions- table cell and its contents properly', () => {
-        render(<AccountLimits {...props} />);
+        render(
+            <StoreProvider store={store}>
+                <AccountLimits {...props} />
+            </StoreProvider>
+        );
         expect(
             screen.getByRole('cell', {
                 name: /\*maximum number of open positions/i,
             })
         ).toBeInTheDocument();
-        const { open_positions } = props.account_limits;
+        const { open_positions } = store.client.account_limits;
         expect(
             screen.getByRole('cell', {
                 name: open_positions?.toString(),
@@ -233,13 +307,21 @@ describe('<AccountLimits/>', () => {
     });
 
     it('should call formatMoney', () => {
-        render(<AccountLimits {...props} />);
-        const { account_balance } = props.account_limits;
-        expect(formatMoney).toHaveBeenCalledWith(props.currency, account_balance, true);
+        render(
+            <StoreProvider store={store}>
+                <AccountLimits {...props} />
+            </StoreProvider>
+        );
+        const { account_balance } = store.client.account_limits;
+        expect(formatMoney).toHaveBeenCalledWith(store.client.currency, account_balance, true);
     });
 
     it('should render Trading limits table and its maximum daily turnover contents properly', () => {
-        render(<AccountLimits {...props} />);
+        render(
+            <StoreProvider store={store}>
+                <AccountLimits {...props} />
+            </StoreProvider>
+        );
         expect(screen.queryByTestId('trading_daily_turnover_table')).toBeInTheDocument();
         expect(
             screen.getByRole('columnheader', {
@@ -259,12 +341,20 @@ describe('<AccountLimits/>', () => {
     });
 
     it('should not render withdrawal_limits_table is_app_settings is true', () => {
-        render(<AccountLimits {...props} is_app_settings />);
+        render(
+            <StoreProvider store={store}>
+                <AccountLimits {...props} is_app_settings />
+            </StoreProvider>
+        );
         expect(screen.queryByTestId('withdrawal_limits_table')).not.toBeInTheDocument();
     });
 
     it('should render withdrawal_limits_table is_app_settings is false', () => {
-        render(<AccountLimits {...props} />);
+        render(
+            <StoreProvider store={store}>
+                <AccountLimits {...props} />
+            </StoreProvider>
+        );
         expect(screen.queryByTestId('withdrawal_limits_table')).toBeInTheDocument();
         expect(
             screen.getByRole('columnheader', {
@@ -274,12 +364,20 @@ describe('<AccountLimits/>', () => {
     });
 
     it('withdrawal_limits_table should have a Limits header if is_fully_authenticated is true', () => {
-        render(<AccountLimits {...props} />);
+        render(
+            <StoreProvider store={store}>
+                <AccountLimits {...props} />
+            </StoreProvider>
+        );
         expect(screen.getByTestId('withdrawal_limits_table')).toHaveTextContent('Limit');
     });
 
     it('show show withdrawal limit lifted message if is_fully_authenticated is true', () => {
-        render(<AccountLimits {...props} />);
+        render(
+            <StoreProvider store={store}>
+                <AccountLimits {...props} />
+            </StoreProvider>
+        );
 
         expect(
             screen.getByRole('cell', {
@@ -289,10 +387,18 @@ describe('<AccountLimits/>', () => {
     });
 
     it('withdrawal_limits_table should show `Total withdrawal limit` if is_fully_authenticated is false and is_appstore is true', () => {
+        store = mockStore({
+            client: {
+                ...mock.client,
+                is_fully_authenticated: false,
+            },
+        });
         render(
             <PlatformContext.Provider value={{ is_appstore: true, is_deriv_crypto: false, is_pre_appstore: false }}>
                 <BrowserRouter>
-                    <AccountLimits {...props} is_fully_authenticated={false} />
+                    <StoreProvider store={store}>
+                        <AccountLimits {...props} />
+                    </StoreProvider>
                 </BrowserRouter>
             </PlatformContext.Provider>
         );
@@ -300,19 +406,35 @@ describe('<AccountLimits/>', () => {
     });
 
     it('withdrawal_limits_table should show `Total withdrawal allowed` when is_fully_authenticated is false and is_appstore is true', () => {
+        store = mockStore({
+            client: {
+                ...mock.client,
+                is_fully_authenticated: false,
+            },
+        });
         render(
             <PlatformContext.Provider value={{ is_appstore: false, is_deriv_crypto: false, is_pre_appstore: false }}>
-                <AccountLimits {...props} is_fully_authenticated={false} />
+                <StoreProvider store={store}>
+                    <AccountLimits {...props} />
+                </StoreProvider>
             </PlatformContext.Provider>
         );
         expect(screen.getByText(/total withdrawal allowed/i)).toBeInTheDocument();
     });
 
     it('withdrawal_limits_table should show the verfiy button when is_fully_authenticated is false and is_appstore is true', () => {
+        store = mockStore({
+            client: {
+                ...mock.client,
+                is_fully_authenticated: false,
+            },
+        });
         render(
             <PlatformContext.Provider value={{ is_appstore: true, is_deriv_crypto: false, is_pre_appstore: false }}>
                 <BrowserRouter>
-                    <AccountLimits {...props} is_fully_authenticated={false} />
+                    <StoreProvider store={store}>
+                        <AccountLimits {...props} />
+                    </StoreProvider>
                 </BrowserRouter>
             </PlatformContext.Provider>
         );
@@ -322,34 +444,50 @@ describe('<AccountLimits/>', () => {
                 name: /verify/i,
             })
         ).toHaveAttribute('href', '/account/proof-of-identity');
-        const { num_of_days_limit } = props.account_limits;
-        expect(formatMoney).toHaveBeenCalledWith(props.currency, num_of_days_limit, true);
+        const { num_of_days_limit } = store.client.account_limits;
+        expect(formatMoney).toHaveBeenCalledWith(store.client.currency, num_of_days_limit, true);
     });
 
     it('withdrawal_limits_table should show total withdrawn and withdrawn remaining details', () => {
+        store = mockStore({
+            client: {
+                ...mock.client,
+                is_fully_authenticated: false,
+            },
+        });
         render(
             <PlatformContext.Provider value={{ is_appstore: true, is_deriv_crypto: false, is_pre_appstore: false }}>
                 <BrowserRouter>
-                    <AccountLimits {...props} is_fully_authenticated={false} />
+                    <StoreProvider store={store}>
+                        <AccountLimits {...props} />
+                    </StoreProvider>
                 </BrowserRouter>
             </PlatformContext.Provider>
         );
-        const { withdrawal_since_inception_monetary, remainder } = props.account_limits;
+        const { withdrawal_since_inception_monetary, remainder } = store.client.account_limits;
 
         expect(screen.getByText(/total withdrawn/i)).toBeInTheDocument();
-        expect(formatMoney).toHaveBeenCalledWith(props.currency, withdrawal_since_inception_monetary, true);
+        expect(formatMoney).toHaveBeenCalledWith(store.client.currency, withdrawal_since_inception_monetary, true);
 
         expect(screen.getByText(/maximum withdrawal remaining/i)).toBeInTheDocument();
-        expect(formatMoney).toHaveBeenCalledWith(props.currency, remainder, true);
+        expect(formatMoney).toHaveBeenCalledWith(store.client.currency, remainder, true);
     });
 
     it('should show limit_notice message when is_appstore is true and is_fully_authenticated is false in mobile mode', () => {
+        store = mockStore({
+            client: {
+                ...mock.client,
+                is_fully_authenticated: false,
+            },
+        });
         (isMobile as jest.Mock).mockReturnValue(true);
         (isDesktop as jest.Mock).mockReturnValue(false);
         render(
             <PlatformContext.Provider value={{ is_appstore: true, is_deriv_crypto: false, is_pre_appstore: false }}>
                 <BrowserRouter>
-                    <AccountLimits {...props} is_fully_authenticated={false} />
+                    <StoreProvider store={store}>
+                        <AccountLimits {...props} />
+                    </StoreProvider>
                 </BrowserRouter>
             </PlatformContext.Provider>
         );
@@ -357,12 +495,20 @@ describe('<AccountLimits/>', () => {
     });
 
     it('should not  show limit_notice message when is_appstore is false and is_fully_authenticated is false', () => {
+        store = mockStore({
+            client: {
+                ...mock.client,
+                is_fully_authenticated: false,
+            },
+        });
         (isMobile as jest.Mock).mockReturnValue(false);
         (isDesktop as jest.Mock).mockReturnValue(true);
         render(
             <PlatformContext.Provider value={{ is_appstore: false, is_deriv_crypto: false, is_pre_appstore: false }}>
                 <BrowserRouter>
-                    <AccountLimits {...props} is_app_settings={false} is_fully_authenticated={false} />
+                    <StoreProvider store={store}>
+                        <AccountLimits {...props} is_app_settings={false} />
+                    </StoreProvider>
                 </BrowserRouter>
             </PlatformContext.Provider>
         );
@@ -372,9 +518,14 @@ describe('<AccountLimits/>', () => {
     });
 
     it('should show AccountLimitsArticle when should_show_article and isDesktop is true', () => {
+        store = mockStore(mock);
         (isMobile as jest.Mock).mockReturnValue(false);
         (isDesktop as jest.Mock).mockReturnValue(true);
-        render(<AccountLimits {...props} should_show_article />);
+        render(
+            <StoreProvider store={store}>
+                <AccountLimits {...props} should_show_article />
+            </StoreProvider>
+        );
         expect(screen.getByRole('heading', { name: /account limits/i })).toBeInTheDocument();
         expect(screen.getByText(/these are default limits that we apply to your accounts\./i)).toBeInTheDocument();
         expect(
@@ -390,7 +541,11 @@ describe('<AccountLimits/>', () => {
     it('should show AccountLimitsFooter if footer_ref is passed', () => {
         const footer = React.createRef<HTMLElement>();
 
-        render(<AccountLimits {...props} should_show_article footer_ref={footer} />);
+        render(
+            <StoreProvider store={store}>
+                <AccountLimits {...props} should_show_article footer_ref={footer} />
+            </StoreProvider>
+        );
         expect(screen.getByText(/mockedaccountlimitsfooter/i)).toBeInTheDocument();
     });
 });

@@ -27,6 +27,7 @@ import {
     getCashierValidations,
     getStatusValidations,
     hasMissingRequiredField,
+    maintenance_notifications,
 } from './Helpers/client-notifications';
 import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
 import BaseStore from './base-store';
@@ -89,6 +90,7 @@ export default class NotificationStore extends BaseStore {
             () => root_store.common.app_routing_history.map(i => i.pathname),
             () => {
                 this.filterNotificationMessages();
+                this.marked_notifications = JSON.parse(LocalStore.get('marked_notifications') || '[]');
             }
         );
         reaction(
@@ -223,12 +225,12 @@ export default class NotificationStore extends BaseStore {
     filterNotificationMessages() {
         if (LocalStore.get('active_loginid') !== 'null')
             this.resetVirtualBalanceNotification(LocalStore.get('active_loginid'));
-
         if (window.location.pathname === routes.personal_details) {
             this.notification_messages = this.notification_messages.filter(
-                notification => notification.platform === 'Account'
+                notification =>
+                    notification.platform === 'Account' || maintenance_notifications.includes(notification.key)
             );
-        } else if (window.location.pathname !== routes.cashier_p2p) {
+        } else if (!window.location.pathname.includes(routes.cashier_p2p)) {
             this.notification_messages = this.notification_messages.filter(notification => {
                 if (notification.platform === undefined || notification.platform.includes(getPathname())) {
                     return true;
@@ -256,7 +258,6 @@ export default class NotificationStore extends BaseStore {
         const is_p2p_notifications_visible = p2p_settings[loginid]
             ? p2p_settings[loginid].is_notifications_visible
             : false;
-
         if (refined_list.length) {
             refined_list.map(refined => {
                 if (refined.includes('p2p')) {
@@ -291,6 +292,7 @@ export default class NotificationStore extends BaseStore {
             has_enabled_two_fa,
             has_changed_two_fa,
             is_poi_dob_mismatch,
+            is_financial_assessment_needed,
             is_financial_information_incomplete,
             has_restricted_mt5_account,
             has_mt5_account_with_rejected_poa,
@@ -314,6 +316,12 @@ export default class NotificationStore extends BaseStore {
         );
 
         let has_missing_required_field;
+
+        if (website_status?.message?.length) {
+            this.addNotificationMessage(this.client_notifications.site_maintenance);
+        } else {
+            this.removeNotificationByKey({ key: this.client_notifications.site_maintenance });
+        }
 
         if (is_logged_in) {
             if (isEmptyObject(account_status)) return;
@@ -367,6 +375,12 @@ export default class NotificationStore extends BaseStore {
                 !hidden_close_account_notification
             ) {
                 this.addNotificationMessage(this.client_notifications.close_mx_mlt_account);
+            }
+
+            if (is_financial_assessment_needed) {
+                this.addNotificationMessage(this.client_notifications.notify_financial_assessment);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.notify_financial_assessment.key });
             }
 
             // Acuity notification is available for both Demo and Real desktop clients
@@ -583,38 +597,28 @@ export default class NotificationStore extends BaseStore {
 
     showCompletedOrderNotification(advertiser_name, order_id) {
         const notification_key = `p2p_order_${order_id}`;
+        const { setP2POrderTab, navigateToOrderDetails } = this.p2p_order_props;
+        const is_p2p_route = window.location.pathname.includes(routes.cashier_p2p);
 
-        const notification_redirect_action =
-            routes.cashier_p2p === window.location.pathname
-                ? {
-                      onClick: () => {
-                          this.p2p_order_props.redirectToOrderDetails(order_id);
-                          this.setP2POrderProps({
-                              ...this.p2p_order_props,
-                              order_id,
-                          });
-                          if (this.is_notifications_visible) this.toggleNotificationsModal();
-                          this.refreshNotifications();
-                      },
-                      text: localize('Give feedback'),
-                  }
-                : {
-                      route: `${routes.cashier_p2p}?order=${order_id}`,
-                      text: localize('Give feedback'),
-                  };
+        const notification_redirect_action = is_p2p_route
+            ? {
+                  onClick: () => {
+                      setP2POrderTab(order_id);
+                      navigateToOrderDetails(order_id);
+                      this.setP2POrderProps({ ...this.p2p_order_props, order_id });
+
+                      if (this.is_notifications_visible) this.toggleNotificationsModal();
+                      this.refreshNotifications();
+                  },
+                  text: localize('Give feedback'),
+              }
+            : {
+                  route: `${routes.p2p_orders}?order=${order_id}`,
+                  text: localize('Give feedback'),
+              };
 
         this.addNotificationMessage({
-            action:
-                this.p2p_order_props?.order_id === order_id
-                    ? {
-                          onClick: () => {
-                              this.p2p_order_props.setIsRatingModalOpen(true);
-                              if (this.is_notifications_visible) this.toggleNotificationsModal();
-                              this.refreshNotifications();
-                          },
-                          text: localize('Give feedback'),
-                      }
-                    : notification_redirect_action,
+            action: notification_redirect_action,
             header: <Localize i18n_default_text='Your order {{order_id}} is complete' values={{ order_id }} />,
             key: notification_key,
             message: (
@@ -629,7 +633,10 @@ export default class NotificationStore extends BaseStore {
     }
 
     markNotificationMessage({ key }) {
-        this.marked_notifications.push(key);
+        if (!this.marked_notifications.includes(key)) {
+            this.marked_notifications.push(key);
+            LocalStore.set('marked_notifications', JSON.stringify(this.marked_notifications));
+        }
     }
 
     refreshNotifications() {
@@ -714,6 +721,7 @@ export default class NotificationStore extends BaseStore {
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
         const { has_enabled_two_fa, setTwoFAChangedStatus } = this.root_store.client;
+        const { setMT5NotificationModal } = this.root_store.traders_hub;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
         const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
         const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
@@ -882,7 +890,7 @@ export default class NotificationStore extends BaseStore {
                     action: window.location.pathname.includes(routes.cashier_p2p)
                         ? {
                               onClick: () => {
-                                  this.p2p_redirect_to.redirectTo('my_profile');
+                                  this.p2p_redirect_to.routeToMyProfile();
                                   if (this.is_notifications_visible) this.toggleNotificationsModal();
 
                                   this.removeNotificationMessage({
@@ -893,8 +901,7 @@ export default class NotificationStore extends BaseStore {
                               text: localize('Yes, increase my limits'),
                           }
                         : {
-                              // TODO: replace this with proper when fixing routes in p2p
-                              route: routes.cashier_p2p_profile,
+                              route: routes.p2p_my_profile,
                               text: localize('Yes, increase my limits'),
                           },
                     header: <Localize i18n_default_text='Enjoy higher daily limits' />,
@@ -916,6 +923,7 @@ export default class NotificationStore extends BaseStore {
             },
             deriv_go: {
                 key: 'deriv_go',
+                header: <Localize i18n_default_text='Trade on the go' />,
                 message: (
                     <Localize
                         i18n_default_text='Get a faster mobile trading experience with the <0>{{platform_name_go}}</0> app!'
@@ -1077,6 +1085,17 @@ export default class NotificationStore extends BaseStore {
                 },
                 type: 'warning',
             },
+            notify_financial_assessment: {
+                action: {
+                    route: routes.financial_assessment,
+                    text: localize('Start now'),
+                },
+                header: localize('Pending action required'),
+                key: 'notify_financial_assessment',
+                message: localize('Please complete your financial assessment.'),
+                should_show_again: true,
+                type: 'warning',
+            },
             password_changed: {
                 key: 'password_changed',
                 header: localize('Password updated.'),
@@ -1233,6 +1252,14 @@ export default class NotificationStore extends BaseStore {
                     type: 'danger',
                 };
             },
+            site_maintenance: {
+                key: 'site_maintenance',
+                header: localize('We’re updating our site'),
+                message: localize('Some services may be temporarily unavailable.'),
+                type: 'warning',
+                should_show_again: true,
+                closeOnClick: notification_obj => this.markNotificationMessage({ key: notification_obj.key }),
+            },
             system_maintenance: (withdrawal_locked, deposit_locked) => {
                 let message, header;
                 if (isCryptocurrency(client_data.currency)) {
@@ -1253,9 +1280,9 @@ export default class NotificationStore extends BaseStore {
                         );
                     }
                 } else {
-                    header = localize('Scheduled cashier system maintenance');
+                    header = localize('Scheduled cashier maintenance');
                     message = localize(
-                        'Our cashier is temporarily down due to system maintenance. You can access the cashier in a few minutes when the maintenance is complete.'
+                        'The cashier is temporarily down due to maintenance. It will be available as soon as the maintenance is complete.'
                     );
                 }
                 return {
@@ -1263,6 +1290,8 @@ export default class NotificationStore extends BaseStore {
                     header,
                     message,
                     type: 'warning',
+                    should_show_again: true,
+                    closeOnClick: notification_obj => this.markNotificationMessage({ key: notification_obj.key }),
                 };
             },
             tax: {
@@ -1491,6 +1520,18 @@ export default class NotificationStore extends BaseStore {
                     route: routes.proof_of_identity,
                     text: localize('Submit proof of identity'),
                 },
+            },
+            mt5_notification: {
+                key: 'mt5_notification',
+                header: localize('Trouble accessing Deriv MT5 on your mobile?'),
+                message: localize('Follow these simple instructions to fix it.'),
+                action: {
+                    text: localize('Learn more'),
+                    onClick: () => {
+                        setMT5NotificationModal(true);
+                    },
+                },
+                type: 'warning',
             },
         };
 

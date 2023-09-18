@@ -30,4 +30,20 @@ export const getCFDAvailableAccount = () => [
         icon: 'DerivX',
         availability: 'Non-EU',
     },
+    {
+        name: 'Deriv cTrader',
+        description: localize('This account offers CFDs on a feature-rich trading platform.'),
+        platform: CFD_PLATFORMS.CTRADER,
+        market_type: 'all',
+        icon: 'CTrader',
+        availability: 'Non-EU',
+    },
+    {
+        name: 'Deriv EZ',
+        description: localize('Trade CFDs on an easy-to-get-started platform with all your favourite assets.'),
+        platform: CFD_PLATFORMS.DERIVEZ,
+        market_type: 'all',
+        icon: 'DerivEz',
+        availability: 'Non-EU',
+    },
 ];

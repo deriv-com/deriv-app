@@ -21,6 +21,11 @@
 
         @include mobile {
             height: 100%;
+
+            &__input {
+                border-radius: 4px;
+                border: 1px solid var(--border-normal);
+            }
         }
     }
 
@@ -46,14 +51,24 @@
                 margin-top: auto;
                 padding: 1.6rem 2.4rem;
 
+                @include mobile {
+                    margin: -1.5rem;
+                }
+
                 &-profile {
                     padding: 0 2.4rem 2rem;
+                    margin-bottom: 4rem;
                 }
             }
         }
 
         &__form-wrapper {
             padding: 1.4rem 2.4rem;
+
+            @include mobile {
+                display: table;
+                height: 100%;
+            }
 
             .dc-input {
                 margin-bottom: 4rem;
@@ -88,6 +103,9 @@
                         padding-left: 0;
                         padding-right: 0;
                     }
+                }
+                & .dc-field--error {
+                    margin-top: 5.6rem;
                 }
             }
         }

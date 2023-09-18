@@ -1,7 +1,7 @@
 import React from 'react';
-import { popover_zindex } from 'Constants/z-indexes';
 import { Icon, Popover } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { popover_zindex } from 'Constants/z-indexes';
 
 type TToolbarIcon = {
     popover_message: string;

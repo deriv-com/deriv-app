@@ -1,14 +1,14 @@
 import React, { createContext, PropsWithChildren, useContext, useMemo } from 'react';
-import { useStore } from '@deriv/stores';
 import { DBot } from '@deriv/bot-skeleton';
-import RootStore from './root-store';
+import { useStore } from '@deriv/stores';
 import type { TWebSocket } from 'Types';
+import RootStore from './root-store';
 
 const DBotStoreContext = createContext<RootStore | null>(null);
 
-const DBotStoreProvider = ({ children, ws }: PropsWithChildren<{ ws: TWebSocket }>) => {
+const DBotStoreProvider = ({ children, ws, mock }: PropsWithChildren<{ ws: TWebSocket; mock?: RootStore }>) => {
     const stores = useStore();
-    const memoizedValue = useMemo(() => new RootStore(stores, ws, DBot), []);
+    const memoizedValue = useMemo(() => mock || new RootStore(stores, ws, DBot), [mock, stores, ws]);
 
     return <DBotStoreContext.Provider value={memoizedValue}>{children}</DBotStoreContext.Provider>;
 };
@@ -24,3 +24,6 @@ const useDBotStore = () => {
 };
 
 export { DBotStoreProvider, useDBotStore };
+
+export const mockDBotStore = (root_store: ReturnType<typeof useStore>, ws: TWebSocket) =>
+    new RootStore(root_store, ws, DBot);

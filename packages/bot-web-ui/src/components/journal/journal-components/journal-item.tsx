@@ -1,10 +1,10 @@
+import React from 'react';
+import classnames from 'classnames';
+import { CSSTransition } from 'react-transition-group';
 import { message_types } from '@deriv/bot-skeleton';
 import { useNewRowTransition } from '@deriv/shared';
-import classnames from 'classnames';
-import React from 'react';
-import { CSSTransition } from 'react-transition-group';
 import { TJournalItemExtra, TJournalItemProps } from '../journal.types';
-import { FormatMessage, DateItem } from '.';
+import { DateItem, FormatMessage } from '.';
 
 const getJournalItemContent = (
     message: string | ((value: () => void) => string),

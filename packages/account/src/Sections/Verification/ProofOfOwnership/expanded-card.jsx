@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import FileUploader from './file-uploader.jsx';
+import FileUploader from './file-uploader';
 import { Input, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import SampleCreditCardModal from 'Components/sample-credit-card-modal';

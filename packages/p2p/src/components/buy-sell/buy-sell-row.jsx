@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { useHistory } from 'react-router-dom';
 import { Table, Text, Button, Icon } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isMobile, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { useExchangeRate } from '@deriv/hooks';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize, localize } from 'Components/i18next';
 import { OnlineStatusAvatar } from 'Components/online-status';
@@ -14,10 +16,12 @@ import { generateEffectiveRate } from 'Utils/format-value';
 import './buy-sell-row.scss';
 
 const BuySellRow = ({ row: advert }) => {
-    const { buy_sell_store, floating_rate_store, general_store } = useStores();
+    const { buy_sell_store, general_store } = useStores();
     const {
         client: { currency },
     } = useStore();
+    const history = useHistory();
+    const { getRate } = useExchangeRate();
 
     if (advert.id === 'WATCH_THIS_SPACE') {
         // This allows for the sliding animation on the Buy/Sell toggle as it pushes
@@ -60,7 +64,7 @@ const BuySellRow = ({ row: advert }) => {
         rate_type,
         rate,
         local_currency,
-        exchange_rate: floating_rate_store.exchange_rate,
+        exchange_rate: getRate(local_currency),
         market_rate: effective_rate,
     });
     const onClickRow = () => {
@@ -68,6 +72,7 @@ const BuySellRow = ({ row: advert }) => {
             buy_sell_store.setShouldShowVerification(true);
         } else if (!general_store.is_barred) {
             buy_sell_store.showAdvertiserPage(advert);
+            history.push({ pathname: routes.p2p_advertiser_page, search: `?id=${advert.advertiser_details.id}` });
         }
     };
 

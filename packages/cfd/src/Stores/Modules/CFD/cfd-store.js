@@ -1,7 +1,7 @@
 import { action, computed, observable, reaction, runInAction, makeObservable, override } from 'mobx';
 import { getAccountListKey, getAccountTypeFields, CFD_PLATFORMS, WS, Jurisdiction } from '@deriv/shared';
 import BaseStore from 'Stores/base-store';
-import { getDxCompanies, getMtCompanies } from './Helpers/cfd-config';
+import { getDxCompanies, getMtCompanies, getDerivezCompanies } from './Helpers/cfd-config';
 
 export default class CFDStore extends BaseStore {
     is_compare_accounts_visible = false;
@@ -11,8 +11,8 @@ export default class CFDStore extends BaseStore {
     jurisdiction_selected_shortcode = '';
 
     account_type = {
-        category: undefined,
-        type: undefined,
+        category: '',
+        type: '',
     };
 
     mt5_trade_account = {};
@@ -21,6 +21,7 @@ export default class CFDStore extends BaseStore {
     has_cfd_error = false;
     error_message = '';
 
+    is_account_being_created = false;
     is_cfd_success_dialog_enabled = false;
     is_mt5_financial_stp_modal_open = false;
     is_cfd_password_modal_enabled = false;
@@ -31,6 +32,15 @@ export default class CFDStore extends BaseStore {
 
     is_cfd_verification_modal_visible = false;
     dxtrade_tokens = {
+        demo: '',
+        real: '',
+    };
+    derivez_tokens = {
+        demo: '',
+        real: '',
+    };
+
+    ctrader_tokens = {
         demo: '',
         real: '',
     };
@@ -54,6 +64,7 @@ export default class CFDStore extends BaseStore {
             map_type: observable,
             has_cfd_error: observable,
             error_message: observable,
+            is_account_being_created: observable,
             is_cfd_success_dialog_enabled: observable,
             is_mt5_financial_stp_modal_open: observable,
             is_cfd_password_modal_enabled: observable,
@@ -61,11 +72,12 @@ export default class CFDStore extends BaseStore {
             is_cfd_verification_modal_visible: observable,
             error_type: observable,
             dxtrade_tokens: observable,
+            ctrader_tokens: observable,
+            derivez_tokens: observable,
             account_title: computed,
             current_list: computed,
             has_created_account_for_selected_jurisdiction: computed,
             has_submitted_cfd_personal_details: computed,
-            is_high_risk_client_for_mt5: computed,
             onMount: action.bound,
             onUnmount: override,
             checkShouldOpenAccount: action.bound,
@@ -83,10 +95,10 @@ export default class CFDStore extends BaseStore {
             setAccountType: action.bound,
             setCurrentAccount: action.bound,
             setMT5TradeAccount: action.bound,
+            setIsAccountBeingCreated: action.bound,
             setError: action.bound,
             setCFDNewAccount: action.bound,
             setCFDSuccessDialog: action.bound,
-            storeProofOfAddress: action.bound,
             getAccountStatus: action.bound,
             creatMT5Password: action.bound,
             submitMt5Password: action.bound,
@@ -104,14 +116,36 @@ export default class CFDStore extends BaseStore {
             setJurisdictionSelectedShortcode: action.bound,
             toggleCFDVerificationModal: action.bound,
             setDxtradeToken: action.bound,
+            setCTraderToken: action.bound,
             loadDxtradeTokens: action.bound,
+            loadCTraderTokens: action.bound,
+            setDerivezToken: action.bound,
+            loadDerivezTokens: action.bound,
         });
 
+        // reaction(
+        //     () => [this.root_store.client.dxtrade_accounts_list],
+        //     () => {
+        //         if (this.root_store.client.dxtrade_accounts_list.length > 0) {
+        //             this.loadDxtradeTokens();
+        //         }
+        //     }
+        // );
+
         reaction(
-            () => [this.root_store.client.dxtrade_accounts_list],
+            () => [this.root_store.client.derivez_accounts_list],
             () => {
-                if (this.root_store.client.dxtrade_accounts_list.length > 0) {
-                    this.loadDxtradeTokens();
+                if (this.root_store.client.derivez_accounts_list.length > 0) {
+                    this.loadDerivezTokens();
+                }
+            }
+        );
+
+        reaction(
+            () => [this.root_store.client.ctrader_accounts_list],
+            () => {
+                if (this.root_store.client.ctrader_accounts_list.length > 0) {
+                    this.loadCTraderTokens();
                 }
             }
         );
@@ -153,6 +187,18 @@ export default class CFDStore extends BaseStore {
                 ...account,
             };
         });
+        this.root_store.client.ctrader_accounts_list.forEach(account => {
+            list[getAccountListKey(account, CFD_PLATFORMS.CTRADER)] = {
+                ...account,
+            };
+        });
+
+        this.root_store.client.derivez_accounts_list.forEach(account => {
+            // e.g. derivez.real.financial_stp
+            list[getAccountListKey(account, CFD_PLATFORMS.DERIVEZ)] = {
+                ...account,
+            };
+        });
 
         return list;
     }
@@ -166,6 +212,12 @@ export default class CFDStore extends BaseStore {
     get dxtrade_companies() {
         return getDxCompanies();
     }
+
+    // eslint-disable-next-line class-methods-use-this
+    get derivez_companies() {
+        return getDerivezCompanies();
+    }
+
     get has_created_account_for_selected_jurisdiction() {
         switch (this.account_type.type) {
             case 'synthetic':
@@ -205,6 +257,10 @@ export default class CFDStore extends BaseStore {
         }
     }
 
+    setIsAccountBeingCreated(is_account_being_created) {
+        this.is_account_being_created = is_account_being_created;
+    }
+
     realAccountSignupEndListener() {
         const post_signup = JSON.parse(sessionStorage.getItem('post_real_account_signup'));
         if (post_signup && post_signup.category && post_signup.type) {
@@ -225,7 +281,7 @@ export default class CFDStore extends BaseStore {
         this.is_cfd_password_modal_enabled = false;
     }
 
-    createCFDAccount({ category, platform, type, set_password }) {
+    async createCFDAccount({ category, platform, type, set_password }) {
         this.clearCFDError();
         this.setAccountType({
             category,
@@ -237,6 +293,32 @@ export default class CFDStore extends BaseStore {
             } else {
                 this.demoCFDSignup();
             }
+        } else if (platform === CFD_PLATFORMS.CTRADER) {
+            if (this.account_type.category === 'demo') {
+                this.setJurisdictionSelectedShortcode('svg');
+                this.setIsAccountBeingCreated(true);
+            }
+            const account_creation_values = {
+                platform,
+                account_type: this.account_type.category,
+                market_type: this.account_type.type,
+            };
+            const response = await this.openCFDAccount(account_creation_values);
+            if (!response.error) {
+                this.setError(false);
+                this.enableCFDPasswordModal();
+                this.setCFDSuccessDialog(true);
+
+                const trading_platform_accounts_list_response = await WS.tradingPlatformAccountsList(
+                    CFD_PLATFORMS.CTRADER
+                );
+                this.root_store.client.responseTradingPlatformAccountsList(trading_platform_accounts_list_response);
+                WS.transferBetweenAccounts();
+                this.setIsAccountBeingCreated(false);
+            } else {
+                this.setError(true, response.error);
+                this.setIsAccountBeingCreated(false);
+            }
         } else if (platform === CFD_PLATFORMS.MT5) {
             if (category === 'real') {
                 this.toggleJurisdictionModal();
@@ -245,6 +327,27 @@ export default class CFDStore extends BaseStore {
                     this.setJurisdictionSelectedShortcode(Jurisdiction.MALTA_INVEST);
                 } else this.setJurisdictionSelectedShortcode(Jurisdiction.SVG);
                 this.demoCFDSignup();
+            }
+        } else if (platform === CFD_PLATFORMS.DERIVEZ) {
+            this.setIsAccountBeingCreated(true);
+            this.setJurisdictionSelectedShortcode('svg');
+            const values = {
+                platform,
+                account_type: this.account_type.category,
+                market_type: this.account_type.type,
+                company: this.jurisdiction_selected_shortcode,
+            };
+            const response = await this.openCFDAccount(values);
+            if (!response.error) {
+                this.enableCFDPasswordModal();
+                this.setCFDSuccessDialog(true);
+                const trading_platform_accounts_list_response = await WS.tradingPlatformAccountsList(values.platform);
+                this.root_store.client.responseTradingPlatformAccountsList(trading_platform_accounts_list_response);
+                this.setCFDNewAccount(response.trading_platform_new_account);
+                this.setIsAccountBeingCreated(false);
+            } else {
+                this.setError(true, response.error);
+                this.setIsAccountBeingCreated(false);
             }
         }
     }
@@ -301,10 +404,16 @@ export default class CFDStore extends BaseStore {
 
     openCFDAccount(values) {
         return WS.tradingPlatformNewAccount({
-            password: values.password,
+            password: CFD_PLATFORMS.DXTRADE ? values.password : '',
             platform: values.platform,
             account_type: this.account_type.category,
-            market_type: this.account_type.type === 'dxtrade' ? 'all' : this.account_type.type,
+            market_type:
+                this.account_type.type === 'dxtrade' ||
+                this.account_type.type === 'cTrader' ||
+                this.account_type.type === 'derivez'
+                    ? 'all'
+                    : this.account_type.type,
+            company: CFD_PLATFORMS.DERIVEZ ? this.jurisdiction_selected_shortcode : '',
         });
     }
 
@@ -366,41 +475,6 @@ export default class CFDStore extends BaseStore {
 
     setCFDSuccessDialog(value) {
         this.is_cfd_success_dialog_enabled = !!value;
-    }
-
-    storeProofOfAddress(file_uploader_ref, values, { setStatus }) {
-        return new Promise((resolve, reject) => {
-            setStatus({ msg: '' });
-            this.setState({ is_btn_loading: true });
-
-            WS.setSettings(values).then(data => {
-                if (data.error) {
-                    setStatus({ msg: data.error.message });
-                    reject(data);
-                } else {
-                    this.root_store.fetchAccountSettings();
-                    // force request to update settings cache since settings have been updated
-                    file_uploader_ref.current.upload().then(api_response => {
-                        if (api_response.warning) {
-                            setStatus({ msg: api_response.message });
-                            reject(api_response);
-                        } else {
-                            WS.authorized.storage.getAccountStatus().then(({ error, get_account_status }) => {
-                                if (error) {
-                                    reject(error);
-                                }
-                                const { identity } = get_account_status.authentication;
-                                const has_poi = !(identity && identity.status === 'none');
-                                resolve({
-                                    identity,
-                                    has_poi,
-                                });
-                            });
-                        }
-                    });
-                }
-            });
-        });
     }
 
     async getAccountStatus(platform) {
@@ -475,31 +549,33 @@ export default class CFDStore extends BaseStore {
     }
 
     async submitCFDPassword(values, actions) {
-        if (this.root_store.client.is_dxtrade_password_not_set) {
+        if (CFD_PLATFORMS.DXTRADE && this.root_store.client.is_dxtrade_password_not_set) {
             const has_error = await this.createCFDPassword(values, actions);
             if (has_error) return;
         }
 
         const response = await this.openCFDAccount(values);
-        if (!response.error) {
-            actions.setStatus({ success: true });
-            actions.setSubmitting(false);
-            this.setError(false);
-            this.setCFDSuccessDialog(true);
-            await this.getAccountStatus(CFD_PLATFORMS.DXTRADE);
 
-            const trading_platform_accounts_list_response = await WS.tradingPlatformAccountsList(values.platform);
-            this.root_store.client.responseTradingPlatformAccountsList(trading_platform_accounts_list_response);
-
-            WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
-            this.setCFDNewAccount(response.trading_platform_new_account);
-        } else {
+        if (response.error) {
             await this.getAccountStatus(CFD_PLATFORMS.DXTRADE);
             this.setError(true, response.error);
             actions.resetForm({});
             actions.setSubmitting(false);
             actions.setStatus({ success: false });
+            return;
         }
+
+        actions.setStatus({ success: true });
+        actions.setSubmitting(false);
+        this.setError(false);
+        this.setCFDSuccessDialog(true);
+        await this.getAccountStatus(CFD_PLATFORMS.DXTRADE);
+
+        const trading_platform_accounts_list_response = await WS.tradingPlatformAccountsList(values.platform);
+        this.root_store.client.responseTradingPlatformAccountsList(trading_platform_accounts_list_response);
+
+        WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
+        this.setCFDNewAccount(response.trading_platform_new_account);
     }
 
     toggleCompareAccountsModal() {
@@ -538,7 +614,15 @@ export default class CFDStore extends BaseStore {
             case CFD_PLATFORMS.DXTRADE: {
                 response = await WS.authorized.send({
                     trading_platform_deposit: 1,
-                    platform: CFD_PLATFORMS.DXTRADE,
+                    platform,
+                    to_account: this.current_account.account_id,
+                });
+                break;
+            }
+            case CFD_PLATFORMS.CTRADER: {
+                response = await WS.authorized.send({
+                    trading_platform_deposit: 1,
+                    platform: CFD_PLATFORMS.CTRADER,
                     to_account: this.current_account.account_id,
                 });
                 break;
@@ -546,6 +630,14 @@ export default class CFDStore extends BaseStore {
             case CFD_PLATFORMS.MT5: {
                 response = await WS.authorized.mt5Deposit({
                     to_mt5: this.current_account.login,
+                });
+                break;
+            }
+            case CFD_PLATFORMS.DERIVEZ: {
+                response = await WS.authorized.send({
+                    trading_platform_deposit: 1,
+                    platform: CFD_PLATFORMS.DERIVEZ,
+                    to_account: this.current_account.login,
                 });
                 break;
             }
@@ -567,11 +659,29 @@ export default class CFDStore extends BaseStore {
                     )?.balance;
                     break;
                 }
+                case CFD_PLATFORMS.CTRADER: {
+                    await WS.authorized
+                        .tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER)
+                        .then(this.root_store.client.responseTradingPlatformAccountsList);
+                    new_balance = this.root_store.client.ctrader_accounts_list.find(
+                        item => item.account_id === this.current_account.account_id
+                    )?.balance;
+                    break;
+                }
                 case CFD_PLATFORMS.MT5: {
                     await WS.authorized.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
 
                     new_balance = this.root_store.client.mt5_login_list.find(
                         item => item.login === this.current_account.login
+                    )?.balance;
+                    break;
+                }
+                case CFD_PLATFORMS.DERIVEZ: {
+                    await WS.authorized
+                        .tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ)
+                        .then(this.root_store.client.responseTradingPlatformAccountsList);
+                    new_balance = this.root_store.client.derivez_accounts_list.find(
+                        item => item.account_id === this.current_account.account_id
                     )?.balance;
                     break;
                 }
@@ -607,15 +717,55 @@ export default class CFDStore extends BaseStore {
         }
     }
 
+    setCTraderToken(response, server) {
+        if (!response.error) {
+            const { ctrader } = response.service_token;
+            this.ctrader_tokens[server] = ctrader.token;
+        }
+    }
+
+    setDerivezToken(response, server) {
+        if (!response.error) {
+            const { pandats } = response.service_token;
+            this.derivez_tokens[server] = pandats.token;
+        }
+    }
+
     loadDxtradeTokens() {
         ['demo', 'real'].forEach(account_type => {
             const has_existing_account = this.root_store.client.dxtrade_accounts_list.some(
                 account => account.account_type === account_type
             );
-
             if (!this.dxtrade_tokens[account_type] && has_existing_account) {
                 WS.getServiceToken(CFD_PLATFORMS.DXTRADE, account_type).then(response =>
                     this.setDxtradeToken(response, account_type)
+                );
+            }
+        });
+    }
+
+    loadCTraderTokens() {
+        ['demo', 'real'].forEach(account_type => {
+            const has_existing_account = this.root_store.client.ctrader_accounts_list.some(
+                account => account.account_type === account_type
+            );
+            if (!this.ctrader_tokens[account_type] && has_existing_account) {
+                WS.getServiceToken(CFD_PLATFORMS.CTRADER, account_type).then(response =>
+                    this.setCTraderToken(response, account_type)
+                );
+            }
+        });
+    }
+
+    loadDerivezTokens() {
+        ['demo', 'real'].forEach(account_type => {
+            const has_existing_account = this.root_store.client.derivez_accounts_list.some(
+                account => account.account_type === account_type
+            );
+
+            if (!this.derivez_tokens[account_type] && has_existing_account) {
+                WS.getServiceToken(CFD_PLATFORMS.DERIVEZ, account_type).then(response =>
+                    this.setDerivezToken(response, account_type)
                 );
             }
         });
@@ -649,23 +799,5 @@ export default class CFDStore extends BaseStore {
 
     toggleCFDVerificationModal() {
         this.is_cfd_verification_modal_visible = !this.is_cfd_verification_modal_visible;
-    }
-
-    get is_high_risk_client_for_mt5() {
-        const { trading_platform_available_accounts } = this.root_store.client;
-        const financial_available_accounts = trading_platform_available_accounts.filter(
-            available_account => available_account.market_type === 'financial'
-        );
-
-        const synthetic_available_accounts = trading_platform_available_accounts.filter(
-            available_account => available_account.market_type === 'gaming'
-        );
-
-        return (
-            financial_available_accounts.length === 1 &&
-            financial_available_accounts.every(acc => acc.shortcode === 'svg') &&
-            synthetic_available_accounts.length === 1 &&
-            synthetic_available_accounts.every(acc => acc.shortcode === 'svg')
-        );
     }
 }

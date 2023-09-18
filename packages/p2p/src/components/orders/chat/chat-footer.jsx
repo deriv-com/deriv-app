@@ -15,18 +15,8 @@ const ChatFooter = observer(() => {
     const text_input_ref = React.useRef(null);
     const [character_count, setCharacterCount] = React.useState(0);
 
-    const updateTextAreaBounds = () => {
-        const el_target = text_input_ref.current;
-
-        if (el_target) {
-            el_target.setAttribute('style', 'height: auto;');
-            el_target.setAttribute('style', `height: ${el_target.scrollHeight}px;`);
-        }
-    };
-
     const handleChange = event => {
         setCharacterCount(event.target.value.length);
-        updateTextAreaBounds();
     };
 
     const handleKeyDown = event => {
@@ -48,8 +38,6 @@ const ChatFooter = observer(() => {
                     range.collapse(false);
                     range.select();
                 }
-
-                updateTextAreaBounds();
             } else {
                 event.preventDefault();
                 sendMessage();
@@ -71,8 +59,6 @@ const ChatFooter = observer(() => {
             }
         }
     };
-
-    React.useEffect(() => updateTextAreaBounds(), []);
 
     const should_show_attachment_icon = character_count === 0;
     const max_characters = 5000;

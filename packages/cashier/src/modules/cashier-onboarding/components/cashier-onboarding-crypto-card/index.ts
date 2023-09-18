@@ -1,3 +1,1 @@
-import CashierOnboardingCryptoCard from './cashier-onboarding-crypto-card';
-
-export { CashierOnboardingCryptoCard };
+export { default as CashierOnboardingCryptoCard } from './cashier-onboarding-crypto-card';

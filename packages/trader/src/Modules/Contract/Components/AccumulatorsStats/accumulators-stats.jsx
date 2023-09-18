@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import { DesktopWrapper, Icon, MobileDialog, MobileWrapper, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import ExpandedTicksHistory from './expanded-ticks-history';
 import TicksHistoryCounter from './ticks-history-counter';
 import { AccumulatorsStatsManualModal } from './accumulators-stats-manual-modal';
 import 'Sass/app/modules/contract/accumulators-stats.scss';
+import { useTraderStore } from 'Stores/useTraderStores';
+import { observer, useStore } from '@deriv/stores';
 
 export const ROW_SIZES = {
     DESKTOP_COLLAPSED: 10,
@@ -17,7 +18,11 @@ export const ROW_SIZES = {
     MOBILE_EXPANDED: 5,
 };
 
-const AccumulatorsStats = ({ is_dark_theme, is_expandable = true, ticks_history_stats = {} }) => {
+const AccumulatorsStats = observer(({ is_expandable = true }) => {
+    const { ui } = useStore();
+    const { ticks_history_stats = {} } = useTraderStore();
+    const { is_dark_mode_on: is_dark_theme } = ui;
+
     const [is_collapsed, setIsCollapsed] = React.useState(true);
     const [is_manual_open, setIsManualOpen] = React.useState(false);
     const widget_title = localize('Stats');
@@ -86,15 +91,10 @@ const AccumulatorsStats = ({ is_dark_theme, is_expandable = true, ticks_history_
             )}
         </div>
     );
-};
+});
 
 AccumulatorsStats.propTypes = {
-    is_dark_theme: PropTypes.bool,
     is_expandable: PropTypes.bool,
-    ticks_history_stats: PropTypes.object,
 };
 
-export default connect(({ modules, ui }) => ({
-    is_dark_theme: ui.is_dark_mode_on,
-    ticks_history_stats: modules.trade.ticks_history_stats,
-}))(AccumulatorsStats);
+export default AccumulatorsStats;

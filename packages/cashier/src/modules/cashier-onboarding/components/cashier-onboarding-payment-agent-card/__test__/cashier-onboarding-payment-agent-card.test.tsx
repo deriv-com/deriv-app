@@ -4,13 +4,19 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../../cashier-providers';
 import CashierOnboardingPaymentAgentCard from '../cashier-onboarding-payment-agent-card';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    usePaymentAgentList: () => ({ data: ['PA1', 'PA2'] }),
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useFetch: jest.fn(() => ({
+        data: {
+            paymentagent_list: {
+                list: ['PA1', 'PA2'],
+            },
+        },
+    })),
 }));
 
 describe('CashierOnboardingPaymentAgentCard', () => {
-    test('should call the onClick callback when clicked', async () => {
+    test('should call the onClick callback when clicked', () => {
         const mock = mockStore({
             modules: {
                 cashier: {

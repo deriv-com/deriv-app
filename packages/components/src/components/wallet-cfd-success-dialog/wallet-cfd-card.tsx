@@ -8,7 +8,7 @@ import { localize } from '@deriv/translations';
 import './wallet-cfd-card.scss';
 
 const WalletCFDCard = ({ wallet }: { wallet: TWalletCFDCard }) => {
-    const { app_icon, account_title, currency, gradient_header_class, icon, is_demo } = wallet;
+    const { app_icon, account_title, currency, gradient_header_class, icon, is_demo, wallet_label } = wallet;
 
     return (
         <div className='wallet-cfd-card'>
@@ -35,7 +35,7 @@ const WalletCFDCard = ({ wallet }: { wallet: TWalletCFDCard }) => {
                         weight='bold'
                         size={isMobile() ? 'xxxxs' : 'xxxs'}
                     >
-                        {is_demo ? localize('Demo') : localize('Real')}
+                        {wallet_label}
                     </Text>
                 </div>
                 <div className='wallet-cfd-card__details'>

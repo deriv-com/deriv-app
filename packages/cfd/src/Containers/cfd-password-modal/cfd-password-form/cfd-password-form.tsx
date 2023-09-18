@@ -197,7 +197,6 @@ const CFDPasswordForm = observer(
                                             i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} {{jurisdiction_shortcode}} account.'
                                             values={{
                                                 platform: getCFDPlatformLabel(platform),
-                                                // account: !show_eu_related_content ? account_title : '',
                                                 platform_name:
                                                     platform === CFD_PLATFORMS.MT5
                                                         ? 'MT5'
@@ -214,7 +213,6 @@ const CFDPasswordForm = observer(
                                             i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} account.'
                                             values={{
                                                 platform: getCFDPlatformLabel(platform),
-                                                // account: account_title,
                                                 platform_name:
                                                     platform === CFD_PLATFORMS.MT5
                                                         ? 'MT5'

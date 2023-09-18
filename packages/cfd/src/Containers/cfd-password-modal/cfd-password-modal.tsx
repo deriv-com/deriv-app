@@ -148,7 +148,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const closeModal = () => {
         closeDialogs();
         disableCFDPasswordModal();
-        invalidate('mt5_login_list');
     };
 
     const closeOpenSuccess = () => {
@@ -318,6 +317,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     };
 
     const cfd_details = {
+        wallet_label: active_wallet?.is_demo ? localize('Demo') : localize('Real'),
         app_icon: getWalletCFDInfo(account_type.type).icon,
         account_title: getWalletCFDInfo(account_type.type).title,
         currency: active_wallet?.currency,

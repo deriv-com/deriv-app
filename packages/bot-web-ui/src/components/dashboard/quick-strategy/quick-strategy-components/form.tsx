@@ -1,81 +1,53 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Form, Formik, FormikProps } from 'formik';
-import * as Yup from 'yup';
+import { observer } from 'mobx-react';
 import { Text, ThemedScrollbars } from '@deriv/components';
 import { isMobile, isSafari } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { TQuickStrategyFormValues } from '../quick-strategy.types';
-import { TQuickStrategyForm } from './components.types';
+import { useDBotStore } from 'Stores/useDBotStore';
+import { CommonSchemaFields, mergeSchema } from './data/schema-validation';
+import strategies from './data/strategies-config';
 import { QuickStrategyFields, QuickStrategyFooter } from '.';
 
-const QuickStrategyForm = ({
-    duration_unit_dropdown,
-    types_strategies_dropdown,
-    initial_values,
-    is_onscreen_keyboard_active,
-    is_stop_button_visible,
-    symbol_dropdown,
-    trade_type_dropdown,
-    selected_symbol,
-    selected_trade_type,
-    selected_duration_unit,
-    selected_type_strategy,
-    description,
-    is_contract_dialog_open,
-    is_stop_bot_dialog_open,
-    is_running,
-    createStrategy,
-    onChangeDropdownItem,
-    onChangeInputValue,
-    onHideDropdownList,
-    onScrollStopDropdownList,
-    setCurrentFocus,
-    toggleStopBotDialog,
-}: TQuickStrategyForm) => {
+const QuickStrategyForm = observer(() => {
+    const { quick_strategy, run_panel } = useDBotStore();
+    const { ui } = useStore();
+
+    const {
+        selected_duration_unit,
+        createStrategy,
+        getInitialValues,
+        selected_type_strategy,
+        toggleStopBotDialog,
+        is_contract_dialog_open,
+        is_stop_bot_dialog_open,
+    } = quick_strategy;
+
+    const { is_stop_button_visible, is_running } = run_panel;
+    const { is_onscreen_keyboard_active } = ui;
+
     const { min, max } = selected_duration_unit;
 
-    const setDefaultValidationNumber = () =>
-        Yup.number()
-            .typeError(localize('Must be a number'))
-            .round('ceil')
-            .min(1, localize('Must be a number higher than 0'));
+    const getStrategyField = () => {
+        return strategies[selected_type_strategy.value].fields;
+    };
 
-    const SchemaFields = Yup.object().shape({
-        'quick-strategy__duration-value': Yup.number()
-            .typeError(localize('Must be a number'))
-            .required(localize('Field cannot be empty'))
-            .min(min, localize('Minimum duration: {{ min }}', { min }))
-            .max(max, localize('Maximum duration: {{ max }}', { max })),
-        'quick-strategy__stake': setDefaultValidationNumber(),
-        'quick-strategy__loss': setDefaultValidationNumber(),
-        'martingale-size': Yup.number()
-            .typeError(localize('Must be a number'))
-            .round('floor')
-            .min(2, localize('The value must be equal to or greater than 2.')),
-        'alembert-unit': setDefaultValidationNumber(),
-        'oscar-unit': setDefaultValidationNumber(),
-        'quick-strategy__profit': setDefaultValidationNumber(),
-    });
+    const SchemaFields = mergeSchema(
+        CommonSchemaFields(min, max),
+        strategies[selected_type_strategy.value].validation_schema
+    );
+
     return (
         <Formik
-            initialValues={initial_values}
+            initialValues={getInitialValues(getStrategyField())}
             validationSchema={SchemaFields}
             onSubmit={createStrategy}
             enableReinitialize={true}
             validateOnMount={true}
         >
-            {({
-                errors,
-                handleChange,
-                values,
-                isSubmitting,
-                setFieldValue,
-                submitForm,
-            }: FormikProps<TQuickStrategyFormValues>) => {
-                const is_valid =
-                    Object.keys(errors).length === 0 && !Object.values(values).some(elem => (elem as string) === '');
-                const is_submit_enabled = !isSubmitting && is_valid;
+            {() => {
                 const is_mobile = isMobile();
 
                 return (
@@ -97,33 +69,11 @@ const QuickStrategyForm = ({
                                     </Text>
                                 </div>
 
-                                <QuickStrategyFields
-                                    types_strategies_dropdown={types_strategies_dropdown}
-                                    symbol_dropdown={symbol_dropdown}
-                                    trade_type_dropdown={trade_type_dropdown}
-                                    duration_unit_dropdown={duration_unit_dropdown}
-                                    selected_type_strategy={selected_type_strategy}
-                                    selected_trade_type={selected_trade_type}
-                                    selected_symbol={selected_symbol}
-                                    selected_duration_unit={selected_duration_unit}
-                                    onChangeDropdownItem={onChangeDropdownItem}
-                                    onHideDropdownList={onHideDropdownList}
-                                    setFieldValue={setFieldValue}
-                                    onScrollStopDropdownList={onScrollStopDropdownList}
-                                    handleChange={handleChange}
-                                    onChangeInputValue={onChangeInputValue}
-                                    setCurrentFocus={setCurrentFocus}
-                                    values={values}
-                                    description={description}
-                                    errors={errors}
-                                />
+                                <QuickStrategyFields />
                             </div>
                         </ThemedScrollbars>
                         <QuickStrategyFooter
-                            is_submit_enabled={is_submit_enabled}
                             is_stop_button_visible={is_stop_button_visible}
-                            setFieldValue={setFieldValue}
-                            submitForm={submitForm}
                             is_running={is_running}
                             is_contract_dialog_open={is_contract_dialog_open}
                             toggleStopBotDialog={toggleStopBotDialog}
@@ -134,6 +84,6 @@ const QuickStrategyForm = ({
             }}
         </Formik>
     );
-};
+});
 
 export default React.memo(QuickStrategyForm);

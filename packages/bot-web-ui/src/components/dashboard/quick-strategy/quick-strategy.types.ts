@@ -88,24 +88,13 @@ export type TInputBaseFields =
     | 'input_oscar_unit';
 
 export type TSetFieldValue = (
-    element: 'button' | 'quick-strategy__duration-unit' | 'quick-strategy__duration-value' | string,
+    element: 'button' | 'durationtype' | 'duration' | string,
     action: 'run' | 'edit' | string | number
 ) => void;
 
-export type TSelectsFieldNames =
-    | 'quick-strategy__type-strategy'
-    | 'quick-strategy__symbol'
-    | 'quick-strategy__trade-type'
-    | 'quick-strategy__duration-unit';
+export type TSelectsFieldNames = 'strategy' | 'symbol' | 'tradetype' | 'durationtype';
 
-export type TInputsFieldNames =
-    | 'quick-strategy__duration-value'
-    | 'quick-strategy__stake'
-    | 'quick-strategy__loss'
-    | 'quick-strategy__profit'
-    | 'martingale-size'
-    | 'alembert-unit'
-    | 'oscar-unit';
+export type TInputsFieldNames = 'duration' | 'stake' | 'loss' | 'profit' | 'size' | 'alembert_unit' | 'oscar_unit';
 
 export type TSymbolDropdownValue = 'group' | 'text' | 'value';
 

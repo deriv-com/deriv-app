@@ -14,9 +14,7 @@ const LoginHistoryTableRow = ({ id, date, action, browser, ip, status }: TLoginH
             <Table.Cell className='login-history__table__row__cell login-history__table__row__cell--action'>
                 <Localize i18n_default_text='{{action}}' values={{ action }} />
             </Table.Cell>
-            <Table.Cell>
-                {browser === 'Unknown' ? <Localize i18n_default_text='{{browser}}' values={{ browser }} /> : browser}
-            </Table.Cell>
+            <Table.Cell>{browser === 'Unknown' ? <Localize i18n_default_text='Unknown' /> : browser}</Table.Cell>
             <Table.Cell>{ip}</Table.Cell>
             <Table.Cell>
                 <Localize i18n_default_text='{{status}}' values={{ status }} />

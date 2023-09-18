@@ -73,7 +73,7 @@ describe('<LoginHistory />', () => {
                 formatted_data: [
                     {
                         date: '2023-08-28 03:11:45 GMT',
-                        browser: '"Chrome  v116.0.0.0"',
+                        browser: 'Chrome  v116.0.0.0',
                         action: 'login',
                         status: 'successful',
                         ip: '175.143.37.57',

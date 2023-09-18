@@ -23,13 +23,7 @@ const LoginHistoryListRow = observer(({ id, date, action, browser, ip, status }:
                     <ListCell
                         className='login-history__list__row__cell--browser'
                         title={browser_title}
-                        text={
-                            browser === 'Unknown' ? (
-                                <Localize i18n_default_text='{{browser}}' values={{ browser }} />
-                            ) : (
-                                browser
-                            )
-                        }
+                        text={browser === 'Unknown' ? <Localize i18n_default_text='Unknown' /> : browser}
                     />
                 </Table.Cell>
                 <Table.Cell className='login-history__list__row__cell'>

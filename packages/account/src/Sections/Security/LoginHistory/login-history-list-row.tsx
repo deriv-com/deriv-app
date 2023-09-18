@@ -3,12 +3,14 @@ import classNames from 'classnames';
 import { TLoginHistoryItems } from 'Types';
 import { Table } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { isDesktop } from '@deriv/shared';
 import getLoginHistoryTableHeaders from 'Constants/get-login-history-table-headers';
 import ListCell from './list-cell';
+import { observer, useStore } from '@deriv/stores';
 
-const LoginHistoryListRow = ({ id, date, action, browser, ip, status }: TLoginHistoryItems) => {
+const LoginHistoryListRow = observer(({ id, date, action, browser, ip, status }: TLoginHistoryItems) => {
     const { date_title, browser_title, action_title, ip_title, status_title } = getLoginHistoryTableHeaders();
+    const { ui } = useStore();
+    const { is_desktop } = ui;
     return (
         <div className={classNames('login-history__list__wrapper')} key={id}>
             <Table.Row className='login-history__list__row login-history__list__row--with-margin'>
@@ -42,7 +44,7 @@ const LoginHistoryListRow = ({ id, date, action, browser, ip, status }: TLoginHi
                 <Table.Cell className='login-history__list__row__cell'>
                     <ListCell className='login-history__list__row__cell--ip-value' title={ip_title} text={ip} />
                 </Table.Cell>
-                {isDesktop() && (
+                {is_desktop && (
                     <Table.Cell className='login-history__list__row__cell'>
                         <ListCell
                             title={status_title}
@@ -53,6 +55,6 @@ const LoginHistoryListRow = ({ id, date, action, browser, ip, status }: TLoginHi
             </Table.Row>
         </div>
     );
-};
+});
 
 export default LoginHistoryListRow;

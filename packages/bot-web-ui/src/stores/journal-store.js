@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable, reaction } from 'mobx';
+import { action, computed, makeObservable, observable, reaction, when } from 'mobx';
 import { log_types, message_types } from '@deriv/bot-skeleton';
 import { config } from '@deriv/bot-skeleton/src/constants/config';
 import { formatDate } from '@deriv/shared';
@@ -51,17 +51,8 @@ export default class JournalStore {
 
     restoreStoredJournals() {
         const { loginid } = this.core?.client;
-
         this.journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
         this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, loginid, []);
-
-        if (this.unfiltered_messages.length > 0) {
-            this.welcomeBackUser();
-        }
-
-        if (this.unfiltered_messages.length === 0) {
-            this.welcomeUser();
-        }
     }
 
     getServerTime() {
@@ -109,10 +100,11 @@ export default class JournalStore {
 
     pushMessage(message, message_type, className, extra = {}) {
         const { client } = this.core;
-        const { loginid, current_currency_type, currency } = client;
+        const { loginid, account_list } = client;
 
         if (loginid) {
-            extra.current_currency = current_currency_type === 'virtual' ? 'Demo' : currency;
+            const current_account = account_list?.find(account => account?.loginid === loginid);
+            extra.current_currency = current_account?.is_virtual ? 'Demo' : current_account?.title;
         } else if (message === log_types.WELCOME) {
             return;
         }
@@ -179,18 +171,17 @@ export default class JournalStore {
 
         // Attempt to load cached journal messages on client loginid change.
         const disposeJournalMessageListener = reaction(
-            () => client.loginid,
-            () => {
-                this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, client.loginid, []);
-
-                if (this.unfiltered_messages.length > 0) {
-                    this.welcomeBackUser();
-                }
-
+            () => client?.loginid,
+            async loginid => {
+                await when(() => client.account_list?.find(account => account.loginid === loginid)?.title ?? false);
+                this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, loginid, []);
                 if (this.unfiltered_messages.length === 0) {
                     this.welcomeUser();
+                } else if (this.unfiltered_messages.length > 0) {
+                    this.welcomeBackUser();
                 }
-            }
+            },
+            { fireImmediately: true } // For initial welcome message
         );
 
         return () => {

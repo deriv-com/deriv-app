@@ -535,6 +535,48 @@ const StaticDashboard = observer(
                                                     : 'prominent'
                                             }
                                         >
+                                            {localize('Deriv cTrader')}
+                                        </Text>
+                                    </div>
+                                </React.Fragment>
+                            )}
+
+                            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
+                                <div className='static-dashboard-wrapper__body'>
+                                    <StaticCFDAccountManager
+                                        type='all'
+                                        platform='ctrader'
+                                        appname={localize('Deriv cTrader')}
+                                        description={localize(
+                                            'This account offers CFDs on a feature-rich trading platform.'
+                                        )}
+                                        loginid={loginid}
+                                        currency={currency}
+                                        has_account={has_account}
+                                        is_last_step={is_last_step}
+                                        is_blurry={is_blurry}
+                                        is_onboarding_animated={is_onboarding_animated}
+                                        is_derivx_last_step={is_derivx_last_step}
+                                        is_financial_last_step={is_financial_last_step}
+                                        is_eu_user={is_eu_user}
+                                    />
+                                </div>
+                            )}
+
+                            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
+                                <React.Fragment>
+                                    <Divider />
+                                    <div className='static-dashboard-wrapper__body--header'>
+                                        <Text
+                                            as='h2'
+                                            weight='bold'
+                                            size='xs'
+                                            color={
+                                                is_blurry.cfd_text || is_blurry.cfd_description
+                                                    ? 'less-prominent'
+                                                    : 'prominent'
+                                            }
+                                        >
                                             {localize('Other CFD Platforms')}
                                         </Text>
                                     </div>

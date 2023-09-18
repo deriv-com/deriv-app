@@ -24,3 +24,4 @@ export { default as useTradingPlatformInvestorPasswordReset } from './useTrading
 export { default as useDxtradeAccountsList } from './useDxtradeAccountsList';
 export { default as useDerivezAccountsList } from './useDerivezAccountsList';
 export { default as useCFDAccountsList } from './useCFDAccountsList';
+export { default as useCtraderAccountsList } from './useCtraderAccountsList';

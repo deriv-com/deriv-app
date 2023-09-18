@@ -45,6 +45,7 @@ describe('APIMiddleware', () => {
         });
 
         api_middleware = new APIMiddleware();
+        process.env.DATADOG_CLIENT_TOKEN_LOGS = '123';
     });
 
     it('Should get measure for each request, invoke method log(), clear measures', () => {

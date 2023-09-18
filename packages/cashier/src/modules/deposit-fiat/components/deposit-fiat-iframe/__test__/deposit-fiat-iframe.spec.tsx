@@ -1,28 +1,19 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
-import { useDepositFiatAddress } from '@deriv/hooks';
+import { render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../../cashier-providers';
 import DepositFiatIframe from '../deposit-fiat-iframe';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositFiatAddress: jest.fn(),
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useRequest: jest.fn(() => ({
+        data: { cashier: 'https://example.com' },
+        mutate: jest.fn(),
+    })),
 }));
-
-const mockedUseDepositFiatAddress = useDepositFiatAddress as jest.MockedFunction<typeof useDepositFiatAddress>;
 
 describe('<DepositFiatIframe />', () => {
     it('should render the loader when waiting for the response from the cashier API', () => {
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockedUseDepositFiatAddress.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isSuccess: true,
-            error: undefined,
-            resend: jest.fn(),
-        });
-
         const mock = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -34,15 +25,6 @@ describe('<DepositFiatIframe />', () => {
     });
 
     it('should render the iframe once the url is received from API', () => {
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockedUseDepositFiatAddress.mockReturnValue({
-            data: 'https://example.com',
-            isLoading: false,
-            isSuccess: true,
-            error: undefined,
-            resend: jest.fn(),
-        });
-
         const mock = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (

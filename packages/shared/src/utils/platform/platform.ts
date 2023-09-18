@@ -27,6 +27,7 @@ export const CFD_PLATFORMS = Object.freeze({
     MT5: 'mt5',
     DXTRADE: 'dxtrade',
     DERIVEZ: 'derivez',
+    CTRADER: 'ctrader',
 });
 
 export const isBot = () => {

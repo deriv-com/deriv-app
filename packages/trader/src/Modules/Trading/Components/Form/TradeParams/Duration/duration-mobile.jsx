@@ -2,9 +2,9 @@ import React from 'react';
 import { Tabs, TickPicker, Numpad, RelativeDatepicker, Text } from '@deriv/components';
 import { isEmptyObject, addComma, getDurationMinMaxValues } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
+import moment from 'moment';
 
 const submit_label = localize('OK');
 
@@ -96,12 +96,12 @@ const Numbers = observer(
         duration_values,
         expiry_epoch,
         has_amount_error,
-        is_vanilla,
         payout_value,
         selected_duration,
         setDurationError,
         setSelectedDuration,
         stake_value,
+        show_expiry = false,
         toggleModal,
     }) => {
         const { ui } = useStore();
@@ -167,15 +167,21 @@ const Numbers = observer(
         };
 
         const setExpiryDate = (epoch, duration) => {
-            let expiry_date = new Date((epoch - (trade_duration * 24 * 60 * 60)) * 1000);
-
+            if (trade_duration_unit !== 'd') {
+                return moment.utc().add(Number(duration), 'days').format('D MMM YYYY, [23]:[59]:[59] [GMT +0]');
+            }
+            let expiry_date = new Date((epoch - trade_duration * 24 * 60 * 60) * 1000);
             if (duration) {
-              expiry_date = new Date(expiry_date.getTime() + (duration) * 24 * 60 * 60 * 1000);
+                expiry_date = new Date(expiry_date.getTime() + duration * 24 * 60 * 60 * 1000);
             }
 
-            return expiry_date.toUTCString().replace('GMT', 'GMT +0').substring(5).replace(/(\d{2}) (\w{3} \d{4})/, '$1 $2,');
-        }
-        
+            return expiry_date
+                .toUTCString()
+                .replace('GMT', 'GMT +0')
+                .substring(5)
+                .replace(/(\d{2}) (\w{3} \d{4})/, '$1 $2,');
+        };
+
         const onNumberChange = num => {
             setSelectedDuration(duration_unit, num);
             validateDuration(num);
@@ -183,11 +189,13 @@ const Numbers = observer(
 
         return (
             <div className='trade-params__amount-keypad'>
-                {is_vanilla && (
+                {show_expiry && (
                     <Text as='div' size='xxxs' line_height='s' className='expiry-text-container--mobile'>
-                        <Localize 
+                        <Localize
                             i18n_default_text='Expiry: {{date}}'
-                            values={{ date: !has_error ? setExpiryDate(expiry_epoch, duration_values?.d_duration) : '' }}
+                            values={{
+                                date: !has_error ? setExpiryDate(expiry_epoch, duration_values?.d_duration) : '',
+                            }}
                         />
                     </Text>
                 )}
@@ -219,7 +227,6 @@ const Duration = observer(
         expiry_epoch,
         h_duration,
         has_amount_error,
-        is_vanilla,
         m_duration,
         payout_value,
         s_duration,
@@ -342,9 +349,9 @@ const Duration = observer(
                                             setDurationError={setDurationError}
                                             setSelectedDuration={setSelectedDuration}
                                             stake_value={stake_value}
+                                            show_expiry
                                             payout_value={payout_value}
                                             expiry_epoch={expiry_epoch}
-                                            is_vanilla={is_vanilla}
                                             duration_values={duration_values}
                                         />
                                         <RelativeDatepicker

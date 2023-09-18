@@ -21,17 +21,27 @@ const WalletsAccordion: React.FC<TProps> = ({ account: { is_active, is_virtual, 
     }, [is_active]);
 
     return (
-        <div className={`wallets-accordion wallets-accordion${is_virtual ? '--virtual' : ''}`}>
-            <div className={`wallets-accordion__header wallets-accordion__header${is_virtual ? '--virtual' : ''}`}>
+        <div
+            className={`wallets-accordion wallets-accordion ${
+                is_virtual ? 'wallets-accordion wallets-accordion--virtual' : ''
+            }`}
+        >
+            <div
+                className={`wallets-accordion__header wallets-accordion__header ${
+                    is_virtual ? 'wallets-accordion__header wallets-accordion__header--virtual' : ''
+                }`}
+            >
                 {header}
                 <div
-                    className={`wallets-accordion__dropdown${is_active ? '--open' : ''}`}
+                    className={`wallets-accordion__dropdown ${is_active ? 'wallets-accordion__dropdown--open' : ''}`}
                     // onClick={() => switchAccount(loginid)}
                 >
                     <IcDropdown />
                 </div>
             </div>
-            <div className={`wallets-accordion__content${is_active ? '--visible' : ''}`}>{is_active && content}</div>
+            <div className={`wallets-accordion__content ${is_active ? 'wallets-accordion__content--visible' : ''}`}>
+                {is_active && content}
+            </div>
         </div>
     );
 };

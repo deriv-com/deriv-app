@@ -12,27 +12,27 @@ const WalletsAddMoreCarousel = () => {
         containScroll: 'trimSnaps',
     };
 
-    const [wallets_add_more_embla_ref, walletsAddMoreEmblaApi] = useEmblaCarousel(options);
+    const [wallets_add_more_embla_ref, wallets_add_more_embla_api] = useEmblaCarousel(options);
     const [is_hovered, setIsHovered] = useState(is_mobile);
     const [prev_btn_enabled, setPrevBtnEnabled] = useState(false);
     const [next_btn_enabled, setNextBtnEnabled] = useState(false);
 
-    const scrollPrev = useCallback(() => walletsAddMoreEmblaApi?.scrollPrev(), [walletsAddMoreEmblaApi]);
-    const scrollNext = useCallback(() => walletsAddMoreEmblaApi?.scrollNext(), [walletsAddMoreEmblaApi]);
+    const scrollPrev = useCallback(() => wallets_add_more_embla_api?.scrollPrev(), [wallets_add_more_embla_api]);
+    const scrollNext = useCallback(() => wallets_add_more_embla_api?.scrollNext(), [wallets_add_more_embla_api]);
 
     useEffect(() => {
-        if (!walletsAddMoreEmblaApi) return;
+        if (!wallets_add_more_embla_api) return;
 
         const onSelect = (embla_api: EmblaCarouselType) => {
             setPrevBtnEnabled(embla_api.canScrollPrev());
             setNextBtnEnabled(embla_api.canScrollNext());
         };
 
-        onSelect(walletsAddMoreEmblaApi);
-        walletsAddMoreEmblaApi.on('reInit', onSelect);
-        walletsAddMoreEmblaApi.reInit({ watchDrag: is_mobile });
-        walletsAddMoreEmblaApi.on('select', onSelect);
-    }, [walletsAddMoreEmblaApi, is_mobile]);
+        onSelect(wallets_add_more_embla_api);
+        wallets_add_more_embla_api.on('reInit', onSelect);
+        wallets_add_more_embla_api.reInit({ watchDrag: is_mobile });
+        wallets_add_more_embla_api.on('select', onSelect);
+    }, [wallets_add_more_embla_api, is_mobile]);
 
     if (!available_wallets?.length) return <h1>No wallets found</h1>;
     return (

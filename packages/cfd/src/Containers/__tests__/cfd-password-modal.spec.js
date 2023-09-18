@@ -137,10 +137,8 @@ describe('<CFDPasswordModal/>', () => {
             </Router>,
             { wrapper: cfd_wrapper }
         );
-        waitFor(() => {
-            expect(screen.findByRole('button', { name: /Try Later/i })).toBeInTheDocument();
-            expect(screen.findByRole('button', { name: /Forgot Password?/i })).toBeInTheDocument();
-        });
+        expect(await screen.findByRole('button', { name: /Try Later/i })).toBeInTheDocument();
+        expect(await screen.findByRole('button', { name: /Forgot Password?/i })).toBeInTheDocument();
     });
 
     it('should close modal when Forget Password button is clicked', async () => {
@@ -154,9 +152,8 @@ describe('<CFDPasswordModal/>', () => {
             { wrapper: cfd_wrapper }
         );
         const ele_forget_btn = await screen.findByRole('button', { name: /forgot password?/i });
-        userEvent.click(ele_forget_btn);
+        fireEvent.click(ele_forget_btn);
 
-        screen.debug();
         await waitFor(() => {
             expect(mockSetCFDSuccessDialog).toHaveBeenCalledWith(false);
             expect(mockDisableCFDPasswordModalFn).toHaveBeenCalled();

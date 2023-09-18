@@ -16,14 +16,7 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import {
-    isDesktop,
-    isMobile,
-    getLocation,
-    makeCancellablePromise,
-    PlatformContext,
-    firstPropertyObject,
-} from '@deriv/shared';
+import { isDesktop, isMobile, getLocation, makeCancellablePromise, PlatformContext } from '@deriv/shared';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import classNames from 'classnames';
 import { ScrollToFieldWithError } from 'Components/forms/scroll-to-field-with-error';
@@ -150,7 +143,7 @@ const AddressDetails = ({
     const handleValidate = (values: FormikValues) => {
         const { errors } = splitValidationResultTypes(validate(values));
         checkSubmitStatus(errors);
-        return should_scroll_to_error_field ? firstPropertyObject(errors) : errors;
+        return errors;
     };
 
     return (

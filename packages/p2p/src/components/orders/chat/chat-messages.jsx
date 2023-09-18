@@ -73,10 +73,13 @@ const ChatMessages = observer(() => {
                 onScroll={event => sendbird_store.onMessagesScroll(event)}
             >
                 {sendbird_store.chat_messages.map(chat_message => {
-                    const is_my_message = chat_message.sender_user_id === sendbird_store.chat_info.user_id;
+                    const is_admin_message = chat_message.custom_type === ChatMessage.TYPE_ADMIN;
+                    const is_my_message =
+                        chat_message.sender_user_id === sendbird_store.chat_info.user_id && !is_admin_message;
                     const message_date = formatMilliseconds(chat_message.created_at, 'MMMM D, YYYY');
                     const message_color = is_my_message ? 'colored-background' : 'general';
-                    const should_render_date = current_date !== message_date && Boolean((current_date = message_date));
+                    const should_render_date =
+                        current_date !== message_date && Boolean(!is_admin_message && (current_date = message_date));
 
                     return (
                         <React.Fragment key={chat_message.id}>
@@ -90,18 +93,25 @@ const ChatMessages = observer(() => {
                             <div
                                 className={classNames(
                                     'order-chat__messages-item',
-                                    `order-chat__messages-item--${is_my_message ? 'outgoing' : 'incoming'}`
+                                    `order-chat__messages-item--${
+                                        is_admin_message ? 'admin' : is_my_message ? 'outgoing' : 'incoming'
+                                    }`
                                 )}
+                                data-testid='dt_chat_message'
                             >
                                 {chat_message.message_type === ChatMessage.TYPE_USER && (
-                                    <ChatMessageText color={message_color}>{chat_message.message}</ChatMessageText>
+                                    <ChatMessageText color={message_color} type={chat_message.custom_type}>
+                                        {chat_message.message}
+                                    </ChatMessageText>
                                 )}
                                 {chat_message.message_type === ChatMessage.TYPE_FILE &&
                                     getMessageFormat(chat_message, message_color)}
                                 <div className={`order-chat__messages-item-timestamp`}>
-                                    <Text color='less-prominent' line_height='s' size='xxxs'>
-                                        {formatMilliseconds(chat_message.created_at, 'HH:mm', true)}
-                                    </Text>
+                                    {!is_admin_message && (
+                                        <Text color='less-prominent' line_height='s' size='xxxs'>
+                                            {formatMilliseconds(chat_message.created_at, 'HH:mm', true)}
+                                        </Text>
+                                    )}
                                     {is_my_message && (
                                         <ChatMessageReceipt
                                             message={chat_message}

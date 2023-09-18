@@ -17,7 +17,7 @@ const OnlineStatusAvatar = ({ is_online, nickname, size, text_size }) => {
             <svg viewBox={`0 0 ${size * 2} ${size * 2}`} width={size} height={size}>
                 <mask id='circle'>
                     <circle fill='white' cx={size} cy={size} r={size} />
-                    <circle fill='black' cx='86%' cy='86%' r={size * 0.37} />
+                    <circle fill='black' cx='87%' cy='86%' r={size * 0.37} />
                 </mask>
                 <rect
                     fill={generateHexColourFromNickname(nickname)}

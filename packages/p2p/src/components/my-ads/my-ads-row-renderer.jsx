@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { HorizontalSwipe, Icon, Popover, ProgressIndicator, Table, Text } from '@deriv/components';
 import { isMobile, formatMoney } from '@deriv/shared';
+import { useExchangeRate } from '@deriv/hooks';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
@@ -40,13 +41,15 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
     const amount_dealt = amount - remaining_amount;
     const enable_action_point = floating_rate_store.change_ad_alert && floating_rate_store.rate_type !== rate_type;
     const is_buy_advert = type === buy_sell.BUY;
+    const advert_type = is_buy_advert ? <Localize i18n_default_text='Buy' /> : <Localize i18n_default_text='Sell' />;
+    const { getRate } = useExchangeRate();
 
     const { display_effective_rate } = generateEffectiveRate({
         price: price_display,
         rate_type,
         rate: rate_display,
         local_currency,
-        exchange_rate: floating_rate_store.exchange_rate,
+        exchange_rate: getRate(local_currency),
         market_rate: effective_rate,
     });
 
@@ -128,10 +131,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                         </Text>
                         <div className='p2p-my-ads__table-row__type-and-status'>
                             <Text color={ad_pause_color} line_height='m' size='s' weight='bold'>
-                                <Localize
-                                    i18n_default_text='{{ad_type}} {{ account_currency }}'
-                                    values={{ account_currency, ad_type: is_buy_advert ? 'Buy' : 'Sell' }}
-                                />
+                                {advert_type} {account_currency}
                             </Text>
                             {enable_action_point ? (
                                 <div className='p2p-my-ads__table-status-warning'>
@@ -231,10 +231,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                 })}
             >
                 <Table.Cell>
-                    <Localize
-                        i18n_default_text='{{ad_type}} {{ id }}'
-                        values={{ id, ad_type: is_buy_advert ? 'Buy' : 'Sell' }}
-                    />
+                    {advert_type} {id}
                 </Table.Cell>
                 <Table.Cell>
                     {min_order_amount_display}-{max_order_amount_display} {account_currency}

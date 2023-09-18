@@ -9,13 +9,18 @@ import 'Components/buy-sell/sort-dropdown.scss';
 const SortDropdown = () => {
     const { buy_sell_store } = useStores();
 
+    const sort_list = [
+        { text: localize('Exchange rate'), value: 'rate' },
+        { text: localize('User rating'), value: 'rating' },
+    ];
+
     if (isDesktop()) {
         return (
             <Dropdown
                 className='sort-dropdown'
                 classNameLabel='sort-dropdown--label'
                 is_align_text_left
-                list={buy_sell_store.sort_list}
+                list={sort_list}
                 onChange={buy_sell_store.handleChange}
                 placeholder={localize('Sort by')}
                 value={buy_sell_store.selected_value}

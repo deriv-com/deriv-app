@@ -30,8 +30,10 @@ const AddedDxtradeAccountsList: React.FC = () => {
                 {data?.map(account => (
                     <>
                         <p className='wallets-available-derivx__details-title'>Deriv X</p>
-                        <p className='wallets-available-derivx__details-description'>{account.balance}</p>
-                        <p className='wallets-available-derivx__details-description'>{account.account_id}</p>
+                        <p className='wallets-available-derivx__details-balance'>
+                            {account?.display_balance} {account?.currency}
+                        </p>
+                        <p className='wallets-available-derivx__details-loginid'>{account.login}</p>
                     </>
                 ))}
             </div>

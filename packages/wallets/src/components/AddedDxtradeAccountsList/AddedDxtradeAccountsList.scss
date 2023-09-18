@@ -8,6 +8,7 @@
         border-radius: 4px;
         border: 1px solid var(--system-light-3-less-prominent-text, #999);
         cursor: pointer;
+        background: #fff;
     }
 
     &__transfer_text {
@@ -43,10 +44,37 @@
     &__details {
         flex-grow: 1;
 
+        &-loginid {
+            color: var(--system-light-3-less-prominent-text, #999);
+
+            /* desktop/small/S - bold */
+            font-family: 'IBM Plex Sans';
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 18px; /* 150% */
+        }
+
         &-title {
-            font-weight: bold;
-            font-size: 1.4rem;
-            line-height: 20px;
+            color: var(--system-light-2-general-text, #333);
+
+            /* desktop/paragraph/P2 - bold */
+            font-family: 'IBM Plex Sans';
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 20px; /* 142.857% */
+        }
+
+        &-balance {
+            color: var(--system-light-1-prominent-text, #333);
+
+            /* desktop/paragraph/P2 - bold */
+            font-family: 'IBM Plex Sans';
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 20px; /* 142.857% */
         }
 
         &-description {

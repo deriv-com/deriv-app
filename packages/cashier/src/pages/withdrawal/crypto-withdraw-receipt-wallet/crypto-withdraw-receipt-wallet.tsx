@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { observer, useStore } from '@deriv/stores';
-import { Div100vhContainer, Icon, Text, WalletCard, Clipboard, Button } from '@deriv/components';
+import { Icon, Text, WalletCard, Clipboard, Button } from '@deriv/components';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import { Localize, localize } from '@deriv/translations';
 import { useActiveWallet } from '@deriv/hooks';
@@ -50,80 +50,78 @@ const CryptoWithdrawReceiptWallet = observer(() => {
     };
 
     return (
-        <Div100vhContainer height_offset='344px'>
-            <div className='crypto-withdraw-receipt-wallet'>
-                <WalletCard wallet={wallet} size='medium' />
-                <Icon className='crypto-withdraw-receipt-wallet__icon' icon='IcArrowDownBold' size={16} />
+        <div className='crypto-withdraw-receipt-wallet'>
+            <WalletCard wallet={wallet} size='medium' />
+            <Icon className='crypto-withdraw-receipt-wallet__icon' icon='IcArrowDownBold' size={16} />
+            <Text
+                as='p'
+                color='less-prominent'
+                size={is_mobile ? 'xxxxs' : 'xxxs'}
+                align='center'
+                className='crypto-withdraw-receipt-wallet__address-header'
+            >
+                <Localize i18n_default_text='Destination address' />
+            </Text>
+            <div className='crypto-withdraw-receipt-wallet__account-info-address'>
                 <Text
+                    color='prominent'
                     as='p'
-                    color='less-prominent'
-                    size={is_mobile ? 'xxxxs' : 'xxxs'}
+                    size={is_mobile ? 'xxs' : 's'}
+                    weight='bold'
                     align='center'
-                    className='crypto-withdraw-receipt-wallet__address-header'
+                    className='crypto-withdraw-receipt-wallet__account-info-detail-text'
                 >
-                    <Localize i18n_default_text='Destination address' />
+                    {blockchain_address}
                 </Text>
-                <div className='crypto-withdraw-receipt-wallet__account-info-address'>
-                    <Text
-                        color='prominent'
-                        as='p'
-                        size={is_mobile ? 'xxs' : 's'}
-                        weight='bold'
-                        align='center'
-                        className='crypto-withdraw-receipt-wallet__account-info-detail-text'
-                    >
-                        {blockchain_address}
-                    </Text>
-                    <Clipboard
-                        text_copy={blockchain_address}
-                        info_message={is_mobile ? '' : localize('copy to clipboard')}
-                        icon='IcWalletClipboard'
-                        success_message={localize('copied!')}
-                        className='crypto-withdraw-receipt-wallet__account-info-clipboard'
-                        popoverAlignment={is_mobile ? 'left' : 'bottom'}
-                    />
-                </div>
-                <div className='crypto-withdraw-receipt-wallet__amount-wrapper'>
-                    <Text as='p' color='prominent' weight='bold' size={is_mobile ? 'xsm' : 'm'} align='center'>
-                        {withdraw_amount} {active_wallet?.currency?.toUpperCase()}
-                    </Text>
-
-                    {is_mobile && (
-                        <Text as='p' color='prominent' size={is_mobile ? 'xs' : 's'} align='center'>
-                            <Localize i18n_default_text='Your withdrawal is currently in review. It will be processed within 24 hours. We’ll send you an email once your transaction has been processed.' />
-                        </Text>
-                    )}
-
-                    {!is_mobile && (
-                        <>
-                            <Text as='p' color='prominent' size={is_mobile ? 'xs' : 's'} align='center'>
-                                <Localize i18n_default_text='Your withdrawal is currently in review. It will be processed within 24 hours.' />
-                            </Text>
-                            <Text as='p' color='prominent' size={is_mobile ? 'xs' : 's'} align='center'>
-                                <Localize i18n_default_text='We’ll send you an email once your transaction has been processed.' />
-                            </Text>
-                        </>
-                    )}
-                </div>
-                <div className='crypto-withdraw-receipt-wallet__button-wrapper'>
-                    <Button
-                        id='crypto-withdraw-receipt-transaction'
-                        text={localize('View transactions')}
-                        onClick={() => openTransactionsTab()}
-                        secondary
-                        large
-                    />
-                    <Button
-                        id='crypto-withdraw-receipt-close'
-                        has_effect
-                        text={localize('Close')}
-                        onClick={() => closeWithdrawForm()}
-                        primary
-                        large
-                    />
-                </div>
+                <Clipboard
+                    text_copy={blockchain_address}
+                    info_message={is_mobile ? '' : localize('copy to clipboard')}
+                    icon='IcWalletClipboard'
+                    success_message={localize('copied!')}
+                    className='crypto-withdraw-receipt-wallet__account-info-clipboard'
+                    popoverAlignment={is_mobile ? 'left' : 'bottom'}
+                />
             </div>
-        </Div100vhContainer>
+            <div className='crypto-withdraw-receipt-wallet__amount-wrapper'>
+                <Text as='p' color='prominent' weight='bold' size={is_mobile ? 'xsm' : 'm'} align='center'>
+                    {withdraw_amount} {active_wallet?.currency?.toUpperCase()}
+                </Text>
+
+                {is_mobile && (
+                    <Text as='p' color='prominent' size={is_mobile ? 'xs' : 's'} align='center'>
+                        <Localize i18n_default_text='Your withdrawal is currently in review. It will be processed within 24 hours. We’ll send you an email once your transaction has been processed.' />
+                    </Text>
+                )}
+
+                {!is_mobile && (
+                    <>
+                        <Text as='p' color='prominent' size={is_mobile ? 'xs' : 's'} align='center'>
+                            <Localize i18n_default_text='Your withdrawal is currently in review. It will be processed within 24 hours.' />
+                        </Text>
+                        <Text as='p' color='prominent' size={is_mobile ? 'xs' : 's'} align='center'>
+                            <Localize i18n_default_text='We’ll send you an email once your transaction has been processed.' />
+                        </Text>
+                    </>
+                )}
+            </div>
+            <div className='crypto-withdraw-receipt-wallet__button-wrapper'>
+                <Button
+                    id='crypto-withdraw-receipt-transaction'
+                    text={localize('View transactions')}
+                    onClick={() => openTransactionsTab()}
+                    secondary
+                    large
+                />
+                <Button
+                    id='crypto-withdraw-receipt-close'
+                    has_effect
+                    text={localize('Close')}
+                    onClick={() => closeWithdrawForm()}
+                    primary
+                    large
+                />
+            </div>
+        </div>
     );
 });
 

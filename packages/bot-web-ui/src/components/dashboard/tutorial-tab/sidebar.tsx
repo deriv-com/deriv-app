@@ -55,7 +55,7 @@ const Sidebar = observer(() => {
     }, [active_tab_tutorials, active_tab]);
 
     const removeHTMLTagsFromString = (param = '') => {
-        return param.replace(/<[^>]*>/g, '');
+        return param.replace(/<.*?>/g, '');
     };
 
     React.useEffect(() => {

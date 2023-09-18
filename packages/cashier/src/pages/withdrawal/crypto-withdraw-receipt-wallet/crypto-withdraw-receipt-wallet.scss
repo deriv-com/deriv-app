@@ -31,6 +31,14 @@
         &-clipboard {
             display: block;
         }
+
+        &-detail-text {
+            @include mobile {
+                text-overflow: ellipsis;
+                overflow: hidden;
+                max-width: 29rem;
+            }
+        }
     }
 
     &__amount-wrapper {

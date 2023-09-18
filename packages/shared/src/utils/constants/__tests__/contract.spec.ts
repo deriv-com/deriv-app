@@ -16,12 +16,12 @@ const unsupported_contract = {
     name: 'Spread Up',
     position: 'top',
 };
-const supported_high_low = {
+const supported_high_low_contract = {
     feature_flag: getTradeFeatureFlag('high_low'),
     name: 'Higher',
     position: 'top',
 };
-const supported_not_high_low = {
+const supported_non_high_low_contract = {
     feature_flag: getTradeFeatureFlag('rise_fall'),
     name: 'Rise',
     position: 'top',
@@ -47,21 +47,21 @@ describe('getUnsupportedContracts', () => {
 
 describe('getSupportedContracts', () => {
     it('should return an object with specific supported contracts if is_high_low === true', () => {
-        expect(getSupportedContracts(true).CALL).toEqual(supported_high_low);
+        expect(getSupportedContracts(true).CALL).toEqual(supported_high_low_contract);
     });
 
     it('should return an object with specific supported contracts if is_high_low === false', () => {
-        expect(getSupportedContracts(false).CALL).toEqual(supported_not_high_low);
+        expect(getSupportedContracts(false).CALL).toEqual(supported_non_high_low_contract);
     });
 });
 
 describe('getContractConfig', () => {
     it('should return an object with specific contracts if is_high_low === true', () => {
-        expect(getContractConfig(true).CALL).toEqual(supported_high_low);
+        expect(getContractConfig(true).CALL).toEqual(supported_high_low_contract);
     });
 
     it('should return object with specific contracts if is_high_low === false', () => {
-        expect(getContractConfig(false).CALL).toEqual(supported_not_high_low);
+        expect(getContractConfig(false).CALL).toEqual(supported_non_high_low_contract);
     });
 });
 

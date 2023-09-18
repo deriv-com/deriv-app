@@ -59,8 +59,7 @@ const ContractReplay = observer(({ contract_id }) => {
     const { routeBackInApp } = common;
     const { is_dark_mode_on: is_dark_theme, notification_messages_ui: NotificationMessages, toggleHistoryTab } = ui;
     const trade_type_feature_flag =
-        contract_info.contract_type &&
-        getContractTypeFeatureFlag(contract_info.contract_type, isHighLow({ shortcode: contract_info.shortcode }));
+        contract_info.shortcode && getContractTypeFeatureFlag(contract_info.contract_type, isHighLow(contract_info));
     const is_trade_type_disabled = useFeatureFlags()[`is_${trade_type_feature_flag}_enabled`] === false;
     const [is_visible, setIsVisible] = React.useState(false);
     const history = useHistory();

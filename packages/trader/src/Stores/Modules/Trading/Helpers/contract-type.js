@@ -87,9 +87,10 @@ export const ContractType = (() => {
                 .map(([key]) => key.replace(trade_feature_flag_prefix, ''));
             // cleanup categories
             Object.keys(available_categories).forEach(key => {
-                available_categories[key].categories = available_categories[key].categories?.filter(
-                    item => typeof item === 'object' && hidden_trade_types?.every(type => !item.value.includes(type))
-                );
+                available_categories[key].categories = available_categories[key].categories?.filter(item => {
+                    // hide trade types with disabled feature flag
+                    return typeof item === 'object' && hidden_trade_types?.every(type => !item.value.startsWith(type));
+                });
                 if (available_categories[key].categories?.length === 0) {
                     delete available_categories[key];
                 }

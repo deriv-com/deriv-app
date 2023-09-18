@@ -2,20 +2,25 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { shouldShowCancellation, shouldShowExpiration, TURBOS } from '../contract';
 
+/**
+ * each trade feature flag should start with 'trade_' prefix
+ * and end with trade type category from getContractCategoriesConfig() or beginning part of it,
+ * e.g.: 'trade_turbos' flag will enable/disable both turboslong and turbosshort contracts.
+ */
 export const TRADE_FEATURE = {
-    ACCUMULATORS: 'trade_accumulators',
-    ENDS_IN_OUT: 'trade_ends_outside_ends_between',
+    ACCUMULATORS: 'trade_accumulator',
+    ENDS_IN_OUT: 'trade_end',
     EVEN_ODD: 'trade_even_odd',
     HIGH_LOW: 'trade_high_low',
-    MATCHES_DIFFERS: 'trade_matches_differs',
-    MULTIPLIERS: 'trade_multipliers',
-    ONLY_UP_DOWN: 'trade_only_ups_only_downs',
+    MATCHES_DIFFERS: 'trade_match_diff',
+    MULTIPLIERS: 'trade_multiplier',
+    ONLY_UP_DOWN: 'trade_run_high_low',
     OVER_UNDER: 'trade_over_under',
     RISE_FALL: 'trade_rise_fall',
-    STAYS_IN_OUT: 'trade_stays_between_goes_outside',
-    TOUCH_NO_TOUCH: 'trade_touch_no_touch',
+    STAYS_IN_OUT: 'trade_stay',
+    TOUCH_NO_TOUCH: 'trade_touch',
     TURBOS: 'trade_turbos',
-    VANILLAS: 'trade_vanillas',
+    VANILLAS: 'trade_vanilla',
 } as const;
 
 export const getLocalizedBasis = () =>

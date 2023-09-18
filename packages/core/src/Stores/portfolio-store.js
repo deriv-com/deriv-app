@@ -4,11 +4,14 @@ import { createTransformer } from 'mobx-utils';
 import {
     isEmptyObject,
     isEnded,
+    isHighLow,
     isUserSold,
     isValidToSell,
     isMultiplierContract,
+    getContractTypeFeatureFlag,
     getCurrentTick,
     getDisplayStatus,
+    LocalStore,
     WS,
     formatPortfolioPosition,
     contractCancelled,
@@ -126,6 +129,12 @@ export default class PortfolioStore extends BaseStore {
         this.error = '';
         if (response.portfolio.contracts) {
             this.positions = response.portfolio.contracts
+                .filter(pos => {
+                    // filter out positions for trade types with disabled feature flag
+                    return Object.entries(LocalStore.getObject('FeatureFlagsStore')?.data ?? {}).every(
+                        ([key, value]) => key !== getContractTypeFeatureFlag(pos.contract_type, isHighLow(pos)) || value
+                    );
+                })
                 .map(pos => formatPortfolioPosition(pos, this.root_store.active_symbols.active_symbols))
                 .sort((pos1, pos2) => pos2.reference - pos1.reference); // new contracts first
 

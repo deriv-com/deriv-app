@@ -39,11 +39,6 @@
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            gap: 2.4rem;
-
-            @include mobile {
-                gap: 1.6rem;
-            }
         }
 
         &-btn {

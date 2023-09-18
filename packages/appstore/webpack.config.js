@@ -153,7 +153,7 @@ module.exports = function (env) {
                 },
                 {
                     test: /\.svg$/,
-                    issuer: /\/packages\/wallets\/.*(\/)?.*.tsx/,
+                    issuer: /\/packages\/wallets\/.*(\/)?.*.(ts|tsx)/,
                     exclude: /node_modules/,
                     include: /public\//,
                     use: svg_loaders,

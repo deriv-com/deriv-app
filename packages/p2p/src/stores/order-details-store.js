@@ -13,7 +13,6 @@ export default class OrderDetailsStore {
             setErrorMessage: action.bound,
             setIntervalState: action.bound,
             setPopupOptions: action.bound,
-            setRemainingTime: action.bound,
             setShouldShowPopup: action.bound,
         });
 
@@ -45,10 +44,6 @@ export default class OrderDetailsStore {
 
     setPopupOptions(popup_options) {
         this.popup_options = popup_options;
-    }
-
-    setRemainingTime(remaining_time) {
-        this.remaining_time = remaining_time;
     }
 
     setShouldShowPopup(should_show_popup) {

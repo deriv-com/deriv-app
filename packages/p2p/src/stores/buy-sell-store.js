@@ -34,7 +34,7 @@ export default class BuySellStore extends BaseStore {
     selected_payment_method_text = [];
     selected_value = 'rate';
     should_show_verification = false;
-    should_use_client_limits = false;
+    should_use_client_limits = true;
     show_advertiser_page = false;
     show_filter_payment_methods = false;
     sort_by = 'rate';

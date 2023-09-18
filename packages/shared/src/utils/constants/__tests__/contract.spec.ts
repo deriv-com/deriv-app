@@ -1,4 +1,3 @@
-import { localize } from '@deriv/translations';
 import {
     getCardLabels,
     getMarketNamesMap,
@@ -7,21 +6,24 @@ import {
     getContractConfig,
     getContractTypeDisplay,
     getContractTypePosition,
+    TRADE_FEATURE,
 } from '../contract';
 
 type TGetSupportedContractsKey = keyof ReturnType<typeof getSupportedContracts>;
-const card_label = localize('Apply');
-const markets_name = localize('AUD/CAD');
+const card_label = 'Apply';
+const markets_name = 'AUD/CAD';
 const unsupported_contract = {
-    name: localize('Spread Up'),
+    name: 'Spread Up',
     position: 'top',
 };
 const supported_high_low = {
-    name: localize('Higher'),
+    feature_flag: TRADE_FEATURE.HIGH_LOW,
+    name: 'Higher',
     position: 'top',
 };
-const not_supported_high_low = {
-    name: localize('Rise'),
+const supported_not_high_low = {
+    feature_flag: TRADE_FEATURE.RISE_FALL,
+    name: 'Rise',
     position: 'top',
 };
 
@@ -49,7 +51,7 @@ describe('getSupportedContracts', () => {
     });
 
     it('should return an object with specific supported contracts if is_high_low === false', () => {
-        expect(getSupportedContracts(false).CALL).toEqual(not_supported_high_low);
+        expect(getSupportedContracts(false).CALL).toEqual(supported_not_high_low);
     });
 });
 
@@ -59,19 +61,19 @@ describe('getContractConfig', () => {
     });
 
     it('should return object with specific contracts if is_high_low === false', () => {
-        expect(getContractConfig(false).CALL).toEqual(not_supported_high_low);
+        expect(getContractConfig(false).CALL).toEqual(supported_not_high_low);
     });
 });
 
 describe('getContractTypeDisplay', () => {
     it('should return a specific button name if show_button_name === true and contract_config has a button_name field', () => {
-        expect(getContractTypeDisplay('ACCU', false, true)).toEqual(localize('Buy'));
+        expect(getContractTypeDisplay('ACCU', false, true)).toEqual('Buy');
     });
     it('should return a specific contract name if show_button_name === false but contract_config has a button_name field', () => {
-        expect(getContractTypeDisplay('ACCU')).toEqual(localize('Accumulators'));
+        expect(getContractTypeDisplay('ACCU')).toEqual('Accumulators');
     });
     it('should return a specific contract name if show_button_name === true but contract_config has no button_name field', () => {
-        expect(getContractTypeDisplay('MULTDOWN', true, true)).toEqual(localize('Down'));
+        expect(getContractTypeDisplay('MULTDOWN', true, true)).toEqual('Down');
     });
     it('should return an empty string if show_button_name === false and contract_config has no name field', () => {
         expect(getContractTypeDisplay('TEST', true, false)).toBe('');

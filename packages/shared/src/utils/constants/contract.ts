@@ -17,6 +17,7 @@ export const TRADE_FEATURE = {
     ONLY_UP_DOWN: 'trade_run_high_low',
     OVER_UNDER: 'trade_over_under',
     RISE_FALL: 'trade_rise_fall',
+    SHARKFIN: 'trade_sharkfin',
     STAYS_IN_OUT: 'trade_stay',
     TOUCH_NO_TOUCH: 'trade_touch',
     TURBOS: 'trade_turbos',

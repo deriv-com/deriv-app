@@ -13,7 +13,7 @@ describe('<RealWalletsUpgrade />', () => {
         );
         return Component;
     };
-    test('should render the Modal', async () => {
+    it('should render the Modal', () => {
         const mock = mockStore({
             traders_hub: {
                 is_real_wallets_upgrade_on: true,
@@ -26,7 +26,7 @@ describe('<RealWalletsUpgrade />', () => {
         expect(container).toBeInTheDocument();
     });
 
-    test('should not render the Modal if is_real_wallets_upgrade_on is false', () => {
+    it('should not render the Modal if is_real_wallets_upgrade_on is false', () => {
         const mock = mockStore({
             traders_hub: {
                 is_real_wallets_upgrade_on: false,

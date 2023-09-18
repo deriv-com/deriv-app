@@ -3,6 +3,11 @@ description: Install npm packages from cache
 runs:
   using: composite
   steps:
+  - name: Set ownership
+    run: |
+      # this is to fix GIT not linking owner of the checkout dir
+      git config --global --add safe.directory /__w/deriv-app/deriv-app
+    shell: bash
   - name: Cache node modules
     id: cache-nodemodules
     uses: actions/cache/restore@v3

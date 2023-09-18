@@ -23,12 +23,18 @@ const CTraderList: React.FC = () => {
                     <TradingAccountCard
                         {...account}
                         key={`ctrader--${account.title}`}
-                        renderActions={() => (
+                        trailing={() => (
                             <SecondaryActionButton>
                                 <p className='wallets-ctrader__text'>Get</p>
                             </SecondaryActionButton>
                         )}
-                    />
+                        leading={() => <div className='wallets-ctrader__content__icon'>{account.icon}</div>}
+                    >
+                        <div className='wallets-ctrader__content__details'>
+                            <p className='wallets-ctrader__content__details-title'>{account.title}</p>
+                            <p className='wallets-ctrader__content__details-description'>{account.description}</p>
+                        </div>
+                    </TradingAccountCard>
                 ))}
             </div>
         </div>

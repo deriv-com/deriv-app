@@ -48,9 +48,15 @@ export default class GeneralStore extends BaseStore {
         );
     }
 
-    active_container: keyof typeof Constants.containers = Constants.containers.deposit;
+    active_container:
+        | 'account_transfer'
+        | 'deposit'
+        | 'payment_agent'
+        | 'payment_agent_transfer'
+        | 'withdraw'
+        | 'onramp' = 'deposit';
     cashier_route_tab_index = 0;
-    deposit_target = '';
+    deposit_target: '/cashier/deposit' | '/cashier/on-ramp' | '/cashier/p2p' | '/cashier/payment-agent' | '' = '';
     is_cashier_onboarding = true;
     is_deposit = false;
     is_loading = false;
@@ -74,7 +80,7 @@ export default class GeneralStore extends BaseStore {
         const { client, modules } = this.root_store;
         const { account_transfer } = modules.cashier;
 
-        if (this.active_container === account_transfer.container) {
+        if (this.active_container === 'account_transfer') {
             this.percentage = Number(
                 ((Number(amount) / Number(account_transfer.selected_from.balance)) * 100).toFixed(0)
             );
@@ -106,7 +112,7 @@ export default class GeneralStore extends BaseStore {
         this.is_cashier_onboarding = is_cashier_onboarding;
     }
 
-    setDepositTarget(target: string): void {
+    setDepositTarget(target: typeof this.deposit_target): void {
         this.deposit_target = target;
     }
 
@@ -181,7 +187,6 @@ export default class GeneralStore extends BaseStore {
             ) {
                 routeTo(routes.cashier_deposit);
                 transaction_history.setIsCryptoTransactionsVisible(true);
-                transaction_history.onMount();
             }
         }
     }
@@ -194,8 +199,12 @@ export default class GeneralStore extends BaseStore {
         this.is_loading = is_loading;
     }
 
-    setActiveTab(container: string): void {
-        this.active_container = container as keyof typeof Constants.containers;
+    setActiveTab(container: typeof this.active_container): void {
+        if (this.active_container === 'payment_agent' && container !== 'payment_agent') {
+            this.root_store.modules.cashier.payment_agent.resetPaymentAgent();
+        }
+
+        this.active_container = container;
     }
 
     accountSwitcherListener() {

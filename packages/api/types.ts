@@ -580,7 +580,7 @@ type TPrivateSocketEndpoints = {
             /**
              * Trading platform name
              */
-            platform: 'dxtrade' | 'mt5' | 'derivez';
+            platform: 'dxtrade' | 'mt5' | 'derivez' | 'ctrader';
             /**
              * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
              */
@@ -720,7 +720,7 @@ type TPrivateSocketEndpoints = {
                 /**
                  * Name of trading platform.
                  */
-                platform?: 'dxtrade' | 'mt5';
+                platform?: 'dxtrade' | 'mt5' | 'ctrader';
                 /**
                  * Trade server name of the MT5 account.
                  */

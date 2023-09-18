@@ -74,6 +74,5 @@ export const priority_toast_messages = [
     'wallets_migrated',
     'wallets_failed',
     'notify_financial_assessment',
-    'mt5_notification',
     ...maintenance_notifications,
 ];

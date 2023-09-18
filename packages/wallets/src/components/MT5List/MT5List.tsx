@@ -37,7 +37,7 @@ const MT5List: React.FC = () => {
                 {mt5_mapper.map(account => (
                     <TradingAccountCard
                         {...account}
-                        key={account.title}
+                        key={`mt5-platform-list--${account.title}`}
                         renderActions={() => (
                             <SecondaryActionButton>
                                 <p className='wallets-other-cfd__text'>Get</p>

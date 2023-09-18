@@ -22,7 +22,7 @@ const CTraderList: React.FC = () => {
                 {ctrader_mapper.map(account => (
                     <TradingAccountCard
                         {...account}
-                        key={account.title}
+                        key={`ctrader--${account.title}`}
                         renderActions={() => (
                             <SecondaryActionButton>
                                 <p className='wallets-ctrader__text'>Get</p>

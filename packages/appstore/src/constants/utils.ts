@@ -1,6 +1,7 @@
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TTransferAccount, TWalletButton } from 'Types';
+import { currency_to_icon_mapper } from './currency-to-icon-mapper';
 
 /**
  * This function checks whether the current item should have a border at the bottom 'aka "divider" '.
@@ -24,40 +25,8 @@ export const getHasDivider = (current_item_index: number, list_size: number, ava
 };
 
 // TODO: Moved to shared package! Delete it later, right now it uses for cashier wallet modals
-// TODO: Refactor using data transformation layer pattern when we will have API for wallets (e.g. wallet.icon)
-export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean, is_modal = false) => {
-    switch (currency) {
-        case 'demo':
-            if (is_modal) return 'IcWalletDerivDemoLight';
-            return is_dark_mode_on ? 'IcWalletDerivDemoDark' : 'IcWalletDerivDemoLight';
-        case 'USD':
-            return 'IcWalletCurrencyUsd';
-        case 'EUR':
-            return 'IcWalletCurrencyEur';
-        case 'AUD':
-            return 'IcWalletCurrencyAud';
-        case 'GBP':
-            return 'IcWalletCurrencyGbp';
-        case 'BTC':
-            return is_dark_mode_on ? 'IcWalletBitcoinDark' : 'IcWalletBitcoinLight';
-        case 'ETH':
-            return is_dark_mode_on ? 'IcWalletEthereumDark' : 'IcWalletEthereumLight';
-        case 'USDT':
-        case 'eUSDT':
-        case 'tUSDT':
-        case 'UST':
-            if (is_modal) {
-                return is_dark_mode_on ? 'IcWalletModalTetherDark' : 'IcWalletModalTetherLight';
-            }
-            return is_dark_mode_on ? 'IcWalletTetherDark' : 'IcWalletTetherLight';
-        case 'LTC':
-            return is_dark_mode_on ? 'IcWalletLiteCoinDark' : 'IcWalletLiteCoinLight';
-        case 'USDC':
-            return is_dark_mode_on ? 'IcWalletUsdCoinDark' : 'IcWalletUsdCoinLight';
-        default:
-            return 'Unknown';
-    }
-};
+export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on = false) =>
+    currency_to_icon_mapper[currency][`${is_dark_mode_on ? 'dark' : 'light'}`];
 
 export const getWalletHeaderButtons = (is_demo: boolean, handleAction?: () => void): TWalletButton[] => {
     return is_demo
@@ -133,7 +102,6 @@ export const getAccountName = ({
             return localize('Deriv EZ');
         case 'dxtrade':
             return localize('Deriv X');
-        // @ts-expect-error Need to update @deriv/api-types to fix the TS error
         case 'ctrader':
             return localize('Deriv cTrader');
         case 'wallet':

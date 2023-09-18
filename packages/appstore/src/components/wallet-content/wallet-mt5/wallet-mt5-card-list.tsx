@@ -35,7 +35,7 @@ const WalletMT5CardList = observer(() => {
                                 />
                             );
                         }
-                        return <AvailableMT5Card key={`${account.market_type}${index}`} account={account} />;
+                        return <AvailableMT5Card key={`${account.market_type}${account.loginid}`} account={account} />;
                     });
                 })}
         </React.Fragment>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, useCurrencyConfig } from '@deriv/api';
 import { screen, render } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import AddWalletCard from '../wallet-add-card';
@@ -11,8 +11,11 @@ const wallet_info = {
     is_added: false,
 };
 
+const mockUseCurrencyConfig = useCurrencyConfig as jest.MockedFunction<typeof useCurrencyConfig>;
+
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
+    useCurrencyConfig: jest.fn(),
     useFetch: jest.fn((name: string) => {
         if (name === 'authorize') {
             return {
@@ -44,20 +47,6 @@ jest.mock('@deriv/api', () => ({
             };
         }
 
-        if (name === 'website_status') {
-            return {
-                data: {
-                    website_status: {
-                        currencies_config: {
-                            USD: { type: 'fiat', name: 'US Dollar' },
-                            BTC: { type: 'crypto', name: 'Bitcoin' },
-                            UST: { type: 'crypto', name: 'USDT' },
-                        },
-                    },
-                },
-            };
-        }
-
         return { data: undefined };
     }),
 }));
@@ -65,6 +54,11 @@ jest.mock('@deriv/api', () => ({
 describe('AddWalletCard', () => {
     it('should render currency card', () => {
         const mock = mockStore({});
+
+        mockUseCurrencyConfig.mockReturnValue({
+            // @ts-expect-error need to come up with a way to mock the return type of useCurrencyConfig
+            getConfig: () => ({ display_code: 'BTC', type: 'crypto', name: 'Bitcoin' }),
+        });
 
         render(
             <StoreProvider store={mock}>
@@ -104,6 +98,11 @@ describe('AddWalletCard', () => {
 
     it('should show USDT instead of UST for UST currency', () => {
         const mock = mockStore({});
+
+        mockUseCurrencyConfig.mockReturnValue({
+            // @ts-expect-error need to come up with a way to mock the return type of useCurrencyConfig
+            getConfig: () => ({ display_code: 'USDT', type: 'crypto', name: 'USDT' }),
+        });
 
         render(
             <StoreProvider store={mock}>

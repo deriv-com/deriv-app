@@ -4,9 +4,7 @@ import TradeButton from 'Components/trade-button/trade-button';
 import React from 'react';
 import MultiActionButtonGroup from 'Components/multi-action-button-group';
 
-type TonAction = {
-    (e?: React.MouseEvent<HTMLButtonElement>): void | VoidFunction;
-};
+type TonAction = (e?: React.MouseEvent<HTMLButtonElement>) => void | VoidFunction;
 
 export type Actions = {
     action_type: 'get' | 'none' | 'trade' | 'dxtrade' | 'multi-action'; // multi-action can be tranfer_trade or top_up_trade

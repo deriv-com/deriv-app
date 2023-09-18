@@ -586,9 +586,6 @@ export default class NotificationStore extends BaseStore {
                     this.addNotificationMessage(this.client_notifications.svg_poi_expired);
                 }
             }
-            if (client && this.root_store.client.mt5_login_list.length > 0) {
-                this.addNotificationMessage(this.client_notifications.mt5_notification);
-            }
         }
 
         if (!is_eu && isMultiplierContract(selected_contract_type) && current_language === 'EN' && is_logged_in) {

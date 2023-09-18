@@ -8,7 +8,6 @@ type TPasswordModalHeaderProps = {
     should_set_trading_password: boolean;
     is_password_reset_error: boolean;
     platform: string;
-    has_mt5_account?: boolean;
 };
 
 const PasswordModalHeader = observer(

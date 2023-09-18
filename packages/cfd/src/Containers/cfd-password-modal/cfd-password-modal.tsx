@@ -297,7 +297,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         >
             <PasswordModalHeader
                 should_set_trading_password={should_set_trading_password}
-                has_mt5_account={has_mt5_account}
                 is_password_reset_error={is_password_reset}
                 platform={platform}
             />
@@ -324,6 +323,14 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     };
 
     const cfd_details = {
+        currency_title: (
+            <Localize
+                i18n_default_text='{{currency}} Wallet'
+                values={{
+                    currency: active_wallet?.currency,
+                }}
+            />
+        ),
         account_title: getWalletCFDInfo(account_type.type).title,
         app_icon: getWalletCFDInfo(account_type.type).icon,
         balance: getBalance(account_type.type),

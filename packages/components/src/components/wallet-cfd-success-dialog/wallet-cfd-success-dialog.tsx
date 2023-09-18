@@ -4,13 +4,13 @@ import Modal from '../modal';
 import Text from '../text';
 import WalletCFDCard from './wallet-cfd-card';
 import { isMobile } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import './wallet-cfd-success-dialog.scss';
 
 export type TWalletCFDCard = {
     account_title: string;
     app_icon: string;
     balance: string;
+    currency_title: React.ReactNode;
     currency: string;
     gradient_header_class: string;
     icon: string;
@@ -64,7 +64,7 @@ const WalletCFDSuccessDialog = ({
             {/* TODO: add another button for real accounts */}
             <Modal.Footer>
                 <Button className='wallet-cfd-dialog__btn' primary onClick={onSubmit} large>
-                    {submit_button_text || localize('OK')}
+                    {submit_button_text}
                 </Button>
             </Modal.Footer>
         </Modal>

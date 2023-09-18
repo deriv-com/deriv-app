@@ -108,7 +108,7 @@ const CreatePassword = ({
                             label={localize('Create {{platform}} password', {
                                 platform: getCFDPlatformLabel(platform),
                             })}
-                            is_center={true}
+                            is_center
                         />
                     </div>
                 </form>

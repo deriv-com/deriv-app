@@ -4,11 +4,20 @@ import Text from '../text';
 import { isMobile } from '@deriv/shared';
 import { AppLinkedWithWalletIcon } from '../app-linked-with-wallet-icon';
 import { TWalletCFDCard } from './wallet-cfd-success-dialog';
-import { localize } from '@deriv/translations';
 import './wallet-cfd-card.scss';
 
 const WalletCFDCard = ({ wallet }: { wallet: TWalletCFDCard }) => {
-    const { account_title, app_icon, balance, currency, gradient_header_class, icon, is_demo, wallet_label } = wallet;
+    const {
+        account_title,
+        app_icon,
+        balance,
+        currency,
+        currency_title,
+        gradient_header_class,
+        icon,
+        is_demo,
+        wallet_label,
+    } = wallet;
 
     return (
         <div className='wallet-cfd-card'>
@@ -45,7 +54,7 @@ const WalletCFDCard = ({ wallet }: { wallet: TWalletCFDCard }) => {
                     </Text>
                     {/* wallet currency */}
                     <Text color='less-prominent' weight='light' size={isMobile() ? 'xxxxs' : 'xxxs'}>
-                        {currency} {localize('Wallet')}
+                        {currency_title}
                     </Text>
                     {/* total balance */}
                     <Text color='prominent' weight='bold' size={isMobile() ? 'xxxs' : 'xxs'}>

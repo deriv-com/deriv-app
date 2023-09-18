@@ -34,35 +34,6 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     submitPassword: TOnSubmitPassword;
 };
 
-const getAccountTitle = (
-    platform: string,
-    account_type: {
-        category?: string;
-        type?: string;
-    },
-    account_title: string
-) => {
-    if (platform === CFD_PLATFORMS.DXTRADE) {
-        return getDxCompanies()[account_type.category as keyof TDxCompanies][
-            account_type.type as keyof TDxCompanies['demo' | 'real']
-        ].short_title;
-    }
-
-    return account_title;
-};
-
-const handlePasswordInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    handleChange: (el: React.ChangeEvent<HTMLInputElement>) => void,
-    validateForm: (values?: TCFDPasswordFormValues) => Promise<FormikErrors<TCFDPasswordFormValues>>,
-    setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void
-) => {
-    handleChange(e);
-    validateForm().then(() => {
-        setFieldTouched('password', true);
-    });
-};
-
 const CFDPasswordForm = observer(
     ({
         account_title,
@@ -117,6 +88,28 @@ const CFDPasswordForm = observer(
             }
 
             return onForgotPassword();
+        };
+
+        const getAccountTitle = () => {
+            if (platform === CFD_PLATFORMS.DXTRADE) {
+                return getDxCompanies()[account_type.category as keyof TDxCompanies][
+                    account_type.type as keyof TDxCompanies['demo' | 'real']
+                ].short_title;
+            }
+
+            return account_title;
+        };
+
+        const handlePasswordInputChange = (
+            e: React.ChangeEvent<HTMLInputElement>,
+            handleChange: (el: React.ChangeEvent<HTMLInputElement>) => void,
+            validateForm: (values?: TCFDPasswordFormValues) => Promise<FormikErrors<TCFDPasswordFormValues>>,
+            setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void
+        ) => {
+            handleChange(e);
+            validateForm().then(() => {
+                setFieldTouched('password', true);
+            });
         };
 
         if (error_type === PASSWORD_ERRORS.RESET) {
@@ -202,9 +195,7 @@ const CFDPasswordForm = observer(
                                                     platform === CFD_PLATFORMS.MT5
                                                         ? 'MT5'
                                                         : getCFDPlatformLabel(platform),
-                                                account: !show_eu_related_content
-                                                    ? getAccountTitle(platform, account_type, account_title)
-                                                    : '',
+                                                account: !show_eu_related_content ? getAccountTitle() : '',
                                                 jurisdiction_shortcode: showJurisdiction(),
                                             }}
                                         />
@@ -218,7 +209,7 @@ const CFDPasswordForm = observer(
                                                     platform === CFD_PLATFORMS.MT5
                                                         ? 'MT5'
                                                         : getCFDPlatformLabel(platform),
-                                                account: getAccountTitle(platform, account_type, account_title),
+                                                account: getAccountTitle(),
                                             }}
                                         />
                                     )}

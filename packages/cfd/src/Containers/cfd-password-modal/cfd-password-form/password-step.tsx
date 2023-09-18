@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormikErrors, FormikHelpers } from 'formik';
+import { FormikErrors } from 'formik';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import { MultiStep } from '@deriv/components';
 import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from '../../props.types';
@@ -63,9 +63,7 @@ const PasswordStep = ({
                 <ChangePasswordConfirmation
                     className='cfd-password-modal__change-password-confirmation'
                     platform={platform}
-                    onConfirm={(_values: TCFDPasswordFormValues, actions: FormikHelpers<TCFDPasswordFormValues>) =>
-                        submitPassword({ password }, actions)
-                    }
+                    onConfirm={(_values, actions) => submitPassword({ password }, actions)}
                     onCancel={() => multi_step_ref.current?.goPrevStep()}
                 />
             ),

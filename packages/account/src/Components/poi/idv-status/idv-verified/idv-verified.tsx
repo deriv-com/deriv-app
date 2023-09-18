@@ -3,8 +3,9 @@ import PoaButton from '../../../poa/poa-button/poa-button';
 import React from 'react';
 import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
+import classNames from 'classnames';
 
 type TIdvVerified = {
     needs_poa: boolean;
@@ -13,9 +14,11 @@ type TIdvVerified = {
 };
 
 const IdvVerified = ({ needs_poa, is_from_external, redirect_button }: Partial<TIdvVerified>) => {
-    const header_Text = needs_poa
-        ? localize('Your ID is verified. You will also need to submit proof of your address.')
-        : localize('ID verification passed');
+    const header_Text = needs_poa ? (
+        <Localize i18n_default_text='Your ID is verified. You will also need to submit proof of your address.' />
+    ) : (
+        <Localize i18n_default_text='ID verification passed' />
+    );
 
     return (
         <div className='proof-of-identity__container' data-testid='poi_idv_verified_container'>
@@ -27,13 +30,15 @@ const IdvVerified = ({ needs_poa, is_from_external, redirect_button }: Partial<T
                 <React.Fragment>
                     {!isMobile() && (
                         <Text className='text' size='xs' align='center'>
-                            {localize("Next, we'll need your proof of address.")}
+                            <Localize i18n_default_text="Next, we'll need your proof of address." />
                         </Text>
                     )}
-                    {!is_from_external && <PoaButton custom_text={localize('Submit proof of address')} />}
+                    {!is_from_external && (
+                        <PoaButton custom_text={<Localize i18n_default_text='Submit proof of address' />} />
+                    )}
                 </React.Fragment>
             ) : (
-                redirect_button || <ContinueTradingButton className='continue-trade--button' />
+                redirect_button || <ContinueTradingButton className='continue-trade' />
             )}
         </div>
     );

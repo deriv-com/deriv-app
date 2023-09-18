@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { idv_error_statuses, TIDVErrorStatus } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import IdvDocumentPending from 'Assets/ic-idv-document-pending.svg';
 import PoaButton from 'Components/poa/poa-button';
 
@@ -50,7 +50,9 @@ const IdvSubmitComplete = observer(
             );
         };
 
-        const poa_button = !is_from_external && <PoaButton custom_text={localize('Submit proof of address')} />;
+        const poa_button = !is_from_external && (
+            <PoaButton custom_text={<Localize i18n_default_text='Submit proof of address' />} />
+        );
 
         return (
             <div className='proof-of-identity__container'>

@@ -2108,6 +2108,10 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 
+    .continue-trade{
+        margin-top: unset !important;
+    }
+
     &__redirection {
         .dc-btn {
             margin-top: 3.2rem;

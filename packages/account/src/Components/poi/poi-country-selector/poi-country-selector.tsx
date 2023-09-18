@@ -98,7 +98,7 @@ const CountrySelector = ({
                                 </Text>
                                 <HintBox
                                     className='proof-of-identity__failed-message'
-                                    icon='IcCloseCircleRed'
+                                    icon='IcAlertDanger'
                                     message={
                                         <Text as='p' size={isMobile() ? 'xxs' : 'xs'}>
                                             {failed_message}

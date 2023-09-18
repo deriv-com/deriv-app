@@ -344,7 +344,7 @@ const IdvFailed = ({
                         {(status?.error_msg || idv_failure?.failure_message) && (
                             <HintBox
                                 className='proof-of-identity__failed-message'
-                                icon='IcCloseCircleRed'
+                                icon='IcAlertDanger'
                                 message={
                                     <Text as='p' size={isMobile() ? 'xxs' : 'xs'} data-testid={mismatch_status}>
                                         {status?.error_msg ?? idv_failure?.failure_message}

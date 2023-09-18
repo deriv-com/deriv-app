@@ -30,6 +30,7 @@ import {
     isDocumentNumberValid,
 } from 'Helpers/utils';
 import { TIDVFormValues, TPersonalDetailsForm } from 'Types';
+import { DUPLICATE_ACCOUNT_ERROR_MESSAGE, GENERIC_ERROR_MESSAGE } from 'Configs/poi-error-config';
 
 type TIDVDocumentSubmitProps = {
     handleBack: () => void;
@@ -109,29 +110,16 @@ const IdvDocumentSubmit = ({
 
         const data = await WS.setSettings(request);
 
-        const generic_error_message = (
-            <Localize i18n_default_text='Sorry, an internal error occurred. Click Verify to try again.' />
-        );
-
-        const duplicated_account_error_message = (
-            <Localize
-                i18n_default_text='An account with these details already exists. Please make sure the details you entered are corrrect as only one real account is allowed per client. If this is a mistake, contact us via <0>live chat</0>.'
-                components={[
-                    <span key={0} className='link link--orange' onClick={() => window.LC_API.open_chat_window()} />,
-                ]}
-            />
-        );
-
         if (data?.error) {
             const response_error =
-                data.error?.code === 'DuplicateAccount' ? duplicated_account_error_message : generic_error_message;
+                data.error?.code === 'DuplicateAccount' ? DUPLICATE_ACCOUNT_ERROR_MESSAGE : GENERIC_ERROR_MESSAGE;
             setStatus({ error_message: response_error });
             setSubmitting(false);
             return;
         }
-        const get_settings = WS.authorized.storage.getSettings();
+        const get_settings = await WS.authorized.storage.getSettings();
         if (get_settings?.error) {
-            setStatus({ error_message: get_settings?.error?.message ?? generic_error_message });
+            setStatus({ error_message: get_settings?.error?.message ?? GENERIC_ERROR_MESSAGE });
             setSubmitting(false);
             return;
         }
@@ -145,7 +133,7 @@ const IdvDocumentSubmit = ({
             (response: IdentityVerificationAddDocumentResponse & { error: { message: string } }) => {
                 setSubmitting(false);
                 if (response.error) {
-                    setStatus({ error_message: response?.error?.message ?? generic_error_message });
+                    setStatus({ error_message: response?.error?.message ?? GENERIC_ERROR_MESSAGE });
                     return;
                 }
                 handleViewComplete();

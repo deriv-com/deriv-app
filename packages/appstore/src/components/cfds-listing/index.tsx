@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, StaticUrl } from '@deriv/components';
-import { useCFDCanGetMoreMT5Accounts, useWalletMigration, useCFDCanGetMoreMT5Accounts } from '@deriv/hooks';
+import { useCFDCanGetMoreMT5Accounts, useWalletMigration } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { isMobile, formatMoney, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';

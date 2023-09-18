@@ -3,7 +3,7 @@ import useActiveWalletAccount from './useActiveWalletAccount';
 import useFetch from '../useFetch';
 
 /** A custom hook that gets the list created MT5 accounts of the user. */
-const useMT5LoginList = () => {
+const useMT5AccountsList = () => {
     const { data: wallet } = useActiveWalletAccount();
 
     const { data: mt5_accounts, ...mt5_accounts_rest } = useFetch('mt5_login_list');
@@ -24,6 +24,7 @@ const useMT5LoginList = () => {
             ...account,
             ...getAccountInfo(account.login),
             loginid: account.login,
+            platform: 'mt5',
         }));
     }, [mt5_accounts?.mt5_login_list, wallet?.linked_to]);
 
@@ -34,4 +35,4 @@ const useMT5LoginList = () => {
     };
 };
 
-export default useMT5LoginList;
+export default useMT5AccountsList;

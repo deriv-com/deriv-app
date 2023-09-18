@@ -47,26 +47,70 @@ const message_code_to_message_mapper: TMessageCodeToMessageMapper = {
 };
 
 const WalletTransferMessages = ({ from_account, to_account }: TWalletTransferMessagesProps) => {
-    const { data: message_list } = useTransferMessageList(from_account, to_account);
+    const [is_allowed_equal_to_available, setIsAllowedEqualToAvailable] = React.useState<boolean>(true);
+    const { data: message_list } = useTransferMessageList(from_account, to_account, is_allowed_equal_to_available);
 
     return (
-        <AnimatedList>
-            {message_list &&
-                message_list.map(msg => {
-                    return (
-                        <AlertMessage
-                            key={msg.code}
-                            variant={'base'}
-                            message={message_code_to_message_mapper[msg.code]({
-                                ...msg,
-                                from_name: getAccountName({ ...from_account }),
-                                to_name: getAccountName({ ...to_account }),
-                            } as TMessageMapperParams)}
-                            type={msg.type}
-                        />
-                    );
-                })}
-        </AnimatedList>
+        <>
+            <AnimatedList>
+                {message_list &&
+                    message_list.map(msg => {
+                        return (
+                            <AlertMessage
+                                key={msg.code}
+                                variant={'base'}
+                                message={message_code_to_message_mapper[msg.code]({
+                                    ...msg,
+                                    from_name: getAccountName({ ...from_account }),
+                                    to_name: getAccountName({ ...to_account }),
+                                } as TMessageMapperParams)}
+                                type={msg.type}
+                            />
+                        );
+                    })}
+            </AnimatedList>
+
+            {/* TODO: remove this once development for all messages is completed. */}
+            <div
+                style={{
+                    position: 'absolute',
+                    bottom: '210px',
+                    width: '180px',
+                    height: '150px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-evenly',
+
+                    border: '1px solid black',
+                    borderRadius: '8px',
+                    padding: '10px',
+                }}
+            >
+                <div
+                    id='mock-limit-values'
+                    style={{
+                        fontSize: 'medium',
+                    }}
+                />
+                <button
+                    onClick={() => setIsAllowedEqualToAvailable(true)}
+                    style={{
+                        background: is_allowed_equal_to_available ? 'var(--brand-red-coral)' : 'none',
+                    }}
+                >
+                    Allowed = Available
+                </button>
+                <button
+                    onClick={() => setIsAllowedEqualToAvailable(false)}
+                    style={{
+                        background: !is_allowed_equal_to_available ? 'var(--brand-red-coral)' : 'none',
+                    }}
+                >
+                    Allowed {'>'} Available
+                </button>
+                <div />
+            </div>
+        </>
     );
 };
 

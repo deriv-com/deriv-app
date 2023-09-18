@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import useExchangeRate from './useExchangeRate';
 import useWalletTransfer from './useWalletTransfer';
 
@@ -48,10 +49,11 @@ const useTransferMessageListBetweenWalletAndTradingApp = (
     if (from_account && to_account) {
         let limits;
         if (from_account.account_type === 'wallet' && to_account.account_type !== 'wallet') {
-            if (to_account.account_type && to_account.type)
+            if (to_account.account_type && to_account.type) {
                 limits = account_limits.daily_transfers[tradingAccountMapper(to_account.account_type, to_account.type)];
-            if (from_account.currency)
-                if (from_account.is_demo)
+            }
+            if (from_account.currency) {
+                if (from_account.is_demo) {
                     message_list.push({
                         code: 'DemoWalletAndTradingAppDailyLimit',
                         is_first_transfer: parseFloat(limits?.allowed) === parseFloat(limits?.available),
@@ -59,7 +61,7 @@ const useTransferMessageListBetweenWalletAndTradingApp = (
                         currency: from_account.currency,
                         type: 'success',
                     });
-                else
+                } else {
                     message_list.push({
                         code: 'WalletAndTradingAppDailyLimit',
                         is_first_transfer: parseFloat(limits?.allowed) === parseFloat(limits?.available),
@@ -67,13 +69,16 @@ const useTransferMessageListBetweenWalletAndTradingApp = (
                         currency: from_account.currency,
                         type: 'success',
                     });
+                }
+            }
         }
         if (from_account.account_type !== 'wallet' && to_account.account_type === 'wallet') {
-            if (from_account.account_type && from_account.type)
+            if (from_account.account_type && from_account.type) {
                 limits =
                     account_limits.daily_transfers[tradingAccountMapper(from_account.account_type, from_account.type)];
-            if (from_account.currency)
-                if (from_account.is_demo)
+            }
+            if (from_account.currency) {
+                if (from_account.is_demo) {
                     message_list.push({
                         code: 'DemoWalletAndTradingAppDailyLimit',
                         is_first_transfer: parseFloat(limits?.allowed) === parseFloat(limits?.available),
@@ -81,7 +86,7 @@ const useTransferMessageListBetweenWalletAndTradingApp = (
                         currency: from_account.currency,
                         type: 'success',
                     });
-                else
+                } else {
                     message_list.push({
                         code: 'WalletAndTradingAppDailyLimit',
                         is_first_transfer: parseFloat(limits?.allowed) === parseFloat(limits?.available),
@@ -89,7 +94,12 @@ const useTransferMessageListBetweenWalletAndTradingApp = (
                         currency: from_account.currency,
                         type: 'success',
                     });
+                }
+            }
         }
+        document.getElementById(
+            'mock-limit-values'
+        ).innerHTML = `Allowed = ${limits?.allowed}<br>Available = ${limits?.available}`;
     }
     return message_list;
 };

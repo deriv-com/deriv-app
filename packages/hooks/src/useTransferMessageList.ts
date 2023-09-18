@@ -92,12 +92,12 @@ const mock_unequal_get_limits_response = {
         },
         mt5: {
             allowed: '10000.00',
-            available: '10000.00',
+            available: '9000.00',
             minimum: '0.01',
         },
         derivez: {
             allowed: '200.00',
-            available: '200.00',
+            available: '147.00',
             minimum: '0.01',
         },
         dxtrade: {
@@ -107,7 +107,7 @@ const mock_unequal_get_limits_response = {
         },
         virtual: {
             allowed: '10000.00',
-            available: '10000.00',
+            available: '2000.00',
             minimum: '0.01',
         },
     },

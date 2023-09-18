@@ -97,9 +97,6 @@ const useTransferMessageListBetweenWalletAndTradingApp = (
                 }
             }
         }
-        document.getElementById(
-            'mock-limit-values'
-        ).innerHTML = `Allowed = ${limits?.allowed}<br>Available = ${limits?.available}`;
     }
     return message_list;
 };

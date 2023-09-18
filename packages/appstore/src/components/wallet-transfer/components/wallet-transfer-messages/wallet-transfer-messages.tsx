@@ -75,23 +75,11 @@ const WalletTransferMessages = ({ from_account, to_account }: TWalletTransferMes
                 style={{
                     position: 'absolute',
                     bottom: '210px',
-                    width: '180px',
-                    height: '150px',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-evenly',
-
-                    border: '1px solid black',
-                    borderRadius: '8px',
-                    padding: '10px',
                 }}
             >
-                <div
-                    id='mock-limit-values'
-                    style={{
-                        fontSize: 'medium',
-                    }}
-                />
                 <button
                     onClick={() => setIsAllowedEqualToAvailable(true)}
                     style={{

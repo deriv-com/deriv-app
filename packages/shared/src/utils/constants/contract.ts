@@ -2,6 +2,22 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { shouldShowCancellation, shouldShowExpiration, TURBOS } from '../contract';
 
+export const TRADE_FEATURE = {
+    ACCUMULATORS: 'trade_accumulators',
+    ENDS_IN_OUT: 'trade_ends_outside_ends_between',
+    EVEN_ODD: 'trade_even_odd',
+    HIGH_LOW: 'trade_high_low',
+    MATCHES_DIFFERS: 'trade_matches_differs',
+    MULTIPLIERS: 'trade_multipliers',
+    ONLY_UP_DOWN: 'trade_only_ups_only_downs',
+    OVER_UNDER: 'trade_over_under',
+    RISE_FALL: 'trade_rise_fall',
+    STAYS_IN_OUT: 'trade_stays_between_goes_outside',
+    TOUCH_NO_TOUCH: 'trade_touch_no_touch',
+    TURBOS: 'trade_turbos',
+    VANILLAS: 'trade_vanillas',
+} as const;
+
 export const getLocalizedBasis = () =>
     ({
         accumulator: localize('Accumulators'),
@@ -29,6 +45,7 @@ type TGetContractTypesConfig = (symbol: string) => Record<string, TContractTypes
 
 type TContractConfig = {
     button_name?: React.ReactNode;
+    feature_flag: string;
     name: React.ReactNode;
     position: string;
 };
@@ -392,104 +409,129 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
     ({
         ACCU: {
             button_name: localize('Buy'),
+            feature_flag: TRADE_FEATURE.ACCUMULATORS,
             name: localize('Accumulators'),
             position: 'top',
         },
         CALL: {
+            feature_flag: is_high_low ? TRADE_FEATURE.HIGH_LOW : TRADE_FEATURE.RISE_FALL,
             name: is_high_low ? localize('Higher') : localize('Rise'),
             position: 'top',
         },
         PUT: {
+            feature_flag: is_high_low ? TRADE_FEATURE.HIGH_LOW : TRADE_FEATURE.RISE_FALL,
             name: is_high_low ? localize('Lower') : localize('Fall'),
             position: 'bottom',
         },
         CALLE: {
+            feature_flag: TRADE_FEATURE.RISE_FALL,
             name: localize('Rise'),
             position: 'top',
         },
         PUTE: {
+            feature_flag: TRADE_FEATURE.RISE_FALL,
             name: localize('Fall'),
             position: 'bottom',
         },
         DIGITMATCH: {
+            feature_flag: TRADE_FEATURE.MATCHES_DIFFERS,
             name: localize('Matches'),
             position: 'top',
         },
         DIGITDIFF: {
+            feature_flag: TRADE_FEATURE.MATCHES_DIFFERS,
             name: localize('Differs'),
             position: 'bottom',
         },
         DIGITEVEN: {
+            feature_flag: TRADE_FEATURE.EVEN_ODD,
             name: localize('Even'),
             position: 'top',
         },
         DIGITODD: {
+            feature_flag: TRADE_FEATURE.EVEN_ODD,
             name: localize('Odd'),
             position: 'bottom',
         },
         DIGITOVER: {
+            feature_flag: TRADE_FEATURE.OVER_UNDER,
             name: localize('Over'),
             position: 'top',
         },
         DIGITUNDER: {
+            feature_flag: TRADE_FEATURE.OVER_UNDER,
             name: localize('Under'),
             position: 'bottom',
         },
         ONETOUCH: {
+            feature_flag: TRADE_FEATURE.TOUCH_NO_TOUCH,
             name: localize('Touch'),
             position: 'top',
         },
         NOTOUCH: {
+            feature_flag: TRADE_FEATURE.TOUCH_NO_TOUCH,
             name: localize('No Touch'),
             position: 'bottom',
         },
         MULTUP: {
+            feature_flag: TRADE_FEATURE.MULTIPLIERS,
             name: localize('Up'),
             position: 'top',
         },
         MULTDOWN: {
+            feature_flag: TRADE_FEATURE.MULTIPLIERS,
             name: localize('Down'),
             position: 'bottom',
         },
         TURBOSLONG: {
+            feature_flag: TRADE_FEATURE.TURBOS,
             name: localize('Turbos'),
             button_name: localize('Long'),
             position: 'top',
         },
         TURBOSSHORT: {
+            feature_flag: TRADE_FEATURE.TURBOS,
             name: localize('Turbos'),
             button_name: localize('Short'),
             position: 'bottom',
         },
         VANILLALONGCALL: {
+            feature_flag: TRADE_FEATURE.VANILLAS,
             name: localize('Call'),
             position: 'top',
         },
         VANILLALONGPUT: {
+            feature_flag: TRADE_FEATURE.VANILLAS,
             name: localize('Put'),
             position: 'bottom',
         },
         RUNHIGH: {
+            feature_flag: TRADE_FEATURE.ONLY_UP_DOWN,
             name: localize('Only Ups'),
             position: 'top',
         },
         RUNLOW: {
+            feature_flag: TRADE_FEATURE.ONLY_UP_DOWN,
             name: localize('Only Downs'),
             position: 'bottom',
         },
         EXPIRYMISS: {
+            feature_flag: TRADE_FEATURE.ENDS_IN_OUT,
             name: localize('Ends Outside'),
             position: 'top',
         },
         EXPIRYRANGE: {
+            feature_flag: TRADE_FEATURE.ENDS_IN_OUT,
             name: localize('Ends Between'),
             position: 'bottom',
         },
         RANGE: {
+            feature_flag: TRADE_FEATURE.STAYS_IN_OUT,
             name: localize('Stays Between'),
             position: 'top',
         },
         UPORDOWN: {
+            feature_flag: TRADE_FEATURE.STAYS_IN_OUT,
             name: localize('Goes Outside'),
             position: 'bottom',
         },
@@ -507,6 +549,11 @@ the difference between these two functions is just the property they return. (na
 export const getContractTypeDisplay = (type: string, is_high_low = false, show_button_name = false) => {
     const contract_config = getContractConfig(is_high_low)[type as TGetSupportedContracts] as TContractConfig;
     return (show_button_name && contract_config?.button_name) || contract_config?.name || '';
+};
+
+export const getContractTypeFeatureFlag = (type: string, is_high_low = false) => {
+    const contract_config = getContractConfig(is_high_low)[type as TGetSupportedContracts] as TContractConfig;
+    return contract_config?.feature_flag || '';
 };
 
 export const getContractTypePosition = (type: TGetSupportedContracts, is_high_low = false) =>

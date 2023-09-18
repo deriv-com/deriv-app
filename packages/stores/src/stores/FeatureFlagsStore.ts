@@ -2,7 +2,7 @@ import BaseStore from './BaseStore';
 
 const FLAGS = {
     next_wallet: false,
-    trade_sharkfin: false,
+    trade_rise_fall: false,
     // Add your flag here 🚀 Note: Trade feature flags should start with 'trade_' prefix.
 } satisfies Record<string, boolean>;
 

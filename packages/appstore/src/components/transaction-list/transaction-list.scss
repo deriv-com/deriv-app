@@ -13,7 +13,7 @@
             padding-top: 6.4rem;
 
             &__crypto {
-                padding-top: 10.52rem;
+                padding-top: 10.5rem;
             }
         }
     }
@@ -101,6 +101,7 @@
         &__label {
             margin: 0;
             font-size: 1.4rem;
+            height: 2.5rem;
 
             @include mobile {
                 margin-top: 0;

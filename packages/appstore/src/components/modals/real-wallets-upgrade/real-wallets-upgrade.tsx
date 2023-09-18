@@ -36,7 +36,7 @@ const RealWalletsUpgrade = observer(() => {
         setIsDisabled(prevDisabled => !prevDisabled);
     };
 
-    const wallet_upgrade_props = {
+    const wallet_upgrade_steps = {
         current_step,
         handleBack,
         handleClose,
@@ -49,9 +49,9 @@ const RealWalletsUpgrade = observer(() => {
     return (
         <React.Fragment>
             {is_mobile ? (
-                <MobileRealWalletsUpgrade {...wallet_upgrade_props} />
+                <MobileRealWalletsUpgrade wallet_upgrade_steps={wallet_upgrade_steps} />
             ) : (
-                <DesktopRealWalletsUpgrade {...wallet_upgrade_props} />
+                <DesktopRealWalletsUpgrade wallet_upgrade_steps={wallet_upgrade_steps} />
             )}
         </React.Fragment>
     );

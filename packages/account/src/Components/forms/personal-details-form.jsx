@@ -412,10 +412,7 @@ const PersonalDetailsForm = props => {
                                 {'tax_residence' in values && (
                                     <TaxResidenceField
                                         setFieldValue={setFieldValue}
-                                        disabled={
-                                            isFieldImmutable('tax_residence', editable_fields) ||
-                                            (initialValues?.tax_residence && has_real_account)
-                                        }
+                                        disabled={isFieldImmutable('tax_residence', editable_fields)}
                                         residence_list={residence_list}
                                         required
                                         setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
@@ -428,10 +425,7 @@ const PersonalDetailsForm = props => {
                                         is_tin_popover_open={is_tin_popover_open}
                                         setIsTinPopoverOpen={setIsTinPopoverOpen}
                                         setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
-                                        disabled={
-                                            isFieldImmutable('tax_identification_number', editable_fields) ||
-                                            (initialValues?.tax_identification_number && has_real_account)
-                                        }
+                                        disabled={isFieldImmutable('tax_identification_number', editable_fields)}
                                         required
                                     />
                                 )}
@@ -544,12 +538,8 @@ const PersonalDetailsForm = props => {
                         {'tax_residence' in values && (
                             <TaxResidenceField
                                 setFieldValue={setFieldValue}
-                                disabled={
-                                    isFieldImmutable('tax_residence', editable_fields) ||
-                                    (values?.tax_residence && has_real_account)
-                                }
+                                disabled={isFieldImmutable('tax_residence', editable_fields)}
                                 residence_list={residence_list}
-                                required
                                 setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                                 setIsTinPopoverOpen={setIsTinPopoverOpen}
                                 is_tax_residence_popover_open={is_tax_residence_popover_open}
@@ -560,11 +550,7 @@ const PersonalDetailsForm = props => {
                                 is_tin_popover_open={is_tin_popover_open}
                                 setIsTinPopoverOpen={setIsTinPopoverOpen}
                                 setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
-                                disabled={
-                                    isFieldImmutable('tax_identification_number', editable_fields) ||
-                                    (values?.tax_identification_number && has_real_account)
-                                }
-                                required
+                                disabled={isFieldImmutable('tax_identification_number', editable_fields)}
                             />
                         )}
                         {'account_opening_reason' in values && (
@@ -650,7 +636,7 @@ const PlaceOfBirthField = ({ handleChange, setFieldValue, disabled, residence_li
 const TaxResidenceField = ({
     setFieldValue,
     residence_list,
-    required,
+    required = false,
     setIsTaxResidencePopoverOpen,
     setIsTinPopoverOpen,
     is_tax_residence_popover_open,
@@ -672,6 +658,7 @@ const TaxResidenceField = ({
                         list_portal_id='modal_root'
                         data-testid='tax_residence'
                         disabled={disabled}
+                        required={required}
                     />
                 </DesktopWrapper>
                 <MobileWrapper>
@@ -688,7 +675,7 @@ const TaxResidenceField = ({
                             setFieldValue('tax_residence', e.target.value, true);
                         }}
                         {...field}
-                        required
+                        required={required}
                         data_testid='tax_residence_mobile'
                         disabled={disabled}
                     />
@@ -722,7 +709,7 @@ const TaxIdentificationNumberField = ({
     setIsTinPopoverOpen,
     setIsTaxResidencePopoverOpen,
     disabled,
-    required,
+    required = false,
 }) => (
     <div className='details-form__tax'>
         <FormInputField
@@ -731,6 +718,7 @@ const TaxIdentificationNumberField = ({
             placeholder={localize('Tax Identification Number')}
             data-testid='tax_identification_number'
             disabled={disabled}
+            required={required}
         />
         <div
             data-testid='tax_identification_number_pop_over'

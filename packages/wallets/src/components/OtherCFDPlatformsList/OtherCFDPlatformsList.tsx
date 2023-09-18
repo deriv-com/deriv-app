@@ -29,12 +29,18 @@ const OtherCFDPlatformsList: React.FC = () => {
                     <TradingAccountCard
                         {...account}
                         key={`cfd_other_platform_list--${account.title}`}
-                        renderActions={() => (
+                        leading={() => <div className='wallets-other-cfd__content__icon'>{account.icon}</div>}
+                        trailing={() => (
                             <SecondaryActionButton>
                                 <p className='wallets-other-cfd__text'>Get</p>
                             </SecondaryActionButton>
                         )}
-                    />
+                    >
+                        <div className='wallets-other-cfd__content__details'>
+                            <p className='wallets-other-cfd__content__details-title'>{account.title}</p>
+                            <p className='wallets-other-cfd__content__details-description'>{account.description}</p>
+                        </div>
+                    </TradingAccountCard>
                 ))}
             </div>
         </div>

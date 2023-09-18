@@ -41,6 +41,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
     const amount_dealt = amount - remaining_amount;
     const enable_action_point = floating_rate_store.change_ad_alert && floating_rate_store.rate_type !== rate_type;
     const is_buy_advert = type === buy_sell.BUY;
+    const advert_type = is_buy_advert ? <Localize i18n_default_text='Buy' /> : <Localize i18n_default_text='Sell' />;
     const { getRate } = useExchangeRate();
 
     const { display_effective_rate } = generateEffectiveRate({
@@ -130,10 +131,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                         </Text>
                         <div className='my-ads-table__row__type-and-status'>
                             <Text color={ad_pause_color} weight='bold'>
-                                <Localize
-                                    i18n_default_text='{{ad_type}} {{ account_currency }}'
-                                    values={{ account_currency, ad_type: is_buy_advert ? 'Buy' : 'Sell' }}
-                                />
+                                {advert_type} {account_currency}
                             </Text>
                             {enable_action_point ? (
                                 <div className='my-ads-table__status-warning'>
@@ -224,10 +222,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                 })}
             >
                 <Table.Cell>
-                    <Localize
-                        i18n_default_text='{{ad_type}} {{ id }}'
-                        values={{ id, ad_type: is_buy_advert ? 'Buy' : 'Sell' }}
-                    />
+                    {advert_type} {id}
                 </Table.Cell>
                 <Table.Cell>
                     {min_order_amount_display}-{max_order_amount_display} {account_currency}

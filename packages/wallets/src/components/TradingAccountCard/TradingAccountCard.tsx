@@ -1,19 +1,17 @@
-import React, { ReactElement } from 'react';
-import useDevice from '../../hooks/useDevice';
+import React from 'react';
 import './TradingAccountCard.scss';
 
 type TProps = {
     description: string;
-    icon: ReactElement;
+    icon: React.ReactNode;
     title: string;
+    renderActions?: () => React.ReactNode;
 };
 
-const TradingAccountCard: React.FC<TProps> = ({ description, icon, title }) => {
-    const { is_mobile } = useDevice();
-
+const TradingAccountCard: React.FC<TProps> = ({ description, icon, title, renderActions }) => {
     return (
         <div className='wallets-trading-account-card'>
-            {icon}
+            <div className='wallets-trading-account-card__icon'>{icon}</div>
             <div className='wallets-trading-account-card__content'>
                 <div className='wallets-trading-account-card__details'>
                     <p className='wallets-trading-account-card__details-title'>
@@ -25,14 +23,7 @@ const TradingAccountCard: React.FC<TProps> = ({ description, icon, title }) => {
                         {description}
                     </p>
                 </div>
-                {!is_mobile && (
-                    <div className='wallets-trading-account-card__actions'>
-                        <button className='wallets-trading-account-card__action'>
-                            {/* TODO: Add localization */}
-                            Open
-                        </button>
-                    </div>
-                )}
+                {renderActions?.()}
             </div>
         </div>
     );

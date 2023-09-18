@@ -88,7 +88,7 @@ describe('<Purchase />', () => {
         expect(screen.getByText(/PurchaseField component/i)).toBeInTheDocument();
     });
 
-    it('should not render PurchaseField component if trade type do not exist', () => {
+    it('should not render PurchaseField component if trade type does not exist', () => {
         const new_mocked_store = { ...default_mock_store };
         new_mocked_store.modules.trade.contract_type = 'test_type';
         new_mocked_store.modules.trade.trade_types = {

@@ -66,7 +66,7 @@ describe('<PurchaseFieldset />', () => {
         expect(screen.getByText(/PurchaseButton/i)).toBeInTheDocument();
     });
 
-    it('should call function onHoverPurchase if user hover and/or unhover on field and is_disabled === false', () => {
+    it('should call function onHoverPurchase if user hovers and/or unhovers on purchase field and is_disabled === false', () => {
         render(<PurchaseFieldset {...default_mocked_props} is_multiplier />);
 
         const popover = screen.getByTestId(/dt_popover_wrapper/i);

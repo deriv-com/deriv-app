@@ -46,7 +46,7 @@ jest.mock('@deriv/components', () => ({
 jest.mock('Modules/Trading/Components/Form/Purchase/contract-info', () => jest.fn(() => <p>ContractInfo</p>));
 
 describe('<PurchaseButton />', () => {
-    it('should render a button with specific text and icon', () => {
+    it('should render a button with specific text for contract type and icon', () => {
         render(<PurchaseButton {...default_mocked_props} />);
 
         expect(screen.getByText(/TradeIcon/i)).toBeInTheDocument();
@@ -72,7 +72,7 @@ describe('<PurchaseButton />', () => {
         expect(default_mocked_props.onClickPurchase).toBeCalled();
     });
 
-    it('should the button with <Money /> component inside for multipliers', () => {
+    it('should render the button with <Money /> component inside for multipliers contract', () => {
         const new_mocked_props = { ...default_mocked_props, is_multiplier: true, is_vanilla: false, type: 'MULTUP' };
         render(<PurchaseButton {...new_mocked_props} />);
 
@@ -80,7 +80,7 @@ describe('<PurchaseButton />', () => {
         expect(screen.getByText(/MoneyComponent/i)).toBeInTheDocument();
     });
 
-    it('should the button with growth rate info inside for accumulators', () => {
+    it('should render the button with growth rate info inside for accumulators', () => {
         const new_mocked_props = { ...default_mocked_props, is_accumulator: true, is_vanilla: false, type: 'ACCU' };
         render(<PurchaseButton {...new_mocked_props} />);
 

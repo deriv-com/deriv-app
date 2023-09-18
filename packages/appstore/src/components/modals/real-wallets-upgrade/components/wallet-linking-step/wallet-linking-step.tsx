@@ -20,7 +20,7 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
                 {data.title}
             </Text>
             <Text as='div' className='wallet-linking-step__description' color='prominent' size={is_mobile ? 'xs' : 's'}>
-                {localize('This is how we link your accounts with your new Wallet.')}
+                <Localize i18n_default_text='This is how we link your accounts with your new Wallet.' />
             </Text>
             <Text
                 as='span'
@@ -28,9 +28,7 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
                 color='prominent'
                 size='xxs'
             >
-                {localize(
-                    'Your existing funds will remain in your trading account(s) and can be transferred to your Wallet after the upgrade.'
-                )}
+                <Localize i18n_default_text='Your existing funds will remain in your trading account(s) and can be transferred to your Wallet after the upgrade.' />
             </Text>
             {!is_mobile && (
                 <div className='wallet-linking-step__title'>

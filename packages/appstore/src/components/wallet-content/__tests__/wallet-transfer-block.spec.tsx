@@ -21,6 +21,7 @@ const wallet_account: TWalletAccount = {
     gradient_card_class: 'wallet-card__test',
     currency_config: undefined,
     linked_to: [{ loginid: 'CR1001', platform: 'dtrade' }],
+    is_fiat_currency: true,
 };
 
 jest.mock('./../../containers/currency-switcher-container', () => jest.fn(({ children }) => <div>{children}</div>));
@@ -48,6 +49,7 @@ jest.mock('@deriv/hooks', () => ({
                 gradient_card_class: 'wallet-card__test',
                 currency_config: undefined,
                 linked_to: [{ loginid: 'CR1001', platform: 'dtrade' }],
+                is_fiat_currency: true,
             },
         ],
     })),
@@ -68,7 +70,9 @@ describe('<WalletTransferBlock />', () => {
                 <WalletTransferBlock wallet_account={wallet_account} />
             </StoreProvider>
         );
-        const balance_title = screen.queryByText('1,000.00 USD');
+        const { currency } = wallet_account;
+
+        const balance_title = screen.getByText(`10,415.24 ${currency}`);
 
         expect(balance_title).toBeInTheDocument();
     });
@@ -79,7 +83,9 @@ describe('<WalletTransferBlock />', () => {
                 <WalletTransferBlock wallet_account={wallet_account} />
             </StoreProvider>
         );
-        const loginid_title = screen.queryByText('CR1001');
+        const { loginid } = wallet_account;
+
+        const loginid_title = screen.getByText(loginid!);
 
         expect(loginid_title).toBeInTheDocument();
     });

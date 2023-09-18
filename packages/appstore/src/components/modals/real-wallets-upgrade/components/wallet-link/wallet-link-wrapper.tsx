@@ -1,5 +1,9 @@
 import React from 'react';
-import { Icon } from '@deriv/components';
+
+import classNames from 'classnames';
+import { Icon, Text, WalletCard } from '@deriv/components';
+import { Localize } from '@deriv/translations';
+import WalletAccount from '../wallet-account/wallet-account';
 import { observer, useStore } from '@deriv/stores';
 import './wallet-link-wrapper.scss';
 import { ContentWithLink } from '../content-with-link';
@@ -24,6 +28,7 @@ const WalletLinkWrapper = observer(({ left, center, right, show_left_fork, show_
                         {left && left()}
                     </ContentWithLink>
                 </div>
+
             </div>
             <div className='wallet-link-wrapper__center'>
                 <div className='wallet-link-wrapper__link-icon'>

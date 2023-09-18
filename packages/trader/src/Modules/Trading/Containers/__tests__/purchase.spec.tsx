@@ -45,17 +45,17 @@ jest.mock('Modules/Trading/Components/Elements/purchase-buttons-overlay.jsx', ()
 );
 
 describe('<Purchase />', () => {
-    const mockPurchaseModal = (mocked_store: TCoreStores, mocked_props: React.ComponentProps<typeof Purchase>) => {
+    const mockPurchaseModal = (mocked_store: TCoreStores) => {
         return (
             <TraderProviders store={mocked_store}>
-                <Purchase {...mocked_props} />
+                <Purchase {...default_mocked_props} />
             </TraderProviders>
         );
     };
 
     it('should render 2 PurchaseField components if it is Rise/Fall trade type', () => {
         const mock_root_store = mockStore(default_mock_store);
-        render(mockPurchaseModal(mock_root_store, default_mocked_props));
+        render(mockPurchaseModal(mock_root_store));
 
         expect(screen.getAllByText(/PurchaseField component/i)).toHaveLength(2);
     });
@@ -70,7 +70,7 @@ describe('<Purchase />', () => {
         new_mocked_store.modules.trade.trade_types = { ACCU: 'Accumulator Up' };
         new_mocked_store.modules.trade.is_accumulator = true;
         const mock_root_store = mockStore(new_mocked_store);
-        render(mockPurchaseModal(mock_root_store, default_mocked_props));
+        render(mockPurchaseModal(mock_root_store));
 
         expect(screen.getByText(/PurchaseField component/i)).toBeInTheDocument();
         expect(screen.getByText(/PurchaseButtonsOverlay component/i)).toBeInTheDocument();
@@ -86,7 +86,7 @@ describe('<Purchase />', () => {
             VANILLALONGPUT: 'Vanilla Long Put',
         };
         const mock_root_store = mockStore(new_mocked_store);
-        render(mockPurchaseModal(mock_root_store, default_mocked_props));
+        render(mockPurchaseModal(mock_root_store));
 
         expect(screen.getByText(/PurchaseField component/i)).toBeInTheDocument();
     });
@@ -99,7 +99,7 @@ describe('<Purchase />', () => {
         };
         new_mocked_store.modules.trade.validation_errors = { test: 'test_error' };
         const mock_root_store = mockStore(new_mocked_store);
-        render(mockPurchaseModal(mock_root_store, default_mocked_props));
+        render(mockPurchaseModal(mock_root_store));
 
         expect(screen.queryByText(/PurchaseField component/i)).not.toBeInTheDocument();
     });

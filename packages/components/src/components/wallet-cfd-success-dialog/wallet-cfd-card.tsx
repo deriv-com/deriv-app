@@ -8,7 +8,7 @@ import { localize } from '@deriv/translations';
 import './wallet-cfd-card.scss';
 
 const WalletCFDCard = ({ wallet }: { wallet: TWalletCFDCard }) => {
-    const { app_icon, account_title, currency, gradient_header_class, icon, is_demo, wallet_label } = wallet;
+    const { account_title, app_icon, balance, currency, gradient_header_class, icon, is_demo, wallet_label } = wallet;
 
     return (
         <div className='wallet-cfd-card'>
@@ -49,7 +49,7 @@ const WalletCFDCard = ({ wallet }: { wallet: TWalletCFDCard }) => {
                     </Text>
                     {/* total balance */}
                     <Text color='prominent' weight='bold' size={isMobile() ? 'xxxs' : 'xxs'}>
-                        {is_demo ? `10,000.00 ${currency}` : `0.00 ${currency}`}
+                        {balance} {currency}
                     </Text>
                 </div>
             </div>

@@ -83,6 +83,13 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const is_password_reset = error_type === PASSWORD_ERRORS.RESET;
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
+    const getBalance = (platform: string) => {
+        if (has_mt5_account) {
+            return mt5_login_list.find(item => item.market_type === platform)?.display_balance;
+        }
+        return false;
+    };
+
     const { poi_verified_for_bvi_labuan_vanuatu, poi_verified_for_maltainvest, poa_verified, manual_status } =
         getAuthenticationStatusInfo(account_status);
 
@@ -317,13 +324,14 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     };
 
     const cfd_details = {
-        wallet_label: active_wallet?.is_demo ? localize('Demo') : localize('Real'),
-        app_icon: getWalletCFDInfo(account_type.type).icon,
         account_title: getWalletCFDInfo(account_type.type).title,
+        app_icon: getWalletCFDInfo(account_type.type).icon,
+        balance: getBalance(account_type.type),
         currency: active_wallet?.currency,
         gradient_header_class: active_wallet?.gradient_header_class,
         icon: active_wallet?.icon,
         is_demo: active_wallet?.is_demo,
+        wallet_label: active_wallet?.is_demo ? localize('Demo') : localize('Real'),
     };
 
     return (

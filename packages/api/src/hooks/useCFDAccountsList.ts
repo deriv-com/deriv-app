@@ -4,7 +4,7 @@ import useDxtradeAccountsList from './useDxtradeAccountsList';
 import useDerivezAccountsList from './useDerivezAccountsList';
 import useCtraderAccountsList from './useCtraderAccountsList';
 
-/** A custom hook that gets the list created MT5 accounts of the user. */
+/** A custom hook that gets the list all created CFD accounts of the user. */
 const useCFDAccountsList = () => {
     const { data: mt5_accounts } = useMT5AccountsList();
     const { data: dxtrade_accounts } = useDxtradeAccountsList();

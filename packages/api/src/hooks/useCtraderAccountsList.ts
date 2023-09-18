@@ -1,14 +1,14 @@
 import { useMemo } from 'react';
 import useFetch from '../useFetch';
 
-/** A custom hook that gets the list of created other CFD accounts. */
-const useDerivezAccountsList = () => {
+/** A custom hook that gets the list of created cTrader accounts. */
+const useCtraderAccountsList = () => {
     const { data: ctrader_accounts } = useFetch('trading_platform_accounts', {
         payload: { platform: 'ctrader' },
     });
 
-    /** Adding neccesary properties to dxtrade accounts */
-    const modified_derivez_accounts = useMemo(
+    /** Adding neccesary properties to cTrader accounts */
+    const modified_ctrader_accounts = useMemo(
         () =>
             ctrader_accounts?.trading_platform_accounts?.map(account => ({
                 ...account,
@@ -19,8 +19,8 @@ const useDerivezAccountsList = () => {
 
     return {
         /** List of all created other CFD accounts */
-        data: modified_derivez_accounts,
+        data: modified_ctrader_accounts,
     };
 };
 
-export default useDerivezAccountsList;
+export default useCtraderAccountsList;

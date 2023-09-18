@@ -34,7 +34,7 @@ const WalletCFDSuccessDialog = ({
     is_open,
     message,
     onSubmit,
-    submit_button_text,
+    submit_button_text = 'OK',
     toggleModal,
     wallet,
 }: TWalletCFDSuccessDialog) => {

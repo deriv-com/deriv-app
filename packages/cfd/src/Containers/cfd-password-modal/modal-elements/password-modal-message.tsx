@@ -60,11 +60,12 @@ const PasswordModalMessage = ({
 }: TPasswordModalMessage) => {
     if (!category && !type) return null;
 
-    const category_label = ACCOUNT_CATEGORY.REAL ? (
-        <Localize i18n_default_text='Real' />
-    ) : (
-        <Localize i18n_default_text='Demo' />
-    );
+    const category_label =
+        category === ACCOUNT_CATEGORY.REAL ? (
+            <Localize i18n_default_text='Real' />
+        ) : (
+            <Localize i18n_default_text='Demo' />
+        );
     let type_label = '';
     switch (platform) {
         case CFD_PLATFORMS.MT5:

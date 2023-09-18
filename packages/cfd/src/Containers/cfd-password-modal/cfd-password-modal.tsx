@@ -234,11 +234,15 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const success_modal_submit_label = React.useMemo(() => {
         if (account_type.category === ACCOUNT_CATEGORY.REAL) {
             if (platform === CFD_PLATFORMS.MT5) {
-                return is_selected_mt5_verified ? localize('Transfer now') : localize('OK');
+                return is_selected_mt5_verified ? (
+                    <Localize i18n_default_text='Transfer now' />
+                ) : (
+                    <Localize i18n_default_text='OK' />
+                );
             }
-            return localize('Transfer now');
+            return <Localize i18n_default_text='Transfer now' />;
         }
-        return localize('Continue');
+        return <Localize i18n_default_text='Continue' />;
     }, [platform, account_type, is_selected_mt5_verified]);
 
     const cfd_password_form = (
@@ -338,7 +342,11 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         gradient_header_class: active_wallet?.gradient_header_class,
         icon: active_wallet?.icon,
         is_demo: active_wallet?.is_demo,
-        wallet_label: active_wallet?.is_demo ? localize('Demo') : localize('Real'),
+        wallet_label: active_wallet?.is_demo ? (
+            <Localize i18n_default_text='Demo' />
+        ) : (
+            <Localize i18n_default_text='Real' />
+        ),
     };
 
     return (

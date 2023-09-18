@@ -1,39 +1,41 @@
 import React from 'react';
 import { Field, FieldProps } from 'formik';
 import { Autocomplete, Icon, IconTradeTypes, SelectNative, Text } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { TFormValues, TSelectsFieldNames } from '../quick-strategy.types';
-import { TSelectFieldProps } from './components.types';
+import { TDropdownItems, TFormValues, TSelectsFieldNames } from '../quick-strategy.types';
+import { TSelects } from './components.types';
 
-const SelectField = React.memo(
-    ({
-        field_name,
-        id,
-        is_mobile,
-        dropdown_list,
-        selected_value,
-        label,
-        select_value,
-        setFieldValue,
-        className,
-        is_able_disabled,
-        values,
-        onChangeDropdownItem,
-        onHideDropdownList,
-        onScrollStopDropdownList,
-        selected_trade_type,
-        selected_symbol,
-    }: TSelectFieldProps) => (
+const SelectField = ({
+    field_name,
+    id,
+    dropdown_list,
+    selected_value,
+    label,
+    select_value,
+    setFieldValue,
+    className,
+    is_able_disabled,
+    values,
+    onChangeDropdownItem,
+    onHideDropdownList,
+    onScrollStopDropdownList,
+    selected_trade_type,
+    selected_symbol,
+}: TSelects & { is_input_field: boolean }) => (
+    <div className='quick-strategy__form-row'>
         <Field name={field_name} key={id} id={id}>
             {({ field }: FieldProps<string, TFormValues>) => (
                 <>
-                    {is_mobile ? (
+                    {isMobile() ? (
                         <SelectNative
                             list_items={dropdown_list}
-                            value={typeof selected_value === 'string' ? selected_value : selected_value.value}
+                            value={
+                                typeof selected_value === 'string' ? selected_value : (selected_value.value as string)
+                            }
                             label={localize(label)}
                             should_show_empty_option={false}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                 onChangeDropdownItem(select_value, e.target.value, setFieldValue);
                             }}
                         />
@@ -41,7 +43,7 @@ const SelectField = React.memo(
                         <Autocomplete
                             {...field}
                             autoComplete='off'
-                            className={className}
+                            className={className ?? ''}
                             type='text'
                             label={localize(label)}
                             list_items={dropdown_list}
@@ -49,7 +51,7 @@ const SelectField = React.memo(
                             onHideDropdownList={() => {
                                 onHideDropdownList(
                                     select_value,
-                                    values[field.name] as TSelectsFieldNames,
+                                    (values as TFormValues)[field.name] as TSelectsFieldNames,
                                     setFieldValue
                                 );
                             }}
@@ -73,13 +75,9 @@ const SelectField = React.memo(
                 </>
             )}
         </Field>
-    ),
-    (prevProps, nextProps) => {
-        return (
-            prevProps.dropdown_list === nextProps.dropdown_list && prevProps.selected_value === nextProps.selected_value
-        );
-    }
+    </div>
 );
+
 SelectField.displayName = 'SelectField';
 
-export default SelectField;
+export default React.memo(SelectField);

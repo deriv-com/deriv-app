@@ -1,34 +1,53 @@
 import React from 'react';
-import { TDropdownItems, TDropdowns, TSelectedValuesSelect } from '../quick-strategy.types';
+import { useFormikContext } from 'formik';
+import { observer } from 'mobx-react';
+import { useStore } from '@deriv/stores';
+import { useDBotStore } from 'Stores/useDBotStore';
+import { TDropdownItems, TSelectedValuesSelect, TSymbolItem } from '../quick-strategy.types';
+import { handleConditionsOfInput } from './data/schema-validation';
+import strategies from './data/strategies-config';
 import { TDropdownLists, TQuickStrategyFields, TSelectedValues } from './components.types';
-import { data_fields, data_uniq_input_obj, Description, DurationFields, Inputs, Selects } from '.';
+import { Description, DurationFields, InputField, SelectField } from '.';
 
-const QuickStrategyFields = React.memo(
-    ({
-        types_strategies_dropdown,
-        symbol_dropdown,
-        trade_type_dropdown,
-        duration_unit_dropdown,
-        selected_type_strategy,
+const Get_Fields = observer(({ data_fields_group_wise }) => {
+    const { values, errors, setFieldValue, handleChange } = useFormikContext();
+    const { ui } = useStore();
+    const { setCurrentFocus } = ui;
+    const { quick_strategy } = useDBotStore();
+    const {
+        onChangeDropdownItem,
+        onChangeInputValue,
+        onHideDropdownList,
+        onScrollStopDropdownList,
         selected_trade_type,
         selected_symbol,
+        types_strategies_dropdown,
+        duration_unit_dropdown,
+        symbol_dropdown,
+        trade_type_dropdown,
         selected_duration_unit,
-        onChangeDropdownItem,
-        onHideDropdownList,
-        setFieldValue,
-        onScrollStopDropdownList,
-        handleChange,
-        onChangeInputValue,
-        setCurrentFocus,
-        values,
-        description,
-        errors,
-    }: TQuickStrategyFields) => {
-        const uniq_selected_input = React.useMemo(
-            () => data_uniq_input_obj.filter((_elem, index) => index === selected_type_strategy.index)[0],
-            [selected_type_strategy]
-        );
+        selected_type_strategy,
+    } = quick_strategy;
 
+    return data_fields_group_wise.map(item => {
+        const {
+            id,
+            field_name,
+            className,
+            input_value,
+            select_value,
+            label,
+            placeholder,
+            trailing_icon_message,
+            zIndex,
+            is_able_disabled,
+            description,
+            conditions,
+            type,
+        } = item;
+
+        const is_input_field = type === 'text' || type === 'number';
+        const is_select_field = type === 'select';
         const dropdown_lists: TDropdownLists = {
             symbol: symbol_dropdown,
             'trade-type': trade_type_dropdown,
@@ -43,126 +62,100 @@ const QuickStrategyFields = React.memo(
             'type-strategy': selected_type_strategy,
         };
 
-        const fields = React.useMemo(
-            () => {
-                return data_fields.map((item, idx) => {
-                    const {
-                        id,
-                        field_name,
-                        className,
-                        input_value,
-                        select_value,
-                        label,
-                        placeholder,
-                        trailing_icon_message,
-                        zIndex,
-                        is_able_disabled,
-                    } = item;
+        const dropdown_list = dropdown_lists[id as TDropdownItems];
 
-                    const is_uniq_strategy_field = item?.is_uniq_strategy_field;
-                    const is_input_field = is_uniq_strategy_field || !!input_value;
-                    const is_select_field = !!select_value;
+        const selected_value: Partial<TSelectedValuesSelect> = selected_values[id as TDropdownItems];
 
-                    const dropdown_list: TDropdowns = !is_uniq_strategy_field
-                        ? dropdown_lists[id as TDropdownItems]
-                        : [];
+        return (
+            <React.Fragment key={id}>
+                {(!conditions?.length || handleConditionsOfInput(conditions, values)) && (
+                    <>
+                        {id === 'duration-unit' && (
+                            <DurationFields
+                                id={id}
+                                field_name={field_name}
+                                dropdown_list={dropdown_list}
+                                selected_value={selected_value}
+                                label={label}
+                                select_value={select_value}
+                                setFieldValue={setFieldValue}
+                                className={className}
+                                is_able_disabled={is_able_disabled}
+                                values={values}
+                                onChangeDropdownItem={onChangeDropdownItem}
+                                onHideDropdownList={onHideDropdownList}
+                                onScrollStopDropdownList={onScrollStopDropdownList}
+                                selected_trade_type={selected_trade_type}
+                                selected_symbol={selected_symbol}
+                                handleChange={e => {
+                                    handleChange(e);
+                                }}
+                                onChangeInputValue={onChangeInputValue}
+                                setCurrentFocus={setCurrentFocus}
+                                errors={errors}
+                            />
+                        )}
+                        {is_input_field && (
+                            <InputField
+                                handleChange={e => {
+                                    handleChange(e);
+                                }}
+                                onChangeInputValue={onChangeInputValue}
+                                setCurrentFocus={setCurrentFocus}
+                                field_name={field_name}
+                                id={id}
+                                className={className}
+                                label={label}
+                                input_value={input_value}
+                                placeholder={placeholder}
+                                trailing_icon_message={trailing_icon_message}
+                                zIndex={zIndex}
+                                errors={errors}
+                                type={type}
+                            />
+                        )}
+                        {is_select_field && id !== 'duration-unit' && (
+                            <SelectField
+                                field_name={field_name}
+                                id={id}
+                                dropdown_list={dropdown_list}
+                                selected_value={selected_value}
+                                label={label}
+                                select_value={select_value}
+                                setFieldValue={setFieldValue}
+                                className={className}
+                                is_able_disabled={is_able_disabled}
+                                values={values}
+                                onChangeDropdownItem={onChangeDropdownItem}
+                                onHideDropdownList={onHideDropdownList}
+                                onScrollStopDropdownList={onScrollStopDropdownList}
+                                selected_trade_type={selected_trade_type}
+                                selected_symbol={selected_symbol}
+                            />
+                        )}
 
-                    const selected_value: Partial<TSelectedValuesSelect> = !is_uniq_strategy_field
-                        ? selected_values[id as TDropdownItems]
-                        : {};
-
-                    return (
-                        <React.Fragment key={id}>
-                            {id === 'duration-unit' && (
-                                <DurationFields
-                                    id={id}
-                                    field_name={field_name}
-                                    idx={idx}
-                                    dropdown_list={dropdown_list}
-                                    selected_value={selected_value}
-                                    label={label}
-                                    select_value={select_value}
-                                    setFieldValue={setFieldValue}
-                                    className={className}
-                                    is_able_disabled={is_able_disabled}
-                                    values={values}
-                                    onChangeDropdownItem={onChangeDropdownItem}
-                                    onHideDropdownList={onHideDropdownList}
-                                    onScrollStopDropdownList={onScrollStopDropdownList}
-                                    selected_trade_type={selected_trade_type}
-                                    selected_symbol={selected_symbol}
-                                    handleChange={handleChange}
-                                    onChangeInputValue={onChangeInputValue}
-                                    setCurrentFocus={setCurrentFocus}
-                                    errors={errors}
-                                />
-                            )}
-                            {is_input_field && (
-                                <Inputs
-                                    idx={idx}
-                                    handleChange={handleChange}
-                                    onChangeInputValue={onChangeInputValue}
-                                    setCurrentFocus={setCurrentFocus}
-                                    field_name={field_name}
-                                    id={id}
-                                    className={className}
-                                    label={label}
-                                    input_value={input_value}
-                                    placeholder={placeholder}
-                                    is_uniq_strategy_field={is_uniq_strategy_field}
-                                    trailing_icon_message={trailing_icon_message}
-                                    zIndex={zIndex}
-                                    uniq_selected_input={uniq_selected_input}
-                                    errors={errors}
-                                    is_input_field={is_input_field}
-                                />
-                            )}
-                            {is_select_field && id !== 'duration-unit' && (
-                                <Selects
-                                    field_name={field_name}
-                                    id={id}
-                                    dropdown_list={dropdown_list}
-                                    selected_value={selected_value}
-                                    label={label}
-                                    select_value={select_value}
-                                    setFieldValue={setFieldValue}
-                                    className={className}
-                                    is_able_disabled={is_able_disabled}
-                                    values={values}
-                                    onChangeDropdownItem={onChangeDropdownItem}
-                                    onHideDropdownList={onHideDropdownList}
-                                    onScrollStopDropdownList={onScrollStopDropdownList}
-                                    selected_trade_type={selected_trade_type}
-                                    selected_symbol={selected_symbol}
-                                    is_input_field={is_input_field}
-                                />
-                            )}
-                            <Description key={description} id={id} description={description} />
-                        </React.Fragment>
-                    );
-                });
-            },
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-            [
-                types_strategies_dropdown,
-                symbol_dropdown,
-                trade_type_dropdown,
-                duration_unit_dropdown,
-                selected_type_strategy,
-                selected_trade_type,
-                selected_symbol,
-                selected_duration_unit,
-                errors,
-            ]
+                        <Description key={description} id={id} description={description} />
+                    </>
+                )}
+            </React.Fragment>
         );
+    });
+});
 
-        return <div className='quick-strategy__fields'>{fields}</div>;
-    },
-    (prevProps, nextProps) =>
-        prevProps.values === nextProps.values &&
-        prevProps.errors === nextProps.errors &&
-        prevProps.duration_unit_dropdown === nextProps.duration_unit_dropdown
-);
+const QuickStrategyFields = observer(() => {
+    const { quick_strategy } = useDBotStore();
+    const { selected_type_strategy } = quick_strategy;
+
+    const data_fields = React.useMemo(() => {
+        return strategies[selected_type_strategy.value].fields || [];
+    }, [selected_type_strategy]);
+
+    return (
+        <div className='quick-strategy__fields'>
+            <Get_Fields data_fields_group_wise={data_fields} />
+        </div>
+    );
+});
 
 QuickStrategyFields.displayName = 'QuickStrategyFields';
 

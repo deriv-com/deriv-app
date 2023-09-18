@@ -1,31 +1,27 @@
 import React from 'react';
+import { useFormikContext } from 'formik';
 import { Button } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TQuickStrategyFooter } from './components.types';
 
-const QuickStrategyFooter = ({
-    is_submit_enabled,
-    is_running,
-    setFieldValue,
-    submitForm,
-    toggleStopBotDialog,
-}: TQuickStrategyFooter) => {
-    const handleCreateEdit = React.useCallback(() => {
-        setFieldValue('button', 'edit');
-        submitForm();
-    }, [is_submit_enabled]);
+const QuickStrategyFooter = ({ is_running, toggleStopBotDialog }: TQuickStrategyFooter) => {
+    const { submitForm, setFieldValue, errors, values, isSubmitting } = useFormikContext();
 
-    const handleRun = React.useCallback(async () => {
-        if (is_running) {
-            await Promise.resolve(setFieldValue('button', 'edit'))
-                .then(() => submitForm())
-                .then(() => toggleStopBotDialog());
-        } else {
-            setFieldValue('button', 'run');
-            submitForm();
-        }
-    }, [is_submit_enabled]);
+    const is_valid = Object.keys(errors).length === 0 && !Object.values(values).some(elem => (elem as string) === '');
+    const is_submit_enabled = !isSubmitting && is_valid;
+
+    const handleRunEdit = React.useCallback(
+        async mode => {
+            setFieldValue('button', mode);
+            submitForm().then(() => {
+                if (is_running) {
+                    toggleStopBotDialog();
+                }
+            });
+        },
+        [is_submit_enabled]
+    );
 
     return (
         <div className={'quick-strategy__form-footer'}>
@@ -38,7 +34,7 @@ const QuickStrategyFooter = ({
                         is_disabled={!is_submit_enabled}
                         secondary
                         large
-                        onClick={handleCreateEdit}
+                        onClick={() => handleRunEdit('edit')}
                     />
                 )}
                 <Button
@@ -48,7 +44,7 @@ const QuickStrategyFooter = ({
                     is_disabled={!is_submit_enabled}
                     primary
                     large
-                    onClick={handleRun}
+                    onClick={() => handleRunEdit('run')}
                 />
             </Button.Group>
         </div>

@@ -6,8 +6,10 @@ export default class ActiveSymbols {
     constructor(ws, trading_times) {
         this.active_symbols = [];
         this.disabled_markets = [];
-        this.disabled_symbols = ['frxGBPNOK', 'frxUSDNOK', 'frxUSDNEK', 'frxUSDSEK']; // These are only forward-starting.
-        this.disabled_submarkets = ['energy', 'step_index'];
+        this.disabled_symbols = config.DISABLED_SYMBOLS; // These are only forward-starting.
+        this.disabled_submarkets = config.DISABLED_SUBMARKETS;
+        this.disabled_symbols_for_quick_strategy = config.DISABLED_SYMBOLS_FOR_QUICK_STRATEGY;
+        this.disabled_submarkets_for_quick_strategy = config.DISABLED_SUBMARKETS_FOR_QUICK_STRATEGY;
         this.init_promise = new PendingPromise();
         this.is_initialised = false;
         this.processed_symbols = {};

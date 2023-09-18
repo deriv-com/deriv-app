@@ -9,6 +9,7 @@
 
     &--empty {
         margin-top: auto;
+        padding-bottom: 0.7rem;
     }
 
     &--frozen {
@@ -22,12 +23,12 @@
         bottom: 0.4rem;
         cursor: pointer;
         display: flex;
-        height: 32px;
+        height: 36px;
         justify-content: center;
         margin-right: 0.4rem;
         position: absolute;
         right: 0;
-        width: 32px;
+        width: 36px;
 
         @media (hover: hover) {
             &:hover {
@@ -43,6 +44,10 @@
     }
 
     .dc-input {
+        &__container {
+            margin-bottom: 0.2rem;
+        }
+
         &__wrapper {
             margin-bottom: unset;
             height: 100%;
@@ -60,8 +65,7 @@
 
         &__field[type='textarea'] {
             overflow-y: auto;
-            height: 40px;
-            min-height: 40px;
+            height: 25px;
             max-height: 100%;
             width: calc(100% - 32px - 0.8rem);
 
@@ -78,6 +82,10 @@
                 border-radius: 10px;
                 background-color: var(--state-active);
             }
+        }
+
+        &__footer {
+            margin-bottom: 0;
         }
 
         &__trailing-icon {

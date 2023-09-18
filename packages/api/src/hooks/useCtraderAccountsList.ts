@@ -18,7 +18,7 @@ const useCtraderAccountsList = () => {
     );
 
     return {
-        /** List of all created other CFD accounts */
+        /** List of all created cTrader accounts */
         data: modified_ctrader_accounts,
     };
 };

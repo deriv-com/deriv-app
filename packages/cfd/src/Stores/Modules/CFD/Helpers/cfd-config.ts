@@ -194,6 +194,12 @@ export const getMtCompanies = (is_eu: boolean) => {
                 title: localize('Derived BVI'),
                 short_title: synthetic_config.short_title,
             },
+            synthetic_v: {
+                mt5_account_type: synthetic_config.account_type,
+                leverage: synthetic_config.leverage,
+                title: localize('Derived Vanuatu'),
+                short_title: synthetic_config.short_title,
+            },
             financial: {
                 mt5_account_type: financial_config.account_type,
                 leverage: financial_config.leverage,

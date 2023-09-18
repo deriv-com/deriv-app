@@ -227,8 +227,7 @@ export type TWalletButton = {
     action: () => void;
 };
 
-export type TRealWalletsUpgrade = {
-    current_step: number;
+export type TWalletSteps = {
     handleBack: () => void;
     handleClose: () => void;
     handleNext: () => void;
@@ -237,15 +236,8 @@ export type TRealWalletsUpgrade = {
     upgradeToWallets: (value: boolean) => void;
 };
 
-export type TwalletSteps = {
-    handleBack: () => void;
-    handleClose: () => void;
-    handleNext: () => void;
-    is_disabled: boolean;
-    toggleCheckbox: () => void;
-    upgradeToWallets: (value: boolean) => void;
-};
-
-export type TModalContentFooter = TwalletSteps & {
-    current_step: number;
+export type TRealWalletsUpgradeSteps = {
+    wallet_upgrade_steps: TWalletSteps & {
+        current_step: number;
+    };
 };

@@ -130,6 +130,8 @@ const ModalElement = ({
 
     const rendered_title = renderTitle ? renderTitle() : null;
 
+    const is_header_visible = !is_risk_warning_visible && (header || title || rendered_title || has_close_icon);
+
     return ReactDOM.createPortal(
         <div
             ref={wrapper_ref}
@@ -149,7 +151,7 @@ const ModalElement = ({
                 minHeight: min_height || 0,
             }}
         >
-            {!is_risk_warning_visible && (header || title || rendered_title) && (
+            {is_header_visible && (
                 <div
                     className={classNames('dc-modal-header', {
                         'dc-modal-header__border-bottom': !should_header_stick_body,

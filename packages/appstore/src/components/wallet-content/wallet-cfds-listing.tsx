@@ -1,14 +1,14 @@
 import React from 'react';
 import { Text, StaticUrl, Button } from '@deriv/components';
-import { useActiveWallet } from '@deriv/hooks';
+import { useActiveWallet, useCFDCanGetMoreMT5Accounts } from '@deriv/hooks';
 import { formatMoney, isCryptocurrency } from '@deriv/shared';
-import { useStore, observer } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import TradingAppCard from 'Components/containers/trading-app-card';
-import GetMoreAccounts from 'Components/get-more-accounts';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
+import { useStore, observer } from '@deriv/stores';
+import GetMoreAccounts from 'Components/get-more-accounts';
 import { TDetailsOfEachMT5Loginid } from 'Types';
 import './wallet-content.scss';
 
@@ -62,9 +62,10 @@ const FiatCFDs = observer(() => {
         selected_account_type,
         available_dxtrade_accounts,
         combined_cfd_mt5_accounts,
-        can_get_more_cfd_mt5_accounts,
         toggleAccountTypeModalVisibility,
     } = traders_hub;
+
+    const can_get_more_cfd_mt5_accounts = useCFDCanGetMoreMT5Accounts();
 
     const wallet_account = useActiveWallet();
     if (!wallet_account) return null;

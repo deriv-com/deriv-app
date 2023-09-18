@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, HintBox, Icon, Text, ThemedScrollbars } from '@deriv/components';
-import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
+import { formatMoney, isDesktop, isMobile, routes } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
 import { api_error_codes } from '../../constants/api-error-codes.js';
@@ -24,7 +24,8 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(() => {
-    const { buy_sell_store, general_store, my_profile_store, order_store, sendbird_store } = useStores();
+    const { buy_sell_store, general_store, my_profile_store, order_store, sendbird_store, order_details_store } =
+        useStores();
     const {
         notifications: { removeNotificationByKey, removeNotificationMessage, setP2POrderProps },
     } = useStore();
@@ -82,6 +83,10 @@ const OrderDetails = observer(() => {
         });
     };
 
+    const navigateToOrderDetails = orderId => {
+        history.push({ pathname: routes.p2p_orders, search: `?order=${orderId}` });
+    };
+
     React.useEffect(() => {
         const disposeListeners = sendbird_store.registerEventListeners();
         const disposeReactions = sendbird_store.registerMobXReactions();
@@ -110,17 +115,19 @@ const OrderDetails = observer(() => {
             handleChatChannelCreation();
         }
 
+        setP2POrderProps({
+            order_id: order_store.order_id,
+            setP2POrderTab: general_store.setP2POrderTab,
+            setIsRatingModalOpen: is_open => (is_open ? showRatingModal() : hideModal()),
+            navigateToOrderDetails,
+        });
+
         return () => {
             disposeListeners();
             disposeReactions();
             order_store.setOrderPaymentMethodDetails(undefined);
             order_store.setOrderId(null);
             order_store.setActiveOrder(null);
-            setP2POrderProps({
-                order_id: order_store.order_id,
-                redirectToOrderDetails: general_store.redirectToOrderDetails,
-                setIsRatingModalOpen: is_open => (is_open ? showRatingModal : hideModal),
-            });
             history.replace({
                 search: '',
                 hash: location.hash,
@@ -128,6 +135,8 @@ const OrderDetails = observer(() => {
             buy_sell_store.setIsCreateOrderSubscribed(false);
             buy_sell_store.unsubscribeCreateOrder();
             sendbird_store.setHasChatError(false);
+            order_details_store.setErrorMessage(null);
+            sendbird_store.setChannelMessages([]);
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -136,12 +145,13 @@ const OrderDetails = observer(() => {
             verification_pending === 0 &&
             !is_buy_order_for_user &&
             status_string !== 'Expired' &&
+            status_string !== 'Under dispute' &&
             order_store.error_code !== api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
         ) {
             showModal({ key: 'EmailLinkExpiredModal' }, { should_stack_modal: isMobile() });
         }
 
-        if (status_string === 'Expired' && isCurrentModal('EmailLinkExpiredModal'))
+        if (status_string === 'Expired' && isCurrentModal('EmailLinkExpiredModal', 'OrderDetailsConfirmModal'))
             hideModal({ should_hide_all_modals: true });
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

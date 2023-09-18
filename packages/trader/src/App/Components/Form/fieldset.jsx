@@ -3,7 +3,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Popover } from '@deriv/components';
 
-const Fieldset = ({ children, className, header, header_tooltip, is_center, onMouseEnter, onMouseLeave }) => {
+const Fieldset = ({
+    children,
+    className,
+    header,
+    header_tooltip,
+    is_center,
+    is_tooltip_disabled,
+    onMouseEnter,
+    onMouseLeave,
+}) => {
     const fieldset_header_class = classNames('trade-container__fieldset-header', {
         'center-text': is_center,
         'trade-container__fieldset-header--inline': header_tooltip,
@@ -19,14 +28,20 @@ const Fieldset = ({ children, className, header, header_tooltip, is_center, onMo
                 <div className={fieldset_header_class}>
                     <span className={fieldset_info_class}>{header}</span>
                     {header_tooltip && (
-                        <Popover
-                            alignment='left'
-                            icon='info'
-                            is_bubble_hover_enabled
-                            message={header_tooltip}
-                            margin={216}
-                            relative_render
-                        />
+                        <span
+                            className={classNames('', {
+                                'trade-container__fieldset-header--tooltip-disabled': is_tooltip_disabled,
+                            })}
+                        >
+                            <Popover
+                                alignment='left'
+                                icon='info'
+                                is_bubble_hover_enabled
+                                message={header_tooltip}
+                                margin={216}
+                                relative_render
+                            />
+                        </span>
                     )}
                 </div>
             )}
@@ -43,8 +58,9 @@ Fieldset.propTypes = {
     children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     className: PropTypes.string,
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    header_tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    header_tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.node]),
     is_center: PropTypes.bool,
+    is_tooltip_disabled: PropTypes.bool,
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
 };

@@ -141,11 +141,12 @@ module.exports = function (env) {
                   ]
                 : [],
         },
-        devtool: is_release ? undefined : 'eval-cheap-module-source-map',
+        devtool: is_release ? 'source-map' : 'eval-cheap-module-source-map',
         externals: [
             {
                 react: 'react',
                 'react-dom': 'react-dom',
+                'react-router': 'react-router',
                 'react-router-dom': 'react-router-dom',
                 'prop-types': 'prop-types',
                 ...(is_publishing ? {} : { 'lodash.debounce': 'lodash.debounce', formik: 'formik' }),

@@ -14,27 +14,28 @@ import SimpleDuration from './simple-duration.jsx';
 const Duration = ({
     advanced_duration_unit,
     advanced_expiry_type,
-    duration,
+    contract_type,
+    duration_t,
     duration_unit,
     duration_units_list,
-    duration_t,
+    duration,
     expiry_date,
+    expiry_epoch,
     expiry_time,
     expiry_type,
     getDurationFromUnit,
     hasDurationUnit,
     is_advanced_duration,
     is_minimized,
-    min_value,
-    max_value,
-    onChange,
-    onChangeUiStore,
-    onChangeMultiple,
-    simple_duration_unit,
-    server_time,
-    start_date,
     market_open_times,
-    contract_type,
+    max_value,
+    min_value,
+    onChange,
+    onChangeMultiple,
+    onChangeUiStore,
+    server_time,
+    simple_duration_unit,
+    start_date,
 }) => {
     React.useEffect(() => {
         if (contract_type === 'vanilla') {
@@ -163,12 +164,13 @@ const Duration = ({
                 <>
                     {is_advanced_duration && (
                         <AdvancedDuration
-                            advanced_expiry_type={advanced_expiry_type}
                             advanced_duration_unit={advanced_duration_unit}
+                            advanced_expiry_type={advanced_expiry_type}
                             changeDurationUnit={changeDurationUnit}
                             duration_t={duration_t}
                             duration_units_list={duration_units_list}
                             expiry_date={expiry_date}
+                            expiry_epoch={expiry_epoch}
                             expiry_list={expiry_list}
                             expiry_type={expiry_type}
                             getDurationFromUnit={getDurationFromUnit}

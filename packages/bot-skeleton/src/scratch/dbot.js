@@ -1,6 +1,5 @@
-import { localize } from '@deriv/translations';
 import './blockly';
-import { hasAllRequiredBlocks, isAllRequiredBlocksEnabled, updateDisabledBlocks } from './utils';
+import { isAllRequiredBlocksEnabled, updateDisabledBlocks, validateErrorOnBlockDelete } from './utils';
 import main_xml from './xml/main.xml';
 import DBotStore from './dbot-store';
 import { save_types } from '../constants';
@@ -16,6 +15,8 @@ class DBot {
         this.interpreter = null;
         this.workspace = null;
         this.before_run_funcs = [];
+        this.symbol = null;
+        this.is_bot_running = false;
     }
 
     /**
@@ -23,6 +24,70 @@ class DBot {
      */
     async initWorkspace(public_path, store, api_helpers_store, is_mobile) {
         const recent_files = await getSavedWorkspaces();
+
+        api_base.init();
+        this.interpreter = Interpreter();
+        const that = this;
+        Blockly.Blocks.trade_definition_tradetype.onchange = function (event) {
+            if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+                return;
+            }
+
+            this.enforceLimitations();
+
+            const { name, type } = event;
+
+            if (type === Blockly.Events.BLOCK_CHANGE) {
+                if (name === 'SYMBOL_LIST' || name === 'TRADETYPECAT_LIST') {
+                    const { contracts_for } = ApiHelpers.instance;
+                    const top_parent_block = this.getTopParent();
+                    const market_block = top_parent_block.getChildByType('trade_definition_market');
+                    const market = market_block.getFieldValue('MARKET_LIST');
+                    const submarket = market_block.getFieldValue('SUBMARKET_LIST');
+                    const symbol = market_block.getFieldValue('SYMBOL_LIST');
+                    const category = this.getFieldValue('TRADETYPECAT_LIST');
+                    const trade_type = this.getFieldValue('TRADETYPE_LIST');
+
+                    if (name === 'SYMBOL_LIST') {
+                        contracts_for.getTradeTypeCategories(market, submarket, symbol).then(categories => {
+                            const category_field = this.getField('TRADETYPECAT_LIST');
+                            if (category_field) {
+                                category_field.updateOptions(categories, {
+                                    default_value: category,
+                                    should_pretend_empty: true,
+                                    event_group: event.group,
+                                });
+                            }
+                        });
+                        that.symbol = symbol;
+                        if (
+                            !that.is_bot_running &&
+                            that.interpreter &&
+                            !this.workspace.options.readOnly &&
+                            symbol !== that.interpreter.bot.tradeEngine.symbol
+                        ) {
+                            const run_button = document.querySelector('#db-animation__run-button');
+                            if (run_button) run_button.disabled = true;
+
+                            that.interpreter.unsubscribeFromTicksService().then(async () => {
+                                await that.interpreter.bot.tradeEngine.watchTicks(symbol);
+                            });
+                        }
+                    } else if (name === 'TRADETYPECAT_LIST' && event.blockId === this.id) {
+                        contracts_for.getTradeTypes(market, submarket, symbol, category).then(trade_types => {
+                            const trade_type_field = this.getField('TRADETYPE_LIST');
+
+                            trade_type_field.updateOptions(trade_types, {
+                                default_value: trade_type,
+                                should_pretend_empty: true,
+                                event_group: event.group,
+                            });
+                        });
+                    }
+                }
+            }
+        };
+
         return new Promise((resolve, reject) => {
             __webpack_public_path__ = public_path; // eslint-disable-line no-global-assign
             ApiHelpers.setInstance(api_helpers_store);
@@ -46,7 +111,6 @@ class DBot {
                     return;
                 }
                 this.workspace = Blockly.inject(el_scratch_div, {
-                    grid: { spacing: 40, length: 11, colour: '#f3f3f3' },
                     media: `${__webpack_public_path__}media/`,
                     trashcan: !is_mobile,
                     zoom: { wheel: true, startScale: workspaceScale },
@@ -54,14 +118,13 @@ class DBot {
                 });
 
                 this.workspace.cached_xml = { main: main_xml };
-                this.workspace.save_workspace_interval = setInterval(async () => {
-                    // Periodically save the workspace.
-                    await saveWorkspaceToRecent(Blockly.Xml.workspaceToDom(this.workspace), save_types.UNSAVED);
-                }, 10000);
 
                 this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
                 this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
                 this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
+                this.workspace.addChangeListener(event => {
+                    if (event.type === 'endDrag') validateErrorOnBlockDelete();
+                });
 
                 Blockly.derivWorkspace = this.workspace;
 
@@ -73,12 +136,15 @@ class DBot {
                 // Push main.xml to workspace and reset the undo stack.
                 this.workspace.current_strategy_id = Blockly.utils.genUid();
                 Blockly.derivWorkspace.strategy_to_load = main_xml;
+                Blockly.mainWorkspace.strategy_to_load = main_xml;
                 let file_name = config.default_file_name;
                 if (recent_files && recent_files.length) {
                     const latest_file = recent_files[0];
                     Blockly.derivWorkspace.strategy_to_load = latest_file.xml;
+                    Blockly.mainWorkspace.strategy_to_load = latest_file.xml;
                     file_name = latest_file.name;
                     Blockly.derivWorkspace.current_strategy_id = latest_file.id;
+                    Blockly.mainWorkspace.current_strategy_id = latest_file.id;
                 }
 
                 const event_group = `dbot-load${Date.now()}`;
@@ -96,7 +162,6 @@ class DBot {
                 window.dispatchEvent(new Event('resize'));
                 window.addEventListener('dragover', DBot.handleDragOver);
                 window.addEventListener('drop', e => DBot.handleDropOver(e, handleFileChange));
-                api_base.init();
                 // disable overflow
                 el_scratch_div.parentNode.style.overflow = 'hidden';
                 resolve();
@@ -106,6 +171,10 @@ class DBot {
                 throw error;
             }
         });
+    }
+
+    async saveRecentWorkspace() {
+        await saveWorkspaceToRecent(Blockly.Xml.workspaceToDom(this.workspace), save_types.UNSAVED);
     }
 
     /**
@@ -128,11 +197,11 @@ class DBot {
     runBot() {
         try {
             const code = this.generateCode();
-            if (this.interpreter !== null) {
-                this.interpreter = null;
-            }
 
-            this.interpreter = Interpreter();
+            if (!this.interpreter.bot.tradeEngine.checkTicksPromiseExists()) this.interpreter = Interpreter();
+
+            this.is_bot_running = true;
+
             api_base.setIsRunning(true);
             this.interpreter.run(code).catch(error => {
                 globalObserver.emit('Error', error);
@@ -224,20 +293,25 @@ class DBot {
      * Instructs the interpreter to stop the bot. If there is an active trade
      * that trade will be completed first to reflect correct contract status in UI.
      */
-    stopBot() {
+    async stopBot() {
         api_base.setIsRunning(false);
-        if (this.interpreter) {
-            this.interpreter.stop();
-        }
+
+        await this.interpreter.terminateSession();
+        this.is_bot_running = false;
+        this.interpreter = null;
+        this.interpreter = Interpreter();
+        await this.interpreter.bot.tradeEngine.watchTicks(this.symbol);
     }
 
     /**
      * Immediately instructs the interpreter to terminate the WS connection and bot.
      */
-    terminateBot() {
+    async terminateBot() {
         if (this.interpreter) {
-            this.interpreter.terminateSession();
+            await this.interpreter.terminateSession();
             this.interpreter = null;
+            this.interpreter = Interpreter();
+            await this.interpreter.bot.tradeEngine.watchTicks(this.symbol);
         }
     }
 
@@ -332,28 +406,7 @@ class DBot {
      * Checks whether the workspace contains all required blocks before running the strategy.
      */
     checkForRequiredBlocks() {
-        let error;
-
-        if (!hasAllRequiredBlocks(this.workspace)) {
-            error = new Error(
-                localize(
-                    'One or more mandatory blocks are missing from your workspace. Please add the required block(s) and then try again.'
-                )
-            );
-        } else if (!isAllRequiredBlocksEnabled(this.workspace)) {
-            error = new Error(
-                localize(
-                    'One or more mandatory blocks are disabled in your workspace. Please enable the required block(s) and then try again.'
-                )
-            );
-        }
-
-        if (error) {
-            globalObserver.emit('Error', error);
-            return false;
-        }
-
-        return true;
+        return isAllRequiredBlocksEnabled(this.workspace);
     }
 
     /**

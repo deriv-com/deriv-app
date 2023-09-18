@@ -5,7 +5,7 @@ import { createBrowserHistory } from 'history';
 import PaymentAgentTransfer from '../payment-agent-transfer';
 import CashierProviders from '../../../cashier-providers';
 import { useCashierLocked } from '@deriv/hooks';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -66,7 +66,7 @@ describe('<PaymentAgentTransfer />', () => {
         mockUseCashierLocked.mockReturnValue(false);
     });
 
-    const renderPaymentAgentTransfer = (mock_root_store: TStores) => {
+    const renderPaymentAgentTransfer = (mock_root_store: ReturnType<typeof mockStore>) => {
         return render(
             <Router history={createBrowserHistory()}>
                 <CashierProviders store={mock_root_store}>

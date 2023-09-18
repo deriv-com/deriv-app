@@ -1,8 +1,8 @@
-import { ProofOfIdentityContainerForMt5 } from '@deriv/account';
-import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
+// @ts-expect-error remove this line when ProofOfIdentityContainerForMt5 is converted to TS
+import ProofOfIdentityContainerForMt5 from '@deriv/account/src/Sections/Verification/ProofOfIdentity/proof-of-identity-container-for-mt5.jsx';
 import React from 'react';
-import RootStore from '../Stores/index';
-import { connect } from '../Stores/connect';
+import { useStore, observer } from '@deriv/stores';
+import type { TCoreStores } from '@deriv/stores/types';
 
 type TCFDValue = {
     poi_state: string;
@@ -12,40 +12,25 @@ type TFormValues = {
     poi_state?: string;
 };
 
-type TCFDNotificationByKey = {
-    key: string;
-};
-type TCFDNotificationMessage = {
-    key: string;
-    should_show_again: string;
-};
-
 export type TCFDPOIProps = {
     index: number;
     onSubmit: (index: number, value: TCFDValue) => void;
     value: TCFDValue;
-    account_status?: GetAccountStatus;
-    addNotificationByKey: (key: string) => void;
-    fetchResidenceList?: () => void;
+    addNotificationMessageByKey: TCoreStores['notifications']['addNotificationMessageByKey'];
     height: string;
-    is_switching: boolean;
-    is_virtual: boolean;
-    is_high_risk: boolean;
-    is_withdrawal_lock: boolean;
     onSave: (index: number, values: TFormValues) => void;
-    refreshNotifications: () => void;
-    removeNotificationByKey: (key: TCFDNotificationByKey) => void;
-    removeNotificationMessage: (key: TCFDNotificationMessage) => void;
-    should_allow_authentication: boolean;
-    account_settings: GetSettings;
-    residence_list: ResidenceList;
+    removeNotificationByKey: TCoreStores['notifications']['removeNotificationByKey'];
+    removeNotificationMessage: TCoreStores['notifications']['removeNotificationMessage'];
     jurisdiction_selected_shortcode: string;
 };
 
-const CFDPOI = ({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => {
+const CFDPOI = observer(({ index, onSave, onSubmit, ...props }: TCFDPOIProps) => {
+    const { client } = useStore();
+    const { account_settings, residence_list } = client;
+
     const [poi_state, setPOIState] = React.useState<string>('none');
-    const citizen = props.account_settings?.citizen || props.account_settings?.country_code;
-    const citizen_data = props.residence_list?.find(item => item.value === citizen);
+    const citizen = account_settings?.citizen || account_settings?.country_code;
+    const citizen_data = residence_list?.find(item => item.value === citizen);
 
     const onStateChange = (status: string) => {
         setPOIState(status);
@@ -55,25 +40,10 @@ const CFDPOI = ({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => 
     return (
         <ProofOfIdentityContainerForMt5
             {...props}
-            height={height}
-            is_from_external={true}
             onStateChange={(status: string) => onStateChange(status)}
             citizen_data={citizen_data}
         />
     );
-};
+});
 
-export default connect(({ client, common, notifications }: RootStore) => ({
-    account_status: client.account_status,
-    app_routing_history: common.app_routing_history,
-    fetchResidenceList: client.fetchResidenceList,
-    is_switching: client.is_switching,
-    is_virtual: client.is_virtual,
-    is_high_risk: client.is_high_risk,
-    is_withdrawal_lock: client.is_withdrawal_lock,
-    refreshNotifications: notifications.refreshNotifications,
-    routeBackInApp: common.routeBackInApp,
-    should_allow_authentication: client.should_allow_authentication,
-    account_settings: client.account_settings,
-    residence_list: client.residence_list,
-}))(CFDPOI);
+export default CFDPOI;

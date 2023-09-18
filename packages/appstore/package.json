@@ -5,12 +5,12 @@
     "main": "dist/appstore/js/index.js",
     "private": true,
     "engines": {
-        "node": "^16.16.0"
+        "node": "18.x"
     },
     "scripts": {
-        "build": "rimraf dist && webpack --progress",
+        "build": "rimraf dist && NODE_OPTIONS='-r ts-node/register' webpack --progress",
         "build:travis": "rimraf dist && webpack",
-        "serve": "rimraf dist && concurrently \"cross-env BUILD_MODE='serve' webpack --progress --watch\" \"tsc -w --noEmit --preserveWatchOutput\"",
+        "serve": "rimraf dist && concurrently \"cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch\" \"tsc -w --noEmit --preserveWatchOutput\"",
         "start": "rimraf dist && npm run test && npm run serve",
         "deploy": "echo \"No deploy specified\"",
         "deploy:clean": "echo \"No deploy:clean specified\"",
@@ -25,7 +25,7 @@
     "license": "Apache-2.0",
     "dependencies": {
         "@deriv/account": "^1.0.0",
-        "@deriv/api-types": "^1.0.94",
+        "@deriv/api-types": "^1.0.118",
         "@deriv/cashier": "^1.0.0",
         "@deriv/components": "^1.0.0",
         "@deriv/cfd": "^1.0.0",
@@ -34,6 +34,7 @@
         "@deriv/trader": "^3.8.0",
         "@deriv/translations": "^1.0.0",
         "@deriv/hooks": "^1.0.0",
+        "@deriv/wallets": "^1.0.0",
         "classnames": "^2.2.6",
         "formik": "^2.1.4",
         "mobx": "^6.6.1",
@@ -57,6 +58,7 @@
         "@storybook/manager-webpack5": "^6.5.10",
         "@storybook/react": "^6.5.10",
         "@testing-library/react": "^12.0.0",
+        "@testing-library/user-event": "^13.5.0",
         "@types/object.fromentries": "^2.0.0",
         "@types/react": "^18.0.7",
         "@types/react-dom": "^18.0.0",
@@ -71,7 +73,7 @@
         "fork-ts-checker-webpack-plugin": "^6.5.0",
         "lint-staged": "^10.4.0",
         "mini-css-extract-plugin": "^1.3.4",
-        "node-sass": "^7.0.1",
+        "sass": "^1.62.1",
         "postcss-loader": "^6.2.1",
         "postcss-preset-env": "^7.4.3",
         "postcss-scss": "^4.0.6",

@@ -2,7 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useHistory, useLocation, withRouter } from 'react-router-dom';
-import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button } from '@deriv/components';
+import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button, StaticUrl } from '@deriv/components';
 import { routes, platforms, formatMoney } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { ToggleNotifications, MenuLinks } from 'App/Components/Layout/Header';
@@ -159,7 +159,18 @@ const TradingHubHeader = ({
                 toggleDialog={toggleAccountsDialog}
             />
         ),
-        [is_acc_switcher_on]
+        [
+            is_acc_switcher_on,
+            is_acc_switcher_disabled,
+            is_eu,
+            is_virtual,
+            currency,
+            country_standpoint,
+            toggleAccountsDialog,
+            account_type,
+            balance,
+            acc_switcher_disabled_message,
+        ]
     );
 
     const DefaultMobileLinks = () => (
@@ -214,11 +225,13 @@ const TradingHubHeader = ({
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
                 <div
-                    className={classNames('`trading-hub-header__logo-wrapper', {
+                    className={classNames('trading-hub-header__logo-wrapper', {
                         'trading-hub-header__logo-wrapper--cashier': cashier_routes,
                     })}
                 >
-                    <DerivBrandLogo className='trading-hub-header__logo' />
+                    <StaticUrl href='/'>
+                        <DerivBrandLogo className='trading-hub-header__logo' />
+                    </StaticUrl>
                 </div>
                 <DesktopWrapper>
                     <Divider />

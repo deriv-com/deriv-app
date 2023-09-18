@@ -20,7 +20,7 @@ module.exports = function (env) {
                 colors: true,
             },
         },
-        devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
+        devtool: IS_RELEASE ? 'source-map' : 'eval-cheap-module-source-map',
         entry: './index.tsx',
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import useStore from '../useStore';
 import StoreProvider from '../storeProvider';
+import useStore from '../useStore';
 import type { TStores } from '../../types';
 
 describe('useStore', () => {

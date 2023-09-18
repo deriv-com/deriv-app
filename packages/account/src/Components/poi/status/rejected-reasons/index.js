@@ -1,3 +1,3 @@
-import { RejectedReasons } from './rejected-reasons.jsx';
+import { RejectedReasons } from './rejected-reasons';
 
 export default RejectedReasons;

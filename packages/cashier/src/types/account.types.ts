@@ -11,6 +11,7 @@ export type TAccount = {
     disabled?: boolean;
     error?: JSX.Element | string;
     is_crypto?: boolean;
+    is_ctrader?: boolean;
     is_derivez?: boolean;
     is_dxtrade?: boolean;
     is_mt?: boolean;
@@ -22,10 +23,7 @@ export type TAccount = {
     value?: string;
 };
 
-// This error will be removed when api-types get updated and then we can will import the correct type
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export type TTransferAccount = TransferBetweenAccountsResponse['accounts'][number] & {
+export type TTransferAccount = NonNullable<TransferBetweenAccountsResponse['accounts']>[number] & {
     sub_account_type?: string;
 };
 

@@ -50,7 +50,7 @@ const OptionsAndMultipliersListing = () => {
                 low_risk_cr_non_eu || high_risk_cr || cr_demo ? (
                     <Text size='xs' line_height='s'>
                         <Localize
-                            i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the
+                            i18n_default_text='Earn a range of payouts by correctly predicting market movements with <0>options</0>, or get the
                     upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
                             components={[
                                 <StaticUrl key={0} className='options' href='trade-types/options/' />,
@@ -86,7 +86,7 @@ const OptionsAndMultipliersListing = () => {
                                     openRealAccountSignup('maltainvest');
                                 }
                             } else {
-                                openRealAccountSignup();
+                                openRealAccountSignup('svg');
                             }
                         }}
                     />
@@ -98,6 +98,7 @@ const OptionsAndMultipliersListing = () => {
                     <TradingAppCard
                         key={`trading_app_card_${available_platform.name}`}
                         {...available_platform}
+                        clickable_icon
                         action_type={
                             is_demo || (!no_CR_account && !is_eu_user) || (has_maltainvest_account && is_eu_user)
                                 ? 'trade'

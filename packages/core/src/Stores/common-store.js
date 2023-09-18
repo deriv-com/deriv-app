@@ -52,7 +52,6 @@ export default class CommonStore extends BaseStore {
             routeTo: action.bound,
             addRouteHistoryItem: action.bound,
             changeSelectedLanguage: action.bound,
-            getExchangeRate: action.bound,
             routeBackInApp: action.bound,
         });
     }
@@ -152,8 +151,11 @@ export default class CommonStore extends BaseStore {
         const search = window.location.search;
         if (search) {
             const url_params = new URLSearchParams(search);
-            this.platform = url_params.get('platform') || '';
-            localStorage.setItem('config.platform', this.platform);
+            const platform = url_params.get('platform');
+            if (platform) {
+                this.platform = platform;
+                window.sessionStorage.setItem('config.platform', this.platform);
+            }
         }
     }
 
@@ -164,7 +166,11 @@ export default class CommonStore extends BaseStore {
     setInitialRouteHistoryItem(location) {
         if (window.location.href.indexOf('?ext_platform_url=') !== -1) {
             const ext_url = decodeURI(new URL(window.location.href).searchParams.get('ext_platform_url'));
-
+            const { setExternalParams } = this.root_store.client;
+            setExternalParams({
+                url: ext_url,
+                should_redirect: true,
+            });
             if (ext_url?.indexOf(getUrlSmartTrader()) === 0) {
                 this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH', is_external: true });
             } else if (ext_url?.indexOf(routes.cashier_p2p) === 0) {
@@ -228,6 +234,7 @@ export default class CommonStore extends BaseStore {
                 should_show_refresh: error.should_show_refresh,
                 redirect_to: error.redirect_to,
                 should_clear_error_on_click: error.should_clear_error_on_click,
+                should_redirect: error.should_redirect,
                 setError: this.setError,
             }),
         };
@@ -241,6 +248,7 @@ export default class CommonStore extends BaseStore {
         should_show_refresh,
         redirect_to,
         should_clear_error_on_click,
+        should_redirect,
     }) {
         this.setError(true, {
             header,
@@ -251,6 +259,7 @@ export default class CommonStore extends BaseStore {
             redirect_to,
             should_clear_error_on_click,
             type: 'error',
+            should_redirect,
         });
     }
 
@@ -297,12 +306,6 @@ export default class CommonStore extends BaseStore {
     }
 
     isCurrentLanguage = lang => lang === this.current_language;
-
-    getExchangeRate = async (from_currency, to_currency) => {
-        const { exchange_rates } = await BinarySocket.exchange_rates(from_currency);
-
-        return exchange_rates?.rates?.[to_currency];
-    };
 
     routeBackInApp(history, additional_platform_path = []) {
         let route_to_item_idx = -1;

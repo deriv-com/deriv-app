@@ -3,16 +3,12 @@ import { Localize } from '@deriv/translations';
 import { GetLimits } from '@deriv/api-types';
 import { Text } from '@deriv/components';
 import { getCurrencyDisplayCode, getPlatformSettings } from '@deriv/shared';
-import { TReactChildren } from 'Types';
-
-type TAccountTransferBulletProps = {
-    children: TReactChildren;
-};
 
 type TAccountTransferNoteProps = {
     allowed_transfers_count: GetLimits['daily_transfers'];
     currency: string;
     is_crypto_to_crypto_transfer?: boolean;
+    is_ctrader_transfer?: boolean;
     is_derivez_transfer?: boolean;
     is_dxtrade_allowed: boolean;
     is_dxtrade_transfer?: boolean;
@@ -22,7 +18,7 @@ type TAccountTransferNoteProps = {
     transfer_fee?: number | null;
 };
 
-const AccountTransferBullet = ({ children }: TAccountTransferBulletProps) => (
+const AccountTransferBullet = ({ children }: React.PropsWithChildren) => (
     <div className='account-transfer-form__bullet-wrapper'>
         <div className='account-transfer-form__bullet' />
         <Text size='xxs'>{children}</Text>

@@ -1,7 +1,18 @@
 import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
-import { isHighLow, getCurrentTick, getGrowthRatePercentage, isBot, isAccumulatorContract } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import {
+    isHighLow,
+    getCurrentTick,
+    getGrowthRatePercentage,
+    getContractSubtype,
+    isAccumulatorContract,
+    isSmartTraderContract,
+    isBot,
+    isMobile,
+    isTurbosContract,
+} from '@deriv/shared';
 import ContractTypeCell from './contract-type-cell';
 import Button from '../../button';
 import Icon from '../../icon';
@@ -21,10 +32,10 @@ export type TContractCardHeaderProps = {
     has_progress_slider: boolean;
     is_mobile: boolean;
     is_sell_requested: boolean;
-    is_valid_to_sell: boolean;
+    is_valid_to_sell?: boolean;
     onClickSell: (contract_id?: number) => void;
     server_time: moment.Moment;
-    id: number;
+    id?: number;
     is_sold?: boolean;
 };
 
@@ -35,7 +46,6 @@ const ContractCardHeader = ({
     getContractTypeDisplay,
     has_progress_slider,
     id,
-    is_mobile,
     is_sell_requested,
     is_sold: is_contract_sold,
     is_valid_to_sell,
@@ -56,34 +66,65 @@ const ContractCardHeader = ({
     } = contract_info;
     const { is_pathname_bot } = isBot();
     const is_sold = !!contract_info.is_sold || is_contract_sold;
-    const is_accumulator = isAccumulatorContract(contract_type || '');
-    const contract_type_list_info = [
-        {
-            is_param_displayed: multiplier,
-            displayed_param: `x${multiplier}`,
-        },
-        {
-            is_param_displayed: is_accumulator,
-            displayed_param: `${getGrowthRatePercentage(growth_rate || 0)}%`,
-        },
-    ];
+    const is_accumulator = isAccumulatorContract(contract_type);
+    const is_smarttrader_contract = isSmartTraderContract(contract_type);
+    const is_mobile = isMobile();
+    const is_turbos = isTurbosContract(contract_type);
+
+    const contract_type_list_info = React.useMemo(
+        () => [
+            {
+                is_param_displayed: multiplier,
+                displayed_param: `x${multiplier}`,
+            },
+            {
+                is_param_displayed: is_accumulator,
+                displayed_param: `${getGrowthRatePercentage(growth_rate || 0)}%`,
+            },
+            {
+                is_param_displayed: is_turbos,
+                displayed_param:
+                    getContractSubtype(contract_type || '') === 'Long' ? localize('Long') : localize('Short'),
+            },
+        ],
+        [multiplier, growth_rate, is_accumulator, is_turbos, contract_type]
+    );
+
     const displayed_trade_param =
         contract_type_list_info.find(contract_type_item_info => contract_type_item_info.is_param_displayed)
             ?.displayed_param || '';
 
     return (
-        <>
+        <React.Fragment>
             <div
                 className={classNames('dc-contract-card__grid', 'dc-contract-card__grid-underlying-trade', {
-                    'dc-contract-card__grid-underlying-trade--mobile': is_mobile && !multiplier && !is_accumulator,
+                    'dc-contract-card__grid-underlying-trade--mobile':
+                        is_mobile && !multiplier && !is_accumulator && !is_turbos,
                     'dc-contract-card__grid-underlying-trade--trader': !is_pathname_bot,
-                    'dc-contract-card__grid-underlying-trade--trader--accumulator': is_accumulator,
-                    'dc-contract-card__grid-underlying-trade--trader--accumulator-sold': is_accumulator && is_sold,
+                    'dc-contract-card__grid-underlying-trade--trader--accumulator': !is_mobile && is_accumulator,
+                    [`dc-contract-card__grid-underlying-trade--trader--${
+                        is_accumulator ? 'accumulator' : 'turbos'
+                    }-sold`]: (is_accumulator || is_turbos) && is_sold,
                 })}
             >
-                <div id='dc-contract_card_underlying_label' className='dc-contract-card__underlying-name'>
-                    <Icon icon={underlying ? `IcUnderlying${underlying}` : 'IcUnknown'} width={40} size={32} />
-                    <Text size='xxs' className='dc-contract-card__symbol' weight='bold'>
+                <div
+                    id='dc-contract_card_underlying_label'
+                    className={classNames('dc-contract-card__underlying-name', {
+                        'dc-contract-card__underlying-name--accumulator': is_accumulator,
+                    })}
+                >
+                    <Icon
+                        icon={underlying ? `IcUnderlying${underlying}` : 'IcUnknown'}
+                        width={is_accumulator ? 46 : 40}
+                        size={32}
+                    />
+                    <Text
+                        size='xxs'
+                        className={classNames('dc-contract-card__symbol', {
+                            'dc-contract-card__symbol--smarttrader-contract': is_smarttrader_contract,
+                        })}
+                        weight='bold'
+                    >
                         {display_name || contract_info.display_name}
                     </Text>
                 </div>
@@ -127,14 +168,14 @@ const ContractCardHeader = ({
                         </CSSTransition>
                     ) : null}
                 </MobileWrapper>
-                {!is_sold && is_accumulator && (
-                    <TickCounterBar
-                        current_tick={tick_passed}
-                        max_ticks_duration={tick_count}
-                        label={getCardLabels().TICKS}
-                    />
-                )}
             </div>
+            {!is_sold && is_accumulator && (
+                <TickCounterBar
+                    current_tick={tick_passed}
+                    max_ticks_duration={tick_count}
+                    label={getCardLabels().TICKS}
+                />
+            )}
             <MobileWrapper>
                 <div className='dc-progress-slider--completed' />
             </MobileWrapper>
@@ -152,7 +193,7 @@ const ContractCardHeader = ({
                     />
                 )}
             </DesktopWrapper>
-        </>
+        </React.Fragment>
     );
 };
 

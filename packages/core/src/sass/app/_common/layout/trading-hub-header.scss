@@ -35,6 +35,7 @@
 
     &__logo-wrapper {
         display: block;
+        cursor: pointer;
         @media screen and (max-width: 380px) {
             &--cashier {
                 display: none;

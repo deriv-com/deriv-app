@@ -27,7 +27,7 @@ export const compareBigUnsignedInt = (a: number, b: number | string | undefined)
 
 export const matchStringByChar = (s: string, p: string) => {
     if (p?.length < 1) return true;
-    const z = p.split('').reduce((a, b) => `${a}[^${b}]*${b}`);
+    const z = p.split('').reduce((a, b) => `${a}[^${b}]*${b}`, '');
     return RegExp(z, 'i').test(s);
 };
 

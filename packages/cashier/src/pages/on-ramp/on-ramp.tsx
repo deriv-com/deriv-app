@@ -6,7 +6,6 @@ import { Localize, localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import CashierLocked from '../../components/cashier-locked';
 import SideNote from '../../components/side-note';
-import { TReactFormEvent } from '../../types';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
 import { useCashierStore } from '../../stores/useCashierStores';
@@ -24,7 +23,7 @@ type TMenuOption = {
 
 export type TOnRampProps = {
     menu_options: TMenuOption[];
-    setSideNotes: (ReactComponent: React.ReactElement[]) => void;
+    setSideNotes?: (notes: React.ReactNode[]) => void;
 };
 
 const OnRampSideNote = () => {
@@ -85,15 +84,13 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
 
     React.useEffect(() => {
         onMountOnramp();
-        if (typeof setSideNotes === 'function' && !is_switching && !is_loading) {
-            setSideNotes([<OnRampSideNote key={0} />]);
+        if (!is_switching && !is_loading) {
+            setSideNotes?.([<OnRampSideNote key={0} />]);
         }
 
         return () => {
             onUnmountOnramp();
-            if (typeof setSideNotes === 'function') {
-                setSideNotes([]);
-            }
+            setSideNotes?.([]);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onMountOnramp, onUnmountOnramp, is_cashier_onboarding, is_switching, is_loading, cashier_route_tab_index]);
@@ -118,9 +115,11 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
                         <SelectNative
                             data_testid='dt_on_ramp_select_native'
                             className='on-ramp__selector'
+                            label={''}
                             list_items={getActivePaths()}
                             value={selected_cashier_path}
                             should_show_empty_option={false}
+                            hide_top_placeholder={false}
                             onChange={e => {
                                 if (e.currentTarget.value !== selected_cashier_path) {
                                     setSelectedCashierPath(e.currentTarget.value);

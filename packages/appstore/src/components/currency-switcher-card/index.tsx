@@ -2,10 +2,10 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import DemoAccountCard from './demo/demo-account-card';
 import RealAccountSwitcher from './real/real-account-switcher';
-import { useStores } from 'Stores/index';
+import { useStore } from '@deriv/stores';
 
-const CurrencySwitcherCard = () => {
-    const { traders_hub, client } = useStores();
+const CurrencySwitcherCard = observer(() => {
+    const { traders_hub, client } = useStore();
     const { has_any_real_account, has_maltainvest_account } = client;
     const { is_real, is_demo, is_eu_user } = traders_hub;
 
@@ -19,6 +19,6 @@ const CurrencySwitcherCard = () => {
         return <DemoAccountCard />;
     }
     return null;
-};
+});
 
-export default observer(CurrencySwitcherCard);
+export default CurrencySwitcherCard;

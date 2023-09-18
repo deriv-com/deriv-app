@@ -15,6 +15,7 @@ import { withRouter } from 'react-router-dom';
 
 const DefaultHeader = ({
     acc_switcher_disabled_message,
+    current_language,
     account_type,
     addNotificationMessage,
     app_routing_history,
@@ -97,6 +98,7 @@ const DefaultHeader = ({
                             is_logging_in={is_logging_in}
                             platform_config={filterPlatformsForClients(platform_config)}
                             setTogglePlatformType={setTogglePlatformType}
+                            current_language={current_language}
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -220,6 +222,7 @@ export default connect(({ client, common, ui, notifications, traders_hub }) => (
     is_notifications_visible: notifications.is_notifications_visible,
     is_route_modal_on: ui.is_route_modal_on,
     is_virtual: client.is_virtual,
+    current_language: common.current_language,
     notifications_count: notifications.notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
     platform: common.platform,

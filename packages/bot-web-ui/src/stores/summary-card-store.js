@@ -1,7 +1,7 @@
-import { action, computed, observable, reaction, makeObservable } from 'mobx';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { getIndicativePrice, isEqualObject, isMultiplierContract } from '@deriv/shared';
-import { contract_stages } from 'Constants/contract-stage';
 import { getValidationRules } from 'Constants/contract';
+import { contract_stages } from 'Constants/contract-stage';
 import { getContractUpdateConfig } from 'Utils/multiplier';
 import Validator from 'Utils/validator';
 
@@ -24,7 +24,7 @@ export default class SummaryCardStore {
     profit = 0;
     indicative = 0;
 
-    constructor(root_store) {
+    constructor(root_store, core) {
         makeObservable(this, {
             contract_info: observable,
             indicative_movement: observable,
@@ -35,6 +35,10 @@ export default class SummaryCardStore {
             contract_update_stop_loss: observable,
             has_contract_update_take_profit: observable,
             has_contract_update_stop_loss: observable,
+            contract_update_config: observable,
+            contract_id: observable,
+            profit: observable,
+            indicative: observable,
             is_contract_completed: computed,
             is_contract_loading: computed,
             is_contract_inactive: computed,
@@ -49,9 +53,11 @@ export default class SummaryCardStore {
             updateLimitOrder: action.bound,
             setValidationErrorMessages: action,
             validateProperty: action,
+            registerReactions: action.bound,
         });
 
         this.root_store = root_store;
+        this.core = core;
         this.disposeReactionsFn = this.registerReactions();
     }
 
@@ -219,7 +225,7 @@ export default class SummaryCardStore {
     }
 
     registerReactions() {
-        const { client } = this.root_store.core;
+        const { client } = this.core;
         this.disposeSwitchAcountListener = reaction(
             () => client.loginid,
             () => this.clear()

@@ -2,14 +2,15 @@ import { configure } from 'mobx';
 import { waitFor } from '@testing-library/react';
 import { routes, ContentFlag } from '@deriv/shared';
 import GeneralStore from '../general-store';
-import type { TWebSocket, TRootStore } from 'Types';
+import type { TWebSocket, TRootStore } from '../../types';
+import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
-let general_store: GeneralStore, root_store: DeepPartial<TRootStore>, WS: DeepPartial<TWebSocket>;
+let general_store: GeneralStore, root_store: ReturnType<typeof mockStore>, WS: DeepPartial<TWebSocket>;
 
 beforeEach(() => {
-    root_store = {
+    root_store = mockStore({
         client: {
             account_list: [{ is_virtual: false, title: 'USD' }],
             account_status: {
@@ -33,10 +34,6 @@ beforeEach(() => {
         },
         modules: {
             cashier: {
-                account_prompt_dialog: {
-                    last_location: null,
-                    resetIsConfirmed: jest.fn(),
-                },
                 account_transfer: {
                     accounts_list: [],
                     container: 'account_transfer',
@@ -58,7 +55,6 @@ beforeEach(() => {
                 },
                 transaction_history: {
                     is_crypto_transactions_visible: false,
-                    onMount: jest.fn(),
                     setIsCryptoTransactionsVisible: jest.fn(),
                 },
                 withdraw: {
@@ -71,7 +67,7 @@ beforeEach(() => {
             toggleSetCurrencyModal: jest.fn(),
         },
         traders_hub: { content_flag: ContentFlag.CR_DEMO },
-    };
+    });
     WS = {
         authorized: {
             p2pAdvertiserInfo: jest.fn().mockResolvedValueOnce({ error: { code: 'advertiser_error' } }),
@@ -83,11 +79,10 @@ beforeEach(() => {
 
 describe('GeneralStore', () => {
     it('should set function on remount', () => {
-        // TODO: Check this
-        // const remountFunc = () => 'function';
+        // TODO: use the actual function smh
         general_store.setOnRemount('function');
 
-        expect(general_store.onRemount).toBe('function');
+        expect(general_store.onRemount).toEqual('function');
     });
 
     it('should return false if the client currency is equal to USD when is_crypto property was called', () => {
@@ -99,34 +94,8 @@ describe('GeneralStore', () => {
         expect(general_store.is_crypto).toBeTruthy();
     });
 
-    it('should set has_set_currency equal to true if the client has real USD account', () => {
-        general_store.setHasSetCurrency();
-
-        expect(general_store.has_set_currency).toBeTruthy();
-    });
-
-    it('should set has_set_currency equal to false if the client has real account with account.title = "Real"', () => {
-        general_store.root_store.client.account_list = [{ is_virtual: 1, title: 'Real' }];
-        general_store.root_store.client.has_active_real_account = true;
-        general_store.setHasSetCurrency();
-
-        expect(general_store.has_set_currency).toBeFalsy();
-    });
-
-    it('should perform proper cashier onboarding mounting', async () => {
-        general_store.has_set_currency = false;
-        const spySetHasSetCurrency = jest.spyOn(general_store, 'setHasSetCurrency');
-        const spySetIsCashierOnboarding = jest.spyOn(general_store, 'setIsCashierOnboarding');
-        const { account_prompt_dialog } = general_store.root_store.modules.cashier;
-        await general_store.onMountCashierOnboarding();
-
-        expect(spySetHasSetCurrency).toHaveBeenCalledTimes(1);
-        expect(spySetIsCashierOnboarding).toHaveBeenCalledWith(true);
-        expect(account_prompt_dialog.resetIsConfirmed).toHaveBeenCalledTimes(1);
-    });
-
     it('should calculate proper percentage for account transfer container', () => {
-        general_store.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount = 500;
+        general_store.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount = '500';
         general_store.root_store.modules.cashier.account_transfer.selected_from.balance = 10000;
         general_store.setActiveTab('account_transfer');
         general_store.calculatePercentage();
@@ -137,7 +106,7 @@ describe('GeneralStore', () => {
     it('should calculate proper percentage for other containers', () => {
         general_store.root_store.client.balance = '9000';
         general_store.setActiveTab('deposit');
-        general_store.calculatePercentage(1000);
+        general_store.calculatePercentage('1000');
 
         expect(general_store.percentage).toBe(11);
     });
@@ -167,12 +136,6 @@ describe('GeneralStore', () => {
         general_store.setShouldShowAllAvailableCurrencies(true);
 
         expect(general_store.should_show_all_available_currencies).toBeTruthy();
-    });
-
-    it('should change value of the variable is_cashier_onboarding', () => {
-        general_store.setIsCashierOnboarding(true);
-
-        expect(general_store.is_cashier_onboarding).toBeTruthy();
     });
 
     it('should set deposit target', () => {
@@ -223,7 +186,9 @@ describe('GeneralStore', () => {
                 pathname: routes.cashier_pa,
             },
         }));
-        general_store.root_store.modules.cashier.payment_agent.filterPaymentAgentList.mockResolvedValueOnce([]);
+        (
+            general_store.root_store.modules.cashier.payment_agent.filterPaymentAgentList as jest.Mock
+        ).mockResolvedValueOnce([]);
         general_store.root_store.client.is_logged_in = true;
         await general_store.onMountCommon(false);
 
@@ -254,14 +219,10 @@ describe('GeneralStore', () => {
                 pathname: routes.cashier_crypto_transactions,
             },
         }));
-        const { onMount, setIsCryptoTransactionsVisible } =
-            general_store.root_store.modules.cashier.transaction_history;
         general_store.root_store.client.is_logged_in = true;
         await general_store.onMountCommon(false);
 
         expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
-        expect(setIsCryptoTransactionsVisible).toHaveBeenCalledWith(true);
-        expect(onMount).toHaveBeenCalledTimes(1);
         jest.restoreAllMocks();
     });
 

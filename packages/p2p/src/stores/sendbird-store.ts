@@ -209,7 +209,7 @@ export default class SendbirdStore extends BaseStore {
         const is_inclusive_of_timestamp = false;
         const result_size = 50;
         const reverse_results = false;
-        const custom_type = [''];
+        const custom_type = ['', 'admin'];
 
         const messages_timestamp =
             timestamp ?? toMoment(this.root_store.general_store.server_time.get()).utc().valueOf();
@@ -435,7 +435,7 @@ export default class SendbirdStore extends BaseStore {
             });
     }
 
-    sendMessage(message: string) {
+    sendMessage(message: string, custom_type = '') {
         const modified_message = message.trim();
 
         if (modified_message.length === 0) {
@@ -453,6 +453,7 @@ export default class SendbirdStore extends BaseStore {
             message_type: MessageType.USER,
             sender_user_id: this.chat_info.user_id,
             status: ChatMessage.STATUS_PENDING,
+            custom_type,
         };
 
         this.addChannelMessage(new ChatMessage(placeholder_msg_options));
@@ -461,6 +462,7 @@ export default class SendbirdStore extends BaseStore {
             ?.sendUserMessage({
                 message: modified_message,
                 data: msg_identifier,
+                customType: custom_type,
             })
             .onSucceeded(channel_message => {
                 const msg_idx = this.chat_messages.findIndex(msg => msg.id === msg_identifier);

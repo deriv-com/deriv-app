@@ -84,6 +84,10 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
                 : available_account.shortcode !== 'maltainvest')
     );
 
+    const all_market_type_available_accounts = trading_platform_available_accounts?.filter(
+        available_account => available_account.market_type === 'all'
+    );
+
     const is_svg_selected = jurisdiction_selected_shortcode === Jurisdiction.SVG;
     const is_bvi_selected = jurisdiction_selected_shortcode === Jurisdiction.BVI;
     const is_vanuatu_selected = jurisdiction_selected_shortcode === Jurisdiction.VANUATU;
@@ -202,6 +206,7 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
                     setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                     swapfree_available_accounts={swapfree_available_accounts}
                     synthetic_available_accounts={synthetic_available_accounts}
+                    all_market_type_available_accounts={all_market_type_available_accounts}
                 />
                 <div
                     className={classNames(

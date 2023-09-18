@@ -53,6 +53,7 @@ export default class ClientStore extends BaseStore {
     email;
     accounts = {};
     trading_platform_available_accounts = [];
+    ctrader_available_accounts = [];
     derivez_available_accounts = [];
     pre_switch_broadcast = false;
     switched = '';
@@ -104,6 +105,7 @@ export default class ClientStore extends BaseStore {
     mt5_login_list = [];
     mt5_login_list_error = null;
     dxtrade_accounts_list = [];
+    ctrader_accounts_list = [];
     derivez_accounts_list = [];
     dxtrade_accounts_list_error = null;
     dxtrade_disabled_signup_types = { real: false, demo: false };
@@ -170,6 +172,7 @@ export default class ClientStore extends BaseStore {
             email: observable,
             accounts: observable,
             trading_platform_available_accounts: observable,
+            ctrader_available_accounts: observable,
             derivez_available_accounts: observable,
             pre_switch_broadcast: observable,
             switched: observable,
@@ -206,6 +209,7 @@ export default class ClientStore extends BaseStore {
             mt5_login_list: observable,
             mt5_login_list_error: observable,
             dxtrade_accounts_list: observable,
+            ctrader_accounts_list: observable,
             derivez_accounts_list: observable,
             dxtrade_accounts_list_error: observable,
             dxtrade_disabled_signup_types: observable,
@@ -390,6 +394,7 @@ export default class ClientStore extends BaseStore {
             responseTradingPlatformAvailableAccounts: action.bound,
             responseDerivezAvailableAccounts: action.bound,
             responseTradingPlatformAccountsList: action.bound,
+            responseCTraderAvailableAccounts: action.bound,
             responseStatement: action.bound,
             getChangeableFields: action.bound,
             syncWithLegacyPlatforms: action.bound,
@@ -631,6 +636,10 @@ export default class ClientStore extends BaseStore {
 
     get has_real_dxtrade_login() {
         return this.dxtrade_accounts_list.some(account => account.account_type === 'real');
+    }
+
+    get has_real_ctrader_login() {
+        return this.ctrader_accounts_list.some(account => account.account_type === 'real');
     }
 
     get has_real_derivez_login() {
@@ -1724,6 +1733,8 @@ export default class ClientStore extends BaseStore {
 
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
+            WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER).then(this.responseTradingPlatformAccountsList);
+            WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.CTRADER).then(this.responseCTraderAvailableAccounts);
             WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ).then(this.responseTradingPlatformAccountsList);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ).then(this.responseDerivezAvailableAccounts);
@@ -2111,6 +2122,7 @@ export default class ClientStore extends BaseStore {
         this.accounts = {};
         this.mt5_login_list = [];
         this.dxtrade_accounts_list = [];
+        this.ctrader_accounts_list = [];
         this.derivez_accounts_list = [];
         this.landing_companies = {};
         localStorage.removeItem('readScamMessage');
@@ -2500,7 +2512,7 @@ export default class ClientStore extends BaseStore {
                     this.setMT5DisabledSignupTypes({
                         [account_type]: true,
                     });
-                    if (platform === CFD_PLATFORMS.DERIVEZ) {
+                    if (platform === CFD_PLATFORMS.DERIVEZ || platform === CFD_PLATFORMS.CTRADER) {
                         this.setCFDDisabledSignupTypes(platform, {
                             [account_type]: true,
                         });
@@ -2542,6 +2554,12 @@ export default class ClientStore extends BaseStore {
     responseTradingPlatformAvailableAccounts(response) {
         if (!response.error) {
             this.trading_platform_available_accounts = response.trading_platform_available_accounts;
+        }
+    }
+
+    responseCTraderAvailableAccounts(response) {
+        if (!response.error) {
+            this.ctrader_available_accounts = response.trading_platform_available_accounts;
         }
     }
 

@@ -9,6 +9,7 @@ export const CFD_text: { [key: string]: string } = {
     mt5: 'MT5',
     mt5_cfds: 'MT5 CFDs',
     cfd: 'CFDs',
+    ctrader: 'cTrader',
     derivez: 'DerivEz',
     synthetic: 'Derived',
     synthetic_demo: 'Derived Demo',
@@ -36,7 +37,7 @@ export const getMT5Title = (account_type: string) => {
     return CFD_text.financial;
 };
 
-type TPlatform = 'dxtrade' | 'mt5' | 'derivez';
+type TPlatform = 'dxtrade' | 'mt5' | 'derivez' | 'ctrader';
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
 type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'maltainvest';
 type TGetAccount = {
@@ -55,17 +56,23 @@ type TGetCFDAccountKey = TGetAccount & {
 // sub_account_type financial_stp only happens in "financial" market_type
 // dxrade and swap_free both have market_type "all" so check for platform is neccessary
 export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shortcode }: TGetCFDAccountKey) => {
+    if (platform === CFD_PLATFORMS.MT5 && market_type === 'all') {
+        // currently we are only supporting SVG for SwapFree
+        switch (shortcode) {
+            case 'svg':
+                return 'all_svg';
+            default:
+                return 'all_demo';
+        }
+    }
     if (market_type === 'all') {
-        if (platform === CFD_PLATFORMS.MT5) {
-            // currently we are only supporting SVG for SwapFree
-            switch (shortcode) {
-                case 'svg':
-                    return 'all_svg';
-                default:
-                    return 'all_demo';
-            }
-        } else {
-            return platform === CFD_PLATFORMS.DERIVEZ ? 'derivez' : 'dxtrade';
+        switch (platform) {
+            case CFD_PLATFORMS.DERIVEZ:
+                return 'derivez';
+            case CFD_PLATFORMS.CTRADER:
+                return 'ctrader';
+            default:
+                return 'dxtrade';
         }
     }
 
@@ -187,22 +194,33 @@ export const getCFDAccountDisplay = ({
     // TODO condition will be changed when card 74063 is merged
     if (market_type === 'synthetic' && platform === CFD_PLATFORMS.DXTRADE) return localize('Synthetic');
     if (market_type === 'all' && platform === CFD_PLATFORMS.DXTRADE && is_transfer_form) return '';
+    if (market_type === 'all' && platform === CFD_PLATFORMS.CTRADER && is_transfer_form) return '';
     if (platform === CFD_PLATFORMS.DERIVEZ) return '';
+    if (platform === CFD_PLATFORMS.CTRADER) return cfd_account_display;
 
     return cfd_account_display;
 };
 
 type TGetCFDAccount = TGetAccount & {
     is_eu?: boolean;
+    is_transfer_form?: boolean;
 };
 
-export const getCFDAccount = ({ market_type, sub_account_type, platform, is_eu }: TGetCFDAccount) => {
+export const getCFDAccount = ({
+    market_type,
+    sub_account_type,
+    platform,
+    is_eu,
+    is_transfer_form = false,
+}: TGetCFDAccount) => {
     let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform });
     if (!cfd_account_key) return undefined;
 
     if (cfd_account_key === 'financial' && is_eu) {
         cfd_account_key = 'cfd';
     }
+
+    if (cfd_account_key === 'ctrader' && is_transfer_form) return 'Ctrader';
 
     return CFD_text[cfd_account_key as keyof typeof CFD_text];
 };
@@ -219,7 +237,9 @@ export const getAccountListKey = (account: TAccount, platform: TPlatform, shortc
         platform,
         shortcode,
     })}@${
-        platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.DERIVEZ ? account.market_type : account.server
+        platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.DERIVEZ || platform === CFD_PLATFORMS.CTRADER
+            ? account.market_type
+            : account.server
     }`;
 };
 
@@ -231,6 +251,23 @@ export const getCFDPlatformLabel = (platform: TPlatform) => {
             return 'Deriv X';
         case CFD_PLATFORMS.DERIVEZ:
             return 'Deriv EZ';
+        case CFD_PLATFORMS.CTRADER:
+            return 'Deriv cTrader';
+        default:
+            return '';
+    }
+};
+
+export const getCFDPlatformNames = (platform: TPlatform) => {
+    switch (platform) {
+        case CFD_PLATFORMS.MT5:
+            return 'MT5';
+        case CFD_PLATFORMS.DXTRADE:
+            return 'Deriv X';
+        case CFD_PLATFORMS.CTRADER:
+            return 'cTrader';
+        case CFD_PLATFORMS.DERIVEZ:
+            return 'deriv EZ';
         default:
             return '';
     }

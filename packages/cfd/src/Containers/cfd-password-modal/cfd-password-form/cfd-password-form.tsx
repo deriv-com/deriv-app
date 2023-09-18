@@ -1,15 +1,15 @@
 import React from 'react';
 import { Formik, FormikErrors } from 'formik';
-import { getLegalEntityName, getErrorMessages, getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
+import { getLegalEntityName, getErrorMessages, getCFDPlatformLabel, CFD_PLATFORMS, CFD_text } from '@deriv/shared';
 import { Text, FormSubmitButton, PasswordMeter, PasswordInput } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import {
-    TDxCompanies,
     getDxCompanies,
     getFormattedJurisdictionCode,
+    TDxCompanies,
 } from '../../../Stores/Modules/CFD/Helpers/cfd-config';
 import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from '../../props.types';
-import { PASSWORD_ERRORS } from '../../../Constants/cfd-password-modal-constants';
+import { ACCOUNT_CATEGORY, PASSWORD_ERRORS } from '../../../Constants/cfd-password-modal-constants';
 import PasswordStep from './password-step';
 import { observer, useStore } from '@deriv/stores';
 
@@ -103,7 +103,8 @@ const CFDPasswordForm = observer(
             return localize('Forgot password?');
         };
 
-        const has_cancel_button = !is_mobile && (!should_set_trading_password || error_type !== 'trading_password');
+        const has_cancel_button =
+            !is_mobile && (!should_set_trading_password || error_type !== PASSWORD_ERRORS.PASSWORD);
 
         const cancel_button_label = getCancelButtonLabel({ should_set_trading_password, error_type });
 
@@ -165,7 +166,7 @@ const CFDPasswordForm = observer(
             } else if (!show_eu_related_content) {
                 return getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
             }
-            return 'CFDs';
+            return CFD_text.cfd;
         };
 
         return (
@@ -192,7 +193,7 @@ const CFDPasswordForm = observer(
                         <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
                             {!should_set_trading_password && (
                                 <Text size='xs' className='dc-modal__container_cfd-password-modal__account-title'>
-                                    {account_type.category === 'real' && (
+                                    {account_type.category === ACCOUNT_CATEGORY.REAL && (
                                         <Localize
                                             i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} {{jurisdiction_shortcode}} account.'
                                             values={{
@@ -208,7 +209,7 @@ const CFDPasswordForm = observer(
                                             }}
                                         />
                                     )}
-                                    {account_type.category === 'demo' && (
+                                    {account_type.category === ACCOUNT_CATEGORY.DEMO && (
                                         <Localize
                                             i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} account.'
                                             values={{
@@ -259,7 +260,7 @@ const CFDPasswordForm = observer(
                                     />
                                 </div>
                             )}
-                            {error_type === 'PasswordError' && (
+                            {error_type === PASSWORD_ERRORS.ERROR && (
                                 <Text size='xs' as='p' className='dc-modal__container_mt5-password-modal__hint'>
                                     <Localize
                                         i18n_default_text='Hint: You may have entered your Deriv password, which is different from your {{platform}} password.'

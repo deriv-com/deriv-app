@@ -22,7 +22,7 @@ import PasswordModalHeader from './modal-elements/password-modal-header';
 import PasswordModalMessage from './modal-elements/password-modal-message';
 import SuccessDialog from '../../Components/success-dialog.jsx';
 import SuccessModalIcons from './modal-elements/success-modal-icons';
-import { PASSWORD_ERRORS, getWalletCFDInfo } from '../../Constants/cfd-password-modal-constants';
+import { ACCOUNT_CATEGORY, PASSWORD_ERRORS, getWalletCFDInfo } from '../../Constants/cfd-password-modal-constants';
 import { useInvalidateQuery } from '@deriv/api';
 import { TCFDPasswordFormValues, TOnSubmitPassword } from '../props.types';
 import '../../sass/cfd.scss';
@@ -160,7 +160,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const closeOpenSuccess = () => {
         disableCFDPasswordModal();
         closeDialogs();
-        if (account_type.category === 'real') {
+        if (account_type.category === ACCOUNT_CATEGORY.REAL) {
             sessionStorage.setItem('cfd_transfer_to_login_id', new_account_response.login || '');
             history.push(routes.cashier_acc_transfer);
         }
@@ -173,7 +173,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
         // if account type is real convert redirect_to from 1 or 2 to 10 or 20
         // and if account type is demo convert redirect_to from 1 or 2 to 11 or 21
-        if (account_type.category === 'real') {
+        if (account_type.category === ACCOUNT_CATEGORY.REAL) {
             redirect_to = Number(`${redirect_to}0`);
         } else if (account_type.category === 'demo') {
             redirect_to = Number(`${redirect_to}1`);
@@ -232,7 +232,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     }, [is_mobile, should_set_trading_password, should_show_password]);
 
     const success_modal_submit_label = React.useMemo(() => {
-        if (account_type.category === 'real') {
+        if (account_type.category === ACCOUNT_CATEGORY.REAL) {
             if (platform === CFD_PLATFORMS.MT5) {
                 return is_selected_mt5_verified ? localize('Transfer now') : localize('OK');
             }
@@ -271,13 +271,13 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             is_open={should_show_password_modal}
             toggleModal={closeModal}
             should_header_stick_body
-            renderTitle={() => (
+            renderTitle={
                 <PasswordModalHeader
                     should_set_trading_password={should_set_trading_password}
                     is_password_reset_error={is_password_reset}
                     platform={platform}
                 />
-            )}
+            }
             onUnmount={() => getAccountStatus(platform)}
             onExited={() => setPasswordModalExited(true)}
             onEntered={() => setPasswordModalExited(false)}
@@ -309,7 +309,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const getWalletHeader = () => {
         return (
             <React.Fragment>
-                {account_type.category === 'demo' ? (
+                {account_type.category === ACCOUNT_CATEGORY.DEMO ? (
                     <Localize
                         i18n_default_text='Your {{account_title}} demo account is ready'
                         values={{
@@ -339,7 +339,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             {password_modal}
             {password_dialog}
             {/* TODO: Remove this once development is completed */}
-            {is_wallet_enabled && account_type.category === 'demo' && platform === CFD_PLATFORMS.MT5 ? (
+            {is_wallet_enabled && account_type.category === ACCOUNT_CATEGORY.DEMO && platform === CFD_PLATFORMS.MT5 ? (
                 <WalletCFDSuccessDialog
                     header={getWalletHeader()}
                     is_open={should_show_success}
@@ -394,8 +394,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     text_submit={success_modal_submit_label}
                     has_cancel={
                         platform === CFD_PLATFORMS.MT5
-                            ? is_selected_mt5_verified && account_type.category === 'real'
-                            : account_type.category === 'real'
+                            ? is_selected_mt5_verified && account_type.category === ACCOUNT_CATEGORY.REAL
+                            : account_type.category === ACCOUNT_CATEGORY.REAL
                     }
                     has_close_icon={false}
                     width={is_mobile ? '32.8rem' : 'auto'}

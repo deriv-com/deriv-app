@@ -18,14 +18,16 @@ const PasswordModalHeader = observer(
         const element = is_mobile ? 'p' : 'span';
         const alignment = 'center';
         const font_size = 's';
-        const style = is_mobile
-            ? {
-                  padding: '2rem',
-              }
-            : {};
 
         return (
-            <Text styles={style} as={element} line_height='m' weight='bold' size={font_size} align={alignment}>
+            <Text
+                align={alignment}
+                as={element}
+                className='cfd-password-modal__header'
+                line_height='m'
+                size={font_size}
+                weight='bold'
+            >
                 {!should_set_trading_password && !is_password_reset_error && (
                     <Localize
                         i18n_default_text='Enter your {{platform}} password'

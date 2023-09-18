@@ -54,6 +54,10 @@ const Sidebar = observer(() => {
         setsearchFAQList([...faq_content]);
     }, [active_tab_tutorials, active_tab]);
 
+    const removeHTMLTagsFromString = (param = '') => {
+        return param.replace(/<[^>]*>/g, '');
+    };
+
     React.useEffect(() => {
         const is_faq = active_tab_tutorials === 1;
         const search = faq_search_value?.toLowerCase();
@@ -61,14 +65,8 @@ const Sidebar = observer(() => {
         if (is_faq) {
             const filtered_list = faq_content?.filter(({ title, description = [] }) => {
                 const match = description?.map(item => (item.type === 'text' ? item.content : '')).join(' ');
-                const title_has_match = title
-                    ?.replace(/<[^>]*>/g, '')
-                    ?.toLowerCase()
-                    ?.includes(search);
-                const description_has_match = match
-                    ?.replace(/<[^>]*>/g, '')
-                    ?.toLowerCase()
-                    ?.includes(search);
+                const title_has_match = removeHTMLTagsFromString(title)?.toLowerCase()?.includes(search);
+                const description_has_match = removeHTMLTagsFromString(match)?.toLowerCase()?.includes(search);
                 return title_has_match || description_has_match;
             });
             setsearchFAQList(filtered_list);

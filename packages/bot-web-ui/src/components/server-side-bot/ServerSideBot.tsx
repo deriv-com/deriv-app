@@ -1,107 +1,65 @@
 import React from 'react';
 import classNames from 'classnames';
+import { api_base } from '@deriv/bot-skeleton';
 import { Button, Icon, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { useDBotStore } from 'Stores/useDBotStore';
+// import { useDBotStore } from 'Stores/useDBotStore';
 import Form from './Form';
 import './server-side-bot.scss';
 
-const mock_data = [
-    {
-        id: '1',
-        name: 'Call Indicies 100 ticks 1',
-        strategy: 'Martingale',
-        paramerters: {
-            contract_type: 'CALL',
-            duration: '5',
-            duration_unit: 't',
-            initial_stake: '1',
-            size: 2,
-            symbol: 'R_100',
-        },
-    },
-    {
-        id: '2',
-        name: 'Server side bot name',
-        strategy: 'Martingale',
-        paramerters: {
-            contract_type: 'CALL',
-            duration: '5',
-            duration_unit: 't',
-            initial_stake: '1',
-            size: 2,
-            symbol: 'R_100',
-        },
-    },
-    {
-        id: '3',
-        name: 'Server side bot name',
-        strategy: 'Martingale',
-        paramerters: {
-            contract_type: 'CALL',
-            duration: '5',
-            duration_unit: 't',
-            initial_stake: '1',
-            size: 2,
-            symbol: 'R_100',
-        },
-    },
-    {
-        id: '4',
-        name: 'Server side bot name',
-        strategy: 'Martingale',
-        paramerters: {
-            contract_type: 'CALL',
-            duration: '5',
-            duration_unit: 't',
-            initial_stake: '1',
-            size: 2,
-            symbol: 'R_100',
-        },
-    },
-    {
-        id: '5',
-        name: 'Server side bot name',
-        strategy: 'Martingale',
-        paramerters: {
-            contract_type: 'CALL',
-            duration: '5',
-            duration_unit: 't',
-            initial_stake: '1',
-            size: 2,
-            symbol: 'R_100',
-        },
-    },
-    {
-        id: '6',
-        name: 'Server side bot name',
-        strategy: 'Martingale',
-        paramerters: {
-            contract_type: 'CALL',
-            duration: '5',
-            duration_unit: 't',
-            initial_stake: '1',
-            size: 2,
-            symbol: 'R_100',
-        },
-    },
-];
-
 const ServerSideBot = () => {
     const [active_bot, setActiveBot] = React.useState<string | null>('1');
+    const [is_loading, setIsLoading] = React.useState<boolean>(true);
     const [form_visibility, setFormVisibility] = React.useState<boolean>(false);
-    const { dbot } = useDBotStore();
+    const [bot_list, setBotList] = React.useState<any[]>([]);
+    // const { server_bot } = useDBotStore();
+    // const { getBotList } = server_bot;
+
+    // // eslint-disable-next-line no-console
+    // console.log(server_bot, 'server_bot');
     const is_mobile = isMobile();
 
-    // React.useEffect(() => {
-    // eslint-disable-next-line no-console
-    // console.log(dbot, 'dbot');
-    // dbot.getBotList();
-    // eslint-disable-next-line no-console
-    // console.log(api_base?.api);
-    // }, []);
+    React.useEffect(() => {
+        setTimeout(() => {
+            get();
+            createBot();
+        }, 2000);
+    }, []);
 
-    const handleAction = (action: { type: string; id: string }) => {
+    const get = async () => {
+        try {
+            const { bot_list, error } = await api_base?.api?.send({ bot_list: 1 });
+            if (error) throw error;
+            setBotList(bot_list);
+            setIsLoading(false);
+        } catch (e) {
+            // eslint-disable-next-line no-console
+            console.log(e, 'error error from compo');
+            setIsLoading(false);
+        }
+    };
+
+    const createBot = () => {
+        api_base?.api?.send({
+            bot_create: 1,
+            data: {
+                name: 'test 2',
+                strategy: 'martingale',
+                parameters: {
+                    contract_type: 'CALL',
+                    symbol: 'R_100',
+                    duration: '1',
+                    duration_unit: 'm',
+                    initial_stake: '1',
+                    size: 2,
+                    take_profit: '10',
+                    stop_loss: '10',
+                },
+            },
+        });
+    };
+
+    const handleAction = (action: { type: string; bot_id: string }) => {
         // eslint-disable-next-line no-console
         console.log(action);
     };
@@ -132,11 +90,12 @@ const ServerSideBot = () => {
                         </div>
                     </div>
                     <div className='server-side__workspace__list'>
-                        {mock_data.map(bot => (
+                        {is_loading && <div>Loading...</div>}
+                        {bot_list.map(bot => (
                             <BotCard
-                                key={bot.id}
+                                key={bot.bot_id}
                                 {...bot}
-                                is_active={bot.id === active_bot}
+                                is_active={bot.bot_id === active_bot}
                                 onClick={(id: string) => setActiveBot(id)}
                                 onAction={handleAction}
                                 is_running={false}
@@ -164,7 +123,7 @@ type TBotCard = {
         symbol: string;
     };
     strategy: string;
-    id: string;
+    bot_id: string;
     is_active: boolean;
     onClick: (id: string) => void;
     onAction: (action: { type: string; id: string }) => void;
@@ -173,7 +132,7 @@ type TBotCard = {
 };
 
 const BotCard: React.FC<TBotCard> = ({
-    id,
+    bot_id,
     name,
     paramerters,
     strategy,
@@ -187,7 +146,7 @@ const BotCard: React.FC<TBotCard> = ({
         className={classNames('server-side__workspace__list__item', {
             'server-side__workspace__list__item--active': is_active,
         })}
-        onClick={() => onClick(id)}
+        onClick={() => onClick(bot_id)}
     >
         <div>
             <div>
@@ -240,13 +199,13 @@ const BotCard: React.FC<TBotCard> = ({
             </div>
         </div>
         <div className='server-side__workspace__list__item__actions'>
-            <div className='ss-icon' onClick={() => onAction({ type: is_running ? 'stop' : 'start', id })}>
+            <div className='ss-icon' onClick={() => onAction({ type: is_running ? 'stop' : 'start', bot_id })}>
                 <Icon icon='IcPlay' />
             </div>
             {/* <div className='ss-icon' onClick={() => onAction({ type: 'edit', id })}>
                 <Icon icon='IcEdit' />
             </div> */}
-            <div className='ss-icon' onClick={() => onAction({ type: 'delete', id })}>
+            <div className='ss-icon' onClick={() => onAction({ type: 'delete', bot_id })}>
                 <Icon icon='IcDelete' />
             </div>
         </div>

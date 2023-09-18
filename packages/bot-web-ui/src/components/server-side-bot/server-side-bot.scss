@@ -41,7 +41,7 @@
                 }
                 &--active {
                     background-color: var(--general-active);
-                    border-left: 4px solid var(--primary-color);
+                    border-left: 4px solid var(--text-loss-danger);
                 }
                 &__stats {
                     display: flex;

@@ -6,7 +6,7 @@
     height: 100%;
     max-width: 588px;
     gap: 0.8rem;
-    margin: 0 auto;
+    margin: 3.2rem auto 0;
 
     @include mobile {
         max-width: 100%;
@@ -36,7 +36,7 @@
             @include mobile {
                 text-overflow: ellipsis;
                 overflow: hidden;
-                max-width: 29rem;
+                max-width: 28.8rem;
             }
         }
     }

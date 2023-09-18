@@ -41,6 +41,6 @@ describe('<ChatMessages />', () => {
             /Hello! This is where you can chat with the counterparty to confirm the order details. Note: In case of a dispute, we'll use this chat as a reference./
         );
         expect(bot_message).toBeInTheDocument();
-        expect(screen.getByTestId('dt_chat_message')).toHaveClass('order-chat__messages-item--admin');
+        expect(screen.getByTestId('dt_chat_message')).toHaveClass('chat-messages-item--admin');
     });
 });

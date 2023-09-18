@@ -1,5 +1,5 @@
 import React from 'react';
-import { DesktopWrapper, Div100vhContainer, MobileWrapper, Text } from '@deriv/components';
+import { Div100vhContainer, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { TCFDPersonalDetailsContainerProps } from './props.types';
 import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form';
@@ -94,7 +94,7 @@ const CFDPersonalDetailsContainer = observer(({ onSubmit }: TCFDPersonalDetailsC
         onSubmit(index, value);
     };
 
-    const PersonalDetailsForm = () => (
+    return (
         <Div100vhContainer
             className='cfd-personal-details-modal'
             id='cfd-personal-details-modal'
@@ -114,21 +114,10 @@ const CFDPersonalDetailsContainer = observer(({ onSubmit }: TCFDPersonalDetailsC
                     onSubmit={updateValue}
                     residence_list={residence_list}
                     changeable_fields={getChangeableFields()}
-                    value={form_values}
+                    initial_values={form_values}
                 />
             </div>
         </Div100vhContainer>
-    );
-
-    return (
-        <React.Fragment>
-            <DesktopWrapper>
-                <PersonalDetailsForm />
-            </DesktopWrapper>
-            <MobileWrapper>
-                <PersonalDetailsForm />
-            </MobileWrapper>
-        </React.Fragment>
     );
 });
 

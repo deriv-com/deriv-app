@@ -27,7 +27,7 @@ type TCFDPersonalDetailsFormProps = {
     is_loading: boolean;
     onSubmit: TOnSubmit;
     residence_list: ResidenceList;
-    value: TFormValues;
+    initial_values: TFormValues;
 };
 
 type TValidatePersonalDetailsParams = {
@@ -212,21 +212,22 @@ const CFDPersonalDetailsForm = ({
     is_loading,
     residence_list,
     onSubmit,
-    value,
+    initial_values,
     index,
     form_error,
 }: TCFDPersonalDetailsFormProps) => {
     const account_opening_reason = getAccountOpeningReasonList();
 
     const onSubmitForm = (values: TFormValues, actions: FormikActions<TFormValues>) =>
-        submitForm(values, actions, index, onSubmit, !isDeepEqual(value, values), residence_list);
+        submitForm(values, actions, index, onSubmit, !isDeepEqual(initial_values, values), residence_list);
 
-    if (residence_list.length === 0) return <Loading is_fullscreen={false} />;
-    if (is_loading) return <Loading is_fullscreen={false} />;
+    const isFieldDisabled = (field: string) => !!initial_values[field] && !changeable_fields?.includes(field);
+
+    if (is_loading || residence_list.length === 0) return <Loading is_fullscreen={false} />;
 
     return (
         <Formik
-            initialValues={{ ...value }}
+            initialValues={{ ...initial_values }}
             validateOnChange
             validateOnBlur
             validate={values =>
@@ -253,15 +254,7 @@ const CFDPersonalDetailsForm = ({
                 const citizenship_error = touched.citizen && errors.citizen;
                 const place_of_birth_error = touched.place_of_birth && errors.place_of_birth;
                 const tax_residence_error = touched.tax_residence && errors.tax_residence;
-                const account_opening_reason_error = touched.account_opening_reason && errors.account_opening_reason;
 
-                const is_citizenship_disabled = !!value.citizen && !changeable_fields?.includes('citizen');
-                const is_place_of_birth_disabled =
-                    !!value.place_of_birth && !changeable_fields?.includes('place_of_birth');
-                const is_tax_residence_disabled =
-                    !!value.tax_residence && !changeable_fields?.includes('tax_residence');
-                const is_account_opening_reason_disabled =
-                    !!value.account_opening_reason && !changeable_fields?.includes('account_opening_reason');
                 const handleItemSelection = (item: ResidenceList[0], _field: string) => {
                     const item_value = item.value ? item.text : '';
                     setFieldValue(_field, item_value, true);
@@ -309,7 +302,7 @@ const CFDPersonalDetailsForm = ({
                                                                 type='text'
                                                                 label={localize('Citizenship*')}
                                                                 error={citizenship_error}
-                                                                disabled={is_citizenship_disabled}
+                                                                disabled={isFieldDisabled('citizen')}
                                                                 list_items={residence_list}
                                                                 onItemSelection={(item: ResidenceList[0]) =>
                                                                     handleItemSelection(item, 'citizen')
@@ -327,7 +320,7 @@ const CFDPersonalDetailsForm = ({
                                                         value={values.citizen}
                                                         list_items={residence_list}
                                                         error={citizenship_error}
-                                                        disabled={is_citizenship_disabled}
+                                                        disabled={isFieldDisabled('citizen')}
                                                         use_text={true}
                                                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                                                             setFieldValue('citizen', e.target.value, true)
@@ -349,7 +342,7 @@ const CFDPersonalDetailsForm = ({
                                                                 type='text'
                                                                 label={localize('Place of birth*')}
                                                                 error={place_of_birth_error}
-                                                                disabled={is_place_of_birth_disabled}
+                                                                disabled={isFieldDisabled('place_of_birth')}
                                                                 list_items={residence_list}
                                                                 onItemSelection={(item: ResidenceList[0]) =>
                                                                     handleItemSelection(item, 'place_of_birth')
@@ -367,7 +360,7 @@ const CFDPersonalDetailsForm = ({
                                                         value={values.place_of_birth}
                                                         list_items={residence_list}
                                                         error={place_of_birth_error}
-                                                        disabled={is_place_of_birth_disabled}
+                                                        disabled={isFieldDisabled('place_of_birth')}
                                                         use_text={true}
                                                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                                                             setFieldValue('place_of_birth', e.target.value, true)
@@ -388,7 +381,7 @@ const CFDPersonalDetailsForm = ({
                                                                 autoComplete='off'
                                                                 label={localize('Tax residence*')}
                                                                 error={tax_residence_error}
-                                                                disabled={is_tax_residence_disabled}
+                                                                disabled={isFieldDisabled('tax_residence')}
                                                                 list_items={residence_list}
                                                                 onItemSelection={(item: ResidenceList[0]) =>
                                                                     handleItemSelection(item, 'tax_residence')
@@ -405,7 +398,7 @@ const CFDPersonalDetailsForm = ({
                                                         label={localize('Tax residence*')}
                                                         value={values.tax_residence}
                                                         error={tax_residence_error}
-                                                        disabled={is_tax_residence_disabled}
+                                                        disabled={isFieldDisabled('tax_residence')}
                                                         list_items={residence_list}
                                                         use_text={true}
                                                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
@@ -423,15 +416,15 @@ const CFDPersonalDetailsForm = ({
                                                     placeholder={localize('Tax identification number*')}
                                                     value={values.tax_identification_number}
                                                     onBlur={handleBlur}
-                                                    disabled={
-                                                        !!value.tax_identification_number &&
-                                                        !changeable_fields?.includes('tax_identification_number')
-                                                    }
+                                                    disabled={isFieldDisabled('tax_identification_number')}
                                                     optional
                                                 />
                                             </fieldset>
                                             <Field name='account_opening_reason'>
-                                                {({ field }: FieldProps<string, TFormValues>) => (
+                                                {({
+                                                    field,
+                                                    meta: { error, touched },
+                                                }: FieldProps<string, TFormValues>) => (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
                                                             <Dropdown
@@ -441,10 +434,10 @@ const CFDPersonalDetailsForm = ({
                                                                 name={field.name}
                                                                 list={account_opening_reason}
                                                                 value={values.account_opening_reason}
-                                                                disabled={is_account_opening_reason_disabled}
+                                                                disabled={isFieldDisabled('account_opening_reason')}
                                                                 onChange={handleChange}
                                                                 handleBlur={handleBlur}
-                                                                error={account_opening_reason_error}
+                                                                error={touched && error}
                                                                 list_portal_id='modal_root'
                                                             />
                                                         </DesktopWrapper>
@@ -456,8 +449,8 @@ const CFDPersonalDetailsForm = ({
                                                                 label={localize('Account opening reason*')}
                                                                 list_items={account_opening_reason}
                                                                 value={values.account_opening_reason}
-                                                                disabled={is_account_opening_reason_disabled}
-                                                                error={account_opening_reason_error}
+                                                                disabled={isFieldDisabled('account_opening_reason')}
+                                                                error={touched && error}
                                                                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                                                     handleChange(e);
                                                                     setFieldValue(

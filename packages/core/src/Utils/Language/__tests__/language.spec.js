@@ -9,6 +9,7 @@ const languages = {
     KO: '한국어',
     PL: 'Polish',
     RU: 'Русский',
+    TR: 'Turkish',
     VI: 'Tiếng Việt',
     ZH_CN: '简体中文',
     ZH_TW: '繁體中文',

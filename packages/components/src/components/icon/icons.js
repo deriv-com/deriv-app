@@ -668,6 +668,7 @@ import './flag/ic-flag-pl.svg';
 import './flag/ic-flag-pt.svg';
 import './flag/ic-flag-ru.svg';
 import './flag/ic-flag-th.svg';
+import './flag/ic-flag-tr.svg';
 import './flag/ic-flag-uk.svg';
 import './flag/ic-flag-vi.svg';
 import './flag/ic-flag-zh-cn.svg';

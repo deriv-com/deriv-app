@@ -186,6 +186,7 @@ const PoiConfirmWithExampleFormContainer = ({
                                         </Text>
                                     }
                                     is_danger
+                                    className='hint-box-layout'
                                 />
                             </div>
                         )}

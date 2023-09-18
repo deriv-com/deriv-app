@@ -5,7 +5,6 @@ import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
-import classNames from 'classnames';
 
 type TIdvVerified = {
     needs_poa: boolean;

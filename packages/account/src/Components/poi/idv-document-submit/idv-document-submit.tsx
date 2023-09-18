@@ -155,6 +155,7 @@ const IdvDocumentSubmit = ({
                                     </Text>
                                 }
                                 is_danger
+                                className='hint-box-layout'
                             />
                         </div>
                     )}

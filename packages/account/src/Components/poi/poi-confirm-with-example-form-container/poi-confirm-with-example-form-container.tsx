@@ -161,8 +161,6 @@ const PoiConfirmWithExampleFormContainer = ({
                             <div className='account-form__poi-confirm-example--status-message'>
                                 <HintBox
                                     icon='IcAlertDanger'
-                                    icon_height={16}
-                                    icon_width={16}
                                     message={
                                         <Text as='p' size='xxxs'>
                                             <Localize i18n_default_text='Sorry, an internal error occurred. Hit the above checkbox to try again.' />

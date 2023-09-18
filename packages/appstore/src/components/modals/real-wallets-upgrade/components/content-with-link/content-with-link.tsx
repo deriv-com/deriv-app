@@ -2,36 +2,43 @@ import React from 'react';
 import classNames from 'classnames';
 import './content-with-link.scss';
 
-const ContentWithLink = ({ children, hide_fork, is_right_forked, fork_width = 15, fork_margin }: any) => {
+const ContentWithLink = ({ children, is_mobile, is_right_forked, show_fork, fork_width = 15, fork_margin }: any) => {
     return (
         <div
-            className='content-with-link'
+            className={classNames('content-with-link', {
+                'content-with-link--right-forked': is_right_forked,
+            })}
             style={{
-                flexDirection: is_right_forked ? 'row' : 'row-reverse',
-                height: hide_fork ? '100%' : 'auto',
+                height: show_fork ? '100%' : 'auto',
             }}
         >
             <div
-                className='content-with-link__content'
-                style={{
-                    margin: is_right_forked ? `0 ${fork_margin}px 0 0` : `0 0 0 ${fork_margin}px`,
-                }}
+                className={classNames('content-with-link__content', {
+                    'content-with-link__content--right-forked': is_right_forked,
+                })}
             >
                 {children}
             </div>
-            <div
-                className='content-with-link__fork'
-                style={{
-                    width: `${fork_width}px`,
-                    display: hide_fork && 'none',
-                    marginTop: hide_fork ? 'none' : `${fork_margin}px`,
-                    marginBottom: hide_fork ? 'none' : `${fork_margin}px`,
-                    rotate: is_right_forked ? '0deg' : '180deg',
-                    height: hide_fork ? '50%' : 'auto',
-                }}
-            />
-            <div className='content-with-link__neck'>
-                <div className='content-with-link__neck-line' style={{ width: hide_fork ? '63px' : '48px' }} />
+            <div className='content-with-link__link'>
+                {show_fork && (
+                    <div
+                        className={classNames('content-with-link__link-fork', {
+                            'content-with-link__link-fork--right-forked': is_right_forked,
+                        })}
+                        style={{
+                            width: is_mobile ? '24.4rem' : `${fork_width}px`,
+                            height: is_mobile ? '0.8rem' : `calc(100% - ${2 * fork_margin}px)`,
+                        }}
+                    />
+                )}
+                <div
+                    className='content-with-link__link-neck'
+                    style={
+                        is_mobile
+                            ? { width: '1px', height: show_fork ? '1.5rem' : '2.3rem' }
+                            : { width: show_fork ? '4.8rem' : '6.3rem' }
+                    }
+                />
             </div>
         </div>
     );

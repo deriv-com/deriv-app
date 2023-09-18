@@ -125,6 +125,12 @@ export const getMtCompanies = (is_eu: boolean) => {
                 title: is_eu ? localize('Demo CFDs') : localize('Demo Financial'),
                 short_title: financial_config.short_title,
             },
+            financial_demo: {
+                mt5_account_type: financial_config.account_type,
+                leverage: financial_config.leverage,
+                title: is_eu ? localize('Demo CFDs') : localize('Demo Financial'),
+                short_title: financial_config.short_title,
+            },
             synthetic_svg: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,

@@ -34,7 +34,7 @@ jest.mock('../useTransferMessageListBetweenWalletAndTradingApp', () =>
 
 describe('useTransferMessageList', () => {
     it('should get return the generated message list', () => {
-        const { result } = renderHook(() => useTransferMessageList(mock_from_account, mock_to_account));
+        const { result } = renderHook(() => useTransferMessageList(mock_from_account, mock_to_account, false));
 
         expect(result.current.data).toStrictEqual([
             {

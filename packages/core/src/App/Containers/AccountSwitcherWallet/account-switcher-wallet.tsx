@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { Button, Text, useOnClickOutside } from '@deriv/components';
+import { Button, Text, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
 import { useWalletAccountsList } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
@@ -41,20 +41,22 @@ export const AccountSwitcherWallet = ({ is_visible, toggle }: TAccountSwitcherWa
                     <Localize i18n_default_text='Deriv Apps accounts' />
                 </Text>
             </div>
-            <div className='account-switcher-wallet__list'>
-                {dtrade_account_wallets?.map(account => {
-                    const show_badge = account?.is_malta_wallet || account?.is_virtual;
+            <ThemedScrollbars height={540}>
+                <div className='account-switcher-wallet__list'>
+                    {dtrade_account_wallets?.map(account => {
+                        const show_badge = account?.is_malta_wallet || account?.is_virtual;
 
-                    return (
-                        <AccountSwitcherWalletItem
-                            key={account.dtrade_loginid}
-                            account={account}
-                            closeAccountsDialog={closeAccountsDialog}
-                            show_badge={show_badge}
-                        />
-                    );
-                })}
-            </div>
+                        return (
+                            <AccountSwitcherWalletItem
+                                key={account.dtrade_loginid}
+                                account={account}
+                                closeAccountsDialog={closeAccountsDialog}
+                                show_badge={show_badge}
+                            />
+                        );
+                    })}
+                </div>
+            </ThemedScrollbars>
             <Button
                 className='account-switcher-wallet__button'
                 has_effect

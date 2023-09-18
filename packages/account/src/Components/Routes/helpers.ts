@@ -2,7 +2,7 @@ import { match, matchPath, RouteProps } from 'react-router';
 import { routes } from '@deriv/shared';
 import { TRouteConfig } from '../../Types';
 
-export const normalizePath = (path: string) => (/^\//.test(path) ? path : `/${path || ''}`); // Default to '/'
+export const normalizePath = (path: string) => (path.startsWith('/') ? path : `/${path || ''}`); // Default to '/'
 
 export const findRouteByPath = (path: string, routes_config?: TRouteConfig[]): RouteProps | undefined => {
     let result: RouteProps | undefined;
@@ -31,7 +31,7 @@ export const findRouteByPath = (path: string, routes_config?: TRouteConfig[]): R
 };
 
 export const isRouteVisible = (route?: { is_authenticated: boolean }, is_logged_in?: boolean) =>
-    !(route && route.is_authenticated && !is_logged_in);
+    !(route?.is_authenticated && !is_logged_in);
 
 export const getPath = (route_path: string, params: { [key: string]: string } = {}) =>
     Object.keys(params).reduce((p, name) => p.replace(`:${name}`, params[name]), route_path);

@@ -9,8 +9,18 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import { removeKeyValue } from '../../../utils/settings';
 import { tour_type } from '../joyride-config';
 
+type TGuideList = {
+    content?: string;
+    id: number;
+    src?: string;
+    subtype?: string;
+    type: string;
+    url?: string;
+    imageclass?: string;
+};
+
 type TGuideContent = {
-    guide_list: [];
+    guide_list: TGuideList[];
 };
 
 const GuideContent = observer(({ guide_list }: TGuideContent) => {
@@ -27,6 +37,7 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
         setTourDialogVisibility,
         showVideoDialog,
     } = dashboard;
+    const is_mobile = isMobile();
 
     const triggerTour = (type: string) => {
         const storage = JSON.parse(localStorage?.dbot_settings);
@@ -57,7 +68,6 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
             setActiveTab(DBOT_TABS.BOT_BUILDER);
         }
     };
-    const is_mobile = isMobile();
 
     return React.useMemo(
         () => (

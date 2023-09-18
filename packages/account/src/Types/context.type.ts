@@ -1,4 +1,4 @@
-import { TToken } from './common-prop.type';
+import { TToken } from './common.type';
 
 export type TApiContext = {
     api_tokens: NonNullable<TToken[]>;

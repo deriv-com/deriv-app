@@ -25,6 +25,7 @@ jest.mock('../../Components/cfd-poa', () =>
         </div>
     ))
 );
+
 jest.mock('../../Components/cfd-poi', () =>
     jest.fn(({ onCancel, onSubmit }) => (
         <div>

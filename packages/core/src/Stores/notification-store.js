@@ -846,7 +846,6 @@ export default class NotificationStore extends BaseStore {
                         />
                     ),
                     platform: 'P2P',
-                    should_show_again: false,
                     type: 'announce',
                 };
             },

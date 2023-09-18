@@ -13,7 +13,7 @@ const DesktopWalletsList: React.FC = () => {
             {wallet_accounts_list.map(account => {
                 return (
                     <WalletsAccordion
-                        key={account.loginid}
+                        key={`wallets-accordion-${account.loginid}`}
                         account={account}
                         content={<AccountsList />}
                         header={<WalletListCard account={account} />}

@@ -23,7 +23,6 @@ const useAuthorize = () => {
             const active_loginid = getActiveLoginIDFromLocalStorage();
             if (active_loginid !== loginid) {
                 localStorage.setItem('active_loginid', loginid);
-
                 invalidate('authorize');
             }
         },

@@ -124,10 +124,9 @@ export default class AccountTransferStore {
     // 2. fiat to mt & vice versa
     // 3. crypto to mt & vice versa
     async onMountAccountTransfer() {
-        const { client, common, modules } = this.root_store;
+        const { client, modules } = this.root_store;
         const { onMountCommon, setLoading, setOnRemount } = modules.cashier.general_store;
         const { active_accounts, is_logged_in } = client;
-        const { is_from_derivgo } = common;
 
         setLoading(true);
         setOnRemount(this.onMountAccountTransfer);
@@ -156,17 +155,11 @@ export default class AccountTransferStore {
                 return;
             }
 
-            if (!is_from_derivgo) {
-                transfer_between_accounts.accounts = transfer_between_accounts.accounts?.filter(
-                    account => account.account_type !== CFD_PLATFORMS.DERIVEZ
-                );
-            }
-
             if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
                 return;
             }
 
-            await this.sortAccountsTransfer(transfer_between_accounts, is_from_derivgo);
+            await this.sortAccountsTransfer(transfer_between_accounts);
             this.setTransferFee();
             this.setMinimumFee();
             this.setTransferLimit();
@@ -262,21 +255,12 @@ export default class AccountTransferStore {
     }
 
     // Using Partial for type to bypass 'msg_type' and 'echo_req' from response type
-    async sortAccountsTransfer(
-        response_accounts?: Partial<TransferBetweenAccountsResponse> | null,
-        is_from_derivgo?: boolean
-    ) {
+    async sortAccountsTransfer(response_accounts?: Partial<TransferBetweenAccountsResponse> | null) {
         const transfer_between_accounts = response_accounts || (await this.WS.authorized.transferBetweenAccounts());
         if (!this.accounts_list.length) {
             if (transfer_between_accounts.error) {
                 return;
             }
-        }
-
-        if (!is_from_derivgo && transfer_between_accounts && Array.isArray(transfer_between_accounts.accounts)) {
-            transfer_between_accounts.accounts = transfer_between_accounts.accounts.filter(
-                account => account.account_type !== CFD_PLATFORMS.DERIVEZ
-            );
         }
 
         const mt5_login_list = (await this.WS.storage.mt5LoginList())?.mt5_login_list;
@@ -579,9 +563,9 @@ export default class AccountTransferStore {
     }
 
     requestTransferBetweenAccounts = async ({ amount }: { amount: number }) => {
-        const { client, modules, common } = this.root_store;
+        const { client, modules } = this.root_store;
         const { setLoading } = modules.cashier.general_store;
-        const { is_from_derivgo } = common;
+
         const {
             is_logged_in,
             responseMt5LoginList,
@@ -608,12 +592,6 @@ export default class AccountTransferStore {
             currency,
             amount
         );
-
-        if (!is_from_derivgo && transfer_between_accounts && Array.isArray(transfer_between_accounts.accounts)) {
-            transfer_between_accounts.accounts = transfer_between_accounts.accounts.filter(
-                account => account.account_type !== CFD_PLATFORMS.DERIVEZ
-            );
-        }
 
         if (is_mt_transfer) this.setIsMT5TransferInProgress(false);
 
@@ -646,17 +624,16 @@ export default class AccountTransferStore {
                         }
                     );
                 }
-                // if one of the accounts was dxtrade
-                if (account.account_type === CFD_PLATFORMS.DXTRADE) {
-                    Promise.all([
-                        this.WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE),
-                        this.WS.balanceAll(),
-                    ]).then(([dxtrade_login_list_response, balance_response]) => {
-                        // update the balance for account switcher by renewing the dxtrade_login_list_response
-                        responseTradingPlatformAccountsList(dxtrade_login_list_response);
-                        // update total balance since Dxtrade total only comes in non-stream balance call
-                        setBalanceOtherAccounts(balance_response.balance);
-                    });
+                // if one of the accounts was dxtrade or derivez
+                if (account.account_type === CFD_PLATFORMS.DXTRADE || account.account_type === CFD_PLATFORMS.DERIVEZ) {
+                    Promise.all([this.WS.tradingPlatformAccountsList(account.account_type), this.WS.balanceAll()]).then(
+                        ([login_list_response, balance_response]) => {
+                            // update the balance for account switcher by renewing the login_list_response
+                            responseTradingPlatformAccountsList(login_list_response);
+                            // update total balance since dxtrade or derivez total only comes in non-stream balance call
+                            setBalanceOtherAccounts(balance_response.balance);
+                        }
+                    );
                 }
                 // if one of the accounts was ctrader
                 if (account.account_type === CFD_PLATFORMS.CTRADER) {

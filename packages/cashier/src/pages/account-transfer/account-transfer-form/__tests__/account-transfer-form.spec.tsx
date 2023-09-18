@@ -86,9 +86,6 @@ describe('<AccountTransferForm />', () => {
                     },
                 },
             },
-            common: {
-                is_from_derivgo: false,
-            },
             traders_hub: {
                 selected_account: {},
             },

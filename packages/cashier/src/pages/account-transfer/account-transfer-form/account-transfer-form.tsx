@@ -3,14 +3,7 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Field, FieldProps, Formik, Form } from 'formik';
 import { Button, Dropdown, Input, Loading, Money, Text } from '@deriv/components';
-import {
-    getDecimalPlaces,
-    getCurrencyDisplayCode,
-    getCurrencyName,
-    getPlatformSettings,
-    validNumber,
-    routes,
-} from '@deriv/shared';
+import { getDecimalPlaces, getCurrencyDisplayCode, getCurrencyName, validNumber, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import { TReactChangeEvent, TAccount, TAccountsList, TError } from '../../../types';
@@ -74,16 +67,15 @@ let derivez_accounts_from: TAccount[] = [];
 let derivez_accounts_to: TAccount[] = [];
 let dxtrade_accounts_from: TAccount[] = [];
 let dxtrade_accounts_to: TAccount[] = [];
+const other_cfds_accounts_from: TAccount[] = [];
+const other_cfds_accounts_to: TAccount[] = [];
 let mt_accounts_from: TAccount[] = [];
 let mt_accounts_to: TAccount[] = [];
 let remaining_transfers: number | undefined;
 
 const AccountTransferForm = observer(
     ({ error, onClickDeposit, onClickNotes, setSideNotes, onClose }: TAccountTransferFormProps) => {
-        const {
-            client,
-            common: { is_from_derivgo },
-        } = useStore();
+        const { client } = useStore();
 
         const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
         const { account_transfer, crypto_fiat_converter, general_store } = useCashierStore();
@@ -135,8 +127,6 @@ const AccountTransferForm = observer(
         const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
         const is_derivez_transfer = selected_to.is_derivez || selected_from.is_derivez;
 
-        const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
-
         const history = useHistory();
 
         const validateAmount = (amount: string) => {
@@ -166,6 +156,7 @@ const AccountTransferForm = observer(
                 if (is_ctrader) return ctrader_accounts_from;
                 if (is_dxtrade) return dxtrade_accounts_from;
                 if (is_derivez) return derivez_accounts_from;
+                if (is_dxtrade || is_derivez || is_ctrader) return other_cfds_accounts_from;
 
                 return accounts_from;
             } else if (type === 'to') {
@@ -173,6 +164,7 @@ const AccountTransferForm = observer(
                 if (is_ctrader) return ctrader_accounts_to;
                 if (is_dxtrade) return dxtrade_accounts_to;
                 if (is_derivez) return derivez_accounts_to;
+                if (is_dxtrade || is_derivez || is_ctrader) return other_cfds_accounts_to;
 
                 return accounts_to;
             }
@@ -199,13 +191,23 @@ const AccountTransferForm = observer(
                 const text = <AccountOption idx={idx} account={account} />;
                 const value = account.value;
 
+                const should_disable_other_cfds_selected_from =
+                    selected_to.is_mt && (account.is_dxtrade || account.is_derivez);
+                const should_disable_mt_selected_from =
+                    (selected_to.is_dxtrade || selected_to.is_derivez) && account.is_mt;
+
+                const selected_from_is_disabled =
+                    should_disable_other_cfds_selected_from || should_disable_mt_selected_from;
+
                 const is_cfd_account = account.is_mt || account.is_ctrader || account.is_dxtrade || account.is_derivez;
+
                 getAccounts('from', account).push({
                     text,
                     value,
                     is_mt: account.is_mt,
                     is_ctrader: account.is_ctrader,
                     is_dxtrade: account.is_dxtrade,
+                    disabled: selected_from_is_disabled,
                     nativepicker_text: `${is_cfd_account ? account.market_type : getCurrencyName(account.currency)} (${
                         account.balance
                     } ${is_cfd_account ? account.currency : account.text})`,
@@ -224,12 +226,17 @@ const AccountTransferForm = observer(
                     const is_selected_from_mt = selected_from.is_mt && account.is_mt;
                     const is_selected_from_ctrader = selected_from.is_ctrader && account.is_ctrader;
                     const is_selected_from_dxtrade = selected_from.is_dxtrade && account.is_dxtrade;
+                    const is_selected_from_derivez = selected_from.is_derivez && account.is_derivez;
 
                     // cannot transfer to MT account from MT
                     // cannot transfer to cTrader account from cTrader
                     // cannot transfer to Dxtrade account from Dxtrade
 
-                    const is_disabled = is_selected_from_mt || is_selected_from_ctrader || is_selected_from_dxtrade;
+                    const is_disabled =
+                        is_selected_from_mt ||
+                        is_selected_from_ctrader ||
+                        is_selected_from_dxtrade ||
+                        is_selected_from_derivez;
 
                     getAccounts('to', account).push({
                         text,
@@ -249,20 +256,16 @@ const AccountTransferForm = observer(
             setFromAccounts({
                 ...(mt_accounts_from.length && { [localize('Deriv MT5 accounts')]: mt_accounts_from }),
                 ...(ctrader_accounts_from.length && { [localize('Deriv cTrader accounts')]: ctrader_accounts_from }),
-                ...(dxtrade_accounts_from.length && {
-                    [localize('{{platform_name_dxtrade}} accounts', { platform_name_dxtrade })]: dxtrade_accounts_from,
-                }),
-                ...(derivez_accounts_from.length && { [localize('Deriv EZ accounts')]: derivez_accounts_from }),
+                ...(dxtrade_accounts_from.length && { [localize('DerivX accounts')]: dxtrade_accounts_from }),
+                ...(derivez_accounts_from.length && { [localize('DerivEz accounts')]: derivez_accounts_from }),
                 ...(accounts_from.length && { [localize('Deriv accounts')]: accounts_from }),
             });
 
             setToAccounts({
                 ...(mt_accounts_to.length && { [localize('Deriv MT5 accounts')]: mt_accounts_to }),
                 ...(ctrader_accounts_to.length && { [localize('Deriv cTrader accounts')]: ctrader_accounts_to }),
-                ...(dxtrade_accounts_to.length && {
-                    [localize('{{platform_name_dxtrade}} accounts', { platform_name_dxtrade })]: dxtrade_accounts_to,
-                }),
-                ...(derivez_accounts_to.length && { [localize('Deriv EZ accounts')]: derivez_accounts_to }),
+                ...(dxtrade_accounts_to.length && { [localize('DerivX accounts')]: dxtrade_accounts_to }),
+                ...(derivez_accounts_to.length && { [localize('DerivEz accounts')]: derivez_accounts_to }),
                 ...(accounts_to.length && { [localize('Deriv accounts')]: accounts_to }),
             });
         }, [accounts_list, selected_to, selected_from]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -288,7 +291,6 @@ const AccountTransferForm = observer(
                         is_dxtrade_transfer={is_dxtrade_transfer}
                         is_mt_transfer={is_mt_transfer}
                         is_ctrader_transfer={is_ctrader_transfer}
-                        is_from_derivgo={is_from_derivgo}
                         is_derivez_transfer={is_derivez_transfer}
                     />
                 );
@@ -317,7 +319,6 @@ const AccountTransferForm = observer(
             derivez_remaining_transfers?.allowed,
             is_dxtrade_transfer,
             is_mt_transfer,
-            is_from_derivgo,
             is_derivez_transfer,
             ctrader_remaining_transfers?.allowed,
             is_ctrader_transfer,
@@ -654,7 +655,6 @@ const AccountTransferForm = observer(
                                                 is_dxtrade_transfer={is_dxtrade_transfer}
                                                 is_ctrader_transfer={is_ctrader_transfer}
                                                 is_mt_transfer={is_mt_transfer}
-                                                is_from_derivgo={is_from_derivgo}
                                                 is_derivez_transfer={is_derivez_transfer}
                                             />
                                         </SideNote>

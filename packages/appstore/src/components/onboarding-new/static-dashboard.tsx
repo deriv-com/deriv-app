@@ -601,23 +601,23 @@ const StaticDashboard = observer(
                                         is_financial_last_step={is_financial_last_step}
                                         is_eu_user={is_eu_user}
                                     />
-                                    {/* <StaticCFDAccountManager
-                                    type='Financial'
-                                    platform='derivez'
-                                    appname={localize('Deriv EZ')}
-                                    description={localize(
-                                        'Trade CFDs on an easy-to-get-started platform with all your favourite assets.'
-                                    )}
-                                    loginid={loginid}
-                                    currency={currency}
-                                    has_account={has_account}
-                                    derived_amount={derived_amount}
-                                    financial_amount={financial_amount}
-                                    is_derivx_last_step={is_derivx_last_step}
-                                    is_blurry={is_blurry}
-                                    is_onboarding_animated={is_onboarding_animated}
-                                    is_eu_user={is_eu_user}
-                                /> */}
+                                    <StaticCFDAccountManager
+                                        type='Financial'
+                                        platform='derivez'
+                                        appname={localize('Deriv EZ')}
+                                        description={localize(
+                                            'Trade CFDs on an easy-to-get-started platform with all your favourite assets.'
+                                        )}
+                                        loginid={loginid}
+                                        currency={currency}
+                                        has_account={has_account}
+                                        derived_amount={derived_amount}
+                                        financial_amount={financial_amount}
+                                        is_derivx_last_step={is_derivx_last_step}
+                                        is_blurry={is_blurry}
+                                        is_onboarding_animated={is_onboarding_animated}
+                                        is_eu_user={is_eu_user}
+                                    />
                                 </div>
                             )}
                         </div>

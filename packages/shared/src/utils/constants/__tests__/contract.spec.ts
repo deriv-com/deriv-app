@@ -6,7 +6,7 @@ import {
     getContractConfig,
     getContractTypeDisplay,
     getContractTypePosition,
-    TRADE_FEATURE,
+    getTradeFeatureFlag,
 } from '../contract';
 
 type TGetSupportedContractsKey = keyof ReturnType<typeof getSupportedContracts>;
@@ -17,12 +17,12 @@ const unsupported_contract = {
     position: 'top',
 };
 const supported_high_low = {
-    feature_flag: TRADE_FEATURE.HIGH_LOW,
+    feature_flag: getTradeFeatureFlag('high_low'),
     name: 'Higher',
     position: 'top',
 };
 const supported_not_high_low = {
-    feature_flag: TRADE_FEATURE.RISE_FALL,
+    feature_flag: getTradeFeatureFlag('rise_fall'),
     name: 'Rise',
     position: 'top',
 };

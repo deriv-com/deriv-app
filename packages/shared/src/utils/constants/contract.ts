@@ -2,27 +2,34 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { shouldShowCancellation, shouldShowExpiration, TURBOS } from '../contract';
 
-/**
- * each trade feature flag should start with 'trade_' prefix
- * and end with trade type category from getContractCategoriesConfig() or beginning part of it,
- * e.g.: 'trade_turbos' flag will enable/disable both turboslong and turbosshort contracts.
- */
-export const TRADE_FEATURE = {
-    ACCUMULATORS: 'trade_accumulator',
-    ENDS_IN_OUT: 'trade_end',
-    EVEN_ODD: 'trade_even_odd',
-    HIGH_LOW: 'trade_high_low',
-    MATCHES_DIFFERS: 'trade_match_diff',
-    MULTIPLIERS: 'trade_multiplier',
-    ONLY_UP_DOWN: 'trade_run_high_low',
-    OVER_UNDER: 'trade_over_under',
-    RISE_FALL: 'trade_rise_fall',
-    SHARKFIN: 'trade_sharkfin',
-    STAYS_IN_OUT: 'trade_stay',
-    TOUCH_NO_TOUCH: 'trade_touch',
-    TURBOS: 'trade_turbos',
-    VANILLAS: 'trade_vanilla',
+export const TRADE_FEATURE_PREFIX = 'trade_';
+
+const TRADE = {
+    ACCUMULATORS: 'accumulator',
+    ENDS_IN_OUT: 'end',
+    EVEN_ODD: 'even_odd',
+    HIGH_LOW: 'high_low',
+    MATCHES_DIFFERS: 'match_diff',
+    MULTIPLIERS: 'multiplier',
+    ONLY_UP_DOWN: 'run_high_low',
+    OVER_UNDER: 'over_under',
+    RISE_FALL: 'rise_fall',
+    SHARKFIN: 'sharkfin',
+    STAYS_IN_OUT: 'stay',
+    TOUCH_NO_TOUCH: 'touch',
+    TURBOS: 'turbos',
+    VANILLAS: 'vanilla',
 } as const;
+
+/**
+ * @param {string} trade_category - one of the trade type categories in TRADE object, e.g. 'rise_fall'.
+ * Each trade feature flag should start with TRADE_FEATURE_PREFIX
+ * and end with trade type category from getContractCategoriesConfig() or the beginning of it, e.g.:
+ * 'trade_turbos' flag will enable/disable both turboslong and turbosshort contracts.
+ */
+export const getTradeFeatureFlag = (trade_category = '') => {
+    return trade_category ? `${TRADE_FEATURE_PREFIX}${trade_category}` : '';
+};
 
 export const getLocalizedBasis = () =>
     ({
@@ -415,129 +422,129 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
     ({
         ACCU: {
             button_name: localize('Buy'),
-            feature_flag: TRADE_FEATURE.ACCUMULATORS,
+            feature_flag: getTradeFeatureFlag(TRADE.ACCUMULATORS),
             name: localize('Accumulators'),
             position: 'top',
         },
         CALL: {
-            feature_flag: is_high_low ? TRADE_FEATURE.HIGH_LOW : TRADE_FEATURE.RISE_FALL,
+            feature_flag: is_high_low ? getTradeFeatureFlag(TRADE.HIGH_LOW) : getTradeFeatureFlag(TRADE.RISE_FALL),
             name: is_high_low ? localize('Higher') : localize('Rise'),
             position: 'top',
         },
         PUT: {
-            feature_flag: is_high_low ? TRADE_FEATURE.HIGH_LOW : TRADE_FEATURE.RISE_FALL,
+            feature_flag: is_high_low ? getTradeFeatureFlag(TRADE.HIGH_LOW) : getTradeFeatureFlag(TRADE.RISE_FALL),
             name: is_high_low ? localize('Lower') : localize('Fall'),
             position: 'bottom',
         },
         CALLE: {
-            feature_flag: TRADE_FEATURE.RISE_FALL,
+            feature_flag: getTradeFeatureFlag(TRADE.RISE_FALL),
             name: localize('Rise'),
             position: 'top',
         },
         PUTE: {
-            feature_flag: TRADE_FEATURE.RISE_FALL,
+            feature_flag: getTradeFeatureFlag(TRADE.RISE_FALL),
             name: localize('Fall'),
             position: 'bottom',
         },
         DIGITMATCH: {
-            feature_flag: TRADE_FEATURE.MATCHES_DIFFERS,
+            feature_flag: getTradeFeatureFlag(TRADE.MATCHES_DIFFERS),
             name: localize('Matches'),
             position: 'top',
         },
         DIGITDIFF: {
-            feature_flag: TRADE_FEATURE.MATCHES_DIFFERS,
+            feature_flag: getTradeFeatureFlag(TRADE.MATCHES_DIFFERS),
             name: localize('Differs'),
             position: 'bottom',
         },
         DIGITEVEN: {
-            feature_flag: TRADE_FEATURE.EVEN_ODD,
+            feature_flag: getTradeFeatureFlag(TRADE.EVEN_ODD),
             name: localize('Even'),
             position: 'top',
         },
         DIGITODD: {
-            feature_flag: TRADE_FEATURE.EVEN_ODD,
+            feature_flag: getTradeFeatureFlag(TRADE.EVEN_ODD),
             name: localize('Odd'),
             position: 'bottom',
         },
         DIGITOVER: {
-            feature_flag: TRADE_FEATURE.OVER_UNDER,
+            feature_flag: getTradeFeatureFlag(TRADE.OVER_UNDER),
             name: localize('Over'),
             position: 'top',
         },
         DIGITUNDER: {
-            feature_flag: TRADE_FEATURE.OVER_UNDER,
+            feature_flag: getTradeFeatureFlag(TRADE.OVER_UNDER),
             name: localize('Under'),
             position: 'bottom',
         },
         ONETOUCH: {
-            feature_flag: TRADE_FEATURE.TOUCH_NO_TOUCH,
+            feature_flag: getTradeFeatureFlag(TRADE.TOUCH_NO_TOUCH),
             name: localize('Touch'),
             position: 'top',
         },
         NOTOUCH: {
-            feature_flag: TRADE_FEATURE.TOUCH_NO_TOUCH,
+            feature_flag: getTradeFeatureFlag(TRADE.TOUCH_NO_TOUCH),
             name: localize('No Touch'),
             position: 'bottom',
         },
         MULTUP: {
-            feature_flag: TRADE_FEATURE.MULTIPLIERS,
+            feature_flag: getTradeFeatureFlag(TRADE.MULTIPLIERS),
             name: localize('Up'),
             position: 'top',
         },
         MULTDOWN: {
-            feature_flag: TRADE_FEATURE.MULTIPLIERS,
+            feature_flag: getTradeFeatureFlag(TRADE.MULTIPLIERS),
             name: localize('Down'),
             position: 'bottom',
         },
         TURBOSLONG: {
-            feature_flag: TRADE_FEATURE.TURBOS,
+            feature_flag: getTradeFeatureFlag(TRADE.TURBOS),
             name: localize('Turbos'),
             button_name: localize('Long'),
             position: 'top',
         },
         TURBOSSHORT: {
-            feature_flag: TRADE_FEATURE.TURBOS,
+            feature_flag: getTradeFeatureFlag(TRADE.TURBOS),
             name: localize('Turbos'),
             button_name: localize('Short'),
             position: 'bottom',
         },
         VANILLALONGCALL: {
-            feature_flag: TRADE_FEATURE.VANILLAS,
+            feature_flag: getTradeFeatureFlag(TRADE.VANILLAS),
             name: localize('Call'),
             position: 'top',
         },
         VANILLALONGPUT: {
-            feature_flag: TRADE_FEATURE.VANILLAS,
+            feature_flag: getTradeFeatureFlag(TRADE.VANILLAS),
             name: localize('Put'),
             position: 'bottom',
         },
         RUNHIGH: {
-            feature_flag: TRADE_FEATURE.ONLY_UP_DOWN,
+            feature_flag: getTradeFeatureFlag(TRADE.ONLY_UP_DOWN),
             name: localize('Only Ups'),
             position: 'top',
         },
         RUNLOW: {
-            feature_flag: TRADE_FEATURE.ONLY_UP_DOWN,
+            feature_flag: getTradeFeatureFlag(TRADE.ONLY_UP_DOWN),
             name: localize('Only Downs'),
             position: 'bottom',
         },
         EXPIRYMISS: {
-            feature_flag: TRADE_FEATURE.ENDS_IN_OUT,
+            feature_flag: getTradeFeatureFlag(TRADE.ENDS_IN_OUT),
             name: localize('Ends Outside'),
             position: 'top',
         },
         EXPIRYRANGE: {
-            feature_flag: TRADE_FEATURE.ENDS_IN_OUT,
+            feature_flag: getTradeFeatureFlag(TRADE.ENDS_IN_OUT),
             name: localize('Ends Between'),
             position: 'bottom',
         },
         RANGE: {
-            feature_flag: TRADE_FEATURE.STAYS_IN_OUT,
+            feature_flag: getTradeFeatureFlag(TRADE.STAYS_IN_OUT),
             name: localize('Stays Between'),
             position: 'top',
         },
         UPORDOWN: {
-            feature_flag: TRADE_FEATURE.STAYS_IN_OUT,
+            feature_flag: getTradeFeatureFlag(TRADE.STAYS_IN_OUT),
             name: localize('Goes Outside'),
             position: 'bottom',
         },

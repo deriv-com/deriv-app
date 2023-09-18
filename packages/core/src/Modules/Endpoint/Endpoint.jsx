@@ -7,6 +7,7 @@ import {
     getSocketURL,
     PlatformContext,
     isMobile,
+    TRADE_FEATURE_PREFIX,
     website_domain,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -16,7 +17,7 @@ const FeatureFlagsSection = observer(() => {
     const visible_feature_flags = Object.entries(feature_flags.data ?? {})?.reduce(
         (a, [key, value]) => ({
             ...a,
-            ...(location.hostname === website_domain && key.startsWith('trade_') ? {} : { [key]: value }),
+            ...(location.hostname === website_domain && key.startsWith(TRADE_FEATURE_PREFIX) ? {} : { [key]: value }),
         }),
         {} // hiding flags for trade types in production
     );

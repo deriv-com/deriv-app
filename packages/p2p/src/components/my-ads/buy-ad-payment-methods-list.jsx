@@ -6,6 +6,7 @@ import { Autocomplete, Icon, Text, useOnClickOutside } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { useStores } from 'Stores';
 import { localize, Localize } from 'Components/i18next';
+import PaymentMethodIcon from 'Components/payment-method-icon';
 import PropTypes from 'prop-types';
 import './buy-ad-payment-methods-list.scss';
 
@@ -17,7 +18,7 @@ const BuyAdPaymentMethodsList = ({
     should_show_hint,
     touched,
 }) => {
-    const { my_ads_store, my_profile_store } = useStores();
+    const { general_store, my_ads_store, my_profile_store } = useStores();
     const [selected_edit_method, setSelectedEditMethod] = React.useState();
     const [payment_methods_list, setPaymentMethodsList] = React.useState([]);
     const [close_icon, setCloseIcon] = React.useState(false);
@@ -124,7 +125,6 @@ const BuyAdPaymentMethodsList = ({
             <div className='buy-ad-payment-methods-list__container'>
                 {selected_methods.map((payment_method, key) => {
                     const method = my_profile_store.getPaymentMethodDisplayName(payment_method);
-                    const payment_method_icon = method.replace(' ', '');
 
                     return (
                         <Formik key={key} enableReinitialize initialValues={{ payment_method: method }}>
@@ -133,13 +133,25 @@ const BuyAdPaymentMethodsList = ({
                                     {({ field }) =>
                                         my_ads_store.current_method.key === key &&
                                         my_ads_store.current_method.is_deleted ? (
-                                            <div className='p2p-my-ads--border' ref={deleted_autocomplete_ref}>
+                                            <div
+                                                className='p2p-my-ads--border'
+                                                ref={deleted_autocomplete_ref}
+                                                onClick={e => {
+                                                    my_ads_store.setShowFilterPaymentMethods(isMobile());
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                }}
+                                            >
                                                 <Autocomplete
                                                     {...field}
                                                     autoComplete='off' // prevent chrome autocomplete
                                                     className='buy-ad-payment-methods-list__input'
                                                     data-lpignore='true'
-                                                    hide_list={hide_list}
+                                                    hide_list={
+                                                        isDesktop()
+                                                            ? hide_list
+                                                            : general_store.isCurrentModal('QuickAddModal')
+                                                    }
                                                     is_alignment_top={is_alignment_top}
                                                     leading_icon={<Icon icon='IcAddOutline' size={14} />}
                                                     list_items={payment_methods_list}
@@ -178,18 +190,13 @@ const BuyAdPaymentMethodsList = ({
                                                     autoComplete='off' // prevent chrome autocomplete
                                                     className='buy-ad-payment-methods-list__input'
                                                     data-lpignore='true'
-                                                    hide_list={hide_list}
-                                                    is_alignment_top={is_alignment_top}
-                                                    leading_icon={
-                                                        <Icon
-                                                            icon={
-                                                                payment_method_icon === 'BankTransfer' ||
-                                                                payment_method_icon === 'Other'
-                                                                    ? `IcCashier${payment_method_icon}`
-                                                                    : 'IcCashierEwallet'
-                                                            }
-                                                        />
+                                                    hide_list={
+                                                        isDesktop()
+                                                            ? hide_list
+                                                            : general_store.isCurrentModal('QuickAddModal')
                                                     }
+                                                    is_alignment_top={is_alignment_top}
+                                                    leading_icon={<PaymentMethodIcon display_name={method} />}
                                                     list_items={[method]}
                                                     list_portal_id={list_portal_id ?? 'deriv_app'}
                                                     onBlur={e => {
@@ -206,22 +213,31 @@ const BuyAdPaymentMethodsList = ({
                                                     }}
                                                     onFocus={e => {
                                                         e.preventDefault();
-                                                        setCloseIcon(true);
-                                                        setHideList(false);
-                                                        setFieldValue('payment_method', method);
-                                                        if (!my_ads_store.current_method.is_deleted) {
-                                                            setSelectedEditMethod({
-                                                                value: payment_method,
-                                                                text: method,
-                                                            });
-                                                            my_ads_store.setCurrentMethod({
-                                                                ...my_ads_store.current_method,
-                                                                key,
-                                                            });
+                                                        if (
+                                                            !general_store.isCurrentModal('QuickAddModal') ||
+                                                            isDesktop()
+                                                        ) {
+                                                            setCloseIcon(true);
+                                                            setHideList(false);
+                                                            setFieldValue('payment_method', method);
+                                                            if (!my_ads_store.current_method.is_deleted) {
+                                                                setSelectedEditMethod({
+                                                                    value: payment_method,
+                                                                    text: method,
+                                                                });
+                                                                my_ads_store.setCurrentMethod({
+                                                                    ...my_ads_store.current_method,
+                                                                    key,
+                                                                });
+                                                            }
                                                         }
                                                     }}
                                                     onShowDropdownList={() => {
-                                                        setCloseIcon(true);
+                                                        if (
+                                                            !general_store.isCurrentModal('QuickAddModal') ||
+                                                            isDesktop()
+                                                        )
+                                                            setCloseIcon(true);
                                                     }}
                                                     required
                                                     trailing_icon={
@@ -238,18 +254,20 @@ const BuyAdPaymentMethodsList = ({
                                                                     : 'IcDelete'
                                                             }
                                                             onTouchStart={e => {
-                                                                e.preventDefault();
+                                                                e.stopPropagation();
                                                                 if (isMobile())
                                                                     onClickIcon(payment_method, key, setFieldValue);
                                                             }}
-                                                            onMouseDown={() => {
-                                                                if (isDesktop() && my_ads_store.show_ad_form)
+                                                            onMouseDown={e => {
+                                                                e.stopPropagation();
+                                                                if (isDesktop())
                                                                     onClickIcon(payment_method, key, setFieldValue);
                                                             }}
-                                                            onClick={() => {
-                                                                if (isDesktop() && !my_ads_store.show_ad_form) {
+                                                            onClick={e => {
+                                                                e.preventDefault();
+                                                                e.stopPropagation();
+                                                                if (isDesktop())
                                                                     onClickIcon(payment_method, key, setFieldValue);
-                                                                }
                                                             }}
                                                         />
                                                     }
@@ -263,41 +281,46 @@ const BuyAdPaymentMethodsList = ({
                         </Formik>
                     );
                 })}
-                {my_ads_store.payment_method_names.length < MAX_PAYMENT_METHOD_SELECTION &&
+                {((isDesktop() &&
+                    my_ads_store.payment_method_names.length < MAX_PAYMENT_METHOD_SELECTION &&
                     payment_methods_list.length > 0 &&
-                    !my_ads_store.current_method.is_deleted && (
-                        <Formik enableReinitialize initialValues={{ payment_method: '' }}>
-                            {({ setFieldValue }) => (
-                                <Field name='payment_method'>
-                                    {({ field }) => (
-                                        <div className='p2p-my-ads--border'>
-                                            <Autocomplete
-                                                {...field}
-                                                autoComplete='off' // prevent chrome autocomplete
-                                                className='buy-ad-payment-methods-list__input'
-                                                data-lpignore='true'
-                                                is_alignment_top={is_alignment_top}
-                                                leading_icon={<Icon icon='IcAddOutline' size={14} />}
-                                                list_items={payment_methods_list}
-                                                list_portal_id={list_portal_id ?? 'deriv_app'}
-                                                onItemSelection={({ value }) =>
-                                                    setTimeout(() => onClickPaymentMethodItem(value), 0)
-                                                }
-                                                onBlur={e => {
-                                                    e.preventDefault();
-                                                    setFieldValue('payment_method', '');
-                                                }}
-                                                placeholder={localize('Add')}
-                                                required
-                                                trailing_icon={<></>}
-                                                type='text'
-                                            />
-                                        </div>
-                                    )}
-                                </Field>
-                            )}
-                        </Formik>
-                    )}
+                    !my_ads_store.current_method.is_deleted) ||
+                    (isMobile() && selected_methods.length < MAX_PAYMENT_METHOD_SELECTION)) && (
+                    <Formik enableReinitialize initialValues={{ payment_method: '' }}>
+                        {({ setFieldValue }) => (
+                            <Field name='payment_method'>
+                                {({ field }) => (
+                                    <div
+                                        className='p2p-my-ads--border'
+                                        onClick={() => my_ads_store.setShowFilterPaymentMethods(isMobile())}
+                                    >
+                                        <Autocomplete
+                                            {...field}
+                                            autoComplete='off' // prevent chrome autocomplete
+                                            className='buy-ad-payment-methods-list__input'
+                                            data-lpignore='true'
+                                            is_alignment_top={is_alignment_top}
+                                            leading_icon={<Icon icon='IcAddOutline' size={14} />}
+                                            list_items={payment_methods_list}
+                                            list_portal_id={list_portal_id ?? 'deriv_app'}
+                                            onItemSelection={({ value }) =>
+                                                setTimeout(() => onClickPaymentMethodItem(value), 0)
+                                            }
+                                            onBlur={e => {
+                                                e.preventDefault();
+                                                setFieldValue('payment_method', '');
+                                            }}
+                                            placeholder={localize('Add')}
+                                            required
+                                            trailing_icon={<></>}
+                                            type='text'
+                                        />
+                                    </div>
+                                )}
+                            </Field>
+                        )}
+                    </Formik>
+                )}
                 {should_show_hint &&
                     !selected_methods.includes('other') &&
                     selected_methods.length < MAX_PAYMENT_METHOD_SELECTION && (
@@ -324,7 +347,10 @@ const BuyAdPaymentMethodsList = ({
                 {({ setFieldValue }) => (
                     <Field name='payment_method'>
                         {({ field }) => (
-                            <div className='p2p-my-ads--border'>
+                            <div
+                                className='p2p-my-ads--border'
+                                onClick={() => my_ads_store.setShowFilterPaymentMethods(isMobile())}
+                            >
                                 <Autocomplete
                                     {...field}
                                     autoComplete='off' // prevent chrome autocomplete

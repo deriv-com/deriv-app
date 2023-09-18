@@ -1,5 +1,6 @@
 export * from './AccountsList';
 export * from './CFDList';
+export * from './CTraderList';
 export * from './DesktopWalletsList';
 export * from './MT5List';
 export * from './OptionsAndMultipliersListing';

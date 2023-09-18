@@ -49,5 +49,17 @@
             grid-template-rows: repeat(5, 1fr);
             grid-template-columns: auto;
         }
+
+        &__text {
+            color: #fff;
+            text-align: center;
+
+            /* desktop/paragraph/P2 - bold */
+            font-family: 'IBM Plex Sans';
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 20px; /* 142.857% */
+        }
     }
 }

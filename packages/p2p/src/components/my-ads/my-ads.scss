@@ -443,6 +443,7 @@
         }
         &-row {
             padding: 1.6rem;
+            height: max-content;
             grid-template-columns: 1.7fr repeat(2, 2fr) repeat(2, 2.3fr) 1.5fr;
 
             .dc-table__cell:last-child {

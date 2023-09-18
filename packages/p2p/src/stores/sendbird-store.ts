@@ -45,7 +45,6 @@ export default class SendbirdStore extends BaseStore {
             should_show_chat_on_orders: observable,
             has_chat_info: computed,
             is_chat_frozen: computed,
-            last_other_user_activity: computed,
             addChannelMessage: action.bound,
             createChatForNewOrder: action.bound,
             replaceChannelMessage: action.bound,
@@ -66,15 +65,6 @@ export default class SendbirdStore extends BaseStore {
 
     get is_chat_frozen() {
         return this.active_chat_channel?.isFrozen;
-    }
-
-    get last_other_user_activity() {
-        const message = this.chat_messages
-            .slice()
-            .reverse()
-            .find(chat_message => chat_message.sender_user_id !== this.chat_info.user_id);
-
-        return message ? epochToMoment(Math.floor(message.created_at / 1000)).fromNow() : null;
     }
 
     addChannelMessage(chat_message: ChatMessage) {

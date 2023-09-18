@@ -2,7 +2,7 @@ import React from 'react';
 import { Formik, FormikErrors } from 'formik';
 import { getLegalEntityName, getErrorMessages, getCFDPlatformLabel, CFD_PLATFORMS, CFD_text } from '@deriv/shared';
 import { Text, FormSubmitButton, PasswordMeter, PasswordInput } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import {
     getDxCompanies,
     getFormattedJurisdictionCode,
@@ -87,9 +87,9 @@ const CFDPasswordForm = observer(
 
         const button_label = React.useMemo(() => {
             if (error_type === PASSWORD_ERRORS.RESET) {
-                return localize('Try later');
+                return <Localize i18n_default_text='Try later' />;
             }
-            return localize('Add account');
+            return <Localize i18n_default_text='Add account' />;
         }, [error_type]);
 
         const getCancelButtonLabel = ({
@@ -97,10 +97,10 @@ const CFDPasswordForm = observer(
             error_type,
         }: Pick<TCFDPasswordFormProps, 'should_set_trading_password' | 'error_type'>) => {
             if (should_set_trading_password && error_type !== PASSWORD_ERRORS.RESET) {
-                return !is_mobile ? null : localize('Cancel');
+                return is_mobile ? <Localize i18n_default_text='Cancel' /> : null;
             }
 
-            return localize('Forgot password?');
+            return <Localize i18n_default_text='Forgot password?' />;
         };
 
         const has_cancel_button =
@@ -233,9 +233,14 @@ const CFDPasswordForm = observer(
                                 >
                                     <PasswordInput
                                         autoComplete='new-password'
-                                        label={localize('{{platform}} password', {
-                                            platform: getCFDPlatformLabel(platform),
-                                        })}
+                                        label={
+                                            <Localize
+                                                i18n_default_text='{{platform}} password'
+                                                values={{
+                                                    platform: getCFDPlatformLabel(platform),
+                                                }}
+                                            />
+                                        }
                                         error={
                                             (touched.password && errors.password) ||
                                             (values.password.length === 0 ? error_message : '')

@@ -1,21 +1,22 @@
-import { localize } from '@deriv/translations';
+import React from 'react';
+import { Localize } from '@deriv/translations';
 
 export const getWalletCFDInfo = (type: string) => {
     switch (type) {
         case 'synthetic':
             return {
                 icon: 'IcRebrandingMt5DerivedDashboard',
-                title: localize('MT5 Derived'),
+                title: <Localize i18n_default_text='MT5 Derived' />,
             };
         case 'all':
             return {
                 icon: 'IcRebrandingMt5SwapFree',
-                title: localize('MT5 SwapFree'),
+                title: <Localize i18n_default_text='MT5 SwapFree' />,
             };
         case 'financial':
             return {
                 icon: 'IcRebrandingMt5FinancialDashboard',
-                title: localize('MT5 Financial'),
+                title: <Localize i18n_default_text='MT5 Financial' />,
             };
         default:
             return {

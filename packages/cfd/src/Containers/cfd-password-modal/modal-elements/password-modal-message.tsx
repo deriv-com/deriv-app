@@ -9,8 +9,8 @@ import {
     TDxCompanies,
     TMtCompanies,
 } from '../../../Stores/Modules/CFD/Helpers/cfd-config';
-import { Localize, localize } from '@deriv/translations';
-import { ACCOUNT_CATEGORY } from 'Constants/cfd-password-modal-constants';
+import { Localize } from '@deriv/translations';
+import { ACCOUNT_CATEGORY } from '../../../Constants/cfd-password-modal-constants';
 
 type TReviewMsgForMT5 = {
     is_selected_mt5_verified: boolean;
@@ -22,7 +22,7 @@ type TPasswordModalMessage = TReviewMsgForMT5 & {
     category: string;
     is_wallet_enabled: boolean;
     platform: string;
-    wallet_account_title: string;
+    wallet_account_title: React.ReactNode;
     show_eu_related_content: boolean;
     type: string;
 };
@@ -60,7 +60,11 @@ const PasswordModalMessage = ({
 }: TPasswordModalMessage) => {
     if (!category && !type) return null;
 
-    const category_label = ACCOUNT_CATEGORY.REAL ? localize('Real') : localize('Demo');
+    const category_label = ACCOUNT_CATEGORY.REAL ? (
+        <Localize i18n_default_text='Real' />
+    ) : (
+        <Localize i18n_default_text='Demo' />
+    );
     let type_label = '';
     switch (platform) {
         case CFD_PLATFORMS.MT5:

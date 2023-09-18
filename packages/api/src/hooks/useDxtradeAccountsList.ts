@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
-import useFetch from '../useFetch';
+import useQuery from '../useQuery';
 
 /** A custom hook that gets the list of created Deriv X accounts. */
 const useDxtradeAccountsList = () => {
-    const { data: dxtrade_accounts } = useFetch('trading_platform_accounts', {
+    const { data: dxtrade_accounts } = useQuery('trading_platform_accounts', {
         payload: { platform: 'dxtrade' },
     });
 

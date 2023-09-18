@@ -5,7 +5,8 @@ import IcAppstoreDerivBot from '../../public/images/ic-appstore-deriv-bot.svg';
 import IcAppstoreDerivGo from '../../public/images/ic-appstore-deriv-go.svg';
 import IcAppstoreDerivTrader from '../../public/images/ic-appstore-deriv-trader.svg';
 import IcAppstoreSmartTrader from '../../public/images/ic-appstore-smart-trader.svg';
-import { TradingAccountCard } from '..';
+import { PrimaryActionButton } from '../PrimaryActionButton';
+import { TradingAccountCard } from '../TradingAccountCard';
 import './OptionsAndMultipliersListing.scss';
 
 const options_and_multipliers = [
@@ -64,7 +65,27 @@ const OptionsAndMultipliersListing = () => {
             </section>
             <div className='wallets-options-and-multipliers-listing__content'>
                 {options_and_multipliers.map(account => (
-                    <TradingAccountCard {...account} key={`trading-account-card-${account.title}`} />
+                    <TradingAccountCard
+                        {...account}
+                        key={`trading-account-card-${account.title}`}
+                        trailing={() => (
+                            <PrimaryActionButton>
+                                <p className='wallets-options-and-multipliers-listing__content__text'>Open</p>
+                            </PrimaryActionButton>
+                        )}
+                        leading={() => (
+                            <div className='wallets-options-and-multipliers-listing__content__icon'>{account.icon}</div>
+                        )}
+                    >
+                        <div className='wallets-options-and-multipliers-listing__content__details'>
+                            <p className='wallets-options-and-multipliers-listing__content__details-title'>
+                                {account.title}
+                            </p>
+                            <p className='wallets-options-and-multipliers-listing__content__details-description'>
+                                {account.description}
+                            </p>
+                        </div>
+                    </TradingAccountCard>
                 ))}
             </div>
         </div>

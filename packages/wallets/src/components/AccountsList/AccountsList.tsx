@@ -1,7 +1,8 @@
 import React from 'react';
 import useDevice from '../../hooks/useDevice';
+import { CFDList } from '../CFDList';
+import { OptionsAndMultipliersListing } from '../OptionsAndMultipliersListing';
 import { TabList, TabPanel, TabPanels, Tabs } from '../Tabs';
-import { OptionsAndMultipliersListing } from '..';
 import './AccountsList.scss';
 
 const AccountsList = () => {
@@ -27,6 +28,7 @@ const AccountsList = () => {
     return (
         <div className='wallets-accounts-list'>
             <div className='wallets-accounts-list__content'>
+                <CFDList />
                 <OptionsAndMultipliersListing />
             </div>
         </div>

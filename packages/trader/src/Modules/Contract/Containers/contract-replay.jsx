@@ -28,6 +28,7 @@ import {
     urlFor,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { useFeatureFlags } from '@deriv/hooks';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
@@ -40,7 +41,7 @@ import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const ContractReplay = observer(({ contract_id }) => {
-    const { common, contract_replay, feature_flags, ui } = useStore();
+    const { common, contract_replay, ui } = useStore();
     const { contract_store } = contract_replay;
     const {
         is_market_closed,
@@ -57,7 +58,10 @@ const ContractReplay = observer(({ contract_id }) => {
     const { contract_info, contract_update, contract_update_history, is_digit_contract } = contract_store;
     const { routeBackInApp } = common;
     const { is_dark_mode_on: is_dark_theme, notification_messages_ui: NotificationMessages, toggleHistoryTab } = ui;
-
+    const trade_type_feature_flag =
+        contract_info.contract_type &&
+        getContractTypeFeatureFlag(contract_info.contract_type, isHighLow({ shortcode: contract_info.shortcode }));
+    const is_trade_type_disabled = useFeatureFlags()[`is_${trade_type_feature_flag}_enabled`] === false;
     const [is_visible, setIsVisible] = React.useState(false);
     const history = useHistory();
 
@@ -81,21 +85,10 @@ const ContractReplay = observer(({ contract_id }) => {
 
     React.useEffect(() => {
         // don't open Contract details page for trade types with disabled feature flag:
-        if (feature_flags.data && contract_info.contract_type) {
-            const trade_type_feature_flag =
-                contract_info.contract_type &&
-                getContractTypeFeatureFlag(
-                    contract_info.contract_type,
-                    isHighLow({ shortcode: contract_info.shortcode })
-                );
-            const is_trade_type_disabled = !!Object.entries(feature_flags.data).find(
-                ([key, value]) => !value && key === trade_type_feature_flag
-            );
-            if (is_trade_type_disabled && is_visible) {
-                onClickClose();
-            }
+        if (is_trade_type_disabled && is_visible) {
+            onClickClose();
         }
-    }, [feature_flags.data, contract_info.contract_type, contract_info.shortcode, is_visible, onClickClose]);
+    }, [is_trade_type_disabled, is_visible, onClickClose]);
 
     if (!contract_info.underlying) return null;
 

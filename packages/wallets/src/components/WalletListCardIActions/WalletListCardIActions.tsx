@@ -74,7 +74,11 @@ const WalletListCardIActions: React.FC<TProps> = ({ account }) => {
     return (
         <div className='wallets-header__actions'>
             {getWalletHeaderButtons(!!account?.is_virtual).map(button => (
-                <button key={button.name} className='wallets-header__button' onClick={button.action}>
+                <button
+                    key={`wallets-header-button-${button.name}`}
+                    className='wallets-header__button'
+                    onClick={button.action}
+                >
                     {button.icon}
                 </button>
             ))}

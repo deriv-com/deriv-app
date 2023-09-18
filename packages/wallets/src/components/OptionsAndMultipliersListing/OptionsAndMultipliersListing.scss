@@ -3,12 +3,23 @@
     height: 100%;
     padding-top: 24px;
 
+    @include mobile {
+        padding-top: unset;
+    }
+
     @include desktop {
         border-top: 2px solid var(--system-light-7-secondary-background, #f2f3f4);
     }
 
     &__header {
         padding-bottom: 24px;
+
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin: auto 1.8rem;
+        }
 
         &-title {
             font-weight: bold;
@@ -32,5 +43,23 @@
         display: grid;
         gap: 1.6rem 4.8rem;
         grid-template-columns: repeat(3, 1fr);
+
+        @include mobile {
+            margin: auto 2rem;
+            grid-template-rows: repeat(5, 1fr);
+            grid-template-columns: auto;
+        }
+
+        &__text {
+            color: #fff;
+            text-align: center;
+
+            /* desktop/paragraph/P2 - bold */
+            font-family: 'IBM Plex Sans';
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 20px; /* 142.857% */
+        }
     }
 }

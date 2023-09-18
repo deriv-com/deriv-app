@@ -19,6 +19,24 @@ describe('JurisdictionModalContent', () => {
         toggleDynamicLeverage: jest.fn(),
         jurisdiction_selected_shortcode: '',
         setJurisdictionSelectedShortcode: jest.fn(),
+        all_market_type_available_accounts: [
+            {
+                market_type: 'all' as const,
+                name: '',
+                requirements: {
+                    after_first_deposit: {
+                        financial_assessment: [''],
+                    },
+                    compliance: {
+                        mt5: [''],
+                        tax_information: [''],
+                    },
+                    signup: [''],
+                },
+                shortcode: Jurisdiction.SVG,
+                sub_account_type: '',
+            },
+        ],
         synthetic_available_accounts: [
             {
                 market_type: 'gaming' as const,
@@ -247,6 +265,7 @@ describe('JurisdictionModalContent', () => {
             { ...mock_props.financial_available_accounts[0], shortcode: Jurisdiction.MALTA_INVEST },
         ];
         mock_props.synthetic_available_accounts = [];
+        mock_props.all_market_type_available_accounts = [];
         render(<JurisdictionModalContent {...mock_props} account_type='financial' />);
         const container = screen.getByTestId('dt-jurisdiction-modal-content');
         expect(container).toHaveClass('cfd-jurisdiction-card--financial__wrapper');

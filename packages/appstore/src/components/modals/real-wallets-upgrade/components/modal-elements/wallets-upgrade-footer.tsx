@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import WalletSteps from './wallet_steps';
-import { TModalContentFooter } from 'Types';
+import { TRealWalletsUpgradeSteps } from 'Types';
 
 type TDefaultFooter = {
     handleBack: () => void;
@@ -23,10 +23,10 @@ type TEndFooter = {
 export const DefaultFooter = ({ handleBack, handleNext }: TDefaultFooter) => (
     <Modal.Footer className='wallet-steps__footer' has_separator>
         <Button secondary large className='wallet-steps__footer-button' onClick={handleBack}>
-            {localize('Back')}
+            <Localize i18n_default_text='Back' />
         </Button>
         <Button primary large className='wallet-steps__footer-button' onClick={handleNext}>
-            {localize('Next')}
+            <Localize i18n_default_text='Next' />
         </Button>
     </Modal.Footer>
 );
@@ -34,10 +34,10 @@ export const DefaultFooter = ({ handleBack, handleNext }: TDefaultFooter) => (
 export const InitialFooter = ({ handleClose, handleNext }: TInitialFooter) => (
     <Modal.Footer className='wallet-steps__footer' has_separator>
         <Button secondary large className='wallet-steps__footer-button' onClick={handleClose}>
-            {localize('Maybe later')}
+            <Localize i18n_default_text='Maybe later' />
         </Button>
         <Button primary large className='wallet-steps__footer-button' onClick={handleNext}>
-            {localize('Next')}
+            <Localize i18n_default_text='Next' />
         </Button>
     </Modal.Footer>
 );
@@ -45,7 +45,7 @@ export const InitialFooter = ({ handleClose, handleNext }: TInitialFooter) => (
 export const EndFooter = ({ handleBack, is_disabled, upgradeToWallets }: TEndFooter) => (
     <Modal.Footer className='wallet-steps__footer' has_separator>
         <Button secondary large className='wallet-steps__footer-button' onClick={handleBack}>
-            {localize('Back')}
+            <Localize i18n_default_text='Back' />
         </Button>
         <Button
             primary
@@ -54,28 +54,16 @@ export const EndFooter = ({ handleBack, is_disabled, upgradeToWallets }: TEndFoo
             disabled={!is_disabled}
             onClick={upgradeToWallets}
         >
-            {localize('Upgrade to Wallets')}
+            <Localize i18n_default_text='Upgrade to Wallets' />
         </Button>
     </Modal.Footer>
 );
 
-const WalletsUpgradeFooter = ({
-    current_step,
-    handleBack,
-    handleClose,
-    handleNext,
-    is_disabled,
-    toggleCheckbox,
-    upgradeToWallets,
-}: TModalContentFooter) => {
-    const wallet_steps_array = WalletSteps({
-        handleBack,
-        handleClose,
-        handleNext,
-        is_disabled,
-        toggleCheckbox,
-        upgradeToWallets,
-    });
+const WalletsUpgradeFooter = ({ wallet_upgrade_steps }: TRealWalletsUpgradeSteps) => {
+    const wallet_steps_array = WalletSteps({ ...wallet_upgrade_steps });
+
+    const { current_step, handleBack, handleNext } = wallet_upgrade_steps;
+
     return (
         wallet_steps_array?.[current_step]?.footer || <DefaultFooter handleBack={handleBack} handleNext={handleNext} />
     );

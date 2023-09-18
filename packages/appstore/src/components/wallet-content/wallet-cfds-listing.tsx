@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, StaticUrl } from '@deriv/components';
 import { useActiveWallet } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import { isCryptocurrency } from '@deriv/shared';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
@@ -30,11 +30,13 @@ const WalletCFDsListing = observer(() => {
             </div>
         );
 
-    const { currency } = wallet_account;
+    const { currency, landing_company_name, is_virtual } = wallet_account;
     const accounts_sub_text =
-        wallet_account.landing_company_name === 'svg' || wallet_account.is_virtual
-            ? localize('Compare accounts')
-            : localize('Account information');
+        landing_company_name === 'svg' || is_virtual ? (
+            <Localize i18n_default_text='Compare accounts' />
+        ) : (
+            <Localize i18n_default_text='Account information' />
+        );
 
     const is_fiat = !isCryptocurrency(currency) && currency !== 'USDT';
 
@@ -45,7 +47,7 @@ const WalletCFDsListing = observer(() => {
                 !is_mobile && (
                     <div className='cfd-accounts__title'>
                         <Text size='sm' weight='bold' color='prominent'>
-                            {localize('CFDs')}
+                            <Localize i18n_default_text='CFDs' />
                         </Text>
                         <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
                             <Text key={0} color='red' size='xxs' weight='bold' styles={{ marginLeft: '1rem' }}>

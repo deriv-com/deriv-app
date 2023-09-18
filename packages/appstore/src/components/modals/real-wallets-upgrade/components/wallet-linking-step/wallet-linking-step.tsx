@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, ThemedScrollbars } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import WalletLinkWrapper, { TWalletLinkWrapper } from '../wallet-link/wallet-link-wrapper';
 import './wallet-linking-step.scss';
@@ -18,7 +18,7 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
                 {data.title}
             </Text>
             <Text as='div' className='wallet-linking-step__description' color='prominent' size={is_mobile ? 'xs' : 's'}>
-                {localize('This is how we link your accounts with your new Wallet.')}
+                <Localize i18n_default_text='This is how we link your accounts with your new Wallet.' />
             </Text>
             <Text
                 as='span'
@@ -26,9 +26,7 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
                 color='prominent'
                 size='xxs'
             >
-                {localize(
-                    'Your existing funds will remain in your trading account(s) and can be transferred to your Wallet after the upgrade.'
-                )}
+                <Localize i18n_default_text='Your existing funds will remain in your trading account(s) and can be transferred to your Wallet after the upgrade.' />
             </Text>
             {!is_mobile && (
                 <div className='wallet-linking-step__title-small'>
@@ -37,14 +35,14 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
                         color='prominent'
                         size='xxxs'
                     >
-                        {localize('Your current trading account(s)')}
+                        <Localize i18n_default_text='Your current trading account(s)' />
                     </Text>
                     <Text
                         className='wallet-linking-step__title-text wallet-linking-step__title-small-text'
                         color='prominent'
                         size='xxxs'
                     >
-                        {localize('Your new Wallet(s)')}
+                        <Localize i18n_default_text='Your new Wallet(s)' />
                     </Text>
                 </div>
             )}

@@ -4,13 +4,6 @@ import { TCFDPasswordFormValues } from 'Containers/props.types';
 import { TDerivezCompanies, TDxCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 import { FormikHelpers } from 'formik';
 
-type TStoreProofOfAddressArgs = {
-    file_uploader_ref: HTMLDivElement | null;
-    values: {
-        [key: string]: string;
-    };
-};
-
 export type TCFDStore = {
     setMT5TradeAccount: <T>(arg: T) => void;
     toggleCFDVerificationModal: () => void;
@@ -21,6 +14,10 @@ export type TCFDStore = {
         real: string;
     };
     derivez_tokens: {
+        demo: string;
+        real: string;
+    };
+    ctrader_tokens: {
         demo: string;
         real: string;
     };
@@ -93,5 +90,4 @@ export type TCFDStore = {
         set_password?: number;
         platform?: string;
     }) => void;
-    storeProofOfAddress: TStoreProofOfAddressArgs;
 };

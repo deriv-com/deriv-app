@@ -54,8 +54,7 @@ describe('<PurchaseButton />', () => {
     });
 
     it('should apply a specific classNames if is_loading === true', () => {
-        const new_mocked_props = { ...default_mocked_props, is_loading: true, index: 0 };
-        render(<PurchaseButton {...new_mocked_props} />);
+        render(<PurchaseButton {...default_mocked_props} is_loading index={0} />);
 
         const purchase_button = screen.getByRole('button');
 

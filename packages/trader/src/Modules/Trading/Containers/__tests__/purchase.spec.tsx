@@ -5,9 +5,6 @@ import TraderProviders from '../../../../trader-providers';
 import { TCoreStores } from '@deriv/stores/types';
 import Purchase from '../purchase';
 
-const default_mocked_props = {
-    is_market_closed: false,
-};
 const default_mock_store = {
     modules: {
         trade: {
@@ -48,7 +45,7 @@ describe('<Purchase />', () => {
     const mockPurchaseModal = (mocked_store: TCoreStores) => {
         return (
             <TraderProviders store={mocked_store}>
-                <Purchase {...default_mocked_props} />
+                <Purchase is_market_closed={false} />
             </TraderProviders>
         );
     };

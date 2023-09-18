@@ -3,6 +3,7 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Field, FieldProps, Formik, Form } from 'formik';
 import { Button, Dropdown, Input, Loading, Money, Text } from '@deriv/components';
+import { useIsMt5LoginListStatusPresent } from '@deriv/hooks';
 import {
     getDecimalPlaces,
     getCurrencyDisplayCode,
@@ -85,13 +86,7 @@ const AccountTransferForm = observer(
             common: { is_from_derivgo },
         } = useStore();
 
-        const {
-            account_limits,
-            authentication_status,
-            is_dxtrade_allowed,
-            getLimits: onMount,
-            mt5_login_list,
-        } = client;
+        const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
         const { account_transfer, crypto_fiat_converter, general_store } = useCashierStore();
 
         const {
@@ -122,6 +117,10 @@ const AccountTransferForm = observer(
             onChangeConverterToAmount,
             resetConverter,
         } = crypto_fiat_converter;
+        const is_open_order_position_status_present = useIsMt5LoginListStatusPresent(
+            selected_to.value ?? '',
+            'open_order_position_status' // this flag is not yet present in the BE response.
+        );
 
         const [from_accounts, setFromAccounts] = React.useState({});
         const [to_accounts, setToAccounts] = React.useState({});
@@ -344,8 +343,7 @@ const AccountTransferForm = observer(
             };
 
             let hint_text;
-            // flag 'open_order_position_status' does not exist in mt5_login_list, @deriv/api-types yet
-            if (mt5_login_list.find(account => account?.login === selected_to.value)?.open_order_position_status) {
+            if (is_open_order_position_status_present) {
                 hint_text = <Localize i18n_default_text='You can no longer open new positions with this account.' />;
             } else {
                 remaining_transfers = getRemainingTransfers() ?? 0;
@@ -359,7 +357,7 @@ const AccountTransferForm = observer(
             }
             setTransferToHint(hint_text);
             resetConverter();
-        }, [account_limits, selected_from, selected_to, mt5_login_list]); // eslint-disable-line react-hooks/exhaustive-deps
+        }, [account_limits, is_open_order_position_status_present, selected_from, selected_to]); // eslint-disable-line react-hooks/exhaustive-deps
 
         const is_mt5_restricted =
             selected_from?.is_mt &&

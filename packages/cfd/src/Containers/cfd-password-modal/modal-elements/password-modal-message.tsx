@@ -10,6 +10,7 @@ import {
     TMtCompanies,
 } from '../../../Stores/Modules/CFD/Helpers/cfd-config';
 import { Localize } from '@deriv/translations';
+import { ACCOUNT_CATEGORY } from '../../../Constants/cfd-password-modal-constants';
 
 type TReviewMsgForMT5 = {
     is_selected_mt5_verified: boolean;
@@ -88,7 +89,7 @@ const PasswordModalMessage = ({
         jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
     const mt5_platform_label = jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'Deriv MT5' : '';
 
-    if (category === 'real') {
+    if (category === ACCOUNT_CATEGORY.REAL) {
         return (
             <React.Fragment>
                 <Localize

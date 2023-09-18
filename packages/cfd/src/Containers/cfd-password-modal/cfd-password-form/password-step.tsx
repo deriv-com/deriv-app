@@ -63,9 +63,7 @@ const PasswordStep = ({
                 <ChangePasswordConfirmation
                     className='cfd-password-modal__change-password-confirmation'
                     platform={platform}
-                    onConfirm={(_values: TCFDPasswordFormValues, actions: FormikHelpers<TCFDPasswordFormValues>) =>
-                        submitPassword({ password }, actions)
-                    }
+                    onConfirm={(_values, actions) => submitPassword({ password }, actions)}
                     onCancel={() => multi_step_ref.current?.goPrevStep()}
                 />
             ),

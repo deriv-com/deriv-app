@@ -9,7 +9,7 @@ import {
     getFormattedJurisdictionCode,
 } from '../../../Stores/Modules/CFD/Helpers/cfd-config';
 import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from '../../props.types';
-import { PASSWORD_ERRORS } from '../../../Constants/cfd-password-modal-constants';
+import { ACCOUNT_CATEGORY, PASSWORD_ERRORS } from '../../../Constants/cfd-password-modal-constants';
 import PasswordStep from './password-step';
 import { observer, useStore } from '@deriv/stores';
 
@@ -32,35 +32,6 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     should_set_trading_password: boolean;
     show_eu_related_content: boolean;
     submitPassword: TOnSubmitPassword;
-};
-
-const getAccountTitle = (
-    platform: string,
-    account_type: {
-        category?: string;
-        type?: string;
-    },
-    account_title: string
-) => {
-    if (platform === CFD_PLATFORMS.DXTRADE) {
-        return getDxCompanies()[account_type.category as keyof TDxCompanies][
-            account_type.type as keyof TDxCompanies['demo' | 'real']
-        ].short_title;
-    }
-
-    return account_title;
-};
-
-const handlePasswordInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    handleChange: (el: React.ChangeEvent<HTMLInputElement>) => void,
-    validateForm: (values?: TCFDPasswordFormValues) => Promise<FormikErrors<TCFDPasswordFormValues>>,
-    setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void
-) => {
-    handleChange(e);
-    validateForm().then(() => {
-        setFieldTouched('password', true);
-    });
 };
 
 const CFDPasswordForm = observer(
@@ -103,7 +74,8 @@ const CFDPasswordForm = observer(
             return localize('Forgot password?');
         };
 
-        const has_cancel_button = !is_mobile && (!should_set_trading_password || error_type !== 'trading_password');
+        const has_cancel_button =
+            !is_mobile && (!should_set_trading_password || error_type !== PASSWORD_ERRORS.PASSWORD);
 
         const cancel_button_label = getCancelButtonLabel({ should_set_trading_password, error_type });
 
@@ -116,6 +88,28 @@ const CFDPasswordForm = observer(
             }
 
             return onForgotPassword();
+        };
+
+        const getAccountTitle = () => {
+            if (platform === CFD_PLATFORMS.DXTRADE) {
+                return getDxCompanies()[account_type.category as keyof TDxCompanies][
+                    account_type.type as keyof TDxCompanies['demo' | 'real']
+                ].short_title;
+            }
+
+            return account_title;
+        };
+
+        const handlePasswordInputChange = (
+            e: React.ChangeEvent<HTMLInputElement>,
+            handleChange: (el: React.ChangeEvent<HTMLInputElement>) => void,
+            validateForm: (values?: TCFDPasswordFormValues) => Promise<FormikErrors<TCFDPasswordFormValues>>,
+            setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void
+        ) => {
+            handleChange(e);
+            validateForm().then(() => {
+                setFieldTouched('password', true);
+            });
         };
 
         if (error_type === PASSWORD_ERRORS.RESET) {
@@ -192,7 +186,7 @@ const CFDPasswordForm = observer(
                         <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
                             {!should_set_trading_password && (
                                 <Text size='xs' className='dc-modal__container_cfd-password-modal__account-title'>
-                                    {account_type.category === 'real' && (
+                                    {account_type.category === ACCOUNT_CATEGORY.REAL && (
                                         <Localize
                                             i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} {{jurisdiction_shortcode}} account.'
                                             values={{
@@ -201,14 +195,12 @@ const CFDPasswordForm = observer(
                                                     platform === CFD_PLATFORMS.MT5
                                                         ? 'MT5'
                                                         : getCFDPlatformLabel(platform),
-                                                account: !show_eu_related_content
-                                                    ? getAccountTitle(platform, account_type, account_title)
-                                                    : '',
+                                                account: !show_eu_related_content ? getAccountTitle() : '',
                                                 jurisdiction_shortcode: showJurisdiction(),
                                             }}
                                         />
                                     )}
-                                    {account_type.category === 'demo' && (
+                                    {account_type.category === ACCOUNT_CATEGORY.DEMO && (
                                         <Localize
                                             i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} account.'
                                             values={{
@@ -217,7 +209,7 @@ const CFDPasswordForm = observer(
                                                     platform === CFD_PLATFORMS.MT5
                                                         ? 'MT5'
                                                         : getCFDPlatformLabel(platform),
-                                                account: getAccountTitle(platform, account_type, account_title),
+                                                account: getAccountTitle(),
                                             }}
                                         />
                                     )}

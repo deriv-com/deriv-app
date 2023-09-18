@@ -28,4 +28,10 @@ export const getWalletCFDInfo = (type: string) => {
 export const PASSWORD_ERRORS = Object.freeze({
     RESET: 'PasswordReset',
     ERROR: 'PasswordErrors',
+    PASSWORD: 'trading_password',
+});
+
+export const ACCOUNT_CATEGORY = Object.freeze({
+    REAL: 'real',
+    DEMO: 'demo',
 });

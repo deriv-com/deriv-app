@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormikErrors, FormikHelpers } from 'formik';
+import { FormikErrors } from 'formik';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import { MultiStep } from '@deriv/components';
 import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from '../../props.types';

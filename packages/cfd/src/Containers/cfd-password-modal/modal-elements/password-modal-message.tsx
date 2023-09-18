@@ -1,5 +1,5 @@
 import React from 'react';
-import { CFD_PLATFORMS, getCFDPlatformLabel, Jurisdiction, getCategoryText } from '@deriv/shared';
+import { CFD_PLATFORMS, getCFDPlatformLabel, Jurisdiction } from '@deriv/shared';
 import {
     getDerivezCompanies,
     getDxCompanies,
@@ -9,7 +9,7 @@ import {
     TDxCompanies,
     TMtCompanies,
 } from '../../../Stores/Modules/CFD/Helpers/cfd-config';
-import { Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { ACCOUNT_CATEGORY } from '../../../Constants/cfd-password-modal-constants';
 
 type TReviewMsgForMT5 = {
@@ -22,7 +22,7 @@ type TPasswordModalMessage = TReviewMsgForMT5 & {
     category: string;
     is_wallet_enabled: boolean;
     platform: string;
-    wallet_account_title: string;
+    wallet_account_title: React.ReactNode;
     show_eu_related_content: boolean;
     type: string;
 };
@@ -60,7 +60,7 @@ const PasswordModalMessage = ({
 }: TPasswordModalMessage) => {
     if (!category && !type) return null;
 
-    const category_label = getCategoryText(category);
+    const category_label = category === ACCOUNT_CATEGORY.REAL ? localize('Real') : localize('Demo');
     let type_label = '';
     switch (platform) {
         case CFD_PLATFORMS.MT5:

@@ -101,7 +101,7 @@ SuccessDialog.propTypes = {
     onCancel: PropTypes.func,
     onSubmit: PropTypes.func,
     text_cancel: PropTypes.string,
-    text_submit: PropTypes.string,
+    text_submit: PropTypes.node,
     title: PropTypes.string,
     toggleModal: PropTypes.func,
     width: PropTypes.string,

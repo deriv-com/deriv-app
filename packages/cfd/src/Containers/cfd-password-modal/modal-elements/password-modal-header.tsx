@@ -20,12 +20,12 @@ const PasswordModalHeader = observer(
 
         return (
             <Text
-                className='cfd-password-modal__header'
-                as={element}
-                line_height='m'
-                weight='bold'
-                size={font_size}
                 align={alignment}
+                as={element}
+                className='cfd-password-modal__header'
+                line_height='m'
+                size={font_size}
+                weight='bold'
             >
                 {!should_set_trading_password && !is_password_reset_error && (
                     <Localize

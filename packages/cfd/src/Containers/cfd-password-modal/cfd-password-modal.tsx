@@ -334,7 +334,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         ),
         account_title: getWalletCFDInfo(account_type.type).title,
         app_icon: getWalletCFDInfo(account_type.type).icon,
-        balance: '10,000.00',
+        balance: '10,000.00', //TODO: fix me
         currency: active_wallet?.currency,
         gradient_header_class: active_wallet?.gradient_header_class,
         icon: active_wallet?.icon,

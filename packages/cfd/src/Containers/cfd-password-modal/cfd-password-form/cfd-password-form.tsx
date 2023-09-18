@@ -1,12 +1,12 @@
 import React from 'react';
 import { Formik, FormikErrors } from 'formik';
-import { getLegalEntityName, getErrorMessages, getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
+import { getLegalEntityName, getErrorMessages, getCFDPlatformLabel, CFD_PLATFORMS, CFD_text } from '@deriv/shared';
 import { Text, FormSubmitButton, PasswordMeter, PasswordInput } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import {
-    TDxCompanies,
     getDxCompanies,
     getFormattedJurisdictionCode,
+    TDxCompanies,
 } from '../../../Stores/Modules/CFD/Helpers/cfd-config';
 import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from '../../props.types';
 import { ACCOUNT_CATEGORY, PASSWORD_ERRORS } from '../../../Constants/cfd-password-modal-constants';
@@ -68,7 +68,7 @@ const CFDPasswordForm = observer(
             error_type,
         }: Pick<TCFDPasswordFormProps, 'should_set_trading_password' | 'error_type'>) => {
             if (should_set_trading_password && error_type !== PASSWORD_ERRORS.RESET) {
-                return !is_mobile ? null : localize('Cancel');
+                return is_mobile ? localize('Cancel') : null;
             }
 
             return localize('Forgot password?');
@@ -159,7 +159,7 @@ const CFDPasswordForm = observer(
             } else if (!show_eu_related_content) {
                 return getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
             }
-            return 'CFDs';
+            return CFD_text.cfd;
         };
 
         return (
@@ -224,9 +224,14 @@ const CFDPasswordForm = observer(
                                 >
                                     <PasswordInput
                                         autoComplete='new-password'
-                                        label={localize('{{platform}} password', {
-                                            platform: getCFDPlatformLabel(platform),
-                                        })}
+                                        label={
+                                            <Localize
+                                                i18n_default_text='{{platform}} password'
+                                                values={{
+                                                    platform: getCFDPlatformLabel(platform),
+                                                }}
+                                            />
+                                        }
                                         error={
                                             (touched.password && errors.password) ||
                                             (values.password.length === 0 ? error_message : '')
@@ -251,7 +256,7 @@ const CFDPasswordForm = observer(
                                     />
                                 </div>
                             )}
-                            {error_type === 'PasswordError' && (
+                            {error_type === PASSWORD_ERRORS.ERROR && (
                                 <Text size='xs' as='p' className='dc-modal__container_mt5-password-modal__hint'>
                                     <Localize
                                         i18n_default_text='Hint: You may have entered your Deriv password, which is different from your {{platform}} password.'

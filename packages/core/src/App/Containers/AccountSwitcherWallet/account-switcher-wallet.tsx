@@ -41,7 +41,7 @@ export const AccountSwitcherWallet = ({ is_visible, toggle }: TAccountSwitcherWa
                     <Localize i18n_default_text='Deriv Apps accounts' />
                 </Text>
             </div>
-            <ThemedScrollbars height={540}>
+            <ThemedScrollbars height={450}>
                 <div className='account-switcher-wallet__list'>
                     {dtrade_account_wallets?.map(account => {
                         const show_badge = account?.is_malta_wallet || account?.is_virtual;

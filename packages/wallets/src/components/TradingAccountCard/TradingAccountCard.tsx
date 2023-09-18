@@ -2,29 +2,16 @@ import React from 'react';
 import './TradingAccountCard.scss';
 
 type TProps = {
-    description: string;
-    icon: React.ReactNode;
-    title: string;
-    renderActions?: () => React.ReactNode;
+    leading: () => React.ReactNode;
+    trailing: () => React.ReactNode;
 };
 
-const TradingAccountCard: React.FC<TProps> = ({ description, icon, title, renderActions }) => {
+const TradingAccountCard: React.FC<React.PropsWithChildren<TProps>> = ({ children, leading, trailing }) => {
     return (
         <div className='wallets-trading-account-card'>
-            <div className='wallets-trading-account-card__icon'>{icon}</div>
-            <div className='wallets-trading-account-card__content'>
-                <div className='wallets-trading-account-card__details'>
-                    <p className='wallets-trading-account-card__details-title'>
-                        {/* TODO: Add localization */}
-                        {title}
-                    </p>
-                    <p className='wallets-trading-account-card__details-description'>
-                        {/* TODO: Add localization */}
-                        {description}
-                    </p>
-                </div>
-                {renderActions?.()}
-            </div>
+            {leading?.()}
+            <div className='wallets-trading-account-card__content'>{children}</div>
+            {trailing?.()}
         </div>
     );
 };

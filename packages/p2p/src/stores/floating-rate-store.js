@@ -2,7 +2,6 @@ import { action, computed, observable, makeObservable } from 'mobx';
 import { ad_type } from 'Constants/floating-rate';
 import BaseStore from 'Stores/base_store';
 import ServerTime from 'Utils/server-time';
-import { roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
 import { countDecimalPlaces } from 'Utils/string';
 
 export default class FloatingRateStore extends BaseStore {
@@ -10,15 +9,9 @@ export default class FloatingRateStore extends BaseStore {
     float_rate_adverts_status;
     float_rate_offset_limit;
     fixed_rate_adverts_end_date;
-    exchange_rate;
     change_ad_alert = false;
     is_loading;
     api_error_message = '';
-    is_market_rate_changed = false;
-    override_exchange_rate = null;
-    previous_exchange_rate = null;
-    current_exchange_rate = null;
-    exchange_rate_subscription = {};
 
     constructor(root_store) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
@@ -29,12 +22,9 @@ export default class FloatingRateStore extends BaseStore {
             float_rate_adverts_status: observable,
             float_rate_offset_limit: observable,
             fixed_rate_adverts_end_date: observable,
-            exchange_rate: observable,
             change_ad_alert: observable,
             is_loading: observable,
             api_error_message: observable,
-            is_market_rate_changed: observable,
-            market_rate: computed,
             rate_type: computed,
             reached_target_date: computed,
             setFixedRateAdvertStatus: action.bound,
@@ -44,15 +34,7 @@ export default class FloatingRateStore extends BaseStore {
             setChangeAdAlert: action.bound,
             setApiErrorMessage: action.bound,
             setIsLoading: action.bound,
-            setExchangeRate: action.bound,
-            setIsMarketRateChanged: action.bound,
-            setOverrideExchangeRate: action.bound,
-            fetchExchangeRate: action.bound,
         });
-    }
-
-    get market_rate() {
-        return this.exchange_rate > 0 ? this.exchange_rate : this.override_exchange_rate;
     }
 
     get rate_type() {
@@ -93,45 +75,5 @@ export default class FloatingRateStore extends BaseStore {
     }
     setIsLoading(state) {
         this.is_loading = state;
-    }
-
-    setExchangeRate(rate) {
-        const fetched_rate = parseFloat(rate);
-        this.exchange_rate = removeTrailingZeros(roundOffDecimal(fetched_rate, 6));
-        if (this.previous_exchange_rate === null) {
-            this.previous_exchange_rate = this.exchange_rate;
-            this.current_exchange_rate = this.exchange_rate;
-        } else {
-            this.previous_exchange_rate = this.current_exchange_rate;
-            this.current_exchange_rate = this.exchange_rate;
-            this.setIsMarketRateChanged(true);
-        }
-    }
-
-    setIsMarketRateChanged(value) {
-        this.is_market_rate_changed = value;
-    }
-
-    setOverrideExchangeRate(override_exchange_rate) {
-        this.override_exchange_rate = removeTrailingZeros(roundOffDecimal(parseFloat(override_exchange_rate), 6));
-    }
-
-    fetchExchangeRate(response) {
-        const { buy_sell_store, general_store } = this.root_store;
-        const { client, ws_subscriptions } = general_store;
-        const { selected_local_currency } = buy_sell_store;
-
-        if (response) {
-            if (response.error) {
-                this.setApiErrorMessage(response.error.message);
-                ws_subscriptions?.exchange_rate_subscription?.unsubscribe?.();
-                this.setExchangeRate(0);
-            } else {
-                const rates = response.exchange_rates?.rates;
-                const rate = rates?.[client?.local_currency_config?.currency] ?? rates?.[selected_local_currency];
-                this.setExchangeRate(rate);
-                this.setApiErrorMessage(null);
-            }
-        }
     }
 }

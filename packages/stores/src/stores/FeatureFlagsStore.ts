@@ -1,15 +1,10 @@
 import BaseStore from './BaseStore';
 
-const CASHIER_FLAGS = {
+const FLAGS = {
     next_wallet: false,
+    sharkfin: false,
     // Add your flag here 🚀
 } satisfies Record<string, boolean>;
-
-const DTRADER_FLAGS = {
-    sharkfin: false,
-} satisfies Record<string, boolean>;
-
-const FLAGS = { ...CASHIER_FLAGS, ...DTRADER_FLAGS };
 
 export default class FeatureFlagsStore extends BaseStore<{ [k in keyof typeof FLAGS]: boolean }> {
     constructor() {

@@ -24,8 +24,6 @@ const wallet_account: TWalletAccount = {
     is_fiat_currency: true,
 };
 
-jest.mock('./../../containers/currency-switcher-container', () => jest.fn(({ children }) => <div>{children}</div>));
-
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useTradingAccountsList: jest.fn(() => ({
@@ -71,8 +69,7 @@ describe('<WalletTransferBlock />', () => {
             </StoreProvider>
         );
         const { currency } = wallet_account;
-
-        const balance_title = screen.getByText(`10,415.24 ${currency}`);
+        const balance_title = screen.getByText(`1,000.00 ${currency}`);
 
         expect(balance_title).toBeInTheDocument();
     });
@@ -83,10 +80,9 @@ describe('<WalletTransferBlock />', () => {
                 <WalletTransferBlock wallet_account={wallet_account} />
             </StoreProvider>
         );
-        const { loginid } = wallet_account;
 
+        const loginid = wallet_account?.linked_to?.[0]?.loginid;
         const loginid_title = screen.getByText(loginid!);
-
         expect(loginid_title).toBeInTheDocument();
     });
 });

@@ -1,5 +1,5 @@
 import debounce from 'lodash.debounce';
-import { action, computed, makeObservable, observable, reaction } from 'mobx';
+import { action, makeObservable, observable, reaction } from 'mobx';
 import React from 'react';
 import { StaticUrl } from '@deriv/components';
 import {
@@ -57,7 +57,6 @@ export default class NotificationStore extends BaseStore {
             should_show_popups: observable,
             p2p_order_props: observable,
             p2p_redirect_to: observable,
-            custom_notifications: computed,
             addNotificationBar: action.bound,
             addNotificationMessage: action.bound,
             addNotificationMessageByKey: action.bound,
@@ -131,31 +130,6 @@ export default class NotificationStore extends BaseStore {
                 }
             }
         );
-    }
-
-    get custom_notifications() {
-        const { has_malta_account, can_have_mlt_account, is_uk } = this.root_store.client;
-        const notification_content = {
-            mx_mlt_notification: {
-                header: () => {
-                    if (has_malta_account || can_have_mlt_account) {
-                        return localize('Your Options account is scheduled to be closed');
-                    } else if (is_uk) {
-                        return localize('Your Gaming account is scheduled to be closed');
-                    }
-                    return localize('Your account is scheduled to be closed');
-                },
-                main: () => {
-                    if (has_malta_account || can_have_mlt_account) {
-                        return localize('Withdraw all funds from your Options account.');
-                    } else if (is_uk) {
-                        return localize('Please withdraw all your funds as soon as possible.');
-                    }
-                    return localize('Please proceed to withdraw your funds before 30 November 2021.');
-                },
-            },
-        };
-        return notification_content;
     }
 
     addNotificationBar(message) {
@@ -277,14 +251,11 @@ export default class NotificationStore extends BaseStore {
             account_status,
             account_open_date,
             accounts,
-            has_iom_account,
-            has_malta_account,
             isAccountOfType,
             is_eu,
             is_identity_verification_needed,
             is_logged_in,
             is_tnc_needed,
-            is_uk,
             landing_company_shortcode,
             loginid,
             obj_total_balance,
@@ -305,7 +276,6 @@ export default class NotificationStore extends BaseStore {
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
         const { current_language, selected_contract_type } = this.root_store.common;
         const malta_account = landing_company_shortcode === 'maltainvest';
-        const virtual_account = landing_company_shortcode === 'virtual';
         const cr_account = landing_company_shortcode === 'svg';
         const is_website_up = website_status.site_status === 'up';
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
@@ -331,8 +301,6 @@ export default class NotificationStore extends BaseStore {
                 cashier_validation,
             } = account_status;
 
-            const hidden_close_account_notification =
-                parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification')) === 1;
             const {
                 cashier_locked,
                 deposit_locked,
@@ -364,18 +332,6 @@ export default class NotificationStore extends BaseStore {
             }
 
             if (loginid !== LocalStore.get('active_loginid')) return;
-
-            if (is_uk && malta_account) {
-                this.addNotificationMessage(this.client_notifications.close_uk_account);
-            }
-
-            if (
-                (has_iom_account || has_malta_account) &&
-                (!malta_account || !virtual_account) &&
-                !hidden_close_account_notification
-            ) {
-                this.addNotificationMessage(this.client_notifications.close_mx_mlt_account);
-            }
 
             if (is_financial_assessment_needed) {
                 this.addNotificationMessage(this.client_notifications.notify_financial_assessment);
@@ -723,8 +679,6 @@ export default class NotificationStore extends BaseStore {
         const { has_enabled_two_fa, setTwoFAChangedStatus } = this.root_store.client;
         const { setMT5NotificationModal } = this.root_store.traders_hub;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
-        const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
-        const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
 
         const platform_name_trader = getPlatformSettings('trader').name;
         const platform_name_go = getPlatformSettings('go').name;
@@ -841,37 +795,6 @@ export default class NotificationStore extends BaseStore {
                 img_alt: 'Trustpilot',
                 className: 'trustpilot',
                 type: 'trustpilot',
-            },
-            close_mx_mlt_account: {
-                key: 'close_mx_mlt_account',
-                header: mx_mlt_custom_header,
-                message: mx_mlt_custom_content,
-                secondary_btn: {
-                    text: localize('Learn more'),
-                    onClick: () => {
-                        ui.showCloseMxMltAccountPopup(true);
-                    },
-                },
-                img_src: getUrlBase('/public/images/common/close_account_banner.png'),
-                img_alt: 'close mx mlt account',
-                type: 'close_mx_mlt',
-            },
-            close_uk_account: {
-                key: 'close_uk_account',
-                header: localize('Your account is scheduled to be closed'),
-                message: localize('Please withdraw all your funds.'),
-                action: {
-                    text: localize('Learn more'),
-                    onClick: () => {
-                        ui.showCloseUKAccountPopup(true);
-                        this.removeNotificationByKey({ key: this.client_notifications.close_uk_account.key });
-                        this.removeNotificationMessage({
-                            key: this.client_notifications.close_uk_account.key,
-                            should_show_again: false,
-                        });
-                    },
-                },
-                type: 'danger',
             },
             currency: {
                 key: 'currency',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { Button, Text, useOnClickOutside } from '@deriv/components';
+import { Button, Text, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
 import { useWalletAccountsList } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
@@ -41,7 +41,9 @@ export const AccountSwitcherWallet = ({ is_visible, toggle }: TAccountSwitcherWa
                     <Localize i18n_default_text='Deriv Apps accounts' />
                 </Text>
             </div>
-            <AccountSwitcherWalletList wallets={dtrade_account_wallets} closeAccountsDialog={closeAccountsDialog} />
+            <ThemedScrollbars height={450}>
+                <AccountSwitcherWalletList wallets={dtrade_account_wallets} closeAccountsDialog={closeAccountsDialog} />
+            </ThemedScrollbars>
             <Button
                 className='account-switcher-wallet__button'
                 has_effect

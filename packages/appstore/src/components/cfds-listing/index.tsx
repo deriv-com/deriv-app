@@ -1,6 +1,7 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
 import { Text, StaticUrl } from '@deriv/components';
+import { useCFDCanGetMoreMT5Accounts, useWalletMigration } from '@deriv/hooks';
+import { observer, useStore } from '@deriv/stores';
 import { isMobile, formatMoney, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
@@ -11,7 +12,6 @@ import CompareAccount from 'Components/compare-account';
 import GetMoreAccounts from 'Components/get-more-accounts';
 import { Actions } from 'Components/containers/trading-app-card-actions';
 import { getHasDivider } from 'Constants/utils';
-import { useWalletMigration, useCFDCanGetMoreMT5Accounts } from '@deriv/hooks';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import './cfds-listing.scss';
 
@@ -31,7 +31,7 @@ const CFDsListing = observer(() => {
     } = useStore();
     const {
         available_dxtrade_accounts,
-        available_derivez_accounts,
+        available_ctrader_accounts,
         combined_cfd_mt5_accounts,
         selected_region,
         has_any_real_account,
@@ -78,7 +78,7 @@ const CFDsListing = observer(() => {
 
     const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
 
-    const getMT5AccountAuthStatus = (current_acc_status: string, jurisdiction?: string) => {
+    const getMT5AccountAuthStatus = (current_acc_status?: string | null, jurisdiction?: string) => {
         if (jurisdiction) {
             switch (jurisdiction) {
                 case Jurisdiction.BVI: {
@@ -152,11 +152,6 @@ const CFDsListing = observer(() => {
             }
         }
         return null;
-    };
-
-    const compareAccountsModalHandle = () => {
-        if (is_in_progress) setWalletsMigrationInProgressPopup(true);
-        else toggleCompareAccountsModal();
     };
 
     return (
@@ -271,6 +266,80 @@ const CFDsListing = observer(() => {
             ) : (
                 <PlatformLoader />
             )}
+
+            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && !is_real && (
+                <div className='cfd-full-row'>
+                    <hr className='divider' />
+                </div>
+            )}
+
+            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && !is_real && (
+                <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
+                    <Text weight='bold'>{localize('Deriv cTrader')}</Text>
+                </div>
+            )}
+
+            {is_landing_company_loaded && !is_real
+                ? available_ctrader_accounts.map((account: AvailableAccount) => {
+                      const existing_accounts = getExistingAccounts(account.platform, account.market_type);
+                      const has_existing_accounts = existing_accounts.length > 0;
+                      return has_existing_accounts ? (
+                          existing_accounts.map((existing_account: TDetailsOfEachMT5Loginid) => (
+                              <TradingAppCard
+                                  action_type='multi-action'
+                                  availability={selected_region}
+                                  clickable_icon
+                                  icon={account.icon}
+                                  sub_title={account.name}
+                                  name={`${formatMoney(
+                                      existing_account.currency,
+                                      existing_account.display_balance,
+                                      true
+                                  )} ${existing_account.currency}`}
+                                  description={existing_account.display_login}
+                                  platform={account.platform}
+                                  key={`trading_app_card_${existing_account.display_login}`}
+                                  onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
+                                      const button_name = e?.currentTarget?.name;
+                                      if (button_name === 'transfer-btn') {
+                                          toggleAccountTransferModal();
+                                          setSelectedAccount(existing_account);
+                                      } else if (button_name === 'topup-btn') {
+                                          showTopUpModal(existing_account);
+                                          setAppstorePlatform(account.platform);
+                                      } else {
+                                          startTrade(account.platform, existing_account);
+                                      }
+                                  }}
+                              />
+                          ))
+                      ) : (
+                          <TradingAppCard
+                              action_type='get'
+                              availability={selected_region}
+                              clickable_icon
+                              icon={account.icon}
+                              name={account.name}
+                              platform={account.platform}
+                              description={account.description}
+                              onAction={() => {
+                                  if ((has_no_real_account || no_CR_account) && is_real) {
+                                      openDerivRealAccountNeededModal();
+                                  } else {
+                                      setAccountType({
+                                          category: selected_account_type,
+                                          type: account.market_type,
+                                      });
+                                      setAppstorePlatform(account.platform);
+                                      getAccount();
+                                  }
+                              }}
+                              key={`trading_app_card_${account.name}`}
+                          />
+                      );
+                  })
+                : !is_real && <PlatformLoader />}
+
             {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                 <React.Fragment>
                     <div className='cfd-full-row'>
@@ -346,68 +415,6 @@ const CFDsListing = observer(() => {
             ) : (
                 <PlatformLoader />
             )}
-
-            {/* TODO: remove is_real flag to unblock the flow for derivez real account creation */}
-            {/* {is_landing_company_loaded && !is_real
-                ? available_derivez_accounts?.map((account: AvailableAccount) => {
-                      const existing_accounts = getExistingAccounts(account.platform, account.market_type);
-                      const has_existing_accounts = existing_accounts.length > 0;
-                      return has_existing_accounts ? (
-                          existing_accounts.map((existing_account: TDetailsOfEachMT5Loginid) => (
-                              <TradingAppCard
-                                  action_type='multi-action'
-                                  availability={selected_region}
-                                  clickable_icon
-                                  icon={account.icon}
-                                  sub_title={account.name}
-                                  name={`${formatMoney(
-                                      existing_account.currency,
-                                      existing_account.display_balance,
-                                      true
-                                  )} ${existing_account.currency}`}
-                                  description={existing_account.display_login}
-                                  platform={account.platform}
-                                  key={`trading_app_card_${existing_account.display_login}`}
-                                  onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
-                                      const button_name = e?.currentTarget?.name;
-                                      if (button_name === 'transfer-btn') {
-                                          toggleAccountTransferModal();
-                                          setSelectedAccount(existing_account);
-                                      } else if (button_name === 'topup-btn') {
-                                          showTopUpModal(existing_account);
-                                          setAppstorePlatform(account.platform);
-                                      } else {
-                                          startTrade(account.platform, existing_account);
-                                      }
-                                  }}
-                              />
-                          ))
-                      ) : (
-                          <TradingAppCard
-                              action_type='get'
-                              availability={selected_region}
-                              clickable_icon
-                              icon={account.icon}
-                              name={account.name}
-                              platform={account.platform}
-                              description={account.description}
-                              onAction={() => {
-                                  if ((has_no_real_account || no_CR_account) && is_real) {
-                                      openDerivRealAccountNeededModal();
-                                  } else {
-                                      setAccountType({
-                                          category: selected_account_type,
-                                          type: account.market_type,
-                                      });
-                                      setAppstorePlatform(account.platform);
-                                      getAccount();
-                                  }
-                              }}
-                              key={`trading_app_card_${account.name}`}
-                          />
-                      );
-                  })
-                : !is_real && <PlatformLoader />} */}
         </ListingContainer>
     );
 });

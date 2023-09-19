@@ -1,9 +1,10 @@
 import React from 'react';
 import { TWalletInfo } from 'Types';
+import { useCurrencyConfig } from '@deriv/api';
 import { Text, WalletCard } from '@deriv/components';
-import { useCurrencyConfig, useCreateWallet } from '@deriv/hooks';
+import { useCreateWallet } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import { getWalletCurrencyIcon } from '@deriv/utils';
+import { getWalletCurrencyIcon } from 'Constants/utils';
 import wallet_description_mapper from 'Constants/wallet_description_mapper';
 
 type TAddWalletCard = {

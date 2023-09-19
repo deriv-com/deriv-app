@@ -5,12 +5,15 @@ import useWalletTransactions from '../useWalletTransactions';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
+    useCurrencyConfig: jest.fn(() => ({ getConfig: () => ({ code: 'USD', type: 'fiat' }) })),
     useFetch: jest.fn(),
     usePaginatedFetch: jest.fn(),
 }));
 
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize' | 'website_status'>>;
 const mockUsePaginatedFetch = usePaginatedFetch as jest.MockedFunction<typeof usePaginatedFetch<'statement'>>;
+
+const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
 describe('useWalletTransactions', () => {
     test('should return a list of transactions for a real wallet', () => {
@@ -71,8 +74,6 @@ describe('useWalletTransactions', () => {
             isLoading: false,
             isSuccess: true,
         });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useWalletTransactions(), { wrapper });
 
@@ -180,8 +181,6 @@ describe('useWalletTransactions', () => {
             isLoading: false,
             isSuccess: true,
         });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useWalletTransactions(), { wrapper });
 

@@ -69,10 +69,14 @@ export const AccountSwitcherWalletItem = observer(
                         <Localize i18n_default_text='Deriv Apps' />
                     </Text>
                     <Text size='xxxs'>
-                        <Localize
-                            i18n_default_text='{{currency}} Wallet'
-                            values={{ currency: currency_config?.display_code }}
-                        />
+                        {is_virtual ? (
+                            <Localize i18n_default_text='Demo Wallet' />
+                        ) : (
+                            <Localize
+                                i18n_default_text='{{currency}} Wallet'
+                                values={{ currency: currency_config?.display_code }}
+                            />
+                        )}
                     </Text>
                     <Text size='xs' weight='bold'>
                         {`${formatMoney(currency || '', dtrade_balance || 0, true)} ${currency_config?.display_code}`}

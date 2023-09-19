@@ -36,28 +36,22 @@ const RealWalletsUpgrade = observer(() => {
         setIsDisabled(prevDisabled => !prevDisabled);
     };
 
+    const wallet_upgrade_steps = {
+        current_step,
+        handleBack,
+        handleClose,
+        handleNext,
+        is_disabled,
+        toggleCheckbox,
+        upgradeToWallets,
+    };
+
     return (
         <React.Fragment>
             {is_mobile ? (
-                <MobileRealWalletsUpgrade
-                    current_step={current_step}
-                    handleBack={handleBack}
-                    handleClose={handleClose}
-                    handleNext={handleNext}
-                    is_disabled={is_disabled}
-                    toggleCheckbox={toggleCheckbox}
-                    upgradeToWallets={upgradeToWallets}
-                />
+                <MobileRealWalletsUpgrade wallet_upgrade_steps={wallet_upgrade_steps} />
             ) : (
-                <DesktopRealWalletsUpgrade
-                    current_step={current_step}
-                    handleBack={handleBack}
-                    handleClose={handleClose}
-                    handleNext={handleNext}
-                    is_disabled={is_disabled}
-                    toggleCheckbox={toggleCheckbox}
-                    upgradeToWallets={upgradeToWallets}
-                />
+                <DesktopRealWalletsUpgrade wallet_upgrade_steps={wallet_upgrade_steps} />
             )}
         </React.Fragment>
     );

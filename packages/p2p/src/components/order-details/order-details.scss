@@ -19,7 +19,7 @@ $card-width: 456px;
         }
     }
 
-    &--body {
+    &__body {
         display: flex;
         flex-direction: column;
     }
@@ -154,16 +154,10 @@ $card-width: 456px;
             }
         }
         &-id {
-            color: var(--text-less-prominent);
-            font-size: var(--text-size-xxs);
-            line-height: 1.8rem;
             margin-top: 0.4rem;
         }
-        &-status {
-            font-size: var(--text-size-s);
-            line-height: 2.4rem;
-            font-weight: bold;
 
+        &-status {
             &--info {
                 color: var(--text-less-prominent);
             }
@@ -177,37 +171,6 @@ $card-width: 456px;
                 color: var(--status-warning);
             }
         }
-        &-amount {
-            line-height: 1.5;
-            font-size: 2.4rem;
-        }
-        &-method {
-            font-size: 1.2rem;
-            border: 1px solid var(--border-normal);
-            width: fit-content;
-            border-radius: 1.6rem;
-            padding: 0.4rem 1rem;
-            margin-top: 0.8rem;
-        }
-        &-timer {
-            font-size: 1.2rem;
-            line-height: 1.5;
-            text-align: center;
-
-            &-counter {
-                margin-top: 0.4rem;
-                border: 1px solid var(--border-normal);
-                border-radius: 16px;
-                padding: 0.4rem 0.8rem;
-            }
-        }
-        &-payment-info {
-            margin-top: 0.8rem;
-            font-size: 1.4rem;
-            line-height: 1.4;
-            color: var(--text-general);
-            word-break: break-word;
-        }
     }
 
     &__info {
@@ -219,20 +182,6 @@ $card-width: 456px;
             flex: 1;
             min-height: 0;
             padding: 1.6rem 0;
-        }
-
-        &-block {
-            margin-bottom: 1.6rem;
-
-            &-value {
-                display: flex;
-                flex-direction: column;
-                font-size: 1.4rem;
-                line-height: 1.43;
-                color: var(--text-general);
-                word-break: break-word;
-                white-space: pre-line;
-            }
         }
 
         &-columns {
@@ -248,39 +197,11 @@ $card-width: 456px;
             flex: 1;
         }
     }
-    &__footer {
-        display: flex;
-        justify-content: space-between;
-        margin-top: auto;
-        font-size: 1.4rem;
-        line-height: 1.43;
-        color: var(--text-general);
-        padding: 1.6rem 2.4rem;
-
-        @include mobile {
-            width: 100%;
-            padding: unset;
-        }
-        @include tablet-up {
-            width: 100%;
-            padding: 0 1.6rem 1.6rem;
-        }
-
-        &--right {
-            margin-left: auto;
-        }
-    }
 
     &--line {
         margin: 0;
         padding: 0;
         width: $card-width;
-    }
-
-    &__message {
-        font-size: var(--text-size-xs);
-        line-height: 2rem;
-        color: var(--text-general);
     }
 
     &__modal-checkbox {

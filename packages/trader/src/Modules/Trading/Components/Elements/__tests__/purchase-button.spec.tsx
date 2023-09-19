@@ -40,7 +40,7 @@ jest.mock('@deriv/shared', () => ({
 }));
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
-    IconTradeTypes: jest.fn(props => <div data-type={props.type}>TradeIcon</div>),
+    IconTradeTypes: jest.fn(props => <div data-testid={props.type}>TradeIcon</div>),
     Money: jest.fn(() => <div>MoneyComponent</div>),
 }));
 jest.mock('Modules/Trading/Components/Form/Purchase/contract-info', () => jest.fn(() => <div>ContractInfo</div>));
@@ -89,11 +89,8 @@ describe('<PurchaseButton />', () => {
     it('should render icon with specific type if is_high_low === true', () => {
         render(<PurchaseButton {...default_mocked_props} is_disabled is_loading is_high_low should_fade type='CALL' />);
 
-        const icon = screen.getByText(/TradeIcon/i);
-
         expect(screen.getByText(/Higher/i)).toBeInTheDocument();
-        expect(icon).toBeInTheDocument();
-        expect(icon).toHaveAttribute('data-type', 'call_barrier');
+        expect(screen.getByTestId(/call_barrier/i)).toBeInTheDocument();
     });
 
     it('should render ContractInfo for mobile if contract type is not turbos or vanillas', () => {

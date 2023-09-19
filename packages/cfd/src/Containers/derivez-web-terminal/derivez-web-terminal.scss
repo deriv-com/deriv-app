@@ -1,6 +1,7 @@
 .derivez-web-terminal {
     width: 100vw;
     height: calc(100vh - 10rem);
+    background-color: var(--general-section-1);
     &-header {
         width: 100vw;
         cursor: pointer;

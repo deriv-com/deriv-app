@@ -346,9 +346,10 @@ describe('createExtendedOrderDetails', () => {
         );
     });
     it('should handle getter for order_purchase_datetime', () => {
-        expect(createExtendedOrderDetails({ ...mock_order }, user_id, server_time).order_purchase_datetime).toEqual(
-            'Sep 14 2023, 12:11'
-        );
+        const purchase_time = new Date(
+            createExtendedOrderDetails({ ...mock_order }, user_id, server_time).order_purchase_datetime
+        ).toUTCString();
+        expect(purchase_time).toEqual('Thu, 14 Sep 2023 08:11:00 GMT');
     });
     it('should handler getter for is_buy_order_for_user', () => {
         expect(createExtendedOrderDetails({ ...mock_order }, user_id, server_time).is_buy_order_for_user).toBeTruthy();

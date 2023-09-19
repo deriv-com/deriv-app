@@ -465,73 +465,78 @@ class ExtendedOrderDetails {
         return this.is_buy_order ? wait_message : confirm_message;
     }
 
+    get my_ad_status_string() {
+        return {
+            counterparty_nickname_label: this.is_buy_order
+                ? localize("Buyer's nickname")
+                : localize("Seller's nickname"),
+            counterparty_real_name_label: this.is_buy_order
+                ? localize("Buyer's real name")
+                : localize("Seller's real name"),
+            left_send_or_receive: this.is_buy_order ? localize('Receive') : localize('Send'),
+            right_send_or_receive: this.is_buy_order ? localize('Send') : localize('Receive'),
+            payment_details: this.is_buy_order
+                ? localize('Your payment details')
+                : localize("Seller's payment details"),
+            contact_details: this.is_buy_order
+                ? localize('Your contact details')
+                : localize("Seller's contact details"),
+            instructions: localize('Your instructions'),
+            result_string: this.is_buy_order
+                ? localize('You sold {{offered_amount}} {{offered_currency}}', {
+                      ...this.result_string_values,
+                  })
+                : localize("You've received {{offered_amount}} {{offered_currency}}", {
+                      ...this.result_string_values,
+                  }),
+        };
+    }
+
+    get counterparty_ad_status_string() {
+        return {
+            counterparty_nickname_label: this.is_buy_order
+                ? localize("Seller's nickname")
+                : localize("Buyer's nickname"),
+            counterparty_real_name_label: this.is_buy_order
+                ? localize("Seller's real name")
+                : localize("Buyer's real name"),
+            left_send_or_receive: this.is_buy_order ? localize('Send') : localize('Receive'),
+            right_send_or_receive: this.is_buy_order ? localize('Receive') : localize('Send'),
+            payment_details: this.is_buy_order
+                ? localize("Seller's payment details")
+                : localize('Your payment details'),
+            contact_details: this.is_buy_order
+                ? localize("Seller's contact details")
+                : localize('Your contact details'),
+            instructions: this.is_buy_order ? localize("Seller's instructions") : localize("Buyer's instructions"),
+            result_string: this.is_buy_order
+                ? localize("You've received {{offered_amount}} {{offered_currency}}", {
+                      ...this.result_string_values,
+                  })
+                : localize('You sold {{offered_amount}} {{offered_currency}}', {
+                      ...this.result_string_values,
+                  }),
+        };
+    }
+
+    get result_string_values() {
+        return {
+            offered_amount: this.order_details.amount_display,
+            offered_currency: this.order_details.account_currency,
+        };
+    }
+
     /**
      * Function that returns the status labels
      *
      * @returns {string} object containing the status labels
      */
     get labels() {
-        if (this.is_buy_order) {
-            if (this.is_my_ad) {
-                return {
-                    counterparty_nickname_label: localize("Buyer's nickname"),
-                    counterparty_real_name_label: localize("Buyer's real name"),
-                    left_send_or_receive: localize('Receive'),
-                    right_send_or_receive: localize('Send'),
-                    payment_details: localize('Your payment details'),
-                    contact_details: localize('Your contact details'),
-                    instructions: localize('Your instructions'),
-                    result_string: localize('You sold {{offered_amount}} {{offered_currency}}', {
-                        offered_amount: this.order_details.amount_display,
-                        offered_currency: this.order_details.account_currency,
-                    }),
-                };
-            }
-
-            return {
-                counterparty_nickname_label: localize("Seller's nickname"),
-                counterparty_real_name_label: localize("Seller's real name"),
-                left_send_or_receive: localize('Send'),
-                right_send_or_receive: localize('Receive'),
-                payment_details: localize("Seller's payment details"),
-                contact_details: localize("Seller's contact details"),
-                instructions: localize("Seller's instructions"),
-                result_string: localize("You've received {{offered_amount}} {{offered_currency}}", {
-                    offered_amount: this.order_details.amount_display,
-                    offered_currency: this.order_details.account_currency,
-                }),
-            };
-        }
-
         if (this.is_my_ad) {
-            return {
-                counterparty_nickname_label: localize("Seller's nickname"),
-                counterparty_real_name_label: localize("Seller's real name"),
-                left_send_or_receive: localize('Send'),
-                right_send_or_receive: localize('Receive'),
-                payment_details: localize("Seller's payment details"),
-                contact_details: localize("Seller's contact details"),
-                instructions: localize('Your instructions'),
-                result_string: localize("You've received {{offered_amount}} {{offered_currency}}", {
-                    offered_amount: this.order_details.amount_display,
-                    offered_currency: this.order_details.account_currency,
-                }),
-            };
+            return this.my_ad_status_string;
         }
 
-        return {
-            counterparty_nickname_label: localize("Buyer's nickname"),
-            counterparty_real_name_label: localize("Buyer's real name"),
-            left_send_or_receive: localize('Receive'),
-            right_send_or_receive: localize('Send'),
-            payment_details: localize('Your payment details'),
-            contact_details: localize('Your contact details'),
-            instructions: localize("Buyer's instructions"),
-            result_string: localize('You sold {{offered_amount}} {{offered_currency}}', {
-                offered_amount: this.order_details.amount_display,
-                offered_currency: this.order_details.account_currency,
-            }),
-        };
+        return this.counterparty_ad_status_string;
     }
 
     /**

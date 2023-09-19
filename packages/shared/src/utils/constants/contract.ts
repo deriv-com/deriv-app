@@ -521,7 +521,7 @@ export const getContractTypeDisplay = (type: string, is_high_low = false, show_b
 
 export const getContractTypeFeatureFlag = (type: string, is_high_low = false) => {
     const contract_config = getContractConfig(is_high_low)[type as TGetSupportedContracts] as TContractConfig;
-    return contract_config?.feature_flag || '';
+    return contract_config?.feature_flag ?? '';
 };
 
 export const getContractTypePosition = (type: TGetSupportedContracts, is_high_low = false) =>

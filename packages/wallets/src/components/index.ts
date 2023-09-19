@@ -21,3 +21,6 @@ export * from './WalletsCarouselContent';
 export * from './OtherCFDPlatformsList';
 export * from './SecondaryActionButton';
 export * from './PrimaryActionButton';
+export * from './AvailableDxtradeAccountsList';
+export * from './AvailableDerivezAccountsList';
+export * from './AddedDxtradeAccountsList';

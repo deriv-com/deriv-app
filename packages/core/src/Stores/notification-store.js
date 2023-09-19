@@ -1518,7 +1518,7 @@ export default class NotificationStore extends BaseStore {
                 type: 'warning',
                 action: {
                     route: routes.proof_of_identity,
-                    text: localize('Submit proof of identity'),
+                    text: localize('Resubmit proof of identity'),
                 },
             },
             mt5_notification: {

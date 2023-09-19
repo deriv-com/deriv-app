@@ -10,7 +10,6 @@ type TPageErrorContainer = {
     redirect_urls?: string[];
     setError?: (has_error: boolean, error: React.ReactNode) => void;
     should_clear_error_on_click?: boolean;
-    has_malta_account?: boolean;
 };
 
 const PageErrorContainer = ({ error_header, error_messages, ...props }: TPageErrorContainer) => {

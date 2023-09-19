@@ -80,7 +80,7 @@ const ApiToken = () => {
 
     const validateFields = (values: TApiTokenForm) => {
         const errors: FormikErrors<TApiTokenForm> = {};
-        const token_name = values.token_name && values.token_name.trim();
+        const token_name = values?.token_name?.trim();
 
         if (!token_name) {
             errors.token_name = localize('Please enter a token name.');

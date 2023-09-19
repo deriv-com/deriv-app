@@ -1,7 +1,7 @@
 .rating-cell-renderer {
     margin-left: auto;
 
-    &--star {
+    &__star {
         pointer-events: none;
 
         > svg {

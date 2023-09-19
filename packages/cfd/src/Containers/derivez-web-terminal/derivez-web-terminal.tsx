@@ -18,34 +18,6 @@ const DerivezWebTerminal = () => {
 
     const derivezWebTraderUrl = getDerivEzWebTerminalLink(account_type, derivez_token);
 
-    useEffect(() => {
-        // listen to theme change from cloudfront(derivez) localStorage and update app.deriv theme
-        window.addEventListener('message', function (e) {
-            const key = e.data.key;
-            const value = e.data.value;
-
-            if (key === 'panda-forex__theme') {
-                setDarkMode(value === 'theme-dark-deriv');
-            }
-        });
-
-        // send theme change from app.deriv localStorage to cloudfront(derivez) localStorage
-        window.addEventListener('storage', function (e) {
-            if (e.key === 'ui_store') {
-                const uiStore = JSON.parse(e.newValue || '');
-
-                if (uiStore.ui_store.is_dark_mode_on !== localStorage.ui_store.is_dark_mode_on) {
-                    const message = {
-                        key: 'panda-forex__theme',
-                        value: uiStore.ui_store.is_dark_mode_on ? 'theme-dark-deriv' : 'theme-white-deriv',
-                    };
-
-                    window.parent.postMessage(message, derivezWebTraderUrl);
-                }
-            }
-        });
-    }, []);
-
     return (
         <div className='derivez-web-terminal'>
             <span className='derivez-web-terminal-header'>

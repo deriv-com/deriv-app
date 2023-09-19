@@ -7,15 +7,13 @@ import { Icon } from '@deriv/components';
 
 const DerivezWebTerminal = () => {
     const history = useHistory();
-    const location = useLocation();
     const routeToPrevious = () => history.push(routes.traders_hub);
-    const { traders_hub } = useStore();
+    const { traders_hub, modules } = useStore();
     const { is_real } = traders_hub;
+    const { derivez_tokens } = modules.cfd;
     const account_type = is_real ? 'real' : 'demo';
 
-    const derivez_token = location.state.derivez_token || '';
-
-    const derivezWebTraderUrl = getDerivEzWebTerminalLink(account_type, derivez_token);
+    const derivezWebTraderUrl = getDerivEzWebTerminalLink(account_type, derivez_tokens[account_type]);
 
     return (
         <div className='derivez-web-terminal'>

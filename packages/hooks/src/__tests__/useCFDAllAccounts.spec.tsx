@@ -6,7 +6,6 @@ import useCFDAllAccounts from '../useCFDAllAccounts';
 describe('useCFDAllAccounts', () => {
     test('should return empty array when client has no CFD accounts', async () => {
         const mock = mockStore({});
-
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
@@ -27,7 +26,6 @@ describe('useCFDAllAccounts', () => {
                 ],
             },
         });
-
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
@@ -48,7 +46,6 @@ describe('useCFDAllAccounts', () => {
                 ],
             },
         });
-
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
@@ -69,7 +66,6 @@ describe('useCFDAllAccounts', () => {
                 ],
             },
         });
-
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
@@ -104,7 +100,6 @@ describe('useCFDAllAccounts', () => {
                 ],
             },
         });
-
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );

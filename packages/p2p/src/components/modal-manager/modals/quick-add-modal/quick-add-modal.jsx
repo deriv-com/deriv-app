@@ -302,6 +302,7 @@ const QuickAddModal = ({ advert }) => {
                             onClickPaymentMethodCard={onClickPaymentMethodCard}
                             selected_methods={selected_methods}
                             onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethod(true)}
+                            p2p_advertiser_payment_methods={p2p_advertiser_payment_methods}
                         />
                     </>
                 )}

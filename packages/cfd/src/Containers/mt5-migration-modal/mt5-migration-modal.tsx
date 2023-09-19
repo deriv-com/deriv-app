@@ -1,35 +1,21 @@
 import React from 'react';
-import { DesktopWrapper, Modal, MobileDialog, UILoader, Div100vhContainer, MobileWrapper } from '@deriv/components';
+import { DesktopWrapper, Modal, MobileDialog, UILoader, MobileWrapper } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { CFD_PLATFORMS, Jurisdiction, isDesktop } from '@deriv/shared';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
-import { TOpenAccountTransferMeta } from '../props.types';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
-import MT5MigrationFrontSideContent from './mt5-migration-front-side-content';
-import MT5MigrationBackSideContent from './mt5-migration-back-side-content';
+import { TOpenAccountTransferMeta } from '../props.types';
+import MT5MigrationModalContent from './mt5-migration-modal-content';
 
 type TMT5MigrationModalProps = {
     openPasswordModal: (acc_type: TOpenAccountTransferMeta) => void;
 };
 
 const MT5MigrationModal = observer(({ openPasswordModal }: TMT5MigrationModalProps) => {
-    const { ui, common } = useStore();
-
-    const {
-        disableApp,
-        enableApp,
-        is_mt5_migration_modal_open,
-        is_mobile,
-        toggleMT5MigrationModal,
-        setMT5MigrationModalEnabled,
-    } = ui;
-    const { setAppstorePlatform } = common;
-    const { setJurisdictionSelectedShortcode } = useCfdStore();
-
-    const { no_of_svg_accounts_to_migrate, eligible_account_to_migrate, has_svg_accounts_to_migrate } =
-        useMT5SVGEligibleToMigrate();
-
+    const { ui } = useStore();
+    const { disableApp, enableApp, is_mt5_migration_modal_open, toggleMT5MigrationModal } = ui;
+    const { mt5_migration_error } = useCfdStore();
+    const { no_of_svg_accounts_to_migrate, has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
     const [show_modal_front_side, setShowModalFrontSide] = React.useState(true);
 
     const modal_title = <Localize i18n_default_text='Enhancing your trading experience' />;
@@ -40,37 +26,21 @@ const MT5MigrationModal = observer(({ openPasswordModal }: TMT5MigrationModalPro
         }
     }, [has_svg_accounts_to_migrate, toggleMT5MigrationModal]);
 
+    React.useEffect(() => {
+        if (mt5_migration_error) {
+            setShowModalFrontSide(false);
+        } else {
+            setShowModalFrontSide(true);
+        }
+    }, [mt5_migration_error]);
+
     const getModalHeight = () => {
         if (show_modal_front_side) {
             return no_of_svg_accounts_to_migrate < 1 ? '54.2rem' : '44rem';
+        } else if (mt5_migration_error) {
+            return '66rem';
         }
         return '61.6rem';
-    };
-
-    const onConfirmMigration = () => {
-        toggleMT5MigrationModal();
-        setAppstorePlatform(CFD_PLATFORMS.MT5);
-        setJurisdictionSelectedShortcode(
-            eligible_account_to_migrate === 'BVI' ? Jurisdiction.BVI : Jurisdiction.VANUATU
-        );
-        setMT5MigrationModalEnabled(true);
-        openPasswordModal({ category: 'real', type: 'financial' });
-    };
-
-    const ModalContent = () => {
-        return (
-            <Div100vhContainer height_offset='150px' is_bypassed={isDesktop()}>
-                {show_modal_front_side ? (
-                    <MT5MigrationFrontSideContent setShowModalFrontSide={setShowModalFrontSide} />
-                ) : (
-                    <MT5MigrationBackSideContent
-                        to_account={eligible_account_to_migrate}
-                        setShowModalFrontSide={setShowModalFrontSide}
-                        onConfirmMigration={onConfirmMigration}
-                    />
-                )}
-            </Div100vhContainer>
-        );
     };
 
     return (
@@ -88,7 +58,11 @@ const MT5MigrationModal = observer(({ openPasswordModal }: TMT5MigrationModalPro
                         width='58.8rem'
                         height={getModalHeight()}
                     >
-                        <ModalContent />
+                        <MT5MigrationModalContent
+                            show_modal_front_side={show_modal_front_side}
+                            setShowModalFrontSide={setShowModalFrontSide}
+                            openPasswordModal={openPasswordModal}
+                        />
                     </Modal>
                 </DesktopWrapper>
                 <MobileWrapper>
@@ -101,7 +75,11 @@ const MT5MigrationModal = observer(({ openPasswordModal }: TMT5MigrationModalPro
                         visible={is_mt5_migration_modal_open}
                         toggleModal={toggleMT5MigrationModal}
                     >
-                        <ModalContent />
+                        <MT5MigrationModalContent
+                            show_modal_front_side={show_modal_front_side}
+                            setShowModalFrontSide={setShowModalFrontSide}
+                            openPasswordModal={openPasswordModal}
+                        />
                     </MobileDialog>
                 </MobileWrapper>
             </React.Suspense>

@@ -25,7 +25,7 @@ export default class CFDStore extends BaseStore {
     is_cfd_success_dialog_enabled = false;
     is_mt5_financial_stp_modal_open = false;
     is_cfd_password_modal_enabled = false;
-
+    mt5_migration_error = '';
     current_account = undefined; // this is a tmp value, don't rely on it, unless you set it first.
 
     error_type = undefined;
@@ -55,6 +55,7 @@ export default class CFDStore extends BaseStore {
             jurisdiction_selected_shortcode: observable,
             account_type: observable,
             mt5_trade_account: observable,
+            mt5_migration_error: observable,
             new_account_response: observable,
             map_type: observable,
             has_cfd_error: observable,
@@ -93,6 +94,7 @@ export default class CFDStore extends BaseStore {
             setError: action.bound,
             setCFDNewAccount: action.bound,
             setCFDSuccessDialog: action.bound,
+            setMT5MigrationError: action.bound,
             getAccountStatus: action.bound,
             creatMT5Password: action.bound,
             submitMt5Password: action.bound,
@@ -427,6 +429,10 @@ export default class CFDStore extends BaseStore {
         this.is_cfd_success_dialog_enabled = !!value;
     }
 
+    setMT5MigrationError(error) {
+        this.mt5_migration_error = error;
+    }
+
     async getAccountStatus(platform) {
         const should_load_account_status =
             (platform === CFD_PLATFORMS.MT5 && this.root_store.client.is_mt5_password_not_set) ||
@@ -475,10 +481,17 @@ export default class CFDStore extends BaseStore {
             this.setCFDNewAccount(response.mt5_new_account);
         } else {
             await this.getAccountStatus(CFD_PLATFORMS.MT5);
-            this.setError(true, response.error);
-            actions.resetForm({});
-            actions.setSubmitting(false);
-            actions.setStatus({ success: false });
+
+            if (this.root_store.ui.is_mt5_migration_modal_enabled) {
+                this.clearCFDError();
+                this.setMT5MigrationError(response?.error?.message);
+                this.root_store.ui.toggleMT5MigrationModal();
+            } else {
+                this.setError(true, response.error);
+                actions.resetForm({});
+                actions.setSubmitting(false);
+                actions.setStatus({ success: false });
+            }
         }
     }
 

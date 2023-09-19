@@ -5,9 +5,12 @@ import { observer, useStore } from '@deriv/stores';
 import AppstoreBannerImage from './appstore-banner-image';
 
 const SVGMigrationBanner = observer(() => {
-    const { ui } = useStore();
-    const { is_mobile } = ui;
-    //TODO: Will add condition check for svg deriv mt5 and svg financial mt5 when API is ready
+    const {
+        ui,
+        modules: { cfd },
+    } = useStore();
+    const { is_mobile, toggleMT5MigrationModal } = ui;
+    const { setMT5MigrationError } = cfd;
     const is_deriv_mt5 = true;
     const is_financial_mt5 = true;
     const is_deriv_financial_mt5 = is_deriv_mt5 && is_financial_mt5;
@@ -16,6 +19,11 @@ const SVGMigrationBanner = observer(() => {
 
     const getAccountTitle = () => {
         return is_deriv_mt5 ? 'MT5 Derived SVG' : 'MT5 Financial SVG';
+    };
+
+    const openMT5MigrationModal = () => {
+        setMT5MigrationError('');
+        toggleMT5MigrationModal();
     };
 
     return (
@@ -41,7 +49,12 @@ const SVGMigrationBanner = observer(() => {
                         </Text>
                     )}
                 </div>
-                <Button className='appstore-banner__svg-migrate-banner-button' primary large onClick={() => null}>
+                <Button
+                    className='appstore-banner__svg-migrate-banner-button'
+                    primary
+                    large
+                    onClick={openMT5MigrationModal}
+                >
                     <Localize i18n_default_text='Upgrade now' />
                 </Button>
             </div>

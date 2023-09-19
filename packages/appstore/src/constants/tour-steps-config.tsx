@@ -280,6 +280,84 @@ export const getWalletStepConfig = (has_mt5_account: boolean, is_all_wallets_add
     },
 ];
 
+export const getWalletStepConfigResponsive = (): Step[] => [
+    {
+        title: (
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    <Localize i18n_default_text={'Wallets'} />
+                </Text>
+                <div className='toggle-account-type__divider' />
+            </React.Fragment>
+        ),
+        content: (
+            <Text as='p' size='xs'>
+                <Localize
+                    i18n_default_text={'This is your Wallet. You can see your total balance for this Wallet here.'}
+                />
+            </Text>
+        ),
+        // The 'target' refers to the element where the spotlight will be positioned. If there are multiple elements with the same class name, the 'target' will select the first matching element.
+        // target: '.wallet-header',
+        target: '.wallet-card',
+        disableBeacon: true,
+        placement: 'bottom',
+        hideBackButton: true,
+        spotlightPadding: 0,
+        styles: { spotlight: { borderRadius: '0.8rem' } },
+    },
+    {
+        title: (
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    <Localize i18n_default_text={'Wallets STEP 2'} />
+                </Text>
+                <div className='toggle-account-type__divider' />
+            </React.Fragment>
+        ),
+        content: (
+            <Text as='p' size='xs'>
+                <Localize
+                    i18n_default_text={'This is your Wallet. You can see your total balance for this Wallet here.'}
+                />
+            </Text>
+        ),
+        // The 'target' refers to the element where the spotlight will be positioned. If there are multiple elements with the same class name, the 'target' will select the first matching element.
+        // target: '.wallet-header',
+        target: '.wallet-card',
+        disableBeacon: true,
+        placement: 'bottom',
+        hideBackButton: true,
+        spotlightPadding: 0,
+        styles: { spotlight: { borderRadius: '0.8rem' } },
+    },
+    {
+        title: (
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    <Localize i18n_default_text={'Wallets STEP 3'} />
+                </Text>
+                <div className='toggle-account-type__divider' />
+            </React.Fragment>
+        ),
+        content: (
+            <Text as='p' size='xs'>
+                <Localize
+                    i18n_default_text={'This is your Wallet. You can see your total balance for this Wallet here.'}
+                />
+            </Text>
+        ),
+        // The 'target' refers to the element where the spotlight will be positioned. If there are multiple elements with the same class name, the 'target' will select the first matching element.
+        // target: '.wallet-header',
+        target: '.wallet-card',
+        disableBeacon: true,
+        placement: 'bottom',
+        hideBackButton: true,
+        spotlightPadding: 0,
+        styles: { spotlight: { borderRadius: '0.8rem' } },
+    },
+];
+
 export const tour_styles: Styles = {
     options: {
         width: 350,

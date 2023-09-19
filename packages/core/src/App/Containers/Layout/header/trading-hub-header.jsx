@@ -54,7 +54,7 @@ export const TradersHubHomeButton = observer(() => {
 const TradingHubOnboarding = observer(() => {
     const history = useHistory();
     const { client, traders_hub, ui } = useStore();
-    const { is_dark_mode_on, is_wallet_modal_visible, setIsWalletModalVisible, is_mobile } = ui;
+    const { is_dark_mode_on, is_wallet_modal_visible, setIsWalletModalVisible } = ui;
     const { setIsOnboardingVisited, toggleIsWalletTourOpen } = traders_hub;
     const { is_logged_in, is_switching, switchAccount, is_landing_company_loaded } = client;
 
@@ -91,8 +91,7 @@ const TradingHubOnboarding = observer(() => {
                         icon={is_dark_mode_on ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
                         size={20}
                         onClick={() => {
-                            /** TODO: Remove `!is_mobile` once wallet onboarding responsive is implemented. */
-                            if (data?.length > 0 && is_wallet_enabled && !is_mobile) {
+                            if (data?.length > 0 && is_wallet_enabled) {
                                 handleSwitchAndToggle();
                             } else {
                                 history.push(routes.onboarding);

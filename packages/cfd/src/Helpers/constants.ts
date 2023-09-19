@@ -43,10 +43,6 @@ const getTitle = (market_type: string, is_eu_user: boolean) => {
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
-const DEMO_MT5_URL = 'https://mt5-demo-web.deriv.com/terminal';
-const REAL_MT5_URL_01 = 'https://mt5-real01-web.deriv.com/terminal';
-const REAL_MT5_URL_02 = 'https://mt5-real02-web.deriv.com/terminal';
-
 const DERIVEZ_URL = 'https://dqwsqxuu0r6t9.cloudfront.net/';
 const DERIVEZ_IOS_APP_URL = 'https://apps.apple.com/my/app/deriv-go/id1550561298';
 const DERIVEZ_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.app&pli=1';
@@ -106,7 +102,7 @@ const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) =>
         case 'android':
             return 'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server,Deriv-Server-02';
         default:
-            return getMT5WebTerminalLink({ category: 'real' }); // Web
+            return '';
     }
 };
 
@@ -130,42 +126,6 @@ const getDerivEzWebTerminalLink = (category: string, token?: string) => {
     return url;
 };
 
-const getMT5WebTerminalLink = ({
-    category,
-    loginid,
-    server_name = 'Deriv-Server',
-}: {
-    category?: string;
-    loginid?: string;
-    server_name?: string;
-}) => {
-    const is_demo = category === 'demo';
-    const server = is_demo ? 'Deriv-Demo' : server_name;
-    const login = loginid ?? '';
-
-    const getBaseUrl = () => {
-        if (is_demo) return DEMO_MT5_URL;
-
-        const cfd_reset_password_intent = localStorage.getItem('cfd_reset_password_intent');
-        if (cfd_reset_password_intent) {
-            const server_cluster = cfd_reset_password_intent.split('.')[0].split('_')[0];
-            switch (server_cluster) {
-                case 'p02':
-                    return REAL_MT5_URL_02;
-                case 'p01':
-                default:
-                    return REAL_MT5_URL_01;
-            }
-        }
-    };
-
-    const base_url = getBaseUrl();
-    const loginParam = login ? `&login=${login}` : '';
-    const queryParams = `?servers=${server}&trade_server=${server}${loginParam}`;
-
-    return `${base_url}${queryParams}`;
-};
-
 export {
     REAL_DXTRADE_URL,
     DEMO_DXTRADE_URL,
@@ -180,6 +140,5 @@ export {
     getPlatformMt5DownloadLink,
     getDXTradeWebTerminalLink,
     getDerivEzWebTerminalLink,
-    getMT5WebTerminalLink,
     getTopUpConfig,
 };

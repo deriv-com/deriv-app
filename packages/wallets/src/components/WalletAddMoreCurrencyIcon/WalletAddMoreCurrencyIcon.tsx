@@ -27,12 +27,12 @@ type TWalletCurrencyIconProps = {
     currency: string;
 };
 
-const WalletCurrencyIcon = ({ currency }: TWalletCurrencyIconProps) => {
+const WalletAddMoreCurrencyIcon = ({ currency }: TWalletCurrencyIconProps) => {
     const CurrencyIcon = React.useMemo(() => currencies[currency as keyof typeof currencies], [currency]);
 
     if (CurrencyIcon) {
         return (
-            <div className='wallets-currency-icon'>
+            <div className='wallets-add-more-currency-icon'>
                 <CurrencyIcon />
             </div>
         );
@@ -41,4 +41,4 @@ const WalletCurrencyIcon = ({ currency }: TWalletCurrencyIconProps) => {
     return <span>LOGO</span>;
 };
 
-export default WalletCurrencyIcon;
+export default WalletAddMoreCurrencyIcon;

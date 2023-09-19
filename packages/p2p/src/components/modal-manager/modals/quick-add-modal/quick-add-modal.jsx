@@ -30,11 +30,6 @@ const QuickAddModal = ({ advert }) => {
         is_sell_ad_add_payment_methods_selected || is_buy_ad_add_payment_methods_selected;
 
     React.useEffect(() => {
-        const saved_selected_methods = localStorage.getItem('selected_methods');
-        if (saved_selected_methods) {
-            setSelectedMethods(JSON.parse(saved_selected_methods));
-            localStorage.removeItem('selected_methods');
-        }
         my_profile_store.getPaymentMethodsList();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

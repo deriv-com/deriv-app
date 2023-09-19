@@ -66,14 +66,14 @@ const WalletsAddMoreCarousel = () => {
                                 onClick={scrollPrev}
                                 disabled={!prev_btn_enabled}
                             >
-                                a
+                                &lt;
                             </button>
                             <button
                                 className='wallets-add-more__carousel-btn wallets-add-more__carousel-btn--next'
                                 onClick={scrollNext}
                                 disabled={!next_btn_enabled}
                             >
-                                b
+                                &gt;
                             </button>
                         </React.Fragment>
                     )}

@@ -198,7 +198,7 @@ const IDVForm = ({
                                             )}
                                         </Field>
                                     </fieldset>
-                                    {values.document_type.id !== IDV_NOT_APPLICABLE_OPTION.id && (
+                                    {values?.document_type?.id !== IDV_NOT_APPLICABLE_OPTION.id && (
                                         <fieldset
                                             className={classNames({
                                                 'proof-of-identity__fieldset-input': !hide_hint,

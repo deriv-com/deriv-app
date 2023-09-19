@@ -799,6 +799,7 @@ describe('<PersonalDetails/>', () => {
                 phone: '+34',
                 tax_residence: '',
                 tax_identification_number: '',
+                document_type: idv_document_data,
             },
         };
         renderwithRouter(<PersonalDetails {...new_props} />);

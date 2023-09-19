@@ -1,4 +1,4 @@
-import WalletCurrencyIcon from './WalletCurrencyIcon';
-import './WalletCurrencyIcon.scss';
+import WalletAddMoreCurrencyIcon from './WalletAddMoreCurrencyIcon';
+import './WalletAddMoreCurrencyIcon.scss';
 
-export default WalletCurrencyIcon;
+export default WalletAddMoreCurrencyIcon;

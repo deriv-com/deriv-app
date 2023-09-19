@@ -1,5 +1,6 @@
 import React from 'react';
-import { useActiveWallet, useCurrencyConfig } from '@deriv/hooks';
+import { useCurrencyConfig } from '@deriv/api';
+import { useActiveWallet } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 import { Div100vhContainer } from '@deriv/components';
 import WithdrawalVerificationEmail from '@deriv/cashier/src/pages/withdrawal/withdrawal-verification-email';

@@ -127,20 +127,22 @@ jest.mock('@deriv/api', () => ({
     }),
 }));
 
+const createWrapper = () => {
+    const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+
+    return wrapper;
+};
+
 describe('useTradingAccountsList', () => {
     test('should return list of 4 accounts for the current account', () => {
-        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
-
-        const { result } = renderHook(() => useTradingAccountsList(), { wrapper });
+        const { result } = renderHook(() => useTradingAccountsList(), { wrapper: createWrapper() });
 
         expect(result.current.data?.every(account => account.account_category === 'trading')).toEqual(true);
         expect(result.current.data?.length).toEqual(4);
     });
 
     test('should return correct balance', () => {
-        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
-
-        const { result } = renderHook(() => useTradingAccountsList(), { wrapper });
+        const { result } = renderHook(() => useTradingAccountsList(), { wrapper: createWrapper() });
 
         expect(result.current.data?.find(account => account.loginid === 'CR1003')?.balance).toEqual(179);
     });

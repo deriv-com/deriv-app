@@ -5,12 +5,19 @@ import useWalletTransactions from '../useWalletTransactions';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
+    useCurrencyConfig: jest.fn(() => ({ getConfig: () => ({ code: 'USD', type: 'fiat' }) })),
     useFetch: jest.fn(),
     usePaginatedFetch: jest.fn(),
 }));
 
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize' | 'website_status'>>;
 const mockUsePaginatedFetch = usePaginatedFetch as jest.MockedFunction<typeof usePaginatedFetch<'statement'>>;
+
+const createWrapper = () => {
+    const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+
+    return wrapper;
+};
 
 describe('useWalletTransactions', () => {
     test('should return a list of transactions for a real wallet', () => {
@@ -72,9 +79,7 @@ describe('useWalletTransactions', () => {
             isSuccess: true,
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
-
-        const { result } = renderHook(() => useWalletTransactions(), { wrapper });
+        const { result } = renderHook(() => useWalletTransactions(), { wrapper: createWrapper() });
 
         expect(result.current.transactions).toEqual(
             expect.arrayContaining([
@@ -181,9 +186,7 @@ describe('useWalletTransactions', () => {
             isSuccess: true,
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
-
-        const { result } = renderHook(() => useWalletTransactions(), { wrapper });
+        const { result } = renderHook(() => useWalletTransactions(), { wrapper: createWrapper() });
 
         expect(result.current.transactions).toEqual(
             expect.arrayContaining([

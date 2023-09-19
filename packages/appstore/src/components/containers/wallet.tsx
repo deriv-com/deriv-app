@@ -12,13 +12,14 @@ type TWallet = {
 
 const Wallet = ({ wallet_account }: TWallet) => {
     const headerRef = React.useRef<HTMLDivElement>(null);
+    const { is_selected, is_demo, is_malta_wallet } = wallet_account;
 
     return (
-        <div ref={headerRef} className={classNames('wallet', { wallet__demo: wallet_account.is_demo })}>
+        <div ref={headerRef} className={classNames('wallet', { wallet__demo: is_demo })}>
             <WalletHeader wallet_account={wallet_account} />
             <CSSTransition
                 appear
-                in={wallet_account.is_selected}
+                in={is_selected}
                 timeout={240}
                 onEntered={() => {
                     if (headerRef?.current) {
@@ -29,7 +30,7 @@ const Wallet = ({ wallet_account }: TWallet) => {
                 classNames='wallet__content-transition'
                 unmountOnExit
             >
-                <WalletContent is_demo={wallet_account.is_demo} is_malta_wallet={wallet_account.is_malta_wallet} />
+                <WalletContent is_demo={is_demo} is_malta_wallet={is_malta_wallet} />
             </CSSTransition>
         </div>
     );

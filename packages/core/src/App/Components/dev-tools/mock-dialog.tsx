@@ -59,7 +59,7 @@ const MockDialog = () => {
         Object.keys(response).forEach((loginid, index) => {
             const current_index = index + 1;
             param_obj[`acct${current_index}`] = loginid;
-            param_obj[`token${current_index}`] = response[loginid].token || '';
+            param_obj[`token${current_index}`] = response[loginid].token ?? '';
             param_obj[`cur${current_index}`] = response[loginid].currency || 'USD';
         });
 
@@ -149,7 +149,7 @@ const MockDialog = () => {
                 <div className=''>
                     <Button
                         disabled={getServerStatus() === 'offline'}
-                        onClick={() => handleSessionIdChange(mock_server_data?.session_id || '')}
+                        onClick={() => handleSessionIdChange(mock_server_data?.session_id ?? '')}
                     >
                         Connect
                     </Button>

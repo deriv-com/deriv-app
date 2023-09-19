@@ -13,6 +13,16 @@ jest.mock('@deriv/api', () => ({
 // @ts-expect-error need to come up with a way to mock the return type of useRequest
 const mockUseRequest = useRequest as jest.MockedFunction<typeof useRequest<'new_account_wallet'>>;
 
+const createWrapper = (mock: ReturnType<typeof mockStore>) => {
+    const wrapper = ({ children }: { children: JSX.Element }) => (
+        <APIProvider>
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        </APIProvider>
+    );
+
+    return wrapper;
+};
+
 describe('useNewWalletCreation', () => {
     test('should return undefined if the response is not ready yet', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
@@ -20,13 +30,7 @@ describe('useNewWalletCreation', () => {
 
         const mock = mockStore({});
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        const { result } = renderHook(() => useNewWalletCreation(), { wrapper });
+        const { result } = renderHook(() => useNewWalletCreation(), { wrapper: createWrapper(mock) });
 
         expect(result.current.data).toBeUndefined();
     });
@@ -52,13 +56,7 @@ describe('useNewWalletCreation', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        const { result } = renderHook(() => useNewWalletCreation(), { wrapper });
+        const { result } = renderHook(() => useNewWalletCreation(), { wrapper: createWrapper(mock) });
 
         expect(result.current.data).toEqual(mockResponse.new_account_wallet);
     });

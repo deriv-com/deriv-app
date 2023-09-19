@@ -1,4 +1,4 @@
-.dp2p-verification {
+.verification {
     width: 100%;
     max-width: 67.2rem;
     display: flex;
@@ -17,16 +17,15 @@
     &__icon {
         margin-bottom: 3.4rem;
     }
+
     &__text {
-        text-align: center;
+        display: flex;
+        flex-direction: column;
 
         &-title {
-            font-size: var(--text-size-s);
-            font-weight: bold;
             margin-bottom: 1rem;
-            line-height: 1.5;
-            color: var(--text-general);
         }
+
         &-description {
             margin-bottom: 2.4rem;
 
@@ -38,6 +37,7 @@
             }
         }
     }
+
     &__checklist {
         width: 400px;
 
@@ -50,14 +50,6 @@
         }
         @include mobile {
             width: 100%;
-        }
-    }
-
-    &__wrapper {
-        padding-top: 3.5rem;
-
-        &--mobile {
-            padding: 3.5rem 2.5rem 0;
         }
     }
 }

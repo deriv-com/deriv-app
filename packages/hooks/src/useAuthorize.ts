@@ -5,10 +5,11 @@ import { getActiveAuthTokenIDFromLocalStorage } from '@deriv/utils';
 /** A custom hook that authorize the user with the given token. If no token is given, it will use the current token. */
 const useAuthorize = (token?: string) => {
     const current_token = getActiveAuthTokenIDFromLocalStorage();
+    const auth_token = token || current_token || '';
 
     const { data, ...rest } = useFetch('authorize', {
-        payload: { authorize: token || current_token || '' },
-        options: { keepPreviousData: true, enabled: Boolean(current_token) },
+        payload: { authorize: auth_token },
+        options: { enabled: Boolean(auth_token) },
     });
 
     // Add additional information to the authorize response.

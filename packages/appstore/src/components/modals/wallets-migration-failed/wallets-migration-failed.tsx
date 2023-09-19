@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, Modal, Button } from '@deriv/components';
-import { localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
 import './wallets-migration-failed.scss';
 
 const WalletsMigrationFailed = observer(() => {
@@ -29,20 +29,18 @@ const WalletsMigrationFailed = observer(() => {
                         weight='bold'
                         className='wallets-migration-failed__title'
                     >
-                        {localize('Sorry for the interruption')}
+                        <Localize i18n_default_text='Sorry for the interruption' />
                     </Text>
                     <Text size={is_mobile ? 'xxs' : 'xs'}>
-                        {localize(
-                            "We're unable to complete with the Wallet upgrade. Please try again later or contact us via live chat."
-                        )}
+                        <Localize i18n_default_text='We’re unable to complete with the Wallet upgrade. Please try again later or contact us via live chat.' />
                     </Text>
                 </Modal.Body>
                 <Modal.Footer className='wallets-migration-failed__footer'>
                     <Button secondary large onClick={handLiveChatButtonClick}>
-                        {localize('Go to live chat')}
+                        <Localize i18n_default_text='Go to live chat' />
                     </Button>
                     <Button primary large onClick={handleClose} classNameSpan='wallets-migration-failed__text'>
-                        {localize('Back to Trader’s Hub')}
+                        <Localize i18n_default_text='Back to Trader’s Hub' />
                     </Button>
                 </Modal.Footer>
             </div>

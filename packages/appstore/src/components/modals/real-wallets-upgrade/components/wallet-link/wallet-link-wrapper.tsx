@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text, WalletCard } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import WalletAccount from '../wallet-account/wallet-account';
 import { observer, useStore } from '@deriv/stores';
 import './wallet-link-wrapper.scss';
@@ -29,7 +29,7 @@ const WalletLinkWrapper = observer(({ wallet_details, account_list }: TWalletLin
                         color='prominent'
                         size='xxxs'
                     >
-                        {localize('Your current trading account(s)')}
+                        <Localize i18n_default_text='Your current trading account(s)' />
                     </Text>
                 )}
                 {account_list.map(account => {
@@ -62,7 +62,7 @@ const WalletLinkWrapper = observer(({ wallet_details, account_list }: TWalletLin
                         color='prominent'
                         size='xxxs'
                     >
-                        {localize('Your new Wallet')}
+                        <Localize i18n_default_text='Your new Wallet' />
                     </Text>
                 )}
             </div>

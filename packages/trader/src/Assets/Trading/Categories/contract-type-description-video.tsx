@@ -38,6 +38,7 @@ const ContractTypeDescriptionVideo = ({ selected_contract_type, data_testid }: T
             controls
             width={is_mobile ? 328 : 480}
             height={is_mobile ? 184.5 : 270}
+            className='contract-type-info__video'
             data-testid={data_testid}
         >
             {/* a browser will select a source with extension it recognizes */}

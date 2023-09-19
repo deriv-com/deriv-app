@@ -1,31 +1,38 @@
-import React, { ReactElement, useMemo } from 'react';
+import React, { ReactElement } from 'react';
 import { useWalletAccountsList } from '@deriv/api';
 import IcDropdown from '../../public/images/ic-dropdown.svg';
 import './WalletsAccordion.scss';
 
 type TProps = {
-    account_info?: ReturnType<typeof useWalletAccountsList>['data'][number];
-    active_account?: string;
+    wallet: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
     content: ReactElement;
     header: ReactElement;
-    switchAccount: (loginid?: string) => void;
 };
 
-const WalletsAccordion: React.FC<TProps> = ({ active_account, account_info, switchAccount, header, content }) => {
-    const is_open = useMemo(() => active_account === account_info?.loginid, [active_account]);
+const WalletsAccordion: React.FC<TProps> = ({ wallet, header, content }) => {
+    const switchAccount = (loginid?: string) => {
+        // if (!loginid) return;
+        // implement switch account here
+    };
 
     return (
-        <div className='wallets-accordion'>
-            <div className='wallets-accordion__header'>
+        <div className={`wallets-accordion wallets-accordion${wallet?.is_virtual ? '--virtual' : ''}`}>
+            <div
+                className={`wallets-accordion__header wallets-accordion__header${
+                    wallet?.is_virtual ? '--virtual' : ''
+                }`}
+            >
                 {header}
                 <div
-                    className={`wallets-accordion__dropdown${is_open ? '--open' : ''}`}
-                    onClick={() => switchAccount(account_info?.loginid)}
+                    className={`wallets-accordion__dropdown${wallet.is_active ? '--open' : ''}`}
+                    onClick={() => switchAccount(wallet?.loginid)}
                 >
                     <IcDropdown />
                 </div>
             </div>
-            <div className={`wallets-accordion__content${is_open ? '--visible' : ''}`}>{is_open && content}</div>
+            <div className={`wallets-accordion__content${wallet.is_active ? '--visible' : ''}`}>
+                {wallet.is_active && content}
+            </div>
         </div>
     );
 };

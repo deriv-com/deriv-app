@@ -17,6 +17,10 @@ export type TCFDStore = {
         demo: string;
         real: string;
     };
+    ctrader_tokens: {
+        demo: string;
+        real: string;
+    };
     mt5_trade_account: Required<
         DetailsOfEachMT5Loginid & { market_type?: TTradingPlatformAvailableAccount['market_type'] | 'synthetic' }
     >;

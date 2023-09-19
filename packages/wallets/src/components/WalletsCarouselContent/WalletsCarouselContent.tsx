@@ -21,13 +21,13 @@ const WalletsCarouselContent: React.FC = () => {
             setActiveIndex(scroll_snap_index);
         });
     }, [emblaApi]);
-    const amount_of_steps = Array.from({ length: wallet_accounts_list.length }, (_, idx) => idx + 1);
+    const amount_of_steps = Array.from({ length: wallet_accounts_list?.length || 0 }, (_, idx) => idx + 1);
 
     return (
         <div className='wallets-carousel-content' ref={wallet_embla_ref}>
             <div className='wallets-carousel-content__container'>
-                {wallet_accounts_list.map(wallet => (
-                    <WalletCard key={`${wallet.loginid}`} account={wallet} />
+                {wallet_accounts_list?.map(wallet => (
+                    <WalletCard key={`wallet-card-${wallet.loginid}`} account={wallet} />
                 ))}
             </div>
             <div className='wallets-carousel-content__progress-bar'>

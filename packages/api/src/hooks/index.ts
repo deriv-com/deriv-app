@@ -11,6 +11,7 @@ export { default as useCFDAccountsList } from './useCFDAccountsList';
 export { default as useCreateMT5Account } from './useCreateMT5Account';
 export { default as useCreateOtherCFDAccount } from './useCreateOtherCFDAccount';
 export { default as useCtraderAccountsList } from './useCtraderAccountsList';
+export { default as useCtraderServiceToken } from './useCtraderServiceToken';
 export { default as useCurrencyConfig } from './useCurrencyConfig';
 export { default as useDepositCryptoAddress } from './useDepositCryptoAddress';
 export { default as useDepositFiatAddress } from './useDepositFiatAddress';

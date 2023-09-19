@@ -137,7 +137,7 @@ const PurchaseFieldset = ({
                         }}
                         onClick={() => {
                             if (!is_disabled) {
-                                onHoverPurchase(false);
+                                onHoverPurchase(false, type);
                             }
                         }}
                     >

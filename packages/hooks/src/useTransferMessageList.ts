@@ -102,7 +102,7 @@ const mock_unequal_get_limits_response = {
         },
         dxtrade: {
             allowed: '2000.00',
-            available: '1900.00',
+            available: '0.00',
             minimum: '0.01',
         },
         virtual: {

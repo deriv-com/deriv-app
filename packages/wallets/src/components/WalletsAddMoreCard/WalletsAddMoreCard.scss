@@ -1,0 +1,20 @@
+.wallets-add-more {
+    &__card {
+        display: flex;
+        flex-direction: column;
+        gap: 2.4rem;
+        padding: 1.6rem;
+        width: 23.2rem;
+        height: 28.2rem;
+        border-radius: 1.6rem;
+        flex-shrink: 0;
+        border: 0.1rem solid var(--system-light-5-active-background, #d6dadb);
+        background: var(--system-light-8-primary-background, #fff);
+        box-shadow: 0px 4px 6px -2px rgba(14, 14, 14, 0.03), 0px 12px 16px -4px rgba(14, 14, 14, 0.08);
+
+        @include mobile {
+            width: 19.2rem;
+            gap: 1.6rem;
+        }
+    }
+}

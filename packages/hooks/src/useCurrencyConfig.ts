@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { useAuthorize, useFetch } from '@deriv/api';
+import { useFetch } from '@deriv/api';
 
 /** @deprecated Use `useCurrencyConfig` from `@deriv/api` package instead. */
 const useCurrencyConfig = () => {

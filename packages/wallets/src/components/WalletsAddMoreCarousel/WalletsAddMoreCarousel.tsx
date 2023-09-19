@@ -3,6 +3,7 @@ import useEmblaCarousel, { EmblaCarouselType, EmblaOptionsType } from 'embla-car
 import { useAvailableWallets } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
 import WalletsAddMoreCard from '../WalletsAddMoreCard';
+import './WalletsAddMoreCarousel.scss';
 
 const WalletsAddMoreCarousel = () => {
     const { is_mobile } = useDevice();
@@ -66,14 +67,14 @@ const WalletsAddMoreCarousel = () => {
                                 onClick={scrollPrev}
                                 disabled={!prev_btn_enabled}
                             >
-                                a
+                                &lt;
                             </button>
                             <button
                                 className='wallets-add-more__carousel-btn wallets-add-more__carousel-btn--next'
                                 onClick={scrollNext}
                                 disabled={!next_btn_enabled}
                             >
-                                b
+                                &gt;
                             </button>
                         </React.Fragment>
                     )}

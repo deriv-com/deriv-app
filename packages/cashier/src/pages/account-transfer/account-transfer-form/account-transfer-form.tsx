@@ -117,10 +117,9 @@ const AccountTransferForm = observer(
             onChangeConverterToAmount,
             resetConverter,
         } = crypto_fiat_converter;
-        const is_open_order_position_status_present = useIsMt5LoginListStatusPresent(
-            selected_to.value ?? '',
-            'open_order_position_status' // this flag is not yet present in the BE response.
-        );
+
+        // TODO: Replace 'login' with 'open_order_position_status' flag once it's available in the BE response and in type TSocketResponseData<"mt5_login_list">
+        const is_open_order_position_status_present = useIsMt5LoginListStatusPresent('login', selected_to.value ?? '');
 
         const [from_accounts, setFromAccounts] = React.useState({});
         const [to_accounts, setToAccounts] = React.useState({});

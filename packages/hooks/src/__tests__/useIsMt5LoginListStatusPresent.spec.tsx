@@ -4,14 +4,16 @@ import useIsMt5LoginListStatusPresent from '../useIsMt5LoginListStatusPresent';
 const mock_login_id = 'MOCK_LOGIN_ID';
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useMT5LoginList: jest.fn(() => ({
-        data: [{ login: mock_login_id, account_type: 'real' }],
+    useMT5AccountsList: jest.fn(() => ({
+        data: [{ login: mock_login_id, open_order_position_status: 1 }],
     })),
 }));
 
 describe('useIsMt5LoginListStatusPresent', () => {
     it('should return true when the given status is present for the given login id', () => {
-        const { result } = renderHook(() => useIsMt5LoginListStatusPresent('account_type', mock_login_id));
+        const { result } = renderHook(() =>
+            useIsMt5LoginListStatusPresent('open_order_position_status', mock_login_id)
+        );
         expect(result.current).toBeTruthy();
     });
 

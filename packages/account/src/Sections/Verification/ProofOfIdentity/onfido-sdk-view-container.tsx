@@ -46,7 +46,7 @@ const OnfidoSdkViewContainer = observer(
 
         const { common, ui } = useStore();
         const { current_language } = common;
-        const { is_mobile } = ui;
+        const { is_mobile, setPreventRender } = ui;
 
         // IDV country code - Alpha ISO2. Onfido country code - Alpha ISO3
         // Ensures that any form of country code passed here is supported.
@@ -67,7 +67,12 @@ const OnfidoSdkViewContainer = observer(
 
         const { send, isSuccess: isNotified } = useNotificationEvent();
 
-        const { service_token, isSuccess, isError, error, isFetched, isLoading } = useServiceToken({
+        // TODO: Remove this when POI flow is refactored to handle residence list inside CountrySelector
+        React.useEffect(() => {
+            setPreventRender(true);
+        }, [setPreventRender]);
+
+        const { service_token, isSuccess, isError, error, isLoading } = useServiceToken({
             service: 'onfido',
             country: token_country_code,
         });
@@ -75,19 +80,23 @@ const OnfidoSdkViewContainer = observer(
 
         const onfido_init = React.useRef<SdkHandle>();
 
-        const onComplete = (data: Omit<SdkResponse, 'data'> & { data?: { id?: string } }) => {
-            onfido_init?.current?.tearDown();
-            const document_ids = Object.keys(data).map(key => data[key as keyof SdkResponse]?.id);
-            if (document_ids?.length) {
-                send({
-                    category: 'authentication',
-                    event: 'poi_documents_uploaded',
-                    args: {
-                        documents: document_ids as Array<string>,
-                    },
-                });
-            }
-        };
+        const onComplete = React.useCallback(
+            (data: Omit<SdkResponse, 'data'> & { data?: { id?: string } }) => {
+                onfido_init?.current?.tearDown();
+                const document_ids = Object.keys(data).map(key => data[key as keyof SdkResponse]?.id);
+                if (document_ids?.length) {
+                    send({
+                        category: 'authentication',
+                        event: 'poi_documents_uploaded',
+                        args: {
+                            documents: document_ids as Array<string>,
+                        },
+                    });
+                }
+                setPreventRender(false);
+            },
+            [send, setPreventRender]
+        );
 
         const initOnfido = React.useCallback(
             async (service_token: string) => {
@@ -161,17 +170,12 @@ const OnfidoSdkViewContainer = observer(
         }, []);
 
         React.useEffect(() => {
-            /**
-             * Handled re-initialization of onfido sdk when language is changed
-             */
-            if (current_language) {
-                if (isSuccess && service_token?.onfido?.token) {
-                    initOnfido(service_token?.onfido?.token);
-                } else if (isError) {
-                    handleError(error as TAPIError);
-                }
+            if (isSuccess && service_token?.onfido?.token) {
+                initOnfido(service_token?.onfido?.token);
+            } else if (isError) {
+                handleError(error as TAPIError);
             }
-        }, [current_language, isFetched]);
+        }, [error, initOnfido, isError, isSuccess, service_token?.onfido?.token]);
 
         React.useEffect(() => {
             /**

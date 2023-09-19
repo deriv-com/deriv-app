@@ -172,6 +172,7 @@ export default class UIStore extends BaseStore {
     is_switch_to_deriv_account_modal_visible = false;
     is_cfd_reset_password_modal_enabled = false;
     sub_section_index = 0;
+    prevent_render = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -397,6 +398,8 @@ export default class UIStore extends BaseStore {
             toggleLanguageSettingsModal: action.bound,
             toggleUnsupportedContractModal: action.bound,
             toggleUpdateEmailModal: action.bound,
+            prevent_render: observable,
+            setPreventRender: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -923,5 +926,9 @@ export default class UIStore extends BaseStore {
 
     setSubSectionIndex(index) {
         this.sub_section_index = index;
+    }
+
+    setPreventRender(state) {
+        this.prevent_render = state;
     }
 }

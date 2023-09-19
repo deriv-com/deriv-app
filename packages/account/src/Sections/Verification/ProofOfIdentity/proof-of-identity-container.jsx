@@ -1,3 +1,5 @@
+import React from 'react';
+import { useHistory } from 'react-router';
 import { Button, Loading } from '@deriv/components';
 import { isEmptyObject, WS, getPlatformRedirect, platforms } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -11,12 +13,10 @@ import { Localize } from '@deriv/translations';
 import NotRequired from 'Components/poi/status/not-required';
 import Onfido from './onfido.jsx';
 import POISubmission from './proof-of-identity-submission.jsx';
-import React from 'react';
 import Unsupported from 'Components/poi/status/unsupported';
 import UploadComplete from 'Components/poi/status/upload-complete';
 import Verified from 'Components/poi/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification';
-import { useHistory } from 'react-router';
 
 const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateChange, setIsCfdPoiCompleted }) => {
     const history = useHistory();
@@ -25,7 +25,7 @@ const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateCh
     const [residence_list, setResidenceList] = React.useState([]);
     const [is_status_loading, setStatusLoading] = React.useState(true);
 
-    const { client, common, notifications } = useStore();
+    const { client, common, notifications, ui } = useStore();
 
     const {
         account_settings,
@@ -37,8 +37,9 @@ const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateCh
         should_allow_authentication,
         is_virtual,
     } = client;
-    const { app_routing_history, is_language_changing, routeBackInApp } = common;
+    const { app_routing_history, routeBackInApp, is_language_changing } = common;
     const { refreshNotifications } = notifications;
+    const { prevent_render } = ui;
 
     const from_platform = getPlatformRedirect(app_routing_history);
 
@@ -67,10 +68,10 @@ const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateCh
     }, [fetchResidenceList]);
 
     React.useEffect(() => {
-        if (is_language_changing) {
+        if (is_language_changing && !prevent_render) {
             loadResidenceList();
         }
-    }, [is_language_changing, loadResidenceList]);
+    }, [is_language_changing, loadResidenceList, prevent_render]);
 
     React.useEffect(() => {
         // only re-mount logic when switching is done
@@ -92,7 +93,7 @@ const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateCh
     /**
      * Display loader while waiting for the account status and residence list to be populated
      */
-    if (is_status_loading || is_switching || isEmptyObject(account_status) || residence_list.length === 0) {
+    if (is_status_loading || is_switching || isEmptyObject(account_status)) {
         return <Loading is_fullscreen={false} />;
     } else if (is_virtual) {
         return <DemoMessage />;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
 import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
@@ -13,21 +14,25 @@ const getWalletHeaderButtons = (is_demo: boolean, handleAction?: () => void) => 
             name: 'Deposit',
             text: is_demo ? 'Reset balance' : 'Deposit',
             icon: <IcCashierAdd />,
+            link: '?&active-cashier-tab=deposit',
         },
         {
             name: 'Withdraw',
             text: 'Withdraw',
             icon: <IcCashierWithdrawal />,
+            link: '?&active-cashier-tab=withdraw',
         },
         {
             name: 'Transfer',
             text: 'Transfer',
             icon: <IcCashierTransfer />,
+            link: '?&active-cashier-tab=transfer',
         },
         {
             name: 'Transactions',
             text: 'Transactions',
             icon: <IcCashierStatement />,
+            link: '?&active-cashier-tab=transactions',
         },
     ];
 
@@ -45,8 +50,10 @@ type TProps = {
 };
 
 const WalletListCardIActions: React.FC<TProps> = ({ account }) => {
-    const { is_mobile } = useDevice();
     const { data: active_wallet } = useActiveWalletAccount();
+    const { is_mobile } = useDevice();
+    const history = useHistory();
+
     const is_demo = !!active_wallet?.is_virtual;
 
     if (is_mobile)
@@ -77,9 +84,18 @@ const WalletListCardIActions: React.FC<TProps> = ({ account }) => {
                 <button
                     key={`wallets-header-button-${button.name}`}
                     className='wallets-header__button'
-                    onClick={button.action}
+                    onClick={() => {
+                        history.push(`/appstore/traders-hub${button.link}`);
+                    }}
                 >
                     {button.icon}
+                    <span
+                        className={`wallets-header__actions-label ${
+                            account?.is_active ? 'wallets-header__actions-label--active' : ''
+                        }`}
+                    >
+                        {button.name}
+                    </span>
                 </button>
             ))}
         </div>

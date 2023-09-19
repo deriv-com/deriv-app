@@ -109,16 +109,18 @@ export default class QuickStrategyStore {
 
     getInitialValues = data_fields => {
         const init = {};
-        Object.keys(data_fields).forEach(data_field_key => {
-            const key = data_fields[data_field_key];
-            if (key.type === 'select' && this.qs_cache[key.field_name]) {
-                init[`${key.field_name}`] = this.qs_cache[key.field_name].text || '';
-            } else if (this.qs_cache[key.field_name] && this.qs_cache[key.field_name]) {
-                init[`${key.field_name}`] = this.qs_cache[key.field_name as keyof TQSCache];
-            }
-        });
+        if (data_fields) {
+            Object.keys(data_fields).forEach(data_field_key => {
+                const key = data_fields[data_field_key];
+                if (key.type === 'select' && this.qs_cache[key.field_name]) {
+                    init[`${key.field_name}`] = this.qs_cache[key.field_name].text || '';
+                } else if (this.qs_cache[key.field_name]) {
+                    init[`${key.field_name}`] = this.qs_cache[key.field_name as keyof TQSCache];
+                }
+            });
 
-        storeSetting('quick_strategy', this.qs_cache);
+            storeSetting('quick_strategy', this.qs_cache);
+        }
 
         return init;
     };

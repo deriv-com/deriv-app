@@ -144,11 +144,11 @@ const Get_Fields = observer(({ data_fields_group_wise }) => {
 
 const QuickStrategyFields = observer(() => {
     const { quick_strategy } = useDBotStore();
-    const { selected_type_strategy } = quick_strategy;
+    const { selected_type_strategy, selected_symbol } = quick_strategy;
 
     const data_fields = React.useMemo(() => {
-        return strategies[selected_type_strategy.value].fields || [];
-    }, [selected_type_strategy]);
+        return selected_type_strategy.value ? strategies[selected_type_strategy.value].fields : [];
+    }, [selected_type_strategy, selected_symbol]);
 
     return (
         <div className='quick-strategy__fields'>

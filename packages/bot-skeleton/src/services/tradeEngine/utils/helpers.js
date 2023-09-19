@@ -3,6 +3,44 @@ import { localize } from '@deriv/translations';
 import { error as logError } from './broadcast';
 import { observer as globalObserver } from '../../../utils/observer';
 
+export const tradeOptionToProposal = (trade_option, purchase_reference) =>
+    trade_option.contractTypes.map(type => {
+        const proposal = {
+            amount: trade_option.amount,
+            basis: trade_option.basis,
+            contract_type: type,
+            currency: trade_option.currency,
+            duration: trade_option.duration,
+            duration_unit: trade_option.duration_unit,
+            multiplier: trade_option.multiplier,
+            passthrough: {
+                contract_type: type,
+                purchase_reference,
+            },
+            proposal: 1,
+            symbol: trade_option.symbol,
+        };
+        if (trade_option.prediction !== undefined) {
+            proposal.selected_tick = trade_option.prediction;
+        }
+        if (!['TICKLOW', 'TICKHIGH'].includes(type) && trade_option.prediction !== undefined) {
+            proposal.barrier = trade_option.prediction;
+        } else if (trade_option.barrierOffset !== undefined) {
+            proposal.barrier = trade_option.barrierOffset;
+        }
+        if (trade_option.secondBarrierOffset !== undefined) {
+            proposal.barrier2 = trade_option.secondBarrierOffset;
+        }
+        if (['MULTUP', 'MULTDOWN'].includes(type)) {
+            proposal.duration = undefined;
+            proposal.duration_unit = undefined;
+        }
+        if (!isEmptyObject(trade_option.limit_order)) {
+            proposal.limit_order = trade_option.limit_order;
+        }
+        return proposal;
+    });
+
 export const tradeOptionToBuy = (contract_type, trade_option) => {
     const buy = {
         buy: '1',
@@ -19,22 +57,48 @@ export const tradeOptionToBuy = (contract_type, trade_option) => {
         },
     };
     if (trade_option.prediction !== undefined) {
-        buy.selected_tick = trade_option.prediction;
+        buy.parameters.selected_tick = trade_option.prediction;
     }
     if (!['TICKLOW', 'TICKHIGH'].includes(contract_type) && trade_option.prediction !== undefined) {
-        buy.barrier = trade_option.prediction;
+        buy.parameters.barrier = trade_option.prediction;
     } else if (trade_option.barrierOffset !== undefined) {
-        buy.barrier = trade_option.barrierOffset;
+        buy.parameters.barrier = trade_option.barrierOffset;
     }
     if (trade_option.secondBarrierOffset !== undefined) {
-        buy.barrier2 = trade_option.secondBarrierOffset;
+        buy.parameters.barrier2 = trade_option.secondBarrierOffset;
     }
-    if (['MULTUP', 'MULTDOWN'].includes(contract_type)) {
-        buy.duration = undefined;
-        buy.duration_unit = undefined;
+    if (!isEmptyObject(trade_option.app_markup_percentage)) {
+        buy.parameters.app_markup_percentage = trade_option.app_markup_percentage;
     }
+    if (!isEmptyObject(trade_option.barrier_range)) {
+        buy.parameters.barrier_range = trade_option.barrier_range;
+    }
+    if (!isEmptyObject(trade_option.date_expiry)) {
+        buy.parameters.date_expiry = trade_option.date_expiry;
+    }
+    if (!isEmptyObject(trade_option.date_start)) {
+        buy.parameters.date_start = trade_option.date_start;
+    }
+    if (!isEmptyObject(trade_option.product_type)) {
+        buy.parameters.product_type = trade_option.product_type;
+    }
+    if (!isEmptyObject(trade_option.trading_period_start)) {
+        buy.parameters.trading_period_start = trade_option.trading_period_start;
+    }
+    // This will be required only in the case of multiplier & accumulator contracts
     if (!isEmptyObject(trade_option.limit_order)) {
-        buy.limit_order = trade_option.limit_order;
+        buy.parameters.limit_order = trade_option.limit_order;
+    }
+    // This will be required only in the case of multiplier contracts
+    if (['MULTUP', 'MULTDOWN'].includes(contract_type)) {
+        buy.parameters.duration = undefined;
+        buy.parameters.duration_unit = undefined;
+
+        buy.parameters.multiplier = trade_option.multiplier;
+    }
+    // This will be required only in the case of accumulator contracts
+    if (['ACCU'].includes(contract_type)) {
+        buy.parameters.growth_rate = trade_option.growth_rate;
     }
     return buy;
 };
@@ -218,3 +282,24 @@ export const createDetails = contract => {
 };
 
 export const getUUID = () => `${new Date().getTime() * Math.random()}`;
+
+const hasBlockOfType = (targetType, workspace) => {
+    const allBlocks = workspace.getAllBlocks();
+    return allBlocks.some(block => block.type === targetType && !!block.parentBlock_);
+};
+
+export const checkBlocksExistenceToSubscribeProposal = () => {
+    const workspace = Blockly.derivWorkspace;
+    const hasPayoutBlock = hasBlockOfType('payout', workspace);
+
+    // Code for the future for case when basis: 'payout':
+    // * Since basis : '${block.type === 'trade_definition_tradeoptions' ? 'stake' : 'payout'}'
+    // * basis: 'payout' when contract_type: "MULTUP"
+    // Uncomment next line later:
+    // const isBasisPayout = !hasBlockOfType('trade_definition_tradeoptions', workspace);
+
+    return {
+        hasPayoutBlock,
+        isBasisPayout: false,
+    };
+};

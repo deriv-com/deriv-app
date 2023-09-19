@@ -152,12 +152,12 @@ export default class BlockConversion {
                 statement_blocks: [block],
             };
         };
-        const tradeOptions = (block_node, is_symbol_type = false) => {
+        const trade_options = (block_node, is_symbol_type = false) => {
             const block = this.workspace.newBlock('trade_definition_tradeoptions');
             const block_node_to_use = block_node;
 
             // Legacy symbol blocks used a statement "CONDITION" populated with a trade type block.
-            // This trade type block has the same structure as tradeOptions, hence we can use it here.
+            // This trade type block has the same structure as trade_options, hence we can use it here.
             if (is_symbol_type) {
                 return false;
             }
@@ -215,7 +215,7 @@ export default class BlockConversion {
             macda: block_node => generateIndicatorBlock(block_node, 'macda_statement', 'macda'),
             market: block_node => {
                 this.has_market_block = true;
-                return tradeOptions(block_node);
+                return trade_options(block_node);
             },
             rsi: block_node => generateIndicatorBlock(block_node, 'rsi_statement', 'rsi'),
             rsia: block_node => generateIndicatorBlock(block_node, 'rsia_statement', 'rsia'),
@@ -252,7 +252,7 @@ export default class BlockConversion {
 
                 return { block_to_attach: block };
             },
-            tradeOptions,
+            trade_options,
         };
 
         return conversions;

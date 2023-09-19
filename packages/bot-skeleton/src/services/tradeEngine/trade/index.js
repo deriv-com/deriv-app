@@ -3,14 +3,15 @@ import thunk from 'redux-thunk';
 import { localize } from '@deriv/translations';
 import Balance from './Balance';
 import OpenContract from './OpenContract';
+import Proposal from './Proposal';
 import Purchase from './Purchase';
 import Sell from './Sell';
-import { start } from './state/actions';
+import { start, proposalsReady } from './state/actions';
 import * as constants from './state/constants';
 import rootReducer from './state/reducers';
 import Ticks from './Ticks';
 import Total from './Total';
-import { doUntilDone } from '../utils/helpers';
+import { doUntilDone, checkBlocksExistenceToSubscribeProposal } from '../utils/helpers';
 import { expectInitArg } from '../utils/sanitize';
 import { createError } from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
@@ -21,7 +22,7 @@ const watchBefore = store =>
         store,
         stopScope: constants.DURING_PURCHASE,
         passScope: constants.BEFORE_PURCHASE,
-        passFlag: '',
+        passFlag: 'proposalsReady',
     });
 
 const watchDuring = store =>
@@ -48,7 +49,7 @@ const watchScope = ({ store, stopScope, passScope, passFlag }) => {
             if (newState.newTick === prevTick) return;
             prevTick = newState.newTick;
 
-            if (newState.scope === passScope && (newState[passFlag] || !passFlag)) {
+            if (newState.scope === passScope && newState[passFlag]) {
                 unsubscribe();
                 resolve(true);
             }
@@ -61,7 +62,7 @@ const watchScope = ({ store, stopScope, passScope, passFlag }) => {
     });
 };
 
-export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Ticks(Total(class {})))))) {
+export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Proposal(Ticks(Total(class {}))))))) {
     constructor($scope) {
         super();
         this.observer = $scope.observer;
@@ -69,8 +70,8 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Tick
         this.observe();
         this.data = {
             contract: {},
+            proposals: [],
         };
-        this.data_trade_options = {};
         this.store = createStore(rootReducer, applyMiddleware(thunk));
     }
 
@@ -85,19 +86,20 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Tick
         if (!this.checkTicksPromiseExists()) this.watchTicks(symbol);
     }
 
-    start(tradeOptions) {
+    start(trade_options) {
         if (!this.options) {
             throw createError('NotInitialized', localize('Bot.init is not called'));
         }
 
         globalObserver.emit('bot.running');
 
-        const validated_trade_options = this.validateTradeOptions(tradeOptions);
+        const validated_trade_options = this.validateTradeOptions(trade_options);
 
-        this.tradeOptions = validated_trade_options;
+        this.trade_options = { ...validated_trade_options, symbol: this.options.symbol };
         this.store.dispatch(start());
-        this.data_trade_options = { ...this.options, ...validated_trade_options };
         this.checkLimits(validated_trade_options);
+
+        this.makeDirectPurchaseDecision();
     }
 
     loginAndGetBalance(token) {
@@ -134,6 +136,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Tick
     observe() {
         this.observeOpenContract();
         this.observeBalance();
+        this.observeProposals();
     }
 
     watch(watchName) {
@@ -141,5 +144,17 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Tick
             return watchBefore(this.store);
         }
         return watchDuring(this.store);
+    }
+
+    makeDirectPurchaseDecision() {
+        const { hasPayoutBlock, isBasisPayout } = checkBlocksExistenceToSubscribeProposal();
+        this.isProposalSubscriptionRequired = hasPayoutBlock || isBasisPayout;
+
+        if (this.isProposalSubscriptionRequired) {
+            this.makeProposals({ ...this.options, ...this.trade_options });
+            this.checkProposalReady();
+        } else {
+            this.store.dispatch(proposalsReady());
+        }
     }
 }

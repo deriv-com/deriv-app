@@ -19,6 +19,9 @@ export default Engine =>
                     key: tickListenerKey,
                 });
                 const callback = ticks => {
+                    if (this.isProposalSubscriptionRequired) {
+                        this.checkProposalReady();
+                    }
                     const lastTick = ticks.slice(-1)[0];
                     const { epoch } = lastTick;
                     this.store.dispatch({ type: constants.NEW_TICK, payload: epoch });

@@ -111,18 +111,18 @@ export default Engine =>
         }
 
         /* eslint-disable class-methods-use-this */
-        validateTradeOptions(tradeOptions) {
-            const take_profit = tradeOptions.take_profit;
-            const stop_loss = tradeOptions.stop_loss;
+        validateTradeOptions(trade_options) {
+            const take_profit = trade_options.take_profit;
+            const stop_loss = trade_options.stop_loss;
 
             if (take_profit) {
-                tradeOptions.limit_order.take_profit = take_profit;
+                trade_options.limit_order.take_profit = take_profit;
             }
             if (stop_loss) {
-                tradeOptions.limit_order.stop_loss = stop_loss;
+                trade_options.limit_order.stop_loss = stop_loss;
             }
 
-            return tradeOptions;
+            return trade_options;
         }
 
         getAccountStat() {

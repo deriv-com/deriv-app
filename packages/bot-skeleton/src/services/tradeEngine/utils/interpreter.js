@@ -18,7 +18,7 @@ JSInterpreter.prototype.restoreStateSnapshot = function (snapshot) {
 };
 
 const botInitialized = bot => bot && bot.tradeEngine.options;
-const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
+const botStarted = bot => botInitialized(bot) && bot.tradeEngine.trade_options;
 const shouldRestartOnError = (bot, errorName = '') =>
     !unrecoverable_errors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
 
@@ -194,7 +194,7 @@ const Interpreter = () => {
                 globalObserver.emit('bot.stop');
                 const { ticksService } = $scope;
                 // Unsubscribe previous ticks_history subscription
-                // Unsubscribe the subscriptions from Balance and OpenContract
+                // Unsubscribe the subscriptions from Proposal, Balance and OpenContract
                 api_base.clearSubscriptions();
 
                 ticksService.unsubscribeFromTicksService().then(() => {
@@ -243,12 +243,12 @@ const Interpreter = () => {
                 }
 
                 globalObserver.emit('Error', e);
-                const { initArgs, tradeOptions } = bot.tradeEngine;
+                const { initArgs, trade_options } = bot.tradeEngine;
                 terminateSession();
                 init();
                 $scope.observer.register('Error', onError);
                 bot.tradeEngine.init(...initArgs);
-                bot.tradeEngine.start(tradeOptions);
+                bot.tradeEngine.start(trade_options);
                 revert($scope.startState);
             };
 

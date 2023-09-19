@@ -18,6 +18,7 @@ const DesktopRealWalletsUpgrade = observer(({ wallet_upgrade_steps }: TRealWalle
             width='1200px'
             should_header_stick_body={false}
             has_close_icon
+            title=' '
         >
             <Modal.Body className='wallet-steps'>
                 <WalletsUpgradeContent wallet_upgrade_steps={wallet_upgrade_steps} />

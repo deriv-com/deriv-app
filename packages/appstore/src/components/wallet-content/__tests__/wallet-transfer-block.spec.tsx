@@ -83,8 +83,8 @@ describe('<WalletTransferBlock />', () => {
                 <WalletTransferBlock wallet_account={wallet_account} />
             </StoreProvider>
         );
-        const { linked_to } = wallet_account;
-        const loginid = String(linked_to?.[0].loginid);
+
+        const loginid = wallet_account.linked_to?.[0].loginid || '';
 
         const loginid_title = screen.getByText(loginid);
 

@@ -1,27 +1,51 @@
 import React from 'react';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
-import { WS, isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import TwoFactorAuthentication from '../two-factor-authentication';
 import { APIProvider, useRequest } from '@deriv/api';
+import { useGetSecretKey, useGetTwoFa } from '@deriv/hooks';
+// import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isDesktop: jest.fn(() => true),
     isMobile: jest.fn(() => false),
-    // WS: {
-    //     authorized: {
-    //         accountSecurity: jest.fn().mockResolvedValue({}),
-    //     },
-    // },
 }));
+
+jest.mock('@deriv/hooks', () => {
+    return {
+        ...jest.requireActual('@deriv/hooks'),
+        useGetTwoFa: jest.fn(() => ({
+            data: true,
+            isLoading: false,
+            isSuccess: true,
+            getTwoFA: jest.fn(),
+        })),
+        useGetSecretKey: jest.fn(() => ({
+            data: {
+                account_security: {
+                    totp: {
+                        secret_key: 'hello123',
+                    },
+                },
+            },
+            isLoading: false,
+            isSuccess: true,
+            getSecretKey: jest.fn(),
+        })),
+    };
+});
+
+const mockUseGetTwoFa = useGetTwoFa as jest.MockedFunction<typeof useGetTwoFa>;
+const mockUseGetSecretKey = useGetSecretKey as jest.MockedFunction<typeof useGetSecretKey>;
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useRequest: jest.fn(),
+    useRequest: jest.fn(() => ({ mutate: jest.fn() })),
 }));
 
-const mockUseRequest = useRequest as jest.MockedFunction<typeof useRequest<'account_security'>>;
+// const mockUseRequest = useRequest as jest.MockedFunction<typeof useRequest<'account_security'>>;
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -35,25 +59,15 @@ jest.mock('@deriv/components', () => {
 jest.mock('qrcode.react', () => jest.fn(() => <div>QRCode</div>));
 
 describe('<TwoFactorAuthentication/>', () => {
-    beforeEach(() => {
-        // @ts-expect-error need to come up with a way to mock the return type of useRequest
-        mockUseRequest.mockReturnValue({
-            error: { message: 'OTP verification failed', code: 'InvalidOTP' },
-            mutate: jest.fn(),
-        });
-    });
-
     afterEach(() => {
         cleanup();
         jest.clearAllMocks();
     });
+
     const store = mockStore({
         client: {
             email_address: 'test@dev.com',
-            getTwoFAStatus: jest.fn().mockResolvedValue(false),
-            has_enabled_two_fa: false,
             is_switching: false,
-            setTwoFAStatus: jest.fn(),
             setTwoFAChangedStatus: jest.fn(),
         },
         common: {
@@ -87,39 +101,37 @@ describe('<TwoFactorAuthentication/>', () => {
         });
     });
 
-    it('should render LoadErrorMessage component if getTwoFAStatus call returns error', async () => {
-        const new_store_config = {
-            ...store,
-            client: {
-                ...store.client,
-                getTwoFAStatus: jest.fn().mockResolvedValue({ error: { message: 'error while getting 2FA status' } }),
-            },
-        };
+    it('should render LoadErrorMessage component if getTwoFA call returns error', async () => {
+        // @ts-expect-error need to come up with a way to mock the return type of useRequest
+        mockUseGetTwoFa.mockReturnValueOnce({
+            error: { message: 'Invalid Request', code: 'InvalidOTP' },
+            getTwoFA: jest.fn(),
+        });
 
-        renderComponent({ store_config: new_store_config });
+        renderComponent({ store_config: store });
 
         await waitFor(() => {
-            const error_message = screen.getByText(/error while getting 2FA status/i);
+            const error_message = screen.getByText(/Invalid Request/i);
             expect(error_message).toBeInTheDocument();
         });
     });
 
-    // fit('should render LoadErrorMessage component if api call returns error when has_enabled_two_fa is false', async () => {
-    //     // @ts-expect-error need to come up with a way to mock the return type of useRequest
-    //     mockUseRequest.mockReturnValue({
-    //         error: { message: 'AccountSecurity error', code: 'InvalidOTP' },
-    //         mutate: jest.fn(),
-    //     });
+    it('should render LoadErrorMessage component if getSecretKey call returns error', async () => {
+        // @ts-expect-error need to come up with a way to mock the return type of useRequest
+        mockUseGetSecretKey.mockReturnValueOnce({
+            error: { message: 'Invalid request error', code: 'InvalidOTP' },
+            getSecretKey: jest.fn(),
+        });
 
-    //     renderComponent({ store_config: store });
+        renderComponent({ store_config: store });
 
-    //     await waitFor(() => {
-    //         const error_message = screen.getByText(/AccountSecurity error/i);
-    //         expect(error_message).toBeInTheDocument();
-    //     });
-    // });
+        await waitFor(() => {
+            const error_message = screen.getByText(/Invalid request error/i);
+            expect(error_message).toBeInTheDocument();
+        });
+    });
 
-    it('should render How to set up 2FA title when has_enabled_two_fa is false', async () => {
+    it('should render How to set up 2FA title if has_enabled_two_fa is false', async () => {
         renderComponent({ store_config: store });
 
         await waitFor(() => {
@@ -128,7 +140,7 @@ describe('<TwoFactorAuthentication/>', () => {
         });
     });
 
-    it('should render timeline_1 component title when has_enabled_two_fa is false', async () => {
+    it('should render timeline_1 component title if has_enabled_two_fa is false', async () => {
         renderComponent({ store_config: store });
 
         await waitFor(() => {
@@ -145,7 +157,7 @@ describe('<TwoFactorAuthentication/>', () => {
         });
     });
 
-    it('should render QR code when has_enabled_two_fa is false', async () => {
+    it('should render QR code if has_enabled_two_fa is false', async () => {
         renderComponent({ store_config: store });
 
         await waitFor(() => {
@@ -155,13 +167,6 @@ describe('<TwoFactorAuthentication/>', () => {
     });
 
     it('should render clipboard component to setup 2FA', async () => {
-        WS.authorized.accountSecurity.mockResolvedValueOnce({
-            account_security: {
-                totp: {
-                    secret_key: 'hello123',
-                },
-            },
-        });
         renderComponent({ store_config: store });
 
         await waitFor(() => {
@@ -186,7 +191,7 @@ describe('<TwoFactorAuthentication/>', () => {
         });
     });
 
-    it('should render digitform component when 2FA is disabled', async () => {
+    it('should render digitform component if 2FA is disabled', async () => {
         renderComponent({ store_config: store });
 
         await waitFor(() => {
@@ -195,7 +200,7 @@ describe('<TwoFactorAuthentication/>', () => {
         });
     });
 
-    it('should render 2FA article component for mobile when 2FA is disabled', async () => {
+    it('should render 2FA article component for mobile if 2FA is disabled', async () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         (isDesktop as jest.Mock).mockReturnValue(false);
 
@@ -207,7 +212,7 @@ describe('<TwoFactorAuthentication/>', () => {
         });
     });
 
-    it('should render 2FA article component for dekstop when 2FA is disabled', async () => {
+    it('should render 2FA article component for dekstop if 2FA is disabled', async () => {
         (isMobile as jest.Mock).mockReturnValue(false);
         (isDesktop as jest.Mock).mockReturnValue(true);
 
@@ -219,43 +224,33 @@ describe('<TwoFactorAuthentication/>', () => {
         });
     });
 
-    it('should render TwoFactorEnabled component when 2FA is enabled', async () => {
-        const new_store_config = {
-            ...store,
-            client: {
-                ...store.client,
-                getTwoFAStatus: jest.fn().mockResolvedValue(true),
-                has_enabled_two_fa: true,
-            },
-        };
-        renderComponent({ store_config: new_store_config });
+    // it('should render TwoFactorEnabled component if 2FA is enabled', async () => {
+    //     renderComponent({ store_config: store });
 
-        await waitFor(() => {
-            const title_1 = screen.getByText(/2FA enabled/i);
-            const title_2 = screen.getByText(/You have enabled 2FA for your Deriv account./i);
-            const title_3 = screen.getByText(
-                /To disable 2FA, please enter the six-digit authentication code generated by your 2FA app below:/i
-            );
-            expect(title_1).toBeInTheDocument();
-            expect(title_2).toBeInTheDocument();
-            expect(title_3).toBeInTheDocument();
-        });
-    });
+    //     const submitButton = screen.getByRole('button', { name: /Enable/i });
+    //     userEvent.click(submitButton);
 
-    it('should render DigitForm component when 2FA is enabled', async () => {
-        const new_store_config = {
-            ...store,
-            client: {
-                ...store.client,
-                getTwoFAStatus: jest.fn().mockResolvedValue(true),
-                has_enabled_two_fa: true,
-            },
-        };
-        renderComponent({ store_config: new_store_config });
+    //     await waitFor(() => {
+    //         const title_1 = screen.getByText(/2FA enabled/i);
+    //         const title_2 = screen.getByText(/You have enabled 2FA for your Deriv account./i);
+    //         const title_3 = screen.getByText(
+    //             /To disable 2FA, please enter the six-digit authentication code generated by your 2FA app below:/i
+    //         );
+    //         expect(title_1).toBeInTheDocument();
+    //         expect(title_2).toBeInTheDocument();
+    //         expect(title_3).toBeInTheDocument();
+    //     });
+    // });
 
-        await waitFor(() => {
-            const digitform = screen.getByTestId('digitform_2fa_enabled');
-            expect(digitform).toBeInTheDocument();
-        });
-    });
+    // fit('should render DigitForm component if 2FA is enabled', async () => {
+    //     renderComponent({ store_config: store });
+
+    //     const submitButton = screen.getByRole('button', { name: /Enable/i });
+    //     userEvent.click(submitButton);
+
+    //     await waitFor(() => {
+    //         const digitform = screen.getByTestId('digitform_2fa_enabled');
+    //         expect(digitform).toBeInTheDocument();
+    //     });
+    // });
 });

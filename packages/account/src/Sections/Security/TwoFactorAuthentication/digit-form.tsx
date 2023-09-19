@@ -3,8 +3,6 @@ import classNames from 'classnames';
 import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
 import { Input, Button } from '@deriv/components';
 import { useSendUserOTP } from '@deriv/hooks';
-// import { useAccountSecurity } from '@deriv/hooks';
-import { getPropertyValue } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 type TDigitForm = {
@@ -19,7 +17,6 @@ type TDigitFormValues = {
 };
 
 const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus, is_language_changing }: TDigitForm) => {
-    // const { data, error, isSuccess, sendUserOTP } = useAccountSecurity();
     const { is_TwoFA_enabled, error, isSuccess, sendUserOTP } = useSendUserOTP();
     const button_text = is_enabled ? localize('Disable') : localize('Enable');
     const formik_ref = React.useRef<FormikProps<TDigitFormValues>>(null);
@@ -52,11 +49,9 @@ const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus, is_langu
 
     React.useEffect(() => {
         if (isSuccess) {
-            // const is_enabled_response = !!getPropertyValue(data, ['account_security', 'totp', 'is_enabled']);
-            const is_enabled_response = is_TwoFA_enabled !== 0;
-            formik_ref.current?.resetForm();
-            setTwoFAStatus(is_enabled_response);
+            setTwoFAStatus(is_TwoFA_enabled);
             setTwoFAChangedStatus(true);
+            formik_ref.current?.resetForm();
         }
     }, [isSuccess, is_TwoFA_enabled, setTwoFAChangedStatus, setTwoFAStatus]);
 
@@ -73,7 +68,6 @@ const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus, is_langu
     };
 
     const handleSubmit = async (values: TDigitFormValues) => {
-        // is_TwoFA_enabled val when call not made
         const action = is_enabled ? 'disable' : 'enable';
         sendUserOTP({ totp_action: action, otp: values.digit_code });
     };

@@ -25,46 +25,42 @@ const TwoFactorAuthentication = observer(() => {
         is_TwoFA_enabled,
         getTwoFA,
         isSuccess: is_success_two_fa,
-        isLoading: isloadingfa,
+        isLoading: is_loading_2fa,
     } = useGetTwoFa();
     const {
         error: error_secret,
         data,
         getSecretKey,
         isSuccess: is_success_secret,
-        isLoading: isloadingsecret,
+        isLoading: is_loading_secret,
     } = useGetSecretKey();
-    const { email_address, has_enabled_two_fa, is_switching, setTwoFAStatus, setTwoFAChangedStatus } = client;
+    const { email_address, is_switching, has_enabled_two_fa, setTwoFAChangedStatus, setTwoFAStatus } = client;
     const { is_language_changing } = common;
-    // const [is_loading, setLoading] = React.useState(true);
-    const [is_qr_loading, setQrLoading] = React.useState(false);
+    const [is_loading, setLoading] = React.useState(true);
     const [error_message, setErrorMessage] = React.useState('');
     const [secret_key, setSecretKey] = React.useState('');
     const [qr_secret_key, setQrSecretKey] = React.useState('');
+    // const [has_enabled_two_fa, setTwoFAStatus] = React.useState(false);
 
     const generateQrCode = React.useCallback(async () => {
-        setQrLoading(true);
-        // console.log('is_qr_loading ', is_qr_loading);
         getSecretKey();
+        setLoading(false);
     }, [getSecretKey]);
 
-    // infinite loop is_TwoFA_enabled dependency...wht if i remove is_TwoFA_enabled-> OTP invalid error solved
-    // is_TwoFA_enabled val updated when digitform makes call? inside 2fa
-    const getDigitStatus = React.useCallback(async () => {
+    React.useEffect(() => {
+        // getDigitStatus();
+        // console.log('is_TwoFA_enabled: ', is_TwoFA_enabled);
         getTwoFA();
-    }, [getTwoFA]);
+    }, [getTwoFA, has_enabled_two_fa]);
 
     React.useEffect(() => {
-        getDigitStatus();
-    }, [getDigitStatus, has_enabled_two_fa]);
-
-    React.useEffect(() => {
+        // console.log('is_success_two_fa: ', is_success_two_fa, is_TwoFA_enabled);
         if (is_success_two_fa) {
-            // console.log('is_TwoFA_enabled ', is_TwoFA_enabled);
+            // console.log(has_enabled_two_fa);
             if (!is_TwoFA_enabled) {
                 generateQrCode();
-                // console.log('is_TwoFA_enabled inside', is_TwoFA_enabled);
             }
+            setLoading(false);
         }
     }, [is_success_two_fa, generateQrCode, is_TwoFA_enabled]);
 
@@ -83,8 +79,6 @@ const TwoFactorAuthentication = observer(() => {
             const qr_secret_key_value = `otpauth://totp/${email_address}?secret=${secret_key_value}&issuer=Deriv.com`;
             setSecretKey(secret_key_value);
             setQrSecretKey(qr_secret_key_value);
-            setQrLoading(false);
-            // console.log('is_qr_loading 2 ', is_qr_loading);
         }
     }, [data, email_address, is_success_secret]);
 
@@ -97,7 +91,7 @@ const TwoFactorAuthentication = observer(() => {
         }
     }, [error_secret]);
 
-    if (is_switching || isloadingsecret || isloadingfa)
+    if (is_switching || is_loading_2fa || is_loading)
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (error_message) return <LoadErrorMessage error_message={error_message} />;
 
@@ -168,7 +162,7 @@ const TwoFactorAuthentication = observer(() => {
                             }
                         >
                             <div className='two-factor__qr'>
-                                {is_qr_loading ? (
+                                {is_loading_secret ? (
                                     <Loading is_fullscreen={false} />
                                 ) : (
                                     <React.Fragment>

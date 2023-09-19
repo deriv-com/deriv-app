@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import useDevice from '../../hooks/useDevice';
 import AlertAnnounce from '../../public/images/alert-annouce.svg';
 import AlertDanger from '../../public/images/alert-danger.svg';
@@ -23,12 +23,15 @@ const InlineMessage: React.FC<TProps> = ({ type = 'warning', size = 'xs', title,
     const Icon = type_icon_mapper[type];
     const icon_size = size === 'lg' && !is_mobile ? 24 : 16;
 
-    const size_to_font_size_mapper: Record<string, string> = {
-        xs: is_mobile ? '8px' : '10px',
-        sm: is_mobile ? '10px' : '12px',
-        md: is_mobile ? '12px' : '14px',
-        lg: is_mobile ? '14px' : '16px',
-    };
+    const size_to_font_size_mapper: Record<string, string> = useMemo(
+        () => ({
+            xs: is_mobile ? '8px' : '10px',
+            sm: is_mobile ? '10px' : '12px',
+            md: is_mobile ? '12px' : '14px',
+            lg: is_mobile ? '14px' : '16px',
+        }),
+        [is_mobile]
+    );
 
     const font_size = size_to_font_size_mapper[size];
 

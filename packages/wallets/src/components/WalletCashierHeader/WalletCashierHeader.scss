@@ -48,6 +48,7 @@
             all: unset;
             padding: 12px 24px;
             font-size: 18px;
+            text-transform: capitalize;
             cursor: pointer;
 
             &--active {

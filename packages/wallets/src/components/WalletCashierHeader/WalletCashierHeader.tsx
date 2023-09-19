@@ -11,6 +11,13 @@ type TProps = {
     data: ReturnType<typeof useActiveWalletAccount>['data'];
 };
 
+const tabs = [
+    { name: 'deposit', link: '?&active-cashier-tab=deposit' },
+    { name: 'withdraw', link: '?&active-cashier-tab=withdraw' },
+    { name: 'transfer', link: '?&active-cashier-tab=transfer' },
+    { name: 'transactions', link: '?&active-cashier-tab=transactions' },
+];
+
 const WalletCashierHeader: React.FC<TProps> = ({ data }) => {
     const { is_mobile } = useDevice();
     const history = useHistory();
@@ -21,13 +28,6 @@ const WalletCashierHeader: React.FC<TProps> = ({ data }) => {
 
     const urlParams = new URLSearchParams(window.location.search);
     const activeCashierTab = urlParams.get('active-cashier-tab');
-
-    const tabs = [
-        { name: 'deposit', link: '?&active-cashier-tab=deposit' },
-        { name: 'withdraw', link: '?&active-cashier-tab=withdraw' },
-        { name: 'transfer', link: '?&active-cashier-tab=transfer' },
-        { name: 'transactions', link: '?&active-cashier-tab=transactions' },
-    ];
 
     return (
         <WalletGradientBackground
@@ -68,7 +68,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ data }) => {
                             }`}
                             onClick={() => history.push(`/appstore/traders-hub${tab.link}`)}
                         >
-                            {tab.name[0].toLocaleUpperCase() + tab.name.slice(1)}
+                            {tab.name}
                         </button>
                     ))}
                 </section>

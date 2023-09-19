@@ -26,6 +26,7 @@ const FilterPaymentMethodsResults = observer(({ filtered_payment_methods, setSel
                 onToggle={e => {
                     my_ads_store.handleChange();
                     setSelectedMethods(methods => [...methods, e.target.value]);
+                    my_ads_store.payment_method_names.push(e.target.value);
                 }}
                 selected=''
                 required

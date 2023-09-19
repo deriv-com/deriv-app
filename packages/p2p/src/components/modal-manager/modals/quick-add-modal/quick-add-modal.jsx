@@ -99,7 +99,7 @@ const QuickAddModal = ({ advert }) => {
                     text={localize('Cancel')}
                     renderPageFooterChildren={() =>
                         !my_ads_store.show_filter_payment_methods && (
-                            <>
+                            <Button.Group>
                                 <Button
                                     has_effect
                                     large
@@ -118,7 +118,7 @@ const QuickAddModal = ({ advert }) => {
                                     primary
                                     text={localize('Add')}
                                 />
-                            </>
+                            </Button.Group>
                         )
                     }
                 >

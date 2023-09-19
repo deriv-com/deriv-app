@@ -31,10 +31,9 @@ const POISubmission = observer(
         const [submission_service, setSubmissionService] = React.useState();
         const [selected_country, setSelectedCountry] = React.useState({});
 
-        const { client, common, notifications } = useStore();
+        const { client, notifications } = useStore();
 
         const { account_settings, getChangeableFields } = client;
-        const { current_language } = common;
         const { refreshNotifications } = notifications;
 
         const handleSelectionNext = () => {

@@ -50,8 +50,7 @@ const PersonalDetailsForm = props => {
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
 
-    const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched, initialValues } =
-        useFormikContext();
+    const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched } = useFormikContext();
 
     React.useEffect(() => {
         if (should_close_tooltip) {

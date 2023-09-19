@@ -38,9 +38,9 @@ const MT5MigrationAccountIcons = observer(({ to, type }: TMT5MigrationAccountIco
 
     return (
         <React.Fragment>
-            <Icon icon={getFromAccountIcon()} height={99} width={96} />
-            <Icon icon={is_mobile ? 'IcLongArrowDown' : 'IcLongArrowRight'} />
-            <Icon icon={getToAccountIcon(`${to}_${type}`)} height={99} width={96} />
+            <Icon icon={getFromAccountIcon()} size={96} />
+            <Icon icon={is_mobile ? 'IcLongArrowDown' : 'IcLongArrowRight'} size={24} />
+            <Icon icon={getToAccountIcon(`${to}_${type}`)} size={96} />
         </React.Fragment>
     );
 });

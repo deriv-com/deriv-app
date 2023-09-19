@@ -152,7 +152,7 @@ const ModalManager = () => {
                 verification_code={trading_platform_dxtrade_password_reset || trading_platform_mt5_password_reset}
             />
             <MT5AccountTypeModal />
-            <MT5MigrationModal openPasswordModal={openRealPasswordModal} />
+            <MT5MigrationModal />
             <RegulatorsCompareModal />
             <CompareAccountsModal
                 platform={platform}

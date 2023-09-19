@@ -1,5 +1,5 @@
 import { useStore } from '@deriv/stores';
-import { Jurisdiction } from '@deriv/shared';
+import { Jurisdiction, getFormattedJurisdictionCode } from '@deriv/shared';
 
 const useMT5SVGEligibleToMigrate = () => {
     const { client } = useStore();
@@ -12,19 +12,24 @@ const useMT5SVGEligibleToMigrate = () => {
     const has_svg_accounts_to_migrate = !!svg_accounts_to_migrate.length;
     const no_of_svg_accounts_to_migrate = svg_accounts_to_migrate.length;
 
-    const is_eligible_for_svg_to_vanuatu_migration = !!svg_accounts_to_migrate.filter(
-        account => Object.values(account.eligible_to_migrate || {}).includes('vanuatu').length
-    );
-
     const is_eligible_for_svg_to_bvi_migration = !!svg_accounts_to_migrate.filter(account =>
         Object.values(account.eligible_to_migrate || {}).includes(Jurisdiction.BVI)
     ).length;
 
-    const eligible_account_to_migrate = is_eligible_for_svg_to_bvi_migration
-        ? 'BVI'
-        : is_eligible_for_svg_to_vanuatu_migration
-        ? 'Vanuatu'
-        : '';
+    const is_eligible_for_svg_to_vanuatu_migration = !!svg_accounts_to_migrate.filter(account =>
+        Object.values(account.eligible_to_migrate || {}).includes(Jurisdiction.VANUATU)
+    ).length;
+
+    const getAccountToMigrate = () => {
+        let account_to_migrate = '';
+        if (is_eligible_for_svg_to_bvi_migration) {
+            account_to_migrate = Jurisdiction.BVI;
+        } else if (is_eligible_for_svg_to_vanuatu_migration) {
+            account_to_migrate = Jurisdiction.VANUATU;
+        }
+        return account_to_migrate;
+    };
+    const eligible_account_to_migrate = getFormattedJurisdictionCode(getAccountToMigrate());
 
     const eligible_svg_to_bvi_derived_accounts = !!svg_accounts_to_migrate.filter(account => {
         const { synthetic } = account.eligible_to_migrate;
@@ -47,6 +52,7 @@ const useMT5SVGEligibleToMigrate = () => {
     }).length;
 
     return {
+        getAccountToMigrate,
         svg_accounts_to_migrate,
         no_of_svg_accounts_to_migrate,
         has_svg_accounts_to_migrate,

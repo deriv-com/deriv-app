@@ -43,12 +43,12 @@ const CellLoader = () => (
         className='transactions__loader-text'
         data-testid='transaction_details_table_cell_loader'
         height={10}
-        width={80}
+        width={30}
         speed={3}
         backgroundColor={'var(--general-section-2)'}
         foregroundColor={'var(--general-hover)'}
     >
-        <rect x='0' y='0' rx='0' ry='0' width='100' height='12' />
+        <rect x='0' y='0' rx='0' ry='0' width='60' height='12' />
     </ContentLoader>
 );
 

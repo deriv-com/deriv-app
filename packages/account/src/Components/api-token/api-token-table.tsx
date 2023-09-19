@@ -14,7 +14,7 @@ const ApiTokenTable = () => {
     const { api_tokens } = React.useContext<TApiContext>(ApiTokenContext);
 
     const formatTokenScopes = (str: string) => {
-        const replace_filter = str.replace(/-|_/g, ' ');
+        const replace_filter = str.replace(/[-_]/g, ' ');
         const sentenced_case = replace_filter[0].toUpperCase() + replace_filter.slice(1).toLowerCase();
         return sentenced_case;
     };
@@ -75,10 +75,7 @@ const ApiTokenTable = () => {
                                     <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
                                         <Localize i18n_default_text='Token' />
                                     </Text>
-                                    <ApiTokenTableRowTokenCell
-                                        token={token.token as string}
-                                        scopes={token.scopes as string[]}
-                                    />
+                                    <ApiTokenTableRowTokenCell token={token.token} scopes={token.scopes} />
                                 </div>
                                 <div>
                                     <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
@@ -94,10 +91,10 @@ const ApiTokenTable = () => {
                                     <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
                                         <Localize i18n_default_text='Scopes' />
                                     </Text>
-                                    <ApiTokenTableRowScopesCell scopes={token.scopes as string[]} />
+                                    <ApiTokenTableRowScopesCell scopes={token.scopes} />
                                 </div>
                                 <div>
-                                    <ApiTokenDeleteButton token={token as TToken} />
+                                    <ApiTokenDeleteButton token={token} />
                                 </div>
                             </div>
                         </div>
@@ -111,10 +108,10 @@ const ApiTokenTable = () => {
         <table className='da-api-token__table'>
             <thead>
                 <tr className='da-api-token__table-header-row'>
-                    <ApiTokenTableRowHeader text={localize('Name')} />
-                    <ApiTokenTableRowHeader text={localize('Token')} />
-                    <ApiTokenTableRowHeader text={localize('Scopes')} />
-                    <ApiTokenTableRowHeader text={localize('Last used')} />
+                    <ApiTokenTableRowHeader text={<Localize i18n_default_text='Name' />} />
+                    <ApiTokenTableRowHeader text={<Localize i18n_default_text='Token' />} />
+                    <ApiTokenTableRowHeader text={<Localize i18n_default_text='Scopes' />} />
+                    <ApiTokenTableRowHeader text={<Localize i18n_default_text='Last used' />} />
                     <th />
                 </tr>
             </thead>

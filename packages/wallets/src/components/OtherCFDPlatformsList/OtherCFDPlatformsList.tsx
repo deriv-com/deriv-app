@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDxtradeAccountsList } from '@deriv/api';
 import { AddedDxtradeAccountsList } from '../AddedDxtradeAccountsList';
-import { AvailableDerivezAccountsList } from '../AvailableDerivezAccountsList';
 import { AvailableDxtradeAccountsList } from '../AvailableDxtradeAccountsList';
 import './OtherCFDPlatformsList.scss';
 
@@ -16,7 +15,6 @@ const OtherCFDPlatformsList: React.FC = () => {
             </div>
             <div className='wallets-other-cfd__content'>
                 {has_dxtrade_account ? <AddedDxtradeAccountsList /> : <AvailableDxtradeAccountsList />}
-                <AvailableDerivezAccountsList />
             </div>
         </div>
     );

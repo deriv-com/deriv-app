@@ -11,29 +11,29 @@ const AddedDxtradeAccountsList: React.FC = () => {
     return (
         <TradingAccountCard
             leading={() => (
-                <div className='wallets-available-derivx__icon'>
+                <div className='wallets-added-derivx__icon'>
                     <DerivX />
                 </div>
             )}
             trailing={() => (
-                <div className='wallets-available-derivx__actions'>
-                    <PrimaryActionButton className='wallets-available-derivx__transfer_button'>
-                        <p className='wallets-available-derivx__transfer_text'>Transfer</p>
+                <div className='wallets-added-derivx__actions'>
+                    <PrimaryActionButton className='wallets-added-derivx__transfer_button'>
+                        <p className='wallets-added-derivx__transfer_text'>Transfer</p>
                     </PrimaryActionButton>
                     <PrimaryActionButton>
-                        <p className='wallets-available-derivx__open_text'>Open</p>
+                        <p className='wallets-added-derivx__open_text'>Open</p>
                     </PrimaryActionButton>
                 </div>
             )}
         >
-            <div className='wallets-available-derivx__details'>
+            <div className='wallets-added-derivx__details'>
                 {data?.map(account => (
                     <>
-                        <p className='wallets-available-derivx__details-title'>Deriv X</p>
-                        <p className='wallets-available-derivx__details-balance'>
+                        <p className='wallets-added-derivx__details-title'>Deriv X</p>
+                        <p className='wallets-added-derivx__details-balance'>
                             {account?.display_balance} {account?.currency}
                         </p>
-                        <p className='wallets-available-derivx__details-loginid'>{account.login}</p>
+                        <p className='wallets-added-derivx__details-loginid'>{account.login}</p>
                     </>
                 ))}
             </div>

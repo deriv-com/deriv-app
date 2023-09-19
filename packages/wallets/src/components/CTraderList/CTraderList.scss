@@ -13,36 +13,5 @@
         display: grid;
         gap: 1.6rem 4.8rem;
         grid-template-columns: repeat(3, 1fr);
-
-        &__details {
-            flex-grow: 1;
-            &-title {
-                font-weight: bold;
-                font-size: 1.4rem;
-                line-height: 20px;
-            }
-
-            &-description {
-                font-size: 1.2rem;
-                line-height: 14px;
-
-                @include mobile {
-                    font-size: 1.4rem;
-                    line-height: 20px;
-                }
-            }
-        }
-    }
-
-    &__text {
-        color: #ff444f;
-        text-align: center;
-
-        /* desktop/paragraph/P2 - bold */
-        font-family: 'IBM Plex Sans';
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 20px; /* 142.857% */
     }
 }

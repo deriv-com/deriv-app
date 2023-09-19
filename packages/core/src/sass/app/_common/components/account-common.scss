@@ -77,6 +77,9 @@
         display: flex;
         flex-direction: column;
         gap: 0.8rem;
+        @include mobile{
+            height: fit-content;
+        }
 
         .account-form__fieldset {
             max-width: unset;

@@ -1,4 +1,5 @@
 import { FileMessage, UserMessage } from '@sendbird/chat/message';
+import { localize } from 'Components/i18next';
 
 type TChatMessageArgs = {
     created_at: number;
@@ -87,5 +88,6 @@ export const convertFromChannelMessage = (channel_message: UserMessage | FileMes
     });
 };
 
-export const admin_message =
-    "Hello! This is where you can chat with the counterparty to confirm the order details.\nNote: In case of a dispute, we'll use this chat as a reference.";
+export const admin_message = localize(
+    "Hello! This is where you can chat with the counterparty to confirm the order details.\nNote: In case of a dispute, we'll use this chat as a reference."
+);

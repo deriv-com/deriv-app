@@ -38,7 +38,7 @@ const MobileWalletsCarousel = observer(() => {
                         buttons_arr={platform_toggle_options}
                         className='traders-hub__button-toggle'
                         has_rounded_button
-                        is_traders_hub={true}
+                        is_traders_hub
                         name='platform_type'
                         onChange={platformTypeChange}
                         value={selected_platform_type}

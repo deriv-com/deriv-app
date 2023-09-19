@@ -6,7 +6,7 @@ type TContentWithLinkProps = {
     children: JSX.Element | Array<JSX.Element>;
     is_mobile?: boolean;
     is_right_forked?: boolean;
-    show_fork?: boolean;
+    has_fork?: boolean;
     fork_width?: number;
     fork_margin?: number;
 };
@@ -15,7 +15,7 @@ const ContentWithLink: React.FC<TContentWithLinkProps> = ({
     children,
     is_mobile,
     is_right_forked,
-    show_fork,
+    has_fork,
     fork_width = 15,
     fork_margin = 0,
 }) => (
@@ -24,7 +24,7 @@ const ContentWithLink: React.FC<TContentWithLinkProps> = ({
             'content-with-link--right-forked': is_right_forked,
         })}
         style={{
-            height: show_fork ? '100%' : 'auto',
+            height: has_fork ? '100%' : 'auto',
         }}
     >
         <div
@@ -35,7 +35,7 @@ const ContentWithLink: React.FC<TContentWithLinkProps> = ({
             {children}
         </div>
         <div className='content-with-link__link'>
-            {show_fork && (
+            {has_fork && (
                 <div
                     className={classNames('content-with-link__link-fork', {
                         'content-with-link__link-fork--right-forked': is_right_forked,
@@ -50,8 +50,8 @@ const ContentWithLink: React.FC<TContentWithLinkProps> = ({
                 className='content-with-link__link-neck'
                 style={
                     is_mobile
-                        ? { width: '1px', height: show_fork ? '1.5rem' : '2.3rem' }
-                        : { width: show_fork ? '4.8rem' : '6.3rem' }
+                        ? { width: '1px', height: has_fork ? '1.5rem' : '2.3rem' }
+                        : { width: has_fork ? '4.8rem' : '6.3rem' }
                 }
             />
         </div>

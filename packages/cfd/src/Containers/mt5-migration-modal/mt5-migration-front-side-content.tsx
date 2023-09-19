@@ -25,7 +25,7 @@ const MT5MigrationFrontSideContent = observer(({ setShowModalFrontSide }: TMT5Mi
     return (
         <React.Fragment>
             <div className='mt5-migration-modal__description'>
-                <Text as='p' color='general' size={content_size} align='center'>
+                <Text as='p' size={content_size} align='center'>
                     <Localize
                         i18n_default_text='We’re upgrading your {{from_account}} account(s) by moving them to the {{to_account}} jurisdiction.'
                         values={{

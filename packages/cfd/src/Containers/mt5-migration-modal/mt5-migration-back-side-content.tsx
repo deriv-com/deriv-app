@@ -1,11 +1,11 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
 import { Button, Checkbox, Modal, Text, StaticUrl, Icon } from '@deriv/components';
-import { Localize } from '@deriv/translations';
-import { CFD_PLATFORMS } from '@deriv/shared';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
-import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
+import { CFD_PLATFORMS } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
 import getMigrationModalDetails from '../../Constants/mt5-migration-modal-content';
+import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 
 type TMT5MigrationBackSideContentProps = {
     setShowModalFrontSide: (value: boolean) => void;

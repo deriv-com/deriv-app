@@ -4,8 +4,8 @@ import {
     mock_states_list,
     mock_general,
     mock_loggedIn,
-    assertFormFieldValues,
     setupMocks,
+    assertField,
 } from '@deriv/integration';
 import { Context } from '@deriv/integration/src/utils/mocks/mocks';
 
@@ -20,6 +20,13 @@ const mock_set_settings = (context: Context) => {
     }
 };
 
+const fillField = async (page, label, value) => {
+    const field = await page.getByLabel(label).first();
+    await field.click();
+    await field.fill('');
+    await field.type(value);
+};
+
 test.describe('Personal Details', () => {
     test('the initial render', async ({ page, baseURL }) => {
         await setupMocks({
@@ -29,26 +36,19 @@ test.describe('Personal Details', () => {
         });
         await page.goto(`${baseURL}/account/personal-details`);
 
-        await assertFormFieldValues(page, {
-            // Details
-            'First name*': 'Jane',
-            'Last name*': 'Smith',
-            'Place of birth': '',
-            'Date of birth*': '01-01-1980',
-            Citizenship: 'Thailand',
-            'Country of residence': 'Thailand',
-            'Phone number*': '+66111111111',
-
-            // Address
-            'First line of address*': 'test',
-            'Second line of address': '',
-            'Town/City*': 'test',
-            'State/Province (optional)': '',
-            'Postal/ZIP code': '',
-
-            // Email preference
-            'Get updates about Deriv products, services and events.': 'on',
-        });
+        await assertField(page, 'First name*', 'Jane');
+        await assertField(page, 'Last name*', 'Smith');
+        await assertField(page, 'Place of birth', '');
+        await assertField(page, 'Date of birth*', '01-01-1980');
+        await assertField(page, 'Citizenship', 'Thailand');
+        await assertField(page, 'Country of residence', 'Thailand');
+        await assertField(page, 'Phone number*', '+66111111111');
+        await assertField(page, 'First line of address*', 'test');
+        await assertField(page, 'Second line of address', '');
+        await assertField(page, 'Town/City*', 'test');
+        await assertField(page, 'State/Province (optional)', '');
+        await assertField(page, 'Postal/ZIP code', '');
+        await assertField(page, 'Get updates about Deriv products, services and events.', 'on');
 
         const submitButton = await page.getByRole('button', { name: 'Submit' }).first();
         expect(await submitButton.isEnabled()).toBe(false);
@@ -62,16 +62,20 @@ test.describe('Personal Details', () => {
         });
         await page.goto(`${baseURL}/account/personal-details`);
 
-        const firstNameField = await page.getByLabel('First name*').first();
-        await firstNameField.click();
-        await firstNameField.fill('');
-        await firstNameField.type('John');
+        await fillField(page, 'First name*', 'John');
+        await fillField(page, 'Last name*', 'Doe');
+        await fillField(page, 'Citizenship', 'Malaysia');
+        await fillField(page, 'Phone number*', '+66222222222');
+        await fillField(page, 'First line of address*', '123 Main Street');
+        await fillField(page, 'Second line of address', 'Suite 100');
+        await fillField(page, 'Town/City*', 'Kuala Lumpur');
+        await fillField(page, 'State/Province (optional)', 'WP');
+        await fillField(page, 'Postal/ZIP code', '50000');
 
         const submitButton = await page.getByRole('button', { name: 'Submit' }).first();
         expect(await submitButton.isEnabled()).toBe(true);
         submitButton.click();
 
-        // Submit button turns into a green tick
         await page.waitForSelector('[data-testid=form-footer-container] button svg');
     });
 });

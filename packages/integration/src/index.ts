@@ -22,4 +22,4 @@ export { default as mock_states_list } from './mocks/location/states_list';
 export { default as mock_general } from './mocks/general';
 export { default as mock_loggedIn } from './mocks/auth';
 export { default as setupMocks } from './utils/mocks/mocks';
-export { assertFormFieldValues } from './utils/asserts/asserts';
+export { assertField } from './utils/asserts/asserts';

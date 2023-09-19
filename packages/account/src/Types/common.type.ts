@@ -1,8 +1,15 @@
 /** Add types that are shared between components */
+import {
+    Authorize,
+    DetailsOfEachMT5Loginid,
+    IdentityVerificationAddDocumentResponse,
+    ResidenceList,
+} from '@deriv/api-types';
 import React from 'react';
 import { FormikHandlers, FormikProps, FormikValues } from 'formik';
-import { Authorize, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
-import { Redirect } from 'react-router-dom';
+import { Redirect, RouteProps } from 'react-router-dom';
+import { CFD_PLATFORMS } from '@deriv/shared';
+import { TPage404 } from '../Constants/routes-config';
 
 export type TToken = {
     display_name: string;
@@ -66,7 +73,7 @@ export type TRoute = {
     icon?: string;
     default?: boolean;
     to?: string;
-    component?: ((cashier_routes?: TRoute[]) => JSX.Element) | typeof Redirect;
+    component?: ((props?: RouteProps['component']) => JSX.Element) | Partial<typeof Redirect> | TPage404;
     getTitle?: () => string;
     subroutes?: TRoute[];
 };
@@ -189,4 +196,69 @@ export type TServerError = {
     message: string;
     details?: { [key: string]: string };
     fields?: string[];
+};
+export type TCFDPlatform = typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS];
+
+export type TClosingAccountFormValues = {
+    'financial-priorities': boolean;
+    'stop-trading': boolean;
+    'not-interested': boolean;
+    'another-website': boolean;
+    'not-user-friendly': boolean;
+    'difficult-transactions': boolean;
+    'lack-of-features': boolean;
+    'unsatisfactory-service': boolean;
+    'other-reasons': boolean;
+    other_trading_platforms: string;
+    do_to_improve: string;
+};
+
+export type TAccounts = {
+    account?: {
+        balance?: string | number;
+        currency?: string;
+        disabled?: boolean;
+        error?: JSX.Element | string;
+        is_crypto?: boolean;
+        is_dxtrade?: boolean;
+        is_mt?: boolean;
+        market_type?: string;
+        nativepicker_text?: string;
+        platform_icon?: {
+            Derived: React.SVGAttributes<SVGElement>;
+            Financial: React.SVGAttributes<SVGElement>;
+            Options: React.SVGAttributes<SVGElement>;
+            CFDs: React.SVGAttributes<SVGAElement>;
+        };
+        text?: JSX.Element | string;
+        value?: string;
+    };
+    icon?: string;
+    idx?: string | number;
+    is_dark_mode_on?: boolean;
+    is_virtual?: boolean | number;
+    loginid?: string;
+    mt5_login_list?: DetailsOfEachMT5Loginid[];
+    title?: string;
+};
+
+type TPendingAccountDetails = {
+    balance?: number;
+    currency?: string;
+    display_login?: string;
+    positions?: number;
+    withdrawals?: number;
+};
+
+export type TDetailsOfDerivAccount = TAccounts & TPendingAccountDetails;
+export type TDetailsOfMT5Account = DetailsOfEachMT5Loginid & TPendingAccountDetails;
+export type TDetailsOfDerivXAccount = TDetailsOfMT5Account & { account_id?: string };
+
+export type TLoginHistoryItems = {
+    id: number;
+    date: string;
+    action: string;
+    browser: string;
+    ip: string;
+    status: string;
 };

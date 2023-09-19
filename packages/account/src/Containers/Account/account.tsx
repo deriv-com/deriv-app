@@ -33,7 +33,7 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
     const { toggleAccountSettings, is_account_settings_visible } = ui;
     // subroutes of a route is structured as an array of arrays
     const subroutes = flatten(routes.map(i => i.subroutes));
-    let selected_content = subroutes.find(r => matchRoute(r, location.pathname));
+    const selected_content = subroutes.find(r => matchRoute(r, location.pathname));
 
     React.useEffect(() => {
         toggleAccountSettings(true);

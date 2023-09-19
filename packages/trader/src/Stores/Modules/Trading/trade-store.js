@@ -171,6 +171,7 @@ export default class TradeStore extends BaseStore {
 
     initial_barriers;
     is_initial_barrier_applied = false;
+    is_digits_widget_active = false;
 
     should_skip_prepost_lifecycle = false;
 
@@ -250,6 +251,7 @@ export default class TradeStore extends BaseStore {
             hovered_contract_type: observable,
             is_accumulator: computed,
             is_chart_loading: observable,
+            is_digits_widget_active: observable,
             is_equal: observable,
             is_market_closed: observable,
             is_mobile_digit_view_selected: observable,
@@ -339,6 +341,7 @@ export default class TradeStore extends BaseStore {
             setContractTypes: action.bound,
             setDefaultSymbol: action.bound,
             setIsTradeParamsExpanded: action.bound,
+            setIsDigitsWidgetActive: action.bound,
             setMarketStatus: action.bound,
             setMobileDigitView: action.bound,
             setPreviousSymbol: action.bound,
@@ -1619,5 +1622,9 @@ export default class TradeStore extends BaseStore {
 
     setStakeBoundary(type, min_stake, max_stake) {
         if (min_stake && max_stake) this.stake_boundary[type] = { min_stake, max_stake };
+    }
+
+    setIsDigitsWidgetActive(is_active) {
+        this.is_digits_widget_active = is_active;
     }
 }

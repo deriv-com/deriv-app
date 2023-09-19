@@ -85,12 +85,6 @@ export default class UIStore extends BaseStore {
     // Welcome modal
     is_welcome_modal_visible = false;
 
-    // Remove MX & MLT
-    is_close_mx_mlt_account_modal_visible = false;
-
-    // Remove MF account modal
-    is_close_uk_account_modal_visible = false;
-
     // set currency modal
     is_set_currency_modal_visible = false;
 
@@ -253,8 +247,6 @@ export default class UIStore extends BaseStore {
             is_cashier_visible: observable,
             is_cfd_page: observable,
 
-            is_close_mx_mlt_account_modal_visible: observable,
-            is_close_uk_account_modal_visible: observable,
             is_closing_create_real_account_modal: observable,
             is_dark_mode_on: observable,
             is_deriv_account_needed_modal_visible: observable,
@@ -382,8 +374,6 @@ export default class UIStore extends BaseStore {
             setShouldShowWarningModal: action.bound,
             setSubSectionIndex: action.bound,
             setTopUpInProgress: action.bound,
-            showCloseMxMltAccountPopup: action.bound,
-            showCloseUKAccountPopup: action.bound,
             toggleAccountsDialog: action.bound,
             toggleAccountSettings: action.bound,
             toggleAccountSignupModal: action.bound,
@@ -487,14 +477,6 @@ export default class UIStore extends BaseStore {
     setPromptHandler(condition, cb = () => {}) {
         this.prompt_when = condition;
         this.promptFn = cb;
-    }
-
-    showCloseMxMltAccountPopup(is_open) {
-        this.is_close_mx_mlt_account_modal_visible = is_open;
-    }
-
-    showCloseUKAccountPopup(is_open) {
-        this.is_close_uk_account_modal_visible = is_open;
     }
 
     get is_mobile() {

@@ -1,8 +1,9 @@
 import React, { HTMLAttributes, ReactNode } from 'react';
 import classNames from 'classnames';
 import { Icon } from '@deriv/components';
-import CurrencyIcon, { Currency } from 'Assets/svgs/currency';
+import { Jurisdiction } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
+import CurrencyIcon, { Currency } from 'Assets/svgs/currency';
 import TradingPlatformIcon from 'Assets/svgs/trading-platform';
 import './currency-switcher-container.scss';
 
@@ -37,7 +38,7 @@ const Dropdown = observer(({ ...props }: DropdownProps) => {
 
     const has_mf_mt5_account = Object.keys(current_list)
         .map(key => current_list[key])
-        .some(account => account.landing_company_short === 'maltainvest');
+        .some(account => account.landing_company_short === Jurisdiction.MALTA_INVEST);
 
     if ((is_eu_user && has_mf_mt5_account) || is_demo) {
         return null;

@@ -15,8 +15,8 @@ import { observer, useStore } from '@deriv/stores';
 const FeatureFlagsSection = observer(() => {
     const { feature_flags } = useStore();
     const visible_feature_flags = Object.entries(feature_flags.data ?? {})?.reduce(
-        (a, [key, value]) => ({
-            ...a,
+        (flags, [key, value]) => ({
+            ...flags,
             ...(location.hostname === website_domain && key.startsWith(TRADE_FEATURE_PREFIX) ? {} : { [key]: value }),
         }),
         {} // hiding flags for trade types in production

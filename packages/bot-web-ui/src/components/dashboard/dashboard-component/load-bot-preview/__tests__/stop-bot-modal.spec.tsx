@@ -1,12 +1,10 @@
-// eslint-disable-next-line simple-import-sort/imports
-import '@testing-library/react/dont-cleanup-after-each';
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/index';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import StopBotModal from '../stop-bot-modal';
-import { mock_ws } from 'Utils/mock';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
@@ -39,7 +37,10 @@ describe('StopBotModal', () => {
         expect(container).toBeInTheDocument();
     });
 
-    it('should close Stop my bot dialog ', () => {
+    it('should render dialog with button label stop my bot', () => {
+        render(<StopBotModal />, {
+            wrapper,
+        });
         mock_DBot_store?.quick_strategy?.toggleStopBotDialog();
         expect(screen.getByText('Stop my bot')).toBeInTheDocument();
     });

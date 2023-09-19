@@ -2,38 +2,38 @@
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    padding: 0.8rem;
-    gap: 0.8rem;
-    border-radius: $BORDER_RADIUS;
+    padding: 8px;
+    gap: 8px;
+    border-radius: 4px;
     height: min-content;
 
     &__lg {
         @include tablet-up {
-            padding: 1.6rem;
-            gap: 1.6rem;
-            border-radius: $BORDER_RADIUS * 2;
+            padding: 16px;
+            gap: 16px;
+            border-radius: 4px * 2;
         }
     }
 
     &__warning {
-        background: $color-status-warning;
+        background: rgba(255, 173, 58, 0.16);
     }
 
     &__information {
-        background: $color-status-information;
+        background: rgba(55, 124, 252, 0.16);
     }
 
     &__announcement {
-        background: $color-status-announcement;
+        background: rgba(75, 180, 179, 0.16);
     }
 
     &__error {
-        background: $color-status-error;
+        background: rgba(236, 63, 63, 0.16);
     }
 
     &__icon {
         &__sm {
-            margin-top: 0.1rem;
+            margin-top: 1px;
 
             @include mobile {
                 margin-top: 0;
@@ -41,16 +41,16 @@
         }
 
         &__md {
-            margin-top: 0.2rem;
+            margin-top: 2px;
 
             @include mobile {
-                margin-top: 0.1rem;
+                margin-top: 1px;
             }
         }
 
         &__lg {
             @include mobile {
-                margin-top: 0.2rem;
+                margin-top: 1px;
             }
         }
     }
@@ -62,16 +62,16 @@
         align-self: stretch;
 
         &__xs {
-            margin-top: 0.1rem;
+            margin-top: 1px;
 
             @include mobile {
-                margin-top: 0.2rem;
+                margin-top: 2px;
             }
         }
 
         &__sm {
             @include mobile {
-                margin-top: 0.1rem;
+                margin-top: 1px;
             }
         }
     }

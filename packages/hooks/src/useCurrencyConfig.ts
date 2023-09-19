@@ -3,7 +3,6 @@ import { useAuthorize, useFetch } from '@deriv/api';
 
 /** @deprecated Use `useCurrencyConfig` from `@deriv/api` package instead. */
 const useCurrencyConfig = () => {
-    const { isSuccess } = useAuthorize();
     const { data: website_status_data } = useFetch('website_status');
     const { data: crypto_config_data } = useFetch('crypto_config');
 

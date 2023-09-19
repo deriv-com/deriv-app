@@ -6,7 +6,7 @@ import WalletClipboard from '../WalletClipboard/WalletClipboard';
 import './WalletDepositCryptoAddress.scss';
 
 const WalletDepositCryptoAddress = () => {
-    const { data: deposit_crypto_address, isLoading, error, mutate } = useDepositCryptoAddress();
+    const { data: deposit_crypto_address, isLoading, mutate } = useDepositCryptoAddress();
     const { isSuccess: isAuthorizeSuccess } = useAuthorize();
     const { is_mobile } = useDevice();
 

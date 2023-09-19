@@ -24,10 +24,10 @@ const InlineMessage: React.FC<TProps> = ({ type = 'warning', size = 'xs', title,
     const icon_size = size === 'lg' && !is_mobile ? 24 : 16;
 
     const size_to_font_size_mapper: Record<string, string> = {
-        xs: is_mobile ? '0.8rem' : '1rem',
-        sm: is_mobile ? '1rem' : '1.2rem',
-        md: is_mobile ? '1.2rem' : '1.4rem',
-        lg: is_mobile ? '1.4rem' : '1.6rem',
+        xs: is_mobile ? '8px' : '10px',
+        sm: is_mobile ? '10px' : '12px',
+        md: is_mobile ? '12px' : '14px',
+        lg: is_mobile ? '14px' : '16px',
     };
 
     const font_size = size_to_font_size_mapper[size];

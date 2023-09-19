@@ -206,6 +206,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         }
     };
 
+    const balance = getBalance(account_type.type);
+
     const should_show_password =
         is_cfd_password_modal_enabled &&
         !is_cfd_success_dialog_enabled &&
@@ -213,6 +215,13 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const should_show_success =
         !has_cfd_error && is_cfd_success_dialog_enabled && is_cfd_password_modal_enabled && is_password_modal_exited;
+
+    const should_show_success_for_wallets =
+        !has_cfd_error &&
+        is_cfd_success_dialog_enabled &&
+        is_cfd_password_modal_enabled &&
+        is_password_modal_exited &&
+        balance;
 
     const should_show_sent_email_modal = is_sent_email_modal_open && is_password_modal_exited;
 
@@ -334,7 +343,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         ),
         account_title: getWalletCFDInfo(account_type.type).title,
         app_icon: getWalletCFDInfo(account_type.type).icon,
-        balance: '10,000.00', //TODO: fix me
+        balance,
         currency: active_wallet?.currency,
         gradient_header_class: active_wallet?.gradient_header_class,
         icon: active_wallet?.icon,
@@ -354,7 +363,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             {is_wallet_enabled && account_type.category === ACCOUNT_CATEGORY.DEMO && platform === CFD_PLATFORMS.MT5 ? (
                 <WalletCFDSuccessDialog
                     header={getWalletHeader()}
-                    is_open={should_show_success}
+                    is_open={should_show_success_for_wallets}
                     message={
                         <PasswordModalMessage
                             category={account_type.category}

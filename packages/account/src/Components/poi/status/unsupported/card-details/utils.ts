@@ -9,7 +9,7 @@ export const setInitialValues = (fields: FormikValues) => {
     return values;
 };
 
-export const checkIsEmpty = (value: string | unknown) => {
+export const checkIsEmpty = (value: unknown) => {
     return typeof value === 'string' ? !value.trim() : !value;
 };
 

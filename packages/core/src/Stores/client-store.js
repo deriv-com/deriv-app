@@ -82,11 +82,6 @@ export default class ClientStore extends BaseStore {
     is_account_setting_loaded = false;
     has_enabled_two_fa = false;
     has_changed_two_fa = false;
-    // this will store the landing_company API response, including
-    // financial_company: {}
-    // gaming_company: {}
-    // mt_financial_company: {}
-    // mt_gaming_company: {}
     landing_companies = {};
 
     // All possible landing companies of user between all
@@ -236,7 +231,6 @@ export default class ClientStore extends BaseStore {
             reality_check_dismissed: computed,
             has_active_real_account: computed,
             has_maltainvest_account: computed,
-            has_malta_account: computed,
             has_any_real_account: computed,
             first_switchable_real_loginid: computed,
             can_change_fiat_currency: computed,
@@ -244,7 +238,6 @@ export default class ClientStore extends BaseStore {
             upgradeable_currencies: computed,
             current_currency_type: computed,
             available_crypto_currencies: computed,
-            has_iom_account: computed,
             has_fiat: computed,
             current_fiat_currency: computed,
             current_landing_company: computed,
@@ -303,7 +296,6 @@ export default class ClientStore extends BaseStore {
             is_brazil: computed,
             country_standpoint: computed,
             can_have_mlt_account: computed,
-            can_have_mx_account: computed,
             can_have_mf_account: computed,
             can_upgrade: computed,
             can_upgrade_to: computed,
@@ -495,10 +487,6 @@ export default class ClientStore extends BaseStore {
         return this.active_accounts.some(acc => acc.landing_company_shortcode === 'maltainvest');
     }
 
-    get has_malta_account() {
-        return this.active_accounts.some(acc => acc.landing_company_shortcode === 'malta');
-    }
-
     hasAnyRealAccount = () => {
         return this.account_list.some(acc => acc.is_virtual === 0);
     };
@@ -584,10 +572,6 @@ export default class ClientStore extends BaseStore {
         }, []);
 
         return this.upgradeable_currencies.filter(acc => !values.includes(acc.value) && acc.type === 'crypto');
-    }
-
-    get has_iom_account() {
-        return this.active_accounts.some(acc => acc.landing_company_shortcode === 'iom');
     }
 
     get has_fiat() {
@@ -830,7 +814,7 @@ export default class ClientStore extends BaseStore {
 
     get is_valid_login() {
         if (!this.is_logged_in) return true;
-        const valid_login_ids_regex = new RegExp('^(MX|MF|MFW|VRTC|VRW|MLT|CR|CRW|FOG)[0-9]+$', 'i');
+        const valid_login_ids_regex = new RegExp('^(MF|MFW|VRTC|VRW|MLT|CR|CRW)[0-9]+$', 'i');
         return this.all_loginids.every(id => valid_login_ids_regex.test(id));
     }
 
@@ -949,12 +933,6 @@ export default class ClientStore extends BaseStore {
             'pt',
             'lv',
         ].includes(this.residence);
-        return countries;
-    }
-
-    // Manual list of MX countries during MLT/MX account removal.
-    get can_have_mx_account() {
-        const countries = ['gb', 'im'].includes(this.residence);
         return countries;
     }
 

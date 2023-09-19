@@ -73,6 +73,5 @@ export const priority_toast_messages = [
     'authenticate',
     'notify_financial_assessment',
     'poa_older_than_six_months',
-    'mt5_notification',
     ...maintenance_notifications,
 ];

@@ -541,7 +541,7 @@ const StaticDashboard = observer(
                                 </React.Fragment>
                             )}
 
-                            {!is_eu_user && !CFDs_restricted_countries && (
+                            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                                 <div className='static-dashboard-wrapper__body'>
                                     <StaticCFDAccountManager
                                         type='all'

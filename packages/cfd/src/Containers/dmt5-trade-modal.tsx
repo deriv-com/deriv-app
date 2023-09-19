@@ -175,7 +175,7 @@ const DMT5TradeModal = ({
                                 const account_type = getCFDAccountKey({
                                     market_type: mt5_trade_account.market_type,
                                     sub_account_type: mt5_trade_account.sub_account_type,
-                                    platform: CFD_PLATFORMS.DMT5,
+                                    platform: CFD_PLATFORMS.MT5,
                                     shortcode: mt5_trade_account.landing_company_short,
                                 });
                                 onPasswordManager(

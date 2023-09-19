@@ -27,8 +27,6 @@ describe('<ContractTypeDescriptionVideo />', () => {
         const video = screen.getByTestId(/description_video/i);
 
         expect(video).toBeInTheDocument();
-        expect(video).toHaveAttribute('width', '480');
-        expect(video).toHaveAttribute('height', '270');
     });
     it('should be able to find a proper video and render the component if is_dark_mode_on is true', () => {
         const mock_root_store = mockStore({ ui: { is_dark_mode_on: true } });

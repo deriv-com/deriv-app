@@ -14,7 +14,7 @@ export type RequiredAndNotNull<T> = {
 
 export type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 export type TAccountCategory = 'real' | 'demo';
-export type TPlatform = 'dxtrade' | 'mt5' | 'trader' | 'dbot' | 'smarttrader' | 'bbot' | 'go' | 'derivez';
+export type TPlatform = 'dxtrade' | 'mt5' | 'trader' | 'dbot' | 'smarttrader' | 'bbot' | 'go' | 'derivez' | 'ctrader';
 export type TBrandData = {
     name: string;
     icon?: string;
@@ -55,15 +55,15 @@ export type TJurisdictionData = Record<
 >;
 
 export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
+    account_id?: string;
     display_login?: string;
-    landing_company_short?: string;
     short_code_and_region?: string;
     mt5_acc_auth_status?: string | null;
     selected_mt5_jurisdiction?: TOpenAccountTransferMeta &
         TJurisdictionData & {
             platform?: string;
         };
-
+    platform?: TPlatform;
     openFailedVerificationModal?: (from_account: string) => void;
 };
 
@@ -132,7 +132,7 @@ export interface AvailableAccount {
     description?: string;
     is_visible?: boolean;
     is_disabled?: boolean;
-    platform?: string;
+    platform?: TPlatform;
     market_type?: 'all' | 'financial' | 'synthetic';
     icon: keyof typeof PlatformIcons;
     availability: RegionAvailability;
@@ -228,8 +228,7 @@ export type TWalletButton = {
     action: () => void;
 };
 
-export type TRealWalletsUpgrade = {
-    current_step: number;
+export type TWalletSteps = {
     handleBack: () => void;
     handleClose: () => void;
     handleNext: () => void;
@@ -238,15 +237,8 @@ export type TRealWalletsUpgrade = {
     upgradeToWallets: (value: boolean) => void;
 };
 
-export type TwalletSteps = {
-    handleBack: () => void;
-    handleClose: () => void;
-    handleNext: () => void;
-    is_disabled: boolean;
-    toggleCheckbox: () => void;
-    upgradeToWallets: (value: boolean) => void;
-};
-
-export type TModalContentFooter = TwalletSteps & {
-    current_step: number;
+export type TRealWalletsUpgradeSteps = {
+    wallet_upgrade_steps: TWalletSteps & {
+        current_step: number;
+    };
 };

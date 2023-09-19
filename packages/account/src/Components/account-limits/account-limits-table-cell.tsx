@@ -40,7 +40,7 @@ const AccountLimitsTableCell = ({
                         {children}
                     </Text>
                 )}
-                {renderExtraInfo && renderExtraInfo()}
+                {renderExtraInfo?.()}
             </td>
         </React.Fragment>
     );

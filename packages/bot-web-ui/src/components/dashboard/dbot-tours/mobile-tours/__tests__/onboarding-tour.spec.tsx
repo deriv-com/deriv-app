@@ -1,3 +1,5 @@
+// eslint-disable-next-line simple-import-sort/imports
+import '@testing-library/react/dont-cleanup-after-each';
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen, waitFor } from '@testing-library/react';

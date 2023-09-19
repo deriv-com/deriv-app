@@ -1,12 +1,11 @@
 import React from 'react';
 
-const WalletsAddMoreCardBanner = ({
-    is_added,
-    landing_company_name,
-}: {
+type TWalletsAddMoreCardBanner = {
     is_added: boolean;
     landing_company_name: string;
-}) => {
+};
+
+const WalletsAddMoreCardBanner = ({ is_added, landing_company_name }: TWalletsAddMoreCardBanner) => {
     return (
         <div className='wallets-add-more__banner'>
             <div className='wallets-add-more__banner-header'>

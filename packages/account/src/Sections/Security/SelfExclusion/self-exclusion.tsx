@@ -458,7 +458,7 @@ const SelfExclusion = observer(({ overlay_ref, setIsOverlayShown }: TSelfExclusi
                 <SelfExclusionModal />
                 <SelfExclusionForm />
             </SelfExclusionWrapper>
-            <SelfExclusionArticleContent is_in_overlay />
+            {overlay_ref && state.show_article && <SelfExclusionArticleContent is_in_overlay />}
         </SelfExclusionContext.Provider>
     );
 });

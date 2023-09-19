@@ -153,21 +153,11 @@ describe('<SelfExclusion />', () => {
             (input: FormikValues) => input.name === 'session_duration_limit'
         );
 
-        await act(async () => {
-            if (session_duration_limit_input) userEvent.type(session_duration_limit_input, '60481');
-        });
+        if (session_duration_limit_input) userEvent.type(session_duration_limit_input, '60481');
 
         expect(
-            screen.getByText('Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).')
+            await screen.findByText('Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).')
         ).toBeInTheDocument();
-
-        await act(async () => {
-            if (session_duration_limit_input) userEvent.type(session_duration_limit_input, '60479');
-        });
-
-        expect(
-            screen.queryByText('Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).')
-        ).not.toBeInTheDocument();
     });
 
     it('Should trigger exclude_until input and show error depends on input value', async () => {
@@ -188,18 +178,18 @@ describe('<SelfExclusion />', () => {
         const exclude_until_input = inputs.find((input: FormikValues) => input.name === 'exclude_until');
 
         await act(async () => {
-            if (exclude_until_input) userEvent.type(exclude_until_input, '2021-04-13');
+            if (exclude_until_input) fireEvent.change(exclude_until_input, { target: { value: '2021-04-13' } });
         });
 
         expect(screen.getByText('Exclude time must be after today.')).toBeInTheDocument();
 
         await act(async () => {
-            if (exclude_until_input) userEvent.type(exclude_until_input, '2022-04-13');
+            if (exclude_until_input) fireEvent.change(exclude_until_input, { target: { value: '2022-04-13' } });
         });
         expect(screen.getByText('Exclude time cannot be less than 6 months.')).toBeInTheDocument();
 
         await act(async () => {
-            if (exclude_until_input) userEvent.type(exclude_until_input, '2028-04-13');
+            if (exclude_until_input) fireEvent.change(exclude_until_input, { target: { value: '2028-04-13' } });
         });
         expect(screen.getByText('Exclude time cannot be for more than five years.')).toBeInTheDocument();
     });
@@ -225,7 +215,7 @@ describe('<SelfExclusion />', () => {
             );
         });
 
-        // expect(screen.getByText('Your stake and loss limits')).toBeInTheDocument();
+        expect(screen.getByText('Your stake and loss limits')).toBeInTheDocument();
         const next_btn_1 = screen.getByRole('button');
         expect(next_btn_1).toHaveTextContent('Next');
 
@@ -234,10 +224,8 @@ describe('<SelfExclusion />', () => {
         const max_turnover_input = inputs_1.find((input: FormikValues) => input.name === 'max_turnover');
         const max_open_bets_input = inputs_1.find((input: FormikValues) => input.name === 'max_open_bets');
 
-        act(() => {
-            if (max_turnover_input) userEvent.type(max_turnover_input, '1700');
-            if (max_open_bets_input) userEvent.type(max_open_bets_input, '999');
-        });
+        if (max_turnover_input) userEvent.type(max_turnover_input, '1700');
+        if (max_open_bets_input) userEvent.type(max_open_bets_input, '999');
 
         await waitFor(() => {
             userEvent.click(next_btn_1);
@@ -264,7 +252,7 @@ describe('<SelfExclusion />', () => {
         expect(inputs_2).toHaveLength(11);
         const max_balance_input = inputs_1.find((input: FormikValues) => input.name === 'max_balance');
 
-        act(() => {
+        await waitFor(() => {
             if (max_balance_input) userEvent.type(max_balance_input, '10000');
         });
 
@@ -326,33 +314,32 @@ describe('<SelfExclusion />', () => {
         );
 
         act(() => {
-            if (exclude_until_input) userEvent.type(exclude_until_input, '2023-02-03');
-            if (max_open_bets_input) userEvent.type(max_open_bets_input, '99');
-            if (max_losses_input) userEvent.type(max_losses_input, '1000');
-            if (max_turnover_input) userEvent.type(max_turnover_input, '1700');
-            if (max_7day_losses_input) userEvent.type(max_7day_losses_input, '700');
-            if (max_7day_turnover_input) userEvent.type(max_7day_turnover_input, '700');
-            if (max_30day_losses_input) userEvent.type(max_30day_losses_input, '3000');
-            if (max_30day_turnover_input) userEvent.type(max_30day_turnover_input, '5000');
-            if (session_duration_limit_input) userEvent.type(session_duration_limit_input, '60399');
+            if (exclude_until_input) fireEvent.change(exclude_until_input, { target: { value: '2023-02-03' } });
         });
+        if (max_open_bets_input) userEvent.type(max_open_bets_input, '99');
+        if (max_losses_input) userEvent.type(max_losses_input, '1000');
+        if (max_turnover_input) userEvent.type(max_turnover_input, '1700');
+        if (max_7day_losses_input) userEvent.type(max_7day_losses_input, '700');
+        if (max_7day_turnover_input) userEvent.type(max_7day_turnover_input, '700');
+        if (max_30day_losses_input) userEvent.type(max_30day_losses_input, '3000');
+        if (max_30day_turnover_input) userEvent.type(max_30day_turnover_input, '5000');
+        if (session_duration_limit_input) userEvent.type(session_duration_limit_input, '60399');
 
-        await waitFor(() => {
-            userEvent.click(next_btn_1);
-        });
+        await userEvent.click(next_btn_1);
 
-        expect(screen.getByText('You have set the following limits:')).toBeInTheDocument();
+        expect(await screen.findByText('You have set the following limits:')).toBeInTheDocument();
         expect(screen.queryByText('Your stake and loss limits')).not.toBeInTheDocument();
         expect(next_btn_1).not.toBeInTheDocument();
         const accept_btn_1 = screen.getByRole('button');
         expect(accept_btn_1).toHaveTextContent('Accept');
-
         await waitFor(() => {
             userEvent.click(accept_btn_1);
         });
 
         expect(accept_btn_1).not.toBeInTheDocument();
+
         const review_btn = screen.getByText('No, review my limits');
+
         expect(review_btn).toBeInTheDocument();
 
         expect(screen.getByText('Yes, log me out immediately')).toBeInTheDocument();

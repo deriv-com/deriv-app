@@ -1,6 +1,6 @@
 import React from 'react';
 import { Badge } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 
 type TWalletBadge = {
     is_demo: boolean;
@@ -9,7 +9,7 @@ type TWalletBadge = {
 
 const WalletBadge = ({ is_demo, label }: TWalletBadge) => {
     return is_demo ? (
-        <Badge type='contained' background_color='blue' label={localize('Demo')} />
+        <Badge type='contained' background_color='blue' label={<Localize i18n_default_text='Demo' />} />
     ) : (
         <Badge type='bordered' label={label?.toUpperCase() ?? ''} />
     );

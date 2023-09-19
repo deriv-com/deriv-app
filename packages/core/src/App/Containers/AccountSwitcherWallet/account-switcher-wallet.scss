@@ -7,7 +7,12 @@
         border-bottom: 1px solid var(--general-hover);
     }
 
-    &__button {
-        margin: 1.6rem;
+    &__footer {
+        border-top: 1px solid var(--general-hover);
+        padding: 1.6rem;
+
+        &-button {
+            width: 100%;
+        }
     }
 }

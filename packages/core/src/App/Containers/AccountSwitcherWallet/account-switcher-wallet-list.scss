@@ -1,11 +1,10 @@
 .account-switcher-wallet {
     &__list {
         padding: 0.4rem 0.8rem;
-        border-bottom: 1px solid var(--general-hover);
 
         @include mobile {
             padding: 0;
-            border-bottom: unset;
+            overflow: auto;
         }
     }
 }

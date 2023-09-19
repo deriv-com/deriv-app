@@ -40,10 +40,10 @@ jest.mock('@deriv/shared', () => ({
 }));
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
-    IconTradeTypes: jest.fn(props => <p data-type={props.type}>TradeIcon</p>),
-    Money: jest.fn(() => <p>MoneyComponent</p>),
+    IconTradeTypes: jest.fn(props => <div data-type={props.type}>TradeIcon</div>),
+    Money: jest.fn(() => <div>MoneyComponent</div>),
 }));
-jest.mock('Modules/Trading/Components/Form/Purchase/contract-info', () => jest.fn(() => <p>ContractInfo</p>));
+jest.mock('Modules/Trading/Components/Form/Purchase/contract-info', () => jest.fn(() => <div>ContractInfo</div>));
 
 describe('<PurchaseButton />', () => {
     it('should render a button with specific text for contract type and icon', () => {

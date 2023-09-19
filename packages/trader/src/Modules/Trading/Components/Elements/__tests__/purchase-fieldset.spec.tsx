@@ -40,9 +40,9 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(() => false),
     isDesktop: jest.fn(() => true),
 }));
-jest.mock('Modules/Trading/Components/Form/Purchase/contract-info', () => jest.fn(() => <p>ContractInfo</p>));
-jest.mock('Modules/Trading/Components/Elements/purchase-button', () => jest.fn(() => <p>PurchaseButton</p>));
-jest.mock('../../Form/Purchase/cancel-deal-info', () => jest.fn(() => <p>CancelDealInfo</p>));
+jest.mock('Modules/Trading/Components/Form/Purchase/contract-info', () => jest.fn(() => <div>ContractInfo</div>));
+jest.mock('Modules/Trading/Components/Elements/purchase-button', () => jest.fn(() => <div>PurchaseButton</div>));
+jest.mock('../../Form/Purchase/cancel-deal-info', () => jest.fn(() => <div>CancelDealInfo</div>));
 
 describe('<PurchaseFieldset />', () => {
     it('should render PurchaseButton and ContractInfo by default', () => {

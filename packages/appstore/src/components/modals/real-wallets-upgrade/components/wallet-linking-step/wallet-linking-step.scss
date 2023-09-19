@@ -1,16 +1,13 @@
 .wallet-linking-step {
     width: 100%;
-    height: calc(
-        100% - 74rem - 40rem - 1.6rem
-    ); // 73.4rem (modal-height) - 16rem (~15.2rem height of header + footer + margin from top)
+    height: 57.4rem; // 73.4rem (modal-height) - 16rem (~15.2rem height of header + footer + margin from top)
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
 
     @include mobile {
-        height: 100%;
-        margin: 4rem 0 7.4rem;
+        height: calc(100vh - 13rem); // 100vh - 4rem (header) - 7.4rem (footer) - 1.6rem (padding)
     }
 
     &__description {
@@ -56,5 +53,16 @@
         margin-top: 2.4rem;
         padding: 0.8rem 1.6rem;
         border-radius: $BORDER_RADIUS;
+    }
+
+    &__accounts-text {
+        border-radius: 8px 8px 0 0;
+    }
+
+    &__wallet-card-text {
+        position: absolute;
+        width: 21.6rem;
+        bottom: 0;
+        border-radius: 0 0 8px 8px;
     }
 }

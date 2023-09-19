@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, ThemedScrollbars, WalletCard } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import WalletLinkWrapper, { TWalletLinkWrapper } from '../wallet-link/wallet-link-wrapper';
 import './wallet-linking-step.scss';
@@ -45,23 +45,16 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
                     return (
                         <WalletLinkWrapper
                             key={wallet.wallet_details.name}
-                            show_left_fork={wallet.account_list.length > 1}
+                            show_left_fork={wallet.account_list.length > 1 || is_mobile}
                             left={() => {
                                 return (
                                     <>
                                         {is_mobile && (
                                             <Text
                                                 as='div'
-                                                className={classNames('wallet-linking-step__title-text', {
-                                                    'wallet-linking-step__title--mobile': is_mobile,
-                                                })}
+                                                className='wallet-linking-step__title-text wallet-linking-step__accounts-text '
                                                 color='prominent'
                                                 size='xxxs'
-                                                styles={
-                                                    is_mobile && {
-                                                        borderRadius: '8px 8px 0 0',
-                                                    }
-                                                }
                                             >
                                                 {localize('Your current trading account(s)')}
                                             </Text>
@@ -86,17 +79,9 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
                                         <WalletCard wallet={wallet.wallet_details} size='large' state='default' />
                                         {is_mobile && (
                                             <Text
-                                                className='wallet-linking-step__title-text'
+                                                className='wallet-linking-step__title-text wallet-linking-step__wallet-card-text'
                                                 color='prominent'
                                                 size='xxxs'
-                                                styles={
-                                                    is_mobile && {
-                                                        position: 'absolute',
-                                                        width: '21.6rem',
-                                                        bottom: '0',
-                                                        borderRadius: '0 0 8px 8px',
-                                                    }
-                                                }
                                             >
                                                 {localize('Your new Wallet')}
                                             </Text>

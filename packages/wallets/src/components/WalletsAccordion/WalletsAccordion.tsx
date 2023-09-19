@@ -11,7 +11,8 @@ type TProps = {
 
 const WalletsAccordion: React.FC<TProps> = ({ wallet, header, content }) => {
     const switchAccount = (loginid?: string) => {
-        // if (!loginid) return;
+        if (!loginid) return null;
+
         // implement switch account here
     };
 

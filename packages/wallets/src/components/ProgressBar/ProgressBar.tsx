@@ -4,7 +4,7 @@ import './ProgressBar.scss';
 type TProps = {
     is_transition?: boolean;
     active_index: number;
-    indexes: Array<number>;
+    indexes: number[];
     setActiveIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 

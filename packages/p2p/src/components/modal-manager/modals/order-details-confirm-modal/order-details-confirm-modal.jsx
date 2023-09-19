@@ -3,7 +3,7 @@ import { useStores } from 'Stores';
 import { Button, Modal, Text } from '@deriv/components';
 import { isMobile, formatMoney } from '@deriv/shared';
 import FileUploaderComponent from 'Components/file-uploader-component';
-import FormError from 'Components/form/error.jsx';
+import FormError from 'Components/section-error';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { getErrorMessage, max_pot_file_size } from 'Utils/file-uploader';

@@ -1717,3 +1717,12 @@ export type TSocketPaginateableEndpointNames = KeysMatching<
     TSocketEndpoints,
     { request: { limit?: number; offset?: number } }
 >;
+
+export type TLoginHistoryData = {
+    id: number;
+    date: string;
+    action: string;
+    browser: string;
+    ip: string;
+    status: string;
+}[];

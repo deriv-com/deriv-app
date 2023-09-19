@@ -11,6 +11,7 @@ export { default as useCloseDerivAccount } from './useCloseDerivAccount';
 export { default as useCurrencyConfig } from './useCurrencyConfig';
 export { default as useGetAccountStatus } from './useGetAccountStatus';
 export { default as useLandingCompany } from './useLandingCompany';
+export { default as useLoginHistory } from './useLoginHistory';
 export { default as useMT5AccountsList } from './useMT5AccountsList';
 export { default as useSettings } from './useSettings';
 export { default as useTradingAccountsList } from './useTradingAccountsList';

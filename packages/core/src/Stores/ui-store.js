@@ -475,7 +475,7 @@ export default class UIStore extends BaseStore {
     }
 
     get is_desktop() {
-        return this.screen_width > MAX_MOBILE_WIDTH;
+        return this.screen_width > MAX_TABLET_WIDTH;
     }
 
     get is_mobile() {

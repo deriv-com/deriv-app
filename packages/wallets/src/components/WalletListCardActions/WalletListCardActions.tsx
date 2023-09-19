@@ -6,7 +6,7 @@ import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
 import IcCashierWithdrawal from '../../public/images/ic-cashier-withdrawal.svg';
-import './WalletListCardIActions.scss';
+import './WalletListCardActions.scss';
 
 const getWalletHeaderButtons = (is_demo: boolean, handleAction?: () => void) => {
     const buttons = [
@@ -49,7 +49,7 @@ type TProps = {
     account?: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
 };
 
-const WalletListCardIActions: React.FC<TProps> = ({ account }) => {
+const WalletListCardActions: React.FC<TProps> = ({ account }) => {
     const { data: active_wallet } = useActiveWalletAccount();
     const { is_mobile } = useDevice();
     const history = useHistory();
@@ -102,4 +102,4 @@ const WalletListCardIActions: React.FC<TProps> = ({ account }) => {
     );
 };
 
-export default WalletListCardIActions;
+export default WalletListCardActions;

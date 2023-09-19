@@ -27,7 +27,7 @@ export * from './WalletDepositCryptoDisclaimers';
 export * from './WalletDepositFiat';
 export * from './WalletListCard';
 export * from './WalletListCardBadge';
-export * from './WalletListCardIActions';
+export * from './WalletListCardActions';
 export * from './WalletListCardIBalance';
 export * from './WalletListCardIDetails';
 export * from './WalletListCardIcon';

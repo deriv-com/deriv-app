@@ -4,6 +4,7 @@ import ConfigStore from 'Stores/config-store';
 import { TRoute } from 'Types';
 import Onboarding from 'Modules/onboarding';
 import CFDCompareAccounts from '@deriv/cfd/src/Containers/cfd-compare-accounts';
+import DerivezWebTerminal from '@deriv/cfd/src/Containers/derivez-web-terminal';
 
 type TRoutesConfig = {
     consumer_routes: ConfigStore['routes'];
@@ -26,6 +27,10 @@ const initRoutesConfig = ({ consumer_routes }: TRoutesConfig): TRoute[] => [
         path: consumer_routes.compare_cfds,
         component: CFDCompareAccounts,
         getTitle: () => localize('CFDCompareAccounts'),
+    },
+    {
+        path: consumer_routes.derivez,
+        component: DerivezWebTerminal,
     },
 ];
 

@@ -7,6 +7,7 @@ export default class ConfigStore extends BaseStore {
         traders_hub: '/appstore/traders-hub',
         onboarding: '/appstore/onboarding',
         compare_cfds: '/appstore/compare-accounts',
+        derivez: '/appstore/derivez',
 
         my_apps: '/my-apps',
         explore: '/explore',

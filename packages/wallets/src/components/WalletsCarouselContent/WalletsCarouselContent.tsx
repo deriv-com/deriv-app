@@ -15,7 +15,7 @@ const WalletsCarouselContent: React.FC = () => {
     const { data: wallet_accounts_list } = useWalletAccountsList();
     const active_wallet_index = useMemo(
         () =>
-            wallet_accounts_list.findIndex(item => item?.is_active) ||
+            wallet_accounts_list?.findIndex(item => item?.is_active) ||
             wallets_carousel_embla_api?.selectedScrollSnap() ||
             0,
         [wallet_accounts_list, wallets_carousel_embla_api]
@@ -41,19 +41,17 @@ const WalletsCarouselContent: React.FC = () => {
 
     const amount_of_steps = useMemo(() => wallet_accounts_list?.map(wallet => wallet.loginid), [wallet_accounts_list]);
 
-    if (!wallet_accounts_list.length) return <h1>No wallets found</h1>;
-
     return (
         <div className='wallets-carousel-content' ref={wallets_carousel_embla_ref}>
             <div className='wallets-carousel-content__container'>
-                {wallet_accounts_list.map(account => (
+                {wallet_accounts_list?.map(account => (
                     <WalletCard key={`wallet-card-${account.loginid}`} account={account} />
                 ))}
             </div>
             <div className='wallets-carousel-content__progress-bar'>
                 <ProgressBar
                     active_index={progress_bar_active_index}
-                    indexes={amount_of_steps}
+                    indexes={amount_of_steps || []}
                     setActiveIndex={switchAccount}
                     is_transition
                 />

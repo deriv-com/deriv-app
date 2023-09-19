@@ -4,7 +4,7 @@ import IcDropdown from '../../public/images/ic-dropdown.svg';
 import './WalletsAccordion.scss';
 
 type TProps = {
-    account: ReturnType<typeof useWalletAccountsList>['data'][number];
+    account: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
     content: ReactElement;
     header: ReactElement;
 };

@@ -48,7 +48,7 @@ export const init = (fncTimeUpdated?: VoidFunction) => {
  * Update the server time
  * @param {Object} response - The response from the server.
  */
-const timeCounter = (response: { error?: unknown; time: number }) => {
+const timeCounter = (response: { error?: Error; time: number }) => {
     if (response.error) return;
 
     if (!clock_started) {

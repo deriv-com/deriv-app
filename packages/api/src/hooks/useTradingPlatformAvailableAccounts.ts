@@ -12,7 +12,8 @@ const useTradingPlatformAvailableAccounts = () => {
             mt5_available_accounts?.trading_platform_available_accounts?.map(account => {
                 return {
                     ...account,
-                };
+                    market_type: account.market_type === 'gaming' ? 'synthetic' : account.market_type,
+                } as const;
             }),
         [mt5_available_accounts?.trading_platform_available_accounts]
     );
@@ -30,7 +31,7 @@ const useTradingPlatformAvailableAccounts = () => {
 
     return {
         /** The available MT5 accounts grouped by market type */
-        data: grouped_mt5_available_accounts,
+        data: modified_mt5_available_accounts,
         ...rest,
     };
 };

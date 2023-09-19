@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormikContext } from 'formik';
 
-export const ScrollToFieldWithError = () => {
+const ScrollToFieldWithError = () => {
     const [all_page_inputs_names, setAllPageInputsNames] = React.useState<string[]>([]);
     const formik = useFormikContext();
     const is_submitting = formik.isSubmitting;
@@ -17,7 +17,6 @@ export const ScrollToFieldWithError = () => {
         for (let i = 0; i <= all_page_inputs_names.length; i++) {
             if (Object.hasOwn(formik.errors, all_page_inputs_names[i])) {
                 current_error_field_name = all_page_inputs_names[i];
-                // setCurrentErrorFieldName(all_page_inputs_names[i]);
                 break;
             }
         }
@@ -29,3 +28,5 @@ export const ScrollToFieldWithError = () => {
 
     return null;
 };
+
+export default ScrollToFieldWithError;

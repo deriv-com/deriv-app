@@ -1,5 +1,6 @@
-import { Formik, Field, FormikProps, FormikValues } from 'formik';
 import React from 'react';
+import classNames from 'classnames';
+import { Formik, Field, FormikProps, FormikValues } from 'formik';
 import { StatesList } from '@deriv/api-types';
 import {
     Modal,
@@ -15,11 +16,10 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile, getLocation, makeCancellablePromise, PlatformContext } from '@deriv/shared';
+import { localize, Localize } from '@deriv/translations';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
-import classNames from 'classnames';
-import { ScrollToFieldWithError } from 'Components/forms/scroll-to-field-with-error';
+import ScrollToFieldWithError from 'Components/forms/scroll-to-field-with-error';
 
 type TAddressDetails = {
     disabled_items: string[];

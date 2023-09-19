@@ -156,10 +156,7 @@ const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTra
                                             <Localize i18n_default_text='We collect information about your employment as part of our due diligence obligations, as required by anti-money laundering legislation.' />
                                         </Text>
                                     )}
-                                    <ThemedScrollbars
-                                        autohide={!(window.innerHeight < 890)}
-                                        height={Number(height) - 77}
-                                    >
+                                    <ThemedScrollbars autohide={window.innerHeight >= 890} height={Number(height) - 77}>
                                         <div
                                             className={classNames(
                                                 'details-form__elements',

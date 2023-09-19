@@ -1,4 +1,7 @@
 export * from './AccountsList';
+export * from './AddedDxtradeAccountsList';
+export * from './AvailableDerivezAccountsList';
+export * from './AvailableDxtradeAccountsList';
 export * from './CFDList';
 export * from './CTraderList';
 export * from './DesktopWalletsList';

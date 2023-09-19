@@ -7,7 +7,7 @@ describe('render <WalletCFDCard />', () => {
         wallet: {
             account_title: 'Success',
             app_icon: 'app_icon',
-            currency: 'USD',
+            currency: 'USD Wallet',
             gradient_header_class: 'gradient_class',
             icon: 'usd_icon',
             is_demo: false,

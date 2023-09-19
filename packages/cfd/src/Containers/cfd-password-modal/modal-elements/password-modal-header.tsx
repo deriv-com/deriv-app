@@ -14,19 +14,9 @@ const PasswordModalHeader = observer(
     ({ should_set_trading_password, is_password_reset_error, platform }: TPasswordModalHeaderProps) => {
         const { ui } = useStore();
         const { is_mobile } = ui;
-        const element = is_mobile ? 'p' : 'span';
-        const alignment = 'center';
-        const font_size = 's';
 
         return (
-            <Text
-                align={alignment}
-                as={element}
-                className='cfd-password-modal__header'
-                line_height='m'
-                size={font_size}
-                weight='bold'
-            >
+            <Text align='center' as={is_mobile ? 'p' : 'span'} className='cfd-password-modal__header' weight='bold'>
                 {!should_set_trading_password && !is_password_reset_error && (
                     <Localize
                         i18n_default_text='Enter your {{platform}} password'

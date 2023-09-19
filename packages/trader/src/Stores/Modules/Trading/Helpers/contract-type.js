@@ -17,7 +17,7 @@ import {
     getContractSubtype,
     getLocalizedBasis,
     LocalStore,
-    TRADE_FEATURE_PREFIX,
+    TRADE_FEATURE_FLAGS,
 } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
@@ -83,8 +83,8 @@ export const ContractType = (() => {
                 available_contract_types[type].config = config;
             });
             const hidden_trade_types = Object.entries(LocalStore.getObject('FeatureFlagsStore')?.data ?? {})
-                .filter(([key, value]) => key.startsWith(TRADE_FEATURE_PREFIX) && !value)
-                .map(([key]) => key.replace(TRADE_FEATURE_PREFIX, ''));
+                .filter(([key, value]) => TRADE_FEATURE_FLAGS.includes(key) && !value)
+                .map(([key]) => key);
             // cleanup categories
             Object.keys(available_categories).forEach(key => {
                 available_categories[key].categories = available_categories[key].categories?.filter(item => {

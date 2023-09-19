@@ -2,18 +2,6 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { shouldShowCancellation, shouldShowExpiration, TURBOS } from '../contract';
 
-export const TRADE_FEATURE_PREFIX = 'trade_';
-
-/**
- * @param {string} trade_category - one of the trade type categories in TRADE object, e.g. 'rise_fall'.
- * Each trade feature flag should start with TRADE_FEATURE_PREFIX
- * and end with trade type category from getContractCategoriesConfig() or the beginning of it, e.g.:
- * 'trade_turbos' flag will enable/disable both turboslong and turbosshort contracts.
- */
-export const getTradeFeatureFlag = (trade_category = '') => {
-    return trade_category ? `${TRADE_FEATURE_PREFIX}${trade_category}` : '';
-};
-
 export const getLocalizedBasis = () =>
     ({
         accumulator: localize('Accumulators'),
@@ -508,12 +496,14 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
         },
         // To add a feature flag for a new trade_type, please add 'feature_flag' to its config here:
         // SHARKFIN: {
-        //     feature_flag: getTradeFeatureFlag('sharkfin'),
+        //     feature_flag: 'sharkfin',
         //     name: localize('Sharkfin'),
         //     position: 'top',
         // }
-        // and also in FeatureFlagsStore, e.g.: trade_sharkfin: false,
+        // and also to DTRADER_FLAGS in FeatureFlagsStore, e.g.: sharkfin: false,
     } as const);
+
+export const TRADE_FEATURE_FLAGS = ['sharkfin'];
 
 export const getContractConfig = (is_high_low?: boolean) => ({
     ...getSupportedContracts(is_high_low),

@@ -335,11 +335,6 @@ describe('createExtendedOrderDetails', () => {
             result_string: "You've received 0.5 USD",
         });
     });
-    it('should handle getter for my_user_details method', () => {
-        expect(createExtendedOrderDetails({ ...mock_order }, user_id, server_time).my_user_details).toEqual(
-            mock_order.client_details
-        );
-    });
     it('should handle getter for other_user_details', () => {
         expect(createExtendedOrderDetails({ ...mock_order }, user_id, server_time).other_user_details).toEqual(
             mock_order.advertiser_details

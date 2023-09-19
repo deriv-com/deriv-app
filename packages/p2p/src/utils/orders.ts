@@ -446,6 +446,11 @@ class ExtendedOrderDetails {
         return localize('Unknown');
     }
 
+    /**
+     * Function that returns the status string of the pending order
+     *
+     * @returns {string} localized status string
+     */
     getStatusForPendingOrder() {
         const wait_message = localize('Wait for payment');
         const pay_message = localize('Pay now');
@@ -456,6 +461,11 @@ class ExtendedOrderDetails {
         return this.is_buy_order ? pay_message : wait_message;
     }
 
+    /**
+     * Function that returns the status string of the buyer confirmed order
+     *
+     * @returns {string} localized status string
+     */
     getStatusForBuyerConfirmedOrder() {
         const confirm_message = localize('Confirm payment');
         const wait_message = localize('Waiting for the seller to confirm');
@@ -532,15 +542,6 @@ class ExtendedOrderDetails {
                 offered_currency: this.order_details.account_currency,
             }),
         };
-    }
-
-    /**
-     * Function that returns the user details of the order
-     *
-     * @returns {object} user details
-     */
-    get my_user_details() {
-        return this.is_my_ad ? this.order_details.advertiser_details : this.order_details.client_details;
     }
 
     /**

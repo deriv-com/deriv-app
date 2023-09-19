@@ -8,8 +8,8 @@ const useBalance = () => {
     const { data: balance_data, ...rest } = useQuery('balance', {
         payload: { account: 'all' },
         options: {
-            refetchInterval: 30000, // Refetch every 30 seconds to simulate subscription.
             enabled: isSuccess,
+            refetchInterval: 30000, // Refetch every 30 seconds to simulate subscription.
         },
     });
 

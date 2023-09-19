@@ -370,10 +370,9 @@ const FinancialAssessment = observer(() => {
                 other_instruments_trading_frequency,
             }),
         };
-        if (!is_mf) {
-            return form_data;
+        if (is_mf) {
+            delete form_data.employment_status;
         }
-        delete form_data.employment_status;
         return form_data;
     };
 
@@ -1023,7 +1022,7 @@ const FinancialAssessment = observer(() => {
                                     )}
                                 </FormBody>
                                 <FormFooter>
-                                    {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
+                                    {status?.msg && <FormSubmitErrorMessage message={status.msg} />}
                                     {isMobile() && !is_appstore && !is_mf && (
                                         <Text
                                             align='center'

@@ -1,10 +1,12 @@
 import React from 'react';
+import { useActiveWalletAccount } from '@deriv/api';
 import { CTraderList } from '../CTraderList';
 import { MT5List } from '../MT5List';
 import { OtherCFDPlatformsList } from '../OtherCFDPlatformsList';
 import './CFDList.scss';
 
 const CFDList = () => {
+    const { data: active_wallet } = useActiveWalletAccount();
     return (
         <div className='wallets-cfd-list'>
             <section className='wallets-cfd-list__header'>
@@ -21,7 +23,7 @@ const CFDList = () => {
                 </div>
             </section>
             <MT5List />
-            <CTraderList />
+            {active_wallet?.is_virtual && <CTraderList />}
             <OtherCFDPlatformsList />
         </div>
     );

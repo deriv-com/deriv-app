@@ -1,8 +1,10 @@
 import { useMemo } from 'react';
 import useQuery from '../useQuery';
+import useAuthorize from './useAuthorize';
 
 /** A custom hook that gets the list of created Deriv X accounts. */
 const useDxtradeAccountsList = () => {
+    const { data: authorize_data } = useAuthorize();
     const { data: dxtrade_accounts } = useQuery('trading_platform_accounts', {
         payload: { platform: 'dxtrade' },
     });
@@ -12,9 +14,13 @@ const useDxtradeAccountsList = () => {
         () =>
             dxtrade_accounts?.trading_platform_accounts?.map(account => ({
                 ...account,
-                loginid: account.account_id,
+                display_balance: Intl.NumberFormat(authorize_data?.preferred_language || 'en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                    minimumIntegerDigits: 1,
+                }).format(account?.balance || 0),
             })),
-        [dxtrade_accounts?.trading_platform_accounts]
+        [authorize_data?.preferred_language, dxtrade_accounts?.trading_platform_accounts]
     );
 
     return {

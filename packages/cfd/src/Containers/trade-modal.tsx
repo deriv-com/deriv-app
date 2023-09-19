@@ -26,6 +26,7 @@ type TTradeModalProps = {
     derivez_tokens: TCFDDashboardContainer['derivez_tokens'];
     is_demo: string;
     platform: TCFDsPlatformType;
+    is_mobile?: boolean;
 };
 
 const PlatformIconsAndDescriptions = (
@@ -74,6 +75,7 @@ const TradeModal = ({
     ctrader_tokens,
     is_demo,
     platform,
+    is_mobile,
 }: TTradeModalProps) => {
     const CTraderAndDerivEZDescription = () => {
         const platform_name = platform === 'derivez' ? 'Deriv EZ' : 'cTrader';
@@ -137,8 +139,10 @@ const TradeModal = ({
             app_title = localize('Run Deriv X on your browser');
         } else if (platform_type === 'derivez') {
             app_title = localize('Run Deriv EZ on your browser');
-        } else if (platform_type === 'ctrader') {
+        } else if (platform_type === 'ctrader' && !is_mobile) {
             app_title = localize('Run cTrader on your browser');
+        } else if (platform_type === 'ctrader' && is_mobile) {
+            return null;
         } else {
             return null;
         }
@@ -241,23 +245,53 @@ const TradeModal = ({
                 </div>
             </div>
             <div className='cfd-trade-modal__download-center-app'>{downloadCenterAppOption(platform)}</div>
-            {platform === CFD_PLATFORMS.CTRADER && (
-                <div className='cfd-trade-modal__download-center-app--windows'>
-                    <Icon icon='IcWindowsLogo' size={32} />
-                    <Text className='cfd-trade-modal__download-center-app--windows-item' size='xs'>
-                        {localize('cTrader Windows app')}
-                    </Text>
-                    <a
-                        className='dc-btn cfd-trade-modal__download-center-app--windows-link'
-                        type='button'
-                        href={CTRADER_DESKTOP_DOWNLOAD}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                    >
-                        <Text size='xxs' weight='bold' color='prominent'>
-                            {localize('Download')}
+            {platform === CFD_PLATFORMS.CTRADER && !is_mobile && (
+                <React.Fragment>
+                    <div className='cfd-trade-modal__download-center-app--windows'>
+                        <Icon icon='IcWindowsLogo' size={32} />
+                        <Text className='cfd-trade-modal__download-center-app--windows-item' size='xs'>
+                            {localize('cTrader Windows app')}
                         </Text>
-                    </a>
+                        <a
+                            className='dc-btn cfd-trade-modal__download-center-app--windows-link'
+                            type='button'
+                            href={CTRADER_DESKTOP_DOWNLOAD}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                        >
+                            <Text size='xxs' weight='bold' color='prominent'>
+                                {localize('Download')}
+                            </Text>
+                        </a>
+                    </div>
+                    <div className='cfd-trade-modal__download-center-app-container'>
+                        <Text
+                            className='cfd-trade-modal__download-center-app-mobile'
+                            align='center'
+                            size='xs'
+                            weight='bold'
+                        >
+                            <Localize i18n_default_text='Coming soon on mobile' />
+                        </Text>
+                        <Text className='cfd-trade-modal__download-center-app-mobile' align='center' size='xxs'>
+                            <Localize i18n_default_text='cTrader is only available on desktop for now.' />
+                        </Text>
+                    </div>
+                </React.Fragment>
+            )}
+            {platform === CFD_PLATFORMS.CTRADER && is_mobile && (
+                <div className='cfd-trade-modal__download-center-app-container'>
+                    <Text
+                        className='cfd-trade-modal__download-center-app-mobile'
+                        align='center'
+                        size='xs'
+                        weight='bold'
+                    >
+                        <Localize i18n_default_text='Coming soon on mobile' />
+                    </Text>
+                    <Text className='cfd-trade-modal__download-center-app-mobile' align='center' size='xxs'>
+                        <Localize i18n_default_text='cTrader is only available on desktop for now.' />
+                    </Text>
                 </div>
             )}
             {platform !== CFD_PLATFORMS.CTRADER && (

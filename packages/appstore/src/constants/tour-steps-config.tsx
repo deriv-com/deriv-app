@@ -285,16 +285,14 @@ export const getWalletStepConfigResponsive = (): Step[] => [
         title: (
             <React.Fragment>
                 <Text as='p' weight='bold' color='brand-red-coral'>
-                    <Localize i18n_default_text={'Wallets'} />
+                    <Localize i18n_default_text='Wallets' />
                 </Text>
                 <div className='toggle-account-type__divider' />
             </React.Fragment>
         ),
         content: (
             <Text as='p' size='xs'>
-                <Localize
-                    i18n_default_text={'This is your Wallet. You can see your total balance for this Wallet here.'}
-                />
+                <Localize i18n_default_text='This is your Wallet. You can see your total balance for this Wallet here.' />
             </Text>
         ),
         // The 'target' refers to the element where the spotlight will be positioned. If there are multiple elements with the same class name, the 'target' will select the first matching element.
@@ -310,16 +308,14 @@ export const getWalletStepConfigResponsive = (): Step[] => [
         title: (
             <React.Fragment>
                 <Text as='p' weight='bold' color='brand-red-coral'>
-                    <Localize i18n_default_text={'Wallets STEP 2'} />
+                    <Localize i18n_default_text='Wallets STEP 2' />
                 </Text>
                 <div className='toggle-account-type__divider' />
             </React.Fragment>
         ),
         content: (
             <Text as='p' size='xs'>
-                <Localize
-                    i18n_default_text={'This is your Wallet. You can see your total balance for this Wallet here.'}
-                />
+                <Localize i18n_default_text='This is your Wallet. You can see your total balance for this Wallet here.' />
             </Text>
         ),
         // The 'target' refers to the element where the spotlight will be positioned. If there are multiple elements with the same class name, the 'target' will select the first matching element.
@@ -335,16 +331,14 @@ export const getWalletStepConfigResponsive = (): Step[] => [
         title: (
             <React.Fragment>
                 <Text as='p' weight='bold' color='brand-red-coral'>
-                    <Localize i18n_default_text={'Wallets STEP 3'} />
+                    <Localize i18n_default_text='Wallets STEP 3' />
                 </Text>
                 <div className='toggle-account-type__divider' />
             </React.Fragment>
         ),
         content: (
             <Text as='p' size='xs'>
-                <Localize
-                    i18n_default_text={'This is your Wallet. You can see your total balance for this Wallet here.'}
-                />
+                <Localize i18n_default_text='This is your Wallet. You can see your total balance for this Wallet here.' />
             </Text>
         ),
         // The 'target' refers to the element where the spotlight will be positioned. If there are multiple elements with the same class name, the 'target' will select the first matching element.

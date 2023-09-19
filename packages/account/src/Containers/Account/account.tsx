@@ -62,8 +62,6 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
     });
 
     if (!selected_content) {
-        // fallback
-        selected_content = subroutes[0];
         history.push(shared_routes.personal_details);
     }
 

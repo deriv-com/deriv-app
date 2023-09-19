@@ -68,12 +68,24 @@ const OptionsAndMultipliersListing = () => {
                     <TradingAccountCard
                         {...account}
                         key={`trading-account-card-${account.title}`}
-                        renderActions={() => (
+                        trailing={() => (
                             <PrimaryActionButton>
                                 <p className='wallets-options-and-multipliers-listing__content__text'>Open</p>
                             </PrimaryActionButton>
                         )}
-                    />
+                        leading={() => (
+                            <div className='wallets-options-and-multipliers-listing__content__icon'>{account.icon}</div>
+                        )}
+                    >
+                        <div className='wallets-options-and-multipliers-listing__content__details'>
+                            <p className='wallets-options-and-multipliers-listing__content__details-title'>
+                                {account.title}
+                            </p>
+                            <p className='wallets-options-and-multipliers-listing__content__details-description'>
+                                {account.description}
+                            </p>
+                        </div>
+                    </TradingAccountCard>
                 ))}
             </div>
         </div>

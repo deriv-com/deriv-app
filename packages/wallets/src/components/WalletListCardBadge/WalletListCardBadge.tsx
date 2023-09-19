@@ -3,13 +3,20 @@ import './WalletListCardBadge.scss';
 
 type TProps = {
     label: string;
+    is_demo?: boolean;
 };
 
-const WalletListCardBadge: React.FC<TProps> = ({ label }) => {
+const WalletListCardBadge: React.FC<TProps> = ({ label, is_demo }) => {
+    const className = is_demo ? 'wallets-list-card__badge--demo' : 'wallets-list-card__badge';
+
+    const labelStyle: React.CSSProperties = {
+        color: is_demo ? 'white' : 'black',
+    };
+
     return (
-        <div className='wallets-list-card__badge'>
+        <div className={className}>
             <div className='wallets-list-card__name'>
-                <p>{label.toUpperCase()}</p>
+                <p style={labelStyle}>{label}</p>
             </div>
         </div>
     );

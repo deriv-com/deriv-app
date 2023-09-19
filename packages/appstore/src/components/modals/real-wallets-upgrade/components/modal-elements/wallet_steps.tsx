@@ -4,7 +4,7 @@ import { EndFooter, InitialFooter } from './wallets-upgrade-footer';
 import WalletLinkingStep from '../wallet-linking-step/wallet-linking-step';
 import ReadyToUpgradeWallets from '../ready-to-upgrade-wallets';
 import getMockWalletMigrationResponse from 'Constants/mock_wallet_migration_response';
-import { TwalletSteps } from 'Types';
+import { TWalletSteps } from 'Types';
 
 const WalletSteps = ({
     handleBack,
@@ -13,7 +13,7 @@ const WalletSteps = ({
     is_disabled,
     toggleCheckbox,
     upgradeToWallets,
-}: TwalletSteps) => [
+}: TWalletSteps) => [
     {
         name: 'intro_wallets',
         component: <WalletsIntro current_step={0} />,

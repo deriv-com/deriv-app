@@ -4,8 +4,13 @@ import { Field, FieldProps } from 'formik';
 import { localize } from '@deriv/translations';
 import { formatInput, getIDVNotApplicableOption } from '@deriv/shared';
 import { Autocomplete, DesktopWrapper, Input, MobileWrapper, SelectNative, Text } from '@deriv/components';
-import { getDocumentData, preventEmptyClipboardPaste, generatePlaceholderText, getExampleFormat } from 'Helpers/utils';
-import { TDocumentList, TIDVForm } from 'Types';
+import {
+    getDocumentData,
+    preventEmptyClipboardPaste,
+    generatePlaceholderText,
+    getExampleFormat,
+} from '../../Helpers/utils';
+import { TDocument, TIDVForm } from 'Types';
 
 const IDVForm = ({
     errors,
@@ -19,7 +24,7 @@ const IDVForm = ({
     hide_hint,
     can_skip_document_verification = false,
 }: TIDVForm) => {
-    const [document_list, setDocumentList] = React.useState<TDocumentList[]>([]);
+    const [document_list, setDocumentList] = React.useState<TDocument[]>([]);
     const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [selected_doc, setSelectedDoc] = React.useState('');
 
@@ -45,10 +50,8 @@ const IDVForm = ({
 
             const new_document_list = filtered_documents.map(key => {
                 const { display_name, format } = document_data[key];
-                const { new_display_name, example_format, sample_image } = getDocumentData(
-                    selected_country.value ?? '',
-                    key
-                );
+                const { new_display_name, example_format, sample_image, additional_document_example_format } =
+                    getDocumentData(selected_country.value ?? '', key);
                 const needs_additional_document = !!document_data[key].additional;
 
                 if (needs_additional_document) {
@@ -58,6 +61,7 @@ const IDVForm = ({
                         additional: {
                             display_name: document_data[key].additional?.display_name,
                             format: document_data[key].additional?.format,
+                            example_format: additional_document_example_format,
                         },
                         value: format,
                         sample_image,
@@ -98,7 +102,7 @@ const IDVForm = ({
         setFieldValue(document_name, current_input, true);
     };
 
-    const bindDocumentData = (item: TDocumentList) => {
+    const bindDocumentData = (item: TDocument) => {
         setFieldValue('document_type', item, true);
         setSelectedDoc(item?.id);
         if (item?.id === IDV_NOT_APPLICABLE_OPTION.id) {
@@ -221,6 +225,7 @@ const IDVForm = ({
                                                             onKeyUp={(e: { target: HTMLInputElement }) =>
                                                                 onKeyUp(e, 'document_number')
                                                             }
+                                                            className='additional-field'
                                                             required
                                                             label={generatePlaceholderText(selected_doc)}
                                                         />

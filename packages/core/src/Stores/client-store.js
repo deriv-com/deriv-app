@@ -52,6 +52,7 @@ export default class ClientStore extends BaseStore {
     email;
     accounts = {};
     trading_platform_available_accounts = [];
+    ctrader_available_accounts = [];
     derivez_available_accounts = [];
     pre_switch_broadcast = false;
     switched = '';
@@ -81,11 +82,6 @@ export default class ClientStore extends BaseStore {
     is_account_setting_loaded = false;
     has_enabled_two_fa = false;
     has_changed_two_fa = false;
-    // this will store the landing_company API response, including
-    // financial_company: {}
-    // gaming_company: {}
-    // mt_financial_company: {}
-    // mt_gaming_company: {}
     landing_companies = {};
 
     // All possible landing companies of user between all
@@ -103,6 +99,7 @@ export default class ClientStore extends BaseStore {
     mt5_login_list = [];
     mt5_login_list_error = null;
     dxtrade_accounts_list = [];
+    ctrader_accounts_list = [];
     derivez_accounts_list = [];
     dxtrade_accounts_list_error = null;
     dxtrade_disabled_signup_types = { real: false, demo: false };
@@ -170,6 +167,7 @@ export default class ClientStore extends BaseStore {
             email: observable,
             accounts: observable,
             trading_platform_available_accounts: observable,
+            ctrader_available_accounts: observable,
             derivez_available_accounts: observable,
             pre_switch_broadcast: observable,
             switched: observable,
@@ -206,6 +204,7 @@ export default class ClientStore extends BaseStore {
             mt5_login_list: observable,
             mt5_login_list_error: observable,
             dxtrade_accounts_list: observable,
+            ctrader_accounts_list: observable,
             derivez_accounts_list: observable,
             dxtrade_accounts_list_error: observable,
             dxtrade_disabled_signup_types: observable,
@@ -234,7 +233,6 @@ export default class ClientStore extends BaseStore {
             reality_check_dismissed: computed,
             has_active_real_account: computed,
             has_maltainvest_account: computed,
-            has_malta_account: computed,
             has_any_real_account: computed,
             first_switchable_real_loginid: computed,
             can_change_fiat_currency: computed,
@@ -242,7 +240,6 @@ export default class ClientStore extends BaseStore {
             upgradeable_currencies: computed,
             current_currency_type: computed,
             available_crypto_currencies: computed,
-            has_iom_account: computed,
             has_fiat: computed,
             current_fiat_currency: computed,
             current_landing_company: computed,
@@ -300,7 +297,6 @@ export default class ClientStore extends BaseStore {
             is_brazil: computed,
             country_standpoint: computed,
             can_have_mlt_account: computed,
-            can_have_mx_account: computed,
             can_have_mf_account: computed,
             can_upgrade: computed,
             can_upgrade_to: computed,
@@ -389,6 +385,7 @@ export default class ClientStore extends BaseStore {
             responseTradingPlatformAvailableAccounts: action.bound,
             responseDerivezAvailableAccounts: action.bound,
             responseTradingPlatformAccountsList: action.bound,
+            responseCTraderAvailableAccounts: action.bound,
             responseStatement: action.bound,
             getChangeableFields: action.bound,
             syncWithLegacyPlatforms: action.bound,
@@ -492,10 +489,6 @@ export default class ClientStore extends BaseStore {
         return this.active_accounts.some(acc => acc.landing_company_shortcode === 'maltainvest');
     }
 
-    get has_malta_account() {
-        return this.active_accounts.some(acc => acc.landing_company_shortcode === 'malta');
-    }
-
     hasAnyRealAccount = () => {
         return this.account_list.some(acc => acc.is_virtual === 0);
     };
@@ -583,10 +576,6 @@ export default class ClientStore extends BaseStore {
         return this.upgradeable_currencies.filter(acc => !values.includes(acc.value) && acc.type === 'crypto');
     }
 
-    get has_iom_account() {
-        return this.active_accounts.some(acc => acc.landing_company_shortcode === 'iom');
-    }
-
     get has_fiat() {
         const values = Object.values(this.accounts).reduce((acc, item) => {
             if (!item.is_virtual && item.landing_company_shortcode === this.landing_company_shortcode) {
@@ -631,6 +620,10 @@ export default class ClientStore extends BaseStore {
 
     get has_real_dxtrade_login() {
         return this.dxtrade_accounts_list.some(account => account.account_type === 'real');
+    }
+
+    get has_real_ctrader_login() {
+        return this.ctrader_accounts_list.some(account => account.account_type === 'real');
     }
 
     get has_real_derivez_login() {
@@ -819,7 +812,7 @@ export default class ClientStore extends BaseStore {
 
     get is_valid_login() {
         if (!this.is_logged_in) return true;
-        const valid_login_ids_regex = new RegExp('^(MX|MF|MFW|VRTC|VRW|MLT|CR|CRW|FOG)[0-9]+$', 'i');
+        const valid_login_ids_regex = new RegExp('^(MF|MFW|VRTC|VRW|MLT|CR|CRW)[0-9]+$', 'i');
         return this.all_loginids.every(id => valid_login_ids_regex.test(id));
     }
 
@@ -876,7 +869,7 @@ export default class ClientStore extends BaseStore {
         const mt_gaming_shortcode = mt_gaming_company?.financial.shortcode || mt_gaming_company?.swap_free.shortcode;
         const is_current_mf = this.landing_company_shortcode === 'maltainvest';
         return (
-            is_current_mf || //is_currently logged in mf account via trdaershub
+            is_current_mf || //is_currently logged in mf account via tradershub
             (financial_shortcode || gaming_shortcode || mt_gaming_shortcode
                 ? (eu_shortcode_regex.test(financial_shortcode) && gaming_shortcode !== 'svg') ||
                   eu_shortcode_regex.test(gaming_shortcode)
@@ -938,12 +931,6 @@ export default class ClientStore extends BaseStore {
             'pt',
             'lv',
         ].includes(this.residence);
-        return countries;
-    }
-
-    // Manual list of MX countries during MLT/MX account removal.
-    get can_have_mx_account() {
-        const countries = ['gb', 'im'].includes(this.residence);
         return countries;
     }
 
@@ -1721,6 +1708,8 @@ export default class ClientStore extends BaseStore {
 
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
+            WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER).then(this.responseTradingPlatformAccountsList);
+            WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.CTRADER).then(this.responseCTraderAvailableAccounts);
             WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ).then(this.responseTradingPlatformAccountsList);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ).then(this.responseDerivezAvailableAccounts);
@@ -2108,6 +2097,7 @@ export default class ClientStore extends BaseStore {
         this.accounts = {};
         this.mt5_login_list = [];
         this.dxtrade_accounts_list = [];
+        this.ctrader_accounts_list = [];
         this.derivez_accounts_list = [];
         this.landing_companies = {};
         localStorage.removeItem('readScamMessage');
@@ -2497,7 +2487,7 @@ export default class ClientStore extends BaseStore {
                     this.setMT5DisabledSignupTypes({
                         [account_type]: true,
                     });
-                    if (platform === CFD_PLATFORMS.DERIVEZ) {
+                    if (platform === CFD_PLATFORMS.DERIVEZ || platform === CFD_PLATFORMS.CTRADER) {
                         this.setCFDDisabledSignupTypes(platform, {
                             [account_type]: true,
                         });
@@ -2539,6 +2529,12 @@ export default class ClientStore extends BaseStore {
     responseTradingPlatformAvailableAccounts(response) {
         if (!response.error) {
             this.trading_platform_available_accounts = response.trading_platform_available_accounts;
+        }
+    }
+
+    responseCTraderAvailableAccounts(response) {
+        if (!response.error) {
+            this.ctrader_available_accounts = response.trading_platform_available_accounts;
         }
     }
 

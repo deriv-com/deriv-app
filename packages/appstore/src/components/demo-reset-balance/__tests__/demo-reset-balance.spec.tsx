@@ -1,5 +1,6 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { APIProvider, useRequest } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import DemoResetBalance from '../demo-reset-balance';
@@ -86,7 +87,7 @@ describe('<DemoResetBalance />', () => {
         });
 
         const reset_balance_button = screen.getByRole('button', { name: /Reset balance/i });
-        fireEvent.click(reset_balance_button);
+        userEvent.click(reset_balance_button);
         expect(mutate).toBeCalledTimes(1);
     });
 
@@ -108,7 +109,7 @@ describe('<DemoResetBalance />', () => {
 
         const transfer_funds_button = screen.getByRole('button', { name: /Transfer funds/i });
 
-        fireEvent.click(transfer_funds_button);
+        userEvent.click(transfer_funds_button);
         expect(setActiveTabIndex).toBeCalledTimes(1);
     });
 

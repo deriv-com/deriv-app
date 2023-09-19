@@ -1,4 +1,4 @@
-import { getIDVNotApplicableOption } from '../constants/idv-options';
+import { getIDVNotApplicableOption } from '../constants/default-options';
 import { FormikValues } from 'formik';
 
 type TDocumentList = Array<{

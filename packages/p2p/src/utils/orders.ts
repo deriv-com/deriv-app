@@ -141,13 +141,7 @@ class ExtendedOrderDetails {
      * @returns {boolean} true if order is cancelled, refunded, completed, dispute completed or dispute refunded
      */
     get is_inactive_order() {
-        return (
-            this.is_buyer_cancelled_order ||
-            this.is_refunded_order ||
-            this.is_completed_order ||
-            this.is_dispute_completed_order ||
-            this.is_dispute_refunded_order
-        );
+        return this.is_finalised_order || this.is_dispute_completed_order || this.is_dispute_refunded_order;
     }
 
     /**
@@ -184,6 +178,10 @@ class ExtendedOrderDetails {
      */
     get is_order_reviewable() {
         return this.order_details.is_reviewable;
+    }
+
+    get is_pending_active() {
+        return this.is_pending_order && this.is_active_order;
     }
 
     /**
@@ -317,11 +315,11 @@ class ExtendedOrderDetails {
     get should_show_cancel_and_paid_button() {
         if (this.has_timer_expired) return false;
 
-        if (this.is_buy_order) {
-            return !this.is_my_ad && this.is_pending_order && this.is_active_order;
-        }
+        return this.is_pending_active && (this.is_buy_order ? !this.is_my_ad : this.is_my_ad);
+    }
 
-        return this.is_my_ad && this.is_pending_order && this.is_active_order;
+    get is_expired_or_ongoing_timer_expired() {
+        return this.is_expired_order || (this.is_ongoing_order && this.has_timer_expired);
     }
 
     /**
@@ -332,11 +330,7 @@ class ExtendedOrderDetails {
     get should_show_complain_and_received_button() {
         if (this.is_finalised_order) return false;
 
-        if (this.is_sell_order) {
-            return (this.is_expired_order || (this.is_ongoing_order && this.has_timer_expired)) && !this.is_my_ad;
-        }
-
-        return (this.is_expired_order || (this.is_ongoing_order && this.has_timer_expired)) && this.is_my_ad;
+        return this.is_expired_or_ongoing_timer_expired && (this.is_sell_order ? !this.is_my_ad : this.is_my_ad);
     }
 
     /**
@@ -353,10 +347,10 @@ class ExtendedOrderDetails {
         if (this.is_finalised_order) return false;
 
         if (this.is_sell_order) {
-            return this.is_expired_order || (this.is_ongoing_order && this.has_timer_expired);
+            return this.is_expired_or_ongoing_timer_expired;
         }
 
-        return (this.is_expired_order || (this.is_ongoing_order && this.has_timer_expired)) && !this.is_my_ad;
+        return this.is_expired_or_ongoing_timer_expired && !this.is_my_ad;
     }
 
     /**
@@ -369,11 +363,7 @@ class ExtendedOrderDetails {
             return (!this.is_incoming_order && this.is_sell_order) || (this.is_incoming_order && this.is_buy_order);
         }
 
-        if (this.is_buy_order) {
-            return this.is_my_ad && this.is_buyer_confirmed_order;
-        }
-
-        return !this.is_my_ad && this.is_buyer_confirmed_order;
+        return this.is_buyer_confirmed_order && (this.is_buy_order ? this.is_my_ad : !this.is_my_ad);
     }
 
     /**

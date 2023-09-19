@@ -69,6 +69,7 @@ describe('<WalletTransferBlock />', () => {
             </StoreProvider>
         );
         const { currency } = wallet_account;
+
         const balance_title = screen.getByText(`1,000.00 ${currency}`);
 
         expect(balance_title).toBeInTheDocument();

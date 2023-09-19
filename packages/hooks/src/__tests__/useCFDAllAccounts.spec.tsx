@@ -76,6 +76,7 @@ describe('useCFDAllAccounts', () => {
         const { result } = renderHook(() => useCFDAllAccounts(), { wrapper });
 
         expect(result.current).toHaveLength(1);
+        expect(result.current).toHaveLength(1);
     });
 
     test('should return proper data when client has MT5, ctrader and dxtrade accounts', async () => {
@@ -110,6 +111,7 @@ describe('useCFDAllAccounts', () => {
         );
         const { result } = renderHook(() => useCFDAllAccounts(), { wrapper });
 
+        expect(result.current).toHaveLength(3);
         expect(result.current).toHaveLength(3);
     });
 });

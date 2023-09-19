@@ -6,13 +6,13 @@ import { getLanguage } from '@deriv/translations';
 import { Loading } from '@deriv/components';
 import { routes, WS } from '@deriv/shared';
 import ServerTime from 'Utils/server-time';
+import { init } from 'Utils/server_time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
 import { useP2POrderList } from '@deriv/hooks';
 import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
 import { ModalManager, ModalManagerContextProvider } from './modal-manager';
-import { init } from '../utils/server_time';
 import Routes from './routes/routes.jsx';
 import './app.scss';
 

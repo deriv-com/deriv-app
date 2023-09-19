@@ -6,7 +6,6 @@ export default class OrderDetailsStore {
             error_message: observable,
             interval: observable,
             popup_options: observable,
-            remaining_time: observable,
             should_show_popup: observable,
             handleShowPopup: action.bound,
             onCancelClick: action.bound,
@@ -22,7 +21,6 @@ export default class OrderDetailsStore {
     error_message = '';
     interval = null;
     popup_options = {};
-    remaining_time;
     should_show_popup = false;
 
     handleShowPopup(options) {

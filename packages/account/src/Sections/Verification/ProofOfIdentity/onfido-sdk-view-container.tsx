@@ -46,7 +46,7 @@ const OnfidoSdkViewContainer = observer(
 
         const { common, ui } = useStore();
         const { current_language } = common;
-        const { is_mobile, setPreventRender } = ui;
+        const { is_mobile } = ui;
 
         // IDV country code - Alpha ISO2. Onfido country code - Alpha ISO3
         // Ensures that any form of country code passed here is supported.
@@ -66,11 +66,6 @@ const OnfidoSdkViewContainer = observer(
         const { data: account_settings } = useSettings();
 
         const { send, isSuccess: isNotified } = useNotificationEvent();
-
-        // TODO: Remove this when POI flow is refactored to handle residence list inside CountrySelector
-        React.useEffect(() => {
-            setPreventRender(true);
-        }, [setPreventRender]);
 
         const { service_token, isSuccess, isError, error, isLoading } = useServiceToken({
             service: 'onfido',
@@ -93,9 +88,8 @@ const OnfidoSdkViewContainer = observer(
                         },
                     });
                 }
-                setPreventRender(false);
             },
-            [send, setPreventRender]
+            [send]
         );
 
         const initOnfido = React.useCallback(

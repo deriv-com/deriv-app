@@ -523,8 +523,6 @@ type TUiStore = {
     purchase_states: boolean[];
     setShouldShowCooldownModal: (value: boolean) => void;
     setAppContentsScrollRef: (ref: React.MutableRefObject<null | HTMLDivElement>) => void;
-    setPreventRender: (value: boolean) => void;
-    prevent_render: boolean;
     populateFooterExtensions: (
         footer_extensions:
             | [

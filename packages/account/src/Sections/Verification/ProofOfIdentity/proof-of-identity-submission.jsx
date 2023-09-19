@@ -25,7 +25,7 @@ const POISubmission = observer(
         residence_list,
         setIsCfdPoiCompleted,
     }) => {
-        const [submission_status, setSubmissionStatus] = React.useState(); // selecting, submitting, complete
+        const [submission_status, setSubmissionStatus] = React.useState(submission_status_code.selecting); // selecting, submitting, complete
         const [submission_service, setSubmissionService] = React.useState();
         const [selected_country, setSelectedCountry] = React.useState({});
 
@@ -110,12 +110,15 @@ const POISubmission = observer(
         const needs_resubmission = has_require_submission || allow_poi_resubmission;
 
         React.useEffect(() => {
+            if (submission_status != submission_status_code.selecting) {
+                return;
+            }
             if (needs_resubmission && identity_last_attempt) {
                 setIdentityService(identity_last_attempt);
             } else {
                 setSubmissionStatus(submission_status_code.selecting);
             }
-        }, [allow_poi_resubmission, identity_last_attempt, needs_resubmission, setIdentityService]);
+        }, [allow_poi_resubmission, identity_last_attempt, needs_resubmission, setIdentityService, submission_status]);
 
         switch (submission_status) {
             case submission_status_code.selecting: {

@@ -25,7 +25,7 @@ const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateCh
     const [residence_list, setResidenceList] = React.useState([]);
     const [is_status_loading, setStatusLoading] = React.useState(true);
 
-    const { client, common, notifications, ui } = useStore();
+    const { client, common, notifications } = useStore();
 
     const {
         account_settings,
@@ -39,7 +39,6 @@ const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateCh
     } = client;
     const { app_routing_history, routeBackInApp, is_language_changing } = common;
     const { refreshNotifications } = notifications;
-    const { prevent_render } = ui;
 
     const from_platform = getPlatformRedirect(app_routing_history);
 
@@ -56,7 +55,6 @@ const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateCh
     };
 
     const loadResidenceList = React.useCallback(() => {
-        setStatusLoading(true);
         fetchResidenceList().then(response_residence_list => {
             if (response_residence_list.error) {
                 setAPIError(response_residence_list.error);
@@ -64,14 +62,13 @@ const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateCh
                 setResidenceList(response_residence_list.residence_list);
             }
         });
-        setStatusLoading(false);
     }, [fetchResidenceList]);
 
     React.useEffect(() => {
-        if (is_language_changing && !prevent_render) {
+        if (is_language_changing) {
             loadResidenceList();
         }
-    }, [is_language_changing, loadResidenceList, prevent_render]);
+    }, [is_language_changing, loadResidenceList]);
 
     React.useEffect(() => {
         // only re-mount logic when switching is done
@@ -83,6 +80,7 @@ const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateCh
                     return;
                 }
                 loadResidenceList();
+                setStatusLoading(false);
             });
         }
     }, [is_switching, loadResidenceList]);

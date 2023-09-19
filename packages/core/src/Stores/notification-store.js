@@ -175,12 +175,11 @@ export default class NotificationStore extends BaseStore {
         if (identity.status === 'verified') {
             //identity
             this.addNotificationMessage(this.client_notifications.poi_verified);
-        } else if (identity.status === 'failed') {
+        } else if (!['none', 'pending', 'expired'].includes(identity.status)) {
             this.addNotificationMessage(this.client_notifications.poi_failed);
         }
 
         // document
-
         if (document.status === 'verified') {
             this.addNotificationMessage(this.client_notifications.poa_verified);
         } else if (has_restricted_mt5_account) {
@@ -191,7 +190,7 @@ export default class NotificationStore extends BaseStore {
             }
         } else if (has_mt5_account_with_rejected_poa) {
             this.addNotificationMessage(this.client_notifications.poa_rejected_for_mt5);
-        } else if (document.status === 'failed') {
+        } else if (!['none', 'pending', 'expired'].includes(document.status)) {
             this.addNotificationMessage(this.client_notifications.poa_failed);
         }
     }

@@ -3,7 +3,7 @@ import { screen, render } from '@testing-library/react';
 import LoginHistoryTableRow from '../login-history-table-row';
 
 describe('LoginHistoryListRow', () => {
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof LoginHistoryTableRow> = {
         id: 0,
         date: '2023-08-29 07:05:35 GMT',
         action: 'Login',

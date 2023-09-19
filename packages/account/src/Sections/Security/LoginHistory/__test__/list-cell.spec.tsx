@@ -7,6 +7,6 @@ const mock_text = 'List Cell Mock Text';
 
 it('should render ListCell', () => {
     render(<ListCell title={mock_title} text={mock_text} />);
-    expect(screen.getByText(/list cell mock title/i)).toBeInTheDocument();
-    expect(screen.getByText(/list cell mock text/i)).toBeInTheDocument();
+    expect(screen.getByText(mock_title)).toBeInTheDocument();
+    expect(screen.getByText(mock_text)).toBeInTheDocument();
 });

@@ -5,14 +5,10 @@ import { isMobile } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import LoginHistory from '../login-history';
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
-
-    return {
-        ...original_module,
-        Loading: jest.fn(() => 'mockedLoading'),
-    };
-});
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    Loading: jest.fn(() => 'mockedLoading'),
+}));
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -26,25 +22,17 @@ jest.mock('@deriv/shared', () => ({
 
 const mockUseLoginHistory = useLoginHistory as jest.MockedFunction<typeof useLoginHistory>;
 
-describe('<LoginHistory />', () => {
-    let mock_store = mockStore({});
-    let response = {
-        data: {
-            formatted_data: [
-                {
-                    date: '',
-                    browser: '',
-                    action: '',
-                    status: '',
-                    ip: '',
-                    id: 0,
-                },
-            ],
-        },
-        isLoading: false,
-        isError: false,
-        error: '',
+type TReturnUseLoginHistory = {
+    data: {
+        formatted_data: [{ [key: string]: string | number }];
     };
+    isLoading: boolean;
+    isError: boolean;
+    error: unknown;
+};
+
+describe('<LoginHistory />', () => {
+    let mock_store: ReturnType<typeof mockStore>, response: TReturnUseLoginHistory;
 
     const renderComponent = () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -83,7 +71,7 @@ describe('<LoginHistory />', () => {
             },
             isLoading: false,
             isError: false,
-            error: 'this is an error message',
+            error: { code: 'error', message: 'this is an error message' },
         };
     });
 
@@ -126,7 +114,7 @@ describe('<LoginHistory />', () => {
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
-    it('should render Loading isLoading is true', () => {
+    it('should render Loading when isLoading is true', () => {
         response.isLoading = true;
         renderComponent();
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();

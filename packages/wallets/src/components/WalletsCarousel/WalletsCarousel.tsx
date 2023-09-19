@@ -1,13 +1,14 @@
 import React from 'react';
 import { AccountsList } from '../AccountsList';
 import { WalletsCarouselContent } from '../WalletsCarouselContent';
+import './WalletsCarousel.scss';
 
 const WalletsCarousel: React.FC = () => {
     return (
-        <React.Fragment>
+        <div className='wallets-carousel'>
             <WalletsCarouselContent />
             <AccountsList />
-        </React.Fragment>
+        </div>
     );
 };
 

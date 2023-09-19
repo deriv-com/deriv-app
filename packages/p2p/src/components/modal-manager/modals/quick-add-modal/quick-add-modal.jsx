@@ -1,16 +1,16 @@
+import React from 'react';
 import classNames from 'classnames';
-import * as React from 'react';
 import { Button, Icon, MobileFullPageModal, Modal, Text } from '@deriv/components';
 import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
 import { isMobile } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
+import { observer } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import AddPaymentMethod from 'Pages/my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
+import BuyAdPaymentMethodsList from 'Pages/my-ads/buy-ad-payment-methods-list.jsx';
+import SellAdPaymentMethodsList from 'Pages/my-ads/sell-ad-payment-methods-list.jsx';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
-import AddPaymentMethod from 'Components/my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
-import SellAdPaymentMethodsList from 'Components/my-ads/sell-ad-payment-methods-list.jsx';
-import BuyAdPaymentMethodsList from 'Components/my-ads/buy-ad-payment-methods-list.jsx';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const QuickAddModal = ({ advert }) => {
     const { is_modal_open, showModal, useSavedState } = useModalManagerContext();

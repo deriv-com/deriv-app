@@ -25,6 +25,7 @@ const WalletCFDCard = ({ wallet }: { wallet: TWalletCFDCard }) => {
                 <div className='wallet-cfd-card__shine' />
                 <div className='wallet-cfd-card__icon'>
                     <AppLinkedWithWalletIcon
+                        size={isMobile() ? 'small' : 'medium'}
                         app_icon={app_icon}
                         gradient_class={gradient_header_class}
                         hide_watermark

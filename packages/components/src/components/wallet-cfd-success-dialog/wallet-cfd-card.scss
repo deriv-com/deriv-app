@@ -6,6 +6,11 @@
     border-radius: $BORDER-RADIUS;
     background: var(--wallets-card-active-gradient-background);
 
+    @include mobile {
+        width: 21.6rem;
+        height: 12.8rem;
+    }
+
     &__icon {
         position: absolute;
         top: 1.6rem;

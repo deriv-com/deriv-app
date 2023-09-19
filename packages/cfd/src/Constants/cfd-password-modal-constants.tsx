@@ -10,7 +10,7 @@ export const getWalletCFDInfo = (type: string) => {
         case 'all':
             return {
                 icon: 'IcRebrandingMt5SwapFree',
-                title: localize('MT5 SwapFree'),
+                title: localize('SwapFree'),
             };
         case 'financial':
             return {

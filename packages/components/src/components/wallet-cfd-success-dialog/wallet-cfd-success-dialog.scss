@@ -16,8 +16,15 @@
     }
 }
 
-.dc-modal-footer {
-    @include desktop {
-        padding: 2.4rem;
+.dc-modal {
+    &-body {
+        @include desktop {
+            padding: 2.4rem 2.4rem 0;
+        }
+    }
+    &-footer {
+        @include desktop {
+            padding: 2.4rem;
+        }
     }
 }

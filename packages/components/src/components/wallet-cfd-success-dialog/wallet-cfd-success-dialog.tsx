@@ -46,7 +46,6 @@ const WalletCFDSuccessDialog = ({
             shouldCloseOnEscape={false}
             small
             toggleModal={toggleModal}
-            width={isMobile() ? '29.8rem' : '39.2rem'}
         >
             <Modal.Body>
                 <div className='wallet-cfd-dialog__card'>

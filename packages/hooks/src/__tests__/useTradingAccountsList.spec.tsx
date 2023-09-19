@@ -86,17 +86,21 @@ jest.mock('@deriv/api', () => ({
     }),
 }));
 
+const createWrapper = (mock: ReturnType<typeof mockStore>) => {
+    const wrapper = ({ children }: { children: JSX.Element }) => (
+        <APIProvider>
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        </APIProvider>
+    );
+
+    return wrapper;
+};
+
 describe('useTradingAccountsList', () => {
     test('should return trading accounts list for the current loginid', () => {
         const mock = mockStore({ client: { accounts: { CR1001: { token: '12345' } }, loginid: 'CR1001' } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        const { result } = renderHook(() => useTradingAccountsList(), { wrapper });
+        const { result } = renderHook(() => useTradingAccountsList(), { wrapper: createWrapper(mock) });
 
         expect(result.current.data?.every(account => account.account_category === 'trading')).toEqual(true);
         expect(result.current.data?.length).toEqual(4);
@@ -106,13 +110,7 @@ describe('useTradingAccountsList', () => {
     test('should return correct balance', () => {
         const mock = mockStore({ client: { accounts: { CR1001: { token: '12345' } }, loginid: 'CR1001' } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        const { result } = renderHook(() => useTradingAccountsList(), { wrapper });
+        const { result } = renderHook(() => useTradingAccountsList(), { wrapper: createWrapper(mock) });
 
         expect(result.current.data?.find(account => account.loginid === 'CR1003')?.balance).toEqual(179);
     });

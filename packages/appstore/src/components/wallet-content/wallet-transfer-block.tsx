@@ -1,11 +1,11 @@
 import React from 'react';
-import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import { Button, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
 import { formatMoney } from '@deriv/shared';
-import { TWalletAccount } from 'Types';
 import { observer, useStore } from '@deriv/stores';
 import { useTradingAccountsList } from '@deriv/hooks';
+import { Localize } from '@deriv/translations';
+import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
+import { TWalletAccount } from 'Types';
 
 type TProps = {
     wallet_account: TWalletAccount;
@@ -38,7 +38,7 @@ const WalletTransferBlock = observer(({ wallet_account }: TProps) => {
                     secondary
                     className='currency-switcher__button'
                 >
-                    {localize('Transfer')}
+                    <Localize i18n_default_text='Transfer' />
                 </Button>
             }
             has_interaction

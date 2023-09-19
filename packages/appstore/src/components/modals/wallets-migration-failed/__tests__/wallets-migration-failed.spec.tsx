@@ -8,7 +8,7 @@ jest.mock('@deriv/components', () => ({
 }));
 
 describe('<WalletsMigrationFailed />', () => {
-    test('Should render the Modal', () => {
+    it('Should render the Modal', () => {
         const mockRootStore = mockStore({
             traders_hub: {
                 is_wallet_migration_failed: true,
@@ -24,7 +24,7 @@ describe('<WalletsMigrationFailed />', () => {
         expect(container).toBeInTheDocument();
     });
 
-    test('Should not render the Modal if is_wallet_migration_failed is false', () => {
+    it('Should not render the Modal if is_wallet_migration_failed is false', () => {
         const mockRootStore = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (

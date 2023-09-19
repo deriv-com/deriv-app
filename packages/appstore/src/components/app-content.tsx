@@ -7,12 +7,13 @@ import './app.scss';
 
 const AppContent: React.FC = observer(() => {
     const { ui } = useStore();
+    const { is_dark_mode_on } = ui;
 
     return (
         <main
             className={classNames('dashboard', {
-                'theme--light': !ui.is_dark_mode_on,
-                'theme--dark': ui.is_dark_mode_on,
+                'theme--light': !is_dark_mode_on,
+                'theme--dark': is_dark_mode_on,
                 'dashboard-onboarding': window.location.pathname === routes.onboarding,
             })}
         >

@@ -133,12 +133,12 @@ describe('<CFDDemoAccountDisplay />', () => {
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         const add_demo_account_buttons = screen.getAllByRole('button', { name: /add demo account/i });
-        expect(add_demo_account_buttons.length).toBe(2);
+        expect(add_demo_account_buttons.length).toBe(4);
 
         fireEvent.click(add_demo_account_buttons[0]);
         expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'synthetic', category: 'demo', platform: 'mt5' });
 
-        fireEvent.click(add_demo_account_buttons[1]);
+        fireEvent.click(add_demo_account_buttons[2]);
         expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'financial', category: 'demo', platform: 'mt5' });
     });
 
@@ -159,10 +159,10 @@ describe('<CFDDemoAccountDisplay />', () => {
         });
 
         checkAccountCardsRendering(TESTED_CASES.EU);
-        const add_demo_account_button = screen.getByRole('button', { name: /add demo account/i });
-        expect(add_demo_account_button).toBeEnabled();
+        const add_demo_account_button = screen.getAllByRole('button', { name: /add demo account/i });
+        expect(add_demo_account_button[0]).toBeEnabled();
 
-        fireEvent.click(add_demo_account_button);
+        fireEvent.click(add_demo_account_button[0]);
         expect(props.openAccountNeededModal).toHaveBeenCalledWith('maltainvest', 'Deriv Multipliers', 'demo CFDs');
     });
 
@@ -183,7 +183,7 @@ describe('<CFDDemoAccountDisplay />', () => {
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
         const add_demo_account_buttons = screen.getAllByRole('button', { name: /add demo account/i });
-        expect(add_demo_account_buttons.length).toBe(2);
+        expect(add_demo_account_buttons.length).toBe(4);
 
         fireEvent.click(add_demo_account_buttons[0]);
         expect(props.onSelectAccount).toHaveBeenCalledWith({
@@ -192,7 +192,7 @@ describe('<CFDDemoAccountDisplay />', () => {
             platform: 'dxtrade',
         });
 
-        fireEvent.click(add_demo_account_buttons[1]);
+        fireEvent.click(add_demo_account_buttons[2]);
         expect(props.onSelectAccount).toHaveBeenCalledWith({
             type: 'financial',
             category: 'demo',

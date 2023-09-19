@@ -1,5 +1,6 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { APIProvider, useRequest } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import DemoResetBalance from '../demo-reset-balance';
@@ -30,7 +31,7 @@ describe('<DemoResetBalance />', () => {
         expect(
             screen.getByText('Reset your virtual balance if it falls below 10,000.00 USD or exceeds 10,000.00 USD.')
         ).toBeInTheDocument();
-        expect(screen.getByText('Reset balance')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Reset balance' })).toBeInTheDocument();
     });
 
     it('should disable reset balance button if the balance is equal to 10000 usd', () => {
@@ -86,7 +87,7 @@ describe('<DemoResetBalance />', () => {
         });
 
         const reset_balance_button = screen.getByRole('button', { name: /Reset balance/i });
-        fireEvent.click(reset_balance_button);
+        userEvent.click(reset_balance_button);
         expect(mutate).toBeCalledTimes(1);
     });
 
@@ -108,7 +109,7 @@ describe('<DemoResetBalance />', () => {
 
         const transfer_funds_button = screen.getByRole('button', { name: /Transfer funds/i });
 
-        fireEvent.click(transfer_funds_button);
+        userEvent.click(transfer_funds_button);
         expect(setActiveTabIndex).toBeCalledTimes(1);
     });
 
@@ -129,6 +130,6 @@ describe('<DemoResetBalance />', () => {
         });
 
         expect(screen.getByText('Your balance has been reset to 10,000.00 USD.')).toBeInTheDocument();
-        expect(screen.getByText('Transfer funds')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Transfer funds/i })).toBeInTheDocument();
     });
 });

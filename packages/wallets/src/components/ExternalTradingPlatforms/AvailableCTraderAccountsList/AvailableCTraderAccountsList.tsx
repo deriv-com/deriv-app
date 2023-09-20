@@ -1,7 +1,7 @@
 import React from 'react';
-import CTrader from '../../public/images/ctrader.svg';
-import { SecondaryActionButton } from '../SecondaryActionButton';
-import { TradingAccountCard } from '../TradingAccountCard';
+import CTrader from '../../../public/images/ctrader.svg';
+import { SecondaryActionButton } from '../../SecondaryActionButton';
+import { TradingAccountCard } from '../../TradingAccountCard';
 import './AvailableCTraderAccountsList.scss';
 
 const AvailableCTraderAccountsList: React.FC = () => {

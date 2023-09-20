@@ -1,8 +1,8 @@
 import React from 'react';
 // import { useCtraderAccountsList } from '@deriv/api';
-import CTrader from '../../public/images/ctrader.svg';
-import { PrimaryActionButton } from '../PrimaryActionButton';
-import { TradingAccountCard } from '../TradingAccountCard';
+import CTrader from '../../../public/images/ctrader.svg';
+import { PrimaryActionButton } from '../../PrimaryActionButton';
+import { TradingAccountCard } from '../../TradingAccountCard';
 import './AddedCTraderAccountsList.scss';
 
 const AddedCTraderAccountsList: React.FC = () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { AvailableCTraderAccountsList } from '../../AvailableCTraderAccountsList';
+import { AvailableCTraderAccountsList } from '../AvailableCTraderAccountsList';
 import './CTraderList.scss';
 
 const CTraderList: React.FC = () => {

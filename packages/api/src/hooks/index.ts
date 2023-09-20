@@ -1,3 +1,4 @@
+export { default as useAccountStatus } from './useAccountStatus';
 export { default as useAccountTypes } from './useAccountTypes';
 export { default as useAccountsList } from './useAccountsList';
 export { default as useActiveAccount } from './useActiveAccount';

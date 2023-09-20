@@ -100,7 +100,7 @@ const FiatCFDs = observer(() => {
                     sub_title,
                 } = existing_account;
                 const list_size = combined_cfd_mt5_accounts.length;
-                const has_mt5_account_status = status ? getMT5AccountAuthStatus(status) : null;
+                const mt5_account_status = status ? getMT5AccountAuthStatus(status) : null;
                 return (
                     <TradingAppCard
                         action_type={action_type}
@@ -108,13 +108,13 @@ const FiatCFDs = observer(() => {
                         clickable_icon
                         icon={icon}
                         sub_title={sub_title}
-                        name={!has_mt5_account_status ? name : ''}
+                        name={!mt5_account_status ? name : ''}
                         short_code_and_region={wallet_account.landing_company_name}
                         platform={platform}
                         description={description}
                         key={key}
                         has_divider={getHasDivider(index, list_size, 3)}
-                        mt5_acc_auth_status={has_mt5_account_status}
+                        mt5_acc_auth_status={mt5_account_status}
                         selected_mt5_jurisdiction={{
                             platform,
                             category: selected_account_type,

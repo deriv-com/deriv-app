@@ -7,12 +7,9 @@
     }
 
     @include mobile {
-        margin: auto 1.8rem;
-        width: auto;
+        padding: 1.8rem;
+        width: 100%;
         height: auto;
-    }
-
-    &__content {
-        margin-top: 24px;
+        background: #ffffff;
     }
 }

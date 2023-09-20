@@ -9,6 +9,7 @@ import {
     isEnded,
     isMobile,
     isMultiplierContract,
+    isTurbosContract,
     LocalStore,
     switch_to_tick_chart,
 } from '@deriv/shared';
@@ -103,7 +104,7 @@ export default class ContractTradeStore extends BaseStore {
 
     clearAccumulatorBarriersData(should_clear_contract_data_only, should_clear_timeout = true) {
         if (this.accu_barriers_timeout_id && should_clear_timeout) clearTimeout(this.accu_barriers_timeout_id);
-        this.accumulator_contract_barriers_data = {};
+        if (!isAccumulatorContractOpen(this.last_contract.contract_info)) this.accumulator_contract_barriers_data = {};
         if (!should_clear_contract_data_only) {
             this.accumulator_barriers_data = {};
         }
@@ -177,7 +178,6 @@ export default class ContractTradeStore extends BaseStore {
             getAccuBarriersDTraderTimeout({
                 barriers_update_timestamp: Date.now(),
                 has_default_timeout: this.accumulator_barriers_data.current_spot_time !== current_spot_time,
-                should_update_contract_barriers,
                 tick_update_timestamp,
                 underlying,
             })
@@ -217,7 +217,11 @@ export default class ContractTradeStore extends BaseStore {
         if (is_call_put) {
             // treat CALLE/PUTE and CALL/PUT the same
             trade_types = ['CALLE', 'PUTE', 'CALL', 'PUT'];
+        } else if (isTurbosContract(trade_type)) {
+            //to show both Long and Short recent contracts on DTrader chart
+            trade_types = ['TURBOSLONG', 'TURBOSSHORT'];
         }
+
         return this.contracts
             .filter(c => c.contract_info.underlying === underlying)
             .filter(c => {

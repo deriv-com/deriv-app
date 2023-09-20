@@ -1,10 +1,12 @@
 import React from 'react';
+import { FormikValues } from 'formik';
 import classNames from 'classnames';
-import { Loading, ThemedScrollbars, Text, ButtonLink } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile, useIsMounted, PlatformContext } from '@deriv/shared';
+import { Loading, ThemedScrollbars } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import LoadErrorMessage from 'Components/load-error-message';
+import { observer, useStore } from '@deriv/stores';
 import DemoMessage from 'Components/demo-message';
+import LoadErrorMessage from 'Components/load-error-message';
 import AccountLimitsArticle from './account-limits-article';
 import AccountLimitsContext, { TAccountLimitsContext } from './account-limits-context';
 import AccountLimitsExtraInfo from './account-limits-extra-info';
@@ -13,8 +15,7 @@ import AccountLimitsOverlay from './account-limits-overlay';
 import AccountLimitsTableCell from './account-limits-table-cell';
 import AccountLimitsTableHeader from './account-limits-table-header';
 import AccountLimitsTurnoverLimitRow from './account-limits-turnover-limit-row';
-import { observer, useStore } from '@deriv/stores';
-import { FormikValues } from 'formik';
+import WithdrawalLimitsTable from './withdrawal-limits-table';
 
 type TAccountLimits = {
     footer_ref?: React.RefObject<HTMLElement>;
@@ -51,13 +52,15 @@ const AccountLimits = observer(
         const [is_overlay_shown, setIsOverlayShown] = React.useState(false);
         const { is_appstore } = React.useContext(PlatformContext);
 
+        const handleGetLimitsResponse = () => {
+            if (isMounted()) setLoading(false);
+        };
+
         React.useEffect(() => {
             if (is_virtual) {
                 setLoading(false);
             } else {
-                getLimits().then(() => {
-                    if (isMounted()) setLoading(false);
-                });
+                getLimits().then(handleGetLimitsResponse);
             }
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
@@ -109,9 +112,7 @@ const AccountLimits = observer(
         }
 
         const { commodities, forex, indices, synthetic_index } = { ...market_specific };
-        const forex_ordered = forex
-            ?.slice()
-            .sort((a: FormikValues, b: FormikValues) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
+        const forex_ordered = forex?.slice().sort((a: FormikValues, b: FormikValues) => a.name.localeCompare(b.name));
         const derived_ordered = synthetic_index
             ?.slice()
             .sort((a: FormikValues, b: FormikValues) => (a.level > b.level ? 1 : -1));
@@ -135,7 +136,7 @@ const AccountLimits = observer(
                             <AccountLimitsArticle is_from_derivgo={is_from_derivgo} />
                         )}
                         <div className='da-account-limits__table-wrapper'>
-                            <ThemedScrollbars is_bypassed={should_bypass_scrollbars || isMobile()}>
+                            <ThemedScrollbars is_bypassed={!!should_bypass_scrollbars || isMobile()}>
                                 <table className='da-account-limits__table' data-testid='trading_limit_item_table'>
                                     <thead>
                                         <tr>
@@ -236,109 +237,14 @@ const AccountLimits = observer(
                                     </tbody>
                                 </table>
                                 {/* We only show "Withdrawal Limits" on account-wide settings pages. */}
+
                                 {!is_app_settings && (
-                                    <React.Fragment>
-                                        <table
-                                            className='da-account-limits__table'
-                                            data-testid='withdrawal_limits_table'
-                                        >
-                                            <thead>
-                                                <tr>
-                                                    <AccountLimitsTableHeader>
-                                                        <Localize i18n_default_text='Withdrawal limits' />
-                                                    </AccountLimitsTableHeader>
-                                                    {is_fully_authenticated && (
-                                                        <AccountLimitsTableHeader align='right'>
-                                                            <Localize i18n_default_text='Limit' />
-                                                        </AccountLimitsTableHeader>
-                                                    )}
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {!is_fully_authenticated && (
-                                                    <React.Fragment>
-                                                        <tr>
-                                                            <AccountLimitsTableCell>
-                                                                {is_appstore ? (
-                                                                    <Localize i18n_default_text='Total withdrawal limit' />
-                                                                ) : (
-                                                                    <Localize i18n_default_text='Total withdrawal allowed' />
-                                                                )}
-                                                                {is_appstore && !is_fully_authenticated && (
-                                                                    <React.Fragment>
-                                                                        <Text
-                                                                            size={isMobile() ? 'xxxs' : 'xxs'}
-                                                                            className='account-management-table__verify'
-                                                                            color='less-prominent'
-                                                                            line_height='xs'
-                                                                        >
-                                                                            {localize(
-                                                                                'To increase limit please verify your identity'
-                                                                            )}
-                                                                        </Text>
-                                                                        <ButtonLink
-                                                                            to='/account/proof-of-identity'
-                                                                            size='small'
-                                                                            className='account-management-table__verify-button'
-                                                                        >
-                                                                            <Text
-                                                                                weight='bold'
-                                                                                color='colored-background'
-                                                                                size={isMobile() ? 'xxxs' : 'xxs'}
-                                                                            >
-                                                                                {localize('Verify')}
-                                                                            </Text>
-                                                                        </ButtonLink>
-                                                                    </React.Fragment>
-                                                                )}
-                                                            </AccountLimitsTableCell>
-                                                            <AccountLimitsTableCell align='right'>
-                                                                {formatMoney(currency, num_of_days_limit, true)}
-                                                            </AccountLimitsTableCell>
-                                                        </tr>
-                                                        <tr>
-                                                            <AccountLimitsTableCell>
-                                                                <Localize i18n_default_text='Total withdrawn' />
-                                                            </AccountLimitsTableCell>
-                                                            <AccountLimitsTableCell align='right'>
-                                                                {formatMoney(
-                                                                    currency,
-                                                                    withdrawal_since_inception_monetary,
-                                                                    true
-                                                                )}
-                                                            </AccountLimitsTableCell>
-                                                        </tr>
-                                                        <tr>
-                                                            <AccountLimitsTableCell>
-                                                                <Localize i18n_default_text='Maximum withdrawal remaining' />
-                                                            </AccountLimitsTableCell>
-                                                            <AccountLimitsTableCell align='right'>
-                                                                {formatMoney(currency, remainder, true)}
-                                                            </AccountLimitsTableCell>
-                                                        </tr>
-                                                    </React.Fragment>
-                                                )}
-                                                {!is_appstore && (
-                                                    <tr>
-                                                        <div className='da-account-limits__text-container'>
-                                                            <Text
-                                                                as='p'
-                                                                size={isMobile() ? 'xxxs' : 'xxs'}
-                                                                color='less-prominent'
-                                                                line_height='s'
-                                                            >
-                                                                {is_fully_authenticated ? (
-                                                                    <Localize i18n_default_text='Your account is fully authenticated and your withdrawal limits have been lifted.' />
-                                                                ) : (
-                                                                    <Localize i18n_default_text='Stated limits are subject to change without prior notice.' />
-                                                                )}
-                                                            </Text>
-                                                        </div>
-                                                    </tr>
-                                                )}
-                                            </tbody>
-                                        </table>
-                                    </React.Fragment>
+                                    <WithdrawalLimitsTable
+                                        is_appstore={is_appstore}
+                                        num_of_days_limit={num_of_days_limit}
+                                        remainder={remainder}
+                                        withdrawal_since_inception_monetary={withdrawal_since_inception_monetary}
+                                    />
                                 )}
                             </ThemedScrollbars>
                         </div>

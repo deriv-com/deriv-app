@@ -2,10 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
-import { Text } from '@deriv/components';
+import { Money, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { FastMarker } from 'Modules/SmartChart';
 import AccumulatorsProfitLossText from './accumulators-profit-loss-text';
+import { isMobile } from '@deriv/shared';
 
 const AccumulatorsProfitLossTooltip = ({
     alignment = 'right',
@@ -22,7 +23,6 @@ const AccumulatorsProfitLossTooltip = ({
 }) => {
     const [is_tooltip_open, setIsTooltipOpen] = React.useState(false);
     const won = profit >= 0;
-    const sign = profit > 0 ? '+' : '';
     const tooltip_timeout = React.useRef(null);
 
     React.useEffect(() => {
@@ -97,14 +97,12 @@ const AccumulatorsProfitLossTooltip = ({
                 classNames={`${className}__content`}
             >
                 <div className={classNames(`${className}__content`, `arrow-${opposite_arrow_position}`)}>
-                    <Text size='xxs' className={`${className}__text`}>
+                    <Text size={isMobile() ? 'xxxxs' : 'xxs'} className={`${className}__text`}>
                         {localize('Total profit/loss:')}
                     </Text>
-                    <Text
-                        size='xs'
-                        className={`${className}__text`}
-                        weight='bold'
-                    >{`${sign}${profit} ${currency}`}</Text>
+                    <Text size={isMobile() ? 'xxxs' : 'xs'} className={`${className}__text`} weight='bold'>
+                        <Money amount={profit} currency={currency} has_sign show_currency />
+                    </Text>
                 </div>
             </CSSTransition>
         </FastMarker>

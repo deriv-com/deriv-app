@@ -13,12 +13,12 @@ const JurisdictionTitleIndicator = ({
     verification_docs,
 }: TJurisdictionTitleIndicatorProps) => {
     const {
-        poi_pending_for_bvi_labuan,
-        poi_resubmit_for_bvi_labuan,
-        poi_verified_for_bvi_labuan,
-        poi_pending_for_vanuatu_maltainvest,
-        poi_resubmit_for_vanuatu_maltainvest,
-        poi_verified_for_vanuatu_maltainvest,
+        poi_pending_for_bvi_labuan_vanuatu,
+        poi_resubmit_for_bvi_labuan_vanuatu,
+        poi_verified_for_bvi_labuan_vanuatu,
+        poi_pending_for_maltainvest,
+        poi_resubmit_for_maltainvest,
+        poi_verified_for_maltainvest,
         poa_pending,
         need_poa_resubmission,
         poa_verified,
@@ -26,23 +26,23 @@ const JurisdictionTitleIndicator = ({
 
     const getVerificationIconVariant = (verification_document: TJurisdictionCardItemVerificationItem): string => {
         let icon_variant: TJurisdictionCardVerificationStatus = 'Default';
-        if ([Jurisdiction.BVI, Jurisdiction.LABUAN].includes(type_of_card)) {
+        if ([Jurisdiction.BVI, Jurisdiction.LABUAN, Jurisdiction.VANUATU].includes(type_of_card)) {
             if (['document_number', 'selfie', 'identity_document'].includes(verification_document)) {
-                if (poi_pending_for_bvi_labuan) {
+                if (poi_pending_for_bvi_labuan_vanuatu) {
                     icon_variant = 'Pending';
-                } else if (poi_resubmit_for_bvi_labuan) {
+                } else if (poi_resubmit_for_bvi_labuan_vanuatu) {
                     icon_variant = 'Failed';
-                } else if (poi_verified_for_bvi_labuan) {
+                } else if (poi_verified_for_bvi_labuan_vanuatu) {
                     icon_variant = 'Verified';
                 }
             }
-        } else if ([Jurisdiction.VANUATU, Jurisdiction.MALTA_INVEST].includes(type_of_card)) {
+        } else if (Jurisdiction.MALTA_INVEST === type_of_card) {
             if (['document_number', 'selfie', 'identity_document'].includes(verification_document)) {
-                if (poi_pending_for_vanuatu_maltainvest) {
+                if (poi_pending_for_maltainvest) {
                     icon_variant = 'Pending';
-                } else if (poi_resubmit_for_vanuatu_maltainvest) {
+                } else if (poi_resubmit_for_maltainvest) {
                     icon_variant = 'Failed';
-                } else if (poi_verified_for_vanuatu_maltainvest) {
+                } else if (poi_verified_for_maltainvest) {
                     icon_variant = 'Verified';
                 }
             }

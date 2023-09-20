@@ -115,7 +115,7 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) 
             />
         );
 
-        if (!is_vanilla) {
+        if (!is_vanilla && (!is_accumulator || !has_open_accu_contract)) {
             switch (getContractTypePosition(type as TGetSupportedContractsKey)) {
                 case 'top':
                     components.unshift(purchase_fieldset);

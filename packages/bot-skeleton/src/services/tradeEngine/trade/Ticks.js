@@ -19,7 +19,7 @@ export default Engine =>
                     key: tickListenerKey,
                 });
                 const callback = ticks => {
-                    if (this.isProposalSubscriptionRequired) {
+                    if (this.is_proposal_subscription_required) {
                         this.checkProposalReady();
                     }
                     const lastTick = ticks.slice(-1)[0];

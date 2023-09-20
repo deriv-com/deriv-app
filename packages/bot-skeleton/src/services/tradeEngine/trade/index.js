@@ -148,9 +148,9 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
     makeDirectPurchaseDecision() {
         const { hasPayoutBlock, isBasisPayout } = checkBlocksExistenceToSubscribeProposal();
-        this.isProposalSubscriptionRequired = hasPayoutBlock || isBasisPayout;
+        this.is_proposal_subscription_required = hasPayoutBlock || isBasisPayout;
 
-        if (this.isProposalSubscriptionRequired) {
+        if (this.is_proposal_subscription_required) {
             this.makeProposals({ ...this.options, ...this.tradeOptions });
             this.checkProposalReady();
         } else {

@@ -29,7 +29,7 @@ export default Engine =>
                 this.contractId = buy.contract_id;
                 this.store.dispatch(purchaseSuccessful());
 
-                if (this.isProposalSubscriptionRequired) {
+                if (this.is_proposal_subscription_required) {
                     this.renewProposalsOnPurchase();
                 }
 
@@ -44,7 +44,7 @@ export default Engine =>
                 });
             };
 
-            if (this.isProposalSubscriptionRequired) {
+            if (this.is_proposal_subscription_required) {
                 const { id, askPrice } = this.selectProposal(contract_type);
 
                 const action = () => api_base.api.send({ buy: id, price: askPrice });

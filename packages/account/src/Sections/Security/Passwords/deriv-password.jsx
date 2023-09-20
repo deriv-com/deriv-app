@@ -8,7 +8,13 @@ import SentEmailModal from 'Components/sent-email-modal';
 import DerivComLogo from 'Assets/ic-brand-deriv-red.svg';
 
 const PlatformDescription = ({ brand_website_name, platform_values, is_eu_user, financial_restricted_countries }) => {
-    const { platform_name_trader, platform_name_dbot, platform_name_smarttrader, platform_name_go } = platform_values;
+    const {
+        platform_name_trader,
+        platform_name_dbot,
+        platform_name_smarttrader,
+        platform_name_go,
+        platform_name_ctrader,
+    } = platform_values;
     if (is_eu_user) {
         return (
             <Localize
@@ -40,7 +46,7 @@ const PlatformDescription = ({ brand_website_name, platform_values, is_eu_user, 
     return (
         <Localize
             i18n_default_text={
-                'Use the <0>Deriv password</0> to log in to {{brand_website_name}}, {{platform_name_go}}, {{platform_name_trader}}, {{platform_name_smarttrader}}, and {{platform_name_dbot}}.'
+                'Use the <0>Deriv password</0> to log in to {{brand_website_name}}, {{platform_name_go}}, {{platform_name_trader}}, {{platform_name_smarttrader}}, {{platform_name_dbot}} and {{platform_name_ctrader}}.'
             }
             components={[<strong key={0} />]}
             values={{
@@ -49,6 +55,7 @@ const PlatformDescription = ({ brand_website_name, platform_values, is_eu_user, 
                 platform_name_dbot,
                 platform_name_smarttrader,
                 platform_name_go,
+                platform_name_ctrader,
             }}
         />
     );
@@ -78,11 +85,13 @@ const DerivPassword = ({
     const platform_name_smarttrader = getPlatformSettings('smarttrader').name;
     const platform_name_trader = getPlatformSettings('trader').name;
     const platform_name_derivez = getPlatformSettings('derivez').name;
+    const platform_name_ctrader = getPlatformSettings('ctrader').name;
     const platform_values = {
         platform_name_trader,
         platform_name_dbot,
         platform_name_smarttrader,
         platform_name_go,
+        platform_name_ctrader,
     };
 
     return (
@@ -110,6 +119,10 @@ const DerivPassword = ({
                             {brand_website_name}
                         </Text>
                     </div>
+
+                    {
+                        //TODO reuse this piece of code in future by mapping through the platforms.
+                    }
                     <div className='passwords-platform__icons'>
                         <Popover alignment='bottom' message={platform_name_trader}>
                             <Icon
@@ -150,6 +163,13 @@ const DerivPassword = ({
                                         icon={`${getPlatformSettings('derivez').icon}`}
                                         size={32}
                                         description='derivez'
+                                    />
+                                </Popover>
+                                <Popover alignment='bottom' message={platform_name_ctrader}>
+                                    <Icon
+                                        icon={`${getPlatformSettings('ctrader').icon}-dashboard`}
+                                        size={32}
+                                        description='ctrader'
                                     />
                                 </Popover>
                             </React.Fragment>

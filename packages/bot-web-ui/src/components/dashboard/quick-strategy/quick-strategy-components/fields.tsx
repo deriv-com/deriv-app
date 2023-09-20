@@ -7,6 +7,8 @@ import { TDropdownItems, TSelectedValuesSelect, TSymbolItem } from '../quick-str
 import { handleConditionsOfInput } from './data/schema-validation';
 import strategies from './data/strategies-config';
 import { TDropdownLists, TQuickStrategyFields, TSelectedValues } from './components.types';
+import MarketOption from './market-option';
+import TradeTypeOption from './trade-type-option';
 import { Description, DurationFields, InputField, SelectField } from '.';
 
 const Get_Fields = observer(({ data_fields_group_wise }) => {
@@ -49,9 +51,27 @@ const Get_Fields = observer(({ data_fields_group_wise }) => {
         const is_input_field = type === 'text' || type === 'number';
         const is_select_field = type === 'select';
 
+        const symbol_dropdown_options = React.useMemo(
+            () =>
+                symbol_dropdown.map((symbol: TSymbolItem) => ({
+                    component: <MarketOption key={symbol.text} symbol={symbol} />,
+                    ...symbol,
+                })),
+            [symbol_dropdown]
+        );
+
+        const trade_type_dropdown_options = React.useMemo(
+            () =>
+                trade_type_dropdown.map(trade_type => ({
+                    component: <TradeTypeOption key={trade_type.text} trade_type={trade_type} />,
+                    ...trade_type,
+                })),
+            [trade_type_dropdown]
+        );
+
         const dropdown_lists: TDropdownLists = {
-            symbol: symbol_dropdown,
-            'trade-type': trade_type_dropdown,
+            symbol: symbol_dropdown_options,
+            'trade-type': trade_type_dropdown_options,
             'duration-unit': duration_unit_dropdown,
             'type-strategy': types_strategies_dropdown,
         };

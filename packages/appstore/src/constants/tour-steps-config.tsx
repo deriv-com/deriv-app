@@ -371,13 +371,7 @@ export const getTourStepLocale = (): Locale => ({
     skip: localize('Skip'),
 });
 
-export const getHighRiskTourStepLocale = (): Locale => ({
-    back: <SpanButton has_effect text={localize('Back')} secondary medium />,
-    close: localize('Close'),
-    last: localize('OK'),
-    next: localize('Next'),
-    skip: localize('Skip'),
-});
+export const getHighRiskTourStepLocale = (): Locale => getTourStepLocale();
 
 export const getWalletStepLocale = (): Locale => ({
     back: <SpanButton has_effect text={localize('Back')} secondary medium />,

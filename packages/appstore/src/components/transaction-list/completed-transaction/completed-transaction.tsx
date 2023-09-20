@@ -3,7 +3,8 @@ import { AppLinkedWithWalletIcon, Text, WalletIcon } from '@deriv/components';
 import { useWalletTransactions } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { getTradingAccountName, getWalletCurrencyIcon } from '@deriv/utils';
+import { getTradingAccountName } from '@deriv/utils';
+import { getWalletCurrencyIcon } from 'Constants/utils';
 
 type TCompletedTransaction = {
     transaction: ReturnType<typeof useWalletTransactions>['transactions'][number];
@@ -34,7 +35,7 @@ const CompletedTransaction = observer(({ transaction }: TCompletedTransaction) =
     );
 
     const icon = React.useMemo(
-        () => getWalletCurrencyIcon(is_virtual ? 'demo' : account_currency_config?.code || '', is_dark_mode_on, false),
+        () => getWalletCurrencyIcon(is_virtual ? 'Demo' : account_currency_config?.code || '', is_dark_mode_on),
         [is_virtual, account_currency_config, is_dark_mode_on]
     );
 
@@ -44,8 +45,10 @@ const CompletedTransaction = observer(({ transaction }: TCompletedTransaction) =
     );
 
     const getAccountName = () => {
+        const demo_prefix = is_virtual ? 'Demo ' : '';
+
         return account_category === 'wallet'
-            ? `${is_virtual ? 'Demo ' : ''}${account_currency_config?.code} Wallet`
+            ? `${demo_prefix}${account_currency_config?.code} Wallet`
             : getTradingAccountName(
                   account_type as 'standard' | 'mt5' | 'dxtrade' | 'binary',
                   !!is_virtual,

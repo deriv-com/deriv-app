@@ -6,7 +6,7 @@ import { Button, Dialog, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { website_name } from '@deriv/shared';
-import ResidenceForm from './set-residence-form.jsx';
+import SetResidenceForm from './set-residence-form.jsx';
 import 'Sass/app/modules/set-residence.scss';
 
 // TODO: Move some of these functions to helpers since some of them are shared with AccountSignUpModal
@@ -56,7 +56,7 @@ const SetResidence = ({ enableApp, onSetResidence, residence_list, toggleModalVi
                 {({ isSubmitting, errors, values, setFieldValue, touched }) => (
                     <Form>
                         <React.Fragment>
-                            <ResidenceForm
+                            <SetResidenceForm
                                 errors={errors}
                                 touched={touched}
                                 setFieldValue={setFieldValue}
@@ -77,7 +77,7 @@ const SetResidence = ({ enableApp, onSetResidence, residence_list, toggleModalVi
                                 >
                                     <Localize i18n_default_text='Set residence' />
                                 </Button>
-                            </ResidenceForm>
+                            </SetResidenceForm>
                         </React.Fragment>
                     </Form>
                 )}

@@ -214,10 +214,6 @@ $MIN_HEIGHT_FLOATING: calc(
             display: grid;
             grid-gap: 4px;
 
-            .dc-input {
-                margin-bottom: 0;
-            }
-
             .dc-dropdown-container {
                 .dc-dropdown__display-text,
                 .dc-list__item-text {
@@ -2199,9 +2195,9 @@ $MIN_HEIGHT_FLOATING: calc(
             margin: 0.4rem 0 3.2rem;
         }
 
-        .document-dropdown {
-            margin: 0.4rem 0 3.2rem;
-        }
+        // .document-dropdown {
+        //     margin: 0.4rem 0 3.2rem;
+        // }
 
         .country-dropdown {
             min-height: 35.2rem;

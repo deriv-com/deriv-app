@@ -72,162 +72,211 @@
     }
 }
 
-.account-form {
-    &__poi-confirm-example {
-        display: flex;
-        flex-direction: column;
-        gap: 0.8rem;
-        @include mobile{
-            height: fit-content;
+.account {
+    &-form {
+        &__poi-confirm-example {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            @include mobile {
+                height: fit-content;
+            }
+
+            .account-form__fieldset {
+                max-width: unset;
+            }
+
+            &--status-message {
+                margin-top: 1.6rem;
+                text-align: center;
+                width: 100%;
+            }
+            &_container {
+                border: 1px solid var(--general-active);
+                border-radius: 0.8rem;
+
+                @include desktop {
+                    padding: 1.6rem;
+                }
+
+                @include mobile {
+                    padding: 1.6rem 1.6rem 0;
+                }
+
+                // .account__scrollbars_container {
+                //     padding: 0;
+
+                //     &--grid-layout {
+                //         height: auto !important;
+
+                //         @include mobile {
+                //             padding: 0 1.6rem;
+                //         }
+                //     }
+
+                //     .account-form__section {
+                //         align-items: center;
+                //         justify-content: space-between;
+                //         margin-top: 0.8rem;
+
+                //         @include mobile {
+                //             margin-bottom: 0;
+                //         }
+                //     }
+                // }
+            }
+
+            &_wrapper {
+                transition: transform 0.35s ease, opacity 0.35s linear;
+                transform-origin: top;
+                opacity: 1;
+                padding: 1.6rem;
+                max-width: 67rem;
+
+                @include mobile {
+                    padding-inline: 0;
+                }
+
+                &--exit {
+                    transform: scale(1, 0);
+                    opacity: 0;
+                }
+            }
+
+            .da-inline-note-with-icon {
+                margin-top: 0;
+                padding: 0.8rem;
+                display: flex;
+                background: var(--status-alert-background);
+                border-radius: $BORDER_RADIUS;
+                gap: 0.8rem;
+                line-height: 1.4rem;
+            }
+
+            .account {
+                &__scrollbars_container--grid-layout {
+                    grid-gap: 0;
+                }
+                &-form {
+                    &__section-side-note {
+                        @include mobile {
+                            margin-top: 1.6rem;
+                            justify-content: center;
+                            display: flex;
+                        }
+                    }
+                    &__section-content {
+                        .account-form__fieldset {
+                            margin-bottom: 0;
+
+                            .dc-input {
+                                margin-bottom: 1rem;
+                            }
+
+                            .dc-input--error,
+                            .dc-input.dc-input--hint {
+                                margin-bottom: 3.8rem;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &--button {
+                padding: 0;
+                margin: 0;
+                background-color: unset;
+                border: unset;
+
+                &__disabled > * {
+                    cursor: not-allowed;
+                }
+            }
         }
 
-        .account-form__fieldset {
-            max-width: unset;
+        &__poi-additional-information {
+            margin-top: 2rem;
         }
 
-        &--status-message {
-            margin-top: 1.6rem;
-            text-align: center;
-            width: 100%;
-        }
-        &_container {
-            border: 1px solid var(--general-active);
-            border-radius: 0.8rem;
+        &__section {
+            display: grid;
 
             @include desktop {
-                padding: 1.6rem;
+                grid-template-areas: 'section-side-note section-content';
+                grid-template-columns: auto 1fr;
+                grid-gap: 1rem;
             }
+
+            align-items: center;
 
             @include mobile {
-                padding: 1.6rem 1.6rem 0;
+                grid-template-areas: 'section-side-note' 'section-content';
             }
 
-            .account__scrollbars_container {
-                padding: 0;
+            &-side-note {
+                grid-area: section-side-note;
 
-                &--grid-layout {
-                    height: auto !important;
-
-                    @include mobile {
-                        padding: 0 1.6rem;
-                    }
-                }
-
-                .account-form__section {
-                    align-items: center;
-                    justify-content: space-between;
-                    margin-top: 0.8rem;
-
-                    @include mobile {
-                        margin-bottom: 0;
-                    }
+                @include mobile {
+                    margin-top: unset;
+                    width: 100%;
+                    margin-bottom: 0.8rem;
                 }
             }
-        }
 
-        &_wrapper {
-            transition: transform 0.35s ease, opacity 0.35s linear;
-            transform-origin: top;
-            opacity: 1;
-            padding: 1.6rem;
-            max-width: 67rem;
+            &-content {
+                grid-area: section-content;
 
-            @include mobile {
-                padding-inline: 0;
-            }
-
-            &--exit {
-                transform: scale(1, 0);
-                opacity: 0;
-            }
-        }
-
-        .da-inline-note-with-icon {
-            margin-top: 0;
-            padding: 0.8rem;
-            display: flex;
-            background: var(--status-alert-background);
-            border-radius: $BORDER_RADIUS;
-            gap: 0.8rem;
-            line-height: 1.4rem;
-        }
-
-        .account {
-            &__scrollbars_container--grid-layout {
-                grid-gap: 0;
-            }
-            &-form {
-                &__section-side-note {
-                    @include mobile {
-                        margin-top: 1.6rem;
-                        justify-content: center;
-                        display: flex;
-                    }
+                @include mobile {
+                    width: 100%;
                 }
-                &__section-content {
-                    .account-form__fieldset {
-                        margin-bottom: 0;
-
-                        .dc-input {
-                            margin-bottom: 1rem;
-                        }
-
-                        .dc-input--error,
-                        .dc-input.dc-input--hint {
-                            margin-bottom: 3.8rem;
-                        }
-                    }
-                }
-            }
-        }
-
-        &--button {
-            padding: 0;
-            margin: 0;
-            background-color: unset;
-            border: unset;
-
-            &__disabled > * {
-                cursor: not-allowed;
             }
         }
     }
+    &__scrollbars_container {
+        height: 100%;
+        padding-top: 2.4rem;
+        padding-bottom: 6.4rem;
 
-    &__poi-additional-information {
-        margin-top: 2rem;
-    }
+        &-wrapper {
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
 
-    &__section {
-        display: grid;
+        &--grid-layout {
+            display: grid;
+            grid-gap: 4px;
+
+            .dc-dropdown-container {
+                .dc-dropdown__display-text,
+                .dc-list__item-text {
+                    text-transform: unset;
+                }
+            }
+
+            @include mobile {
+                padding: 0 1.6rem;
+                overflow-x: hidden;
+                overflow-y: auto;
+                grid-template-rows: auto auto 1fr;
+
+                & .account-form__header {
+                    &:first-child {
+                        padding-top: 2.4rem;
+                        margin-bottom: 3.2rem;
+                    }
+                }
+            }
+        }
 
         @include desktop {
-            grid-template-areas: 'section-side-note section-content';
-            grid-template-columns: auto 1fr;
-            grid-gap: 1rem;
+            padding-left: 16px;
+            padding-right: 16px;
         }
-
-        align-items: center;
 
         @include mobile {
-            grid-template-areas: 'section-side-note' 'section-content';
-        }
-
-        &-side-note {
-            grid-area: section-side-note;
-
-            @include mobile {
-                margin-top: unset;
-                width: 100%;
-                margin-bottom: 0.8rem;
-            }
-        }
-
-        &-content {
-            grid-area: section-content;
-
-            @include mobile {
-                width: 100%;
-            }
+            height: unset;
+            padding-top: unset;
+            padding-bottom: unset;
         }
     }
 }
@@ -242,12 +291,12 @@
             }
 
             &__fieldset {
-                @include desktop {
-                    margin-bottom: unset;
-                }
-                @include mobile {
-                    margin-bottom: 2rem;
-                }
+                // @include desktop {
+                //     margin-bottom: unset;
+                // }
+                // @include mobile {
+                margin-bottom: 2rem;
+                // }
                 &-input {
                     @include desktop {
                         margin-bottom: unset;
@@ -269,6 +318,7 @@
 
     .additional-field {
         margin-top: 1.6rem;
+        margin-bottom: 2rem;
 
         @include mobile {
             margin-top: 1rem;

@@ -141,37 +141,32 @@ const IDVForm = ({
                                             {({ field }: FieldProps) => (
                                                 <React.Fragment>
                                                     <DesktopWrapper>
-                                                        <div className='document-dropdown'>
-                                                            <Autocomplete
-                                                                {...field}
-                                                                data-lpignore='true'
-                                                                error={touched.document_type && errors.document_type}
-                                                                autoComplete='off'
-                                                                type='text'
-                                                                label={localize('Choose the document type')}
-                                                                list_items={document_list}
-                                                                value={values.document_type.text}
-                                                                onBlur={(e: { target: HTMLInputElement }) => {
-                                                                    handleBlur(e);
-                                                                    if (!getDocument(e.target.value)) {
-                                                                        resetDocumentItemSelected();
-                                                                    }
-                                                                }}
-                                                                onChange={handleChange}
-                                                                onItemSelection={(item: TDocument) => {
-                                                                    if (
-                                                                        item.text === 'No results found' ||
-                                                                        !item.text
-                                                                    ) {
-                                                                        setSelectedDoc('');
-                                                                        resetDocumentItemSelected();
-                                                                    } else {
-                                                                        bindDocumentData(item);
-                                                                    }
-                                                                }}
-                                                                required
-                                                            />
-                                                        </div>
+                                                        <Autocomplete
+                                                            {...field}
+                                                            data-lpignore='true'
+                                                            error={touched.document_type && errors.document_type}
+                                                            autoComplete='off'
+                                                            type='text'
+                                                            label={localize('Choose the document type')}
+                                                            list_items={document_list}
+                                                            value={values.document_type.text}
+                                                            onBlur={(e: { target: HTMLInputElement }) => {
+                                                                handleBlur(e);
+                                                                if (!getDocument(e.target.value)) {
+                                                                    resetDocumentItemSelected();
+                                                                }
+                                                            }}
+                                                            onChange={handleChange}
+                                                            onItemSelection={(item: TDocument) => {
+                                                                if (item.text === 'No results found' || !item.text) {
+                                                                    setSelectedDoc('');
+                                                                    resetDocumentItemSelected();
+                                                                } else {
+                                                                    bindDocumentData(item);
+                                                                }
+                                                            }}
+                                                            required
+                                                        />
                                                     </DesktopWrapper>
                                                     <MobileWrapper>
                                                         <SelectNative

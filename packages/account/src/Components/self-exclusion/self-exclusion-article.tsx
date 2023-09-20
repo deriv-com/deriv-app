@@ -1,19 +1,22 @@
 import * as React from 'react';
 import { StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { getBrandWebsiteName, getPlatformSettings, PlatformContext, isDesktop, isMobile } from '@deriv/shared';
+import { getBrandWebsiteName, getPlatformSettings, PlatformContext } from '@deriv/shared';
 import AccountArticle from 'Components/article';
 import { selfExclusionArticleItems } from 'Components/self-exclusion/self-exclusion-article-content';
 import SelfExclusionContext from './self-exclusion-context';
+import { useStore } from '@deriv/stores';
 
 const SelfExclusionArticle = () => {
     const { is_app_settings, toggleArticle, is_eu, is_uk } = React.useContext(SelfExclusionContext);
     const { is_deriv_crypto } = React.useContext(PlatformContext);
+    const { ui } = useStore();
+    const { is_desktop, is_mobile } = ui;
     return (
         <AccountArticle
             title={localize('Trading limits and self-exclusion')}
             descriptions={
-                isDesktop()
+                is_desktop
                     ? selfExclusionArticleItems({ is_eu, is_uk, is_deriv_crypto, is_app_settings })
                     : [
                           is_eu ? (
@@ -36,7 +39,7 @@ const SelfExclusionArticle = () => {
                           ),
                       ]
             }
-            {...(isMobile() && { onClickLearnMore: toggleArticle })}
+            {...(is_mobile && { onClickLearnMore: toggleArticle })}
         />
     );
 };

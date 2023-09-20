@@ -253,14 +253,14 @@ export default class QuickStrategyStore {
     }
 
     async createStrategy(form_value) {
-        /* eslint-disable */ console.log(...oo_oo(`42bdd6da_0`, form_value));
         const symbol = this.selected_symbol.value;
         const trade_type = this.selected_trade_type.value;
         const duration_unit = this.selected_duration_unit.value;
+        const duration_value = this.input_duration_value;
         const { contracts_for } = ApiHelpers.instance;
         const market = await contracts_for.getMarketBySymbol(symbol);
         const submarket = await contracts_for.getSubmarketBySymbol(symbol);
-        const tradetypecat = await contracts_for.getTradeTypeCategoryByTradeType(trade_type);
+        const trade_type_cat = await contracts_for.getTradeTypeCategoryByTradeType(trade_type);
 
         const strategy_name = Object.keys(strategies).find(s => strategies[s].index === this.active_index);
         const strategy_xml = await import(/* webpackChunkName: `[request]` */ `../xml/${strategy_name}.xml`);
@@ -287,11 +287,11 @@ export default class QuickStrategyStore {
             ...form_value,
             market,
             submarket,
-            tradetypecat,
+            symbol,
+            tradetype: trade_type,
+            tradetypecat: trade_type_cat,
             durationtype: duration_unit,
         };
-
-        /* eslint-disable */ console.log(...oo_oo(`42bdd6da_1`, fields_to_update));
 
         Object.keys(fields_to_update).forEach(key => {
             const value = fields_to_update[key as keyof typeof fields_to_update];

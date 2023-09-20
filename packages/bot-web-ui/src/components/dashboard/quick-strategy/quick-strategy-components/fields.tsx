@@ -10,7 +10,7 @@ import { TDropdownLists, TQuickStrategyFields, TSelectedValues } from './compone
 import { Description, DurationFields, InputField, SelectField } from '.';
 
 const Get_Fields = observer(({ data_fields_group_wise }) => {
-    const { values, errors, setFieldValue, handleChange } = useFormikContext();
+    const { values, errors, setFieldValue, handleChange, touched } = useFormikContext();
     const { ui } = useStore();
     const { setCurrentFocus } = ui;
     const { quick_strategy } = useDBotStore();
@@ -48,6 +48,7 @@ const Get_Fields = observer(({ data_fields_group_wise }) => {
 
         const is_input_field = type === 'text' || type === 'number';
         const is_select_field = type === 'select';
+
         const dropdown_lists: TDropdownLists = {
             symbol: symbol_dropdown,
             'trade-type': trade_type_dropdown,
@@ -110,7 +111,7 @@ const Get_Fields = observer(({ data_fields_group_wise }) => {
                                 placeholder={placeholder}
                                 trailing_icon_message={trailing_icon_message}
                                 zIndex={zIndex}
-                                errors={errors}
+                                errors={touched?.[field_name] && errors}
                                 type={type}
                             />
                         )}

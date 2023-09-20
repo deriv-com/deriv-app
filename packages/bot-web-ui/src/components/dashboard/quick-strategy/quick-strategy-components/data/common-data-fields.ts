@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { INPUT_TYPES } from 'Constants/quick-strategies-validation';
+import { INPUT_TYPES, OPERATORS } from 'Constants/quick-strategies-validation';
 import { popover_zindex } from 'Constants/z-indexes';
 import { TDataFields } from '../../quick-strategy.types';
 

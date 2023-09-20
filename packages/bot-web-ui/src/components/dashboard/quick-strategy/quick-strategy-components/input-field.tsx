@@ -35,7 +35,7 @@ const InputField = ({
                             {...field}
                             className={className}
                             type={type}
-                            error={errors[(field.name as keyof typeof errors) || (field_name as keyof typeof errors)]}
+                            error={errors?.[field.name as keyof typeof errors]}
                             label={localize(label || '')}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 handleChange(e);

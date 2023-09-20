@@ -81,7 +81,7 @@ const MyProfileName = () => {
                             </DesktopWrapper>
                             {rating_average ? (
                                 <React.Fragment>
-                                    <div className='my-profile-name--rating__row'>
+                                    <div className='my-profile-name__rating__row'>
                                         <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
                                             {rating_average_decimal}
                                         </Text>

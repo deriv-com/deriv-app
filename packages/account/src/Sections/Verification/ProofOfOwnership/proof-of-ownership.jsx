@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import { Loading } from '@deriv/components';
+import { observer, useStore } from '@deriv/stores';
 import ProofOfOwnershipForm from './proof-of-ownership-form.jsx';
 import { POONotRequired, POOVerified, POORejetced, POOSubmitted } from 'Components/poo/statuses';
-import { Loading } from '@deriv/components';
 import { POO_STATUSES } from './constants/constants';
-import getPaymentMethodsConfig from './payment-method-config.js';
-import { observer, useStore } from '@deriv/stores';
+import getPaymentMethodsConfig from '../../../Configs/payment-method-config';
 
 export const ProofOfOwnership = observer(() => {
     const { client, notifications, ui } = useStore();

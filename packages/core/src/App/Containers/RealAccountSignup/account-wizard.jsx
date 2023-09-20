@@ -10,6 +10,7 @@ import { connect } from 'Stores/connect';
 import AcceptRiskForm from './accept-risk-form.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
+import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
 import 'Sass/details-form.scss';
 
 const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, getTotalSteps, sub_section_index }) => {
@@ -57,6 +58,7 @@ const AccountWizard = props => {
     const [previous_data, setPreviousData] = React.useState([]);
     const [state_items, setStateItems] = React.useState([]);
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
+    const is_high_risk_client_for_mt5 = useIsClientHighRiskForMT5();
 
     const {
         setIsTradingAssessmentForNewUserEnabled,
@@ -77,12 +79,17 @@ const AccountWizard = props => {
         setLoading(false);
     };
 
+    const get_items_props = {
+        ...props,
+        is_high_risk_client_for_mt5,
+    };
+
     React.useEffect(() => {
         setIsTradingAssessmentForNewUserEnabled(true);
         getData();
         setStateItems(previous_state => {
             if (!previous_state.length) {
-                return getItems(props);
+                return getItems(get_items_props);
             }
             return previous_state;
         });
@@ -110,7 +117,7 @@ const AccountWizard = props => {
                 if (state_items.length) {
                     items = state_items;
                 } else {
-                    items = getItems(props);
+                    items = getItems(get_items_props);
                 }
 
                 if (items.length > 1 && 'phone' in items[1]?.form_value) {
@@ -212,6 +219,14 @@ const AccountWizard = props => {
         delete clone?.tax_identification_confirm;
         delete clone?.agreed_tnc;
         delete clone?.agreed_tos;
+
+        // BE does not accept empty strings for TIN
+        // so we remove it from the payload if it is empty in case of optional TIN field
+        // as the value will be available from the form_values
+        if (clone?.tax_identification_number?.length === 0) {
+            delete clone.tax_identification_number;
+        }
+
         clone = processInputData(clone);
         props.setRealAccountFormData(clone);
         if (payload) {

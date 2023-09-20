@@ -3,7 +3,7 @@ import { Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Dialog, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { website_name } from '@deriv/shared';
 import ResidenceForm from './set-residence-form.jsx';
@@ -21,12 +21,9 @@ const validateResidence = (values, residence_list) => {
         const index_of_selection = residence_list.findIndex(item => isResidenceText(item, values));
 
         if (index_of_selection === -1 || residence_list[index_of_selection].disabled === 'DISABLED') {
-            errors.residence = (
-                <Localize
-                    i18n_default_text='Unfortunately, {{website_name}} is not available in your country.'
-                    values={{ website_name }}
-                />
-            );
+            errors.residence = localize('Unfortunately, {{website_name}} is not available in your country.', {
+                website_name,
+            });
         }
     }
 

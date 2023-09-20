@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useAuthorize, useWalletAccountsList } from '@deriv/api';
-import useCashierParam, { TCashierParams } from '../../hooks/useCashierParam';
+import useCashierParam, { TCashierTabs } from '../../hooks/useCashierParam';
 import useDevice from '../../hooks/useDevice';
 import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
@@ -49,7 +49,7 @@ type TProps = {
 const WalletListCardActions: React.FC<TProps> = ({ account }) => {
     const { data: active_wallet } = useActiveWalletAccount();
     const { switchAccount } = useAuthorize();
-    const getCashierParam = useCashierParam();
+    const { getCashierParam } = useCashierParam();
     const { is_mobile } = useDevice();
     const history = useHistory();
 
@@ -88,7 +88,7 @@ const WalletListCardActions: React.FC<TProps> = ({ account }) => {
                             await switchAccount(account.loginid);
                         }
                         history.push(
-                            `/appstore/traders-hub${getCashierParam(button.name.toLowerCase() as TCashierParams)}`
+                            `/appstore/traders-hub?${getCashierParam(button.name.toLowerCase() as TCashierTabs)}`
                         );
                     }}
                 >

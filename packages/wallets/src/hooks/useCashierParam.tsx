@@ -1,13 +1,24 @@
 import { useCallback } from 'react';
 
-export type TCashierParams = 'deposit' | 'transactions' | 'transfer' | 'withdraw';
+export type TCashierTabs = 'deposit' | 'transactions' | 'transfer' | 'withdraw';
 
+const paramKey = 'active-cashier-tab';
+
+/** A custom hook to get cashier active tab and setting the parameter */
 const useCashierParam = () => {
-    const getCashierParam = useCallback((param: TCashierParams) => {
-        return `?&active-cashier-tab=${param}`;
+    const urlParams = new URLSearchParams(window.location.search);
+    const activeCashierTab = urlParams.get(paramKey);
+
+    const getCashierParam = useCallback((param: TCashierTabs) => {
+        return `&${paramKey}=${param}`;
     }, []);
 
-    return getCashierParam;
+    return {
+        /** Current cashier tab */
+        activeCashierTab,
+        /** Function to get cashier query parameter */
+        getCashierParam,
+    };
 };
 
 export default useCashierParam;

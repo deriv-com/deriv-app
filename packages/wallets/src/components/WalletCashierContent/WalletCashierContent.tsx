@@ -1,5 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
+import useCashierParam from '../../hooks/useCashierParam';
 import WalletDepositCrypto from '../WalletDepositCrypto/WalletDepositCrypto';
 import WalletDepositFiat from '../WalletDepositFiat/WalletDepositFiat';
 import './WalletCashierContent.scss';
@@ -9,8 +10,7 @@ type TProps = {
 };
 
 const WalletCashierContent = ({ data }: TProps) => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const activeCashierTab = urlParams.get('active-cashier-tab');
+    const { activeCashierTab } = useCashierParam();
 
     return (
         <div className='wallets-cashier-content'>

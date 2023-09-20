@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api';
-import useCashierParam, { TCashierParams } from '../../hooks/useCashierParam';
+import useCashierParam, { TCashierTabs } from '../../hooks/useCashierParam';
 import useDevice from '../../hooks/useDevice';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletListCardBadge } from '../WalletListCardBadge';
@@ -15,16 +15,13 @@ type TProps = {
 const tabs = ['Deposit', 'Withdraw', 'Transfer', 'Transactions'];
 
 const WalletCashierHeader: React.FC<TProps> = ({ data }) => {
-    const getCashierParam = useCashierParam();
+    const { activeCashierTab, getCashierParam } = useCashierParam();
     const { is_mobile } = useDevice();
     const history = useHistory();
     const { currency, currency_config, display_balance, landing_company_name, wallet_currency_type } = data || {};
 
     const formattedLandingCompany =
         landing_company_name === 'virtual' ? 'Demo' : landing_company_name?.toUpperCase() || 'SVG';
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const activeCashierTab = urlParams.get('active-cashier-tab');
 
     return (
         <WalletGradientBackground
@@ -69,7 +66,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ data }) => {
                             }`}
                             onClick={() =>
                                 history.push(
-                                    `/appstore/traders-hub${getCashierParam(tab.toLowerCase() as TCashierParams)}`
+                                    `/appstore/traders-hub?${getCashierParam(tab.toLowerCase() as TCashierTabs)}`
                                 )
                             }
                         >

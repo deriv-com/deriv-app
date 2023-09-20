@@ -6,18 +6,20 @@ import { WalletsAccordion } from '../WalletsAccordion';
 import './DesktopWalletsList.scss';
 
 const DesktopWalletsList: React.FC = () => {
-    const { data } = useWalletAccountsList();
+    const { data: wallet_accounts_list } = useWalletAccountsList();
 
     return (
         <div className='wallets-desktop-wallets-list'>
-            {data?.map(wallet => (
-                <WalletsAccordion
-                    key={wallet.loginid}
-                    wallet={wallet}
-                    header={<WalletListCard account={wallet} />}
-                    content={<AccountsList />}
-                />
-            ))}
+            {wallet_accounts_list?.map(account => {
+                return (
+                    <WalletsAccordion
+                        key={`wallets-accordion-${account.loginid}`}
+                        account={account}
+                        content={<AccountsList />}
+                        header={<WalletListCard account={account} />}
+                    />
+                );
+            })}
         </div>
     );
 };

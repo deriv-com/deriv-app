@@ -66,3 +66,4 @@ export { default as useP2PConfig } from './useP2PConfig';
 export { default as useIsClientHighRiskForMT5 } from './useIsClientHighRiskForMT5';
 export { default as useCFDCanGetMoreMT5Accounts } from './useCFDCanGetMoreMT5Accounts';
 export { default as useModal } from './useModal';
+export { default as useToggle } from './useToggle';

@@ -1,14 +1,15 @@
 import React from 'react';
-import { Money, Text } from '@deriv/components';
+import classNames from 'classnames';
+import { Money, Text, Popover } from '@deriv/components';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer } from '@deriv/stores';
 import MultiplierAmountModal from 'Modules/Trading/Containers/Multiplier/multiplier-amount-modal';
-import RadioGroupOptionsModal from 'Modules/Trading/Containers/radio-group-options-modal.jsx';
+import RadioGroupOptionsModal from 'Modules/Trading/Containers/radio-group-options-modal';
 import MultipliersExpiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration';
 import MultipliersExpirationModal from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration-modal';
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info';
-import { Localize } from '@deriv/translations';
-import { getGrowthRatePercentage } from '@deriv/shared';
+import { localize, Localize } from '@deriv/translations';
+import { getGrowthRatePercentage, getTickSizeBarrierPercentage } from '@deriv/shared';
 
 type TAmountWidgetProps = {
     amount: number;
@@ -20,6 +21,8 @@ type TAmountWidgetProps = {
 type TRadioGroupOptionsWidgetProps = {
     displayed_trade_param: string;
     modal_title: React.ReactNode;
+    tooltip_message?: string | React.ReactNode;
+    is_disabled?: boolean;
 };
 
 const AmountWidget = ({ amount, currency, expiration, is_crypto_multiplier }: TAmountWidgetProps) => {
@@ -80,10 +83,16 @@ export const MultiplierAmountWidget = observer(() => {
     return <AmountWidget {...amount_widget_props} />;
 });
 
-const RadioGroupOptionsWidget = ({ displayed_trade_param, modal_title }: TRadioGroupOptionsWidgetProps) => {
+const RadioGroupOptionsWidget = ({
+    displayed_trade_param,
+    tooltip_message,
+    is_disabled,
+    modal_title,
+}: TRadioGroupOptionsWidgetProps) => {
     const [is_open, setIsOpen] = React.useState(false);
 
     const toggleModal = () => {
+        if (is_disabled) return;
         setIsOpen(!is_open);
     };
 
@@ -92,9 +101,25 @@ const RadioGroupOptionsWidget = ({ displayed_trade_param, modal_title }: TRadioG
             {/* @ts-expect-error TODO: check if TS error is gone after RadioGroupOptionsModal is migrated to TS */}
             <RadioGroupOptionsModal is_open={is_open} toggleModal={toggleModal} modal_title={modal_title} />
             <div className='mobile-widget mobile-widget__multiplier-options' onClick={toggleModal}>
-                <div className='mobile-widget__item'>
+                <div
+                    className={classNames('mobile-widget__item', {
+                        'mobile-widget__item-disabled': is_disabled,
+                    })}
+                >
                     <span className='mobile-widget__item-value'>{displayed_trade_param}</span>
                 </div>
+                {!!tooltip_message && (
+                    <span className='mobile-widget__item-tooltip' onClick={e => e.stopPropagation()}>
+                        <Popover
+                            alignment='left'
+                            classNameBubble='mobile-widget__item-popover'
+                            icon='info'
+                            is_bubble_hover_enabled
+                            zIndex='9999'
+                            message={tooltip_message}
+                        />
+                    </span>
+                )}
             </div>
         </React.Fragment>
     );
@@ -111,11 +136,24 @@ export const MultiplierOptionsWidget = observer(() => {
 });
 
 export const AccumulatorOptionsWidget = observer(() => {
-    const { growth_rate } = useTraderStore();
+    const { growth_rate, has_open_accu_contract, tick_size_barrier } = useTraderStore();
+    const displayed_trade_param = `${getGrowthRatePercentage(growth_rate)}%`;
+    const modal_title = localize('Growth rate');
+    const tooltip_message = (
+        <Localize
+            i18n_default_text='Your stake will grow at {{growth_rate}}% per tick as long as the current spot price remains within ±{{tick_size_barrier}} from the previous spot price.'
+            values={{
+                growth_rate: getGrowthRatePercentage(growth_rate),
+                tick_size_barrier: getTickSizeBarrierPercentage(tick_size_barrier),
+            }}
+        />
+    );
     return (
         <RadioGroupOptionsWidget
-            displayed_trade_param={`${getGrowthRatePercentage(growth_rate)}%`}
-            modal_title={<Localize i18n_default_text='Growth rate' />}
+            displayed_trade_param={displayed_trade_param}
+            is_disabled={has_open_accu_contract}
+            modal_title={modal_title}
+            tooltip_message={tooltip_message}
         />
     );
 });

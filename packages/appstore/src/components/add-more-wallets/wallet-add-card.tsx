@@ -3,6 +3,7 @@ import { TWalletInfo } from 'Types';
 import { Text, WalletCard } from '@deriv/components';
 import { useCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
 import { getWalletCurrencyIcon } from '@deriv/utils';
 import wallet_description_mapper from 'Constants/wallet_description_mapper';
 
@@ -34,7 +35,10 @@ const AddWalletCard = observer(({ wallet_info }: TAddWalletCard) => {
                 <WalletCard wallet={wallet_details} size='medium' state={is_added ? 'added' : 'add'} />
                 <div className='add-wallets__card-description'>
                     <Text as='h3' color='prominent' size={is_mobile ? 'xs' : 's'} weight='bold'>
-                        {`${currency_config?.display_code} Wallet`}
+                        <Localize
+                            i18n_default_text='{{currency_code}} Wallet'
+                            values={{ currency_code: currency_config?.display_code }}
+                        />
                     </Text>
                     <Text as='p' size='xs' line_height={is_mobile ? 's' : 'm'}>
                         {wallet_description_mapper[currency]}

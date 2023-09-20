@@ -5,9 +5,9 @@ import { getBrandWebsiteName, getPlatformSettings, PlatformContext } from '@deri
 import AccountArticle from 'Components/article';
 import { selfExclusionArticleItems } from 'Components/self-exclusion/self-exclusion-article-content';
 import SelfExclusionContext from './self-exclusion-context';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 
-const SelfExclusionArticle = () => {
+const SelfExclusionArticle = observer(() => {
     const { is_app_settings, toggleArticle, is_eu, is_uk } = React.useContext(SelfExclusionContext);
     const { is_deriv_crypto } = React.useContext(PlatformContext);
     const { ui } = useStore();
@@ -42,6 +42,6 @@ const SelfExclusionArticle = () => {
             {...(is_mobile && { onClickLearnMore: toggleArticle })}
         />
     );
-};
+});
 
 export default SelfExclusionArticle;

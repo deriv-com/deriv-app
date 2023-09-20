@@ -42,5 +42,6 @@ module.exports = {
         camelcase: 'warn',
         '@typescript-eslint/array-type': 'error',
         '@typescript-eslint/sort-type-constituents': 'error',
+        '@typescript-eslint/no-unused-vars': 'error',
     },
 };

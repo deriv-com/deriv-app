@@ -16,14 +16,14 @@ describe('<RecommendUser />', () => {
         render(<RecommendUser {...recommend_user_props} />);
 
         expect(screen.getByText('Would you recommend this buyer?')).toBeInTheDocument();
-        expect(screen.getAllByRole('button').length).toBe(2);
+        expect(screen.getAllByRole('button')).toHaveLength(2);
     });
 
     it('should render the component with correct message if it is a buy order for the user and both buttons', () => {
         render(<RecommendUser {...recommend_user_props} is_buy_order_for_user />);
 
         expect(screen.getByText('Would you recommend this seller?')).toBeInTheDocument();
-        expect(screen.getAllByRole('button').length).toBe(2);
+        expect(screen.getAllByRole('button')).toHaveLength(2);
     });
 
     it('should auto select the Yes button if the user was previously recommended', () => {

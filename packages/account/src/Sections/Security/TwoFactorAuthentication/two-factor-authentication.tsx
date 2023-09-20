@@ -1,25 +1,14 @@
 import React from 'react';
-import QRCode from 'qrcode.react';
-import {
-    Timeline,
-    DesktopWrapper,
-    MobileWrapper,
-    ThemedScrollbars,
-    Clipboard,
-    Icon,
-    Loading,
-    Text,
-} from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
-import { getPropertyValue, isMobile } from '@deriv/shared';
+import { Loading } from '@deriv/components';
+import { getPropertyValue } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import LoadErrorMessage from 'Components/load-error-message';
-import DigitForm from './digit-form';
-import TwoFactorAuthenticationArticle from './two-factor-authentication-article';
 import { useGetTwoFa, useGetSecretKey } from '@deriv/hooks';
+import TwoFactorEnabled from './two-factor-enabled';
+import TwoFactorDisabled from './two-factor-disabled';
 
 const TwoFactorAuthentication = observer(() => {
-    const { client, common } = useStore();
+    const { client } = useStore();
     const {
         error: error_2fa,
         is_TwoFA_enabled,
@@ -34,13 +23,25 @@ const TwoFactorAuthentication = observer(() => {
         isSuccess: is_success_secret,
         isLoading: is_loading_secret,
     } = useGetSecretKey();
-    const { email_address, is_switching, has_enabled_two_fa, setTwoFAChangedStatus, setTwoFAStatus } = client;
-    const { is_language_changing } = common;
+    // const { email_address, is_switching, has_enabled_two_fa } = client;
+    const { email_address, is_switching } = client;
     const [is_loading, setLoading] = React.useState(true);
     const [error_message, setErrorMessage] = React.useState('');
     const [secret_key, setSecretKey] = React.useState('');
     const [qr_secret_key, setQrSecretKey] = React.useState('');
-    // const [has_enabled_two_fa, setTwoFAStatus] = React.useState(false);
+    const [has_enabled_two_fa, setTwoFAStatus] = React.useState(false);
+
+    const getDigitStatus = React.useCallback(() => {
+        getTwoFA();
+    }, [getTwoFA]);
+
+    React.useEffect(() => {
+        getDigitStatus();
+    }, [getDigitStatus, has_enabled_two_fa]);
+
+    // React.useEffect(() => {
+    //     getTwoFA();
+    // }, [getTwoFA, has_enabled_two_fa]);
 
     const generateQrCode = React.useCallback(async () => {
         getSecretKey();
@@ -48,21 +49,14 @@ const TwoFactorAuthentication = observer(() => {
     }, [getSecretKey]);
 
     React.useEffect(() => {
-        // getDigitStatus();
-        // console.log('is_TwoFA_enabled: ', is_TwoFA_enabled);
-        getTwoFA();
-    }, [getTwoFA, has_enabled_two_fa]);
-
-    React.useEffect(() => {
-        // console.log('is_success_two_fa: ', is_success_two_fa, is_TwoFA_enabled);
         if (is_success_two_fa) {
-            // console.log(has_enabled_two_fa);
             if (!is_TwoFA_enabled) {
                 generateQrCode();
             }
             setLoading(false);
         }
-    }, [is_success_two_fa, generateQrCode, is_TwoFA_enabled]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_success_two_fa]);
 
     React.useEffect(() => {
         if (error_2fa) {
@@ -75,12 +69,14 @@ const TwoFactorAuthentication = observer(() => {
 
     React.useEffect(() => {
         if (is_success_secret) {
+            // console.log(data);
             const secret_key_value = getPropertyValue(data, ['account_security', 'totp', 'secret_key']);
             const qr_secret_key_value = `otpauth://totp/${email_address}?secret=${secret_key_value}&issuer=Deriv.com`;
             setSecretKey(secret_key_value);
             setQrSecretKey(qr_secret_key_value);
         }
-    }, [data, email_address, is_success_secret]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_success_secret]);
 
     React.useEffect(() => {
         if (error_secret) {
@@ -91,138 +87,24 @@ const TwoFactorAuthentication = observer(() => {
         }
     }, [error_secret]);
 
-    if (is_switching || is_loading_2fa || is_loading)
+    if (is_switching || is_loading || is_loading_2fa)
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (error_message) return <LoadErrorMessage error_message={error_message} />;
 
-    const TwoFactorEnabled = (
-        <ThemedScrollbars is_bypassed={isMobile()} className='two-factor__scrollbars'>
-            <div className='two-factor__wrapper--enabled'>
-                <Icon icon='IcQrPhone' className='two-factor__icon' />
-                <Text as='h3' align='center' weight='bold' color='prominent' className='two-factor__qr--title'>
-                    {localize('2FA enabled')}
-                </Text>
-                <Text as='h4' size='xs' align='center' className='two-factor__qr--message'>
-                    {localize('You have enabled 2FA for your Deriv account.')}
-                </Text>
-                <Text as='h4' size='xs' align='center' className='two-factor__qr--message'>
-                    {localize(
-                        'To disable 2FA, please enter the six-digit authentication code generated by your 2FA app below:'
-                    )}
-                </Text>
-                <div data-testid='digitform_2fa_enabled'>
-                    <DigitForm
-                        is_enabled={has_enabled_two_fa}
-                        setTwoFAStatus={setTwoFAStatus}
-                        setTwoFAChangedStatus={setTwoFAChangedStatus}
-                        is_language_changing={is_language_changing}
-                    />
-                </div>
-            </div>
-        </ThemedScrollbars>
-    );
-
-    const TwoFactorDisabled = (
-        <React.Fragment>
-            <ThemedScrollbars
-                is_bypassed={isMobile()}
-                autoHide
-                className='two-factor__scrollbars'
-                hideHorizontal={true}
-            >
-                <MobileWrapper>
-                    <TwoFactorAuthenticationArticle />
-                </MobileWrapper>
-                <Text as='h2' color='prominent' weight='bold' className='two-factor__title'>
-                    {localize('How to set up 2FA for your Deriv account')}
-                </Text>
-                <div>
-                    <Timeline className='two-factor__timeline' line_height='xs'>
-                        <Timeline.Item
-                            item_title={
-                                <Localize
-                                    i18n_default_text='Scan the QR code below with your 2FA app. We recommend <0>Authy</0> or <1>Google Authenticator</1>.'
-                                    components={[
-                                        <a
-                                            className='link two-factor__link'
-                                            href='https://authy.com/'
-                                            target='_blank'
-                                            rel='noopener noreferrer'
-                                            key={0}
-                                        />,
-                                        <a
-                                            className='link two-factor__link'
-                                            href='https://github.com/google/google-authenticator/wiki#implementations'
-                                            target='_blank'
-                                            rel='noopener noreferrer'
-                                            key={1}
-                                        />,
-                                    ]}
-                                />
-                            }
-                        >
-                            <div className='two-factor__qr'>
-                                {is_loading_secret ? (
-                                    <Loading is_fullscreen={false} />
-                                ) : (
-                                    <React.Fragment>
-                                        {qr_secret_key && (
-                                            <div className='two-factor__qr--wrapper'>
-                                                <QRCode value={qr_secret_key} />
-                                            </div>
-                                        )}
-
-                                        {secret_key && (
-                                            <React.Fragment>
-                                                <Text
-                                                    as='h4'
-                                                    size='xs'
-                                                    align='center'
-                                                    className='two-factor__qr--message'
-                                                >
-                                                    {localize(
-                                                        'If you are unable to scan the QR code, you can manually enter this code instead:'
-                                                    )}
-                                                </Text>
-                                                <div className='two-factor__qr--code' data-testid='2fa_clipboard'>
-                                                    <Text size='xs'>{secret_key}</Text>
-                                                    <Clipboard
-                                                        text_copy={secret_key}
-                                                        info_message={localize('Click here to copy key')}
-                                                        success_message={localize('Key copied!')}
-                                                        className='two-factor__qr--clipboard'
-                                                    />
-                                                </div>
-                                            </React.Fragment>
-                                        )}
-                                    </React.Fragment>
-                                )}
-                            </div>
-                        </Timeline.Item>
-                        <Timeline.Item
-                            item_title={localize('Enter the authentication code generated by your 2FA app:')}
-                        >
-                            <div data-testid='digitform_2fa_disabled'>
-                                <DigitForm
-                                    is_enabled={has_enabled_two_fa}
-                                    setTwoFAStatus={setTwoFAStatus}
-                                    setTwoFAChangedStatus={setTwoFAChangedStatus}
-                                    is_language_changing={is_language_changing}
-                                />
-                            </div>
-                        </Timeline.Item>
-                    </Timeline>
-                </div>
-            </ThemedScrollbars>
-            <DesktopWrapper>
-                <TwoFactorAuthenticationArticle />
-            </DesktopWrapper>
-        </React.Fragment>
-    );
-
     return (
         <section className='two-factor'>
-            <div className='two-factor__wrapper'>{has_enabled_two_fa ? TwoFactorEnabled : TwoFactorDisabled}</div>
+            <div className='two-factor__wrapper'>
+                {has_enabled_two_fa ? (
+                    <TwoFactorEnabled setTwoFAStatus={setTwoFAStatus} />
+                ) : (
+                    <TwoFactorDisabled
+                        secret_key={secret_key}
+                        qr_secret_key={qr_secret_key}
+                        is_loading_secret={is_loading_secret}
+                        setTwoFAStatus={setTwoFAStatus}
+                    />
+                )}
+            </div>
         </section>
     );
 });

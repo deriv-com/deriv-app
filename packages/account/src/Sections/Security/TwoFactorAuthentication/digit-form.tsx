@@ -4,19 +4,25 @@ import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
 import { Input, Button } from '@deriv/components';
 import { useSendUserOTP } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
+import { useStore } from '@deriv/stores';
 
 type TDigitForm = {
-    is_enabled: boolean;
+    // is_enabled: boolean;
     setTwoFAStatus: (status: boolean) => void;
-    setTwoFAChangedStatus: (status: boolean) => void;
-    is_language_changing: boolean;
+    // setTwoFAChangedStatus: (status: boolean) => void;
+    // is_language_changing: boolean;
 };
 
 type TDigitFormValues = {
     digit_code: string;
 };
 
-const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus, is_language_changing }: TDigitForm) => {
+const DigitForm = ({ setTwoFAStatus }: TDigitForm) => {
+    const { client, common } = useStore();
+    const { is_language_changing } = common;
+    // const { has_enabled_two_fa: is_enabled, setTwoFAChangedStatus, setTwoFAStatus } = client;
+    const { has_enabled_two_fa: is_enabled, setTwoFAChangedStatus } = client;
+
     const { is_TwoFA_enabled, error, isSuccess, sendUserOTP } = useSendUserOTP();
     const button_text = is_enabled ? localize('Disable') : localize('Enable');
     const formik_ref = React.useRef<FormikProps<TDigitFormValues>>(null);

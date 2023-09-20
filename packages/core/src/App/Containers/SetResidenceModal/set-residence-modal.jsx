@@ -76,6 +76,7 @@ const SetResidence = ({ enableApp, onSetResidence, residence_list, toggleModalVi
                                     is_disabled={!values.residence || !!errors.residence || isSubmitting}
                                     text={localize('Set residence')}
                                     primary
+                                    large
                                 />
                             </ResidenceForm>
                         </React.Fragment>

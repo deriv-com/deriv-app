@@ -5,7 +5,7 @@
     &__residence-selection {
         display: flex;
         justify-content: center;
-        align-items: center;
+        gap: 0.4rem;
         flex-flow: nowrap column;
     }
     &__heading {
@@ -20,6 +20,10 @@
     &__subtext {
         margin: 0 0 2.4rem;
         max-width: 90%;
+    }
+    &__button_wrapper {
+        margin-top: 1.6rem;
+        text-align: right;
     }
     &__btn {
         align-self: flex-end;

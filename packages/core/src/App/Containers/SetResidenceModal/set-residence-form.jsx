@@ -5,6 +5,7 @@ import { Autocomplete, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 const SetResidenceForm = ({
+    children,
     class_prefix = 'set-residence',
     default_value,
     history_value,
@@ -51,11 +52,13 @@ const SetResidenceForm = ({
                     {localize('Country of residence is where you currently live.')}
                 </Text>
             ) : null}
+            <div className={`${class_prefix}__button_wrapper`}>{children}</div>
         </div>
     );
 };
 
 SetResidenceForm.propTypes = {
+    children: PropTypes.object,
     class_prefix: PropTypes.string,
     default_value: PropTypes.string,
     history_value: PropTypes.string,

@@ -296,7 +296,6 @@ export const getWalletStepConfigResponsive = (): Step[] => [
             </Text>
         ),
         // The 'target' refers to the element where the spotlight will be positioned. If there are multiple elements with the same class name, the 'target' will select the first matching element.
-        // target: '.wallet-header',
         target: '.wallet-card',
         disableBeacon: true,
         placement: 'bottom',
@@ -318,8 +317,6 @@ export const getWalletStepConfigResponsive = (): Step[] => [
                 <Localize i18n_default_text='This is your Wallet. You can see your total balance for this Wallet here.' />
             </Text>
         ),
-        // The 'target' refers to the element where the spotlight will be positioned. If there are multiple elements with the same class name, the 'target' will select the first matching element.
-        // target: '.wallet-header',
         target: '.wallet-card',
         disableBeacon: true,
         placement: 'bottom',
@@ -341,8 +338,6 @@ export const getWalletStepConfigResponsive = (): Step[] => [
                 <Localize i18n_default_text='This is your Wallet. You can see your total balance for this Wallet here.' />
             </Text>
         ),
-        // The 'target' refers to the element where the spotlight will be positioned. If there are multiple elements with the same class name, the 'target' will select the first matching element.
-        // target: '.wallet-header',
         target: '.wallet-card',
         disableBeacon: true,
         placement: 'bottom',

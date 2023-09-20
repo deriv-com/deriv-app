@@ -1,6 +1,6 @@
 import React from 'react';
 import useDevice from '../../hooks/useDevice';
-import Bitcion from '../../public/images/bitcion.svg';
+import Bitcoin from '../../public/images/bitcoin.svg';
 import Demo from '../../public/images/demo.svg';
 import ETH from '../../public/images/eth.svg';
 import EUR from '../../public/images/eur.svg';
@@ -14,7 +14,7 @@ const type_to_icon_mapper = {
     USD,
     EUR,
     GBP,
-    BTC: Bitcion,
+    BTC: Bitcoin,
     USDC,
     ETH,
     LTC,
@@ -42,8 +42,13 @@ type TProps = {
 
 const WalletListCardIcon: React.FC<TProps> = ({ type }) => {
     const { is_mobile } = useDevice();
-    const Icon = type_to_icon_mapper[type as keyof typeof type_to_icon_mapper];
-    const size = type_to_size_mapper[type as keyof typeof type_to_icon_mapper][is_mobile ? 'mobile' : 'desktop'];
+
+    let icon_type = type as keyof typeof type_to_icon_mapper;
+
+    if (!Object.keys(type_to_size_mapper).includes(icon_type)) icon_type = 'USD';
+
+    const Icon = type_to_icon_mapper[icon_type];
+    const size = type_to_size_mapper[icon_type][is_mobile ? 'mobile' : 'desktop'];
 
     if (!Icon) return null;
 

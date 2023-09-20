@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import useMT5AccountsList from './useMT5AccountsList';
-import useTradingPlatformAvailableAccounts from './useTradingPlatformAvailableAccounts';
+import useAvailableMT5Accounts from './useAvailableMT5Accounts';
 
 const useSortedMT5Accounts = () => {
-    const { data: all_available_mt5_accounts } = useTradingPlatformAvailableAccounts();
+    const { data: all_available_mt5_accounts } = useAvailableMT5Accounts();
     const { data: mt5_accounts, ...rest } = useMT5AccountsList();
 
     const modified_data = useMemo(() => {

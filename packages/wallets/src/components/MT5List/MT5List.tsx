@@ -7,7 +7,7 @@ import './MT5List.scss';
 const MT5List: React.FC = () => {
     const { data } = useSortedMT5Accounts();
 
-    if (!data) return <p>Loading...</p>;
+    if (!data) return <span className='wallets-mt5-loader' />;
 
     return (
         <React.Fragment>

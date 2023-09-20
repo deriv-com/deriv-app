@@ -6,6 +6,7 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
 import PersonalDetails from '../personal-details';
 import userEvent from '@testing-library/user-event';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
 
@@ -236,7 +237,12 @@ describe('<PersonalDetails/>', () => {
     afterAll(() => ReactDOM.createPortal.mockClear());
 
     const renderwithRouter = component => {
-        render(<BrowserRouter>{component}</BrowserRouter>);
+        const mock_store = mockStore({});
+        render(
+            <StoreProvider store={mock_store}>
+                <BrowserRouter>{component}</BrowserRouter>
+            </StoreProvider>
+        );
     };
 
     it('should autopopulate tax_residence for MF clients', () => {

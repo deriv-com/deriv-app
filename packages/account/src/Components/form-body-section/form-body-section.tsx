@@ -1,8 +1,8 @@
-import React from 'react';
 import { Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import classNames from 'classnames';
+import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import classNames from 'classnames';
+import React from 'react';
 
 export type TFormBodySection = {
     /**
@@ -18,6 +18,11 @@ export type TFormBodySection = {
      * @default 'left'
      * */
     side_note_position?: 'left' | 'right';
+    /**
+     * The type of the side note either it can be locaziled string (`localize or Localize`) component or image as JSX element.
+     * @default 'text'
+     * */
+    type?: 'text' | 'image';
 };
 
 /**
@@ -27,43 +32,49 @@ export type TFormBodySection = {
  *  and allows reversing the order of the side note and the main content.
  *  @returns {JSX.Element} A React component that renders a form body section.
  */
-const FormBodySection = ({
-    children,
-    has_side_note,
-    side_note,
-    side_note_position = 'left',
-}: React.PropsWithChildren<TFormBodySection>): JSX.Element => {
-    if (has_side_note) {
-        return (
-            <div
-                data-testid='dt_side_note_container'
-                className={classNames('account-form__section', {
-                    'account-form__section--reversed': side_note_position === 'right',
-                })}
-            >
+const FormBodySection = observer(
+    ({
+        children,
+        has_side_note,
+        side_note,
+        side_note_position = 'left',
+        type = 'text',
+    }: React.PropsWithChildren<TFormBodySection>): JSX.Element => {
+        const {
+            ui: { is_mobile },
+        } = useStore();
+        if (has_side_note) {
+            return (
                 <div
-                    className={classNames('account-form__section-side-note', {
-                        'account-form__section-side-note__example': typeof side_note !== 'string',
+                    data-testid='dt_side_note_container'
+                    className={classNames('account-form__section', {
+                        'account-form__section--reversed': side_note_position === 'right',
                     })}
                 >
-                    {typeof side_note === 'string' ? (
-                        <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'} data-testid='side-note-text'>
-                            {side_note}
-                        </Text>
-                    ) : (
-                        <React.Fragment>
-                            <Text as='p' size={isMobile() ? 'xxs' : 'xs'} weight='bold'>
-                                <Localize i18n_default_text='Example' />
+                    <div
+                        className={classNames('account-form__section-side-note', {
+                            'account-form__section-side-note__example': type !== 'text',
+                        })}
+                    >
+                        {type === 'text' ? (
+                            <Text color='less-prominent' size={is_mobile ? 'xxs' : 'xs'} data-testid='side-note-text'>
+                                {side_note}
                             </Text>
-                            <div className='account-form__section-side-note__example-image'>{side_note}</div>
-                        </React.Fragment>
-                    )}
+                        ) : (
+                            <React.Fragment>
+                                <Text as='p' size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
+                                    <Localize i18n_default_text='Example' />
+                                </Text>
+                                <div className='account-form__section-side-note__example-image'>{side_note}</div>
+                            </React.Fragment>
+                        )}
+                    </div>
+                    <div className='account-form__section-content'>{children}</div>
                 </div>
-                <div className='account-form__section-content'>{children}</div>
-            </div>
-        );
+            );
+        }
+        return children as JSX.Element;
     }
-    return children as JSX.Element;
-};
+);
 
 export default FormBodySection;

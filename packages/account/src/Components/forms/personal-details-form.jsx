@@ -109,6 +109,11 @@ const PersonalDetailsForm = props => {
     // need to put this check related to DIEL clients
     const is_svg_only = is_svg && !is_mf;
 
+    // need to disable the checkbox if the user has not filled in the name and dob fields initially
+    const is_confirmation_checkbox_disabled = ['first_name', 'last_name', 'date_of_birth'].some(
+        field => !values[field] || errors[field]
+    );
+
     return (
         <React.Fragment>
             <div
@@ -133,6 +138,7 @@ const PersonalDetailsForm = props => {
                     has_side_note={(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image}
                     side_note={<PoiNameDobExampleIcon />}
                     side_note_position='right'
+                    type='image'
                 >
                     <fieldset className='account-form__fieldset'>
                         {'salutation' in values && (
@@ -523,8 +529,7 @@ const PersonalDetailsForm = props => {
                 </FormBodySection>
                 {is_qualified_for_idv && (
                     <ConfirmationCheckbox
-                        // we need to disable the checkbox if the user has not filled in the name and dob fields initially
-                        disabled={!(values.first_name && values.last_name && values.date_of_birth)}
+                        disabled={is_confirmation_checkbox_disabled}
                         label={
                             <Localize i18n_default_text='I confirm that the name and date of birth above match my chosen identity document' />
                         }

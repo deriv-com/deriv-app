@@ -1,12 +1,16 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import FormBodySection, { TFormBodySection } from '../form-body-section';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 const MockFormBodySection = (props: TFormBodySection) => {
+    const mock_store = mockStore({});
     return (
-        <FormBodySection {...props}>
-            <p>Lorem Ipsum</p>
-        </FormBodySection>
+        <StoreProvider store={mock_store}>
+            <FormBodySection {...props}>
+                <p>Lorem Ipsum</p>
+            </FormBodySection>
+        </StoreProvider>
     );
 };
 
@@ -29,7 +33,7 @@ describe('Test coverage for FormBodySection component', () => {
 
     it('When "side_note" value is not string, it should not render inside Text component', () => {
         const test_side_note = <div>test side note component</div>;
-        render(<MockFormBodySection has_side_note side_note={test_side_note} />);
+        render(<MockFormBodySection has_side_note side_note={test_side_note} type='image' />);
         expect(screen.getByText('test side note component')).toBeInTheDocument();
         expect(screen.queryByTestId('side-note-text')).not.toBeInTheDocument();
     });

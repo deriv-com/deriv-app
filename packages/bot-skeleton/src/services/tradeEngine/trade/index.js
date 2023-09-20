@@ -86,16 +86,16 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         if (!this.checkTicksPromiseExists()) this.watchTicks(symbol);
     }
 
-    start(trade_options) {
+    start(tradeOptions) {
         if (!this.options) {
             throw createError('NotInitialized', localize('Bot.init is not called'));
         }
 
         globalObserver.emit('bot.running');
 
-        const validated_trade_options = this.validateTradeOptions(trade_options);
+        const validated_trade_options = this.validateTradeOptions(tradeOptions);
 
-        this.trade_options = { ...validated_trade_options, symbol: this.options.symbol };
+        this.tradeOptions = { ...validated_trade_options, symbol: this.options.symbol };
         this.store.dispatch(start());
         this.checkLimits(validated_trade_options);
 
@@ -151,7 +151,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         this.isProposalSubscriptionRequired = hasPayoutBlock || isBasisPayout;
 
         if (this.isProposalSubscriptionRequired) {
-            this.makeProposals({ ...this.options, ...this.trade_options });
+            this.makeProposals({ ...this.options, ...this.tradeOptions });
             this.checkProposalReady();
         } else {
             this.store.dispatch(proposalsReady());

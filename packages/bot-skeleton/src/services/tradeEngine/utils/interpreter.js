@@ -18,7 +18,7 @@ JSInterpreter.prototype.restoreStateSnapshot = function (snapshot) {
 };
 
 const botInitialized = bot => bot && bot.tradeEngine.options;
-const botStarted = bot => botInitialized(bot) && bot.tradeEngine.trade_options;
+const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
 const shouldRestartOnError = (bot, errorName = '') =>
     !unrecoverable_errors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
 
@@ -243,12 +243,12 @@ const Interpreter = () => {
                 }
 
                 globalObserver.emit('Error', e);
-                const { initArgs, trade_options } = bot.tradeEngine;
+                const { initArgs, tradeOptions } = bot.tradeEngine;
                 terminateSession();
                 init();
                 $scope.observer.register('Error', onError);
                 bot.tradeEngine.init(...initArgs);
-                bot.tradeEngine.start(trade_options);
+                bot.tradeEngine.start(tradeOptions);
                 revert($scope.startState);
             };
 

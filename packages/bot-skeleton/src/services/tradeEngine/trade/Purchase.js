@@ -81,39 +81,38 @@ export default Engine =>
                     ['PriceMoved', 'InvalidContractProposal'],
                     delayIndex++
                 ).then(onSuccess);
-            } 
-                const trade_option = tradeOptionToBuy(contract_type, this.trade_options);
-                const action = () => api_base.api.send(trade_option);
+            }
+            const trade_option = tradeOptionToBuy(contract_type, this.tradeOptions);
+            const action = () => api_base.api.send(trade_option);
 
-                this.isSold = false;
+            this.isSold = false;
 
-                contractStatus({
-                    id: 'contract.purchase_sent',
-                    data: this.trade_options.amount,
-                });
+            contractStatus({
+                id: 'contract.purchase_sent',
+                data: this.tradeOptions.amount,
+            });
 
-                if (!this.options.timeMachineEnabled) {
-                    return doUntilDone(action).then(onSuccess);
-                }
+            if (!this.options.timeMachineEnabled) {
+                return doUntilDone(action).then(onSuccess);
+            }
 
-                return recoverFromError(
-                    action,
-                    (errorCode, makeDelay) => {
-                        if (errorCode === 'DisconnectError') {
-                            this.clearProposals();
+            return recoverFromError(
+                action,
+                (errorCode, makeDelay) => {
+                    if (errorCode === 'DisconnectError') {
+                        this.clearProposals();
+                    }
+                    const unsubscribe = this.store.subscribe(() => {
+                        const { scope } = this.store.getState();
+                        if (scope === BEFORE_PURCHASE) {
+                            makeDelay().then(() => this.observer.emit('REVERT', 'before'));
+                            unsubscribe();
                         }
-                        const unsubscribe = this.store.subscribe(() => {
-                            const { scope } = this.store.getState();
-                            if (scope === BEFORE_PURCHASE) {
-                                makeDelay().then(() => this.observer.emit('REVERT', 'before'));
-                                unsubscribe();
-                            }
-                        });
-                    },
-                    ['PriceMoved', 'InvalidContractProposal'],
-                    delayIndex++
-                ).then(onSuccess);
-            
+                    });
+                },
+                ['PriceMoved', 'InvalidContractProposal'],
+                delayIndex++
+            ).then(onSuccess);
         }
         getPurchaseReference = () => purchase_reference;
         regeneratePurchaseReference = () => {

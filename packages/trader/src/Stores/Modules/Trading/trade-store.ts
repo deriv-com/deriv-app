@@ -27,6 +27,7 @@ import {
     unsupported_contract_types_list,
     BARRIER_COLORS,
     BARRIER_LINE_STYLES,
+    TContractInfo,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
@@ -571,7 +572,8 @@ export default class TradeStore extends BaseStore {
             this.is_accumulator &&
             !!this.root_store.portfolio.open_accu_contract &&
             !!this.root_store.portfolio.active_positions.find(
-                ({ contract_info, type }) => isAccumulatorContract(type) && contract_info.underlying === this.symbol
+                ({ contract_info, type }: { contract_info: TContractInfo; type: string }) =>
+                    isAccumulatorContract(type) && contract_info.underlying === this.symbol
             )
         );
     }

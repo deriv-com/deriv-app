@@ -15,7 +15,7 @@ const MT5MigrationFrontSideContent = observer(({ setShowModalFrontSide }: TMT5Mi
     const { is_mobile } = ui;
     const content_size = is_mobile ? 'xs' : 's';
     const {
-        eligible_account_to_migrate,
+        eligible_account_to_migrate_label,
         eligible_svg_to_bvi_derived_accounts,
         eligible_svg_to_bvi_financial_accounts,
         eligible_svg_to_vanuatu_derived_accounts,
@@ -30,7 +30,7 @@ const MT5MigrationFrontSideContent = observer(({ setShowModalFrontSide }: TMT5Mi
                         i18n_default_text='We’re upgrading your {{from_account}} account(s) by moving them to the {{to_account}} jurisdiction.'
                         values={{
                             from_account: getFormattedJurisdictionCode(Jurisdiction.SVG),
-                            to_account: eligible_account_to_migrate,
+                            to_account: eligible_account_to_migrate_label,
                         }}
                     />
                 </Text>

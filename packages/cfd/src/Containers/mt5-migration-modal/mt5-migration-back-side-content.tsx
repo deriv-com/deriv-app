@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Checkbox, Modal, Text, StaticUrl, Icon } from '@deriv/components';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
-import { CFD_PLATFORMS } from '@deriv/shared';
+import { CFD_PLATFORMS, dbvi_company_names } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import getMigrationModalDetails from '../../Constants/mt5-migration-modal-content';
@@ -16,18 +16,18 @@ const MT5MigrationBackSideContent = observer(({ setShowModalFrontSide }: TMT5Mig
     const { toggleMT5MigrationModal, setMT5MigrationModalEnabled, is_mobile } = ui;
     const { setAppstorePlatform } = common;
     const { setJurisdictionSelectedShortcode, setAccountType, enableCFDPasswordModal } = useCfdStore();
-    const { getAccountToMigrate, eligible_account_to_migrate } = useMT5SVGEligibleToMigrate();
+    const { getEligibleAccountToMigrate, eligible_account_to_migrate_label } = useMT5SVGEligibleToMigrate();
     const { mt5_migration_error } = useCfdStore();
     const [is_checked, setIsChecked] = React.useState(false);
 
-    const content = getMigrationModalDetails(eligible_account_to_migrate);
+    const content = getMigrationModalDetails(eligible_account_to_migrate_label);
     const header_size = is_mobile ? 'xs' : 's';
     const checkbox_text_size = is_mobile ? 'xxs' : 'xs';
     const content_size = is_mobile ? 'xxxs' : 'xs';
 
     const onConfirmMigration = () => {
         setAppstorePlatform(CFD_PLATFORMS.MT5);
-        setJurisdictionSelectedShortcode(getAccountToMigrate());
+        setJurisdictionSelectedShortcode(getEligibleAccountToMigrate());
         setMT5MigrationModalEnabled(true);
         toggleMT5MigrationModal();
         setAccountType({ category: 'real', type: 'financial' });
@@ -79,10 +79,18 @@ const MT5MigrationBackSideContent = observer(({ setShowModalFrontSide }: TMT5Mig
                             label={
                                 <Text as='p' size={checkbox_text_size} line_height='xs'>
                                     <Localize
-                                        i18n_default_text='I agree to move my MT5 account(s) and agree to Deriv BVI Ltd’s <0>terms and conditions</0>'
+                                        i18n_default_text='I agree to move my {{platform}} account(s) and agree to Deriv {{account_to_migrate}} Ltd’s <0>terms and conditions</0>'
                                         components={[
-                                            <StaticUrl key={0} className='link' href={'tnc/deriv-(bvi)-ltd.pdf'} />,
+                                            <StaticUrl
+                                                key={0}
+                                                className='link'
+                                                href={dbvi_company_names[getEligibleAccountToMigrate()].tnc_url}
+                                            />,
                                         ]}
+                                        values={{
+                                            platform: CFD_PLATFORMS.MT5.toUpperCase(),
+                                            account_to_migrate: eligible_account_to_migrate_label,
+                                        }}
                                     />
                                 </Text>
                             }

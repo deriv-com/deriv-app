@@ -8,7 +8,14 @@ import MT5MigrationModalContent from './mt5-migration-modal-content';
 
 const MT5MigrationModal = observer(() => {
     const { ui } = useStore();
-    const { disableApp, enableApp, is_mt5_migration_modal_open, is_mobile, toggleMT5MigrationModal } = ui;
+    const {
+        disableApp,
+        enableApp,
+        is_mt5_migration_modal_open,
+        is_mobile,
+        toggleMT5MigrationModal,
+        setMT5MigrationModalEnabled,
+    } = ui;
     const { mt5_migration_error } = useCfdStore();
     const { no_of_svg_accounts_to_migrate, has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
     const [show_modal_front_side, setShowModalFrontSide] = React.useState(true);
@@ -34,6 +41,7 @@ const MT5MigrationModal = observer(() => {
 
     const closeModal = () => {
         setShowModalFrontSide(true);
+        setMT5MigrationModalEnabled(false);
         toggleMT5MigrationModal();
     };
 

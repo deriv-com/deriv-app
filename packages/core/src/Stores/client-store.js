@@ -2513,7 +2513,7 @@ export default class ClientStore extends BaseStore {
                 return {
                     ...account,
                     eligible_to_migrate: {
-                        financial: 'vanuatu',
+                        financial: 'bvi', // dummy data to test BE, ToBe removed
                     },
                     display_login,
                 };

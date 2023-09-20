@@ -621,7 +621,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         updateAccountStatus,
     } = client;
     const { show_eu_related_content } = traders_hub;
-    const { is_mt5_migration_modal_enabled } = ui;
+    const { is_mt5_migration_modal_enabled, setMT5MigrationModalEnabled } = ui;
 
     const {
         account_title,
@@ -714,6 +714,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const closeDialogs = () => {
         setCFDSuccessDialog(false);
+        if (is_mt5_migration_modal_enabled) setMT5MigrationModalEnabled(false);
         setError(false);
     };
 

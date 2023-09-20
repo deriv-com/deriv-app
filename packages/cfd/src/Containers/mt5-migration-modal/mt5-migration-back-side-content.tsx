@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Checkbox, Modal, Text, StaticUrl, Icon } from '@deriv/components';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
-import { CFD_PLATFORMS, dbvi_company_names } from '@deriv/shared';
+import { CFD_PLATFORMS, DBVI_COMPANY_NAMES } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import getMigrationModalDetails from '../../Constants/mt5-migration-modal-content';
@@ -36,7 +36,7 @@ const MT5MigrationBackSideContent = observer(({ setShowModalFrontSide }: TMT5Mig
 
     return (
         <React.Fragment>
-            {mt5_migration_error && (
+            {!!mt5_migration_error && (
                 <div className='mt5-migration-modal__error'>
                     <div className='mt5-migration-modal__error-header'>
                         <Icon icon='IcAlertDanger' />
@@ -84,7 +84,7 @@ const MT5MigrationBackSideContent = observer(({ setShowModalFrontSide }: TMT5Mig
                                             <StaticUrl
                                                 key={0}
                                                 className='link'
-                                                href={dbvi_company_names[getEligibleAccountToMigrate()].tnc_url}
+                                                href={DBVI_COMPANY_NAMES[getEligibleAccountToMigrate()].tnc_url}
                                             />,
                                         ]}
                                         values={{

@@ -35,7 +35,7 @@ export const getFormattedJurisdictionCode = (jurisdiction_code: string) => {
     return formatted_label;
 };
 
-export const dbvi_company_names: { [key: string]: { [key: string]: string } } = {
+export const DBVI_COMPANY_NAMES: { [key: string]: { [key: string]: string } } = {
     bvi: { name: 'Deriv (BVI) Ltd', tnc_url: 'tnc/deriv-(bvi)-ltd.pdf' },
     labuan: { name: 'Deriv (FX) Ltd', tnc_url: 'tnc/deriv-(fx)-ltd.pdf' },
     maltainvest: {
@@ -44,3 +44,8 @@ export const dbvi_company_names: { [key: string]: { [key: string]: string } } = 
     },
     vanuatu: { name: 'Deriv (V) Ltd', tnc_url: 'tnc/general-terms.pdf' },
 };
+
+export const JURISDICTION_MARKET_TYPES = {
+    FINANCIAL: 'financial',
+    DERIVED: 'derived',
+} as const;

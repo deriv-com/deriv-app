@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
+import { Jurisdiction, JURISDICTION_MARKET_TYPES } from '@deriv/shared';
 
 type TMT5MigrationAccountIconsProps = {
     to: string;
@@ -12,9 +13,9 @@ const MT5MigrationAccountIcons = observer(({ to, type }: TMT5MigrationAccountIco
     const { is_mobile } = ui;
     const getFromAccountIcon = () => {
         switch (type) {
-            case 'derived':
+            case JURISDICTION_MARKET_TYPES.DERIVED:
                 return 'IcMt5SvgDerived';
-            case 'financial':
+            case JURISDICTION_MARKET_TYPES.FINANCIAL:
                 return 'IcMt5SvgFinancial';
             default:
                 return '';
@@ -23,13 +24,13 @@ const MT5MigrationAccountIcons = observer(({ to, type }: TMT5MigrationAccountIco
 
     const getToAccountIcon = (to_type: string) => {
         switch (to_type) {
-            case 'bvi_derived':
+            case `${Jurisdiction.BVI}_${JURISDICTION_MARKET_TYPES.DERIVED}`:
                 return 'IcMt5BviDerived';
-            case 'bvi_financial':
+            case `${Jurisdiction.BVI}_${JURISDICTION_MARKET_TYPES.FINANCIAL}`:
                 return 'IcMt5BviFinancial';
-            case 'vanuatu_derived':
+            case `${Jurisdiction.VANUATU}_${JURISDICTION_MARKET_TYPES.DERIVED}`:
                 return 'IcMt5VanuatuDerived';
-            case 'vanuatu_financial':
+            case `${Jurisdiction.VANUATU}_${JURISDICTION_MARKET_TYPES.FINANCIAL}`:
                 return 'IcMt5VanuatuFinancial';
             default:
                 return '';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
-import { getFormattedJurisdictionCode, Jurisdiction } from '@deriv/shared';
+import { getFormattedJurisdictionCode, Jurisdiction, JURISDICTION_MARKET_TYPES } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import MT5MigrationAccountIcons from './mt5-migration-account-icons';
@@ -37,15 +37,22 @@ const MT5MigrationFrontSideContent = observer(({ setShowModalFrontSide }: TMT5Mi
             </div>
             <div className='mt5-migration-modal__migration_content'>
                 <div className='mt5-migration-modal__migration_content-items'>
-                    {eligible_svg_to_bvi_derived_accounts && <MT5MigrationAccountIcons to='bvi' type='derived' />}
-                    {eligible_svg_to_bvi_financial_accounts && <MT5MigrationAccountIcons to='bvi' type='financial' />}
+                    {eligible_svg_to_bvi_derived_accounts && (
+                        <MT5MigrationAccountIcons to={Jurisdiction.BVI} type={JURISDICTION_MARKET_TYPES.DERIVED} />
+                    )}
+                    {eligible_svg_to_bvi_financial_accounts && (
+                        <MT5MigrationAccountIcons to={Jurisdiction.BVI} type={JURISDICTION_MARKET_TYPES.FINANCIAL} />
+                    )}
                 </div>
                 <div className='mt5-migration-modal__migration_content-items'>
                     {eligible_svg_to_vanuatu_derived_accounts && (
-                        <MT5MigrationAccountIcons to='vanuatu' type='derived' />
+                        <MT5MigrationAccountIcons to={Jurisdiction.VANUATU} type={JURISDICTION_MARKET_TYPES.DERIVED} />
                     )}
                     {eligible_svg_to_vanuatu_financial_accounts && (
-                        <MT5MigrationAccountIcons to='vanuatu' type='financial' />
+                        <MT5MigrationAccountIcons
+                            to={Jurisdiction.VANUATU}
+                            type={JURISDICTION_MARKET_TYPES.FINANCIAL}
+                        />
                     )}
                 </div>
             </div>

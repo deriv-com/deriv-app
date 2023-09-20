@@ -1,6 +1,6 @@
 import React from 'react';
 import useDevice from '../../hooks/useDevice';
-import { CFDList } from '../CFDList';
+import { CFDList } from '../ExternalTradingPlatforms';
 import { OptionsAndMultipliersListing } from '../OptionsAndMultipliersListing';
 import { TabList, TabPanel, TabPanels, Tabs } from '../Tabs';
 import './AccountsList.scss';

@@ -1,7 +1,7 @@
 import React from 'react';
-import DerivX from '../../public/images/derivx.svg';
-import { SecondaryActionButton } from '../SecondaryActionButton';
-import { TradingAccountCard } from '../TradingAccountCard';
+import DerivX from '../../../public/images/derivx.svg';
+import { SecondaryActionButton } from '../../SecondaryActionButton';
+import { TradingAccountCard } from '../../TradingAccountCard';
 import './AvailableDxtradeAccountsList.scss';
 
 const AvailableDxtradeAccountsList: React.FC = () => {

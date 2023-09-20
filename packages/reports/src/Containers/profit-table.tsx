@@ -103,7 +103,7 @@ const ProfitTable = ({
     }, []);
 
     React.useEffect(() => {
-        if (prev_date_from !== undefined && prev_date_to !== undefined ) {
+        if (prev_date_from !== undefined && prev_date_to !== undefined) {
             RudderStack.track('ce_reports_form', {
                 action: 'filter_dates',
                 form_name: 'default',

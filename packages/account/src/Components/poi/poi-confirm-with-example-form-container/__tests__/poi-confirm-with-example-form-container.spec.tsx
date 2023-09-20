@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import PoiConfirmWithExampleFormContainer from '../poi-confirm-with-example-form-container';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
 
@@ -46,6 +47,12 @@ describe('<PoiConfirmWithExampleFormContainer/>', () => {
         (ReactDOM.createPortal as jest.Mock).mockClear();
     });
 
+    const mock_store = mockStore({});
+
+    const wrapper = ({ children }: { children: JSX.Element }) => (
+        <StoreProvider store={mock_store}>{children}</StoreProvider>
+    );
+
     const mock_props = {
         account_settings: {},
         getChangeableFields: jest.fn(() => ['first_name', 'last_name', 'date_of_birth']),
@@ -56,7 +63,7 @@ describe('<PoiConfirmWithExampleFormContainer/>', () => {
         'I confirm that the name and date of birth above match my chosen identity document (see below)';
 
     it('should render PersonalDetailsForm with image and checkbox', async () => {
-        render(<PoiConfirmWithExampleFormContainer {...mock_props} />);
+        render(<PoiConfirmWithExampleFormContainer {...mock_props} />, { wrapper });
 
         expect(await screen.findByText('PoiNameDobExampleImage')).toBeInTheDocument();
         expect(screen.getByText(clarification_message)).toBeInTheDocument();
@@ -65,13 +72,13 @@ describe('<PoiConfirmWithExampleFormContainer/>', () => {
         expect(checkbox_el.checked).toBeFalsy();
 
         const input_fields: HTMLInputElement[] = screen.getAllByRole('textbox');
-        expect(input_fields.length).toBe(3);
+        expect(input_fields).toHaveLength(3);
         expect(input_fields[0].name).toBe('first_name');
         expect(input_fields[1].name).toBe('last_name');
         expect(input_fields[2].name).toBe('date_of_birth');
     });
     it('should change fields and trigger submit', async () => {
-        render(<PoiConfirmWithExampleFormContainer {...mock_props} />);
+        render(<PoiConfirmWithExampleFormContainer {...mock_props} />, { wrapper });
 
         const checkbox_el: HTMLInputElement = await screen.findByRole('checkbox');
         expect(checkbox_el.checked).toBeFalsy();

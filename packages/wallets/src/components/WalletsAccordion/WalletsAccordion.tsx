@@ -34,7 +34,7 @@ const WalletsAccordion: React.FC<TProps> = ({ account: { is_active, is_virtual, 
                 {header}
                 <div
                     className={`wallets-accordion__dropdown ${is_active ? 'wallets-accordion__dropdown--open' : ''}`}
-                    // onClick={() => switchAccount(loginid)}
+                    onClick={() => switchAccount(loginid)}
                 >
                     <IcDropdown />
                 </div>

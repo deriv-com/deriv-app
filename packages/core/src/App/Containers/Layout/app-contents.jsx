@@ -22,7 +22,7 @@ const AppContents = observer(({ children }) => {
         ui,
     } = useStore();
 
-    const { is_eu_country, is_logged_in, is_logging_in, user_id } = client;
+    const { is_eu_country, is_logged_in, is_logging_in, user_id, loginid } = client;
     const {
         is_app_disabled,
         is_cashier_visible,
@@ -45,6 +45,7 @@ const AppContents = observer(({ children }) => {
 
     React.useEffect(() => {
         if (is_logged_in && user_id) {
+            RudderStack.setAccountType(loginid.substring(0, 2));
             RudderStack.identifyEvent(user_id, {
                 language: getLanguage().toLowerCase() || 'en',
             });

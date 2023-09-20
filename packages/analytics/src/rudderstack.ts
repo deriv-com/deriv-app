@@ -1,4 +1,5 @@
 import * as RudderAnalytics from 'rudder-sdk-js';
+import { isMobile } from '@deriv/shared';
 
 type SignupProvider = 'email' | 'phone' | 'google' | 'facebook' | 'apple';
 
@@ -87,11 +88,65 @@ type IdentifyAction = {
     language: string;
 };
 
+type ReportsFormAction =
+    | {
+          action: 'choose_report_type';
+          form_name: string;
+          subform_name: 'open_positions_form' | 'statement_form' | 'trade_table_form';
+          trade_type_filter?: string;
+          growth_type_filter?: string;
+          start_date_filter?: string | null;
+          end_date_filter?: string | null;
+          transaction_type_filter?: string;
+      }
+    | {
+          action: 'filter_trade_type';
+          form_name: string;
+          subform_name: 'open_positions_form';
+          trade_type_filter: string;
+      }
+    | {
+          action: 'filter_growth_rate';
+          form_name: string;
+          subform_name: 'open_positions_form';
+          growth_type_filter: string;
+      }
+    | {
+          action: 'filter_dates';
+          form_name: string;
+          subform_name: 'trade_table_form' | 'statement_form';
+          start_date_filter: string | null;
+          end_date_filter: string | null;
+      }
+    | {
+          action: 'filter_transaction_type';
+          form_name: string;
+          subform_name: 'statement_form';
+          transaction_type_filter: string;
+      }
+    | {
+          action: 'open';
+          form_name: string;
+          subform_name: string;
+          form_source: string;
+      }
+    | {
+          action: 'close';
+          form_name: string;
+          subform_name: string;
+      }
+    | {
+          action: 'open_contract_details';
+          form_name: string;
+          form_source: string;
+      };
+
 type TEvents = {
-    ce_virtual_signup_form: VirtualSignupFormAction;
     ce_real_account_signup_form: RealAccountSignupFormAction;
-    ce_virtual_signup_email_confirmation: VirtualSignupEmailConfirmationAction;
+    ce_reports_form: ReportsFormAction;
     ce_trade_types_form: TradeTypesFormAction;
+    ce_virtual_signup_email_confirmation: VirtualSignupEmailConfirmationAction;
+    ce_virtual_signup_form: VirtualSignupFormAction;
     identify: IdentifyAction;
 };
 
@@ -99,6 +154,7 @@ export class RudderStack {
     has_identified = false;
     has_initialized = false;
     current_page = '';
+    account_type = '';
 
     constructor() {
         this.init();
@@ -121,6 +177,10 @@ export class RudderStack {
                 this.has_initialized = true;
             });
         }
+    }
+
+    setAccountType(account_type: string) {
+        this.account_type = account_type;
     }
 
     identifyEvent = (user_id: string, payload: TEvents['identify']) => {
@@ -155,7 +215,11 @@ export class RudderStack {
      */
     track<T extends keyof TEvents>(event: T, payload: TEvents[T]) {
         if (this.has_initialized && this.has_identified) {
-            RudderAnalytics.track(event, payload);
+            RudderAnalytics.track(event, {
+                ...payload,
+                account_type: this.account_type,
+                device_type: isMobile() ? 'mobile' : 'desktop',
+            });
         }
     }
 }

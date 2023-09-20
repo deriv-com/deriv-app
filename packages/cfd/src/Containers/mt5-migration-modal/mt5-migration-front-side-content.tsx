@@ -5,12 +5,9 @@ import { getFormattedJurisdictionCode, Jurisdiction, JURISDICTION_MARKET_TYPES }
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import MT5MigrationAccountIcons from './mt5-migration-account-icons';
+import { useMT5MigrationModalContext } from './mt5-migration-modal-context';
 
-type TMT5MigrationFrontSideContentProps = {
-    setShowModalFrontSide: (value: boolean) => void;
-};
-
-const MT5MigrationFrontSideContent = observer(({ setShowModalFrontSide }: TMT5MigrationFrontSideContentProps) => {
+const MT5MigrationFrontSideContent = observer(() => {
     const { ui } = useStore();
     const { is_mobile } = ui;
     const content_size = is_mobile ? 'xs' : 's';
@@ -21,6 +18,7 @@ const MT5MigrationFrontSideContent = observer(({ setShowModalFrontSide }: TMT5Mi
         eligible_svg_to_vanuatu_derived_accounts,
         eligible_svg_to_vanuatu_financial_accounts,
     } = useMT5SVGEligibleToMigrate();
+    const { setShowModalFrontSide } = useMT5MigrationModalContext();
 
     return (
         <React.Fragment>

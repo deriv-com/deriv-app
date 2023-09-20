@@ -5,6 +5,7 @@ import { observer, useStore } from '@deriv/stores';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import MT5MigrationModalContent from './mt5-migration-modal-content';
+import { MT5MigrationModalContext } from './mt5-migration-modal-context';
 
 const MT5MigrationModal = observer(() => {
     const { ui } = useStore();
@@ -18,6 +19,7 @@ const MT5MigrationModal = observer(() => {
     } = ui;
     const { mt5_migration_error } = useCfdStore();
     const { no_of_svg_accounts_to_migrate, has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
+
     const [show_modal_front_side, setShowModalFrontSide] = React.useState(true);
 
     const modal_title = (
@@ -57,38 +59,34 @@ const MT5MigrationModal = observer(() => {
     return (
         <div>
             <React.Suspense fallback={<UILoader />}>
-                <DesktopWrapper>
-                    <Modal
-                        className='mt5-migration-modal'
-                        disableApp={disableApp}
-                        enableApp={enableApp}
-                        exit_classname='cfd-modal--custom-exit'
-                        is_open={is_mt5_migration_modal_open}
-                        title={modal_title}
-                        toggleModal={closeModal}
-                        width='58.8rem'
-                        height={getModalHeight()}
-                    >
-                        <MT5MigrationModalContent
-                            show_modal_front_side={show_modal_front_side}
-                            setShowModalFrontSide={setShowModalFrontSide}
-                        />
-                    </Modal>
-                </DesktopWrapper>
-                <MobileWrapper>
-                    <PageOverlay
-                        is_open={is_mt5_migration_modal_open}
-                        header_classname='mt5-migration-modal__mobile-header'
-                        portal_id='deriv_app'
-                        header={modal_title}
-                        onClickClose={toggleMT5MigrationModal}
-                    >
-                        <MT5MigrationModalContent
-                            show_modal_front_side={show_modal_front_side}
-                            setShowModalFrontSide={setShowModalFrontSide}
-                        />
-                    </PageOverlay>
-                </MobileWrapper>
+                <MT5MigrationModalContext.Provider value={{ show_modal_front_side, setShowModalFrontSide }}>
+                    <DesktopWrapper>
+                        <Modal
+                            className='mt5-migration-modal'
+                            disableApp={disableApp}
+                            enableApp={enableApp}
+                            exit_classname='cfd-modal--custom-exit'
+                            is_open={is_mt5_migration_modal_open}
+                            title={modal_title}
+                            toggleModal={closeModal}
+                            width='58.8rem'
+                            height={getModalHeight()}
+                        >
+                            <MT5MigrationModalContent />
+                        </Modal>
+                    </DesktopWrapper>
+                    <MobileWrapper>
+                        <PageOverlay
+                            is_open={is_mt5_migration_modal_open}
+                            header_classname='mt5-migration-modal__mobile-header'
+                            portal_id='deriv_app'
+                            header={modal_title}
+                            onClickClose={toggleMT5MigrationModal}
+                        >
+                            <MT5MigrationModalContent />
+                        </PageOverlay>
+                    </MobileWrapper>
+                </MT5MigrationModalContext.Provider>
             </React.Suspense>
         </div>
     );

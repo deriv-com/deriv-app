@@ -48,6 +48,13 @@
         grid-template-columns: 1fr 1fr;
         grid-gap: 1.6rem;
 
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
         &-card {
             height: 29.6rem;
             width: 26.2rem;
@@ -67,12 +74,6 @@
                 width: 32.8rem;
                 height: auto;
             }
-        }
-        @include mobile {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
         }
     }
 }

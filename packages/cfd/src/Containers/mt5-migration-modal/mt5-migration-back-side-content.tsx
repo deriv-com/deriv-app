@@ -6,18 +6,17 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import getMigrationModalDetails from '../../Constants/mt5-migration-modal-content';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
+import { useMT5MigrationModalContext } from './mt5-migration-modal-context';
 
-type TMT5MigrationBackSideContentProps = {
-    setShowModalFrontSide: (value: boolean) => void;
-};
-
-const MT5MigrationBackSideContent = observer(({ setShowModalFrontSide }: TMT5MigrationBackSideContentProps) => {
+const MT5MigrationBackSideContent = observer(() => {
     const { ui, common } = useStore();
     const { toggleMT5MigrationModal, setMT5MigrationModalEnabled, is_mobile } = ui;
     const { setAppstorePlatform } = common;
-    const { setJurisdictionSelectedShortcode, setAccountType, enableCFDPasswordModal } = useCfdStore();
+    const { enableCFDPasswordModal, mt5_migration_error, setJurisdictionSelectedShortcode, setAccountType } =
+        useCfdStore();
+
     const { getEligibleAccountToMigrate, eligible_account_to_migrate_label } = useMT5SVGEligibleToMigrate();
-    const { mt5_migration_error } = useCfdStore();
+    const { setShowModalFrontSide } = useMT5MigrationModalContext();
     const [is_checked, setIsChecked] = React.useState(false);
 
     const content = getMigrationModalDetails(eligible_account_to_migrate_label);

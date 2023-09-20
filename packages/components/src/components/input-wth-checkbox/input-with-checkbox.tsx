@@ -16,7 +16,7 @@ type TInputWithCheckbox = {
     classNameInput?: string;
     classNamePrefix?: string;
     currency: string;
-    current_focus?: string;
+    current_focus?: string | null;
     defaultChecked: boolean;
     error_messages?: string[];
     is_negative_disabled: boolean;

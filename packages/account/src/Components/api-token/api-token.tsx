@@ -100,7 +100,7 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
 
     const validateFields = (values: FormikValues) => {
         const errors: FormikErrors<FormikValues> = {};
-        const token_name = values.token_name && values.token_name.trim();
+        const token_name = values?.token_name?.trim();
 
         if (!token_name) {
             errors.token_name = localize('Please enter a token name.');

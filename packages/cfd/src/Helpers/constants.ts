@@ -36,7 +36,7 @@ const getTitle = (market_type: string, is_eu_user: boolean) => {
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
-const CTRADER_DESKTOP_DOWNLOAD = 'https://deriv.ctrader.com/cbrokerdemo-deriv-setup.exe';
+const CTRADER_DESKTOP_DOWNLOAD = 'https://getctrader.com/deriv/ctrader-deriv-setup.exe';
 
 const CTRADER_DOWNLOAD_LINK = 'https://ctrader.com/download/';
 

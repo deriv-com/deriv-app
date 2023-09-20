@@ -2503,7 +2503,7 @@ export default class ClientStore extends BaseStore {
                 return {
                     ...account,
                     eligible_to_migrate: {
-                        financial: 'bvi', // dummy data to test BE, ToBe removed
+                        financial: 'bvi', // TODO: added this dummy data to test BE, remove once BE is done
                     },
                     display_login,
                 };

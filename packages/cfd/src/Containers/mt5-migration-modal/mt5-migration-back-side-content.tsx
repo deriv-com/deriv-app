@@ -28,8 +28,8 @@ const MT5MigrationBackSideContent = observer(() => {
         setAppstorePlatform(CFD_PLATFORMS.MT5);
         setJurisdictionSelectedShortcode(getEligibleAccountToMigrate());
         setMT5MigrationModalEnabled(true);
-        toggleMT5MigrationModal();
         setAccountType({ category: 'real', type: 'financial' }); // TODO: remove hardcoded value once BE is ready
+        toggleMT5MigrationModal();
         enableCFDPasswordModal();
     };
 

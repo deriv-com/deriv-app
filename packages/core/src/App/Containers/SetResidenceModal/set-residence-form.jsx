@@ -47,11 +47,11 @@ const SetResidenceForm = ({
                     </React.Fragment>
                 )}
             </Field>
-            {!errors?.residence?.length > 0 ? (
+            {!errors?.residence?.length && (
                 <Text as='p' size='xxs' className='account-signup__subtext' color='less-prominent'>
                     <Localize i18n_default_text='Country of residence is where you currently live.' />
                 </Text>
-            ) : null}
+            )}
             <div className={`${class_prefix}__button_wrapper`}>{children}</div>
         </div>
     );

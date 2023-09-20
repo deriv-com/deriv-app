@@ -1,5 +1,4 @@
 import { action, observable, makeObservable } from 'mobx';
-import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import { PaymentAgentListResponse } from '@deriv/api-types';
 import {
@@ -14,7 +13,6 @@ import {
 export default class PaymentAgentTransferStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
         makeObservable(this, {
-            container: observable,
             error: observable,
             is_try_transfer_successful: observable,
             is_transfer_successful: observable,
@@ -36,7 +34,6 @@ export default class PaymentAgentTransferStore {
         this.WS = WS;
     }
 
-    container = Constants.containers.payment_agent_transfer;
     error: TRootStore['modules']['cashier']['error'] = new ErrorStore();
     is_try_transfer_successful = false;
     is_transfer_successful = false;

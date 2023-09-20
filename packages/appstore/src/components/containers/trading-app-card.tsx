@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { getStatusBadgeConfig } from '@deriv/account';
 import { Text, StatusBadge } from '@deriv/components';
-import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
+import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import {
     getAppstorePlatforms,
     getMFAppstorePlatforms,
@@ -53,6 +53,15 @@ const TradingAppCard = ({
         link_to: '',
     };
 
+    const appDescription = () => {
+        if (
+            platform !== CFD_PLATFORMS.CTRADER ||
+            (platform === CFD_PLATFORMS.CTRADER && action_type !== 'multi-action')
+        ) {
+            return app_desc;
+        }
+    };
+
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
         mt5_acc_auth_status,
         openFailedVerificationModal,
@@ -96,7 +105,7 @@ const TradingAppCard = ({
                     'trading-app-card__icon--container__clickable': clickable_icon,
                 })}
             >
-                <TradigPlatformIconProps icon={icon} onClick={clickable_icon ? openStaticPage : undefined} size={48} />
+                <TradingPlatformIconProps icon={icon} onClick={clickable_icon ? openStaticPage : undefined} size={48} />
             </div>
             <div className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}>
                 <div className='trading-app-card__details'>
@@ -125,7 +134,7 @@ const TradingAppCard = ({
                         {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
                     </Text>
                     <Text className='description' color={'general'} size='xxs' line_height='m'>
-                        {app_desc}
+                        {appDescription()}
                     </Text>
                     {mt5_acc_auth_status && (
                         <StatusBadge

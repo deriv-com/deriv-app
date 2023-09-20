@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { ContentFlag, moduleLoader } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import MT5Notification from './mt5-notification';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import CooldownWarningModal from './cooldown-warning-modal.jsx';
@@ -17,9 +18,6 @@ const AccountSignupModal = React.lazy(() =>
 );
 const AcuityDownloadModal = React.lazy(() =>
     import(/* webpackChunkName: "acuity-download-modal"  */ '../AcuityDownloadModal')
-);
-const CloseMxMltAccountModal = React.lazy(() =>
-    moduleLoader(() => import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseMxMltAccountModal'))
 );
 const ResetOrUnlinkPasswordModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../ResetOrUnlinkPasswordModal'))
@@ -45,10 +43,6 @@ const ResetEmailModal = React.lazy(() => import(/* webpackChunkName: "reset-emai
 
 const UpdateEmailModal = React.lazy(() => import(/* webpackChunkName: "update-email-modal"  */ '../UpdateEmailModal'));
 
-const CloseUKAccountModal = React.lazy(() =>
-    import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseUKAccountModal')
-);
-
 const WarningScamMessageModal = React.lazy(() =>
     import(/* webpackChunkName: "warning-scam-message" */ '../WarningScamMessageModal')
 );
@@ -64,8 +58,6 @@ const AppModals = ({
     is_welcome_modal_visible,
     is_reality_check_visible,
     is_set_residence_modal_visible,
-    is_close_mx_mlt_account_modal_visible,
-    is_close_uk_account_modal_visible,
     is_logged_in,
     should_show_cooldown_modal,
     should_show_assessment_complete_modal,
@@ -73,6 +65,7 @@ const AppModals = ({
     fetchFinancialAssessment,
     setCFDScore,
     content_flag,
+    is_mt5_notification_modal_visible,
     active_account_landing_company,
     is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible,
@@ -132,10 +125,6 @@ const AppModals = ({
         ComponentToLoad = <TradingAssessmentExistingUser />;
     } else if (is_acuity_modal_open) {
         ComponentToLoad = <AcuityDownloadModal />;
-    } else if (is_close_mx_mlt_account_modal_visible) {
-        ComponentToLoad = <CloseMxMltAccountModal />;
-    } else if (is_close_uk_account_modal_visible) {
-        ComponentToLoad = <CloseUKAccountModal />;
     } else if (is_warning_scam_message_modal_visible) {
         ComponentToLoad = <WarningScamMessageModal />;
     } else if (is_closing_create_real_account_modal) {
@@ -148,6 +137,8 @@ const AppModals = ({
         ComponentToLoad = <RealityCheckModal />;
     } else if (should_show_cooldown_modal) {
         ComponentToLoad = <CooldownWarningModal />;
+    } else if (is_mt5_notification_modal_visible) {
+        ComponentToLoad = <MT5Notification />;
     } else if (should_show_assessment_complete_modal) {
         ComponentToLoad = <CompletedAssessmentModal />;
     } else if (is_deriv_account_needed_modal_visible) {
@@ -176,14 +167,13 @@ export default connect(({ client, ui, traders_hub }) => ({
     is_account_needed_modal_on: ui.is_account_needed_modal_on,
     is_acuity_modal_open: ui.is_acuity_modal_open,
     is_closing_create_real_account_modal: ui.is_closing_create_real_account_modal,
-    is_close_mx_mlt_account_modal_visible: ui.is_close_mx_mlt_account_modal_visible,
-    is_close_uk_account_modal_visible: ui.is_close_uk_account_modal_visible,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     is_logged_in: client.is_logged_in,
     is_reality_check_visible: client.is_reality_check_visible,
     has_maltainvest_account: client.has_maltainvest_account,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
+    is_mt5_notification_modal_visible: traders_hub.is_mt5_notification_modal_visible,
     setCFDScore: client.setCFDScore,
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     should_show_cooldown_modal: ui.should_show_cooldown_modal,

@@ -2,10 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { Loading, Table, Text, ThemedScrollbars } from '@deriv/components';
 import Bowser from 'bowser';
-import { convertDateFormat, isMobile, isDesktop, PlatformContext, WS } from '@deriv/shared';
+import { isMobile, isDesktop, PlatformContext, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
+import moment from 'moment';
 
 const API_FETCH_LIMIT = 50;
 
@@ -20,9 +21,8 @@ const getFormattedData = login_history => {
             /(?<date>[0-9a-zA-Z-]+\s[0-9:]+GMT)[\s](IP=)(?<ip>[\w:.]+)\sIP_COUNTRY=(?<country>([a-zA-Z]{2}))\s(User_AGENT=)(\w.*)(?<name>iPhone|Android)([\W\w]+)\s(?<app>Deriv P2P|Deriv GO)(?<version>[\w\W]+)\s(LANG=)([\w]{2})/
         );
         const date = environment_split[0];
-        const time = environment_split[1].replace('GMT', '');
-        const date_time = convertDateFormat(`${date} ${time}`, 'D-MMMM-YY hh:mm:ss', 'YYYY-MM-DD hh:mm:ss');
-        data[i].date = `${date_time} GMT`;
+        const time = environment_split[1].replace('GMT', ' GMT');
+        data[i].date = `${moment(date).format('YYYY-MM-DD')} ${time}`;
         data[i].action = login_history[i].action === 'login' ? localize('Login') : localize('Logout');
         const user_agent = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
         const ua = mobile_app_UA ? mobile_app_UA.groups : Bowser.getParser(user_agent)?.getBrowser();

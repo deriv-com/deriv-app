@@ -2,6 +2,7 @@ import React from 'react';
 import DerivedMT5 from '../../public/images/mt5-derived.svg';
 import FinancialMT5 from '../../public/images/mt5-financial.svg';
 import SwapFreeMT5 from '../../public/images/mt5-swap-free.svg';
+import MT5CreatePassword from '../MT5CreatePassword';
 import { SecondaryActionButton } from '../SecondaryActionButton';
 import { TradingAccountCard } from '../TradingAccountCard';
 import './MT5List.scss';
@@ -32,6 +33,7 @@ const MT5List: React.FC = () => {
                 <div className='wallets-mt5-list__title'>
                     <h1>Deriv MT5</h1>
                 </div>
+                <MT5CreatePassword />
             </section>
             <div className='wallets-mt5-list__content'>
                 {mt5_mapper.map(account => (

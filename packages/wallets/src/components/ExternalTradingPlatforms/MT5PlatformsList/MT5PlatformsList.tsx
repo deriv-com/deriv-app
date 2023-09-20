@@ -2,9 +2,9 @@ import React from 'react';
 import { useSortedMT5Accounts } from '@deriv/api';
 import { AddedMT5AccountsList } from '../AddedMT5AccountsList';
 import { AvailableMT5AccountsList } from '../AvailableMT5AccountsList';
-import './MT5List.scss';
+import './MT5PlatformsList.scss';
 
-const MT5List: React.FC = () => {
+const MT5PlatformsList: React.FC = () => {
     const { data } = useSortedMT5Accounts();
 
     if (!data) return <span className='wallets-mt5-loader' />;
@@ -35,4 +35,4 @@ const MT5List: React.FC = () => {
     );
 };
 
-export default MT5List;
+export default MT5PlatformsList;

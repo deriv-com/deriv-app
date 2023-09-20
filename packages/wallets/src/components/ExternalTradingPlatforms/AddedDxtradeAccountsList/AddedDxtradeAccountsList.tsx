@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDxtradeAccountsList } from '@deriv/api';
-import DerivX from '../../public/images/derivx.svg';
-import { PrimaryActionButton } from '../PrimaryActionButton';
-import { TradingAccountCard } from '../TradingAccountCard';
+import DerivX from '../../../public/images/derivx.svg';
+import { PrimaryActionButton } from '../../PrimaryActionButton';
+import { TradingAccountCard } from '../../TradingAccountCard';
 import './AddedDxtradeAccountsList.scss';
 
 const AddedDxtradeAccountsList: React.FC = () => {

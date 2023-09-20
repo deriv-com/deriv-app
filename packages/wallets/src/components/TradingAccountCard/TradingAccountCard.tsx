@@ -2,8 +2,8 @@ import React from 'react';
 import './TradingAccountCard.scss';
 
 type TProps = {
-    leading: () => React.ReactNode;
-    trailing: () => React.ReactNode;
+    leading?: () => React.ReactNode;
+    trailing?: () => React.ReactNode;
 };
 
 const TradingAccountCard: React.FC<React.PropsWithChildren<TProps>> = ({ children, leading, trailing }) => {

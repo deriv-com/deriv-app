@@ -8,6 +8,7 @@ const useCreateOtherCFDAccount = () => {
     const { data, ...rest } = useRequest('trading_platform_new_account', {
         onSuccess: () => {
             invalidate('trading_platform_accounts');
+            invalidate('service_token');
         },
     });
 

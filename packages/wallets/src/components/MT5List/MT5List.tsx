@@ -1,64 +1,37 @@
 import React from 'react';
-import DerivedMT5 from '../../public/images/mt5-derived.svg';
-import FinancialMT5 from '../../public/images/mt5-financial.svg';
-import SwapFreeMT5 from '../../public/images/mt5-swap-free.svg';
-import { SecondaryActionButton } from '../SecondaryActionButton';
-import { TradingAccountCard } from '../TradingAccountCard';
+import { useSortedMT5Accounts } from '@deriv/api';
+import { AddedMT5AccountsList } from '../AddedMT5AccountsList';
+import { AvailableMT5AccountsList } from '../AvailableMT5AccountsList';
 import './MT5List.scss';
 
-const mt5_mapper = [
-    {
-        title: 'Derived',
-        description: 'This account offers CFDs on derived instruments.',
-        icon: <DerivedMT5 />,
-    },
-    {
-        title: 'Financial',
-        description: 'This account offers CFDs on financial instruments.',
-        icon: <FinancialMT5 />,
-    },
-    {
-        title: 'Swap-Free',
-        description:
-            'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs',
-        icon: <SwapFreeMT5 />,
-    },
-];
-
 const MT5List: React.FC = () => {
+    const { data } = useSortedMT5Accounts();
+
+    if (!data) return <span className='wallets-mt5-loader' />;
+
     return (
-        <>
+        <React.Fragment>
             <section className='wallets-mt5-list'>
                 <div className='wallets-mt5-list__title'>
                     <h1>Deriv MT5</h1>
                 </div>
             </section>
             <div className='wallets-mt5-list__content'>
-                {mt5_mapper.map(account => (
-                    <TradingAccountCard
-                        {...account}
-                        key={`mt5-platform-list--${account.title}`}
-                        leading={() => (
-                            <div className='wallets-options-and-multipliers-listing__content__icon'>{account.icon}</div>
-                        )}
-                        trailing={() => (
-                            <SecondaryActionButton>
-                                <p className='wallets-other-cfd__text'>Get</p>
-                            </SecondaryActionButton>
-                        )}
-                    >
-                        <div className='wallets-options-and-multipliers-listing__content__details'>
-                            <p className='wallets-options-and-multipliers-listing__content__details-title'>
-                                {account.title}
-                            </p>
-                            <p className='wallets-options-and-multipliers-listing__content__details-description'>
-                                {account.description}
-                            </p>
-                        </div>
-                    </TradingAccountCard>
-                ))}
+                {data?.map((account, index) => {
+                    if (account.is_added)
+                        return (
+                            <AddedMT5AccountsList key={`added-mt5-list${account.loginid}-${index}`} account={account} />
+                        );
+
+                    return (
+                        <AvailableMT5AccountsList
+                            key={`available-mt5-list${account.name}-${index}`}
+                            account={account}
+                        />
+                    );
+                })}
             </div>
-        </>
+        </React.Fragment>
     );
 };
 

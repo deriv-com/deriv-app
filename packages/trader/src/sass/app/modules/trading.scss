@@ -140,7 +140,8 @@
                 align-items: center;
                 gap: 0.8rem;
                 .dc-popover__target {
-                    height: 1.6rem;
+                    height: 1.8rem;
+                    border-bottom: 1px dotted var(--text-general);
                 }
             }
         }
@@ -548,6 +549,10 @@
         }
     }
     &__amount {
+        .trade-container__input:disabled {
+            color: var(--text-general);
+            opacity: 0.5;
+        }
         &--multipliers {
             & .trade-container__input {
                 left: 3.6rem;
@@ -823,6 +828,27 @@
                     height: 86px;
                 }
             }
+        }
+    }
+    &__sell-button {
+        padding: 1.6rem 0.8rem;
+        &__stake {
+            padding-right: 0.5rem;
+        }
+        .dc-btn--sell {
+            margin-bottom: 0.5rem;
+            @include mobile {
+                margin-bottom: 1rem;
+            }
+        }
+        @include mobile {
+            padding: 0;
+            margin-bottom: 0;
+        }
+    }
+    &__notification {
+        @include mobile {
+            margin-bottom: 0.6rem;
         }
     }
     &__loading {

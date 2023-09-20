@@ -6,7 +6,7 @@ const MT5CreatePassword = () => {
     return (
         <div className='wallets-create-password'>
             <MT5PasswordIcon />
-            <h1 className='wallets-create-password-title'>Create a Deriv MT5 password</h1>
+            <div className='wallets-create-password-title'>Create a Deriv MT5 password</div>
             <span className='wallets-create-password-subtitle'>
                 You can use this password for all your Deriv MT5 accounts.
             </span>

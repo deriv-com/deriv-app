@@ -113,7 +113,7 @@ const AdErrorTooltipModal = ({ visibility_status = [], account_currency = '', re
         ));
 
     return (
-        <Modal className='p2p-my-ads__modal-error' is_open={is_modal_open} small has_close_icon={false}>
+        <Modal className='ad-error-tooltip-modal' is_open={is_modal_open} small has_close_icon={false}>
             <ThemedScrollbars height={'calc(100vh - 8.4rem)'}>
                 <Modal.Body>
                     <Text

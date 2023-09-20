@@ -132,7 +132,6 @@ export default class GeneralStore extends BaseStore {
             showCompletedOrderNotification: action.bound,
             handleTabClick: action.bound,
             onMount: action.bound,
-            subscribeToLocalCurrency: action.bound,
             onUnmount: action.bound,
             onNicknamePopupClose: action.bound,
             redirectTo: action.bound,
@@ -240,6 +239,7 @@ export default class GeneralStore extends BaseStore {
                         );
                     }
                 } else {
+                    this.hideModal();
                     const { code, message } = response.error;
                     this.setErrorCode(code);
                     this.setBlockUnblockUserError(message);
@@ -511,47 +511,12 @@ export default class GeneralStore extends BaseStore {
                     },
                     [this.setP2pOrderList]
                 ),
-                exchange_rate_subscription: subscribeWS(
-                    {
-                        exchange_rates: 1,
-                        base_currency: this.external_stores.client.currency,
-                        subscribe: 1,
-                        target_currency:
-                            this.root_store.buy_sell_store.selected_local_currency ??
-                            this.external_stores.client.local_currency_config?.currency,
-                    },
-                    [this.root_store.floating_rate_store.fetchExchangeRate]
-                ),
             };
-
-            this.disposeLocalCurrencyReaction = reaction(
-                () => [this.root_store.buy_sell_store.local_currency, this.active_index],
-                () => {
-                    this.subscribeToLocalCurrency();
-                }
-            );
 
             if (this.ws_subscriptions) {
                 this.setIsLoading(false);
             }
         });
-    }
-
-    subscribeToLocalCurrency() {
-        const { floating_rate_store, buy_sell_store } = this.root_store;
-        const client_currency = this.external_stores.client.local_currency_config?.currency;
-
-        this.ws_subscriptions?.exchange_rate_subscription?.unsubscribe?.();
-        this.ws_subscriptions.exchange_rate_subscription = subscribeWS(
-            {
-                exchange_rates: 1,
-                base_currency: this.external_stores.client.currency,
-                subscribe: 1,
-                target_currency:
-                    this.active_index > 0 ? client_currency : buy_sell_store.local_currency ?? client_currency,
-            },
-            [floating_rate_store.fetchExchangeRate]
-        );
     }
 
     onUnmount() {
@@ -562,10 +527,6 @@ export default class GeneralStore extends BaseStore {
 
         if (typeof this.disposeUserBarredReaction === 'function') {
             this.disposeUserBarredReaction();
-        }
-
-        if (typeof this.disposeLocalCurrencyReaction === 'function') {
-            this.disposeLocalCurrencyReaction();
         }
 
         this.setActiveIndex(0);
@@ -743,7 +704,6 @@ export default class GeneralStore extends BaseStore {
                     float_rate_adverts,
                     float_rate_offset_limit,
                     fixed_rate_adverts_end_date,
-                    override_exchange_rate,
                     maximum_order_amount,
                 } = response.website_status.p2p_config;
                 my_ads_store.setMaximumOrderAmount(maximum_order_amount);
@@ -752,7 +712,6 @@ export default class GeneralStore extends BaseStore {
                 floating_rate_store.setFloatRateOffsetLimit(float_rate_offset_limit);
                 floating_rate_store.setFixedRateAdvertsEndDate(fixed_rate_adverts_end_date || null);
                 floating_rate_store.setApiErrorMessage(null);
-                if (override_exchange_rate) floating_rate_store.setOverrideExchangeRate(override_exchange_rate);
             }
         });
     }
@@ -951,15 +910,7 @@ export default class GeneralStore extends BaseStore {
                 return !v(values[key]);
             });
 
-            if (error_index !== -1) {
-                switch (key) {
-                    case 'nickname':
-                    default: {
-                        errors[key] = nickname_messages[error_index];
-                        break;
-                    }
-                }
-            }
+            if (error_index !== -1) errors[key] = nickname_messages[error_index];
         });
 
         return errors;

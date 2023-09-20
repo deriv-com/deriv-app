@@ -7,7 +7,7 @@ import { localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { removeKeyValue } from '../../../utils/settings';
-import { tour_type } from '../joyride-config';
+import { tour_type } from '../dbot-tours/utils';
 
 type TGuideContent = {
     guide_list: [];

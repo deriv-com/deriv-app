@@ -1,10 +1,8 @@
-import { useStore } from '@deriv/stores';
+import { useMT5AccountsList } from '@deriv/api';
 import { Jurisdiction, getFormattedJurisdictionCode } from '@deriv/shared';
 
 const useMT5SVGEligibleToMigrate = () => {
-    const { client } = useStore();
-    const { mt5_login_list } = client;
-
+    const { data: mt5_login_list = [] } = useMT5AccountsList();
     const svg_accounts_to_migrate = mt5_login_list.filter(
         account => account.landing_company_short === 'svg' && !!account.eligible_to_migrate
     );

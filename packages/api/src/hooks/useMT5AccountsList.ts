@@ -25,6 +25,9 @@ const useMT5AccountsList = () => {
             ...getAccountInfo(account.login),
             loginid: account.login,
             platform: 'mt5',
+            eligible_to_migrate: {
+                financial: 'bvi', // TODO: added this dummy data for testing, remove once BE is done
+            },
         }));
     }, [mt5_accounts?.mt5_login_list, wallet?.linked_to]);
 

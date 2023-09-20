@@ -1,15 +1,8 @@
 import React from 'react';
 import { useMT5AccountsList } from '@deriv/api';
 
-// TODO: Remove this todo once 'open_order_position_status' flag is available in the BE response and in type TSocketResponseData<"mt5_login_list">
-const TMT5LoginAccountList = [
-    'account_type',
-    'balance',
-    'currency',
-    'display_balance',
-    'login',
-    'open_order_position_status',
-] as const;
+// TODO: Add 'open_order_position_status' flag once available in the BE response and in type TSocketResponseData<"mt5_login_list">
+const TMT5LoginAccountList = ['account_type', 'balance', 'currency', 'display_balance', 'login'] as const;
 type TStatus = typeof TMT5LoginAccountList[number];
 
 /**

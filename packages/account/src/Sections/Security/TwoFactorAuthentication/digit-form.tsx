@@ -6,25 +6,23 @@ import { useSendUserOTP } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import { useStore } from '@deriv/stores';
 
-type TDigitForm = {
-    // is_enabled: boolean;
-    setTwoFAStatus: (status: boolean) => void;
-    // setTwoFAChangedStatus: (status: boolean) => void;
-    // is_language_changing: boolean;
-};
+// type TDigitForm = {
+//     setTwoFAStatus: (status: boolean) => void;
+// };
 
 type TDigitFormValues = {
     digit_code: string;
 };
 
-const DigitForm = ({ setTwoFAStatus }: TDigitForm) => {
+// { setTwoFAStatus }: TDigitForm
+const DigitForm = () => {
     const { client, common } = useStore();
     const { is_language_changing } = common;
-    // const { has_enabled_two_fa: is_enabled, setTwoFAChangedStatus, setTwoFAStatus } = client;
-    const { has_enabled_two_fa: is_enabled, setTwoFAChangedStatus } = client;
+    const { has_enabled_two_fa, setTwoFAChangedStatus, setTwoFAStatus } = client;
+    // const { setTwoFAChangedStatus } = client;
 
     const { is_TwoFA_enabled, error, isSuccess, sendUserOTP } = useSendUserOTP();
-    const button_text = is_enabled ? localize('Disable') : localize('Enable');
+    const button_text = has_enabled_two_fa ? localize('Disable') : localize('Enable');
     const formik_ref = React.useRef<FormikProps<TDigitFormValues>>(null);
 
     const initial_form = {
@@ -74,7 +72,8 @@ const DigitForm = ({ setTwoFAStatus }: TDigitForm) => {
     };
 
     const handleSubmit = async (values: TDigitFormValues) => {
-        const action = is_enabled ? 'disable' : 'enable';
+        // using stored state value as api call is not made yet so is_TwoFA_enabled=false always at this line
+        const action = has_enabled_two_fa ? 'disable' : 'enable';
         sendUserOTP({ totp_action: action, otp: values.digit_code });
     };
 

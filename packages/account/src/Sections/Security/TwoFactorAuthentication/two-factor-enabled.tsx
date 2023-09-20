@@ -4,11 +4,12 @@ import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import DigitForm from './digit-form';
 
-type TTwoFactorEnabled = {
-    setTwoFAStatus: (status: boolean) => void;
-};
+// type TTwoFactorEnabled = {
+//     setTwoFAStatus: (status: boolean) => void;
+// };
+// { setTwoFAStatus }: TTwoFactorEnabled
 
-const TwoFactorEnabled = ({ setTwoFAStatus }: TTwoFactorEnabled) => {
+const TwoFactorEnabled = () => {
     return (
         <ThemedScrollbars is_bypassed={isMobile()} className='two-factor__scrollbars'>
             <div className='two-factor__wrapper--enabled'>
@@ -25,7 +26,8 @@ const TwoFactorEnabled = ({ setTwoFAStatus }: TTwoFactorEnabled) => {
                     )}
                 </Text>
                 <div data-testid='digitform_2fa_enabled'>
-                    <DigitForm setTwoFAStatus={setTwoFAStatus} />
+                    <DigitForm />
+                    {/* setTwoFAStatus={setTwoFAStatus} */}
                 </div>
             </div>
         </ThemedScrollbars>

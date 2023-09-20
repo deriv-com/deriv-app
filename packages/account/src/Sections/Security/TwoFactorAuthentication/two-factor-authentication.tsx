@@ -23,15 +23,18 @@ const TwoFactorAuthentication = observer(() => {
         isSuccess: is_success_secret,
         isLoading: is_loading_secret,
     } = useGetSecretKey();
-    // const { email_address, is_switching, has_enabled_two_fa } = client;
-    const { email_address, is_switching } = client;
+    const { email_address, is_switching, has_enabled_two_fa } = client;
+    // const { email_address, is_switching } = client;
     const [is_loading, setLoading] = React.useState(true);
     const [error_message, setErrorMessage] = React.useState('');
     const [secret_key, setSecretKey] = React.useState('');
     const [qr_secret_key, setQrSecretKey] = React.useState('');
-    const [has_enabled_two_fa, setTwoFAStatus] = React.useState(false);
+    // const [has_enabled_two_fa, setTwoFAStatus] = React.useState(is_TwoFA_enabled);
+    // const [x, setX] = React.useState(is_TwoFA_enabled);
 
     const getDigitStatus = React.useCallback(() => {
+        // console.log('has_enabled_two_fa', has_enabled_two_fa);
+        // console.log('is_TwoFA_enabled', is_TwoFA_enabled);
         getTwoFA();
     }, [getTwoFA]);
 
@@ -50,6 +53,8 @@ const TwoFactorAuthentication = observer(() => {
 
     React.useEffect(() => {
         if (is_success_two_fa) {
+            // console.log('is_TwoFA_enabled is_success_two_fa', is_TwoFA_enabled);
+            // setTwoFAStatus(is_TwoFA_enabled);
             if (!is_TwoFA_enabled) {
                 generateQrCode();
             }
@@ -95,13 +100,13 @@ const TwoFactorAuthentication = observer(() => {
         <section className='two-factor'>
             <div className='two-factor__wrapper'>
                 {has_enabled_two_fa ? (
-                    <TwoFactorEnabled setTwoFAStatus={setTwoFAStatus} />
+                    <TwoFactorEnabled />
                 ) : (
                     <TwoFactorDisabled
                         secret_key={secret_key}
                         qr_secret_key={qr_secret_key}
                         is_loading_secret={is_loading_secret}
-                        setTwoFAStatus={setTwoFAStatus}
+                        // setTwoFAStatus={setTwoFAStatus}
                     />
                 )}
             </div>

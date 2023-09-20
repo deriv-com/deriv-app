@@ -309,6 +309,7 @@ const ChartTrade = observer(props => {
         language: current_language.toLowerCase(),
         position: is_chart_layout_default ? 'bottom' : 'left',
         theme: is_dark_mode_on ? 'dark' : 'light',
+        ...(is_accumulator ? { whitespace: 190, minimumLeftBars: isMobile() ? 3 : undefined } : {}),
     };
 
     const { current_spot, current_spot_time } = accumulator_barriers_data || {};
@@ -390,6 +391,7 @@ const ChartTrade = observer(props => {
             shouldFetchTradingTimes={!end_epoch}
             hasAlternativeSource={has_alternative_source}
             getMarketsOrder={getMarketsOrder}
+            should_zoom_out_on_yaxis={is_accumulator}
             yAxisMargin={{
                 top: isMobile() ? 76 : 106,
             }}

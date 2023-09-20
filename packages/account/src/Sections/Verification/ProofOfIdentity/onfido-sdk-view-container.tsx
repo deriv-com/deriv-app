@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import countries from 'i18n-iso-countries';
 import { init, SdkHandle, SdkResponse, SupportedLanguages } from 'onfido-sdk-ui';
 import { CSSTransition } from 'react-transition-group';
 import { useNotificationEvent, useServiceToken, useSettings } from '@deriv/api';
@@ -11,6 +10,7 @@ import getOnfidoPhrases from '../../../Constants/onfido-phrases';
 import MissingPersonalDetails from '../../../Components/poi/missing-personal-details';
 import PoiConfirmWithExampleFormContainer from '../../../Components/poi/poi-confirm-with-example-form-container';
 import OnfidoSdkView from './onfido-sdk-view';
+import { convertAlpha2toAlpha3, convertAlpha3toAlpha2 } from '../../../Helpers/utils';
 
 type TAPIError = {
     code?: string;
@@ -44,18 +44,25 @@ const OnfidoSdkViewContainer = observer(
         const [is_confirmed, setIsConfirmed] = React.useState(false);
         const [is_onfido_initialized, setIsOnfidoInitialized] = React.useState(false);
 
+        const { data: account_settings } = useSettings();
+
+        const { send, isSuccess: isNotified } = useNotificationEvent();
         const { common, ui } = useStore();
         const { current_language } = common;
         const { is_mobile } = ui;
 
         // IDV country code - Alpha ISO2. Onfido country code - Alpha ISO3
-        // Ensures that any form of country code passed here is supported.
-        const onfido_country_code =
-            country_code.length !== 3 ? countries.alpha2ToAlpha3(country_code.toUpperCase()) : country_code;
+        const onfido_country_code = convertAlpha2toAlpha3(country_code);
 
         // Service Token country code - Alpha ISO2
-        const token_country_code =
-            country_code.length !== 2 ? countries.alpha3ToAlpha2(country_code.toUpperCase()) : country_code;
+        const token_country_code = convertAlpha3toAlpha2(country_code);
+
+        const { service_token, isSuccess, isError, error, isLoading } = useServiceToken({
+            service: 'onfido',
+            country: token_country_code,
+        });
+
+        const onfido_init = React.useRef<SdkHandle>();
 
         // Onfido `document_supported` checks are made for an array of string.
         // Ensure that `document_supported` passed respects this no the matter source.
@@ -63,17 +70,7 @@ const OnfidoSdkViewContainer = observer(
             ? documents_supported
             : Object.keys(documents_supported).map(d => documents_supported[d].display_name);
 
-        const { data: account_settings } = useSettings();
-
-        const { send, isSuccess: isNotified } = useNotificationEvent();
-
-        const { service_token, isSuccess, isError, error, isLoading } = useServiceToken({
-            service: 'onfido',
-            country: token_country_code,
-        });
         let component_to_load: React.ReactNode;
-
-        const onfido_init = React.useRef<SdkHandle>();
 
         const onComplete = React.useCallback(
             (data: Omit<SdkResponse, 'data'> & { data?: { id?: string } }) => {

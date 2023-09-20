@@ -1,4 +1,5 @@
 import React from 'react';
+import countries from 'i18n-iso-countries';
 import { filterObjProperties, toMoment, validLength, validName, getIDVNotApplicableOption } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
@@ -169,3 +170,22 @@ export const shouldHideHelperImage = (document_id: string) => document_id === ID
 
 export const isServerError = (error: unknown): error is TServerError =>
     typeof error === 'object' && error !== null && 'code' in error;
+
+/**
+ *  Returns the alpha 3 code for a given country code
+ * @name convertAlpha2toAlpha3
+ * @param country_code  - country code
+ * @returns alpha 3 code
+ */
+export const convertAlpha2toAlpha3 = (country_code: string) =>
+    country_code.length !== 3 ? countries.alpha2ToAlpha3(country_code.toUpperCase()) : country_code;
+
+/**
+ * Returns the alpha 2 code for a given country code
+ * @name convertAlpha3toAlpha2
+ * @param country_code - country code
+ * @returns alpha 2 code
+ */
+
+export const convertAlpha3toAlpha2 = (country_code: string) =>
+    country_code.length !== 2 ? countries.alpha3ToAlpha2(country_code.toUpperCase()) : country_code;

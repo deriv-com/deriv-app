@@ -6,7 +6,7 @@ import { WalletListCardIcon } from '../WalletListCardIcon';
 import './WalletCard.scss';
 
 type TProps = {
-    account: ReturnType<typeof useWalletAccountsList>['data'][number];
+    account: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
 };
 
 const WalletCard: React.FC<TProps> = ({ account }) => {

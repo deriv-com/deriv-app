@@ -66,6 +66,17 @@
     }
 }
 
+.mobile-widget__item-popover,
+.accu-info-display__popover {
+    max-width: 28rem;
+}
+.accu-info-display__popover {
+    @include mobile {
+        max-width: 33rem;
+        margin-right: 1rem;
+    }
+}
+
 .react-tiny-popover-container {
     &--disabled-pointer-event {
         pointer-events: none;

@@ -1,7 +1,7 @@
-import React from 'react';
-import useWalletAccountsList from './useWalletAccountsList';
-import useCurrencyConfig from './useCurrencyConfig';
+import { useMemo } from 'react';
 import useAllAvailableAccounts from './useAllAvailableAccounts';
+import useCurrencyConfig from './useCurrencyConfig';
+import useWalletAccountsList from './useWalletAccountsList';
 
 const useAvailableWallets = () => {
     const { data: account_type_data } = useAllAvailableAccounts();
@@ -9,7 +9,7 @@ const useAvailableWallets = () => {
     const { getConfig } = useCurrencyConfig();
 
     /** Get the available wallets for the wallet account type */
-    const modified_available_wallets = React.useMemo(() => {
+    const modified_available_wallets = useMemo(() => {
         if (!account_type_data) return;
         const { crypto, doughflow } = account_type_data?.wallet || {};
         const crypto_currencies = crypto?.currencies;
@@ -35,11 +35,11 @@ const useAvailableWallets = () => {
                 is_added: false,
             }));
 
-        return [...available_wallets, ...modified_wallets];
+        return [...available_wallets, ...(modified_wallets || [])];
     }, [account_type_data, added_wallets]);
 
     /** Sort the available wallets by fiat, crypto, then virtual */
-    const sorted_available_wallets = React.useMemo(() => {
+    const sorted_available_wallets = useMemo(() => {
         if (!modified_available_wallets) return;
 
         const getConfigIsCrypto = (currency: string) => getConfig(currency)?.is_crypto;

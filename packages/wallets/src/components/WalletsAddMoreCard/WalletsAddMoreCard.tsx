@@ -10,7 +10,11 @@ const WalletsAddMoreCard = ({ currency, is_added, landing_company_name }: TWalle
     return (
         <div className='wallets-add-more__card'>
             <WalletGradientBackground currency={currency || 'USD'} type='card' device='mobile' has_shine>
-                <WalletsAddMoreCardBanner is_added={is_added} landing_company_name={landing_company_name ?? ''} />
+                <WalletsAddMoreCardBanner
+                    currency={currency || 'USD'}
+                    is_added={is_added}
+                    landing_company_name={landing_company_name ?? ''}
+                />
             </WalletGradientBackground>
             <WalletsAddMoreCardContent currency={currency ?? ''} />
         </div>

@@ -73,7 +73,7 @@ export const toGMTFormat = (time?: moment.MomentInput) =>
         .utc()
         .format('YYYY-MM-DD HH:mm:ss [GMT]');
 
-export const formatDate = (date?: moment.MomentInput, date_format = 'YYYY-MM-DD') => toMoment(date).format(date_format);
+export const formatDate = (date?: moment.MomentInput, date_format = 'YYYY-MM-DD', should_format_null = true) => (!should_format_null && date === null) ? null : toMoment(date).format(date_format);
 
 export const formatTime = (epoch: number | string, time_format = 'HH:mm:ss [GMT]') =>
     toMoment(epoch).format(time_format);

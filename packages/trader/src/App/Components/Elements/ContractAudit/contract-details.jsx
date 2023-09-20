@@ -17,6 +17,7 @@ import {
     isUserCancelled,
     toGMTFormat,
 } from '@deriv/shared';
+import { RudderStack } from '@deriv/analytics';
 import {
     addCommaToNumber,
     getBarrierLabel,
@@ -60,6 +61,14 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
         if (isCancellationExpired(contract_info)) return localize('Deal cancellation (expired)');
         return localize('Deal cancellation (active)');
     };
+
+    React.useEffect(() => {
+        RudderStack.track('ce_reports_form', {
+            action: 'open_contract_details',
+            form_name: 'default',
+            form_source : 'deriv_trader',
+        });
+    }, []);
 
     return (
         <ThemedScrollbars is_bypassed={isMobile()}>

@@ -32,6 +32,7 @@ import {
     TContractStore,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { RudderStack } from '@deriv/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import { getContractDurationType } from '../Helpers/market-underlying';
 
@@ -82,17 +83,19 @@ const EmptyPlaceholderWrapper = ({ is_empty, component_icon, children }: TEmptyP
 );
 
 type TOpenPositionsTable = Pick<TDataList, 'getRowAction'> & {
+    accumulator_rate: string;
+    active_positions: TPortfolioStore['active_positions'];
     className: string;
     columns: Record<string, unknown>[];
     component_icon: string;
+    contract_type_value: string;
     currency: string;
-    active_positions: TPortfolioStore['active_positions'];
+    is_empty: boolean;
     is_loading: boolean;
     mobileRowRenderer: TRowRenderer;
     preloaderCheck: (item: TTotals) => boolean;
     row_size: number;
     totals: TTotals;
-    is_empty: boolean;
 };
 
 type TTotals = {
@@ -277,66 +280,80 @@ const MobileRowRenderer = ({
 };
 
 export const OpenPositionsTable = ({
+    accumulator_rate,
+    active_positions,
     className,
     columns,
     component_icon,
+    contract_type_value,
     currency,
-    active_positions,
-    is_loading,
     getRowAction,
+    is_empty,
+    is_loading,
     mobileRowRenderer,
     preloaderCheck,
     row_size,
     totals,
-    is_empty,
-}: TOpenPositionsTable) => (
-    <React.Fragment>
-        {is_loading ? (
-            <PlaceholderComponent
-                is_loading={is_loading}
-                empty_message_component={EmptyTradeHistoryMessage}
-                component_icon={component_icon}
-                localized_message={localize('You have no open positions yet.')}
-            />
-        ) : (
-            currency && (
-                <div className='reports__content'>
-                    <DesktopWrapper>
-                        <EmptyPlaceholderWrapper component_icon={component_icon} is_empty={is_empty}>
-                            <DataTable
-                                className={className}
-                                columns={columns}
-                                preloaderCheck={preloaderCheck}
-                                footer={totals}
-                                data_source={active_positions}
-                                getRowAction={getRowAction}
-                                getRowSize={() => row_size}
-                                content_loader={ReportsTableRowLoader}
-                            >
-                                <PlaceholderComponent is_loading={is_loading} />
-                            </DataTable>
-                        </EmptyPlaceholderWrapper>
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <EmptyPlaceholderWrapper component_icon={component_icon} is_empty={is_empty}>
-                            <DataList
-                                className={className}
-                                data_source={active_positions}
-                                footer={totals}
-                                rowRenderer={mobileRowRenderer}
-                                getRowAction={getRowAction}
-                                row_gap={8}
-                                keyMapper={item => item?.id}
-                            >
-                                <PlaceholderComponent is_loading={is_loading} />
-                            </DataList>
-                        </EmptyPlaceholderWrapper>
-                    </MobileWrapper>
-                </div>
-            )
-        )}
-    </React.Fragment>
-);
+}: TOpenPositionsTable) => {
+    React.useEffect(() => {
+        RudderStack.track('ce_reports_form', {
+            action: 'choose_report_type',
+            form_name: 'default',
+            subform_name: 'open_positions_form',
+            trade_type_filter: contract_type_value,
+            growth_type_filter: accumulator_rate,
+        });
+    }, []);
+
+    return (
+        <React.Fragment>
+            {is_loading ? (
+                <PlaceholderComponent
+                    is_loading={is_loading}
+                    empty_message_component={EmptyTradeHistoryMessage}
+                    component_icon={component_icon}
+                    localized_message={localize('You have no open positions yet.')}
+                />
+            ) : (
+                currency && (
+                    <div className='reports__content'>
+                        <DesktopWrapper>
+                            <EmptyPlaceholderWrapper component_icon={component_icon} is_empty={is_empty}>
+                                <DataTable
+                                    className={className}
+                                    columns={columns}
+                                    preloaderCheck={preloaderCheck}
+                                    footer={totals}
+                                    data_source={active_positions}
+                                    getRowAction={getRowAction}
+                                    getRowSize={() => row_size}
+                                    content_loader={ReportsTableRowLoader}
+                                >
+                                    <PlaceholderComponent is_loading={is_loading} />
+                                </DataTable>
+                            </EmptyPlaceholderWrapper>
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <EmptyPlaceholderWrapper component_icon={component_icon} is_empty={is_empty}>
+                                <DataList
+                                    className={className}
+                                    data_source={active_positions}
+                                    footer={totals}
+                                    rowRenderer={mobileRowRenderer}
+                                    getRowAction={getRowAction}
+                                    row_gap={8}
+                                    keyMapper={item => item?.id}
+                                >
+                                    <PlaceholderComponent is_loading={is_loading} />
+                                </DataList>
+                            </EmptyPlaceholderWrapper>
+                        </MobileWrapper>
+                    </div>
+                )
+            )}
+        </React.Fragment>
+    );
+};
 
 const getRowAction: TDataList['getRowAction'] = row_obj =>
     row_obj.is_unsupported
@@ -486,8 +503,10 @@ const OpenPositions = ({
     const [contract_type_value, setContractTypeValue] = React.useState(
         contract_types.find(type => type.is_default)?.text || localize('Options')
     );
+    const prev_contract_type_value = usePrevious(contract_type_value);
     const accumulator_rates = [localize('All growth rates'), '1%', '2%', '3%', '4%', '5%'];
     const [accumulator_rate, setAccumulatorRate] = React.useState(accumulator_rates[0]);
+    const prev_accumulator_rate = usePrevious(accumulator_rate);
     const is_accumulator_selected = contract_type_value === contract_types[2].text;
     const is_multiplier_selected = contract_type_value === contract_types[1].text;
     const show_accu_in_dropdown = !is_eu && is_virtual;
@@ -532,6 +551,28 @@ const OpenPositions = ({
         checkForAccuAndMultContracts(previous_active_positions);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [previous_active_positions]);
+
+    React.useEffect(() => {
+        if (prev_contract_type_value) {
+            RudderStack.track('ce_reports_form', {
+                action: 'filter_trade_type',
+                form_name: 'default',
+                subform_name: 'open_positions_form',
+                trade_type_filter: contract_type_value,
+            });
+        }
+    }, [contract_type_value]);
+
+    React.useEffect(() => {
+        if (prev_accumulator_rate) {
+            RudderStack.track('ce_reports_form', {
+                action: 'filter_growth_rate',
+                form_name: 'default',
+                subform_name: 'open_positions_form',
+                growth_type_filter: accumulator_rate,
+            });
+        }
+    }, [accumulator_rate]);
 
     const checkForAccuAndMultContracts = (prev_active_positions: TPortfolioStore['active_positions'] = []) => {
         if (active_positions === prev_active_positions) return;
@@ -588,12 +629,14 @@ const OpenPositions = ({
     );
 
     const shared_props = {
+        accumulator_rate,
         active_positions: active_positions_filtered,
         component_icon,
+        contract_type_value,
         currency,
+        getRowAction,
         is_loading,
         mobileRowRenderer,
-        getRowAction,
         preloaderCheck: isPurchaseReceived,
         totals: active_positions_filtered_totals,
     };

@@ -1,14 +1,16 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, DataList, DataTable, Text, Clipboard } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, DataList, DataTable, Text, Clipboard, usePrevious } from '@deriv/components';
 import {
     extractInfoFromShortcode,
-    isForwardStarting,
-    getUnsupportedContracts,
+    formatDate,
     getContractPath,
     getSupportedContracts,
+    getUnsupportedContracts,
+    isForwardStarting,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { RudderStack } from '@deriv/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import { connect } from 'Stores/connect';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
@@ -178,13 +180,48 @@ const Statement = ({
     onMount,
     onUnmount,
 }: TStatement) => {
+    const prev_action_type = usePrevious(action_type);
+    const prev_date_from = usePrevious(date_from);
+    const prev_date_to = usePrevious(date_to);
+
     React.useEffect(() => {
         onMount();
+        RudderStack.track('ce_reports_form', {
+            action: 'choose_report_type',
+            form_name: 'default',
+            subform_name: 'statement_form',
+            transaction_type_filter: action_type,
+            start_date_filter: formatDate(date_from, 'DD/MM/YYYY', false),
+            end_date_filter: formatDate(date_to, 'DD/MM/YYYY', false),
+        });
         return () => {
             onUnmount();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        if (prev_action_type) {
+            RudderStack.track('ce_reports_form', {
+                action: 'filter_transaction_type',
+                form_name: 'default',
+                subform_name: 'statement_form',
+                transaction_type_filter: action_type,
+            });
+        }
+    }, [action_type]);
+
+    React.useEffect(() => {
+        if (prev_date_from !== undefined && prev_date_to !== undefined) {
+            RudderStack.track('ce_reports_form', {
+                action: 'filter_dates',
+                form_name: 'default',
+                subform_name: 'statement_form',
+                start_date_filter: formatDate(date_from, 'DD/MM/YYYY', false),
+                end_date_filter: formatDate(date_to, 'DD/MM/YYYY', false),
+            });
+        }
+    }, [date_to, date_from]);
 
     if (error) return <p>{error}</p>;
 

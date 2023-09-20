@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import QRCode from 'qrcode.react';
 import { useAuthorize, useDepositCryptoAddress } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
+import { Loader } from '../Loader';
 import WalletClipboard from '../WalletClipboard/WalletClipboard';
 import './WalletDepositCryptoAddress.scss';
 
@@ -16,7 +17,12 @@ const WalletDepositCryptoAddress = () => {
         }
     }, [isAuthorizeSuccess, mutate]);
 
-    if (isLoading) return <p>Loading...</p>;
+    if (isLoading)
+        return (
+            <div className='wallets-deposit-crypto-address__loader'>
+                <Loader />
+            </div>
+        );
 
     return (
         <div className='wallets-deposit-crypto-address'>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api';
+import useCashierParam, { TCashierParams } from '../../hooks/useCashierParam';
 import useDevice from '../../hooks/useDevice';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletListCardBadge } from '../WalletListCardBadge';
@@ -11,14 +12,10 @@ type TProps = {
     data: ReturnType<typeof useActiveWalletAccount>['data'];
 };
 
-const tabs = [
-    { name: 'deposit', link: '?&active-cashier-tab=deposit' },
-    { name: 'withdraw', link: '?&active-cashier-tab=withdraw' },
-    { name: 'transfer', link: '?&active-cashier-tab=transfer' },
-    { name: 'transactions', link: '?&active-cashier-tab=transactions' },
-];
+const tabs = ['Deposit', 'Withdraw', 'Transfer', 'Transactions'];
 
 const WalletCashierHeader: React.FC<TProps> = ({ data }) => {
+    const getCashierParam = useCashierParam();
     const { is_mobile } = useDevice();
     const history = useHistory();
     const { currency, currency_config, display_balance, landing_company_name, wallet_currency_type } = data || {};
@@ -37,12 +34,6 @@ const WalletCashierHeader: React.FC<TProps> = ({ data }) => {
             type='header'
         >
             <main className='wallets-cashier-header'>
-                <button
-                    className='wallets-cashier-header__close-button'
-                    onClick={() => history.push('/appstore/traders-hub')}
-                >
-                    x
-                </button>
                 <section className='wallets-cashier-header__info'>
                     <div className='wallets-cashier-header__info__top-left'>
                         <div className='wallets-cashier-header__info__top-left__details'>
@@ -57,18 +48,32 @@ const WalletCashierHeader: React.FC<TProps> = ({ data }) => {
                             {display_balance} {currency}
                         </p>
                     </div>
-                    {wallet_currency_type && <WalletListCardIcon type={wallet_currency_type} />}
+                    <div className='wallets-cashier-header__info__top-right'>
+                        {wallet_currency_type && <WalletListCardIcon type={wallet_currency_type} />}
+                        <button
+                            className='wallets-cashier-header__close-button'
+                            onClick={() => history.push('/appstore/traders-hub')}
+                        >
+                            x
+                        </button>
+                    </div>
                 </section>
                 <section className='wallets-cashier-header__tabs'>
                     {tabs.map(tab => (
                         <button
-                            key={`cashier-tab-${tab.name}`}
+                            key={`cashier-tab-${tab}`}
                             className={`wallets-cashier-header__tabs__tab ${
-                                activeCashierTab === tab.name ? 'wallets-cashier-header__tabs__tab--active' : ''
+                                activeCashierTab === tab.toLowerCase()
+                                    ? 'wallets-cashier-header__tabs__tab--active'
+                                    : ''
                             }`}
-                            onClick={() => history.push(`/appstore/traders-hub${tab.link}`)}
+                            onClick={() =>
+                                history.push(
+                                    `/appstore/traders-hub${getCashierParam(tab.toLowerCase() as TCashierParams)}`
+                                )
+                            }
                         >
-                            {tab.name}
+                            {tab}
                         </button>
                     ))}
                 </section>

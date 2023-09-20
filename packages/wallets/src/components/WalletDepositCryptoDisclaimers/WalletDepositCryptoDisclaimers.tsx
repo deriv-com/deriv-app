@@ -26,8 +26,8 @@ const WalletDepositCryptoDisclaimers = ({ data }: TProps) => {
     return (
         <div className='wallets-deposit-crypto-disclaimers'>
             <InlineMessage>
-                <div>
-                    <h4>To avoid loss of funds:</h4>
+                <div className='wallets-deposit-crypto-disclaimers__content'>
+                    <p>To avoid loss of funds:</p>
                     <br />
                     {currency_config?.minimum_deposit && (
                         <li>
@@ -44,12 +44,12 @@ const WalletDepositCryptoDisclaimers = ({ data }: TProps) => {
                     </li>
                 </div>
             </InlineMessage>
-            <h3
+            <p
                 className='wallets-deposit-crypto-disclaimers__note'
                 style={{ fontSize: is_mobile ? ' 1rem' : '1.2rem' }}
             >
                 <strong>Note:</strong> You’ll receive an email when your deposit start being processed.
-            </h3>
+            </p>
         </div>
     );
 };

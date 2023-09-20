@@ -8,9 +8,9 @@ type TProps = {
 
 const WalletDepositCryptoCurrencyDetails = ({ name, display_code }: TProps) => {
     return (
-        <h3 className='wallets-deposit-crypto-currency-details'>
+        <p className='wallets-deposit-crypto-currency-details'>
             Send only {name} ({display_code}) to this address.
-        </h3>
+        </p>
     );
 };
 

@@ -4,6 +4,10 @@
     justify-content: center;
     gap: 24px;
 
+    &__content {
+        line-height: 14px;
+    }
+
     &__note {
         font-size: 12px;
         line-height: 18px;

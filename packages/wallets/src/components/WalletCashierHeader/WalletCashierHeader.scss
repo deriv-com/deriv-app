@@ -1,14 +1,14 @@
 .wallets-cashier-header {
-    height: 15vw;
-    padding: 40px 24px 0;
-    position: relative;
+    height: 160px;
+    padding: 24px 24px 0;
+
+    @include mobile {
+        height: 122px;
+    }
 
     &__close-button {
         all: unset;
         font-size: 24px;
-        position: absolute;
-        top: 12px;
-        right: 24px;
         cursor: pointer;
     }
 
@@ -37,6 +37,12 @@
                 font-weight: 700;
             }
         }
+
+        &__top-right {
+            display: flex;
+            gap: 16px;
+            align-items: start;
+        }
     }
 
     &__tabs {
@@ -46,12 +52,20 @@
 
         &__tab {
             all: unset;
-            padding: 12px 24px;
+            display: flex;
+            width: 144px;
+            height: 48px;
+            padding: 0px 16px;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
             font-size: 18px;
             text-transform: capitalize;
             cursor: pointer;
 
             &--active {
+                border-radius: 16px 16px 0px 0px;
                 background-color: #ffffff;
                 font-weight: 700;
             }

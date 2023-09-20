@@ -38,14 +38,14 @@ const InlineMessage: React.FC<TProps> = ({ type = 'warning', size = 'xs', title,
     return (
         <div className={`wallets-inline-message wallets-inline-message__${type} wallets-inline-message__${size} `}>
             <Icon width={icon_size} height={icon_size} className={`wallets-inline-message__icon__${size}`} />
-            <p
+            <span
                 style={{ fontSize: font_size }}
                 className={`wallets-inline-message__messages inline-message__messages__${size}`}
             >
                 {title && <strong>{title}</strong>}
                 {message && <span>{message}</span>}
                 {children}
-            </p>
+            </span>
         </div>
     );
 };

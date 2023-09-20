@@ -186,7 +186,6 @@ export default class ContractTradeStore extends BaseStore {
             getAccuBarriersDTraderTimeout({
                 barriers_update_timestamp: Date.now(),
                 has_default_timeout: this.accumulator_barriers_data.current_spot_time !== current_spot_time,
-                should_update_contract_barriers,
                 tick_update_timestamp,
                 underlying,
             })

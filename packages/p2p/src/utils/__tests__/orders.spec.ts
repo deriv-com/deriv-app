@@ -345,9 +345,9 @@ describe('createExtendedOrderDetails', () => {
             mock_order.expiry_time * 1000
         );
     });
-    it('should handle getter for order_purchase_datetime', () => {
+    it('should handle getter for purchase_time', () => {
         const purchase_time = new Date(
-            createExtendedOrderDetails({ ...mock_order }, user_id, server_time).order_purchase_datetime
+            createExtendedOrderDetails({ ...mock_order }, user_id, server_time).purchase_time
         ).toUTCString();
         expect(purchase_time).toEqual('Thu, 14 Sep 2023 08:11:00 GMT');
     });

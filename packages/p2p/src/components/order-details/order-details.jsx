@@ -53,7 +53,7 @@ const OrderDetails = observer(() => {
         other_user_details,
         payment_info,
         previous_recommendation,
-        order_purchase_datetime,
+        purchase_time,
         rate,
         review_details,
         should_highlight_alert,
@@ -292,7 +292,7 @@ const OrderDetails = observer(() => {
                                     label={labels.right_send_or_receive}
                                     value={`${amount_display} ${account_currency}`}
                                 />
-                                <OrderInfoBlock label={localize('Time')} value={order_purchase_datetime} />
+                                <OrderInfoBlock label={localize('Time')} value={purchase_time} />
                             </div>
                         </div>
                         {is_active_order && (

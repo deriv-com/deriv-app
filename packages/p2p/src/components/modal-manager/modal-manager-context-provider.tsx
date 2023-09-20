@@ -39,26 +39,26 @@ const ModalManagerContextProvider = (props: React.PropsWithChildren<{ mock?: TMo
      * @param {key} string - the key to specify when persisting the local state, by default you should specify the local state name
      * @param {default_state} - the value you want the state to be initially
      */
-    const useSavedState = (key, default_state) => {
+    const useSavedState = (key: string, default_state: string[]) => {
         const [saved_state, setSavedState] = React.useState(default_state);
         const saved_state_ref = React.useRef(saved_state);
 
         React.useEffect(() => {
-            const persisted_state = persisted_states.current[active_modal.key];
+            const persisted_state = persisted_states.current[modal.active_modal.key];
 
             if (persisted_state) {
                 if (persisted_state[key]) {
                     setSavedState(persisted_state[key]);
                 }
             } else {
-                persisted_states.current[active_modal.key] = {
+                persisted_states.current[modal.active_modal.key] = {
                     [key]: default_state,
                 };
             }
 
             return () => {
-                if (persisted_states.current[active_modal.key]) {
-                    persisted_states.current[active_modal.key][key] = saved_state_ref.current;
+                if (persisted_states.current[modal.active_modal.key]) {
+                    persisted_states.current[modal.active_modal.key][key] = saved_state_ref.current;
                 }
             };
         }, []);

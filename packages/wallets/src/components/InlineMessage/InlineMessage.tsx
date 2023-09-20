@@ -13,10 +13,10 @@ const type_icon_mapper = {
     error: AlertDanger,
 };
 
-type TProps = {
+type TProps = RequireAtLeastOne<{ title: React.ReactNode; message: React.ReactNode; children: React.ReactNode }> & {
     type?: keyof typeof type_icon_mapper;
-    size?: 'xs' | 'sm' | 'md' | 'lg';
-} & RequireAtLeastOne<{ title: React.ReactNode; message: React.ReactNode; children: React.ReactNode }>;
+    size?: 'lg' | 'md' | 'sm' | 'xs';
+};
 
 const InlineMessage: React.FC<TProps> = ({ type = 'warning', size = 'xs', title, message, children }) => {
     const { is_mobile } = useDevice();

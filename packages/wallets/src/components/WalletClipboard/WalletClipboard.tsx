@@ -6,16 +6,18 @@ import './WalletClipboard.scss';
 
 type TProps = {
     info_message?: string;
-    popoverAlignment: 'top' | 'right' | 'bottom' | 'left';
+    popoverAlignment: 'bottom' | 'left' | 'right' | 'top';
     success_message: string;
     text_copy: string;
 };
 
-const WalletClipboard = ({ info_message, popoverAlignment, success_message, text_copy }: TProps) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_, copy] = useCopyToClipboard();
+const WalletClipboard = ({
+    //  info_message, popoverAlignment, success_message,
+    text_copy,
+}: TProps) => {
+    const [, copy] = useCopyToClipboard();
     const [isCopied, setIsCopied] = useState(false);
-    let timeout_clipboard: NodeJS.Timeout;
+    let timeout_clipboard: ReturnType<typeof setTimeout>;
 
     const onClick = (event: { stopPropagation: () => void }) => {
         setIsCopied(true);

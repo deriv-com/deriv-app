@@ -85,7 +85,7 @@ const WalletListCardActions: React.FC<TProps> = ({ account }) => {
                     className='wallets-header__button'
                     onClick={async () => {
                         if (account?.loginid) {
-                            //await switchAccount(account.loginid);
+                            await switchAccount(account.loginid);
                         }
                         history.push(
                             `/appstore/traders-hub${getCashierParam(button.name.toLowerCase() as TCashierParams)}`

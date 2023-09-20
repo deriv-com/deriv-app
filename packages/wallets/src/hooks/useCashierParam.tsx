@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-export type TCashierParams = 'deposit' | 'withdraw' | 'transfer' | 'transactions';
+export type TCashierParams = 'deposit' | 'transactions' | 'transfer' | 'withdraw';
 
 const useCashierParam = () => {
     const getCashierParam = useCallback((param: TCashierParams) => {

@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom';
 
 type TModalContext = {
     isOpen: boolean;
-    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     show: (ModalContent: React.ReactNode) => void;
     hide: () => void;
 };
@@ -35,7 +34,7 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     };
 
     return (
-        <ModalContext.Provider value={{ isOpen, setIsOpen, show, hide }}>
+        <ModalContext.Provider value={{ isOpen, hide, show }}>
             {children}
             {rootRef.current && createPortal(content, rootRef.current)}
         </ModalContext.Provider>

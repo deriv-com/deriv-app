@@ -6,11 +6,12 @@ import { TContractInfo, TDigitsInfo, TLimitOrder, TTickItem } from './contract-t
 type TGetAccuBarriersDTraderTimeout = (params: {
     barriers_update_timestamp: number;
     has_default_timeout: boolean;
-    should_update_contract_barriers?: boolean;
     tick_update_timestamp: number | null;
     underlying: string;
 }) => number;
 
+// animation correction time is an interval in ms between ticks receival from API and their actual visual update on the chart
+export const ANIMATION_CORRECTION_TIME = 200;
 export const DELAY_TIME_1S_SYMBOL = 500;
 // generation_interval will be provided via API later to help us distinguish between 1-second and 2-second symbols
 export const symbols_2s = ['R_10', 'R_25', 'R_50', 'R_75', 'R_100'];
@@ -81,17 +82,12 @@ export const getAccuBarriersDefaultTimeout = (symbol: string) => {
 export const getAccuBarriersDTraderTimeout: TGetAccuBarriersDTraderTimeout = ({
     barriers_update_timestamp,
     has_default_timeout,
-    should_update_contract_barriers,
     tick_update_timestamp,
     underlying,
 }) => {
     if (has_default_timeout || !tick_update_timestamp) return getAccuBarriersDefaultTimeout(underlying);
-    const animation_correction_time =
-        (should_update_contract_barriers
-            ? getAccuBarriersDefaultTimeout(underlying) / -4
-            : getAccuBarriersDefaultTimeout(underlying) / 4) || 0;
     const target_update_time =
-        tick_update_timestamp + getAccuBarriersDefaultTimeout(underlying) + animation_correction_time;
+        tick_update_timestamp + getAccuBarriersDefaultTimeout(underlying) + ANIMATION_CORRECTION_TIME;
     const difference = target_update_time - barriers_update_timestamp;
     return difference < 0 ? 0 : difference;
 };
@@ -146,7 +142,7 @@ const createDigitInfo = (spot: string, spot_time: number) => {
 };
 
 export const getLimitOrderAmount = (limit_order?: TLimitOrder) => {
-    if (!limit_order) return { stop_loss: 0, take_profit: 0 };
+    if (!limit_order) return { stop_loss: null, take_profit: null };
     const {
         stop_loss: { order_amount: stop_loss_order_amount } = {},
         take_profit: { order_amount: take_profit_order_amount } = {},

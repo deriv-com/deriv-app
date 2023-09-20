@@ -12,6 +12,7 @@ type TNumberSelector = {
     }) => void;
     selected_number?: number;
     should_show_in_percents?: boolean;
+    is_disabled?: boolean;
 };
 
 // arr_arr_numbers is an array of arrays where each nested array indicates one row
@@ -24,9 +25,10 @@ const NumberSelector = ({
     onChange,
     selected_number,
     should_show_in_percents,
+    is_disabled,
 }: TNumberSelector) => {
     const handleSelect = (event: React.MouseEvent<HTMLSpanElement>) => {
-        if (Number(event.currentTarget.getAttribute('data-value')) !== selected_number) {
+        if (Number(event.currentTarget.getAttribute('data-value')) !== selected_number && !is_disabled) {
             onChange({ target: { name, value: Number(event.currentTarget.getAttribute('data-value')) } });
         }
     };
@@ -41,6 +43,7 @@ const NumberSelector = ({
                             className={classNames('number-selector__selection', {
                                 'number-selector__selection--selected': selected_number === i,
                                 'number-selector__selection--percentage': should_show_in_percents,
+                                'number-selector__selection--disabled': is_disabled,
                             })}
                             data-value={i}
                             onClick={handleSelect}

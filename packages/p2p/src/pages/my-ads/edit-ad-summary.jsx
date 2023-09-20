@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Text } from '@deriv/components';
+import { useExchangeRate, useP2PConfig } from '@deriv/hooks';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
 import { ad_type } from 'Constants/floating-rate';
@@ -15,10 +16,16 @@ const EditAdSummary = ({ offer_amount, price_rate, type }) => {
         client: { currency, local_currency_config },
     } = useStore();
 
-    const { floating_rate_store, my_ads_store } = useStores();
+    const { my_ads_store } = useStores();
+    const { data: p2p_config } = useP2PConfig();
+    const { getRate } = useExchangeRate();
+    const override_exchange_rate = p2p_config?.override_exchange_rate;
+    const market_rate = override_exchange_rate
+        ? Number(override_exchange_rate)
+        : getRate(local_currency_config.currency);
 
     const display_offer_amount = offer_amount ? formatMoney(currency, offer_amount, true) : '';
-    const market_feed = my_ads_store.required_ad_type === ad_type.FLOAT ? floating_rate_store.market_rate : null;
+    const market_feed = my_ads_store.required_ad_type === ad_type.FLOAT ? market_rate : null;
 
     let display_price_rate = '';
     let display_total = '';

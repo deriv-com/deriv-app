@@ -6,9 +6,11 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import { useStores } from 'Stores';
 
 const AddPaymentMethodErrorModal = () => {
-    const { my_profile_store } = useStores();
+    const { general_store, my_profile_store } = useStores();
     const { is_modal_open, hideModal } = useModalManagerContext();
-    const { add_payment_method_error_message, setAddPaymentMethodErrorMessage } = my_profile_store;
+    const { setFormikRef, setSavedFormState } = general_store;
+    const { add_payment_method_error_message, setAddPaymentMethodErrorMessage, setSelectedPaymentMethod } =
+        my_profile_store;
     return (
         <Modal is_open={is_modal_open} small has_close_icon={false} title={localize("Something's not right")}>
             <Modal.Body>
@@ -22,6 +24,9 @@ const AddPaymentMethodErrorModal = () => {
                     text={localize('Ok')}
                     onClick={() => {
                         setAddPaymentMethodErrorMessage('');
+                        setSelectedPaymentMethod('');
+                        setSavedFormState(null);
+                        setFormikRef(null);
                         hideModal({
                             should_save_form_history: true,
                         });

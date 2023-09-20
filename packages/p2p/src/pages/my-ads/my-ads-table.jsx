@@ -4,12 +4,12 @@ import { Button, HintBox, InfiniteDataList, Loading, Table, Text } from '@deriv/
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
-import P2pEmpty from 'Components/p2p-empty';
 import ToggleAds from 'Pages/my-ads/toggle-ads.jsx';
 import TableError from 'Components/section-error';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
+import NoAds from 'Pages/buy-sell/no-ads';
 import './my-ads-table.scss';
 
 const getHeaders = offered_currency => [
@@ -146,19 +146,7 @@ const MyAdsTable = () => {
         );
     }
 
-    return (
-        <P2pEmpty icon='IcCashierNoAds' title={localize('You have no ads.')}>
-            <Button
-                className='p2p-empty__button'
-                is_disabled={general_store.is_barred}
-                onClick={() => my_ads_store.onClickCreate()}
-                large
-                primary
-            >
-                {localize('Create new ad')}
-            </Button>
-        </P2pEmpty>
-    );
+    return <NoAds is_ads_page />;
 };
 
 export default observer(MyAdsTable);

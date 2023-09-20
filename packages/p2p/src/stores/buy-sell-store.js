@@ -34,7 +34,7 @@ export default class BuySellStore extends BaseStore {
     selected_payment_method_text = [];
     selected_value = 'rate';
     should_show_verification = false;
-    should_use_client_limits = false;
+    should_use_client_limits = true;
     show_advertiser_page = false;
     show_filter_payment_methods = false;
     sort_by = 'rate';
@@ -253,7 +253,7 @@ export default class BuySellStore extends BaseStore {
     }
 
     handleResponse = async order => {
-        const { sendbird_store, order_store, general_store, floating_rate_store } = this.root_store;
+        const { sendbird_store, order_store, general_store } = this.root_store;
         const { setErrorMessage, handleConfirm, handleClose } = this.form_props;
         const { error, p2p_order_create, p2p_order_info, subscription } = order || {};
 
@@ -266,7 +266,6 @@ export default class BuySellStore extends BaseStore {
             }
             setErrorMessage(null);
             general_store.hideModal();
-            floating_rate_store.setIsMarketRateChanged(false);
 
             if (p2p_order_create?.id) {
                 const response = await requestWS({ p2p_order_info: 1, id: p2p_order_create.id });
@@ -416,14 +415,11 @@ export default class BuySellStore extends BaseStore {
     }
 
     onLocalCurrencySelect(local_currency) {
-        const { floating_rate_store } = this.root_store;
         this.setSelectedLocalCurrency(local_currency);
         this.setLocalCurrency(local_currency);
         this.setItems([]);
         this.setIsLoading(true);
         this.loadMoreItems({ startIndex: 0 });
-        floating_rate_store.previous_exchange_rate = null;
-        floating_rate_store.setIsMarketRateChanged(false);
     }
 
     registerIsListedReaction() {

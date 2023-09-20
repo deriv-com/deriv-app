@@ -19,6 +19,17 @@
         }
     }
 
+    &__footer {
+        @include mobile {
+            border-top: 2px solid var(--general-section-1);
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            margin-top: auto;
+            padding: 1.6rem;
+        }
+    }
+
     &__layout {
         padding: unset;
     }
@@ -91,6 +102,10 @@
                 align-self: flex-start;
             }
         }
+    }
+
+    &__icon {
+        margin-right: 0.8rem;
     }
 
     &-line {

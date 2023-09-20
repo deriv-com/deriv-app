@@ -114,3 +114,9 @@
         height: unset;
     }
 }
+
+.dc-modal__container_switch-ads {
+    @include mobile {
+        min-width: 328px !important;
+    }
+}

@@ -47,7 +47,6 @@ const BuySellModal = () => {
             buy_sell_store.fetchAdvertiserAdverts();
             buy_sell_store.unsubscribeAdvertInfo();
         }
-        floating_rate_store.setIsMarketRateChanged(false);
     };
 
     const onConfirmClick = (order_info: { id: string }) => {

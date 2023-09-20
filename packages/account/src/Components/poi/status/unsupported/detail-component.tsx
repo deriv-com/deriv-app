@@ -3,9 +3,9 @@ import { Loading, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { WS } from '@deriv/shared';
 import { UploadComplete } from '../upload-complete/upload-complete';
-import PoiUnsupportedFailed from 'Components/poi-unsupported-failed';
-import uploadFile from 'Components/file-uploader-container/upload-file';
-import OnfidoUpload from 'Sections/Verification/ProofOfIdentity/onfido-sdk-view-container';
+import PoiUnsupportedFailed from '../../../poi-unsupported-failed';
+import uploadFile from '../../../file-uploader-container/upload-file';
+import OnfidoUpload from '../../../../Sections/Verification/ProofOfIdentity/onfido-sdk-view-container';
 
 import CardDetails from './card-details';
 import { SELFIE_DOCUMENT } from './constants';

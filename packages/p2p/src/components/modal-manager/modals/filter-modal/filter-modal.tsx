@@ -111,14 +111,14 @@ const FilterModal = () => {
     };
 
     const onClickReset = () => {
-        setShouldUseClientLimits(false);
+        setShouldUseClientLimits(true);
 
         setSelectedMethods([]);
         setSelectedMethodsText([]);
 
         setHasMadeChanges(
             selected_payment_method_value.length > 0 &&
-                diff(selected_methods, selected_payment_method_value).length === 0
+                getListDifference(selected_methods, selected_payment_method_value).length === 0
         );
     };
 

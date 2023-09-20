@@ -1,19 +1,33 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Button, DesktopWrapper, MobileFullPageModal, MobileWrapper, Text, ThemedScrollbars } from '@deriv/components';
+import {
+    Button,
+    DesktopWrapper,
+    Loading,
+    MobileFullPageModal,
+    MobileWrapper,
+    Text,
+    ThemedScrollbars,
+} from '@deriv/components';
+import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
 import { Localize, localize } from 'Components/i18next';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
 import PaymentMethodCard from '../payment-method-card';
 
 const PaymentMethodsList = () => {
+    const { data: advertiser_payment_methods, isRefetching } = useP2PAdvertiserPaymentMethods();
+    const { isCurrentModal } = useModalManagerContext();
     const { my_profile_store } = useStores();
 
-    const independent_categories = ['bank_transfer', 'other'];
+    const should_show_loading_screen =
+        !advertiser_payment_methods || (isRefetching && !isCurrentModal('DeletePaymentMethodConfirmationModal'));
 
-    const sortPaymentMethodsListMethods = payment_methods_list_methods => {
-        const order = ['bank_transfer', 'e_wallet', 'other'];
-        return payment_methods_list_methods.sort((i, j) => order.indexOf(i.method) - order.indexOf(j.method));
+    const type_to_title_mapper = {
+        bank: localize('Bank Transfers'),
+        ewallet: localize('E-wallets'),
+        other: localize('Others'),
     };
 
     React.useEffect(() => {
@@ -21,6 +35,8 @@ const PaymentMethodsList = () => {
         my_profile_store.setPaymentMethodToEdit(null);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    if (should_show_loading_screen) return <Loading is_fullscreen={false} />;
 
     return (
         <>
@@ -35,37 +51,34 @@ const PaymentMethodsList = () => {
                         <Localize i18n_default_text='Add new' />
                     </Button>
                     <div className='payment-methods-list__list-container'>
-                        {sortPaymentMethodsListMethods([...my_profile_store.payment_methods_list_methods]).map(
-                            (payment_methods_list_method, key) => {
-                                const payment_methods_list = my_profile_store.advertiser_payment_methods_list.filter(
-                                    payment_method =>
-                                        payment_method.method === payment_methods_list_method.method ||
-                                        (!independent_categories.includes(payment_method.method) &&
-                                            payment_methods_list_method.method === 'e_wallet')
+                        {advertiser_payment_methods &&
+                            Object.keys(type_to_title_mapper).map(key => {
+                                const current_title = type_to_title_mapper[key];
+                                const payment_methods = advertiser_payment_methods.filter(
+                                    payment_method => payment_method.type === key
                                 );
+
+                                if (!payment_methods.length) return null;
 
                                 return (
                                     <React.Fragment key={key}>
                                         <Text className='payment-methods-list__list-header' size='xs' weight='bold'>
-                                            {`${payment_methods_list_method.display_name}s`}
+                                            {current_title}
                                         </Text>
 
                                         <div className='payment-methods-list__list-body'>
-                                            {payment_methods_list.map(
-                                                (each_payment_method, each_payment_method_key) => (
-                                                    <PaymentMethodCard
-                                                        key={each_payment_method_key}
-                                                        large={true}
-                                                        payment_method={each_payment_method}
-                                                        show_payment_method_name={false}
-                                                    />
-                                                )
-                                            )}
+                                            {payment_methods.map((each_payment_method, each_payment_method_key) => (
+                                                <PaymentMethodCard
+                                                    key={each_payment_method_key}
+                                                    large
+                                                    payment_method={each_payment_method}
+                                                    show_payment_method_name={false}
+                                                />
+                                            ))}
                                         </div>
                                     </React.Fragment>
                                 );
-                            }
-                        )}
+                            })}
                     </div>
                 </div>
             </DesktopWrapper>
@@ -90,19 +103,19 @@ const PaymentMethodsList = () => {
                     )}
                 >
                     <div className='payment-methods-list__list-container'>
-                        {sortPaymentMethodsListMethods([...my_profile_store.payment_methods_list_methods]).map(
-                            (payment_methods_list_method, key) => {
-                                const payment_methods_list = my_profile_store.advertiser_payment_methods_list.filter(
-                                    payment_method =>
-                                        payment_method.method === payment_methods_list_method.method ||
-                                        (!independent_categories.includes(payment_method.method) &&
-                                            payment_methods_list_method.method === 'e_wallet')
+                        {advertiser_payment_methods &&
+                            Object.keys(type_to_title_mapper).map(key => {
+                                const current_title = type_to_title_mapper[key];
+                                const payment_methods = advertiser_payment_methods.filter(
+                                    payment_method => payment_method.type === key
                                 );
+
+                                if (!payment_methods.length) return null;
 
                                 return (
                                     <React.Fragment key={key}>
                                         <Text className='payment-methods-list__list-header' size='xs' weight='bold'>
-                                            {`${payment_methods_list_method.display_name}s`}
+                                            {current_title}
                                         </Text>
 
                                         <ThemedScrollbars
@@ -111,21 +124,18 @@ const PaymentMethodsList = () => {
                                             is_only_horizontal
                                             is_scrollbar_hidden
                                         >
-                                            {payment_methods_list.map(
-                                                (each_payment_method, each_payment_method_key) => (
-                                                    <PaymentMethodCard
-                                                        key={each_payment_method_key}
-                                                        payment_method={each_payment_method}
-                                                        small
-                                                        show_payment_method_name={false}
-                                                    />
-                                                )
-                                            )}
+                                            {payment_methods.map((each_payment_method, each_payment_method_key) => (
+                                                <PaymentMethodCard
+                                                    key={each_payment_method_key}
+                                                    payment_method={each_payment_method}
+                                                    small
+                                                    show_payment_method_name={false}
+                                                />
+                                            ))}
                                         </ThemedScrollbars>
                                     </React.Fragment>
                                 );
-                            }
-                        )}
+                            })}
                     </div>
                 </MobileFullPageModal>
             </MobileWrapper>

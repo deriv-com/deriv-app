@@ -53,7 +53,7 @@ describe('<OrderDetailsWrapper />', () => {
         render(<OrderDetailsWrapper {...desktop_props} />);
 
         await waitFor(() => {
-            expect(screen.getByTestId('dt_page_return_icon')).toBeInTheDocument();
+            expect(screen.getByTestId('dt_page_return')).toBeInTheDocument();
             expect(screen.getByText('desktop test')).toBeInTheDocument();
         });
     });

@@ -31,8 +31,8 @@
         margin-bottom: 1.3rem;
     }
 
-    &__icon {
-        margin-right: 0.8rem;
+    &--text {
+        display: flex;
     }
 
     &__scroll {
@@ -42,5 +42,9 @@
 
     &__horizontal {
         padding-right: 0rem;
+    }
+
+    &__icon {
+        margin-right: 0.8rem;
     }
 }

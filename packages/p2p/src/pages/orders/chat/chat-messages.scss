@@ -30,6 +30,19 @@
                 }
             }
         }
+        &-pdf {
+            background-color: var(--general-main-1);
+            border-radius: 0.8rem;
+            padding: 1rem 0.8rem 1rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.4rem;
+            a {
+                color: var(--text-less-prominent);
+                text-decoration: none;
+            }
+        }
         &-timestamp {
             align-items: center;
             display: flex;
@@ -41,7 +54,7 @@
 
             .chat-message-text {
                 background-color: var(--general-active);
-                border-bottom-left-radius: $BORDER_RADIUS;
+                border-bottom-left-radius: 0;
             }
         }
         &--outgoing {
@@ -49,8 +62,16 @@
 
             .chat-message-text {
                 background-color: var(--brand-secondary);
-                border-bottom-right-radius: $BORDER_RADIUS;
+                border-bottom-right-radius: 0;
             }
+        }
+
+        &--admin {
+            align-items: center;
+            background: var(--status-warning-transparent);
+            border: 1px solid var(--status-warning);
+            padding: 0.8rem 0;
+            border-radius: 0.8rem;
         }
     }
 }

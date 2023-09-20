@@ -11,6 +11,7 @@ import {
     getPropertyValue,
     getContractSubtype,
     isBarrierSupported,
+    isAccumulatorContract,
     isCryptocurrency,
     isDesktop,
     isEmptyObject,
@@ -378,6 +379,7 @@ export default class TradeStore extends BaseStore {
             growth_rate: observable,
             has_cancellation: observable,
             has_equals_only: observable,
+            has_open_accu_contract: computed,
             has_stop_loss: observable,
             has_take_profit: observable,
             hovered_barrier: observable,
@@ -561,6 +563,16 @@ export default class TradeStore extends BaseStore {
     get is_symbol_in_active_symbols() {
         return this.active_symbols.some(
             symbol_info => symbol_info.symbol === this.symbol && symbol_info.exchange_is_open === 1
+        );
+    }
+
+    get has_open_accu_contract() {
+        return (
+            this.is_accumulator &&
+            !!this.root_store.portfolio.open_accu_contract &&
+            !!this.root_store.portfolio.active_positions.find(
+                ({ contract_info, type }) => isAccumulatorContract(type) && contract_info.underlying === this.symbol
+            )
         );
     }
 

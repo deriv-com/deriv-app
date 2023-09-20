@@ -138,6 +138,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_pending_proof_of_ownership: false,
             is_single_currency: false,
             is_switching: false,
+            is_single_currency: false,
             is_tnc_needed: false,
             is_trading_experience_incomplete: false,
             is_virtual: false,

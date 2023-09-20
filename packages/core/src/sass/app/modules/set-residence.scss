@@ -23,7 +23,8 @@
     }
     &__button_wrapper {
         margin-top: 1.6rem;
-        text-align: right;
+        display: flex;
+        flex-direction: column;
     }
     &__btn {
         align-self: flex-end;

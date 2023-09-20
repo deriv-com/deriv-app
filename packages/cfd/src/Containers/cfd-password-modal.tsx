@@ -1,5 +1,5 @@
-import { Formik, FormikErrors, FormikHelpers } from 'formik';
 import React from 'react';
+import { Formik, FormikErrors, FormikHelpers } from 'formik';
 import { useHistory } from 'react-router';
 import { SentEmailModal } from '@deriv/account';
 import {
@@ -22,6 +22,7 @@ import {
 } from '@deriv/components';
 import {
     CFD_PLATFORMS,
+    getCFDPlatformNames,
     getAuthenticationStatusInfo,
     getCFDPlatformLabel,
     getErrorMessages,
@@ -188,6 +189,9 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
     } else if (platform === CFD_PLATFORMS.DERIVEZ) {
         return <Icon icon='IcBrandDerivEz' size={128} />;
     } else if (traders_hub) {
+        if (platform === CFD_PLATFORMS.CTRADER) {
+            return <TradingPlatformIcon icon='CTrader' size={128} />;
+        }
         switch (type) {
             case 'synthetic':
                 return <TradingPlatformIcon icon='Derived' size={128} />;
@@ -514,6 +518,17 @@ const CFDPasswordForm = ({
         );
     }
 
+    const accountTitle = () => {
+        switch (platform) {
+            case 'ctrader':
+            case 'derivez':
+            case 'derivx':
+                return 'CFD';
+            default:
+                return account_title;
+        }
+    };
+
     const showJuristiction = () => {
         if (platform === CFD_PLATFORMS.DXTRADE) {
             return '';
@@ -839,6 +854,15 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
         const mt5_platform_label = jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'Deriv MT5' : '';
 
+        const accountTypes = () => {
+            if (platform === 'dxtrade' && type_label === 'Derived') {
+                return 'Synthetic';
+            } else if (platform === 'derivez' || platform === 'ctrader') {
+                return 'CFDs';
+            }
+            return type_label;
+        };
+
         if (category === 'real') {
             let platformName = '';
             switch (platform) {
@@ -858,7 +882,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     <Localize
                         i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}} {{jurisdiction_selected_shortcode}}</1> account. '
                         values={{
-                            type: type_label,
+                            // TODO: remove below condition once deriv x changes are completed
+                            type: accountTypes(),
                             platform:
                                 platform === CFD_PLATFORMS.MT5 ? mt5_platform_label : getCFDPlatformLabel(platform),
                             category: category_label,
@@ -884,8 +909,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             <Localize
                 i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account. '
                 values={{
-                    type: type_label,
-                    platform: getCFDPlatformLabel(platform),
+                    type: accountTypes(),
+                    platform: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
                     category: category_label,
                 }}
                 components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}

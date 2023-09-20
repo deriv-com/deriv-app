@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { getUrlBase, isMobile } from '@deriv/shared';
+import { getUrlBase } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 
 type TContractTypeDescriptionVideo = {
@@ -36,8 +36,7 @@ const ContractTypeDescriptionVideo = ({ selected_contract_type, data_testid }: T
             onContextMenu={e => e.preventDefault()}
             preload='auto'
             controls
-            width={isMobile() ? 328 : 480}
-            height={isMobile() ? 184.5 : 270}
+            className='contract-type-info__video'
             data-testid={data_testid}
         >
             {/* a browser will select a source with extension it recognizes */}

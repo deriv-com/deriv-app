@@ -4,6 +4,7 @@ import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { useDBotStore } from '../../../stores/useDBotStore';
 import LoadModal from '../../load-modal';
+import QuickStrategy1 from '../../quick-strategy';
 import SaveModal from '../dashboard-component/load-bot-preview/save-modal';
 import DesktopTours from '../dbot-tours/desktop-tours/desktop-tours';
 import MobileTours from '../dbot-tours/mobile-tours/mobile-tours';
@@ -58,6 +59,7 @@ const BotBuilder = observer(() => {
             <LoadModal />
             <SaveModal />
             <QuickStrategy />
+            <QuickStrategy1 />
         </>
     );
 });

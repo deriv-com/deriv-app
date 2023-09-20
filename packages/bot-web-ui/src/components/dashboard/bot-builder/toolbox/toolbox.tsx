@@ -10,7 +10,7 @@ import SearchBox from './search-box';
 import { ToolboxItems } from './toolbox-items';
 
 const Toolbox = observer(() => {
-    const { toolbox, flyout, quick_strategy } = useDBotStore();
+    const { toolbox, flyout, quick_strategy_store_1 } = useDBotStore();
     const {
         hasSubCategory,
         is_search_loading,
@@ -27,7 +27,7 @@ const Toolbox = observer(() => {
     } = toolbox;
 
     const { setVisibility } = flyout;
-    const { loadDataStrategy } = quick_strategy;
+    const { setFormVisibility } = quick_strategy_store_1;
 
     const toolbox_ref = React.useRef(ToolboxItems);
     const [is_open, setOpen] = React.useState(true);
@@ -37,6 +37,10 @@ const Toolbox = observer(() => {
         return () => onUnmount();
     }, []);
 
+    const handleQuickStrategyOpen = () => {
+        setFormVisibility(true);
+    };
+
     if (!isMobile()) {
         return (
             <div className='dashboard__toolbox' data-testid='dashboard__toolbox'>
@@ -44,7 +48,7 @@ const Toolbox = observer(() => {
                     popover_message={localize('Click here to start building your Deriv Bot.')}
                     button_id='db-toolbar__get-started-button'
                     button_classname='toolbar__btn toolbar__btn--icon toolbar__btn--start'
-                    buttonOnClick={loadDataStrategy}
+                    buttonOnClick={handleQuickStrategyOpen}
                     button_text={localize('Quick strategy')}
                 />
                 <div id='gtm-toolbox' className='db-toolbox__content'>

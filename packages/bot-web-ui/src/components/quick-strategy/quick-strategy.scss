@@ -1,0 +1,135 @@
+.qs {
+    --sidebar-width: 24rem;
+    --footer-height: 7.2rem;
+    --header-height: 5.6rem;
+    --min-content-height: 40rem;
+
+    .xy-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .x-center {
+        display: flex;
+        align-items: center;
+    }
+
+    &__head {
+        @extend .x-center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--border-divider);
+        &__title {
+            @extend .x-center;
+            padding: 0 2.4rem;
+            height: var(--header-height);
+            background-color: var(--general-section-1);
+            width: var(--sidebar-width);
+        }
+        &__action {
+            padding: 0 2.4rem;
+            span {
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+    &__body {
+        display: flex;
+        &__sidebar {
+            background-color: var(--general-section-1);
+            width: var(--sidebar-width);
+            &__subtitle {
+                padding: 1rem 2.4rem;
+            }
+            &__items {
+                ul {
+                    list-style: none;
+                    padding: 0;
+                    margin: 0;
+                    li {
+                        border-left: 4px solid transparent;
+                        height: 4rem;
+                        padding: 1rem 1.6rem 1rem 4rem;
+                        user-select: none;
+                        &:hover {
+                            background-color: var(--general-main-1);
+                            cursor: pointer;
+                        }
+                        &.active {
+                            border-left: 4px solid var(--brand-red-coral);
+                            background-color: var(--general-main-1);
+                        }
+                    }
+                }
+            }
+        }
+        &__content {
+            background-color: var(--general-main-1);
+            width: calc(100% - var(--sidebar-width));
+            position: relative;
+            padding: 1rem;
+            &__head {
+                @extend .xy-center;
+                &__tabs {
+                    @extend .x-center;
+                    background-color: var(--general-section-1);
+                    padding: 0.4rem;
+                    border-radius: 0.6rem;
+                    height: 4rem;
+                    &__tab {
+                        display: inline-block;
+                        text-align: center;
+                        min-width: 16rem;
+                        padding: 0.6rem 0.8rem;
+                        border-radius: 0.4rem;
+                        user-select: none;
+                        &:hover {
+                            cursor: pointer;
+                        }
+                        &.active {
+                            background-color: var(--general-main-1);
+                        }
+                        &.disabled {
+                            cursor: pointer;
+                            pointer-events: none;
+                            opacity: 0.5;
+                        }
+                    }
+                }
+            }
+            &__description {
+                padding: 1rem 1.4rem;
+            }
+            &__form {
+                padding: 1rem;
+            }
+            &__footer {
+                width: 100%;
+                height: 7.2rem;
+                border-top: 1px solid var(--border-divider);
+                @extend .x-center;
+                justify-content: flex-end;
+                padding: 1.6rem 2.4rem;
+                background-color: var(--general-main-1);
+                button {
+                    margin-right: 1rem;
+                    &:last-child {
+                        margin-right: 0;
+                    }
+                }
+            }
+        }
+    }
+    &__form {
+        &__container {
+            min-height: 10rem;
+            // to overwrite the height of the ThemedScrollbar
+            max-height: calc(100vh - 23rem) !important;
+            margin-bottom: 1rem;
+            height: auto;
+            overflow-y: auto;
+        }
+    }
+}

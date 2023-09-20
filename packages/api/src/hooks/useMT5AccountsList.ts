@@ -31,9 +31,6 @@ const useMT5AccountsList = () => {
     return {
         /** The list of created MT5 accounts */
         data: modified_mt5_accounts,
-        eligible_to_migrate: {
-            synthetic: 'bvi',
-        },
         ...mt5_accounts_rest,
     };
 };

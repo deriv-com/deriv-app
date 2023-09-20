@@ -2,7 +2,7 @@ import { Field } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Autocomplete, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 
 const SetResidenceForm = ({
     children,
@@ -49,7 +49,7 @@ const SetResidenceForm = ({
             </Field>
             {!errors?.residence?.length > 0 ? (
                 <Text as='p' size='xxs' className='account-signup__subtext' color='less-prominent'>
-                    {localize('Country of residence is where you currently live.')}
+                    <Localize i18n_default_text='Country of residence is where you currently live.' />
                 </Text>
             ) : null}
             <div className={`${class_prefix}__button_wrapper`}>{children}</div>

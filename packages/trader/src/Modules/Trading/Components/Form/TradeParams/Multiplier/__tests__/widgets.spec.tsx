@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import TraderProviders from '../../../../../../../trader-providers';
+import { TCoreStores } from '@deriv/stores/types';
 import { AccumulatorOptionsWidget } from '../widgets';
 
 const default_mock_store = {
@@ -24,7 +25,7 @@ jest.mock('Modules/Trading/Containers/radio-group-options-modal.jsx', () =>
 );
 
 describe('AccumulatorOptionsWidget', () => {
-    const mockAccumulatorOptionsWidget = mocked_store => {
+    const mockAccumulatorOptionsWidget = (mocked_store: TCoreStores) => {
         return (
             <TraderProviders store={mocked_store}>
                 <AccumulatorOptionsWidget />

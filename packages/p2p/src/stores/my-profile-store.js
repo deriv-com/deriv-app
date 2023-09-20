@@ -1,4 +1,4 @@
-import { observable, action, computed, when, makeObservable } from 'mobx';
+import { observable, action, computed, makeObservable } from 'mobx';
 import { requestWS } from 'Utils/websocket';
 import { localize } from 'Components/i18next';
 import { textValidator } from 'Utils/validations';
@@ -19,7 +19,6 @@ export default class MyProfileStore extends BaseStore {
     has_more_items_to_load = false;
     is_block_user_table_loading = false;
     is_button_loading = false;
-    is_confirm_delete_modal_open = false;
     is_daily_limit_modal_open = false;
     is_daily_limit_success_modal_open = false;
     is_delete_payment_method_error_modal_open = false;
@@ -67,7 +66,6 @@ export default class MyProfileStore extends BaseStore {
             has_more_items_to_load: observable,
             is_block_user_table_loading: observable,
             is_button_loading: observable,
-            is_confirm_delete_modal_open: observable,
             is_daily_limit_modal_open: observable,
             is_daily_limit_success_modal_open: observable,
             is_delete_payment_method_error_modal_open: observable,
@@ -101,7 +99,6 @@ export default class MyProfileStore extends BaseStore {
             initial_values: computed,
             payment_method_info: computed,
             payment_methods_list_items: computed,
-            payment_methods_list_methods: computed,
             payment_methods_list_values: computed,
             rendered_trade_partners_list: computed,
             trade_partner_dropdown_list: computed,
@@ -138,7 +135,6 @@ export default class MyProfileStore extends BaseStore {
             setFullName: action.bound,
             setHasMoreItemsToLoad: action.bound,
             setIsBlockUserTableLoading: action.bound,
-            setIsConfirmDeleteModalOpen: action.bound,
             setIsDailyLimitModalOpen: action.bound,
             setIsDailyLimitSuccessModalOpen: action.bound,
             setIsDeletePaymentMethodErrorModalOpen: action.bound,
@@ -260,22 +256,6 @@ export default class MyProfileStore extends BaseStore {
         });
 
         return list_items;
-    }
-
-    get payment_methods_list_methods() {
-        const methods = [];
-
-        Object.entries(this.advertiser_payment_methods).forEach(key => {
-            if (methods.every(e => e.method !== key[1].method)) {
-                if (key[1].method === 'other' || key[1].method === 'bank_transfer') {
-                    methods.push({ method: key[1].method, display_name: key[1].display_name });
-                } else if (methods.every(e => e.method !== 'e_wallet')) {
-                    methods.push({ method: 'e_wallet', display_name: localize('E-wallet') });
-                }
-            }
-        });
-
-        return methods;
     }
 
     get payment_methods_list_values() {
@@ -586,22 +566,19 @@ export default class MyProfileStore extends BaseStore {
     }
 
     onClickDelete() {
+        const { general_store } = this.root_store;
         requestWS({
             p2p_advertiser_payment_methods: 1,
             delete: [this.payment_method_to_delete.ID],
         }).then(async response => {
-            this.setIsConfirmDeleteModalOpen(false);
+            general_store.hideModal();
             if (!response.error) {
                 this.getAdvertiserPaymentMethods();
             } else {
                 this.setDeleteErrorMessage(response.error.message);
-                await when(
-                    () => !this.root_store.general_store.is_modal_open,
-                    () =>
-                        this.root_store.general_store.showModal({
-                            key: 'DeletePaymentMethodErrorModal',
-                        })
-                );
+                general_store.showModal({
+                    key: 'DeletePaymentMethodErrorModal',
+                });
             }
         });
     }
@@ -633,7 +610,7 @@ export default class MyProfileStore extends BaseStore {
             this.setShouldShowEditPaymentMethodForm(true);
         } else {
             this.setPaymentMethodToDelete(payment_method);
-            this.setIsConfirmDeleteModalOpen(true);
+            this.root_store.general_store.showModal({ key: 'ConfirmDeletePaymentMethodModal' });
         }
     }
 
@@ -653,10 +630,11 @@ export default class MyProfileStore extends BaseStore {
     }
 
     updatePaymentMethod(values, { setSubmitting }) {
+        this.setIsLoading(true);
         requestWS({
             p2p_advertiser_payment_methods: 1,
             update: {
-                [this.payment_method_to_edit.ID]: {
+                [this.payment_method_to_edit.id]: {
                     ...values,
                 },
             },
@@ -668,9 +646,8 @@ export default class MyProfileStore extends BaseStore {
                 });
             } else {
                 this.setShouldShowEditPaymentMethodForm(false);
-                this.getAdvertiserPaymentMethods();
             }
-
+            this.setIsLoading(false);
             setSubmitting(false);
         });
     }
@@ -725,7 +702,7 @@ export default class MyProfileStore extends BaseStore {
 
         Object.keys(values).forEach(key => {
             const value = values[key];
-            const payment_method_field_set = this.payment_method_field_set[key];
+            const payment_method_field_set = this.payment_method_field_set[key] || this.payment_method_to_edit;
             const { display_name, required } = payment_method_field_set;
 
             if (required && !value) {
@@ -795,10 +772,6 @@ export default class MyProfileStore extends BaseStore {
 
     setIsBlockUserTableLoading(is_block_user_table_loading) {
         this.is_block_user_table_loading = is_block_user_table_loading;
-    }
-
-    setIsConfirmDeleteModalOpen(is_confirm_delete_modal_open) {
-        this.is_confirm_delete_modal_open = is_confirm_delete_modal_open;
     }
 
     setIsDailyLimitModalOpen(is_daily_limit_modal_open) {

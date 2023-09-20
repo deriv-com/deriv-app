@@ -6,12 +6,15 @@
             "Assets/*": ["src/assets/*"],
             "Components/*": ["src/components/*"],
             "Constants/*": ["src/constants/*"],
+            "Pages/*": ["src/pages/*"],
             "Stores/*": ["src/stores/*"],
             "Translations/*": ["src/translations/*"],
+            "Types": ["src/types"],
+            "Types/*": ["src/types/*"],
             "Utils/*": ["src/utils/*"],
             "@deriv/*": ["../*/src"]
         },
         "outDir": "./lib"
     },
-    "include": ["src"]
+    "include": ["src", "@deriv-stores.d.ts"]
 }

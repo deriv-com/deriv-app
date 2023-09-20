@@ -1,13 +1,13 @@
-.email-verified-modal {
+.email-link-verified-modal {
     align-items: center;
     display: flex;
     flex-direction: column;
 
-    &--footer {
+    &__footer {
         align-self: center;
     }
 
-    &--text {
+    &__text {
         margin: 2.4rem 0;
     }
 }

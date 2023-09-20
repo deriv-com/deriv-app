@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import AddressDetails from '../address-details';
-import { isDesktop, isMobile, PlatformContext, TLocationList } from '@deriv/shared';
+import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import { FormikProps, FormikValues } from 'formik';
 
 jest.mock('@deriv/shared', () => ({
@@ -40,6 +40,7 @@ describe('<AddressDetails/>', () => {
         getCurrentStep: jest.fn(),
         goToNextStep: jest.fn(),
         goToPreviousStep: jest.fn(),
+        has_real_account: false,
         is_gb_residence: '',
         is_svg: true,
         onCancel: jest.fn(),
@@ -102,9 +103,9 @@ describe('<AddressDetails/>', () => {
         expect(screen.queryByText(verification_info)).not.toBeInTheDocument();
 
         const inputs: HTMLTextAreaElement[] = screen.getAllByRole('textbox');
-        expect(inputs.length).toBe(5);
+        expect(inputs).toHaveLength(5);
         const required_fields = inputs.filter(input => input.required === true);
-        expect(required_fields.length).toBe(2);
+        expect(required_fields).toHaveLength(2);
     });
 
     it('should render AddressDetails component and trigger buttons', async () => {
@@ -116,10 +117,10 @@ describe('<AddressDetails/>', () => {
         expect(screen.queryByText(verification_info)).not.toBeInTheDocument();
 
         const inputs: HTMLTextAreaElement[] = screen.getAllByRole('textbox');
-        expect(inputs.length).toBe(5);
+        expect(inputs).toHaveLength(5);
 
         const required_fields = inputs.filter(input => input.required === true);
-        expect(required_fields.length).toBe(2);
+        expect(required_fields).toHaveLength(2);
 
         const previous_btn = screen.getByRole('button', { name: /previous/i });
         fireEvent.click(previous_btn);
@@ -175,9 +176,9 @@ describe('<AddressDetails/>', () => {
         expect(mock_props.onSubmitEnabledChange).toHaveBeenCalledTimes(1);
 
         const inputs: HTMLTextAreaElement[] = screen.getAllByRole('textbox');
-        expect(inputs.length).toBe(5);
+        expect(inputs).toHaveLength(5);
         const required_fields = inputs.filter(input => input.required === true);
-        expect(required_fields.length).toBe(0);
+        expect(required_fields).toHaveLength(0);
 
         await waitFor(() => {
             expect(screen.getByLabelText(address_line_1)).toBeInTheDocument();
@@ -209,10 +210,10 @@ describe('<AddressDetails/>', () => {
         expect(screen.queryByText(use_address_info)).not.toBeInTheDocument();
 
         const inputs: HTMLTextAreaElement[] = screen.getAllByRole('textbox');
-        expect(inputs.length).toBe(5);
+        expect(inputs).toHaveLength(5);
 
         const required_fields = inputs.filter(input => input.required === true);
-        expect(required_fields.length).toBe(4);
+        expect(required_fields).toHaveLength(4);
 
         expect(screen.getByLabelText(address_line_1_marked)).toBeInTheDocument();
         expect(screen.getByLabelText(address_line_2_marked)).toBeInTheDocument();
@@ -235,7 +236,7 @@ describe('<AddressDetails/>', () => {
         mock_props.states_list = [
             { text: 'State 1', value: 'State 1' },
             { text: 'State 2', value: 'State 2' },
-        ] as TLocationList[];
+        ];
 
         render(<AddressDetails {...mock_props} />);
 
@@ -253,7 +254,7 @@ describe('<AddressDetails/>', () => {
         mock_props.states_list = [
             { text: 'State 1', value: 'State 1' },
             { text: 'State 2', value: 'State 2' },
-        ] as TLocationList[];
+        ];
 
         render(<AddressDetails {...mock_props} />);
 

@@ -126,6 +126,7 @@ export default class MyAdsStore extends BaseStore {
             onToggleSwitchModal: action.bound,
             setRequiredAdType: action.bound,
             setUpdatePaymentMethodsErrorMessage: action.bound,
+            toggleMyAdsRateSwitchModal: action.bound,
             validateCreateAdForm: action.bound,
             validateEditAdForm: action.bound,
         });
@@ -139,14 +140,16 @@ export default class MyAdsStore extends BaseStore {
         this.setIsLoading(true);
         if (!this.root_store.general_store.is_advertiser) {
             requestWS({ get_account_status: 1 }).then(response => {
-                if (!response.error) {
-                    const { get_account_status } = response;
-                    const { status } = get_account_status.authentication.identity;
-                    this.root_store.general_store.setPoiStatus(status);
-                } else {
-                    this.setErrorMessage(response.error);
+                if (response) {
+                    if (!response.error) {
+                        const { get_account_status } = response;
+                        const { status } = get_account_status.authentication.identity;
+                        this.root_store.general_store.setPoiStatus(status);
+                    } else {
+                        this.setErrorMessage(response.error);
+                    }
+                    this.setIsLoading(false);
                 }
-                this.setIsLoading(false);
             });
         } else {
             this.setIsLoading(false);

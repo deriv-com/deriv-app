@@ -1,8 +1,10 @@
 import { FileMessage, UserMessage } from '@sendbird/chat/message';
+import { localize } from 'Components/i18next';
 
 type TChatMessageArgs = {
     created_at: number;
     channel_url: string;
+    custom_type?: string;
     id: string;
     file_type?: string;
     message?: string;
@@ -17,6 +19,7 @@ type TChatMessageArgs = {
 export default class ChatMessage {
     created_at: number;
     channel_url: string;
+    custom_type?: string;
     id: string;
     file_type?: string;
     message?: string;
@@ -30,6 +33,7 @@ export default class ChatMessage {
     constructor({
         created_at,
         channel_url,
+        custom_type,
         id,
         file_type,
         message,
@@ -42,6 +46,7 @@ export default class ChatMessage {
     }: TChatMessageArgs) {
         this.created_at = created_at;
         this.channel_url = channel_url;
+        this.custom_type = custom_type;
         this.file_type = file_type;
         this.id = id;
         this.message = message;
@@ -62,6 +67,7 @@ export default class ChatMessage {
     // static STATUS_DELIVERED_TO_SERVER = 2;
     // static STATUS_READ_BY_RECEIVER = 3;
 
+    static TYPE_ADMIN = 'admin';
     static TYPE_USER = 'user';
     static TYPE_FILE = 'file';
 }
@@ -70,6 +76,7 @@ export const convertFromChannelMessage = (channel_message: UserMessage | FileMes
     return new ChatMessage({
         created_at: channel_message.createdAt,
         channel_url: channel_message.channelUrl,
+        custom_type: channel_message.customType,
         file_type: channel_message.isFileMessage() ? channel_message.type : undefined,
         id: channel_message.messageId.toString(),
         message: channel_message.isUserMessage() ? channel_message.message : undefined,
@@ -80,3 +87,7 @@ export const convertFromChannelMessage = (channel_message: UserMessage | FileMes
         url: channel_message.isFileMessage() ? channel_message.url : undefined,
     });
 };
+
+export const admin_message = localize(
+    "Hello! This is where you can chat with the counterparty to confirm the order details.\nNote: In case of a dispute, we'll use this chat as a reference."
+);

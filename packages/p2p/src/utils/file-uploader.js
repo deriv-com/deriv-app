@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from 'Components/i18next';
 
 export const accepted_file_types = 'image/png, image/jpeg, image/jpg, application/pdf';
 

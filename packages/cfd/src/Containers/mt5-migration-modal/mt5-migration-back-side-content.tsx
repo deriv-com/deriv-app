@@ -29,7 +29,7 @@ const MT5MigrationBackSideContent = observer(() => {
         setJurisdictionSelectedShortcode(getEligibleAccountToMigrate());
         setMT5MigrationModalEnabled(true);
         toggleMT5MigrationModal();
-        setAccountType({ category: 'real', type: 'financial' });
+        setAccountType({ category: 'real', type: 'financial' }); // TODO: remove hardcoded value once BE is ready
         enableCFDPasswordModal();
     };
 

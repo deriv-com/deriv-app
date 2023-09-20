@@ -81,7 +81,7 @@
         min-width: 14rem;
         padding: 1.6rem;
         position: absolute;
-        right: 0;
+        right: 5.5rem;
         top: 0;
 
         &--disable {
@@ -175,7 +175,11 @@
 
     &__row {
         padding: 1.6rem;
-        grid-template-columns: 1.7fr repeat(2, 2fr) repeat(2, 2.3fr) 1.5fr;
+        grid-template-columns: 1.7fr repeat(2, 2fr) 2.3fr 2.65fr 2.5fr;
+
+        .dc-table__head:nth-last-child(2) {
+            margin-left: 3.2rem;
+        }
 
         .dc-table__cell:last-child {
             word-break: unset;
@@ -227,13 +231,15 @@
 
     &__status {
         width: 100%;
+        margin-left: 1.9rem;
 
         &-warning {
             align-items: center;
             display: flex;
             flex-direction: row;
-            justify-content: space-between;
+            justify-content: space-around;
             width: 100%;
+            cursor: pointer;
 
             @include mobile {
                 align-items: center;
@@ -241,6 +247,14 @@
                 justify-content: unset;
                 width: unset;
                 gap: 1rem;
+            }
+            .dc-popover__target {
+                display: flex;
+            }
+            &__icon {
+                @include mobile {
+                    margin-bottom: 0.8rem;
+                }
             }
         }
     }

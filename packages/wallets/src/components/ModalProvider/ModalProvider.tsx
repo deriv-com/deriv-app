@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom';
 
 type TModalContext = {
     isOpen: boolean;
-    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     show: (ModalContent: React.ReactNode) => void;
     hide: () => void;
 };
@@ -19,23 +18,20 @@ export const useModal = () => {
 };
 
 const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
-    const [isOpen, setIsOpen] = React.useState(false);
     const [content, setContent] = React.useState<React.ReactNode | null>();
 
     const rootRef = React.useRef<HTMLElement>(document.getElementById('wallets_modal_root'));
 
     const show = (ModalContent: React.ReactNode) => {
-        setIsOpen(true);
         setContent(ModalContent);
     };
 
     const hide = () => {
-        setIsOpen(false);
         setContent(null);
     };
 
     return (
-        <ModalContext.Provider value={{ isOpen, setIsOpen, show, hide }}>
+        <ModalContext.Provider value={{ isOpen: content !== null, show, hide }}>
             {children}
             {rootRef.current && createPortal(content, rootRef.current)}
         </ModalContext.Provider>

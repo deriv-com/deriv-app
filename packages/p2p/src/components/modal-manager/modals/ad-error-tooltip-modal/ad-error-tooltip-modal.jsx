@@ -1,13 +1,12 @@
 import React from 'react';
 import { Button, Modal, Text, ThemedScrollbars } from '@deriv/components';
-import { observer } from 'mobx-react-lite';
+import { isMobile } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import { isMobile } from '@deriv/shared';
-import { ad_type } from 'Constants/floating-rate';
-import { useStore } from '@deriv/stores';
 import { buy_sell } from 'Constants/buy-sell';
+import { ad_type } from 'Constants/floating-rate';
 
 const AdRateError = () => {
     const { floating_rate_store } = useStores();

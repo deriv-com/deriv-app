@@ -172,6 +172,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                                         icon='IcAlertWarning'
                                         onClick={onClickTooltipIcon}
                                         className={!!is_advert_active && 'my-ads-table__status-warning__icon'}
+                                        data_testid='dt_visibility_alert_icon'
                                     />
                                 </div>
                             ) : (
@@ -310,7 +311,11 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                         <div className='my-ads-table__status-warning'>
                             <AdStatus is_active={!!is_advert_active && !general_store.is_barred} />
                             <Popover alignment='top' message={localize('Ad not listed')}>
-                                <Icon icon='IcAlertWarning' onClick={onClickTooltipIcon} />
+                                <Icon
+                                    icon='IcAlertWarning'
+                                    onClick={onClickTooltipIcon}
+                                    data_testid='dt_visibility_alert_icon'
+                                />
                             </Popover>
                         </div>
                     ) : (

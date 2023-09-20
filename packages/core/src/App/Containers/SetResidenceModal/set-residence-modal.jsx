@@ -3,7 +3,7 @@ import { Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Dialog, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { website_name } from '@deriv/shared';
 import ResidenceForm from './set-residence-form.jsx';
@@ -21,9 +21,12 @@ const validateResidence = (values, residence_list) => {
         const index_of_selection = residence_list.findIndex(item => isResidenceText(item, values));
 
         if (index_of_selection === -1 || residence_list[index_of_selection].disabled === 'DISABLED') {
-            errors.residence = localize('Unfortunately, {{website_name}} is not available in your country.', {
-                website_name,
-            });
+            errors.residence = (
+                <Localize
+                    i18n_default_text='Unfortunately, {{website_name}} is not available in your country.'
+                    values={{ website_name }}
+                />
+            );
         }
     }
 
@@ -63,9 +66,7 @@ const SetResidence = ({ enableApp, onSetResidence, residence_list, toggleModalVi
                                 residence_list={residence_list}
                             >
                                 <Text as='p' size='xxs' weight='bold' className='set-residence__subtext'>
-                                    {localize(
-                                        'We need this to make sure our service complies with laws and regulations in your country.'
-                                    )}
+                                    <Localize i18n_default_text='We need this to make sure our service complies with laws and regulations in your country.' />
                                 </Text>
                                 <Button
                                     className={classNames('set-residence__btn', {
@@ -74,10 +75,11 @@ const SetResidence = ({ enableApp, onSetResidence, residence_list, toggleModalVi
                                     })}
                                     type='submit'
                                     is_disabled={!values.residence || !!errors.residence || isSubmitting}
-                                    text={localize('Set residence')}
                                     primary
                                     large
-                                />
+                                >
+                                    <Localize i18n_default_text='Set residence' />
+                                </Button>
                             </ResidenceForm>
                         </React.Fragment>
                     </Form>

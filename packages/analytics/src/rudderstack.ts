@@ -95,8 +95,8 @@ type ReportsFormAction =
           subform_name: 'open_positions_form' | 'statement_form' | 'trade_table_form';
           trade_type_filter?: string;
           growth_type_filter?: string;
-          start_date_filter?: string | null;
-          end_date_filter?: string | null;
+          start_date_filter?: string;
+          end_date_filter?: string;
           transaction_type_filter?: string;
       }
     | {
@@ -115,8 +115,8 @@ type ReportsFormAction =
           action: 'filter_dates';
           form_name: string;
           subform_name: 'trade_table_form' | 'statement_form';
-          start_date_filter: string | null;
-          end_date_filter: string | null;
+          start_date_filter?: string;
+          end_date_filter?: string;
       }
     | {
           action: 'filter_transaction_type';

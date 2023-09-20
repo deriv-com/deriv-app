@@ -1,16 +1,21 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { observer } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useStores } from 'Stores';
 
-const LeavePageModal = ({ onLeavePage = () => {}, onCancel = () => {} }) => {
+type TLeavePageModalProps = {
+    onCancel?: () => void;
+    onLeavePage?: () => void;
+};
+
+const LeavePageModal = ({ onLeavePage, onCancel }: TLeavePageModalProps) => {
     const { buy_sell_store } = useStores();
     const { hideModal, is_modal_open } = useModalManagerContext();
 
     const onClickCancel = () => {
-        onCancel();
+        onCancel?.();
         hideModal({
             should_restore_local_state: true,
         });
@@ -18,7 +23,7 @@ const LeavePageModal = ({ onLeavePage = () => {}, onCancel = () => {} }) => {
 
     const onClickLeavePage = () => {
         buy_sell_store.setShowFilterPaymentMethods(false);
-        onLeavePage();
+        onLeavePage?.();
         hideModal({
             should_restore_local_state: false,
             should_hide_all_modals: true,
@@ -31,7 +36,7 @@ const LeavePageModal = ({ onLeavePage = () => {}, onCancel = () => {} }) => {
             is_open={is_modal_open}
             small
             title={
-                <Text color='prominent' size='s' weight='bold'>
+                <Text color='prominent' weight='bold'>
                     <Localize i18n_default_text='Leave page?' />
                 </Text>
             }

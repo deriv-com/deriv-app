@@ -1,5 +1,5 @@
 .rating-modal {
-    &--body {
+    &__body {
         padding: 0.8rem 2.4rem;
 
         @include mobile {
@@ -10,11 +10,11 @@
         }
     }
 
-    &--footer {
+    &__footer {
         padding: 2.4rem;
     }
 
-    &--star {
+    &__star {
         pointer-events: none;
 
         > svg {

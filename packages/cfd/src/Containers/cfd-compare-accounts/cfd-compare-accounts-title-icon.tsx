@@ -10,11 +10,11 @@ const CFDCompareAccountsTitleIcon = ({ trading_platforms, is_eu_user, is_demo }:
     const market_type = !is_eu_user ? getMarketType(trading_platforms) : 'CFDs';
     const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode);
     const jurisdiction_card_icon =
-        trading_platforms.platform === 'dxtrade'
+        trading_platforms.platform === 'dxtrade' || trading_platforms.platform === 'ctrader'
             ? getAccountIcon(trading_platforms.platform)
             : getAccountIcon(market_type);
     const jurisdiction_card_title =
-        trading_platforms.platform === 'dxtrade'
+        trading_platforms.platform === 'dxtrade' || trading_platforms.platform === 'ctrader'
             ? getAccountCardTitle(trading_platforms.platform, is_demo)
             : getAccountCardTitle(market_type_shortcode, is_demo);
     const labuan_jurisdiction_message = localize(

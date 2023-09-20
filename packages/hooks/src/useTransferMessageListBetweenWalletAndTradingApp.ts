@@ -1,16 +1,17 @@
+import { useEffect } from 'react';
 import useExchangeRate from './useExchangeRate';
 import useWalletTransfer from './useWalletTransfer';
 
-type TTransferMessageBetweenWalletAndTradingApp =
+type TTransferMessageListBetweenWalletAndTradingApp =
     | {
-          code: 'WalletToTradingAppDailyLimit';
+          code: 'WalletAndTradingAppDailyLimit';
           is_first_transfer: boolean;
           limit: number;
           currency: string;
           type: 'error' | 'info' | 'success';
       }
     | {
-          code: 'DemoWalletToTradingAppDailyLimit';
+          code: 'DemoWalletAndTradingAppDailyLimit';
           is_first_transfer: boolean;
           limit: number;
           currency: string;
@@ -30,7 +31,7 @@ const tradingAccountMapper = (account_type: string, currency_type: string): stri
  * @param from_account - Information of the source account received from the useWalletsList hook.
  * @param to_account - Information of the destination account received from the useWalletsList hook.
  */
-const useTransferMessageBetweenWalletAndTradingApp = (
+const useTransferMessageListBetweenWalletAndTradingApp = (
     from_account: Partial<ReturnType<typeof useWalletTransfer>['from_account']>,
     to_account: Partial<ReturnType<typeof useWalletTransfer>['to_account']>,
     account_limits: any // TODO: add type of account_limits when the new schema is ready.
@@ -41,35 +42,63 @@ const useTransferMessageBetweenWalletAndTradingApp = (
                 DemoTradingApp-DemoWallet
     */
 
-    const message_list: TTransferMessageBetweenWalletAndTradingApp[] = [];
+    const message_list: TTransferMessageListBetweenWalletAndTradingApp[] = [];
 
     const { getRate } = useExchangeRate();
 
     if (from_account && to_account) {
+        let limits;
         if (from_account.account_type === 'wallet' && to_account.account_type !== 'wallet') {
-            let limits;
-            if (to_account.account_type && to_account.type)
+            if (to_account.account_type && to_account.type) {
                 limits = account_limits.daily_transfers[tradingAccountMapper(to_account.account_type, to_account.type)];
-            if (from_account.currency)
-                if (from_account.is_demo)
+            }
+            if (from_account.currency) {
+                if (from_account.is_demo) {
                     message_list.push({
-                        code: 'DemoWalletToTradingAppDailyLimit',
+                        code: 'DemoWalletAndTradingAppDailyLimit',
                         is_first_transfer: parseFloat(limits?.allowed) === parseFloat(limits?.available),
                         limit: parseFloat(limits?.available),
                         currency: from_account.currency,
                         type: 'success',
                     });
-                else
+                } else {
                     message_list.push({
-                        code: 'WalletToTradingAppDailyLimit',
+                        code: 'WalletAndTradingAppDailyLimit',
                         is_first_transfer: parseFloat(limits?.allowed) === parseFloat(limits?.available),
                         limit: parseFloat(limits?.available) * getRate(from_account.currency),
                         currency: from_account.currency,
                         type: 'success',
                     });
+                }
+            }
+        }
+        if (from_account.account_type !== 'wallet' && to_account.account_type === 'wallet') {
+            if (from_account.account_type && from_account.type) {
+                limits =
+                    account_limits.daily_transfers[tradingAccountMapper(from_account.account_type, from_account.type)];
+            }
+            if (from_account.currency) {
+                if (from_account.is_demo) {
+                    message_list.push({
+                        code: 'DemoWalletAndTradingAppDailyLimit',
+                        is_first_transfer: parseFloat(limits?.allowed) === parseFloat(limits?.available),
+                        limit: parseFloat(limits?.available),
+                        currency: from_account.currency,
+                        type: 'success',
+                    });
+                } else {
+                    message_list.push({
+                        code: 'WalletAndTradingAppDailyLimit',
+                        is_first_transfer: parseFloat(limits?.allowed) === parseFloat(limits?.available),
+                        limit: parseFloat(limits?.available) * getRate(from_account.currency),
+                        currency: from_account.currency,
+                        type: 'success',
+                    });
+                }
+            }
         }
     }
     return message_list;
 };
 
-export default useTransferMessageBetweenWalletAndTradingApp;
+export default useTransferMessageListBetweenWalletAndTradingApp;

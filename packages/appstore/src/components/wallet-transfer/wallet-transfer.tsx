@@ -148,7 +148,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                             <WalletTransferMessages
                                 from_account={from_account}
                                 to_account={to_account}
-                                // setMessageList={setMessageList} - TODO: add this line later for managing input error messages
+                                // TODO: add driving state for managing input validation
                             />
                             <div className='wallet-transfer__tile'>
                                 <Field name='to_amount'>

@@ -4,7 +4,11 @@ import PasswordShowIcon from '../../public/images/ic-password-show.svg';
 import { useModal } from '../ModalProvider';
 import { WalletModal } from '../WalletModal';
 
-const MT5CreatePassword = () => {
+type TProps = {
+    onClick: () => void;
+};
+
+const MT5CreatePassword: React.FC<TProps> = ({ onClick }) => {
     const { hide } = useModal();
 
     return (
@@ -18,7 +22,9 @@ const MT5CreatePassword = () => {
                 <input placeholder='Deriv MT5 password' type='password' />
                 <PasswordShowIcon className='wallets-create-password-input-trailing-icon' />
             </div>
-            <button className='wallets-create-password-button'>Create Deriv MT5 password</button>
+            <button className='wallets-create-password-button' onClick={onClick}>
+                Create Deriv MT5 password
+            </button>
         </WalletModal>
     );
 };

@@ -40,9 +40,19 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
 
     const ShowMT5PasswordModal = () => {
         return hasMT5Account ? (
-            <MT5EnterPassword name={market_type_to_name_mapper[account.market_type || 'synthetic']} />
+            <MT5EnterPassword
+                market_type={market_type_to_name_mapper[account.market_type || 'synthetic']}
+                onClick={() => {
+                    // Do nothing
+                }}
+                platform='Deriv MT5'
+            />
         ) : (
-            <MT5CreatePassword />
+            <MT5CreatePassword
+                onClick={() => {
+                    // Do nothing
+                }}
+            />
         );
     };
 

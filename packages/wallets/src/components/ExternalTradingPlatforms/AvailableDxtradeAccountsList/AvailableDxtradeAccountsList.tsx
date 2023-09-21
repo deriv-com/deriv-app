@@ -1,10 +1,25 @@
 import React from 'react';
 import DerivX from '../../../public/images/derivx.svg';
+import { useModal } from '../../ModalProvider';
+import { MT5EnterPassword } from '../../MT5EnterPassword';
 import { SecondaryActionButton } from '../../SecondaryActionButton';
 import { TradingAccountCard } from '../../TradingAccountCard';
 import './AvailableDxtradeAccountsList.scss';
 
 const AvailableDxtradeAccountsList: React.FC = () => {
+    const { show } = useModal();
+
+    const ShowPasswordModal = () => {
+        return (
+            <MT5EnterPassword
+                onClick={() => {
+                    // Do nothing
+                }}
+                platform='Deriv X'
+            />
+        );
+    };
+
     return (
         <TradingAccountCard
             leading={() => (
@@ -13,7 +28,7 @@ const AvailableDxtradeAccountsList: React.FC = () => {
                 </div>
             )}
             trailing={() => (
-                <SecondaryActionButton>
+                <SecondaryActionButton onClick={() => show(<ShowPasswordModal />)}>
                     <p className='wallets-available-dxtrade__text'>Get</p>
                 </SecondaryActionButton>
             )}

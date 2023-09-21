@@ -1,19 +1,17 @@
 import React from 'react';
 import QRCode from 'qrcode.react';
 import { MobileWrapper, ThemedScrollbars, Text, Timeline, Loading, Clipboard, DesktopWrapper } from '@deriv/components';
-import TwoFactorAuthenticationArticle from './two-factor-authentication-article';
 import { Localize, localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import DigitForm from './digit-form';
+import TwoFactorAuthenticationArticle from './two-factor-authentication-article';
 
 type TTwoFactorDisabled = {
     secret_key: string;
     qr_secret_key: string;
     is_loading_secret: boolean;
-    // setTwoFAStatus: (status: boolean) => void;
 };
 
-// { secret_key, qr_secret_key, is_loading_secret, setTwoFAStatus }
 const TwoFactorDisabled = ({ secret_key, qr_secret_key, is_loading_secret }: TTwoFactorDisabled) => {
     return (
         <React.Fragment>
@@ -27,7 +25,7 @@ const TwoFactorDisabled = ({ secret_key, qr_secret_key, is_loading_secret }: TTw
                     <TwoFactorAuthenticationArticle />
                 </MobileWrapper>
                 <Text as='h2' color='prominent' weight='bold' className='two-factor__title'>
-                    {localize('How to set up 2FA for your Deriv account')}
+                    <Localize i18n_default_text='How to set up 2FA for your Deriv account' />
                 </Text>
                 <div>
                     <Timeline className='two-factor__timeline' line_height='xs'>
@@ -73,9 +71,7 @@ const TwoFactorDisabled = ({ secret_key, qr_secret_key, is_loading_secret }: TTw
                                                     align='center'
                                                     className='two-factor__qr--message'
                                                 >
-                                                    {localize(
-                                                        'If you are unable to scan the QR code, you can manually enter this code instead:'
-                                                    )}
+                                                    <Localize i18n_default_text='If you are unable to scan the QR code, you can manually enter this code instead:' />
                                                 </Text>
                                                 <div className='two-factor__qr--code' data-testid='2fa_clipboard'>
                                                     <Text size='xs'>{secret_key}</Text>
@@ -97,7 +93,6 @@ const TwoFactorDisabled = ({ secret_key, qr_secret_key, is_loading_secret }: TTw
                         >
                             <div data-testid='digitform_2fa_disabled'>
                                 <DigitForm />
-                                {/* setTwoFAStatus={setTwoFAStatus} */}
                             </div>
                         </Timeline.Item>
                     </Timeline>

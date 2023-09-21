@@ -6,20 +6,14 @@ import { useSendUserOTP } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import { useStore } from '@deriv/stores';
 
-// type TDigitForm = {
-//     setTwoFAStatus: (status: boolean) => void;
-// };
-
 type TDigitFormValues = {
     digit_code: string;
 };
 
-// { setTwoFAStatus }: TDigitForm
 const DigitForm = () => {
     const { client, common } = useStore();
     const { is_language_changing } = common;
     const { has_enabled_two_fa, setTwoFAChangedStatus, setTwoFAStatus } = client;
-    // const { setTwoFAChangedStatus } = client;
 
     const { is_TwoFA_enabled, error, isSuccess, sendUserOTP } = useSendUserOTP();
     const button_text = has_enabled_two_fa ? localize('Disable') : localize('Enable');
@@ -57,7 +51,7 @@ const DigitForm = () => {
             setTwoFAChangedStatus(true);
             formik_ref.current?.resetForm();
         }
-    }, [isSuccess, is_TwoFA_enabled, setTwoFAChangedStatus, setTwoFAStatus]);
+    }, [isSuccess, is_TwoFA_enabled]);
 
     const validateFields = async (values: TDigitFormValues) => {
         const digit_code = values.digit_code;
@@ -72,7 +66,6 @@ const DigitForm = () => {
     };
 
     const handleSubmit = async (values: TDigitFormValues) => {
-        // using stored state value as api call is not made yet so is_TwoFA_enabled=false always at this line
         const action = has_enabled_two_fa ? 'disable' : 'enable';
         sendUserOTP({ totp_action: action, otp: values.digit_code });
     };

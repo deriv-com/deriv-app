@@ -464,7 +464,9 @@ const mock = (): TStores & { is_mock: boolean } => {
             getContractById: jest.fn(),
         },
         modules: {
-            setMT5MigrationError: jest.fn(),
+            cfd: {
+                setMT5MigrationError: jest.fn(),
+            },
         },
         exchange_rates: {
             data: undefined,

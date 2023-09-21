@@ -18,8 +18,8 @@ const SVGMigrationBanner = observer(() => {
     } = useMT5SVGEligibleToMigrate();
     const { is_mobile, toggleMT5MigrationModal } = ui;
     const { setMT5MigrationError } = cfd;
-    const is_deriv_mt5 = eligible_svg_to_bvi_derived_accounts ?? eligible_svg_to_vanuatu_derived_accounts;
-    const is_financial_mt5 = eligible_svg_to_bvi_financial_accounts ?? eligible_svg_to_vanuatu_financial_accounts;
+    const is_deriv_mt5 = eligible_svg_to_bvi_derived_accounts || eligible_svg_to_vanuatu_derived_accounts;
+    const is_financial_mt5 = eligible_svg_to_bvi_financial_accounts || eligible_svg_to_vanuatu_financial_accounts;
     const is_deriv_financial_mt5 = is_deriv_mt5 && is_financial_mt5;
     const image = is_mobile ? 'svg_migrate_mobile' : 'svg_migrate_desktop';
     const size: string = is_mobile ? 'xs' : 'm';

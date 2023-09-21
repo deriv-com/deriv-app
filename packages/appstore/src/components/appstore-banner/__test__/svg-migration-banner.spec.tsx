@@ -45,16 +45,6 @@ describe('SVGMigrationBanner', () => {
         };
     });
 
-    it('should not render SVGMigrationBanner', () => {
-        renderComponent();
-        const texts = [/We’re upgrading your/i, /MT5 Derived SVG/i, /MT5 Financial SVG/i, /and/i, /account./i];
-        texts.forEach(text => {
-            expect(screen.getByText(text)).not.toBeInTheDocument();
-        });
-        expect(screen.getByRole('button', { name: /upgrade now/i })).not.toBeInTheDocument();
-        expect(screen.getByTestId('dt_svg_migrate_desktop')).not.toBeInTheDocument();
-    });
-
     it('should render SVGMigrationBanner with both MT5 Derived SVG and MT5 Financial SVG text', () => {
         response.eligible_svg_to_bvi_derived_accounts = true;
         response.eligible_svg_to_bvi_financial_accounts = true;

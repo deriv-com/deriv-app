@@ -19,7 +19,6 @@ type TDetailedExistingAccount = AvailableAccount &
     TDetailsOfEachMT5Loginid &
     Actions & {
         key: string;
-        webtrader_url: string;
     };
 
 const CFDsListing = observer(() => {

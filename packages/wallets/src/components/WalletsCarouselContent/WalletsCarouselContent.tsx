@@ -3,7 +3,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { useAuthorize, useWalletAccountsList } from '@deriv/api';
 import { ProgressBar } from '../ProgressBar';
 import { WalletCard } from '../WalletCard';
-import { WalletListCardIActions } from '../WalletListCardIActions';
+import { WalletListCardActions } from '../WalletListCardActions';
 import './WalletsCarouselContent.scss';
 
 const WalletsCarouselContent: React.FC = () => {
@@ -56,7 +56,7 @@ const WalletsCarouselContent: React.FC = () => {
                     is_transition
                 />
             </div>
-            <WalletListCardIActions />
+            <WalletListCardActions />
         </div>
     );
 };

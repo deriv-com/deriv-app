@@ -72,3 +72,4 @@ export { default as useWalletAccountsList } from './useWalletAccountsList';
 export { default as useActiveWalletAccount } from './useActiveWalletAccount';
 export { default as useActiveTradingAccount } from './useActiveTradingAccount';
 export { default as useModal } from './useModal';
+export { default as useToggle } from './useToggle';

@@ -15,6 +15,7 @@ export interface IDashboardStore {
     has_started_bot_builder_tour: boolean;
     has_started_onboarding_tour: boolean;
     has_tour_ended: boolean;
+    is_web_socket_intialised: boolean;
     initInfoPanel: () => void;
     is_dialog_open: boolean;
     is_file_supported: boolean;
@@ -30,6 +31,7 @@ export interface IDashboardStore {
     setInfoPanelVisibility: (visibility: boolean) => void;
     setIsFileSupported: (is_file_supported: boolean) => void;
     setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => void;
+    setWebSocketState: (is_web_socket_intialised: boolean) => void;
     setOpenSettings: (toast_message: string, show_toast: boolean) => void;
     setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
     setStrategySaveType: (param: string) => void;
@@ -63,12 +65,14 @@ export default class DashboardStore implements IDashboardStore {
             is_info_panel_visible: observable,
             is_preview_on_popup: observable,
             is_tour_dialog_visible: observable,
+            is_web_socket_intialised: observable,
             is_dark_mode: computed,
             onCloseDialog: action.bound,
             onCloseTour: action.bound,
             onTourEnd: action.bound,
             setActiveTab: action.bound,
             setActiveTabTutorial: action.bound,
+            setWebSocketState: action.bound,
             setBotBuilderTokenCheck: action.bound,
             setBotBuilderTourState: action.bound,
             setFAQSearchValue: action.bound,
@@ -130,7 +134,7 @@ export default class DashboardStore implements IDashboardStore {
     active_tab_tutorials = 0;
     active_tour_step_number = 0;
     dialog_options = {};
-    faq_search_value = null || '';
+    faq_search_value = '';
     getFileArray = [];
     has_builder_token = '';
     has_file_loaded = false;
@@ -148,6 +152,7 @@ export default class DashboardStore implements IDashboardStore {
     show_toast = false;
     strategy_save_type = 'unsaved';
     toast_message = '';
+    is_web_socket_intialised = true;
 
     get is_dark_mode() {
         const {
@@ -159,6 +164,10 @@ export default class DashboardStore implements IDashboardStore {
         } = this.root_store;
         return is_dark_mode_on;
     }
+
+    setWebSocketState = (is_web_socket_intialised: boolean) => {
+        this.is_web_socket_intialised = is_web_socket_intialised;
+    };
 
     setOpenSettings = (toast_message: string, show_toast = true) => {
         this.toast_message = toast_message;

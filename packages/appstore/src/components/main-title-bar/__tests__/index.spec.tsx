@@ -47,6 +47,34 @@ jest.mock('@deriv/api', () => ({
                     },
                 },
             };
+        } else if (name === 'crypto_config') {
+            return {
+                data: {
+                    crypto_config: {
+                        currencies_config: {
+                            BTC: {
+                                minimum_withdrawal: 0.00034286,
+                            },
+                            ETH: {
+                                minimum_withdrawal: 0.02728729,
+                            },
+                            LTC: {
+                                minimum_withdrawal: 0.06032091,
+                            },
+                            USD: {},
+                            USDC: {
+                                minimum_withdrawal: 50,
+                            },
+                            UST: {
+                                minimum_withdrawal: 24.99,
+                            },
+                            eUSDT: {
+                                minimum_withdrawal: 50.05,
+                            },
+                        },
+                    },
+                },
+            };
         }
 
         return undefined;
@@ -56,7 +84,7 @@ jest.mock('@deriv/api', () => ({
 describe('MainTitleBar', () => {
     const render_container = (mock_store_override?: ReturnType<typeof mockStore>) => {
         const mock_store = mockStore({ feature_flags: { data: { wallet: false } } });
-        const wrapper = ({ children }: { children: JSX.Element }) => (
+        const wrapper = ({ children }: React.PropsWithChildren) => (
             <APIProvider>
                 <StoreProvider store={mock_store_override ?? mock_store}>{children}</StoreProvider>
             </APIProvider>

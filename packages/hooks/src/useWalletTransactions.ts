@@ -1,26 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useStore } from '@deriv/stores';
 import { usePaginatedFetch, useCurrencyConfig } from '@deriv/api';
-import usePlatformAccounts from './usePlatformAccounts';
-import useWalletsList from './useWalletsList';
-import useActiveWallet from './useActiveWallet';
+import useActiveWalletAccount from './useActiveWalletAccount';
+import useWalletAccountsList from './useWalletAccountsList';
+import useAccountsList from './useAccountsList';
 
 /** A custom hook to get a list of transactions for an active wallet of a user, optionally filtered by transaction type */
 const useWalletTransactions = (action_type?: 'deposit' | 'withdrawal' | 'virtual_credit' | 'transfer') => {
-    const {
-        client: { loginid },
-    } = useStore();
-    const { data: wallets } = useWalletsList();
-    const current_wallet = useActiveWallet();
+    const { data: accounts } = useAccountsList();
+    const { data: wallets } = useWalletAccountsList();
+    const current_wallet = useActiveWalletAccount();
     const { getConfig } = useCurrencyConfig();
-    const { demo: demo_platform_account } = usePlatformAccounts();
-    const { real: real_platform_accounts } = usePlatformAccounts();
-
-    // Combine demo and real accounts into one list of user accounts.
-    const accounts = useMemo(
-        () => [demo_platform_account, ...real_platform_accounts],
-        [demo_platform_account, real_platform_accounts]
-    );
+    const loginid = current_wallet?.loginid;
 
     // Get the paginated and filtered list of transactions from the API.
     const { data, ...rest } = usePaginatedFetch('statement', {
@@ -87,7 +77,7 @@ const useWalletTransactions = (action_type?: 'deposit' | 'withdrawal' | 'virtual
                                       ? transaction.from?.loginid
                                       : transaction.to?.loginid;
                               if (!other_loginid) return null;
-                              const other_account = accounts.find(el => el?.loginid === other_loginid);
+                              const other_account = accounts?.find(el => el?.loginid === other_loginid);
                               if (!other_account || !other_account.currency || !other_account.account_type) return null;
                               return {
                                   ...other_account,

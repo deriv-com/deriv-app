@@ -1,6 +1,7 @@
 export * from './AccountsList';
 export * from './CreatePassword';
 export * from './DesktopWalletsList';
+export * from './DxtradeEnterPasswordModal';
 export * from './EnterPassword';
 export * from './ExternalTradingPlatforms';
 export * from './InlineMessage';

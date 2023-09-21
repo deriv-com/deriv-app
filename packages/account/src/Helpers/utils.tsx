@@ -3,7 +3,7 @@ import { Localize, localize } from '@deriv/translations';
 import { filterObjProperties, toMoment, validLength, validName, getIDVNotApplicableOption } from '@deriv/shared';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
 import { FormikValues } from 'formik';
-import { getIDVDocumentConfig } from '../Constants/idv-document-config';
+import { getIDVDocuments } from '../Constants/idv-document-config';
 import { TServerError } from '../Types';
 
 export const documentAdditionalError = (document_additional: string, document_additional_format: string) => {
@@ -56,15 +56,13 @@ export const shouldShowIdentityInformation = ({
 };
 
 export const getDocumentData = (country_code: string, document_type: string) => {
-    const IDV_DOCUMENT_DATA = getIDVDocumentConfig();
-    return (
-        (Object.keys(IDV_DOCUMENT_DATA).includes(country_code) &&
-            (IDV_DOCUMENT_DATA as any)[country_code][document_type]) || {
-            new_display_name: '',
-            example_format: '',
-            sample_image: '',
-        }
-    );
+    const DEFAULT_CONFIG = {
+        new_display_name: '',
+        example_format: '',
+        sample_image: '',
+    };
+    const IDV_DOCUMENT_DATA: any = getIDVDocuments(country_code);
+    return IDV_DOCUMENT_DATA[document_type] ?? DEFAULT_CONFIG;
 };
 
 export const preventEmptyClipboardPaste = (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -135,7 +133,7 @@ export const validateName = (name: string) => {
     return '';
 };
 
-export const getExampleFormat = (example_format: string | undefined) =>
+export const getExampleFormat = (example_format?: string) =>
     example_format ? localize('Example: ') + example_format : '';
 
 export const isDocumentTypeValid = (document_type: FormikValues) => {

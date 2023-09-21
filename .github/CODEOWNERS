@@ -159,4 +159,11 @@
 #  deriv-app/wallets
 # ==============================================================
 
-/packages/wallets/**/*                                           @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv
+/packages/wallets/**/*                                          @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv
+
+
+# ==============================================================
+#  deriv-app/api
+# ==============================================================
+
+/packages/api/**/*                                              @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv

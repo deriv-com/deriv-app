@@ -1,0 +1,96 @@
+.transaction-details-modal-desktop {
+    color: var(--text-general);
+
+    .dc-dialog {
+        &__dialog {
+            padding: 0px;
+            width: 80vw;
+            max-width: inherit;
+            max-height: inherit;
+            justify-content: start;
+        }
+        &__header-wrapper {
+            padding-inline: 18px;
+            margin: 1.5rem 0;
+        }
+        &__content {
+            max-width: inherit;
+            margin-bottom: 0;
+        }
+    }
+
+    &__table-container {
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+        max-height: 40vh;
+        margin-bottom: 8px;
+        &__top-table {
+            height: 40vh;
+        }
+    }
+
+    &__table-row {
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        border-bottom: 1.5px solid var(--general-section-2);
+    }
+
+    &__table-header {
+        position: sticky;
+        top: 0;
+        background-color: var(--general-section-2);
+        font-size: 14px;
+        font-weight: 700;
+        .transaction-details-modal-desktop {
+            &__table-cell {
+                margin-left: -2px;
+            }
+        }
+    }
+
+    &__table-cell {
+        flex: 1;
+        overflow: auto;
+        padding: 16px 18px;
+        white-space: normal;
+        word-wrap: break-word;
+        &--grow-big {
+            flex-grow: 3;
+        }
+        &--grow-mid {
+            flex-grow: 1.5;
+        }
+        .transactions__loader-text {
+            width: 100%;
+        }
+    }
+    &__loss {
+        color: var(--text-loss-danger);
+    }
+    &__profit {
+        &--win {
+            color: var(--text-profit-success);
+
+            &:before {
+                content: '+';
+            }
+        }
+        &--loss {
+            color: var(--text-loss-danger);
+
+            &:before {
+                content: '-';
+            }
+        }
+    }
+    &__icon-wrapper {
+        display: flex;
+        align-items: baseline;
+    }
+    &__divider {
+        width: 100%;
+        padding: 4px 16px;
+    }
+}

@@ -45,7 +45,6 @@ export default class SendbirdStore extends BaseStore {
             should_show_chat_on_orders: observable,
             has_chat_info: computed,
             is_chat_frozen: computed,
-            last_other_user_activity: computed,
             addChannelMessage: action.bound,
             createChatForNewOrder: action.bound,
             replaceChannelMessage: action.bound,
@@ -66,15 +65,6 @@ export default class SendbirdStore extends BaseStore {
 
     get is_chat_frozen() {
         return this.active_chat_channel?.isFrozen;
-    }
-
-    get last_other_user_activity() {
-        const message = this.chat_messages
-            .slice()
-            .reverse()
-            .find(chat_message => chat_message.sender_user_id !== this.chat_info.user_id);
-
-        return message ? epochToMoment(Math.floor(message.created_at / 1000)).fromNow() : null;
     }
 
     addChannelMessage(chat_message: ChatMessage) {
@@ -209,7 +199,7 @@ export default class SendbirdStore extends BaseStore {
         const is_inclusive_of_timestamp = false;
         const result_size = 50;
         const reverse_results = false;
-        const custom_type = [''];
+        const custom_type = ['', 'admin'];
 
         const messages_timestamp =
             timestamp ?? toMoment(this.root_store.general_store.server_time.get()).utc().valueOf();
@@ -386,8 +376,7 @@ export default class SendbirdStore extends BaseStore {
                 } else {
                     this.setChannelMessages([]);
                 }
-            },
-            { fireImmediately: true }
+            }
         );
 
         return () => {
@@ -436,7 +425,7 @@ export default class SendbirdStore extends BaseStore {
             });
     }
 
-    sendMessage(message: string) {
+    sendMessage(message: string, custom_type = '') {
         const modified_message = message.trim();
 
         if (modified_message.length === 0) {
@@ -454,6 +443,7 @@ export default class SendbirdStore extends BaseStore {
             message_type: MessageType.USER,
             sender_user_id: this.chat_info.user_id,
             status: ChatMessage.STATUS_PENDING,
+            custom_type,
         };
 
         this.addChannelMessage(new ChatMessage(placeholder_msg_options));
@@ -462,6 +452,7 @@ export default class SendbirdStore extends BaseStore {
             ?.sendUserMessage({
                 message: modified_message,
                 data: msg_identifier,
+                customType: custom_type,
             })
             .onSucceeded(channel_message => {
                 const msg_idx = this.chat_messages.findIndex(msg => msg.id === msg_identifier);

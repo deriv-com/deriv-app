@@ -22,13 +22,15 @@ type TPersonalDetailsConfig = {
     is_appstore?: boolean;
     residence: string;
     account_status: GetAccountStatus;
+    is_high_risk_client_for_mt5?: boolean;
 };
 
-const personal_details_config = ({
+export const personal_details_config = ({
     residence_list,
     account_settings,
     is_appstore,
     real_account_signup_target,
+    is_high_risk_client_for_mt5,
 }: TPersonalDetailsConfig) => {
     if (!residence_list || !account_settings) {
         return {};
@@ -37,6 +39,8 @@ const personal_details_config = ({
     // minimum characters required is 9 numbers (excluding +- signs or space)
     const min_phone_number = 9;
     const max_phone_number = 35;
+
+    const default_residence = real_account_signup_target === 'maltainvest' ? account_settings?.residence : '';
 
     const config = {
         account_opening_reason: {
@@ -114,10 +118,10 @@ const personal_details_config = ({
             ],
         },
         tax_residence: {
-            default_value:
-                real_account_signup_target === 'maltainvest'
-                    ? account_settings.residence
-                    : residence_list.find(item => item.value === account_settings.tax_residence)?.text || '',
+            //if tax_residence is already set, we will use it as default value else for mf clients we will use residence as default value
+            default_value: account_settings?.tax_residence
+                ? residence_list.find(item => item.value === account_settings?.tax_residence)?.text ?? ''
+                : default_residence,
             supported_in: ['maltainvest'],
             rules: [['req', localize('Tax residence is required.')]],
         },
@@ -132,30 +136,28 @@ const personal_details_config = ({
                     { min: 0, max: 25 },
                 ],
                 [
-                    'regular',
+                    // check if the TIN value is available, then perform the regex test
+                    // else return true (to pass the test)
+                    // this is to allow empty string to pass the test in case of optioal TIN field
+                    (value: string) => (value ? RegExp(/^(?!^$|\s+)[A-Za-z0-9./\s-]{0,25}$/).test(value) : true),
                     localize('Letters, numbers, spaces, periods, hyphens and forward slashes only.'),
-                    {
-                        regex: /^(?!^$|\s+)[A-Za-z0-9./\s-]{0,25}$/,
-                    },
                 ],
                 [
                     (value: string, options: Record<string, unknown>, { tax_residence }: { tax_residence: string }) => {
-                        return !!tax_residence;
+                        // check if  TIN value is available,
+                        // only then ask client to fill in tax residence
+                        return value ? !!tax_residence : true;
                     },
                     localize('Please fill in Tax residence.'),
                 ],
                 [
                     (value: string, options: Record<string, unknown>, { tax_residence }: { tax_residence: string }) => {
-                        const from_list = residence_list.filter(res => res.text === tax_residence && res.tin_format);
-                        const tax_regex = from_list[0]?.tin_format?.[0];
-                        return tax_regex ? new RegExp(tax_regex).test(value) : true;
+                        const tin_format = residence_list.find(
+                            res => res.text === tax_residence && res.tin_format
+                        )?.tin_format;
+                        return value && tin_format ? tin_format.some(regex => new RegExp(regex).test(value)) : true;
                     },
-                    [
-                        'warn',
-                        localize(
-                            'This Tax Identification Number (TIN) is invalid. You may continue with account creation, but to facilitate future payment processes, valid tax information will be required.'
-                        ),
-                    ],
+                    localize('Tax Identification Number is not properly formatted.'),
                 ],
             ],
         },
@@ -188,6 +190,25 @@ const personal_details_config = ({
     };
 
     const getConfig = () => {
+        // Need to check if client is high risk (only have SVG i.e. China & Russia)
+        // No need to get additinal details when client is high risk
+        if (!is_high_risk_client_for_mt5 && real_account_signup_target !== 'maltainvest') {
+            const properties_to_update: (keyof typeof config)[] = [
+                'place_of_birth',
+                'tax_residence',
+                'tax_identification_number',
+                'account_opening_reason',
+            ];
+
+            properties_to_update.forEach(key => {
+                config[key].supported_in.push('svg');
+                // Remove required rule for TIN and Tax residence from the config to make the fields optional
+                if (key === 'tax_identification_number' || key === 'tax_residence') {
+                    config[key].rules = config[key].rules.filter(rule => rule[0] !== 'req');
+                }
+            });
+        }
+
         if (is_appstore) {
             const allowed_fields = ['first_name', 'last_name', 'date_of_birth', 'phone'];
             return Object.keys(config).reduce((new_config, key) => {
@@ -211,6 +232,7 @@ const personalDetailsConfig = <T>(
         account_settings,
         account_status,
         residence,
+        is_high_risk_client_for_mt5,
     }: TPersonalDetailsConfig,
     PersonalDetails: T,
     is_appstore = false
@@ -222,6 +244,7 @@ const personalDetailsConfig = <T>(
         real_account_signup_target,
         residence,
         account_status,
+        is_high_risk_client_for_mt5,
     });
     const disabled_items = account_settings.immutable_fields;
     return {

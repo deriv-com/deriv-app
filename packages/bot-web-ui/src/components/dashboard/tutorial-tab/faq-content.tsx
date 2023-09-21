@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text, Accordion } from '@deriv/components';
+import { Accordion, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TDescription } from './tutorial-content';
 
@@ -16,8 +16,8 @@ type TFAQList = {
     description: TDescription[];
 };
 
-const FAQ = ({ type, content, src }: TDescription) => {
-    if (type === 'image') return <img src={src} />;
+const FAQ = ({ type, content, src, imageclass }: TDescription) => {
+    if (type === 'image') return <img src={src} className={imageclass} />;
     const is_mobile = isMobile();
 
     return (

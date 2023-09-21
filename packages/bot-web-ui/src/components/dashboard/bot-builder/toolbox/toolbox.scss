@@ -130,6 +130,10 @@
         &:last-of-type {
             border-bottom: 1px solid var(--general-section-6);
         }
+
+        &--active {
+            background-color: var(--general-hover);
+        }
     }
 
     &__button.dc-btn {
@@ -149,6 +153,9 @@
             cursor: pointer;
 
             &:hover {
+                background-color: var(--general-hover);
+            }
+            &--active {
                 background-color: var(--general-hover);
             }
         }

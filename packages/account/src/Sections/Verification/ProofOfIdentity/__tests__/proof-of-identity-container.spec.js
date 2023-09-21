@@ -3,6 +3,7 @@ import { render, screen, act, waitFor } from '@testing-library/react';
 import ProofOfIdentityContainer from '../proof-of-identity-container';
 import { populateVerificationStatus } from '../../Helpers/verification.js';
 import { identity_status_codes, service_code } from '../proof-of-identity-utils';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -43,109 +44,10 @@ jest.mock('Components/poi/status/limited', () => jest.fn(() => 'mockedLimited'))
 jest.mock('Components/poi/status/expired', () => jest.fn(() => 'mockedExpired'));
 
 const mock_props = {
-    account_settings: {},
-    account_status: {
-        authentication: {
-            attempts: {
-                count: 1,
-                history: [
-                    {
-                        country_code: 'id',
-                        id: '8919',
-                        service: 'manual',
-                        status: 'verified',
-                        timestamp: 1674633681,
-                    },
-                ],
-                latest: {
-                    country_code: 'id',
-                    id: '8919',
-                    service: 'manual',
-                    status: 'verified',
-                    timestamp: 1674633681,
-                },
-            },
-            document: {
-                status: 'verified',
-            },
-
-            identity: {
-                services: {
-                    idv: {
-                        last_rejected: [],
-                        reported_properties: {},
-                        status: 'none',
-                        submissions_left: 3,
-                    },
-                    manual: {
-                        status: 'none',
-                    },
-                    onfido: {
-                        country_code: 'IDN',
-                        documents_supported: [
-                            'Driving Licence',
-                            'National Identity Card',
-                            'Passport',
-                            'Residence Permit',
-                        ],
-                        is_country_supported: 1,
-                        last_rejected: [],
-                        reported_properties: {},
-                        status: 'none',
-                        submissions_left: 3,
-                    },
-                },
-                status: 'verified',
-            },
-            income: {
-                status: 'none',
-            },
-            needs_verification: [],
-            ownership: {
-                requests: [],
-                status: 'none',
-            },
-        },
-        currency_config: {
-            USD: {
-                is_deposit_suspended: 0,
-                is_withdrawal_suspended: 0,
-            },
-        },
-        p2p_status: 'none',
-        prompt_client_to_authenticate: 0,
-        risk_classification: 'low',
-        status: [
-            'age_verification',
-            'allow_document_upload',
-            'authenticated',
-            'dxtrade_password_not_set',
-            'financial_information_not_complete',
-            'idv_disallowed',
-            'mt5_password_not_set',
-            'trading_experience_not_complete',
-        ],
-    },
-    app_routing_history: [
-        {
-            pathname: '/account/proof-of-identity',
-        },
-    ],
-    fetchResidenceList: jest.fn().mockResolvedValue({
-        residence_list: [],
-    }),
-    getChangeableFields: [],
-    is_from_external: false,
-    is_switching: false,
-    is_virtual: false,
-    is_high_risk: false,
-    is_withdrawal_lock: false,
     onStateChange: jest.fn(),
-    refreshNotifications: jest.fn(),
-    routeBackInApp: jest.fn(),
-    should_allow_authentication: false,
     setIsCfdPoiCompleted: jest.fn(),
-    updateAccountStatus: jest.fn(),
+    is_from_external: false,
+    height: '200',
 };
 
 describe('ProofOfIdentityContainer', () => {
@@ -153,44 +55,171 @@ describe('ProofOfIdentityContainer', () => {
         jest.clearAllMocks();
     });
 
-    it('should render proof of identity container with loader', async () => {
-        const new_props = {
-            ...mock_props,
-            is_switching: true,
-        };
+    let store = mockStore({
+        client: {
+            account_status: {
+                authentication: {
+                    attempts: {
+                        count: 1,
+                        history: [
+                            {
+                                country_code: 'id',
+                                id: '8919',
+                                service: 'manual',
+                                status: 'verified',
+                                timestamp: 1674633681,
+                            },
+                        ],
+                        latest: {
+                            country_code: 'id',
+                            id: '8919',
+                            service: 'manual',
+                            status: 'verified',
+                            timestamp: 1674633681,
+                        },
+                    },
+                    document: {
+                        status: 'verified',
+                    },
 
-        render(<ProofOfIdentityContainer {...new_props} />);
+                    identity: {
+                        services: {
+                            idv: {
+                                last_rejected: [],
+                                reported_properties: {},
+                                status: 'none',
+                                submissions_left: 3,
+                            },
+                            manual: {
+                                status: 'none',
+                            },
+                            onfido: {
+                                country_code: 'IDN',
+                                documents_supported: [
+                                    'Driving Licence',
+                                    'National Identity Card',
+                                    'Passport',
+                                    'Residence Permit',
+                                ],
+                                is_country_supported: 1,
+                                last_rejected: [],
+                                reported_properties: {},
+                                status: 'none',
+                                submissions_left: 3,
+                            },
+                        },
+                        status: 'verified',
+                    },
+                    income: {
+                        status: 'none',
+                    },
+                    needs_verification: [],
+                    ownership: {
+                        requests: [],
+                        status: 'none',
+                    },
+                },
+                currency_config: {
+                    USD: {
+                        is_deposit_suspended: 0,
+                        is_withdrawal_suspended: 0,
+                    },
+                },
+                p2p_status: 'none',
+                prompt_client_to_authenticate: 0,
+                risk_classification: 'low',
+                status: [
+                    'age_verification',
+                    'allow_document_upload',
+                    'authenticated',
+                    'dxtrade_password_not_set',
+                    'financial_information_not_complete',
+                    'idv_disallowed',
+                    'mt5_password_not_set',
+                    'trading_experience_not_complete',
+                ],
+            },
+            fetchResidenceList: jest.fn().mockResolvedValue({
+                residence_list: [
+                    {
+                        identity: {
+                            services: {
+                                idv: {
+                                    documents_supported: {},
+                                    has_visual_sample: 0,
+                                    is_country_supported: 0,
+                                },
+                                onfido: {
+                                    documents_supported: {
+                                        passport: {
+                                            display_name: 'Passport',
+                                        },
+                                    },
+                                    is_country_supported: 1,
+                                },
+                            },
+                        },
+                        phone_idd: '93',
+                        text: 'Afghanistan',
+                        value: 'af',
+                    },
+                ],
+            }),
+        },
+        common: {
+            app_routing_history: [
+                {
+                    pathname: '/account/proof-of-identity',
+                },
+            ],
+        },
+    });
+
+    const renderComponent = ({ props = mock_props, store_config = store }) => {
+        return render(
+            <StoreProvider store={store_config}>
+                <ProofOfIdentityContainer {...props} />
+            </StoreProvider>
+        );
+    };
+
+    it('should render proof of identity container with loader', async () => {
+        const new_store = { ...store, client: { ...store.client, is_switching: true } };
+
+        renderComponent({ store_config: new_store });
+
         await waitFor(() => {});
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
     it('should render message when account is virtual', async () => {
-        const new_props = {
-            ...mock_props,
-            is_virtual: true,
-        };
+        const new_store = { ...store, client: { ...store.client, is_virtual: true } };
 
-        render(<ProofOfIdentityContainer {...new_props} />);
+        renderComponent({ store_config: new_store });
         await waitFor(() => {});
         expect(screen.getByText('mockedDemoMessage')).toBeInTheDocument();
     });
 
     it('should render API error message returned in response', async () => {
-        const new_props = {
-            ...mock_props,
-            fetchResidenceList: jest.fn().mockResolvedValue({
-                error: {
-                    message: 'API error',
-                },
-            }),
+        const new_store = {
+            ...store,
+            client: {
+                ...store.client,
+                fetchResidenceList: jest.fn().mockResolvedValue({
+                    error: {
+                        message: 'API error',
+                    },
+                }),
+            },
         };
-        render(<ProofOfIdentityContainer {...new_props} />);
+
+        renderComponent({ store_config: new_store });
         await waitFor(() => {});
         expect(screen.getByText('mockedErrorMessage')).toBeInTheDocument();
     });
 
     it('should render messages that POA is not required', async () => {
-        render(<ProofOfIdentityContainer {...mock_props} />);
+        renderComponent({});
         await waitFor(() => {});
         expect(screen.getByText('mockedNotRequired')).toBeInTheDocument();
     });
@@ -201,7 +230,7 @@ describe('ProofOfIdentityContainer', () => {
             is_age_verified: true,
         });
 
-        render(<ProofOfIdentityContainer {...mock_props} />);
+        renderComponent({});
         await waitFor(() => {});
         expect(screen.getByText('mockedProofOfIdentitySubmission')).toBeInTheDocument();
     });
@@ -213,7 +242,7 @@ describe('ProofOfIdentityContainer', () => {
             identity_status: identity_status_codes.verified,
         });
 
-        render(<ProofOfIdentityContainer {...mock_props} />);
+        renderComponent({});
         await waitFor(() => {});
         expect(screen.getByText('mockedProofOfIdentitySubmission')).toBeInTheDocument();
     });
@@ -224,8 +253,7 @@ describe('ProofOfIdentityContainer', () => {
             is_age_verified: true,
             identity_status: identity_status_codes.pending,
         });
-
-        render(<ProofOfIdentityContainer {...mock_props} />);
+        renderComponent({});
         await waitFor(() => {});
         expect(screen.getByText('mockedUploadComplete')).toBeInTheDocument();
     });
@@ -237,7 +265,7 @@ describe('ProofOfIdentityContainer', () => {
             identity_status: identity_status_codes.verified,
         });
 
-        render(<ProofOfIdentityContainer {...mock_props} />);
+        renderComponent({});
         await waitFor(() => {});
         expect(screen.getByText('mockedVerified')).toBeInTheDocument();
     });
@@ -248,8 +276,7 @@ describe('ProofOfIdentityContainer', () => {
             is_age_verified: true,
             identity_status: identity_status_codes.expired,
         });
-
-        render(<ProofOfIdentityContainer {...mock_props} />);
+        renderComponent({});
         await waitFor(() => {});
         expect(screen.getByText('mockedExpired')).toBeInTheDocument();
     });
@@ -261,7 +288,7 @@ describe('ProofOfIdentityContainer', () => {
             identity_status: identity_status_codes.rejected,
         });
 
-        render(<ProofOfIdentityContainer {...mock_props} />);
+        renderComponent({});
         await waitFor(() => {});
         expect(screen.getByText('mockedLimited')).toBeInTheDocument();
     });
@@ -273,7 +300,7 @@ describe('ProofOfIdentityContainer', () => {
             identity_status: identity_status_codes.rejected,
         });
 
-        render(<ProofOfIdentityContainer {...mock_props} />);
+        renderComponent({});
         await waitFor(() => {});
         expect(screen.getByText('mockedOnfido')).toBeInTheDocument();
     });
@@ -285,7 +312,7 @@ describe('ProofOfIdentityContainer', () => {
             identity_status: identity_status_codes.rejected,
         });
 
-        render(<ProofOfIdentityContainer {...mock_props} />);
+        renderComponent({});
         await waitFor(() => {});
         expect(screen.getByText('mockedIDV')).toBeInTheDocument();
     });
@@ -297,7 +324,7 @@ describe('ProofOfIdentityContainer', () => {
             identity_status: identity_status_codes.rejected,
         });
 
-        render(<ProofOfIdentityContainer {...mock_props} />);
+        renderComponent({});
         await waitFor(() => {});
         expect(screen.getByText('mockedUnsupported')).toBeInTheDocument();
     });

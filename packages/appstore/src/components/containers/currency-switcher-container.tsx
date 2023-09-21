@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, ReactNode } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { Icon } from '@deriv/components';
 import { Jurisdiction } from '@deriv/shared';
@@ -7,11 +7,11 @@ import CurrencyIcon, { Currency } from 'Assets/svgs/currency';
 import TradingPlatformIcon from 'Assets/svgs/trading-platform';
 import './currency-switcher-container.scss';
 
-interface CurrentSwitcherContainerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
-    actions?: ReactNode;
+interface CurrentSwitcherContainerProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
+    actions?: React.ReactNode;
     has_interaction?: boolean;
     icon: Currency | 'Options';
-    title: ReactNode;
+    title: React.ReactNode;
     show_dropdown?: boolean;
 }
 type CurrencyPlatformIconProps = {

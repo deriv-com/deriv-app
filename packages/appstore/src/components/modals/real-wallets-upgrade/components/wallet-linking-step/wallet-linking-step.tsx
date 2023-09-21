@@ -78,6 +78,7 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
                                                     currency={account.currency}
                                                     icon={account.icon}
                                                     name={account.account_name}
+                                                    is_mobile={is_mobile}
                                                 />
                                             );
                                         })}

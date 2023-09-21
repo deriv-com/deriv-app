@@ -48,6 +48,9 @@ const useAccountsList = () => {
                     balance,
                     /** The balance of the account in currency format. */
                     display_balance: Intl.NumberFormat(authorize_data?.preferred_language || 'en-US', {
+                        style: 'currency',
+                        currencyDisplay: 'code',
+                        currency: account.currency_config?.display_code || 'USD',
                         minimumFractionDigits: account.currency_config?.fractional_digits || 2,
                         maximumFractionDigits: account.currency_config?.fractional_digits || 2,
                         minimumIntegerDigits: 1,

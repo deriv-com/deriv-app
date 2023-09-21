@@ -3,6 +3,7 @@ import { AvailableCTraderAccountsList } from '../AvailableCTraderAccountsList';
 import './CTraderList.scss';
 
 const CTraderList: React.FC = () => {
+    /** QA BOX NOT SETUP */
     // const { data } = useCtraderAccountsList();
     // const has_ctrader_account = !!data?.length;
     return (

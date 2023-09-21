@@ -2,7 +2,7 @@ import useFetch from '../useFetch';
 import useActiveAccount from './useActiveAccount';
 
 /** A custom hook that get Service Token for CTrader Platform. */
-const useCtraderServiceToken = () => {
+const useCTraderServiceToken = () => {
     const { data: account } = useActiveAccount();
     const { data: ctrader_token, ...rest } = useFetch('service_token', {
         payload: { service: 'ctrader', server: account?.is_virtual ? 'demo' : 'real' },
@@ -15,4 +15,4 @@ const useCtraderServiceToken = () => {
     };
 };
 
-export default useCtraderServiceToken;
+export default useCTraderServiceToken;

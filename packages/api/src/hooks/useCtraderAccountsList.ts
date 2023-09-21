@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
-import useCtraderServiceToken from './useCtraderServiceToken';
+import useCTraderServiceToken from './useCTraderServiceToken';
 import useFetch from '../useFetch';
 
 /** A custom hook that gets the list of created cTrader accounts. */
-const useCtraderAccountsList = () => {
+const useCTraderAccountsList = () => {
     const { data: ctrader_accounts } = useFetch('trading_platform_accounts', {
         payload: { platform: 'ctrader' },
     });
-    const { data: token } = useCtraderServiceToken();
+    const { data: token } = useCTraderServiceToken();
 
     /** Adding neccesary properties to cTrader accounts */
     const modified_ctrader_accounts = useMemo(
@@ -26,4 +26,4 @@ const useCtraderAccountsList = () => {
     };
 };
 
-export default useCtraderAccountsList;
+export default useCTraderAccountsList;

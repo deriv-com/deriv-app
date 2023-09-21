@@ -2,14 +2,14 @@ import { useMemo } from 'react';
 import useMT5AccountsList from './useMT5AccountsList';
 import useDxtradeAccountsList from './useDxtradeAccountsList';
 import useDerivezAccountsList from './useDerivezAccountsList';
-import useCtraderAccountsList from './useCtraderAccountsList';
+import useCTraderAccountsList from './useCTraderAccountsList';
 
 /** A custom hook that gets the list all created CFD accounts of the user. */
 const useCFDAccountsList = () => {
     const { data: mt5_accounts } = useMT5AccountsList();
     const { data: dxtrade_accounts } = useDxtradeAccountsList();
     const { data: derivez_accounts } = useDerivezAccountsList();
-    const { data: ctrader_accounts } = useCtraderAccountsList();
+    const { data: ctrader_accounts } = useCTraderAccountsList();
 
     const data = useMemo(() => {
         if (!mt5_accounts || !dxtrade_accounts || !derivez_accounts || !ctrader_accounts) return;

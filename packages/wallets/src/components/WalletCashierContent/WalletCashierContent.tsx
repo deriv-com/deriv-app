@@ -5,11 +5,8 @@ import WalletDepositCrypto from '../WalletDepositCrypto/WalletDepositCrypto';
 import WalletDepositFiat from '../WalletDepositFiat/WalletDepositFiat';
 import './WalletCashierContent.scss';
 
-type TProps = {
-    data: ReturnType<typeof useActiveWalletAccount>['data'];
-};
-
-const WalletCashierContent = ({ data }: TProps) => {
+const WalletCashierContent = () => {
+    const { data } = useActiveWalletAccount();
     const { activeCashierTab } = useCashierParam();
 
     return (

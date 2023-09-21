@@ -4,14 +4,14 @@ import WalletCashierContent from '../WalletCashierContent/WalletCashierContent';
 import WalletCashierHeader from '../WalletCashierHeader/WalletCashierHeader';
 
 const WalletCashier = () => {
-    const { data, isLoading } = useActiveWalletAccount();
+    const { isLoading } = useActiveWalletAccount();
 
     if (isLoading) return <p>Loading...</p>;
 
     return (
         <div>
-            <WalletCashierHeader data={data} />
-            <WalletCashierContent data={data} />
+            <WalletCashierHeader />
+            <WalletCashierContent />
         </div>
     );
 };

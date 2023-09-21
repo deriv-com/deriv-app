@@ -8,13 +8,10 @@ import { WalletListCardBadge } from '../WalletListCardBadge';
 import { WalletListCardIcon } from '../WalletListCardIcon';
 import './WalletCashierHeader.scss';
 
-type TProps = {
-    data: ReturnType<typeof useActiveWalletAccount>['data'];
-};
-
 const tabs = ['Deposit', 'Withdraw', 'Transfer', 'Transactions'];
 
-const WalletCashierHeader: React.FC<TProps> = ({ data }) => {
+const WalletCashierHeader = () => {
+    const { data } = useActiveWalletAccount();
     const { activeCashierTab, getCashierParam } = useCashierParam();
     const { is_mobile } = useDevice();
     const history = useHistory();

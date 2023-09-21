@@ -1,15 +1,13 @@
 import React from 'react';
+import { useActiveWalletAccount } from '@deriv/api';
 import './WalletDepositCryptoCurrencyDetails.scss';
 
-type TProps = {
-    name?: string;
-    display_code?: string;
-};
-
-const WalletDepositCryptoCurrencyDetails = ({ name, display_code }: TProps) => {
+const WalletDepositCryptoCurrencyDetails = () => {
+    const { data } = useActiveWalletAccount();
+    const { currency_config } = data || {};
     return (
         <p className='wallets-deposit-crypto-currency-details'>
-            Send only {name} ({display_code}) to this address.
+            Send only {currency_config?.name} ({currency_config?.display_code}) to this address.
         </p>
     );
 };

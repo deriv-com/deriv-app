@@ -4,10 +4,6 @@ import useDevice from '../../hooks/useDevice';
 import { InlineMessage } from '../InlineMessage';
 import './WalletDepositCryptoDisclaimers.scss';
 
-type TProps = {
-    data: ReturnType<typeof useActiveWalletAccount>['data'];
-};
-
 // Check with BE to see if we can get the network name from the API.
 const crypto_currency_to_network_mapper: Record<string, string> = {
     BTC: 'Bitcoin (BTC)',
@@ -19,7 +15,8 @@ const crypto_currency_to_network_mapper: Record<string, string> = {
     tUSDT: 'Tron (TRC20) ',
 };
 
-const WalletDepositCryptoDisclaimers = ({ data }: TProps) => {
+const WalletDepositCryptoDisclaimers = () => {
+    const { data } = useActiveWalletAccount();
     const { is_mobile } = useDevice();
     const { currency, currency_config } = data || {};
 

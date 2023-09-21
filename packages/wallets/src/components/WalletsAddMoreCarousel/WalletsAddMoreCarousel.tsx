@@ -3,6 +3,7 @@ import useEmblaCarousel, { EmblaCarouselType, EmblaOptionsType } from 'embla-car
 import { useAvailableWallets } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
 import WalletsAddMoreCard from '../WalletsAddMoreCard';
+import './WalletsAddMoreCarousel.scss';
 
 const WalletsAddMoreCarousel = () => {
     const { is_mobile } = useDevice();

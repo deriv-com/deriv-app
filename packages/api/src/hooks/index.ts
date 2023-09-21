@@ -1,3 +1,4 @@
+export { default as useAccountStatus } from './useAccountStatus';
 export { default as useAccountTypes } from './useAccountTypes';
 export { default as useAccountsList } from './useAccountsList';
 export { default as useActiveAccount } from './useActiveAccount';
@@ -12,8 +13,10 @@ export { default as useCFDAccountsList } from './useCFDAccountsList';
 export { default as useCreateMT5Account } from './useCreateMT5Account';
 export { default as useCreateOtherCFDAccount } from './useCreateOtherCFDAccount';
 export { default as useCtraderAccountsList } from './useCtraderAccountsList';
-export { default as useAccountStatus, default as useCtraderServiceToken } from './useCtraderServiceToken';
+export { default as useCtraderServiceToken } from './useCtraderServiceToken';
 export { default as useCurrencyConfig } from './useCurrencyConfig';
+export { default as useDepositCryptoAddress } from './useDepositCryptoAddress';
+export { default as useDepositFiatAddress } from './useDepositFiatAddress';
 export { default as useDerivezAccountsList } from './useDerivezAccountsList';
 export { default as useDxtradeAccountsList } from './useDxtradeAccountsList';
 export { default as useGetAccountStatus } from './useGetAccountStatus';

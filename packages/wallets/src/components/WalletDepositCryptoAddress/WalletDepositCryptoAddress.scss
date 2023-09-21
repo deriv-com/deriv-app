@@ -1,0 +1,26 @@
+.wallets-deposit-crypto-address {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    min-height: 60px;
+
+    &__hash {
+        color: #000;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 700;
+        padding: 0.8rem 1rem;
+        border-radius: 4px 0px 0px 4px;
+        border: 1px solid #e6e9e9;
+
+        &-container {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    &__loader {
+        height: 60px;
+    }
+}

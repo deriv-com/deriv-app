@@ -16,7 +16,7 @@ const CFDPlatformsList = () => {
                 <div className='wallets-cfd-list__header-description'>
                     <h1>
                         Trade with leverage and tight spreads for better returns on trades.{' '}
-                        <a href='#' className='wallets-cfd-list__header-description__link'>
+                        <a className='wallets-cfd-list__header-description__link' href='#'>
                             Learn more
                         </a>
                     </h1>

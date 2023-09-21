@@ -830,7 +830,8 @@
 
 .personal-details-form {
     .dc-radio-group__input {
-        width: 0;
-        height: 0;
+        display: unset;
+        appearance: unset;
+        visibility: hidden;
     }
 }

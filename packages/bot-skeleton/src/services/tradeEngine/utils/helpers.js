@@ -283,6 +283,7 @@ export const createDetails = contract => {
 
 export const getUUID = () => `${new Date().getTime() * Math.random()}`;
 
+
 const hasBlockOfType = (targetType, workspace) => {
     const allBlocks = workspace.getAllBlocks();
     return allBlocks.some(block => block.type === targetType && !!block.parentBlock_);
@@ -302,4 +303,11 @@ export const checkBlocksForProposalRequest = () => {
         has_payout_block,
         is_basis_payout: false,
     };
+};
+
+export const socket_state = {
+    [WebSocket.CONNECTING]: 'Connecting',
+    [WebSocket.OPEN]: 'Connected',
+    [WebSocket.CLOSING]: 'Closing',
+    [WebSocket.CLOSED]: 'Closed',
 };

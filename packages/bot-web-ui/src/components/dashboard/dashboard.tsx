@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
+import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { updateWorkspaceName } from '@deriv/bot-skeleton';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
+import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -11,23 +13,17 @@ import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import RunPanel from '../run-panel';
 import RunStrategy from './dashboard-component/run-strategy';
+import TourEndDialog from './dbot-tours/common/tour-end-dialog';
+import TourStartDialog from './dbot-tours/common/tour-start-dialog';
+import DesktopTours from './dbot-tours/desktop-tours';
+import MobileTours from './dbot-tours/mobile-tours';
+import { getTourSettings, setTourSettings, setTourType, tour_status_ended, tour_type } from './dbot-tours/utils';
 import DashboardComponent from './dashboard-component';
-import {
-    DBOT_ONBOARDING,
-    getTourSettings,
-    setTourSettings,
-    setTourType,
-    tour_status_ended,
-    tour_type,
-} from './joyride-config';
-import ReactJoyrideWrapper from './react-joyride-wrapper';
 import StrategyNotification from './strategy-notification';
-import TourSlider from './tour-slider';
-import TourTriggrerDialog from './tour-trigger-dialog';
 import Tutorial from './tutorial-tab';
 
 const Dashboard = observer(() => {
-    const { dashboard, load_modal, run_panel, quick_strategy } = useDBotStore();
+    const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useDBotStore();
     const {
         active_tab,
         has_tour_started,
@@ -39,15 +35,18 @@ const Dashboard = observer(() => {
         setHasTourEnded,
         has_started_bot_builder_tour,
         is_tour_dialog_visible,
+        has_tour_ended,
         setActiveTab,
         setBotBuilderTokenCheck,
         setOnBoardingTokenCheck,
+        setWebSocketState,
         onCloseTour,
     } = dashboard;
     const { onEntered, dashboard_strategies } = load_modal;
     const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
         run_panel;
     const { is_strategy_modal_open } = quick_strategy;
+    const { clear } = summary_card;
     const { DASHBOARD, BOT_BUILDER, CHART, TUTORIAL } = DBOT_TABS;
     const is_tour_complete = React.useRef(true);
     let bot_tour_token: string | number = '';
@@ -72,6 +71,21 @@ const Dashboard = observer(() => {
     };
     const active_hash_tab = GetHashedValue(active_tab);
 
+    const checkAndHandleConnection = () => {
+        const api_status = api_base.getConnectionStatus();
+        //added this check because after sleep mode all the store values refresh and is_running is false.
+        const is_bot_running = document.getElementById('db-animation__stop-button') !== null;
+        if (is_bot_running && (api_status === 'Closed' || api_status === 'Closing')) {
+            dbot.terminateBot();
+            clear();
+            setWebSocketState(false);
+        }
+    };
+
+    React.useEffect(() => {
+        window.addEventListener('focus', checkAndHandleConnection);
+    }, []);
+
     React.useEffect(() => {
         if (init_render.current) {
             setActiveTab(Number(active_hash_tab));
@@ -79,7 +93,6 @@ const Dashboard = observer(() => {
             init_render.current = false;
         } else {
             let active_tab_name = 'dashboard';
-            if (active_tab === 0) active_tab_name = 'dashboard';
             if (active_tab === 1) active_tab_name = 'bot_builder';
             if (active_tab === 2) active_tab_name = 'chart';
             if (active_tab === 3) active_tab_name = 'tutorial';
@@ -229,15 +242,13 @@ const Dashboard = observer(() => {
                         'dashboard__container--active': has_tour_started && active_tab === DASHBOARD && is_mobile,
                     })}
                 >
-                    {(active_tab === DASHBOARD || active_tab === BOT_BUILDER) && <TourTriggrerDialog />}
+                    {!has_tour_ended && (active_tab === DASHBOARD || active_tab === BOT_BUILDER) ? (
+                        <TourStartDialog />
+                    ) : (
+                        <TourEndDialog />
+                    )}
 
-                    {has_tour_started &&
-                        active_tab === DASHBOARD &&
-                        (is_mobile ? (
-                            <TourSlider />
-                        ) : (
-                            <ReactJoyrideWrapper steps={DBOT_ONBOARDING} spotlightClicks hideCloseButton />
-                        ))}
+                    {has_tour_started && active_tab === DASHBOARD && (is_mobile ? <MobileTours /> : <DesktopTours />)}
                     <Tabs
                         active_index={active_tab}
                         className='dashboard__tabs'

@@ -94,7 +94,7 @@ const WalletListCardActions: React.FC<TProps> = ({ isDemo, loginid }) => {
                     {button.icon}
                     <span
                         className={`wallets-header__actions-label ${
-                            isDemo ? 'wallets-header__actions-label--active' : ''
+                            activeWallet?.is_active ? 'wallets-header__actions-label--active' : ''
                         }`}
                     >
                         {button.name}

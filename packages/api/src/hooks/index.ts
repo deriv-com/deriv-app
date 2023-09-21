@@ -29,4 +29,5 @@ export { default as useTradingPlatformAccounts } from './useTradingPlatformAccou
 export { default as useTradingPlatformInvestorPasswordChange } from './useTradingPlatformInvestorPasswordChange';
 export { default as useTradingPlatformInvestorPasswordReset } from './useTradingPlatformInvestorPasswordReset';
 export { default as useTradingPlatformPasswordChange } from './useTradingPlatformPasswordChange';
+export { default as useTransferBetweenAccounts } from './useTransferBetweenAccounts';
 export { default as useWalletAccountsList } from './useWalletAccountsList';

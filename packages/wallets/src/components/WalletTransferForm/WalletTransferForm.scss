@@ -1,0 +1,36 @@
+.wallets-transform-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 48px;
+
+    &__fields {
+        &-section {
+            border: 1px solid var(--light-5-active-background, #d6dadb);
+            border-radius: 4px;
+            color: var(--system-light-2-general-text, #333);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding: 8px;
+            width: 650px;
+        }
+    }
+
+    &__submit-button {
+        all: unset;
+        display: flex;
+        padding: 10px 16px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+        background: var(--button-primary-default, #ff444f);
+        color: var(--system-dark-1-prominent-text, #fff);
+        text-align: center;
+
+        /* desktop/paragraph/P2 - bold */
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 20px; /* 142.857% */
+    }
+}

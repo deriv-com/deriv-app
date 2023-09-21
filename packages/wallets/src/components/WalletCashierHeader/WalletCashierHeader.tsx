@@ -38,9 +38,7 @@ const WalletCashierHeader = () => {
                                 <WalletListCardBadge is_demo={data?.is_virtual} label={formattedLandingCompany} />
                             )}
                         </div>
-                        <p className='wallets-cashier-header__info__top-left__balance'>
-                            {display_balance} {currency}
-                        </p>
+                        <p className='wallets-cashier-header__info__top-left__balance'>{display_balance}</p>
                     </div>
                     <div className='wallets-cashier-header__info__top-right'>
                         {wallet_currency_type && <WalletListCardIcon type={wallet_currency_type} />}

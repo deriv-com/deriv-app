@@ -6,16 +6,16 @@ import './WalletModal.scss';
 
 type TWalletModalProps = {
     has_close_icon?: boolean;
-    should_close_on_backdrop_click?: boolean;
     onClickCloseIcon?: () => void;
+    should_close_on_backdrop_click?: boolean;
 };
 
 const WalletModal = ({
     children,
-    onClickCloseIcon,
-    has_close_icon,
-    should_close_on_backdrop_click = true,
     className: propsClassName,
+    has_close_icon,
+    onClickCloseIcon,
+    should_close_on_backdrop_click = true,
     ...rest
 }: ComponentPropsWithoutRef<'div'> & PropsWithChildren<TWalletModalProps>) => {
     const { hide } = useModal();

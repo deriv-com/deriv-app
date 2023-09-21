@@ -17,6 +17,7 @@ import type {
     SetFinancialAssessmentRequest,
     SetFinancialAssessmentResponse,
     StatesList,
+    Transaction,
 } from '@deriv/api-types';
 import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
 
@@ -648,6 +649,26 @@ type TTradersHubStore = {
     toggleIsTourOpen: (is_tour_open: boolean) => void;
 };
 
+type TGtmStore = {
+    is_gtm_applicable: boolean;
+    visitorId: Readonly<string>;
+    common_variables: Readonly<{
+        language: string;
+        visitorId?: string;
+        currency?: string;
+        userId?: string;
+        email?: string;
+        loggedIn: boolean;
+        theme: 'dark' | 'light';
+        platform: 'DBot' | 'MT5' | 'DTrader' | 'undefined';
+    }>;
+    accountSwitcherListener: () => Promise<Record<string, unknown>>;
+    pushDataLayer: (data: Record<string, unknown>) => void;
+    pushTransactionData: (response: Transaction, extra_data: Record<string, unknown>) => void;
+    eventHandler: (get_settings: GetSettings) => void;
+    setLoginFlag: (event_name: string) => void;
+};
+
 /**
  * This is the type that contains all the `core` package stores
  */
@@ -655,6 +676,7 @@ export type TCoreStores = {
     client: TClientStore;
     common: TCommonStore;
     contract_trade: TContractStore;
+    gtm: TGtmStore;
     menu: TMenuStore;
     // This should be `any` as this property will be handled in each package.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

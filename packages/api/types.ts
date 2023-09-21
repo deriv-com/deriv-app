@@ -67,6 +67,8 @@ import type {
     GetSelfExclusionResponse,
     IdentityVerificationAddDocumentRequest,
     IdentityVerificationAddDocumentResponse,
+    KYCAuthenticationStatusRequest,
+    KYCAuthenticationStatusResponse,
     LandingCompanyDetailsRequest,
     LandingCompanyDetailsResponse,
     LandingCompanyRequest,
@@ -1293,6 +1295,10 @@ type TSocketEndpoints = {
     identity_verification_document_add: {
         request: IdentityVerificationAddDocumentRequest;
         response: IdentityVerificationAddDocumentResponse;
+    };
+    kyc_auth_status: {
+        request: KYCAuthenticationStatusRequest;
+        response: KYCAuthenticationStatusResponse;
     };
     landing_company_details: {
         request: LandingCompanyDetailsRequest;

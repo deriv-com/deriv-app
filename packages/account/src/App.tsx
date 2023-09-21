@@ -1,9 +1,10 @@
 import React from 'react';
-import Routes from './Containers/routes';
-import ResetTradingPassword from './Containers/reset-trading-password';
+import { APIProvider } from '@deriv/api';
 import { setWebsocket } from '@deriv/shared';
 import { StoreProvider } from '@deriv/stores';
 import type { TCoreStores } from '@deriv/stores/types';
+import ResetTradingPassword from './Containers/reset-trading-password';
+import Routes from './Containers/routes';
 
 // TODO: add correct types for WS after implementing them
 type TAppProps = {
@@ -21,9 +22,11 @@ const App = ({ passthrough }: TAppProps) => {
 
     return (
         <StoreProvider store={root_store}>
-            {Notifications && <Notifications />}
-            <Routes />
-            <ResetTradingPassword />
+            <APIProvider>
+                {Notifications && <Notifications />}
+                <Routes />
+                <ResetTradingPassword />
+            </APIProvider>
         </StoreProvider>
     );
 };

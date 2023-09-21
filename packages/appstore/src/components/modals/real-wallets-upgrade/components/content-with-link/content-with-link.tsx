@@ -21,11 +21,9 @@ const ContentWithLink: React.FC<TContentWithLinkProps> = ({
 }) => (
     <div
         className={classNames('content-with-link', {
+            'content-with-link--has-fork': has_fork,
             'content-with-link--right-forked': is_right_forked,
         })}
-        style={{
-            height: has_fork ? '100%' : 'auto',
-        }}
     >
         <div
             className={classNames('content-with-link__content', {
@@ -47,12 +45,9 @@ const ContentWithLink: React.FC<TContentWithLinkProps> = ({
                 />
             )}
             <div
-                className='content-with-link__link-neck'
-                style={
-                    is_mobile
-                        ? { width: '1px', height: has_fork ? '1.5rem' : '2.3rem' }
-                        : { width: has_fork ? '4.8rem' : '6.3rem' }
-                }
+                className={classNames('content-with-link__link-neck', {
+                    'content-with-link__link-neck--has-fork': has_fork,
+                })}
             />
         </div>
     </div>

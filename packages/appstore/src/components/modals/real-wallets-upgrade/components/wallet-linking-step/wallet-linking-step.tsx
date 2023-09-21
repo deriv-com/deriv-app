@@ -1,9 +1,9 @@
 import React from 'react';
 import { Icon, Text, ThemedScrollbars, WalletCard } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import WalletAccount from '../wallet-account/wallet-account';
-import WalletLinkWrapper, { TWalletLinkWrapper } from '../wallet-link/wallet-link-wrapper';
+import WalletLinkWrapper from '../wallet-link/wallet-link-wrapper';
 import './wallet-linking-step.scss';
 
 type TWalletLinkingStep = {
@@ -44,10 +44,10 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
             {!is_mobile && (
                 <div className='wallet-linking-step__title'>
                     <Text className='wallet-linking-step__title-text' color='prominent' size='xxxs'>
-                        {localize('Your current trading account(s)')}
+                        <Localize i18n_default_text='Your current trading account(s)' />
                     </Text>
                     <Text className='wallet-linking-step__title-text' color='prominent' size='xxxs'>
-                        {localize('Your new Wallet(s)')}
+                        <Localize i18n_default_text='Your new Wallet(s)' />
                     </Text>
                 </div>
             )}
@@ -67,7 +67,7 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
                                                 color='prominent'
                                                 size='xxxs'
                                             >
-                                                {localize('Your current trading account(s)')}
+                                                <Localize i18n_default_text='Your current trading account(s)' />
                                             </Text>
                                         )}
                                         {wallet.account_list.map(account => {
@@ -96,7 +96,7 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
                                                 color='prominent'
                                                 size='xxxs'
                                             >
-                                                {localize('Your new Wallet')}
+                                                <Localize i18n_default_text='Your new Wallet' />
                                             </Text>
                                         )}
                                     </div>

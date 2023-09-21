@@ -1,12 +1,15 @@
+import React from 'react';
+import { render, screen } from '@testing-library/react';
 import {
-    generatePlaceholderText,
     documentAdditionalError,
-    shouldShowIdentityInformation,
+    generatePlaceholderText,
     getDocumentData,
-    getRegex,
-    preventEmptyClipboardPaste,
-    isFieldImmutable,
     getExampleFormat,
+    getRegex,
+    isDocumentNumberValid,
+    isFieldImmutable,
+    preventEmptyClipboardPaste,
+    shouldShowIdentityInformation,
 } from '../utils';
 
 describe('generatePlaceholderText', () => {
@@ -170,5 +173,62 @@ describe('getExampleFormat', () => {
 
     it('should return empty string when no example format is provided', () => {
         expect(getExampleFormat('')).toEqual('');
+    });
+});
+
+describe('isDocumentNumberValid', () => {
+    it('should return error message for empty document number, when document_type text Passport', () => {
+        const mock_document_type = {
+            id: 'passport',
+            text: 'Passport',
+            example_format: '081234567F53',
+        };
+        const errorMessage = isDocumentNumberValid('', mock_document_type);
+        render(<div>{errorMessage}</div>);
+        expect(screen.getByText('Please enter your document number. Example: 081234567F53')).toBeInTheDocument();
+    });
+
+    it('should return error message for empty Driver License, when document_type text Drivers License', () => {
+        const mock_document_type = {
+            id: 'drivers_license',
+            text: 'Drivers License',
+            example_format: '081234567F53',
+        };
+        const errorMessage = isDocumentNumberValid('', mock_document_type);
+        render(<div>{errorMessage}</div>);
+        expect(
+            screen.getByText('Please enter your Driver License Reference number. Example: 081234567F53')
+        ).toBeInTheDocument();
+    });
+
+    it('should return error message for empty SSNIT, when document_type text Social Security and National Insurance Trust', () => {
+        const mock_document_type = {
+            id: 'ssnit',
+            text: 'Social Security and National Insurance Trust',
+            example_format: '081234567F53',
+        };
+        const errorMessage = isDocumentNumberValid('', mock_document_type);
+        render(<div>{errorMessage}</div>);
+        expect(screen.getByText('Please enter your SSNIT number. Example: 081234567F53')).toBeInTheDocument();
+    });
+
+    it('should return Please enter valid ID, when user inputs same with example', () => {
+        const mock_document_type = {
+            id: 'ssnit',
+            text: 'Social Security and National Insurance Trust',
+            example_format: '081234567F53',
+        };
+        const errorMessage = isDocumentNumberValid('081234567F53', mock_document_type);
+        expect(errorMessage).toEqual('Please enter a valid ID number.');
+    });
+
+    it('should return undefined, when user inputs value correctly', () => {
+        const mock_document_type = {
+            id: 'ssnit',
+            text: 'Social Security and National Insurance Trust',
+            example_format: '081234567F53',
+        };
+        const errorMessage = isDocumentNumberValid('08123456F753', mock_document_type);
+        expect(errorMessage).toBeUndefined();
     });
 });

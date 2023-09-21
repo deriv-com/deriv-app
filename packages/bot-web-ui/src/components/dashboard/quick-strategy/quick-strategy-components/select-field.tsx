@@ -3,8 +3,7 @@ import { Field, FieldProps } from 'formik';
 import { Autocomplete, Icon, IconTradeTypes, SelectNative, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { TDropdownItems, TFormValues, TSelectsFieldNames } from '../quick-strategy.types';
-import { TSelects } from './components.types';
+import { TFormValues, TSelectFieldProps, TSelectsFieldNames } from '../quick-strategy.types';
 
 const SelectField = ({
     field_name,
@@ -22,7 +21,7 @@ const SelectField = ({
     onScrollStopDropdownList,
     selected_trade_type,
     selected_symbol,
-}: TSelects & { is_input_field: boolean }) => {
+}: TSelectFieldProps) => {
     return (
         <div className='quick-strategy__form-row'>
             <Field name={field_name} key={id} id={id}>

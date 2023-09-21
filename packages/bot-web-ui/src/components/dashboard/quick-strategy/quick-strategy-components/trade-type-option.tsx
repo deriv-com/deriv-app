@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconTradeTypes, Text } from '@deriv/components';
-import { TTradeTypeOptionProps } from './components.types';
+import { TTradeTypeOptionProps } from '../quick-strategy.types';
 
 const TradeTypeOption = ({ trade_type }: TTradeTypeOptionProps) => (
     <div key={trade_type.value} className='quick-strategy__option'>

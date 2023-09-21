@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable, runInAction } from 'mobx';
+import { action, makeObservable, observable, runInAction } from 'mobx';
 import { ApiHelpers, config, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { localize } from '@deriv/translations';
@@ -6,22 +6,21 @@ import strategies from 'Components/dashboard/quick-strategy/quick-strategy-compo
 import GTM from 'Utils/gtm';
 import { getSetting, storeSetting } from 'Utils/settings';
 import {
-    TCreateStrategy,
+    TDataFields,
     TDropdownItems,
     TDropdowns,
     TDurationOptions,
     TDurations,
     TDurationUnitDropdown,
     TFieldMapData,
-    TFieldsToUpdate,
-    TInputBaseFields,
+    TInitialValues,
+    TInputsFieldNames,
     TKeysStrategies,
     TMarketOption,
     TQSCache,
     TSelectedValuesSelect,
     TSelectsFieldNames,
     TSetFieldValue,
-    TStrategies,
     TSymbol,
     TSymbolDropdown,
     TTradeType,
@@ -42,19 +41,11 @@ export default class QuickStrategyStore {
             selected_trade_type: observable,
             selected_type_strategy: observable,
             selected_duration_unit: observable,
-            input_duration_value: observable,
-            input_stake: observable,
-            input_alembert_unit: observable,
-            input_martingale_size: observable,
-            input_oscar_unit: observable,
-            input_loss: observable,
-            input_profit: observable,
             is_strategy_modal_open: observable,
             active_index: observable,
             symbol_dropdown: observable,
             trade_type_dropdown: observable,
             duration_unit_dropdown: observable,
-            description: observable,
             is_contract_dialog_open: observable,
             is_stop_bot_dialog_open: observable,
             types_strategies_dropdown: observable,
@@ -90,15 +81,7 @@ export default class QuickStrategyStore {
     selected_trade_type: TTradeType = (this.qs_cache.tradetype as TTradeType) || {};
     selected_type_strategy: TTypeStrategy = (this.qs_cache.strategy as TTypeStrategy) || {};
     selected_duration_unit: TDurationOptions = (this.qs_cache.durationtype as TDurationOptions) || {};
-    input_duration_value: string | number = this.qs_cache.duration || '';
-    input_stake: string = this.qs_cache.stake || '';
-    input_martingale_size: string = this.qs_cache.size || '';
-    input_alembert_unit: string = this.qs_cache.alembert_unit || '';
-    input_oscar_unit: string = this.qs_cache.oscar_unit || '';
-    input_loss: string = this.qs_cache.loss || '';
-    input_profit: string = this.qs_cache.profit || '';
     active_index: number = this.selected_type_strategy.index || 0;
-    description: string = this.qs_cache.strategy?.description || '';
     types_strategies_dropdown: TTypeStrategiesDropdown = [];
     symbol_dropdown: TSymbolDropdown = [];
     trade_type_dropdown: TTradeTypeDropdown = [];
@@ -107,15 +90,22 @@ export default class QuickStrategyStore {
     is_stop_bot_dialog_open = false;
     is_strategy_modal_open = false;
 
-    getInitialValues = data_fields => {
-        const init = {};
+    getInitialValues = (data_fields: TDataFields[]) => {
+        const init: Record<Partial<keyof TInitialValues>, unknown> = {};
         if (data_fields) {
-            Object.keys(data_fields).forEach(data_field_key => {
-                const key = data_fields[data_field_key];
-                if (key.type === 'select' && this.qs_cache[key.field_name]) {
-                    init[`${key.field_name}`] = this.qs_cache[key.field_name].text || '';
-                } else if (this.qs_cache[key.field_name]) {
-                    init[`${key.field_name}`] = this.qs_cache[key.field_name as keyof TQSCache];
+            data_fields.forEach(data_field => {
+                if (data_field) {
+                    if (data_field?.type === 'select' && this.qs_cache[data_field.field_name as keyof TQSCache]) {
+                        init[data_field.field_name as keyof TQSCache] =
+                            (this.qs_cache[data_field.field_name as keyof TQSCache] as
+                                | TMarketOption
+                                | TTradeType
+                                | TTypeStrategy
+                                | TDurationOptions)!.text || '';
+                    } else if (this.qs_cache[data_field.field_name as keyof TQSCache]) {
+                        init[data_field.field_name as keyof TQSCache] =
+                            this.qs_cache[data_field.field_name as keyof TQSCache];
+                    }
                 }
             });
 
@@ -159,7 +149,7 @@ export default class QuickStrategyStore {
         this.qs_cache.symbol = symbol;
         this.selected_symbol = symbol;
         delete this.qs_cache.durationtype;
-        delete this.qs_cache.selected_tradetype;
+        delete this.qs_cache.tradetype;
     }
 
     setSelectedTradeType(trade_type: TTradeType): void {
@@ -168,9 +158,8 @@ export default class QuickStrategyStore {
         delete this.qs_cache.durationtype;
     }
 
-    setDurationInputValue(duration_value: string | number): void {
+    setDurationInputValue(duration_value: number): void {
         this.qs_cache.duration = duration_value;
-        this.input_duration_value = duration_value;
     }
 
     onChangeDropdownItem(type: TDropdownItems, value: string, setFieldValue: TSetFieldValue): void {
@@ -217,9 +206,7 @@ export default class QuickStrategyStore {
         }
     }
 
-    onChangeInputValue(field: TInputBaseFields, event: React.ChangeEvent<HTMLInputElement>): void {
-        this.qs_cache[field] = event.currentTarget.value;
-        this[field] = event.currentTarget.value;
+    onChangeInputValue(field: TInputsFieldNames, event: React.ChangeEvent<HTMLInputElement>): void {
         storeSetting('quick_strategy', this.qs_cache);
     }
 
@@ -252,7 +239,7 @@ export default class QuickStrategyStore {
         }
     }
 
-    async createStrategy(form_value) {
+    async createStrategy(form_value: TInitialValues) {
         const symbol = this.selected_symbol.value;
         const trade_type = this.selected_trade_type.value;
         const duration_unit = this.selected_duration_unit.value;
@@ -261,7 +248,9 @@ export default class QuickStrategyStore {
         const submarket = await contracts_for.getSubmarketBySymbol(symbol);
         const trade_type_cat = await contracts_for.getTradeTypeCategoryByTradeType(trade_type);
 
-        const strategy_name = Object.keys(strategies).find(s => strategies[s].index === this.active_index);
+        const strategy_name = Object.keys(strategies).find(
+            s => strategies[s as keyof typeof strategies].index === this.active_index
+        );
         const strategy_xml = await import(/* webpackChunkName: `[request]` */ `../xml/${strategy_name}.xml`);
         const strategy_dom = Blockly.Xml.textToDom(strategy_xml.default);
 
@@ -282,7 +271,7 @@ export default class QuickStrategyStore {
             });
         };
 
-        const fields_to_update: TFieldsToUpdate = {
+        const fields_to_update = {
             ...form_value,
             market,
             submarket,
@@ -302,7 +291,7 @@ export default class QuickStrategyStore {
             }
         });
 
-        const file_name = (strategies as TStrategies)?.[strategy_name as TKeysStrategies]?.label || localize('Unknown');
+        const file_name = strategies?.[strategy_name as TKeysStrategies]?.label || localize('Unknown');
 
         const { derivWorkspace: workspace } = Blockly;
 
@@ -416,11 +405,10 @@ export default class QuickStrategyStore {
     }
 
     async updateTypesStrategiesDropdown() {
-        const types_strategies = Object.values(strategies as TStrategies).map(strategy => ({
+        const types_strategies = Object.values(strategies).map(strategy => ({
             index: strategy.index,
             text: strategy.label,
             value: strategy.value,
-            description: strategy.description,
         }));
 
         this.setTypesStrategiesDropdown(types_strategies);

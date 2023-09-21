@@ -1,6 +1,5 @@
 import { localize } from '@deriv/translations';
-import { INPUT_TYPES, OPERATORS } from 'Constants/quick-strategies-validation';
-import { popover_zindex } from 'Constants/z-indexes';
+import { INPUT_TYPES } from 'Constants/quick-strategies-validation';
 import { TDataFields } from '../../quick-strategy.types';
 
 const getMessage = (property: string) => `The bot will stop trading if your total ${property} exceeds this amount.`;
@@ -51,7 +50,6 @@ export const DURATION_VALUE: TDataFields = {
     trailing_icon_message: 'The trade length of your purchased contract.',
     group_by: 'asset-type',
     className: 'quick-strategy__input',
-    zIndex: popover_zindex.QUICK_STRATEGY,
 };
 export const STAKE: TDataFields = {
     id: 'stake',
@@ -63,7 +61,6 @@ export const STAKE: TDataFields = {
     group_by: 'trade-type',
     type: INPUT_TYPES.NUMBER,
     className: 'quick-strategy__input',
-    zIndex: popover_zindex.QUICK_STRATEGY,
 };
 export const LOSS: TDataFields = {
     id: 'loss',
@@ -75,7 +72,6 @@ export const LOSS: TDataFields = {
     group_by: 'trade-type',
     type: INPUT_TYPES.NUMBER,
     className: 'quick-strategy__input',
-    zIndex: popover_zindex.QUICK_STRATEGY,
 };
 export const PROFIT: TDataFields = {
     id: 'profit',
@@ -87,5 +83,4 @@ export const PROFIT: TDataFields = {
     group_by: 'trade-type',
     type: INPUT_TYPES.NUMBER,
     className: 'quick-strategy__input',
-    zIndex: popover_zindex.QUICK_STRATEGY,
 };

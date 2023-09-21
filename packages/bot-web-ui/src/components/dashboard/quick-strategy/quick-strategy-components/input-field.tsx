@@ -4,8 +4,7 @@ import { Field, FieldProps } from 'formik';
 import { Icon, Input, Popover } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { TFormValues, TInputBaseFields, TInputsFieldNames } from '../quick-strategy.types';
-import { TInputs } from './components.types';
+import { TInitialValues, TInputBaseFields, TInputFieldProps } from '../quick-strategy.types';
 
 const InputField = ({
     field_name,
@@ -14,22 +13,22 @@ const InputField = ({
     label,
     placeholder,
     trailing_icon_message,
-    zIndex,
     errors,
     handleChange,
     onChangeInputValue,
     setCurrentFocus,
     type,
-}: TInputs) => {
+}: TInputFieldProps) => {
     const is_mobile = isMobile();
     return (
         <div
+            data-testid='dt_input_field_div'
             className={classNames('quick-strategy__form-row', {
                 'quick-strategy__form-row--multiple': !is_mobile,
             })}
         >
             <Field name={field_name} key={id} id={id}>
-                {({ field }: FieldProps<string, TFormValues>) => {
+                {({ field }: FieldProps<string, TInitialValues>) => {
                     return (
                         <Input
                             {...field}
@@ -49,7 +48,6 @@ const InputField = ({
                                 <Popover
                                     alignment={is_mobile ? 'top' : 'bottom'}
                                     message={<Localize i18n_default_text={trailing_icon_message} />}
-                                    zIndex={zIndex}
                                 >
                                     <Icon icon='IcInfoOutline' />
                                 </Popover>

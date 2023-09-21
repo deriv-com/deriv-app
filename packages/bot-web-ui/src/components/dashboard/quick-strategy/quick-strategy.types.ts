@@ -1,5 +1,6 @@
 import React from 'react';
-import { FormikHelpers as FormikActions } from 'formik';
+import { FormikErrors, FormikHelpers as FormikActions, FormikProps } from 'formik';
+import { OPERATORS } from 'Constants/quick-strategies-validation';
 
 export type TDurationOptions = {
     max: number;
@@ -9,7 +10,6 @@ export type TDurationOptions = {
 };
 
 export type TTypeStrategy = {
-    description: string;
     index: number;
     text: string;
     value: string;
@@ -29,13 +29,7 @@ export type TTradeTypeContractsFor = {
     value: string;
 };
 
-type TStrategy = {
-    index: number;
-    label: string;
-    description: string;
-};
 export type TKeysStrategies = 'martingale' | 'dalembert' | 'oscars_grind';
-export type TStrategies = Record<TKeysStrategies, TStrategy>;
 
 export type TSymbol = Record<
     'market' | 'market_display' | 'submarket' | 'submarket_display' | 'symbol' | 'symbol_display',
@@ -53,14 +47,14 @@ export type TDuration = {
 export type TDurations = Array<TDuration>;
 
 export type TFieldsToUpdate = {
-    alembert_unit: string;
-    duration: string | number;
+    alembert_unit?: string;
+    duration?: number;
     durationtype: string;
     loss: string;
     market: string;
-    oscar_unit: string;
+    oscar_unit?: string;
     profit: string;
-    size: string;
+    size?: string;
     stake: string;
     submarket: string;
     symbol: string;
@@ -109,23 +103,16 @@ export type TDropdowns = TSymbolDropdown | TTradeTypeDropdown | TDurationUnitDro
 
 export type TSelectedValuesSelect = TTypeStrategy | TTradeType | TDurationOptions | TMarketOption;
 
-type TSetSelectedTradeType = (trade_type: TTradeType) => void;
-type TSetSelectedSymbol = (symbol: string) => void;
-type TSetSelectedDurationUnit = (duration_unit: TDurationOptions) => void;
-type TSetSelectedTypeStrategy = (type_strategy: TTypeStrategy) => void;
-
-type TSelectedField = TSetSelectedSymbol | TSetSelectedTradeType | TSetSelectedDurationUnit | TSetSelectedTypeStrategy;
-
 export type TFieldMapData = {
     field_name: TSelectsFieldNames;
     dropdown: TDropdowns;
     selected: TSelectedValuesSelect;
-    setSelected: TSelectedField;
+    setSelected: (item: TSelectedValuesSelect) => void;
 };
 
 export type TFieldsMapData = Record<TDropdownItems, TFieldMapData>;
 
-type TInitialKeys = TSelectsFieldNames | TInputsFieldNames;
+export type TInitialKeys = TSelectsFieldNames | TInputsFieldNames | 'button';
 
 export type TGenericInitialValues<T extends PropertyKey, Value> = {
     [Key in T]?: Value;
@@ -181,33 +168,135 @@ export type TQuickStrategyProps = React.PropsWithChildren<{
 }>;
 
 export type TQSCache = {
-    selected_type_strategy?: TTypeStrategy;
-    selected_symbol?: TMarketOption;
-    input_stake?: string;
-    input_loss?: string;
-    input_martingale_size?: string;
-    input_profit?: string;
-    input_oscar_unit?: string;
-    input_alembert_unit?: string;
-    selected_trade_type?: TTradeType;
-    selected_duration_unit?: TDurationOptions;
-    input_duration_value?: number | string;
-};
-
-export type TCommonInputsProperties = {
-    className?: string;
-    zIndex?: number;
+    strategy?: TTypeStrategy;
+    symbol?: TMarketOption;
+    stake?: string;
+    loss?: string;
+    size?: string;
+    profit?: string;
+    oscar_unit?: string;
+    alembert_unit?: string;
+    tradetype?: TTradeType;
+    durationtype?: TDurationOptions;
+    duration?: number;
 };
 
 export type TDataFields = {
     id: string;
-    field_name: TSelectsFieldNames | TInputsFieldNames;
+    field_name?: TSelectsFieldNames | TInputsFieldNames;
     className?: string;
     input_value?: TInputBaseFields;
     select_value?: TDropdownItems;
-    label: string;
+    label?: string;
     placeholder?: string;
     trailing_icon_message?: string;
     is_able_disabled?: boolean;
     group_by?: string;
-} & Readonly<TCommonInputsProperties>;
+    type?: string;
+    description?: string;
+    conditions?: {
+        name: keyof TInitialValues;
+        value: string | number | boolean;
+        operator: keyof typeof OPERATORS;
+    }[];
+};
+
+export type TQuickStrategyForm = {
+    active_index: number;
+    duration_unit_dropdown: TDurationUnitDropdown;
+    types_strategies_dropdown: TTypeStrategiesDropdown;
+    initial_values: TQuickStrategyFormValues;
+    is_onscreen_keyboard_active: boolean;
+    is_stop_button_visible: boolean;
+    symbol_dropdown: TSymbolDropdown;
+    trade_type_dropdown: TTradeTypeDropdown;
+    selected_symbol: TMarketOption;
+    selected_trade_type: TTradeType;
+    selected_duration_unit: TDurationOptions;
+    selected_type_strategy: TTypeStrategy;
+    description: string;
+    is_running: boolean;
+    is_contract_dialog_open: boolean;
+    is_stop_bot_dialog_open: boolean;
+    createStrategy: TCreateStrategy;
+    onChangeDropdownItem: TOnChangeDropdownItem;
+    onChangeInputValue: TOnChangeInputValue;
+    onHideDropdownList: TOnHideDropdownList;
+    onScrollStopDropdownList: TOnScrollStopDropdownList;
+    setCurrentFocus: TSetCurrentFocus;
+    toggleStopBotDialog: () => void;
+};
+
+export type TQuickStrategyFields = {
+    types_strategies_dropdown: TTypeStrategiesDropdown;
+    symbol_dropdown: TSymbolDropdown;
+    trade_type_dropdown: TTradeTypeDropdown;
+    duration_unit_dropdown: TDurationUnitDropdown;
+    selected_type_strategy: TTypeStrategy;
+    selected_trade_type: TTradeType;
+    selected_symbol: TMarketOption;
+    selected_duration_unit: TDurationOptions;
+    onChangeDropdownItem: TOnChangeDropdownItem;
+    onHideDropdownList: TOnHideDropdownList;
+    setFieldValue: TSetFieldValue;
+    onScrollStopDropdownList: TOnScrollStopDropdownList;
+    handleChange: FormikProps<TFormValues>['handleChange'];
+    onChangeInputValue: TOnChangeInputValue;
+    setCurrentFocus: TSetCurrentFocus;
+    values: TInitialValues | TFormValues;
+    description: string;
+    errors: FormikErrors<TQuickStrategyFormValues>;
+};
+
+export type TQuickStrategyFooter = {
+    is_running: boolean;
+    toggleStopBotDialog: () => void;
+};
+
+export type TDropdownLists = Record<TDropdownItems, TDropdowns>;
+export type TSelectedValues = Record<TDropdownItems, TSelectedValuesSelect>;
+
+export type TSelectFieldProps = React.PropsWithChildren<{
+    field_name: TSelectsFieldNames;
+    id: string;
+    dropdown_list: TDropdowns;
+    selected_value: Partial<TSelectedValuesSelect>;
+    label: string;
+    select_value: TDropdownItems;
+    setFieldValue: TSetFieldValue;
+    className?: string;
+    is_able_disabled?: boolean;
+    values: TFormValues | TInitialValues;
+    onChangeDropdownItem: TOnChangeDropdownItem;
+    onHideDropdownList: TOnHideDropdownList;
+    onScrollStopDropdownList: TOnScrollStopDropdownList;
+    selected_trade_type: TTradeType;
+    selected_symbol: TMarketOption;
+}>;
+
+export type TInputFieldProps = React.PropsWithChildren<{
+    idx?: number;
+    handleChange: FormikProps<TFormValues>['handleChange'];
+    onChangeInputValue: TOnChangeInputValue;
+    setCurrentFocus: TSetCurrentFocus;
+    field_name?: TInputsFieldNames;
+    id?: string;
+    label?: string;
+    input_value?: TInputBaseFields;
+    placeholder?: string;
+    trailing_icon_message?: string;
+    uniq_selected_input?: TDataFields;
+    type: string;
+    errors: boolean | FormikErrors<TQuickStrategyFormValues> | undefined;
+    className?: string;
+}>;
+
+export type TTradeTypeOptionProps = React.PropsWithChildren<{
+    trade_type: TTradeType;
+}>;
+
+export type TMarketOptionProps = React.PropsWithChildren<{
+    symbol: TMarketOption;
+}>;
+
+export type TDurationFieldProps = TSelectFieldProps;

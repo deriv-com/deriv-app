@@ -1,6 +1,5 @@
 import { localize } from '@deriv/translations';
 import { INPUT_TYPES } from 'Constants/quick-strategies-validation';
-import { popover_zindex } from 'Constants/z-indexes';
 import { TDataFields } from '../../quick-strategy.types';
 import {
     DURATION_UNIT,
@@ -24,17 +23,18 @@ export const MARTINGALE_SIZE: TDataFields = {
     group_by: 'trade-type',
     type: INPUT_TYPES.NUMBER,
     className: 'quick-strategy__input',
-    zIndex: popover_zindex.QUICK_STRATEGY,
+};
+
+export const MARTINGALE_DESCRIPTION: TDataFields = {
+    id: 'description',
+    description: localize(
+        'The Martingale Strategy is a classic trading technique that has been used for more than a hundred years, popularised by the French mathematician Paul Pierre Levy in the 18th century.'
+    ),
 };
 
 const martingale_data_fields = [
     TYPE_STRATEGY,
-    {
-        id: 'description',
-        description: localize(
-            'The Martingale Strategy is a classic trading technique that has been used for more than a hundred years, popularised by the French mathematician Paul Pierre Levy in the 18th century.'
-        ),
-    },
+    MARTINGALE_DESCRIPTION,
     SYMBOL,
     TRADE_TYPE,
     DURATION_UNIT,

@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 import { localize } from '@deriv/translations';
 import { OPERATORS } from 'Constants/quick-strategies-validation';
+import { TDataFields, TInitialValues } from '../../quick-strategy.types';
 
 export const setDefaultValidationNumber = () =>
     Yup.number()
@@ -35,7 +36,7 @@ export const DAlembertSchemaFields = Yup.object().shape({
     alembert_uni: setDefaultValidationNumber(),
 });
 
-const execute_operations = ({ operator, op1, op2 }) => {
+const execute_operations = <T>({ operator, op1, op2 }: { operator: keyof typeof OPERATORS; op1: T; op2: T }) => {
     switch (operator) {
         case OPERATORS.EQUAL:
             return op1 == op2;
@@ -54,7 +55,7 @@ const execute_operations = ({ operator, op1, op2 }) => {
     }
 };
 
-export const handleConditionsOfInput = (conditions, current_form_data) => {
+export const handleConditionsOfInput = (conditions: TDataFields['conditions'], current_form_data: TInitialValues) => {
     if (conditions?.length) {
         const condition = conditions?.every(element => {
             const { name, value, operator } = element;
@@ -68,10 +69,8 @@ export const handleConditionsOfInput = (conditions, current_form_data) => {
     return false;
 };
 
-export const mergeSchema = (...schemas: typeof Yup.ObjectSchema[]) => {
-    const [first, ...rest] = schemas;
-
-    const merged = rest.reduce((mergedSchemas, schema) => mergedSchemas.concat(schema), first);
+export const mergeSchema = (first: ReturnType<typeof CommonSchemaFields>, ...rest: Yup.AnyObjectSchema[]) => {
+    const merged = rest.reduce((mergedSchemas, schema) => (mergedSchemas as any).concat(schema as any), first);
 
     return merged;
 };

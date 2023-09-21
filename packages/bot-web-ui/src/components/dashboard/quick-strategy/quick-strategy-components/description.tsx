@@ -2,12 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 
-type TDescription = {
-    id: string;
-    description: string;
-};
-
-const Description = ({ id, description }: TDescription) => (
+const Description = ({ description }: { description?: string }) => (
     <React.Fragment>
         {
             <div key='description' className='quick-strategy__text'>

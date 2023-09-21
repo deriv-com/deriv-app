@@ -1,6 +1,5 @@
 import { localize } from '@deriv/translations';
 import { INPUT_TYPES } from 'Constants/quick-strategies-validation';
-import { popover_zindex } from 'Constants/z-indexes';
 import { TDataFields } from '../../quick-strategy.types';
 import {
     DURATION_UNIT,
@@ -23,17 +22,18 @@ export const OSCARS_UNIT: TDataFields = {
     group_by: 'trade-type',
     type: INPUT_TYPES.NUMBER,
     className: 'quick-strategy__input',
-    zIndex: popover_zindex.QUICK_STRATEGY,
+};
+
+export const OSCARS_GRIND_DESCRIPTION: TDataFields = {
+    id: 'description',
+    description: localize(
+        "The Oscar's Grind Strategy is a low-risk positive progression strategy that first appeared in 1965. By using this strategy, the size of your contract will increase after successful trades, but remains unchanged after unsuccessful trades."
+    ),
 };
 
 const oscars_grind_data_fields = [
     TYPE_STRATEGY,
-    {
-        id: 'description',
-        description: localize(
-            "The Oscar's Grind Strategy is a low-risk positive progression strategy that first appeared in 1965. By using this strategy, the size of your contract will increase after successful trades, but remains unchanged after unsuccessful trades."
-        ),
-    },
+    OSCARS_GRIND_DESCRIPTION,
     SYMBOL,
     TRADE_TYPE,
     DURATION_UNIT,

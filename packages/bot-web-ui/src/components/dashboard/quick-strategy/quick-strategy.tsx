@@ -1,7 +1,7 @@
 import React from 'react';
 import { MobileFullPageModal, Modal } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { QuickStrategyContainer } from './quick-strategy-components';

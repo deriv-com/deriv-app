@@ -7,6 +7,8 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
 import { useStore, observer } from '@deriv/stores';
 import { useActiveWallet } from '@deriv/hooks';
+import { useCreateNewRealAccount, useSettings } from '@deriv/api';
+import { toMoment } from '@deriv/shared';
 import './wallet-content.scss';
 
 type TProps = {
@@ -66,9 +68,13 @@ const WalletOptionsAndMultipliersListing = observer(() => {
         is_logging_in,
         is_switching,
     } = client;
-    const { available_platforms, is_eu_user, no_MF_account, no_CR_account, is_demo } = traders_hub;
+    const { available_platforms, is_eu_user, no_MF_account, no_CR_account, is_demo, setWalletCreateNewAccountModal } =
+        traders_hub;
 
+    const { mutate: createNewRealAccount } = useCreateNewRealAccount();
     const wallet_account = useActiveWallet();
+    const { data: user_settings } = useSettings();
+    const { date_of_birth, country_code, first_name, last_name } = user_settings;
 
     if (!wallet_account || is_switching || is_logging_in || !is_landing_company_loaded) {
         return (
@@ -81,7 +87,18 @@ const WalletOptionsAndMultipliersListing = observer(() => {
     const platforms_action_type =
         is_demo || (!no_CR_account && !is_eu_user) || (has_maltainvest_account && is_eu_user) ? 'trade' : 'none';
 
-    const derivAccountAction = () => {
+    const createRealTradingAccount = () => {
+        createNewRealAccount({
+            currency: wallet_account?.currency_config?.display_code,
+            date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
+            first_name,
+            last_name,
+            residence: country_code,
+        });
+        setWalletCreateNewAccountModal(true);
+    };
+
+    const derivAccount = () => {
         if (no_MF_account) {
             if (real_account_creation_unlock_date) {
                 setShouldShowCooldownModal(true);
@@ -89,7 +106,7 @@ const WalletOptionsAndMultipliersListing = observer(() => {
                 openRealAccountSignup('maltainvest');
             }
         } else {
-            openRealAccountSignup('svg');
+            createRealTradingAccount();
         }
     };
 
@@ -119,7 +136,7 @@ const WalletOptionsAndMultipliersListing = observer(() => {
                         name={get_account_card_name}
                         description={get_account_card_description}
                         icon='Options'
-                        onAction={derivAccountAction}
+                        onAction={derivAccount}
                     />
                 </div>
             )}

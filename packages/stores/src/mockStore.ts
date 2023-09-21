@@ -442,6 +442,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_mt5_notification_modal_visible: false,
             setMT5NotificationModal: jest.fn(),
             available_derivez_accounts: [],
+            is_wallet_create_new_account_modal: false,
+            setWalletCreateNewAccountModal: jest.fn(),
         },
         notifications: {
             addNotificationMessage: jest.fn(),

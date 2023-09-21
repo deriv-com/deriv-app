@@ -19,6 +19,7 @@ const useDxtradeAccountsList = () => {
                     maximumFractionDigits: 2,
                     minimumIntegerDigits: 1,
                 }).format(account?.balance || 0),
+                has_dxtrade_account: true,
             })),
         [authorize_data?.preferred_language, dxtrade_accounts?.trading_platform_accounts]
     );

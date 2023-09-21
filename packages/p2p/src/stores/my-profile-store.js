@@ -569,7 +569,7 @@ export default class MyProfileStore extends BaseStore {
             delete: [this.payment_method_to_delete.ID],
         }).then(async response => {
             general_store.hideModal();
-            if (response.error) {
+            if (!response.error) {
                 this.getAdvertiserPaymentMethods();
             } else {
                 general_store.showModal({

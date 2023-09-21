@@ -5,9 +5,11 @@ import { useStores } from 'Stores';
 import AddPaymentMethodErrorModal from '../add-payment-method-error-modal';
 
 const mocked_store_values: DeepPartial<ReturnType<typeof useStores>> = {
+    general_store: { setFormikRef: jest.fn(), setSavedFormState: jest.fn() },
     my_profile_store: {
         add_payment_method_error_message: 'this is the error message',
         setAddPaymentMethodErrorMessage: jest.fn(),
+        setSelectedPaymentMethod: jest.fn(),
     },
 };
 

@@ -16,7 +16,7 @@ import BuySellModalError from './buy-sell-modal-error';
 
 const BuySellModal = () => {
     const { hideModal, is_modal_open, showModal } = useModalManagerContext();
-    const { buy_sell_store, floating_rate_store, general_store, my_profile_store, order_store } = useStores();
+    const { buy_sell_store, general_store, my_profile_store, order_store } = useStores();
     const { is_buy, selected_ad_state } = buy_sell_store;
     const { balance } = general_store;
     const { should_show_add_payment_method_form } = my_profile_store;

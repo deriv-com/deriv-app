@@ -1,10 +1,18 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { APIProvider } from '@deriv/api';
 import { isDesktop, isMobile } from '@deriv/shared';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import { useStores } from 'Stores';
 import { TModalManagerContext } from 'Types';
 import CreateAdAddPaymentMethodModal from '../create-ad-add-payment-method-modal';
+
+const wrapper = ({ children }) => (
+    <APIProvider>
+        <StoreProvider store={mockStore({})}>{children}</StoreProvider>
+    </APIProvider>
+);
 
 const mock_modal_manager_context: Partial<TModalManagerContext> = {
     hideModal: jest.fn(),
@@ -55,13 +63,13 @@ describe('<CreateAdAddPaymentMethodModal />', () => {
     });
 
     it('should render CreateAdAddPaymentMethodModal component in desktop view', () => {
-        render(<CreateAdAddPaymentMethodModal />);
+        render(<CreateAdAddPaymentMethodModal />, { wrapper });
         expect(screen.getByText('Add payment method')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
     });
 
     it('should close CreateAdAddPaymentMethodModal component when clicking Cancel button', () => {
-        render(<CreateAdAddPaymentMethodModal />);
+        render(<CreateAdAddPaymentMethodModal />, { wrapper });
         const cancel_button = screen.getByRole('button', { name: 'Cancel' });
         expect(cancel_button).toBeInTheDocument();
         userEvent.click(cancel_button);
@@ -70,7 +78,7 @@ describe('<CreateAdAddPaymentMethodModal />', () => {
 
     it('should show CancelAddPaymentMethod modal if is_form_modified is true', () => {
         mock_store.general_store.is_form_modified = true;
-        render(<CreateAdAddPaymentMethodModal />);
+        render(<CreateAdAddPaymentMethodModal />, { wrapper });
         const cancel_button = screen.getByRole('button', { name: 'Cancel' });
         expect(cancel_button).toBeInTheDocument();
         userEvent.click(cancel_button);
@@ -84,14 +92,14 @@ describe('<CreateAdAddPaymentMethodModal />', () => {
 
     it('should not show Cancel button if selected_payment_method is not empty in desktop view', () => {
         mock_store.my_profile_store.selected_payment_method = ['Bank transfer'];
-        render(<CreateAdAddPaymentMethodModal />);
+        render(<CreateAdAddPaymentMethodModal />, { wrapper });
         expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
     });
 
     it('should render CreateAdAddPaymentMethodModal component in mobile view', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
-        render(<CreateAdAddPaymentMethodModal />);
+        render(<CreateAdAddPaymentMethodModal />, { wrapper });
         expect(screen.getByTestId('dt_div_100_vh')).toBeInTheDocument();
         expect(screen.getByText('Add payment method')).toBeInTheDocument();
     });

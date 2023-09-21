@@ -1,9 +1,17 @@
 import React from 'react';
 import { screen, render, act, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { APIProvider } from '@deriv/api';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
 import BuySellModal from '../buy-sell-modal';
+
+const wrapper = ({ children }) => (
+    <APIProvider>
+        <StoreProvider store={mockStore({})}>{children}</StoreProvider>
+    </APIProvider>
+);
 
 let mock_store: DeepPartial<ReturnType<typeof useStores>>;
 
@@ -84,28 +92,28 @@ describe('<BuySellModal />', () => {
     });
 
     it('should render the BuySellModal', () => {
-        render(<BuySellModal />);
+        render(<BuySellModal />, { wrapper });
 
         expect(screen.getByText('Buy USD')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Confirm' })).toBeInTheDocument();
     });
 
-    it('should call setIsMarketRateChanged, hideModal, fetchAdvertiserAdverts when clicking cross icon if should_show_add_payment_method_form is false', () => {
-        render(<BuySellModal />);
+    it('should call hideModal, fetchAdvertiserAdverts, unsubscribeAdvertInfo when clicking cross icon if should_show_add_payment_method_form is false', () => {
+        render(<BuySellModal />, { wrapper });
 
         const cross_icon = screen.getByTestId('dt_modal_close_icon');
         userEvent.click(cross_icon);
 
         expect(mock_modal_manager.hideModal).toHaveBeenCalled();
         expect(mock_store.buy_sell_store.fetchAdvertiserAdverts).toHaveBeenCalled();
-        expect(mock_store.floating_rate_store.setIsMarketRateChanged).toHaveBeenCalledWith(false);
+        expect(mock_store.buy_sell_store.unsubscribeAdvertInfo).toHaveBeenCalled();
     });
 
     it('should call hideAddPaymentMethodForm when clicking cross icon if should_show_add_payment_method_form is true and is_form_modified is false', () => {
         mock_store.my_profile_store.should_show_add_payment_method_form = true;
 
-        render(<BuySellModal />);
+        render(<BuySellModal />, { wrapper });
 
         const cross_icon = screen.getByTestId('dt_modal_close_icon');
         userEvent.click(cross_icon);
@@ -117,7 +125,7 @@ describe('<BuySellModal />', () => {
         mock_store.my_profile_store.should_show_add_payment_method_form = true;
         mock_store.general_store.is_form_modified = true;
 
-        render(<BuySellModal />);
+        render(<BuySellModal />, { wrapper });
 
         const cross_icon = screen.getByTestId('dt_modal_close_icon');
         userEvent.click(cross_icon);
@@ -128,7 +136,7 @@ describe('<BuySellModal />', () => {
     it('should call submitForm when pressing Confirm', () => {
         const submitFormSpy = jest.spyOn(React, 'useRef');
 
-        render(<BuySellModal />);
+        render(<BuySellModal />, { wrapper });
 
         const confirm_button = screen.getByRole('button', { name: 'Confirm' });
         userEvent.click(confirm_button);
@@ -137,7 +145,7 @@ describe('<BuySellModal />', () => {
     });
 
     it('should call showModal and setFormErrorCode when advert rate has changed', async () => {
-        render(<BuySellModal />);
+        render(<BuySellModal />, { wrapper });
 
         act(() => {
             mock_store.buy_sell_store.advert.rate = 2;
@@ -155,7 +163,7 @@ describe('<BuySellModal />', () => {
 
         mock_modal_manager.is_modal_open = false;
 
-        render(<BuySellModal />);
+        render(<BuySellModal />, { wrapper });
 
         expect(mockSetErrorMessage).toHaveBeenCalledWith('');
     });

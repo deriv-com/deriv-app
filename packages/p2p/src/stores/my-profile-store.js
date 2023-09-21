@@ -12,7 +12,6 @@ export default class MyProfileStore extends BaseStore {
     advertiser_payment_methods = {};
     advertiser_payment_methods_error = '';
     available_payment_methods = {};
-    delete_error_message = '';
     error_message = '';
     form_error = '';
     full_name = '';
@@ -59,7 +58,6 @@ export default class MyProfileStore extends BaseStore {
             advertiser_payment_methods: observable,
             advertiser_payment_methods_error: observable,
             available_payment_methods: observable,
-            delete_error_message: observable,
             error_message: observable,
             form_error: observable,
             full_name: observable,
@@ -129,7 +127,6 @@ export default class MyProfileStore extends BaseStore {
             setAdvertiserPaymentMethodsError: action.bound,
             setAvailablePaymentMethods: action.bound,
             setDefaultAdvertDescription: action.bound,
-            setDeleteErrorMessage: action.bound,
             setErrorMessage: action.bound,
             setFormError: action.bound,
             setFullName: action.bound,
@@ -572,12 +569,12 @@ export default class MyProfileStore extends BaseStore {
             delete: [this.payment_method_to_delete.ID],
         }).then(async response => {
             general_store.hideModal();
-            if (!response.error) {
+            if (response.error) {
                 this.getAdvertiserPaymentMethods();
             } else {
-                this.setDeleteErrorMessage(response.error.message);
                 general_store.showModal({
                     key: 'DeletePaymentMethodErrorModal',
+                    error_message: response.error.message,
                 });
             }
         });
@@ -748,10 +745,6 @@ export default class MyProfileStore extends BaseStore {
 
     setDefaultAdvertDescription(default_advert_description) {
         this.default_advert_description = default_advert_description;
-    }
-
-    setDeleteErrorMessage(delete_error_message) {
-        this.delete_error_message = delete_error_message;
     }
 
     setErrorMessage(error_message) {

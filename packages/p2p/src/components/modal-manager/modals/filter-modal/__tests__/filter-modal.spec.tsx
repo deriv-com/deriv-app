@@ -111,7 +111,7 @@ describe('<FilterModal />', () => {
         });
         const reset_button = screen.getByRole('button', { name: 'Reset' });
         userEvent.click(reset_button);
-        expect(mock_store.buy_sell_store.setShouldUseClientLimits).toHaveBeenCalledWith(false);
+        expect(mock_store.buy_sell_store.setShouldUseClientLimits).toHaveBeenCalledWith(true);
     });
     it('should handle clicking apply button', () => {
         render(<FilterModal />, {

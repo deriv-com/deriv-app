@@ -1,6 +1,6 @@
 import React from 'react';
 import { QRCode } from 'react-qrcode';
-import { TCFDsPlatformType } from 'Components/props.types';
+import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
 import {
     getPlatformDXTradeDownloadLink,
     getPlatformCTraderDownloadLink,
@@ -11,18 +11,19 @@ import {
     platformsText,
     platformsIcons,
 } from './constants';
-import { isMobile, CFD_PLATFORMS } from '@deriv/shared';
+import { isMobile } from '@deriv/shared';
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { TCFDDashboardContainer } from 'Containers/props.types';
+import { CATEGORY, CFD_PLATFORMS } from './cfd-config';
 
-export const mobileDownloadLink = (platform: TCFDsPlatformType, type: 'ios' | 'android' | 'huawei') => {
+export const mobileDownloadLink = (platform: TCFDsPlatformType, type: TMobilePlatforms) => {
     switch (platform) {
-        case 'dxtrade':
+        case CFD_PLATFORMS.DXTRADE:
             return getPlatformDXTradeDownloadLink(type);
-        case 'ctrader':
+        case CFD_PLATFORMS.CTRADER:
             return getPlatformCTraderDownloadLink(type);
-        case 'derivez':
+        case CFD_PLATFORMS.DERIVEZ:
             return getPlatformDerivEZDownloadLink(type);
         default:
             return getPlatformDXTradeDownloadLink(type);
@@ -34,11 +35,11 @@ export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
 
     const QRCodeLinks = () => {
         switch (acc_type) {
-            case 'derivez':
+            case CFD_PLATFORMS.DERIVEZ:
                 return 'https://onelink.to/bkdwkd';
-            case 'dxtrade':
+            case CFD_PLATFORMS.DXTRADE:
                 return 'https://onelink.to/grmtyx';
-            case 'ctrader':
+            case CFD_PLATFORMS.CTRADER:
                 return 'https://onelink.to/yvk2a5';
             default:
                 return 'https://onelink.to/grmtyx';
@@ -79,21 +80,21 @@ export const PlatformsDesktopDownload = ({
 }: TPlatformsDesktopDownload) => {
     const PlatformsDesktopDownloadLinks = () => {
         switch (platform) {
-            case 'ctrader':
+            case CFD_PLATFORMS.CTRADER:
                 return getCTraderWebTerminalLink(
-                    is_demo ? 'demo' : 'real',
-                    ctrader_tokens && ctrader_tokens[is_demo ? 'demo' : 'real']
+                    is_demo ? CATEGORY.DEMO : CATEGORY.REAL,
+                    ctrader_tokens && ctrader_tokens[is_demo ? CATEGORY.DEMO : CATEGORY.REAL]
                 );
 
-            case 'derivez':
+            case CFD_PLATFORMS.DERIVEZ:
                 return getDerivEzWebTerminalLink(
                     is_demo ? 'demo' : 'real',
-                    derivez_tokens && derivez_tokens[is_demo ? 'demo' : 'real']
+                    derivez_tokens && derivez_tokens[is_demo ? CATEGORY.DEMO : CATEGORY.REAL]
                 );
-            case 'dxtrade':
+            case CFD_PLATFORMS.DXTRADE:
                 return getDXTradeWebTerminalLink(
                     is_demo ? 'demo' : 'real',
-                    dxtrade_tokens && dxtrade_tokens[is_demo ? 'demo' : 'real']
+                    dxtrade_tokens && dxtrade_tokens[is_demo ? CATEGORY.DEMO : CATEGORY.REAL]
                 );
             default:
                 return '';

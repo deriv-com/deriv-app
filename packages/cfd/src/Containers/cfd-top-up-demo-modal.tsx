@@ -1,7 +1,7 @@
 import React from 'react';
 import SuccessDialog from '../Components/success-dialog.jsx';
 import { Icon, Modal, Button, Money, Text } from '@deriv/components';
-import { getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
+import { getCFDPlatformLabel } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import {
     TDxCompanies,
@@ -13,6 +13,7 @@ import {
 import { getTopUpConfig } from '../Helpers/constants';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { CFD_PLATFORMS } from '../Helpers/cfd-config.js';
 
 type TCFDTopUpDemoModalProps = {
     platform: string;
@@ -67,13 +68,13 @@ const CFDTopUpDemoModal = observer(({ platform }: TCFDTopUpDemoModalProps) => {
         }
 
         return title;
-    }, [mt5_companies, dxtrade_companies, current_account, derivez_companies]);
+    }, [mt5_companies, dxtrade_companies, derivez_companies, current_account, platform, ctrader_companies]);
 
     const onCloseSuccess = () => {
         closeSuccessTopUpModal();
     };
 
-    const has_sub_title = [CFD_PLATFORMS.CTRADER].includes(platform);
+    const has_sub_title = platform === CFD_PLATFORMS.CTRADER;
 
     const platform_title = getCFDPlatformLabel(platform, has_sub_title);
 

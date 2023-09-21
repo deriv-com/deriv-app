@@ -2,9 +2,10 @@ import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { TCompareAccountsCard } from 'Components/props.types';
-import { getJuridisctionDescription, getMarketType } from '../../Helpers/compare-accounts-config';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { getJuridisctionDescription, getMarketType } from '../../Helpers/compare-accounts-config';
+import { REGION } from '../../Helpers/cfd-config';
 
 const CFDCompareAccountsDescription = ({ trading_platforms, is_demo }: TCompareAccountsCard) => {
     const market_type = getMarketType(trading_platforms);
@@ -23,10 +24,10 @@ const CFDCompareAccountsDescription = ({ trading_platforms, is_demo }: TCompareA
                     {juridisction_data.leverage}
                 </Text>
                 <Text as='p' size='xxxs' align='center'>
-                    {selected_region === 'Non-EU' ? juridisction_data.leverage_description : localize('Leverage')}
+                    {selected_region === REGION.NON_EU ? juridisction_data.leverage_description : localize('Leverage')}
                 </Text>
             </div>
-            {selected_region === 'Non-EU' && (
+            {selected_region === REGION.NON_EU && (
                 <div className='compare-cfd-account-text-container__separator'>
                     <Text as='h1' weight='bold' size='m' align='center'>
                         {juridisction_data.spread}

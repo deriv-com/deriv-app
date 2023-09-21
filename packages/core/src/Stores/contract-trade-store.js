@@ -336,6 +336,9 @@ export default class ContractTradeStore extends BaseStore {
     }) {
         const contract_exists = this.contracts_map[contract_id];
         if (contract_exists) {
+            if (Object.keys(this.contracts_map).length > this.contracts.length) {
+                this.contracts.push(...Object.values(this.contracts_map));
+            }
             return;
         }
 

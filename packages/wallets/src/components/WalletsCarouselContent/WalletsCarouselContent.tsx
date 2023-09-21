@@ -3,7 +3,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { useAuthorize, useWalletAccountsList } from '@deriv/api';
 import { ProgressBar } from '../ProgressBar';
 import { WalletCard } from '../WalletCard';
-import { WalletListCardIActions } from '../WalletListCardIActions';
+import { WalletListCardActions } from '../WalletListCardActions';
 import './WalletsCarouselContent.scss';
 
 const WalletsCarouselContent: React.FC = () => {
@@ -45,18 +45,18 @@ const WalletsCarouselContent: React.FC = () => {
         <div className='wallets-carousel-content' ref={wallets_carousel_embla_ref}>
             <div className='wallets-carousel-content__container'>
                 {wallet_accounts_list?.map(account => (
-                    <WalletCard key={`wallet-card-${account.loginid}`} account={account} />
+                    <WalletCard account={account} key={`wallet-card-${account.loginid}`} />
                 ))}
             </div>
             <div className='wallets-carousel-content__progress-bar'>
                 <ProgressBar
                     active_index={progress_bar_active_index}
                     indexes={amount_of_steps || []}
-                    setActiveIndex={switchAccount}
                     is_transition
+                    setActiveIndex={switchAccount}
                 />
             </div>
-            <WalletListCardIActions />
+            <WalletListCardActions />
         </div>
     );
 };

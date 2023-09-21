@@ -1,11 +1,13 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api';
+import { useHistory } from 'react-router-dom';
+import { useActiveWalletAccount, useAuthorize } from '@deriv/api';
+import useCashierParam, { TCashierTabs } from '../../hooks/useCashierParam';
 import useDevice from '../../hooks/useDevice';
 import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
 import IcCashierWithdrawal from '../../public/images/ic-cashier-withdrawal.svg';
-import './WalletListCardIActions.scss';
+import './WalletListCardActions.scss';
 
 const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
     const buttons = [
@@ -42,11 +44,16 @@ const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
 
 type TProps = {
     isDemo: boolean;
+    loginid: string;
 };
 
-const WalletListCardIActions: React.FC<TProps> = ({ isDemo }) => {
-    const { isMobile } = useDevice();
+const WalletListCardActions: React.FC<TProps> = ({ isDemo, loginid }) => {
     const { data: activeWallet } = useActiveWalletAccount();
+    const { switchAccount } = useAuthorize();
+    const { getCashierParam } = useCashierParam();
+    const { isMobile } = useDevice();
+    const history = useHistory();
+
     const is_demo = !!activeWallet?.is_virtual;
 
     if (isMobile)
@@ -76,14 +83,26 @@ const WalletListCardIActions: React.FC<TProps> = ({ isDemo }) => {
             {getWalletHeaderButtons(isDemo).map(button => (
                 <button
                     className='wallets-header__button'
-                    key={`wallets-header-button-${button.name}`}
-                    onClick={button.action}
+                    key={loginid}
+                    onClick={async () => {
+                        await switchAccount(loginid);
+                        history.push(
+                            `/appstore/traders-hub?${getCashierParam(button.name.toLowerCase() as TCashierTabs)}`
+                        );
+                    }}
                 >
                     {button.icon}
+                    <span
+                        className={`wallets-header__actions-label ${
+                            isDemo ? 'wallets-header__actions-label--active' : ''
+                        }`}
+                    >
+                        {button.name}
+                    </span>
                 </button>
             ))}
         </div>
     );
 };
 
-export default WalletListCardIActions;
+export default WalletListCardActions;

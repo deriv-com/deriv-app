@@ -53,4 +53,12 @@ module.exports = {
         'typescript-sort-keys/string-enum': 'warn',
         camelcase: 'warn',
     },
+    overrides: [
+        {
+            files: ['*.ts', '*.mts', '*.cts', '*.tsx'],
+            rules: {
+                'no-undef': 'off',
+            },
+        },
+    ],
 };

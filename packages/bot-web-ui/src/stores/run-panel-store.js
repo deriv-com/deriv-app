@@ -141,7 +141,7 @@ export default class RunPanelStore {
         return (
             this.is_running ||
             this.has_open_contract ||
-            (journal.unfiltered_messages.length === 0 && transactions.elements.length === 0)
+            (journal.unfiltered_messages.length === 0 && transactions?.transactions?.length === 0)
         );
     }
 

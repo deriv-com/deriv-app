@@ -6,9 +6,9 @@ import React from 'react';
 // for example [[1, 2, 3]] will be a single row of these three numbers
 // but [[1, 2, 3], [4, 5, 6]] will be two rows:
 // first row with the first three numbers and second row with the last three numbers
-const NumberSelector = ({ arr_arr_numbers, name, onChange, selected_number, should_show_in_percents }) => {
+const NumberSelector = ({ arr_arr_numbers, name, onChange, selected_number, should_show_in_percents, is_disabled }) => {
     const handleSelect = item => {
-        if (+item.target.getAttribute('data-value') !== selected_number) {
+        if (+item.target.getAttribute('data-value') !== selected_number && !is_disabled) {
             onChange({ target: { name, value: +item.target.getAttribute('data-value') } });
         }
     };
@@ -23,6 +23,7 @@ const NumberSelector = ({ arr_arr_numbers, name, onChange, selected_number, shou
                             className={classNames('number-selector__selection', {
                                 'number-selector__selection--selected': selected_number === i,
                                 'number-selector__selection--percentage': should_show_in_percents,
+                                'number-selector__selection--disabled': is_disabled,
                             })}
                             data-value={i}
                             onClick={handleSelect}
@@ -42,6 +43,7 @@ NumberSelector.propTypes = {
     onChange: PropTypes.func,
     selected_number: PropTypes.number,
     should_show_in_percents: PropTypes.bool,
+    is_disabled: PropTypes.bool,
 };
 
 export default NumberSelector;

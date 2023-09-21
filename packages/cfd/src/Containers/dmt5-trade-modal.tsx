@@ -210,7 +210,7 @@ const DMT5TradeModal = ({
                     <a
                         className='dc-btn cfd-trade-modal__download-center-app--option-link'
                         type='button'
-                        href={mt5_trade_account.webtrader_url}
+                        href={mt5_trade_account.webtrader_url || ''}
                         target='_blank'
                         rel='noopener noreferrer'
                     >

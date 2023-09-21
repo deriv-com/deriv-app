@@ -296,7 +296,7 @@ class DBot {
     async stopBot() {
         api_base.setIsRunning(false);
 
-        await this.interpreter.terminateSession();
+        await this.interpreter.stop();
         this.is_bot_running = false;
         this.interpreter = null;
         this.interpreter = Interpreter();

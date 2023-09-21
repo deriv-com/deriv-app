@@ -4,7 +4,7 @@ import './WalletDepositFiat.scss';
 
 const WalletDepositFiat = () => {
     const { isSuccess: isAuthorizeSuccess } = useAuthorize();
-    const { data: iframe_url, mutate, isError } = useDepositFiatAddress();
+    const { data: iframe_url, isError, mutate } = useDepositFiatAddress();
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {

@@ -44,4 +44,12 @@ module.exports = {
         '@typescript-eslint/sort-type-constituents': 'error',
         '@typescript-eslint/no-unused-vars': 'error',
     },
+    overrides: [
+        {
+            files: ['*.ts', '*.mts', '*.cts', '*.tsx'],
+            rules: {
+                'no-undef': 'off',
+            },
+        },
+    ],
 };

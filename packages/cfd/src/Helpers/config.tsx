@@ -6,7 +6,6 @@ import {
     getPlatformCTraderDownloadLink,
     getPlatformDerivEZDownloadLink,
     getDXTradeWebTerminalLink,
-    getDerivEzWebTerminalLink,
     getCTraderWebTerminalLink,
     platformsText,
     platformsIcons,
@@ -87,11 +86,6 @@ export const PlatformsDesktopDownload = ({
                     is_demo ? 'demo' : 'real',
                     ctrader_tokens && ctrader_tokens[is_demo ? 'demo' : 'real']
                 );
-            // case 'derivez':
-            //     return getDerivEzWebTerminalLink(
-            //         is_demo ? 'demo' : 'real',
-            //         derivez_tokens && derivez_tokens[is_demo ? 'demo' : 'real']
-            //     );
             case 'dxtrade':
                 return getDXTradeWebTerminalLink(
                     is_demo ? 'demo' : 'real',

@@ -256,19 +256,19 @@ const CFDsListing = observer(() => {
                 <PlatformLoader />
             )}
 
-            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && !is_real && (
+            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                 <div className='cfd-full-row'>
                     <hr className='divider' />
                 </div>
             )}
 
-            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && !is_real && (
+            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                 <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
                     <Text weight='bold'>{localize('Deriv cTrader')}</Text>
                 </div>
             )}
 
-            {is_landing_company_loaded && !is_real
+            {is_landing_company_loaded
                 ? available_ctrader_accounts.map((account: AvailableAccount) => {
                       const existing_accounts = getExistingAccounts(account.platform, account.market_type);
                       const has_existing_accounts = existing_accounts.length > 0;

@@ -1,4 +1,1 @@
-import WalletModal from './WalletModal';
-import './WalletModal.scss';
-
-export default WalletModal;
+export { default as WalletModal } from './WalletModal';

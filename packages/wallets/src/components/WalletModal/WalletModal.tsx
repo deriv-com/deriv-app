@@ -2,29 +2,30 @@ import React, { ComponentPropsWithoutRef, PropsWithChildren, useRef } from 'reac
 import { useOnClickOutside } from 'usehooks-ts';
 import CloseIcon from '../../public/images/ic-close-dark.svg';
 import { useModal } from '../ModalProvider';
+import './WalletModal.scss';
 
 type TWalletModalProps = {
-    should_show_close_icon?: boolean;
-    should_close_on_click_outside?: boolean;
+    has_close_icon?: boolean;
+    should_close_on_backdrop_click?: boolean;
     onClickCloseIcon?: () => void;
 };
 
 const WalletModal = ({
     children,
     onClickCloseIcon,
-    should_show_close_icon,
-    should_close_on_click_outside = true,
+    has_close_icon,
+    should_close_on_backdrop_click = true,
     className: propsClassName,
     ...rest
 }: ComponentPropsWithoutRef<'div'> & PropsWithChildren<TWalletModalProps>) => {
     const { hide } = useModal();
     const modalRef = useRef(null);
 
-    useOnClickOutside(modalRef, should_close_on_click_outside ? hide : () => undefined);
+    useOnClickOutside(modalRef, should_close_on_backdrop_click ? hide : () => undefined);
 
     return (
         <div ref={modalRef} {...rest} className={`wallets-modal ${propsClassName}`}>
-            {should_show_close_icon && <CloseIcon className='wallets-modal-close-icon' onClick={onClickCloseIcon} />}
+            {has_close_icon && <CloseIcon className='wallets-modal-close-icon' onClick={onClickCloseIcon} />}
             {children}
         </div>
     );

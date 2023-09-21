@@ -1,7 +1,7 @@
 import React from 'react';
 import './WalletGradientBackground.scss';
 
-type WalletGradientBackground = {
+type TProps = {
     children: React.ReactNode;
     currency: string;
     device?: 'desktop' | 'mobile';
@@ -11,14 +11,14 @@ type WalletGradientBackground = {
     type?: 'card' | 'header';
 };
 
-const WalletGradientBackground: React.FC<WalletGradientBackground> = ({
+const WalletGradientBackground: React.FC<TProps> = ({
+    children,
+    currency,
+    device = 'desktop',
     has_shine = false,
     is_demo = false,
-    currency,
     theme = 'light',
     type = 'card',
-    device = 'desktop',
-    children,
 }) => {
     const className = is_demo
         ? `wallets-gradient--demo-${device}-${type}-${theme}`

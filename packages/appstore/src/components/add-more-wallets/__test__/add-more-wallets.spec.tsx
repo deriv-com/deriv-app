@@ -10,7 +10,7 @@ jest.mock('../wallet-add-card', () => {
 });
 
 jest.mock('../carousel-container', () => {
-    const CarouselContainer = ({ children }: { children: React.ReactNode }) => (
+    const CarouselContainer = ({ children }: React.PropsWithChildren) => (
         <div data-testid='dt-carousel-container'>{children}</div>
     );
     return CarouselContainer;
@@ -55,7 +55,7 @@ jest.mock('@deriv/api', () => ({
 
 describe('AddMoreWallets', () => {
     const wrapper = (mock: ReturnType<typeof mockStore>) => {
-        const Component = ({ children }: { children: JSX.Element }) => {
+        const Component = ({ children }: React.PropsWithChildren) => {
             return (
                 <APIProvider>
                     <StoreProvider store={mock}>{children}</StoreProvider>

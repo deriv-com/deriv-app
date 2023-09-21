@@ -1,7 +1,7 @@
 import React from 'react';
 import { useWalletAccountsList } from '@deriv/api';
+import WalletListCardActions from '../WalletListCardActions/WalletListCardActions';
 import WalletListCardBadge from '../WalletListCardBadge/WalletListCardBadge';
-import WalletListCardIActions from '../WalletListCardIActions/WalletListCardIActions';
 import WalletListCardTitle from '../WalletListCardTitle/WalletListCardTitle';
 import './WalletListCardIDetails.scss';
 
@@ -20,7 +20,7 @@ const WalletListCardIDetails: React.FC<TProps> = ({ account }) => {
                     <WalletListCardBadge label={landing_company_name.toUpperCase()} />
                 )}
             </div>
-            <WalletListCardIActions account={account} />
+            <WalletListCardActions account={account} />
         </div>
     );
 };

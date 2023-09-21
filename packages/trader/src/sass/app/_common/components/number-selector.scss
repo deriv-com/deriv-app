@@ -25,7 +25,11 @@
             background-color: var(--state-active);
             color: var(--text-prominent);
         }
-        &:hover:not(&--selected) {
+        &--disabled {
+            color: var(--text-disabled);
+            cursor: not-allowed;
+        }
+        &:hover:not(&--disabled):not(&--selected) {
             cursor: pointer;
             background-color: var(--state-hover);
         }

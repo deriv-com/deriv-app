@@ -39,14 +39,7 @@ const WalletCFDSuccessDialog = ({
     wallet,
 }: TWalletCFDSuccessDialog) => {
     return (
-        <Modal
-            className='wallet-cfd-dialog'
-            has_close_icon={false}
-            is_open={is_open}
-            shouldCloseOnEscape={false}
-            small
-            toggleModal={toggleModal}
-        >
+        <Modal className='wallet-cfd-dialog' has_close_icon={false} is_open={is_open} small toggleModal={toggleModal}>
             <Modal.Body>
                 <div className='wallet-cfd-dialog__card'>
                     <WalletCFDCard wallet={wallet} />

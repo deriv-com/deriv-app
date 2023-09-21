@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider, usePaginatedFetch } from '@deriv/api';
+import { APIProvider, useFetch } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useP2PAdvertList from '../useP2PAdvertList';
@@ -10,16 +10,16 @@ type TWrapper = {
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    usePaginatedFetch: jest.fn(),
+    useFetch: jest.fn(),
 }));
 
-const mockUsePaginatedFetch = usePaginatedFetch as jest.MockedFunction<typeof usePaginatedFetch<'p2p_advert_list'>>;
+const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'p2p_advert_list'>>;
 
 describe('useP2PAdvertList', () => {
-    it('should return undefined if there is no response', () => {
+    it('should return an empty array if there is no response', () => {
         const mock_store = mockStore({});
-        // @ts-expect-error need to come up with a way to mock the return type of usePaginatedFetch
-        mockUsePaginatedFetch.mockReturnValue({});
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockUseFetch.mockReturnValue({});
 
         const wrapper = ({ children }: TWrapper) => (
             <APIProvider>
@@ -28,7 +28,7 @@ describe('useP2PAdvertList', () => {
         );
 
         const { result } = renderHook(() => useP2PAdvertList(), { wrapper });
-        expect(result.current.data).toBe(undefined);
+        expect(result.current.data).toHaveLength(0);
     });
 
     it('should return the p2p_advert_list object from response', () => {
@@ -36,11 +36,11 @@ describe('useP2PAdvertList', () => {
             client: { currency: 'USD' },
         });
 
-        mockUsePaginatedFetch.mockReturnValue({
+        mockUseFetch.mockReturnValue({
             data: {
                 p2p_advert_list: {
                     list: [
-                        // @ts-expect-error need to come up with a way to mock the return type of usePaginatedFetch
+                        // @ts-expect-error need to come up with a way to mock the return type of useFetch
                         {
                             account_currency: 'USD',
                             amount: 50,

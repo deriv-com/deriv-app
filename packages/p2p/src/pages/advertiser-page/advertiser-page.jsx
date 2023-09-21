@@ -4,6 +4,7 @@ import { daysSince, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useHistory } from 'react-router-dom';
+import { useP2PAdvertiserAdverts } from 'Hooks';
 import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
@@ -91,7 +92,6 @@ const AdvertiserPage = () => {
         const disposeBlockUnblockUserErrorReaction = reaction(
             () => [advertiser_page_store.active_index, general_store.block_unblock_user_error],
             () => {
-                advertiser_page_store.onTabChange();
                 if (general_store.block_unblock_user_error) {
                     showModal({
                         key: 'ErrorModal',
@@ -140,12 +140,14 @@ const AdvertiserPage = () => {
         },
     });
 
-    if (advertiser_page_store.is_loading || general_store.is_block_unblock_user_loading) {
+    const { error, isError, isLoading } = useP2PAdvertiserAdverts();
+
+    if (isLoading || advertiser_page_store.is_loading || general_store.is_block_unblock_user_loading) {
         return <Loading is_fullscreen={false} />;
     }
 
-    if (advertiser_page_store.error_message) {
-        return <div className='advertiser-page__error'>{advertiser_page_store.error_message}</div>;
+    if (isError) {
+        return <div className='advertiser-page__error'>{error.message}</div>;
     }
 
     return (
@@ -160,6 +162,7 @@ const AdvertiserPage = () => {
                     className='buy-sell__advertiser-page-return'
                     onClick={() => {
                         buy_sell_store.hideAdvertiserPage();
+                        general_store.setCounterpartyAdvertiserId(null);
                         if (general_store.active_index === general_store.path.my_profile)
                             my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
                         history.push(general_store.active_tab_route);

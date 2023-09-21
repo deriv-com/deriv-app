@@ -1,5 +1,4 @@
 export { default as useAccountTransferVisible } from './useAccountTransferVisible';
-export { useGetTwoFa, useGetSecretKey, useSendUserOTP } from './useAccountSecurity';
 export { default as useCFDAccounts } from './useCFDAccounts';
 export { default as useCFDAllAccounts } from './useCFDAllAccounts';
 export { default as useCFDDemoAccounts } from './useCFDDemoAccounts';

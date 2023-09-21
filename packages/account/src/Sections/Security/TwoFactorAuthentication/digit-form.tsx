@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
 import { Input, Button } from '@deriv/components';
-import { useSendUserOTP } from '@deriv/hooks';
+import { useSendUserOTP } from '@deriv/api';
 import { localize } from '@deriv/translations';
 import { useStore } from '@deriv/stores';
 
@@ -51,6 +51,7 @@ const DigitForm = () => {
             setTwoFAChangedStatus(true);
             formik_ref.current?.resetForm();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccess, is_TwoFA_enabled]);
 
     const validateFields = async (values: TDigitFormValues) => {

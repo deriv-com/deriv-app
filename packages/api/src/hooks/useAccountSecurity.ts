@@ -1,5 +1,6 @@
-import { useAuthorize, useRequest } from '@deriv/api';
 import React from 'react';
+import useAuthorize from './useAuthorize';
+import useRequest from '../useRequest';
 
 type TAccountSecurityPayload = NonNullable<
     NonNullable<Parameters<ReturnType<typeof useRequest<'account_security'>>['mutate']>[0]>['payload']

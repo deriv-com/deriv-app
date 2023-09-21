@@ -1,6 +1,6 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { useGetTwoFa, useGetSecretKey } from '@deriv/hooks';
+import { useGetTwoFa, useGetSecretKey } from '@deriv/api';
 import { getPropertyValue } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import LoadErrorMessage from 'Components/load-error-message';

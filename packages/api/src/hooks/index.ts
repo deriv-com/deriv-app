@@ -1,4 +1,5 @@
 export { default as useAccountsList } from './useAccountsList';
+export { useGetTwoFa, useGetSecretKey, useSendUserOTP } from './useAccountSecurity';
 export { default as useAccountTypes } from './useAccountTypes';
 export { default as useActiveAccount } from './useActiveAccount';
 export { default as useActiveTradingAccount } from './useActiveTradingAccount';

@@ -6,12 +6,12 @@ import { WalletsAccordion } from '../WalletsAccordion';
 import './DesktopWalletsList.scss';
 
 const DesktopWalletsList: React.FC = () => {
-    const { data } = useWalletAccountsList();
+    const { data: wallets } = useWalletAccountsList();
     const { switchAccount } = useAuthorize();
 
     return (
         <div className='wallets-desktop-wallets-list'>
-            {data?.map(wallet => {
+            {wallets?.map(wallet => {
                 return (
                     <WalletsAccordion
                         isOpen={wallet.is_active}

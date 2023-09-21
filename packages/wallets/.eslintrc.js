@@ -1,6 +1,10 @@
 module.exports = {
     root: true,
-    extends: '../../.eslintrc.js',
+    extends: ['../../.eslintrc.js', 'eslint:recommended', 'plugin:react/recommended'],
+    parserOptions: {
+        sourceType: 'module',
+    },
+    env: { es6: true },
     plugins: ['simple-import-sort'],
     rules: {
         'simple-import-sort/imports': [
@@ -31,5 +35,21 @@ module.exports = {
                 ],
             },
         ],
+        'simple-import-sort/exports': 'error',
+        'import/first': 'error',
+        'import/newline-after-import': 'error',
+        'import/no-duplicates': 'error',
+        camelcase: 'warn',
+        '@typescript-eslint/array-type': 'error',
+        '@typescript-eslint/sort-type-constituents': 'error',
+        '@typescript-eslint/no-unused-vars': 'error',
     },
+    overrides: [
+        {
+            files: ['*.ts', '*.mts', '*.cts', '*.tsx'],
+            rules: {
+                'no-undef': 'off',
+            },
+        },
+    ],
 };

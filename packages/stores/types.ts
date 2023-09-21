@@ -301,6 +301,7 @@ type TClientStore = {
     is_low_risk: boolean;
     is_pending_proof_of_ownership: boolean;
     is_switching: boolean;
+    is_single_currency: boolean;
     is_tnc_needed: boolean;
     is_trading_experience_incomplete: boolean;
     is_virtual: boolean;

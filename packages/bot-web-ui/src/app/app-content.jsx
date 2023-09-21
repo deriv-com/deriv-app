@@ -4,6 +4,7 @@ import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Audio, BotNotificationMessages, Dashboard, NetworkToastPopup, RoutePromptDialog } from 'Components';
 import BotBuilder from 'Components/dashboard/bot-builder';
+import BotStopped from 'Components/dashboard/bot-stopped';
 import TransactionDetailsModal from 'Components/transaction-details';
 import GTM from 'Utils/gtm';
 import hotjar from 'Utils/hotjar';
@@ -123,6 +124,7 @@ const AppContent = observer(() => {
                 <Dashboard />
                 <NetworkToastPopup />
                 <BotBuilder />
+                <BotStopped />
                 <RoutePromptDialog />
                 <TransactionDetailsModal />
             </div>

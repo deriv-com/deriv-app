@@ -1,6 +1,6 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { log_types } from '@deriv/bot-skeleton';
-import { formatDate, isBot, isEnded } from '@deriv/shared';
+import { formatDate, isEnded } from '@deriv/shared';
 import { transaction_elements } from '../constants/transactions';
 import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';
 
@@ -190,10 +190,10 @@ export default class TransactionsStore {
         };
     }
 
-    recoverPendingContracts() {
+    recoverPendingContracts(contract = null) {
         this.transactions.forEach(({ data: trx }) => {
             if (trx.is_completed || this.recovered_transactions.includes(trx.contract_id)) return;
-            this.recoverPendingContractsById(trx.contract_id);
+            this.recoverPendingContractsById(trx.contract_id, contract);
         });
     }
 
@@ -228,20 +228,14 @@ export default class TransactionsStore {
         });
     }
 
-    recoverPendingContractsById(contract_id) {
-        const { ws } = this.root_store;
+    recoverPendingContractsById(contract_id, contract = null) {
         const positions = this.core.portfolio.positions;
 
-        // TODO: the idea is to remove the POC calls completely
-        // but adding this check to prevent making POC calls only for bot as of now
-        if (!isBot()) {
-            ws.authorized.subscribeProposalOpenContract(contract_id, response => {
-                this.is_called_proposal_open_contract = true;
-                if (!response.error) {
-                    const { proposal_open_contract } = response;
-                    this.updateResultsCompletedContract(proposal_open_contract);
-                }
-            });
+        if (contract) {
+            this.is_called_proposal_open_contract = true;
+            if (contract.contract_id === contract_id) {
+                this.updateResultsCompletedContract(contract);
+            }
         }
 
         if (!this.is_called_proposal_open_contract) {

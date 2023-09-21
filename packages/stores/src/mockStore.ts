@@ -490,7 +490,21 @@ const mock = (): TStores & { is_mock: boolean } => {
             update: jest.fn(),
             unmount: jest.fn(),
         },
-        gtm: {},
+        gtm: {
+            is_gtm_applicable: false,
+            visitorId: 'visitorId',
+            common_variables: {
+                language: 'en',
+                theme: 'dark',
+                platform: 'DBot',
+                loggedIn: false,
+            },
+            accountSwitcherListener: jest.fn(),
+            pushDataLayer: jest.fn(),
+            pushTransactionData: jest.fn(),
+            eventHandler: jest.fn(),
+            setLoginFlag: jest.fn(),
+        },
         pushwoosh: {},
         contract_replay: {
             contract_store: {

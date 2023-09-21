@@ -1,38 +1,40 @@
 import React from 'react';
-import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api';
+import { useHistory } from 'react-router-dom';
+import { useActiveWalletAccount, useAuthorize } from '@deriv/api';
+import useCashierParam, { TCashierTabs } from '../../hooks/useCashierParam';
 import useDevice from '../../hooks/useDevice';
 import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
 import IcCashierWithdrawal from '../../public/images/ic-cashier-withdrawal.svg';
-import './WalletListCardIActions.scss';
+import './WalletListCardActions.scss';
 
-const getWalletHeaderButtons = (is_demo: boolean, handleAction?: () => void) => {
+const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
     const buttons = [
         {
-            name: 'Deposit',
-            text: is_demo ? 'Reset balance' : 'Deposit',
             icon: <IcCashierAdd />,
+            name: 'Deposit',
+            text: isDemo ? 'Reset balance' : 'Deposit',
         },
         {
+            icon: <IcCashierWithdrawal />,
             name: 'Withdraw',
             text: 'Withdraw',
-            icon: <IcCashierWithdrawal />,
         },
         {
+            icon: <IcCashierTransfer />,
             name: 'Transfer',
             text: 'Transfer',
-            icon: <IcCashierTransfer />,
         },
         {
+            icon: <IcCashierStatement />,
             name: 'Transactions',
             text: 'Transactions',
-            icon: <IcCashierStatement />,
         },
     ];
 
     // Filter out the "Withdraw" button when is_demo is true
-    const filteredButtons = is_demo ? buttons.filter(button => button.name !== 'Withdraw') : buttons;
+    const filteredButtons = isDemo ? buttons.filter(button => button.name !== 'Withdraw') : buttons;
 
     return filteredButtons.map(button => ({
         ...button,
@@ -41,15 +43,20 @@ const getWalletHeaderButtons = (is_demo: boolean, handleAction?: () => void) => 
 };
 
 type TProps = {
-    account?: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
+    isDemo: boolean;
+    loginid: string;
 };
 
-const WalletListCardIActions: React.FC<TProps> = ({ account }) => {
-    const { is_mobile } = useDevice();
-    const { data: active_wallet } = useActiveWalletAccount();
-    const is_demo = !!active_wallet?.is_virtual;
+const WalletListCardActions: React.FC<TProps> = ({ isDemo, loginid }) => {
+    const { data: activeWallet } = useActiveWalletAccount();
+    const { switchAccount } = useAuthorize();
+    const { getCashierParam } = useCashierParam();
+    const { isMobile } = useDevice();
+    const history = useHistory();
 
-    if (is_mobile)
+    const is_demo = !!activeWallet?.is_virtual;
+
+    if (isMobile)
         return (
             <div className='wallets-mobile-actions__container'>
                 <div className='wallets-mobile-actions'>
@@ -57,8 +64,8 @@ const WalletListCardIActions: React.FC<TProps> = ({ account }) => {
                         <React.Fragment key={button.name}>
                             <div className='wallets-mobile-actions-content'>
                                 <button
-                                    key={button.name}
                                     className='wallets-mobile-actions-content-icon'
+                                    key={button.name}
                                     onClick={button.action}
                                 >
                                     {button.icon}
@@ -73,17 +80,29 @@ const WalletListCardIActions: React.FC<TProps> = ({ account }) => {
 
     return (
         <div className='wallets-header__actions'>
-            {getWalletHeaderButtons(!!account?.is_virtual).map(button => (
+            {getWalletHeaderButtons(isDemo).map(button => (
                 <button
-                    key={`wallets-header-button-${button.name}`}
                     className='wallets-header__button'
-                    onClick={button.action}
+                    key={loginid}
+                    onClick={async () => {
+                        await switchAccount(loginid);
+                        history.push(
+                            `/appstore/traders-hub?${getCashierParam(button.name.toLowerCase() as TCashierTabs)}`
+                        );
+                    }}
                 >
                     {button.icon}
+                    <span
+                        className={`wallets-header__actions-label ${
+                            isDemo ? 'wallets-header__actions-label--active' : ''
+                        }`}
+                    >
+                        {button.name}
+                    </span>
                 </button>
             ))}
         </div>
     );
 };
 
-export default WalletListCardIActions;
+export default WalletListCardActions;

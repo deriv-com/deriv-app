@@ -6,15 +6,19 @@
     "dependencies": {
         "@deriv/api": "^1.0.0",
         "embla-carousel-react": "^8.0.0-rc12",
+        "qrcode.react": "^1.0.0",
+        "react-router-dom": "^5.2.0",
         "react": "^17.0.2",
         "usehooks-ts": "^2.7.0"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "5.45.0",
         "@typescript-eslint/parser": "5.45.0",
-        "eslint-plugin-react": "^7.22.0",
         "eslint-plugin-react-hooks": "^4.2.0",
+        "eslint-plugin-react": "^7.22.0",
         "eslint-plugin-simple-import-sort": "^10.0.0",
+        "eslint-plugin-sort-destructure-keys": "^1.5.0",
+        "eslint-plugin-typescript-sort-keys": "^2.3.0",
         "typescript": "^4.6.3"
     }
 }

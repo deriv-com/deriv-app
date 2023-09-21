@@ -171,6 +171,24 @@ jobs:
     environment:
       NODE_ENV: staging
 
+  release_uat:
+    docker:
+      - image: cimg/node:18.16.0
+    resource_class: xlarge
+    steps:
+      - git_checkout_from_cache
+      - npm_install_from_cache
+      - build
+      - versioning:
+          version_name: uat
+      - persist_to_workspace:
+          root: packages
+          paths:
+            - core
+      - notify_slack
+    environment:
+      NODE_ENV: uat
+
   release_production:
     docker:
       - image: cimg/node:18.16.0
@@ -200,6 +218,16 @@ jobs:
       - publish_to_pages_staging
     environment:
       NODE_ENV: staging
+
+  publish_cloudflare_uat:
+    docker:
+      - image: cimg/node:18.16.0
+    steps:
+      - attach_workspace:
+          at: packages
+      - publish_to_pages_uat
+    environment:
+      NODE_ENV: uat
 
   publish_cloudflare_production:
     docker:
@@ -272,6 +300,21 @@ workflows:
           context: binary-frontend-artifact-upload
           requires:
             - release_staging
+          filters:
+            branches:
+              only: /^master$/
+
+  release_uat:
+    jobs:
+      - release_uat:
+          context: binary-frontend-artifact-upload
+          filters:
+            branches:
+              only: /^master$/
+      - publish_cloudflare_uat:
+          context: binary-frontend-artifact-upload
+          requires:
+            - release_uat
           filters:
             branches:
               only: /^master$/

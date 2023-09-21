@@ -12,7 +12,7 @@ const AccumulatorsAmountMobile = observer(({ is_nativepicker }) => {
     const { ui, client } = useStore();
     const { current_focus, setCurrentFocus } = ui;
     const { is_single_currency } = client;
-    const { amount, currency, onChange } = useTraderStore();
+    const { amount, currency, onChange, has_open_accu_contract } = useTraderStore();
     return (
         <>
             <MobileWrapper>
@@ -27,6 +27,7 @@ const AccumulatorsAmountMobile = observer(({ is_nativepicker }) => {
                     id='dt_amount_input'
                     inline_prefix={is_single_currency ? currency : null}
                     is_autocomplete_disabled
+                    is_disabled={has_open_accu_contract}
                     is_float
                     is_hj_whitelisted
                     is_incrementable

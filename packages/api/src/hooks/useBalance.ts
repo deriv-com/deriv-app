@@ -1,11 +1,16 @@
 import { useMemo } from 'react';
 import useFetch from '../useFetch';
+import useAuthorize from './useAuthorize';
 
 /** A custom hook that gets the balance for all the user accounts. */
 const useBalance = () => {
+    const { isSuccess } = useAuthorize();
     const { data: balance_data, ...rest } = useFetch('balance', {
         payload: { account: 'all' },
-        options: { refetchInterval: 30000 }, // Refetch every 30 seconds to simulate subscription.
+        options: {
+            enabled: isSuccess,
+            refetchInterval: 30000, // Refetch every 30 seconds to simulate subscription.
+        },
     });
 
     // Add additional information to the balance data.

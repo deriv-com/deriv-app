@@ -37,7 +37,7 @@ const type_to_size_mapper = {
 };
 
 type TProps = {
-    type: keyof typeof type_to_icon_mapper | Omit<string, keyof typeof type_to_icon_mapper>;
+    type: Omit<string, keyof typeof type_to_icon_mapper> | keyof typeof type_to_icon_mapper;
 };
 
 const WalletListCardIcon: React.FC<TProps> = ({ type }) => {

@@ -111,7 +111,7 @@ commands:
           command: echo "<< parameters.version_name >>-$(date -u +"%Y-%m-%dT%H:%M:%SZ")" > packages/core/dist/version
 
   publish_to_pages_staging:
-    description: "Publish to cloudflare pages"
+    description: "Publish to cloudflare pages (staging)"
     steps:
       - run:
           name: "Publish to cloudflare pages (staging)"
@@ -120,6 +120,17 @@ commands:
             cd packages/core
             npx wrangler pages deploy dist/ --project-name=deriv-app-pages --branch=staging
             echo "New staging website - http://staging.cf-pages-deriv-app.deriv.com"
+
+  publish_to_pages_uat:
+    description: "Publish to cloudflare pages (user acceptance testing)"
+    steps:
+      - run:
+          name: "Publish to cloudflare pages (uat)"
+          command: |
+            npm i wrangler@3.1.0
+            cd packages/core
+            npx wrangler pages deploy dist/ --project-name=deriv-app-pages --branch=uat
+            echo "New uat website - http://uat.cf-pages-deriv-app.deriv.com"
 
   publish_to_pages_production:
     description: "Publish to cloudflare pages"

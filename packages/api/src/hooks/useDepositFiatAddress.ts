@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
-import useRequest from '../useRequest';
+import useMutation from '../useMutation';
 
 const useDepositFiatAddress = () => {
-    const { data, mutate: _mutate, ...rest } = useRequest('cashier');
+    const { data, mutate: _mutate, ...rest } = useMutation('cashier');
     const deposit_iframe_url = typeof data?.cashier === 'string' ? data?.cashier : undefined;
 
     const mutate = useCallback(() => _mutate({ payload: { cashier: 'deposit', provider: 'doughflow' } }), [_mutate]);

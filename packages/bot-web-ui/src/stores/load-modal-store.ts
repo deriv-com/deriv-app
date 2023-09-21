@@ -406,7 +406,7 @@ export default class LoadModalStore implements ILoadModalStore {
             this.recent_workspace.dispose();
             this.recent_workspace = null;
         }
-        if (!this.recent_workspace || !this.recent_workspace?.rendered) {
+        if (!this.recent_workspace?.rendered) {
             this.recent_workspace = Blockly.inject(ref, {
                 media: `${__webpack_public_path__}media/`,
                 zoom: {
@@ -490,7 +490,7 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     readFile = (is_preview: boolean, drop_event: DragEvent, file: File): void => {
-        const file_name = file && file.name.replace(/\.[^/.]+$/, '');
+        const file_name = file?.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();
         reader.onload = action(e => {
             const load_options = {

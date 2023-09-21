@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { ContentFlag, moduleLoader } from '@deriv/shared';
+import { ContentFlag, routes, moduleLoader, SessionStore } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import MT5Notification from './mt5-notification';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
@@ -62,6 +62,7 @@ const AppModals = ({
     is_logged_in,
     should_show_cooldown_modal,
     should_show_assessment_complete_modal,
+    toggleAccountSignupModal,
     is_trading_assessment_for_new_user_enabled,
     fetchFinancialAssessment,
     setCFDScore,
@@ -76,7 +77,8 @@ const AppModals = ({
     is_need_real_account_for_cashier_modal_visible,
     is_wallet_migration_in_progress_popup,
 }) => {
-    const url_params = new URLSearchParams(useLocation().search);
+    const temp_session_signup_params = SessionStore.get('signup_query_param');
+    const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
     const url_action_param = url_params.get('action');
 
     const is_eu_user = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL, ContentFlag.EU_DEMO].includes(content_flag);
@@ -88,6 +90,12 @@ const AppModals = ({
             });
         }
     }, [is_logged_in]);
+    if (temp_session_signup_params && window.location.href.includes(routes.onboarding)) {
+        toggleAccountSignupModal(true);
+    } else {
+        SessionStore.remove('signup_query_param');
+        toggleAccountSignupModal(false);
+    }
 
     let ComponentToLoad = null;
     switch (url_action_param) {
@@ -182,6 +190,7 @@ export default connect(({ client, ui, traders_hub }) => ({
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     should_show_cooldown_modal: ui.should_show_cooldown_modal,
     should_show_assessment_complete_modal: ui.should_show_assessment_complete_modal,
+    toggleAccountSignupModal: ui.toggleAccountSignupModal,
     is_trading_assessment_for_new_user_enabled: ui.is_trading_assessment_for_new_user_enabled,
     active_account_landing_company: client.landing_company_shortcode,
     is_deriv_account_needed_modal_visible: ui.is_deriv_account_needed_modal_visible,

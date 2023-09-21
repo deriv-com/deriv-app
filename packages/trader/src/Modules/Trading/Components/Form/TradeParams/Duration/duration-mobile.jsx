@@ -1,7 +1,9 @@
 import React from 'react';
-import { Tabs, TickPicker, Numpad, RelativeDatepicker, Text } from '@deriv/components';
-import { isEmptyObject, addComma, getDurationMinMaxValues } from '@deriv/shared';
+import { Tabs, TickPicker, Numpad, RelativeDatepicker } from '@deriv/components';
+import { isEmptyObject, addComma, getDurationMinMaxValues, getUnitMap } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import ExpiryText from './expiry-text.jsx';
+import DurationRangeText from './duration-range-text';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import moment from 'moment';
@@ -112,6 +114,7 @@ const Numbers = observer(
             duration_unit: trade_duration_unit,
             basis: trade_basis,
             amount: trade_amount,
+            is_vanilla,
             onChangeMultiple,
         } = useTraderStore();
         const { value: duration_unit } = duration_unit_option;
@@ -189,16 +192,20 @@ const Numbers = observer(
 
         return (
             <div className='trade-params__amount-keypad'>
-                {show_expiry && (
-                    <Text as='div' size='xxxs' line_height='s' className='expiry-text-container--mobile'>
-                        <Localize
-                            i18n_default_text='Expiry: {{date}}'
-                            values={{
-                                date: !has_error ? setExpiryDate(expiry_epoch, duration_values?.d_duration) : '',
-                            }}
+                <div className='text-container'>
+                    {is_vanilla && (
+                        <DurationRangeText
+                            min={min}
+                            max={max}
+                            duration_unit={getUnitMap()[duration_unit].name_plural}
                         />
-                    </Text>
-                )}
+                    )}
+                    {show_expiry && (
+                        <ExpiryText
+                            fixed_date={!has_error ? setExpiryDate(expiry_epoch, duration_values?.d_duration) : ''}
+                        />
+                    )}
+                </div>
                 <Numpad
                     value={selected_duration}
                     onSubmit={setDuration}

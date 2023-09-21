@@ -1,9 +1,10 @@
 import React from 'react';
 import { useMT5AccountsList } from '@deriv/api';
+import { useStore } from '@deriv/stores';
 
-// TODO: Add 'open_order_position_status' flag once available in the BE response and in type TSocketResponseData<"mt5_login_list">
-const TMT5LoginAccountList = ['account_type', 'balance', 'currency', 'display_balance', 'login'] as const;
-type TStatus = typeof TMT5LoginAccountList[number];
+// TODO: Remove this todo once 'open_order_position_status' flag is available in BE response and in type TSocketResponseData<"mt5_login_list">
+type DetailsOfEachMT5LoginId = ReturnType<typeof useStore>['client']['mt5_login_list'][number];
+type TStatus = keyof DetailsOfEachMT5LoginId;
 
 /**
  * A custom hook to check if the given status flag is present in the mt5_login_list of given account login id

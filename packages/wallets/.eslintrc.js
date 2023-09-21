@@ -1,7 +1,11 @@
 module.exports = {
     root: true,
-    extends: '../../.eslintrc.js',
-    plugins: ['simple-import-sort'],
+    extends: ['../../.eslintrc.js', 'eslint:recommended', 'plugin:react/recommended'],
+    parserOptions: {
+        sourceType: 'module',
+    },
+    env: { es6: true },
+    plugins: ['simple-import-sort', 'typescript-sort-keys', 'sort-destructure-keys'],
     rules: {
         'simple-import-sort/imports': [
             'error',
@@ -31,5 +35,31 @@ module.exports = {
                 ],
             },
         ],
+        '@typescript-eslint/array-type': 'error',
+        '@typescript-eslint/no-unused-vars': 'error',
+        '@typescript-eslint/sort-type-constituents': 'error',
+        'import/first': 'error',
+        'import/newline-after-import': 'error',
+        'import/no-duplicates': 'error',
+        'lines-around-comment': ['error', { allowObjectStart: true }],
+        'no-unneeded-ternary': 'error',
+        'object-shorthand': 'error',
+        'prefer-const': 'error',
+        'react/jsx-pascal-case': 'error',
+        'react/jsx-sort-props': 'warn',
+        'simple-import-sort/exports': 'error',
+        'sort-destructure-keys/sort-destructure-keys': 'warn',
+        'sort-keys': 'warn',
+        'typescript-sort-keys/interface': 'warn',
+        'typescript-sort-keys/string-enum': 'warn',
+        camelcase: 'warn',
     },
+    overrides: [
+        {
+            files: ['*.ts', '*.mts', '*.cts', '*.tsx'],
+            rules: {
+                'no-undef': 'off',
+            },
+        },
+    ],
 };

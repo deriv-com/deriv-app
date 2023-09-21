@@ -72,6 +72,7 @@ const WalletModalBody = observer(
                     const tab_name = Object.keys(tabs).find(key => tabs[key] === index) as typeof active_modal_tab;
                     setWalletModalActiveTab(tab_name);
                 }}
+                should_scroll_tab_into_view
             >
                 {getCashierOptions(is_demo ? 'demo' : 'real').map(option => {
                     return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import './wallet-account.scss';
 
 type TWalletAccount = {
@@ -22,7 +22,10 @@ const WalletAccount = ({ balance, name, currency, icon, is_mobile = false }: TWa
                 </Text>
 
                 <Text as='div' size={is_mobile ? 'xxxs' : 'xxs'}>
-                    {localize('Balance')}: {formatMoney(currency ?? '', balance, true)} {currency}
+                    <Localize
+                        i18n_default_text='Balance: {{balance}} {{currency}}'
+                        values={{ balance: formatMoney(currency ?? '', balance, true), currency }}
+                    />
                 </Text>
             </div>
         </div>

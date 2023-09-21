@@ -125,6 +125,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_pending_proof_of_ownership: false,
             is_poa_older_than_six_months: false,
             is_switching: false,
+            is_single_currency: false,
             is_tnc_needed: false,
             is_trading_experience_incomplete: false,
             is_virtual: false,
@@ -469,6 +470,21 @@ const mock = (): TStores & { is_mock: boolean } => {
             data: undefined,
             update: jest.fn(),
             unmount: jest.fn(),
+        },
+        gtm: {
+            is_gtm_applicable: false,
+            visitorId: 'visitorId',
+            common_variables: {
+                language: 'en',
+                theme: 'dark',
+                platform: 'DBot',
+                loggedIn: false,
+            },
+            accountSwitcherListener: jest.fn(),
+            pushDataLayer: jest.fn(),
+            pushTransactionData: jest.fn(),
+            eventHandler: jest.fn(),
+            setLoginFlag: jest.fn(),
         },
     };
 };

@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { MobileWrapper, Toast } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';

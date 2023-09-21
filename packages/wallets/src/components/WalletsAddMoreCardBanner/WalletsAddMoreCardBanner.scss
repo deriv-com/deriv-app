@@ -12,7 +12,7 @@
         @include mobile {
             width: 16rem;
             height: 9.6rem;
-            padding: 0.8rem;
+            padding: 1rem;
             flex-shrink: 0;
         }
         &-header {
@@ -20,20 +20,32 @@
             justify-content: space-between;
         }
         &-button {
+            background-color: #ffffff;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
-            padding: 0.6rem 1.6rem;
+            padding: 1rem;
             font-weight: 700;
 
             @include mobile {
                 padding: 0.3rem 0.8rem;
             }
+
+            &-icon {
+                margin-right: 0.5rem;
+            }
+
             &--is-added {
                 opacity: 0.3;
                 cursor: default;
             }
         }
         &-landing-company {
+            align-self: flex-start;
             border: 0.1rem solid #000;
             border-radius: 0.2rem;
             padding: 0 0.4rem;

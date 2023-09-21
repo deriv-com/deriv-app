@@ -35,7 +35,7 @@ const WalletCashierHeader = () => {
                                 {currency} Wallet
                             </h1>
                             {landing_company_name && (
-                                <WalletListCardBadge label={formattedLandingCompany} is_demo={data?.is_virtual} />
+                                <WalletListCardBadge is_demo={data?.is_virtual} label={formattedLandingCompany} />
                             )}
                         </div>
                         <p className='wallets-cashier-header__info__top-left__balance'>
@@ -55,12 +55,12 @@ const WalletCashierHeader = () => {
                 <section className='wallets-cashier-header__tabs'>
                     {tabs.map(tab => (
                         <button
-                            key={`cashier-tab-${tab}`}
                             className={`wallets-cashier-header__tabs__tab ${
                                 activeCashierTab === tab.toLowerCase()
                                     ? 'wallets-cashier-header__tabs__tab--active'
                                     : ''
                             }`}
+                            key={`cashier-tab-${tab}`}
                             onClick={() =>
                                 history.push(
                                     `/appstore/traders-hub?${getCashierParam(tab.toLowerCase() as TCashierTabs)}`

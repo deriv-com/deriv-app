@@ -26,14 +26,14 @@ const WalletDepositCryptoAddress = () => {
 
     return (
         <div className='wallets-deposit-crypto-address'>
-            <QRCode value={deposit_crypto_address || ''} size={is_mobile ? 128 : 160} className='' />
+            <QRCode size={is_mobile ? 128 : 160} value={deposit_crypto_address || ''} />
             <div className='wallets-deposit-crypto-address__hash-container'>
                 <p className='wallets-deposit-crypto-address__hash'>{deposit_crypto_address}</p>
                 <WalletClipboard
-                    text_copy={deposit_crypto_address || ''}
                     info_message={is_mobile ? undefined : 'copy'}
-                    success_message='copied'
                     popoverAlignment={is_mobile ? 'left' : 'bottom'}
+                    success_message='copied'
+                    text_copy={deposit_crypto_address || ''}
                 />
             </div>
         </div>

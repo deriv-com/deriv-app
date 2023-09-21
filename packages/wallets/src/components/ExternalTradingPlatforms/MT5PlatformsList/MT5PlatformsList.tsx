@@ -20,13 +20,13 @@ const MT5PlatformsList: React.FC = () => {
                 {data?.map((account, index) => {
                     if (account.is_added)
                         return (
-                            <AddedMT5AccountsList key={`added-mt5-list${account.loginid}-${index}`} account={account} />
+                            <AddedMT5AccountsList account={account} key={`added-mt5-list${account.loginid}-${index}`} />
                         );
 
                     return (
                         <AvailableMT5AccountsList
-                            key={`available-mt5-list${account.name}-${index}`}
                             account={account}
+                            key={`available-mt5-list${account.name}-${index}`}
                         />
                     );
                 })}

@@ -2,15 +2,15 @@ import React from 'react';
 import PasswordShowIcon from '../../public/images/ic-password-show.svg';
 import { useModal } from '../ModalProvider';
 import { WalletModal } from '../WalletModal';
-import './MT5EnterPassword.scss';
+import './EnterPassword.scss';
 
 type TProps = {
-    market_type?: string;
+    marketType?: string;
     onClick: () => void;
     platform?: string;
 };
 
-const MT5EnterPassword: React.FC<TProps> = ({ market_type, onClick, platform }) => {
+const EnterPassword: React.FC<TProps> = ({ marketType, onClick, platform }) => {
     const { hide } = useModal();
 
     return (
@@ -18,7 +18,7 @@ const MT5EnterPassword: React.FC<TProps> = ({ market_type, onClick, platform }) 
             <div className='wallets-enter-password--container'>
                 <div className='wallets-enter-password-title'>Enter your {platform} password</div>
                 <span className='wallets-enter-password-subtitle'>
-                    Enter your {platform} password to add a {platform} {market_type} account.
+                    Enter your {platform} password to add a {platform} {marketType} account.
                 </span>
                 <div className='wallets-enter-password-input'>
                     <input placeholder={`${platform} password`} type='password' />
@@ -35,4 +35,4 @@ const MT5EnterPassword: React.FC<TProps> = ({ market_type, onClick, platform }) 
     );
 };
 
-export default MT5EnterPassword;
+export default EnterPassword;

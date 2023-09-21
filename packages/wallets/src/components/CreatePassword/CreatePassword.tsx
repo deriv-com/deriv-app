@@ -3,12 +3,13 @@ import MT5PasswordIcon from '../../public/images/ic-mt5-password.svg';
 import PasswordShowIcon from '../../public/images/ic-password-show.svg';
 import { useModal } from '../ModalProvider';
 import { WalletModal } from '../WalletModal';
+import './CreatePassword.scss';
 
 type TProps = {
     onClick: () => void;
 };
 
-const MT5CreatePassword: React.FC<TProps> = ({ onClick }) => {
+const CreatePassword: React.FC<TProps> = ({ onClick }) => {
     const { hide } = useModal();
 
     return (
@@ -29,4 +30,4 @@ const MT5CreatePassword: React.FC<TProps> = ({ onClick }) => {
     );
 };
 
-export default MT5CreatePassword;
+export default CreatePassword;

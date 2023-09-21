@@ -1,7 +1,7 @@
 import React from 'react';
 import DerivX from '../../../public/images/derivx.svg';
+import { EnterPassword } from '../../EnterPassword';
 import { useModal } from '../../ModalProvider';
-import { MT5EnterPassword } from '../../MT5EnterPassword';
 import { SecondaryActionButton } from '../../SecondaryActionButton';
 import { TradingAccountCard } from '../../TradingAccountCard';
 import './AvailableDxtradeAccountsList.scss';
@@ -11,7 +11,7 @@ const AvailableDxtradeAccountsList: React.FC = () => {
 
     const ShowPasswordModal = () => {
         return (
-            <MT5EnterPassword
+            <EnterPassword
                 onClick={() => {
                     // Do nothing
                 }}

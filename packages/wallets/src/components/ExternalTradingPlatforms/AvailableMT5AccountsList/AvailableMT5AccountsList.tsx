@@ -3,9 +3,9 @@ import { useMT5AccountsList, useSortedMT5Accounts } from '@deriv/api';
 import DerivedMT5 from '../../../public/images/mt5-derived.svg';
 import FinancialMT5 from '../../../public/images/mt5-financial.svg';
 import SwapFreeMT5 from '../../../public/images/mt5-swap-free.svg';
+import { CreatePassword } from '../../CreatePassword';
+import { EnterPassword } from '../../EnterPassword';
 import { useModal } from '../../ModalProvider';
-import MT5CreatePassword from '../../MT5CreatePassword';
-import { MT5EnterPassword } from '../../MT5EnterPassword';
 import { SecondaryActionButton } from '../../SecondaryActionButton';
 import { TradingAccountCard } from '../../TradingAccountCard';
 import './AvailableMT5AccountsList.scss';
@@ -40,15 +40,15 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
 
     const ShowMT5PasswordModal = () => {
         return hasMT5Account ? (
-            <MT5EnterPassword
-                market_type={market_type_to_name_mapper[account.market_type || 'synthetic']}
+            <EnterPassword
+                marketType={market_type_to_name_mapper[account.market_type || 'synthetic']}
                 onClick={() => {
                     // Do nothing
                 }}
                 platform='Deriv MT5'
             />
         ) : (
-            <MT5CreatePassword
+            <CreatePassword
                 onClick={() => {
                     // Do nothing
                 }}

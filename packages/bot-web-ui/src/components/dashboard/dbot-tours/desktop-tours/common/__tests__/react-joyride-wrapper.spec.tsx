@@ -3,7 +3,7 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
-import { DBotStoreProvider, mockDBotStore } from '../../../stores/useDBotStore';
+import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import ReactJoyrideWrapper from '../react-joyride-wrapper';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
@@ -13,6 +13,9 @@ jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
 }));
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 jest.mock('react-joyride', () => jest.fn(() => <div>ReactJoyride</div>));
+jest.mock('@deriv/deriv-charts', () => ({
+    setSmartChartsPublicPath: jest.fn(),
+}));
 
 describe('ReactJoyrideWrapper', () => {
     const mock_store = mockStore({});

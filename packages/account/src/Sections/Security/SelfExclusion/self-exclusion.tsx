@@ -12,24 +12,20 @@ import {
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import DemoMessage from 'Components/demo-message';
+import 'Components/self-exclusion/self-exclusion.scss';
 import LoadErrorMessage from 'Components/load-error-message';
-import SelfExclusionArticleContent from './self-exclusion-article-content';
-import SelfExclusionContext from './self-exclusion-context';
-import SelfExclusionModal from './self-exclusion-modal';
-import SelfExclusionWrapper from './self-exclusion-wrapper';
-import SelfExclusionForm from './self-exclusion-form';
+import SelfExclusionArticleContent from 'Components/self-exclusion/self-exclusion-article-content';
+import SelfExclusionContext from 'Components/self-exclusion/self-exclusion-context';
+import SelfExclusionModal from 'Components/self-exclusion/self-exclusion-modal';
+import SelfExclusionWrapper from 'Components/self-exclusion/self-exclusion-wrapper';
+import SelfExclusionForm from 'Components/self-exclusion/self-exclusion-form';
 import { FormikHelpers, FormikValues } from 'formik';
 import { observer, useStore } from '@deriv/stores';
 
 type TSelfExclusion = {
-    footer_ref?: React.RefObject<HTMLElement>;
-    is_appstore: boolean;
-    is_app_settings: boolean;
-    is_wrapper_bypassed: boolean;
     overlay_ref: HTMLDivElement;
     setIsOverlayShown?: React.Dispatch<React.SetStateAction<boolean>>;
 };
-
 type TExclusionData = {
     max_deposit: string;
     max_turnover: string;
@@ -72,13 +68,7 @@ type TResponse = {
     };
 };
 
-const SelfExclusion = ({
-    footer_ref,
-    is_app_settings,
-    is_appstore,
-    overlay_ref,
-    setIsOverlayShown,
-}: TSelfExclusion) => {
+const SelfExclusion = observer(({ overlay_ref, setIsOverlayShown }: TSelfExclusion) => {
     const { client, ui } = useStore();
     const { currency, is_virtual, is_switching, standpoint, is_eu, is_uk, logout, landing_company_shortcode } = client;
     const { is_tablet } = ui;
@@ -421,7 +411,7 @@ const SelfExclusion = ({
     };
 
     if (is_virtual) {
-        return <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />;
+        return <DemoMessage />;
     }
 
     if (state.is_loading || is_switching) {
@@ -444,11 +434,9 @@ const SelfExclusion = ({
         exclusion_fields_settings,
         exclusion_limits,
         exclusion_texts,
-        footer_ref,
         getMaxLength,
         goToConfirm,
         handleSubmit,
-        is_app_settings,
         is_eu,
         is_mf,
         is_mlt,
@@ -467,14 +455,12 @@ const SelfExclusion = ({
     return (
         <SelfExclusionContext.Provider value={context_value}>
             <SelfExclusionWrapper>
-                {/* Only show the modal in non-"<AppSettings>" views, others will
-                    use the overlay provided by <AppSettings> */}
-                {!is_app_settings && <SelfExclusionModal />}
+                <SelfExclusionModal />
                 <SelfExclusionForm />
             </SelfExclusionWrapper>
             {overlay_ref && state.show_article && <SelfExclusionArticleContent is_in_overlay />}
         </SelfExclusionContext.Provider>
     );
-};
+});
 
-export default observer(SelfExclusion);
+export default SelfExclusion;

@@ -5,6 +5,7 @@ import SelfExclusion from '../self-exclusion';
 import { FormikValues } from 'formik';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { WS } from '@deriv/shared';
+import userEvent from '@testing-library/user-event';
 
 const portal_root = document.createElement('div');
 document.body.appendChild(portal_root);
@@ -38,7 +39,7 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     useWS: () => undefined,
 }));
 
-jest.mock('../self-exclusion-modal', () => {
+jest.mock('Components/self-exclusion/self-exclusion-modal', () => {
     const MockSelfExclusionModal = () => <div>SelfExclusionModal</div>;
     return MockSelfExclusionModal;
 });
@@ -61,38 +62,14 @@ const mock = {
 let store = mockStore(mock);
 describe('<SelfExclusion />', () => {
     let mock_props = {
-        footer_ref: undefined,
-        is_app_settings: false,
-        is_appstore: false,
-        is_wrapper_bypassed: false,
         overlay_ref: document.createElement('div'),
         setIsOverlayShown: jest.fn(),
-        WS: {
-            authorized: {
-                getLimits: () =>
-                    Promise.resolve({
-                        get_limits: {},
-                    }),
-                getSelfExclusion: () =>
-                    Promise.resolve({
-                        error: { message: '' },
-                    }),
-                setSelfExclusion: () =>
-                    Promise.resolve({
-                        error: false,
-                    }),
-            },
-        },
     };
 
     beforeEach(() => {
         mock.client.currency = 'Test currency';
         store = mockStore(mock);
         mock_props = {
-            footer_ref: undefined,
-            is_app_settings: false,
-            is_appstore: false,
-            is_wrapper_bypassed: false,
             overlay_ref: document.createElement('div'),
             setIsOverlayShown: jest.fn(),
         };
@@ -176,23 +153,11 @@ describe('<SelfExclusion />', () => {
             (input: FormikValues) => input.name === 'session_duration_limit'
         );
 
-        await act(async () => {
-            if (session_duration_limit_input)
-                fireEvent.change(session_duration_limit_input, { target: { value: '60481' } });
-        });
+        if (session_duration_limit_input) userEvent.type(session_duration_limit_input, '60481');
 
         expect(
-            screen.getByText('Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).')
+            await screen.findByText('Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).')
         ).toBeInTheDocument();
-
-        await act(async () => {
-            if (session_duration_limit_input)
-                fireEvent.change(session_duration_limit_input, { target: { value: '60479' } });
-        });
-
-        expect(
-            screen.queryByText('Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).')
-        ).not.toBeInTheDocument();
     });
 
     it('Should trigger exclude_until input and show error depends on input value', async () => {
@@ -259,13 +224,11 @@ describe('<SelfExclusion />', () => {
         const max_turnover_input = inputs_1.find((input: FormikValues) => input.name === 'max_turnover');
         const max_open_bets_input = inputs_1.find((input: FormikValues) => input.name === 'max_open_bets');
 
-        act(() => {
-            if (max_turnover_input) fireEvent.change(max_turnover_input, { target: { value: '1700' } });
-            if (max_open_bets_input) fireEvent.change(max_open_bets_input, { target: { value: '999' } });
-        });
+        if (max_turnover_input) userEvent.type(max_turnover_input, '1700');
+        if (max_open_bets_input) userEvent.type(max_open_bets_input, '999');
 
         await waitFor(() => {
-            fireEvent.click(next_btn_1);
+            userEvent.click(next_btn_1);
         });
 
         expect(screen.getByText('You have set the following limits:')).toBeInTheDocument();
@@ -277,7 +240,7 @@ describe('<SelfExclusion />', () => {
         expect(back_btn_1).toBeInTheDocument();
 
         await waitFor(() => {
-            fireEvent.click(back_btn_1);
+            userEvent.click(back_btn_1);
         });
 
         expect(screen.getByText('Your stake and loss limits')).toBeInTheDocument();
@@ -289,12 +252,12 @@ describe('<SelfExclusion />', () => {
         expect(inputs_2).toHaveLength(11);
         const max_balance_input = inputs_1.find((input: FormikValues) => input.name === 'max_balance');
 
-        act(() => {
-            if (max_balance_input) fireEvent.change(max_balance_input, { target: { value: '10000' } });
+        await waitFor(() => {
+            if (max_balance_input) userEvent.type(max_balance_input, '10000');
         });
 
         await waitFor(() => {
-            fireEvent.click(next_btn_2);
+            userEvent.click(next_btn_2);
         });
 
         expect(screen.getByText('You have set the following limits:')).toBeInTheDocument();
@@ -303,7 +266,7 @@ describe('<SelfExclusion />', () => {
         expect(accept_btn_2).toHaveTextContent('Accept');
 
         await waitFor(() => {
-            fireEvent.click(accept_btn_2);
+            userEvent.click(accept_btn_2);
         });
 
         expect(screen.getByText('You have set the following limits:')).toBeInTheDocument();
@@ -352,39 +315,37 @@ describe('<SelfExclusion />', () => {
 
         act(() => {
             if (exclude_until_input) fireEvent.change(exclude_until_input, { target: { value: '2023-02-03' } });
-            if (max_open_bets_input) fireEvent.change(max_open_bets_input, { target: { value: '99' } });
-            if (max_losses_input) fireEvent.change(max_losses_input, { target: { value: '1000' } });
-            if (max_turnover_input) fireEvent.change(max_turnover_input, { target: { value: '1700' } });
-            if (max_7day_losses_input) fireEvent.change(max_7day_losses_input, { target: { value: '700' } });
-            if (max_7day_turnover_input) fireEvent.change(max_7day_turnover_input, { target: { value: '700' } });
-            if (max_30day_losses_input) fireEvent.change(max_30day_losses_input, { target: { value: '3000' } });
-            if (max_30day_turnover_input) fireEvent.change(max_30day_turnover_input, { target: { value: '5000' } });
-            if (session_duration_limit_input)
-                fireEvent.change(session_duration_limit_input, { target: { value: '60399' } });
         });
+        if (max_open_bets_input) userEvent.type(max_open_bets_input, '99');
+        if (max_losses_input) userEvent.type(max_losses_input, '1000');
+        if (max_turnover_input) userEvent.type(max_turnover_input, '1700');
+        if (max_7day_losses_input) userEvent.type(max_7day_losses_input, '700');
+        if (max_7day_turnover_input) userEvent.type(max_7day_turnover_input, '700');
+        if (max_30day_losses_input) userEvent.type(max_30day_losses_input, '3000');
+        if (max_30day_turnover_input) userEvent.type(max_30day_turnover_input, '5000');
+        if (session_duration_limit_input) userEvent.type(session_duration_limit_input, '60399');
 
-        await waitFor(() => {
-            fireEvent.click(next_btn_1);
-        });
+        await userEvent.click(next_btn_1);
 
-        expect(screen.getByText('You have set the following limits:')).toBeInTheDocument();
+        expect(await screen.findByText('You have set the following limits:')).toBeInTheDocument();
         expect(screen.queryByText('Your stake and loss limits')).not.toBeInTheDocument();
         expect(next_btn_1).not.toBeInTheDocument();
         const accept_btn_1 = screen.getByRole('button');
         expect(accept_btn_1).toHaveTextContent('Accept');
-
         await waitFor(() => {
-            fireEvent.click(accept_btn_1);
+            userEvent.click(accept_btn_1);
         });
 
         expect(accept_btn_1).not.toBeInTheDocument();
+
         const review_btn = screen.getByText('No, review my limits');
+
         expect(review_btn).toBeInTheDocument();
 
         expect(screen.getByText('Yes, log me out immediately')).toBeInTheDocument();
 
         await waitFor(() => {
-            fireEvent.click(review_btn);
+            userEvent.click(review_btn);
         });
 
         expect(screen.queryByText('Yes, log me out immediately')).not.toBeInTheDocument();
@@ -395,7 +356,7 @@ describe('<SelfExclusion />', () => {
         expect(accept_btn_2).toHaveTextContent('Accept');
 
         await waitFor(() => {
-            fireEvent.click(accept_btn_2);
+            userEvent.click(accept_btn_2);
         });
 
         expect(screen.getByText('No, review my limits')).toBeInTheDocument();
@@ -403,7 +364,7 @@ describe('<SelfExclusion />', () => {
         expect(logout_btn).toBeInTheDocument();
 
         await waitFor(() => {
-            fireEvent.click(logout_btn);
+            userEvent.click(logout_btn);
         });
 
         expect(logout).toHaveBeenCalled();

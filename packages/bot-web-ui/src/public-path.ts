@@ -5,7 +5,7 @@ const getUrlBase = (path = '') => {
 
     if (!/^\/(br_)/.test(l.pathname)) return path;
 
-    const get_path = /^\//.test(path) ? path : `/${path}`;
+    const get_path = path.startsWith('/') ? path : `/${path}`;
 
     return `/${l.pathname.split('/')[1]}${get_path}`;
 };

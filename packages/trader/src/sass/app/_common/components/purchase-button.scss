@@ -384,6 +384,14 @@
             }
         }
         @include mobile {
+            background: var(--purchase-section-1);
+            background: linear-gradient(
+                0deg,
+                var(--purchase-section-1) 0%,
+                var(--purchase-section-1) 15%,
+                var(--purchase-main-1) 15%,
+                var(--purchase-main-1) 100%
+            );
             .btn-purchase {
                 &__bottom,
                 &__top {

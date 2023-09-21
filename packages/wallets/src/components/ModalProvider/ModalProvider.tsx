@@ -2,9 +2,9 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 
 type TModalContext = {
+    hide: () => void;
     isOpen: boolean;
     show: (ModalContent: React.ReactNode) => void;
-    hide: () => void;
 };
 
 const ModalContext = React.createContext<TModalContext | null>(null);

@@ -13,9 +13,9 @@ const type_icon_mapper = {
     error: AlertDanger,
 };
 
-type TProps = RequireAtLeastOne<{ title: React.ReactNode; message: React.ReactNode; children: React.ReactNode }> & {
-    type?: keyof typeof type_icon_mapper;
+type TProps = RequireAtLeastOne<{ children: React.ReactNode; message: React.ReactNode; title: React.ReactNode }> & {
     size?: 'lg' | 'md' | 'sm' | 'xs';
+    type?: keyof typeof type_icon_mapper;
 };
 
 const InlineMessage: React.FC<TProps> = ({ type = 'warning', size = 'xs', title, message, children }) => {
@@ -37,10 +37,10 @@ const InlineMessage: React.FC<TProps> = ({ type = 'warning', size = 'xs', title,
 
     return (
         <div className={`wallets-inline-message wallets-inline-message__${type} wallets-inline-message__${size} `}>
-            <Icon width={icon_size} height={icon_size} className={`wallets-inline-message__icon__${size}`} />
+            <Icon className={`wallets-inline-message__icon__${size}`} height={icon_size} width={icon_size} />
             <span
-                style={{ fontSize: font_size }}
                 className={`wallets-inline-message__messages inline-message__messages__${size}`}
+                style={{ fontSize: font_size }}
             >
                 {title && <strong>{title}</strong>}
                 {message && <span>{message}</span>}

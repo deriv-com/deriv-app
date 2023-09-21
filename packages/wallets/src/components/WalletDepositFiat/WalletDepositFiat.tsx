@@ -24,8 +24,8 @@ const WalletDepositFiat = () => {
             {isLoading && <p>Loading...</p>}
             {iframe_url && (
                 <iframe
-                    key={iframe_url}
                     className='wallets-deposit-fiat__iframe'
+                    key={iframe_url}
                     onLoad={() => setIsLoading(false)}
                     src={iframe_url}
                     style={{ display: isLoading ? 'none' : 'block' }}

@@ -211,13 +211,13 @@
         }
 
         &__footer {
-            height: 80px;
+            height: 8.0rem;
             position: absolute;
             bottom: 0;
             left: 0;
             display: flex;
             width: 100%;
-            padding: 16px 24px;
+            padding: 1.6rem 2.4rem;
             align-items: center;
             justify-content: flex-end;
             z-index: 4;
@@ -334,7 +334,6 @@
             }
 
             @include mobile {
-                padding: 1.6rem 0;
                 flex-direction: column;
                 height: auto;
                 align-items: initial;
@@ -602,10 +601,7 @@
             min-height: unset;
             overflow-y: scroll;
             justify-content: center;
-
-            @include mobile {
-                padding: 0 1.6rem;
-            }
+            padding: 0 1.6rem;
         }
 
         &--reset {

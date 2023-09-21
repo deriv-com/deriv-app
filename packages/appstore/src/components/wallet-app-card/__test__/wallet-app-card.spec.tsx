@@ -8,9 +8,8 @@ describe('render <WalletCFDCard />', () => {
     const mocked_props = {
         wallet: {
             account_title: 'Success',
-            balance: '0.0',
+            balance: '0.00 USD',
             currency_title: 'USD Wallet',
-            currency: 'USD',
             gradient_card_class: 'wallet-app-card__bg--gradient-1',
             icon: 'IcUSD',
             is_demo: false,
@@ -26,15 +25,15 @@ describe('render <WalletCFDCard />', () => {
         render(<WalletAppCard {...mocked_props} />, { wrapper });
         expect(screen.getByText(/Real/i)).toBeInTheDocument();
         expect(screen.getByText(/USD Wallet/i)).toBeInTheDocument();
-        expect(screen.getByText(/0.0/i)).toBeInTheDocument();
+        expect(screen.getByText(/0.00 USD/i)).toBeInTheDocument();
         expect(screen.getByText(/Success/i)).toBeInTheDocument();
     });
 
     it('renders the wallet details correctly in demo:', () => {
         mocked_props.wallet.is_demo = true;
-        mocked_props.wallet.balance = '10,000';
+        mocked_props.wallet.balance = '10,000 USD';
         render(<WalletAppCard {...mocked_props} />, { wrapper });
         expect(screen.getByText(/Demo/i)).toBeInTheDocument();
-        expect(screen.getByText(/10,000/i)).toBeInTheDocument();
+        expect(screen.getByText(/10,000 USD/i)).toBeInTheDocument();
     });
 });

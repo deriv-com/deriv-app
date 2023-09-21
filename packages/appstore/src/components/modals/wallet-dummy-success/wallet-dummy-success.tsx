@@ -1,13 +1,14 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Button, Modal, Text, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import { routes, formatMoney } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import WalletAppCard from 'Components/wallet-app-card';
 import { getAccountName } from 'Constants/utils';
 import { useActiveWallet } from '@deriv/hooks';
 import './wallet-dummy-success.scss';
+import { useAccountsList } from '@deriv/api';
 
 const WalletDummySuccess = observer(() => {
     const { ui, traders_hub } = useStore();
@@ -15,11 +16,13 @@ const WalletDummySuccess = observer(() => {
 
     const { is_mobile } = ui;
     const active_wallet = useActiveWallet();
+    const { data: account_list_data } = useAccountsList();
 
+    const currency = active_wallet?.currency_config?.display_code;
+    const balance = account_list_data?.find(account => account.currency === currency)?.display_balance;
     const account_title = `${getAccountName({
         account_type: 'trading',
     })} (${active_wallet?.landing_company_name?.toUpperCase()})`;
-    const account_balance = formatMoney(active_wallet?.currency_config?.display_code, active_wallet?.balance, true);
 
     const currency_title = getAccountName({
         account_type: 'wallet',
@@ -32,9 +35,8 @@ const WalletDummySuccess = observer(() => {
 
     const wallet_details = {
         account_title,
-        balance: account_balance,
+        balance,
         currency_title,
-        currency: active_wallet?.currency_config?.display_code,
         gradient_card_class: active_wallet?.gradient_card_class,
         icon: active_wallet?.icon,
         is_demo: active_wallet?.is_demo,

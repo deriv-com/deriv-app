@@ -5,18 +5,19 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import './wallet-app-card.scss';
 
-type TWalletAppCard = {
-    account_title: React.ReactNode;
-    balance: string;
-    currency_title: string;
-    currency?: string;
-    gradient_card_class?: string;
-    icon?: string;
-    is_demo?: boolean;
+type WalletAppCardProps = {
+    wallet: {
+        account_title: React.ReactNode;
+        balance?: string;
+        currency_title: string;
+        gradient_card_class?: string;
+        icon?: string;
+        is_demo?: boolean;
+    };
 };
 
-const WalletAppCard = observer(({ wallet }: { wallet: TWalletAppCard }) => {
-    const { balance, currency, account_title, gradient_card_class, icon, is_demo, currency_title } = wallet;
+const WalletAppCard = observer(({ wallet }: WalletAppCardProps) => {
+    const { balance, account_title, gradient_card_class, icon, is_demo, currency_title } = wallet;
 
     const { ui } = useStore();
     const { is_mobile } = ui;
@@ -61,7 +62,7 @@ const WalletAppCard = observer(({ wallet }: { wallet: TWalletAppCard }) => {
                     </Text>
                     {/* total balance */}
                     <Text color='prominent' weight='bold' size={is_mobile ? 'xxxs' : 'xxs'}>
-                        {balance} {currency}
+                        {balance}
                     </Text>
                 </div>
             </div>

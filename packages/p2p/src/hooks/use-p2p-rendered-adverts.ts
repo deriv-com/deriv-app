@@ -4,6 +4,52 @@ import { useP2PAdvertList } from '@deriv/hooks';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores/index';
 
+type TAdvertList = ReturnType<typeof useP2PAdvertList>['data'];
+
+/**
+ * @name getSearchResults
+ * Filter out adverts based on the search term. Btw, this causes a bug that's in production as well.
+ * If a user doesn't scroll to the bottom before searching, the items that fall outside of the limit won't be part of the search results.
+ *  */
+const getSearchResults = (items: TAdvertList, search_term: string) => {
+    if (search_term) {
+        return items?.filter(item =>
+            item.advertiser_details.name.toLowerCase().includes(search_term.toLowerCase().trim())
+        );
+    }
+};
+
+/**
+ *  @name getRenderedAdverts
+ * Returns the adverts that are ready to be rendered. Adverts that consist of a combination of items filtered based on the
+ * Buy/Sell toggle and the search term. See useP2PRenderedAdverts for more information.
+ */
+const getRenderedAdverts = (search_term: string, search_results: TAdvertList, filtered_items: TAdvertList = []) => {
+    let rendered_adverts: DeepPartial<TAdvertList> = [];
+    if (isMobile()) {
+        if (search_term) {
+            rendered_adverts = [{ id: 'WATCH_THIS_SPACE' }, { id: 'NO_MATCH_ROW' }];
+            if (search_results && search_results.length > 0) {
+                rendered_adverts = [{ id: 'WATCH_THIS_SPACE' }, ...search_results];
+            }
+        } else {
+            // This allows for the sliding animation on the Buy/Sell toggle as it pushes
+            // an empty item with an item that holds the same height of the toggle container.
+            // Also see: buy-sell-row.jsx
+            rendered_adverts = [{ id: 'WATCH_THIS_SPACE' }, ...filtered_items];
+        }
+    } else {
+        rendered_adverts = filtered_items;
+        if (search_term) {
+            rendered_adverts = [{ id: 'NO_MATCH_ROW' }];
+            if (search_results && search_results.length > 0) {
+                rendered_adverts = search_results;
+            }
+        }
+    }
+    return rendered_adverts;
+};
+
 /**
  * @name useP2PRenderedAdverts
  *
@@ -31,7 +77,6 @@ const useP2PRenderedAdverts = () => {
     });
 
     const has_more_items_to_load = items ? items?.length >= general_store.list_item_limit : false;
-    let rendered_adverts: DeepPartial<typeof items> = [];
 
     // Filter out adverts based on the Buy/Sell toggle. If the toggle is set to Buy, only show Sell adverts and vice versa.
     const filtered_items = React.useMemo(() => {
@@ -40,38 +85,14 @@ const useP2PRenderedAdverts = () => {
         );
     }, [items, buy_sell_store.table_type]);
 
-    // Filter out adverts based on the search term. Btw, this causes a bug that's in production as well.
-    // If a user doesn't scroll to the bottom before searching, the items that fall outside of the limit won't be part of the search results.
-    // I think the searching should be done from BE side. :D
     const search_results = React.useMemo(() => {
-        if (buy_sell_store.search_term) {
-            return items.filter(item =>
-                item.advertiser_details.name.toLowerCase().includes(buy_sell_store.search_term.toLowerCase().trim())
-            );
-        }
+        return getSearchResults(items, buy_sell_store.search_term);
     }, [buy_sell_store.search_term, items]);
 
-    if (isMobile()) {
-        if (buy_sell_store.search_term) {
-            rendered_adverts = [{ id: 'WATCH_THIS_SPACE' }, { id: 'NO_MATCH_ROW' }];
-            if (search_results && search_results.length > 0) {
-                rendered_adverts = [{ id: 'WATCH_THIS_SPACE' }, ...search_results];
-            }
-        } else {
-            // This allows for the sliding animation on the Buy/Sell toggle as it pushes
-            // an empty item with an item that holds the same height of the toggle container.
-            // Also see: buy-sell-row.jsx
-            rendered_adverts = [{ id: 'WATCH_THIS_SPACE' }, ...filtered_items];
-        }
-    } else {
-        rendered_adverts = filtered_items;
-        if (buy_sell_store.search_term) {
-            rendered_adverts = [{ id: 'NO_MATCH_ROW' }];
-            if (search_results && search_results.length > 0) {
-                rendered_adverts = search_results;
-            }
-        }
-    }
+    const rendered_adverts = React.useMemo(() => {
+        return getRenderedAdverts(buy_sell_store.search_term, search_results, filtered_items);
+    }, [buy_sell_store.search_term, filtered_items, search_results]);
+
     return {
         rendered_adverts,
         has_more_items_to_load,

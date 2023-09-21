@@ -11,7 +11,7 @@ type TProps = {
     loginid: string;
 };
 
-const WalletListCardIDetails: React.FC<TProps> = ({ isDemo, currency, badge, loginid }) => (
+const WalletListCardIDetails: React.FC<TProps> = ({ badge, currency, isDemo, loginid }) => (
     <div className='wallets-list-details__action-container'>
         <div className='wallets-list-details__elements'>
             <WalletListCardTitle currency={currency} />

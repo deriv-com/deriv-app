@@ -10,11 +10,11 @@ type TProps = {
 };
 
 const WalletsAccordion: React.FC<React.PropsWithChildren<TProps>> = ({
+    children,
     isDemo = false,
     isOpen = false,
     onToggle,
     renderHeader,
-    children,
 }) => {
     const accordionRef = React.useRef<HTMLDivElement>(null);
 

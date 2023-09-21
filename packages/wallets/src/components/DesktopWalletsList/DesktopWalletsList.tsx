@@ -23,6 +23,7 @@ const DesktopWalletsList: React.FC = () => {
                                 balance={wallet.display_balance}
                                 currency={wallet.currency_config?.display_code || 'USD'}
                                 isDemo={wallet.is_virtual}
+                                loginid={wallet.loginid}
                                 walletType={wallet.wallet_currency_type}
                             />
                         )}

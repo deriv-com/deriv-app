@@ -5,7 +5,7 @@ module.exports = {
         sourceType: 'module',
     },
     env: { es6: true },
-    plugins: ['simple-import-sort', 'typescript-sort-keys'],
+    plugins: ['simple-import-sort', 'typescript-sort-keys', 'sort-destructure-keys'],
     rules: {
         'simple-import-sort/imports': [
             'error',
@@ -48,6 +48,7 @@ module.exports = {
         'react/jsx-pascal-case': 'error',
         'react/jsx-sort-props': 'warn',
         'simple-import-sort/exports': 'error',
+        'sort-destructure-keys/sort-destructure-keys': 'warn',
         'sort-keys': 'warn',
         'typescript-sort-keys/interface': 'warn',
         'typescript-sort-keys/string-enum': 'warn',

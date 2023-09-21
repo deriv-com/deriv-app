@@ -226,17 +226,19 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     onSubmit() {
-        this.root_store.general_store.blockUnblockUser(
-            !this.is_counterparty_advertiser_blocked,
-            this.advertiser_details_id
-        );
+        const current_advertiser_id = this.advertiser_details_id ?? this.counterparty_advertiser_info?.id;
+        this.root_store.general_store.blockUnblockUser(!this.is_counterparty_advertiser_blocked, current_advertiser_id);
         if (this.is_counterparty_advertiser_blocked) this.getCounterpartyAdvertiserList(this.advertiser_details_id);
         this.setIsDropdownMenuVisible(false);
     }
 
     onTabChange() {
-        this.setAdverts([]);
-        this.loadMoreAdvertiserAdverts({ startIndex: 0 });
+        const { general_store } = this.root_store;
+        const advertiser_id = general_store.counterparty_advertiser_id || this.advertiser_details_id;
+        if (advertiser_id) {
+            this.setAdverts([]);
+            this.loadMoreAdvertiserAdverts({ startIndex: 0 });
+        }
     }
 
     onUnmount() {

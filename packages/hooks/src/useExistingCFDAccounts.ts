@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useFetch } from '@deriv/api';
-import useActiveWallet from './useActiveWallet';
+import useActiveWalletAccount from './useActiveWalletAccount';
 
 type TAccount = {
     cfd_type?: 'mt5' | 'derivez' | 'dxtrade';
@@ -34,7 +34,7 @@ const getAccountIcon = ({ cfd_type, market_type }: TAccount) => {
  * @description This hook is used to get the created CFD accounts of the user.
  */
 const useExistingCFDAccounts = () => {
-    const wallet = useActiveWallet();
+    const wallet = useActiveWalletAccount();
     const { data: mt5, ...mt5_rest } = useFetch('mt5_login_list');
     const { data: derivez, ...derivez_rest } = useFetch('trading_platform_accounts', {
         payload: { platform: 'derivez' },

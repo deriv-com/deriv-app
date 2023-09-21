@@ -1,6 +1,5 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { StoreProvider, mockStore } from '@deriv/stores';
 import { APIProvider } from '@deriv/api';
 import useExistingCFDAccounts from '../useExistingCFDAccounts';
 
@@ -94,15 +93,7 @@ jest.mock('@deriv/api', () => ({
 
 describe('useExistingCFDAccounts', () => {
     it('should return the existing cfd accounts', () => {
-        const mock = mockStore({
-            client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
         const { result } = renderHook(() => useExistingCFDAccounts(), { wrapper });
 
         expect(result.current.data.dxtrade_accounts).toEqual([

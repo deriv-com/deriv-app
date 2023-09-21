@@ -68,8 +68,9 @@ const WalletModalBody = observer(
                 icon_color={is_demo ? 'var(--demo-text-color-1)' : ''}
                 is_scrollable={false}
                 onTabItemClick={(index: number) => {
-                    // @ts-expect-error the key always exist in the tabs object, So we can ignore the TS error.
-                    const tab_name = Object.keys(tabs).find(key => tabs[key] === index) as typeof active_modal_tab;
+                    const tab_name = Object.keys(tabs).find(
+                        key => tabs[key as keyof typeof tabs] === index
+                    ) as typeof active_modal_tab;
                     setWalletModalActiveTab(tab_name);
                 }}
             >

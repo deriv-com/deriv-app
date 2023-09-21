@@ -49,7 +49,7 @@ describe('<WalletTransferBlock />', () => {
         );
         const { loginid } = wallet_account;
 
-        const loginid_title = screen.getByText(loginid!);
+        const loginid_title = screen.getByText(String(loginid));
 
         expect(loginid_title).toBeInTheDocument();
     });

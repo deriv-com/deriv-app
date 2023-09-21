@@ -39,7 +39,7 @@
 
         &-text {
             padding: 0.4rem 0.8rem;
-            border-radius: 24px;
+            border-radius: $BORDER_RADIUS * 6;
         }
     }
 
@@ -51,7 +51,6 @@
 
     &__title-text {
         width: fit-content;
-        text-align: center;
         background-color: var(--general-section-2);
 
         @include mobile {

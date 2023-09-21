@@ -11,7 +11,7 @@ import * as constants from './state/constants';
 import rootReducer from './state/reducers';
 import Ticks from './Ticks';
 import Total from './Total';
-import { doUntilDone, checkBlocksExistenceToSubscribeProposal } from '../utils/helpers';
+import { doUntilDone, checkBlocksForProposalRequest } from '../utils/helpers';
 import { expectInitArg } from '../utils/sanitize';
 import { createError } from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
@@ -147,8 +147,8 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
     }
 
     makeDirectPurchaseDecision() {
-        const { hasPayoutBlock, isBasisPayout } = checkBlocksExistenceToSubscribeProposal();
-        this.is_proposal_subscription_required = hasPayoutBlock || isBasisPayout;
+        const { has_payout_block, is_basis_payout } = checkBlocksForProposalRequest();
+        this.is_proposal_subscription_required = has_payout_block || is_basis_payout;
 
         if (this.is_proposal_subscription_required) {
             this.makeProposals({ ...this.options, ...this.tradeOptions });

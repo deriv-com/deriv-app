@@ -288,18 +288,18 @@ const hasBlockOfType = (targetType, workspace) => {
     return allBlocks.some(block => block.type === targetType && !!block.parentBlock_);
 };
 
-export const checkBlocksExistenceToSubscribeProposal = () => {
+export const checkBlocksForProposalRequest = () => {
     const workspace = Blockly.derivWorkspace;
-    const hasPayoutBlock = hasBlockOfType('payout', workspace);
+    const has_payout_block = hasBlockOfType('payout', workspace);
 
     // Code for the future for case when basis: 'payout':
     // * Since basis : '${block.type === 'trade_definition_tradeoptions' ? 'stake' : 'payout'}'
     // * basis: 'payout' when contract_type: "MULTUP"
     // Uncomment next line later:
-    // const isBasisPayout = !hasBlockOfType('trade_definition_tradeoptions', workspace);
+    // const is_basis_payout = !hasBlockOfType('trade_definition_tradeoptions', workspace);
 
     return {
-        hasPayoutBlock,
-        isBasisPayout: false,
+        has_payout_block,
+        is_basis_payout: false,
     };
 };

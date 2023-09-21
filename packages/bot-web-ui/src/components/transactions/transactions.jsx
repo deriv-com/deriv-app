@@ -40,7 +40,7 @@ const TransactionItem = ({ row, is_new_row }) => {
 const Transactions = observer(({ is_drawer_open }) => {
     const { run_panel, transactions } = useDBotStore();
     const { contract_stage } = run_panel;
-    const { elements, onMount, onUnmount, toggleTransactionDetailsModal } = transactions;
+    const { transactions: transaction_list, onMount, onUnmount, toggleTransactionDetailsModal } = transactions;
 
     React.useEffect(() => {
         onMount();
@@ -63,7 +63,7 @@ const Transactions = observer(({ is_drawer_open }) => {
                 <Button
                     id='download__container-view-detail-button'
                     className='download__container-view-detail-button'
-                    is_disabled={!elements.length}
+                    is_disabled={!transaction_list?.length}
                     text={localize('View Detail')}
                     onClick={() => {
                         toggleTransactionDetailsModal(true);
@@ -87,10 +87,10 @@ const Transactions = observer(({ is_drawer_open }) => {
                 })}
             >
                 <div className='transactions__scrollbar'>
-                    {elements.length ? (
+                    {transaction_list?.length ? (
                         <DataList
                             className='transactions'
-                            data_source={elements}
+                            data_source={transaction_list}
                             rowRenderer={props => <TransactionItem {...props} />}
                             keyMapper={row => {
                                 switch (row.type) {
@@ -106,7 +106,7 @@ const Transactions = observer(({ is_drawer_open }) => {
                                 }
                             }}
                             getRowSize={({ index }) => {
-                                const row = elements[index];
+                                const row = transaction_list?.[index];
                                 switch (row.type) {
                                     case transaction_elements.CONTRACT: {
                                         return 50;

@@ -1,11 +1,13 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
+import { connect } from 'Stores/connect';
 import { PlatformContext, routes } from '@deriv/shared';
+import { useFeatureFlags, useWalletAccountsList } from '@deriv/hooks';
 import DefaultHeader from './default-header.jsx';
 import DashboardHeader from './dashboard-header.jsx';
 import TradingHubHeader from './trading-hub-header.jsx';
 import DTraderHeader from './dtrader-header.jsx';
-import { connect } from 'Stores/connect';
-import { useLocation } from 'react-router-dom';
+import DTraderHeaderWallets from './dtrader-header-wallets';
 
 const Header = ({ is_logged_in }) => {
     const { is_appstore } = React.useContext(PlatformContext);
@@ -16,6 +18,10 @@ const Header = ({ is_logged_in }) => {
         pathname.startsWith(routes.cashier) ||
         pathname.startsWith(routes.compare_cfds);
 
+    const { is_wallet_enabled } = useFeatureFlags();
+    const { has_wallet } = useWalletAccountsList();
+    const should_show_wallets = is_wallet_enabled && has_wallet;
+
     if (is_appstore) {
         return <DashboardHeader />;
     } else if (is_logged_in) {
@@ -25,7 +31,7 @@ const Header = ({ is_logged_in }) => {
         } else if (pathname === routes.onboarding) {
             result = null;
         } else {
-            result = <DTraderHeader />;
+            result = should_show_wallets ? <DTraderHeaderWallets /> : <DTraderHeader />;
         }
         return result;
     } else if (pathname === routes.onboarding) {

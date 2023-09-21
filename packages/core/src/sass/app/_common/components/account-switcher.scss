@@ -53,6 +53,10 @@
         z-index: 2;
         background: var(--general-main-1);
 
+        &--wallets {
+            width: 47rem;
+        }
+
         &:before {
             content: '';
             position: absolute;
@@ -82,7 +86,6 @@
 
     &__container {
         align-items: center;
-        -webkit-box-align: center;
         display: flex;
     }
     &__wrapper {
@@ -181,6 +184,31 @@
         }
         @include mobile {
             height: 2.8rem !important;
+        }
+    }
+
+    &__wallets {
+        padding: 1.2rem 1.6rem;
+
+        &-container {
+            align-items: center;
+            -webkit-box-align: center;
+            display: flex;
+            gap: 0.8rem;
+            margin-right: 0.8rem;
+        }
+
+        &-account-type-and-balance {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0;
+            pointer-events: none;
+        }
+
+        &-balance {
+            color: var(--text-general);
+            margin-right: 0;
         }
     }
 }

@@ -84,6 +84,8 @@ const useWalletAccountsList = () => {
                 },
             } as const;
 
+            const dtrade_loginid = wallet.linked_to?.find(account => account.platform === 'dtrade')?.loginid;
+
             return {
                 ...wallet,
                 /** Returns the wallet's currency type. ex: `Demo`, `USD`, etc. */
@@ -91,12 +93,15 @@ const useWalletAccountsList = () => {
                 /** Landing company shortcode the account belongs to. */
                 landing_company_name: wallet.landing_company_name?.replace('maltainvest', 'malta'),
                 /** Indicating whether the wallet is a maltainvest wallet. */
-                is_malta_wallet: wallet.landing_company_name === 'malta',
+                is_malta_wallet: wallet.landing_company_name === 'maltainvest',
                 /** The gradient class names for the wallet header and card background. */
                 gradients,
                 /** Local asset names for the wallet icon. ex: `IcWalletCurrencyUsd` for `USD`  */
                 icons: currency_to_icon_mapper[wallet_currency_type],
-
+                /** The DTrade account ID of this wallet */
+                dtrade_loginid,
+                /** The DTrade account balance of this wallet */
+                dtrade_balance: account_list_data?.find(account => account.loginid === dtrade_loginid)?.balance,
                 /** @deprecated Use `is_virtual` instead. */
                 is_demo: wallet.is_virtual,
                 /** @deprecated Use `is_active` instead. */
@@ -129,6 +134,8 @@ const useWalletAccountsList = () => {
     return {
         /** List of all wallet accounts for the current user. */
         data: sorted_accounts,
+        /** Indicating whether the user has a wallet */
+        has_wallet: sorted_accounts && sorted_accounts.length > 0,
         ...rest,
     };
 };

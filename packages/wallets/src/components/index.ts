@@ -3,6 +3,7 @@ export * from './DesktopWalletsList';
 export * from './ExternalTradingPlatforms';
 export * from './InlineMessage';
 export * from './Loader';
+export * from './MT5EnterPassword';
 export * from './OptionsAndMultipliersListing';
 export * from './PrimaryActionButton';
 export * from './ProgressBar';

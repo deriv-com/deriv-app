@@ -242,6 +242,7 @@ export default class GeneralStore extends BaseStore {
                         );
                     }
                 } else {
+                    this.hideModal();
                     const { code, message } = response.error;
                     this.setErrorCode(code);
                     this.setBlockUnblockUserError(message);
@@ -910,15 +911,7 @@ export default class GeneralStore extends BaseStore {
                 return !v(values[key]);
             });
 
-            if (error_index !== -1) {
-                switch (key) {
-                    case 'nickname':
-                    default: {
-                        errors[key] = nickname_messages[error_index];
-                        break;
-                    }
-                }
-            }
+            if (error_index !== -1) errors[key] = nickname_messages[error_index];
         });
 
         return errors;

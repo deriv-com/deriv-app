@@ -26,7 +26,7 @@ const Toolbox = observer(() => {
         toolbox_dom,
     } = toolbox;
 
-    const { setVisibility } = flyout;
+    const { setVisibility, selected_category } = flyout;
     const { loadDataStrategy } = quick_strategy;
 
     const toolbox_ref = React.useRef(ToolboxItems);
@@ -87,7 +87,10 @@ const Toolbox = observer(() => {
                                         return (
                                             <div
                                                 key={`db-toolbox__row--${category.getAttribute('id')}`}
-                                                className='db-toolbox__row'
+                                                className={classNames('db-toolbox__row', {
+                                                    'db-toolbox__row--active':
+                                                        selected_category?.getAttribute('id') === category?.id,
+                                                })}
                                             >
                                                 <div
                                                     className='db-toolbox__item'
@@ -123,7 +126,15 @@ const Toolbox = observer(() => {
                                                                     key={`db-toolbox__sub-category-row--${subCategory.getAttribute(
                                                                         'id'
                                                                     )}`}
-                                                                    className='db-toolbox__sub-category-row'
+                                                                    className={classNames(
+                                                                        'db-toolbox__sub-category-row',
+                                                                        {
+                                                                            'db-toolbox__sub-category-row--active':
+                                                                                selected_category?.getAttribute(
+                                                                                    'id'
+                                                                                ) === subCategory?.id,
+                                                                        }
+                                                                    )}
                                                                     onClick={() => {
                                                                         onToolboxItemClick(subCategory);
                                                                     }}

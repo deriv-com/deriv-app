@@ -1,4 +1,3 @@
-// import { CFD_PLATFORMS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
     TInstrumentsIcon,
@@ -221,21 +220,6 @@ const getJuridisctionDescription = (shortcode: string) => {
 
     switch (shortcode) {
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_BVI:
-            return createDescription(
-                'Deriv (BVI) Ltd',
-                'British Virgin Islands',
-                localize('British Virgin Islands Financial Services Commission'),
-                localize('(License no. SIBA/L/18/1114)'),
-                localize('Regulator/External dispute resolution')
-            );
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_VANUATU:
-            return createDescription(
-                'Deriv (V) Ltd',
-                'Vanuatu',
-                localize('Vanuatu Financial Services Commission'),
-                '',
-                localize('Regulator/External dispute resolution')
-            );
         case MARKET_TYPE_SHORTCODE.FINANCIAL_BVI:
             return createDescription(
                 'Deriv (BVI) Ltd',
@@ -244,6 +228,7 @@ const getJuridisctionDescription = (shortcode: string) => {
                 localize('(License no. SIBA/L/18/1114)'),
                 localize('Regulator/External dispute resolution')
             );
+        case MARKET_TYPE_SHORTCODE.SYNTHETIC_VANUATU:
         case MARKET_TYPE_SHORTCODE.FINANCIAL_VANUATU:
             return createDescription(
                 'Deriv (V) Ltd',

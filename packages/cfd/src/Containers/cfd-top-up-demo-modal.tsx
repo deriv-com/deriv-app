@@ -13,7 +13,7 @@ import {
 import { getTopUpConfig } from '../Helpers/constants';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
-import { CFD_PLATFORMS } from '../Helpers/cfd-config.js';
+import { CFD_PLATFORMS } from '../Helpers/cfd-config';
 
 type TCFDTopUpDemoModalProps = {
     platform: string;

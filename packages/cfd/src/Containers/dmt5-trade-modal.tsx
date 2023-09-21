@@ -16,7 +16,7 @@ import { CFDAccountCopy } from '../Components/cfd-account-copy';
 import { getPlatformMt5DownloadLink, getMT5WebTerminalLink } from '../Helpers/constants';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { TCFDPasswordReset } from './props.types';
-import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION } from '../Helpers/cfd-config.js';
+import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION } from '../Helpers/cfd-config';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid;

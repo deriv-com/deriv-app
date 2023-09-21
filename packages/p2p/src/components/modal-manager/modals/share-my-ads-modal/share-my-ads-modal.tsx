@@ -14,7 +14,7 @@ import { websiteUrl } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import MyProfileSeparatorContainer from 'Components/my-profile/my-profile-separator-container';
+import MyProfileSeparatorContainer from 'Pages/my-profile/my-profile-separator-container';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import { TAdvert } from 'Types';

@@ -2,8 +2,8 @@ import React from 'react';
 import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
 import { useP2PAdvertInfo } from '@deriv/hooks';
 import { daysSince, isMobile, routes } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { reaction } from 'mobx';
-import { observer } from 'mobx-react-lite';
 import { useHistory } from 'react-router-dom';
 import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
@@ -29,6 +29,7 @@ const AdvertiserPage = () => {
         counterparty_advertiser_id,
         is_advertiser,
         is_barred,
+        setCounterpartyAdvertId,
         setCounterpartyAdvertiserId,
     } = general_store;
     const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
@@ -71,14 +72,34 @@ const AdvertiserPage = () => {
                   name: nickname,
               });
     };
-    const { data: p2p_advert_info, isSuccess: has_p2p_advert_info } = useP2PAdvertInfo(counterparty_advert_id, {
+    const {
+        data: p2p_advert_info,
+        isFetching,
+        isSuccess: has_p2p_advert_info,
+    } = useP2PAdvertInfo(counterparty_advert_id, {
         enabled: !!counterparty_advert_id,
     });
 
+    const showErrorModal = () => {
+        setCounterpartyAdvertId('');
+        showModal({
+            key: 'ErrorModal',
+            props: {
+                error_message: "It's either deleted or no longer active.",
+                error_modal_button_text: 'OK',
+                error_modal_title: 'This ad is unavailable',
+                onClose: () => {
+                    hideModal({ should_hide_all_modals: true });
+                },
+                width: isMobile() ? '90vw' : '',
+            },
+        });
+    };
+
     const setShowAdvertInfo = React.useCallback(
         () => {
-            if (has_p2p_advert_info && is_advertiser && !is_barred) {
-                const { is_active, is_buy, is_visible } = p2p_advert_info || {};
+            const { is_active, is_buy, is_visible } = p2p_advert_info || {};
+            if (has_p2p_advert_info) {
                 const advert_type = is_buy ? 1 : 0;
 
                 if (is_active && is_visible) {
@@ -88,16 +109,10 @@ const AdvertiserPage = () => {
                     advertiser_page_store.loadMoreAdvertiserAdverts({ startIndex: 0 });
                     showModal({ key: 'BuySellModal' });
                 } else {
-                    showModal({
-                        key: 'ErrorModal',
-                        props: {
-                            error_message: "It's either deleted or no longer active.",
-                            error_modal_button_text: 'OK',
-                            error_modal_title: 'This ad is unavailable',
-                            width: isMobile() ? '90vw' : '',
-                        },
-                    });
+                    showErrorModal();
                 }
+            } else {
+                showErrorModal();
             }
         },
 
@@ -106,10 +121,14 @@ const AdvertiserPage = () => {
     );
 
     React.useEffect(() => {
-        if (counterparty_advert_id) {
-            setShowAdvertInfo();
+        if (is_advertiser && !is_barred) {
+            if (isFetching) {
+                showModal({ key: 'LoadingModal' });
+            } else if (counterparty_advert_id) {
+                setShowAdvertInfo();
+            }
         }
-    }, [counterparty_advert_id, setShowAdvertInfo]);
+    }, [counterparty_advert_id, isFetching, setShowAdvertInfo]);
 
     React.useEffect(() => {
         buy_sell_store.setShowAdvertiserPage(true);

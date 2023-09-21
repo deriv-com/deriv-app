@@ -346,7 +346,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                         <div onClick={onClickShare}>
                             <Popover
                                 alignment='bottom'
-                                className={classNames('p2p-my-ads__table-popovers__share', {
+                                className={classNames('my-ads-table__popovers__share', {
                                     'p2p-my-ads__table-popovers--disable':
                                         general_store.is_barred || is_activate_ad_disabled,
                                 })}

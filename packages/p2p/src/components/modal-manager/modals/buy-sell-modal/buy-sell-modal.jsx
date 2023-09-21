@@ -109,8 +109,7 @@ const BuySellModalTitle = () => {
 };
 
 const BuySellModal = () => {
-    const { advertiser_page_store, buy_sell_store, floating_rate_store, general_store, my_profile_store, order_store } =
-        useStores();
+    const { advertiser_page_store, buy_sell_store, general_store, my_profile_store, order_store } = useStores();
     const submitForm = React.useRef(() => {});
     const [error_message, setErrorMessage] = useSafeState(null);
     const [is_submit_disabled, setIsSubmitDisabled] = useSafeState(true);
@@ -209,8 +208,6 @@ const BuySellModal = () => {
             buy_sell_store.fetchAdvertiserAdverts();
             buy_sell_store.unsubscribeAdvertInfo();
         }
-        floating_rate_store.setIsMarketRateChanged(false);
-        general_store.setCounterpartyAdvertId('');
     };
 
     const onConfirmClick = order_info => {
@@ -244,6 +241,8 @@ const BuySellModal = () => {
         if (!is_modal_open) {
             setErrorMessage(null);
         }
+
+        if (general_store.counterparty_advert_id) general_store.setCounterpartyAdvertId('');
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_modal_open]);
@@ -307,7 +306,7 @@ const BuySellModal = () => {
                     <ThemedScrollbars
                         height={buy_sell_store.table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}
                     >
-                        <Modal.Body className='buy-sell__modal--layout'>
+                        <Modal.Body className='buy-sell-modal__layout'>
                             {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
                             <BuySellFormError />
                             {my_profile_store.should_show_add_payment_method_form ? (

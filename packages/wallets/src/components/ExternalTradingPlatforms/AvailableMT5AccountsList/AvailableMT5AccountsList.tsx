@@ -1,11 +1,8 @@
 import React from 'react';
-import { useMT5AccountsList, useSortedMT5Accounts } from '@deriv/api';
+import { useSortedMT5Accounts } from '@deriv/api';
 import DerivedMT5 from '../../../public/images/mt5-derived.svg';
 import FinancialMT5 from '../../../public/images/mt5-financial.svg';
 import SwapFreeMT5 from '../../../public/images/mt5-swap-free.svg';
-import { useModal } from '../../ModalProvider';
-import MT5CreatePassword from '../../MT5CreatePassword';
-import { MT5EnterPassword } from '../../MT5EnterPassword';
 import { SecondaryActionButton } from '../../SecondaryActionButton';
 import { TradingAccountCard } from '../../TradingAccountCard';
 import './AvailableMT5AccountsList.scss';
@@ -33,19 +30,6 @@ type TProps = {
 };
 
 const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
-    const { show } = useModal();
-    const { data } = useMT5AccountsList();
-
-    const hasMT5Account = data?.find(acc => acc?.loginid);
-
-    const ShowMT5PasswordModal = () => {
-        return hasMT5Account ? (
-            <MT5EnterPassword name={market_type_to_name_mapper[account.market_type || 'synthetic']} />
-        ) : (
-            <MT5CreatePassword />
-        );
-    };
-
     return (
         <TradingAccountCard
             leading={() => (
@@ -54,7 +38,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 </div>
             )}
             trailing={() => (
-                <SecondaryActionButton onClick={() => show(<ShowMT5PasswordModal />)}>
+                <SecondaryActionButton>
                     <p className='wallets-available-mt5__text'>Get</p>
                 </SecondaryActionButton>
             )}

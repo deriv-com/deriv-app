@@ -1,0 +1,22 @@
+.wallets-carousel-content {
+    background-color: #f2f3f4;
+    width: 100vw;
+    padding: 2rem;
+    overflow: hidden;
+    gap: 1.6rem;
+
+    &__container {
+        height: max-content;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 2.4rem;
+    }
+
+    &__progress-bar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.6rem;
+    }
+}

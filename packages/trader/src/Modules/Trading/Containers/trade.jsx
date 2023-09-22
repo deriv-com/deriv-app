@@ -2,12 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
 import { getDecimalPlaces, isDesktop, isMobile } from '@deriv/shared';
-import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
+import ChartLoader from 'App/Components/Elements/chart-loader';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
 import Test from './test.jsx';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
-import FormLayout from '../Components/Form/form-layout.jsx';
+import FormLayout from '../Components/Form/form-layout';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements.jsx';
 import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.jsx';
@@ -49,6 +49,7 @@ const Trade = observer(() => {
         symbol,
         is_synthetics_available,
         is_synthetics_trading_market_available,
+        is_turbos,
         is_vanilla,
     } = useTraderStore();
     const {
@@ -149,12 +150,17 @@ const Trade = observer(() => {
     );
 
     const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
+    const chart_height_offset = React.useMemo(() => {
+        if (is_accumulator) return '295px';
+        if (is_turbos) return '300px';
+        return '259px';
+    }, [is_turbos, is_accumulator]);
 
     return (
         <div
             id='trade_container'
             className={classNames('trade-container', {
-                'trade-container--accumulators': is_accumulator,
+                [`trade-container--${is_accumulator ? 'accumulators' : 'turbos'}`]: is_accumulator || is_turbos,
             })}
         >
             <DesktopWrapper>
@@ -167,7 +173,7 @@ const Trade = observer(() => {
                 id='chart_container'
                 className='chart-container'
                 is_disabled={isDesktop()}
-                height_offset={is_accumulator ? '295px' : '259px'}
+                height_offset={chart_height_offset}
             >
                 <NotificationMessages />
                 <React.Suspense
@@ -304,6 +310,7 @@ const ChartTrade = observer(props => {
         language: current_language.toLowerCase(),
         position: is_chart_layout_default ? 'bottom' : 'left',
         theme: is_dark_mode_on ? 'dark' : 'light',
+        ...(is_accumulator ? { whitespace: 190, minimumLeftBars: isMobile() ? 3 : undefined } : {}),
     };
 
     const { current_spot, current_spot_time } = accumulator_barriers_data || {};
@@ -386,6 +393,7 @@ const ChartTrade = observer(props => {
             hasAlternativeSource={has_alternative_source}
             refToAddTick={refToAddTick}
             getMarketsOrder={getMarketsOrder}
+            should_zoom_out_on_yaxis={is_accumulator}
             yAxisMargin={{
                 top: isMobile() ? 76 : 106,
             }}

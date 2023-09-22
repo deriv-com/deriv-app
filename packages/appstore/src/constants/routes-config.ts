@@ -3,6 +3,7 @@ import TradersHub from 'Modules/traders-hub';
 import ConfigStore from 'Stores/config-store';
 import { TRoute } from 'Types';
 import Onboarding from 'Modules/onboarding';
+import CFDCompareAccounts from '@deriv/cfd/src/Containers/cfd-compare-accounts';
 
 type TRoutesConfig = {
     consumer_routes: ConfigStore['routes'];
@@ -14,12 +15,17 @@ const initRoutesConfig = ({ consumer_routes }: TRoutesConfig): TRoute[] => [
     {
         path: consumer_routes.traders_hub,
         component: TradersHub,
-        getTitle: () => localize('TradersHub'),
+        getTitle: () => localize("Trader's Hub"),
     },
     {
         path: consumer_routes.onboarding,
         component: Onboarding,
         getTitle: () => localize('Onboarding'),
+    },
+    {
+        path: consumer_routes.compare_cfds,
+        component: CFDCompareAccounts,
+        getTitle: () => localize('CFDCompareAccounts'),
     },
 ];
 

@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { PropTypes } from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
-import { DataList, DesktopWrapper, Icon, Text, ThemedScrollbars } from '@deriv/components';
+import { Button, DataList, Icon, Text, ThemedScrollbars } from '@deriv/components';
 import { isMobile, useNewRowTransition } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
@@ -40,7 +40,7 @@ const TransactionItem = ({ row, is_new_row }) => {
 const Transactions = observer(({ is_drawer_open }) => {
     const { run_panel, transactions } = useDBotStore();
     const { contract_stage } = run_panel;
-    const { elements, onMount, onUnmount } = transactions;
+    const { transactions: transaction_list, onMount, onUnmount, toggleTransactionDetailsModal } = transactions;
 
     React.useEffect(() => {
         onMount();
@@ -56,11 +56,20 @@ const Transactions = observer(({ is_drawer_open }) => {
                 'run-panel-tab__content--mobile': is_mobile && is_drawer_open,
             })}
         >
-            <DesktopWrapper>
-                <div className='download__container'>
-                    <Download tab='transactions' />
-                </div>
-            </DesktopWrapper>
+            <div className='download__container transaction-details__button-container'>
+                <Download tab='transactions' />
+                <Button
+                    id='download__container__view-detail-button'
+                    className='download__container__view-detail-button'
+                    is_disabled={!transaction_list?.length}
+                    text={localize('View Detail')}
+                    onClick={() => {
+                        toggleTransactionDetailsModal(true);
+                    }}
+                    secondary
+                    icon={<Icon icon='IcDbotViewDetail' size={18} />}
+                />
+            </div>
             <div className='transactions__header'>
                 <span className='transactions__header-column transactions__header-type'>{localize('Type')}</span>
                 <span className='transactions__header-column transactions__header-spot'>
@@ -77,10 +86,10 @@ const Transactions = observer(({ is_drawer_open }) => {
                 })}
             >
                 <div className='transactions__scrollbar'>
-                    {elements.length ? (
+                    {transaction_list?.length ? (
                         <DataList
                             className='transactions'
-                            data_source={elements}
+                            data_source={transaction_list}
                             rowRenderer={props => <TransactionItem {...props} />}
                             keyMapper={row => {
                                 switch (row.type) {
@@ -96,7 +105,7 @@ const Transactions = observer(({ is_drawer_open }) => {
                                 }
                             }}
                             getRowSize={({ index }) => {
-                                const row = elements[index];
+                                const row = transaction_list?.[index];
                                 switch (row.type) {
                                     case transaction_elements.CONTRACT: {
                                         return 50;

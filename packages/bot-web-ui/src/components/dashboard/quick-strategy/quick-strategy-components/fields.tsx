@@ -40,6 +40,24 @@ const GetFields = observer(({ data_fields_group_wise }: { data_fields_group_wise
         selected_type_strategy,
     } = quick_strategy;
 
+    const symbol_dropdown_options = React.useMemo(
+        () =>
+            symbol_dropdown.map((symbol: TSymbolItem) => ({
+                component: <MarketOption key={symbol.text} symbol={symbol} />,
+                ...symbol,
+            })),
+        [symbol_dropdown]
+    );
+
+    const trade_type_dropdown_options = React.useMemo(
+        () =>
+            trade_type_dropdown.map(trade_type => ({
+                component: <TradeTypeOption key={trade_type.text} trade_type={trade_type} />,
+                ...trade_type,
+            })),
+        [trade_type_dropdown]
+    );
+
     return (
         <React.Fragment>
             {data_fields_group_wise.map(item => {
@@ -60,24 +78,6 @@ const GetFields = observer(({ data_fields_group_wise }: { data_fields_group_wise
 
                 const is_input_field = type === 'text' || type === 'number';
                 const is_select_field = type === 'select';
-
-                const symbol_dropdown_options = React.useMemo(
-                    () =>
-                        symbol_dropdown.map((symbol: TSymbolItem) => ({
-                            component: <MarketOption key={symbol.text} symbol={symbol} />,
-                            ...symbol,
-                        })),
-                    [symbol_dropdown]
-                );
-
-                const trade_type_dropdown_options = React.useMemo(
-                    () =>
-                        trade_type_dropdown.map(trade_type => ({
-                            component: <TradeTypeOption key={trade_type.text} trade_type={trade_type} />,
-                            ...trade_type,
-                        })),
-                    [trade_type_dropdown]
-                );
 
                 const dropdown_lists: TDropdownLists = {
                     symbol: symbol_dropdown_options,

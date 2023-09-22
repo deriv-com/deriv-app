@@ -207,6 +207,7 @@ export default class QuickStrategyStore {
     }
 
     onChangeInputValue(field: TInputsFieldNames, event: React.ChangeEvent<HTMLInputElement>): void {
+        this.qs_cache[field] = event.target.value as keyof TQSCache;
         storeSetting('quick_strategy', this.qs_cache);
     }
 

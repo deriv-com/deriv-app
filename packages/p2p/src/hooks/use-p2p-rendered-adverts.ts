@@ -67,7 +67,6 @@ const useP2PRenderedAdverts = () => {
     const { data: items = [], ...rest } = useP2PAdvertList({
         counterparty_type,
         limit: general_store.list_item_limit,
-        offset: 0,
         sort_by: buy_sell_store.sort_by,
         use_client_limits: buy_sell_store.should_use_client_limits ? 1 : 0,
         ...(buy_sell_store.selected_payment_method_value.length > 0

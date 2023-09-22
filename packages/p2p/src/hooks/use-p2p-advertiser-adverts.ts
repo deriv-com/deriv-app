@@ -20,7 +20,6 @@ const useP2PAdvertiserAdverts = () => {
         ...rest
     } = useP2PAdvertList({
         counterparty_type: advertiser_page_store.counterparty_type,
-        offset: 0,
         limit: general_store.list_item_limit,
         advertiser_id:
             general_store.counterparty_advertiser_id && general_store.is_advertiser_info_subscribed

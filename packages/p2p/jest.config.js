@@ -9,6 +9,7 @@ module.exports = {
         '^Assets/(.*)$': '<rootDir>/src/assets/$1',
         '^Components/(.*)$': '<rootDir>/src/components/$1',
         '^Constants/(.*)$': '<rootDir>/src/constants/$1',
+        '^Pages/(.*)$': '<rootDir>/src/pages/$1',
         '^Stores/(.*)$': '<rootDir>/src/stores/$1',
         '^Stores$': '<rootDir>/src/stores/index',
         '^Translations/(.*)$': '<rootDir>/src/translations/$1',
@@ -20,7 +21,7 @@ module.exports = {
         '/crowdin/',
         // TODO: Update the test files once the major features are done
         // This is a temporary change, I hope
-        '/src/components/order*',
+        '/src/components/order-details*',
     ],
     coveragePathIgnorePatterns: [
         '<rootDir>/.eslintrc.js',
@@ -29,4 +30,5 @@ module.exports = {
         '<rootDir>/coverage/lcov-report',
         '<rootDir>/dist',
     ],
+    transformIgnorePatterns: ['/node_modules/(?!@sendbird/chat).+\\.js$'],
 };

@@ -59,6 +59,7 @@ export const extractInfoFromShortcode = (shortcode: string): TInfoFromShortcode 
         pattern = multipliers_regex;
     } else pattern = is_accumulators ? accumulators_regex : options_regex;
     const extracted = pattern.exec(shortcode);
+
     if (extracted !== null) {
         info_from_shortcode.category = extracted[1].charAt(0).toUpperCase() + extracted[1].slice(1).toLowerCase();
         info_from_shortcode.underlying = extracted[2];

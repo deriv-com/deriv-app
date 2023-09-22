@@ -6,6 +6,43 @@
     justify-content: center;
 }
 
+.bot-stopped-dialog {
+    @include mobile {
+        padding: 2rem;
+    }
+    .dc-dialog {
+        position: relative;
+        &__header-wrapper {
+            margin: 0 0 2.4rem;
+        }
+        &__content {
+            &__header {
+                display: flex;
+                justify-content: space-between;
+                margin: 0 0 2.4rem;
+                .dc-icon {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        @include mobile {
+            &__footer {
+                flex-wrap: unset;
+                .dc-dialog__button {
+                    &:first-child {
+                        margin-right: 1rem;
+                    }
+                    padding: 0;
+                    width: 40%;
+                    min-width: unset;
+                    flex-basis: unset;
+                }
+            }
+        }
+    }
+}
+
 .dashboard {
     &__main {
         width: 100%;
@@ -290,6 +327,12 @@
     }
 }
 
+#react-joyride-step-6 {
+    .onboard__label {
+        margin-bottom: 1.6rem;
+    }
+}
+
 .onboard {
     &__header {
         display: flex;
@@ -299,6 +342,13 @@
 
         &--close {
             cursor: pointer;
+        }
+    }
+
+    &__steps {
+        @media (max-height: 730px) {
+            max-height: 40vh;
+            overflow-y: auto;
         }
     }
 
@@ -317,10 +367,18 @@
         img {
             width: 97%;
         }
+
+        .initial-loader {
+            width: 33rem;
+            height: 18rem;
+        }
     }
 
     &__content {
         text-align: left;
+        p {
+            font-size: 1.4rem;
+        }
 
         &__block {
             &:first-child {
@@ -330,38 +388,12 @@
     }
 }
 
-.dbot-onboarding__container {
-    img {
-        width: 100%;
-    }
-}
-
-@for $i from 0 through 6 {
-    #react-joyride-step-#{$i} {
-        .onboard__container {
-            .initial-loader {
-                width: 33rem;
-
-                @if ($i ==0 or $i ==5) {
-                    height: 18.6rem;
-                } @else if ($i ==1) {
-                    height: 18.4rem;
-                } @else if ($i ==2 or $i ==3) {
-                    height: 18.7rem;
-                } @else if ($i ==6) {
-                    height: 4.4rem;
-                }
-            }
-            @if ($i ==5) {
-                img {
-                    width: 100%;
-                }
-            }
-        }
-    }
-}
-
 .joyride-content {
+    font-size: 1.4rem;
+    @media (max-height: 790px) {
+        max-height: 46vh;
+        overflow-y: auto;
+    }
     &__left {
         text-align: left;
 
@@ -384,7 +416,7 @@
         }
     }
 
-    img {
+    video {
         width: 100%;
         margin-top: 1rem;
     }
@@ -459,16 +491,20 @@
         }
     }
 
-    &__image {
+    &__image,
+    &__media {
         background: var(--general-section-1);
         text-align: center;
         padding: 0.8rem;
         width: 100%;
-        margin-bottom: 0.8rem;
-        height: 50%;
     }
 
     img {
+        height: 100%;
+    }
+
+    video {
+        width: 65%;
         height: 100%;
     }
 
@@ -513,8 +549,7 @@
 
     &__bot-builder-tour {
         height: unset;
-        background: $color-black-3;
-        border-top: 0.1rem solid $color-black-5;
+        background: var(--general-section-1);
 
         .dbot-slider {
             width: 100%;
@@ -525,10 +560,10 @@
                 .dc-accordion {
                     &__item {
                         border: none;
-                        border-bottom: 0.1rem solid $color-black-5;
+                        border-bottom: 0.1rem solid;
 
                         &-header {
-                            color: $color-white;
+                            color: var(--text-prominent);
                             text-align: center;
                             font-weight: 700;
                             font-size: 1.4rem;
@@ -539,14 +574,10 @@
                         }
 
                         &-content {
-                            color: $color-white;
+                            color: var(--text-prominent);
                         }
                     }
                 }
-            }
-
-            &__content {
-                color: $color-white;
             }
 
             &__status {
@@ -576,7 +607,7 @@
                     background: transparent;
 
                     span {
-                        color: $color-white;
+                        color: var(--text-prominent);
                     }
                 }
             }
@@ -591,7 +622,6 @@
         display: flex;
         width: 100%;
         padding: 0.6rem 1.6rem;
-        border-bottom: solid 0.1rem $color-black-5;
         cursor: pointer;
     }
 
@@ -600,7 +630,7 @@
         text-align: center;
 
         span {
-            color: $color-white;
+            color: var(--text-prominent);
         }
     }
 
@@ -615,14 +645,13 @@
     }
 
     &__content {
-        background-color: $color-black-3;
+        background-color: var(--general-section-1);
         overflow: hidden;
         transition: all 0.4s ease-in-out;
         max-height: 0;
         opacity: 0;
-        color: $color-white;
+        color: var(--text-prominent);
         padding: 1rem 0;
-        font-size: 1.2rem;
 
         &--open {
             opacity: 1;
@@ -675,10 +704,18 @@
     position: fixed;
     z-index: 1;
     left: 0;
+    right: 0;
     bottom: 7rem;
 
-    .dc-toast__message {
-        background: var(--text-general);
-        color: var(--general-main-1);
+    .dc-toast {
+        width: 100%;
+        &__message {
+            background: var(--text-prominent);
+            color: var(--general-main-1);
+        }
+    }
+
+    @include mobile {
+        bottom: 10rem;
     }
 }

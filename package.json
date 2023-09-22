@@ -24,6 +24,7 @@
         "@deriv/eslint-config-deriv": "^1.0.0-beta.3",
         "@jest/globals": "^26.5.3",
         "@nrwl/nx-cloud": "latest",
+        "@playwright/test": "^1.37.1",
         "@testing-library/jest-dom": "^5.12.0",
         "@testing-library/react": "^12.0.0",
         "@testing-library/react-hooks": "^7.0.2",
@@ -80,9 +81,9 @@
         "test": "f () { bash ./scripts/circleci-config.test.sh && npm run test:stylelint  && npm run test:eslint-all && JEST_MAX_WORKERS=6 npm run test:jest  ;}; f",
         "test:stylelint": "stylelint \"./packages/*/src/**/*.s(a|c)ss\"",
         "test:jest": "jest --all --maxWorkers=${JEST_MAX_WORKERS:-'45%'}",
-        "test:e2e": "cd end-to-end-test &&  npx playwright test",
-        "test:e2e-dev": "cd end-to-end-test &&  npx playwright test --trace on && npx playwright show-report",
-        "test:performance": "cd e2e_tests &&  jest -c ./jest.config.js --maxWorkers=2 --detectOpenHandles performance",
+        "test:e2e": "npx playwright test",
+        "test:e2e-dev": "npx playwright test --trace on && npx playwright show-report",
+        "test:performance": "cd e2e-tests &&  jest -c ./jest.config.js --maxWorkers=2 --detectOpenHandles performance",
         "stylelint:fix": "stylelint \"./packages/*/src/**/*.s(a|c)ss\" --fix",
         "translate": "f () { lerna exec --scope @deriv/translations -- npm run translate ;}; f",
         "stylelint-check": "stylelint-config-prettier-check",
@@ -90,12 +91,15 @@
     },
     "dependencies": {
         "@babel/preset-typescript": "^7.16.5",
+        "@sendbird/chat": "^4.9.7",
         "@types/react-transition-group": "^4.4.4",
         "babel-jest": "^27.3.1",
         "dotenv": "^8.2.0",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
-        "typescript": "^4.6.3"
+        "selfsigned": "^2.1.1",
+        "typescript": "^4.6.3",
+        "ws": "^8.13.0"
     },
     "optionalDependencies": {
         "fsevents": "^2.3.2"

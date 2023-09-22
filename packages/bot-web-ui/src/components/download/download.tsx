@@ -1,22 +1,18 @@
 import React from 'react';
 import { Button, Icon, Popover } from '@deriv/components';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { useDBotStore } from 'Stores/useDBotStore';
 
 type TDownloadProps = {
-    onClickDownloadTransaction: () => void;
-    onClickDownloadJournal: () => void;
     tab: string;
-    is_clear_stat_disabled: boolean;
 };
 
-const Download = ({
-    tab,
-    onClickDownloadTransaction,
-    onClickDownloadJournal,
-    is_clear_stat_disabled,
-}: TDownloadProps) => {
+const Download = observer(({ tab }: TDownloadProps) => {
+    const { download, run_panel } = useDBotStore();
+    const { is_clear_stat_disabled } = run_panel;
+    const { onClickDownloadTransaction, onClickDownloadJournal } = download;
+
     let clickFunction, popover_message;
     if (tab === 'transactions') {
         clickFunction = onClickDownloadTransaction;
@@ -31,23 +27,18 @@ const Download = ({
             classNameBubble='run-panel__info--bubble'
             alignment='bottom'
             message={popover_message}
-            zIndex={5}
+            zIndex='5'
         >
             <Button
                 id='download-button'
                 is_disabled={is_clear_stat_disabled}
-                className='download__button'
-                icon={
-                    <Icon icon='IcDownload' color={is_clear_stat_disabled && 'disabled'} className='download__icon' />
-                }
+                text={localize('Download')}
+                icon={<Icon icon='IcDbotDownload' size={18} />}
+                secondary
                 onClick={clickFunction}
             />
         </Popover>
     );
-};
+});
 
-export default connect(({ download, run_panel }: RootStore) => ({
-    onClickDownloadTransaction: download.onClickDownloadTransaction,
-    onClickDownloadJournal: download.onClickDownloadJournal,
-    is_clear_stat_disabled: run_panel.is_clear_stat_disabled,
-}))(Download);
+export default Download;

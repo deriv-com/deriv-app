@@ -16,7 +16,6 @@ import {
 import type { TransferBetweenAccountsResponse } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
 import AccountTransferGetSelectedError from '../pages/account-transfer/account-transfer-get-selected-error';
-import Constants from '../constants/constants';
 import ErrorStore from './error-store';
 import type { TRootStore, TWebSocket, TAccount, TTransferAccount, TPlatformIcon } from '../types';
 
@@ -26,7 +25,6 @@ export default class AccountTransferStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
         makeObservable(this, {
             accounts_list: observable,
-            container: observable,
             error: observable,
             has_no_account: observable,
             has_no_accounts_balance: observable,
@@ -71,7 +69,6 @@ export default class AccountTransferStore {
     }
 
     accounts_list: TAccount[] = [];
-    container: string = Constants.containers.account_transfer;
     error = new ErrorStore();
     has_no_account = false;
     has_no_accounts_balance = false;
@@ -97,7 +94,7 @@ export default class AccountTransferStore {
             account_status,
         } = this.root_store.client;
 
-        if (!account_status.status) return false;
+        if (!account_status?.status) return false;
 
         const need_financial_assessment =
             is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
@@ -237,20 +234,14 @@ export default class AccountTransferStore {
     }
 
     setTransferLimit() {
-        const is_mt_transfer = this.selected_from.is_mt || this.selected_to.is_mt;
-        const is_dxtrade_transfer = this.selected_from.is_dxtrade || this.selected_to.is_dxtrade;
-        const is_derivez_transfer = this.selected_from.is_derivez || this.selected_to.is_derivez;
+        const transfer_limits = [
+            { limits: 'limits_mt5', is_transfer: this.selected_from.is_mt || this.selected_to.is_mt },
+            { limits: 'limits_dxtrade', is_transfer: this.selected_from.is_dxtrade || this.selected_to.is_dxtrade },
+            { limits: 'limits_ctrader', is_transfer: this.selected_from.is_ctrader || this.selected_to.is_ctrader },
+            { limits: 'limits_derivez', is_transfer: this.selected_from.is_derivez || this.selected_to.is_derivez },
+        ];
 
-        let limits_key;
-        if (is_mt_transfer) {
-            limits_key = 'limits_mt5';
-        } else if (is_dxtrade_transfer) {
-            limits_key = 'limits_dxtrade';
-        } else if (is_derivez_transfer) {
-            limits_key = 'limits_derivez';
-        } else {
-            limits_key = 'limits';
-        }
+        const limits_key = transfer_limits.find(option => option.is_transfer)?.limits || 'limits';
 
         const transfer_limit = getPropertyValue(getCurrencies(), [
             this.selected_from.currency || '',
@@ -293,6 +284,9 @@ export default class AccountTransferStore {
         const dxtrade_accounts_list = (await this.WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE))
             ?.trading_platform_accounts;
 
+        const ctrader_accounts_list = (await this.WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER))
+            ?.trading_platform_accounts;
+
         const derivez_accounts_list = (await this.WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ))
             ?.trading_platform_accounts;
 
@@ -307,6 +301,17 @@ export default class AccountTransferStore {
                 if (found_account === undefined) return account;
 
                 return { ...account, ...found_account, account_type: CFD_PLATFORMS.MT5 };
+            }
+            if (
+                account.account_type === CFD_PLATFORMS.CTRADER &&
+                Array.isArray(ctrader_accounts_list) &&
+                ctrader_accounts_list.length
+            ) {
+                const found_account = ctrader_accounts_list.find(acc => acc.account_id === account.loginid);
+
+                if (found_account === undefined) return account;
+
+                return { ...account, ...found_account, account_type: CFD_PLATFORMS.CTRADER };
             }
             if (
                 account.account_type === CFD_PLATFORMS.DXTRADE &&
@@ -376,8 +381,9 @@ export default class AccountTransferStore {
         accounts?.forEach((account: TTransferAccount) => {
             const cfd_platforms = {
                 mt5: { name: 'Deriv MT5', icon: 'IcMt5' },
+                ctrader: { name: 'Deriv cTrader', icon: 'IcBrand' },
                 dxtrade: { name: 'Deriv X', icon: 'IcRebranding' },
-                derivez: { name: 'Deriv EZ', icon: 'IcDerivez' },
+                derivez: { name: 'Deriv EZ', icon: 'IcRebranding' },
             };
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const is_cfd = Object.keys(cfd_platforms).includes(account.account_type!);
@@ -390,6 +396,7 @@ export default class AccountTransferStore {
                         sub_account_type: account.sub_account_type,
                         platform: account.account_type,
                         is_eu: this.root_store.client.is_eu,
+                        is_transfer_form: true,
                     })) ||
                 ''
             }`;
@@ -409,13 +416,15 @@ export default class AccountTransferStore {
                           platform: account.account_type,
                           is_eu: this.root_store.client.is_eu,
                       })} ${this.root_store.client.is_eu ? '' : non_eu_accounts}`
-                    : `${cfd_text_display} ${getCFDAccountDisplay({
-                          market_type: account.market_type,
-                          sub_account_type: account.sub_account_type,
-                          platform: account.account_type,
-                          is_eu: this.root_store.client.is_eu,
-                          is_transfer_form: true,
-                      })}`;
+                    : `${cfd_text_display} ${
+                          getCFDAccountDisplay({
+                              market_type: account.market_type,
+                              sub_account_type: account.sub_account_type,
+                              platform: account.account_type,
+                              is_eu: this.root_store.client.is_eu,
+                              is_transfer_form: true,
+                          }) || ''
+                      }`;
             const account_text_display = is_cfd
                 ? cfd_account_text_display
                 : getCurrencyDisplayCode(
@@ -440,6 +449,7 @@ export default class AccountTransferStore {
                 currency: account.currency,
                 is_crypto: isCryptocurrency(account.currency),
                 is_mt: account.account_type === CFD_PLATFORMS.MT5,
+                is_ctrader: account.account_type === CFD_PLATFORMS.CTRADER,
                 is_dxtrade: account.account_type === CFD_PLATFORMS.DXTRADE,
                 is_derivez: account.account_type === CFD_PLATFORMS.DERIVEZ,
                 ...(is_cfd && {
@@ -645,6 +655,17 @@ export default class AccountTransferStore {
                         // update the balance for account switcher by renewing the dxtrade_login_list_response
                         responseTradingPlatformAccountsList(dxtrade_login_list_response);
                         // update total balance since Dxtrade total only comes in non-stream balance call
+                        setBalanceOtherAccounts(balance_response.balance);
+                    });
+                }
+                // if one of the accounts was ctrader
+                if (account.account_type === CFD_PLATFORMS.CTRADER) {
+                    Promise.all([
+                        this.WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER),
+                        this.WS.balanceAll(),
+                    ]).then(([ctrader_login_list_response, balance_response]) => {
+                        // update the balance for account switcher by renewing the ctrader_login_list_response
+                        responseTradingPlatformAccountsList(ctrader_login_list_response);
                         setBalanceOtherAccounts(balance_response.balance);
                     });
                 }

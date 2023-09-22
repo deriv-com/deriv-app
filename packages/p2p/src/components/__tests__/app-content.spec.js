@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import { isMobile } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import AppContent from '../app-content.jsx';
 

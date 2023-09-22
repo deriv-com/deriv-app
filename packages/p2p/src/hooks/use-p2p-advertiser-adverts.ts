@@ -13,22 +13,25 @@ import { useStores } from 'Stores/index';
 
 const useP2PAdvertiserAdverts = () => {
     const { advertiser_page_store, general_store, buy_sell_store } = useStores();
+    const { advertiser_details_id, counterparty_type } = advertiser_page_store;
+    const { selected_local_currency } = buy_sell_store;
+    const { counterparty_advertiser_id, is_advertiser_info_subscribed, list_item_limit } = general_store;
 
     const {
         data: adverts = [],
         loadMoreAdverts: loadMoreAdvertiserAdverts,
         ...rest
     } = useP2PAdvertList({
-        counterparty_type: advertiser_page_store.counterparty_type,
-        limit: general_store.list_item_limit,
+        counterparty_type,
+        limit: list_item_limit,
         advertiser_id:
-            general_store.counterparty_advertiser_id && general_store.is_advertiser_info_subscribed
-                ? general_store.counterparty_advertiser_id
-                : advertiser_page_store.advertiser_details_id,
-        ...(buy_sell_store.selected_local_currency ? { local_currency: buy_sell_store.selected_local_currency } : {}),
+            counterparty_advertiser_id && is_advertiser_info_subscribed
+                ? counterparty_advertiser_id
+                : advertiser_details_id,
+        ...(selected_local_currency ? { local_currency: selected_local_currency } : {}),
     });
+    const has_more_adverts_to_load = adverts?.length >= list_item_limit ?? false;
 
-    const has_more_adverts_to_load = adverts ? adverts?.length >= general_store.list_item_limit : false;
     return {
         adverts,
         has_more_adverts_to_load,

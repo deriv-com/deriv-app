@@ -1,5 +1,4 @@
 import React from 'react';
-import { isMobile } from '@deriv/shared';
 import { useP2PAdvertList } from '@deriv/hooks';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores/index';
@@ -24,9 +23,14 @@ const getSearchResults = (items: TAdvertList, search_term: string) => {
  * @returns { Array } - adverts that are ready to be rendered. Adverts that consist of a combination of items filtered based on the
  * Buy/Sell toggle and the search term. See useP2PRenderedAdverts for more information.
  */
-const getRenderedAdverts = (search_term: string, search_results: TAdvertList, filtered_items: TAdvertList = []) => {
+const getRenderedAdverts = (
+    search_term: string,
+    search_results: TAdvertList,
+    filtered_items: TAdvertList = [],
+    is_mobile: boolean
+) => {
     let rendered_adverts: DeepPartial<TAdvertList> = [];
-    if (isMobile()) {
+    if (is_mobile) {
         if (search_term) {
             rendered_adverts = [{ id: 'WATCH_THIS_SPACE' }, { id: 'NO_MATCH_ROW' }];
             if (search_results && search_results.length > 0) {
@@ -61,36 +65,45 @@ const getRenderedAdverts = (search_term: string, search_results: TAdvertList, fi
  *
  * */
 const useP2PRenderedAdverts = () => {
-    const { general_store, buy_sell_store } = useStores();
-    const counterparty_type = buy_sell_store.is_buy ? buy_sell.BUY : buy_sell.SELL;
+    const { general_store, buy_sell_store, ui } = useStores();
+    const {
+        sort_by,
+        should_use_client_limits,
+        is_buy,
+        selected_payment_method_value,
+        selected_local_currency,
+        table_type,
+        search_term,
+    } = buy_sell_store;
+    const { list_item_limit } = general_store;
+    const { is_mobile } = ui;
+    const counterparty_type = is_buy ? buy_sell.BUY : buy_sell.SELL;
 
     const { data: items = [], ...rest } = useP2PAdvertList({
         counterparty_type,
-        limit: general_store.list_item_limit,
-        sort_by: buy_sell_store.sort_by,
-        use_client_limits: buy_sell_store.should_use_client_limits ? 1 : 0,
-        ...(buy_sell_store.selected_payment_method_value.length > 0
-            ? { payment_method: buy_sell_store.selected_payment_method_value }
-            : {}),
-        ...(buy_sell_store.selected_local_currency ? { local_currency: buy_sell_store.selected_local_currency } : {}),
+        limit: list_item_limit,
+        sort_by,
+        use_client_limits: should_use_client_limits ? 1 : 0,
+        ...(selected_payment_method_value.length > 0 ? { payment_method: selected_payment_method_value } : {}),
+        ...(selected_local_currency ? { local_currency: selected_local_currency } : {}),
     });
 
-    const has_more_items_to_load = items ? items?.length >= general_store.list_item_limit : false;
+    const has_more_items_to_load = items?.length >= list_item_limit ?? false;
 
     // Filter out adverts based on the Buy/Sell toggle. If the toggle is set to Buy, only show Sell adverts and vice versa.
     const filtered_items = React.useMemo(() => {
         return items.filter(item =>
-            buy_sell_store.table_type === buy_sell.BUY ? item.type === buy_sell.SELL : item.type === buy_sell.BUY
+            table_type === buy_sell.BUY ? item.type === buy_sell.SELL : item.type === buy_sell.BUY
         );
-    }, [items, buy_sell_store.table_type]);
+    }, [items, table_type]);
 
     const search_results = React.useMemo(() => {
-        return getSearchResults(items, buy_sell_store.search_term);
-    }, [buy_sell_store.search_term, items]);
+        return getSearchResults(items, search_term);
+    }, [search_term, items]);
 
     const rendered_adverts = React.useMemo(() => {
-        return getRenderedAdverts(buy_sell_store.search_term, search_results, filtered_items);
-    }, [buy_sell_store.search_term, filtered_items, search_results]);
+        return getRenderedAdverts(search_term, search_results, filtered_items, is_mobile);
+    }, [search_term, filtered_items, is_mobile, search_results]);
 
     return {
         rendered_adverts,

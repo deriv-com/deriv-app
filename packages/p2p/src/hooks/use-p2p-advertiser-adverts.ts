@@ -12,10 +12,10 @@ import { useStores } from 'Stores/index';
  * */
 
 const useP2PAdvertiserAdverts = () => {
-    const { advertiser_page_store, general_store, buy_sell_store } = useStores();
+    const { advertiser_page_store, buy_sell_store, general_store } = useStores();
     const { advertiser_details_id, counterparty_type } = advertiser_page_store;
-    const { selected_local_currency } = buy_sell_store;
     const { counterparty_advertiser_id, is_advertiser_info_subscribed, list_item_limit } = general_store;
+    const { selected_local_currency } = buy_sell_store;
 
     const {
         data: adverts = [],

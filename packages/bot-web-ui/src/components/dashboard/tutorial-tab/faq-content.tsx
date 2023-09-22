@@ -1,14 +1,13 @@
 import React from 'react';
-import RootStore from 'Stores/index';
-import { Text, Accordion } from '@deriv/components';
+import { Accordion, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { useDBotStore } from 'Stores/useDBotStore';
 import { TDescription } from './tutorial-content';
 
 type TFAQContent = {
     faq_list: TFAQList[];
-    faq_search_value: string;
     hide_header?: boolean;
 };
 
@@ -17,8 +16,8 @@ type TFAQList = {
     description: TDescription[];
 };
 
-const FAQ = ({ type, content, src }: TDescription) => {
-    if (type === 'image') return <img src={src} />;
+const FAQ = ({ type, content, src, imageclass }: TDescription) => {
+    if (type === 'image') return <img src={src} className={imageclass} />;
     const is_mobile = isMobile();
 
     return (
@@ -34,7 +33,42 @@ const FAQ = ({ type, content, src }: TDescription) => {
     );
 };
 
-const FAQContent = ({ faq_list, faq_search_value, hide_header = false }: TFAQContent) => {
+const scrollToElement = (wrapper_element: HTMLElement, offset: number) => {
+    if (wrapper_element) {
+        wrapper_element.scrollTo({
+            top: offset,
+            behavior: 'smooth',
+        });
+    }
+};
+
+const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => {
+    const { dashboard } = useDBotStore();
+    const { faq_search_value } = dashboard;
+    const faq_wrapper_element = React.useRef<HTMLDivElement>(null);
+    const timer_id = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const handleAccordionClick = () => {
+        // Scroll to the top of the open accordion item.
+        // Need timer to first close the accordion item then scroll the new item to top.
+        timer_id.current = setTimeout(() => {
+            const open_accordion_element: HTMLElement | null | undefined =
+                faq_wrapper_element.current?.querySelector('.dc-accordion__item--open');
+            const previous_sibling_element = open_accordion_element?.previousElementSibling as HTMLElement;
+            if (faq_wrapper_element.current && open_accordion_element) {
+                const offset = previous_sibling_element ? previous_sibling_element.offsetTop - 80 : 0;
+                scrollToElement(faq_wrapper_element?.current, offset);
+            }
+            if (timer_id?.current) clearTimeout(timer_id.current);
+        }, 5);
+    };
+
+    React.useEffect(() => {
+        return () => {
+            if (timer_id.current) clearTimeout(timer_id.current);
+        };
+    }, []);
+
     const getList = () => {
         return faq_list.map(({ title, description }: TFAQList) => ({
             header: (
@@ -49,20 +83,24 @@ const FAQContent = ({ faq_list, faq_search_value, hide_header = false }: TFAQCon
                     {title}
                 </Text>
             ),
-            content: description.map(item => <FAQ {...item} key={`faq-description-item-${item}`} />),
+            content: description.map((item, index) => (
+                <FAQ {...item} key={`faq-description-item-${item?.content}-${index}`} />
+            )),
         }));
     };
 
     return (
         <div>
-            <div className='faq__wrapper'>
+            <div className='faq__wrapper' ref={faq_wrapper_element}>
                 {!hide_header && (
                     <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
                         {localize('FAQ')}
                     </Text>
                 )}
                 {faq_list?.length ? (
-                    <Accordion className='faq__wrapper__content' list={getList()} icon_close='' icon_open='' />
+                    <div onClick={handleAccordionClick}>
+                        <Accordion className='faq__wrapper__content' list={getList()} icon_close='' icon_open='' />
+                    </div>
                 ) : (
                     <div className='faq__wrapper__nosearch'>
                         <Text as='h1' weight='bold' line_height='xxs'>
@@ -75,8 +113,6 @@ const FAQContent = ({ faq_list, faq_search_value, hide_header = false }: TFAQCon
             </div>
         </div>
     );
-};
+});
 
-export default connect(({ dashboard }: RootStore) => ({
-    faq_search_value: dashboard.faq_search_value,
-}))(FAQContent);
+export default FAQContent;

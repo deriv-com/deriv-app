@@ -1,10 +1,10 @@
-import { DesktopWrapper, Icon, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
-import Download from 'Components/download';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { FilterDialog } from '.';
+import { Icon, Text } from '@deriv/components';
+import { Localize } from '@deriv/translations';
+import Download from 'Components/download';
 import { TJournalToolsProps } from '../journal.types';
+import { FilterDialog } from '.';
 
 const JournalTools = ({
     checked_filters,
@@ -18,9 +18,7 @@ const JournalTools = ({
     return (
         <>
             <div className='journal-tools__container'>
-                <DesktopWrapper>
-                    <Download tab='journal' />
-                </DesktopWrapper>
+                <Download tab='journal' />
                 <div ref={toggle_ref} className='journal-tools__container-filter' onClick={toggleFilterDialog}>
                     <Text size='xs' className='journal-tools__container-filter--label'>
                         <Localize i18n_default_text='Filters' />

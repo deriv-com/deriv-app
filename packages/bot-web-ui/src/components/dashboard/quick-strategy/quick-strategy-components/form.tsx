@@ -1,13 +1,13 @@
-import { ThemedScrollbars, Text } from '@deriv/components';
-import { isSafari, isMobile } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import React from 'react';
 import classNames from 'classnames';
 import { Form, Formik, FormikProps } from 'formik';
-import React from 'react';
 import * as Yup from 'yup';
-import { QuickStrategyFields, QuickStrategyFooter } from '.';
+import { Text, ThemedScrollbars } from '@deriv/components';
+import { isMobile, isSafari } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { TQuickStrategyFormValues } from '../quick-strategy.types';
 import { TQuickStrategyForm } from './components.types';
+import { QuickStrategyFields, QuickStrategyFooter } from '.';
 
 const QuickStrategyForm = ({
     duration_unit_dropdown,
@@ -84,7 +84,7 @@ const QuickStrategyForm = ({
                             'quick-strategy__form--active-keyboard': is_onscreen_keyboard_active,
                         })}
                     >
-                        <ThemedScrollbars height='calc(100vh - 24rem)' autohide is_bypassed={is_mobile}>
+                        <ThemedScrollbars autohide is_bypassed={is_mobile} className='quick-strategy__form-scrollbar'>
                             <div
                                 className={classNames('quick-strategy__form-content', {
                                     'quick-strategy__form-content--active-keyboard': is_onscreen_keyboard_active,

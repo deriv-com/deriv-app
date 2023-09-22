@@ -1,25 +1,26 @@
+import { TStores } from '@deriv/stores/types';
+import type { TDbot, TWebSocket } from 'Types';
+import AppStore from './app-store';
+import BlocklyStore from './blockly-store';
 import ChartStore from './chart-store';
+import DashboardStore from './dashboard-store';
+import DataCollectionStore from './data-collection-store';
 import DownloadStore from './download-store';
-import FlyoutStore from './flyout-store';
 import FlyoutHelpStore from './flyout-help-store';
+import FlyoutStore from './flyout-store';
 import GoogleDriveStore from './google-drive-store';
 import JournalStore from './journal-store';
 import LoadModalStore from './load-modal-store';
-import RunPanelStore from './run-panel-store';
-import SaveModalStore from './save-modal-store';
-import SummaryStore from './summary-store';
-import SummaryCardStore from './summary-card-store';
-import ToolbarStore from './toolbar-store';
-import TransactionsStore from './transactions-store';
 import QuickStrategyStore from './quick-strategy-store';
 import RoutePromptDialogStore from './route-prompt-dialog-store';
-import DataCollectionStore from './data-collection-store';
-import BlocklyStore from './blockly-store';
+import RunPanelStore from './run-panel-store';
+import SaveModalStore from './save-modal-store';
 import SelfExclusionStore from './self-exclusion-store';
+import SummaryCardStore from './summary-card-store';
+import SummaryStore from './summary-store';
+import ToolbarStore from './toolbar-store';
 import ToolboxStore from './toolbox-store';
-import AppStore from './app-store';
-import DashboardStore from './dashboard-store';
-import type { TDbot, TWebSocket, TRootStore } from 'Types';
+import TransactionsStore from './transactions-store';
 
 // TODO: need to write types for the individual classes and convert them to ts
 export default class RootStore {
@@ -48,7 +49,7 @@ export default class RootStore {
     public blockly_store: BlocklyStore;
     public data_collection_store: DataCollectionStore;
 
-    constructor(core: TRootStore, ws: TWebSocket, dbot: TDbot) {
+    constructor(core: TStores, ws: TWebSocket, dbot: TDbot) {
         this.ws = ws;
         this.dbot = dbot;
         this.app = new AppStore(this, core);

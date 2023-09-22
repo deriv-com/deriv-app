@@ -2,10 +2,10 @@
     "name": "@deriv/components",
     "version": "1.0.0",
     "description": "deriv components",
-    "main": "src/index.js",
+    "main": "src/index.ts",
     "private": true,
     "engines": {
-        "node": "^16.16.0"
+        "node": "18.x"
     },
     "scripts": {
         "start": "rimraf lib && npm run test && npm run serve",
@@ -41,7 +41,10 @@
         "@storybook/manager-webpack5": "^6.5.10",
         "@storybook/react": "^6.5.10",
         "@storybook/testing-library": "^0.0.13",
+        "@testing-library/jest-dom": "^5.12.0",
         "@testing-library/react": "^12.0.0",
+        "@testing-library/react-hooks": "^7.0.2",
+        "@testing-library/user-event": "^13.5.0",
         "@types/lodash.throttle": "^4.1.7",
         "@types/react": "^18.0.7",
         "@types/react-dom": "^18.0.0",
@@ -57,7 +60,7 @@
         "eslint-plugin-react": "^7.22.0",
         "eslint-plugin-react-hooks": "^4.2.0",
         "lint-staged": "^10.4.0",
-        "node-sass": "^7.0.1",
+        "sass": "^1.62.1",
         "sass-loader": "^12.6.0",
         "sass-resources-loader": "^2.1.1",
         "style-loader": "^1.2.1",
@@ -73,6 +76,7 @@
         "@deriv/shared": "^1.0.0",
         "@deriv/translations": "^1.0.0",
         "classnames": "^2.2.6",
+        "embla-carousel-react": "^8.0.0-rc12",
         "gh-pages": "^2.1.1",
         "glob": "^7.1.5",
         "lodash.throttle": "^4.1.1",

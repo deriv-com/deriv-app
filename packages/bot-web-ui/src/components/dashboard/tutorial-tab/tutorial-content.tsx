@@ -1,7 +1,7 @@
-import { localize } from '@deriv/translations';
 import { getImageLocation } from '../../../public-path';
+import { localize } from '@deriv/translations';
 
-export type TDescription = Pick<TContent, 'type' | 'content' | 'src'>;
+export type TDescription = Pick<TContent, 'type' | 'content' | 'src' | 'imageclass'>;
 
 export type TFaqContent = Pick<TContent, 'title' | 'description' | 'src'>;
 
@@ -18,21 +18,22 @@ export type TContent = {
     title: string;
     type: string;
     url?: string;
+    imageclass?: string;
 };
 export const user_guide_content: TUserGuideContent[] = [
     {
         id: 1,
         type: 'Tour',
         subtype: 'OnBoard',
-        content: localize('Get started on DBot'),
-        src: getImageLocation('onboard-tour.png'),
+        content: localize('Get started on Deriv Bot'),
+        src: getImageLocation('dbot-onboard-tour.png'),
     },
     {
         id: 2,
         type: 'Tour',
         subtype: 'BotBuilder',
         content: localize('Let’s build a bot!'),
-        src: getImageLocation('builder-tour.png'),
+        src: getImageLocation('bot-builder-tour.png'),
     },
 ];
 
@@ -40,7 +41,7 @@ export const guide_content: TGuideContent[] = [
     {
         id: 1,
         type: 'DBotVideo',
-        content: localize('DBot - your automated trading partner'),
+        content: localize('Deriv Bot - your automated trading partner'),
         url: 'https://www.youtube.com/embed/QdI5zCkO4Gk',
         src: getImageLocation('video_dbot.webp'),
     },
@@ -48,12 +49,12 @@ export const guide_content: TGuideContent[] = [
 
 export const faq_content: TFaqContent[] = [
     {
-        title: localize('What is DBot?'),
+        title: localize('What is Deriv Bot?'),
         description: [
             {
                 type: 'text',
                 content: localize(
-                    "DBot is a web-based strategy builder for trading digital options. It’s a platform where you can build your own automated trading bot using drag-and-drop 'blocks'."
+                    "Deriv Bot is a web-based strategy builder for trading digital options. It’s a platform where you can build your own automated trading bot using drag-and-drop 'blocks'."
                 ),
             },
         ],
@@ -130,7 +131,7 @@ export const faq_content: TFaqContent[] = [
         ],
     },
     {
-        title: localize('Do you offer pre-built trading bots on DBot?'),
+        title: localize('Do you offer pre-built trading bots on Deriv Bot?'),
         description: [
             {
                 type: 'text',
@@ -146,7 +147,7 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'text',
                 content: localize(
-                    "A quick strategy is a ready-made strategy that you can use in DBot. There are 3 quick strategies you can choose from: Martingale, D'Alembert, and Oscar's Grind."
+                    "A quick strategy is a ready-made strategy that you can use in Deriv Bot. There are 3 quick strategies you can choose from: Martingale, D'Alembert, and Oscar's Grind."
                 ),
             },
             {
@@ -191,7 +192,7 @@ export const faq_content: TFaqContent[] = [
         ],
     },
     {
-        title: localize('How do I import my own trading bot into DBot?'),
+        title: localize('How do I import my own trading bot into Deriv Bot?'),
         description: [
             {
                 type: 'text',
@@ -270,17 +271,18 @@ export const faq_content: TFaqContent[] = [
         ],
     },
     {
-        title: localize('How do I control my losses with DBot?'),
+        title: localize('How do I control my losses with Deriv Bot?'),
         description: [
             {
                 type: 'text',
                 content: localize(
-                    'There are several ways to control your losses with DBot. Here’s a simple example of how you can implement loss control in your strategy:'
+                    'There are several ways to control your losses with Deriv Bot. Here’s a simple example of how you can implement loss control in your strategy:'
                 ),
             },
             {
                 type: 'image',
                 src: getImageLocation('loss_control.png'),
+                imageclass: 'loss-control',
             },
             {
                 type: 'text',
@@ -289,25 +291,25 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'text',
                 content: localize(
-                    '- <strong>currentPL</strong>: Use this variable to store the cumulative profit or loss while your bot is running. Set the initial value to <strong>0</strong>.'
+                    '- <strong>current profit/loss</strong>: Use this variable to store the cumulative profit or loss while your bot is running. Set the initial value to <strong>0</strong>.'
                 ),
             },
             {
                 type: 'text',
                 content: localize(
-                    '- <strong>currentStake</strong>: Use this variable to store the stake amount used in the last contract. You can assign any amount you want, but it must be a positive number.'
+                    '- <strong>current stake</strong>: Use this variable to store the stake amount used in the last contract. You can assign any amount you want, but it must be a positive number.'
                 ),
             },
             {
                 type: 'text',
                 content: localize(
-                    '- <strong>maximumLoss</strong>: Use this variable to store your maximum loss limit. You can assign any amount you want, but it must be a positive number.'
+                    '- <strong>maximum loss</strong>: Use this variable to store your maximum loss limit. You can assign any amount you want, but it must be a positive number.'
                 ),
             },
             {
                 type: 'text',
                 content: localize(
-                    '- <strong>tradeAgain</strong>: Use this variable to stop trading when your loss limit is reached. Set the initial value to <strong>true</strong>.'
+                    '- <strong>trade again</strong>: Use this variable to stop trading when your loss limit is reached. Set the initial value to <strong>true</strong>.'
                 ),
             },
             {
@@ -317,7 +319,7 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'text',
                 content: localize(
-                    '2. Use a logic block to check if <strong>currentPL</strong> exceeds <strong>maximumLoss</strong>. If it does, set <strong>tradeAgain</strong> to false to prevent the bot from running another cycle.'
+                    '2. Use a logic block to check if <strong>current profit/loss</strong> exceeds <strong>maximum loss</strong>. If it does, set <strong>trade again</strong> to false to prevent the bot from running another cycle.'
                 ),
             },
             {
@@ -327,7 +329,7 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'text',
                 content: localize(
-                    '3. Update <strong>currentPL</strong> with the profit from the last contract. If the last contract was lost, the value of <strong>currentPL</strong> will be negative.'
+                    '3. Update <strong>current profit/loss</strong> with the profit from the last contract. If the last contract was lost, the value of <strong>current profit/loss</strong> will be negative.'
                 ),
             },
             {
@@ -337,7 +339,7 @@ export const faq_content: TFaqContent[] = [
         ],
     },
     {
-        title: localize('Can I run DBot on multiple tabs in my web browser?'),
+        title: localize('Can I run Deriv Bot on multiple tabs in my web browser?'),
         description: [
             {
                 type: 'text',
@@ -348,11 +350,11 @@ export const faq_content: TFaqContent[] = [
         ],
     },
     {
-        title: localize('Can I trade cryptocurrencies on DBot?'),
+        title: localize('Can I trade cryptocurrencies on Deriv Bot?'),
         description: [
             {
                 type: 'text',
-                content: localize("No, we don't offer cryptocurrencies on DBot."),
+                content: localize("No, we don't offer cryptocurrencies on Deriv Bot."),
             },
         ],
     },
@@ -362,13 +364,13 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'text',
                 content: localize(
-                    "No, we don't. However, you'll find quick strategies on DBot that'll help you build your own trading bot for free."
+                    "No, we don't. However, you'll find quick strategies on Deriv Bot that'll help you build your own trading bot for free."
                 ),
             },
         ],
     },
     {
-        title: localize('In which countries is DBot available?'),
+        title: localize('In which countries is Deriv Bot available?'),
         description: [
             {
                 type: 'text',
@@ -379,11 +381,11 @@ export const faq_content: TFaqContent[] = [
         ],
     },
     {
-        title: localize('If I close my web browser, will DBot continue to run?'),
+        title: localize('If I close my web browser, will Deriv Bot continue to run?'),
         description: [
             {
                 type: 'text',
-                content: localize('No, DBot will stop running when your web browser is closed.'),
+                content: localize('No, Deriv Bot will stop running when your web browser is closed.'),
             },
         ],
     },
@@ -393,7 +395,7 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'text',
                 content: localize(
-                    "Three of the most commonly used strategies in automated trading are Martingale, D'Alembert, and Oscar's Grind — you can find them all ready-made and waiting for you in DBot."
+                    "Three of the most commonly used strategies in automated trading are Martingale, D'Alembert, and Oscar's Grind — you can find them all ready-made and waiting for you in Deriv Bot."
                 ),
             },
         ],
@@ -404,7 +406,7 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'text',
                 content: localize(
-                    '<a href="https://www.youtube.com/watch?v=QdI5zCkO4Gk&t=203s" target="_blank">Watch this video</a> to learn how to build a trading bot on DBot. Also, <a href="https://deriv.com/academy/blog/posts/how-to-build-a-basic-trading-bot-with-dbot/" target="_blank">check out this blog post</a> on building a trading bot.'
+                    '<a href="https://www.youtube.com/watch?v=QdI5zCkO4Gk&t=203s" target="_blank">Watch this video</a> to learn how to build a trading bot on Deriv Bot. Also, <a href="https://deriv.com/academy/blog/posts/how-to-build-a-basic-trading-bot-with-dbot/" target="_blank">check out this blog post</a> on building a trading bot.'
                 ),
             },
         ],

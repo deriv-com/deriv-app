@@ -21,7 +21,7 @@ import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-n
 const NotificationsList = ({ notifications, toggleDialog }) => {
     const getNotificationitemIcon = item => {
         const { type } = item;
-        if (['contract_sold', 'info'].includes(type)) {
+        if (['contract_sold', 'info', 'news', 'promotions'].includes(type)) {
             return 'IcAlertInfo';
         } else if (type === 'p2p_completed_order') {
             return 'IcAlertAnnounce';

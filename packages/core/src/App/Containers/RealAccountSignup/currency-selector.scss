@@ -106,6 +106,12 @@
             top: -5.8rem;
         }
     }
+
+    &__loading-wrapper {
+        @include desktop {
+            min-width: 768px;
+        }
+    }
 }
 
 .currency-hr {

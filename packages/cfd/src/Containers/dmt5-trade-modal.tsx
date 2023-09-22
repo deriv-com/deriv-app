@@ -1,6 +1,7 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Text, Button, Icon, Money, Popover } from '@deriv/components';
-import { TPasswordBoxProps, TTradingPlatformAccounts, TCFDDashboardContainer } from '../Components/props.types';
+import { TPasswordBoxProps, TTradingPlatformAccounts } from '../Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import {
     CFD_PLATFORMS,
@@ -15,6 +16,7 @@ import { Localize, localize } from '@deriv/translations';
 import { CFDAccountCopy } from '../Components/cfd-account-copy';
 import { getPlatformMt5DownloadLink, getMT5WebTerminalLink } from '../Helpers/constants';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import { TCFDPasswordReset } from './props.types';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid;
@@ -22,22 +24,26 @@ type TMT5TradeModalProps = {
     onPasswordManager: (
         arg1: string | undefined,
         arg2: string,
-        arg3: string,
+        group: TCFDPasswordReset['account_group'],
         arg4: string,
         arg5: string | undefined
     ) => void;
     toggleModal: () => void;
-    dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
 };
 
 export type TSpecBoxProps = {
     value: string | undefined;
     is_bold?: boolean;
+    is_broker?: boolean;
 };
 
-const SpecBox = ({ value, is_bold }: TSpecBoxProps) => (
+const SpecBox = ({ value, is_bold, is_broker }: TSpecBoxProps) => (
     <div className='cfd-trade-modal__spec-box'>
-        <Text size='xs' weight={is_bold ? 'bold' : ''} className='cfd-trade-modal__spec-text'>
+        <Text
+            size='xs'
+            weight={is_bold ? 'bold' : ''}
+            className={classNames('cfd-trade-modal__spec-text', { 'cfd-trade-modal__spec-text-broker': is_broker })}
+        >
             {value}
         </Text>
         <CFDAccountCopy text={value} className='cfd-trade-modal__spec-copy' />
@@ -150,7 +156,7 @@ const DMT5TradeModal = ({
             <div className='cfd-trade-modal__login-specs'>
                 <div className='cfd-trade-modal__login-specs-item'>
                     <Text className='cfd-trade-modal--paragraph'>{localize('Broker')}</Text>
-                    <SpecBox is_bold value={'Deriv Limited'} />
+                    <SpecBox is_bold is_broker value={'Deriv Holdings (Guernsey) Limited'} />
                 </div>
                 <div className='cfd-trade-modal__login-specs-item'>
                     <Text className='cfd-trade-modal--paragraph'>{localize('Server')}</Text>
@@ -169,7 +175,7 @@ const DMT5TradeModal = ({
                                 const account_type = getCFDAccountKey({
                                     market_type: mt5_trade_account.market_type,
                                     sub_account_type: mt5_trade_account.sub_account_type,
-                                    platform: CFD_PLATFORMS.DMT5,
+                                    platform: CFD_PLATFORMS.MT5,
                                     shortcode: mt5_trade_account.landing_company_short,
                                 });
                                 onPasswordManager(

@@ -10,7 +10,7 @@ jest.mock('Modules/SmartChart', () => ({
 describe('AccumulatorsProfitLossText', () => {
     const props = {
         className: 'profit-loss-text',
-        currency: 'USD test',
+        currency: 'USD',
         profit: +0.35,
     };
 
@@ -19,6 +19,6 @@ describe('AccumulatorsProfitLossText', () => {
         const text_el = screen.getByTestId('dt_accumulator_profit_text');
         expect(text_el).toHaveClass('profit-loss-text__profit');
         expect(screen.getByText('3')).toHaveClass('profit-loss-text__sliding-tenth');
-        expect(screen.getByText('USD test')).toHaveClass('profit-loss-text__currency');
+        expect(screen.getByText('USD')).toHaveClass('profit-loss-text__currency');
     });
 });

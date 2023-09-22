@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { loginUrl, routes, PlatformContext } from '@deriv/shared';
+import { loginUrl, routes, SessionStore } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
@@ -23,7 +22,6 @@ const Redirect = ({
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
-    const { is_appstore } = React.useContext(PlatformContext);
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
 
@@ -32,20 +30,12 @@ const Redirect = ({
 
     switch (action_param) {
         case 'signup': {
-            if (is_appstore) {
-                // TODO: redirect
-                // history.push({
-                //     pathname: routes.dashboard,
-                //     search: url_query_string,
-                // });
-                // redirected_to_route = true;
-            } else {
-                history.push({
-                    pathname: routes.onboarding,
-                    search: url_query_string,
-                });
-            }
-            sessionStorage.removeItem('redirect_url');
+            SessionStore.set('signup_query_param', url_query_string);
+            history.push({
+                pathname: routes.onboarding,
+                search: url_query_string,
+            });
+            SessionStore.remove('redirect_url');
             redirected_to_route = true;
             toggleAccountSignupModal(true);
             break;
@@ -153,7 +143,7 @@ const Redirect = ({
         }
         case 'verification': {
             // Removing this will break mobile DP2P app. Do not remove.
-            sessionStorage.setItem('redirect_url', routes.cashier_p2p_verification);
+            sessionStorage.setItem('redirect_url', routes.p2p_verification);
             const new_href = loginUrl({
                 language: getLanguage(),
             });
@@ -180,7 +170,7 @@ const Redirect = ({
             break;
     }
 
-    if (!redirected_to_route) {
+    if (!redirected_to_route && history.location.pathname !== routes.root) {
         history.push({
             pathname: routes.root,
             search: url_query_string,
@@ -210,7 +200,6 @@ Redirect.propTypes = {
 export default withRouter(
     connect(({ client, ui }) => ({
         currency: client.currency,
-        loginid: client.loginid,
         is_eu: client.is_eu,
         setVerificationCode: client.setVerificationCode,
         verification_code: client.verification_code,

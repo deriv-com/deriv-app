@@ -1,7 +1,8 @@
 import { toJS } from 'mobx';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'Stores/connect';
+import { useTraderStore } from 'Stores/useTraderStores';
+import { observer, useStore } from '@deriv/stores';
 
 const styles = {
     container: {
@@ -30,7 +31,16 @@ const styles = {
     },
 };
 
-const Test = props => {
+const Test = observer(() => {
+    const stores = useStore();
+    const trade_store = useTraderStore();
+    const test_stores = {
+        trade: Object.entries(trade_store),
+        client: Object.entries(stores.client),
+        ui: Object.entries(stores.ui),
+        portfolio: Object.entries(stores.portfolio),
+    };
+
     const [is_visible, setIsVisible] = React.useState(false);
     const [store, setStore] = React.useState('trade');
 
@@ -63,7 +73,7 @@ const Test = props => {
     return (
         <code id='state_info' style={{ ...container, display: is_visible ? 'block' : 'none' }}>
             <div style={tabs}>
-                {Object.keys(props).map(storage => (
+                {Object.keys(test_stores).map(storage => (
                     <p
                         key={storage}
                         onClick={() => setStore(storage)}
@@ -73,18 +83,13 @@ const Test = props => {
                     </p>
                 ))}
             </div>
-            {props[store].sort().map(renderStoreContent)}
+            {test_stores[store].sort().map(renderStoreContent)}
         </code>
     );
-};
+});
 
 Test.propTypes = {
     entries: PropTypes.array,
 };
 
-export default connect(({ modules, client, ui, portfolio }) => ({
-    trade: Object.entries(modules.trade),
-    client: Object.entries(client),
-    ui: Object.entries(ui),
-    portfolio: Object.entries(portfolio),
-}))(Test);
+export default Test;

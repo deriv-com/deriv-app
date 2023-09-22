@@ -139,14 +139,16 @@ export default class MyAdsStore extends BaseStore {
         this.setIsLoading(true);
         if (!this.root_store.general_store.is_advertiser) {
             requestWS({ get_account_status: 1 }).then(response => {
-                if (!response.error) {
-                    const { get_account_status } = response;
-                    const { status } = get_account_status.authentication.identity;
-                    this.root_store.general_store.setPoiStatus(status);
-                } else {
-                    this.setErrorMessage(response.error);
+                if (response) {
+                    if (!response.error) {
+                        const { get_account_status } = response;
+                        const { status } = get_account_status.authentication.identity;
+                        this.root_store.general_store.setPoiStatus(status);
+                    } else {
+                        this.setErrorMessage(response.error);
+                    }
+                    this.setIsLoading(false);
                 }
-                this.setIsLoading(false);
             });
         } else {
             this.setIsLoading(false);
@@ -283,6 +285,10 @@ export default class MyAdsStore extends BaseStore {
                         });
                     } else {
                         setIsAdvertActive(!!response.p2p_advert_update.is_active);
+                        const updated_items = this.adverts.map(ad =>
+                            ad.id === response.p2p_advert_update.id ? response.p2p_advert_update : ad
+                        );
+                        this.setAdverts(updated_items);
                     }
                 }
                 this.setSelectedAdId('');

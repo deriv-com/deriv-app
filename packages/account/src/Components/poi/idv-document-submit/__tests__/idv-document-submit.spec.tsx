@@ -5,8 +5,8 @@ import IdvDocumentSubmit from '../idv-document-submit';
 
 jest.mock('react-router');
 jest.mock('Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
-jest.mock('Helpers/utils.ts', () => ({
-    ...jest.requireActual('Helpers/utils.ts'),
+jest.mock('Helpers/utils', () => ({
+    ...jest.requireActual('Helpers/utils'),
     getDocumentData: jest.fn((country_code, key) => {
         const data = {
             tc: {
@@ -61,7 +61,7 @@ describe('<IdvDocumentSubmit/>', () => {
                             document_1: { display_name: 'Test document 1 name', format: '5436454364243' },
                             document_2: { display_name: 'Test document 2 name', format: 'A54321' },
                         },
-                        has_visual_sample: true,
+                        has_visual_sample: 1,
                     },
                 },
             },
@@ -80,7 +80,7 @@ describe('<IdvDocumentSubmit/>', () => {
         expect(screen.queryByText('Please select a document type.')).not.toBeInTheDocument();
 
         const inputs = screen.getAllByRole<HTMLTextAreaElement>('textbox');
-        expect(inputs.length).toBe(5);
+        expect(inputs).toHaveLength(5);
         expect(inputs[0].name).toBe('document_type');
         expect(inputs[1].name).toBe('document_number');
     });
@@ -93,7 +93,7 @@ describe('<IdvDocumentSubmit/>', () => {
         expect(mock_props.handleBack).toHaveBeenCalledTimes(1);
 
         const document_type_input = screen.getByLabelText('Choose the document type');
-        const document_number_input = screen.getByPlaceholderText('Enter your document number');
+        const document_number_input = screen.getByLabelText('Enter your document number');
         expect(document_number_input).toBeDisabled();
         expect(screen.queryByText('Test document 1 name')).not.toBeInTheDocument();
         expect(screen.queryByText('Test document 2 name')).not.toBeInTheDocument();
@@ -122,7 +122,7 @@ describe('<IdvDocumentSubmit/>', () => {
 
         const document_type_input = screen.getByRole<HTMLTextAreaElement>('combobox');
         expect(document_type_input.name).toBe('document_type');
-        const document_number_input = screen.getByPlaceholderText<HTMLTextAreaElement>('Enter your document number');
+        const document_number_input = screen.getByLabelText<HTMLTextAreaElement>('Enter your document number');
         expect(document_number_input.name).toBe('document_number');
         expect(document_number_input).toBeDisabled();
 
@@ -137,7 +137,7 @@ describe('<IdvDocumentSubmit/>', () => {
         fireEvent.change(document_number_input, { target: { value: 'A-32523' } });
         expect(await screen.findByText(/please enter the correct format/i)).toBeInTheDocument();
 
-        fireEvent.change(document_number_input, { target: { value: '5436454364243' } });
+        fireEvent.change(document_number_input, { target: { value: 'A54321' } });
         await waitFor(() => {
             expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
             expect(screen.queryByText(/please enter a valid ID number/i)).not.toBeInTheDocument();

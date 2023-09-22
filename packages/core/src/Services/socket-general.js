@@ -204,9 +204,6 @@ const BinarySocketGeneral = (() => {
                 ) {
                     return;
                 }
-                if (!['reset_password'].includes(msg_type)) {
-                    if (window.TrackJS) window.TrackJS.track('Custom InvalidToken error');
-                }
                 // eslint-disable-next-line no-case-declarations
                 const active_platform = getActivePlatform(common_store.app_routing_history);
 

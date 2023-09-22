@@ -1,6 +1,8 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { CFDRealAccountDisplay } from '../cfd-real-account-display';
+import { mockStore } from '@deriv/stores';
+import CFDProviders from '../../cfd-providers';
 
 const mock_connect_props = {
     dxtrade_tokens: {
@@ -10,12 +12,6 @@ const mock_connect_props = {
     setMT5TradeAccount: jest.fn(),
     isEligibleForMoreRealMt5: () => true,
 };
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => props => Component({ ...props, ...mock_connect_props }),
-}));
 
 describe('<CFDRealAccountDisplay />', () => {
     const TESTED_CASES = {
@@ -213,21 +209,25 @@ describe('<CFDRealAccountDisplay />', () => {
     };
 
     it('should render Derived & Financial cards with enabled buttons on Deriv MT5 when is_logged_in=true & is_eu=false', () => {
-        render(<CFDRealAccountDisplay {...props} />);
+        render(<CFDRealAccountDisplay {...props} />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore({})}>{children}</CFDProviders>,
+        });
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         const add_real_account_buttons = screen.getAllByRole('button', { name: /add real account/i });
-        expect(add_real_account_buttons.length).toBe(2);
+        expect(add_real_account_buttons.length).toBe(4);
 
         fireEvent.click(add_real_account_buttons[0]);
         expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'synthetic', category: 'real', platform: 'mt5' });
 
-        fireEvent.click(add_real_account_buttons[1]);
+        fireEvent.click(add_real_account_buttons[2]);
         expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'financial', category: 'real', platform: 'mt5' });
     });
 
     it('should render Derived & Financial cards without "Add real account" buttons on Deriv MT5 when is_logged_in=false & is_eu_country=false', () => {
-        render(<CFDRealAccountDisplay {...props} is_logged_in={false} />);
+        render(<CFDRealAccountDisplay {...props} is_logged_in={false} />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore({})}>{children}</CFDProviders>,
+        });
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
@@ -241,31 +241,38 @@ describe('<CFDRealAccountDisplay />', () => {
                 show_eu_related_content
                 should_enable_add_button
                 account_settings={account_settings_eu}
-            />
+            />,
+            {
+                wrapper: ({ children }) => <CFDProviders store={mockStore({})}>{children}</CFDProviders>,
+            }
         );
 
         checkAccountCardsRendering(TESTED_CASES.EU);
-        const add_real_account_button = screen.getByRole('button', { name: /add real account/i });
-        expect(add_real_account_button).toBeEnabled();
+        const add_real_account_button = screen.getAllByRole('button', { name: /add real account/i });
+        expect(add_real_account_button[0]).toBeEnabled();
 
-        fireEvent.click(add_real_account_button);
+        fireEvent.click(add_real_account_button[0]);
         expect(props.openDerivRealAccountNeededModal).toHaveBeenCalledTimes(1);
     });
 
     it('should render a CFDs card only without "Add real account" button on Deriv MT5 when is_logged_in=false & is_eu_country=true (also when redirected from Deriv X platform)', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
-        render(<CFDRealAccountDisplay {...props} is_logged_in={false} show_eu_related_content />);
+        render(<CFDRealAccountDisplay {...props} is_logged_in={false} show_eu_related_content />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore({})}>{children}</CFDProviders>,
+        });
 
         checkAccountCardsRendering(TESTED_CASES.EU);
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
     });
 
     it('should render Derived & Financial cards with enabled buttons on Deriv X when is_logged_in=true & is_eu=false', () => {
-        render(<CFDRealAccountDisplay {...props} platform='dxtrade' />);
+        render(<CFDRealAccountDisplay {...props} platform='dxtrade' />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore({})}>{children}</CFDProviders>,
+        });
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
         const add_real_account_buttons = screen.getAllByRole('button', { name: /add real account/i });
-        expect(add_real_account_buttons.length).toBe(3);
+        expect(add_real_account_buttons.length).toBe(6);
 
         fireEvent.click(add_real_account_buttons[0]);
         expect(props.onSelectAccount).toHaveBeenCalledWith({
@@ -274,7 +281,7 @@ describe('<CFDRealAccountDisplay />', () => {
             platform: 'dxtrade',
         });
 
-        fireEvent.click(add_real_account_buttons[1]);
+        fireEvent.click(add_real_account_buttons[2]);
         expect(props.onSelectAccount).toHaveBeenCalledWith({
             type: 'financial',
             category: 'real',
@@ -283,19 +290,23 @@ describe('<CFDRealAccountDisplay />', () => {
     });
 
     it('should render Derived & Financial cards without "Add real account" buttons on Deriv X when is_logged_in=false & is_eu_country=false', () => {
-        render(<CFDRealAccountDisplay {...props} is_logged_in={false} platform='dxtrade' />);
+        render(<CFDRealAccountDisplay {...props} is_logged_in={false} platform='dxtrade' />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore({})}>{children}</CFDProviders>,
+        });
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
     });
 
     it('should show "Switch to your real account", which opens Account Switcher, on Deriv X cards when has_real_account=true & is_virtual=true', () => {
-        render(<CFDRealAccountDisplay {...props} is_virtual platform='dxtrade' />);
+        render(<CFDRealAccountDisplay {...props} is_virtual platform='dxtrade' />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore({})}>{children}</CFDProviders>,
+        });
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
         const switch_to_real_account_links = screen.getAllByText('Switch to your real account');
-        expect(switch_to_real_account_links.length).toBe(3);
+        expect(switch_to_real_account_links.length).toBe(6);
 
         fireEvent.click(switch_to_real_account_links[0]);
         expect(props.toggleShouldShowRealAccountsList).toHaveBeenCalledWith(true);
@@ -303,7 +314,9 @@ describe('<CFDRealAccountDisplay />', () => {
     });
 
     it('should disable all "Add real account" buttons when has_cfd_account_error=true', () => {
-        render(<CFDRealAccountDisplay {...props} has_cfd_account_error />);
+        render(<CFDRealAccountDisplay {...props} has_cfd_account_error />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore({})}>{children}</CFDProviders>,
+        });
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         const add_real_account_buttons = screen.getAllByRole('button', { name: /add real account/i });

@@ -6,6 +6,7 @@ import Loading from '../templates/_common/components/loading';
 import { LandingCompany, DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TTradingPlatformAccounts, TCFDPlatform } from './props.types';
 import { TObjectCFDAccount } from '../Containers/cfd-dashboard';
+import { TCFDPasswordReset } from '../Containers/props.types';
 
 type TStandPoint = {
     financial_company: string;
@@ -39,7 +40,13 @@ type TCFDDemoAccountDisplayProps = {
             enabled: number;
         }
     >;
-    openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
+    openPasswordManager: (
+        login?: string,
+        title?: string,
+        group?: TCFDPasswordReset['account_group'],
+        type?: string,
+        server?: string
+    ) => void;
     landing_companies?: LandingCompany;
 };
 

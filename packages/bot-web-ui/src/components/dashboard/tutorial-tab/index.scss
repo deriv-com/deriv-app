@@ -34,9 +34,9 @@
             text-align: center;
             flex-direction: column;
             margin-right: 2.4rem;
-            width: 21.5rem;
             @include mobile {
                 flex-direction: row;
+                width: auto;
                 span {
                     text-align: left;
                     padding-left: 0.8rem;
@@ -69,8 +69,9 @@
         }
         &__tours {
             height: 13.5rem;
-            background-position: center center;
+            background-size: contain;
             margin-bottom: 0.8rem;
+            width: 21.5rem;
             cursor: pointer;
             @include mobile {
                 height: 8.7rem;
@@ -102,17 +103,11 @@
 .faq {
     &__wrapper {
         overflow: auto;
-        height: 100vh;
-        padding-bottom: 20rem;
+        height: calc(100vh - 180px);
+        padding-bottom: 18px;
 
         @include mobile {
-            height: calc(100vh - 27rem);
-            .dc-accordion__wrapper > div:last-child {
-                //iphone 14 specific
-                @media (min-height: 450px) and (max-height: 750px) {
-                    padding-bottom: 10rem;
-                }
-            }
+            height: calc(var(--vh) - 280px);
         }
 
         &__nosearch {
@@ -137,6 +132,12 @@
                     justify-content: space-between;
                 }
                 &-content {
+                    .loss-control {
+                        width: 80%;
+                    }
+                    img {
+                        width: 45%;
+                    }
                     @include mobile {
                         width: 100%;
 

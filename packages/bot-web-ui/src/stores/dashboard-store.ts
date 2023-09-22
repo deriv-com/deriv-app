@@ -1,9 +1,9 @@
-import { observable, action, computed, reaction, makeObservable } from 'mobx';
-import { tour_type, setTourSettings, TTourType } from '../components/dashboard/joyride-config';
-import RootStore from './root-store';
-import { clearInjectionDiv } from 'Constants/load-modal';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
+import { setColors } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
-import { setColors, blocksCoordinate } from '@deriv/bot-skeleton';
+import { clearInjectionDiv } from 'Constants/load-modal';
+import { setTourSettings, tour_type, TTourType } from '../components/dashboard/dbot-tours/utils';
+import RootStore from './root-store';
 
 export interface IDashboardStore {
     active_tab: number;
@@ -15,6 +15,7 @@ export interface IDashboardStore {
     has_started_bot_builder_tour: boolean;
     has_started_onboarding_tour: boolean;
     has_tour_ended: boolean;
+    is_web_socket_intialised: boolean;
     initInfoPanel: () => void;
     is_dialog_open: boolean;
     is_file_supported: boolean;
@@ -30,8 +31,10 @@ export interface IDashboardStore {
     setInfoPanelVisibility: (visibility: boolean) => void;
     setIsFileSupported: (is_file_supported: boolean) => void;
     setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => void;
+    setWebSocketState: (is_web_socket_intialised: boolean) => void;
     setOpenSettings: (toast_message: string, show_toast: boolean) => void;
     setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
+    setStrategySaveType: (param: string) => void;
     show_toast: boolean;
     showVideoDialog: (param: { [key: string]: string }) => void;
     strategy_save_type: string;
@@ -62,12 +65,14 @@ export default class DashboardStore implements IDashboardStore {
             is_info_panel_visible: observable,
             is_preview_on_popup: observable,
             is_tour_dialog_visible: observable,
+            is_web_socket_intialised: observable,
             is_dark_mode: computed,
             onCloseDialog: action.bound,
             onCloseTour: action.bound,
             onTourEnd: action.bound,
             setActiveTab: action.bound,
             setActiveTabTutorial: action.bound,
+            setWebSocketState: action.bound,
             setBotBuilderTokenCheck: action.bound,
             setBotBuilderTourState: action.bound,
             setFAQSearchValue: action.bound,
@@ -129,7 +134,7 @@ export default class DashboardStore implements IDashboardStore {
     active_tab_tutorials = 0;
     active_tour_step_number = 0;
     dialog_options = {};
-    faq_search_value = null || '';
+    faq_search_value = '';
     getFileArray = [];
     has_builder_token = '';
     has_file_loaded = false;
@@ -147,6 +152,7 @@ export default class DashboardStore implements IDashboardStore {
     show_toast = false;
     strategy_save_type = 'unsaved';
     toast_message = '';
+    is_web_socket_intialised = true;
 
     get is_dark_mode() {
         const {
@@ -158,6 +164,10 @@ export default class DashboardStore implements IDashboardStore {
         } = this.root_store;
         return is_dark_mode_on;
     }
+
+    setWebSocketState = (is_web_socket_intialised: boolean) => {
+        this.is_web_socket_intialised = is_web_socket_intialised;
+    };
 
     setOpenSettings = (toast_message: string, show_toast = true) => {
         this.toast_message = toast_message;
@@ -236,7 +246,7 @@ export default class DashboardStore implements IDashboardStore {
             this.setBotBuilderTourState(false);
         }
         if (this.active_tab === 1) {
-            blocksCoordinate();
+            window.Blockly?.derivWorkspace?.cleanUp();
         }
     };
 
@@ -300,10 +310,9 @@ export default class DashboardStore implements IDashboardStore {
     };
 
     onTourEnd = (step: number, has_started_onboarding_tour: boolean): void => {
-        if (step === 7) {
+        if (step === 8) {
             this.onCloseTour();
             this.setTourEnd(tour_type);
-            this.setTourDialogVisibility(true);
         }
         if (!has_started_onboarding_tour && step === 3) {
             this.onCloseTour();

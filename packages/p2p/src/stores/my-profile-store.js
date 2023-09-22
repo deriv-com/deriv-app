@@ -101,7 +101,6 @@ export default class MyProfileStore extends BaseStore {
             initial_values: computed,
             payment_method_info: computed,
             payment_methods_list_items: computed,
-            payment_methods_list_methods: computed,
             payment_methods_list_values: computed,
             rendered_trade_partners_list: computed,
             trade_partner_dropdown_list: computed,
@@ -260,22 +259,6 @@ export default class MyProfileStore extends BaseStore {
         });
 
         return list_items;
-    }
-
-    get payment_methods_list_methods() {
-        const methods = [];
-
-        Object.entries(this.advertiser_payment_methods).forEach(key => {
-            if (methods.every(e => e.method !== key[1].method)) {
-                if (key[1].method === 'other' || key[1].method === 'bank_transfer') {
-                    methods.push({ method: key[1].method, display_name: key[1].display_name });
-                } else if (methods.every(e => e.method !== 'e_wallet')) {
-                    methods.push({ method: 'e_wallet', display_name: localize('E-wallet') });
-                }
-            }
-        });
-
-        return methods;
     }
 
     get payment_methods_list_values() {
@@ -468,11 +451,11 @@ export default class MyProfileStore extends BaseStore {
 
     getSettings() {
         requestWS({ get_settings: 1 }).then(response => {
-            const { get_settings } = response;
-            if (!response.error) {
-                this.setFullName(`${get_settings.first_name} ${get_settings.last_name}`);
+            const { get_settings } = response || {};
+            if (!response?.error) {
+                this.setFullName(`${get_settings?.first_name} ${get_settings?.last_name}`);
             } else {
-                this.setFormError(response.error.message);
+                this.setFormError(response?.error?.message);
             }
         });
     }
@@ -653,10 +636,11 @@ export default class MyProfileStore extends BaseStore {
     }
 
     updatePaymentMethod(values, { setSubmitting }) {
+        this.setIsLoading(true);
         requestWS({
             p2p_advertiser_payment_methods: 1,
             update: {
-                [this.payment_method_to_edit.ID]: {
+                [this.payment_method_to_edit.id]: {
                     ...values,
                 },
             },
@@ -668,9 +652,8 @@ export default class MyProfileStore extends BaseStore {
                 });
             } else {
                 this.setShouldShowEditPaymentMethodForm(false);
-                this.getAdvertiserPaymentMethods();
             }
-
+            this.setIsLoading(false);
             setSubmitting(false);
         });
     }
@@ -725,7 +708,7 @@ export default class MyProfileStore extends BaseStore {
 
         Object.keys(values).forEach(key => {
             const value = values[key];
-            const payment_method_field_set = this.payment_method_field_set[key];
+            const payment_method_field_set = this.payment_method_field_set[key] || this.payment_method_to_edit;
             const { display_name, required } = payment_method_field_set;
 
             if (required && !value) {

@@ -108,7 +108,7 @@ module.exports = function (env) {
                         {
                             loader: 'css-loader',
                             options: {
-                                url: false,
+                                url: (_, resourcePath) => resourcePath.includes('packages/wallets'),
                             },
                         },
                         {
@@ -131,15 +131,36 @@ module.exports = function (env) {
                             loader: 'sass-resources-loader',
                             options: {
                                 // Provide path to the file with resources
-                                // eslint-disable-next-line global-require, import/no-dynamic-require
-                                resources: require('@deriv/shared/src/styles/index.js'),
+                                resources: [
+                                    // eslint-disable-next-line global-require, import/no-dynamic-require
+                                    ...require('@deriv/shared/src/styles/index.js'),
+                                    // eslint-disable-next-line global-require, import/no-dynamic-require
+                                    ...require('@deriv/wallets/src/styles/index.js'),
+                                ],
                             },
                         },
                     ],
                 },
                 {
                     test: /\.svg$/,
-                    exclude: /node_modules|public\//,
+                    issuer: /\/packages\/wallets\/.*(\/)?.*.scss/,
+                    exclude: /node_modules/,
+                    include: /public\//,
+                    type: 'asset/resource',
+                    generator: {
+                        filename: 'appstore/wallets/public/[name].[contenthash][ext]',
+                    },
+                },
+                {
+                    test: /\.svg$/,
+                    issuer: /\/packages\/wallets\/.*(\/)?.*.tsx/,
+                    exclude: /node_modules/,
+                    include: /public\//,
+                    use: svg_loaders,
+                },
+                {
+                    test: /\.svg$/,
+                    exclude: [/node_modules|public\//],
                     use: svg_loaders,
                 },
             ],

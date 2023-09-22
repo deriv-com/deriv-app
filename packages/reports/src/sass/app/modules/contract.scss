@@ -35,18 +35,37 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
                     margin-right: 0.8rem;
                 }
             }
-            &-text {
-                max-width: 360px;
+            &-wrapper {
+                max-width: 35rem;
 
                 @include mobile {
-                    max-width: 175px;
-                    line-height: 1.4;
-                    letter-spacing: normal;
+                    max-width: 11rem;
+                }
+
+                a {
+                    color: var(--brand-red-coral);
+                }
+            }
+            &-text {
+                &--collapsed {
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 3;
+                    display: -webkit-box;
+                    line-clamp: 3;
+                    overflow: hidden;
+                }
+
+                @include mobile {
                     font-size: 1rem;
-                    /* iPhone SE screen height fixes due to UI space restrictions */
-                    @media only screen and (max-height: 480px) {
-                        font-size: 0.8rem;
-                    }
+                    letter-spacing: normal;
+                    line-height: 1.4;
+                    max-width: 11rem;
+                    line-clamp: 2;
+                    -webkit-line-clamp: 2;
+                }
+                /* iPhone SE screen height fixes due to UI space restrictions */
+                @media only screen and (max-height: 480px) {
+                    font-size: 0.8rem !important;
                 }
             }
         }

@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
-import { useRequest } from '@deriv/api';
+import useRequest from '../useRequest';
 
 type TPayload = Parameters<ReturnType<typeof useRequest<'verify_email'>>['mutate']>[0]['payload'];
 
 /** A custom hook for verifying email address */
 const useVerifyEmail = () => {
     const { mutate: _mutate, ...rest } = useRequest('verify_email');
-    
+
     const mutate = useCallback((payload: TPayload) => _mutate({ payload }), [_mutate]);
 
     return {

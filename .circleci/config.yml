@@ -311,10 +311,14 @@ workflows:
           filters:
             branches:
               only: /^master$/
+      - hold:
+          type: approval
+          requires:
+           - release_uat
       - publish_cloudflare_uat:
           context: binary-frontend-artifact-upload
           requires:
-            - release_uat
+            - hold
           filters:
             branches:
               only: /^master$/

@@ -91,7 +91,7 @@ const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateCh
     /**
      * Display loader while waiting for the account status and residence list to be populated
      */
-    if (is_status_loading || is_switching || isEmptyObject(account_status)) {
+    if (is_status_loading || is_switching || isEmptyObject(account_status) || residence_list.length === 0) {
         return <Loading is_fullscreen={false} />;
     } else if (is_virtual) {
         return <DemoMessage />;

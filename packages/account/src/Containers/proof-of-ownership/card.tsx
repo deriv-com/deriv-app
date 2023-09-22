@@ -10,6 +10,12 @@ type TCardProps = {
     updateErrors: (index: number, error: string) => void;
 };
 
+/**
+ * Renders Chevron Icon which is used to expand card
+ * @name ExpansionIcon
+ * @param is_open - status to check if card is open
+ * @returns React Component
+ */
 const ExpansionIcon = ({ is_open }: { is_open: boolean }) => (
     <Icon
         icon='IcChevronUpBold'
@@ -23,7 +29,9 @@ const ExpansionIcon = ({ is_open }: { is_open: boolean }) => (
 /**
  * Renders payment method
  * @name Card
- * @param details
+ * @param details - payment method details
+ * @param index - index of payment method
+ * @param updateErrors - function to update errors
  * @returns React Component
  */
 const Card = ({ details, index, updateErrors }: TCardProps) => {

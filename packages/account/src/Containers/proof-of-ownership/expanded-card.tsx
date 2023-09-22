@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { useFormikContext } from 'formik';
 import { Input, Text } from '@deriv/components';
-
 import { IDENTIFIER_TYPES, VALIDATIONS } from '../../Constants/poo-identifier.js';
 import FileUploader from '../../Sections/Verification/ProofOfOwnership/file-uploader.jsx';
 import { TPaymentMethodInfo } from '../../Types';
@@ -23,8 +22,6 @@ type TExpandedCardProps = {
  */
 const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps) => {
     const { values, setFieldValue, errors } = useFormikContext();
-
-    const [is_sample_modal_open, setIsSampleModalOpen] = React.useState(false);
 
     const handleUploadedFile = async (name: string, file: Blob) => {
         await setFieldValue(name, file);
@@ -77,7 +74,8 @@ const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps)
         }
         return formatted_id.replace(/(\w{4})/g, '$1 ').trim();
     };
-    const isSpecialPM = pm_icon => ['IcOnlineNaira', 'IcAstroPayLight', 'IcAstroPayDark'].some(ic => ic === pm_icon);
+    const isSpecialPM = (pm_icon: string) =>
+        ['IcOnlineNaira', 'IcAstroPayLight', 'IcAstroPayDark'].some(ic => ic === pm_icon);
 
     return (
         <React.Fragment>

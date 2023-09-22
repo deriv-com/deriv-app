@@ -1,16 +1,16 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, useStateCallback } from '@deriv/components';
 import { Formik } from 'formik';
+import DocumentUploader from '@binary-com/binary-document-uploader';
+import { Button, useStateCallback } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import FormFooter from '../../../Components/form-footer';
 import FormBody from '../../../Components/form-body';
 import FormSubHeader from '../../../Components/form-sub-header';
 import FormBodySection from '../../../Components/form-body-section';
 import { isMobile, readFiles, WS, DOCUMENT_TYPE } from '@deriv/shared';
-import Card from './card.jsx';
-import DocumentUploader from '@binary-com/binary-document-uploader';
+import Card from '../../../Containers/proof-of-ownership/card';
 import { IDENTIFIER_TYPES, VALIDATIONS } from '../../../Constants/poo-identifier';
 
 const getScrollOffset = (items_count = 0) => {

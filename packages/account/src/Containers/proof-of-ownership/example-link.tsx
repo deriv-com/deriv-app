@@ -3,6 +3,11 @@ import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import SampleCreditCardModal from '../../Components/sample-credit-card-modal';
 
+/**
+ * Renders Text with link to Example Credit card modal
+ * @name ExampleLink
+ * @returns React Component
+ */
 const ExampleLink = () => {
     const [is_sample_modal_open, setIsSampleModalOpen] = React.useState(false);
 

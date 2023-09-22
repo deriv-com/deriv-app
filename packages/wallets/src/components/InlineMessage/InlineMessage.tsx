@@ -18,7 +18,7 @@ type TProps = RequireAtLeastOne<{ children: React.ReactNode; message: React.Reac
     type?: keyof typeof type_icon_mapper;
 };
 
-const InlineMessage: React.FC<TProps> = ({ type = 'warning', size = 'xs', title, message, children }) => {
+const InlineMessage: React.FC<TProps> = ({ children, message, size = 'xs', title, type = 'warning' }) => {
     const { is_mobile } = useDevice();
     const Icon = type_icon_mapper[type];
     const icon_size = size === 'lg' && !is_mobile ? 24 : 16;

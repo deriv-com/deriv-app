@@ -19,7 +19,7 @@ const useAvailableMT5Accounts = () => {
     );
 
     return {
-        /** The available MT5 accounts grouped by market type */
+        /** The available MT5 accounts */
         data: modified_mt5_available_accounts,
         ...rest,
     };

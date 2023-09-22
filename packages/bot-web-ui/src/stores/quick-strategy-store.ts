@@ -95,6 +95,10 @@ export default class QuickStrategyStore {
         if (data_fields) {
             data_fields.forEach(data_field => {
                 if (data_field) {
+                    if (data_field?.id === 'symbol' && !this.qs_cache[data_field.field_name as keyof TQSCache]) {
+                        init[data_field.field_name as keyof TQSCache] =
+                            this.getFieldValue(this.symbol_dropdown, this.selected_symbol.value) || '';
+                    }
                     if (data_field?.type === 'select' && this.qs_cache[data_field.field_name as keyof TQSCache]) {
                         init[data_field.field_name as keyof TQSCache] =
                             (this.qs_cache[data_field.field_name as keyof TQSCache] as

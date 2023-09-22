@@ -10,7 +10,7 @@ import ExampleLink from './example-link';
 type TExpandedCardProps = {
     card_details: TPaymentMethodInfo;
     index: number;
-    updateErrors: (index: number, item_index: number, name: string, value: string) => void;
+    updateErrors: (index: number, item_index: number, sub_index: number) => void;
 };
 
 /**
@@ -88,118 +88,128 @@ const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps)
                         size='xs'
                         key={instruction?.key ?? instruction}
                     >
-                        {instruction} <ExampleLink />
+                        {instruction}{' '}
+                        {card_details?.identifier_type === IDENTIFIER_TYPES.CARD_NUMBER && <ExampleLink />}
                     </Text>
                 ))}
                 <fieldset>
-                    {card_details.items.map((item, item_index) => {
-                        const controls_to_show = [...Array(item?.documents_required).keys()];
-                        return (
-                            <div className='proof-of-ownership__card-open-inputs' key={`${item_index}-${item.id}`}>
-                                {card_details?.input_label && isSpecialPM(card_details?.icon) && (
-                                    <div className='proof-of-ownership__card-open-inputs-field'>
-                                        <Input
-                                            label={card_details?.input_label}
-                                            data-lpignore='true'
-                                            className={classNames('proof-of-ownership__card-open-inputs-cardnumber', {
-                                                'proof-of-ownership-valid-identifier':
-                                                    values?.data?.[index]?.[item_index]?.payment_method_identifier &&
-                                                    !errors?.[item_index]?.payment_method_identifier,
-                                            })}
-                                            type='text'
-                                            onChange={e => {
-                                                handleIdentifierChange(
-                                                    `data[${index}].[${item_index}]`,
-                                                    e.currentTarget.value.trim(),
-                                                    item.id,
-                                                    item_index,
-                                                    card_details.documents_required
-                                                );
-                                            }}
-                                            value={values?.data?.[index]?.[item_index]?.payment_method_identifier || ''}
-                                            onBlur={e => {
-                                                handleBlur(
-                                                    `data[${index}].[${item_index}]`,
-                                                    e.currentTarget.value.trim(),
-                                                    card_details?.identifier_type,
-                                                    item.id,
-                                                    item_index,
-                                                    card_details.documents_required
-                                                );
-                                            }}
-                                            data-testid='dt_payment_method_identifier'
-                                            error={errors?.[item_index]?.payment_method_identifier}
-                                        />
-                                    </div>
-                                )}
-                                {controls_to_show.map(i => (
-                                    <React.Fragment key={`${item?.id}-${i}`}>
-                                        {card_details?.input_label && !isSpecialPM(card_details?.icon) && (
-                                            <div className='proof-of-ownership__card-open-inputs-field'>
-                                                <Input
-                                                    label={card_details?.input_label}
-                                                    data-lpignore='true'
-                                                    className={classNames(
-                                                        'proof-of-ownership__card-open-inputs-cardnumber',
-                                                        {
-                                                            'proof-of-ownership-valid-identifier':
-                                                                values?.data?.[index]?.[item_index]
-                                                                    ?.payment_method_identifier &&
-                                                                !errors?.[item_index]?.payment_method_identifier,
-                                                        }
-                                                    )}
-                                                    type='text'
-                                                    onChange={e => {
-                                                        handleIdentifierChange(
-                                                            `data[${index}].[${item_index}]`,
-                                                            e.currentTarget.value.trim(),
-                                                            item.id,
-                                                            item_index,
-                                                            card_details.documents_required
-                                                        );
-                                                    }}
-                                                    value={
-                                                        values?.data?.[index]?.[item_index]
-                                                            ?.payment_method_identifier ?? ''
+                    {card_details?.items &&
+                        card_details?.items.map((item, item_index) => {
+                            const controls_to_show = [...Array(item?.documents_required).keys()];
+                            return (
+                                <div className='proof-of-ownership__card-open-inputs' key={`${item_index}-${item.id}`}>
+                                    {card_details?.input_label && isSpecialPM(card_details?.icon) && (
+                                        <div className='proof-of-ownership__card-open-inputs-field'>
+                                            <Input
+                                                label={card_details?.input_label}
+                                                data-lpignore='true'
+                                                className={classNames(
+                                                    'proof-of-ownership__card-open-inputs-cardnumber',
+                                                    {
+                                                        'proof-of-ownership-valid-identifier':
+                                                            values?.data?.[index]?.[item_index]
+                                                                ?.payment_method_identifier &&
+                                                            !errors?.[item_index]?.payment_method_identifier,
                                                     }
-                                                    onBlur={e => {
-                                                        handleBlur(
-                                                            `data[${index}].[${item_index}]`,
-                                                            e.currentTarget.value.trim(),
-                                                            card_details?.identifier_type,
-                                                            item.id,
-                                                            item_index,
-                                                            card_details.documents_required
-                                                        );
-                                                    }}
-                                                    data-testid='dt_payment_method_identifier'
-                                                    error={errors?.[item_index]?.payment_method_identifier}
-                                                />
-                                            </div>
-                                        )}
-                                        <div
-                                            className={classNames('proof-of-ownership__card-open-inputs-upload', {
-                                                expand: !card_details?.input_label,
-                                                organise: card_details?.input_label !== null,
-                                            })}
-                                        >
-                                            <FileUploader
-                                                handleFile={handleUploadedFile}
-                                                file_name={values?.data?.[index]?.[item_index]?.files?.[i]?.name ?? ''}
-                                                class_name='proof-of-ownership__card-open-inputs-photo'
-                                                name={`data[${index}].[${item_index}].files[${i}]`}
-                                                error={errors?.[item_index]?.files?.[i]}
-                                                index={index}
-                                                item_index={item_index}
-                                                sub_index={i}
-                                                updateErrors={updateErrors}
+                                                )}
+                                                type='text'
+                                                onChange={e => {
+                                                    handleIdentifierChange(
+                                                        `data[${index}].[${item_index}]`,
+                                                        e.currentTarget.value.trim(),
+                                                        item.id,
+                                                        item_index,
+                                                        card_details.documents_required
+                                                    );
+                                                }}
+                                                value={
+                                                    values?.data?.[index]?.[item_index]?.payment_method_identifier || ''
+                                                }
+                                                onBlur={e => {
+                                                    handleBlur(
+                                                        `data[${index}].[${item_index}]`,
+                                                        e.currentTarget.value.trim(),
+                                                        card_details?.identifier_type,
+                                                        item.id,
+                                                        item_index,
+                                                        card_details.documents_required
+                                                    );
+                                                }}
+                                                data-testid='dt_payment_method_identifier'
+                                                error={errors?.[item_index]?.payment_method_identifier}
                                             />
                                         </div>
-                                    </React.Fragment>
-                                ))}
-                            </div>
-                        );
-                    })}
+                                    )}
+                                    {controls_to_show.map(i => (
+                                        <React.Fragment key={`${item?.id}-${i}`}>
+                                            {card_details?.input_label && !isSpecialPM(card_details?.icon) && (
+                                                <div className='proof-of-ownership__card-open-inputs-field'>
+                                                    <Input
+                                                        label={card_details?.input_label}
+                                                        data-lpignore='true'
+                                                        className={classNames(
+                                                            'proof-of-ownership__card-open-inputs-cardnumber',
+                                                            {
+                                                                'proof-of-ownership-valid-identifier':
+                                                                    values?.data?.[index]?.[item_index]
+                                                                        ?.payment_method_identifier &&
+                                                                    !errors?.[item_index]?.payment_method_identifier,
+                                                            }
+                                                        )}
+                                                        type='text'
+                                                        onChange={e => {
+                                                            handleIdentifierChange(
+                                                                `data[${index}].[${item_index}]`,
+                                                                e.currentTarget.value.trim(),
+                                                                item.id,
+                                                                item_index,
+                                                                card_details.documents_required
+                                                            );
+                                                        }}
+                                                        value={
+                                                            values?.data?.[index]?.[item_index]
+                                                                ?.payment_method_identifier ?? ''
+                                                        }
+                                                        onBlur={e => {
+                                                            handleBlur(
+                                                                `data[${index}].[${item_index}]`,
+                                                                e.currentTarget.value.trim(),
+                                                                card_details?.identifier_type,
+                                                                item.id,
+                                                                item_index,
+                                                                card_details.documents_required
+                                                            );
+                                                        }}
+                                                        data-testid='dt_payment_method_identifier'
+                                                        error={errors?.[item_index]?.payment_method_identifier}
+                                                    />
+                                                </div>
+                                            )}
+                                            <div
+                                                className={classNames('proof-of-ownership__card-open-inputs-upload', {
+                                                    expand: !card_details?.input_label,
+                                                    organise: card_details?.input_label !== null,
+                                                })}
+                                            >
+                                                <FileUploader
+                                                    handleFile={handleUploadedFile}
+                                                    file_name={
+                                                        values?.data?.[index]?.[item_index]?.files?.[i]?.name ?? ''
+                                                    }
+                                                    class_name='proof-of-ownership__card-open-inputs-photo'
+                                                    name={`data[${index}].[${item_index}].files[${i}]`}
+                                                    error={errors?.[item_index]?.files?.[i]}
+                                                    index={index}
+                                                    item_index={item_index}
+                                                    sub_index={i}
+                                                    updateErrors={updateErrors}
+                                                />
+                                            </div>
+                                        </React.Fragment>
+                                    ))}
+                                </div>
+                            );
+                        })}
                 </fieldset>
             </div>
         </React.Fragment>

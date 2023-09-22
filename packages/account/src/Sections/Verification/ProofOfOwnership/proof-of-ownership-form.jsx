@@ -38,6 +38,7 @@ const ProofOfOwnershipForm = ({
         let has_errors = false;
         let are_files_uploaded = false;
         const cards = values?.data;
+        if (!cards) return;
         Object.keys(cards)?.forEach?.(card_key => {
             const items = cards?.[card_key] ?? {};
             const item_keys = Object.keys(items);
@@ -247,11 +248,8 @@ const ProofOfOwnershipForm = ({
                                             </div>
                                         )}
                                         <Card
-                                            error={errors?.data?.[index]}
                                             index={index}
-                                            values={values}
-                                            card={grouped_payment_method_data[grouped_payment_method_data_key]}
-                                            setFieldValue={setFieldValue}
+                                            details={grouped_payment_method_data[grouped_payment_method_data_key]}
                                             updateErrors={updateErrors}
                                         />
                                     </div>

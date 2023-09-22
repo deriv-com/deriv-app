@@ -7,7 +7,7 @@ import { TPaymentMethodInfo } from '../../Types';
 type TCardProps = {
     details: TPaymentMethodInfo;
     index: number;
-    updateErrors: (index: number, error: string) => void;
+    updateErrors: (index: number, item_index: number, sub_index: number) => void;
 };
 
 /**

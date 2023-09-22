@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import ExpandedCard from './';
-import { TPaymentMethodInfo } from 'Types';
 import { Formik } from 'formik';
+import { TPaymentMethodInfo } from 'Types';
+import ExpandedCard from '../expanded-card';
 
 const grouped_payment_method_data: Record<string, TPaymentMethodInfo> = {
     visa: {
@@ -15,12 +15,11 @@ const grouped_payment_method_data: Record<string, TPaymentMethodInfo> = {
                 documents_required: 1,
             },
         ],
-        instructions: [
-            'Upload a photo showing your name and the first six and last four digits of your card number. If the card does not display your name, upload the bank statement showing your name and card number in the transaction history.',
-        ],
+        instructions: ['mock instruction 1'],
         input_label: 'Card number',
         identifier_type: 'card_number',
         is_generic_pm: false,
+        documents_required: 1,
     },
     onlinenaira: {
         icon: 'IcOnlineNaira',
@@ -39,6 +38,7 @@ const grouped_payment_method_data: Record<string, TPaymentMethodInfo> = {
         input_label: 'Account ID',
         identifier_type: 'account_id',
         is_generic_pm: false,
+        documents_required: 0,
     },
 };
 
@@ -68,29 +68,12 @@ describe('expanded-card.jsx', () => {
         );
 
     it('should display correct identifier', () => {
-        // render(
-        //     <Formik
-        //         initialValues={{
-        //             data: [
-        //                 [
-        //                     {
-        //                         payment_method_identifier: '1234 56XX XXXX 1121',
-        //                     },
-        //                 ],
-        //             ],
-        //         }}
-        //         onSubmit={jest.fn()}
-        //     >
-        //         <ExpandedCard {...mock_props} />
-        //     </Formik>
-        // );
         renderComponent({});
 
         expect(screen.getByDisplayValue('1234 56XX XXXX 1121')).toBeInTheDocument();
     });
 
     it('should show example link for credit/debit card and render the correct identifier label', () => {
-        // render(<ExpandedCard card_details={grouped_payment_method_data.visa} />);
         renderComponent({});
         const el_example_link = screen.getByText('See example');
         expect(el_example_link).toBeInTheDocument();
@@ -98,7 +81,6 @@ describe('expanded-card.jsx', () => {
     });
 
     it('should render payment method link in the description', () => {
-        // render(<ExpandedCard card_details={grouped_payment_method_data.onlinenaira} />);
         const new_props: React.ComponentProps<typeof ExpandedCard> = {
             ...mock_props,
             card_details: grouped_payment_method_data.onlinenaira,

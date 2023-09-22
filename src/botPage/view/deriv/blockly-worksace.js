@@ -9,13 +9,8 @@ import {
 } from '@storage';
 import { translate } from '@i18n';
 import config, { updateConfigCurrencies } from '../../common/const';
-import logHandler from '../logger';
 import { observer as globalObserver } from '../../../common/utils/observer';
-
 import { logoutAllTokens } from '../../../common/appId';
-import IntegrationsDialog from '../Dialogs/IntegrationsDialog';
-import Chart from '../Dialogs/Chart';
-import TradingView from '../Dialogs/TradingView';
 import Limits from '../Dialogs/Limits';
 import {
     saveBeforeUnload,
@@ -27,10 +22,6 @@ import GTM from '../../../common/gtm';
 import google_drive_util from '../../../common/integrations/GoogleDrive';
 import { load } from '../blockly';
 import api from './api';
-
-const integrationsDialog = new IntegrationsDialog();
-const tradingView = new TradingView();
-let chart;
 
 const checkForRequiredBlocks = () => {
     const displayError = errorMessage => {
@@ -221,20 +212,6 @@ const addBindings = blockly => {
             classes: { 'ui-dialog-titlebar-close': 'icon-close' },
         });
 
-    $('#integrations').click(() => integrationsDialog.open());
-
-    $('#chartButton').click(() => {
-        if (!chart) {
-            chart = new Chart(api);
-        }
-
-        chart.open();
-    });
-
-    $('#tradingViewButton').click(() => {
-        tradingView.open();
-    });
-
     globalObserver.register('ui.logout', () => {
         saveBeforeUnload();
         $('.barspinner').show();
@@ -378,8 +355,6 @@ const addEventHandlers = blockly => {
 const initialize = blockly =>
     new Promise(resolve => {
         updateConfigCurrencies().then(() => {
-            updateTokenList();
-            logHandler();
             applyToolboxPermissions();
             setElementActions(blockly);
             resolve();

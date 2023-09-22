@@ -28,6 +28,7 @@ import { updateActiveAccount, updateActiveToken, updateIsLogged } from '../../st
 import { setShouldReloadWorkspace, updateShowTour } from '../../store/ui-slice';
 import BotUnavailableMessage from '../Error/bot-unavailable-message-page';
 import ToolBox from '../ToolBox';
+import logHandler from '../../../logger';
 
 const Main = () => {
     const [blockly, setBlockly] = React.useState(null);
@@ -36,6 +37,10 @@ const Main = () => {
     const history = useHistory();
     const { should_reload_workspace } = useSelector(state => state.ui);
     const { account_type } = useSelector(state => state.client);
+
+    React.useEffect(() => {
+        logHandler();
+    }, [logHandler]);
 
     React.useEffect(() => {
         if (should_reload_workspace) {

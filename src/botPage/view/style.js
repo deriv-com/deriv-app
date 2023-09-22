@@ -46,8 +46,6 @@ export const loading = {
     fontSize: '1.5em',
 };
 
-export const iframe = { width: '100%', height: '100%' };
-
 export const exportButton = {
     position: 'absolute',
     left: '41em',

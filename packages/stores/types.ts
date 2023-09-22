@@ -14,6 +14,7 @@ import type {
     SetFinancialAssessmentRequest,
     SetFinancialAssessmentResponse,
     StatesList,
+    Transaction,
 } from '@deriv/api-types';
 import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
@@ -301,6 +302,7 @@ type TClientStore = {
     is_low_risk: boolean;
     is_pending_proof_of_ownership: boolean;
     is_switching: boolean;
+    is_single_currency: boolean;
     is_tnc_needed: boolean;
     is_trading_experience_incomplete: boolean;
     is_virtual: boolean;
@@ -644,6 +646,26 @@ type TTradersHubStore = {
     showTopUpModal: () => void;
 };
 
+type TGtmStore = {
+    is_gtm_applicable: boolean;
+    visitorId: Readonly<string>;
+    common_variables: Readonly<{
+        language: string;
+        visitorId?: string;
+        currency?: string;
+        userId?: string;
+        email?: string;
+        loggedIn: boolean;
+        theme: 'dark' | 'light';
+        platform: 'DBot' | 'MT5' | 'DTrader' | 'undefined';
+    }>;
+    accountSwitcherListener: () => Promise<Record<string, unknown>>;
+    pushDataLayer: (data: Record<string, unknown>) => void;
+    pushTransactionData: (response: Transaction, extra_data: Record<string, unknown>) => void;
+    eventHandler: (get_settings: GetSettings) => void;
+    setLoginFlag: (event_name: string) => void;
+};
+
 /**
  * This is the type that contains all the `core` package stores
  */
@@ -659,6 +681,7 @@ export type TCoreStores = {
     modules: Record<string, any>;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
+    gtm: TGtmStore;
 };
 
 export type TStores = TCoreStores & {

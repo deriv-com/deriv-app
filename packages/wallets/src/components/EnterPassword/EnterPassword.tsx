@@ -20,7 +20,7 @@ const EnterPassword: React.FC<TProps> = ({
     platform,
 }) => {
     return (
-        <>
+        <React.Fragment>
             <div className='wallets-enter-password--container'>
                 <div className='wallets-enter-password-title'>Enter your {platform} password</div>
                 <span className='wallets-enter-password-subtitle'>
@@ -39,7 +39,7 @@ const EnterPassword: React.FC<TProps> = ({
                     Add account
                 </button>
             </div>
-        </>
+        </React.Fragment>
     );
 };
 

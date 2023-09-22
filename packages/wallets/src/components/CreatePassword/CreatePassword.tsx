@@ -1,32 +1,30 @@
 import React from 'react';
-import MT5PasswordIcon from '../../public/images/ic-mt5-password.svg';
 import PasswordShowIcon from '../../public/images/ic-password-show.svg';
-import { useModal } from '../ModalProvider';
-import { WalletModal } from '../WalletModal';
 import './CreatePassword.scss';
 
 type TProps = {
-    onClick: () => void;
+    icon: React.ReactNode;
+    onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onPrimaryClick: () => void;
+    platform: string;
 };
 
-const CreatePassword: React.FC<TProps> = ({ onClick }) => {
-    const { hide } = useModal();
-
+const CreatePassword: React.FC<TProps> = ({ icon, onPasswordChange, onPrimaryClick, platform }) => {
     return (
-        <WalletModal className='wallets-create-password' has_close_icon onClickCloseIcon={hide}>
-            <MT5PasswordIcon />
-            <div className='wallets-create-password-title'>Create a Deriv MT5 password</div>
+        <div className='wallets-create-password'>
+            {icon}
+            <div className='wallets-create-password-title'>Create a {platform} password</div>
             <span className='wallets-create-password-subtitle'>
-                You can use this password for all your Deriv MT5 accounts.
+                You can use this password for all your {platform} accounts.
             </span>
             <div className='wallets-create-password-input'>
-                <input placeholder='Deriv MT5 password' type='password' />
+                <input onChange={onPasswordChange} placeholder={`${platform} password`} type='password' />
                 <PasswordShowIcon className='wallets-create-password-input-trailing-icon' />
             </div>
-            <button className='wallets-create-password-button' onClick={onClick}>
-                Create Deriv MT5 password
+            <button className='wallets-create-password-button' onClick={onPrimaryClick}>
+                Create {platform} password
             </button>
-        </WalletModal>
+        </div>
     );
 };
 

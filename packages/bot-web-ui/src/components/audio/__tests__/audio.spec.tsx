@@ -1,5 +1,4 @@
 import React from 'react';
-import exp from 'constants';
 import { render, screen } from '@testing-library/react';
 import Audio from '../audio';
 

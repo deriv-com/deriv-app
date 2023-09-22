@@ -43,18 +43,18 @@ const WalletsAddMoreCarousel = () => {
                 <div
                     className='wallets-add-more__carousel'
                     data-testid='dt-wallets-add-more'
-                    ref={wallets_add_more_embla_ref}
                     onMouseEnter={() => !is_mobile && setIsHovered(true)}
                     onMouseLeave={() => !is_mobile && setIsHovered(false)}
+                    ref={wallets_add_more_embla_ref}
                 >
                     <div className='wallets-add-more__carousel-wrapper'>
                         {available_wallets?.map(item => {
                             const { currency, is_added, landing_company_name } = item;
                             return (
                                 <WalletsAddMoreCard
-                                    key={`wallets_add_more_${currency}-${landing_company_name}`}
                                     currency={currency}
                                     is_added={is_added}
+                                    key={`wallets_add_more_${currency}-${landing_company_name}`}
                                     landing_company_name={landing_company_name}
                                 />
                             );
@@ -64,15 +64,15 @@ const WalletsAddMoreCarousel = () => {
                         <React.Fragment>
                             <button
                                 className='wallets-add-more__carousel-btn wallets-add-more__carousel-btn--prev'
-                                onClick={scrollPrev}
                                 disabled={!prev_btn_enabled}
+                                onClick={scrollPrev}
                             >
                                 &lt;
                             </button>
                             <button
                                 className='wallets-add-more__carousel-btn wallets-add-more__carousel-btn--next'
-                                onClick={scrollNext}
                                 disabled={!next_btn_enabled}
+                                onClick={scrollNext}
                             >
                                 &gt;
                             </button>

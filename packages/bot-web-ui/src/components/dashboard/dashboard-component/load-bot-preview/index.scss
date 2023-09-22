@@ -153,24 +153,15 @@
 
         &__files {
             flex-basis: 100%;
-            height: calc(100% - 3.8rem);
-
-            @include mobile {
-                overflow: auto;
-                height: calc(100vh - 35rem);
-            }
 
             &__list {
                 overflow: auto;
-
-                @include mobile {
-                    overflow: unset;
-                    height: calc(100vh - 18rem);
-                    padding-right: 1rem;
-                }
-
-                height: calc(100% - 15rem); // 100% - Title height
                 width: 100%;
+                height: calc(100vh - 56rem);
+                @include mobile {
+                    height: calc(100vh - 46rem);
+                    padding-bottom: 15rem;
+                }
             }
         }
 

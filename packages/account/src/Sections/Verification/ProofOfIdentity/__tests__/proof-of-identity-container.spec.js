@@ -202,7 +202,7 @@ describe('ProofOfIdentityContainer', () => {
         });
     });
 
-    fit('should render API error message returned in response', async () => {
+    it('should render API error message returned in response', async () => {
         const new_store = {
             ...store,
             client: {
@@ -216,7 +216,6 @@ describe('ProofOfIdentityContainer', () => {
         };
 
         renderComponent({ store_config: new_store });
-        screen.debug();
         await waitFor(() => {
             expect(screen.getByText('mockedErrorMessage')).toBeInTheDocument();
         });

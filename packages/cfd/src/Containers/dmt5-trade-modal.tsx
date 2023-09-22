@@ -14,7 +14,7 @@ import {
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { CFDAccountCopy } from '../Components/cfd-account-copy';
-import { getPlatformMt5DownloadLink, getMT5WebTerminalLink } from '../Helpers/constants';
+import { getPlatformMt5DownloadLink } from '../Helpers/constants';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { TCFDPasswordReset } from './props.types';
 
@@ -175,7 +175,7 @@ const DMT5TradeModal = ({
                                 const account_type = getCFDAccountKey({
                                     market_type: mt5_trade_account.market_type,
                                     sub_account_type: mt5_trade_account.sub_account_type,
-                                    platform: CFD_PLATFORMS.DMT5,
+                                    platform: CFD_PLATFORMS.MT5,
                                     shortcode: mt5_trade_account.landing_company_short,
                                 });
                                 onPasswordManager(
@@ -210,11 +210,7 @@ const DMT5TradeModal = ({
                     <a
                         className='dc-btn cfd-trade-modal__download-center-app--option-link'
                         type='button'
-                        href={getMT5WebTerminalLink({
-                            category: mt5_trade_account.account_type,
-                            loginid: (mt5_trade_account as TTradingPlatformAccounts).display_login,
-                            server_name: (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment,
-                        })}
+                        href={mt5_trade_account.webtrader_url}
                         target='_blank'
                         rel='noopener noreferrer'
                     >

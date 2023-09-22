@@ -41,9 +41,15 @@ jest.mock('Stores', () => ({
 
 const mockUseStores = useStores as jest.MockedFunction<typeof useStores>;
 
+const renderHookWithConfig = config => {
+    mockUseStores.mockReturnValue(config);
+    const { result } = renderHook(() => useP2PRenderedAdverts());
+    return result.current.rendered_adverts;
+};
+
 describe('useP2PRenderedAdverts', () => {
     it('should return the adverts object from response with type sell when table_type is buy', () => {
-        mockUseStores.mockReturnValue({
+        const config = {
             general_store: {
                 lisst_item_limit: 50,
             },
@@ -53,9 +59,8 @@ describe('useP2PRenderedAdverts', () => {
                 table_type: 'buy',
             },
             advertiser_page_store: { counterparty_type: 'buy' },
-        });
-        const { result } = renderHook(() => useP2PRenderedAdverts());
-        const view = result.current.rendered_adverts;
+        };
+        const view = renderHookWithConfig(config);
 
         expect(view).toHaveLength(1);
         expect(view[0]?.country).toBe('id');
@@ -64,7 +69,7 @@ describe('useP2PRenderedAdverts', () => {
         expect(view[0].advertiser_details?.name).toBe('client Test90000254');
     });
     it('should return the adverts object from response with type buy when table_type is sell', () => {
-        mockUseStores.mockReturnValue({
+        const config = {
             general_store: {
                 lisst_item_limit: 50,
             },
@@ -74,9 +79,8 @@ describe('useP2PRenderedAdverts', () => {
                 table_type: 'sell',
             },
             advertiser_page_store: { counterparty_type: 'buy' },
-        });
-        const { result } = renderHook(() => useP2PRenderedAdverts());
-        const view = result.current.rendered_adverts;
+        };
+        const view = renderHookWithConfig(config);
 
         expect(view).toHaveLength(1);
         expect(view[0]?.country).toBe('id');
@@ -85,7 +89,7 @@ describe('useP2PRenderedAdverts', () => {
         expect(view[0].advertiser_details?.name).toBe('client Test90000253');
     });
     it('should return the adverts object from response when selected_payment_method_value has a length > 0', () => {
-        mockUseStores.mockReturnValue({
+        const config = {
             general_store: {
                 lisst_item_limit: 50,
             },
@@ -95,9 +99,8 @@ describe('useP2PRenderedAdverts', () => {
                 table_type: 'sell',
             },
             advertiser_page_store: { counterparty_type: 'buy' },
-        });
-        const { result } = renderHook(() => useP2PRenderedAdverts());
-        const view = result.current.rendered_adverts;
+        };
+        const view = renderHookWithConfig(config);
 
         expect(view).toHaveLength(1);
         expect(view[0]?.country).toBe('id');
@@ -106,7 +109,7 @@ describe('useP2PRenderedAdverts', () => {
         expect(view[0].advertiser_details?.name).toBe('client Test90000253');
     });
     it('should return the adverts object from response when selected_payment_method_value has a length === 0', () => {
-        mockUseStores.mockReturnValue({
+        const config = {
             general_store: {
                 lisst_item_limit: 50,
             },
@@ -116,9 +119,8 @@ describe('useP2PRenderedAdverts', () => {
                 table_type: 'sell',
             },
             advertiser_page_store: { counterparty_type: 'buy' },
-        });
-        const { result } = renderHook(() => useP2PRenderedAdverts());
-        const view = result.current.rendered_adverts;
+        };
+        const view = renderHookWithConfig(config);
 
         expect(view).toHaveLength(1);
         expect(view[0]?.country).toBe('id');
@@ -127,7 +129,7 @@ describe('useP2PRenderedAdverts', () => {
         expect(view[0].advertiser_details?.name).toBe('client Test90000253');
     });
     it('should return the adverts object from response when selected_local_currency is defined', () => {
-        mockUseStores.mockReturnValue({
+        const config = {
             general_store: {
                 lisst_item_limit: 50,
             },
@@ -137,9 +139,8 @@ describe('useP2PRenderedAdverts', () => {
                 table_type: 'sell',
             },
             advertiser_page_store: { counterparty_type: 'buy' },
-        });
-        const { result } = renderHook(() => useP2PRenderedAdverts());
-        const view = result.current.rendered_adverts;
+        };
+        const view = renderHookWithConfig(config);
 
         expect(view).toHaveLength(1);
         expect(view[0]?.country).toBe('id');
@@ -148,7 +149,7 @@ describe('useP2PRenderedAdverts', () => {
         expect(view[0].advertiser_details?.name).toBe('client Test90000253');
     });
     it('should return the adverts object from response when selected_local_currency is undefined', () => {
-        mockUseStores.mockReturnValue({
+        const config = {
             general_store: {
                 lisst_item_limit: 50,
             },
@@ -158,9 +159,8 @@ describe('useP2PRenderedAdverts', () => {
                 table_type: 'sell',
             },
             advertiser_page_store: { counterparty_type: 'buy' },
-        });
-        const { result } = renderHook(() => useP2PRenderedAdverts());
-        const view = result.current.rendered_adverts;
+        };
+        const view = renderHookWithConfig(config);
 
         expect(view).toHaveLength(1);
         expect(view[0]?.country).toBe('id');
@@ -169,7 +169,7 @@ describe('useP2PRenderedAdverts', () => {
         expect(view[0].advertiser_details?.name).toBe('client Test90000253');
     });
     it('should return the adverts object from response when should_use_client_limits is true', () => {
-        mockUseStores.mockReturnValue({
+        const config = {
             general_store: {
                 lisst_item_limit: 50,
             },
@@ -180,9 +180,8 @@ describe('useP2PRenderedAdverts', () => {
                 should_use_client_limits: true,
             },
             advertiser_page_store: { counterparty_type: 'buy' },
-        });
-        const { result } = renderHook(() => useP2PRenderedAdverts());
-        const view = result.current.rendered_adverts;
+        };
+        const view = renderHookWithConfig(config);
 
         expect(view).toHaveLength(1);
         expect(view[0]?.country).toBe('id');
@@ -191,7 +190,7 @@ describe('useP2PRenderedAdverts', () => {
         expect(view[0].advertiser_details?.name).toBe('client Test90000253');
     });
     it('should return the adverts object from response when should_use_client_limits is false', () => {
-        mockUseStores.mockReturnValue({
+        const config = {
             general_store: {
                 lisst_item_limit: 50,
             },
@@ -202,9 +201,8 @@ describe('useP2PRenderedAdverts', () => {
                 should_use_client_limits: false,
             },
             advertiser_page_store: { counterparty_type: 'buy' },
-        });
-        const { result } = renderHook(() => useP2PRenderedAdverts());
-        const view = result.current.rendered_adverts;
+        };
+        const view = renderHookWithConfig(config);
 
         expect(view).toHaveLength(1);
         expect(view[0]?.country).toBe('id');
@@ -213,7 +211,7 @@ describe('useP2PRenderedAdverts', () => {
         expect(view[0].advertiser_details?.name).toBe('client Test90000253');
     });
     it('should return the adverts object from response when is_buy is true', () => {
-        mockUseStores.mockReturnValue({
+        const config = {
             general_store: {
                 lisst_item_limit: 50,
             },
@@ -225,9 +223,8 @@ describe('useP2PRenderedAdverts', () => {
                 is_buy: true,
             },
             advertiser_page_store: { counterparty_type: 'buy' },
-        });
-        const { result } = renderHook(() => useP2PRenderedAdverts());
-        const view = result.current.rendered_adverts;
+        };
+        const view = renderHookWithConfig(config);
 
         expect(view).toHaveLength(1);
         expect(view[0]?.country).toBe('id');
@@ -236,7 +233,7 @@ describe('useP2PRenderedAdverts', () => {
         expect(view[0].advertiser_details?.name).toBe('client Test90000253');
     });
     it('should return the adverts object from response when is_buy is false', () => {
-        mockUseStores.mockReturnValue({
+        const config = {
             general_store: {
                 lisst_item_limit: 50,
             },
@@ -248,9 +245,8 @@ describe('useP2PRenderedAdverts', () => {
                 is_buy: false,
             },
             advertiser_page_store: { counterparty_type: 'buy' },
-        });
-        const { result } = renderHook(() => useP2PRenderedAdverts());
-        const view = result.current.rendered_adverts;
+        };
+        const view = renderHookWithConfig(config);
 
         expect(view).toHaveLength(1);
         expect(view[0]?.country).toBe('id');
@@ -259,7 +255,7 @@ describe('useP2PRenderedAdverts', () => {
         expect(view[0].advertiser_details?.name).toBe('client Test90000253');
     });
     it('should return the adverts object from response for adverts that match the given search_term', () => {
-        mockUseStores.mockReturnValue({
+        const config = {
             general_store: {
                 lisst_item_limit: 50,
             },
@@ -272,9 +268,9 @@ describe('useP2PRenderedAdverts', () => {
                 search_term: 'client Test90000253',
             },
             advertiser_page_store: { counterparty_type: 'buy' },
-        });
-        const { result } = renderHook(() => useP2PRenderedAdverts());
-        const view = result.current.rendered_adverts;
+        };
+        const view = renderHookWithConfig(config);
+
         expect(view).toHaveLength(1);
         expect(view[0]?.country).toBe('id');
         expect(view[0].counterparty_type).toBe('buy');
@@ -283,7 +279,8 @@ describe('useP2PRenderedAdverts', () => {
     });
     it('should return the adverts object from response for adverts that match the given search_term for mobile', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
-        mockUseStores.mockReturnValue({
+
+        const config = {
             general_store: {
                 lisst_item_limit: 50,
             },
@@ -296,9 +293,9 @@ describe('useP2PRenderedAdverts', () => {
                 search_term: 'client Test90000253',
             },
             advertiser_page_store: { counterparty_type: 'buy' },
-        });
-        const { result } = renderHook(() => useP2PRenderedAdverts());
-        const view = result.current.rendered_adverts;
+        };
+        const view = renderHookWithConfig(config);
+
         expect(view).toHaveLength(2);
         expect(view[1]?.country).toBe('id');
         expect(view[1].counterparty_type).toBe('buy');
@@ -307,7 +304,8 @@ describe('useP2PRenderedAdverts', () => {
     });
     it('should return the adverts object from response for adverts for mobile when search_term is undefined', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
-        mockUseStores.mockReturnValue({
+
+        const config = {
             general_store: {
                 lisst_item_limit: 50,
             },
@@ -319,9 +317,9 @@ describe('useP2PRenderedAdverts', () => {
                 is_buy: false,
             },
             advertiser_page_store: { counterparty_type: 'buy' },
-        });
-        const { result } = renderHook(() => useP2PRenderedAdverts());
-        const view = result.current.rendered_adverts;
+        };
+        const view = renderHookWithConfig(config);
+
         expect(view).toHaveLength(2);
         expect(view[1]?.country).toBe('id');
         expect(view[1].counterparty_type).toBe('buy');

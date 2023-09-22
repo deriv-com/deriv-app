@@ -49,7 +49,6 @@ const PersonalDetailsForm = props => {
 
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
-    const [selected_salutation, setSelectedSalutation] = React.useState('');
 
     const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched } = useFormikContext();
 
@@ -97,7 +96,6 @@ const PersonalDetailsForm = props => {
 
     const handleSalutationSelection = event => {
         if (event.target?.type === 'radio') {
-            setSelectedSalutation(event.target?.value);
             setFieldValue('salutation', event.target?.value);
         }
     };
@@ -174,7 +172,7 @@ const PersonalDetailsForm = props => {
                                 <RadioGroup
                                     className='dc-radio__input'
                                     name='salutation'
-                                    selected={selected_salutation}
+                                    selected={values.salutation}
                                     onToggle={e => {
                                         e.persist();
                                         setFieldValue('salutation', e.target.value);
@@ -187,7 +185,7 @@ const PersonalDetailsForm = props => {
                                             label={item.label}
                                             value={item.value}
                                             disabled={
-                                                !!selected_salutation && isFieldImmutable('salutation', editable_fields)
+                                                !!values.salutation && isFieldImmutable('salutation', editable_fields)
                                             }
                                         />
                                     ))}

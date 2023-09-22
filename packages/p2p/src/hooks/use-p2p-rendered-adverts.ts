@@ -21,7 +21,7 @@ const getSearchResults = (items: TAdvertList, search_term: string) => {
 
 /**
  *  @name getRenderedAdverts
- * Returns the adverts that are ready to be rendered. Adverts that consist of a combination of items filtered based on the
+ * @returns { Array } - adverts that are ready to be rendered. Adverts that consist of a combination of items filtered based on the
  * Buy/Sell toggle and the search term. See useP2PRenderedAdverts for more information.
  */
 const getRenderedAdverts = (search_term: string, search_results: TAdvertList, filtered_items: TAdvertList = []) => {

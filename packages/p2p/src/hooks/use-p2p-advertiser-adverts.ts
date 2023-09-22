@@ -30,7 +30,7 @@ const useP2PAdvertiserAdverts = () => {
                 : advertiser_details_id,
         ...(selected_local_currency ? { local_currency: selected_local_currency } : {}),
     });
-    const has_more_adverts_to_load = adverts?.length >= list_item_limit ?? false;
+    const has_more_adverts_to_load = adverts.length >= list_item_limit;
 
     return {
         adverts,

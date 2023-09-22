@@ -2,6 +2,7 @@ import React from 'react';
 import { useP2PAdvertList } from '@deriv/hooks';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores/index';
+import { useStore } from '@deriv/stores';
 
 type TAdvertList = ReturnType<typeof useP2PAdvertList>['data'];
 
@@ -33,7 +34,7 @@ const getRenderedAdverts = (
     if (is_mobile) {
         if (search_term) {
             rendered_adverts = [{ id: 'WATCH_THIS_SPACE' }, { id: 'NO_MATCH_ROW' }];
-            if (search_results && search_results.length > 0) {
+            if (search_results?.length) {
                 rendered_adverts = [{ id: 'WATCH_THIS_SPACE' }, ...search_results];
             }
         } else {
@@ -46,7 +47,7 @@ const getRenderedAdverts = (
         rendered_adverts = filtered_items;
         if (search_term) {
             rendered_adverts = [{ id: 'NO_MATCH_ROW' }];
-            if (search_results && search_results.length > 0) {
+            if (search_results?.length) {
                 rendered_adverts = search_results;
             }
         }
@@ -65,7 +66,8 @@ const getRenderedAdverts = (
  *
  * */
 const useP2PRenderedAdverts = () => {
-    const { general_store, buy_sell_store, ui } = useStores();
+    const { general_store, buy_sell_store } = useStores();
+    const { ui } = useStore();
     const {
         sort_by,
         should_use_client_limits,
@@ -88,7 +90,7 @@ const useP2PRenderedAdverts = () => {
         ...(selected_local_currency ? { local_currency: selected_local_currency } : {}),
     });
 
-    const has_more_items_to_load = items?.length >= list_item_limit ?? false;
+    const has_more_items_to_load = items.length >= general_store.list_item_limit;
 
     // Filter out adverts based on the Buy/Sell toggle. If the toggle is set to Buy, only show Sell adverts and vice versa.
     const filtered_items = React.useMemo(() => {

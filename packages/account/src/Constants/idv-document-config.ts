@@ -5,7 +5,7 @@ const getImageLocation = (image_name: string) => getUrlBase(`/public/images/comm
 
 // Note: Ensure that the object keys matches BE API's keys. This is simply a mapping for FE templates
 
-export const getIDVDocumentConfig = () => ({
+const getIDVDocumentConfig = () => ({
     ke: {
         alien_card: {
             new_display_name: '',
@@ -125,4 +125,58 @@ export const getIDVDocumentConfig = () => ({
             sample_image: getImageLocation('zw_national_identity_card.png'),
         },
     },
+    cl: {
+        national_id: {
+            example_format: '123456789',
+        },
+    },
+    ar: {
+        dni: {
+            example_format: '12345678',
+        },
+    },
+    mx: {
+        curp: {
+            example_format: 'ABCD123456HEFGIJ00',
+        },
+    },
+    id: {
+        nik: {
+            example_format: '1234567890123456',
+        },
+    },
+    in: {
+        aadhaar: {
+            example_format: '123456789012',
+            additional_document_example_format: 'ABCDE1234F',
+        },
+        drivers_license: {
+            example_format: 'AB1234567890123',
+        },
+        epic: {
+            example_format: 'ABC1234567',
+        },
+        pan: {
+            example_format: 'ABCDE1234F',
+        },
+        passport: {
+            example_format: 'A1234567',
+            additional_document_example_format: 'AB1234567890123',
+        },
+    },
+    pe: {
+        national_id: {
+            example_format: '12345678',
+        },
+    },
+    vn: {
+        national_id: {
+            example_format: '12345678901',
+        },
+    },
 });
+
+export const getIDVDocuments = (country_code: string) => {
+    const IDV_DOCUMENT_DATA: { [key: string]: object } = getIDVDocumentConfig();
+    return IDV_DOCUMENT_DATA[country_code];
+};

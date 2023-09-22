@@ -13,7 +13,7 @@ import {
 import { getSelectedRoute } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { RudderStack } from '@deriv/analytics';
+import { RudderStack, getRudderstackConfig } from '@deriv/analytics';
 import { TRoute } from 'Types';
 import 'Sass/app/modules/reports.scss';
 
@@ -37,21 +37,22 @@ const Reports = observer(({ history, location, routes }: TReports) => {
     const { is_logged_in, is_logging_in, setVisibilityRealityCheck } = client;
     const { is_from_derivgo, routeBackInApp } = common;
     const { is_reports_visible, setReportsTabIndex, reports_route_tab_index, toggleReports } = ui;
+    const { action_names, event_names, form_names, form_sources } = getRudderstackConfig();
 
     React.useEffect(() => {
-        RudderStack.track('ce_reports_form', {
-            action: 'open',
-            form_name: 'default',
+        RudderStack.track(event_names.reports, {
+            action: action_names.open,
+            form_name: form_names.default,
             subform_name: history.location.pathname.split('/')[2],
-            form_source: 'deriv_trader',
+            form_source: form_sources.deriv_trader,
         });
         toggleReports(true);
         return () => {
             setVisibilityRealityCheck(1);
             toggleReports(false);
-            RudderStack.track('ce_reports_form', {
-                action: 'close',
-                form_name: 'default',
+            RudderStack.track(event_names.reports, {
+                action: action_names.close,
+                form_name: form_names.default,
                 subform_name: location.pathname.split('/')[2],
             });
         };

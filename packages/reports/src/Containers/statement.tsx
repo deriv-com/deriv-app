@@ -10,7 +10,7 @@ import {
     isForwardStarting,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { RudderStack } from '@deriv/analytics';
+import { RudderStack, getRudderstackConfig } from '@deriv/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import { connect } from 'Stores/connect';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
@@ -183,13 +183,14 @@ const Statement = ({
     const prev_action_type = usePrevious(action_type);
     const prev_date_from = usePrevious(date_from);
     const prev_date_to = usePrevious(date_to);
+    const { action_names, event_names, form_names, subform_names } = getRudderstackConfig();
 
     React.useEffect(() => {
         onMount();
-        RudderStack.track('ce_reports_form', {
-            action: 'choose_report_type',
-            form_name: 'default',
-            subform_name: 'statement_form',
+        RudderStack.track(event_names.reports, {
+            action: action_names.choose_report_type,
+            form_name: form_names.default,
+            subform_name: subform_names.statement,
             transaction_type_filter: action_type,
             start_date_filter: formatDate(date_from, 'DD/MM/YYYY', false),
             end_date_filter: formatDate(date_to, 'DD/MM/YYYY', false),
@@ -202,10 +203,10 @@ const Statement = ({
 
     React.useEffect(() => {
         if (prev_action_type) {
-            RudderStack.track('ce_reports_form', {
-                action: 'filter_transaction_type',
-                form_name: 'default',
-                subform_name: 'statement_form',
+            RudderStack.track(event_names.reports, {
+                action: action_names.filter_transaction_type,
+                form_name: form_names.default,
+                subform_name: subform_names.statement,
                 transaction_type_filter: action_type,
             });
         }
@@ -213,10 +214,10 @@ const Statement = ({
 
     React.useEffect(() => {
         if (prev_date_from !== undefined && prev_date_to !== undefined) {
-            RudderStack.track('ce_reports_form', {
-                action: 'filter_dates',
-                form_name: 'default',
-                subform_name: 'statement_form',
+            RudderStack.track(event_names.reports, {
+                action: action_names.filter_dates,
+                form_name: form_names.default,
+                subform_name: subform_names.statement,
                 start_date_filter: formatDate(date_from, 'DD/MM/YYYY', false),
                 end_date_filter: formatDate(date_to, 'DD/MM/YYYY', false),
             });

@@ -1,6 +1,6 @@
 import { getIDVNotApplicableOption } from '../constants/default-options';
 
-type TDocumentList = Array<{
+type TDocument = {
     id: string;
     text: string;
     value?: string;
@@ -10,10 +10,10 @@ type TDocumentList = Array<{
         display_name: string;
         format: string;
     };
-}>;
+};
 
 type TIDVFormValues = {
-    document_type: TDocumentList[0];
+    document_type: TDocument;
     document_number: string;
     document_additional?: string;
     error_message?: string;

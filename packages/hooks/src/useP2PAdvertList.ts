@@ -8,7 +8,7 @@ import useExchangeRate from './useExchangeRate';
 const useP2PAdvertList = (payload?: NonNullable<Parameters<typeof useFetch<'p2p_advert_list'>>[1]>['payload']) => {
     const { getRate } = useExchangeRate();
 
-    const limit: number = payload?.limit || 10;
+    const limit: number = payload?.limit || 50;
     const [offset, setOffset] = React.useState<number>(payload?.offset || 0);
 
     const { data, ...rest } = useFetch('p2p_advert_list', {

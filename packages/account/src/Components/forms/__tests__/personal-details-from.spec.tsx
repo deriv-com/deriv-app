@@ -12,8 +12,6 @@ jest.mock('react-router-dom', () => ({
 describe('PersonalDetailsForm', () => {
     const mock_props = {
         editable_fields: ['salutation'],
-        is_fully_authenticated: true,
-        is_qualified_for_poa: true,
         salutation_list: [
             { value: 'Mr', label: 'Mr' },
             { value: 'Ms', label: 'Ms' },

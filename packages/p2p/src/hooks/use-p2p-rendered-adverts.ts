@@ -104,7 +104,7 @@ const useP2PRenderedAdverts = () => {
     }, [search_term, items]);
 
     const rendered_adverts = React.useMemo(() => {
-        return getRenderedAdverts(search_term, search_results, filtered_items, is_mobile);
+        return getRenderedAdverts(search_term, search_results, is_mobile, filtered_items);
     }, [search_term, filtered_items, is_mobile, search_results]);
 
     return {

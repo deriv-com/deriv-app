@@ -13,6 +13,7 @@ const useAvailableMT5Accounts = () => {
                 return {
                     ...account,
                     market_type: account.market_type === 'gaming' ? 'synthetic' : account.market_type,
+                    platform: 'mt5',
                 } as const;
             }),
         [mt5_available_accounts?.trading_platform_available_accounts]

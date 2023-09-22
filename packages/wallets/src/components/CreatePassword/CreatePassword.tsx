@@ -1,16 +1,20 @@
 import React from 'react';
-import { useCreateOtherCFDAccount } from '@deriv/api';
+import { useAvailableMT5Accounts, useCreateOtherCFDAccount } from '@deriv/api';
 import PasswordShowIcon from '../../public/images/ic-password-show.svg';
 import './CreatePassword.scss';
 
-type TPlatform = Parameters<
-    NonNullable<ReturnType<typeof useCreateOtherCFDAccount>['mutate']>
->[0]['payload']['platform'];
+type TPlatformMT5 = NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[number]['platform'];
+
+type TPlatformOtherAccounts =
+    | Parameters<NonNullable<ReturnType<typeof useCreateOtherCFDAccount>['mutate']>>[0]['payload']['platform'];
+
+type TPlatform = TPlatformMT5 | TPlatformOtherAccounts;
 
 const platformToTitleMapper: Record<TPlatform, string> = {
     ctrader: 'cTrader',
     derivez: 'Deriv EZ',
     dxtrade: 'Deriv X',
+    mt5: 'Deriv MT5',
 };
 
 type TProps = {

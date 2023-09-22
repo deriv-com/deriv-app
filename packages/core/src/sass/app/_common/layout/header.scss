@@ -204,24 +204,25 @@
         }
     }
 
-    &__menu--trading-hub {
+    &__menu--traders-hub {
         padding: 1.5rem;
+        &-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        &-text {
+            width: 13rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        &-beta-icon {
+            margin: 0 4rem 0 1rem;
+        }
     }
 
-    &__menu--trading-hub-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    &__menu--trading-hub-text {
-        width: 13rem;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
-
-    &__menu--explore-trading-hub {
+    &__menu--explore-traders-hub {
         border-radius: 1rem;
 
         &--dark {
@@ -234,7 +235,7 @@
         }
     }
 
-    &__menu--exit-trading-hub {
+    &__menu--exit-traders-hub {
         border-radius: 1rem;
 
         &--dark {
@@ -247,11 +248,7 @@
         }
     }
 
-    &__menu--trading-hub-beta-icon {
-        margin: 0 4rem 0 1rem;
-    }
-
-    &__menu--exit-trading-hub-beta-icon {
+    &__menu--exit-traders-hub-beta-icon {
         margin: 0 4rem 0 1rem;
     }
 

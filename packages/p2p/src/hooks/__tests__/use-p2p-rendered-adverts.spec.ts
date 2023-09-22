@@ -41,7 +41,7 @@ jest.mock('Stores', () => ({
 
 const mockUseStores = useStores as jest.MockedFunction<typeof useStores>;
 
-const renderHookWithConfig = config => {
+const renderHookWithConfig = (config: Record<string, object>) => {
     mockUseStores.mockReturnValue(config);
     const { result } = renderHook(() => useP2PRenderedAdverts());
     return result.current.rendered_adverts;

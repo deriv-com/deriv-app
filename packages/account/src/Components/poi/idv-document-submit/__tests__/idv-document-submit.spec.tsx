@@ -12,8 +12,8 @@ const mock_store = mockStore({
 
 jest.mock('react-router');
 jest.mock('Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
-jest.mock('Helpers/utils.ts', () => ({
-    ...jest.requireActual('Helpers/utils.ts'),
+jest.mock('Helpers/utils', () => ({
+    ...jest.requireActual('Helpers/utils'),
     getDocumentData: jest.fn((country_code, key) => {
         const data = {
             tc: {
@@ -155,8 +155,8 @@ describe('<IdvDocumentSubmit/>', () => {
         fireEvent.keyUp(document_number_input);
         fireEvent.change(document_number_input, { target: { value: 'A-32523' } });
         expect(await screen.findByText(/please enter the correct format/i)).toBeInTheDocument();
-        fireEvent.change(document_number_input, { target: { value: '5436454364243' } });
 
+        fireEvent.change(document_number_input, { target: { value: 'A54321' } });
         await waitFor(() => {
             expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
             expect(screen.queryByText(/please enter a valid ID number/i)).not.toBeInTheDocument();

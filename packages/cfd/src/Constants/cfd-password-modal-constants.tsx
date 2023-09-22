@@ -27,7 +27,7 @@ export const getWalletCFDInfo = (type: string) => {
 
 export const PASSWORD_ERRORS = Object.freeze({
     RESET: 'PasswordReset',
-    ERROR: 'PasswordErrors',
+    ERROR: 'PasswordError',
     PASSWORD: 'trading_password',
 });
 

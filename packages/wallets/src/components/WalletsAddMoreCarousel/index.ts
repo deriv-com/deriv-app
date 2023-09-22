@@ -1,4 +1,1 @@
-import WalletsAddMoreCarousel from './WalletsAddMoreCarousel';
-import './WalletsAddMoreCarousel.scss';
-
-export default WalletsAddMoreCarousel;
+export { default as WalletsAddMoreCarousel } from './WalletsAddMoreCarousel';

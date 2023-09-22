@@ -1,7 +1,7 @@
 import React from 'react';
 import countries from 'i18n-iso-countries';
+import { Localize, localize } from '@deriv/translations';
 import { filterObjProperties, toMoment, validLength, validName, getIDVNotApplicableOption } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
 import { FormikValues } from 'formik';
 import { getIDVDocuments } from '../Constants/idv-document-config';
@@ -154,8 +154,26 @@ export const isAdditionalDocumentValid = (document_type: FormikValues, document_
 
 export const isDocumentNumberValid = (document_number: string, document_type: FormikValues) => {
     const is_document_number_invalid = document_number === document_type.example_format;
-    if (!document_number) {
-        return localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
+    if (!document_number && document_type.text) {
+        let document_name = '';
+        const example_format = getExampleFormat(document_type.example_format);
+        switch (document_type.id) {
+            case 'drivers_license':
+                document_name = 'Driver License Reference number';
+                break;
+            case 'ssnit':
+                document_name = 'SSNIT number';
+                break;
+            default:
+                document_name = 'document number';
+                break;
+        }
+        return (
+            <Localize
+                i18n_default_text='Please enter your {{document_name}}. {{example_format}}'
+                values={{ document_name, example_format }}
+            />
+        );
     } else if (is_document_number_invalid) {
         return localize('Please enter a valid ID number.');
     }

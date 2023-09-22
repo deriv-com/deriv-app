@@ -1,18 +1,42 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import FileUploader from './file-uploader';
-import { Input, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import SampleCreditCardModal from '../../../Components/sample-credit-card-modal';
+import React from 'react';
 import classNames from 'classnames';
-import { IDENTIFIER_TYPES, VALIDATIONS } from '../../../Constants/poo-identifier';
+import { useFormikContext } from 'formik';
+import { Input, Text } from '@deriv/components';
 
-const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors, values }) => {
-    const [is_sample_modal_open, setIsSampleModalOpen] = useState(false);
-    const handleUploadedFile = async (name, file) => {
+import { IDENTIFIER_TYPES, VALIDATIONS } from '../../Constants/poo-identifier.js';
+import FileUploader from '../../Sections/Verification/ProofOfOwnership/file-uploader.jsx';
+import { TPaymentMethodInfo } from '../../Types';
+import ExampleLink from './example-link.js';
+
+type TExpandedCardProps = {
+    card_details: TPaymentMethodInfo;
+    index: number;
+    updateErrors: (index: number, item_index: number, name: string, value: string) => void;
+};
+
+/**
+ *
+ * @param card_details Details of payment method
+ * @param index Index of payment method
+ * @param updateErrors Function to update errors
+ * @returns React Component
+ */
+const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps) => {
+    const { values, setFieldValue, errors } = useFormikContext();
+
+    const [is_sample_modal_open, setIsSampleModalOpen] = React.useState(false);
+
+    const handleUploadedFile = async (name: string, file: Blob) => {
         await setFieldValue(name, file);
     };
-    const handleBlur = (name, payment_method_identifier, identifier_type, item_id, item_index, documents_required) => {
+    const handleBlur = (
+        name: string,
+        payment_method_identifier: string,
+        identifier_type: string,
+        item_id: string,
+        item_index: number,
+        documents_required: number
+    ) => {
         handleIdentifierChange(
             name,
             formatIdentifier(payment_method_identifier, identifier_type),
@@ -21,7 +45,13 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
             documents_required
         );
     };
-    const handleIdentifierChange = (name, payment_method_identifier, item_id, item_index, documents_required) => {
+    const handleIdentifierChange = (
+        name: string,
+        payment_method_identifier: string,
+        item_id: string,
+        item_index: number,
+        documents_required: number
+    ) => {
         setFieldValue(`${name}`, {
             ...values.data?.[index]?.[item_index],
             documents_required,
@@ -31,24 +61,13 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
             identifier_type: card_details.identifier_type,
         });
     };
-    const exampleLink = () =>
-        card_details?.identifier_type === IDENTIFIER_TYPES.CARD_NUMBER && (
-            <span
-                className='proof-of-ownership__card-open-desc-link'
-                key={0}
-                onClick={() => {
-                    setIsSampleModalOpen(true);
-                }}
-            >
-                {localize('See example')}
-            </span>
-        );
-    const formatIdentifier = (payment_method_identifier, identifier_type) => {
+
+    const formatIdentifier = (payment_method_identifier: string, identifier_type: string) => {
         let formatted_id = payment_method_identifier?.replace(/\s/g, '') || '';
         if (identifier_type === IDENTIFIER_TYPES.CARD_NUMBER) {
             if (
                 formatted_id.length !== 16 ||
-                (formatted_id.length === 16 && VALIDATIONS.has_invalid_characters(formatted_id))
+                (formatted_id.length === 16 && VALIDATIONS.hasInvalidCharacters(formatted_id))
             ) {
                 return formatted_id;
             }
@@ -59,8 +78,9 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
         return formatted_id.replace(/(\w{4})/g, '$1 ').trim();
     };
     const isSpecialPM = pm_icon => ['IcOnlineNaira', 'IcAstroPayLight', 'IcAstroPayDark'].some(ic => ic === pm_icon);
+
     return (
-        <>
+        <React.Fragment>
             <div>
                 {card_details?.instructions?.map(instruction => (
                     <Text
@@ -70,7 +90,7 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
                         size='xs'
                         key={instruction?.key ?? instruction}
                     >
-                        {instruction} {exampleLink()}
+                        {instruction} <ExampleLink />
                     </Text>
                 ))}
                 <fieldset>
@@ -86,7 +106,7 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
                                             className={classNames('proof-of-ownership__card-open-inputs-cardnumber', {
                                                 'proof-of-ownership-valid-identifier':
                                                     values?.data?.[index]?.[item_index]?.payment_method_identifier &&
-                                                    !error?.[item_index]?.payment_method_identifier,
+                                                    !errors?.[item_index]?.payment_method_identifier,
                                             })}
                                             type='text'
                                             onChange={e => {
@@ -110,7 +130,7 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
                                                 );
                                             }}
                                             data-testid='dt_payment_method_identifier'
-                                            error={error?.[item_index]?.payment_method_identifier}
+                                            error={errors?.[item_index]?.payment_method_identifier}
                                         />
                                     </div>
                                 )}
@@ -127,7 +147,7 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
                                                             'proof-of-ownership-valid-identifier':
                                                                 values?.data?.[index]?.[item_index]
                                                                     ?.payment_method_identifier &&
-                                                                !error?.[item_index]?.payment_method_identifier,
+                                                                !errors?.[item_index]?.payment_method_identifier,
                                                         }
                                                     )}
                                                     type='text'
@@ -155,7 +175,7 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
                                                         );
                                                     }}
                                                     data-testid='dt_payment_method_identifier'
-                                                    error={error?.[item_index]?.payment_method_identifier}
+                                                    error={errors?.[item_index]?.payment_method_identifier}
                                                 />
                                             </div>
                                         )}
@@ -170,7 +190,7 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
                                                 file_name={values?.data?.[index]?.[item_index]?.files?.[i]?.name ?? ''}
                                                 class_name='proof-of-ownership__card-open-inputs-photo'
                                                 name={`data[${index}].[${item_index}].files[${i}]`}
-                                                error={error?.[item_index]?.files?.[i]}
+                                                error={errors?.[item_index]?.files?.[i]}
                                                 index={index}
                                                 item_index={item_index}
                                                 sub_index={i}
@@ -184,23 +204,8 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
                     })}
                 </fieldset>
             </div>
-            <SampleCreditCardModal
-                is_open={is_sample_modal_open}
-                onClose={() => {
-                    setIsSampleModalOpen(false);
-                }}
-            />
-        </>
+        </React.Fragment>
     );
-};
-
-ExpandedCard.propTypes = {
-    card_details: PropTypes.object,
-    error: PropTypes.object,
-    index: PropTypes.number,
-    setFieldValue: PropTypes.func,
-    updateErrors: PropTypes.func,
-    values: PropTypes.object,
 };
 
 export default ExpandedCard;

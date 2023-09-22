@@ -11,7 +11,7 @@ import FormBodySection from '../../../Components/form-body-section';
 import { isMobile, readFiles, WS, DOCUMENT_TYPE } from '@deriv/shared';
 import Card from './card.jsx';
 import DocumentUploader from '@binary-com/binary-document-uploader';
-import { IDENTIFIER_TYPES, VALIDATIONS } from './constants/constants';
+import { IDENTIFIER_TYPES, VALIDATIONS } from '../../../Constants/poo-identifier';
 
 const getScrollOffset = (items_count = 0) => {
     if (isMobile()) return '200px';
@@ -49,7 +49,7 @@ const ProofOfOwnershipForm = ({
                     const payment_method_identifier = payment_method?.payment_method_identifier?.trim();
                     const is_payment_method_identifier_provided =
                         payment_method?.is_generic_pm || payment_method_identifier?.length > 0;
-                    const is_credit_or_debit_card = payment_method?.identifier_type === IDENTIFIER_TYPES.card_number;
+                    const is_credit_or_debit_card = payment_method?.identifier_type === IDENTIFIER_TYPES.CARD_NUMBER;
                     total_documents_uploaded = payment_method?.files?.filter(Boolean)?.length ?? 0;
                     if (is_payment_method_identifier_provided) {
                         are_files_uploaded = total_documents_uploaded === payment_method.documents_required;

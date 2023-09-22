@@ -13,7 +13,7 @@ export const ProofOfOwnership = observer(() => {
     const { refreshNotifications } = notifications;
     const { is_dark_mode_on: is_dark_mode } = ui;
     const cards = account_status?.authentication?.ownership?.requests;
-    const [status, setStatus] = useState(POO_STATUSES.none);
+    const [status, setStatus] = useState(POO_STATUSES.NONE);
     const citizen = client?.account_settings?.citizen || client?.account_settings?.country_code;
 
     const grouped_payment_method_data = React.useMemo(() => {
@@ -43,9 +43,9 @@ export const ProofOfOwnership = observer(() => {
         setStatus(account_status?.authentication?.ownership?.status?.toLowerCase());
     }, [account_status]);
     const onTryAgain = () => {
-        setStatus(POO_STATUSES.none);
+        setStatus(POO_STATUSES.NONE);
     };
-    if (cards?.length > 0 && status !== POO_STATUSES.rejected) {
+    if (cards?.length > 0 && status !== POO_STATUSES.REJECTED) {
         return (
             <ProofOfOwnershipForm
                 grouped_payment_method_data={grouped_payment_method_data.groups}
@@ -56,16 +56,16 @@ export const ProofOfOwnership = observer(() => {
             />
         ); // Proof of ownership is required.
     }
-    if (status === POO_STATUSES.verified) {
+    if (status === POO_STATUSES.VERIFIED) {
         return <POOVerified />; // Proof of ownership verified
     }
-    if (status === POO_STATUSES.pending) {
+    if (status === POO_STATUSES.PENDING) {
         return <POOSubmitted />; // Proof of ownership submitted pending review
     }
-    if (status === POO_STATUSES.none) {
+    if (status === POO_STATUSES.NONE) {
         return <POONotRequired />; // Client does not need proof of ownership.
     }
-    if (status === POO_STATUSES.rejected) {
+    if (status === POO_STATUSES.REJECTED) {
         return <POORejetced onTryAgain={onTryAgain} />; // Proof of ownership rejected
     }
     return <Loading is_fullscreen={false} className='account__initial-loader' />;

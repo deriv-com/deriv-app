@@ -219,7 +219,7 @@ const ProofOfOwnershipForm = ({
             innerRef={form_ref}
             onSubmit={handleFormSubmit}
         >
-            {({ values, errors, setFieldValue, handleSubmit, isValid, dirty }) => (
+            {({ handleSubmit, isValid, dirty }) => (
                 <form
                     data-testid='dt_poo_form'
                     className='proof-of-ownership'

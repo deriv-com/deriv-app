@@ -1,10 +1,14 @@
 import React from 'react';
 import DerivX from '../../../public/images/derivx.svg';
+import { DxtradeEnterPasswordModal } from '../../DxtradeEnterPasswordModal';
+import { useModal } from '../../ModalProvider';
 import { SecondaryActionButton } from '../../SecondaryActionButton';
 import { TradingAccountCard } from '../../TradingAccountCard';
 import './AvailableDxtradeAccountsList.scss';
 
 const AvailableDxtradeAccountsList: React.FC = () => {
+    const { show } = useModal();
+
     return (
         <TradingAccountCard
             leading={() => (
@@ -13,7 +17,7 @@ const AvailableDxtradeAccountsList: React.FC = () => {
                 </div>
             )}
             trailing={() => (
-                <SecondaryActionButton>
+                <SecondaryActionButton onClick={() => show(<DxtradeEnterPasswordModal />)}>
                     <p className='wallets-available-dxtrade__text'>Get</p>
                 </SecondaryActionButton>
             )}

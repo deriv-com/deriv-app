@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import ModalManagerContextProvider from 'Components/modal-manager/modal-manager-context-provider';
 import LoadingModal from '../loading-modal';
 
 jest.mock('Components/modal-manager/modal-manager-context', () => ({

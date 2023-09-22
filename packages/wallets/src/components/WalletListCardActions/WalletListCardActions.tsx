@@ -43,11 +43,12 @@ const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
 };
 
 type TProps = {
+    isActive: boolean;
     isDemo: boolean;
     loginid: string;
 };
 
-const WalletListCardActions: React.FC<TProps> = ({ isDemo, loginid }) => {
+const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { switchAccount } = useAuthorize();
     const { getCashierParam } = useCashierParam();
@@ -94,7 +95,7 @@ const WalletListCardActions: React.FC<TProps> = ({ isDemo, loginid }) => {
                     {button.icon}
                     <span
                         className={`wallets-header__actions-label ${
-                            activeWallet?.is_active ? 'wallets-header__actions-label--active' : ''
+                            isActive ? 'wallets-header__actions-label--active' : ''
                         }`}
                     >
                         {button.name}

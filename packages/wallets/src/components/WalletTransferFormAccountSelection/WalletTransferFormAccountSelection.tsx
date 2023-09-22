@@ -7,7 +7,7 @@ import './WalletTransferFormAccountSelection.scss';
 
 type TProps = {
     label: string;
-    onSelect: (value: string) => void;
+    onSelect: (value: NonNullable<ReturnType<typeof useAccountsList>['data']>[number]) => void;
 };
 
 const WalletTransferFormAccountSelection: React.FC<TProps> = ({ label, onSelect }) => {
@@ -33,11 +33,11 @@ const WalletTransferFormAccountSelection: React.FC<TProps> = ({ label, onSelect 
                         className='wallets-transfer-form-account-selection__account'
                         key={`account-selection-${account?.loginid}`}
                         onClick={() => {
-                            onSelect(account.loginid);
+                            onSelect(account);
                             modal.hide();
                         }}
                     >
-                        <WalletTransferFromAccountCard loginId={account.loginid} />
+                        <WalletTransferFromAccountCard account={account} />
                     </button>
                 ))}
             </div>

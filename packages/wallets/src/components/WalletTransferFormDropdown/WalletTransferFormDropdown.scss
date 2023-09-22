@@ -34,8 +34,10 @@
         background: var(--system-light-5-active-background, #d6dadb);
     }
 
-    &__icon {
-        display: inline-block;
-        align-self: center;
+    &__icons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
     }
 }

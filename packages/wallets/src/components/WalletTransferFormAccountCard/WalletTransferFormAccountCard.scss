@@ -8,6 +8,10 @@
         display: flex;
         gap: 16px;
 
+        &--is-input {
+            gap: 8px;
+        }
+
         &__card {
             display: flex;
             align-items: center;
@@ -28,6 +32,25 @@
             font-style: normal;
             font-weight: 400;
             line-height: 14px; /* 140% */
+
+            &--is-input {
+                font-size: 10px;
+            }
+        }
+
+        &__title {
+            color: var(--system-light-1-prominent-text, #333);
+
+            /* desktop/subtitle/Sub 2 - bold */
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 30px; /* 150% */
+
+            &--is-input {
+                font-size: 10px;
+                line-height: 14px;
+            }
         }
     }
 
@@ -40,5 +63,10 @@
         padding: 2px 4px;
         width: 50px;
         height: 35px;
+
+        &--is-input {
+            width: 46px;
+            height: 31px;
+        }
     }
 }

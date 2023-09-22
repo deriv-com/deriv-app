@@ -17,9 +17,6 @@ const WalletCashierHeader = () => {
     const history = useHistory();
     const { currency, currency_config, display_balance, landing_company_name, wallet_currency_type } = data || {};
 
-    const formattedLandingCompany =
-        landing_company_name === 'virtual' ? 'Demo' : landing_company_name?.toUpperCase() || 'SVG';
-
     return (
         <WalletGradientBackground
             currency={currency_config?.display_code || 'USD'}
@@ -35,7 +32,7 @@ const WalletCashierHeader = () => {
                                 {currency} Wallet
                             </h1>
                             {landing_company_name && (
-                                <WalletListCardBadge is_demo={data?.is_virtual} label={formattedLandingCompany} />
+                                <WalletListCardBadge is_demo={data?.is_virtual} label={landing_company_name} />
                             )}
                         </div>
                         <p className='wallets-cashier-header__info__top-left__balance'>{display_balance}</p>

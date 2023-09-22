@@ -6,13 +6,14 @@ import './WalletTransferFormInputField.scss';
 type TProps = {
     defaultValue?: number;
     fieldName: string;
+    fractionDigits?: number;
     label: string;
 };
 
-const WalletTransferFormInputField: React.FC<TProps> = ({ defaultValue, fieldName, label }) => {
+const WalletTransferFormInputField: React.FC<TProps> = ({ defaultValue, fieldName, fractionDigits = 2, label }) => {
     const { setFieldValue } = useFormikContext();
     const { onChange, value } = useInputATMFormatter(defaultValue, {
-        fraction_digits: 2,
+        fraction_digits: fractionDigits,
     });
 
     useEffect(() => {

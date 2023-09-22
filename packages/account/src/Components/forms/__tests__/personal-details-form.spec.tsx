@@ -1,8 +1,8 @@
 import React from 'react';
+import { Formik } from 'formik';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import PersonalDetailsForm from '../personal-details-form';
-import { Formik } from 'formik';
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

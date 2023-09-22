@@ -10,7 +10,7 @@ jobs:
 
   build:
     name: Reporter
-    runs-on: Runner_16cores
+    runs-on: ubuntu-latest
     container:
       image: node:18.16.0
     steps:

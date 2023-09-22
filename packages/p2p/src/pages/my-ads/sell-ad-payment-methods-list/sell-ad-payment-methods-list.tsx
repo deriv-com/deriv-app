@@ -50,8 +50,8 @@ const SellAdPaymentMethodsList = ({
             is_scrollbar_hidden
             is_only_horizontal={is_only_horizontal}
         >
-            {p2p_advertiser_payment_methods && sortPaymentMethods(p2p_advertiser_payment_methods).map(
-                (payment_method: TPaymentMethod) => (
+            {p2p_advertiser_payment_methods &&
+                sortPaymentMethods(p2p_advertiser_payment_methods).map((payment_method: TPaymentMethod) => (
                     <PaymentMethodCard
                         is_vertical_ellipsis_visible={false}
                         key={payment_method.ID}
@@ -60,8 +60,7 @@ const SellAdPaymentMethodsList = ({
                         payment_method={payment_method}
                         style={selected_methods.includes(payment_method.ID) ? style : {}}
                     />
-                )
-            )}
+                ))}
             <PaymentMethodCard is_add label={localize('Payment method')} medium onClickAdd={onClickAdd} />
         </ThemedScrollbars>
     );

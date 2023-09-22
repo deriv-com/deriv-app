@@ -61,18 +61,16 @@ const WalletListCardActions: React.FC<TProps> = ({ isDemo, loginid }) => {
             <div className='wallets-mobile-actions__container'>
                 <div className='wallets-mobile-actions'>
                     {getWalletHeaderButtons(is_demo).map(button => (
-                        <React.Fragment key={button.name}>
-                            <div className='wallets-mobile-actions-content'>
-                                <button
-                                    className='wallets-mobile-actions-content-icon'
-                                    key={button.name}
-                                    onClick={button.action}
-                                >
-                                    {button.icon}
-                                </button>
-                                <div className='wallets-mobile-actions-content-text'>{button.text}</div>
-                            </div>
-                        </React.Fragment>
+                        <div className='wallets-mobile-actions-content' key={button.name}>
+                            <button
+                                className='wallets-mobile-actions-content-icon'
+                                key={button.name}
+                                onClick={button.action}
+                            >
+                                {button.icon}
+                            </button>
+                            <div className='wallets-mobile-actions-content-text'>{button.text}</div>
+                        </div>
                     ))}
                 </div>
             </div>
@@ -83,7 +81,7 @@ const WalletListCardActions: React.FC<TProps> = ({ isDemo, loginid }) => {
             {getWalletHeaderButtons(isDemo).map(button => (
                 <button
                     className='wallets-header__button'
-                    key={loginid}
+                    key={button.name}
                     onClick={async () => {
                         await switchAccount(loginid);
                         history.push(

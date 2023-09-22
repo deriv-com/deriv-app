@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import PoiConfirmWithExampleFormContainer from '../poi-confirm-with-example-form-container';
-import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
 
@@ -22,16 +21,17 @@ jest.mock('@deriv/shared', () => ({
     })),
     WS: {
         wait: jest.fn(() => Promise.resolve()),
-        setSettings: jest.fn(() =>
-            Promise.resolve({
-                data: { error: '' },
-            })
-        ),
+        setSettings: jest.fn(() => Promise.resolve({ error: '' })),
         authorized: {
             storage: {
                 getSettings: jest.fn(() =>
                     Promise.resolve({
-                        response: { error: '', get_settings: {} },
+                        error: '',
+                        get_settings: {
+                            first_name: 'test first name1',
+                            last_name: 'test last name1',
+                            date_of_birth: '2003-08-03',
+                        },
                     })
                 ),
             },
@@ -47,12 +47,6 @@ describe('<PoiConfirmWithExampleFormContainer/>', () => {
         (ReactDOM.createPortal as jest.Mock).mockClear();
     });
 
-    const mock_store = mockStore({});
-
-    const wrapper = ({ children }: { children: JSX.Element }) => (
-        <StoreProvider store={mock_store}>{children}</StoreProvider>
-    );
-
     const mock_props = {
         account_settings: {},
         getChangeableFields: jest.fn(() => ['first_name', 'last_name', 'date_of_birth']),
@@ -63,7 +57,7 @@ describe('<PoiConfirmWithExampleFormContainer/>', () => {
         'I confirm that the name and date of birth above match my chosen identity document (see below)';
 
     it('should render PersonalDetailsForm with image and checkbox', async () => {
-        render(<PoiConfirmWithExampleFormContainer {...mock_props} />, { wrapper });
+        render(<PoiConfirmWithExampleFormContainer {...mock_props} />);
 
         expect(await screen.findByText('PoiNameDobExampleImage')).toBeInTheDocument();
         expect(screen.getByText(clarification_message)).toBeInTheDocument();
@@ -78,7 +72,8 @@ describe('<PoiConfirmWithExampleFormContainer/>', () => {
         expect(input_fields[2].name).toBe('date_of_birth');
     });
     it('should change fields and trigger submit', async () => {
-        render(<PoiConfirmWithExampleFormContainer {...mock_props} />, { wrapper });
+        jest.useFakeTimers();
+        render(<PoiConfirmWithExampleFormContainer {...mock_props} />);
 
         const checkbox_el: HTMLInputElement = await screen.findByRole('checkbox');
         expect(checkbox_el.checked).toBeFalsy();
@@ -104,9 +99,14 @@ describe('<PoiConfirmWithExampleFormContainer/>', () => {
 
         const button_el = screen.getByRole('button');
         userEvent.click(button_el);
+        await userEvent.click(button_el);
+        act(() => {
+            jest.advanceTimersByTime(500);
+        });
 
         await waitFor(() => {
             expect(mock_props.onFormConfirm).toHaveBeenCalled();
         });
+        jest.useRealTimers();
     });
 });

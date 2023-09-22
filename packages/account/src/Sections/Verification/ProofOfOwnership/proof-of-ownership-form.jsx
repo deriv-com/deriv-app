@@ -98,9 +98,9 @@ const ProofOfOwnershipForm = ({
                         is_credit_or_debit_card &&
                         ((payment_method_identifier?.length !== 0 &&
                             (payment_method_identifier?.length !== 16 || payment_method_identifier?.length > 19) &&
-                            !VALIDATIONS.is_formated_card_number(payment_method_identifier)) ||
+                            !VALIDATIONS.isFormattedCardNumber(payment_method_identifier)) ||
                             (payment_method_identifier?.length === 16 &&
-                                VALIDATIONS.has_invalid_characters(payment_method_identifier)))
+                                VALIDATIONS.hasInvalidCharacters(payment_method_identifier)))
                     ) {
                         errors.data[card_key][item_key].payment_method_identifier =
                             localize('Enter your full card number');

@@ -15,7 +15,7 @@ import pt from 'Translations/pt.json';
 import ru from 'Translations/ru.json';
 import th from 'Translations/th.json';
 import tr from 'Translations/tr.json';
-import vi from 'Translations/ru.json';
+import vi from 'Translations/vi.json';
 import zh_cn from 'Translations/zh_cn.json';
 import zh_tw from 'Translations/zh_tw.json';
 

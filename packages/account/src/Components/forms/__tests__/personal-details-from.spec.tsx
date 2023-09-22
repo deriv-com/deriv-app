@@ -28,6 +28,7 @@ describe('PersonalDetailsForm', () => {
 
     it("should display the salutations 'Mr' and 'Ms' on screen", () => {
         renderComponent();
+
         expect(screen.getByRole('radio', { name: 'Mr' })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: 'Ms' })).toBeInTheDocument();
     });

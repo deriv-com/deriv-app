@@ -57,10 +57,38 @@ describe('useCFDAllAccounts', () => {
         expect(result.current).toHaveLength(1);
     });
 
-    test('should return proper data when client has both MT5 and dxtrade accounts', async () => {
+    test('should return proper data when client has ctrader accounts', async () => {
+        const mock = mockStore({
+            client: {
+                ctrader_accounts_list: [
+                    {
+                        account_type: 'real',
+                        balance: 1000,
+                        currency: 'USD',
+                    },
+                ],
+            },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+        const { result } = renderHook(() => useCFDAllAccounts(), { wrapper });
+
+        expect(result.current).toHaveLength(1);
+    });
+
+    test('should return proper data when client has MT5, ctrader and dxtrade accounts', async () => {
         const mock = mockStore({
             client: {
                 mt5_login_list: [
+                    {
+                        account_type: 'real',
+                        balance: 1000,
+                        currency: 'USD',
+                    },
+                ],
+                ctrader_accounts_list: [
                     {
                         account_type: 'real',
                         balance: 1000,
@@ -82,6 +110,6 @@ describe('useCFDAllAccounts', () => {
         );
         const { result } = renderHook(() => useCFDAllAccounts(), { wrapper });
 
-        expect(result.current).toHaveLength(2);
+        expect(result.current).toHaveLength(3);
     });
 });

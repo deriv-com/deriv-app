@@ -1,6 +1,6 @@
 import React from 'react';
+import { Localize, localize } from '@deriv/translations';
 import { filterObjProperties, toMoment, validLength, validName, getIDVNotApplicableOption } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
 import { FormikValues } from 'formik';
 import { getIDVDocuments } from '../Constants/idv-document-config';
@@ -98,15 +98,6 @@ export const generatePlaceholderText = (selected_doc: string): string => {
     }
 };
 
-export const validate = <T>(errors: Record<string, string>, values: T) => {
-    return (fn: (value: string) => string, arr: string[], err_msg: string) => {
-        arr.forEach(field => {
-            const value = values[field as keyof typeof values] as string;
-            if (!fn(value) && !errors[field]) errors[field] = err_msg;
-        });
-    };
-};
-
 export const isFieldImmutable = (field: string, mutable_fields: string[] = []) => !mutable_fields.includes(field);
 
 export const makeSettingsRequest = (values: FormikValues, changeable_fields: string[]) => {
@@ -156,8 +147,26 @@ export const isAdditionalDocumentValid = (document_type: FormikValues, document_
 
 export const isDocumentNumberValid = (document_number: string, document_type: FormikValues) => {
     const is_document_number_invalid = document_number === document_type.example_format;
-    if (!document_number) {
-        return localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
+    if (!document_number && document_type.text) {
+        let document_name = '';
+        const example_format = getExampleFormat(document_type.example_format);
+        switch (document_type.id) {
+            case 'drivers_license':
+                document_name = 'Driver License Reference number';
+                break;
+            case 'ssnit':
+                document_name = 'SSNIT number';
+                break;
+            default:
+                document_name = 'document number';
+                break;
+        }
+        return (
+            <Localize
+                i18n_default_text='Please enter your {{document_name}}. {{example_format}}'
+                values={{ document_name, example_format }}
+            />
+        );
     } else if (is_document_number_invalid) {
         return localize('Please enter a valid ID number.');
     }
@@ -188,4 +197,13 @@ export const getIDVDocumentType = (
         },
     } = residence;
     return documents_supported[document_type as string].display_name;
+};
+
+export const validate = <T,>(errors: Record<string, string>, values: T) => {
+    return (fn: (value: string) => string, arr: string[], err_msg: string) => {
+        arr.forEach(field => {
+            const value = values[field as keyof typeof values] as string;
+            if (!fn(value) && !errors[field]) errors[field] = err_msg;
+        });
+    };
 };

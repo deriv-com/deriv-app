@@ -6,8 +6,8 @@ import { DesktopWalletsList, Loader, WalletCashier, WalletsAddMoreCarousel, Wall
 import './AppContent.scss';
 
 const AppContent: React.FC = () => {
+    const { isMobile } = useDevice();
     const { activeCashierTab } = useCashierParam();
-    const { is_mobile } = useDevice();
     const { isLoading } = useAuthorize();
 
     if (isLoading) return <Loader />;
@@ -18,7 +18,7 @@ const AppContent: React.FC = () => {
 
     return (
         <div className='wallets-app'>
-            <div className='wallets-app__content'>{is_mobile ? <WalletsCarousel /> : <DesktopWalletsList />}</div>
+            <div className='wallets-app__content'>{isMobile ? <WalletsCarousel /> : <DesktopWalletsList />}</div>
             <WalletsAddMoreCarousel />
         </div>
     );

@@ -6,7 +6,7 @@ import { getWalletHeaderButtons } from 'Constants/utils';
 import './wallet-button.scss';
 
 type TProps = {
-    readonly button: ReturnType<typeof getWalletHeaderButtons>[number];
+    button: ReturnType<typeof getWalletHeaderButtons>[number];
     is_desktop_wallet?: boolean;
     is_disabled?: boolean;
     is_open?: boolean;

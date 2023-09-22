@@ -73,7 +73,8 @@ const FiatCFDs = observer(() => {
     const getMT5AccountAuthStatus = (current_acc_status: string) => {
         if (current_acc_status === 'proof_failed') {
             return 'failed';
-        } else if (current_acc_status === 'verification_pending') {
+        }
+        if (current_acc_status === 'verification_pending') {
             return 'pending';
         }
         return null;

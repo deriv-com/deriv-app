@@ -44,7 +44,6 @@ describe('<WalletContent />', () => {
         expect(wrapper).toHaveClass('wallet-content__demo');
     });
 
-    // data-testid='dt_disclaimer_wrapper'
     it('Check there is NOT disclaimer for demo', () => {
         render(
             <StoreProvider store={mockedRootStore}>

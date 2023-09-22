@@ -12,9 +12,7 @@ const useLocalStorageData = <T>(
     key: string,
     fallback_value?: T
 ): [T | null, React.Dispatch<React.SetStateAction<T | null>>, VoidFunction] => {
-    const [data, setData] = React.useState<T | null>(
-        getLocalStorage(key) ?? (fallback_value !== undefined ? fallback_value : null)
-    );
+    const [data, setData] = React.useState<T | null>(getLocalStorage(key) ?? fallback_value ?? null);
 
     React.useEffect(() => {
         localStorage.setItem(key, JSON.stringify(data));
@@ -22,7 +20,7 @@ const useLocalStorageData = <T>(
 
     const clearData = () => {
         localStorage.removeItem(key);
-        setData(fallback_value || null);
+        setData(fallback_value ?? null);
     };
 
     return [data, setData, clearData];

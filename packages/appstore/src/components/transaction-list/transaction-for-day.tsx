@@ -4,7 +4,7 @@ import { useWalletTransactions } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import NonPendingTransaction from './non-pending-transaction';
 
-export const TransactionsForADay = observer(
+export const TransactionsForOneDay = observer(
     ({
         day,
         transaction_list,

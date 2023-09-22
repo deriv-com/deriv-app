@@ -71,7 +71,7 @@ describe('<WalletsBanner />', () => {
             render(<WalletsBannerUpgrading />, {
                 wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             });
-            const loading_dots = screen.queryByTestId('dt_wallets-loading-dots');
+            const loading_dots = screen.queryByTestId('dt_wallets_loading_dots');
 
             expect(loading_dots).toBeInTheDocument();
         });
@@ -144,7 +144,7 @@ describe('<WalletsBanner />', () => {
             render(<WalletsBannerReady />, {
                 wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             });
-            const tick = screen.queryByTestId('dt_wallets-ready-tick');
+            const tick = screen.queryByTestId('dt_wallets_ready_tick');
 
             expect(tick).toBeInTheDocument();
         });

@@ -3,7 +3,7 @@ import { Dropdown } from '@deriv/components';
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import { groupTransactionsByDay } from '@deriv/utils';
-import { TransactionsForADay } from './transaction-for-day';
+import { TransactionsForOneDay } from './transaction-for-day';
 import './transaction-list.scss';
 
 const TransactionList = () => {
@@ -61,11 +61,11 @@ const TransactionList = () => {
                     value={filter}
                 />
                 {Object.entries(grouped_transactions).map(([day, transaction_list]) => (
-                    <TransactionsForADay
+                    <TransactionsForOneDay
                         key={day}
                         day={day}
                         transaction_list={
-                            transaction_list as React.ComponentProps<typeof TransactionsForADay>['transaction_list']
+                            transaction_list as React.ComponentProps<typeof TransactionsForOneDay>['transaction_list']
                         }
                     />
                 ))}

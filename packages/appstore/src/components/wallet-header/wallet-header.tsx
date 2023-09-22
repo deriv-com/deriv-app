@@ -21,6 +21,9 @@ const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
     // const [is_loading, setIsLoading] = useState(false);
     const { multipliers_account_status } = traders_hub;
 
+    const { is_demo, currency, gradient_card_class, currency_config, icon, balance, landing_company_name } =
+        wallet_account;
+
     const wallet_buttons = getWalletHeaderButtons(wallet_account.is_demo);
 
     const onArrowClickHandler = async () => {
@@ -34,23 +37,23 @@ const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
     //     if (is_authorize) {
     //         setIsLoading(false);
     //     }
-    // }, [is_authorize]);
+    // }, [is_authorize]);}
 
     return (
-        <div className={classNames('wallet-header', { 'wallet-header__demo': wallet_account.is_demo })}>
+        <div className={classNames('wallet-header', { 'wallet-header__demo': is_demo })}>
             <div className='wallet-header__container'>
                 <WalletCurrencyCard
-                    is_demo={wallet_account.is_demo}
-                    currency={wallet_account.currency}
-                    gradient_class={wallet_account.gradient_card_class}
-                    icon={wallet_account.icon}
-                    icon_type={wallet_account.currency_config?.type}
+                    is_demo={is_demo}
+                    currency={currency}
+                    gradient_class={gradient_card_class}
+                    icon={icon}
+                    icon_type={currency_config?.type}
                 />
                 <div className='wallet-header__description'>
                     <WalletHeaderTitle
-                        is_demo={wallet_account.is_demo}
-                        currency={wallet_account.currency}
-                        landing_company_name={wallet_account.landing_company_name}
+                        is_demo={is_demo}
+                        currency={currency}
+                        landing_company_name={landing_company_name}
                     />
                     <WalletHeaderButtons
                         is_disabled={!!multipliers_account_status}
@@ -60,7 +63,7 @@ const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
                     />
                 </div>
                 <div className='wallet-header__balance'>
-                    <WalletHeaderBalance balance={wallet_account.balance} currency={wallet_account.currency} />
+                    <WalletHeaderBalance balance={balance} currency={currency} />
                     <Icon
                         data_testid='dt_arrow'
                         onClick={onArrowClickHandler}

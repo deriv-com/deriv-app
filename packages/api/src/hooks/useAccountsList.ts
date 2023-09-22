@@ -32,8 +32,6 @@ const useAccountsList = () => {
                 loginid: `${account.loginid}`,
                 /** Account's currency config information */
                 currency_config: account.currency ? getConfig(account.currency) : undefined,
-                /** Determines the account type whether it is a real or demo account. */
-                account_type: account.is_virtual ? 'demo' : 'real',
             } as const;
         });
     }, [authorize_data.account_list, authorize_data.loginid, getConfig]);

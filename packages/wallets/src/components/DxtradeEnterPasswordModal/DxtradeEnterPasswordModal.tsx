@@ -8,17 +8,20 @@ import './DxtradeEnterPasswordModal.scss';
 
 const DxtradeEnterPasswordModal = () => {
     const [password, setPassword] = React.useState('');
-    const { isSuccess, send } = useCreateOtherCFDAccount();
+    const { isSuccess, mutate } = useCreateOtherCFDAccount();
     const { data: activeWallet } = useActiveWalletAccount();
     const { hide } = useModal();
 
-    const onSubmit = () =>
-        send({
-            account_type: activeWallet?.account_type || 'demo',
-            market_type: 'all',
-            password,
-            platform: 'dxtrade',
+    const onSubmit = () => {
+        mutate({
+            payload: {
+                account_type: activeWallet?.is_virtual ? 'demo' : 'real',
+                market_type: 'all',
+                password,
+                platform: 'dxtrade',
+            },
         });
+    };
 
     useEffect(() => {
         if (isSuccess) hide();

@@ -1,4 +1,1 @@
-import WalletsCarousel from './WalletsCarousel';
-import './WalletsCarousel.scss';
-
-export default WalletsCarousel;
+export { default as WalletsCarousel } from './WalletsCarousel';

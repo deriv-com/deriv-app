@@ -2,10 +2,10 @@ import React from 'react';
 import classNames from 'classnames';
 import { useFormikContext } from 'formik';
 import { Input, Text } from '@deriv/components';
-import { IDENTIFIER_TYPES, VALIDATIONS } from '../../Constants/poo-identifier.js';
-import FileUploader from '../../Sections/Verification/ProofOfOwnership/file-uploader.jsx';
+import { IDENTIFIER_TYPES, VALIDATIONS } from '../../Constants/poo-identifier';
+import FileUploader from '../../Sections/Verification/ProofOfOwnership/file-uploader';
 import { TPaymentMethodInfo } from '../../Types';
-import ExampleLink from './example-link.js';
+import ExampleLink from './example-link';
 
 type TExpandedCardProps = {
     card_details: TPaymentMethodInfo;

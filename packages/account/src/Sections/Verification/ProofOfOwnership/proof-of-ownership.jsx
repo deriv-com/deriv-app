@@ -4,7 +4,7 @@ import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import ProofOfOwnershipForm from './proof-of-ownership-form.jsx';
 import { POONotRequired, POOVerified, POORejetced, POOSubmitted } from 'Components/poo/statuses';
-import { POO_STATUSES } from './constants/constants';
+import { POO_STATUSES } from '../../../Constants/poo-identifier.ts';
 import getPaymentMethodsConfig from '../../../Configs/payment-method-config';
 
 export const ProofOfOwnership = observer(() => {

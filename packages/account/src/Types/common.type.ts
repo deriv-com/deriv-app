@@ -199,7 +199,7 @@ export type TPaymentMethodInfo = {
     icon: string;
     payment_method: string;
     items: NonNullable<NonNullable<GetAccountStatus['authentication']>['ownership']>['requests'];
-    instructions: string;
+    instructions: Array<string>;
     input_label: string;
     identifier_type: TPaymentMethodIdentifier;
     is_generic_pm: boolean;

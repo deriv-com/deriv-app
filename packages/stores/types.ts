@@ -315,6 +315,7 @@ type TClientStore = {
     is_populating_dxtrade_account_list: boolean;
     is_social_signup: boolean;
     is_switching: boolean;
+    is_single_currency: boolean;
     is_tnc_needed: boolean;
     is_trading_experience_incomplete: boolean;
     is_virtual: boolean;

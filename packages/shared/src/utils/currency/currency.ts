@@ -42,15 +42,13 @@ const crypto_currencies_display_order = [
     'USDK',
 ];
 
-export const reorderCurrencies = <T>(list: Array<T>, type = 'fiat') => {
+export const reorderCurrencies = <T extends { value: string; type: string }>(list: Array<T>, type = 'fiat') => {
     const new_order = type === 'fiat' ? fiat_currencies_display_order : crypto_currencies_display_order;
 
     return list.sort((a, b) => {
-        // @ts-expect-error as T is not guaranteed to have value property
         if (new_order.indexOf(a.value) < new_order.indexOf(b.value)) {
             return -1;
         }
-        // @ts-expect-error as T is not guaranteed to have value property
         if (new_order.indexOf(a.value) > new_order.indexOf(b.value)) {
             return 1;
         }

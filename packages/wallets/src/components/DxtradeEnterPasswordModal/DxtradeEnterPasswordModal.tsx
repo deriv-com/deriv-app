@@ -33,7 +33,7 @@ const DxtradeEnterPasswordModal = () => {
                 icon={<DxTradePasswordIcon />}
                 onPasswordChange={e => setPassword(e.target.value)}
                 onPrimaryClick={onSubmit}
-                platform='Deriv X'
+                platform='dxtrade'
             />
         </WalletModal>
     );

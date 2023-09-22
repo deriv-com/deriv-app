@@ -234,8 +234,8 @@
             }
         }
 
-        &--reversed {
-            @include desktop() {
+        @include desktop {
+            &--reversed {
                 grid-template-areas: 'section-content section-side-note';
                 grid-template-columns: 1fr auto;
             }
@@ -434,8 +434,8 @@
     }
 }
 
-.formik__confirmation-checkbox {
-    @include mobile {
+@include mobile {
+    .formik__confirmation-checkbox {
         margin-bottom: 1.6rem;
     }
 }

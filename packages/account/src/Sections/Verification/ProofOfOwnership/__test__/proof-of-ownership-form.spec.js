@@ -2,12 +2,8 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import ProofOfOwnershipForm from '../proof-of-ownership-form.jsx';
 import { grouped_payment_method_data } from './test-data';
-import { StoreProvider, mockStore } from '@deriv/stores';
 
 describe('proof-of-ownership-form.jsx', () => {
-    const mock_store = mockStore();
-    const wrapper = ({ children }) => <StoreProvider store={mock_store}>{children}</StoreProvider>;
-
     it('should render a single card item inside the form', () => {
         render(
             <ProofOfOwnershipForm
@@ -17,8 +13,7 @@ describe('proof-of-ownership-form.jsx', () => {
                 is_dark_mode={false}
                 client_email={'test@testing.com'}
                 citizen='id'
-            />,
-            { wrapper }
+            />
         );
         const cardItems = screen.getByRole('card-item');
         expect(cardItems).toBeInTheDocument();
@@ -32,8 +27,7 @@ describe('proof-of-ownership-form.jsx', () => {
                 is_dark_mode={false}
                 client_email={'test@testing.com'}
                 citizen='id'
-            />,
-            { wrapper }
+            />
         );
         const cardItems = screen.getAllByRole('card-item');
         expect(cardItems).toHaveLength(Object.keys(grouped_payment_method_data).length);
@@ -47,8 +41,7 @@ describe('proof-of-ownership-form.jsx', () => {
                 is_dark_mode={false}
                 client_email={'test@testing.com'}
                 citizen='id'
-            />,
-            { wrapper }
+            />
         );
         const poo_dropdown_button = await screen.findByTestId('dt_proof-of-ownership-button');
         fireEvent.click(poo_dropdown_button);

@@ -27,8 +27,8 @@ const getSearchResults = (items: TAdvertList, search_term: string) => {
 const getRenderedAdverts = (
     search_term: string,
     search_results: TAdvertList,
-    filtered_items: TAdvertList = [],
-    is_mobile: boolean
+    is_mobile: boolean,
+    filtered_items: TAdvertList = []
 ) => {
     let rendered_adverts: DeepPartial<TAdvertList> = [];
     if (is_mobile) {

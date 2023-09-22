@@ -19,7 +19,9 @@ import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { TCFDPasswordReset } from './props.types';
 
 type TMT5TradeModalProps = {
-    mt5_trade_account: DetailsOfEachMT5Loginid;
+    mt5_trade_account: DetailsOfEachMT5Loginid & {
+        webtrader_url?: string;
+    };
     show_eu_related_content: boolean;
     onPasswordManager: (
         arg1: string | undefined,

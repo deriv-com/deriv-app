@@ -5,7 +5,8 @@ import IcAppstoreDerivBot from '../../public/images/ic-appstore-deriv-bot.svg';
 import IcAppstoreDerivGo from '../../public/images/ic-appstore-deriv-go.svg';
 import IcAppstoreDerivTrader from '../../public/images/ic-appstore-deriv-trader.svg';
 import IcAppstoreSmartTrader from '../../public/images/ic-appstore-smart-trader.svg';
-import { TradingAccountCard } from '..';
+import { PrimaryActionButton } from '../PrimaryActionButton';
+import { TradingAccountCard } from '../TradingAccountCard';
 import './OptionsAndMultipliersListing.scss';
 
 const options_and_multipliers = [
@@ -52,11 +53,11 @@ const OptionsAndMultipliersListing = () => {
                     {/* TODO: Localization needed*/}
                     <h1>
                         Earn a range of payouts by correctly predicting market price movements with{' '}
-                        <a key={0} href='#' className='wallets-options-and-multipliers-listing__header-subtitle__link'>
+                        <a className='wallets-options-and-multipliers-listing__header-subtitle__link' href='#' key={0}>
                             options
                         </a>
                         , or get the upside of CFDs without risking more than your initial stake with{' '}
-                        <a key={1} href='#' className='wallets-options-and-multipliers-listing__header-subtitle__link'>
+                        <a className='wallets-options-and-multipliers-listing__header-subtitle__link' href='#' key={1}>
                             multipliers
                         </a>
                     </h1>
@@ -64,7 +65,27 @@ const OptionsAndMultipliersListing = () => {
             </section>
             <div className='wallets-options-and-multipliers-listing__content'>
                 {options_and_multipliers.map(account => (
-                    <TradingAccountCard {...account} key={`trading-account-card-${account.title}`} />
+                    <TradingAccountCard
+                        {...account}
+                        key={`trading-account-card-${account.title}`}
+                        leading={() => (
+                            <div className='wallets-options-and-multipliers-listing__content__icon'>{account.icon}</div>
+                        )}
+                        trailing={() => (
+                            <PrimaryActionButton>
+                                <p className='wallets-options-and-multipliers-listing__content__text'>Open</p>
+                            </PrimaryActionButton>
+                        )}
+                    >
+                        <div className='wallets-options-and-multipliers-listing__content__details'>
+                            <p className='wallets-options-and-multipliers-listing__content__details-title'>
+                                {account.title}
+                            </p>
+                            <p className='wallets-options-and-multipliers-listing__content__details-description'>
+                                {account.description}
+                            </p>
+                        </div>
+                    </TradingAccountCard>
                 ))}
             </div>
         </div>

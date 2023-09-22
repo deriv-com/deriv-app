@@ -87,7 +87,13 @@ const AccountTransferForm = observer(
         } = useStore();
 
         const { is_mobile } = ui;
-        const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
+        const {
+            account_limits,
+            authentication_status,
+            is_dxtrade_allowed,
+            getLimits: onMount,
+            mt5_login_list,
+        } = client;
         const { account_transfer, crypto_fiat_converter, general_store } = useCashierStore();
 
         const {
@@ -121,7 +127,7 @@ const AccountTransferForm = observer(
 
         const [from_accounts, setFromAccounts] = React.useState({});
         const [to_accounts, setToAccounts] = React.useState({});
-        const [transfer_to_hint, setTransferToHint] = React.useState<string>();
+        const [transfer_to_hint, setTransferToHint] = React.useState<JSX.Element>();
 
         const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
 
@@ -339,15 +345,23 @@ const AccountTransferForm = observer(
                 return internal_remaining_transfers?.available;
             };
 
-            remaining_transfers = getRemainingTransfers();
-
-            const hint =
-                remaining_transfers && Number(remaining_transfers) === 1
-                    ? localize('You have {{number}} transfer remaining for today.', { number: remaining_transfers })
-                    : localize('You have {{number}} transfers remaining for today.', { number: remaining_transfers });
-            setTransferToHint(hint);
+            let hint_text;
+            // flag 'open_order_position_status' does not exist in mt5_login_list, @deriv/api-types yet
+            if (mt5_login_list.find(account => account?.login === selected_to.value)?.open_order_position_status) {
+                hint_text = <Localize i18n_default_text='You can no longer open new positions with this account.' />;
+            } else {
+                remaining_transfers = getRemainingTransfers() ?? 0;
+                const transfer_text = Number(remaining_transfers) > 1 ? 'transfers' : 'transfer';
+                hint_text = (
+                    <Localize
+                        i18n_default_text='You have {{remaining_transfers}} {{transfer_text}} remaining for today.'
+                        values={{ remaining_transfers, transfer_text }}
+                    />
+                );
+            }
+            setTransferToHint(hint_text);
             resetConverter();
-        }, [selected_to, selected_from, account_limits]); // eslint-disable-line react-hooks/exhaustive-deps
+        }, [account_limits, selected_from, selected_to, mt5_login_list]); // eslint-disable-line react-hooks/exhaustive-deps
 
         const is_mt5_restricted =
             selected_from?.is_mt &&

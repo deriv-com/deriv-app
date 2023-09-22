@@ -276,6 +276,7 @@ export default class NotificationStore extends BaseStore {
             is_pending_proof_of_ownership,
             p2p_advertiser_info,
             is_p2p_enabled,
+            is_poa_older_than_six_months,
         } = this.root_store.client;
         const { upgradable_daily_limits } = p2p_advertiser_info || {};
         const { max_daily_buy, max_daily_sell } = upgradable_daily_limits || {};
@@ -336,7 +337,11 @@ export default class NotificationStore extends BaseStore {
             } else {
                 this.removeNotificationByKey({ key: this.client_notifications.poi_dob_mismatch });
             }
-
+            if (is_poa_older_than_six_months) {
+                this.addNotificationMessage(this.client_notifications.poa_older_than_six_months);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.poa_older_than_six_months });
+            }
             if (loginid !== LocalStore.get('active_loginid')) return;
 
             if (is_financial_assessment_needed) {
@@ -1054,6 +1059,16 @@ export default class NotificationStore extends BaseStore {
                 header: localize('Your proof of address is verified.'),
                 type: 'announce',
                 should_hide_close_btn: false,
+            },
+            poa_older_than_six_months: {
+                key: 'poa_older_than_six_months',
+                header: <Localize i18n_default_text='Lets get your address verified' />,
+                message: <Localize i18n_default_text='Please submit your proof of address' />,
+                type: 'warning',
+                action: {
+                    route: routes.proof_of_address,
+                    text: localize('Submit now'),
+                },
             },
             poi_failed: {
                 action: {

@@ -313,6 +313,7 @@ type TClientStore = {
     is_logging_in: boolean;
     is_low_risk: boolean;
     is_pending_proof_of_ownership: boolean;
+    is_poa_older_than_six_months: boolean;
     is_switching: boolean;
     is_single_currency: boolean;
     is_tnc_needed: boolean;

@@ -1,7 +1,7 @@
-import React from 'react';
-import { Dialog } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import React, { useEffect, useState } from 'react';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import Draggable from 'Components/draggable';
 import { useDBotStore } from 'Stores/useDBotStore';
 import DesktopTransactionTable from './desktop-transaction-table';
 import { TColumn, TRunPanelStore, TTransactionStore } from './transaction-details.types';
@@ -20,42 +20,70 @@ const transaction_columns: TColumn[] = [
 
 /* TODO: Add back account & balance when we have support from transaction store */
 const result_columns: TColumn[] = [
-    // { key: 'account', label: localize('Account') },
+    { key: 'account', label: localize('Account') },
     { key: 'no_of_runs', label: localize('No. of runs') },
     { key: 'total_stake', label: localize('Total stake') },
-    { key: 'total_payout    ', label: localize('Total payout') },
+    { key: 'total_payout', label: localize('Total payout') },
     { key: 'win', label: localize('Win') },
     { key: 'loss', label: localize('Loss') },
     { key: 'total_profit', label: localize('Total profit/loss') },
-    // { key: 'balance', label: localize('Balance') },
+    { key: 'balance', label: localize('Balance') },
 ];
 
 const TransactionDetailsDesktop = observer(() => {
+    const { client } = useStore();
+    const { loginid, balance } = client;
     const { transactions, run_panel } = useDBotStore();
-    const { toggleTransactionDetailsModal, is_transaction_details_modal_open, elements }: Partial<TTransactionStore> =
-        transactions;
+    const {
+        toggleTransactionDetailsModal,
+        is_transaction_details_modal_open,
+        transactions: transaction_list,
+    }: Partial<TTransactionStore> = transactions;
     const { statistics }: Partial<TRunPanelStore> = run_panel;
+
+    const [screenDimensions, setScreenDimensions] = useState({ width: 0, height: 0 });
+
+    const handleResize = () => {
+        setScreenDimensions({ width: window.innerWidth, height: window.innerHeight });
+    };
+
+    useEffect(() => {
+        window.addEventListener('resize', handleResize);
+        setScreenDimensions({ width: window.innerWidth, height: window.innerHeight });
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    // Calculate xaxis and yaxis to center the modal on open
+    const modalWidth = 1034;
+    const modalHeight = 800;
+    const xaxis = (screenDimensions.width - modalWidth) / 2;
+    const yAxisValue = (screenDimensions.height - modalHeight) / 2;
+    const yaxis = yAxisValue >= 0 ? yAxisValue : 0;
+
     return (
-        <Dialog
-            cancel_button_text=''
-            className='transaction-details-modal-desktop'
-            confirm_button_text=''
-            has_close_icon
-            is_mobile_full_width
+        <Draggable
+            bounds='.dashboard__main'
+            dragHandleClassName='react-rnd-wrapper-header'
             is_visible={is_transaction_details_modal_open}
-            onClose={() => {
-                toggleTransactionDetailsModal(false);
-            }}
-            portal_element_id='modal_root'
-            title={localize('Transactions detailed summary')}
+            minWidth={modalWidth}
+            onCloseDraggable={() => toggleTransactionDetailsModal(false)}
+            width={modalWidth}
+            xaxis={xaxis}
+            yaxis={yaxis}
+            header_title={'Transactions detailed summary'}
         >
             <DesktopTransactionTable
                 transaction_columns={transaction_columns}
-                transactions={elements}
+                transactions={transaction_list}
                 result_columns={result_columns}
                 result={statistics}
+                account={loginid ?? ''}
+                balance={balance ?? 0}
             />
-        </Dialog>
+        </Draggable>
     );
 });
 

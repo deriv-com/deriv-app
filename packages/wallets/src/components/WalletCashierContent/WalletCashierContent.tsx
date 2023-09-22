@@ -1,20 +1,23 @@
 import React from 'react';
+import { useRouteMatch } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api';
-import useCashierParam from '../../hooks/useCashierParam';
 import WalletDepositCrypto from '../WalletDepositCrypto/WalletDepositCrypto';
 import WalletDepositFiat from '../WalletDepositFiat/WalletDepositFiat';
-import './WalletCashierContent.scss';
 
 const WalletCashierContent = () => {
     const { data } = useActiveWalletAccount();
-    const { activeCashierTab } = useCashierParam();
+    const isCrypto = data?.currency_config?.is_crypto;
+    const isDeposit = useRouteMatch('/appstore/traders-hub/cashier/deposit');
 
-    return (
-        <div className='wallets-cashier-content'>
-            {activeCashierTab === 'deposit' &&
-                (data?.currency_config?.is_crypto ? <WalletDepositCrypto /> : <WalletDepositFiat />)}
-        </div>
-    );
+    if (isDeposit) {
+        if (isCrypto) {
+            return <WalletDepositCrypto />;
+        }
+
+        return <WalletDepositFiat />;
+    }
+
+    return <p>In development</p>;
 };
 
 export default WalletCashierContent;

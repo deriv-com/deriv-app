@@ -119,7 +119,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                         <div className='my-ads-table__popovers-delete'>
                             <Icon icon='IcDelete' custom_color='var(--general-main-1)' onClick={onClickDelete} />
                         </div>
-                        <div className='p2p-my-ads__table-popovers__share'>
+                        <div className='my-ads-table__popovers-share'>
                             <Icon icon='IcShare' custom_color='var(--general-main-1)' onClick={onClickShare} />
                         </div>
                     </React.Fragment>
@@ -346,8 +346,8 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                         <div onClick={onClickShare}>
                             <Popover
                                 alignment='bottom'
-                                className={classNames('my-ads-table__popovers__share', {
-                                    'p2p-my-ads__table-popovers--disable':
+                                className={classNames('my-ads-table__popovers-share', {
+                                    'my-ads-table__popovers--disable':
                                         general_store.is_barred || is_activate_ad_disabled,
                                 })}
                                 message={localize('Share')}

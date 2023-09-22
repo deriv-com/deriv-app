@@ -140,7 +140,7 @@
             }
         }
 
-        &__share {
+        &-share {
             @include popoverIcons(none, 3.2rem, 3.2rem);
 
             @include mobile {

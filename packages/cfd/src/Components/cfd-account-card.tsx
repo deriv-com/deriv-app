@@ -25,7 +25,7 @@ import { useStore, observer } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { FormikValues } from 'formik';
 import { CFD_PLATFORMS, CATEGORY, MARKET_TYPE } from '../Helpers/cfd-config';
-import { TMarketTypeSynthetic, TAccountCategory } from 'Types';
+import { TMarketTypeSynthetic, TAccountCategory } from '../types/market-type.types';
 
 const account_icons: { [key: string]: TAccountIconValues } = {
     mt5: {

@@ -204,7 +204,7 @@ const OnfidoSdkViewContainer = observer(
 
         return (
             <ThemedScrollbars is_bypassed={is_mobile} height={height}>
-                <div className={'onfido-container'}>
+                <div className='onfido-container'>
                     {component_to_load || (
                         <CSSTransition
                             appear={is_onfido_disabled}

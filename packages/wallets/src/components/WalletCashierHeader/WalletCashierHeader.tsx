@@ -1,26 +1,25 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api';
-import useCashierParam, { TCashierTabs } from '../../hooks/useCashierParam';
 import useDevice from '../../hooks/useDevice';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletListCardBadge } from '../WalletListCardBadge';
 import { WalletListCardIcon } from '../WalletListCardIcon';
 import './WalletCashierHeader.scss';
 
-const tabs = ['Deposit', 'Withdraw', 'Transfer', 'Transactions'];
+const tabs = ['deposit', 'withdraw', 'transfer', 'transactions'] as const;
 
 const WalletCashierHeader = () => {
     const { data } = useActiveWalletAccount();
-    const { activeCashierTab, getCashierParam } = useCashierParam();
-    const { is_mobile } = useDevice();
+    const { isMobile } = useDevice();
     const history = useHistory();
     const { currency, currency_config, display_balance, landing_company_name, wallet_currency_type } = data || {};
+    const location = useLocation();
 
     return (
         <WalletGradientBackground
             currency={currency_config?.display_code || 'USD'}
-            device={is_mobile ? 'mobile' : 'desktop'}
+            device={isMobile ? 'mobile' : 'desktop'}
             theme='light'
             type='header'
         >
@@ -51,16 +50,12 @@ const WalletCashierHeader = () => {
                     {tabs.map(tab => (
                         <button
                             className={`wallets-cashier-header__tabs__tab ${
-                                activeCashierTab === tab.toLowerCase()
+                                location.pathname === `/appstore/traders-hub/cashier/${tab}`
                                     ? 'wallets-cashier-header__tabs__tab--active'
                                     : ''
                             }`}
                             key={`cashier-tab-${tab}`}
-                            onClick={() =>
-                                history.push(
-                                    `/appstore/traders-hub?${getCashierParam(tab.toLowerCase() as TCashierTabs)}`
-                                )
-                            }
+                            onClick={() => history.push(`/appstore/traders-hub/cashier/${tab}`)}
                         >
                             {tab}
                         </button>

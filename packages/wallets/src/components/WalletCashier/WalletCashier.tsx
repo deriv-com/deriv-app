@@ -10,10 +10,12 @@ const WalletCashier = () => {
     if (isLoading) return <p>Loading...</p>;
 
     return (
-        <div className='wallets-cashier'>
+        <>
             <WalletCashierHeader />
-            <WalletCashierContent />
-        </div>
+            <div className='wallets-cashier-content'>
+                <WalletCashierContent />
+            </div>
+        </>
     );
 };
 

@@ -1,6 +1,7 @@
-.wallets-cashier {
-    height: 100%;
-    width: 100%;
+.wallets-cashier-content {
+    padding: 24px;
     display: flex;
-    flex-direction: column;
+    gap: 24px;
+    justify-content: center;
+    flex: 1;
 }

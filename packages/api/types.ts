@@ -958,7 +958,7 @@ type TPrivateSocketEndpoints = {
                     /**
                      * The status code of the transaction.
                      * Possible values for **deposit:** `PENDING|CONFIRMED|ERROR`,
-                     * possible values for **withdrawal:** `LOCKED|VERIFIED|REJECTED|PERFORMING_BLOCKCHAIN_TXN|PROCESSING|SENT|ERROR|CANCELLED`.
+                     * possible values for **withdrawal:** `LOCKED|VERIFIED|REJECTED|PERFORMING_BLOCKCHAIN_TXN|PROCESSING|SENT|ERROR|CANCELLED|REVERTING|REVERTED`.
                      */
                     status_code:
                         | 'CANCELLED'
@@ -969,6 +969,8 @@ type TPrivateSocketEndpoints = {
                         | 'PERFORMING_BLOCKCHAIN_TXN'
                         | 'PROCESSING'
                         | 'REJECTED'
+                        | 'REVERTED'
+                        | 'REVERTING'
                         | 'SENT'
                         | 'VERIFIED';
                     /**

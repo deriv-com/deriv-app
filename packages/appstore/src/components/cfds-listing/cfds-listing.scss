@@ -561,6 +561,23 @@
                     }
                 }
             }
+            &-ctrader {
+                &-container {
+                    display: flex;
+                    flex-direction: column;
+                    margin-top: 4rem;
+                    margin-bottom: 6rem;
+                    @include mobile {
+                        margin-top: 5rem;
+                        margin-bottom: 0;
+                    }
+                }
+                &__banner-text {
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+
             &--windows {
                 display: flex;
                 gap: 1.6rem;

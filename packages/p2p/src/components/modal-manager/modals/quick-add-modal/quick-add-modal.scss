@@ -31,6 +31,14 @@
         margin-bottom: 1.3rem;
     }
 
+    &--text {
+        display: flex;
+    }
+
+    &__horizontal {
+        padding-right: 0rem;
+    }
+
     &__icon {
         margin-right: 0.8rem;
     }

@@ -4,16 +4,13 @@ import CFDPOI from '../cfd-poi';
 import CFDProviders from '../../cfd-providers';
 import { mockStore } from '@deriv/stores';
 
-jest.mock('@deriv/account', () => ({
-    ...jest.requireActual('@deriv/account'),
-    ProofOfIdentityContainerForMt5: () => <div>ProofOfIdentityContainerForMt5</div>,
-}));
+jest.mock('@deriv/account/src/Sections/Verification/ProofOfIdentity/proof-of-identity-container-for-mt5.jsx', () =>
+    jest.fn(() => <div>ProofOfIdentityContainerForMt5</div>)
+);
 
 describe('<CFDPOI />', () => {
     let props;
     let mockRootStore;
-
-    const ProofOfIdentityContainerForMt5 = 'ProofOfIdentityContainerForMt5';
 
     beforeEach(() => {
         mockRootStore = {
@@ -85,6 +82,10 @@ describe('<CFDPOI />', () => {
             form_error: undefined,
             height: 'auto',
             index: 1,
+            is_loading: false,
+            is_switching: false,
+            is_virtual: false,
+            is_eu_user: false,
             onCancel: jest.fn(),
             onSave: jest.fn(),
             onSubmit: jest.fn(),
@@ -100,6 +101,6 @@ describe('<CFDPOI />', () => {
         render(<CFDPOI {...props} />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
-        expect(screen.getByText(ProofOfIdentityContainerForMt5)).toBeInTheDocument();
+        expect(screen.getByText('ProofOfIdentityContainerForMt5')).toBeInTheDocument();
     });
 });

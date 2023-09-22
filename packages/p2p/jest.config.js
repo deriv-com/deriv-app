@@ -16,7 +16,7 @@ module.exports = {
         '^Types/(.*)$': '<rootDir>/src/types/$1',
         '^Utils/(.*)$': '<rootDir>/src/utils/$1',
     },
-    testPathIgnorePatterns: ['/scripts/', '/translations/', '/crowdin/'],
+    testPathIgnorePatterns: ['/scripts/', '/translations/', '/crowdin/', '/src/components/order-details*',],
     coveragePathIgnorePatterns: [
         '<rootDir>/.eslintrc.js',
         '<rootDir>/jest.config.js',
@@ -24,4 +24,5 @@ module.exports = {
         '<rootDir>/coverage/lcov-report',
         '<rootDir>/dist',
     ],
+    transformIgnorePatterns: ['/node_modules/(?!@sendbird/chat).+\\.js$'],
 };

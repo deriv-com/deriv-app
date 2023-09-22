@@ -12,6 +12,7 @@ describe('proof-of-ownership-form.jsx', () => {
                 refreshNotifications={jest.fn()}
                 is_dark_mode={false}
                 client_email={'test@testing.com'}
+                citizen='id'
             />
         );
         const cardItems = screen.getAllByRole('card-item');
@@ -25,6 +26,7 @@ describe('proof-of-ownership-form.jsx', () => {
                 refreshNotifications={jest.fn()}
                 is_dark_mode={false}
                 client_email={'test@testing.com'}
+                citizen='id'
             />
         );
         const cardItems = screen.getAllByRole('card-item');
@@ -38,6 +40,7 @@ describe('proof-of-ownership-form.jsx', () => {
                 refreshNotifications={jest.fn()}
                 is_dark_mode={false}
                 client_email={'test@testing.com'}
+                citizen='id'
             />
         );
         const poo_dropdown_button = await screen.findByTestId('dt_proof-of-ownership-button');

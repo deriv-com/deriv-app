@@ -13,6 +13,7 @@ type TSellAdPaymentMethodsListProps = {
     is_only_horizontal?: boolean;
     onClickAdd?: () => void;
     onClickPaymentMethodCard: (payment_method: TPaymentMethod) => void;
+    p2p_advertiser_payment_methods: TPaymentMethod[];
     selected_methods: string[];
 };
 
@@ -20,6 +21,7 @@ const SellAdPaymentMethodsList = ({
     is_only_horizontal = isMobile(),
     onClickAdd,
     onClickPaymentMethodCard,
+    p2p_advertiser_payment_methods,
     selected_methods,
 }: TSellAdPaymentMethodsListProps) => {
     const { my_profile_store } = useStores();
@@ -48,7 +50,7 @@ const SellAdPaymentMethodsList = ({
             is_scrollbar_hidden
             is_only_horizontal={is_only_horizontal}
         >
-            {sortPaymentMethods([...my_profile_store.advertiser_payment_methods_list]).map(
+            {p2p_advertiser_payment_methods && sortPaymentMethods(p2p_advertiser_payment_methods).map(
                 (payment_method: TPaymentMethod) => (
                     <PaymentMethodCard
                         is_vertical_ellipsis_visible={false}

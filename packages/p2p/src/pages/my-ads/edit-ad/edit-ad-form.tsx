@@ -270,10 +270,6 @@ const EditAdForm = () => {
                                                                         error_messages={errors.rate_type ?? ''}
                                                                         fiat_currency={account_currency}
                                                                         local_currency={local_currency}
-                                                                        offset={{
-                                                                            upper_limit: float_rate_offset_limit,
-                                                                            lower_limit: float_rate_offset_limit * -1,
-                                                                        }}
                                                                         required
                                                                         change_handler={e => {
                                                                             my_ads_store.restrictDecimalPlace(
@@ -311,15 +307,15 @@ const EditAdForm = () => {
                                                             {({ field }: FieldProps) => (
                                                                 <Input
                                                                     {...field}
+                                                                    className='edit-ad-form__field'
                                                                     data-lpignore='true'
                                                                     data-testid='min_transaction'
-                                                                    type='text'
                                                                     error={getErrorMessages('min_transaction')}
                                                                     label={localize('Min order')}
-                                                                    className='edit-ad-form__field'
                                                                     trailing_icon={getTrailingComponent()}
                                                                     onChange={onChangeInput}
                                                                     required
+                                                                    type='text'
                                                                 />
                                                             )}
                                                         </Field>
@@ -377,13 +373,13 @@ const EditAdForm = () => {
                                                                 hint={localize(
                                                                     'This information will be visible to everyone.'
                                                                 )}
+                                                                initial_character_count={
+                                                                    description ? description.length : 0
+                                                                }
                                                                 label={
                                                                     <Text color='less-prominent' size='xs'>
                                                                         <Localize i18n_default_text='Instructions (optional)' />
                                                                     </Text>
-                                                                }
-                                                                initial_character_count={
-                                                                    description ? description.length : 0
                                                                 }
                                                                 max_characters={300}
                                                                 type='textarea'

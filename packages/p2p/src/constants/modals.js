@@ -51,6 +51,11 @@ export const modals = {
             /* webpackChunkName: "create-ad-add-payment-method-modal" */ 'Components/modal-manager/modals/create-ad-add-payment-method-modal'
         )
     ),
+    DeletePaymentMethodConfirmationModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "delete-payment-method-confirmation-modal" */ 'Components/modal-manager/modals/delete-payment-method-confirmation-modal'
+        )
+    ),
     DeletePaymentMethodErrorModal: React.lazy(() =>
         import(
             /* webpackChunkName: "delete-payment-method-error-modal" */ 'Components/modal-manager/modals/delete-payment-method-error-modal'
@@ -89,6 +94,9 @@ export const modals = {
         import(
             /* webpackChunkName: "invalid-verification-link-modal" */ 'Components/modal-manager/modals/invalid-verification-link-modal'
         )
+    ),
+    LeavePageModal: React.lazy(() =>
+        import(/* webpackChunkName: "leave-page-modal" */ 'Components/modal-manager/modals/leave-page-modal')
     ),
     LoadingModal: React.lazy(() =>
         import(/* webpackChunkName: "loading-modal" */ 'Components/modal-manager/modals/loading-modal')

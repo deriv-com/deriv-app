@@ -107,6 +107,9 @@
                     transform: scale(1.4);
                     stroke: var(--text-general);
 
+                    &--disabled {
+                        stroke: var(--text-disabled);
+                    }
                     &:hover,
                     &:active {
                         background: none;
@@ -242,7 +245,7 @@
                 }
             }
         }
-        &__strike {
+        &__stake-container {
             display: flex;
             flex-direction: column;
             .trade-container__stake-field {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
 import { observer } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -21,9 +22,10 @@ const EditAdFormPaymentMethods = ({
     setSelectedMethods,
     touched,
 }: TEditAdFormPaymentMethodsProps) => {
-    const { my_ads_store, my_profile_store } = useStores();
+    const { my_ads_store } = useStores();
     const { payment_method_ids, setPaymentMethodIds, setPaymentMethodNames } = my_ads_store;
     const { showModal } = useModalManagerContext();
+    const { data: p2p_advertiser_payment_methods } = useP2PAdvertiserPaymentMethods();
 
     const onClickPaymentMethodCard = (payment_method: TPaymentMethod) => {
         if (!payment_method_ids.includes(payment_method.ID)) {
@@ -45,12 +47,10 @@ const EditAdFormPaymentMethods = ({
             setPaymentMethodIds([]);
             setPaymentMethodNames([]);
         };
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (is_sell_advert) {
-        if (my_profile_store.advertiser_has_payment_methods) {
+        if (p2p_advertiser_payment_methods?.length) {
             return (
                 <SellAdPaymentMethodsList
                     selected_methods={selected_methods}
@@ -60,6 +60,7 @@ const EditAdFormPaymentMethods = ({
                         })
                     }
                     onClickPaymentMethodCard={onClickPaymentMethodCard}
+                    p2p_advertiser_payment_methods={p2p_advertiser_payment_methods}
                 />
             );
         }

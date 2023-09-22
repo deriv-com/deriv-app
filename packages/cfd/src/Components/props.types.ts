@@ -1,7 +1,9 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TCFDPasswordReset } from '../Containers/props.types';
 
-export type TCFDPlatform = 'dxtrade' | 'mt5';
+export type TMobilePlatforms = 'ios' | 'android' | 'huawei';
+
+export type TCFDPlatform = 'dxtrade' | 'mt5' | 'ctrader' | 'derivez';
 
 export type TCFDsPlatformType = 'dxtrade' | 'derivez' | 'mt5' | 'ctrader' | '';
 
@@ -41,10 +43,19 @@ export type TCFDDashboardContainer = {
         demo: string;
         real: string;
     };
+    ctrader_tokens: {
+        demo: string;
+        real: string;
+    };
     derivez_tokens: {
         demo: string;
         real: string;
     };
+};
+
+type TOpenAccountTransferMeta = {
+    category: string;
+    type?: string;
 };
 
 export type TCFDAccountCardActionProps = {
@@ -82,6 +93,11 @@ export type TTradingPlatformAvailableAccount = {
     landing_company_short?: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
 };
 
+export type TModifiedTradingPlatformAvailableAccount = Omit<TTradingPlatformAvailableAccount, 'market_type'> & {
+    platform?: 'mt5' | 'dxtrade' | 'ctrader';
+    market_type: TTradingPlatformAvailableAccount['market_type'] | 'synthetic';
+};
+
 export type TCardFlipStatus = {
     svg: boolean;
     bvi: boolean;
@@ -93,6 +109,7 @@ export type TCardFlipStatus = {
 export type TClickableDescription = {
     type: 'text' | 'link';
     text: string;
+    onClick?: React.MouseEventHandler<HTMLSpanElement>;
 };
 
 export type TJurisdictionCardSectionTitleIndicators = {
@@ -129,6 +146,10 @@ export type TJurisdictionCardItems = {
     is_over_header_available: boolean;
     synthetic_verification_docs?: TJurisdictionCardItemVerification;
     financial_verification_docs?: TJurisdictionCardItemVerification;
+};
+
+export type TJurisdictionCardParams = {
+    toggleDynamicLeverage: React.MouseEventHandler<HTMLSpanElement>;
 };
 
 export type TJurisdictionVerificationSection = {
@@ -227,4 +248,44 @@ export type TTradingPlatformAccounts = {
      * Name of trading platform.
      */
     platform?: 'dxtrade' | string;
+};
+
+export type TInstrumentsIcon = {
+    icon:
+        | 'DerivedFX'
+        | 'Synthetics'
+        | 'Baskets'
+        | 'Stocks'
+        | 'StockIndices'
+        | 'Commodities'
+        | 'Forex'
+        | 'Cryptocurrencies'
+        | 'ETF';
+    text: string;
+    highlighted: boolean;
+    className?: string;
+    is_asterisk?: boolean;
+};
+
+export type TCompareAccountsCard = {
+    trading_platforms: TModifiedTradingPlatformAvailableAccount;
+    is_eu_user?: boolean;
+    is_demo?: boolean;
+};
+
+export type TJurisdictionData = {
+    jurisdiction?: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest' | 'malta';
+};
+
+export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
+    display_login?: string;
+    landing_company_short?: string;
+    short_code_and_region?: string;
+    mt5_acc_auth_status?: string | null;
+    selected_mt5_jurisdiction?: TOpenAccountTransferMeta &
+        TJurisdictionData & {
+            platform?: string;
+        };
+
+    openFailedVerificationModal?: (from_account: string) => void;
 };

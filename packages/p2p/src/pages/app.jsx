@@ -6,6 +6,7 @@ import { getLanguage } from '@deriv/translations';
 import { Loading } from '@deriv/components';
 import { routes, WS } from '@deriv/shared';
 import ServerTime from 'Utils/server-time';
+import { init } from 'Utils/server_time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
 import AppContent from 'Components/app-content.jsx';
@@ -34,6 +35,8 @@ const App = () => {
     const [code_param, setCodeParam] = React.useState();
 
     React.useEffect(() => {
+        init();
+
         general_store.setExternalStores({ client, common, modules, notifications, ui });
         general_store.setWebsocketInit(WS);
         general_store.getWebsiteStatus();
@@ -48,7 +51,7 @@ const App = () => {
         // Check if advertiser info has been subscribed to before the user navigates to
         // /advertiser?=id{counterparty_advertiser_id} from the url
         const disposeAdvertiserInfoSubscribedReaction = reaction(
-            () => general_store.is_advertiser_info_subscribed,
+            () => general_store.is_advertiser_info_subscribed && general_store.counterparty_advertiser_id,
             () => {
                 if (
                     /\/advertiser$/.test(location.pathname) &&
@@ -67,7 +70,7 @@ const App = () => {
         // Redirect back to /p2p, this was implemented for the mobile team. Do not remove.
         if (/\/verification$/.test(location.pathname)) {
             localStorage.setItem('is_verifying_p2p', true);
-            history.push(routes.cashier_p2p);
+            history.push(routes.p2p_my_ads);
         }
 
         ServerTime.init(general_store.server_time);

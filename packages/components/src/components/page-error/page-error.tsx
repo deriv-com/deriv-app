@@ -5,6 +5,7 @@ import DesktopWrapper from '../desktop-wrapper';
 import MobileWrapper from '../mobile-wrapper';
 import ButtonLink from '../button-link/button-link';
 import Text from '../text/text';
+import Button from '../button';
 
 type TMessageObject = { message: string; has_html?: boolean };
 
@@ -15,18 +16,17 @@ type TPageErrorProps = {
     header: React.ReactNode;
     image_url?: string;
     messages: Array<TMessageObject | React.ReactNode>;
-    redirect_labels: string[];
+    redirect_labels: Array<JSX.Element | string>;
     redirect_urls?: string[];
     setError?: (has_error: boolean, error: React.ReactNode) => void;
     should_clear_error_on_click?: boolean;
-    has_malta_account?: boolean;
+    should_redirect?: boolean;
 };
 
 const PageError = ({
     buttonOnClick,
     buttonSize = 'large',
     classNameImage,
-    has_malta_account,
     header,
     image_url,
     messages,
@@ -34,6 +34,7 @@ const PageError = ({
     redirect_urls,
     should_clear_error_on_click,
     setError,
+    should_redirect = true,
 }: TPageErrorProps) => {
     const onClickHandler = () => {
         if (should_clear_error_on_click) {
@@ -42,6 +43,7 @@ const PageError = ({
             buttonOnClick?.();
         }
     };
+    const is_mobile = isMobile();
 
     return (
         // if image_url is passed we should split the page to two columns and left-align messages
@@ -73,10 +75,16 @@ const PageError = ({
             <div
                 className={classNames('dc-page-error__box', {
                     'dc-page-error__box--left': !!image_url,
-                    'dc-page-error__box--malta': has_malta_account,
                 })}
             >
-                <Text as='h3' size='l' align='center' weight='bold' line_height='s' color='prominent'>
+                <Text
+                    as='h3'
+                    size={is_mobile ? 's' : 'l'}
+                    align='center'
+                    weight='bold'
+                    line_height='s'
+                    color='prominent'
+                >
                     {header}
                 </Text>
                 <div
@@ -94,8 +102,8 @@ const PageError = ({
                             (message as TMessageObject)?.has_html ? (
                                 <Text
                                     as='p'
-                                    size='s'
-                                    align={isMobile() ? 'center' : 'left'}
+                                    size={is_mobile ? 'xxs' : 's'}
+                                    align={is_mobile ? 'center' : 'left'}
                                     line_height='x'
                                     key={index}
                                     className='dc-page-error__message-paragraph'
@@ -104,8 +112,8 @@ const PageError = ({
                             ) : (
                                 <Text
                                     as='p'
-                                    size='s'
-                                    align={isMobile() ? 'center' : 'left'}
+                                    size={is_mobile ? 'xxs' : 's'}
+                                    align={is_mobile ? 'center' : 'left'}
                                     line_height='x'
                                     key={index}
                                     className='dc-page-error__message-paragraph'
@@ -117,8 +125,9 @@ const PageError = ({
                     </Text>
                 </div>
                 <div className='dc-page-error__btn-wrapper'>
-                    {redirect_urls?.map?.((url, index) => {
-                        return (
+                    {should_redirect &&
+                        redirect_labels.length !== 0 &&
+                        redirect_urls?.map?.((url, index) => (
                             <ButtonLink
                                 className='dc-page-error__btn'
                                 to={url}
@@ -126,12 +135,33 @@ const PageError = ({
                                 size={buttonSize}
                                 key={index}
                             >
-                                <Text weight='bold' className='dc-page-error__btn-text dc-btn__text'>
+                                <Text
+                                    weight='bold'
+                                    size={is_mobile ? 'xs' : 's'}
+                                    className='dc-page-error__btn-text dc-btn__text'
+                                >
                                     {redirect_labels[index]}
                                 </Text>
                             </ButtonLink>
-                        );
-                    })}
+                        ))}
+                    {!should_redirect && (
+                        <Button
+                            type='button'
+                            className='dc-page-error__btn--no-redirect'
+                            onClick={onClickHandler}
+                            primary
+                            large={!is_mobile}
+                            medium={is_mobile}
+                        >
+                            <Text
+                                weight='bold'
+                                size={is_mobile ? 'xs' : 's'}
+                                className='dc-page-error__btn-text dc-btn__text'
+                            >
+                                {redirect_labels[0]}
+                            </Text>
+                        </Button>
+                    )}
                 </div>
             </div>
         </div>

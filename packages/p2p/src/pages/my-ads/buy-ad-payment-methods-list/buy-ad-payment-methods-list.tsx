@@ -5,7 +5,9 @@ import { Autocomplete, Icon, Text, useOnClickOutside } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
+import PaymentMethodIcon from 'Components/payment-method-icon';
 import { useStores } from 'Stores';
+import './buy-ad-payment-methods-list.scss';
 
 type TPaymentMethod = {
     value?: string;
@@ -64,9 +66,7 @@ const BuyAdPaymentMethodsList = ({
                     )
                 )
         );
-
         return disposeAddPaymentMethodsList;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
@@ -161,8 +161,6 @@ const BuyAdPaymentMethodsList = ({
             <div className='buy-ad-payment-methods-list__container'>
                 {selected_methods.map((payment_method, key) => {
                     const method = getPaymentMethodDisplayName(payment_method);
-                    const payment_method_icon = method?.replace(' ', '');
-
                     return (
                         <Formik
                             key={key}
@@ -226,16 +224,7 @@ const BuyAdPaymentMethodsList = ({
                                                     data-testid='dt_buy_ad_payment_methods_list_input'
                                                     hide_list={hide_list}
                                                     is_alignment_top={is_alignment_top}
-                                                    leading_icon={
-                                                        <Icon
-                                                            icon={
-                                                                payment_method_icon === 'BankTransfer' ||
-                                                                payment_method_icon === 'Other'
-                                                                    ? `IcCashier${payment_method_icon}`
-                                                                    : 'IcCashierEwallet'
-                                                            }
-                                                        />
-                                                    }
+                                                    leading_icon={<PaymentMethodIcon display_name={method} />}
                                                     list_items={[method]}
                                                     list_portal_id={list_portal_id}
                                                     onBlur={(e: React.FocusEvent<HTMLInputElement>) => {

@@ -22,7 +22,7 @@ const AutoSizer = _AutoSizer as unknown as React.FC<AutoSizerProps>;
 const CellMeasurer = _CellMeasurer as unknown as React.FC<CellMeasurerProps>;
 
 export type TSource = {
-    [key: string]: string;
+    [key: string]: unknown;
 };
 
 type TMeasure = {
@@ -40,19 +40,19 @@ type TDataTable = {
     className: string;
     content_loader: React.ElementType;
     columns: TSource[];
-    contract_id: number;
-    getActionColumns: (params: { row_obj?: TSource; is_header?: boolean; is_footer: boolean }) => TTableRowItem[];
+    contract_id?: number;
+    getActionColumns?: (params: { row_obj?: TSource; is_header?: boolean; is_footer: boolean }) => TTableRowItem[];
     getRowSize?: ((params: { index: number }) => number) | number;
-    measure: () => void;
-    getRowAction?: (item: TSource) => TTableRowItem;
-    onScroll: React.UIEventHandler<HTMLDivElement>;
-    id: number;
-    passthrough: (item: TSource) => boolean;
+    measure?: () => void;
+    getRowAction?: (row: Record<string, unknown>) => { component: JSX.Element } | string;
+    onScroll?: React.UIEventHandler<HTMLDivElement>;
+    id?: number;
+    passthrough?: (item: TSource) => boolean;
     autoHide?: boolean;
-    footer: boolean;
+    footer: Record<string, unknown>;
     preloaderCheck: (param: TSource) => boolean;
     data_source: TSource[];
-    keyMapper: (row: TSource) => number | string;
+    keyMapper?: (row: TSource) => number | string;
 };
 
 const DataTable = ({
@@ -113,7 +113,7 @@ const DataTable = ({
                 columns={columns}
                 content_loader={content_loader}
                 getActionColumns={getActionColumns}
-                id={contract_id}
+                id={contract_id as string}
                 key={id}
                 measure={measure}
                 passthrough={passthrough}
@@ -128,7 +128,13 @@ const DataTable = ({
         );
 
         return is_dynamic_height ? (
-            <CellMeasurer cache={cache_ref.current!} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
+            <CellMeasurer
+                cache={cache_ref.current as CellMeasurerCache}
+                columnIndex={0}
+                key={row_key}
+                rowIndex={index}
+                parent={parent}
+            >
                 {({ measure }) => <div style={style}>{getContent({ measure })}</div>}
             </CellMeasurer>
         ) : (

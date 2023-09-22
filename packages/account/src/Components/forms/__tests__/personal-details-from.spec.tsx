@@ -20,11 +20,10 @@ describe('PersonalDetailsForm', () => {
         ],
     };
 
-    const renderComponent = (mock_props_override = {}) => {
-        const component_props = { ...mock_props, ...mock_props_override };
-        return render(
+    const renderComponent = () => {
+        render(
             <Formik initialValues={{ salutation: '' }} onSubmit={jest.fn()}>
-                <PersonalDetailsForm {...component_props} />
+                <PersonalDetailsForm {...mock_props} />
             </Formik>
         );
     };

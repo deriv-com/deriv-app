@@ -1,5 +1,5 @@
 import { observer as globalObserver } from '../../utils/observer';
-import { doUntilDone } from '../tradeEngine/utils/helpers';
+import { doUntilDone, socket_state } from '../tradeEngine/utils/helpers';
 import { generateDerivApiInstance, getLoginId, getToken } from './appId';
 
 class APIBase {
@@ -24,6 +24,14 @@ class APIBase {
             this.time_interval = null;
             this.getTime();
         }
+    }
+
+    getConnectionStatus() {
+        if (this.api?.connection) {
+            const ready_state = this.api.connection.readyState;
+            return socket_state[ready_state] || 'Unknown';
+        }
+        return 'Socket not initialized';
     }
 
     terminate() {
@@ -60,8 +68,9 @@ class APIBase {
         if (token) {
             this.token = token;
             this.account_id = account_id;
+            this.api.authorize(this.token);
             this.api
-                .authorize(this.token)
+                .expectResponse('authorize')
                 .then(({ authorize }) => {
                     if (this.has_activeSymbols) {
                         this.toggleRunButton(false);

@@ -1,9 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import { connect } from 'Stores/connect';
+import { observer } from '@deriv/stores';
+import { useDBotStore } from 'Stores/useDBotStore';
 
-const FlyoutBlock = ({ initBlockWorkspace, block_node, should_center_block, should_hide_display_name }) => {
+const FlyoutBlock = observer(({ block_node, should_center_block, should_hide_display_name }) => {
+    const { flyout } = useDBotStore();
+    const { initBlockWorkspace } = flyout;
+
     let el_block_workspace = React.useRef();
 
     React.useEffect(() => {
@@ -20,15 +23,6 @@ const FlyoutBlock = ({ initBlockWorkspace, block_node, should_center_block, shou
             })}
         />
     );
-};
+});
 
-FlyoutBlock.propTypes = {
-    block_node: PropTypes.any,
-    initBlockWorkspace: PropTypes.func,
-    should_center_block: PropTypes.bool,
-    should_hide_display_name: PropTypes.bool,
-};
-
-export default connect(({ flyout }) => ({
-    initBlockWorkspace: flyout.initBlockWorkspace,
-}))(FlyoutBlock);
+export default FlyoutBlock;

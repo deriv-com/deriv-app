@@ -1,0 +1,162 @@
+.compare-cfd-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &-navigation {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        cursor: pointer;
+    }
+    &-title {
+        flex: 1;
+        @include mobile {
+            text-align: center;
+            padding: 1rem;
+        }
+    }
+}
+
+.compare-cfd-account {
+    max-width: 123.2rem;
+    margin: auto;
+    &-container {
+        margin: 1.5rem;
+        @include mobile {
+            margin: 0;
+            overflow-x: auto;
+            overflow-y: scroll;
+            padding: 0 0 20.1rem;
+            max-height: 80rem;
+            width: 100%;
+        }
+        &__card-count {
+            display: flex;
+            justify-content: center;
+            margin-left: 13rem;
+            &--mobile {
+                margin-left: 10.5rem;
+            }
+        }
+    }
+    &-main-container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    &-card-container {
+        position: relative;
+        overflow: hidden;
+        width: 27rem;
+        border: 1px solid var(--general-hover);
+        border-radius: 2.4rem;
+        &:hover {
+            box-shadow: 0 2px 8px 0 var(--shadow-menu);
+        }
+        @include mobile {
+            width: 18rem;
+        }
+        &__eu-clients {
+            position: relative;
+            top: 0.5rem;
+            text-align: center;
+        }
+        &__banner {
+            position: absolute;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            width: 15rem;
+            height: 2rem;
+            background: var(--status-transfer);
+            color: var(--text-colored-background);
+            transform: translateX(17rem) translateY(-2rem) rotate(45deg);
+        }
+    }
+    &-outline {
+        display: flex;
+        flex-direction: column;
+        padding: 4rem 2.4rem 0;
+        border-radius: 2.4rem;
+        @include mobile {
+            padding: 7rem 1.5rem 0;
+        }
+    }
+    &-text-container {
+        max-height: 25.5rem;
+        &--demo {
+            max-height: 13.5rem;
+        }
+        &__separator {
+            margin: 0.9rem;
+        }
+    }
+    &-icon-title {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding-top: 2rem;
+        align-items: center;
+        &__separator {
+            display: flex;
+            align-items: center;
+            gap: 0.8em;
+        }
+    }
+    &-instrument-icon {
+        display: flex;
+        align-items: center;
+        margin: 0.2rem;
+        cursor: not-allowed;
+    }
+    &-labuan-tooltip {
+        position: relative;
+        left: 0.5rem;
+        top: 0.2rem;
+        &--msg {
+            position: relative;
+            width: 62%;
+            @include mobile {
+                display: block;
+                position: fixed;
+                width: 15.2rem;
+                right: 0;
+            }
+        }
+    }
+    &-platform-label {
+        background-color: var(--header-background-mt5);
+        padding: 0.9rem;
+        border-top-left-radius: 1.4rem;
+        border-top-right-radius: 1.4rem;
+        &--other-cfds {
+            background-color: var(--header-background-others);
+        }
+    }
+    &-underline {
+        border-top: 0.5rem solid var(--less-prominent);
+        width: 21.3rem;
+    }
+    &__button {
+        width: calc(100% - 4rem);
+        height: 4rem;
+        margin: 2rem;
+    }
+}
+.card-list {
+    display: flex;
+    gap: 2rem;
+}
+
+.trading-instruments {
+    &__span {
+        position: relative;
+        top: 0.2rem;
+        font-size: 1.6rem;
+        color: var(--text-red);
+    }
+    &__text {
+        margin-left: 0.5rem;
+    }
+}

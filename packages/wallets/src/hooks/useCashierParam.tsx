@@ -16,6 +16,7 @@ const useCashierParam = () => {
     return {
         /** Current cashier tab */
         activeCashierTab,
+
         /** Function to get cashier query parameter */
         getCashierParam,
     };

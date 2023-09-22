@@ -415,14 +415,14 @@ type TClientStore = {
 };
 
 type TCommonStoreError = {
-    app_routing_history: TAppRoutingHistory[];
+    app_routing_history?: TAppRoutingHistory[];
     header: string | JSX.Element;
     message: string | JSX.Element;
     redirect_label: string;
-    redirect_to: string;
+    redirect_to?: string;
     redirectOnClick: (() => void) | null;
-    setError: (has_error: boolean, error: React.ReactNode | null) => void;
-    should_clear_error_on_click: boolean;
+    setError?: (has_error: boolean, error: React.ReactNode | null) => void;
+    should_clear_error_on_click?: boolean;
     should_show_refresh: boolean;
     type?: string;
 };
@@ -456,6 +456,7 @@ type TUiStore = {
     disableApp: () => void;
     enableApp: () => void;
     has_real_account_signup_ended: boolean;
+    is_account_settings_visible: boolean;
     is_loading: boolean;
     is_cashier_visible: boolean;
     is_closing_create_real_account_modal: boolean;
@@ -484,6 +485,7 @@ type TUiStore = {
     setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: Omit<string, TRoutes> | TRoutes) => void;
     toggleAccountsDialog: () => void;
+    toggleAccountSettings: (props?: boolean) => void;
     toggleCashier: () => void;
     toggleLanguageSettingsModal: () => void;
     toggleLinkExpiredModal: (state_change: boolean) => void;

@@ -9,7 +9,6 @@ export { default as useAuthorize } from './useAuthorize';
 export { default as useAvailableMT5Accounts } from './useAvailableMT5Accounts';
 export { default as useAvailableWallets } from './useAvailableWallets';
 export { default as useBalance } from './useBalance';
-export { default as useAccountStatus } from './useAccountStatus';
 export { default as useCFDAccountsList } from './useCFDAccountsList';
 export { default as useCreateMT5Account } from './useCreateMT5Account';
 export { default as useCreateOtherCFDAccount } from './useCreateOtherCFDAccount';

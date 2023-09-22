@@ -1,7 +1,7 @@
 import { OSDetect } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
-import { CFD_PLATFORMS, MOBILE_PLATFORMS, OS_PLATFORMS, CATEGORY } from './cfd-config';
+import { CFD_PLATFORMS, MOBILE_PLATFORMS, DESKTOP_PLATFORMS, CATEGORY } from './cfd-config';
 
 const platformsText = (platform: TCFDsPlatformType) => {
     switch (platform) {
@@ -105,13 +105,13 @@ const getPlatformCTraderDownloadLink = (platform: TMobilePlatforms) => {
 
 const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) => {
     switch (platform || OSDetect()) {
-        case OS_PLATFORMS.WINDOWS:
+        case DESKTOP_PLATFORMS.WINDOWS:
             return 'https://download.mql5.com/cdn/web/deriv.holdings.guernsey/mt5/deriv5setup.exe';
-        case OS_PLATFORMS.LINUX:
+        case DESKTOP_PLATFORMS.LINUX:
             return 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux';
         case MOBILE_PLATFORMS.IOS:
             return 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server,Deriv-Server-02';
-        case OS_PLATFORMS.MACOS:
+        case DESKTOP_PLATFORMS.MACOS:
             return 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg';
         case MOBILE_PLATFORMS.HAUWEI:
             return 'https://appgallery.huawei.com/#/app/C102015329';

@@ -25,7 +25,7 @@ export const MOBILE_PLATFORMS = {
     ANDROID: 'android',
 } as const;
 
-export const OS_PLATFORMS = {
+export const DESKTOP_PLATFORMS = {
     WINDOWS: 'windows',
     LINUX: 'linux',
     MACOS: 'macos',

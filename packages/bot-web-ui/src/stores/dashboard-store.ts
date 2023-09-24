@@ -12,6 +12,7 @@ export interface IDashboardStore {
     has_mobile_preview_loaded: boolean;
     has_started_bot_builder_tour: boolean;
     has_started_onboarding_tour: boolean;
+    is_web_socket_intialised: boolean;
     initInfoPanel: () => void;
     is_dialog_open: boolean;
     is_file_supported: boolean;
@@ -26,6 +27,7 @@ export interface IDashboardStore {
     setInfoPanelVisibility: (visibility: boolean) => void;
     setIsFileSupported: (is_file_supported: boolean) => void;
     setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => void;
+    setWebSocketState: (is_web_socket_intialised: boolean) => void;
     setOpenSettings: (toast_message: string, show_toast: boolean) => void;
     setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
     setStrategySaveType: (param: string) => void;
@@ -57,12 +59,14 @@ export default class DashboardStore implements IDashboardStore {
             is_info_panel_visible: observable,
             is_preview_on_popup: observable,
             is_tour_dialog_visible: observable,
+            is_web_socket_intialised: observable,
             is_dark_mode: computed,
             onCloseDialog: action.bound,
             onCloseTour: action.bound,
             onTourEnd: action.bound,
             setActiveTab: action.bound,
             setActiveTabTutorial: action.bound,
+            setWebSocketState: action.bound,
             setBotBuilderTourState: action.bound,
             setFAQSearchValue: action.bound,
             setFileLoaded: action.bound,
@@ -78,7 +82,6 @@ export default class DashboardStore implements IDashboardStore {
             show_mobile_tour_dialog: observable,
             showVideoDialog: action.bound,
             strategy_save_type: observable,
-            // toggleOnConfirm: action.bound,
             toast_message: observable,
             setStrategySaveType: action.bound,
             setShowMobileTourDialog: action.bound,
@@ -123,7 +126,7 @@ export default class DashboardStore implements IDashboardStore {
     active_tab_tutorials = 0;
     active_tour_step_number = 0;
     dialog_options = {};
-    faq_search_value = null || '';
+    faq_search_value = '';
     getFileArray = [];
     has_file_loaded = false;
     has_mobile_preview_loaded = false;
@@ -139,6 +142,7 @@ export default class DashboardStore implements IDashboardStore {
     show_mobile_tour_dialog = false;
     strategy_save_type = 'unsaved';
     toast_message = '';
+    is_web_socket_intialised = true;
 
     get is_dark_mode() {
         const {
@@ -153,6 +157,10 @@ export default class DashboardStore implements IDashboardStore {
 
     setShowMobileTourDialog = (show_mobile_tour_dialog: boolean) => {
         this.show_mobile_tour_dialog = show_mobile_tour_dialog;
+    };
+
+    setWebSocketState = (is_web_socket_intialised: boolean) => {
+        this.is_web_socket_intialised = is_web_socket_intialised;
     };
 
     setOpenSettings = (toast_message: string, show_toast = true) => {
@@ -261,26 +269,12 @@ export default class DashboardStore implements IDashboardStore {
         workspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, addition);
     };
 
-    // toggleOnConfirm = (active_tab: number, value: boolean): void => {
-    //     if (active_tab === 0) {
-    //         this.setTourActive(value);
-    //         this.setOnBoardTourRunState(value);
-    //     } else {
-    //         this.setBotBuilderTourState(value);
-    //     }
-    //     this.setHasTourEnded(value);
-    // };
-
     onCloseTour = (): void => {
-        // this.setOnBoardTourRunState(false);
-        // this.setBotBuilderTourState(false);
         setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
-        // this.setTourActive(false);
         this.setActiveTour('');
     };
     setTourEnd = (param: TTourType): void => {
         const { key } = param;
-        this.setHasTourEnded(true);
         if (!isMobile()) this.setTourDialogVisibility(true);
         setTourSettings(new Date().getTime(), `${key}_token`);
     };

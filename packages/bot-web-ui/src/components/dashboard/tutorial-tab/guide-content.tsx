@@ -50,35 +50,34 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
                     </Text>
                 )}
                 <div className='tutorials-wrap__group'>
-                    {guide_list &&
-                        guide_list.map(({ id, content, src, type, subtype }) => {
-                            return (
-                                type === 'Tour' && (
+                    {guide_list?.map(({ id, content, src, type, subtype }) => {
+                        return (
+                            type === 'Tour' && (
+                                <div
+                                    className='tutorials-wrap__group__cards tutorials-wrap--tour'
+                                    key={id}
+                                    onClick={() => triggerTour(subtype)}
+                                >
                                     <div
-                                        className='tutorials-wrap__group__cards tutorials-wrap--tour'
-                                        key={id}
-                                        onClick={() => triggerTour(subtype)}
+                                        className={classNames('tutorials-wrap__placeholder__tours', {
+                                            'tutorials-wrap__placeholder--disabled': !src,
+                                        })}
+                                        style={{
+                                            backgroundImage: `url(${src})`,
+                                        }}
+                                    />
+                                    <Text
+                                        align='center'
+                                        color='prominent'
+                                        line_height='s'
+                                        size={is_mobile ? 'xxs' : 's'}
                                     >
-                                        <div
-                                            className={classNames('tutorials-wrap__placeholder__tours', {
-                                                'tutorials-wrap__placeholder--disabled': !src,
-                                            })}
-                                            style={{
-                                                backgroundImage: `url(${src})`,
-                                            }}
-                                        />
-                                        <Text
-                                            align='center'
-                                            color='prominent'
-                                            line_height='s'
-                                            size={is_mobile ? 'xxs' : 's'}
-                                        >
-                                            {content}
-                                        </Text>
-                                    </div>
-                                )
-                            );
-                        })}
+                                        {content}
+                                    </Text>
+                                </div>
+                            )
+                        );
+                    })}
                 </div>
                 {guide_list?.length > 0 && (
                     <Text align='center' weight='bold' color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
@@ -86,46 +85,45 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
                     </Text>
                 )}
                 <div className='tutorials-wrap__group'>
-                    {guide_list &&
-                        guide_list.map(({ id, content, url, type, src }) => {
-                            return (
-                                type !== 'Tour' && (
-                                    <div className='tutorials-wrap__group__cards tutorials-wrap--placeholder' key={id}>
-                                        <div
-                                            className={classNames('tutorials-wrap__placeholder', {
-                                                'tutorials-wrap__placeholder--disabled': !url,
-                                            })}
-                                            style={{
-                                                backgroundImage: `url(${src})`,
-                                            }}
-                                        >
-                                            <div className='tutorials-wrap__placeholder__button-group'>
-                                                <Icon
-                                                    className='tutorials-wrap__placeholder__button-group--play'
-                                                    width='4rem'
-                                                    height='4rem'
-                                                    icon={'IcPlayOutline'}
-                                                    onClick={() =>
-                                                        showVideoDialog({
-                                                            type: 'url',
-                                                            url,
-                                                        })
-                                                    }
-                                                />
-                                            </div>
+                    {guide_list?.map(({ id, content, url, type, src }) => {
+                        return (
+                            type !== 'Tour' && (
+                                <div className='tutorials-wrap__group__cards tutorials-wrap--placeholder' key={id}>
+                                    <div
+                                        className={classNames('tutorials-wrap__placeholder', {
+                                            'tutorials-wrap__placeholder--disabled': !url,
+                                        })}
+                                        style={{
+                                            backgroundImage: `url(${src})`,
+                                        }}
+                                    >
+                                        <div className='tutorials-wrap__placeholder__button-group'>
+                                            <Icon
+                                                className='tutorials-wrap__placeholder__button-group--play'
+                                                width='4rem'
+                                                height='4rem'
+                                                icon={'IcPlayOutline'}
+                                                onClick={() =>
+                                                    showVideoDialog({
+                                                        type: 'url',
+                                                        url,
+                                                    })
+                                                }
+                                            />
                                         </div>
-                                        <Text
-                                            align='center'
-                                            color='prominent'
-                                            line_height='s'
-                                            size={is_mobile ? 'xxs' : 's'}
-                                        >
-                                            {content}
-                                        </Text>
                                     </div>
-                                )
-                            );
-                        })}
+                                    <Text
+                                        align='center'
+                                        color='prominent'
+                                        line_height='s'
+                                        size={is_mobile ? 'xxs' : 's'}
+                                    >
+                                        {content}
+                                    </Text>
+                                </div>
+                            )
+                        );
+                    })}
                     {!guide_list.length && (
                         <div className='tutorials-wrap__group__nosearch'>
                             <Text as='h1' weight='bold' line_height='xxs'>

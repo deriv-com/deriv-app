@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { updateWorkspaceName } from '@deriv/bot-skeleton';
+import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
+import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -16,12 +18,13 @@ import StrategyNotification from './strategy-notification';
 import Tutorial from './tutorial-tab';
 
 const Dashboard = observer(() => {
-    const { dashboard, load_modal, run_panel, quick_strategy } = useDBotStore();
-    const { active_tab, is_tour_active, setActiveTab } = dashboard;
+    const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useDBotStore();
+    const { active_tab, is_tour_active, setActiveTab, setWebSocketState } = dashboard;
     const { onEntered, dashboard_strategies } = load_modal;
     const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
         run_panel;
     const { is_strategy_modal_open } = quick_strategy;
+    const { clear } = summary_card;
     const { DASHBOARD, BOT_BUILDER, CHART, TUTORIAL } = DBOT_TABS;
     const is_mobile = isMobile();
     const init_render = React.useRef(true);
@@ -41,6 +44,21 @@ const Dashboard = observer(() => {
     };
     const active_hash_tab = GetHashedValue(active_tab);
 
+    const checkAndHandleConnection = () => {
+        const api_status = api_base.getConnectionStatus();
+        //added this check because after sleep mode all the store values refresh and is_running is false.
+        const is_bot_running = document.getElementById('db-animation__stop-button') !== null;
+        if (is_bot_running && (api_status === 'Closed' || api_status === 'Closing')) {
+            dbot.terminateBot();
+            clear();
+            setWebSocketState(false);
+        }
+    };
+
+    React.useEffect(() => {
+        window.addEventListener('focus', checkAndHandleConnection);
+    }, []);
+
     React.useEffect(() => {
         if (init_render.current) {
             setActiveTab(Number(active_hash_tab));
@@ -48,7 +66,6 @@ const Dashboard = observer(() => {
             init_render.current = false;
         } else {
             let active_tab_name = 'dashboard';
-            if (active_tab === 0) active_tab_name = 'dashboard';
             if (active_tab === 1) active_tab_name = 'bot_builder';
             if (active_tab === 2) active_tab_name = 'chart';
             if (active_tab === 3) active_tab_name = 'tutorial';

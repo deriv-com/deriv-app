@@ -163,7 +163,7 @@ export default class SaveModalStore implements ISaveModalStore {
         this.updateBotName(bot_name);
 
         if (active_tab === 0) {
-            const workspace_id = selected_strategy.id || Blockly?.utils?.genUid();
+            const workspace_id = selected_strategy.id ?? Blockly?.utils?.genUid();
             await this.addStrategyToWorkspace(workspace_id, is_local, save_as_collection, bot_name, xml);
             if (main_strategy) await loadStrategyToBuilder(main_strategy);
         } else {

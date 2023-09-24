@@ -9,6 +9,7 @@ import SelfExclusion from 'Components/self-exclusion';
 import Summary from 'Components/summary';
 import TradeAnimation from 'Components/trade-animation';
 import Transactions from 'Components/transactions';
+import { DBOT_TABS } from 'Constants/bot-contents';
 import { popover_zindex } from 'Constants/z-indexes';
 import { useDBotStore } from 'Stores/useDBotStore';
 
@@ -253,8 +254,9 @@ const RunPanel = observer(() => {
         toggleStatisticsInfoModal,
         statistics,
     } = run_panel;
-    const { has_started_onboarding_tour } = dashboard;
+    const { has_started_onboarding_tour, is_tour_active, active_tab } = dashboard;
     const { total_payout, total_profit, total_stake, won_contracts, lost_contracts, number_of_runs } = statistics;
+    const { BOT_BUILDER, CHART } = DBOT_TABS;
 
     const is_mobile = isMobile();
 
@@ -298,6 +300,9 @@ const RunPanel = observer(() => {
         />
     );
 
+    const show_run_panel = [BOT_BUILDER, CHART].includes(active_tab) || is_tour_active;
+    if ((!show_run_panel && !is_mobile) || is_tour_active === 'bot_builder') return null;
+
     return (
         <>
             <div className={is_mobile && is_drawer_open ? 'run-panel__container--mobile' : 'run-panel'}>
@@ -305,7 +310,7 @@ const RunPanel = observer(() => {
                     anchor='right'
                     className={classNames('run-panel', {
                         'run-panel__container': !is_mobile,
-                        'run-panel__container--tour-active': !is_mobile && has_started_onboarding_tour,
+                        'run-panel__container--tour-active': !is_mobile,
                     })}
                     contentClassName='run-panel__content'
                     header={header}

@@ -4,8 +4,8 @@ import { render, screen } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import BotBuilderTour from '../../mobile-tours/bot-builder-tour';
-import OnboardingTour from '../../mobile-tours/onboarding-tour';
+import BotBuilderTour from '../../bot-builder-tour/bot-builder-tour-mobile';
+import OnboardingTour from '../../onboarding-tour/onboarding-tour-mobile';
 import { BOT_BUILDER_MOBILE, DBOT_ONBOARDING_MOBILE } from '../index';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());

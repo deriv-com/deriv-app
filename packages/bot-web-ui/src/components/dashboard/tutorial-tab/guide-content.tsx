@@ -5,9 +5,8 @@ import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
+import { removeKeyValue } from 'Utils/settings';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { removeKeyValue } from '../../../utils/settings';
-import { tour_type } from '../dbot-tours/utils';
 
 type TGuideContent = {
     guide_list: [];
@@ -21,40 +20,23 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
         is_dialog_open,
         onCloseDialog: onOkButtonClick,
         setActiveTab,
-        setHasTourEnded,
-        setOnBoardTourRunState,
-        setTourActive,
         setTourDialogVisibility,
         showVideoDialog,
+        setActiveTour,
+        setShowMobileTourDialog,
     } = dashboard;
 
     const triggerTour = (type: string) => {
-        const storage = JSON.parse(localStorage?.dbot_settings);
         if (type === 'OnBoard') {
-            if (storage.onboard_tour_token) {
-                removeKeyValue('onboard_tour_token');
-                removeKeyValue('onboard_tour_status');
-                removeKeyValue('bot_builder_status');
-            }
-            tour_type.key = 'onboard_tour';
-            setHasTourEnded(false);
-            if (is_mobile) {
-                setTourActive(true);
-                setOnBoardTourRunState(true);
-            } else {
-                setTourDialogVisibility(true);
-            }
+            removeKeyValue('onboard_tour_token');
             setActiveTab(DBOT_TABS.DASHBOARD);
-        } else {
-            if (storage.bot_builder_token) {
-                removeKeyValue('bot_builder_token');
-                removeKeyValue('bot_builder_status');
-                removeKeyValue('onboard_tour_status');
-            }
-            tour_type.key = 'bot_builder';
-            setHasTourEnded(false);
+            if (is_mobile) setActiveTour('onboarding');
             setTourDialogVisibility(true);
+        } else {
             setActiveTab(DBOT_TABS.BOT_BUILDER);
+            if (is_mobile) setActiveTour('bot_builder');
+            setTourDialogVisibility(true);
+            if (is_mobile) setShowMobileTourDialog(true);
         }
     };
     const is_mobile = isMobile();

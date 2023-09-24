@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import {
     useActiveWalletAccount,
+    useAvailableMT5Accounts,
     useCreateMT5Account,
     useMT5AccountsList,
     useSettings,
@@ -21,6 +22,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
     const { isSuccess, mutate } = useCreateMT5Account();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: mt5Accounts } = useMT5AccountsList();
+    const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const { data: settings } = useSettings();
     const { hide } = useModal();
 
@@ -32,9 +34,13 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
         mutate({
             payload: {
                 account_type: activeWallet?.is_virtual ? 'demo' : accountType,
+                company: 'svg',
+                country: settings?.country_code || '',
                 email: settings?.email || '',
-                leverage: 1000,
+                leverage: availableMT5Accounts?.find(acc => acc.market_type === marketType)?.leverage || 500,
                 mainPassword: password,
+                ...(marketType === 'financial' && { mt5_account_type: 'financial' }),
+                ...(marketType === 'all' && { sub_account_category: 'swap_free' }),
                 name: settings?.first_name || '',
             },
         });

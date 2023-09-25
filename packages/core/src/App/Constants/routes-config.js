@@ -239,7 +239,7 @@ const getModules = () => {
             path: routes.traders_hub,
             component: AppStore,
             is_authenticated: true,
-            getTitle: () => localize('Traders Hub'),
+            getTitle: () => localize("Trader's Hub"),
         },
         {
             path: routes.onboarding,
@@ -250,7 +250,7 @@ const getModules = () => {
                 {
                     path: routes.traders_hub,
                     component: AppStore,
-                    getTitle: () => localize('Traders Hub'),
+                    getTitle: () => localize("Trader's Hub"),
                 },
                 {
                     path: routes.onboarding,

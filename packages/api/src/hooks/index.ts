@@ -10,6 +10,7 @@ export { default as useAvailableMT5Accounts } from './useAvailableMT5Accounts';
 export { default as useAvailableWallets } from './useAvailableWallets';
 export { default as useBalance } from './useBalance';
 export { default as useCFDAccountsList } from './useCFDAccountsList';
+export { default as useCountryConfig } from './useCountryConfig';
 export { default as useCreateMT5Account } from './useCreateMT5Account';
 export { default as useCreateOtherCFDAccount } from './useCreateOtherCFDAccount';
 export { default as useCtraderAccountsList } from './useCtraderAccountsList';
@@ -29,4 +30,5 @@ export { default as useTradingPlatformAccounts } from './useTradingPlatformAccou
 export { default as useTradingPlatformInvestorPasswordChange } from './useTradingPlatformInvestorPasswordChange';
 export { default as useTradingPlatformInvestorPasswordReset } from './useTradingPlatformInvestorPasswordReset';
 export { default as useTradingPlatformPasswordChange } from './useTradingPlatformPasswordChange';
+export { default as useTransferBetweenAccounts } from './useTransferBetweenAccounts';
 export { default as useWalletAccountsList } from './useWalletAccountsList';

@@ -3,7 +3,7 @@ import './WalletListCardBadge.scss';
 
 type TProps = {
     is_demo?: boolean;
-    label: string;
+    label?: string;
 };
 
 const WalletListCardBadge: React.FC<TProps> = ({ is_demo, label }) => {
@@ -13,10 +13,12 @@ const WalletListCardBadge: React.FC<TProps> = ({ is_demo, label }) => {
         color: is_demo ? 'white' : 'black',
     };
 
+    const formattedLabel = label === 'virtual' ? 'Demo' : label?.toUpperCase() || 'SVG';
+
     return (
         <div className={className}>
             <div className='wallets-list-card__name'>
-                <p style={labelStyle}>{label}</p>
+                <p style={labelStyle}>{formattedLabel}</p>
             </div>
         </div>
     );

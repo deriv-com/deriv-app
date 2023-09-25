@@ -10,7 +10,7 @@ import LTC from '../../public/images/ltc.svg';
 import USD from '../../public/images/usd.svg';
 import USDC from '../../public/images/usdc.svg';
 
-const type_to_icon_mapper = {
+const typeToIconMapper = {
     USD,
     EUR,
     GBP,
@@ -23,32 +23,33 @@ const type_to_icon_mapper = {
     Demo,
 };
 
-const type_to_size_mapper = {
-    USD: { mobile: 32, desktop: 48 },
-    EUR: { mobile: 32, desktop: 48 },
-    GBP: { mobile: 32, desktop: 48 },
-    BTC: { mobile: 45, desktop: 90 },
-    USDC: { mobile: 45, desktop: 90 },
-    ETH: { mobile: 45, desktop: 90 },
-    LTC: { mobile: 45, desktop: 90 },
-    UST: { mobile: 45, desktop: 90 },
-    eUSDT: { mobile: 45, desktop: 90 },
-    Demo: { mobile: 45, desktop: 90 },
+const typeToSizeMapper = {
+    USD: { mobile: 32, desktop: 48, small: 16 },
+    EUR: { mobile: 32, desktop: 48, small: 16 },
+    GBP: { mobile: 32, desktop: 48, small: 16 },
+    BTC: { mobile: 45, desktop: 90, small: 32 },
+    USDC: { mobile: 45, desktop: 90, small: 32 },
+    ETH: { mobile: 45, desktop: 90, small: 32 },
+    LTC: { mobile: 45, desktop: 90, small: 32 },
+    UST: { mobile: 45, desktop: 90, small: 32 },
+    eUSDT: { mobile: 45, desktop: 90, small: 32 },
+    Demo: { mobile: 45, desktop: 90, small: 32 },
 };
 
 type TProps = {
-    type: Omit<string, keyof typeof type_to_icon_mapper> | keyof typeof type_to_icon_mapper;
+    small?: boolean;
+    type: Omit<string, keyof typeof typeToIconMapper> | keyof typeof typeToIconMapper;
 };
 
-const WalletListCardIcon: React.FC<TProps> = ({ type }) => {
-    const { is_mobile } = useDevice();
+const WalletListCardIcon: React.FC<TProps> = ({ small = false, type }) => {
+    const { isMobile } = useDevice();
 
-    let icon_type = type as keyof typeof type_to_icon_mapper;
+    let iconType = type as keyof typeof typeToIconMapper;
 
-    if (!Object.keys(type_to_size_mapper).includes(icon_type)) icon_type = 'USD';
+    if (!Object.keys(typeToSizeMapper).includes(iconType)) iconType = 'USD';
 
-    const Icon = type_to_icon_mapper[icon_type];
-    const size = type_to_size_mapper[icon_type][is_mobile ? 'mobile' : 'desktop'];
+    const Icon = typeToIconMapper[iconType];
+    const size = small ? typeToSizeMapper[iconType].small : typeToSizeMapper[iconType][isMobile ? 'mobile' : 'desktop'];
 
     if (!Icon) return null;
 

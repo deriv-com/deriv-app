@@ -217,6 +217,7 @@ export const icons =
         'IcCashierTetherDark',
         'IcCashierTetherLight',
         'IcCashierTopUp',
+        'IcCashierUnderMaintenance',
         'IcCashierUpiDark',
         'IcCashierUpiLight',
         'IcCashierUsdCoinDark',

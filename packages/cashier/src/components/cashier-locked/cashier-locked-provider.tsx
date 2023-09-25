@@ -60,19 +60,14 @@ const getMessage = ({
                     'Deposits are temporarily unavailable due to system maintenance. You can make your deposits when the maintenance is complete.'
                 ),
             };
-        if (is_crypto)
-            return {
-                icon: 'IcCashierLocked',
-                title: localize('Cashier is locked'),
-                description: localize(
-                    'Our cryptocurrency cashier is temporarily down due to system maintenance. You can access the Cashier in a few minutes when the maintenance is complete.'
-                ),
-            };
         return {
-            icon: 'IcCashierLocked',
-            title: localize('Cashier is locked'),
-            description: localize(
-                'Our cashier is temporarily down due to system maintenance. You can access the Cashier in a few minutes when the maintenance is complete.'
+            icon: 'IcCashierUnderMaintenance',
+            title: localize('Cashier is currently down for maintenance'),
+            description: (
+                <Localize
+                    i18n_default_text='Please check back in a few minutes.<0></0>Thank you for your patience.'
+                    components={[<br key={0} />]}
+                />
             ),
         };
     }

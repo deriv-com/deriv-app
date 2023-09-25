@@ -9,7 +9,7 @@ const useDxtradeAccountsList = () => {
         payload: { platform: 'dxtrade' },
     });
 
-    /** Adding neccesary properties to Deriv X accounts */
+    /** Adding necessary properties to Deriv X accounts */
     const modified_dxtrade_accounts = useMemo(
         () =>
             dxtrade_accounts?.trading_platform_accounts?.map(account => ({

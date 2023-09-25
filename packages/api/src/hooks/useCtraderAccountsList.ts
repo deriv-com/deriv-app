@@ -14,7 +14,9 @@ const useCtraderAccountsList = () => {
         () =>
             ctrader_accounts?.trading_platform_accounts?.map(account => ({
                 ...account,
-                loginid: account.account_id,
+                /** The id of the cTrader account */
+                id: account.account_id,
+                /** The token of the cTrader account */
                 token,
             })),
         [ctrader_accounts?.trading_platform_accounts, token]

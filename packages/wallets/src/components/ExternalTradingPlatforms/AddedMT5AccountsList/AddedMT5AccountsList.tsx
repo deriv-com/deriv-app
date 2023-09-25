@@ -7,13 +7,13 @@ import { PrimaryActionButton } from '../../PrimaryActionButton';
 import { TradingAccountCard } from '../../TradingAccountCard';
 import './AddedMT5AccountsList.scss';
 
-const market_type_to_name_mapper = {
+const marketTypeToNameMapper = {
     all: 'Swap-Free',
     financial: 'Financial',
     synthetic: 'Derived',
 };
 
-const market_type_to_icon_mapper = {
+const marketTypeToIconMapper = {
     all: <SwapFreeMT5 />,
     financial: <FinancialMT5 />,
     synthetic: <DerivedMT5 />,
@@ -27,9 +27,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     return (
         <TradingAccountCard
             leading={() => (
-                <div className='wallets-added-mt5__icon'>
-                    {market_type_to_icon_mapper[account.market_type || 'all']}
-                </div>
+                <div className='wallets-added-mt5__icon'>{marketTypeToIconMapper[account.market_type || 'all']}</div>
             )}
             trailing={() => (
                 <div className='wallets-added-mt5__actions'>
@@ -43,9 +41,16 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
             )}
         >
             <div className='wallets-added-mt5__details'>
-                <p className='wallets-added-mt5__details-title'>
-                    {market_type_to_name_mapper[account.market_type || 'all']}
-                </p>
+                <div className='wallets-added-mt5__details-title'>
+                    <p className='wallets-added-mt5__details-title-text'>
+                        {marketTypeToNameMapper[account.market_type || 'all']}
+                    </p>
+                    <div className='wallets-added-mt5__details-title-landing-company'>
+                        <p className='wallets-added-mt5__details-title-landing-company-text'>
+                            {account.landing_company_short}
+                        </p>
+                    </div>
+                </div>
                 <p className='wallets-added-mt5__details-balance'>
                     {account.display_balance} {account.currency}
                 </p>

@@ -205,12 +205,12 @@ type TButtonProps = {
     text: string;
 };
 
+type TActionProps = TButtonProps & {
+    route?: string;
+};
+
 type TNotificationMessage = {
-    action?: {
-        onClick: () => void;
-        route?: string;
-        text: string;
-    };
+    action?: TActionProps;
     className?: string;
     cta_btn?: TButtonProps;
     header: string;
@@ -226,6 +226,7 @@ type TNotificationMessage = {
     primary_btn?: TButtonProps;
     secondary_btn?: TButtonProps;
     should_hide_close_btn?: boolean;
+    should_show_again?: boolean;
     timeout?: number;
     timeoutMessage?: (remaining: number | string) => string;
     type: string;
@@ -257,7 +258,17 @@ type TDXTraderStatusServerType = Record<'all' | 'demo' | 'real', number>;
 
 type TMt5StatusServer = Record<'demo' | 'real', TMt5StatusServerType[]>;
 
+type TCountryStandpoint = {
+    is_belgium: boolean;
+    is_france: boolean;
+    is_isle_of_man: boolean;
+    is_other_eu: boolean;
+    is_rest_of_eu: boolean;
+    is_united_kingdom: boolean;
+};
+
 type TClientStore = {
+    account_type: string;
     accounts: { [k: string]: TActiveAccount };
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
@@ -276,6 +287,7 @@ type TClientStore = {
     balance?: string | number;
     can_change_fiat_currency: boolean;
     cfd_score: number;
+    country_standpoint: TCountryStandpoint;
     ctrader_accounts_list: TCtraderAccountsList[];
     currency: string;
     current_currency_type?: string;
@@ -416,14 +428,14 @@ type TClientStore = {
 };
 
 type TCommonStoreError = {
-    app_routing_history: TAppRoutingHistory[];
+    app_routing_history?: TAppRoutingHistory[];
     header: string | JSX.Element;
     message: string | JSX.Element;
     redirect_label: string;
-    redirect_to: string;
+    redirect_to?: string;
     redirectOnClick: (() => void) | null;
-    setError: (has_error: boolean, error: React.ReactNode | null) => void;
-    should_clear_error_on_click: boolean;
+    setError?: (has_error: boolean, error: React.ReactNode | null) => void;
+    should_clear_error_on_click?: boolean;
     should_show_refresh: boolean;
     type?: string;
 };
@@ -451,6 +463,7 @@ type TCommonStore = {
 };
 
 type TUiStore = {
+    account_switcher_disabled_message: string;
     addToast: (toast_config: TAddToastProps) => void;
     app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;
     closeSuccessTopUpModal: () => void;
@@ -460,6 +473,8 @@ type TUiStore = {
     enableApp: () => void;
     has_only_forward_starting_contracts: boolean;
     has_real_account_signup_ended: boolean;
+    header_extension: JSX.Element | null;
+    is_account_settings_visible: boolean;
     is_accounts_switcher_on: boolean;
     is_app_disabled: boolean;
     is_cashier_visible: boolean;
@@ -475,6 +490,7 @@ type TUiStore = {
     is_need_real_account_for_cashier_modal_visible: boolean;
     is_positions_drawer_on: boolean;
     is_reset_trading_password_modal_visible: boolean;
+    is_route_modal_on: boolean;
     is_services_error_visible: boolean;
     is_switch_to_deriv_account_modal_visible: boolean;
     is_ready_to_deposit_modal_visible: boolean;
@@ -526,6 +542,7 @@ type TUiStore = {
     shouldNavigateAfterChooseCrypto: (value: Omit<string, TRoutes> | TRoutes) => void;
     sub_section_index: number;
     toggleAccountsDialog: () => void;
+    toggleAccountSettings: (props?: boolean) => void;
     toggleCashier: () => void;
     toggleLanguageSettingsModal: () => void;
     toggleLinkExpiredModal: (state_change: boolean) => void;
@@ -575,18 +592,29 @@ type TNotificationStore = {
     addNotificationMessage: (message: TNotification) => void;
     addNotificationMessageByKey: (key: string) => void;
     client_notifications: object;
+    is_notifications_empty: boolean;
+    is_notifications_visible: boolean;
     filterNotificationMessages: () => void;
+    notifications: TNotificationMessage[];
     refreshNotifications: () => void;
+    removeNotifications: (should_close_persistent: boolean) => void;
     removeNotificationByKey: ({ key }: { key: string }) => void;
     removeNotificationMessage: ({ key, should_show_again }: { key: string; should_show_again?: boolean }) => void;
+    removeNotificationMessageByKey: ({ key }: { key: string }) => void;
     setP2POrderProps: () => void;
     setP2PRedirectTo: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
+    toggleNotificationsModal: () => void;
 };
 
 type TBalance = {
     balance: number;
     currency: string;
+};
+
+type TModalData = {
+    active_modal: string;
+    data: Record<string, unknown>;
 };
 
 type TTradersHubStore = {
@@ -621,6 +649,7 @@ type TTradersHubStore = {
     is_real: boolean;
     is_regulators_compare_modal_visible: boolean;
     is_tour_open: boolean;
+    modal_data: TModalData;
     multipliers_account_status: string;
     no_CR_account: boolean;
     no_MF_account: boolean;
@@ -641,6 +670,7 @@ type TTradersHubStore = {
     selected_account_type: string;
     selected_platform_type: string;
     setMT5NotificationModal: (value: boolean) => void;
+    setIsOnboardingVisited: (is_visited: boolean) => void;
     setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
     showTopUpModal: () => void;
     startTrade: () => void;

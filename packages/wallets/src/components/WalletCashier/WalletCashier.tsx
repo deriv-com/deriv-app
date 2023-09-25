@@ -2,6 +2,7 @@ import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
 import WalletCashierContent from '../WalletCashierContent/WalletCashierContent';
 import WalletCashierHeader from '../WalletCashierHeader/WalletCashierHeader';
+import './WalletCashier.scss';
 
 const WalletCashier = () => {
     const { isLoading } = useActiveWalletAccount();
@@ -9,10 +10,12 @@ const WalletCashier = () => {
     if (isLoading) return <p>Loading...</p>;
 
     return (
-        <div>
+        <>
             <WalletCashierHeader />
-            <WalletCashierContent />
-        </div>
+            <div className='wallets-cashier-content'>
+                <WalletCashierContent />
+            </div>
+        </>
     );
 };
 

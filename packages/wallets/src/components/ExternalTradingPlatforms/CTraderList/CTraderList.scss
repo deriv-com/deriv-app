@@ -1,8 +1,8 @@
 .wallets-ctrader {
-    padding: 24px 0;
+    padding-bottom: 24px;
+
     &__title {
         color: #333;
-        font-family: 'IBM Plex Sans';
         font-size: 16px;
         font-style: normal;
         font-weight: 700;
@@ -13,6 +13,11 @@
         display: grid;
         gap: 1.6rem 4.8rem;
         grid-template-columns: repeat(3, 1fr);
+
+        @include mobile {
+            grid-template-rows: 1fr;
+            grid-template-columns: auto;
+        }
 
         &__details {
             flex-grow: 1;
@@ -39,7 +44,6 @@
         text-align: center;
 
         /* desktop/paragraph/P2 - bold */
-        font-family: 'IBM Plex Sans';
         font-size: 14px;
         font-style: normal;
         font-weight: 700;

@@ -4,7 +4,7 @@ import useCurrencyConfig from './useCurrencyConfig';
 import useWalletAccountsList from './useWalletAccountsList';
 
 const useAvailableWallets = () => {
-    const { data: account_type_data } = useAllAvailableAccounts();
+    const { data: account_type_data, ...rest } = useAllAvailableAccounts();
     const { data: added_wallets } = useWalletAccountsList();
     const { getConfig } = useCurrencyConfig();
 
@@ -71,6 +71,7 @@ const useAvailableWallets = () => {
     return {
         /** Sorted available wallets */
         data: sorted_available_wallets,
+        ...rest,
     };
 };
 

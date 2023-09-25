@@ -14,7 +14,7 @@ import {
 } from '@deriv/shared';
 import {
     documentAdditionalError,
-    getRegex,
+    isDocumentNumberValid,
     validate,
     makeSettingsRequest,
     validateName,
@@ -80,20 +80,6 @@ const IdvDocumentSubmit = ({
         const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
         if (error_message) {
             return localize(error_message) + getExampleFormat(document_type.additional?.example_format);
-        }
-        return undefined;
-    };
-
-    const isDocumentNumberValid = (document_number: string, document_type: Required<TDocument>) => {
-        const is_document_number_invalid = document_number === document_type.example_format;
-        if (!document_number) {
-            return localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
-        } else if (is_document_number_invalid) {
-            return localize('Please enter a valid ID number.');
-        }
-        const format_regex = getRegex(document_type.value);
-        if (!format_regex.test(document_number)) {
-            return localize('Please enter the correct format. ') + getExampleFormat(document_type.example_format);
         }
         return undefined;
     };

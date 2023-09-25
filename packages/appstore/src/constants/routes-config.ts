@@ -15,7 +15,7 @@ const initRoutesConfig = ({ consumer_routes }: TRoutesConfig): TRoute[] => [
     {
         path: consumer_routes.traders_hub,
         component: TradersHub,
-        getTitle: () => localize('TradersHub'),
+        getTitle: () => localize("Trader's Hub"),
     },
     {
         path: consumer_routes.onboarding,

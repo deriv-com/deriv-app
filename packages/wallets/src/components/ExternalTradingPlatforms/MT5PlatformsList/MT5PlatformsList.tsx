@@ -15,25 +15,21 @@ const MT5PlatformsList: React.FC = () => {
                 <div className='wallets-mt5-list__title'>
                     <h1>Deriv MT5</h1>
                 </div>
-
-                <div className='wallets-mt5-list__content'>
-                    {data?.map((account, index) => {
-                        if (account.is_added)
-                            return (
-                                <AddedMT5AccountsList
-                                    key={`added-mt5-list${account.loginid}-${index}`}
-                                    account={account}
-                                />
-                            );
-
+            </div>
+            <div className='wallets-mt5-list__content'>
+                {data?.map((account, index) => {
+                    if (account.is_added)
                         return (
-                            <AvailableMT5AccountsList
-                                key={`available-mt5-list${account.name}-${index}`}
-                                account={account}
-                            />
+                            <AddedMT5AccountsList account={account} key={`added-mt5-list${account.loginid}-${index}`} />
                         );
-                    })}
-                </div>
+
+                    return (
+                        <AvailableMT5AccountsList
+                            account={account}
+                            key={`available-mt5-list${account.name}-${index}`}
+                        />
+                    );
+                })}
             </div>
         </React.Fragment>
     );

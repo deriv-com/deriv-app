@@ -144,8 +144,6 @@
         }
     }
     &__list {
-        padding: 0 4rem;
-
         @include mobile {
             padding: 0 1.6rem;
         }

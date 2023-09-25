@@ -3,7 +3,7 @@ import CashierStoreProvider from '@deriv/cashier/src/cashier-providers';
 import CFDStoreProvider from '@deriv/cfd/src/cfd-providers';
 import { StoreProvider } from '@deriv/stores';
 import AppContent from './app-content';
-import { ModalProvider } from 'src/wallets-cfd/context/ModalProvider';
+// import { ModalProvider } from 'src/wallets-cfd/context/ModalProvider';
 import './app.scss';
 
 type TProps = {
@@ -16,9 +16,9 @@ const App: React.FC<TProps> = ({ passthrough: { root_store } }) => (
     <CashierStoreProvider store={root_store}>
         <CFDStoreProvider store={root_store}>
             <StoreProvider store={root_store}>
-                <ModalProvider>
-                    <AppContent />
-                </ModalProvider>
+                {/* <ModalProvider> */}
+                <AppContent />
+                {/* </ModalProvider> */}
             </StoreProvider>
         </CFDStoreProvider>
     </CashierStoreProvider>

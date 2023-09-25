@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { TJurisdictionCardSectionProps } from '../props.types';
 import JurisdictionClickableDescription from './jurisdiction-clickable-description';
 import JurisdictionTitleIndicator from './jurisdiction-title-indicator';
+import { TJurisdictionCardSectionProps } from '@deriv/cfd/src/Containers/props.types';
 
 const JurisdictionCardSection = ({
     account_status,

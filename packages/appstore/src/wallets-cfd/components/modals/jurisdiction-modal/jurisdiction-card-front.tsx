@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { TJurisdictionCardFrontProps } from 'Containers/props.types';
 import JurisdictionCardSection from './jurisdiction-card-section';
+import { TJurisdictionCardFrontProps } from '@deriv/cfd/src/Containers/props.types';
 
 const JurisdictionCardFront = ({
     account_status,

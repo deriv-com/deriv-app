@@ -3,7 +3,7 @@ import { Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { getAuthenticationStatusInfo, isMobile, Jurisdiction, getMT5Title, CFD_PLATFORMS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { TJurisdictionModalFootNoteProps } from '../props.types';
+import { TJurisdictionModalFootNoteProps } from '@deriv/cfd/src/Containers/props.types';
 
 const FooterNote = ({
     account_status,

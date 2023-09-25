@@ -4,11 +4,14 @@ import { useFilteredCFDAccounts } from '@deriv/hooks';
 import AddedMT5Card from './added-mt5-card';
 import AvailableMT5Card from './available-mt5-card';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
+// import { useModal } from 'src/wallets-cfd/context/ModalProvider';
+// import JurisdictionModal from 'src/wallets-cfd/components/modals/jurisdiction-modal/jurisdiction-modal';
 
 const market_types = ['gaming', 'synthetic', 'financial', 'all'];
 
 const WalletMT5CardList = observer(() => {
     const { data: filtered_cfd_accounts, isFetchedAfterMount } = useFilteredCFDAccounts();
+    // const { show } = useModal();
 
     if (!isFetchedAfterMount)
         return (
@@ -35,7 +38,14 @@ const WalletMT5CardList = observer(() => {
                                 />
                             );
                         }
-                        return <AvailableMT5Card key={`${account.market_type}${account.loginid}`} account={account} />;
+                        return (
+                            <>
+                                <AvailableMT5Card key={`${account.market_type}${account.loginid}`} account={account} />
+                                {/* <button onClick={() => show(<AvailableMT5Card account={account} />)}>
+                                    toggle modal
+                                </button> */}
+                            </>
+                        );
                     });
                 })}
         </React.Fragment>

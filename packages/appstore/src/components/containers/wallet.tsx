@@ -16,7 +16,6 @@ const Wallet = ({ wallet_account }: TWallet) => {
 
     return (
         <div ref={headerRef} className={classNames('wallet', { wallet__demo: is_demo })}>
-            {/* <button onClick={() => {}}>toggle modal</button> */}
             <WalletHeader wallet_account={wallet_account} />
             <CSSTransition
                 appear

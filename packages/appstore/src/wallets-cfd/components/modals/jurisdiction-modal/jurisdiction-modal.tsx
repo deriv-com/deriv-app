@@ -3,13 +3,14 @@ import classNames from 'classnames';
 import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv/components';
 import JurisdictionModalContentWrapper from './jurisdiction-modal-content-wrapper';
 import JurisdictionModalTitle from './jurisdiction-modal-title';
+import DynamicLeverageModalContent from '../dynamic-leverage/dynamic-leverage-modal-content';
+import { DynamicLeverageContext } from '../dynamic-leverage/dynamic-leverage-context';
+import { WalletModal } from '../../containers/WalletModal';
+import { useModal } from 'src/wallets-cfd/context/ModalProvider';
 
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '@deriv/cfd/src/Stores/Modules/CFD/Helpers/useCfdStores';
 import { TJurisdictionModalProps } from '@deriv/cfd/src/Containers/props.types';
-import DynamicLeverageModalContent from '../dynamic-leverage/dynamic-leverage-modal-content';
-import { DynamicLeverageContext } from '../dynamic-leverage/dynamic-leverage-context';
-import { WalletModal } from '../../containers/WalletModal';
 
 const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalProps) => {
     const { traders_hub, ui, common } = useStore();
@@ -44,14 +45,18 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
         </div>
     );
 
-    // <WalletModal className='wallets-enter-password' has_close_icon onClickCloseIcon={hide}></WalletModal>
+    const { hide } = useModal();
 
     return (
         <div>
             <React.Suspense fallback={<UILoader />}>
                 <DynamicLeverageContext.Provider value={{ is_dynamic_leverage_visible, toggleDynamicLeverage }}>
                     <DesktopWrapper>
-                        <WalletModal>
+                        <WalletModal
+                            className='jurisdiction-modal'
+                            has_close_icon={!is_dynamic_leverage_visible}
+                            onClickCloseIcon={hide}
+                        >
                             {/* <Modal
                                 className='jurisdiction-modal'
                                 disableApp={disableApp}

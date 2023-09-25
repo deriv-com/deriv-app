@@ -1,11 +1,12 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Jurisdiction } from '@deriv/shared';
-import { getJurisdictionContents } from '../../Constants/jurisdiction-contents/jurisdiction-contents';
-import { TJurisdictionCardProps } from '../props.types';
 import JurisdictionCardBack from './jurisdiction-card-back';
 import JurisdictionCardFront from './jurisdiction-card-front';
 import { useDynamicLeverage } from '../dynamic-leverage/dynamic-leverage-context';
+
+import { TJurisdictionCardProps } from '@deriv/cfd/src/Containers/props.types';
+import { getJurisdictionContents } from '@deriv/cfd/src/Constants/jurisdiction-contents/jurisdiction-contents';
 
 const JurisdictionCard = ({
     account_status,

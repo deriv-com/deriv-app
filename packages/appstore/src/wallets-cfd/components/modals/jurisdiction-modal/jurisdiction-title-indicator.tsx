@@ -2,9 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
-import { jurisdictionVerificationContents } from '../../Constants/jurisdiction-contents/jurisdiction-verification-contents';
-import { TJurisdictionTitleIndicatorProps } from 'Containers/props.types';
-import { TJurisdictionCardItemVerificationItem, TJurisdictionCardVerificationStatus } from 'Components/props.types';
+import { TJurisdictionTitleIndicatorProps } from '@deriv/cfd/src/Containers/props.types';
+import {
+    TJurisdictionCardItemVerificationItem,
+    TJurisdictionCardVerificationStatus,
+} from '@deriv/cfd/src/Components/props.types';
+import { jurisdictionVerificationContents } from '@deriv/cfd/src/Constants/jurisdiction-contents/jurisdiction-verification-contents';
 
 const JurisdictionTitleIndicator = ({
     account_status,

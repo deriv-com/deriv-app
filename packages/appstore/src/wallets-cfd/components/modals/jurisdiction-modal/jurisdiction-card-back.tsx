@@ -1,8 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
-// import { jurisdictionVerificationContents } from '../../Constants/jurisdiction-contents/jurisdiction-verification-contents';
-// import { TJurisdictionCardBackProps } from 'Containers/props.types';
 
 import { TJurisdictionCardBackProps } from '@deriv/cfd/src/Containers/props.types';
 import { jurisdictionVerificationContents } from '@deriv/cfd/src/Constants/jurisdiction-contents/jurisdiction-verification-contents';

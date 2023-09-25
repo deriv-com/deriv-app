@@ -3,12 +3,13 @@ import React from 'react';
 import { Button, Modal } from '@deriv/components';
 import { getAuthenticationStatusInfo, isMobile, Jurisdiction } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { TJurisdictionModalContentWrapperProps } from '../props.types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
 import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
 import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
 import { useStore, observer } from '@deriv/stores';
-import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
+
+import { TJurisdictionModalContentWrapperProps } from '@deriv/cfd/src/Containers/props.types';
+import { useCfdStore } from '@deriv/cfd/src/Stores/Modules/CFD/Helpers/useCfdStores';
 
 const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisdictionModalContentWrapperProps) => {
     const { client, traders_hub } = useStore();

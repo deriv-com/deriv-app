@@ -107,15 +107,14 @@ const AddWalletTradingAccountModal = observer(() => {
             <MobileWrapper>
                 <MobileDialog
                     portal_element_id='deriv_app'
+                    wrapper_classname='wallet-success'
                     visible={is_wallet_create_new_account_modal}
                     onClose={() => setWalletCreateNewAccountModal(false)}
                     has_full_height
                 >
-                    <div className='wallet-success-dialog__content'>
-                        <ModalContent />
-                        <div className='wallet-success-dialog__footer'>
-                            <ModalFooter />
-                        </div>
+                    <ModalContent />
+                    <div className='wallet-success-dialog__footer'>
+                        <ModalFooter />
                     </div>
                 </MobileDialog>
             </MobileWrapper>

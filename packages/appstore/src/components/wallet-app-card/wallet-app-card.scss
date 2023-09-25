@@ -36,6 +36,9 @@
 
         padding: 0 0.8rem 0.4rem;
         border-radius: 0 0 0 $BORDER_RADIUS;
+        @include mobile {
+            padding: 0.4rem 0.8rem;
+        }
         &--real {
             background-color: var(--brand-red-coral);
         }

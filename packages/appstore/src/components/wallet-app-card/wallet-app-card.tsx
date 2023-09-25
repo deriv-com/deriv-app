@@ -29,7 +29,6 @@ const WalletAppCard = observer(({ wallet }: WalletAppCardProps) => {
                 <div className='wallet-app-card__shine' />
                 <div className='wallet-app-card__icon'>
                     <AppLinkedWithWalletIcon
-                        size={is_mobile ? 'small' : 'medium'}
                         app_icon={is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight'}
                         gradient_class={gradient_card_class}
                         hide_watermark

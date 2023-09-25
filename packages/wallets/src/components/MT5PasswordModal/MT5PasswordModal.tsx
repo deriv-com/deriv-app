@@ -51,27 +51,23 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
         if (isSuccess) hide();
     }, [hide, isSuccess]);
 
-    if (hasMT5Account) {
-        return (
-            <WalletModal>
+    return (
+        <WalletModal>
+            {hasMT5Account ? (
                 <EnterPassword
                     marketType={marketType}
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}
                     platform='mt5'
                 />
-            </WalletModal>
-        );
-    }
-
-    return (
-        <WalletModal>
-            <CreatePassword
-                icon={<MT5PasswordIcon />}
-                onPasswordChange={e => setPassword(e.target.value)}
-                onPrimaryClick={onSubmit}
-                platform='mt5'
-            />
+            ) : (
+                <CreatePassword
+                    icon={<MT5PasswordIcon />}
+                    onPasswordChange={e => setPassword(e.target.value)}
+                    onPrimaryClick={onSubmit}
+                    platform='mt5'
+                />
+            )}
         </WalletModal>
     );
 };

@@ -6,6 +6,7 @@ import { ModalContext, useModalContext } from '../wallets/context/modal-context'
 import AppContent from './app-content';
 import './app.scss';
 import { MobileDialog, Button, DesktopWrapper, MobileWrapper, Modal, Text } from '@deriv/components';
+import { ModalProvider } from 'src/wallets/context/ModalProvider';
 
 type TProps = {
     passthrough: {
@@ -90,7 +91,9 @@ const App: React.FC<TProps> = ({ passthrough: { root_store } }) => (
         <CFDStoreProvider store={root_store}>
             <StoreProvider store={root_store}>
                 <WrapperWithModals>
-                    <AppContent />
+                    <ModalProvider>
+                        <AppContent />
+                    </ModalProvider>
                 </WrapperWithModals>
             </StoreProvider>
         </CFDStoreProvider>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, useFetch } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import WalletCardsCarousel from '..';
 
@@ -50,6 +50,7 @@ jest.mock('@deriv/api', () => ({
                                 loginid: 'CRW10005',
                             },
                         ],
+                        loginid: 'VRW10001',
                     },
                 },
             };
@@ -84,7 +85,24 @@ jest.mock('@deriv/api', () => ({
                 data: {
                     crypto_config: {
                         currencies_config: {
-                            BTC: {},
+                            BTC: {
+                                minimum_withdrawal: 0.00034286,
+                            },
+                            ETH: {
+                                minimum_withdrawal: 0.02728729,
+                            },
+                            LTC: {
+                                minimum_withdrawal: 0.06032091,
+                            },
+                            USDC: {
+                                minimum_withdrawal: 50,
+                            },
+                            UST: {
+                                minimum_withdrawal: 24.99,
+                            },
+                            eUSDT: {
+                                minimum_withdrawal: 50.05,
+                            },
                         },
                     },
                 },
@@ -97,6 +115,8 @@ jest.mock('@deriv/api', () => ({
 
 jest.mock('./../cards-slider-swiper', () => jest.fn(() => <div>slider</div>));
 
+const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
+
 describe('<WalletCardsCarousel />', () => {
     const wrapper = (mock: ReturnType<typeof mockStore>) => {
         const Component = ({ children }: { children: JSX.Element }) => (
@@ -106,6 +126,7 @@ describe('<WalletCardsCarousel />', () => {
         );
         return Component;
     };
+
     it('Should render slider', () => {
         const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
 
@@ -116,7 +137,25 @@ describe('<WalletCardsCarousel />', () => {
     });
 
     it('Should render buttons for REAL', () => {
-        const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
+        const mock = mockStore({});
+
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockUseFetch.mockReturnValue({
+            data: {
+                authorize: {
+                    account_list: [
+                        {
+                            account_category: 'wallet',
+                            account_type: 'doughflow',
+                            currency: 'USD',
+                            is_virtual: 0,
+                            loginid: 'CRW909900',
+                        },
+                    ],
+                    loginid: 'CRW909900',
+                },
+            },
+        });
 
         render(<WalletCardsCarousel />, { wrapper: wrapper(mock) });
 
@@ -133,6 +172,24 @@ describe('<WalletCardsCarousel />', () => {
 
     it('Should render buttons for DEMO', () => {
         const mock = mockStore({ client: { accounts: { VRW10001: { token: '12345' } }, loginid: 'VRW10001' } });
+
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockUseFetch.mockReturnValue({
+            data: {
+                authorize: {
+                    account_list: [
+                        {
+                            account_category: 'wallet',
+                            account_type: 'doughflow',
+                            currency: 'USD',
+                            is_virtual: 1,
+                            loginid: 'VRW10001',
+                        },
+                    ],
+                    loginid: 'VRW10001',
+                },
+            },
+        });
 
         render(<WalletCardsCarousel />, { wrapper: wrapper(mock) });
 

@@ -504,6 +504,7 @@ type TClientStore = {
         new_account_maltainvest?: { oauth_token: string; client_id: string };
         new_account_wallet?: { oauth_token: string; client_id: string };
     }) => Promise<void>;
+    is_bot_allowed: boolean;
 };
 
 type TCommonStoreError = {
@@ -632,6 +633,9 @@ type TUiStore = {
     ) => void;
     is_wallet_creation_success_modal_open: boolean;
     toggleIsWalletCreationSuccessModalOpen: (value: boolean) => void;
+    account_switcher_disabled_message: string;
+    is_route_modal_on: boolean;
+    header_extension?: JSX.Element;
 };
 
 type TPortfolioStore = {
@@ -662,7 +666,7 @@ type TContractStore = {
 type TNotificationStore = {
     addNotificationMessage: (message: TNotification) => void;
     addNotificationMessageByKey: (key: string) => void;
-    client_notifications: object;
+    client_notifications: Record<string, any>;
     filterNotificationMessages: () => void;
     refreshNotifications: () => void;
     removeAllNotificationMessages: (should_close_persistent: boolean) => void;
@@ -671,6 +675,9 @@ type TNotificationStore = {
     setP2POrderProps: () => void;
     setP2PRedirectTo: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
+    is_notifications_visible: boolean;
+    toggleNotificationsModal: () => void;
+    notifications: Record<string, any>[];
 };
 
 type TBalance = {

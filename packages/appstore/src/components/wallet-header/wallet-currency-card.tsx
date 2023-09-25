@@ -14,8 +14,8 @@ const WalletCurrencyCard = ({ is_demo, currency, icon, icon_type, gradient_class
                 gradient_class={gradient_class}
                 icon={icon}
                 size={'xlarge'}
-                type={icon_type}
-                has_bg
+                type={is_demo ? 'demo' : icon_type}
+                has_bg={true}
                 hide_watermark
             />
         </div>

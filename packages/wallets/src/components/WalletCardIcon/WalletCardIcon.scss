@@ -1,0 +1,25 @@
+.wallets-card-icon {
+    &-xs {
+        &--rounded {
+            transform: scale(50%);
+        }
+    }
+
+    &-sm {
+        &--rounded {
+            transform: scale(60%);
+        }
+    }
+
+    &-md {
+        transform: scale(100%);
+    }
+
+    &-lg {
+        transform: scale(120%);
+
+        @include mobile {
+            transform: scale(160%);
+        }
+    }
+}

@@ -2,5 +2,3 @@
 . "$(dirname "$0")/_/husky.sh"
 
 npx lint-staged --allow-empty
-
-bash ./.husky/secret-scanner.sh

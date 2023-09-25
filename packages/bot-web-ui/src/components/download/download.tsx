@@ -27,15 +27,14 @@ const Download = observer(({ tab }: TDownloadProps) => {
             classNameBubble='run-panel__info--bubble'
             alignment='bottom'
             message={popover_message}
-            zIndex={5}
+            zIndex='5'
         >
             <Button
                 id='download-button'
                 is_disabled={is_clear_stat_disabled}
-                className='download__button'
-                icon={
-                    <Icon icon='IcDownload' color={is_clear_stat_disabled && 'disabled'} className='download__icon' />
-                }
+                text={localize('Download')}
+                icon={<Icon icon='IcDbotDownload' size={18} />}
+                secondary
                 onClick={clickFunction}
             />
         </Popover>

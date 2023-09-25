@@ -13,14 +13,14 @@ type TProps = {
 };
 
 const WalletGradientBackground: React.FC<TProps> = ({
+    children,
+    currency,
+    device = 'desktop',
     has_shine = false,
     is_demo = false,
-    currency,
     theme = 'light',
     type = 'card',
-    device = 'desktop',
     bodyClassName,
-    children,
 }) => {
     const getClassName = () => {
         if (is_demo) return `wallets-gradient--demo-${device}-${type}-${theme}`;

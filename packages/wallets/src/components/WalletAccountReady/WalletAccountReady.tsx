@@ -7,9 +7,9 @@ import SwapFreeMT5Icon from '../../public/images/mt5-swap-free.svg';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletListCardIcon } from '../WalletListCardIcon';
 import { useActiveWalletAccount, type useMT5AccountsList } from '@deriv/api';
+import { useModal } from '../ModalProvider';
 
 type TWalletAccountReadyProps = {
-    is_demo: boolean;
     market_type: string;
 };
 
@@ -27,12 +27,13 @@ const market_type_to_title_mapper = {
 
 const WalletAccountReady = ({ market_type }: TWalletAccountReadyProps) => {
     const { data } = useActiveWalletAccount();
+    const { hide } = useModal();
     const is_demo = data?.is_virtual;
 
     const MarketTypeIcon = React.useMemo(() => market_type_to_icon_mapper[market_type], [market_type]);
 
     return (
-        <WalletModal className='wallets-account-ready'>
+        <div className='wallets-account-ready'>
             <WalletGradientBackground
                 bodyClassName='wallets-account-ready__info'
                 currency={data?.currency || 'USD'}
@@ -75,8 +76,10 @@ const WalletAccountReady = ({ market_type }: TWalletAccountReadyProps) => {
                 You can now start practicing trading with your {market_type_to_title_mapper[market_type]}
                 {is_demo && ' demo'} account.
             </div>
-            <button className='wallets-account-ready__button'>Continue</button>
-        </WalletModal>
+            <button className='wallets-account-ready__button' onClick={hide}>
+                Continue
+            </button>
+        </div>
     );
 };
 

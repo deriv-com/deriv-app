@@ -23,7 +23,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const { active_tab, setActiveTab, setPreviewOnDialog } = dashboard;
     const { toggleSaveModal, updateBotName } = save_modal;
     const {
-        dashboard_strategies,
+        dashboard_strategies = [],
         getRecentFileIcon,
         getSaveType,
         getSelectedStrategyID,

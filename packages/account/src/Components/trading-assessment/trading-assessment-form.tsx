@@ -4,11 +4,23 @@ import { Formik, Form } from 'formik';
 import { Button, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize, getLanguage } from '@deriv/translations';
-import TradingAssessmentRadioButton from './trading-assessment-radio-buttons.jsx';
-import TradingAssessmentDropdown from './trading-assessment-dropdown.jsx';
+import TradingAssessmentRadioButton from './trading-assessment-radio-buttons';
+import TradingAssessmentDropdown from './trading-assessment-dropdown';
+import { trading_assessment_questions } from 'Constants/trading-assessment-questions';
+import { TFormData, TQuestion } from 'Types';
+
+type TTradingAssessmentForm = {
+    class_name: string;
+    disabled_items: string[];
+    form_value: TFormData;
+    onSubmit: (values?: TFormData, action?: React.ReactNode, should_override?: boolean) => void;
+    onCancel: (form_data: TFormData) => void;
+    should_move_to_next: boolean;
+    setSubSectionIndex: (index: number) => void;
+    is_independent_section: boolean;
+};
 
 const TradingAssessmentForm = ({
-    assessment_questions,
     class_name,
     disabled_items,
     form_value,
@@ -17,16 +29,20 @@ const TradingAssessmentForm = ({
     should_move_to_next,
     setSubSectionIndex,
     is_independent_section,
-}) => {
+}: TTradingAssessmentForm) => {
     const [is_section_filled, setIsSectionFilled] = React.useState(false);
     const [should_inform_user, shouldInformUser] = React.useState(false);
-    const [current_question_details, setCurrentQuestionDetails] = React.useState({
-        current_question_index: 0,
-        current_question: {},
-    });
-    const [form_data, setFormData] = React.useState({});
+    const [form_data, setFormData] = React.useState<TFormData>({ ...form_value });
+
+    const assessment_questions = trading_assessment_questions();
 
     const stored_items = parseInt(localStorage.getItem('current_question_index') || '0');
+
+    const [current_question_details, setCurrentQuestionDetails] = React.useState({
+        current_question_index: 0,
+        current_question: assessment_questions[stored_items],
+    });
+
     const last_question_index = assessment_questions.length - 1;
     const should_display_previous_button = is_independent_section
         ? current_question_details.current_question_index !== 0
@@ -69,7 +85,7 @@ const TradingAssessmentForm = ({
             if (next_question < assessment_questions.length) {
                 setCurrentQuestionDetails(prev_state_question => {
                     const next_state_question_index = prev_state_question.current_question_index + 1;
-                    localStorage.setItem('current_question_index', next_state_question_index);
+                    localStorage.setItem('current_question_index', String(next_state_question_index));
                     // Sub section form progress is not required when the section is independent
                     if (!is_independent_section) {
                         setSubSectionIndex(next_state_question_index);
@@ -88,7 +104,7 @@ const TradingAssessmentForm = ({
         if (prev_question >= 0) {
             setCurrentQuestionDetails(prev_state_question => {
                 const prev_state_question_index = prev_state_question.current_question_index - 1;
-                localStorage.setItem('current_question_index', prev_state_question_index);
+                localStorage.setItem('current_question_index', String(prev_state_question_index));
                 if (!is_independent_section) {
                     setSubSectionIndex(prev_state_question_index);
                 }
@@ -102,15 +118,21 @@ const TradingAssessmentForm = ({
         }
     };
 
-    const handleValueSelection = (e, form_control, callBackFn) => {
+    const handleValueSelection = (
+        e: React.ChangeEvent<HTMLSelectElement>,
+        form_control: string,
+        callBackFn: {
+            (form_control: string, value: string): void;
+        }
+    ) => {
         if (typeof e.persist === 'function') e.persist();
         callBackFn(form_control, e.target.value);
         setFormData(prev_form => ({ ...prev_form, [form_control]: e.target.value }));
     };
 
-    const isAssessmentCompleted = answers => Object.values(answers).every(answer => Boolean(answer));
+    const isAssessmentCompleted = (answers: TFormData) => Object.values(answers).every(answer => Boolean(answer));
 
-    const nextButtonHandler = values => {
+    const nextButtonHandler = (values: TFormData) => {
         verifyIfAllFieldsFilled();
         if (is_section_filled) {
             if (isAssessmentCompleted(values) && stored_items === last_question_index) onSubmit(values);
@@ -126,8 +148,17 @@ const TradingAssessmentForm = ({
             <section className={'trading-assessment__form'}>
                 <Formik initialValues={{ ...form_value }}>
                     {({ setFieldValue, values }) => {
-                        const { question_text, form_control, answer_options, questions } =
-                            current_question_details.current_question;
+                        const {
+                            question_text,
+                            form_control,
+                            answer_options,
+                            questions,
+                        }: {
+                            question_text: string;
+                            form_control: keyof TFormData;
+                            answer_options: { text: string; value: string }[];
+                            questions: TQuestion[];
+                        } = current_question_details.current_question;
 
                         return (
                             <Form className='trading-assessment__form--layout'>
@@ -150,7 +181,7 @@ const TradingAssessmentForm = ({
                                         <TradingAssessmentRadioButton
                                             text={question_text}
                                             list={answer_options ?? []}
-                                            onChange={e => handleValueSelection(e, form_control, setFieldValue, values)}
+                                            onChange={e => handleValueSelection(e, form_control, setFieldValue)}
                                             values={values}
                                             form_control={form_control}
                                             setEnableNextSection={setIsSectionFilled}

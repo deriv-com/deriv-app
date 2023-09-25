@@ -8,7 +8,7 @@ import Div100vhContainer from '../div100vh-container';
 
 type TMobileDialog = {
     content_height_offset?: string;
-    onClose: React.MouseEventHandler;
+    onClose?: React.MouseEventHandler;
     has_content_scroll?: boolean;
     portal_element_id: string;
     renderTitle?: () => string;

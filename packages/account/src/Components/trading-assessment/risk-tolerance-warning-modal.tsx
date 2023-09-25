@@ -2,6 +2,15 @@ import React from 'react';
 import { Button, Icon, Modal, Text, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
+type TRiskToleranceWarningModal = {
+    show_risk_modal: boolean;
+    handleAcceptRisk: () => void;
+    title: string;
+    button_text?: string;
+    body_content: JSX.Element;
+    has_sub_header?: boolean;
+};
+
 const RiskToleranceWarningModal = ({
     show_risk_modal,
     handleAcceptRisk,
@@ -9,7 +18,7 @@ const RiskToleranceWarningModal = ({
     button_text,
     body_content,
     has_sub_header = false,
-}) => {
+}: TRiskToleranceWarningModal) => {
     return (
         <React.Fragment>
             <DesktopWrapper>

@@ -3,6 +3,20 @@ import { Field } from 'formik';
 import { DesktopWrapper, Dropdown, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { localize, getLanguage } from '@deriv/translations';
 import classNames from 'classnames';
+import { TFormData, TQuestion } from 'Types';
+
+type TTradingAssessmentDropdown = {
+    disabled_items: string[];
+    item_list: TQuestion[];
+    onChange: (
+        e: React.ChangeEvent<HTMLSelectElement>,
+        form_control: string,
+        setFieldValue: (field: string, value: string, shouldValidate?: boolean) => void
+    ) => void;
+    values: TFormData;
+    setFieldValue: (field: string, value: string, shouldValidate?: boolean) => void;
+    setEnableNextSection: (enable: boolean) => void;
+};
 
 const TradingAssessmentDropdown = ({
     disabled_items,
@@ -11,7 +25,7 @@ const TradingAssessmentDropdown = ({
     values,
     setFieldValue,
     setEnableNextSection,
-}) => {
+}: TTradingAssessmentDropdown) => {
     React.useEffect(() => {
         checkIfAllFieldsFilled();
     }, [values]);
@@ -19,10 +33,12 @@ const TradingAssessmentDropdown = ({
     const checkIfAllFieldsFilled = () => {
         if (values) {
             setEnableNextSection(
-                values.cfd_experience &&
-                    values.cfd_frequency &&
-                    values.trading_experience_financial_instruments &&
-                    values.trading_frequency_financial_instruments
+                Boolean(
+                    values.cfd_experience &&
+                        values.cfd_frequency &&
+                        values.trading_experience_financial_instruments &&
+                        values.trading_frequency_financial_instruments
+                )
             );
         }
     };

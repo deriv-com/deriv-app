@@ -197,3 +197,25 @@ export type TServerError = {
     details?: { [key: string]: string };
     fields?: string[];
 };
+
+export type TFormData = {
+    cfd_experience: string;
+    cfd_frequency: string;
+    cfd_trading_definition: string;
+    leverage_impact_trading: string;
+    leverage_trading_high_risk_stop_loss: string;
+    required_initial_margin: string;
+    risk_tolerance: string;
+    source_of_experience: string;
+    trading_experience_financial_instruments: string;
+    trading_frequency_financial_instruments: string;
+};
+
+export type TQuestion = {
+    question_text: string;
+    form_control: keyof TFormData;
+    answer_options: { text: string; value: string }[];
+    field_type?: string;
+};
+
+// export type TAssessmentQuestions = Array<TQuestion & { section?: string; questions: TQuestion[] }>;

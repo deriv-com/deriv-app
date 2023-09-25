@@ -8,10 +8,11 @@ type TItemWrapper = {
 };
 type TRadioGroup = {
     className?: string;
-    name: string;
+    name?: string;
     onToggle: (e: ChangeEvent<HTMLInputElement>) => void;
     required?: boolean;
     selected: string;
+    is_left?: boolean;
 } & TItemWrapper;
 
 const ItemWrapper = ({ children, should_wrap_items }: React.PropsWithChildren<TItemWrapper>) => {

@@ -8,20 +8,8 @@
     align-self: stretch;
     background: var(--system-light-7-secondary-background, #f2f3f4);
 
-    @include desktop {
-        padding: 40px;
-    }
-
     @include mobile {
         overflow-y: auto;
         height: 100%;
-    }
-
-    &__content {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 24px;
     }
 }

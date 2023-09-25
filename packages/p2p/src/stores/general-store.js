@@ -121,7 +121,6 @@ export default class GeneralStore extends BaseStore {
             is_active_tab: computed,
             is_barred: computed,
             is_form_modified: computed,
-            is_my_profile_tab_visible: computed,
             should_show_dp2p_blocked: computed,
             blockUnblockUser: action.bound,
             createAdvertiser: action.bound,
@@ -210,10 +209,6 @@ export default class GeneralStore extends BaseStore {
         return this.form_state?.dirty || this.saved_form_state;
     }
 
-    get is_my_profile_tab_visible() {
-        return this.is_advertiser && !this.root_store.my_profile_store.should_hide_my_profile_tab;
-    }
-
     get should_show_dp2p_blocked() {
         return this.is_blocked || this.is_high_risk || this.is_p2p_blocked_for_pa;
     }
@@ -239,6 +234,7 @@ export default class GeneralStore extends BaseStore {
                         );
                     }
                 } else {
+                    this.hideModal();
                     const { code, message } = response.error;
                     this.setErrorCode(code);
                     this.setBlockUnblockUserError(message);
@@ -903,15 +899,7 @@ export default class GeneralStore extends BaseStore {
                 return !v(values[key]);
             });
 
-            if (error_index !== -1) {
-                switch (key) {
-                    case 'nickname':
-                    default: {
-                        errors[key] = nickname_messages[error_index];
-                        break;
-                    }
-                }
-            }
+            if (error_index !== -1) errors[key] = nickname_messages[error_index];
         });
 
         return errors;

@@ -8,9 +8,9 @@ import {
     useSortedMT5Accounts,
 } from '@deriv/api';
 import MT5PasswordIcon from '../../public/images/ic-mt5-password.svg';
+import { AccountReady } from '../AccountReady';
 import { CreatePassword } from '../CreatePassword';
 import { EnterPassword } from '../EnterPassword';
-import { WalletAccountReady } from '../WalletAccountReady';
 import { WalletModal } from '../WalletModal';
 
 type TProps = {
@@ -47,7 +47,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
 
     return (
         <WalletModal>
-            {isSuccess && <WalletAccountReady market_type={marketType} />}
+            {isSuccess && <AccountReady marketType={marketType} />}
             {!isSuccess &&
                 (hasMT5Account ? (
                     <EnterPassword

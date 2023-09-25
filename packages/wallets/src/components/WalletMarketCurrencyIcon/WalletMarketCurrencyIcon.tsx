@@ -14,23 +14,23 @@ const market_type_to_icon_mapper: Record<string, ComponentType<SVGAttributes<SVG
 
 type TWalletMarketCurrencyIconProps = {
     currency: string;
-    is_demo: boolean;
-    market_type: string;
+    isDemo: boolean;
+    marketType: string;
 };
 
-const WalletMarketCurrencyIcon = ({ currency, is_demo, market_type }: TWalletMarketCurrencyIconProps) => {
-    const MarketTypeIcon = React.useMemo(() => market_type_to_icon_mapper[market_type], [market_type]);
+const WalletMarketCurrencyIcon = ({ currency, isDemo, marketType }: TWalletMarketCurrencyIconProps) => {
+    const MarketTypeIcon = React.useMemo(() => market_type_to_icon_mapper[marketType], [marketType]);
 
     return (
         <div className='wallets-market-currency-icon'>
             <MarketTypeIcon className='wallets-market-currency-icon__after' />
             <div
                 className={`wallets-market-currency-icon__before wallets-market-currency-icon__before-${
-                    is_demo ? 'demo' : 'real'
+                    isDemo ? 'demo' : 'real'
                 }`}
             >
-                <WalletGradientBackground currency={currency} has_shine is_demo={is_demo} type='card'>
-                    <WalletListCardIcon type={is_demo ? 'Demo' : currency} />
+                <WalletGradientBackground currency={currency} has_shine is_demo={isDemo} type='card'>
+                    <WalletListCardIcon type={isDemo ? 'Demo' : currency} />
                 </WalletGradientBackground>
             </div>
         </div>

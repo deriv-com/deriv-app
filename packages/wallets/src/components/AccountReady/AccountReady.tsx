@@ -1,12 +1,12 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api';
+import { useActiveWalletAccount, type useSortedMT5Accounts } from '@deriv/api';
 import { useModal } from '../ModalProvider';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletMarketCurrencyIcon } from '../WalletMarketCurrencyIcon';
-import './WalletAccountReady.scss';
+import './AccountReady.scss';
 
-type TWalletAccountReadyProps = {
-    market_type: string;
+type TAccountReadyProps = {
+    marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
 };
 
 const market_type_to_title_mapper: Record<string, string> = {
@@ -15,10 +15,10 @@ const market_type_to_title_mapper: Record<string, string> = {
     synthetic: 'MT5 Derived',
 };
 
-const WalletAccountReady = ({ market_type }: TWalletAccountReadyProps) => {
+const AccountReady: React.FC<TAccountReadyProps> = ({ marketType }) => {
     const { data } = useActiveWalletAccount();
     const { hide } = useModal();
-    const is_demo = data?.is_virtual;
+    const isDemo = data?.is_virtual;
 
     return (
         <div className='wallets-account-ready'>
@@ -30,27 +30,27 @@ const WalletAccountReady = ({ market_type }: TWalletAccountReadyProps) => {
             >
                 <div
                     className={`wallets-account-ready__info-badge wallets-account-ready__info-badge--${
-                        is_demo ? 'demo' : 'real'
+                        isDemo ? 'demo' : 'real'
                     }`}
                 >
-                    {is_demo ? 'Demo' : 'Real'}
+                    {isDemo ? 'Demo' : 'Real'}
                 </div>
                 <WalletMarketCurrencyIcon
                     currency={data?.currency || 'USD'}
-                    is_demo={is_demo || true}
-                    market_type={market_type}
+                    isDemo={isDemo || true}
+                    marketType={marketType}
                 />
                 <div className='wallets-account-ready__info__text--type'>MT5 Swap-Free</div>
                 <div className='wallets-account-ready__info__text--wallet'>{data?.currency} Wallet</div>
                 <div className='wallets-account-ready__info__text--amount'>{data?.display_balance} USD</div>
             </WalletGradientBackground>
             <div className='wallets-account-ready__title'>
-                Your {market_type_to_title_mapper[market_type]}
-                {is_demo && ' demo'} account is ready
+                Your {market_type_to_title_mapper[marketType]}
+                {isDemo && ' demo'} account is ready
             </div>
             <div className='wallets-account-ready__subtitle'>
-                You can now start practicing trading with your {market_type_to_title_mapper[market_type]}
-                {is_demo && ' demo'} account.
+                You can now start practicing trading with your {market_type_to_title_mapper[marketType]}
+                {isDemo && ' demo'} account.
             </div>
             <button className='wallets-account-ready__button' onClick={hide}>
                 Continue
@@ -59,4 +59,4 @@ const WalletAccountReady = ({ market_type }: TWalletAccountReadyProps) => {
     );
 };
 
-export default WalletAccountReady;
+export default AccountReady;

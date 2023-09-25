@@ -1,5 +1,5 @@
-import useFetch from '../useFetch';
 import useActiveAccount from './useActiveAccount';
+import useFetch from '../useFetch';
 
 /** A custom hook that get Service Token for DerivEz Platform. */
 const useDerivezServiceToken = () => {

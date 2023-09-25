@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import useFetch from '../useFetch';
 import useDerivezServiceToken from './useDerivezServiceToken';
+import useFetch from '../useFetch';
 
 /** A custom hook that gets the list of created DerivEz accounts. */
 const useDerivezAccountsList = () => {

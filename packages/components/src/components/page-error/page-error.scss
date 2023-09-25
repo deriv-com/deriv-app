@@ -24,9 +24,6 @@
         align-items: center;
         justify-content: center;
 
-        &--malta .dc-btn {
-            display: none;
-        }
         @include desktop {
             &--left {
                 align-items: start;

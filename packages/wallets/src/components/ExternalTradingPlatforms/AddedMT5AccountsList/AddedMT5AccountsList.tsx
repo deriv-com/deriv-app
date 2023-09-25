@@ -47,7 +47,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     </p>
                     <div className='wallets-added-mt5__details-title-landing-company'>
                         <p className='wallets-added-mt5__details-title-landing-company-text'>
-                            {account.landing_company_short?.toUpperCase()}
+                            {account.landing_company_short}
                         </p>
                     </div>
                 </div>

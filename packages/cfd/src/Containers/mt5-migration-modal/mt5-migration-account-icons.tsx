@@ -22,7 +22,8 @@ const MT5MigrationAccountIcons = observer(({ to, type }: TMT5MigrationAccountIco
         }
     };
 
-    const getToAccountIcon = (to_type: string) => {
+    const getToAccountIcon = () => {
+        const to_type = `${to}_${type}`;
         switch (to_type) {
             case `${Jurisdiction.BVI}_${JURISDICTION_MARKET_TYPES.DERIVED}`:
                 return 'IcMt5BviDerived';
@@ -41,7 +42,7 @@ const MT5MigrationAccountIcons = observer(({ to, type }: TMT5MigrationAccountIco
         <React.Fragment>
             <Icon icon={getFromAccountIcon()} size={96} />
             <Icon icon={is_mobile ? 'IcLongArrowDown' : 'IcLongArrowRight'} size={24} />
-            <Icon icon={getToAccountIcon(`${to}_${type}`)} size={96} />
+            <Icon icon={getToAccountIcon()} size={96} />
         </React.Fragment>
     );
 });

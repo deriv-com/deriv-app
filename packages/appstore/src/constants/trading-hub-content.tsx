@@ -1,5 +1,5 @@
 import React from 'react';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import StaticDashboard from 'Components/onboarding-new/static-dashboard';
 
 type TStep = {

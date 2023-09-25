@@ -25,7 +25,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
     const { data: mt5Accounts } = useMT5AccountsList();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const { data: settings } = useSettings();
-    const { hide, show } = useModal();
 
     const hasMT5Account = mt5Accounts?.find(account => account.login);
 

@@ -1,3 +1,3 @@
-import { PoaButton } from './poa-button';
+import PoaButton from './poa-button';
 
 export default PoaButton;

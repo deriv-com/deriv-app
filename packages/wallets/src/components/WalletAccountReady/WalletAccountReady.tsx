@@ -39,7 +39,6 @@ const WalletAccountReady = ({ market_type }: TWalletAccountReadyProps) => {
                     currency={data?.currency || 'USD'}
                     is_demo={is_demo || true}
                     market_type={market_type}
-                    size='sm'
                 />
                 <div className='wallets-account-ready__info__text--type'>MT5 Swap-Free</div>
                 <div className='wallets-account-ready__info__text--wallet'>{data?.currency} Wallet</div>

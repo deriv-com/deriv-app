@@ -19,8 +19,9 @@ type WalletAppCardProps = {
 const WalletAppCard = observer(({ wallet }: WalletAppCardProps) => {
     const { balance, account_title, gradient_card_class, icon, is_demo, currency_title } = wallet;
 
-    const { ui } = useStore();
-    const { is_mobile } = ui;
+    const {
+        ui: { is_dark_mode_on, is_mobile },
+    } = useStore();
 
     return (
         <div className='wallet-app-card'>
@@ -29,7 +30,7 @@ const WalletAppCard = observer(({ wallet }: WalletAppCardProps) => {
                 <div className='wallet-app-card__icon'>
                     <AppLinkedWithWalletIcon
                         size={is_mobile ? 'small' : 'medium'}
-                        app_icon='IcAppstoreOptions'
+                        app_icon={is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight'}
                         gradient_class={gradient_card_class}
                         hide_watermark
                         type={is_demo ? 'demo' : 'fiat'}

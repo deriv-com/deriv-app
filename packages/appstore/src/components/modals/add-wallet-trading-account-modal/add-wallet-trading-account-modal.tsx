@@ -2,15 +2,15 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import { Button, Modal, Text, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { routes } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import WalletAppCard from 'Components/wallet-app-card';
 import { getAccountName } from 'Constants/utils';
 import { useActiveWallet } from '@deriv/hooks';
-import './wallet-dummy-success.scss';
 import { useAccountsList } from '@deriv/api';
+import './add-wallet-trading-account-modal.scss';
 
-const WalletDummySuccess = observer(() => {
+const AddWalletTradingAccountModal = observer(() => {
     const { ui, traders_hub } = useStore();
     const { is_wallet_create_new_account_modal, setWalletCreateNewAccountModal } = traders_hub;
 
@@ -73,7 +73,7 @@ const WalletDummySuccess = observer(() => {
     const ModalFooter = () => (
         <Button.Group>
             <Button secondary onClick={() => setWalletCreateNewAccountModal(false)}>
-                {localize('Maybe later')}
+                <Localize i18n_default_text='Maybe later' />
             </Button>
             <Button
                 primary
@@ -82,7 +82,7 @@ const WalletDummySuccess = observer(() => {
                     history.push(routes.cashier_deposit);
                 }}
             >
-                {localize('Transfer funds')}
+                <Localize i18n_default_text='Transfer funds' />
             </Button>
         </Button.Group>
     );
@@ -125,4 +125,4 @@ const WalletDummySuccess = observer(() => {
     );
 });
 
-export default WalletDummySuccess;
+export default AddWalletTradingAccountModal;

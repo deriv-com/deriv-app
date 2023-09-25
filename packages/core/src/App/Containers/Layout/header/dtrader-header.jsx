@@ -4,6 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { routes, isMobile, getDecimalPlaces, platforms } from '@deriv/shared';
+import { useWalletMigration } from '@deriv/hooks';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config.ts';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
@@ -58,6 +59,10 @@ const DTraderHeader = ({
         () => removeNotificationMessage({ key: 'new_version_available' }),
         [removeNotificationMessage]
     );
+
+    const { is_migrated, is_failed } = useWalletMigration();
+    if (is_migrated) addNotificationMessage(client_notifications.wallets_migrated);
+    if (is_failed) addNotificationMessage(client_notifications.wallets_failed);
 
     React.useEffect(() => {
         document.addEventListener('IgnorePWAUpdate', removeUpdateNotification);

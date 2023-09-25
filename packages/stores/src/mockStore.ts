@@ -251,6 +251,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setLoginId: jest.fn(),
             resetLocalStorageValues: jest.fn(),
             accountRealReaction: jest.fn(),
+            is_bot_allowed: false,
         },
         common: {
             error: {
@@ -365,6 +366,9 @@ const mock = (): TStores & { is_mock: boolean } => {
             setResetTradingPasswordModalOpen: jest.fn(),
             is_wallet_creation_success_modal_open: false,
             toggleIsWalletCreationSuccessModalOpen: jest.fn(),
+            account_switcher_disabled_message: '',
+            is_route_modal_on: false,
+            header_extension: undefined,
         },
         traders_hub: {
             CFDs_restricted_countries: false,
@@ -456,6 +460,9 @@ const mock = (): TStores & { is_mock: boolean } => {
             setP2POrderProps: jest.fn(),
             setP2PRedirectTo: jest.fn(),
             showAccountSwitchToRealNotification: jest.fn(),
+            is_notifications_visible: false,
+            toggleNotificationsModal: jest.fn(),
+            notifications: [],
         },
         portfolio: {
             active_positions: [],

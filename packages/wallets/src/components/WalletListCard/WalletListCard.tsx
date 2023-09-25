@@ -9,12 +9,13 @@ type TProps = {
     badge?: string;
     balance: string;
     currency: string;
+    isActive: boolean;
     isDemo: boolean;
     loginid: string;
     walletType: string;
 };
 
-const WalletListCard: React.FC<TProps> = ({ badge, balance, currency, isDemo, loginid, walletType }) => (
+const WalletListCard: React.FC<TProps> = ({ badge, balance, currency, isActive, isDemo, loginid, walletType }) => (
     <div className='wallets-list-header__card_container'>
         <div className='wallets-list-header__content'>
             <div className='wallets-list-header__details-container'>
@@ -24,7 +25,13 @@ const WalletListCard: React.FC<TProps> = ({ badge, balance, currency, isDemo, lo
                     </div>
                 </WalletGradientBackground>
 
-                <WalletListCardIDetails badge={badge} currency={currency} isDemo={isDemo} loginid={loginid} />
+                <WalletListCardIDetails
+                    badge={badge}
+                    currency={currency}
+                    isActive={isActive}
+                    isDemo={isDemo}
+                    loginid={loginid}
+                />
             </div>
             <WalletListCardIBalance balance={balance} />
         </div>

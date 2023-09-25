@@ -1,5 +1,4 @@
 .wallets-other-cfd {
-    padding: 24px 0;
     &__title {
         color: #333;
         font-size: 16px;
@@ -12,6 +11,11 @@
         display: grid;
         gap: 1.6rem 4.8rem;
         grid-template-columns: repeat(3, 1fr);
+
+        @include mobile {
+            grid-template-rows: 1fr;
+            grid-template-columns: auto;
+        }
 
         &__details {
             flex-grow: 1;
@@ -31,16 +35,5 @@
                 }
             }
         }
-    }
-
-    &__text {
-        color: #ff444f;
-        text-align: center;
-
-        /* desktop/paragraph/P2 - bold */
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 20px; /* 142.857% */
     }
 }

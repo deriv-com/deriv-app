@@ -17,7 +17,6 @@ describe('StopBotModal', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
 
     beforeAll(() => {
-        jest.resetModules();
         const mock_store = mockStore({});
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
 

@@ -21,7 +21,7 @@ const SVGMigrationBanner = observer(() => {
     const has_derived_mt5_to_migrate = eligible_svg_to_bvi_derived_accounts || eligible_svg_to_vanuatu_derived_accounts;
     const has_financial_mt5_to_migrate =
         eligible_svg_to_bvi_financial_accounts || eligible_svg_to_vanuatu_financial_accounts;
-    const is_deriv_financial_mt5 = has_derived_mt5_to_migrate && has_financial_mt5_to_migrate;
+    const has_derived_and_financial_mt5 = has_derived_mt5_to_migrate && has_financial_mt5_to_migrate;
     const image = is_mobile ? 'svg_migrate_mobile' : 'svg_migrate_desktop';
     const size: string = is_mobile ? 'xs' : 'm';
 
@@ -38,7 +38,7 @@ const SVGMigrationBanner = observer(() => {
         <div className='appstore-banner__container appstore-banner__svg-migrate-banner'>
             <div className='appstore-banner__svg-migrate-banner-description'>
                 <div className='appstore-banner__svg-migrate-banner-description__text'>
-                    {is_deriv_financial_mt5 ? (
+                    {has_derived_and_financial_mt5 ? (
                         <Text size={size}>
                             <Localize
                                 i18n_default_text='We’re upgrading your <0>MT5 Derived SVG</0> and <0>MT5 Financial SVG</0> account.'

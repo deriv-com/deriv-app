@@ -326,10 +326,10 @@ export default class ContractTradeStore extends BaseStore {
         is_tick_contract,
         limit_order = {},
     }) {
-        const contract_exists = this.contracts_map[contract_id];
-        if (contract_exists) {
+        const existing_contract = this.contracts_map[contract_id];
+        if (existing_contract) {
             if (this.contracts.every(c => c.contract_id !== contract_id)) {
-                this.contracts.push(this.contracts_map[contract_id]);
+                this.contracts.push(existing_contract);
             }
             return;
         }

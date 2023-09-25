@@ -30,6 +30,7 @@ const OnboardingTourMobile = observer(() => {
     const tour_button_text = tour_step === 8 ? localize('Got it, thanks!') : start_button;
     const test_id = tour_step_key === 8 ? 'finish-onboard-tour' : 'next-onboard-tour';
     const hide_prev_button = [1, 2, 8];
+    const tour_active = is_tour_active === 'onboarding';
 
     React.useEffect(() => {
         DBOT_ONBOARDING_MOBILE.forEach(data => {
@@ -157,7 +158,7 @@ const OnboardingTourMobile = observer(() => {
                         type='danger'
                         onClick={() => {
                             setStep(tour_step + 1);
-                            onTourEnd(tour_step, true);
+                            onTourEnd(tour_step, tour_active);
                         }}
                         label={tour_button_text}
                         data-testid={test_id}

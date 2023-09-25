@@ -10,8 +10,6 @@ export interface IDashboardStore {
     dialog_options: { [key: string]: string };
     faq_search_value: string | null;
     has_mobile_preview_loaded: boolean;
-    has_started_bot_builder_tour: boolean;
-    has_started_onboarding_tour: boolean;
     is_web_socket_intialised: boolean;
     initInfoPanel: () => void;
     is_dialog_open: boolean;
@@ -20,13 +18,12 @@ export interface IDashboardStore {
     is_preview_on_popup: boolean;
     onCloseDialog: () => void;
     onCloseTour: (param: Partial<string>) => void;
-    onTourEnd: (step: number, has_started_onboarding_tour: boolean) => void;
+    onTourEnd: (step: number, tour_active: boolean) => void;
     setActiveTab: (active_tab: number) => void;
     setActiveTabTutorial: (active_tab_tutorials: number) => void;
     setFAQSearchValue: (faq_search_value: string) => void;
     setInfoPanelVisibility: (visibility: boolean) => void;
     setIsFileSupported: (is_file_supported: boolean) => void;
-    setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => void;
     setWebSocketState: (is_web_socket_intialised: boolean) => void;
     setOpenSettings: (toast_message: string, show_toast: boolean) => void;
     setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
@@ -50,8 +47,6 @@ export default class DashboardStore implements IDashboardStore {
             getFileArray: observable,
             has_file_loaded: observable,
             has_mobile_preview_loaded: observable,
-            has_started_bot_builder_tour: observable,
-            has_started_onboarding_tour: observable,
             initInfoPanel: action.bound,
             is_tour_active: observable,
             is_dialog_open: observable,
@@ -67,12 +62,10 @@ export default class DashboardStore implements IDashboardStore {
             setActiveTab: action.bound,
             setActiveTabTutorial: action.bound,
             setWebSocketState: action.bound,
-            setBotBuilderTourState: action.bound,
             setFAQSearchValue: action.bound,
             setFileLoaded: action.bound,
             setInfoPanelVisibility: action.bound,
             setIsFileSupported: action.bound,
-            setOnBoardTourRunState: action.bound,
             setPreviewOnDialog: action.bound,
             setPreviewOnPopup: action.bound,
             setActiveTour: action.bound,
@@ -130,8 +123,6 @@ export default class DashboardStore implements IDashboardStore {
     getFileArray = [];
     has_file_loaded = false;
     has_mobile_preview_loaded = false;
-    has_started_bot_builder_tour = false;
-    has_started_onboarding_tour = false;
     is_tour_active = '';
     is_dialog_open = false;
     is_file_supported = false;
@@ -192,16 +183,8 @@ export default class DashboardStore implements IDashboardStore {
         this.strategy_save_type = strategy_save_type;
     };
 
-    setBotBuilderTourState = (has_started_bot_builder_tour: boolean): void => {
-        this.has_started_bot_builder_tour = has_started_bot_builder_tour;
-    };
-
     setPreviewOnPopup = (is_preview_on_popup: boolean): void => {
         this.is_preview_on_popup = is_preview_on_popup;
-    };
-
-    setOnBoardTourRunState = (has_started_onboarding_tour: boolean): void => {
-        this.has_started_onboarding_tour = has_started_onboarding_tour;
     };
 
     setTourDialogVisibility = (is_tour_dialog_visible: boolean): void => {
@@ -223,9 +206,6 @@ export default class DashboardStore implements IDashboardStore {
 
     setActiveTab = (active_tab: number): void => {
         this.active_tab = active_tab;
-        if (this.has_started_bot_builder_tour) {
-            this.setBotBuilderTourState(false);
-        }
         if (this.active_tab === 1) {
             window.Blockly?.derivWorkspace?.cleanUp();
         }
@@ -279,13 +259,13 @@ export default class DashboardStore implements IDashboardStore {
         setTourSettings(new Date().getTime(), `${key}_token`);
     };
 
-    onTourEnd = (step: number, is_tour_active: boolean): void => {
+    onTourEnd = (step: number, tour_active: boolean): void => {
         if (step === 8) {
             this.onCloseTour();
             this.setTourEnd(tour_type);
             this.setActiveTour('');
         }
-        if (!is_tour_active && step === 3) {
+        if (!tour_active && step === 3) {
             this.onCloseTour();
             this.setTourEnd(tour_type);
             this.setActiveTour('');

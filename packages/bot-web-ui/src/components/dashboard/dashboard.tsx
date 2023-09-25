@@ -25,22 +25,18 @@ const Dashboard = observer(() => {
         run_panel;
     const { is_strategy_modal_open } = quick_strategy;
     const { clear } = summary_card;
-    const { DASHBOARD, BOT_BUILDER, CHART, TUTORIAL } = DBOT_TABS;
+    const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
     const is_mobile = isMobile();
     const init_render = React.useRef(true);
     const { ui } = useStore();
     const { url_hashed_values } = ui;
+    const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial'];
 
     let tab_value: number | string = active_tab;
     const GetHashedValue = (tab: number) => {
         tab_value = url_hashed_values?.split('#')[1];
-        if (tab_value === 'dashboard') return DASHBOARD;
-        if (tab_value === 'bot_builder') return BOT_BUILDER;
-        if (tab_value === 'chart') return CHART;
-        if (tab_value === 'tutorial') return TUTORIAL;
-        if (isNaN(Number(tab_value)) || isNaN(tab)) return active_tab;
-        if (Number(tab_value) > 4 || tab > 4) return active_tab;
-        return tab_value;
+        if (!tab_value) return tab;
+        return Number(hash.indexOf(String(tab_value)));
     };
     const active_hash_tab = GetHashedValue(active_tab);
 
@@ -65,11 +61,7 @@ const Dashboard = observer(() => {
             if (is_mobile) handleTabChange(Number(active_hash_tab));
             init_render.current = false;
         } else {
-            let active_tab_name = 'dashboard';
-            if (active_tab === 1) active_tab_name = 'bot_builder';
-            if (active_tab === 2) active_tab_name = 'chart';
-            if (active_tab === 3) active_tab_name = 'tutorial';
-            window.location.hash = active_tab_name;
+            window.location.hash = hash[active_tab] || hash[0];
         }
     }, [active_tab]);
 

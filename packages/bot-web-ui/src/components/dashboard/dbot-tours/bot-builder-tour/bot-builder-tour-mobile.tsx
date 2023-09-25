@@ -42,7 +42,7 @@ const BotBuilderTourMobile = observer(() => {
     }, [tour_step, show_mobile_tour_dialog]);
 
     const tour_button_text = tour_step === 3 ? localize('Finish') : localize('Next');
-
+    const tour_active = is_tour_active === 'onboarding';
     return (
         <>
             {show_mobile_tour_dialog && <TourStartDialog />}
@@ -73,7 +73,7 @@ const BotBuilderTourMobile = observer(() => {
                                 type='danger'
                                 onClick={() => {
                                     setTourStep(tour_step + 1);
-                                    onTourEnd(tour_step, false);
+                                    onTourEnd(tour_step, tour_active);
                                 }}
                                 label={tour_button_text}
                                 data-testid={test_id}

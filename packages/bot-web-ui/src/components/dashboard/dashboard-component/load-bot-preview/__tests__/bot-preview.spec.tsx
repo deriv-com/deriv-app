@@ -12,7 +12,6 @@ jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
     unHighlightAllBlocks: jest.fn(),
 }));
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
-
 describe('BotPreview', () => {
     it('should render BotPreview component with ref', () => {
         const mock_store = mockStore({});

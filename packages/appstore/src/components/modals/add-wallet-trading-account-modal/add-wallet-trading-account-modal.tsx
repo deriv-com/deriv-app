@@ -7,7 +7,7 @@ import { observer, useStore } from '@deriv/stores';
 import WalletAppCard from 'Components/wallet-app-card';
 import { getAccountName } from 'Constants/utils';
 import { useActiveWallet } from '@deriv/hooks';
-import { useAccountsList } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api';
 import './add-wallet-trading-account-modal.scss';
 
 const AddWalletTradingAccountModal = observer(() => {
@@ -16,10 +16,8 @@ const AddWalletTradingAccountModal = observer(() => {
 
     const { is_mobile } = ui;
     const active_wallet = useActiveWallet();
-    const { data: account_list_data } = useAccountsList();
+    const { data: active_wallet_account } = useActiveWalletAccount();
 
-    const currency = active_wallet?.currency_config?.display_code;
-    const balance = account_list_data?.find(account => account.currency === currency)?.display_balance;
     const account_title = `${getAccountName({
         account_type: 'trading',
     })} (${active_wallet?.landing_company_name?.toUpperCase()})`;
@@ -35,7 +33,7 @@ const AddWalletTradingAccountModal = observer(() => {
 
     const wallet_details = {
         account_title,
-        balance,
+        balance: active_wallet_account?.display_balance,
         currency_title,
         gradient_card_class: active_wallet?.gradient_card_class,
         icon: active_wallet?.icon,

@@ -89,11 +89,13 @@ const WalletOptionsAndMultipliersListing = observer(() => {
 
     const createRealTradingAccount = () => {
         createNewRealAccount({
-            currency: wallet_account?.currency_config?.display_code,
-            date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
-            first_name,
-            last_name,
-            residence: country_code,
+            payload: {
+                currency: wallet_account?.currency_config?.display_code,
+                date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
+                first_name,
+                last_name,
+                residence: country_code || undefined,
+            },
         });
         setWalletCreateNewAccountModal(true);
     };

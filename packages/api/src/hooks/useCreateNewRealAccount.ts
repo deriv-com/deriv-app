@@ -1,25 +1,26 @@
-import { useCallback } from 'react';
+import { useMemo } from 'react';
 import useRequest from '../useRequest';
 import useInvalidateQuery from '../useInvalidateQuery';
-
-type TPayload = NonNullable<
-    NonNullable<Parameters<ReturnType<typeof useRequest<'new_account_real'>>['mutate']>>[0]
->['payload'];
 
 /** A custom hook that creates a new real trading account. */
 const useCreateNewRealAccount = () => {
     const invalidate = useInvalidateQuery();
-    const { mutate: _mutate, ...rest } = useRequest('new_account_real', {
+    const { data, ...rest } = useRequest('new_account_real', {
         onSuccess: () => {
             invalidate('authorize');
         },
     });
 
-    const mutate = useCallback((payload: TPayload) => _mutate({ payload }), [_mutate]);
+    // Add additional information to the new real trading account response.
+    const modified_data = useMemo(() => {
+        if (!data?.new_account_real) return undefined;
+
+        return { ...data?.new_account_real };
+    }, [data]);
 
     return {
-        /** The balance response. */
-        mutate,
+        /** The response and the mutation of the new account real API request */
+        data: modified_data,
         ...rest,
     };
 };

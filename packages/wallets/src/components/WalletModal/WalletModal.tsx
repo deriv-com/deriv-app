@@ -5,7 +5,6 @@ import './WalletModal.scss';
 
 type TProps = {
     hideCloseButton?: boolean;
-    className?: string;
 };
 
 const WalletModal = ({ children, hideCloseButton = false }: React.PropsWithChildren<TProps>) => {

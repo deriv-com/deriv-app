@@ -6,7 +6,7 @@ import { Localize, localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from '../../../../stores/useDBotStore';
 import { bot_builder_tour_header, onboarding_tour_header, tourDialogAction, tourDialogInfo } from '../config';
-import { active_tour, setTourSettings } from '../utils';
+import { setTourSettings, tour_list } from '../utils';
 
 const TourStartDialog = observer(() => {
     const { dashboard } = useDBotStore();
@@ -51,7 +51,7 @@ const TourStartDialog = observer(() => {
     };
 
     const onHandleConfirm = () => {
-        setActiveTour(active_tour[active_tab]);
+        setActiveTour(tour_list[active_tab]);
         if (is_mobile) setShowMobileTourDialog(false);
         setTourDialogVisibility(false);
         setTourSettings(new Date().getTime(), tour_token);

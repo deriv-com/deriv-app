@@ -26,7 +26,7 @@ type TStatisticsSummary = {
     number_of_runs: number;
     total_stake: number;
     total_payout: number;
-    is_tour_active: string;
+    active_tour: string;
     toggleStatisticsInfoModal: () => void;
     total_profit: number;
     won_contracts: number;
@@ -41,7 +41,7 @@ type TDrawerHeader = {
 type TDrawerContent = {
     active_index: number;
     is_drawer_open: boolean;
-    is_tour_active: string;
+    active_tour: string;
     setActiveTabIndex: () => void;
 };
 
@@ -70,14 +70,14 @@ export const StatisticsSummary = ({
     number_of_runs,
     total_stake,
     total_payout,
-    is_tour_active,
+    active_tour,
     toggleStatisticsInfoModal,
     total_profit,
     won_contracts,
 }: TStatisticsSummary) => (
     <div
         className={classNames('run-panel__stat', {
-            'run-panel__stat--tour-active': is_tour_active,
+            'run-panel__stat--tour-active': active_tour,
             'run-panel__stat--mobile': is_mobile,
         })}
     >
@@ -126,13 +126,7 @@ const DrawerHeader = ({ is_clear_stat_disabled, is_mobile, is_drawer_open, onCle
         />
     );
 
-const DrawerContent = ({
-    active_index,
-    is_drawer_open,
-    is_tour_active,
-    setActiveTabIndex,
-    ...props
-}: TDrawerContent) => {
+const DrawerContent = ({ active_index, is_drawer_open, active_tour, setActiveTabIndex, ...props }: TDrawerContent) => {
     return (
         <>
             <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
@@ -146,7 +140,7 @@ const DrawerContent = ({
                     <Journal />
                 </div>
             </Tabs>
-            {is_drawer_open && active_index !== 2 && <StatisticsSummary is_tour_active={is_tour_active} {...props} />}
+            {is_drawer_open && active_index !== 2 && <StatisticsSummary active_tour={active_tour} {...props} />}
         </>
     );
 };
@@ -252,7 +246,7 @@ const RunPanel = observer(() => {
         toggleStatisticsInfoModal,
         statistics,
     } = run_panel;
-    const { is_tour_active, active_tab } = dashboard;
+    const { active_tour, active_tab } = dashboard;
     const { total_payout, total_profit, total_stake, won_contracts, lost_contracts, number_of_runs } = statistics;
     const { BOT_BUILDER, CHART } = DBOT_TABS;
 
@@ -283,7 +277,7 @@ const RunPanel = observer(() => {
             total_profit={total_profit}
             total_stake={total_stake}
             won_contracts={won_contracts}
-            is_tour_active={is_tour_active}
+            active_tour={active_tour}
         />
     );
 
@@ -298,8 +292,8 @@ const RunPanel = observer(() => {
         />
     );
 
-    const show_run_panel = [BOT_BUILDER, CHART].includes(active_tab) || is_tour_active;
-    if ((!show_run_panel && !is_mobile) || is_tour_active === 'bot_builder') return null;
+    const show_run_panel = [BOT_BUILDER, CHART].includes(active_tab) || active_tour;
+    if ((!show_run_panel && !is_mobile) || active_tour === 'bot_builder') return null;
 
     return (
         <>

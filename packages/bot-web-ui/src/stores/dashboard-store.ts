@@ -2,7 +2,7 @@ import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { setColors } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
 import { clearInjectionDiv } from 'Constants/load-modal';
-import { active_tour, setTourSettings, tour_type, TTourType } from '../components/dashboard/dbot-tours/utils';
+import { setTourSettings, tour_list, tour_type, TTourType } from '../components/dashboard/dbot-tours/utils';
 import RootStore from './root-store';
 
 export interface IDashboardStore {
@@ -18,7 +18,7 @@ export interface IDashboardStore {
     is_preview_on_popup: boolean;
     onCloseDialog: () => void;
     onCloseTour: (param: Partial<string>) => void;
-    onTourEnd: (step: number, tour_active: boolean) => void;
+    onTourEnd: (step: number, is_tour_active: boolean) => void;
     setActiveTab: (active_tab: number) => void;
     setActiveTabTutorial: (active_tab_tutorials: number) => void;
     setFAQSearchValue: (faq_search_value: string) => void;
@@ -48,7 +48,7 @@ export default class DashboardStore implements IDashboardStore {
             has_file_loaded: observable,
             has_mobile_preview_loaded: observable,
             initInfoPanel: action.bound,
-            is_tour_active: observable,
+            active_tour: observable,
             is_dialog_open: observable,
             is_file_supported: observable,
             is_info_panel_visible: observable,
@@ -123,7 +123,7 @@ export default class DashboardStore implements IDashboardStore {
     getFileArray = [];
     has_file_loaded = false;
     has_mobile_preview_loaded = false;
-    is_tour_active = '';
+    active_tour = '';
     is_dialog_open = false;
     is_file_supported = false;
     is_info_panel_visible = false;
@@ -191,8 +191,8 @@ export default class DashboardStore implements IDashboardStore {
         this.is_tour_dialog_visible = is_tour_dialog_visible;
     };
 
-    setActiveTour = (is_tour_active: string): void => {
-        this.is_tour_active = is_tour_active;
+    setActiveTour = (active_tour: string): void => {
+        this.active_tour = active_tour;
     };
 
     setFileLoaded = (has_file_loaded: boolean): void => {
@@ -206,12 +206,6 @@ export default class DashboardStore implements IDashboardStore {
 
     setActiveTab = (active_tab: number): void => {
         this.active_tab = active_tab;
-        if (this.active_tab === 1) {
-            window.Blockly?.derivWorkspace?.cleanUp();
-        }
-        if (this.active_tab !== active_tour[this.is_tour_active]) {
-            this.setActiveTour('');
-        }
     };
 
     setActiveTabTutorial = (active_tab_tutorials: number): void => {
@@ -259,13 +253,13 @@ export default class DashboardStore implements IDashboardStore {
         setTourSettings(new Date().getTime(), `${key}_token`);
     };
 
-    onTourEnd = (step: number, tour_active: boolean): void => {
+    onTourEnd = (step: number, is_tour_active: boolean): void => {
         if (step === 8) {
             this.onCloseTour();
             this.setTourEnd(tour_type);
             this.setActiveTour('');
         }
-        if (!tour_active && step === 3) {
+        if (!is_tour_active && step === 3) {
             this.onCloseTour();
             this.setTourEnd(tour_type);
             this.setActiveTour('');

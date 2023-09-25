@@ -6,12 +6,12 @@ import ReactJoyrideWrapper from '../common/react-joyride-wrapper';
 import TourEndDialog from '../common/tour-end-dialog';
 import TourStartDialog from '../common/tour-start-dialog';
 import { BOT_BUILDER_TOUR } from '../config';
-import useTourHandler from '../hooks/useTourHandler';
+import { useTourHandler } from '../hooks/useTourHandler';
 
 const BotBuilderTourDesktop = observer(() => {
     const { is_close_tour, is_finished, handleJoyrideCallback, setIsCloseTour } = useTourHandler();
     const { dashboard } = useDBotStore();
-    const { active_tab, is_tour_active, setActiveTour, setTourDialogVisibility } = dashboard;
+    const { active_tab, active_tour, setActiveTour, setTourDialogVisibility } = dashboard;
     const token = getSetting('bot_builder_token');
     if (!token && active_tab === 1) setTourDialogVisibility(true);
 
@@ -27,7 +27,7 @@ const BotBuilderTourDesktop = observer(() => {
     return (
         <>
             {!is_finished ? <TourStartDialog /> : <TourEndDialog />}
-            {is_tour_active && (
+            {active_tour && (
                 <ReactJoyrideWrapper
                     handleCallback={handleJoyrideCallback}
                     steps={BOT_BUILDER_TOUR}

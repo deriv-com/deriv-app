@@ -16,7 +16,7 @@ const BotBuilderTourMobile = observer(() => {
     const {
         onTourEnd,
         setTourActiveStep,
-        is_tour_active,
+        active_tour,
         show_mobile_tour_dialog,
         active_tab,
         setShowMobileTourDialog,
@@ -31,7 +31,7 @@ const BotBuilderTourMobile = observer(() => {
     React.useEffect(() => {
         setTourActiveStep(tour_step);
         //component does not rerender so calling this to highlight
-        !show_mobile_tour_dialog && highlightLoadModalButton(is_tour_active, tour_step);
+        !show_mobile_tour_dialog && highlightLoadModalButton(active_tour, tour_step);
         if (tour_step === 2) toggleTourLoadModal(true);
         else toggleTourLoadModal(false);
         const token = getSetting('bot_builder_token');
@@ -42,11 +42,11 @@ const BotBuilderTourMobile = observer(() => {
     }, [tour_step, show_mobile_tour_dialog]);
 
     const tour_button_text = tour_step === 3 ? localize('Finish') : localize('Next');
-    const tour_active = is_tour_active === 'onboarding';
+    const is_tour_active = active_tour === 'onboarding';
     return (
         <>
             {show_mobile_tour_dialog && <TourStartDialog />}
-            {is_tour_active && !show_mobile_tour_dialog && (
+            {active_tour && !show_mobile_tour_dialog && (
                 <div data-testid='botbuilder-tour-mobile' className='dbot-slider dbot-slider__bot-builder-tour'>
                     {content_data && <Accordion data-testid='bot-builder-acc' content_data={content_data} expanded />}
                     <div className='dbot-slider__status'>
@@ -73,7 +73,7 @@ const BotBuilderTourMobile = observer(() => {
                                 type='danger'
                                 onClick={() => {
                                     setTourStep(tour_step + 1);
-                                    onTourEnd(tour_step, tour_active);
+                                    onTourEnd(tour_step, is_tour_active);
                                 }}
                                 label={tour_button_text}
                                 data-testid={test_id}

@@ -13,13 +13,14 @@ import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import RunPanel from '../run-panel';
 import RunStrategy from './dashboard-component/run-strategy';
+import { tour_list } from './dbot-tours/utils';
 import DashboardComponent from './dashboard-component';
 import StrategyNotification from './strategy-notification';
 import Tutorial from './tutorial-tab';
 
 const Dashboard = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useDBotStore();
-    const { active_tab, is_tour_active, setActiveTab, setWebSocketState } = dashboard;
+    const { active_tab, active_tour, setActiveTab, setWebSocketState, setActiveTour } = dashboard;
     const { onEntered, dashboard_strategies } = load_modal;
     const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
         run_panel;
@@ -62,6 +63,9 @@ const Dashboard = observer(() => {
             init_render.current = false;
         } else {
             window.location.hash = hash[active_tab] || hash[0];
+        }
+        if (tour_list[active_tab] !== active_tour) {
+            setActiveTour('');
         }
     }, [active_tab]);
 
@@ -113,7 +117,7 @@ const Dashboard = observer(() => {
             <div className='dashboard__main'>
                 <div
                     className={classNames('dashboard__container', {
-                        'dashboard__container--active': is_tour_active && active_tab === DASHBOARD && is_mobile,
+                        'dashboard__container--active': active_tour && active_tab === DASHBOARD && is_mobile,
                     })}
                 >
                     <Tabs

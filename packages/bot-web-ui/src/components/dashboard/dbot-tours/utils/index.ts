@@ -6,7 +6,7 @@ type TTourStatus = {
     type: string;
 };
 
-type TActiveTour = {
+type TTourList = {
     [key: number]: string;
 };
 
@@ -39,7 +39,7 @@ export const setTourSettings = (param: number, type: string) => {
     return storeSetting(type, param);
 };
 
-export const active_tour: TActiveTour = Object.freeze({
+export const tour_list: TTourList = Object.freeze({
     0: 'onboarding',
     1: 'bot_builder',
 });

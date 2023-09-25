@@ -10,7 +10,7 @@ import WorkspaceWrapper from './workspace-wrapper';
 
 const BotBuilder = observer(() => {
     const { dashboard, app } = useDBotStore();
-    const { active_tab, is_tour_active, is_preview_on_popup } = dashboard;
+    const { active_tab, active_tour, is_preview_on_popup } = dashboard;
 
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
@@ -26,7 +26,7 @@ const BotBuilder = observer(() => {
                 className={classNames('bot-builder', {
                     'bot-builder--active': active_tab === 1 && !is_preview_on_popup,
                     'bot-builder--inactive': is_preview_on_popup,
-                    'bot-builder--tour-active': is_tour_active,
+                    'bot-builder--tour-active': active_tour,
                 })}
             >
                 {is_preview_on_popup ? null : (

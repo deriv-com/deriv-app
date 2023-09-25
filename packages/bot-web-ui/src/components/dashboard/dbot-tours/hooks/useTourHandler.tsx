@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import { CallBackProps } from 'react-joyride';
 
-export default function useTourHandler() {
+export const useTourHandler = () => {
     const [is_finished, setIsFinished] = useState(false);
     const [is_close_tour, setIsCloseTour] = useState(false);
 
-    const handleJoyrideCallback = data => {
+    const handleJoyrideCallback = (data: CallBackProps) => {
         const { action, status } = data;
         if (status === 'finished') {
             setIsFinished(true);
@@ -20,4 +21,4 @@ export default function useTourHandler() {
         is_close_tour,
         setIsCloseTour,
     };
-}
+};

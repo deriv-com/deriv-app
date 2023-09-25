@@ -60,7 +60,7 @@ const DashboardDescription = ({ is_mobile, has_dashboard_strategies }: TDashboar
 const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
     const { load_modal, dashboard } = useDBotStore();
     const { dashboard_strategies } = load_modal;
-    const { setActiveTab, setActiveTabTutorial, active_tab, is_tour_active } = dashboard;
+    const { setActiveTab, setActiveTabTutorial, active_tab, active_tour } = dashboard;
     const has_dashboard_strategies = !!dashboard_strategies?.length;
     const is_mobile = isMobile();
 
@@ -68,7 +68,7 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
         <React.Fragment>
             <div
                 className={classNames('tab__dashboard', {
-                    'tab__dashboard--tour-active': is_tour_active,
+                    'tab__dashboard--tour-active': active_tour,
                 })}
             >
                 <div className='tab__dashboard__content'>

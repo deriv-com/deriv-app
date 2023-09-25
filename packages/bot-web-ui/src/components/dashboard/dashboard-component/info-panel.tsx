@@ -10,7 +10,7 @@ import { SIDEBAR_INTRO } from './constants';
 const InfoPanel = observer(() => {
     const is_mobile = isMobile();
     const { dashboard } = useDBotStore();
-    const { is_tour_active, is_info_panel_visible, setActiveTab, setActiveTabTutorial, setInfoPanelVisibility } =
+    const { active_tour, is_info_panel_visible, setActiveTab, setActiveTabTutorial, setInfoPanelVisibility } =
         dashboard;
     const switchTab = (link: boolean, label: string) => {
         const tutorial_link = link ? setActiveTab(DBOT_TABS.TUTORIAL) : null;
@@ -63,7 +63,7 @@ const InfoPanel = observer(() => {
     return (
         <>
             <DesktopWrapper>
-                {!is_tour_active && (
+                {!active_tour && (
                     <div
                         className={classNames('tab__dashboard__info-panel', {
                             'tab__dashboard__info-panel--active': is_info_panel_visible,

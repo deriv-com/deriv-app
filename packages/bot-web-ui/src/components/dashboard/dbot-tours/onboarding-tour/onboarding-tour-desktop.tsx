@@ -5,11 +5,11 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import ReactJoyrideWrapper from '../common/react-joyride-wrapper';
 import TourStartDialog from '../common/tour-start-dialog';
 import { DBOT_ONBOARDING } from '../config';
-import useTourHandler from '../hooks/useTourHandler';
+import { useTourHandler } from '../hooks/useTourHandler';
 
 const OnboardingTourDesktop = observer(() => {
     const { dashboard } = useDBotStore();
-    const { active_tab, is_tour_active, setActiveTour, setTourDialogVisibility } = dashboard;
+    const { active_tab, active_tour, setActiveTour, setTourDialogVisibility } = dashboard;
     const { is_close_tour, is_finished, handleJoyrideCallback, setIsCloseTour } = useTourHandler();
     React.useEffect(() => {
         if (is_close_tour || is_finished) {
@@ -24,7 +24,7 @@ const OnboardingTourDesktop = observer(() => {
     return (
         <>
             <TourStartDialog />
-            {is_tour_active && (
+            {active_tour && (
                 <ReactJoyrideWrapper handleCallback={handleJoyrideCallback} steps={DBOT_ONBOARDING} spotlightClicks />
             )}
         </>

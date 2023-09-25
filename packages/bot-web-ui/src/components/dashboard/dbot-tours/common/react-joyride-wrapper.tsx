@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactJoyride, { Step, Styles } from 'react-joyride';
+import ReactJoyride, { CallBackProps, Step, Styles } from 'react-joyride';
 import { localize } from '@deriv/translations';
 
 const common_tour_button_properties = {
@@ -12,7 +12,7 @@ const common_tour_button_properties = {
 interface IReactJoyrideWrapperProps {
     steps: Step[];
     styles: Styles;
-    handleCallback: (data: any) => void;
+    handleCallback: (data: CallBackProps) => void;
 }
 
 const ReactJoyrideWrapper: React.FC<IReactJoyrideWrapperProps> = ({ steps, styles, handleCallback, ...props }) => {

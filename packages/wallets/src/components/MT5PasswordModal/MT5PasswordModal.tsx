@@ -10,7 +10,6 @@ import {
 import MT5PasswordIcon from '../../public/images/ic-mt5-password.svg';
 import { CreatePassword } from '../CreatePassword';
 import { EnterPassword } from '../EnterPassword';
-import { useModal } from '../ModalProvider';
 import { WalletAccountReady } from '../WalletAccountReady';
 import { WalletModal } from '../WalletModal';
 

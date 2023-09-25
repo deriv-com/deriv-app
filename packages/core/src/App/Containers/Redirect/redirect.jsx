@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { loginUrl, routes, PlatformContext } from '@deriv/shared';
+import { loginUrl, PlatformContext, routes, SessionStore } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
@@ -25,27 +25,16 @@ const Redirect = ({
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
-    const { is_appstore } = React.useContext(PlatformContext);
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
+    const { is_appstore } = React.useContext(PlatformContext);
 
     setVerificationCode(code_param, action_param);
     setNewEmail(url_params.get('email'), action_param);
 
     switch (action_param) {
         case 'signup': {
-            if (is_appstore) {
-                // TODO: redirect
-                // history.push({
-                //     pathname: routes.dashboard,
-                //     search: url_query_string,
-                // });
-                // redirected_to_route = true;
-            } else {
-                history.push({
-                    pathname: routes.onboarding,
-                    search: url_query_string,
-                });
+            if (!is_appstore) {
                 RudderStack.track(
                     'ce_virtual_signup_form',
                     {
@@ -60,7 +49,12 @@ const Redirect = ({
                     }
                 );
             }
-            sessionStorage.removeItem('redirect_url');
+            SessionStore.set('signup_query_param', url_query_string);
+            history.push({
+                pathname: routes.onboarding,
+                search: url_query_string,
+            });
+            SessionStore.remove('redirect_url');
             redirected_to_route = true;
             toggleAccountSignupModal(true);
             break;

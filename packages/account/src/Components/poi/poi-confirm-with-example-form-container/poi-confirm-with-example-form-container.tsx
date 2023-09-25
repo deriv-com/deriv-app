@@ -12,10 +12,10 @@ import {
     toMoment,
     WS,
 } from '@deriv/shared';
-import FormBody from 'Components/form-body';
-import LoadErrorMessage from 'Components/load-error-message';
-import PersonalDetailsForm from 'Components/forms/personal-details-form';
-import { makeSettingsRequest, validate, validateName } from 'Helpers/utils';
+import FormBody from '../../form-body';
+import LoadErrorMessage from '../../load-error-message';
+import PersonalDetailsForm from '../../forms/personal-details-form.jsx';
+import { makeSettingsRequest, validate, validateName } from '../../../Helpers/utils';
 import { TInputFieldValues } from 'Types';
 
 type TRestState = {
@@ -90,7 +90,10 @@ const PoiConfirmWithExampleFormContainer = ({
                 setRestState({ ...rest_state, api_error: response.error.message });
                 return;
             }
-            setRestState({ ...rest_state, ...response.get_settings });
+            const { first_name, last_name, date_of_birth } = response?.get_settings ?? {
+                ...rest_state.form_initial_values,
+            };
+            setRestState({ ...rest_state, form_initial_values: { first_name, last_name, date_of_birth } });
             setChecked(true);
             setIsLoading(false);
 
@@ -137,11 +140,7 @@ const PoiConfirmWithExampleFormContainer = ({
             {({ errors, handleSubmit, isSubmitting, status }) => (
                 <Form className='account-form__poi-confirm-example' onSubmit={handleSubmit}>
                     <FormBody>
-                        <PersonalDetailsForm
-                            editable_fields={rest_state.changeable_fields}
-                            is_rendered_for_onfido
-                            warning_items={undefined}
-                        />
+                        <PersonalDetailsForm editable_fields={rest_state.changeable_fields} is_rendered_for_onfido />
                         <button
                             type='submit'
                             className={classNames('account-form__poi-confirm-example--button', {

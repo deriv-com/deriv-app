@@ -34,7 +34,7 @@ const SelfExclusionConfirmPage = () => {
                 >
                     <Localize i18n_default_text='You have set the following limits:' />
                 </Text>
-                {state?.changed_attributes.map((key: string, idx: number) => {
+                {state?.changed_attributes.map((key: string) => {
                     const need_date_format = ['exclude_until', 'timeout_until'];
                     const need_money_format = [
                         'max_deposit',
@@ -67,7 +67,7 @@ const SelfExclusionConfirmPage = () => {
                     const checked_value = +values[key] === 0 ? 'Removed' : value;
 
                     return (
-                        <div key={idx} className='da-self-exclusion__confirm-item'>
+                        <div key={key} className='da-self-exclusion__confirm-item'>
                             <Text as='p' size='xs'>
                                 {exclusion_texts ? exclusion_texts[key] : ''}
                             </Text>

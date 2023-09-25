@@ -1,0 +1,132 @@
+.wallets-account-ready {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    gap: 24px;
+    width: 392px;
+    border-radius: 10px;
+    text-align: center;
+
+    &__info {
+        background-color: grey;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 240px;
+        height: 128px;
+        padding: 10px;
+        position: relative;
+        border-radius: 10px;
+
+        &-icon {
+            position: relative;
+            z-index: 0;
+            width: 95px;
+            height: 70px;
+            transform: scale(65%);
+            transform-origin: top left;
+
+            &__text {
+                &-type {
+                    font-weight: 400;
+                    line-height: 14px;
+                    font-size: 10px;
+                }
+
+                &-wallet {
+                    font-size: 10px;
+                    font-weight: 400;
+                    line-height: 14px;
+                    color: #999999;
+                }
+
+                &-amount {
+                    font-size: 14px;
+                    font-weight: 700;
+                    line-height: 20px;
+                }
+            }
+
+            &--before {
+                &-demo {
+                    $scaling-before: 75%;
+                    width: 90%;
+
+                    & .wallets-gradient svg {
+                        transform: scale($scaling-before + 10%);
+                    }
+                    transform: scale($scaling-before);
+                    transform-origin: bottom right;
+                }
+
+                &-real {
+                    $scaling-before: 90%;
+                    width: 80%;
+
+                    & .wallets-gradient svg {
+                        transform: scale(70%);
+                    }
+                    transform: scale($scaling-before);
+                    transform-origin: bottom right;
+                }
+
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                z-index: 1;
+            }
+
+            &--after {
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 2;
+            }
+        }
+
+        &-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-weight: 700;
+            border-radius: 0 10px 0px 10px;
+            display: grid;
+            place-items: center;
+            color: #ffffff;
+            height: 25px;
+            width: 50px;
+
+            &--demo {
+                background-color: #377cfc;
+            }
+
+            &--real {
+                background-color: #ff444f;
+            }
+        }
+    }
+
+    &__title {
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    &__subtitle {
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    &__button {
+        background-color: #ff444f;
+        color: #ffffff;
+        cursor: pointer;
+        font-weight: 700;
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+    }
+}

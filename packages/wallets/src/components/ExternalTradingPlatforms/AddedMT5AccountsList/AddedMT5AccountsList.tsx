@@ -1,11 +1,13 @@
 import React from 'react';
-import { useMT5AccountsList } from '@deriv/api';
+import { useAccountStatus, useMT5AccountsList } from '@deriv/api';
 import DerivedMT5 from '../../../public/images/mt5-derived.svg';
 import FinancialMT5 from '../../../public/images/mt5-financial.svg';
 import SwapFreeMT5 from '../../../public/images/mt5-swap-free.svg';
 import { PrimaryActionButton } from '../../PrimaryActionButton';
 import { TradingAccountCard } from '../../TradingAccountCard';
 import './AddedMT5AccountsList.scss';
+import { WalletAccountReady } from '../../WalletAccountReady';
+import { useModal } from '../../ModalProvider';
 
 const market_type_to_name_mapper = {
     all: 'Swap-Free',
@@ -24,6 +26,8 @@ type TProps = {
 };
 
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
+    const { show } = useModal();
+
     return (
         <TradingAccountCard
             leading={() => (
@@ -36,7 +40,9 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     <PrimaryActionButton className='wallets-added-mt5__transfer_button'>
                         <p className='wallets-added-mt5__transfer_text'>Transfer</p>
                     </PrimaryActionButton>
-                    <PrimaryActionButton>
+                    <PrimaryActionButton
+                        onClick={() => show(<WalletAccountReady market_type={account?.market_type || 'Derived'} />)}
+                    >
                         <p className='wallets-added-mt5__open_text'>Open</p>
                     </PrimaryActionButton>
                 </div>

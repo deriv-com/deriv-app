@@ -144,8 +144,6 @@
         }
     }
     &__list {
-        padding: 0 4rem;
-
         @include mobile {
             padding: 0 1.6rem;
         }
@@ -181,12 +179,6 @@
     }
 
     &__item {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0 3.2rem;
-        height: 4.8rem;
-
         @include mobile {
             padding: 0 1.6rem;
             height: 4rem;
@@ -208,9 +200,6 @@
         width: 100%;
         font-size: var(--text-size-l);
         color: var(--text-prominent);
-        display: flex;
-        align-items: center;
-        justify-content: center;
 
         @include mobile {
             font-size: var(--text-size-xs);

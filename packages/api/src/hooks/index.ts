@@ -32,3 +32,4 @@ export { default as useTradingPlatformInvestorPasswordReset } from './useTrading
 export { default as useTradingPlatformPasswordChange } from './useTradingPlatformPasswordChange';
 export { default as useTransferBetweenAccounts } from './useTransferBetweenAccounts';
 export { default as useWalletAccountsList } from './useWalletAccountsList';
+export { default as useDerivezServiceToken } from './useDerivezServiceToken';

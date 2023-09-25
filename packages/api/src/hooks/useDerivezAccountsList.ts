@@ -12,7 +12,8 @@ const useDerivezAccountsList = () => {
         () =>
             derivez_accounts?.trading_platform_accounts?.map(account => ({
                 ...account,
-                loginid: account.account_id,
+                /** The id of the DerivEz account */
+                id: account.account_id,
             })),
         [derivez_accounts?.trading_platform_accounts]
     );

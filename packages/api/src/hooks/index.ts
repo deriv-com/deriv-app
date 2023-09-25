@@ -26,7 +26,6 @@ export { default as useMT5AccountsList } from './useMT5AccountsList';
 export { default as useSettings } from './useSettings';
 export { default as useSortedMT5Accounts } from './useSortedMT5Accounts';
 export { default as useTradingAccountsList } from './useTradingAccountsList';
-export { default as useTradingPlatformAccounts } from './useTradingPlatformAccounts';
 export { default as useTradingPlatformInvestorPasswordChange } from './useTradingPlatformInvestorPasswordChange';
 export { default as useTradingPlatformInvestorPasswordReset } from './useTradingPlatformInvestorPasswordReset';
 export { default as useTradingPlatformPasswordChange } from './useTradingPlatformPasswordChange';

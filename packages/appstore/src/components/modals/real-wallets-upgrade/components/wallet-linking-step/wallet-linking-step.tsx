@@ -24,6 +24,7 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
                 as='span'
                 className='wallet-linking-step__note wallet-linking-step__title-text'
                 color='prominent'
+                align='center'
                 size='xxs'
             >
                 <Localize i18n_default_text='Your existing funds will remain in your trading account(s) and can be transferred to your Wallet after the upgrade.' />
@@ -33,6 +34,7 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
                     <Text
                         className='wallet-linking-step__title-text wallet-linking-step__title-small-text'
                         color='prominent'
+                        align='center'
                         size='xxxs'
                     >
                         <Localize i18n_default_text='Your current trading account(s)' />
@@ -40,6 +42,7 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
                     <Text
                         className='wallet-linking-step__title-text wallet-linking-step__title-small-text'
                         color='prominent'
+                        align='center'
                         size='xxxs'
                     >
                         <Localize i18n_default_text='Your new Wallet(s)' />
@@ -47,12 +50,12 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
                 </div>
             )}
             <ThemedScrollbars className='wallet-linking-step__content'>
-                {data.wallets.map(wallet => {
+                {data.wallets.map(({ wallet_details, account_list }) => {
                     return (
                         <WalletLinkWrapper
-                            key={wallet.wallet_details.name}
-                            account_list={wallet.account_list}
-                            wallet_details={wallet.wallet_details}
+                            key={wallet_details.name}
+                            account_list={account_list}
+                            wallet_details={wallet_details}
                         />
                     );
                 })}

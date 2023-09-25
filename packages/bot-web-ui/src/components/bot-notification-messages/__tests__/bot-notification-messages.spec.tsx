@@ -16,6 +16,9 @@ jest.mock('@deriv/bot-skeleton', () => ({
     ...jest.requireActual('@deriv/bot-skeleton'),
     blocksCoordinate: jest.fn(),
 }));
+jest.mock('@deriv/deriv-charts', () => ({
+    setSmartChartsPublicPath: jest.fn(),
+}));
 
 describe('BotNotificationMessages', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;

@@ -31,7 +31,7 @@ jest.mock('@deriv/hooks', () => ({
     useTradingAccountsList: jest.fn(() => ({
         data: [{ account_category: 'trading', currency: 'USD', balance: 1000, loginid: 'CR1001' }],
     })),
-    useWalletsList: jest.fn(() => ({
+    useWalletAccountsList: jest.fn(() => ({
         data: [
             {
                 currency: 'USD',

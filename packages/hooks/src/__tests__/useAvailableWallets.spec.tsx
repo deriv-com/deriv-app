@@ -2,7 +2,6 @@ import React from 'react';
 import { APIProvider } from '@deriv/api';
 import useAvailableWallets from '../useAvailableWallets';
 import { renderHook } from '@testing-library/react-hooks';
-import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -35,6 +34,21 @@ jest.mock('@deriv/api', () => ({
                     },
                 },
             };
+        } else if (name === 'website_status') {
+            return {
+                data: {
+                    website_status: {
+                        currencies_config: {
+                            AUD: { type: 'fiat', is_crypto: false },
+                            BTC: { type: 'crypto', is_crypto: true },
+                            ETH: { type: 'crypto', is_crypto: true },
+                            UST: { type: 'crypto', is_crypto: true },
+                            USD: { type: 'fiat', is_crypto: false },
+                            LTC: { type: 'crypto', is_crypto: true },
+                        },
+                    },
+                },
+            };
         }
 
         return { data: undefined };
@@ -42,45 +56,25 @@ jest.mock('@deriv/api', () => ({
 }));
 
 describe('useAvailableWallets', () => {
-    const createWrapper = (mock: ReturnType<typeof mockStore>) => {
-        const Component = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
+    const createWrapper = () => {
+        const Component = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
         return Component;
     };
     it('should return available wallets', () => {
-        const mock = mockStore({
-            client: {
-                accounts: { CRW909900: { token: '12345', landing_company_name: 'svg' } },
-                loginid: 'CRW909900',
-                is_crypto: (currency: string) => ['BTC', 'ETH', 'LTC'].includes(currency),
-            },
-        });
+        const { result } = renderHook(() => useAvailableWallets(), { wrapper: createWrapper() });
 
-        const { result } = renderHook(() => useAvailableWallets(), { wrapper: createWrapper(mock) });
+        const expected = ['AUD', 'EUR', 'BTC', 'ETH', 'LTC', 'USD'].map(currency => ({
+            currency,
+            is_added: currency === 'USD',
+            landing_company_name: 'svg',
+            gradient_card_class: `wallet-card__${currency.toLowerCase()}-bg`,
+        }));
 
-        expect(result.current?.data).toEqual(
-            ['AUD', 'EUR', 'BTC', 'ETH', 'LTC', 'USD'].map(currency => ({
-                currency,
-                is_added: currency === 'USD',
-                landing_company_name: 'svg',
-                gradient_card_class: `wallet-card__${currency.toLowerCase()}-bg`,
-            }))
-        );
+        expect(result.current?.data).toEqual(expected);
     });
 
     it('should not return unavailable wallets', () => {
-        const mock = mockStore({
-            client: {
-                accounts: { CRW909900: { token: '12345', landing_company_name: 'svg' } },
-                loginid: 'CRW909900',
-                is_crypto: (currency: string) => ['BTC', 'ETH', 'LTC'].includes(currency),
-            },
-        });
-
-        const { result } = renderHook(() => useAvailableWallets(), { wrapper: createWrapper(mock) });
+        const { result } = renderHook(() => useAvailableWallets(), { wrapper: createWrapper() });
 
         expect(result.current?.data).not.toEqual([
             {

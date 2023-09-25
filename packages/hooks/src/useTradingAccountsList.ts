@@ -1,32 +1,19 @@
 import { useMemo } from 'react';
-import { useFetch } from '@deriv/api';
-import useAuthorize from './useAuthorize';
+import useAccountsList from './useAccountsList';
 
-/** A custom hook to get the list of trading accounts for the current user. */
+/** A custom hook that gets the list of all trading accounts for the current user. */
 const useTradingAccountsList = () => {
-    const { data: authorize_data, ...rest } = useAuthorize();
-    const { data: balance_data } = useFetch('balance', { payload: { account: 'all' } });
+    const { data: account_list_data, ...rest } = useAccountsList();
 
-    // Filter trading accounts.
-    const trading_accounts = useMemo(
-        () => authorize_data?.account_list?.filter(account => account.account_category === 'trading'),
-        [authorize_data?.account_list]
-    );
-
-    // Add balance to each account.
-    const trading_accounts_with_balance = useMemo(
-        () =>
-            trading_accounts?.map(account => ({
-                ...account,
-                /** balance */
-                balance: balance_data?.balance?.accounts?.[account.loginid || '']?.balance || 0,
-            })),
-        [balance_data?.balance?.accounts, trading_accounts]
+    // Filter out non-trading accounts.
+    const filtered_accounts = useMemo(
+        () => account_list_data?.filter(account => account.is_trading),
+        [account_list_data]
     );
 
     return {
-        /** List of wallets for current user. */
-        data: trading_accounts_with_balance,
+        /** List of all trading accounts for the current user. */
+        data: filtered_accounts,
         ...rest,
     };
 };

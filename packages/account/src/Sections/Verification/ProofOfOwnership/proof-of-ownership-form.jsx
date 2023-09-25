@@ -38,7 +38,9 @@ const ProofOfOwnershipForm = ({
         let has_errors = false;
         let are_files_uploaded = false;
         const cards = values?.data;
-        if (!cards) return;
+        if (!cards) {
+            return errors;
+        }
         Object.keys(cards)?.forEach?.(card_key => {
             const items = cards?.[card_key] ?? {};
             const item_keys = Object.keys(items);

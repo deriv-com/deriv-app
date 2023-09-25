@@ -15,7 +15,9 @@ const useMT5AccountsList = () => {
         /** Adding the neccesary properties to the response */
         const getAccountInfo = (login?: string) => {
             return {
+                /** The platform of the account linked to the wallet */
                 platform: wallet?.linked_to?.find(linked => linked.loginid === login)?.platform,
+                /** The formatted display login of the account */
                 display_login: login?.replace(/^(MT[DR]?)/, ''),
             };
         };
@@ -23,7 +25,9 @@ const useMT5AccountsList = () => {
         return mt5_accounts?.mt5_login_list?.map(account => ({
             ...account,
             ...getAccountInfo(account.login),
+            /** The id of the account */
             loginid: account.login,
+            /** The platform of the account */
             platform: 'mt5',
         }));
     }, [mt5_accounts?.mt5_login_list, wallet?.linked_to]);

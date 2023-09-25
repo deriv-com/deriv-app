@@ -1,12 +1,10 @@
+import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
+import { mockStore, StoreProvider } from '@deriv/stores';
+import { TCoreStores } from '@deriv/stores/types';
 import { useStores } from 'Stores/index';
 import useP2PRenderedAdverts from '../use-p2p-rendered-adverts';
-import { isMobile } from '@deriv/shared';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => false),
-}));
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useP2PAdvertList: jest.fn(() => ({
@@ -41,9 +39,13 @@ jest.mock('Stores', () => ({
 
 const mockUseStores = useStores as jest.MockedFunction<typeof useStores>;
 
-const renderHookWithConfig = (config: Record<string, object>) => {
+const renderHookWithConfig = (config: Record<string, object>, mock?: TCoreStores) => {
+    const mock_store = mock || mockStore({ ui: { is_mobile: false } });
     mockUseStores.mockReturnValue(config);
-    const { result } = renderHook(() => useP2PRenderedAdverts());
+    const wrapper = ({ children }: { children: JSX.Element }) => (
+        <StoreProvider store={mock_store}>{children}</StoreProvider>
+    );
+    const { result } = renderHook(() => useP2PRenderedAdverts(), { wrapper });
     return result.current.rendered_adverts;
 };
 
@@ -278,8 +280,6 @@ describe('useP2PRenderedAdverts', () => {
         expect(view[0].advertiser_details?.name).toBe('client Test90000253');
     });
     it('should return the adverts object from response for adverts that match the given search_term for mobile', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-
         const config = {
             general_store: {
                 lisst_item_limit: 50,
@@ -294,7 +294,7 @@ describe('useP2PRenderedAdverts', () => {
             },
             advertiser_page_store: { counterparty_type: 'buy' },
         };
-        const view = renderHookWithConfig(config);
+        const view = renderHookWithConfig(config, mockStore({ ui: { is_mobile: true } }));
 
         expect(view).toHaveLength(2);
         expect(view[1]?.country).toBe('id');
@@ -303,8 +303,6 @@ describe('useP2PRenderedAdverts', () => {
         expect(view[1].advertiser_details?.name).toBe('client Test90000253');
     });
     it('should return the adverts object from response for adverts for mobile when search_term is undefined', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-
         const config = {
             general_store: {
                 lisst_item_limit: 50,
@@ -318,7 +316,7 @@ describe('useP2PRenderedAdverts', () => {
             },
             advertiser_page_store: { counterparty_type: 'buy' },
         };
-        const view = renderHookWithConfig(config);
+        const view = renderHookWithConfig(config, mockStore({ ui: { is_mobile: true } }));
 
         expect(view).toHaveLength(2);
         expect(view[1]?.country).toBe('id');

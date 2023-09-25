@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import useRequest from '../useRequest';
 import useInvalidateQuery from '../useInvalidateQuery';
 
-/** A custom hook that creates third party CFD accounts. */
+/** A custom hook to create third party CFD accounts. */
 const useCreateOtherCFDAccount = () => {
     const invalidate = useInvalidateQuery();
     const { data, ...rest } = useRequest('trading_platform_new_account', {

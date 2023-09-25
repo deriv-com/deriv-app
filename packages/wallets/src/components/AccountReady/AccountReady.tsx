@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveWalletAccount, type useSortedMT5Accounts } from '@deriv/api';
+import { useActiveWalletAccount, useSortedMT5Accounts } from '@deriv/api';
 import { useModal } from '../ModalProvider';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletMarketCurrencyIcon } from '../WalletMarketCurrencyIcon';
@@ -9,7 +9,7 @@ type TAccountReadyProps = {
     marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
 };
 
-const market_type_to_title_mapper: Record<string, string> = {
+const market_type_to_title_mapper: Record<TAccountReadyProps['marketType'], string> = {
     financial: 'MT5 Financial',
     all: 'Swap-Free',
     synthetic: 'MT5 Derived',

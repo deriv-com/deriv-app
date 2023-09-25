@@ -4,9 +4,10 @@ import classNames from 'classnames';
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
 
 const InfoBoxLongcode = ({ contract_info }) => {
-    const max_longcode_length = 150;
+    const max_longcode_length = isMobile() ? 47 : 150;
     const [is_collapsed, setIsCollapsed] = React.useState(true);
 
     const handleToggle = () => {
@@ -27,7 +28,7 @@ const InfoBoxLongcode = ({ contract_info }) => {
                 </Text>
                 {` `}
                 {contract_info.longcode.length > max_longcode_length && (
-                    <Text as='a' href='#' size='xs' onClick={handleToggle} c>
+                    <Text as='a' href='#' size='xs' onClick={handleToggle} className='info-box-longcode-text'>
                         {is_collapsed ? localize('View more') : localize('View less')}
                     </Text>
                 )}

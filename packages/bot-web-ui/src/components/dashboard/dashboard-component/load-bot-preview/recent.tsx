@@ -40,20 +40,20 @@ const RecentComponent = observer(() => {
                             <Localize i18n_default_text='Your bots:' />
                         </Text>
                     </div>
+                    <div
+                        className={classNames('load-strategy__recent-item load-strategy__recent-item__loaded', {
+                            'load-strategy__recent-item__loaded--first-child': !is_mobile,
+                        })}
+                    >
+                        {HEADERS.map(tab_name => {
+                            return (
+                                <Text size='xs' weight='bold' key={tab_name}>
+                                    {tab_name}
+                                </Text>
+                            );
+                        })}
+                    </div>
                     <div className='load-strategy__recent__files__list'>
-                        <div
-                            className={classNames('load-strategy__recent-item load-strategy__recent-item__loaded', {
-                                'load-strategy__recent-item__loaded--first-child': !is_mobile,
-                            })}
-                        >
-                            {HEADERS.map(tab_name => {
-                                return (
-                                    <Text size='xs' weight='bold' key={tab_name}>
-                                        {tab_name}
-                                    </Text>
-                                );
-                            })}
-                        </div>
                         {dashboard_strategies.map((workspace, index) => {
                             return <RecentWorkspace key={workspace.id} workspace={workspace} index={index} />;
                         })}

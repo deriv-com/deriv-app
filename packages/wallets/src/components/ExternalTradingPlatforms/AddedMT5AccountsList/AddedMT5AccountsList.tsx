@@ -41,9 +41,16 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
             )}
         >
             <div className='wallets-added-mt5__details'>
-                <p className='wallets-added-mt5__details-title'>
-                    {marketTypeToNameMapper[account.market_type || 'all']}
-                </p>
+                <div className='wallets-added-mt5__details-title'>
+                    <p className='wallets-added-mt5__details-title-text'>
+                        {marketTypeToNameMapper[account.market_type || 'all']}
+                    </p>
+                    <div className='wallets-added-mt5__details-title-landing-company'>
+                        <p className='wallets-added-mt5__details-title-landing-company-text'>
+                            {account.landing_company_short?.toUpperCase()}
+                        </p>
+                    </div>
+                </div>
                 <p className='wallets-added-mt5__details-balance'>
                     {account.display_balance} {account.currency}
                 </p>

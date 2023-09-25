@@ -215,6 +215,7 @@ import './cashier/ic-cashier-sort.svg';
 import './cashier/ic-cashier-tether-dark.svg';
 import './cashier/ic-cashier-tether-light.svg';
 import './cashier/ic-cashier-top-up.svg';
+import './cashier/ic-cashier-under-maintenance.svg';
 import './cashier/ic-cashier-upi-dark.svg';
 import './cashier/ic-cashier-upi-light.svg';
 import './cashier/ic-cashier-usd-coin-dark.svg';

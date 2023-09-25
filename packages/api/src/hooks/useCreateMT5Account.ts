@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import useRequest from '../useRequest';
 import useInvalidateQuery from '../useInvalidateQuery';
 
-/** A custom hook that creates the MT5 account. */
+/** A custom hook to create MT5 accounts. */
 const useCreateMT5Account = () => {
     const invalidate = useInvalidateQuery();
     const { data, ...rest } = useRequest('mt5_new_account', {

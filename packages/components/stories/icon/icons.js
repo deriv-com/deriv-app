@@ -302,7 +302,6 @@ export const icons =
         'IcBotBuilderArrow',
         'IcBotBuilderTabIcon',
         'IcBotBuilder',
-        'IcBotStop',
         'IcBox',
         'IcButtonBack',
         'IcCalendarDatefrom',

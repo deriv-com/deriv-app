@@ -119,7 +119,7 @@ describe('<DigitForm />', () => {
     });
 
     it('should display error if user types invalid OTP', async () => {
-        // @ts-expect-error need to come up with a way to mock the return type of useRequest
+        // @ts-expect-error need to come up with a way to mock the return type of useSendUserOTP
         mockUseSendUserOTP.mockReturnValue({
             error: { message: 'OTP verification failed', code: 'InvalidOTP' },
             sendUserOTP: jest.fn(),
@@ -141,7 +141,7 @@ describe('<DigitForm />', () => {
     });
 
     it('should display error if error code inside response is not equal to InvalidOTP ', async () => {
-        // @ts-expect-error need to come up with a way to mock the return type of useRequest
+        // @ts-expect-error need to come up with a way to mock the return type of useSendUserOTP
         mockUseSendUserOTP.mockReturnValue({
             error: { message: 'OTP verification failed', code: '' },
             sendUserOTP: jest.fn(),

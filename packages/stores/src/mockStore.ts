@@ -103,7 +103,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             email_address: '',
             setCFDScore: jest.fn(),
             getLimits: jest.fn(),
-            getTwoFAStatus: jest.fn(),
             has_active_real_account: false,
             has_logged_out: false,
             has_maltainvest_account: false,

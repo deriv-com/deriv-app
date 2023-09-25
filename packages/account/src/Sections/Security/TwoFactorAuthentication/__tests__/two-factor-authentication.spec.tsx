@@ -84,7 +84,7 @@ describe('<TwoFactorAuthentication/>', () => {
     });
 
     it('should render LoadErrorMessage component if getTwoFA call returns error', async () => {
-        // @ts-expect-error need to come up with a way to mock the return type of useRequest
+        // @ts-expect-error need to come up with a way to mock the return type of useGetTwoFa
         mockUseGetTwoFa.mockReturnValueOnce({
             error: { message: 'Invalid Request', code: 'InvalidOTP' },
             getTwoFA: jest.fn(),
@@ -99,7 +99,7 @@ describe('<TwoFactorAuthentication/>', () => {
     });
 
     it('should render LoadErrorMessage component if getSecretKey call returns error', async () => {
-        // @ts-expect-error need to come up with a way to mock the return type of useRequest
+        // @ts-expect-error need to come up with a way to mock the return type of useGetSecretKey
         mockUseGetSecretKey.mockReturnValueOnce({
             error: { message: 'Invalid request error', code: 'InvalidOTP' },
             getSecretKey: jest.fn(),
@@ -136,7 +136,7 @@ describe('<TwoFactorAuthentication/>', () => {
     });
 
     it('should render QR code if getTwoFA call is successful and is_TwoFA_enabled returns false', async () => {
-        // @ts-expect-error need to come up with a way to mock the return type of useRequest
+        // @ts-expect-error need to come up with a way to mock the return type of useGetTwoFa
         mockUseGetTwoFa.mockReturnValueOnce({
             isSuccess: true,
             is_TwoFA_enabled: true,

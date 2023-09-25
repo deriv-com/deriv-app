@@ -204,10 +204,6 @@ export default class NotificationStore extends BaseStore {
                 notification =>
                     notification.platform === 'Account' || maintenance_notifications.includes(notification.key)
             );
-        } else if (window.location.pathname === routes.trade || window.location.pathname === routes.bot) {
-            // TODO: Add BE flag to trigger the notification
-            this.addNotificationMessage(this.client_notifications.wallets_migrated);
-            this.addNotificationMessage(this.client_notifications.wallets_failed);
         } else if (!window.location.pathname.includes(routes.cashier_p2p)) {
             this.notification_messages = this.notification_messages.filter(notification => {
                 if (notification.platform === undefined || notification.platform.includes(getPathname())) {

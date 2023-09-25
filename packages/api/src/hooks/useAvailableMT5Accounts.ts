@@ -5,7 +5,7 @@ const market_type_to_leverage_mapper: Record<string, number> = {
     gaming: 500,
     financial: 1000,
     all: 100,
-} as const;
+};
 
 /** @description This hook is used to get all the available MT5 accounts. */
 const useAvailableMT5Accounts = () => {

@@ -39,23 +39,17 @@ const EnterPassword: React.FC<TProps> = ({
     onSecondaryClick,
     platform,
 }) => {
+    const title = platformToTitleMapper[platform];
     return (
         <React.Fragment>
             <div className='wallets-enter-password'>
                 <div className='wallets-enter-password--container'>
-                    <div className='wallets-enter-password-title'>
-                        Enter your {platformToTitleMapper[platform]} password
-                    </div>
+                    <div className='wallets-enter-password-title'>Enter your {title} password</div>
                     <span className='wallets-enter-password-subtitle'>
-                        Enter your {platformToTitleMapper[platform]} password to add a {platformToTitleMapper[platform]}{' '}
-                        {marketType} account.
+                        Enter your {title} password to add a {title} {marketType} account.
                     </span>
                     <div className='wallets-enter-password-input'>
-                        <input
-                            onChange={onPasswordChange}
-                            placeholder={`${platformToTitleMapper[platform]} password`}
-                            type='password'
-                        />
+                        <input onChange={onPasswordChange} placeholder={`${title} password`} type='password' />
                         <PasswordShowIcon className='wallets-create-password-input-trailing-icon' />
                     </div>
                 </div>

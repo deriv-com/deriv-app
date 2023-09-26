@@ -6,7 +6,7 @@ import WalletAddMoreCurrencyIcon from '../WalletAddMoreCurrencyIcon';
 
 type TWalletsAddMoreCardBannerProps = NonNullable<ReturnType<typeof useAvailableWallets>['data']>[0];
 
-const WalletsAddMoreCardBanner = ({ currency, is_added, landing_company_name }: TWalletsAddMoreCardBannerProps) => {
+const WalletsAddMoreCardBanner = ({ currency, isAdded, landingCompanyName }: TWalletsAddMoreCardBannerProps) => {
     return (
         <div className='wallets-add-more__banner'>
             <div className='wallets-add-more__banner-header'>
@@ -14,20 +14,20 @@ const WalletsAddMoreCardBanner = ({ currency, is_added, landing_company_name }: 
                     <WalletAddMoreCurrencyIcon currency={currency ? currency.toLowerCase() : ''} />
                 </span>
                 <span className='wallets-add-more__banner-landing-company'>
-                    {landing_company_name ? landing_company_name.toUpperCase() : ''}
+                    {landingCompanyName ? landingCompanyName.toUpperCase() : ''}
                 </span>
             </div>
             <button
                 className={`wallets-add-more__banner-button ${
-                    is_added ? 'wallets-add-more__banner-button--is-added' : ''
+                    isAdded ? 'wallets-add-more__banner-button--is-added' : ''
                 }`}
             >
-                {is_added ? (
+                {isAdded ? (
                     <CheckIcon className='wallets-add-more__banner-button-icon' />
                 ) : (
                     <PlusIcon className='wallets-add-more__banner-button-icon' />
                 )}
-                {is_added ? 'Added' : 'Add'}
+                {isAdded ? 'Added' : 'Add'}
             </button>
         </div>
     );

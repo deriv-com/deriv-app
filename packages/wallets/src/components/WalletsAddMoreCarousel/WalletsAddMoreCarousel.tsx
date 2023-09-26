@@ -32,9 +32,9 @@ const WalletsAddMoreCarousel = () => {
                     {availableWallets?.map(wallet => (
                         <WalletsAddMoreCard
                             currency={wallet.currency}
-                            is_added={wallet.is_added}
+                            isAdded={wallet.is_added}
                             key={`wallets_add_more_${wallet.currency}-${wallet.landing_company_name}`}
-                            landing_company_name={wallet.landing_company_name}
+                            landingCompanyName={wallet.landing_company_name}
                         />
                     ))}
                 </div>

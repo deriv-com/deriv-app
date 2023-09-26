@@ -9,41 +9,41 @@ import { PrimaryActionButton } from '../PrimaryActionButton';
 import { TradingAccountCard } from '../TradingAccountCard';
 import './OptionsAndMultipliersListing.scss';
 
-const options_and_multipliers = [
+const optionsAndMultipliers = [
     {
-        title: 'Deriv Trader',
         description: 'Options and multipliers trading platform.',
         icon: <IcAppstoreDerivTrader />,
+        title: 'Deriv Trader',
     },
     {
-        title: 'Deriv Bot',
         description: 'Automate your trading, no coding needed.',
         icon: <IcAppstoreDerivBot />,
+        title: 'Deriv Bot',
     },
     {
-        title: 'SmartTrader',
         description: 'Our legacy options trading platform.',
         icon: <IcAppstoreSmartTrader />,
+        title: 'SmartTrader',
     },
     {
-        title: 'Binary Bot',
         description: 'Our legacy automated trading platform.',
         icon: <IcAppstoreBinaryBot />,
+        title: 'Binary Bot',
     },
     {
-        title: 'Deriv GO',
         description: 'Trade on the go with our mobile app.',
         icon: <IcAppstoreDerivGo />,
+        title: 'Deriv GO',
     },
 ];
 
 const OptionsAndMultipliersListing = () => {
-    const { is_mobile } = useDevice();
+    const { isMobile } = useDevice();
 
     return (
         <div className='wallets-options-and-multipliers-listing'>
             <section className='wallets-options-and-multipliers-listing__header'>
-                {!is_mobile && (
+                {!isMobile && (
                     <div className='wallets-options-and-multipliers-listing__header-title'>
                         {/* TODO: Localization needed*/}
                         <h1>Options & Multipliers</h1>
@@ -64,7 +64,7 @@ const OptionsAndMultipliersListing = () => {
                 </div>
             </section>
             <div className='wallets-options-and-multipliers-listing__content'>
-                {options_and_multipliers.map(account => (
+                {optionsAndMultipliers.map(account => (
                     <TradingAccountCard
                         {...account}
                         key={`trading-account-card-${account.title}`}

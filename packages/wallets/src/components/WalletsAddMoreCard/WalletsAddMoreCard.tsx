@@ -6,14 +6,14 @@ import WalletsAddMoreCardContent from '../WalletsAddMoreCardContent';
 
 type TWalletsAddMoreCard = NonNullable<ReturnType<typeof useAvailableWallets>['data']>[0];
 
-const WalletsAddMoreCard = ({ currency, is_added, landing_company_name }: TWalletsAddMoreCard) => {
+const WalletsAddMoreCard = ({ currency, isAdded, landingCompanyName }: TWalletsAddMoreCard) => {
     return (
         <div className='wallets-add-more__card'>
-            <WalletGradientBackground currency={currency || 'USD'} device='mobile' has_shine type='card'>
+            <WalletGradientBackground currency={currency || 'USD'} device='mobile' hasShine type='card'>
                 <WalletsAddMoreCardBanner
                     currency={currency || 'USD'}
-                    is_added={is_added}
-                    landing_company_name={landing_company_name ?? ''}
+                    isAdded={isAdded}
+                    landingCompanyName={landingCompanyName ?? ''}
                 />
             </WalletGradientBackground>
             <WalletsAddMoreCardContent currency={currency ?? ''} />

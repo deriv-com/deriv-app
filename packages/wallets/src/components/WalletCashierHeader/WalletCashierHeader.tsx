@@ -14,12 +14,11 @@ const WalletCashierHeader = () => {
     const { data } = useActiveWalletAccount();
     const { isMobile } = useDevice();
     const history = useHistory();
-    const { currency, currency_config, display_balance, landing_company_name, wallet_currency_type } = data || {};
     const location = useLocation();
 
     return (
         <WalletGradientBackground
-            currency={currency_config?.display_code || 'USD'}
+            currency={data?.currency_config?.display_code || 'USD'}
             device={isMobile ? 'mobile' : 'desktop'}
             theme='light'
             type='header'
@@ -29,16 +28,16 @@ const WalletCashierHeader = () => {
                     <div className='wallets-cashier-header__info__top-left'>
                         <div className='wallets-cashier-header__info__top-left__details'>
                             <h1 className='wallets-cashier-header__info__top-left__details__title'>
-                                {currency} Wallet
+                                {data?.currency} Wallet
                             </h1>
-                            {landing_company_name && (
-                                <WalletListCardBadge is_demo={data?.is_virtual} label={landing_company_name} />
+                            {data?.landing_company_name && (
+                                <WalletListCardBadge is_demo={data?.is_virtual} label={data?.landing_company_name} />
                             )}
                         </div>
-                        <p className='wallets-cashier-header__info__top-left__balance'>{display_balance}</p>
+                        <p className='wallets-cashier-header__info__top-left__balance'>{data?.display_balance}</p>
                     </div>
                     <div className='wallets-cashier-header__info__top-right'>
-                        {wallet_currency_type && <WalletCardIcon size='xl' type={wallet_currency_type} />}
+                        {data?.wallet_currency_type && <WalletCardIcon size='xl' type={data?.wallet_currency_type} />}
                         <button
                             className='wallets-cashier-header__close-button'
                             onClick={() => history.push('/appstore/traders-hub')}

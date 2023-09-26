@@ -7,7 +7,7 @@ const market_type_to_leverage_mapper: Record<string, number> = {
     all: 100,
 };
 
-/** @description This hook is used to get all the available MT5 accounts. */
+/** A custom hook to get the list of available MT5 accounts. */
 const useAvailableMT5Accounts = () => {
     const { data: mt5_available_accounts, ...rest } = useFetch('trading_platform_available_accounts', {
         payload: { platform: 'mt5' },
@@ -18,8 +18,11 @@ const useAvailableMT5Accounts = () => {
             mt5_available_accounts?.trading_platform_available_accounts?.map(account => {
                 return {
                     ...account,
+                    /** The market type for the account */
                     market_type: account.market_type === 'gaming' ? 'synthetic' : account.market_type,
+                    /** The platform for the account */
                     platform: 'mt5',
+                    /** Leverage for the account */
                     leverage:
                         market_type_to_leverage_mapper[
                             account.market_type as keyof typeof market_type_to_leverage_mapper

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
+import { APIProvider } from '@deriv/api';
 import { ExchangeRatesProvider } from './providers';
 import StoreContext from './storeContext';
 import { ExchangeRatesStore, FeatureFlagsStore } from './stores';
@@ -26,9 +27,11 @@ const StoreProvider = ({ children, store }: React.PropsWithChildren<{ store: TCo
     }, [memoizedValue]);
 
     return (
-        <StoreContext.Provider value={memoizedValue}>
-            <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
-        </StoreContext.Provider>
+        <APIProvider>
+            <StoreContext.Provider value={memoizedValue}>
+                <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
+            </StoreContext.Provider>
+        </APIProvider>
     );
 };
 

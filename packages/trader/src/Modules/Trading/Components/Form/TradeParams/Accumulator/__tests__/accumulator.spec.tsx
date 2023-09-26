@@ -50,4 +50,18 @@ describe('Accumulator', () => {
         });
         expect(container).toBeEmptyDOMElement();
     });
+
+    it('should not render the component if accumulator_range_list is empty', () => {
+        const new_mock_connect_props = { ...mock_connect_props };
+        new_mock_connect_props.modules.trade = { accumulator_range_list: [], onChange: jest.fn(), growth_rate: 0.01 };
+        render(<Accumulator />, {
+            wrapper: ({ children }) => (
+                <TraderProviders store={mockStore(new_mock_connect_props)}>{children}</TraderProviders>
+            ),
+        });
+
+        expect(screen.queryByText('Growth rate')).not.toBeInTheDocument();
+        expect(screen.queryByText('1%')).not.toBeInTheDocument();
+        expect(screen.queryByText('2%')).not.toBeInTheDocument();
+    });
 });

@@ -30,17 +30,16 @@ const reducer = (state, payload) => {
 const makeGetDefaultDuration = (trade_duration, trade_duration_unit) => duration_unit =>
     trade_duration_unit === duration_unit ? trade_duration : DEFAULT_DURATION[duration_unit];
 
-const TradeParamsModal = observer(({ is_open, toggleModal }) => {
+const TradeParamsModal = observer(({ is_open, toggleModal, tab_index }) => {
     const { client, ui } = useStore();
     const { currency } = client;
     const { enableApp, disableApp } = ui;
     const { amount, form_components, duration, duration_unit, duration_units_list } = useTraderStore();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const getDefaultDuration = React.useCallback(makeGetDefaultDuration(duration, duration_unit), []);
 
     const [state, dispatch] = React.useReducer(reducer, {
-        trade_param_tab_idx: 0,
+        trade_param_tab_idx: tab_index,
         duration_tab_idx: undefined,
         amount_tab_idx: undefined,
         has_amount_error: false,
@@ -111,7 +110,7 @@ const TradeParamsModal = observer(({ is_open, toggleModal }) => {
                             toggleModal={toggleModal}
                             isVisible={isVisible}
                             setTradeParamTabIdx={setTradeParamTabIdx}
-                            trade_param_tab_idx={state.trade_param_tab_idx}
+                            trade_param_tab_idx={tab_index}
                             setDurationTabIdx={setDurationTabIdx}
                             duration_tab_idx={state.duration_tab_idx}
                             setAmountTabIdx={setAmountTabIdx}

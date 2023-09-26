@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode, isMobile } from '@deriv/shared';
 import { FastMarker } from 'Modules/SmartChart';
 import classNames from 'classnames';
 import { TRef } from './accumulators-profit-loss-tooltip';
@@ -118,7 +118,7 @@ const AccumulatorsProfitLossText = ({
         <FastMarker markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')}>
             <Text
                 weight='bold'
-                size='m'
+                size={isMobile() ? 's' : 'sm'}
                 color={won ? 'profit-success' : 'loss-danger'}
                 className={classNames(`${className}__profit`, {
                     [`${className}__profit--fading-in`]: is_fading_in,
@@ -129,7 +129,7 @@ const AccumulatorsProfitLossText = ({
                 <div className={is_sliding ? `${className}__sliding-tenth` : ''}>{current_profit_tenth}</div>
                 {`${profit_hundredths}`}
             </Text>
-            <Text size='xxs' as='div' className={`${className}__currency`}>
+            <Text size={isMobile() ? 'xxxs' : 'xxs'} as='div' className={`${className}__currency`}>
                 {getCurrencyDisplayCode(currency)}
             </Text>
         </FastMarker>

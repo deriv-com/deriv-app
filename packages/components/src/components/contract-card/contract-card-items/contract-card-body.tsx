@@ -23,7 +23,7 @@ export type TGeneralContractCardBodyProps = {
     contract_update: TContractInfo['contract_update'];
     connectWithContractUpdate?: (contract_update_form: React.ElementType) => React.ElementType;
     currency: string;
-    current_focus?: string;
+    current_focus?: string | null;
     error_message_alignment?: string;
     getCardLabels: TGetCardLables;
     getContractById: (contract_id?: number) => TContractStore;

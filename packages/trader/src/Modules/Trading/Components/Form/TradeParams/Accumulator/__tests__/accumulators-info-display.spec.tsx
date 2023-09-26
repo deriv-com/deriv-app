@@ -27,13 +27,17 @@ describe('AccumulatorsInfoDisplay', () => {
         expect(screen.getByText(/max. ticks/i)).toBeInTheDocument();
         expect(screen.getByText('250 ticks')).toBeInTheDocument();
     });
-    it('should render 1 tick if maximum_ticks = 1', () => {
-        mock_connect_props.modules.trade.maximum_ticks = 1;
+    it('should render correct value Maximum payout and Maximum ticks if maximum_ticks === 1', () => {
+        const new_mock_connect_props = { ...mock_connect_props };
+        new_mock_connect_props.modules.trade = { currency: 'USD', maximum_payout: 0, maximum_ticks: 1 };
         render(<AccumulatorsInfoDisplay />, {
             wrapper: ({ children }) => (
-                <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
+                <TraderProviders store={mockStore(new_mock_connect_props)}>{children}</TraderProviders>
             ),
         });
+        expect(screen.getByText(/max. payout/i)).toBeInTheDocument();
+        expect(screen.getByText('0.00 USD')).toBeInTheDocument();
+        expect(screen.getByText(/max. ticks/i)).toBeInTheDocument();
         expect(screen.getByText('1 tick')).toBeInTheDocument();
     });
 });

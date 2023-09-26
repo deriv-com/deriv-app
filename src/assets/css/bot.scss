@@ -68,6 +68,13 @@ body {
     z-index: 100;
 }
 
+.blocklyDropdownMenu {
+    &.goog-menu {
+        border: none;
+        box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.2);
+    }
+}
+
 #blocklyArea {
     height: calc(100% - #{$HEADER_HEIGHT} - #{$TOOLBOX_HEIGHT});
     @include mobile {

@@ -168,7 +168,7 @@ const getConfig = () => ({
     trading_view_chart: {
         visible: true,
         // URL to the chart
-        url: 'https://tradingview.deriv.com/deriv',
+        url: 'https://tradingview.deriv.com/deriv?hide_banner=1',
         label: translate('Trading View'),
     },
     login: {

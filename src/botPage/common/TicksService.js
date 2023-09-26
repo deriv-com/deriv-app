@@ -276,7 +276,7 @@ export default class TicksService {
             style,
         };
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             doUntilDone(() => this.api.send(request_object))
                 .then(r => {
                     if (style === 'ticks') {
@@ -292,7 +292,6 @@ export default class TicksService {
                     }
                 })
                 .catch(e => {
-                    reject(e);
                     globalObserver.emit('Error', e);
                 });
         });

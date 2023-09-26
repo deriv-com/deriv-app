@@ -46,13 +46,11 @@ const notifyError = error => {
 };
 
 const waitForNotifications = () => {
-    const notifList = ['success', 'info', 'warn', 'error'];
-
+    const notify_types = ['success', 'info', 'warn', 'error'];
     globalObserver.register('Notify', notify);
-
     globalObserver.register('Error', notifyError);
 
-    notifList.forEach(className =>
+    notify_types.forEach(className =>
         globalObserver.register(`ui.log.${className}`, message =>
             notify({ className, message, position: isMobile() ? 'left' : 'right' })
         )

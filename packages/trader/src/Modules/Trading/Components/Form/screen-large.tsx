@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import ContractType from '../../Containers/contract-type';
 import Purchase from '../../Containers/purchase';
 import TradeParams from '../../Containers/trade-params';

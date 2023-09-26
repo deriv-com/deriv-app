@@ -177,7 +177,7 @@ type TMenuItem = {
 
 type TAddToastProps = {
     key?: string;
-    content: React.ReactNode;
+    content: string | React.ReactNode;
     timeout?: number;
     is_bottom?: boolean;
     type?: string;
@@ -459,11 +459,11 @@ type TUiStore = {
     enableApp: () => void;
     has_only_forward_starting_contracts: boolean;
     has_real_account_signup_ended: boolean;
+    header_extension: JSX.Element | null;
     is_account_settings_visible: boolean;
     is_loading: boolean;
     is_cashier_visible: boolean;
     is_closing_create_real_account_modal: boolean;
-    header_extension: JSX.Element | null;
     is_dark_mode_on: boolean;
     is_reports_visible: boolean;
     is_route_modal_on: boolean;
@@ -477,6 +477,18 @@ type TUiStore = {
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;
     notification_messages_ui: React.ElementType;
+    populateFooterExtensions: (
+        footer_extensions:
+            | [
+                  {
+                      position?: string;
+                      Component?: React.FunctionComponent;
+                      has_right_separator?: boolean;
+                  }
+              ]
+            | []
+    ) => void;
+    setAppContentsScrollRef: (ref: React.MutableRefObject<null | HTMLDivElement>) => void;
     setCurrentFocus: (value: string | null) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setHasOnlyForwardingContracts: (has_only_forward_starting_contracts: boolean) => void;
@@ -528,18 +540,6 @@ type TUiStore = {
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     purchase_states: boolean[];
     setShouldShowCooldownModal: (value: boolean) => void;
-    setAppContentsScrollRef: (ref: React.MutableRefObject<null | HTMLDivElement>) => void;
-    populateFooterExtensions: (
-        footer_extensions:
-            | [
-                  {
-                      position?: string;
-                      Component?: React.FunctionComponent;
-                      has_right_separator?: boolean;
-                  }
-              ]
-            | []
-    ) => void;
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
 };
 

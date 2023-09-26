@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, Icon, InputField, MobileWrapper, Modal, Text, usePrevious } from '@deriv/components';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import ValueMovement from '../Purchase/value-movement';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -34,7 +34,7 @@ const Barrier = observer(({ is_minimized, is_absolute_only }: TBarrier) => {
     const current_spot = contract_info?.spot || '';
     const current_barrier_price = contract_info?.barrier || '';
     const previous_spot = usePrevious(current_spot);
-    if (previous_spot) has_spot_increased = current_spot > previous_spot;
+    if (previous_spot) has_spot_increased = Number(current_spot) > previous_spot;
     const barrier_title = barrier_count === 1 ? localize('Barrier') : localize('Barriers');
     const has_error_or_not_loaded = contract_info?.has_error || !contract_info?.id;
 

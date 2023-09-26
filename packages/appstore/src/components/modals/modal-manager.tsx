@@ -21,7 +21,7 @@ import AccountTransferModal from 'Components/account-transfer-modal';
 import RealWalletsUpgrade from './real-wallets-upgrade/real-wallets-upgrade';
 import WalletsMigrationFailed from './wallets-migration-failed';
 import WalletModal from './wallet-modal';
-import WalletSuccessDialog from './wallet-success-dialog/wallet-success-dialog';
+import AddNewWalletModal from './add-new-wallet-modal/add-new-wallet-modal';
 import AddWalletTradingAccountModal from './add-wallet-trading-account-modal/add-wallet-trading-account-modal';
 
 type TCurrentList = DetailsOfEachMT5Loginid & {
@@ -175,7 +175,7 @@ const ModalManager = () => {
             {is_real_wallets_upgrade_on && <RealWalletsUpgrade />}
             <WalletsMigrationFailed />
             <WalletModal />
-            <WalletSuccessDialog />
+            <AddNewWalletModal />
             <AddWalletTradingAccountModal />
         </React.Fragment>
     );

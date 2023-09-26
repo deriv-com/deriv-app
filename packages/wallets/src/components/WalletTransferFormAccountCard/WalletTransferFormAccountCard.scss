@@ -53,20 +53,4 @@
             }
         }
     }
-
-    &-icon {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-shrink: 0;
-        border-radius: 4px;
-        padding: 2px 4px;
-        width: 50px;
-        height: 35px;
-
-        &--is-input {
-            width: 46px;
-            height: 31px;
-        }
-    }
 }

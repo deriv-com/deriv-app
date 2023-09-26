@@ -7,7 +7,7 @@ import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
 import Test from './test.jsx';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
-import FormLayout from '../Components/Form/form-layout.jsx';
+import FormLayout from '../Components/Form/form-layout';
 import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements.jsx';
 import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.jsx';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -43,6 +43,7 @@ const Trade = observer(() => {
         prepareTradeStore,
         setContractTypes,
         setMobileDigitView,
+        setIsDigitsWidgetActive,
         show_digits_stats,
         is_accumulator,
         symbol,
@@ -66,7 +67,6 @@ const Trade = observer(() => {
     const [try_open_markets, setTryOpenMarkets] = React.useState(false);
     const [category, setCategory] = React.useState(null);
     const [subcategory, setSubcategory] = React.useState(null);
-    const [is_digits_widget_active, setIsDigitsWidgetActive] = React.useState(false);
     const [swipe_index, setSwipeIndex] = React.useState(0);
     const charts_ref = React.useRef();
 
@@ -143,11 +143,10 @@ const Trade = observer(() => {
                 open_market={open_market}
                 open={try_synthetic_indices || try_open_markets}
                 charts_ref={charts_ref}
-                is_digits_widget_active={is_digits_widget_active}
                 {...params}
             />
         ),
-        [open_market, try_synthetic_indices, try_open_markets, charts_ref, is_digits_widget_active]
+        [open_market, try_synthetic_indices, try_open_markets]
     );
 
     const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';

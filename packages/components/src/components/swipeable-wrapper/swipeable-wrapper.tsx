@@ -53,7 +53,7 @@ const SwipeableWrapper = ({ children, className, onChange, ...props }: React.Pro
             <div
                 {...swipe_handlers}
                 style={{
-                    transform: `translateX(${props.is_disabled ? -100 : active_index * -100}vw)`,
+                    left: `${props.is_disabled ? -100 : active_index * -100}vw`,
                 }}
                 className={classNames('dc-swipeable__view', className)}
                 {...props}

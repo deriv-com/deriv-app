@@ -9,7 +9,6 @@ import GBP from '../../public/images/gbp.svg';
 import LTC from '../../public/images/ltc.svg';
 import USD from '../../public/images/usd.svg';
 import USDC from '../../public/images/usdc.svg';
-import './WalletCardIcon.scss';
 
 const typeToIconMapper = {
     BTC: Bitcoin,
@@ -25,8 +24,18 @@ const typeToIconMapper = {
 };
 
 const typeToWidthMapper = {
-    rectangleIcon: { desktop: 90, mobile: 45 },
-    roundedIcon: { desktop: 48, mobile: 32 },
+    rectangleIcon: {
+        lg: { desktop: 90, mobile: 45 },
+        md: { desktop: 72, mobile: 36 },
+        sm: { desktop: 60, mobile: 60 },
+        xl: { desktop: 120, mobile: 100 },
+    },
+    roundedIcon: {
+        lg: { desktop: 48, mobile: 32 },
+        md: { desktop: 24, mobile: 24 },
+        sm: { desktop: 16, mobile: 16 },
+        xl: { desktop: 56, mobile: 48 },
+    },
 };
 
 const typesWithRoundedIcon = ['EUR', 'GBP', 'USD'];
@@ -45,17 +54,12 @@ const WalletCardIcon: React.FC<TProps> = ({ size = 'lg', type }) => {
 
     const Icon = typeToIconMapper[iconType];
     const isRoundedIcon = typesWithRoundedIcon.includes(iconType);
-    const defaultWidth =
-        typeToWidthMapper[isRoundedIcon ? 'roundedIcon' : 'rectangleIcon'][isMobile ? 'mobile' : 'desktop'];
+    const width =
+        typeToWidthMapper[isRoundedIcon ? 'roundedIcon' : 'rectangleIcon'][size][isMobile ? 'mobile' : 'desktop'];
 
     if (!Icon) return null;
 
-    return (
-        <Icon
-            className={`wallets-card-icon-${size} ${isRoundedIcon ? `wallets-card-icon-${size}--rounded` : ''}`}
-            width={defaultWidth}
-        />
-    );
+    return <Icon width={width} />;
 };
 
 export default WalletCardIcon;

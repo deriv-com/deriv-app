@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAccountsList } from '@deriv/api';
-import Close from '../../public/images/close.svg';
+import CloseIcon from '../../public/images/close-icon.svg';
 import { Loader } from '../Loader';
 import { useModal } from '../ModalProvider';
 import WalletTransferFromAccountCard from '../WalletTransferFormAccountCard/WalletTransferFormAccountCard';
@@ -25,7 +25,7 @@ const WalletTransferFormAccountSelection: React.FC<TProps> = ({ label, onSelect 
                     className='wallets-transfer-form-account-selection__header__close-button'
                     onClick={() => modal.hide()}
                 >
-                    <Close />
+                    <CloseIcon />
                 </button>
             </div>
             <div className='wallets-transfer-form-account-selection__accounts'>

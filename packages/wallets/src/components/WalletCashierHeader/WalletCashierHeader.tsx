@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
-import Close from '../../public/images/close.svg';
+import CloseIcon from '../../public/images/close-icon.svg';
 import { WalletCardIcon } from '../WalletCardIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletListCardBadge } from '../WalletListCardBadge';
@@ -43,7 +43,7 @@ const WalletCashierHeader = () => {
                             className='wallets-cashier-header__close-button'
                             onClick={() => history.push('/appstore/traders-hub')}
                         >
-                            <Close />
+                            <CloseIcon />
                         </button>
                     </div>
                 </section>

@@ -2,10 +2,11 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { TSocketResponse } from '../../types';
 import APIProvider from '../APIProvider';
-import useFetch from '../useFetch';
+import useQuery from '../useQuery';
 
 jest.mock('@deriv/shared', () => ({
-    WS: {
+    ...jest.requireActual('@deriv/shared'),
+    useWS: () => ({
         send: jest.fn(() =>
             Promise.resolve<TSocketResponse<'ping'>>({
                 msg_type: 'ping',
@@ -13,14 +14,15 @@ jest.mock('@deriv/shared', () => ({
                 echo_req: {},
             })
         ),
-    },
+        subscribe: jest.fn(),
+    }),
 }));
 
-describe('useFetch', () => {
+describe('useQuery', () => {
     test('should call ping and get pong in response', async () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
-        const { result, waitFor } = renderHook(() => useFetch('ping'), { wrapper });
+        const { result, waitFor } = renderHook(() => useQuery('ping'), { wrapper });
 
         await waitFor(() => result.current.isSuccess, { timeout: 10000 });
 

@@ -4,7 +4,7 @@ import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Localize, localize } from '@deriv/translations';
 import { Money, Numpad, Tabs } from '@deriv/components';
-import { getDecimalPlaces, isEmptyObject } from '@deriv/shared';
+import { getDecimalPlaces, isEmptyObject, isVanillaContract } from '@deriv/shared';
 import MinMaxStakeInfo from './min-max-stake-info';
 
 type TBasis = {
@@ -33,6 +33,7 @@ const Basis = observer(
         const { addToast } = ui;
         const { currency } = client;
         const {
+            contract_type,
             is_turbos,
             is_vanilla,
             onChangeMultiple,
@@ -40,8 +41,13 @@ const Basis = observer(
             basis: trade_basis,
             duration_unit: trade_duration_unit,
             duration: trade_duration,
-            contract_type,
+            stake_boundary,
+            vanilla_trade_type,
         } = useTraderStore();
+        const { min_stake, max_stake } =
+            (isVanillaContract(contract_type)
+                ? stake_boundary[vanilla_trade_type]
+                : stake_boundary[contract_type.toUpperCase()]) || {};
 
         const user_currency_decimal_places = getDecimalPlaces(currency);
         const onNumberChange = (num: number | string) => {
@@ -71,6 +77,12 @@ const Basis = observer(
 
         const validateAmount = (value: number | string) => {
             const localized_message = <Localize i18n_default_text='Should not be 0 or empty' />;
+            const min_max_stake_message = (
+                <Localize
+                    i18n_default_text='Stake must be between {{min_stake}} {{currency}} and {{max_stake}} {{currency}}'
+                    values={{ min_stake, currency, max_stake }}
+                />
+            );
             const selected_value = parseFloat(value.toString());
 
             if (value.toString() === '0.' || selected_value === 0) {
@@ -81,6 +93,10 @@ const Basis = observer(
                 addToast({ key: 'amount_error', content: localized_message, type: 'error', timeout: 2000 });
                 setAmountError(true);
                 return false;
+            } else if (selected_value < Number(min_stake)) {
+                addToast({ key: 'amount_error', content: min_max_stake_message, type: 'error', timeout: 2000 });
+                setAmountError(true);
+                return 'error';
             }
             setAmountError(false);
             return true;
@@ -89,7 +105,9 @@ const Basis = observer(
         return (
             <React.Fragment>
                 <div className='trade-params__stake-container'>
-                    {(is_turbos || is_vanilla) && <MinMaxStakeInfo />}
+                    {(is_turbos || is_vanilla) && (
+                        <MinMaxStakeInfo currency={currency} max_stake={max_stake} min_stake={min_stake} />
+                    )}
                     <div
                         className={classNames('trade-params__amount-keypad', {
                             strike__pos: contract_type === 'vanilla',
@@ -101,6 +119,7 @@ const Basis = observer(
                             onSubmit={setBasisAndAmount}
                             currency={currency}
                             min={min_amount}
+                            max={max_stake}
                             is_currency
                             render={({ value, className }) => {
                                 return (

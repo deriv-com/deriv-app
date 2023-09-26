@@ -14,6 +14,7 @@ import { localize } from '@deriv/translations';
 type TTradeParamsModal = {
     is_open: boolean;
     toggleModal: () => void;
+    tab_index: number;
 };
 
 type TTradeParamsMobile = {
@@ -82,16 +83,15 @@ const makeGetDefaultDuration = (trade_duration: number, trade_duration_unit: str
         ? trade_duration
         : DEFAULT_DURATION[duration_unit as keyof typeof DEFAULT_DURATION];
 
-const TradeParamsModal = observer(({ is_open, toggleModal }: TTradeParamsModal) => {
+const TradeParamsModal = observer(({ is_open, toggleModal, tab_index }: TTradeParamsModal) => {
     const { client } = useStore();
     const { currency } = client;
     const { amount, form_components, duration, duration_unit, duration_units_list } = useTraderStore();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const getDefaultDuration = React.useCallback(makeGetDefaultDuration(duration, duration_unit), []);
 
     const [state, dispatch] = React.useReducer(reducer, {
-        trade_param_tab_idx: 0,
+        trade_param_tab_idx: tab_index,
         duration_tab_idx: undefined,
         amount_tab_idx: undefined,
         has_amount_error: false,
@@ -160,7 +160,7 @@ const TradeParamsModal = observer(({ is_open, toggleModal }: TTradeParamsModal) 
                             toggleModal={toggleModal}
                             isVisible={isVisible}
                             setTradeParamTabIdx={setTradeParamTabIdx}
-                            trade_param_tab_idx={state.trade_param_tab_idx}
+                            trade_param_tab_idx={tab_index}
                             setDurationTabIdx={setDurationTabIdx}
                             duration_tab_idx={state.duration_tab_idx}
                             setAmountTabIdx={setAmountTabIdx}

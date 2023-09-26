@@ -1644,7 +1644,10 @@ export default class TradeStore extends BaseStore {
     }
 
     setContractPurchaseToastbox(response: Buy) {
-        const list = getAvailableContractTypes(this.contract_types_list, unsupported_contract_types_list);
+        const list = getAvailableContractTypes(
+            this.contract_types_list,
+            unsupported_contract_types_list
+        ) as Array<TToastBoxListItem>;
 
         this.contract_purchase_toast_box = {
             key: true,

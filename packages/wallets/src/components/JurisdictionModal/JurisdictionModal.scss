@@ -1,0 +1,23 @@
+.wallets-jurisdiction-modal {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+
+    &__button {
+        display: flex;
+        height: 40px;
+        padding: 10px 16px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+        border: none;
+        color: #ffffff;
+        background: #ff444f;
+        font-weight: 700;
+        cursor: pointer;
+        margin-left: 1rem;
+
+        &--disabled {
+        }
+    }
+}

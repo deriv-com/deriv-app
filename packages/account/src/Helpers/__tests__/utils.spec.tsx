@@ -10,7 +10,7 @@ import {
     isFieldImmutable,
     preventEmptyClipboardPaste,
     shouldShowIdentityInformation,
-    getIETFLanguageTag,
+    getOnfidoSupportedLocaleCode,
 } from '../utils';
 
 describe('generatePlaceholderText', () => {
@@ -234,20 +234,12 @@ describe('isDocumentNumberValid', () => {
     });
 });
 
-describe('getIETFLanguageTag', () => {
+describe('getOnfidoSupportedLocaleCode', () => {
     it('should return the correct language tag for German', () => {
-        expect(getIETFLanguageTag('DE')).toEqual('de_DE');
+        expect(getOnfidoSupportedLocaleCode('DE')).toEqual('de');
     });
 
     it('should return the correct language tag for Chinese', () => {
-        expect(getIETFLanguageTag('zh_CN')).toEqual('zh_CN');
-    });
-
-    it('should return the correct language tag for Korean', () => {
-        expect(getIETFLanguageTag('KO')).toEqual('ko_KR');
-    });
-
-    it('should return default language as english when language is not supported', () => {
-        expect(getIETFLanguageTag('test')).toEqual('en_US');
+        expect(getOnfidoSupportedLocaleCode('Zh_CN')).toEqual('zh_CN');
     });
 });

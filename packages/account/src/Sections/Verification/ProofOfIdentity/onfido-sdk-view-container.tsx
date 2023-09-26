@@ -7,11 +7,10 @@ import { Loading, ThemedScrollbars } from '@deriv/components';
 import { useNotificationEvent, useServiceToken } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import ErrorMessage from '../../../Components/error-component';
-import getOnfidoPhrases from '../../../Constants/onfido-phrases';
 import MissingPersonalDetails from '../../../Components/poi/missing-personal-details';
 import PoiConfirmWithExampleFormContainer from '../../../Components/poi/poi-confirm-with-example-form-container';
 import OnfidoSdkView from './onfido-sdk-view';
-import { convertAlpha2toAlpha3, convertAlpha3toAlpha2, getIETFLanguageTag } from '../../../Helpers/utils';
+import { convertAlpha2toAlpha3, convertAlpha3toAlpha2, getOnfidoSupportedLocaleCode } from '../../../Helpers/utils';
 
 type TAPIError = {
     code?: string;
@@ -96,11 +95,7 @@ const OnfidoSdkViewContainer = observer(
                 try {
                     onfido_init.current = await init({
                         containerId: 'onfido',
-                        language: {
-                            locale: getIETFLanguageTag(current_language) as SupportedLanguages,
-                            phrases: getOnfidoPhrases(),
-                            mobilePhrases: getOnfidoPhrases(),
-                        },
+                        language: getOnfidoSupportedLocaleCode(current_language) as SupportedLanguages,
                         token: service_token,
                         useModal: false,
                         useMemoryHistory: true,

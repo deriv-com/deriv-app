@@ -1,7 +1,5 @@
 import React from 'react';
 import countries from 'i18n-iso-countries';
-import ISO6391 from 'iso-639-1';
-import { getLocalesByOfficialLanguage } from '@vtex/i18n-iso';
 import { Localize, localize } from '@deriv/translations';
 import { filterObjProperties, toMoment, validLength, validName, getIDVNotApplicableOption } from '@deriv/shared';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
@@ -214,16 +212,19 @@ export const convertAlpha3toAlpha2 = (country_code: string) =>
     country_code.length !== 2 ? countries.alpha3ToAlpha2(country_code.toUpperCase()) : country_code;
 
 /**
- * Converts ISO-639-1 language code to IETF language tag
- * @name getIETFLanguageTag
- * @param language_code  - iso-639-1 format language code
- * @returns IETF language tag
+ * Generates a language code supported by Onfido
+ * @name getOnfidoSupportedLocaleCode
+ * @param language_code
+ * @returns language code supported by Onfido
  */
-export const getIETFLanguageTag = (language_code: string) => {
-    const code = language_code.toLowerCase().substring(0, 2);
-    const language = ISO6391.getName(code);
-    const ietf_tag = getLocalesByOfficialLanguage(language, {
-        tryFallback: true,
-    })[0].IETFLanguageTag;
-    return ietf_tag.replace('-', '_');
+export const getOnfidoSupportedLocaleCode = (language_code: string) => {
+    try {
+        const code = language_code.split('_');
+        if (code[0] === 'ID') {
+            return 'id_ID';
+        }
+        return code.length > 1 ? `${code[0].toLowerCase()}_${code[1].toUpperCase()}` : code[0].toLowerCase();
+    } catch (e) {
+        return 'en_US';
+    }
 };

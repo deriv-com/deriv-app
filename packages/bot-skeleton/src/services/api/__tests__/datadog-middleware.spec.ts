@@ -117,7 +117,11 @@ describe('APIMiddleware', () => {
             const result = api_middleware.defineMeasure('proposal');
 
             expect(spydefineMeasure).toHaveBeenCalledWith('proposal');
-            expect(mockMeasure).toHaveBeenCalledWith('run-proposal', 'bot-start', 'first_proposal_end');
+            expect(mockMeasure).toHaveBeenCalledWith(
+                'run_proposal_or_direct_buy',
+                'bot-start',
+                'first_proposal_or_run_end'
+            );
             expect(clearMarks).toBeCalledTimes(1);
             expect(result).toBeDefined();
         });

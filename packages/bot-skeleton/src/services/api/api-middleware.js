@@ -37,7 +37,7 @@ export const REQUESTS = [
     'buy',
     'proposal',
     'proposal_open_contract',
-    'run-proposal',
+    'run_proposal_or_direct_buy',
     'transaction',
     'ticks_history',
     'history',
@@ -76,10 +76,14 @@ class APIMiddleware {
     defineMeasure = res_type => {
         if (res_type) {
             let measure;
-            if (res_type === 'proposal') {
-                performance.mark('first_proposal_end');
+            if (res_type === 'proposal' || res_type === 'buy') {
+                performance.mark('first_proposal_or_run_end');
                 if (performance.getEntriesByName('bot-start', 'mark').length) {
-                    measure = performance.measure('run-proposal', 'bot-start', 'first_proposal_end');
+                    measure = performance.measure(
+                        'run_proposal_or_direct_buy',
+                        'bot-start',
+                        'first_proposal_or_run_end'
+                    );
                     performance.clearMarks('bot-start');
                 }
             }

@@ -192,7 +192,7 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
                             editable_fields={status?.is_confirmed ? [] : changeable_fields}
                         />
                     </section>
-                    <FormFooter className='proof-of-identity__footer'>
+                    <FormFooter className='proof-of-identity__footer account-form__footer--reset'>
                         {isDesktop() && (
                             <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
                                 <BackButtonIcon className='back-btn-icon' /> {localize('Go Back')}

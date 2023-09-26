@@ -4,7 +4,7 @@ import BarriersList from './barriers-list';
 import { DesktopWrapper, InputField, MobileWrapper, Dropdown, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { toMoment, VANILLALONG } from '@deriv/shared';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';

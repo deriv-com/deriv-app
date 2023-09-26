@@ -31,6 +31,7 @@ import {
     BARRIER_COLORS,
     BARRIER_LINE_STYLES,
 } from '@deriv/shared';
+import { RudderStack } from '@deriv/analytics';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
@@ -47,6 +48,7 @@ import BaseStore from '../../base-store';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import debounce from 'lodash.debounce';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
+import { STATE_TYPES, getChartAnalyticsData } from './Helpers/chart';
 
 const store_name = 'trade_store';
 const g_subscribers_map = {}; // blame amin.m
@@ -183,7 +185,6 @@ export default class TradeStore extends BaseStore {
             'barrier_2',
             'basis',
             'contract_start_type',
-            'contract_type',
             'duration',
             'duration_unit',
             'expiry_date',
@@ -201,14 +202,15 @@ export default class TradeStore extends BaseStore {
             'multiplier',
             'start_date',
             'start_time',
-            'symbol',
             'stop_loss',
             'take_profit',
             'is_trade_params_expanded',
         ];
+        const session_storage_properties = ['contract_type', 'symbol'];
         super({
             root_store,
             local_storage_properties,
+            session_storage_properties,
             store_name,
             validation_rules: getValidationRules(),
         });
@@ -1512,15 +1514,21 @@ export default class TradeStore extends BaseStore {
     };
 
     chartStateChange(state, option) {
-        const market_close_prop = 'isClosed';
-        switch (state) {
-            case 'MARKET_STATE_CHANGE':
-                if (option && market_close_prop in option) {
-                    if (this.is_trade_component_mounted && option[market_close_prop] !== this.is_market_closed)
-                        this.prepareTradeStore(false);
-                }
-                break;
-            default:
+        if (
+            state === STATE_TYPES.MARKET_STATE_CHANGE &&
+            this.is_trade_component_mounted &&
+            option?.isClosed &&
+            option.isClosed !== this.is_market_closed
+        ) {
+            this.prepareTradeStore(false);
+        }
+        const { data, event_type } = getChartAnalyticsData(state, option);
+        if (data) {
+            RudderStack.track(event_type, {
+                ...data,
+                device_type: isMobile() ? 'mobile' : 'desktop',
+                form_name: 'default',
+            });
         }
     }
 

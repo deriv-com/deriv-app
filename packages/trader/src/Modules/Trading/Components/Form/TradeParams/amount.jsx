@@ -3,7 +3,7 @@ import { ButtonToggle, Dropdown, InputField } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 
 import AllowEquals from './allow-equals.jsx';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import Multiplier from './Multiplier/multiplier.jsx';
 import MultipliersInfo from './Multiplier/info.jsx';
 import MinMaxStakeInfo from './min-max-stake-info';

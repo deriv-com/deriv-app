@@ -57,7 +57,7 @@ const IDVForm = ({
                 if (needs_additional_document) {
                     return {
                         id: key,
-                        text: new_display_name || display_name,
+                        text: display_name ?? new_display_name, // Display document name from API if available, else use the one from the helper function
                         additional: {
                             display_name: document_data[key].additional?.display_name,
                             format: document_data[key].additional?.format,
@@ -70,7 +70,7 @@ const IDVForm = ({
                 }
                 return {
                     id: key,
-                    text: new_display_name || display_name,
+                    text: display_name ?? new_display_name, // Display document name from API if available, else use the one from the helper function
                     value: format,
                     sample_image,
                     example_format,
@@ -153,7 +153,7 @@ const IDVForm = ({
                                                                     }
                                                                 }}
                                                                 onChange={handleChange}
-                                                                onItemSelection={(item: TDocumentList) => {
+                                                                onItemSelection={(item: TDocument) => {
                                                                     if (
                                                                         item.text === 'No results found' ||
                                                                         !item.text

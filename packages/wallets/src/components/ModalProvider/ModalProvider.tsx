@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { useOnClickOutside } from 'usehooks-ts';
 
 type TModalContext = {
     hide: () => void;
@@ -18,6 +19,7 @@ export const useModal = () => {
 };
 
 const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
+    const modalRef = useRef<HTMLDivElement>(null);
     const [content, setContent] = React.useState<React.ReactNode | null>();
 
     const rootRef = React.useRef<HTMLElement>(document.getElementById('wallets_modal_root'));
@@ -30,10 +32,12 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
         setContent(null);
     };
 
+    useOnClickOutside(modalRef, hide);
+
     return (
-        <ModalContext.Provider value={{ isOpen: content !== null, show, hide }}>
+        <ModalContext.Provider value={{ hide, isOpen: content !== null, show }}>
             {children}
-            {rootRef.current && createPortal(content, rootRef.current)}
+            {rootRef.current && content && createPortal(<div ref={modalRef}>{content}</div>, rootRef.current)}
         </ModalContext.Provider>
     );
 };

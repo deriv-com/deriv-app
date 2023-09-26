@@ -1,18 +1,26 @@
 import React from 'react';
 import classNames from 'classnames';
-import { DesktopWrapper, InputField, MobileWrapper, Dropdown, Text, Icon } from '@deriv/components';
+import BarriersList from './barriers-list';
+import { DesktopWrapper, InputField, MobileWrapper, Dropdown, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';
-import './strike-field.scss';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const Strike = observer(() => {
     const { ui, common } = useStore();
-    const { barrier_1, onChange, validation_errors, strike_price_choices, expiry_type, expiry_date } = useTraderStore();
-    const { current_focus, setCurrentFocus, advanced_duration_unit, vanilla_trade_type } = ui;
+    const {
+        barrier_1,
+        onChange,
+        validation_errors,
+        barrier_choices: strike_price_choices,
+        expiry_type,
+        expiry_date,
+        vanilla_trade_type,
+    } = useTraderStore();
+    const { current_focus, setCurrentFocus, advanced_duration_unit } = ui;
     const { server_time } = common;
 
     const [is_open, setIsOpen] = React.useState(false);
@@ -34,38 +42,6 @@ const Strike = observer(() => {
         text: strike_price,
         value: strike_price,
     }));
-
-    if (should_open_dropdown) {
-        return (
-            <section className='strike-field'>
-                <div className='strike-field--header'>
-                    <Text weight='bold' size='xs'>
-                        {localize('Strike Prices')}
-                    </Text>
-                    <Icon icon='IcCross' onClick={() => setShouldOpenDropdown(false)} />
-                </div>
-                <div className='strike-field--body'>
-                    {strike_price_list.map(strike => (
-                        <Text
-                            size='xs'
-                            line_height='xl'
-                            key={strike.key}
-                            className={classNames('strike-field--body-item', {
-                                'dc-list__item--selected': selected_value === strike.value,
-                            })}
-                            onClick={() => {
-                                setSelectedValue(strike.value);
-                                setShouldOpenDropdown(false);
-                                onChange({ target: { name: 'barrier_1', value: strike.value } });
-                            }}
-                        >
-                            {strike.value}
-                        </Text>
-                    ))}
-                </div>
-            </section>
-        );
-    }
 
     return (
         <React.Fragment>
@@ -125,6 +101,21 @@ const Strike = observer(() => {
                         </div>
                     )}
                 </Fieldset>
+                {should_open_dropdown && (
+                    <BarriersList
+                        className='trade-container__barriers-table'
+                        header={localize('Strike Prices')}
+                        barriers_list={strike_price_choices}
+                        selected_item={selected_value}
+                        show_table={should_open_dropdown}
+                        onClick={strike => {
+                            setSelectedValue(strike);
+                            setShouldOpenDropdown(false);
+                            onChange({ target: { name: 'barrier_1', value: strike } });
+                        }}
+                        onClickCross={() => setShouldOpenDropdown(false)}
+                    />
+                )}
             </DesktopWrapper>
             <MobileWrapper>
                 <div className='mobile-widget__wrapper'>

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Localize, localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared';
-import { TEmptyStateProps } from '../empty-state/empty-state';
 
 type TProps = {
     cashier_validation: string[] | undefined;
@@ -23,7 +22,7 @@ const getMessage = ({
     is_withdrawal_locked,
     is_identity_verification_needed,
     excluded_until,
-}: TProps): TEmptyStateProps => {
+}: TProps) => {
     const no_residence = cashier_validation?.includes('no_residence');
     const unwelcome_status = cashier_validation?.includes('unwelcome_status');
     const self_exclusion = cashier_validation?.includes('SelfExclusion');
@@ -61,19 +60,14 @@ const getMessage = ({
                     'Deposits are temporarily unavailable due to system maintenance. You can make your deposits when the maintenance is complete.'
                 ),
             };
-        if (is_crypto)
-            return {
-                icon: 'IcCashierLocked',
-                title: localize('Cashier is locked'),
-                description: localize(
-                    'Our cryptocurrency cashier is temporarily down due to system maintenance. You can access the Cashier in a few minutes when the maintenance is complete.'
-                ),
-            };
         return {
-            icon: 'IcCashierLocked',
-            title: localize('Cashier is locked'),
-            description: localize(
-                'Our cashier is temporarily down due to system maintenance. You can access the Cashier in a few minutes when the maintenance is complete.'
+            icon: 'IcCashierUnderMaintenance',
+            title: localize('Cashier is currently down for maintenance'),
+            description: (
+                <Localize
+                    i18n_default_text='Please check back in a few minutes.<0></0>Thank you for your patience.'
+                    components={[<br key={0} />]}
+                />
             ),
         };
     }

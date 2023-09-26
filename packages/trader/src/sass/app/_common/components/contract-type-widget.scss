@@ -14,15 +14,16 @@
         align-items: center;
         justify-content: flex-start;
         flex-direction: row;
-        padding: 1.6rem;
+        padding: 1.6rem 1.2rem;
 
         /* postcss-bem-linter: ignore */
-        span[name='contract_type'] {
+        span[data-name='contract_type'] {
             @include typeface(--paragraph-left-normal-black);
             color: var(--text-prominent);
             font-weight: bold;
             vertical-align: middle;
             padding-left: 0.4em;
+            overflow-wrap: anywhere;
         }
         &:hover,
         &:focus {
@@ -100,11 +101,16 @@
         &--multiplier {
             margin-bottom: 0.6rem;
         }
+        &--turbosshort,
+        &--turboslong {
+            top: 0.2rem;
+            margin-right: 0.7rem;
+        }
         &--vanilla {
             margin-right: 0.4rem;
         }
         .contract-type-widget__display {
-            padding: 0.8rem;
+            padding: 0.8rem 2rem 0.8rem 0.8rem;
         }
     }
 }

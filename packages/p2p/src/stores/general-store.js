@@ -1,6 +1,6 @@
 import React from 'react';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
-import { get, init, timePromise } from '../../../cashier/src/utils/server_time';
+import { get, init, timePromise } from '../utils/server_time';
 import { isEmptyObject, isMobile, routes, toMoment } from '@deriv/shared';
 import BaseStore from 'Stores/base_store';
 import { localize, Localize } from 'Components/i18next';
@@ -121,7 +121,6 @@ export default class GeneralStore extends BaseStore {
             is_active_tab: computed,
             is_barred: computed,
             is_form_modified: computed,
-            is_my_profile_tab_visible: computed,
             should_show_dp2p_blocked: computed,
             blockUnblockUser: action.bound,
             createAdvertiser: action.bound,
@@ -132,7 +131,6 @@ export default class GeneralStore extends BaseStore {
             showCompletedOrderNotification: action.bound,
             handleTabClick: action.bound,
             onMount: action.bound,
-            subscribeToLocalCurrency: action.bound,
             onUnmount: action.bound,
             onNicknamePopupClose: action.bound,
             redirectTo: action.bound,
@@ -211,10 +209,6 @@ export default class GeneralStore extends BaseStore {
         return this.form_state?.dirty || this.saved_form_state;
     }
 
-    get is_my_profile_tab_visible() {
-        return this.is_advertiser && !this.root_store.my_profile_store.should_hide_my_profile_tab;
-    }
-
     get should_show_dp2p_blocked() {
         return this.is_blocked || this.is_high_risk || this.is_p2p_blocked_for_pa;
     }
@@ -240,6 +234,7 @@ export default class GeneralStore extends BaseStore {
                         );
                     }
                 } else {
+                    this.hideModal();
                     const { code, message } = response.error;
                     this.setErrorCode(code);
                     this.setBlockUnblockUserError(message);
@@ -254,7 +249,7 @@ export default class GeneralStore extends BaseStore {
             p2p_advertiser_create: 1,
             name,
         }).then(response => {
-            const { sendbird_store, buy_sell_store } = this.root_store;
+            const { sendbird_store } = this.root_store;
             const { error, p2p_advertiser_create } = response;
             const {
                 daily_buy,
@@ -278,7 +273,6 @@ export default class GeneralStore extends BaseStore {
                 this.setNicknameError(undefined);
                 sendbird_store.handleP2pAdvertiserInfo(response);
                 this.toggleNicknamePopup();
-                buy_sell_store.hideVerification();
             }
         });
     }
@@ -512,47 +506,12 @@ export default class GeneralStore extends BaseStore {
                     },
                     [this.setP2pOrderList]
                 ),
-                exchange_rate_subscription: subscribeWS(
-                    {
-                        exchange_rates: 1,
-                        base_currency: this.external_stores.client.currency,
-                        subscribe: 1,
-                        target_currency:
-                            this.root_store.buy_sell_store.selected_local_currency ??
-                            this.external_stores.client.local_currency_config?.currency,
-                    },
-                    [this.root_store.floating_rate_store.fetchExchangeRate]
-                ),
             };
-
-            this.disposeLocalCurrencyReaction = reaction(
-                () => [this.root_store.buy_sell_store.local_currency, this.active_index],
-                () => {
-                    this.subscribeToLocalCurrency();
-                }
-            );
 
             if (this.ws_subscriptions) {
                 this.setIsLoading(false);
             }
         });
-    }
-
-    subscribeToLocalCurrency() {
-        const { floating_rate_store, buy_sell_store } = this.root_store;
-        const client_currency = this.external_stores.client.local_currency_config?.currency;
-
-        this.ws_subscriptions?.exchange_rate_subscription?.unsubscribe?.();
-        this.ws_subscriptions.exchange_rate_subscription = subscribeWS(
-            {
-                exchange_rates: 1,
-                base_currency: this.external_stores.client.currency,
-                subscribe: 1,
-                target_currency:
-                    this.active_index > 0 ? client_currency : buy_sell_store.local_currency ?? client_currency,
-            },
-            [floating_rate_store.fetchExchangeRate]
-        );
     }
 
     onUnmount() {
@@ -563,10 +522,6 @@ export default class GeneralStore extends BaseStore {
 
         if (typeof this.disposeUserBarredReaction === 'function') {
             this.disposeUserBarredReaction();
-        }
-
-        if (typeof this.disposeLocalCurrencyReaction === 'function') {
-            this.disposeLocalCurrencyReaction();
         }
 
         this.setActiveIndex(0);
@@ -739,19 +694,13 @@ export default class GeneralStore extends BaseStore {
             if (!!response && response.error) {
                 floating_rate_store.setApiErrorMessage(response.error.message);
             } else {
-                const {
-                    fixed_rate_adverts,
-                    float_rate_adverts,
-                    float_rate_offset_limit,
-                    fixed_rate_adverts_end_date,
-                    override_exchange_rate,
-                } = response.website_status.p2p_config;
+                const { fixed_rate_adverts, float_rate_adverts, float_rate_offset_limit, fixed_rate_adverts_end_date } =
+                    response.website_status.p2p_config;
                 floating_rate_store.setFixedRateAdvertStatus(fixed_rate_adverts);
                 floating_rate_store.setFloatingRateAdvertStatus(float_rate_adverts);
                 floating_rate_store.setFloatRateOffsetLimit(float_rate_offset_limit);
                 floating_rate_store.setFixedRateAdvertsEndDate(fixed_rate_adverts_end_date || null);
                 floating_rate_store.setApiErrorMessage(null);
-                if (override_exchange_rate) floating_rate_store.setOverrideExchangeRate(override_exchange_rate);
             }
         });
     }
@@ -950,15 +899,7 @@ export default class GeneralStore extends BaseStore {
                 return !v(values[key]);
             });
 
-            if (error_index !== -1) {
-                switch (key) {
-                    case 'nickname':
-                    default: {
-                        errors[key] = nickname_messages[error_index];
-                        break;
-                    }
-                }
-            }
+            if (error_index !== -1) errors[key] = nickname_messages[error_index];
         });
 
         return errors;

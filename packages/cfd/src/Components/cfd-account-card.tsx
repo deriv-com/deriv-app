@@ -7,8 +7,9 @@ import { localize, Localize } from '@deriv/translations';
 import { CFDAccountCopy } from './cfd-account-copy';
 import {
     getDXTradeWebTerminalLink,
-    getDerivEzWebTerminalLink,
     getPlatformDXTradeDownloadLink,
+    getCTraderWebTerminalLink,
+    getDerivEzWebTerminalLink,
 } from '../Helpers/constants';
 import {
     TAccountIconValues,
@@ -212,6 +213,7 @@ const CFDAccountCardComponent = observer(
         const {
             dxtrade_tokens,
             derivez_tokens,
+            ctrader_tokens,
             setAccountType,
             setJurisdictionSelectedShortcode,
             setMT5TradeAccount,
@@ -717,6 +719,51 @@ const CFDAccountCardComponent = observer(
                                 >
                                     <Localize i18n_default_text='Download the app' />
                                 </a>
+                            )}
+                            {existing_data &&
+                                is_logged_in &&
+                                !is_web_terminal_unsupported &&
+                                platform === CFD_PLATFORMS.CTRADER && (
+                                    <a
+                                        className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
+                                        type='button'
+                                        href={getCTraderWebTerminalLink(
+                                            type.category,
+                                            ctrader_tokens[type.category as 'demo' | 'real']
+                                        )}
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                    >
+                                        <Localize i18n_default_text='Trade on web terminal' />
+                                    </a>
+                                )}
+                            {existing_data && is_logged_in && is_web_terminal_unsupported && (
+                                <a
+                                    className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
+                                    type='button'
+                                    href={getDxtradeDownloadLink()}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                >
+                                    <Localize i18n_default_text='Download the app' />
+                                </a>
+                            )}
+                            {!existing_data && is_logged_in && (
+                                <CFDAccountCardAction
+                                    button_label={button_label}
+                                    handleClickSwitchAccount={handleClickSwitchAccount}
+                                    has_real_account={has_real_account}
+                                    is_accounts_switcher_on={is_accounts_switcher_on}
+                                    is_button_primary={is_button_primary}
+                                    is_disabled={is_disabled}
+                                    is_virtual={is_virtual}
+                                    onSelectAccount={onSelectAccount}
+                                    type={type}
+                                    platform={platform}
+                                    title={title}
+                                    real_account_creation_unlock_date={real_account_creation_unlock_date}
+                                    setShouldShowCooldownModal={setShouldShowCooldownModal}
+                                />
                             )}
                             {existing_data &&
                                 is_logged_in &&

@@ -41,6 +41,7 @@
 
     &__title {
         padding-left: 1.6rem;
+        word-wrap: anywhere;
     }
 
     &__container {
@@ -51,6 +52,9 @@
 
     &__icon {
         margin-left: auto;
+        @include mobile {
+            display: block;
+        }
 
         @include mobile {
             display: block;

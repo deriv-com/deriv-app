@@ -16,7 +16,7 @@ const WithdrawalVerificationEmail = observer(() => {
 
     return (
         <EmptyState
-            icon='IcCashierAuthenticate'
+            icon='IcWithdrawRequestVerification'
             title={localize('Please help us verify your withdrawal request.')}
             description={
                 <>

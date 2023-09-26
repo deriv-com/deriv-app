@@ -25,7 +25,6 @@ export type TRef = {
     setPosition: (position: { epoch: number | null; price: number | null }) => void;
 };
 
-
 const AccumulatorsProfitLossTooltip = ({
     alignment = 'right',
     className = 'sc-accumulators-profit-loss-tooltip',

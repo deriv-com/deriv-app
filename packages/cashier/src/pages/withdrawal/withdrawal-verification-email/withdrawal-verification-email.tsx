@@ -20,7 +20,7 @@ const WithdrawalVerificationEmail = observer(() => {
             title={localize('Please help us verify your withdrawal request.')}
             description={
                 <>
-                    <Localize i18n_default_text="Hit the button below and we'll send you an email with a link. Click that link to verify your withdrawal request." />
+                    <Localize i18n_default_text="Click the button below and we'll send you an email with a link. Click that link to verify your withdrawal request." />
                     <br />
                     <br />
                     <Localize i18n_default_text='This is to protect your account from unauthorised withdrawals.' />

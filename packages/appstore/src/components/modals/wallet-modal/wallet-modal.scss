@@ -113,36 +113,37 @@
 }
 
 // styles for mobile and desktop modal body (tabs with content)
-.dc-tabs--modal-body__tabs {
-    width: 100%;
-    margin-top: -4.8rem;
-    z-index: 9999;
-
-    @include mobile {
-        top: 8.2rem;
-        margin-top: 0;
-        transition: top 0.2s ease;
-
-        &.is_scrolled {
-            top: 4.2rem;
-        }
-    }
-
-    &__themed-scrollbar {
+.dc-tabs {
+    &--modal-body__tabs {
         width: 100%;
-    }
-
-    &__content-wrapper {
-        max-width: 128rem;
-        margin: 0 auto;
-        padding: 2.4rem 4rem;
+        margin-top: -4.8rem;
+        z-index: 9999;
 
         @include mobile {
-            padding: 1.6rem;
+            top: 8.2rem;
+            margin-top: 0;
+            transition: top 0.2s ease;
+
+            &.is_scrolled {
+                top: 4.2rem;
+            }
+        }
+
+        &__themed-scrollbar {
+            width: 100%;
+        }
+
+        &__content-wrapper {
+            max-width: 128rem;
+            margin: 0 auto;
+            padding: 2.4rem 4rem;
+
+            @include mobile {
+                padding: 1.6rem;
+            }
         }
     }
-
-    .dc-tabs__list {
+    &__list {
         padding: 0 4rem;
 
         @include mobile {
@@ -179,7 +180,7 @@
         }
     }
 
-    .dc-tabs__item {
+    &__item {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -198,12 +199,12 @@
         }
     }
 
-    .dc-tabs__active {
+    &__active {
         background-color: var(--general-main-1);
         border-radius: 1.6rem 1.6rem 0 0;
     }
 
-    .dc-tabs__content {
+    &__content {
         width: 100%;
         display: flex;
         align-items: center;

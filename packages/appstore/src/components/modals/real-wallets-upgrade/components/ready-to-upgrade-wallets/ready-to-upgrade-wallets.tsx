@@ -33,15 +33,7 @@ const ReadyToUpgradeWallets = observer(({ value, toggleCheckbox }: TReadyToUpgra
                     <Localize
                         i18n_default_text="This is <0>irreversible.</0> Once you upgrade, the Cashier won't be available anymore. You'll need to
                 use Wallets to deposit, withdraw, and transfer funds."
-                        components={
-                            <Text
-                                size={text_body_size}
-                                weight='bold'
-                                align='center'
-                                line_height={form_line_height}
-                                key={0}
-                            />
-                        }
+                        components={<strong key={0} />}
                     />
                 </Text>
             </div>

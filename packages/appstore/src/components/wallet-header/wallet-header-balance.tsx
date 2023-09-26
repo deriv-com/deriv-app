@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, StatusBadge } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
 import { getStatusBadgeConfig } from '@deriv/account';
 import { useStore, observer } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
 import { TWalletAccount } from 'Types';
 import { formatMoney } from '@deriv/shared';
 
@@ -49,7 +49,7 @@ const WalletHeaderBalance = observer(({ balance, currency }: TWalletHeaderBalanc
                         size='xxs'
                         className='wallet-header__balance-title-amount-title'
                     >
-                        {localize('Wallet balance')}
+                        <Localize i18n_default_text='Wallet balance' />
                     </Text>
                     {balance_amount}
                 </React.Fragment>

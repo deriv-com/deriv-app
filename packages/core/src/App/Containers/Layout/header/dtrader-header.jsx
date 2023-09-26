@@ -4,16 +4,16 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { routes, isMobile, getDecimalPlaces, platforms } from '@deriv/shared';
+import { useWalletMigration } from '@deriv/hooks';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
-import platform_config from 'App/Constants/platform-config';
+import platform_config from 'App/Constants/platform-config.ts';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
 import { connect } from 'Stores/connect';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
-import { TradersHubHomeButton } from './trading-hub-header';
-import { useWalletMigration } from '@deriv/hooks';
+import TradersHubHomeButton from './traders-hub-home-button';
 
 const Divider = () => <div className='header__menu--dtrader--separator' />;
 

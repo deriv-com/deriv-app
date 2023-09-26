@@ -5,10 +5,10 @@ import ListingContainer from 'Components/containers/listing-container';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
+import { Jurisdiction, toMoment } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { useActiveWallet } from '@deriv/hooks';
 import { useCreateNewRealAccount, useSettings } from '@deriv/api';
-import { toMoment } from '@deriv/shared';
 import './wallet-content.scss';
 
 type TProps = {
@@ -105,7 +105,7 @@ const WalletOptionsAndMultipliersListing = observer(() => {
             if (real_account_creation_unlock_date) {
                 setShouldShowCooldownModal(true);
             } else {
-                openRealAccountSignup('maltainvest');
+                openRealAccountSignup(Jurisdiction.MALTA_INVEST);
             }
         } else {
             createRealTradingAccount();

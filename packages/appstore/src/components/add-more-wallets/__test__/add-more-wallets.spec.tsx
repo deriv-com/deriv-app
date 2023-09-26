@@ -1,8 +1,8 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import AddMoreWallets from '../add-more-wallets';
 import { APIProvider } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import AddMoreWallets from '../add-more-wallets';
 
 jest.mock('../wallet-add-card', () => {
     const AddWalletCard = () => <div>AddWalletCard</div>;
@@ -11,7 +11,7 @@ jest.mock('../wallet-add-card', () => {
 
 jest.mock('../carousel-container', () => {
     const CarouselContainer = ({ children }: React.PropsWithChildren) => (
-        <div data-testid='dt-carousel-container'>{children}</div>
+        <div data-testid='dt_carousel_container'>{children}</div>
     );
     return CarouselContainer;
 });
@@ -113,7 +113,7 @@ describe('AddMoreWallets', () => {
         });
 
         render(<AddMoreWallets />, { wrapper: wrapper(mock) });
-        expect(screen.getByTestId('dt-carousel-container')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_carousel_container')).toBeInTheDocument();
     });
 
     it('should render the wallet add card', () => {

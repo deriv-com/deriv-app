@@ -1,6 +1,6 @@
-import debounce from 'lodash.debounce';
-import { action, makeObservable, observable, reaction } from 'mobx';
 import React from 'react';
+import debounce from 'lodash.debounce';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { StaticUrl } from '@deriv/components';
 import {
     LocalStore,
@@ -48,39 +48,40 @@ export default class NotificationStore extends BaseStore {
         super({ root_store });
 
         makeObservable(this, {
-            is_notifications_visible: observable,
-            notifications: observable,
-            notification_messages: observable,
-            marked_notifications: observable,
-            push_notifications: observable,
-            client_notifications: observable,
-            should_show_popups: observable,
-            p2p_order_props: observable,
-            p2p_redirect_to: observable,
             addNotificationBar: action.bound,
             addNotificationMessage: action.bound,
             addNotificationMessageByKey: action.bound,
-            showCompletedOrderNotification: action.bound,
             addVerificationNotifications: action.bound,
+            client_notifications: observable,
             filterNotificationMessages: action.bound,
+            getP2pCompletedOrders: action.bound,
             handleClientNotifications: action.bound,
+            is_notifications_empty: computed,
+            is_notifications_visible: observable,
+            marked_notifications: observable,
             markNotificationMessage: action.bound,
+            notification_messages: observable,
+            notifications: observable,
+            p2p_completed_orders: observable,
+            p2p_order_props: observable,
+            p2p_redirect_to: observable,
+            push_notifications: observable,
             refreshNotifications: action.bound,
             removeAllNotificationMessages: action.bound,
-            removeNotifications: action.bound,
             removeNotificationByKey: action.bound,
             removeNotificationMessage: action.bound,
             removeNotificationMessageByKey: action.bound,
+            removeNotifications: action.bound,
             resetVirtualBalanceNotification: action.bound,
             setClientNotifications: action.bound,
             setP2POrderProps: action.bound,
             setP2PRedirectTo: action.bound,
             setShouldShowPopups: action.bound,
+            should_show_popups: observable,
+            showCompletedOrderNotification: action.bound,
             toggleNotificationsModal: action.bound,
             unmarkNotificationMessage: action.bound,
             updateNotifications: action.bound,
-            p2p_completed_orders: observable,
-            getP2pCompletedOrders: action.bound,
         });
 
         const debouncedGetP2pCompletedOrders = debounce(this.getP2pCompletedOrders, 1000);
@@ -132,6 +133,10 @@ export default class NotificationStore extends BaseStore {
         );
     }
 
+    get is_notifications_empty() {
+        return !this.notifications.length;
+    }
+
     addNotificationBar(message) {
         this.push_notifications.push(message);
         this.push_notifications = unique(this.push_notifications, 'msg_type');
@@ -152,6 +157,7 @@ export default class NotificationStore extends BaseStore {
 
                 if (is_existing_message) {
                     this.markNotificationMessage({ key: notification.key });
+                    return;
                 }
 
                 const sortFn = isMobile() ? sortNotificationsMobile : sortNotifications;
@@ -161,7 +167,7 @@ export default class NotificationStore extends BaseStore {
                     ['svg', 'p2p'].some(key => notification.key?.includes(key)) ||
                     (excluded_notifications && !excluded_notifications.includes(notification.key))
                 ) {
-                    this.updateNotifications(this.notification_messages);
+                    this.updateNotifications();
                 }
             }
         }
@@ -1513,8 +1519,8 @@ export default class NotificationStore extends BaseStore {
         this.marked_notifications = this.marked_notifications.filter(item => key !== item);
     }
 
-    updateNotifications(notifications_array) {
-        this.notifications = notifications_array.filter(message =>
+    updateNotifications() {
+        this.notifications = this.notification_messages.filter(message =>
             ['svg', 'p2p'].some(key => message.key?.includes(key))
                 ? message
                 : excluded_notifications && !excluded_notifications.includes(message.key)

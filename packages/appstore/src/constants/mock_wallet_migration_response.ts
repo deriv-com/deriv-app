@@ -14,7 +14,7 @@ const getMockWalletMigrationResponse = () => {
                         icon_type: 'fiat',
                         jurisdiction_title: 'SVG',
                         name: 'USD',
-                        gradient_class: `wallet-card__usd-bg`,
+                        gradient_class: 'wallet-card__usd-bg',
                     },
                     account_list: [
                         {
@@ -124,7 +124,7 @@ const getMockWalletMigrationResponse = () => {
                         icon_type: 'fiat',
                         jurisdiction_title: 'MALTA',
                         name: 'USD',
-                        gradient_class: `wallet-card__usd-bg`,
+                        gradient_class: 'wallet-card__usd-bg',
                     },
                     account_list: [
                         {
@@ -156,7 +156,7 @@ const getMockWalletMigrationResponse = () => {
                         icon_type: 'crypto',
                         jurisdiction_title: 'SVG',
                         name: 'Bitcoin',
-                        gradient_class: `wallet-card__btc-bg`,
+                        gradient_class: 'wallet-card__btc-bg',
                     },
                     account_list: [
                         {
@@ -175,7 +175,7 @@ const getMockWalletMigrationResponse = () => {
                         icon_type: 'crypto',
                         jurisdiction_title: 'SVG',
                         name: 'Ethereum',
-                        gradient_class: `wallet-card__eth-bg`,
+                        gradient_class: 'wallet-card__eth-bg',
                     },
                     account_list: [
                         {
@@ -194,7 +194,7 @@ const getMockWalletMigrationResponse = () => {
                         icon_type: 'crypto',
                         jurisdiction_title: 'SVG',
                         name: 'USD Coin',
-                        gradient_class: `wallet-card__usdc-bg`,
+                        gradient_class: 'wallet-card__usdc-bg',
                     },
                     account_list: [
                         {

@@ -6,6 +6,7 @@ import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
 import { FormikValues } from 'formik';
 import { getIDVDocuments } from '../Constants/idv-document-config';
 import { TServerError } from '../Types';
+import { LANGUAGE_CODES } from '../Constants/onfido';
 
 export const documentAdditionalError = (document_additional: string, document_additional_format: string) => {
     let error_message = null;
@@ -221,10 +222,10 @@ export const getOnfidoSupportedLocaleCode = (language_code: string) => {
     try {
         const code = language_code.toLowerCase().split('_');
         if (code[0] === 'id') {
-            return 'id_ID';
+            return LANGUAGE_CODES.ID;
         }
         return code.length > 1 ? `${code[0]}_${code[1].toUpperCase()}` : code[0];
     } catch (e) {
-        return 'en_US';
+        return LANGUAGE_CODES.EN;
     }
 };

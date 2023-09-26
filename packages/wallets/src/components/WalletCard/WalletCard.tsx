@@ -1,8 +1,8 @@
 import React from 'react';
 import { useWalletAccountsList } from '@deriv/api';
+import { WalletCardIcon } from '../WalletCardIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletListCardBadge } from '../WalletListCardBadge';
-import { WalletListCardIcon } from '../WalletListCardIcon';
 import './WalletCard.scss';
 
 type TProps = {
@@ -24,7 +24,7 @@ const WalletCard: React.FC<TProps> = ({ account }) => {
             >
                 <div className='wallets-card__details'>
                     <div className='wallets-card__details__top'>
-                        <WalletListCardIcon type={wallet_currency_type} />
+                        <WalletCardIcon type={wallet_currency_type} />
                         <div className='wallets-card__details-landing_company'>
                             {landing_company_name && (
                                 <WalletListCardBadge is_demo={account?.is_virtual} label={landing_company_name} />

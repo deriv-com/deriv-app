@@ -14,7 +14,6 @@ const mock = (): TStores & { is_mock: boolean } => {
         redirectOnClick: jest.fn(),
         setError: jest.fn(),
     };
-    const services_error = { code: '', message: '', type: '' };
     return {
         is_mock: true,
         client: {
@@ -118,6 +117,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 is_united_kingdom: false,
             },
             currency: '',
+            currencies_list: [{ text: '', value: '', has_tool_tip: false }],
             current_currency_type: '',
             current_fiat_currency: '',
             cfd_score: 0,
@@ -279,9 +279,9 @@ const mock = (): TStores & { is_mock: boolean } => {
             changeCurrentLanguage: jest.fn(),
             changeSelectedLanguage: jest.fn(),
             is_network_online: false,
+            services_error: {},
             server_time: undefined,
             is_language_changing: false,
-            services_error: {},
             is_socket_opened: false,
             setAppstorePlatform: jest.fn(),
             app_routing_history: [],
@@ -370,6 +370,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleShouldShowRealAccountsList: jest.fn(),
             is_reset_trading_password_modal_visible: false,
             setResetTradingPasswordModalOpen: jest.fn(),
+            vanilla_trade_type: 'VANILLALONGCALL',
         },
         traders_hub: {
             getAccount: jest.fn(),

@@ -26,7 +26,7 @@ export type TGeneralContractCardBodyProps = {
     current_focus?: string | null;
     error_message_alignment?: string;
     getCardLabels: TGetCardLables;
-    getContractById: (contract_id?: number) => TContractStore;
+    getContractById: (contract_id: number) => TContractStore;
     should_show_cancellation_warning: boolean;
     has_progress_slider: boolean;
     is_mobile: boolean;

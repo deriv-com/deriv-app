@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { SlideIn } from 'App/Components/Animations';
 import InfoBoxLongcode from './info-box-longcode.jsx';
-import ContractError from '../contract-error.jsx';
+import ContractError from '../contract-error';
 
 const InfoBox = ({ contract_info, error_message, removeError }) => {
     const is_ready = !!contract_info.longcode;

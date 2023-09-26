@@ -122,7 +122,7 @@ const ContractCardBody = ({
                 {...toggle_card_dialog_props}
             />
         );
-    } else if (is_accumulator) {
+    } else if (is_accumulator && indicative !== null) {
         card_body = (
             <AccumulatorCardBody
                 contract_info={contract_info}

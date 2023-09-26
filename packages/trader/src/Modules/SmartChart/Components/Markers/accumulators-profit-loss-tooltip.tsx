@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
@@ -6,13 +5,31 @@ import { Money, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { FastMarker } from 'Modules/SmartChart';
 import AccumulatorsProfitLossText from './accumulators-profit-loss-text';
+import { ProposalOpenContract } from '@deriv/api-types';
 import { isMobile } from '@deriv/shared';
+
+type TPickProposalOpenContract = Pick<
+    ProposalOpenContract,
+    'current_spot' | 'current_spot_time' | 'currency' | 'exit_tick' | 'exit_tick_time' | 'high_barrier' | 'is_sold'
+>;
+
+type TAccumulatorsProfitLossText = React.ComponentProps<typeof AccumulatorsProfitLossText>;
+
+type TAccumulatorsProfitLossTooltip = {
+    alignment?: string;
+    should_show_profit_text?: boolean;
+} & TPickProposalOpenContract &
+    TAccumulatorsProfitLossText;
+
+export type TRef = {
+    setPosition: (position: { epoch: number | null; price: number | null }) => void;
+};
 
 const AccumulatorsProfitLossTooltip = ({
     alignment = 'right',
+    className = 'sc-accumulators-profit-loss-tooltip',
     current_spot,
     current_spot_time,
-    className = 'sc-accumulators-profit-loss-tooltip',
     currency,
     exit_tick,
     exit_tick_time,
@@ -20,10 +37,10 @@ const AccumulatorsProfitLossTooltip = ({
     is_sold,
     profit,
     should_show_profit_text,
-}) => {
+}: TAccumulatorsProfitLossTooltip) => {
     const [is_tooltip_open, setIsTooltipOpen] = React.useState(false);
     const won = profit >= 0;
-    const tooltip_timeout = React.useRef(null);
+    const tooltip_timeout = React.useRef<ReturnType<typeof setTimeout>>();
 
     React.useEffect(() => {
         return () => {
@@ -38,7 +55,7 @@ const AccumulatorsProfitLossTooltip = ({
         }
     }, [is_sold]);
 
-    const onCloseDelayed = duration =>
+    const onCloseDelayed = (duration: number) =>
         setTimeout(() => {
             setIsTooltipOpen(false);
         }, duration);
@@ -55,16 +72,18 @@ const AccumulatorsProfitLossTooltip = ({
             : ['top', 'bottom'].find(el => el !== alignment);
     }, [alignment]);
 
-    const onRef = ref => {
+    const onRef = (ref: TRef | null): void => {
         if (ref) {
             if (!exit_tick) {
                 // this call will hide the marker:
                 ref.setPosition({ epoch: null, price: null });
             }
-            ref.setPosition({
-                epoch: +exit_tick_time,
-                price: +exit_tick,
-            });
+            if (exit_tick_time && exit_tick) {
+                ref.setPosition({
+                    epoch: +exit_tick_time,
+                    price: +exit_tick,
+                });
+            }
         }
     };
 
@@ -107,20 +126,6 @@ const AccumulatorsProfitLossTooltip = ({
             </CSSTransition>
         </FastMarker>
     ) : null;
-};
-
-AccumulatorsProfitLossTooltip.propTypes = {
-    alignment: PropTypes.string,
-    current_spot: PropTypes.number,
-    current_spot_time: PropTypes.number,
-    className: PropTypes.string,
-    currency: PropTypes.string,
-    exit_tick: PropTypes.number,
-    exit_tick_time: PropTypes.number,
-    high_barrier: PropTypes.string,
-    is_sold: PropTypes.number,
-    profit: PropTypes.number,
-    should_show_profit_text: PropTypes.bool,
 };
 
 export default React.memo(AccumulatorsProfitLossTooltip);

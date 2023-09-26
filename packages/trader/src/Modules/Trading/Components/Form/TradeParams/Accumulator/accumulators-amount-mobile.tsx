@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { AMOUNT_MAX_LENGTH, getDecimalPlaces } from '@deriv/shared';
@@ -8,7 +7,11 @@ import LabeledQuantityInputMobile from '../../LabeledQuantityInputMobile';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
-const AccumulatorsAmountMobile = observer(({ is_nativepicker }) => {
+type TAccumulatorsAmountMobile = {
+    is_nativepicker: boolean;
+};
+
+const AccumulatorsAmountMobile = observer(({ is_nativepicker }: TAccumulatorsAmountMobile) => {
     const { ui, client } = useStore();
     const { current_focus, setCurrentFocus } = ui;
     const { is_single_currency } = client;
@@ -45,9 +48,5 @@ const AccumulatorsAmountMobile = observer(({ is_nativepicker }) => {
         </>
     );
 });
-
-AccumulatorsAmountMobile.propTypes = {
-    is_nativepicker: PropTypes.bool,
-};
 
 export default AccumulatorsAmountMobile;

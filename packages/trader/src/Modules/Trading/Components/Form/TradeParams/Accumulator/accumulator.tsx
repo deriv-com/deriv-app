@@ -19,7 +19,7 @@ const Accumulator = observer(() => {
     } = useTraderStore();
 
     // splitting accumulator_range_list into rows containing 5 values each:
-    const arr_arr_numbers = accumulator_range_list.reduce((acc, _el, index) => {
+    const arr_arr_numbers: number[][] | undefined = accumulator_range_list?.reduce((acc: number[][], _el, index) => {
         if (index % 5 === 0) {
             acc.push(accumulator_range_list.slice(index, index + 5));
         }
@@ -27,7 +27,7 @@ const Accumulator = observer(() => {
     }, []);
     const has_error_or_not_loaded =
         proposal_info?.ACCU?.has_error || !proposal_info?.ACCU?.id || isEmptyObject(proposal_info);
-    if (!accumulator_range_list.length) return null;
+    if (!accumulator_range_list?.length) return null;
     return (
         <Fieldset
             className={classNames('trade-container__fieldset', 'accumulator')}

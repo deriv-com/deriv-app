@@ -1,13 +1,35 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { isCryptocurrency, getLimitOrderAmount, isValidToSell } from '@deriv/shared';
+import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 import ContractCardItem from './contract-card-item';
 import ToggleCardDialog from './toggle-card-dialog';
 import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay';
+import { ContractUpdate } from '@deriv/api-types';
+import { TToastConfig } from '../../types/contract.types';
+import { TGetCardLables } from '../../types/common.types';
+
+type TAccumulatorCardBody = {
+    addToast: (toast_config: TToastConfig) => void;
+    connectWithContractUpdate?: React.ComponentProps<typeof ToggleCardDialog>['connectWithContractUpdate'];
+    contract_info: TContractInfo;
+    contract_update?: ContractUpdate;
+    currency: Required<TContractInfo>['currency'];
+    current_focus?: string | null;
+    error_message_alignment?: string;
+    getCardLabels: TGetCardLables;
+    getContractById: React.ComponentProps<typeof ToggleCardDialog>['getContractById'];
+    indicative?: number;
+    is_sold: boolean;
+    onMouseLeave: () => void;
+    removeToast: (toast_id: string) => void;
+    setCurrentFocus: (value: string) => void;
+    status?: string;
+    is_positions?: boolean;
+};
 
 const AccumulatorCardBody = ({
     addToast,
@@ -26,11 +48,16 @@ const AccumulatorCardBody = ({
     setCurrentFocus,
     status,
     is_positions,
-}) => {
+}: TAccumulatorCardBody) => {
     const { buy_price, profit, limit_order, sell_price } = contract_info;
     const { take_profit } = getLimitOrderAmount(contract_update || limit_order);
     const is_valid_to_sell = isValidToSell(contract_info);
     const { CURRENT_STAKE, INITIAL_STAKE, TAKE_PROFIT, TOTAL_PROFIT_LOSS } = getCardLabels();
+    let is_won, is_loss;
+    if (profit) {
+        is_won = +profit > 0;
+        is_loss = +profit < 0;
+    }
 
     return (
         <React.Fragment>
@@ -41,8 +68,8 @@ const AccumulatorCardBody = ({
                 <ContractCardItem header={CURRENT_STAKE} className='dc-contract-card__current-stake'>
                     <div
                         className={classNames({
-                            'dc-contract-card--profit': +profit > 0,
-                            'dc-contract-card--loss': +profit < 0,
+                            'dc-contract-card--profit': is_won,
+                            'dc-contract-card--loss': is_loss,
                         })}
                     >
                         <Money amount={sell_price || indicative} currency={currency} />
@@ -59,8 +86,8 @@ const AccumulatorCardBody = ({
                 <ContractCardItem
                     header={TOTAL_PROFIT_LOSS}
                     is_crypto={isCryptocurrency(currency)}
-                    is_loss={+profit < 0}
-                    is_won={+profit > 0}
+                    is_loss={is_loss}
+                    is_won={is_won}
                 >
                     <Money amount={profit} currency={currency} />
                     <div
@@ -99,31 +126,12 @@ const AccumulatorCardBody = ({
                             'dc-contract-card__status--accumulator-mobile-positions': is_positions,
                         })}
                     >
-                        <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={+profit > 0} />
+                        <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={is_won} />
                     </div>
                 </MobileWrapper>
             )}
         </React.Fragment>
     );
-};
-
-AccumulatorCardBody.propTypes = {
-    addToast: PropTypes.func,
-    connectWithContractUpdate: PropTypes.func,
-    contract_info: PropTypes.object,
-    contract_update: PropTypes.object,
-    currency: PropTypes.string,
-    current_focus: PropTypes.string,
-    error_message_alignment: PropTypes.string,
-    getCardLabels: PropTypes.func,
-    getContractById: PropTypes.func,
-    indicative: PropTypes.number,
-    is_positions: PropTypes.bool,
-    is_sold: PropTypes.bool,
-    onMouseLeave: PropTypes.func,
-    removeToast: PropTypes.func,
-    setCurrentFocus: PropTypes.func,
-    status: PropTypes.string,
 };
 
 export default React.memo(AccumulatorCardBody);

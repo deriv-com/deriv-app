@@ -27,7 +27,7 @@ describe('Accumulator', () => {
         expect(screen.getByText('3%')).toBeInTheDocument();
         expect(screen.getByText('4%')).toBeInTheDocument();
         expect(screen.getByText('5%')).toBeInTheDocument();
-        expect(screen.getByText('1%').getAttribute('class')).toContain('--selected');
+        expect(screen.getByText('1%')).toHaveClass('number-selector__selection--selected');
     });
 
     it('3% growth_rate should be selected when 0.03 is a currently selected and stored growth_rate value', () => {
@@ -37,8 +37,18 @@ describe('Accumulator', () => {
                 <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
             ),
         });
-        expect(screen.getByText('3%').getAttribute('class')).toContain('--selected');
-        expect(screen.getByText('1%').getAttribute('class')).not.toContain('--selected');
+        expect(screen.getByText('3%')).toHaveClass('number-selector__selection--selected');
+        expect(screen.getByText('1%')).not.toHaveClass('number-selector__selection--selected');
+    });
+
+    it('component should return null if accumulator_range_list is empty', () => {
+        mock_connect_props.modules.trade.accumulator_range_list = [];
+        const { container } = render(<Accumulator />, {
+            wrapper: ({ children }) => (
+                <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
+            ),
+        });
+        expect(container).toBeEmptyDOMElement();
     });
 
     it('should not render the component if accumulator_range_list is empty', () => {

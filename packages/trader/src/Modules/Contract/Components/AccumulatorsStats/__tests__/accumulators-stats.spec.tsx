@@ -1,9 +1,10 @@
 import React from 'react';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import AccumulatorsStats, { ROW_SIZES } from '../accumulators-stats';
 import { TraderProviders } from '../../../../../trader-providers';
 import { mockStore } from '@deriv/stores';
+import userEvent from '@testing-library/user-event';
 
 const mock_connect_props = {
     modules: {
@@ -29,34 +30,34 @@ describe('AccumulatorsStats', () => {
     modal_root_el.setAttribute('id', 'modal_root');
 
     beforeEach(() => {
-        isMobile.mockReturnValue(false);
-        isDesktop.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(false);
+        (isDesktop as jest.Mock).mockReturnValue(true);
     });
 
     it('should render as expandable', () => {
-        const { container } = render(<AccumulatorsStats />, {
+        render(<AccumulatorsStats />, {
             wrapper: ({ children }) => (
                 <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
             ),
         });
-        expect(container.querySelector('.accordion-toggle-arrow')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_accordion-toggle-arrow')).toBeInTheDocument();
     });
     it('should render as non-expandable', () => {
-        const { container } = render(<AccumulatorsStats is_expandable={false} />, {
+        render(<AccumulatorsStats is_expandable={false} />, {
             wrapper: ({ children }) => (
                 <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
             ),
         });
-        expect(container.querySelector('.accordion-toggle-arrow')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('dt_accordion-toggle-arrow')).not.toBeInTheDocument();
     });
     it('should show manual after info icon is clicked', () => {
-        const { container } = render(<AccumulatorsStats />, {
+        render(<AccumulatorsStats />, {
             container: document.body.appendChild(modal_root_el),
             wrapper: ({ children }) => (
                 <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
             ),
         });
-        fireEvent.click(container.querySelector('.info'));
+        userEvent.click(screen.getByTestId('dt_ic_info_icon'));
         expect(screen.getByTestId('dt_accumulators_stats_manual_video')).toBeInTheDocument();
     });
     it('should render partial history values (tick counters) when initially collapsed in desktop', () => {
@@ -68,8 +69,8 @@ describe('AccumulatorsStats', () => {
         expect(screen.getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.DESKTOP_COLLAPSED);
     });
     it('should render partial history values (tick counters) when initially collapsed in mobile', () => {
-        isMobile.mockReturnValue(true);
-        isDesktop.mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
         render(<AccumulatorsStats />, {
             wrapper: ({ children }) => (
                 <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
@@ -77,23 +78,24 @@ describe('AccumulatorsStats', () => {
         });
         expect(screen.getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.MOBILE_COLLAPSED);
     });
+
     it('should expand in desktop when accordion_toggle_arrow is clicked', () => {
-        const { container } = render(<AccumulatorsStats />, {
+        render(<AccumulatorsStats />, {
             wrapper: ({ children }) => (
                 <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
             ),
         });
         expect(screen.getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.DESKTOP_COLLAPSED);
 
-        fireEvent.click(container.querySelector('.accordion-toggle-arrow'));
+        userEvent.click(screen.getByTestId('dt_accordion-toggle-arrow'));
         const row = screen.getAllByTestId('dt_accu_stats_history_row')[0];
         expect(within(row).getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.DESKTOP_EXPANDED);
         expect(screen.getAllByTestId('dt_accu_stats_history_counter').length).toEqual(20);
     });
     it('should show MobileDialog with full "Stay in history" in mobile when accordion_toggle_arrow is clicked', () => {
-        isMobile.mockReturnValue(true);
-        isDesktop.mockReturnValue(false);
-        const { container } = render(<AccumulatorsStats />, {
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        render(<AccumulatorsStats />, {
             container: document.body.appendChild(modal_root_el),
             wrapper: ({ children }) => (
                 <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
@@ -101,8 +103,8 @@ describe('AccumulatorsStats', () => {
         });
         expect(screen.getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.MOBILE_COLLAPSED);
 
-        fireEvent.click(container.querySelector('.accordion-toggle-arrow'));
-        const mobile_dialog = document.body.querySelector('.dc-mobile-dialog__accumulators-stats');
+        userEvent.click(screen.getByTestId('dt_accordion-toggle-arrow'));
+        const mobile_dialog = screen.getByTestId('dt_mobile_dialog');
         const row = within(mobile_dialog).getAllByTestId('dt_accu_stats_history_row')[0];
         expect(within(row).getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.MOBILE_EXPANDED);
         expect(within(mobile_dialog).getAllByTestId('dt_accu_stats_history_counter').length).toEqual(20);

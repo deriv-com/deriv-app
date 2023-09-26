@@ -32,11 +32,11 @@ const typeToWidthMapper = {
 const typesWithRoundedIcon = ['EUR', 'GBP', 'USD'];
 
 type TProps = {
-    size?: 'lg' | 'md' | 'sm' | 'xs';
+    size?: 'lg' | 'md' | 'sm' | 'xl';
     type: Omit<string, keyof typeof typeToIconMapper> | keyof typeof typeToIconMapper;
 };
 
-const WalletCardIcon: React.FC<TProps> = ({ size = 'md', type }) => {
+const WalletCardIcon: React.FC<TProps> = ({ size = 'lg', type }) => {
     const { isMobile } = useDevice();
 
     let iconType = type as keyof typeof typeToIconMapper;

@@ -23,7 +23,7 @@ const WalletTransferFromAccountCard: React.FC<TProps> = ({ account, type = 'moda
                     <WalletCurrencyCard
                         currency={account?.currency_config?.display_code || 'USD'}
                         isDemo={account?.is_virtual}
-                        size={isInput ? 'xs' : 'sm'}
+                        size={isInput ? 'sm' : 'md'}
                     />
                 </div>
                 <div className='wallets-transfer-form-account-card__details'>

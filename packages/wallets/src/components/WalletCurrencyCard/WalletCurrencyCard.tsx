@@ -6,10 +6,10 @@ import './WalletCurrencyCard.scss';
 type TProps = {
     currency: string;
     isDemo?: boolean;
-    size?: 'md' | 'sm' | 'xs';
+    size?: 'lg' | 'md' | 'sm';
 };
 
-const WalletCurrencyCard: React.FC<TProps> = ({ currency, isDemo, size = 'md' }: TProps) => {
+const WalletCurrencyCard: React.FC<TProps> = ({ currency, isDemo, size = 'lg' }: TProps) => {
     return (
         <WalletGradientBackground currency={currency} is_demo={isDemo} type='card'>
             <div className={`wallets-currency-card wallets-currency-card-${size}`}>

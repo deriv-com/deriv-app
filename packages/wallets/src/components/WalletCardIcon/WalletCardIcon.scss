@@ -1,21 +1,21 @@
 .wallets-card-icon {
-    &-xs {
+    &-sm {
         &--rounded {
             transform: scale(50%);
         }
     }
 
-    &-sm {
+    &-md {
         &--rounded {
             transform: scale(60%);
         }
     }
 
-    &-md {
+    &-lg {
         transform: scale(100%);
     }
 
-    &-lg {
+    &-xl {
         transform: scale(120%);
 
         @include mobile {

@@ -38,7 +38,7 @@ const WalletCashierHeader = () => {
                         <p className='wallets-cashier-header__info__top-left__balance'>{display_balance}</p>
                     </div>
                     <div className='wallets-cashier-header__info__top-right'>
-                        {wallet_currency_type && <WalletCardIcon size='lg' type={wallet_currency_type} />}
+                        {wallet_currency_type && <WalletCardIcon size='xl' type={wallet_currency_type} />}
                         <button
                             className='wallets-cashier-header__close-button'
                             onClick={() => history.push('/appstore/traders-hub')}

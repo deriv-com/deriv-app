@@ -9,7 +9,7 @@ type TStatus = keyof DetailsOfEachMT5LoginId;
 /**
  * A custom hook to check if the given status flag is present in the mt5_login_list of given account login id
  */
-const useIsMt5LoginListStatusPresent = (status: TStatus, account_login_id: string): boolean => {
+const useIsMt5LoginListStatusPresent = (status: TStatus, account_login_id: string) => {
     const { data: mt5_login_list } = useMT5AccountsList();
 
     return React.useMemo(

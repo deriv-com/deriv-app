@@ -19,7 +19,9 @@ const getHighlightedIconLabel = (
         ['financial_labuan', 'financial_vanuatu'].includes(market_type_shortcode) ||
         is_demo ||
         trading_platforms.platform === CFD_PLATFORMS.DXTRADE ||
-        selected_region === 'EU'
+        trading_platforms.platform === CFD_PLATFORMS.CTRADER ||
+        selected_region === 'EU' ||
+        (trading_platforms.platform === CFD_PLATFORMS.MT5 && market_type_shortcode === 'all_svg')
             ? localize('Forex')
             : localize('Forex: standard/micro');
 
@@ -74,11 +76,11 @@ const getHighlightedIconLabel = (
             }
         case 'all':
         default:
-            if (trading_platforms.platform === 'mt5') {
+            if (trading_platforms.platform === CFD_PLATFORMS.MT5) {
                 return [
                     { icon: 'Synthetics', text: localize('Synthetics'), highlighted: true },
                     { icon: 'Baskets', text: localize('Baskets'), highlighted: false },
-                    { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: true },
+                    { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: false },
                     { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
                     { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
                     { icon: 'Commodities', text: localize('Commodities'), highlighted: false },
@@ -122,6 +124,8 @@ const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
             return is_demo ? localize('Swap-Free Demo') : localize('Swap-Free - SVG');
         case 'dxtrade':
             return is_demo ? localize('Deriv X Demo') : localize('Deriv X');
+        case 'ctrader':
+            return is_demo ? localize('cTrader Demo') : localize('cTrader');
         default:
             return is_demo ? localize('CFDs Demo') : localize('CFDs');
     }
@@ -131,6 +135,7 @@ const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
 const getPlatformLabel = (shortcode?: string) => {
     switch (shortcode) {
         case 'dxtrade':
+        case 'ctrader':
         case 'CFDs':
             return localize('Other CFDs Platform');
         case 'mt5':
@@ -156,6 +161,8 @@ const getAccountIcon = (shortcode: string) => {
             return 'SwapFree';
         case 'dxtrade':
             return 'DerivX';
+        case 'ctrader':
+            return 'CTrader';
         default:
             return 'CFDs';
     }
@@ -313,6 +320,24 @@ const dxtrade_data: TModifiedTradingPlatformAvailableAccount = {
     platform: 'dxtrade',
 };
 
+const ctrader_data: TModifiedTradingPlatformAvailableAccount = {
+    market_type: 'all',
+    name: 'cTrader',
+    requirements: {
+        after_first_deposit: {
+            financial_assessment: [''],
+        },
+        compliance: {
+            mt5: [''],
+            tax_information: [''],
+        },
+        signup: [''],
+    },
+    shortcode: 'svg',
+    sub_account_type: '',
+    platform: 'ctrader',
+};
+
 // Check whether the POA POI status are completed for different jurisdictions
 const getAccountVerficationStatus = (
     market_type_shortcode: string,
@@ -391,6 +416,12 @@ const isDxtradeAccountAdded = (current_list: Record<string, TDetailsOfEachMT5Log
         return value.account_type === current_account_type && key.includes(CFD_PLATFORMS.DXTRADE);
     });
 
+const isCTraderAccountAdded = (current_list: Record<string, TDetailsOfEachMT5Loginid>, is_demo?: boolean) =>
+    Object.entries(current_list).some(([key, value]) => {
+        const current_account_type = is_demo ? 'demo' : 'real';
+        return value.account_type === current_account_type && key.includes(CFD_PLATFORMS.CTRADER);
+    });
+
 // Get the MT5 demo accounts of the user
 const getMT5DemoData = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
     const swap_free_demo_accounts = available_accounts.filter(
@@ -408,6 +439,10 @@ const getDxtradeDemoData = (available_accounts: TModifiedTradingPlatformAvailabl
     return available_accounts.filter(item => item.platform === CFD_PLATFORMS.DXTRADE);
 };
 
+const getCtraderDemoData = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
+    return available_accounts.filter(item => item.platform === CFD_PLATFORMS.CTRADER);
+};
+
 export {
     getHighlightedIconLabel,
     getJuridisctionDescription,
@@ -418,11 +453,14 @@ export {
     getSortedCFDAvailableAccounts,
     getEUAvailableAccounts,
     dxtrade_data,
+    ctrader_data,
     getHeaderColor,
     platfromsHeaderLabel,
     getAccountVerficationStatus,
     isMt5AccountAdded,
     isDxtradeAccountAdded,
+    isCTraderAccountAdded,
     getMT5DemoData,
     getDxtradeDemoData,
+    getCtraderDemoData,
 };

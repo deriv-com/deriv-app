@@ -1,21 +1,18 @@
 import React from 'react';
-import { useAuthorize } from '@deriv/api';
-import WalletsCarousel from './components/WalletCarousel';
-import WalletList from './components/WalletList';
-// import IcTest from './public/ic-test.svg';
-import './app-content.scss';
+import { useAuthorize, useCurrencyConfig } from '@deriv/api';
+import { Loader } from './components';
+import { Router } from './routes';
+import './AppContent.scss';
 
 const AppContent: React.FC = () => {
-    const { isSuccess } = useAuthorize();
+    const { isLoading: isAuthorizeLoading } = useAuthorize();
+    const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
-    if (!isSuccess) return <p>authorizing...</p>;
+    if (isAuthorizeLoading || isCurrencyConfigLoading) return <Loader />;
 
     return (
-        <div>
-            <div className='wallets-app-content-icon' />
-            {/* <IcTest width={25} height={25} /> */}
-            <WalletList />
-            <WalletsCarousel />
+        <div className='wallets-app'>
+            <Router />
         </div>
     );
 };

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useAuthorize } from '@deriv/api';
-import useCashierParam, { TCashierTabs } from '../../hooks/useCashierParam';
 import useDevice from '../../hooks/useDevice';
 import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
@@ -13,28 +12,28 @@ const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
     const buttons = [
         {
             icon: <IcCashierAdd />,
-            name: 'Deposit',
+            name: 'deposit',
             text: isDemo ? 'Reset balance' : 'Deposit',
         },
         {
             icon: <IcCashierWithdrawal />,
-            name: 'Withdraw',
+            name: 'withdraw',
             text: 'Withdraw',
         },
         {
             icon: <IcCashierTransfer />,
-            name: 'Transfer',
+            name: 'transfer',
             text: 'Transfer',
         },
         {
             icon: <IcCashierStatement />,
-            name: 'Transactions',
+            name: 'transactions',
             text: 'Transactions',
         },
-    ];
+    ] as const;
 
     // Filter out the "Withdraw" button when is_demo is true
-    const filteredButtons = isDemo ? buttons.filter(button => button.name !== 'Withdraw') : buttons;
+    const filteredButtons = isDemo ? buttons.filter(button => button.name !== 'withdraw') : buttons;
 
     return filteredButtons.map(button => ({
         ...button,
@@ -43,14 +42,14 @@ const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
 };
 
 type TProps = {
+    isActive: boolean;
     isDemo: boolean;
     loginid: string;
 };
 
-const WalletListCardActions: React.FC<TProps> = ({ isDemo, loginid }) => {
+const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { switchAccount } = useAuthorize();
-    const { getCashierParam } = useCashierParam();
     const { isMobile } = useDevice();
     const history = useHistory();
 
@@ -84,18 +83,16 @@ const WalletListCardActions: React.FC<TProps> = ({ isDemo, loginid }) => {
                     key={button.name}
                     onClick={async () => {
                         await switchAccount(loginid);
-                        history.push(
-                            `/appstore/traders-hub?${getCashierParam(button.name.toLowerCase() as TCashierTabs)}`
-                        );
+                        history.push(`/appstore/traders-hub/cashier/${button.name}`);
                     }}
                 >
                     {button.icon}
                     <span
                         className={`wallets-header__actions-label ${
-                            isDemo ? 'wallets-header__actions-label--active' : ''
+                            isActive ? 'wallets-header__actions-label--active' : ''
                         }`}
                     >
-                        {button.name}
+                        {button.text}
                     </span>
                 </button>
             ))}

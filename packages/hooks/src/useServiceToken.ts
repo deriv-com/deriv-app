@@ -1,5 +1,5 @@
-import { TSocketRequestPayload } from '../../types';
-import useFetch from '../useFetch';
+import { useQuery } from '@deriv/api';
+import { TSocketRequestPayload } from '@deriv/api/types';
 
 type TServiceTokenPayload = TSocketRequestPayload<'service_token'>['payload'];
 
@@ -10,7 +10,7 @@ type TServiceTokenPayload = TSocketRequestPayload<'service_token'>['payload'];
  * @returns response and its status
  */
 const useServiceToken = (payload: TServiceTokenPayload) => {
-    const { data, ...rest } = useFetch('service_token', {
+    const { data, ...rest } = useQuery('service_token', {
         payload,
         options: { retry: 3, enabled: Boolean(payload) },
     });

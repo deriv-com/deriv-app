@@ -1,19 +1,15 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import APIProvider from '../../APIProvider';
+import { useMutation } from '@deriv/api';
+import APIProvider from '@deriv/api/src/APIProvider';
 import useNotificationEvent from '../useNotificationEvent';
 
-jest.mock('@deriv/shared', () => ({
-    WS: {
-        send: jest.fn().mockResolvedValueOnce({
-            msg_type: 'notification_event',
-            echo_req: {},
-            notification_event: 1,
-        }),
-    },
-}));
-
 type TNotificationPayload = Parameters<ReturnType<typeof useNotificationEvent>['send']>[0];
+
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useMutation: jest.fn(),
+}));
 
 describe('useNotificationEvent', () => {
     afterEach(() => {
@@ -21,6 +17,12 @@ describe('useNotificationEvent', () => {
     });
 
     it('should return the notification event', async () => {
+        (useMutation as jest.Mock).mockReturnValueOnce({
+            data: {
+                notification_event: 1,
+            },
+            mutate: jest.fn(),
+        });
         const payload: TNotificationPayload = {
             category: 'authentication',
             event: 'poi_documents_uploaded',

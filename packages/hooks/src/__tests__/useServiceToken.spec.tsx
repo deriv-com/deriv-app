@@ -1,10 +1,13 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import APIProvider from '../../APIProvider';
-import useFetch from '../../useFetch';
+import { useQuery } from '@deriv/api';
+import APIProvider from '@deriv/api/src/APIProvider';
 import useServiceToken from '../useServiceToken';
 
-jest.mock('../../useFetch', () => jest.fn());
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useQuery: jest.fn(),
+}));
 
 type TServiceTokenPayload = Parameters<typeof useServiceToken>[0];
 
@@ -14,7 +17,7 @@ describe('useServiceToken', () => {
     });
 
     it('should return the service token', async () => {
-        (useFetch as jest.Mock).mockReturnValueOnce({
+        (useQuery as jest.Mock).mockReturnValueOnce({
             msg_type: 'service_token',
             service_token: {
                 onfido: {
@@ -43,7 +46,7 @@ describe('useServiceToken', () => {
             code: 'ApplicantError',
             message: 'Cannot create applicant',
         };
-        (useFetch as jest.Mock).mockReturnValueOnce({
+        (useQuery as jest.Mock).mockReturnValueOnce({
             error: error_message,
         });
 

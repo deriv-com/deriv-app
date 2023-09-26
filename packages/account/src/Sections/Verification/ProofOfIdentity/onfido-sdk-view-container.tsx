@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react';
 import { init, SdkHandle, SdkResponse, SupportedLanguages } from 'onfido-sdk-ui';
 import { CSSTransition } from 'react-transition-group';
-import { useNotificationEvent, useServiceToken, useSettings } from '@deriv/api';
+import { useSettings } from '@deriv/api';
 import { ResidenceList } from '@deriv/api-types';
 import { Loading, ThemedScrollbars } from '@deriv/components';
+import { useNotificationEvent, useServiceToken } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import ErrorMessage from '../../../Components/error-component';
 import getOnfidoPhrases from '../../../Constants/onfido-phrases';

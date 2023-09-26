@@ -5,13 +5,12 @@ import { isDesktop } from '@deriv/shared';
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import { buy_sell } from 'Constants/buy-sell';
 
 type TBuySellModalTitleProps = {
-    table_type: string;
+    is_buy?: boolean;
 };
 
-const BuySellModalTitle = ({ table_type }: TBuySellModalTitleProps) => {
+const BuySellModalTitle = ({ is_buy = false }: TBuySellModalTitleProps) => {
     const { general_store, buy_sell_store, my_profile_store } = useStores();
     const { selected_ad_state } = buy_sell_store;
     const { showModal } = useModalManagerContext();
@@ -44,7 +43,7 @@ const BuySellModalTitle = ({ table_type }: TBuySellModalTitleProps) => {
             }
             return <Localize i18n_default_text='Add payment method' />;
         }
-        if (table_type === buy_sell.BUY) {
+        if (is_buy) {
             return <Localize i18n_default_text='Buy {{ currency }}' values={{ currency: account_currency }} />;
         }
         return <Localize i18n_default_text='Sell {{ currency }}' values={{ currency: account_currency }} />;

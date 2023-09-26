@@ -51,7 +51,7 @@ describe('<BuySellModalTitle />', () => {
     it('should display Buy USD if table type is buy', () => {
         mock_store.buy_sell_store.table_type = 'buy';
 
-        render(<BuySellModalTitle />);
+        render(<BuySellModalTitle is_buy={true} />);
 
         expect(screen.getByText('Buy USD')).toBeInTheDocument();
     });

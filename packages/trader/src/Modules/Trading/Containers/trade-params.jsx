@@ -7,16 +7,16 @@ import BarrierSelector from 'Modules/Trading/Components/Form/TradeParams/Turbos/
 import Duration from 'Modules/Trading/Components/Form/TradeParams/Duration';
 import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit.jsx';
 import CancelDeal from 'Modules/Trading/Components/Form/TradeParams/Multiplier/cancel-deal';
-import Accumulator from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulator.jsx';
+import Accumulator from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulator';
 import StopLoss from 'Modules/Trading/Components/Form/TradeParams/Multiplier/stop-loss';
 import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit';
 import Expiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration';
-import AccumulatorsInfoDisplay from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-info-display.jsx';
+import AccumulatorsInfoDisplay from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-info-display';
 import Strike from 'Modules/Trading/Components/Form/TradeParams/strike.jsx';
 import TradeTypeTabs from 'Modules/Trading/Components/Form/TradeParams/trade-type-tabs';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 
 const TradeParams = observer(({ is_minimized }) => {
     const { form_components } = useTraderStore();

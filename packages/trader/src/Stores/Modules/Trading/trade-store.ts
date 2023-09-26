@@ -29,6 +29,8 @@ import {
     BARRIER_LINE_STYLES,
     TContractInfo,
 } from '@deriv/shared';
+import { RudderStack } from '@deriv/analytics';
+import type { TEvents } from '@deriv/analytics';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
@@ -62,6 +64,7 @@ import {
     TicksStreamResponse,
     TradingTimesRequest,
 } from '@deriv/api-types';
+import { STATE_TYPES, TPayload, getChartAnalyticsData } from './Helpers/chart';
 
 type TBarriers = Array<
     ChartBarrierStore & {
@@ -318,7 +321,6 @@ export default class TradeStore extends BaseStore {
             'barrier_2',
             'basis',
             'contract_start_type',
-            'contract_type',
             'duration',
             'duration_unit',
             'expiry_date',
@@ -335,14 +337,15 @@ export default class TradeStore extends BaseStore {
             'multiplier',
             'start_date',
             'start_time',
-            'symbol',
             'stop_loss',
             'take_profit',
             'is_trade_params_expanded',
         ];
+        const session_storage_properties = ['contract_type', 'symbol'];
         super({
             root_store,
             local_storage_properties,
+            session_storage_properties,
             store_name,
             validation_rules: getValidationRules(),
         });
@@ -1611,15 +1614,21 @@ export default class TradeStore extends BaseStore {
     };
 
     chartStateChange(state: string, option?: TChartStateChangeOption) {
-        const market_close_prop = 'isClosed';
-        switch (state) {
-            case 'MARKET_STATE_CHANGE':
-                if (option && market_close_prop in option) {
-                    if (this.is_trade_component_mounted && option[market_close_prop] !== this.is_market_closed)
-                        this.prepareTradeStore(false);
-                }
-                break;
-            default:
+        if (
+            state === STATE_TYPES.MARKET_STATE_CHANGE &&
+            this.is_trade_component_mounted &&
+            option?.isClosed &&
+            option.isClosed !== this.is_market_closed
+        ) {
+            this.prepareTradeStore(false);
+        }
+        const { data, event_type } = getChartAnalyticsData(state as keyof typeof STATE_TYPES, option) as TPayload;
+        if (data) {
+            RudderStack.track(event_type, {
+                ...data,
+                device_type: isMobile() ? 'mobile' : 'desktop',
+                form_name: 'default',
+            } as TEvents['ce_chart_types_form']);
         }
     }
 
@@ -1644,7 +1653,10 @@ export default class TradeStore extends BaseStore {
     }
 
     setContractPurchaseToastbox(response: Buy) {
-        const list = getAvailableContractTypes(this.contract_types_list, unsupported_contract_types_list);
+        const list = getAvailableContractTypes(
+            this.contract_types_list,
+            unsupported_contract_types_list
+        ) as Array<TToastBoxListItem>;
 
         this.contract_purchase_toast_box = {
             key: true,

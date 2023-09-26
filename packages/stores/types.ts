@@ -2,6 +2,7 @@ import type {
     AccountLimitsResponse,
     Authorize,
     ContractUpdate,
+    ContractUpdateHistory,
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
@@ -14,7 +15,6 @@ import type {
     SetFinancialAssessmentRequest,
     SetFinancialAssessmentResponse,
     StatesList,
-    ContractUpdateHistory,
     Transaction,
 } from '@deriv/api-types';
 import type { Moment } from 'moment';
@@ -177,7 +177,7 @@ type TMenuItem = {
 
 type TAddToastProps = {
     key?: string;
-    content: React.ReactNode;
+    content: string | React.ReactNode;
     timeout?: number;
     is_bottom?: boolean;
     type?: string;
@@ -188,12 +188,12 @@ type TButtonProps = {
     text: string;
 };
 
+type TActionProps = TButtonProps & {
+    route?: string;
+};
+
 type TNotificationMessage = {
-    action?: {
-        onClick: () => void;
-        route?: string;
-        text: string;
-    };
+    action?: TActionProps;
     className?: string;
     cta_btn?: TButtonProps;
     header_popup?: string;
@@ -209,6 +209,7 @@ type TNotificationMessage = {
     primary_btn?: TButtonProps;
     secondary_btn?: TButtonProps;
     should_hide_close_btn?: boolean;
+    should_show_again?: boolean;
     timeout?: number;
     timeoutMessage?: (remaining: number | string) => string;
     type: string;
@@ -240,8 +241,18 @@ type TDXTraderStatusServerType = Record<'all' | 'demo' | 'real', number>;
 
 type TMt5StatusServer = Record<'demo' | 'real', TMt5StatusServerType[]>;
 
+type TCountryStandpoint = {
+    is_belgium: boolean;
+    is_france: boolean;
+    is_isle_of_man: boolean;
+    is_other_eu: boolean;
+    is_rest_of_eu: boolean;
+    is_united_kingdom: boolean;
+};
+
 type TClientStore = {
     fetchStatesList: () => Promise<StatesList>;
+    account_type: string;
     accounts: { [k: string]: TActiveAccount };
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
@@ -257,6 +268,7 @@ type TClientStore = {
     can_change_fiat_currency: boolean;
     cfd_score: number;
     setCFDScore: (score: number) => void;
+    country_standpoint: TCountryStandpoint;
     currency: string;
     currencies_list: { text: string; value: string; has_tool_tip?: boolean }[];
     current_currency_type?: string;
@@ -398,14 +410,14 @@ type TClientStore = {
 };
 
 type TCommonStoreError = {
-    app_routing_history: TAppRoutingHistory[];
+    app_routing_history?: TAppRoutingHistory[];
     header: string | JSX.Element;
     message: string | JSX.Element;
     redirect_label: string;
-    redirect_to: string;
+    redirect_to?: string;
     redirectOnClick: (() => void) | null;
-    setError: (has_error: boolean, error: React.ReactNode | null) => void;
-    should_clear_error_on_click: boolean;
+    setError?: (has_error: boolean, error: React.ReactNode | null) => void;
+    should_clear_error_on_click?: boolean;
     should_show_refresh: boolean;
     type?: string;
 };
@@ -440,18 +452,22 @@ type TCommonStore = {
 
 type TUiStore = {
     addToast: (toast_config: TAddToastProps) => void;
+    account_switcher_disabled_message: string;
     app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;
     current_focus: string | null;
     disableApp: () => void;
     enableApp: () => void;
     has_only_forward_starting_contracts: boolean;
     has_real_account_signup_ended: boolean;
+    header_extension: JSX.Element | null;
+    is_account_settings_visible: boolean;
     is_loading: boolean;
     is_cashier_visible: boolean;
     is_chart_countdown_visible: boolean;
     is_closing_create_real_account_modal: boolean;
     is_dark_mode_on: boolean;
     is_reports_visible: boolean;
+    is_route_modal_on: boolean;
     is_language_settings_modal_on: boolean;
     is_link_expired_modal_visible: boolean;
     is_mobile: boolean;
@@ -464,6 +480,18 @@ type TUiStore = {
     onChangeUiStore: ({ name, value }: { name: string; value: number | null }) => void;
     notification_messages_ui: React.ElementType;
     setChartCountdown: (value: boolean) => void;
+    populateFooterExtensions: (
+        footer_extensions:
+            | [
+                  {
+                      position?: string;
+                      Component?: React.FunctionComponent;
+                      has_right_separator?: boolean;
+                  }
+              ]
+            | []
+    ) => void;
+    setAppContentsScrollRef: (ref: React.MutableRefObject<null | HTMLDivElement>) => void;
     setCurrentFocus: (value: string | null) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setHasOnlyForwardingContracts: (has_only_forward_starting_contracts: boolean) => void;
@@ -479,6 +507,7 @@ type TUiStore = {
     setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: Omit<string, TRoutes> | TRoutes) => void;
     toggleAccountsDialog: () => void;
+    toggleAccountSettings: (props?: boolean) => void;
     toggleCashier: () => void;
     toggleLanguageSettingsModal: () => void;
     toggleLinkExpiredModal: (state_change: boolean) => void;
@@ -518,18 +547,6 @@ type TUiStore = {
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     purchase_states: boolean[];
     setShouldShowCooldownModal: (value: boolean) => void;
-    setAppContentsScrollRef: (ref: React.MutableRefObject<null | HTMLDivElement>) => void;
-    populateFooterExtensions: (
-        footer_extensions:
-            | [
-                  {
-                      position?: string;
-                      Component?: React.FunctionComponent;
-                      has_right_separator?: boolean;
-                  }
-              ]
-            | []
-    ) => void;
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
 };
 
@@ -674,18 +691,29 @@ type TNotificationStore = {
     addNotificationMessage: (message: TNotification) => void;
     addNotificationMessageByKey: (key: string) => void;
     client_notifications: object;
+    is_notifications_empty: boolean;
+    is_notifications_visible: boolean;
     filterNotificationMessages: () => void;
+    notifications: TNotificationMessage[];
     refreshNotifications: () => void;
+    removeNotifications: (should_close_persistent: boolean) => void;
     removeNotificationByKey: ({ key }: { key: string }) => void;
     removeNotificationMessage: ({ key, should_show_again }: { key: string; should_show_again?: boolean }) => void;
+    removeNotificationMessageByKey: ({ key }: { key: string }) => void;
     setP2POrderProps: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setP2PRedirectTo: () => void;
+    toggleNotificationsModal: () => void;
 };
 
 type TBalance = {
     currency: string;
     balance: number;
+};
+
+type TModalData = {
+    active_modal: string;
+    data: Record<string, unknown>;
 };
 
 type TTradersHubStore = {
@@ -705,6 +733,7 @@ type TTradersHubStore = {
     };
     is_low_risk_cr_eu_real: boolean;
     is_eu_user: boolean;
+    setIsOnboardingVisited: (is_visited: boolean) => void;
     show_eu_related_content: boolean;
     setTogglePlatformType: (platform_type: string) => void;
     is_real: boolean;
@@ -713,6 +742,7 @@ type TTradersHubStore = {
     toggleRegulatorsCompareModal: () => void;
     selected_region: string;
     openFailedVerificationModal: (selected_account_type: string) => void;
+    modal_data: TModalData;
     multipliers_account_status: string;
     financial_restricted_countries: boolean;
     selected_account_type: string;

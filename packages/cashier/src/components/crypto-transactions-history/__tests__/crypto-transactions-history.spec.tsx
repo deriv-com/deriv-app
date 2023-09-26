@@ -62,7 +62,7 @@ describe('<CryptoTransactionsHistory />', () => {
         );
     });
 
-    it('should show the loader when is_loading is equal "true"', () => {
+    it('should show the loader when isLoading is equal "true"', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useSubscription
         mockUseSubscription.mockReturnValue({
             data: {
@@ -84,7 +84,7 @@ describe('<CryptoTransactionsHistory />', () => {
                     ],
                 },
             },
-            is_loading: true,
+            isLoading: true,
             subscribe: jest.fn(),
         });
 

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { InputWithCheckbox } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { TTradeStore } from 'Types';

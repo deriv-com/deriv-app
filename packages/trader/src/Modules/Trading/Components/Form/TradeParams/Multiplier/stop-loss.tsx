@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { InputWithCheckbox } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import { isDesktop } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';

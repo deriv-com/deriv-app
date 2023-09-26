@@ -1,11 +1,17 @@
-import React from 'react';
-import { useSortedMT5Accounts } from '@deriv/api';
+import React, { useMemo } from 'react';
+import { useActiveWalletAccount, useSortedMT5Accounts } from '@deriv/api';
 import { AddedMT5AccountsList } from '../AddedMT5AccountsList';
 import { AvailableMT5AccountsList } from '../AvailableMT5AccountsList';
+import { GetMoreMT5Accounts } from '../GetMoreMT5Accounts';
 import './MT5PlatformsList.scss';
 
 const MT5PlatformsList: React.FC = () => {
     const { data } = useSortedMT5Accounts();
+    const { data: activeWallet } = useActiveWalletAccount();
+
+    const hasMT5Account = useMemo(() => {
+        return data?.some(account => account.is_added);
+    }, [data]);
 
     if (!data) return <span className='wallets-mt5-loader' />;
 
@@ -30,6 +36,7 @@ const MT5PlatformsList: React.FC = () => {
                         />
                     );
                 })}
+                {hasMT5Account && !activeWallet?.is_virtual && <GetMoreMT5Accounts />}
             </div>
         </React.Fragment>
     );

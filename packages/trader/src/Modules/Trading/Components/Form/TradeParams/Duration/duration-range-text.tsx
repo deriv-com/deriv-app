@@ -6,22 +6,20 @@ import { Localize } from '@deriv/translations';
 type TDurationRangeText = {
     min: string;
     max: string;
-    duration_unit: string;
+    duration_unit_text: string;
 };
 
-const DurationRangeText = ({ min, max, duration_unit }: TDurationRangeText) => {
-    return (
-        <Text as='div' size='xxxs' line_height='s' className='range-text-container'>
-            <Localize
-                i18n_default_text='Range: {{min}} - {{max}} {{duration_unit}} '
-                values={{
-                    min,
-                    max: addComma(max),
-                    duration_unit,
-                }}
-            />
-        </Text>
-    );
-};
+const DurationRangeText = ({ min, max, duration_unit_text }: TDurationRangeText) => (
+    <Text as='div' size='xxxs' line_height='s' className='range-text-container'>
+        <Localize
+            i18n_default_text='Range: {{min}} - {{max}} {{duration_unit}} '
+            values={{
+                min: addComma(min),
+                max: addComma(max),
+                duration_unit_text,
+            }}
+        />
+    </Text>
+);
 
 export default DurationRangeText;

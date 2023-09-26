@@ -116,7 +116,7 @@ const AdvancedDuration = observer(
                                 <DurationRangeText
                                     min={min}
                                     max={max}
-                                    duration_unit={getUnitMap()[advanced_duration_unit].name_plural}
+                                    duration_unit_text={getUnitMap()[advanced_duration_unit].name_plural}
                                 />
                             )}
                             {advanced_duration_unit === 'd' && (

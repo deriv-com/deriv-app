@@ -190,21 +190,14 @@ const Numbers = observer(
             validateDuration(num);
         };
 
+        const fixed_date = !has_error ? setExpiryDate(expiry_epoch, duration_values?.d_duration) : '';
+        const duration_unit_text = getUnitMap()[duration_unit].name_plural;
+
         return (
             <div className='trade-params__amount-keypad'>
                 <div className='text-container'>
-                    {is_vanilla && (
-                        <DurationRangeText
-                            min={min}
-                            max={max}
-                            duration_unit={getUnitMap()[duration_unit].name_plural}
-                        />
-                    )}
-                    {show_expiry && (
-                        <ExpiryText
-                            fixed_date={!has_error ? setExpiryDate(expiry_epoch, duration_values?.d_duration) : ''}
-                        />
-                    )}
+                    {is_vanilla && <DurationRangeText min={min} max={max} duration_unit_text={duration_unit_text} />}
+                    {show_expiry && <ExpiryText fixed_date={fixed_date} />}
                 </div>
                 <Numpad
                     value={selected_duration}

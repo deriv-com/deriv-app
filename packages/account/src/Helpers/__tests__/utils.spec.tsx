@@ -239,6 +239,10 @@ describe('getOnfidoSupportedLocaleCode', () => {
         expect(getOnfidoSupportedLocaleCode('DE')).toEqual('de');
     });
 
+    it('should return the correct language tag for Indonesian', () => {
+        expect(getOnfidoSupportedLocaleCode('ID')).toEqual('id_ID');
+    });
+
     it('should return the correct language tag for Chinese', () => {
         expect(getOnfidoSupportedLocaleCode('Zh_CN')).toEqual('zh_CN');
     });

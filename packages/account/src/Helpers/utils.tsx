@@ -219,11 +219,11 @@ export const convertAlpha3toAlpha2 = (country_code: string) =>
  */
 export const getOnfidoSupportedLocaleCode = (language_code: string) => {
     try {
-        const code = language_code.split('_');
-        if (code[0] === 'ID') {
+        const code = language_code.toLowerCase().split('_');
+        if (code[0] === 'id') {
             return 'id_ID';
         }
-        return code.length > 1 ? `${code[0].toLowerCase()}_${code[1].toUpperCase()}` : code[0].toLowerCase();
+        return code.length > 1 ? `${code[0]}_${code[1].toUpperCase()}` : code[0];
     } catch (e) {
         return 'en_US';
     }

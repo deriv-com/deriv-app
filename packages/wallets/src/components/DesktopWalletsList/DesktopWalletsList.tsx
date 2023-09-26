@@ -14,6 +14,7 @@ const DesktopWalletsList: React.FC = () => {
             {wallets?.map(wallet => {
                 return (
                     <WalletsAccordion
+                        isDemo={wallet.is_virtual}
                         isOpen={wallet.is_active}
                         key={`wallets-accordion-${wallet.loginid}`}
                         onToggle={() => switchAccount(wallet.loginid)}
@@ -22,9 +23,9 @@ const DesktopWalletsList: React.FC = () => {
                                 badge={wallet.landing_company_name}
                                 balance={wallet.display_balance}
                                 currency={wallet.currency_config?.display_code || 'USD'}
+                                isActive={wallet.is_active}
                                 isDemo={wallet.is_virtual}
                                 loginid={wallet.loginid}
-                                walletType={wallet.wallet_currency_type}
                             />
                         )}
                     >

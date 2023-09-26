@@ -1,7 +1,7 @@
 import React from 'react';
 import { Collapsible } from '@deriv/components';
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
-import AllowEqualsMobile from 'Modules/Trading/Containers/allow-equals.jsx';
+import AllowEqualsMobile from 'Modules/Trading/Containers/allow-equals';
 import {
     hasCallPutEqual,
     hasDurationForCallPutEqual,
@@ -14,7 +14,7 @@ import {
 import AccumulatorsAmountMobile from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-amount-mobile.jsx';
 import AccumulatorsInfoDisplay from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-info-display.jsx';
 import { BarrierMobile, LastDigitMobile } from 'Modules/Trading/Containers/trade-params-mobile.jsx';
-import ContractType from 'Modules/Trading/Containers/contract-type.jsx';
+import ContractType from 'Modules/Trading/Containers/contract-type';
 import MobileWidget from 'Modules/Trading/Components/Elements/mobile-widget.jsx';
 import Purchase from 'Modules/Trading/Containers/purchase';
 import RiskManagementInfo from 'Modules/Trading/Components/Elements/Multiplier/risk-management-info.jsx';

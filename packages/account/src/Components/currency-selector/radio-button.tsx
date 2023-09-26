@@ -63,6 +63,7 @@ const RadioButton = ({
     label,
     second_line_label,
     onClick,
+    className,
     ...props
 }: TRadioButton) => {
     return (
@@ -76,7 +77,7 @@ const RadioButton = ({
                 onChange={onChange}
                 onBlur={onBlur}
                 disabled={props.selected}
-                className={classNames('currency-list__radio-button')}
+                className={classNames(className, 'currency-list__radio-button')}
                 {...props}
             />
             <label

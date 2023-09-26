@@ -26,25 +26,10 @@ const marketTypeDetailsMapper = {
 
 const MT5AccountType: React.FC = () => {
     return (
-        <div className='wallets-mt5-account-type'>
-            <div className='wallets-mt5-account-type-header'>
-                <div className='wallets-mt5-account-type-header-text'>Select Deriv MT5’s account type</div>
-            </div>
-            <div className='wallets-mt5-account-type-content'>
-                {Object.entries(marketTypeDetailsMapper).map(([key, value]) => (
-                    <MT5AccountTypeCard
-                        description={value.description}
-                        icon={value.icon}
-                        key={key}
-                        title={value.title}
-                    />
-                ))}
-            </div>
-            <div className='wallets-mt5-account-type-footer'>
-                <div className='wallets-mt5-account-type-footer-button'>
-                    <p className='wallets-mt5-account-type-footer-button-text'>Next</p>
-                </div>
-            </div>
+        <div className='wallets-mt5-account-type-content'>
+            {Object.entries(marketTypeDetailsMapper).map(([key, value]) => (
+                <MT5AccountTypeCard description={value.description} icon={value.icon} key={key} title={value.title} />
+            ))}
         </div>
     );
 };

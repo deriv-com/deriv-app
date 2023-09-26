@@ -48,7 +48,7 @@ const PlatformIconsAndDescriptions = (
                         components={[
                             <span
                                 key={0}
-                                className={platform === CFD_PLATFORMS.CTRADER ? 'cfd-trade-modal--tag' : ''}
+                                className={platform === CFD_PLATFORMS.CTRADER && is_demo ? 'cfd-trade-modal--tag' : ''}
                             />,
                         ]}
                     />

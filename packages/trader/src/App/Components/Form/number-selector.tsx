@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 
 type TNumberSelector = {
-    arr_arr_numbers: number[][];
+    arr_arr_numbers?: number[][];
     name: string;
     onChange: (new_values: {
         target: {
@@ -35,24 +35,25 @@ const NumberSelector = ({
 
     return (
         <div className='number-selector'>
-            {arr_arr_numbers.map((arr_numbers, idx) => (
-                <div className='number-selector__row' key={idx.toString() + arr_numbers?.[0]}>
-                    {arr_numbers.map(i => (
-                        <span
-                            key={i}
-                            className={classNames('number-selector__selection', {
-                                'number-selector__selection--selected': selected_number === i,
-                                'number-selector__selection--percentage': should_show_in_percents,
-                                'number-selector__selection--disabled': is_disabled,
-                            })}
-                            data-value={i}
-                            onClick={handleSelect}
-                        >
-                            {should_show_in_percents ? `${i * 100}%` : i}
-                        </span>
-                    ))}
-                </div>
-            ))}
+            {arr_arr_numbers &&
+                arr_arr_numbers.map((arr_numbers, idx) => (
+                    <div className='number-selector__row' key={idx.toString() + arr_numbers?.[0]}>
+                        {arr_numbers.map(i => (
+                            <span
+                                key={i}
+                                className={classNames('number-selector__selection', {
+                                    'number-selector__selection--selected': selected_number === i,
+                                    'number-selector__selection--percentage': should_show_in_percents,
+                                    'number-selector__selection--disabled': is_disabled,
+                                })}
+                                data-value={i}
+                                onClick={handleSelect}
+                            >
+                                {should_show_in_percents ? `${i * 100}%` : i}
+                            </span>
+                        ))}
+                    </div>
+                ))}
         </div>
     );
 };

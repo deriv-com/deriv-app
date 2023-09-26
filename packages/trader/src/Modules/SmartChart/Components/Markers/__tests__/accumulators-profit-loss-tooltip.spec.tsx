@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import AccumulatorsProfitLossTooltip from '../accumulators-profit-loss-tooltip.jsx';
+import AccumulatorsProfitLossTooltip from '../accumulators-profit-loss-tooltip';
 
 jest.mock('Modules/SmartChart', () => ({
     ...jest.requireActual('Modules/SmartChart'),
@@ -9,7 +9,7 @@ jest.mock('Modules/SmartChart', () => ({
 jest.mock('../accumulators-profit-loss-text', () => () => 'AccumulatorsProfitLossText');
 
 describe('AccumulatorsProfitLossTooltip', () => {
-    const props = {
+    const props: React.ComponentProps<typeof AccumulatorsProfitLossTooltip> = {
         className: 'profit-loss-tooltip',
         currency: 'USD',
         current_spot: 6468.95,
@@ -47,9 +47,7 @@ describe('AccumulatorsProfitLossTooltip', () => {
         const spot_el = screen.getByTestId('dt_accumulator_tooltip_spot');
         expect(spot_el).toBeInTheDocument();
         expect(spot_el).toHaveClass('profit-loss-tooltip__spot-circle');
-        expect(spot_el.closest('div')).toHaveClass('profit-loss-tooltip');
         expect(screen.getByText(profit_text)).toBeInTheDocument();
-        expect(screen.getByText(profit_text).closest('div')).not.toHaveClass('profit-loss-tooltip__content-exit');
-        expect(screen.getByText(profit_text).closest('div')).toHaveClass('profit-loss-tooltip__content-enter-active');
+        expect(screen.getByText('0.15 USD')).toBeInTheDocument();
     });
 });

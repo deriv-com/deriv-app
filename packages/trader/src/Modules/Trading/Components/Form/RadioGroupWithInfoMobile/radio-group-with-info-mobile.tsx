@@ -1,5 +1,29 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { RadioGroup, Popover } from '@deriv/components';
+
+type TItemsList = {
+    text: string;
+    value: number;
+};
+
+type TRadioGroupWithInfoMobile = {
+    items_list?: TItemsList[];
+    contract_name: string;
+    current_value_object: {
+        name: string;
+        value: number;
+    };
+    onChange: (event: {
+        target: {
+            name: string;
+            value: number;
+        };
+    }) => void;
+    info: React.ComponentProps<typeof Popover>['message'];
+    is_tooltip_disabled?: boolean;
+    popover_alignment?: React.ComponentProps<typeof Popover>['alignment'];
+    toggleModal: () => void;
+};
 
 const RadioGroupWithInfoMobile = ({
     items_list,
@@ -10,8 +34,8 @@ const RadioGroupWithInfoMobile = ({
     is_tooltip_disabled = false,
     popover_alignment = 'right',
     toggleModal,
-}) => {
-    const onValueChange = e => {
+}: TRadioGroupWithInfoMobile) => {
+    const onValueChange = (e: ChangeEvent<HTMLInputElement>) => {
         onChange({
             target: {
                 name: current_value_object.name,
@@ -30,7 +54,7 @@ const RadioGroupWithInfoMobile = ({
                     icon='info'
                     id={`dt_${contract_name}-stake__tooltip`}
                     is_bubble_hover_enabled
-                    zIndex={9999}
+                    zIndex='9999'
                     message={info}
                 />
             </div>
@@ -40,8 +64,8 @@ const RadioGroupWithInfoMobile = ({
                 selected={!Number.isNaN(current_value_object.value) ? current_value_object.value?.toString() : ''}
                 onToggle={onValueChange}
             >
-                {items_list.map(({ text, value }) => (
-                    <RadioGroup.Item key={value} id={text} label={text} value={value?.toString()} />
+                {items_list?.map(({ text, value }) => (
+                    <RadioGroup.Item key={value} id={text} label={text} value={value?.toString()} disabled={false} />
                 ))}
             </RadioGroup>
         </>

@@ -5,13 +5,16 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { getGrowthRatePercentage, getTickSizeBarrierPercentage, isEmptyObject } from '@deriv/shared';
 import MultiplierOptions from 'Modules/Trading/Containers/Multiplier/multiplier-options.jsx';
 import RadioGroupWithInfoMobile from 'Modules/Trading/Components/Form/RadioGroupWithInfoMobile';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 
-const RadioGroupOptionsModal = observer(({ is_open, modal_title, toggleModal }) => {
+type TRadioGroupOptionsModal = {
+    is_open: boolean;
+    modal_title: string;
+    toggleModal: () => void;
+};
+
+const RadioGroupOptionsModal = observer(({ is_open, modal_title, toggleModal }: TRadioGroupOptionsModal) => {
     const { accumulator_range_list, growth_rate, onChange, tick_size_barrier, proposal_info } = useTraderStore();
-    const {
-        ui: { enableApp, disableApp },
-    } = useStore();
 
     // Fix to prevent iOS from zooming in erratically on quick taps
     usePreventIOSZoom();
@@ -23,11 +26,9 @@ const RadioGroupOptionsModal = observer(({ is_open, modal_title, toggleModal }) 
             <Modal
                 id='dt_trade_parameters_mobile'
                 className='trade-params'
-                enableApp={enableApp}
                 is_open={is_open}
                 is_title_centered
                 should_header_stick_body={false}
-                disableApp={disableApp}
                 toggleModal={toggleModal}
                 height='auto'
                 width='calc(100vw - 32px)'
@@ -35,6 +36,7 @@ const RadioGroupOptionsModal = observer(({ is_open, modal_title, toggleModal }) 
             >
                 <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='48px'>
                     {modal_title === localize('Multiplier') ? (
+                        // @ts-expect-error should be gone after MultiplierOptions is converted to typescript
                         <MultiplierOptions toggleModal={toggleModal} />
                     ) : (
                         <RadioGroupWithInfoMobile
@@ -48,7 +50,7 @@ const RadioGroupOptionsModal = observer(({ is_open, modal_title, toggleModal }) 
                                 }
                             )}
                             is_tooltip_disabled={has_error_or_not_loaded}
-                            items_list={accumulator_range_list.map(value => ({
+                            items_list={accumulator_range_list?.map(value => ({
                                 text: `${getGrowthRatePercentage(value)}%`,
                                 value,
                             }))}

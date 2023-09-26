@@ -20,7 +20,7 @@ type TResultOverlayProps = {
 
 type TResultStatusIcon = {
     getCardLabels: TGetCardLables;
-    is_contract_won: boolean;
+    is_contract_won?: boolean;
 };
 
 export const ResultStatusIcon = ({ getCardLabels, is_contract_won }: TResultStatusIcon) => (

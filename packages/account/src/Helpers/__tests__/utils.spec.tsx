@@ -10,6 +10,7 @@ import {
     isFieldImmutable,
     preventEmptyClipboardPaste,
     shouldShowIdentityInformation,
+    getIETFLanguageTag,
 } from '../utils';
 
 describe('generatePlaceholderText', () => {
@@ -230,5 +231,23 @@ describe('isDocumentNumberValid', () => {
         };
         const errorMessage = isDocumentNumberValid('08123456F753', mock_document_type);
         expect(errorMessage).toBeUndefined();
+    });
+});
+
+describe('getIETFLanguageTag', () => {
+    it('should return the correct language tag for German', () => {
+        expect(getIETFLanguageTag('DE')).toEqual('de_DE');
+    });
+
+    it('should return the correct language tag for Chinese', () => {
+        expect(getIETFLanguageTag('zh_CN')).toEqual('zh_CN');
+    });
+
+    it('should return the correct language tag for Korean', () => {
+        expect(getIETFLanguageTag('KO')).toEqual('ko_KR');
+    });
+
+    it('should return default language as english when language is not supported', () => {
+        expect(getIETFLanguageTag('test')).toEqual('en_US');
     });
 });

@@ -1,5 +1,7 @@
 import React from 'react';
 import countries from 'i18n-iso-countries';
+import ISO6391 from 'iso-639-1';
+import { getLocalesByOfficialLanguage } from '@vtex/i18n-iso';
 import { Localize, localize } from '@deriv/translations';
 import { filterObjProperties, toMoment, validLength, validName, getIDVNotApplicableOption } from '@deriv/shared';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
@@ -210,3 +212,18 @@ export const convertAlpha2toAlpha3 = (country_code: string) =>
 
 export const convertAlpha3toAlpha2 = (country_code: string) =>
     country_code.length !== 2 ? countries.alpha3ToAlpha2(country_code.toUpperCase()) : country_code;
+
+/**
+ * Converts ISO-639-1 language code to IETF language tag
+ * @name getIETFLanguageTag
+ * @param language_code  - iso-639-1 format language code
+ * @returns IETF language tag
+ */
+export const getIETFLanguageTag = (language_code: string) => {
+    const code = language_code.toLowerCase().substring(0, 2);
+    const language = ISO6391.getName(code);
+    const ietf_tag = getLocalesByOfficialLanguage(language, {
+        tryFallback: true,
+    })[0].IETFLanguageTag;
+    return ietf_tag.replace('-', '_');
+};

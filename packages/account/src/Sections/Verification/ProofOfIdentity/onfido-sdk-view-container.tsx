@@ -10,7 +10,7 @@ import getOnfidoPhrases from '../../../Constants/onfido-phrases';
 import MissingPersonalDetails from '../../../Components/poi/missing-personal-details';
 import PoiConfirmWithExampleFormContainer from '../../../Components/poi/poi-confirm-with-example-form-container';
 import OnfidoSdkView from './onfido-sdk-view';
-import { convertAlpha2toAlpha3, convertAlpha3toAlpha2 } from '../../../Helpers/utils';
+import { convertAlpha2toAlpha3, convertAlpha3toAlpha2, getIETFLanguageTag } from '../../../Helpers/utils';
 
 type TAPIError = {
     code?: string;
@@ -96,9 +96,7 @@ const OnfidoSdkViewContainer = observer(
                     onfido_init.current = await init({
                         containerId: 'onfido',
                         language: {
-                            locale:
-                                (`${current_language?.toLowerCase()}_${current_language?.toUpperCase()}` as SupportedLanguages) ||
-                                'en_US',
+                            locale: getIETFLanguageTag(current_language) as SupportedLanguages,
                             phrases: getOnfidoPhrases(),
                             mobilePhrases: getOnfidoPhrases(),
                         },
@@ -186,7 +184,7 @@ const OnfidoSdkViewContainer = observer(
             if (isNotified) {
                 handleViewComplete();
             }
-        }, [isNotified]);
+        }, [handleViewComplete, isNotified]);
 
         if (isLoading) {
             component_to_load = <Loading is_fullscreen={false} />;

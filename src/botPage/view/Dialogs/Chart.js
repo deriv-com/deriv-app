@@ -93,6 +93,7 @@ const ChartContent = () => {
                 symbol,
                 granularity,
                 callback,
+                is_chart_candles: true,
             });
         } else {
             listeners[getKey(request)] = ticksService.monitor({

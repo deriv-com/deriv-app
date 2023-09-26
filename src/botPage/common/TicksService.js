@@ -234,7 +234,7 @@ export default class TicksService {
         });
     }
     requestStream(options) {
-        const { style, is_chart_ticks } = options;
+        const { style, is_chart_ticks, is_chart_candles } = options;
         const stringified_options = JSON.stringify(options);
 
         if (style === 'ticks') {
@@ -253,7 +253,11 @@ export default class TicksService {
         }
 
         if (style === 'candles') {
-            if (!this.candles_promise || this.candles_promise.stringified_options !== stringified_options) {
+            if (
+                !this.candles_promise ||
+                this.candles_promise.stringified_options !== stringified_options ||
+                is_chart_candles
+            ) {
                 this.candles_promise = {
                     promise: this.requestPipSizes().then(() => this.requestTicks(options)),
                     stringified_options,
@@ -276,7 +280,7 @@ export default class TicksService {
             style,
         };
 
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             doUntilDone(() => this.api.send(request_object))
                 .then(r => {
                     if (style === 'ticks') {

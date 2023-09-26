@@ -396,6 +396,15 @@
         color: var(--text-less-prominent);
         line-height: 1.45;
     }
+    &--tag {
+        background-color: $color-blue;
+        color: var(--text-colored-background);
+        border-radius: 0.2rem;
+        padding: 0 0.4rem;
+        font-weight: bold;
+        font-size: 1.3rem;
+    }
+
     &__mobile {
         &-title {
             text-align: left;
@@ -428,7 +437,6 @@
     &__maintenance {
         display: flex;
         padding-top: 1rem;
-        align-items: center;
 
         &-icon {
             padding-right: 0.5rem;
@@ -439,12 +447,17 @@
         }
     }
 
-    &__dxtrade-button {
+    &__dxtrade-button,
+    &__platform-button {
         display: flex;
         background: var(--brand-dark-grey);
         align-items: center;
         text-decoration: none;
         border-radius: $BORDER_RADIUS;
+
+        &-icon {
+            margin-left: 0.6rem;
+        }
 
         &-text {
             padding: 0.5rem;
@@ -453,9 +466,6 @@
                 padding-right: 0.5rem;
                 white-space: nowrap;
             }
-        }
-        &-icon {
-            margin-left: 0.6rem;
         }
     }
     &__specs {
@@ -530,6 +540,47 @@
                 &:last-child {
                     border-bottom: 1px solid var(--border-disabled);
                 }
+                &-item {
+                    flex-grow: 1;
+                }
+                &-link {
+                    align-items: center;
+                    display: flex;
+                    justify-content: center;
+                    text-decoration: none;
+                    @include typeface(--paragraph-center-bold-black, none);
+                    background-color: transparent;
+                    border: 1px solid var(--border-normal-2);
+                    color: var(--text-less-prominent);
+
+                    &:hover {
+                        background-color: var(--button-secondary-hover);
+                    }
+                }
+            }
+            &-ctrader {
+                &-container {
+                    display: flex;
+                    flex-direction: column;
+                    margin-top: 4rem;
+                    margin-bottom: 6rem;
+                    @include mobile {
+                        margin-top: 5rem;
+                        margin-bottom: 0;
+                    }
+                }
+                &__banner-text {
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+
+            &--windows {
+                display: flex;
+                gap: 1.6rem;
+                align-items: center;
+                padding: 1.6rem 2.4rem;
+                border-bottom: 1px solid var(--border-disabled);
                 &-item {
                     flex-grow: 1;
                 }

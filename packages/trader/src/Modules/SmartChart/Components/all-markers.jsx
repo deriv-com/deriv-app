@@ -151,20 +151,20 @@ const draw_path = (ctx, { zoom, top, left, icon }) => {
     ctx.restore();
 };
 
-const draw_shaded_barriers = ({
+const drawAccuBarrierRange = ({
+    coordinates,
     ctx,
     labels,
-    start_left,
-    top,
-    bottom,
-    stroke_color,
-    fill_color,
     has_persistent_borders,
     previous_tick,
     scale,
+    shade_color,
+    stroke_color,
 }) => {
     ctx.save();
-    const end_left = ctx.canvas.offsetWidth - ctx.canvas.parentElement.stx.panels.chart.yaxisTotalWidthRight;
+    const { bottom, start_left, top } = coordinates;
+    const end_left =
+        coordinates.end_left ?? ctx.canvas.offsetWidth - ctx.canvas.parentElement.stx.panels.chart.yaxisTotalWidthRight;
     const end_top = ctx.canvas.offsetHeight - ctx.canvas.parentElement.stx.xaxisHeight;
     const is_top_visible = top < end_top && (top >= 0 || !has_persistent_borders);
     const is_bottom_visible = bottom < end_top;
@@ -234,7 +234,7 @@ const draw_shaded_barriers = ({
         ctx.stroke();
     }
     // draw shaded area between barriers
-    ctx.fillStyle = fill_color;
+    ctx.fillStyle = shade_color;
     ctx.fillRect(start_left, displayed_top, end_left - start_left, Math.abs(displayed_bottom - displayed_top));
     ctx.restore();
 };
@@ -388,22 +388,24 @@ const TickContract = RawMarkerMaker(
 
         if (start && is_accumulator_trade_without_contract) {
             // draw 2 barriers with a shade between them for ACCU trade without contracts
-            draw_shaded_barriers({
-                bottom: barrier_2,
+            drawAccuBarrierRange({
+                coordinates: {
+                    bottom: barrier_2,
+                    start_left: start.left,
+                    top: barrier,
+                },
                 ctx,
-                fill_color: getColor({
-                    status: has_crossed_accu_barriers ? 'accu_shade_crossed' : 'accu_shade',
-                    is_dark_theme,
-                }),
                 labels: accu_barriers_difference,
                 previous_tick: {
                     stroke_color: getColor({ status: 'fg', is_dark_theme }) + opacity,
                     radius: 1.5 * scale,
                 },
-                start_left: start.left,
-                stroke_color: getColor({ status: has_crossed_accu_barriers ? 'lost' : 'open', is_dark_theme }),
-                top: barrier,
                 scale,
+                shade_color: getColor({
+                    status: has_crossed_accu_barriers ? 'accu_shade_crossed' : 'accu_shade',
+                    is_dark_theme,
+                }),
+                stroke_color: getColor({ status: has_crossed_accu_barriers ? 'lost' : 'open', is_dark_theme }),
             });
             return;
         }
@@ -436,16 +438,13 @@ const TickContract = RawMarkerMaker(
             // draw 2 barriers with a shade between them for an ongoing ACCU contract:
             const contract_details_start_left =
                 is_accumulator_contract && contract_status === 'open' ? exit?.left : previous_tick?.left;
-            draw_shaded_barriers({
-                bottom: barrier_2,
+            drawAccuBarrierRange({
+                coordinates: {
+                    bottom: barrier_2,
+                    start_left: is_in_contract_details ? contract_details_start_left : start.left,
+                    top: barrier,
+                },
                 ctx,
-                fill_color: getColor({
-                    status:
-                        has_crossed_accu_barriers || contract_status === 'lost'
-                            ? 'accu_shade_crossed'
-                            : 'accu_contract_shade',
-                    is_dark_theme,
-                }),
                 // we should show barrier lines in contract details even when they are outside of the chart:
                 has_persistent_borders: is_in_contract_details,
                 labels: !is_in_contract_details && accu_barriers_difference,
@@ -455,16 +454,22 @@ const TickContract = RawMarkerMaker(
                     radius: 1.5 * scale,
                 },
                 scale,
-                start_left: is_in_contract_details ? contract_details_start_left : start.left,
+                shade_color: getColor({
+                    status:
+                        has_crossed_accu_barriers || contract_status === 'lost'
+                            ? 'accu_shade_crossed'
+                            : 'accu_contract_shade',
+                    is_dark_theme,
+                }),
                 stroke_color: getColor({
                     status: has_crossed_accu_barriers || contract_status === 'lost' ? 'lost' : 'won',
                     is_dark_theme,
                 }),
-                top: barrier,
             });
         }
         if (is_in_contract_details) return;
 
+        ctx.save();
         ctx.strokeStyle = color;
         ctx.fillStyle = color;
 
@@ -587,6 +592,33 @@ const TickContract = RawMarkerMaker(
                 zoom: exit.zoom,
                 icon: ICONS.END.with_color(color, getColor({ status: 'bg', is_dark_theme })),
             });
+            if (is_accu_contract_ended) {
+                drawAccuBarrierRange({
+                    coordinates: {
+                        bottom: barrier_2,
+                        end_left: exit.left,
+                        start_left: previous_tick?.left,
+                        top: barrier,
+                    },
+                    ctx,
+                    previous_tick: {
+                        stroke_color: color + opacity,
+                        radius: 1.5 * scale,
+                    },
+                    scale,
+                    shade_color: getColor({
+                        status:
+                            has_crossed_accu_barriers || contract_status === 'lost'
+                                ? 'accu_shade_crossed'
+                                : 'accu_contract_shade',
+                        is_dark_theme,
+                    }),
+                    stroke_color: getColor({
+                        status: has_crossed_accu_barriers || contract_status === 'lost' ? 'lost' : 'won',
+                        is_dark_theme,
+                    }),
+                });
+            }
         }
         ctx.restore();
     }

@@ -191,19 +191,6 @@ const ContractDetails = ({
                         )}
                     </React.Fragment>
                 )}
-                {hasTwoBarriers(contract_type) && (
-                    <React.Fragment>
-                        {[high_barrier, low_barrier].map((barrier, index) => (
-                            <ContractAuditItem
-                                id={`dt_bt_label_${index + 1}`}
-                                icon={<Icon icon='IcContractStrike' size={24} />}
-                                key={barrier}
-                                label={high_barrier === barrier ? localize('High barrier') : localize('Low barrier')}
-                                value={barrier}
-                            />
-                        ))}
-                    </React.Fragment>
-                )}
                 <ContractAuditItem
                     id='dt_start_time_label'
                     icon={<Icon icon='IcContractStartTime' size={24} />}

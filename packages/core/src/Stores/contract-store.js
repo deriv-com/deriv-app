@@ -200,31 +200,29 @@ export default class ContractStore extends BaseStore {
             ) {
                 return;
             }
+            if (!this.barriers_array.length) {
+                // Accumulators barrier range in C.Details consists of labels (this.barriers_array) and horizontal lines with shade (this.marker)
+                this.barriers_array = this.createBarriersArray(
+                    {
+                        ...contract_info,
+                        high_barrier: this.accu_high_barrier,
+                        low_barrier: this.accu_low_barrier,
+                    },
+                    is_dark_mode
+                );
+                this.marker = calculate_marker(this.contract_info, {
+                    accu_high_barrier: this.accu_high_barrier,
+                    accu_low_barrier: this.accu_low_barrier,
+                }); // this.marker is rendered as DelayedAccuBarriersMarker component
+                return;
+            }
             setTimeout(
                 () =>
                     runInAction(() => {
-                        if (!this.barriers_array.length) {
-                            this.barriers_array = this.createBarriersArray(
-                                {
-                                    ...contract_info,
-                                    high_barrier: this.accu_high_barrier,
-                                    low_barrier: this.accu_low_barrier,
-                                },
-                                is_dark_mode
-                            );
-                            return;
-                        }
                         if (contract_info) {
                             if (isBarrierSupported(contract_type) && this.accu_high_barrier && this.accu_low_barrier) {
                                 // updating barrier labels in C.Details page
                                 main_barrier?.updateBarriers(this.accu_high_barrier, this.accu_low_barrier);
-                            }
-                            // this.marker contains horizontal barrier lines & shade between rendered as DelayedAccuBarriersMarker in C.Details page
-                            if (!this.marker) {
-                                this.marker = calculate_marker(this.contract_info, {
-                                    accu_high_barrier: this.accu_high_barrier,
-                                    accu_low_barrier: this.accu_low_barrier,
-                                });
                             }
                             // this.markers_array contains tick markers & start/end vertical lines in C.Details page
                             this.markers_array = createChartMarkers(contract_info, true);

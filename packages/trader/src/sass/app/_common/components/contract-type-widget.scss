@@ -14,7 +14,7 @@
         align-items: center;
         justify-content: flex-start;
         flex-direction: row;
-        padding: 1.6rem;
+        padding: 1.6rem 1.2rem;
 
         /* postcss-bem-linter: ignore */
         span[data-name='contract_type'] {
@@ -23,6 +23,7 @@
             font-weight: bold;
             vertical-align: middle;
             padding-left: 0.4em;
+            overflow-wrap: anywhere;
         }
         &:hover,
         &:focus {

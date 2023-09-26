@@ -122,7 +122,7 @@ const InputField = ({
 }: TInputField) => {
     const [local_value, setLocalValue] = React.useState<string>();
     const Icon = icon as React.ElementType;
-    const has_error = error_messages && !!error_messages.length;
+    const has_error = error_messages && !!error_messages.length && !is_error_tooltip_hidden;
     const max_is_disabled = max_value && (+value >= +max_value || Number(local_value) >= +max_value);
     const min_is_disabled = min_value && (+value <= +min_value || Number(local_value) <= +min_value);
     let has_valid_length = true;
@@ -304,7 +304,7 @@ const InputField = ({
                 is_increment_input ? 'dc-input-wrapper__input' : '',
                 inline_prefix ? 'input--has-inline-prefix' : '',
                 'input',
-                { 'input--error': has_error },
+                { 'input--error': error_messages && !!error_messages.length },
                 classNameInput
             )}
             classNameDynamicSuffix={classNameDynamicSuffix}
@@ -355,7 +355,7 @@ const InputField = ({
             className={classNames('trade-container__tooltip', { 'dc-tooltip--with-label': label })}
             alignment={error_message_alignment || 'left'}
             message={has_error ? error_messages[0] : null}
-            has_error={!is_error_tooltip_hidden && has_error}
+            has_error={has_error}
         >
             {!!label && (
                 <label htmlFor={name} className='dc-input-field__label'>

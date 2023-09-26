@@ -19,7 +19,7 @@ const EmailVerificationEmptyState = ({ type }: TEmailVerificationEmptyStateProps
     };
 
     return (
-        <div className='email-verification-empty-state'>
+        <React.Fragment>
             <EmptyState
                 icon='IcWithdrawRequestVerificationSent'
                 title={localize("We've sent you an email.")}
@@ -33,7 +33,7 @@ const EmailVerificationEmptyState = ({ type }: TEmailVerificationEmptyStateProps
                     resend={() => verify.send()}
                 />
             )}
-        </div>
+        </React.Fragment>
     );
 };
 

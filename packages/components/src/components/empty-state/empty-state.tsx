@@ -21,12 +21,12 @@ const EmptyState: React.FC<TProps> = ({ icon, title, description, action }) => (
     <div className='empty-state'>
         {icon && <Icon icon={icon} size={128} />}
         {title && (
-            <Text size='s' weight='bold' align='center' data-testid='dt_empty_state_title'>
+            <Text weight='bold' align='center' data-testid='dt_empty_state_title'>
                 {title}
             </Text>
         )}
         {description && (
-            <Text size='s' align='center' data-testid='dt_empty_state_description'>
+            <Text align='center' data-testid='dt_empty_state_description'>
                 {description}
             </Text>
         )}

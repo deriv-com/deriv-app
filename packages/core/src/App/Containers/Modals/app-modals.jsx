@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { ContentFlag, moduleLoader } from '@deriv/shared';
+import { ContentFlag, routes, moduleLoader, SessionStore } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import MT5Notification from './mt5-notification';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
@@ -18,10 +18,6 @@ const AccountSignupModal = React.lazy(() =>
 );
 const AcuityDownloadModal = React.lazy(() =>
     import(/* webpackChunkName: "acuity-download-modal"  */ '../AcuityDownloadModal')
-);
-
-const CloseMxMltAccountModal = React.lazy(() =>
-    moduleLoader(() => import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseMxMltAccountModal'))
 );
 const ResetOrUnlinkPasswordModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../ResetOrUnlinkPasswordModal'))
@@ -47,10 +43,6 @@ const ResetEmailModal = React.lazy(() => import(/* webpackChunkName: "reset-emai
 
 const UpdateEmailModal = React.lazy(() => import(/* webpackChunkName: "update-email-modal"  */ '../UpdateEmailModal'));
 
-const CloseUKAccountModal = React.lazy(() =>
-    import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseUKAccountModal')
-);
-
 const WarningScamMessageModal = React.lazy(() =>
     import(/* webpackChunkName: "warning-scam-message" */ '../WarningScamMessageModal')
 );
@@ -75,11 +67,10 @@ const AppModals = ({
     is_welcome_modal_visible,
     is_reality_check_visible,
     is_set_residence_modal_visible,
-    is_close_mx_mlt_account_modal_visible,
-    is_close_uk_account_modal_visible,
     is_logged_in,
     should_show_cooldown_modal,
     should_show_assessment_complete_modal,
+    toggleAccountSignupModal,
     is_trading_assessment_for_new_user_enabled,
     fetchFinancialAssessment,
     setCFDScore,
@@ -95,7 +86,8 @@ const AppModals = ({
     is_additional_kyc_info_modal_open,
     is_kyc_information_submitted_modal_open,
 }) => {
-    const url_params = new URLSearchParams(useLocation().search);
+    const temp_session_signup_params = SessionStore.get('signup_query_param');
+    const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
     const url_action_param = url_params.get('action');
 
     const is_eu_user = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL, ContentFlag.EU_DEMO].includes(content_flag);
@@ -107,6 +99,12 @@ const AppModals = ({
             });
         }
     }, [is_logged_in]);
+    if (temp_session_signup_params && window.location.href.includes(routes.onboarding)) {
+        toggleAccountSignupModal(true);
+    } else {
+        SessionStore.remove('signup_query_param');
+        toggleAccountSignupModal(false);
+    }
 
     let ComponentToLoad = null;
     switch (url_action_param) {
@@ -146,10 +144,6 @@ const AppModals = ({
         ComponentToLoad = <TradingAssessmentExistingUser />;
     } else if (is_acuity_modal_open) {
         ComponentToLoad = <AcuityDownloadModal />;
-    } else if (is_close_mx_mlt_account_modal_visible) {
-        ComponentToLoad = <CloseMxMltAccountModal />;
-    } else if (is_close_uk_account_modal_visible) {
-        ComponentToLoad = <CloseUKAccountModal />;
     } else if (is_warning_scam_message_modal_visible) {
         ComponentToLoad = <WarningScamMessageModal />;
     } else if (is_closing_create_real_account_modal) {
@@ -200,8 +194,6 @@ export default connect(({ client, ui, traders_hub }) => ({
     is_account_needed_modal_on: ui.is_account_needed_modal_on,
     is_acuity_modal_open: ui.is_acuity_modal_open,
     is_closing_create_real_account_modal: ui.is_closing_create_real_account_modal,
-    is_close_mx_mlt_account_modal_visible: ui.is_close_mx_mlt_account_modal_visible,
-    is_close_uk_account_modal_visible: ui.is_close_uk_account_modal_visible,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     is_logged_in: client.is_logged_in,
@@ -213,6 +205,7 @@ export default connect(({ client, ui, traders_hub }) => ({
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     should_show_cooldown_modal: ui.should_show_cooldown_modal,
     should_show_assessment_complete_modal: ui.should_show_assessment_complete_modal,
+    toggleAccountSignupModal: ui.toggleAccountSignupModal,
     is_trading_assessment_for_new_user_enabled: ui.is_trading_assessment_for_new_user_enabled,
     active_account_landing_company: client.landing_company_shortcode,
     is_deriv_account_needed_modal_visible: ui.is_deriv_account_needed_modal_visible,

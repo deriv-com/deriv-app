@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import Draggable from 'Components/draggable';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -20,20 +20,25 @@ const transaction_columns: TColumn[] = [
 
 /* TODO: Add back account & balance when we have support from transaction store */
 const result_columns: TColumn[] = [
-    // { key: 'account', label: localize('Account') },
+    { key: 'account', label: localize('Account') },
     { key: 'no_of_runs', label: localize('No. of runs') },
     { key: 'total_stake', label: localize('Total stake') },
     { key: 'total_payout', label: localize('Total payout') },
     { key: 'win', label: localize('Win') },
     { key: 'loss', label: localize('Loss') },
     { key: 'total_profit', label: localize('Total profit/loss') },
-    // { key: 'balance', label: localize('Balance') },
+    { key: 'balance', label: localize('Balance') },
 ];
 
 const TransactionDetailsDesktop = observer(() => {
+    const { client } = useStore();
+    const { loginid, balance } = client;
     const { transactions, run_panel } = useDBotStore();
-    const { toggleTransactionDetailsModal, is_transaction_details_modal_open, elements }: Partial<TTransactionStore> =
-        transactions;
+    const {
+        toggleTransactionDetailsModal,
+        is_transaction_details_modal_open,
+        transactions: transaction_list,
+    }: Partial<TTransactionStore> = transactions;
     const { statistics }: Partial<TRunPanelStore> = run_panel;
 
     const [screenDimensions, setScreenDimensions] = useState({ width: 0, height: 0 });
@@ -72,9 +77,11 @@ const TransactionDetailsDesktop = observer(() => {
         >
             <DesktopTransactionTable
                 transaction_columns={transaction_columns}
-                transactions={elements}
+                transactions={transaction_list}
                 result_columns={result_columns}
                 result={statistics}
+                account={loginid ?? ''}
+                balance={balance ?? 0}
             />
         </Draggable>
     );

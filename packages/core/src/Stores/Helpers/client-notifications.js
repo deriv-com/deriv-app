@@ -72,7 +72,6 @@ export const priority_toast_messages = [
     'p2p_daily_limit_increase',
     'authenticate',
     'notify_financial_assessment',
-    'mt5_notification',
     'additional_kyc_info',
     ...maintenance_notifications,
 ];

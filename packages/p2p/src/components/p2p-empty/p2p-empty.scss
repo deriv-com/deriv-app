@@ -1,0 +1,28 @@
+.p2p-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2.4rem;
+    max-width: 628px;
+
+    &--no-tabs {
+        margin-top: calc(4rem + 4.4rem);
+    }
+
+    &-icon {
+        margin-bottom: 2.4rem;
+    }
+
+    &-title {
+        margin: 0.8rem;
+    }
+
+    &__button {
+        text-decoration: none;
+        margin-top: 1.6rem;
+
+        @include mobile {
+            width: calc(100vw - 3.2rem);
+        }
+    }
+}

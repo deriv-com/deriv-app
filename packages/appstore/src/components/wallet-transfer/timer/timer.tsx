@@ -1,24 +1,23 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { useCountdown } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';
+
+type TCountdown = {
+    count: number;
+    reset: VoidFunction;
+    start: VoidFunction;
+};
 
 type TTimerProps = {
     className?: string;
-    from: number;
+    countdown: TCountdown;
     onComplete?: VoidFunction;
 };
 
-export type TTimerRef = {
-    reset: VoidFunction;
-};
+const Timer = ({ className, countdown, onComplete }: TTimerProps) => {
+    const { count, reset, start } = countdown;
 
-const Timer = React.forwardRef<TTimerRef, TTimerProps>(({ className, from, onComplete }, ref) => {
-    const { count, reset, start } = useCountdown({ from });
-
-    React.useImperativeHandle(ref, () => ({
-        reset,
-    }));
+    React.useEffect(() => start(), [start]);
 
     React.useEffect(() => {
         if (count === 0) {
@@ -27,15 +26,11 @@ const Timer = React.forwardRef<TTimerRef, TTimerProps>(({ className, from, onCom
         }
     }, [count, onComplete, reset]);
 
-    React.useEffect(() => start(), [start]);
-
     return (
         <Text as='p' size='xs' color='less-prominent' className={className}>
             <Localize i18n_default_text='{{remaining_time}}s' values={{ remaining_time: count }} />
         </Text>
     );
-});
-
-Timer.displayName = 'Timer';
+};
 
 export default Timer;

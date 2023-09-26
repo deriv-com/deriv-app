@@ -540,8 +540,19 @@ const FinancialAssessment = observer(() => {
                                                     placeholder={localize('Occupation')}
                                                     is_align_text_left
                                                     name='occupation'
-                                                    list={getOccupationList()}
-                                                    value={values.occupation}
+                                                    list={
+                                                        values?.employment_status === 'Employed'
+                                                            ? getOccupationList().filter(
+                                                                  item => item.value !== 'Unemployed'
+                                                              )
+                                                            : getOccupationList()
+                                                    }
+                                                    value={
+                                                        values.employment_status === 'Employed' &&
+                                                        values.occupation === 'Unemployed'
+                                                            ? ''
+                                                            : values.occupation
+                                                    }
                                                     onChange={handleChange}
                                                     handleBlur={handleBlur}
                                                     error={touched.occupation && errors.occupation}
@@ -552,8 +563,19 @@ const FinancialAssessment = observer(() => {
                                                     placeholder={localize('Please select')}
                                                     name='occupation'
                                                     label={localize('Occupation')}
-                                                    list_items={getOccupationList()}
-                                                    value={values.occupation}
+                                                    list_items={
+                                                        values?.employment_status === 'Employed'
+                                                            ? getOccupationList().filter(
+                                                                  item => item.value !== 'Unemployed'
+                                                              )
+                                                            : getOccupationList()
+                                                    }
+                                                    value={
+                                                        values.employment_status === 'Employed' &&
+                                                        values.occupation === 'Unemployed'
+                                                            ? ''
+                                                            : values.occupation
+                                                    }
                                                     error={touched.occupation ? errors.occupation : undefined}
                                                     onChange={e => {
                                                         setFieldTouched('occupation', true);

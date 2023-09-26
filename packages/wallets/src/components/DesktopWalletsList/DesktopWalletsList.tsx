@@ -26,7 +26,6 @@ const DesktopWalletsList: React.FC = () => {
                                 isActive={wallet.is_active}
                                 isDemo={wallet.is_virtual}
                                 loginid={wallet.loginid}
-                                walletType={wallet.wallet_currency_type}
                             />
                         )}
                     >

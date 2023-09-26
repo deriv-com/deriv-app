@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import useDerivezServiceToken from './useDerivezServiceToken';
-import useFetch from '../useFetch';
+import useQuery from '../useQuery';
 
 /** A custom hook that gets the list of created DerivEz accounts. */
 const useDerivezAccountsList = () => {
-    const { data: derivez_accounts } = useFetch('trading_platform_accounts', {
+    const { data: derivez_accounts } = useQuery('trading_platform_accounts', {
         payload: { platform: 'derivez' },
     });
     const { data: token } = useDerivezServiceToken();

@@ -342,6 +342,14 @@ const FinancialAssessment = observer(() => {
         return '80px';
     };
 
+    const getFormattedOccupationList = values =>
+        values?.employment_status === 'Employed'
+            ? getOccupationList().filter(item => item.value !== 'Unemployed')
+            : getOccupationList();
+
+    const getFormattedOccupationValues = values =>
+        values?.employment_status === 'Employed' && values?.occupation === 'Unemployed' ? '' : values?.occupation;
+
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
     if (is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />;
@@ -540,19 +548,8 @@ const FinancialAssessment = observer(() => {
                                                     placeholder={localize('Occupation')}
                                                     is_align_text_left
                                                     name='occupation'
-                                                    list={
-                                                        values?.employment_status === 'Employed'
-                                                            ? getOccupationList().filter(
-                                                                  item => item.value !== 'Unemployed'
-                                                              )
-                                                            : getOccupationList()
-                                                    }
-                                                    value={
-                                                        values.employment_status === 'Employed' &&
-                                                        values.occupation === 'Unemployed'
-                                                            ? ''
-                                                            : values.occupation
-                                                    }
+                                                    list={getFormattedOccupationList(values)}
+                                                    value={getFormattedOccupationValues(values)}
                                                     onChange={handleChange}
                                                     handleBlur={handleBlur}
                                                     error={touched.occupation && errors.occupation}
@@ -563,19 +560,8 @@ const FinancialAssessment = observer(() => {
                                                     placeholder={localize('Please select')}
                                                     name='occupation'
                                                     label={localize('Occupation')}
-                                                    list_items={
-                                                        values?.employment_status === 'Employed'
-                                                            ? getOccupationList().filter(
-                                                                  item => item.value !== 'Unemployed'
-                                                              )
-                                                            : getOccupationList()
-                                                    }
-                                                    value={
-                                                        values.employment_status === 'Employed' &&
-                                                        values.occupation === 'Unemployed'
-                                                            ? ''
-                                                            : values.occupation
-                                                    }
+                                                    list_items={getFormattedOccupationList(values)}
+                                                    value={getFormattedOccupationValues(values)}
                                                     error={touched.occupation ? errors.occupation : undefined}
                                                     onChange={e => {
                                                         setFieldTouched('occupation', true);

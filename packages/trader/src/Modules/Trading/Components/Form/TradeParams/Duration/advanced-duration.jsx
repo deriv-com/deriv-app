@@ -58,8 +58,8 @@ const AdvancedDuration = observer(
 
         const has_error = !!validation_errors?.duration?.length;
 
-        const duration_unit_text =
-            getUnitMap()[advanced_duration_unit].name_plural || getUnitMap()[advanced_duration_unit].name;
+        const { name_plural, name } = getUnitMap()[advanced_duration_unit];
+        const duration_unit_text = name_plural ?? name;
 
         return (
             <>

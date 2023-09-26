@@ -65,7 +65,7 @@ const RadioGroupWithInfoMobile = ({
                 onToggle={onValueChange}
             >
                 {items_list?.map(({ text, value }) => (
-                    <RadioGroup.Item key={value} id={text} label={text} value={value?.toString()} />
+                    <RadioGroup.Item key={value} id={text} label={text} value={value?.toString()} disabled={false} />
                 ))}
             </RadioGroup>
         </>

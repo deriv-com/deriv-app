@@ -1,10 +1,10 @@
 import useActiveAccount from './useActiveAccount';
-import useFetch from '../useFetch';
+import useQuery from '../useQuery';
 
 /** A custom hook that get Service Token for DerivEz Platform. */
 const useDerivezServiceToken = () => {
     const { data: account } = useActiveAccount();
-    const { data: derivez_token, ...rest } = useFetch('service_token', {
+    const { data: derivez_token, ...rest } = useQuery('service_token', {
         payload: { service: 'pandats', server: account?.is_virtual ? 'demo' : 'real' },
     });
 

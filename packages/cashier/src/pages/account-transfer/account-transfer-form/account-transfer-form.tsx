@@ -78,6 +78,7 @@ let dxtrade_accounts_to: TAccount[] = [];
 let mt_accounts_from: TAccount[] = [];
 let mt_accounts_to: TAccount[] = [];
 let remaining_transfers: number | undefined;
+let has_reached_maximum_daily_transfers = false;
 
 const AccountTransferForm = observer(
     ({ error, onClickDeposit, onClickNotes, setSideNotes, onClose }: TAccountTransferFormProps) => {
@@ -343,12 +344,14 @@ const AccountTransferForm = observer(
                 return internal_remaining_transfers?.available;
             };
 
+            remaining_transfers = Number(getRemainingTransfers() ?? 0);
+            has_reached_maximum_daily_transfers = !remaining_transfers;
+
             let hint_text;
             if (is_open_order_position_status_present) {
                 hint_text = <Localize i18n_default_text='You can no longer open new positions with this account.' />;
             } else {
-                remaining_transfers = getRemainingTransfers() ?? 0;
-                const transfer_text = Number(remaining_transfers) > 1 ? 'transfers' : 'transfer';
+                const transfer_text = remaining_transfers > 1 ? 'transfers' : 'transfer';
                 hint_text = (
                     <Localize
                         i18n_default_text='You have {{remaining_transfers}} {{transfer_text}} remaining for today.'
@@ -364,8 +367,6 @@ const AccountTransferForm = observer(
             selected_from?.is_mt &&
             selected_from?.status?.includes('poa_failed') &&
             authentication_status?.document_status !== 'verified';
-
-        const has_reached_maximum_daily_transfers = !Number(remaining_transfers);
 
         const poa_pending_msg = localize(
             'You will be able to transfer funds between MT5 accounts and other accounts once your address is verified.'
@@ -444,17 +445,17 @@ const AccountTransferForm = observer(
                                 </div>
                             ) : (
                                 <>
-                                    <div className='account-transfer-form__inline-warning-message'>
-                                        {has_reached_maximum_daily_transfers && (
+                                    {has_reached_maximum_daily_transfers && (
+                                        <div className='account-transfer-form__inline-warning-message'>
                                             <InlineMessage
                                                 message={localize(
                                                     'You have reached the maximum daily transfers. Please try again tomorrow.'
                                                 )}
                                                 size='sm'
                                             />
-                                        )}
-                                    </div>
-                                    <Form noValidate>
+                                        </div>
+                                    )}
+                                    <Form className='account-transfer-form' noValidate>
                                         <div
                                             className='cashier__drop-down-wrapper account-transfer-form__drop-down-wrapper'
                                             data-testid='dt_account_transfer_form_drop_down_wrapper'
@@ -521,8 +522,10 @@ const AccountTransferForm = observer(
                                                         }}
                                                         className={classNames(
                                                             'cashier__input dc-input--no-placeholder account-transfer-form__input',
-                                                            !is_from_outside_cashier &&
-                                                                'account-transfer-form__input-fit-content'
+                                                            {
+                                                                'account-transfer-form__input-fit-content':
+                                                                    !is_from_outside_cashier,
+                                                            }
                                                         )}
                                                         classNameHint={classNames('account-transfer-form__hint', {
                                                             'account-transfer-form__hint__disabled':
@@ -633,40 +636,41 @@ const AccountTransferForm = observer(
                                         <div
                                             className={classNames(
                                                 'cashier__form-submit',
-                                                'account-transfer-form__form-buttons'
+                                                'account-transfer-form__form-buttons',
+                                                {
+                                                    'account-transfer-form__form-buttons--with-notes':
+                                                        is_from_outside_cashier,
+                                                }
                                             )}
                                             data-testid='dt_account_transfer_form_submit'
                                         >
                                             {is_from_outside_cashier && <NotesLink />}
-                                            <Button
-                                                className='account-transfer-form__deposit-button'
-                                                secondary
-                                                large
-                                                onClick={depositClick}
-                                            >
-                                                <Localize i18n_default_text='Deposit' />
-                                            </Button>
+                                            <div className='account-transfer-form__form-buttons__default'>
+                                                <Button secondary large onClick={depositClick}>
+                                                    <Localize i18n_default_text='Deposit' />
+                                                </Button>
 
-                                            <Button
-                                                className='account-transfer-form__submit-button'
-                                                type='submit'
-                                                is_disabled={
-                                                    isSubmitting ||
-                                                    has_reached_maximum_daily_transfers ||
-                                                    !!selected_from.error ||
-                                                    !!selected_to.error ||
-                                                    (selected_from.balance && !Number(selected_from.balance)) ||
-                                                    !!converter_from_error ||
-                                                    !!converter_to_error ||
-                                                    !!errors.amount ||
-                                                    shouldShowTransferButton(values.amount) ||
-                                                    is_mt5_restricted
-                                                }
-                                                primary
-                                                large
-                                            >
-                                                <Localize i18n_default_text='Transfer' />
-                                            </Button>
+                                                <Button
+                                                    className='account-transfer-form__submit-button'
+                                                    type='submit'
+                                                    is_disabled={
+                                                        isSubmitting ||
+                                                        has_reached_maximum_daily_transfers ||
+                                                        !!selected_from.error ||
+                                                        !!selected_to.error ||
+                                                        (selected_from.balance && !Number(selected_from.balance)) ||
+                                                        !!converter_from_error ||
+                                                        !!converter_to_error ||
+                                                        !!errors.amount ||
+                                                        shouldShowTransferButton(values.amount) ||
+                                                        is_mt5_restricted
+                                                    }
+                                                    primary
+                                                    large
+                                                >
+                                                    <Localize i18n_default_text='Transfer' />
+                                                </Button>
+                                            </div>
                                         </div>
                                         {!is_from_outside_cashier && (
                                             <SideNote title={<Localize i18n_default_text='Notes' />} is_mobile>

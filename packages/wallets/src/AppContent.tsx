@@ -1,13 +1,14 @@
 import React from 'react';
-import { useAuthorize } from '@deriv/api';
+import { useAuthorize, useCurrencyConfig } from '@deriv/api';
 import { Loader } from './components';
 import { Router } from './routes';
 import './AppContent.scss';
 
 const AppContent: React.FC = () => {
-    const { isLoading } = useAuthorize();
+    const { isLoading: isAuthorizeLoading } = useAuthorize();
+    const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
-    if (isLoading) return <Loader />;
+    if (isAuthorizeLoading || isCurrencyConfigLoading) return <Loader />;
 
     return (
         <div className='wallets-app'>

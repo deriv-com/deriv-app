@@ -28,12 +28,12 @@ const DxtradeEnterPasswordModal = () => {
     }, [hide, isSuccess]);
 
     return (
-        <WalletModal has_close_icon onClickCloseIcon={hide}>
+        <WalletModal>
             <CreatePassword
                 icon={<DxTradePasswordIcon />}
                 onPasswordChange={e => setPassword(e.target.value)}
                 onPrimaryClick={onSubmit}
-                platform='Deriv X'
+                platform='dxtrade'
             />
         </WalletModal>
     );

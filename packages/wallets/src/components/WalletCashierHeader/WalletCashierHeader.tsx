@@ -2,9 +2,10 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
+import CloseIcon from '../../public/images/close-icon.svg';
+import { WalletCardIcon } from '../WalletCardIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletListCardBadge } from '../WalletListCardBadge';
-import { WalletListCardIcon } from '../WalletListCardIcon';
 import './WalletCashierHeader.scss';
 
 const tabs = ['deposit', 'withdraw', 'transfer', 'transactions'] as const;
@@ -37,12 +38,12 @@ const WalletCashierHeader = () => {
                         <p className='wallets-cashier-header__info__top-left__balance'>{display_balance}</p>
                     </div>
                     <div className='wallets-cashier-header__info__top-right'>
-                        {wallet_currency_type && <WalletListCardIcon type={wallet_currency_type} />}
+                        {wallet_currency_type && <WalletCardIcon size='xl' type={wallet_currency_type} />}
                         <button
                             className='wallets-cashier-header__close-button'
                             onClick={() => history.push('/appstore/traders-hub')}
                         >
-                            x
+                            <CloseIcon />
                         </button>
                     </div>
                 </section>

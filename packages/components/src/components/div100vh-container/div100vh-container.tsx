@@ -15,7 +15,7 @@ import Div100vh from 'react-div-100vh';
 /* To bypass usage of component altogether, use is_bypassed */
 
 type TDiv100vhContainer = {
-    height_offset: string;
+    height_offset?: string;
     is_bypassed?: boolean;
     is_disabled?: boolean;
     max_height_offset?: string;

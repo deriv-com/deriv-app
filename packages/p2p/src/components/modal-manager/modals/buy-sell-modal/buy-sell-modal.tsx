@@ -16,8 +16,9 @@ import BuySellModalError from './buy-sell-modal-error';
 
 const BuySellModal = () => {
     const { hideModal, is_modal_open, showModal } = useModalManagerContext();
-    const { buy_sell_store, general_store, my_profile_store, order_store } = useStores();
-    const { is_buy, selected_ad_state } = buy_sell_store;
+    const { advertiser_page_store, buy_sell_store, general_store, my_profile_store, order_store } = useStores();
+    const { counterparty_type } = advertiser_page_store;
+    const { is_buy, selected_ad_state, show_advertiser_page, table_type: buy_sell_table_type } = buy_sell_store;
     const { balance } = general_store;
     const { should_show_add_payment_method_form } = my_profile_store;
 
@@ -29,6 +30,7 @@ const BuySellModal = () => {
     const submitForm = React.useRef<(() => void) | null>(null);
 
     const show_low_balance_message = !is_buy && is_account_balance_low;
+    const table_type = show_advertiser_page ? counterparty_type : buy_sell_table_type;
 
     const setSubmitForm = (submitFormFn: () => void) => (submitForm.current = submitFormFn);
 
@@ -108,7 +110,7 @@ const BuySellModal = () => {
                     is_flex
                     is_modal_open={is_modal_open}
                     page_header_className='buy-sell-modal__header'
-                    renderPageHeaderElement={<BuySellModalTitle />}
+                    renderPageHeaderElement={<BuySellModalTitle table_type={table_type} />}
                     pageHeaderReturnFn={onCancel}
                 >
                     <BuySellModalError
@@ -145,7 +147,7 @@ const BuySellModal = () => {
                     height={is_buy ? 'auto' : '649px'}
                     is_open={is_modal_open}
                     portalId='modal_root'
-                    title={<BuySellModalTitle />}
+                    title={<BuySellModalTitle table_type={table_type} />}
                     toggleModal={onCancel}
                     width='456px'
                 >

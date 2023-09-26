@@ -118,7 +118,6 @@ export default class GeneralStore extends BaseStore {
             is_active_tab: computed,
             is_barred: computed,
             is_form_modified: computed,
-            is_my_profile_tab_visible: computed,
             should_show_dp2p_blocked: computed,
             blockUnblockUser: action.bound,
             createAdvertiser: action.bound,
@@ -204,10 +203,6 @@ export default class GeneralStore extends BaseStore {
 
     get is_form_modified() {
         return this.form_state?.dirty || this.saved_form_state;
-    }
-
-    get is_my_profile_tab_visible() {
-        return this.is_advertiser && !this.root_store.my_profile_store.should_hide_my_profile_tab;
     }
 
     get should_show_dp2p_blocked() {

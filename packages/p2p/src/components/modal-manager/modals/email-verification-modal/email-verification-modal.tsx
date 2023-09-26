@@ -5,13 +5,7 @@ import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
-const EmailVerificationModal = (
-    {
-        // TODO: Uncomment when time is available in BE response and add types
-        //remaining_time,
-        //verification_link_expiry_time,
-    }
-) => {
+const EmailVerificationModal = () => {
     const { order_store } = useStores();
     const { hideModal, is_modal_open } = useModalManagerContext();
     const [should_show_reasons_if_no_email, setShouldShowReasonsIfNoEmail] = React.useState(false);

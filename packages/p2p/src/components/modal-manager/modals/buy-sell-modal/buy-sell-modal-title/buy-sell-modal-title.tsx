@@ -7,13 +7,16 @@ import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { buy_sell } from 'Constants/buy-sell';
 
-const BuySellModalTitle = () => {
-    const { general_store, buy_sell_store, advertiser_page_store, my_profile_store } = useStores();
-    const { selected_ad_state, show_advertiser_page, table_type: buy_sell_table_type } = buy_sell_store;
+type TBuySellModalTitleProps = {
+    table_type: string;
+};
+
+const BuySellModalTitle = ({ table_type }: TBuySellModalTitleProps) => {
+    const { general_store, buy_sell_store, my_profile_store } = useStores();
+    const { selected_ad_state } = buy_sell_store;
     const { showModal } = useModalManagerContext();
 
     const { account_currency } = selected_ad_state;
-    const table_type = show_advertiser_page ? advertiser_page_store.counterparty_type : buy_sell_table_type;
 
     const getModalTitle = () => {
         if (my_profile_store.should_show_add_payment_method_form) {

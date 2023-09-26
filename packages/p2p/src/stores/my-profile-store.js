@@ -20,7 +20,6 @@ export default class MyProfileStore extends BaseStore {
     is_button_loading = false;
     is_daily_limit_modal_open = false;
     is_daily_limit_success_modal_open = false;
-    is_delete_payment_method_error_modal_open = false;
     is_error_modal_open = false;
     is_filter_modal_open = false;
     is_loading = false;
@@ -39,7 +38,6 @@ export default class MyProfileStore extends BaseStore {
     selected_payment_method_type = '';
     selected_sort_value = 'all_users';
     selected_trade_partner = {};
-    should_hide_my_profile_tab = false;
     should_show_add_payment_method_form = false;
     should_show_block_user_list_header = false;
     should_show_edit_payment_method_form = false;
@@ -66,7 +64,6 @@ export default class MyProfileStore extends BaseStore {
             is_button_loading: observable,
             is_daily_limit_modal_open: observable,
             is_daily_limit_success_modal_open: observable,
-            is_delete_payment_method_error_modal_open: observable,
             is_error_modal_open: observable,
             is_filter_modal_open: observable,
             is_loading: observable,
@@ -85,7 +82,6 @@ export default class MyProfileStore extends BaseStore {
             selected_payment_method_type: observable,
             selected_sort_value: observable,
             selected_trade_partner: observable,
-            should_hide_my_profile_tab: observable,
             should_show_add_payment_method_form: observable,
             should_show_block_user_list_header: observable,
             should_show_edit_payment_method_form: observable,
@@ -126,7 +122,7 @@ export default class MyProfileStore extends BaseStore {
             setAdvertiserPaymentMethods: action.bound,
             setAdvertiserPaymentMethodsError: action.bound,
             setAvailablePaymentMethods: action.bound,
-            setDefaultAdvertDescription: action.bound,
+            setDeleteErrorMessage: action.bound,
             setErrorMessage: action.bound,
             setFormError: action.bound,
             setFullName: action.bound,
@@ -134,7 +130,6 @@ export default class MyProfileStore extends BaseStore {
             setIsBlockUserTableLoading: action.bound,
             setIsDailyLimitModalOpen: action.bound,
             setIsDailyLimitSuccessModalOpen: action.bound,
-            setIsDeletePaymentMethodErrorModalOpen: action.bound,
             setIsErrorModalOpen: action.bound,
             setIsFilterModalOpen: action.bound,
             setIsLoading: action.bound,
@@ -153,7 +148,6 @@ export default class MyProfileStore extends BaseStore {
             setSelectedPaymentMethodType: action.bound,
             setSelectedSortValue: action.bound,
             setSelectedTradePartner: action.bound,
-            setShouldHideMyProfileTab: action.bound,
             setShouldShowAddPaymentMethodForm: action.bound,
             setShouldShowBlockUserListHeader: action.bound,
             setShouldShowEditPaymentMethodForm: action.bound,
@@ -743,8 +737,8 @@ export default class MyProfileStore extends BaseStore {
         this.available_payment_methods = available_payment_methods;
     }
 
-    setDefaultAdvertDescription(default_advert_description) {
-        this.default_advert_description = default_advert_description;
+    setDeleteErrorMessage(delete_error_message) {
+        this.delete_error_message = delete_error_message;
     }
 
     setErrorMessage(error_message) {
@@ -773,10 +767,6 @@ export default class MyProfileStore extends BaseStore {
 
     setIsDailyLimitSuccessModalOpen(is_daily_limit_success_modal_open) {
         this.is_daily_limit_success_modal_open = is_daily_limit_success_modal_open;
-    }
-
-    setIsDeletePaymentMethodErrorModalOpen(is_delete_payment_method_error_modal_open) {
-        this.is_delete_payment_method_error_modal_open = is_delete_payment_method_error_modal_open;
     }
 
     setIsErrorModalOpen(is_error_modal_open) {
@@ -849,10 +839,6 @@ export default class MyProfileStore extends BaseStore {
 
     setSelectedTradePartner(selected_trade_partner) {
         this.selected_trade_partner = selected_trade_partner;
-    }
-
-    setShouldHideMyProfileTab(should_hide_my_profile_tab) {
-        this.should_hide_my_profile_tab = should_hide_my_profile_tab;
     }
 
     setShouldShowAddPaymentMethodForm(should_show_add_payment_method_form) {

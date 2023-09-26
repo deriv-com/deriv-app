@@ -12,6 +12,7 @@ import {
     Loading,
 } from '@deriv/components';
 import {
+    useAuthorize,
     useOnrampVisible,
     useAccountTransferVisible,
     useIsP2PEnabled,
@@ -61,6 +62,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         cashier_route_tab_index: tab_index,
         setActiveTab,
     } = general_store;
+    const { isSuccess: is_authorized } = useAuthorize();
     const {
         data: is_payment_agent_transfer_visible,
         isLoading: is_payment_agent_checking,
@@ -206,6 +208,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
 
     if (
         ((!is_logged_in || is_mobile) && is_logging_in) ||
+        !is_authorized ||
         !is_account_setting_loaded ||
         is_payment_agent_checking ||
         is_p2p_enabled_loading

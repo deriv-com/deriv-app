@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
-import useFetch from '../useFetch';
+import useQuery from '../useQuery';
 import useSettings from './useSettings';
 
 /** A custom hook that returns the available landing companies of the user's country. */
 const useLandingCompany = () => {
     const { data: settings_data } = useSettings();
-    const { data, ...rest } = useFetch('landing_company', {
+    const { data, ...rest } = useQuery('landing_company', {
         payload: { landing_company: settings_data?.country_code || '' },
         options: { enabled: Boolean(settings_data?.country_code) },
     });

@@ -1,5 +1,7 @@
+import React from 'react';
 import { useWS } from '@deriv/shared';
 import { act, renderHook } from '@testing-library/react-hooks';
+import APIProvider from '../APIProvider';
 import useSubscription from '../useSubscription';
 
 jest.mock('@deriv/shared');
@@ -29,9 +31,11 @@ describe('useSubscription', () => {
             }),
         });
 
-        const { result, waitForNextUpdate } = renderHook(() => useSubscription('p2p_order_info'));
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
-        expect(result.current.is_loading).toBe(false);
+        const { result, waitForNextUpdate } = renderHook(() => useSubscription('p2p_order_info'), { wrapper });
+
+        expect(result.current.isLoading).toBe(false);
         expect(result.current.error).toBe(undefined);
         expect(result.current.data?.p2p_order_info).toBe(undefined);
 

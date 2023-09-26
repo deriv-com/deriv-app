@@ -22,14 +22,17 @@ const Basis = observer(
         const { addToast } = ui;
         const { currency } = client;
         const {
+            contract_type,
             is_turbos,
             is_vanilla,
             onChangeMultiple,
+            stake_boundary,
             trade_amount,
             trade_basis,
             trade_duration_unit,
             trade_duration,
         } = useTraderStore();
+        const { min_stake, max_stake } = stake_boundary[contract_type.toUpperCase()] || {};
         const user_currency_decimal_places = getDecimalPlaces(currency);
         const onNumberChange = num => {
             setSelectedAmount(basis, num);
@@ -58,6 +61,12 @@ const Basis = observer(
 
         const validateAmount = value => {
             const localized_message = <Localize i18n_default_text='Should not be 0 or empty' />;
+            const min_max_stake_message = (
+                <Localize
+                    i18n_default_text='Stake must be between {{min_stake}} {{currency}} and {{max_stake}} {{currency}}'
+                    values={{ min_stake, currency, max_stake }}
+                />
+            );
             const selected_value = parseFloat(value.toString());
 
             if (value.toString() === '0.' || selected_value === 0) {
@@ -68,6 +77,10 @@ const Basis = observer(
                 addToast({ key: 'amount_error', content: localized_message, type: 'error', timeout: 2000 });
                 setAmountError(true);
                 return false;
+            } else if (selected_value < min_stake) {
+                addToast({ key: 'amount_error', content: min_max_stake_message, type: 'error', timeout: 2000 });
+                setAmountError(true);
+                return 'error';
             }
             setAmountError(false);
             return true;
@@ -76,7 +89,9 @@ const Basis = observer(
         return (
             <React.Fragment>
                 <div className='trade-params__stake-container'>
-                    {(is_turbos || is_vanilla) && <MinMaxStakeInfo />}
+                    {(is_turbos || is_vanilla) && (
+                        <MinMaxStakeInfo currency={currency} max_stake={max_stake} min_stake={min_stake} />
+                    )}
                     <div
                         className={classNames('trade-params__amount-keypad', {
                             strike__pos: is_vanilla,
@@ -88,6 +103,7 @@ const Basis = observer(
                             onSubmit={setBasisAndAmount}
                             currency={currency}
                             min={min_amount}
+                            max={max_stake}
                             is_currency
                             render={({ value, className }) => {
                                 return (

@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
-import useFetch from './useFetch';
-import {
+import useQuery from './useQuery';
+import type {
     TSocketAcceptableProps,
     TSocketRequestPayload,
     TSocketRequestQueryOptions,
@@ -24,7 +24,7 @@ const usePaginatedFetch = <T extends TSocketPaginateableEndpointNames>(
 
     // @ts-expect-error It's safe to ignore the TS error here since the
     // exact type of the payload is not determined at this point.
-    const { remove, ...rest } = useFetch(name, {
+    const { remove, ...rest } = useQuery(name, {
         payload: { ...payload, offset, limit },
         options: { ...options, keepPreviousData: !!offset },
     });

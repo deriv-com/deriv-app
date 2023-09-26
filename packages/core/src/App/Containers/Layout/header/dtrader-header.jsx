@@ -61,7 +61,9 @@ const DTraderHeader = ({
         [removeNotificationMessage]
     );
 
-    const { is_in_progress } = useWalletMigration();
+    const { is_in_progress, is_migrated, is_failed } = useWalletMigration();
+    if (is_migrated) addNotificationMessage(client_notifications.wallets_migrated);
+    if (is_failed) addNotificationMessage(client_notifications.wallets_failed);
 
     React.useEffect(() => {
         document.addEventListener('IgnorePWAUpdate', removeUpdateNotification);

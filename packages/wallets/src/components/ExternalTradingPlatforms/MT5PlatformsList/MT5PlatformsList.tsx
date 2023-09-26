@@ -9,7 +9,7 @@ const MT5PlatformsList: React.FC = () => {
     const { data } = useSortedMT5Accounts();
     const { data: activeWallet } = useActiveWalletAccount();
 
-    const addedMT5Account = useMemo(() => {
+    const hasMT5Account = useMemo(() => {
         return data?.some(account => account.is_added);
     }, [data]);
 
@@ -36,7 +36,7 @@ const MT5PlatformsList: React.FC = () => {
                         />
                     );
                 })}
-                {addedMT5Account && !activeWallet?.is_virtual && <GetMoreMT5Accounts />}
+                {hasMT5Account && !activeWallet?.is_virtual && <GetMoreMT5Accounts />}
             </div>
         </React.Fragment>
     );

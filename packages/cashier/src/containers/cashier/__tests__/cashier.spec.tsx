@@ -17,6 +17,7 @@ jest.mock('@deriv/hooks', () => {
             isSuccess: true,
         })),
         useIsP2PEnabled: jest.fn(() => ({ data: true, isLoading: false, isSuccess: true })),
+        useAuthorize: jest.fn(() => ({ data: true, isLoading: false, isSuccess: true })),
     };
 });
 

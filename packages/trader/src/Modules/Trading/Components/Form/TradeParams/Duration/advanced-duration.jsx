@@ -58,6 +58,9 @@ const AdvancedDuration = observer(
 
         const has_error = !!validation_errors?.duration?.length;
 
+        const duration_unit_text =
+            getUnitMap()[advanced_duration_unit].name_plural || getUnitMap()[advanced_duration_unit].name;
+
         return (
             <>
                 {expiry_list.length > 1 && (
@@ -113,11 +116,7 @@ const AdvancedDuration = observer(
                                 />
                             )}
                             {is_vanilla && (
-                                <DurationRangeText
-                                    min={min}
-                                    max={max}
-                                    duration_unit_text={getUnitMap()[advanced_duration_unit].name_plural}
-                                />
+                                <DurationRangeText min={min} max={max} duration_unit_text={duration_unit_text} />
                             )}
                             {advanced_duration_unit === 'd' && (
                                 <ExpiryText expiry_epoch={expiry_epoch} has_error={has_error} />

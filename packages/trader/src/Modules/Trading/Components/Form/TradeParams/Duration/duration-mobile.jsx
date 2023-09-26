@@ -191,7 +191,8 @@ const Numbers = observer(
         };
 
         const fixed_date = !has_error ? setExpiryDate(expiry_epoch, duration_values?.d_duration) : '';
-        const duration_unit_text = getUnitMap()[duration_unit].name_plural;
+
+        const duration_unit_text = getUnitMap()[duration_unit].name_plural || getUnitMap()[duration_unit].name;
 
         return (
             <div className='trade-params__amount-keypad'>

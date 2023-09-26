@@ -229,6 +229,199 @@ import type {
 import type { useMutation, useQuery } from '@tanstack/react-query';
 
 type TPrivateSocketEndpoints = {
+    service_token: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            service_token: 1;
+            /**
+             * [Optional] The 2-letter country code.
+             */
+            country?: string;
+            /**
+             * [Optional] The URL of the web page where the Web SDK will be used.
+             */
+            referrer?: string;
+            /**
+             * Server (dxtrade and derivez).
+             */
+            server?: 'demo' | 'real';
+            /**
+             * The service(s) to retrieve token(s) for.
+             */
+            service:
+                | ('onfido' | 'sendbird' | 'banxa' | 'wyre' | 'dxtrade' | 'pandats' | 'ctrader')
+                | ('onfido' | 'sendbird' | 'banxa' | 'wyre' | 'pandats')[];
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            /**
+             * Service specific tokens and data.
+             */
+            service_token?: {
+                /**
+                 * Banxa order data.
+                 */
+                banxa?: {
+                    /**
+                     * Created order id reference token.
+                     */
+                    token?: string;
+                    /**
+                     * Banxa order checkout url.
+                     */
+                    url?: string;
+                    /**
+                     * Banxa order checkout iframe url.
+                     */
+                    url_iframe?: string;
+                };
+                /**
+                 * CTrader data.
+                 */
+                ctrader?: {
+                    /**
+                     * CTrader One Time token
+                     */
+                    token?: string;
+                };
+                /**
+                 * Deriv X data.
+                 */
+                dxtrade?: {
+                    /**
+                     * Deriv X login token.
+                     */
+                    token?: string;
+                };
+                /**
+                 * Onfido data.
+                 */
+                onfido?: {
+                    /**
+                     * Onfido token.
+                     */
+                    token?: string;
+                };
+                /**
+                 * Deriv EZ data.
+                 */
+                pandats?: {
+                    /**
+                     * Deriv EZ SSO token
+                     */
+                    token?: string;
+                };
+                /**
+                 * Sendbird data.
+                 */
+                sendbird?: {
+                    /**
+                     * Sendbird application ID.
+                     */
+                    app_id?: string;
+                    /**
+                     * The epoch time in which the token will be expired. Note: the token could be expired sooner than this, due to different reasons.
+                     */
+                    expiry_time?: number;
+                    /**
+                     * Sendbird token.
+                     */
+                    token?: string;
+                };
+                /**
+                 * Wyre reservation data.
+                 */
+                wyre?: {
+                    /**
+                     * Wyre reservation id token
+                     */
+                    token?: string;
+                    /**
+                     * Wyre reservation URL
+                     */
+                    url?: string;
+                };
+            };
+        };
+        /**
+         * Echo of the request made.
+         */
+        echo_req: {
+            [k: string]: unknown;
+        };
+        /**
+         * Action name of the request made.
+         */
+        msg_type: 'service_token';
+        /**
+         * Optional field sent in request to map to response, present only when request contains `req_id`.
+         */
+        req_id?: number;
+        [k: string]: unknown;
+    };
+    trading_platform_investor_password_reset: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            trading_platform_investor_password_reset: 1;
+            /**
+             * Trading account ID.
+             */
+            account_id: string;
+            /**
+             * New password of the account. For validation (Accepts any printable ASCII character. Must be within 8-25 characters, and include numbers, lowercase and uppercase letters. Must not be the same as the user's email address).
+             */
+            new_password: string;
+            /**
+             * Name of trading platform.
+             */
+            platform: 'mt5';
+            /**
+             * Email verification code (received from a `verify_email` call, which must be done first)
+             */
+            verification_code: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            trading_platform_investor_password_reset?: 0 | 1;
+        };
+        /**
+         * Echo of the request made.
+         */
+        echo_req: {
+            [k: string]: unknown;
+        };
+        /**
+         * Action name of the request made.
+         */
+        msg_type: 'trading_platform_investor_password_reset';
+        /**
+         * Optional field sent in request to map to response, present only when request contains `req_id`.
+         */
+        req_id?: number;
+        [k: string]: unknown;
+    };
     trading_platform_password_change: {
         request: {
             /**
@@ -502,7 +695,7 @@ type TPrivateSocketEndpoints = {
             /**
              * Trading platform name
              */
-            platform: 'dxtrade' | 'mt5' | 'derivez';
+            platform: 'dxtrade' | 'mt5' | 'derivez' | 'ctrader';
             /**
              * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
              */
@@ -642,7 +835,7 @@ type TPrivateSocketEndpoints = {
                 /**
                  * Name of trading platform.
                  */
-                platform?: 'dxtrade' | 'mt5';
+                platform?: 'dxtrade' | 'mt5' | 'ctrader';
                 /**
                  * Trade server name of the MT5 account.
                  */
@@ -765,7 +958,7 @@ type TPrivateSocketEndpoints = {
                     /**
                      * The status code of the transaction.
                      * Possible values for **deposit:** `PENDING|CONFIRMED|ERROR`,
-                     * possible values for **withdrawal:** `LOCKED|VERIFIED|REJECTED|PERFORMING_BLOCKCHAIN_TXN|PROCESSING|SENT|ERROR|CANCELLED`.
+                     * possible values for **withdrawal:** `LOCKED|VERIFIED|REJECTED|PERFORMING_BLOCKCHAIN_TXN|PROCESSING|SENT|ERROR|CANCELLED|REVERTING|REVERTED`.
                      */
                     status_code:
                         | 'CANCELLED'
@@ -776,6 +969,8 @@ type TPrivateSocketEndpoints = {
                         | 'PERFORMING_BLOCKCHAIN_TXN'
                         | 'PROCESSING'
                         | 'REJECTED'
+                        | 'REVERTED'
+                        | 'REVERTING'
                         | 'SENT'
                         | 'VERIFIED';
                     /**

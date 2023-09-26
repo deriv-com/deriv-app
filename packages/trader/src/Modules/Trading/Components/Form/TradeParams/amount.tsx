@@ -16,6 +16,7 @@ type TInput = {
     currency: string;
     current_focus: string | null;
     error_messages?: string[];
+    is_disabled?: React.ComponentProps<typeof InputField>['is_disabled'];
     is_single_currency: boolean;
     onChange: (e: { target: { name: string; value: number | string } }) => void;
     setCurrentFocus: (name: string | null) => void;
@@ -27,6 +28,7 @@ export const Input = ({
     current_focus,
     error_messages,
     is_single_currency,
+    is_disabled,
     onChange,
     setCurrentFocus,
 }: TInput) => (
@@ -45,6 +47,7 @@ export const Input = ({
         is_hj_whitelisted
         is_incrementable
         is_negative_disabled
+        is_disabled={is_disabled}
         max_length={AMOUNT_MAX_LENGTH}
         name='amount'
         onChange={onChange}
@@ -75,6 +78,7 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
         is_turbos,
         is_vanilla,
         has_equals_only,
+        has_open_accu_contract,
         onChange,
         validation_errors,
     } = useTraderStore();
@@ -160,6 +164,7 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
                     current_focus={current_focus}
                     error_messages={error_messages}
                     is_single_currency={is_single_currency}
+                    is_disabled={has_open_accu_contract}
                     onChange={onChange}
                     setCurrentFocus={setCurrentFocus}
                 />
@@ -185,7 +190,7 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
                     />
                 </React.Fragment>
             )}
-            {(is_turbos || is_vanilla) && <MinMaxStakeInfo />}
+            {(is_turbos || is_vanilla) && <MinMaxStakeInfo min_stake={0} max_stake={0} currency={currency} />}
         </Fieldset>
     );
 });

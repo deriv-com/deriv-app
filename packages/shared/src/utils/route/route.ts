@@ -1,8 +1,8 @@
 // Checks if pathname matches route. (Works even with query string /?)
-import React from 'react';
+
 // TODO: Add test cases for this
-type TRoute = {
-    component?: JSX.Element | null;
+export type TRoute = {
+    component?: React.ElementType | null;
     default?: boolean;
     exact?: boolean;
     getTitle?: () => string;
@@ -19,7 +19,8 @@ type TGetSelectedRoute = {
     pathname: string;
 };
 
-export const matchRoute = (route: TRoute, pathname: string) => new RegExp(`^${route.path}(/.*)?$`).test(pathname);
+// @ts-expect-error as this is a utility function with dynamic types
+export const matchRoute = <T>(route: T, pathname: string) => new RegExp(`^${route?.path}(/.*)?$`).test(pathname);
 
 export const getSelectedRoute = ({ routes, pathname }: TGetSelectedRoute) => {
     const matching_route = routes.find(route => matchRoute(route, pathname));

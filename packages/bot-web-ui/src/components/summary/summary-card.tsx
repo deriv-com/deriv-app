@@ -34,7 +34,7 @@ const SummaryCard = observer(({ contract_info, is_contract_loading }: TSummaryCa
         <ContractCard.Body
             addToast={addToast}
             contract_info={contract_info}
-            currency={contract_info && contract_info.currency}
+            currency={contract_info?.currency ?? ''}
             current_focus={current_focus}
             error_message_alignment='left'
             getCardLabels={getCardLabels}

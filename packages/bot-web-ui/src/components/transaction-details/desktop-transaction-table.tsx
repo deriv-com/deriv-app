@@ -43,12 +43,12 @@ const CellLoader = () => (
         className='transactions__loader-text'
         data-testid='transaction_details_table_cell_loader'
         height={10}
-        width={80}
+        width={30}
         speed={3}
         backgroundColor={'var(--general-section-2)'}
         foregroundColor={'var(--general-hover)'}
     >
-        <rect x='0' y='0' rx='0' ry='0' width='100' height='12' />
+        <rect x='0' y='0' rx='0' ry='0' width='60' height='12' />
     </ContentLoader>
 );
 
@@ -57,6 +57,8 @@ export default function DesktopTransactionTable({
     result_columns,
     transactions,
     transaction_columns,
+    account,
+    balance,
 }: TDesktopTransactionTable) {
     return (
         <div data-testid='transaction_details_tables'>
@@ -78,7 +80,7 @@ export default function DesktopTransactionTable({
                                         convertDateFormat(
                                             data?.date_start,
                                             'YYYY-M-D HH:mm:ss [GMT]',
-                                            'YYYY-MM-DD HH:mm:ss [GMT] ZZ'
+                                            'YYYY-MM-DD HH:mm:ss [GMT]'
                                         )
                                     }
                                     extra_classes={[`${PARENT_CLASS}__table-cell--grow-big`]}
@@ -135,6 +137,7 @@ export default function DesktopTransactionTable({
             <div className={classNames(`${PARENT_CLASS}__table-container`)}>
                 <TableHeader columns={result_columns} />
                 <div className={`${PARENT_CLASS}__table-row`}>
+                    <TableCell label={account} />
                     <TableCell label={result?.number_of_runs} />
                     <TableCell label={Math.abs(result?.total_stake ?? 0).toFixed(2)} />
                     <TableCell label={Math.abs(result?.total_payout ?? 0).toFixed(2)} />
@@ -155,6 +158,7 @@ export default function DesktopTransactionTable({
                             </div>
                         }
                     />
+                    <TableCell label={balance} />
                 </div>
             </div>
         </div>

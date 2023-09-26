@@ -70,7 +70,5 @@ describe('<ClosingAccountReason />', () => {
         });
 
         expect(screen.getByText(/Remaining characters: 97/i)).toBeInTheDocument();
-
-        screen.debug();
     });
 });

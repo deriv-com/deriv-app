@@ -19,10 +19,6 @@ jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
 }));
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
-jest.mock('@deriv/components', () => ({
-    Loading: () => <div>Loading...</div>,
-}));
-
 jest.mock('../transaction-details-desktop', () => ({
     __esModule: true,
     default: () => <div>Desktop Details</div>,
@@ -31,6 +27,9 @@ jest.mock('../transaction-details-desktop', () => ({
 jest.mock('../transaction-details-mobile', () => ({
     __esModule: true,
     default: () => <div>Mobile Details</div>,
+}));
+jest.mock('@deriv/deriv-charts', () => ({
+    setSmartChartsPublicPath: jest.fn(),
 }));
 
 const mock_ws = {
@@ -62,10 +61,6 @@ describe('TransactionDetails', () => {
                 </DBotStoreProvider>
             </StoreProvider>
         );
-    });
-    it('should render loader on initial render', () => {
-        render(<TransactionDetails />, { wrapper });
-        expect(screen.queryByText('Loading...')).toBeInTheDocument();
     });
 
     it('should render Desktop component based on Desktop', async () => {

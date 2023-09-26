@@ -31,8 +31,7 @@ export type TContractUpdateFormProps = Pick<
     | 'status'
 > & {
     contract: TContractStore;
-    current_focus?: string;
-    error_message_alignment: string;
+    error_message_alignment?: string;
     getCardLabels: TGetCardLables;
     onMouseLeave: () => void;
     removeToast: (toast_id: string) => void;
@@ -91,11 +90,11 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
 
     const isValid = (val?: number | null) => !(val === undefined || val === null);
 
+    const is_multiplier = isMultiplierContract(contract_info.contract_type || '');
     const is_take_profit_valid = has_contract_update_take_profit
         ? +contract_update_take_profit > 0
-        : isValid(stop_loss);
+        : isValid(is_multiplier ? stop_loss : take_profit);
     const is_stop_loss_valid = has_contract_update_stop_loss ? +contract_update_stop_loss > 0 : isValid(take_profit);
-    const is_multiplier = isMultiplierContract(contract_info.contract_type || '');
     const is_valid_multiplier_contract_update = is_valid_to_cancel
         ? false
         : !!(is_take_profit_valid || is_stop_loss_valid);

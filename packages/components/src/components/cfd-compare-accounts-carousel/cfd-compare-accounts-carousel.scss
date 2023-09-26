@@ -1,0 +1,69 @@
+.cfd-compare-accounts-carousel {
+    position: relative;
+    --slide-spacing: 1rem;
+    --slide-size: 50%;
+    --slide-height: 19rem;
+    overflow: hidden;
+    &__viewport {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        @include mobile {
+            padding-bottom: 6rem;
+        }
+    }
+    &__container {
+        backface-visibility: hidden;
+        display: flex;
+        touch-action: pan-y;
+        flex-direction: row;
+        max-height: auto;
+        margin-left: calc(var(--slide-spacing) * -1);
+        transition: transform 0s ease-in-out;
+    }
+    &__slide {
+        flex: 0 0 var(--slide-size);
+        min-width: 0;
+        padding-left: var(--slide-spacing);
+        position: relative;
+        &__img {
+            display: block;
+            height: var(--slide-height);
+            width: 100%;
+            object-fit: cover;
+        }
+    }
+    &__button {
+        background-color: var(--general-main-1);
+        z-index: 1;
+        color: var(--background-site);
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 50%;
+        cursor: pointer;
+        width: 4rem;
+        height: 4rem;
+        border: 1px solid var(--general-background-main);
+        border-radius: 50%;
+        box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.08), 0px 24px 24px rgba(0, 0, 0, 0.08);
+        &--prev {
+            left: 1.6rem;
+        }
+        &--next {
+            right: 1.6rem;
+        }
+        &:disabled {
+            opacity: 0.3;
+            display: none;
+        }
+        &__svg {
+            width: 50%;
+            height: 35%;
+        }
+        @include mobile {
+            display: none;
+        }
+    }
+}

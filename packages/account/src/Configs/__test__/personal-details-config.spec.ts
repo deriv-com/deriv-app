@@ -106,4 +106,22 @@ describe('personal-details-config', () => {
         const personal_details = personal_details_config(new_props);
         expect(personal_details[0].tax_residence.default_value).toEqual('');
     });
+
+    it('should include svg in additional fields if client is not high risk for mt5', () => {
+        const new_props = {
+            ...mock_props,
+            real_account_signup_target: 'svg',
+            is_high_risk_client_for_mt5: false,
+        };
+        const personal_details = personal_details_config(new_props);
+        const additional_fields = [
+            'place_of_birth',
+            'tax_residence',
+            'tax_identification_number',
+            'account_opening_reason',
+        ];
+        additional_fields.forEach(field => {
+            expect(personal_details[0][field].supported_in).toContain('svg');
+        });
+    });
 });

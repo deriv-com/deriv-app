@@ -26,7 +26,7 @@ import {
     urlFor,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
+import ChartLoader from 'App/Components/Elements/chart-loader';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
 import { SmartChart } from 'Modules/SmartChart';
@@ -281,6 +281,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                 is_accumulator_contract && end_epoch && start_epoch < prev_start_epoch
             }
             shouldFetchTradingTimes={false}
+            should_zoom_out_on_yaxis={is_accumulator_contract}
             yAxisMargin={getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
             shouldFetchTickHistory={

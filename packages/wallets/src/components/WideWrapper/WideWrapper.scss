@@ -1,0 +1,27 @@
+.wallets-wide-wrapper {
+    background-color: #ffffff;
+    border-radius: 8px;
+
+    width: 80vw;
+    height: 80vh;
+
+    &__header {
+        padding: 2rem;
+        border-bottom: 2px solid #f2f3f4;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 24px; /* 150% */
+    }
+
+    &__footer {
+        padding: 2rem;
+        height: 10%;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        border-top: 2px solid #f2f3f4;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+}

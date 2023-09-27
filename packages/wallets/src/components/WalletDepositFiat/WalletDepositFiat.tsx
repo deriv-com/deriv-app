@@ -4,12 +4,12 @@ import './WalletDepositFiat.scss';
 
 const WalletDepositFiat = () => {
     const { isSuccess: isAuthorizeSuccess } = useAuthorize();
-    const { data: iframe_url, isError, mutate } = useDepositFiatAddress();
+    const { data: iframeUrl, isError, mutate } = useDepositFiatAddress();
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         setIsLoading(true);
-    }, [iframe_url]);
+    }, [iframeUrl]);
 
     useEffect(() => {
         if (isAuthorizeSuccess) {
@@ -22,12 +22,12 @@ const WalletDepositFiat = () => {
     return (
         <React.Fragment>
             {isLoading && <p>Loading...</p>}
-            {iframe_url && (
+            {iframeUrl && (
                 <iframe
                     className='wallets-deposit-fiat__iframe'
-                    key={iframe_url}
+                    key={iframeUrl}
                     onLoad={() => setIsLoading(false)}
-                    src={iframe_url}
+                    src={iframeUrl}
                     style={{ display: isLoading ? 'none' : 'block' }}
                 />
             )}

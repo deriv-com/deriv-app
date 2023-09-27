@@ -15,11 +15,11 @@ const currencies = {
     eth: ETHIcon,
     eur: EURIcon,
     eusdt: TetherIcon,
-    ltc: LTCIcon,
-    usd: USDIcon,
     gbp: GBPIcon,
-    usdc: USDCIcon,
+    ltc: LTCIcon,
     tusdt: TetherIcon,
+    usd: USDIcon,
+    usdc: USDCIcon,
     ust: TetherIcon,
 };
 

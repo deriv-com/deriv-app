@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Money, Text, Popover } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import { observer } from '@deriv/stores';
 import { getContractSubtype, getLocalizedBasis } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';

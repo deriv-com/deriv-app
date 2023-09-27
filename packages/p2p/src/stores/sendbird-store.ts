@@ -199,7 +199,7 @@ export default class SendbirdStore extends BaseStore {
         const is_inclusive_of_timestamp = false;
         const result_size = 50;
         const reverse_results = false;
-        const custom_type = ['', 'admin'];
+        const custom_type = [''];
 
         const messages_timestamp =
             timestamp ?? toMoment(this.root_store.general_store.server_time.get()).utc().valueOf();

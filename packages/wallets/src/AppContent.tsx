@@ -1,16 +1,18 @@
 import React from 'react';
-import WalletList from './components/WalletList';
-import WalletsCarousel from './components/WalletCarousel';
-import IcBrandDerivGo from './public/ic-brand-derivgo.svg';
-import './app-content.scss';
+import { useAuthorize, useCurrencyConfig } from '@deriv/api';
+import { Loader } from './components';
+import { Router } from './routes';
+import './AppContent.scss';
 
 const AppContent: React.FC = () => {
+    const { isLoading: isAuthorizeLoading } = useAuthorize();
+    const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
+
+    if (isAuthorizeLoading || isCurrencyConfigLoading) return <Loader />;
+
     return (
-        <div>
-            <div className='wallet-app-content-icon' />
-            <IcBrandDerivGo width={25} height={25} />
-            <WalletList />
-            <WalletsCarousel />
+        <div className='wallets-app'>
+            <Router />
         </div>
     );
 };

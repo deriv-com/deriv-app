@@ -1,0 +1,139 @@
+import classNames from 'classnames';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Text, ThemedScrollbars, Icon } from '@deriv/components';
+import { formatMilliseconds } from '@deriv/shared';
+import { observer } from 'mobx-react-lite';
+import ChatMessageReceipt from 'Pages/orders/chat/chat-message-receipt.jsx';
+import ChatMessageText from 'Pages/orders/chat/chat-message-text.jsx';
+import { useStores } from 'Stores';
+import ChatMessage from 'Utils/chat-message';
+import { convertToMB, isImageType, isPDFType } from 'Utils/file-uploader';
+import './chat-messages.scss';
+
+const ChatMessages = observer(() => {
+    const { sendbird_store } = useStores();
+    const scroll_ref = React.useRef(null);
+
+    const onImageLoad = event => {
+        // Height of element changes after the image is loaded. Accommodate
+        // this extra height in the scroll.
+        if (scroll_ref.current) {
+            scroll_ref.current.scrollTop += event.target.parentNode.clientHeight;
+        }
+    };
+
+    sendbird_store.setMessagesRef(scroll_ref);
+
+    if (sendbird_store.chat_messages.length) {
+        let current_date = null;
+
+        const getMessageFormat = (chat_message, message_color) => {
+            const { file_type, url, size, name } = chat_message ?? {};
+            if (isImageType(file_type))
+                return (
+                    <a className='chat-messages-item-image' href={url} rel='noopener noreferrer' target='_blank'>
+                        <img src={url} onLoad={onImageLoad} />
+                    </a>
+                );
+            else if (isPDFType(file_type)) {
+                return (
+                    <ChatMessageText color={message_color}>
+                        <div className='chat-messages-item-pdf'>
+                            <Icon icon='IcPdf' data_testid='dt_pdf_icon' size={20} />
+                            <a href={url} rel='noopener noreferrer' target='_blank'>
+                                {name}
+                            </a>
+                        </div>
+                        {`${convertToMB(size).toFixed(2)}MB`}
+                    </ChatMessageText>
+                );
+            }
+            return (
+                <ChatMessageText color={message_color}>
+                    <a className='chat-messages-item-file' href={url} rel='noopener noreferrer' target='_blank'>
+                        {name}
+                    </a>
+                </ChatMessageText>
+            );
+        };
+
+        return (
+            <ThemedScrollbars
+                autohide
+                className='chat-messages'
+                height='unset'
+                refSetter={scroll_ref}
+                onScroll={event => sendbird_store.onMessagesScroll(event)}
+            >
+                {sendbird_store.chat_messages.map(chat_message => {
+                    const is_admin_message = chat_message.custom_type === ChatMessage.TYPE_ADMIN;
+                    const is_my_message =
+                        chat_message.sender_user_id === sendbird_store.chat_info.user_id && !is_admin_message;
+                    const message_date = formatMilliseconds(chat_message.created_at, 'MMMM D, YYYY');
+                    const message_color = is_my_message ? 'colored-background' : 'general';
+                    const should_render_date =
+                        current_date !== message_date && Boolean(!is_admin_message && (current_date = message_date));
+
+                    return (
+                        <React.Fragment key={chat_message.id}>
+                            {should_render_date && (
+                                <div className='chat-messages-date'>
+                                    <Text align='center' color='less-prominent' lh='m' size='xs' weight='bold'>
+                                        {message_date}
+                                    </Text>
+                                </div>
+                            )}
+                            <div
+                                className={classNames(
+                                    'chat-messages-item',
+                                    `chat-messages-item--${
+                                        is_admin_message ? 'admin' : is_my_message ? 'outgoing' : 'incoming'
+                                    }`
+                                )}
+                                data-testid='dt_chat_message'
+                            >
+                                {chat_message.message_type === ChatMessage.TYPE_USER && (
+                                    <ChatMessageText color={message_color} type={chat_message.custom_type}>
+                                        {chat_message.message}
+                                    </ChatMessageText>
+                                )}
+                                {chat_message.message_type === ChatMessage.TYPE_FILE &&
+                                    getMessageFormat(chat_message, message_color)}
+                                <div className={`order-chat__messages-item-timestamp`}>
+                                    {!is_admin_message && (
+                                        <Text color='less-prominent' line_height='s' size='xxxs'>
+                                            {formatMilliseconds(chat_message.created_at, 'HH:mm', true)}
+                                        </Text>
+                                    )}
+                                    {is_my_message && (
+                                        <ChatMessageReceipt
+                                            message={chat_message}
+                                            chat_channel={sendbird_store.active_chat_channel}
+                                            sendbird_user_id={sendbird_store.chat_info.user_id}
+                                        />
+                                    )}
+                                </div>
+                            </div>
+                        </React.Fragment>
+                    );
+                })}
+            </ThemedScrollbars>
+        );
+    }
+
+    return <div className='chat-messages' />;
+});
+
+ChatMessages.displayName = 'ChatMessages';
+ChatMessages.propTypes = {
+    active_chat_channel: PropTypes.object,
+    chat_messages: PropTypes.number,
+    chat_info: PropTypes.shape({
+        app_id: PropTypes.string,
+        user_id: PropTypes.string,
+        token: PropTypes.string,
+    }),
+};
+
+export default ChatMessages;

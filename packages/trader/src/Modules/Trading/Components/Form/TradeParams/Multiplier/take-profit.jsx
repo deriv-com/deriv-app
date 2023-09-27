@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { InputWithCheckbox } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
@@ -13,7 +13,7 @@ const TakeProfit = observer(props => {
 
     const { addToast, removeToast, current_focus, setCurrentFocus } = ui;
     const { is_single_currency } = client;
-    const { is_accumulator, currency } = trade;
+    const { is_accumulator, currency, has_open_accu_contract } = trade;
 
     const validation_errors = props.validation_errors ?? trade.validation_errors;
     const take_profit = props.take_profit ?? trade.take_profit;
@@ -47,6 +47,7 @@ const TakeProfit = observer(props => {
                 current_focus={current_focus}
                 defaultChecked={has_take_profit}
                 error_messages={has_take_profit ? validation_errors.take_profit : undefined}
+                is_disabled={has_open_accu_contract}
                 is_single_currency={is_single_currency}
                 is_negative_disabled={true}
                 is_input_hidden={!has_take_profit}

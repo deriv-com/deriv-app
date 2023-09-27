@@ -7,4 +7,16 @@
     border-radius: 4px;
     background: #ff444f;
     border: unset;
+    cursor: pointer;
+
+    &-disabled {
+        border: unset;
+        padding: 6px 16px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+        background-color: #ccc;
+        color: #666;
+        cursor: not-allowed;
+    }
 }

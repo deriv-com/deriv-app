@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ThemedScrollbars } from '@deriv/components';
+import { ThemedScrollbars, Loading } from '@deriv/components';
 import { useActiveWallet, useWalletsList } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import AddMoreWallets from 'Components/add-more-wallets';
@@ -10,7 +10,7 @@ import './wallets.scss';
 
 const Wallets = observer(() => {
     const { client, ui } = useStore();
-    const { switchAccount } = client;
+    const { switchAccount, is_authorize } = client;
     const { is_mobile } = ui;
     const { data } = useWalletsList();
     const active_wallet = useActiveWallet();
@@ -20,6 +20,8 @@ const Wallets = observer(() => {
             switchAccount(data[0].loginid);
         }
     }, [active_wallet, data, switchAccount]);
+
+    if (!is_authorize) return <Loading is_fullscreen />;
 
     return (
         <ThemedScrollbars className={'wallets-module'}>

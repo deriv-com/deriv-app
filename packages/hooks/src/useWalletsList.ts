@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
+import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 import useAuthorize from './useAuthorize';
 import useCurrencyConfig from './useCurrencyConfig';
-import useBalance from './useBalance';
 
 const currency_to_icon_mapper: Record<string, Record<'light' | 'dark', string>> = {
     Demo: {
@@ -63,12 +63,15 @@ const currency_to_icon_mapper: Record<string, Record<'light' | 'dark', string>> 
 /** @deprecated Use `useWalletAccountsList` instead. */
 const useWalletsList = () => {
     const { client, ui } = useStore();
-    const { loginid } = client;
+    const { loginid, is_authorize } = client;
     const { is_dark_mode_on } = ui;
     const { getConfig } = useCurrencyConfig();
 
     const { data: authorize_data, ...rest } = useAuthorize();
-    const { data: balance_data } = useBalance();
+    const { data: balance_data } = useFetch('balance', {
+        payload: { account: 'all' },
+        options: { enabled: is_authorize },
+    });
 
     // Filter out non-wallet accounts.
     const wallets = useMemo(
@@ -82,9 +85,9 @@ const useWalletsList = () => {
             wallets?.map(wallet => ({
                 ...wallet,
                 /** Wallet balance */
-                balance: balance_data?.accounts?.[wallet.loginid || '']?.balance || 0,
+                balance: balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance || 0,
             })),
-        [balance_data?.accounts, wallets]
+        [balance_data?.balance?.accounts, wallets]
     );
 
     // Add additional information to each wallet.

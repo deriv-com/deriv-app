@@ -41,7 +41,7 @@ const Contract = observer(() => {
             <ContractTypeWidget
                 list={list}
                 name='contract_type'
-                onChange={onChange}
+                onChange={e => onChange({ target: { name: e.target?.name || '', value: e.target?.value } })}
                 value={contract_type}
                 languageChanged={!!(prev_lang && prev_lang !== current_language)}
             />

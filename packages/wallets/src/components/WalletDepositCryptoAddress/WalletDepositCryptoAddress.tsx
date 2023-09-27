@@ -7,9 +7,9 @@ import WalletClipboard from '../WalletClipboard/WalletClipboard';
 import './WalletDepositCryptoAddress.scss';
 
 const WalletDepositCryptoAddress = () => {
-    const { data: deposit_crypto_address, isLoading, mutate } = useDepositCryptoAddress();
+    const { data: depositCryptoAddress, isLoading, mutate } = useDepositCryptoAddress();
     const { isSuccess: isAuthorizeSuccess } = useAuthorize();
-    const { is_mobile } = useDevice();
+    const { isMobile } = useDevice();
 
     useEffect(() => {
         if (isAuthorizeSuccess) {
@@ -26,14 +26,14 @@ const WalletDepositCryptoAddress = () => {
 
     return (
         <div className='wallets-deposit-crypto-address'>
-            <QRCode size={is_mobile ? 128 : 160} value={deposit_crypto_address || ''} />
+            <QRCode size={isMobile ? 128 : 160} value={depositCryptoAddress || ''} />
             <div className='wallets-deposit-crypto-address__hash-container'>
-                <p className='wallets-deposit-crypto-address__hash'>{deposit_crypto_address}</p>
+                <p className='wallets-deposit-crypto-address__hash'>{depositCryptoAddress}</p>
                 <WalletClipboard
-                    info_message={is_mobile ? undefined : 'copy'}
-                    popoverAlignment={is_mobile ? 'left' : 'bottom'}
-                    success_message='copied'
-                    text_copy={deposit_crypto_address || ''}
+                    infoMessage={isMobile ? undefined : 'copy'}
+                    popoverAlignment={isMobile ? 'left' : 'bottom'}
+                    successMessage='copied'
+                    textCopy={depositCryptoAddress || ''}
                 />
             </div>
         </div>

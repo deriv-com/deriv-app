@@ -1,10 +1,16 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { SlideIn } from 'App/Components/Animations';
-import InfoBoxLongcode from './info-box-longcode.jsx';
-import ContractError from '../contract-error.jsx';
+import InfoBoxLongcode from './info-box-longcode';
+import ContractError from '../contract-error';
+import { TContractInfo } from '@deriv/shared';
 
-const InfoBox = ({ contract_info, error_message, removeError }) => {
+type TInfoBox = {
+    contract_info: TContractInfo;
+    error_message?: string;
+    removeError: () => void;
+};
+
+const InfoBox = ({ contract_info, error_message, removeError }: TInfoBox) => {
     const is_ready = !!contract_info.longcode;
     return (
         <SlideIn is_visible={is_ready} className='info-box-container' keyname='info-box-container'>
@@ -16,12 +22,6 @@ const InfoBox = ({ contract_info, error_message, removeError }) => {
             <ContractError message={error_message} onClickClose={removeError} />
         </SlideIn>
     );
-};
-
-InfoBox.propTypes = {
-    contract_info: PropTypes.object,
-    error_message: PropTypes.string,
-    removeError: PropTypes.func,
 };
 
 export default InfoBox;

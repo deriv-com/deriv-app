@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import { Money, Text, Popover } from '@deriv/components';
 import classNames from 'classnames';
 import { observer } from '@deriv/stores';

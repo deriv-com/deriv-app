@@ -32,7 +32,7 @@ const TradingAssessmentForm = ({
 }: TTradingAssessmentForm) => {
     const [is_section_filled, setIsSectionFilled] = React.useState(false);
     const [should_inform_user, shouldInformUser] = React.useState(false);
-    const [form_data, setFormData] = React.useState<TFormData>({ ...form_value });
+    const [form_data, setFormData] = React.useState({ ...form_value });
 
     const assessment_questions = trading_assessment_questions();
 
@@ -154,9 +154,9 @@ const TradingAssessmentForm = ({
                             answer_options,
                             questions,
                         }: {
-                            question_text: string;
+                            question_text: React.ReactNode;
                             form_control: keyof TFormData;
-                            answer_options: { text: string; value: string }[];
+                            answer_options: { text: React.ReactNode; value: string }[];
                             questions: TQuestion[];
                         } = current_question_details.current_question;
 
@@ -181,7 +181,7 @@ const TradingAssessmentForm = ({
                                         <TradingAssessmentRadioButton
                                             text={question_text}
                                             list={answer_options ?? []}
-                                            onChange={e => handleValueSelection(e, form_control, setFieldValue)}
+                                            onChange={e => handleValueSelection(e as any, form_control, setFieldValue)}
                                             values={values}
                                             form_control={form_control}
                                             setEnableNextSection={setIsSectionFilled}

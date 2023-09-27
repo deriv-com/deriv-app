@@ -217,5 +217,3 @@ export type TQuestion = {
     answer_options: { text: string; value: string }[];
     field_type?: string;
 };
-
-// export type TAssessmentQuestions = Array<TQuestion & { section?: string; questions: TQuestion[] }>;

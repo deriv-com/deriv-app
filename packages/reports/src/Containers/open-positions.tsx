@@ -81,6 +81,7 @@ type TMobileRowRenderer = TUiStore & {
 };
 
 type TOpenPositionsTable = {
+    accumulator_rate: string;
     className: string;
     columns: Record<string, unknown>[];
     component_icon: string;

@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
-import useRequest from '../useRequest';
+import useMutation from '../useMutation';
 import useInvalidateQuery from '../useInvalidateQuery';
 
 /** A custom hook that creates a new real trading account. */
 const useCreateNewRealAccount = () => {
     const invalidate = useInvalidateQuery();
-    const { data, ...rest } = useRequest('new_account_real', {
+    const { data, ...rest } = useMutation('new_account_real', {
         onSuccess: () => {
             invalidate('authorize');
         },

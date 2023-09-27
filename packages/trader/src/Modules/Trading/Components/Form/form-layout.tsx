@@ -10,7 +10,7 @@ type TFormLayout = {
 const Screen = Loadable({
     loader: () =>
         isMobile()
-            ? import(/* webpackChunkName: "screen-small" */ './screen-small.jsx')
+            ? import(/* webpackChunkName: "screen-small" */ './screen-small')
             : import(/* webpackChunkName: "screen-large" */ './screen-large'),
     loading: () => null,
     render(loaded, props) {

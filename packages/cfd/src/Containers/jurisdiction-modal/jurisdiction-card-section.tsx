@@ -34,7 +34,7 @@ const JurisdictionCardSection = ({
                     />
                 ) : (
                     card_section_item.description && (
-                        <Text as='span' size='xxs'>
+                        <Text as='span' size='xs'>
                             {card_section_item.description}
                         </Text>
                     )

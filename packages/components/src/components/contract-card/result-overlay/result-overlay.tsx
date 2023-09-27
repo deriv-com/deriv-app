@@ -14,13 +14,13 @@ type TResultOverlayProps = {
     is_unsupported: boolean;
     is_visible: boolean;
     onClick: () => void;
-    onClickRemove: (contract_id?: number) => void;
+    onClickRemove: (contract_id: number) => void;
     result: string;
 };
 
 type TResultStatusIcon = {
     getCardLabels: TGetCardLables;
-    is_contract_won: boolean;
+    is_contract_won?: boolean;
 };
 
 export const ResultStatusIcon = ({ getCardLabels, is_contract_won }: TResultStatusIcon) => (
@@ -88,7 +88,7 @@ const ResultOverlay = ({
                         <span
                             id={`dc_contract_card_${contract_id}_result_close_icon`}
                             className='dc-result__close-btn'
-                            onClick={() => onClickRemove(contract_id)}
+                            onClick={() => onClickRemove(Number(contract_id))}
                         />
                     )}
                     {getContractPath && (

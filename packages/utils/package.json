@@ -6,6 +6,6 @@
     "dependencies": {},
     "devDependencies": {
         "typescript": "^4.6.3",
-        "@deriv/api-types": "^1.0.116"
+        "@deriv/api-types": "^1.0.118"
     }
 }

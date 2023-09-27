@@ -4,7 +4,7 @@ import BarriersList from './barriers-list';
 import { DesktopWrapper, InputField, MobileWrapper, Dropdown, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -13,9 +13,10 @@ const Strike = observer(() => {
     const { ui, common } = useStore();
     const {
         barrier_1,
+        barrier_choices: strike_price_choices,
+        duration_unit,
         onChange,
         validation_errors,
-        barrier_choices: strike_price_choices,
         expiry_type,
         expiry_date,
         vanilla_trade_type,
@@ -42,6 +43,8 @@ const Strike = observer(() => {
         text: strike_price,
         value: strike_price,
     }));
+
+    const should_show_spot = duration_unit !== 'd';
 
     return (
         <React.Fragment>
@@ -120,7 +123,9 @@ const Strike = observer(() => {
             <MobileWrapper>
                 <div className='mobile-widget__wrapper'>
                     <div className='strike-widget' onClick={toggleWidget}>
-                        <div className='mobile-widget__spot'>{<Text size='xs'>{localize('Spot')}</Text>}</div>
+                        {should_show_spot && (
+                            <div className='mobile-widget__spot'>{<Text size='xs'>{localize('Spot')}</Text>}</div>
+                        )}
                         <div className='mobile-widget__amount'>{barrier_1}</div>
                         <div className='mobile-widget__type'>{localize('Strike price')}</div>
                     </div>

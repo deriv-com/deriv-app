@@ -194,9 +194,7 @@ export default class WithdrawStore {
             return;
         }
 
-        const response_cashier = await this.WS.authorized.cashier(active_container as 'deposit' | 'withdraw', {
-            verification_code,
-        });
+        const response_cashier = await this.WS.authorized.cashier('withdraw', { verification_code });
 
         // if tab changed while waiting for response, ignore it
         if (current_container !== active_container) {

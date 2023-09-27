@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import IcDropdown from '../../public/images/ic-dropdown.svg';
 import './WalletsAccordion.scss';
 
@@ -16,7 +16,7 @@ const WalletsAccordion: React.FC<React.PropsWithChildren<TProps>> = ({
     onToggle,
     renderHeader,
 }) => {
-    const accordionRef = React.useRef<HTMLDivElement>(null);
+    const accordionRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (isOpen && accordionRef?.current) {

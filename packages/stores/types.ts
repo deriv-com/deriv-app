@@ -117,7 +117,7 @@ type TAccountsList = {
             Derived: React.SVGAttributes<SVGElement>;
             Financial: React.SVGAttributes<SVGElement>;
             Options: React.SVGAttributes<SVGElement>;
-            CFDs: React.SVGAttributes<SVGAElement>;
+            CFDs: React.SVGAttributes<SVGElement>;
         };
         text?: JSX.Element | string;
         value?: string;
@@ -421,7 +421,6 @@ type TCommonStoreError = {
     should_show_refresh: boolean;
     type?: string;
 };
-
 type TCommonStoreServicesError = {
     code?: string;
     message?: string;
@@ -442,8 +441,8 @@ type TCommonStore = {
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
     is_language_changing: boolean;
-    is_socket_opened: boolean;
     services_error: TCommonStoreServicesError;
+    is_socket_opened: boolean;
     setAppstorePlatform: (value: string) => void;
     app_routing_history: TAppRoutingHistory[];
     getExchangeRate: (from_currency: string, to_currency: string) => Promise<number>;

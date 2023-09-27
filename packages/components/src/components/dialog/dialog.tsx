@@ -26,7 +26,7 @@ type TDialog = {
     onConfirm: () => void;
     onEscapeButtonCancel?: () => void;
     portal_element_id?: string;
-    title?: string;
+    title?: string | JSX.Element;
 };
 
 const Dialog = ({

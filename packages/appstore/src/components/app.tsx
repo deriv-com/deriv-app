@@ -8,6 +8,7 @@ import Routes from 'Components/routes/routes';
 import { useStores, initContext } from 'Stores';
 import { TRootStore } from 'Types';
 import './app.scss';
+import { APIProvider } from '@deriv/api';
 
 type TAppProps = {
     passthrough: {
@@ -25,17 +26,19 @@ const App = ({ passthrough: { WS, root_store } }: TAppProps) => {
         <CashierStoreProvider store={root_store as any}>
             <CFDStoreProvider store={root_store as any}>
                 <StoreProvider store={root_store as any}>
-                    <main
-                        className={classNames('dashboard', {
-                            'theme--light': !ui.is_dark_mode_on,
-                            'theme--dark': ui.is_dark_mode_on,
-                            'dashboard-onboarding': window.location.pathname === routes.onboarding,
-                        })}
-                    >
-                        <div className='dw-dashboard'>
-                            <Routes />
-                        </div>
-                    </main>
+                    <APIProvider>
+                        <main
+                            className={classNames('dashboard', {
+                                'theme--light': !ui.is_dark_mode_on,
+                                'theme--dark': ui.is_dark_mode_on,
+                                'dashboard-onboarding': window.location.pathname === routes.onboarding,
+                            })}
+                        >
+                            <div className='dw-dashboard'>
+                                <Routes />
+                            </div>
+                        </main>
+                    </APIProvider>
                 </StoreProvider>
             </CFDStoreProvider>
         </CashierStoreProvider>

@@ -46,6 +46,7 @@ export { default as usePlatformRealAccounts } from './usePlatformRealAccounts';
 export { default as useRealSTPAccount } from './useRealSTPAccount';
 export { default as useTotalAccountBalance } from './useTotalAccountBalance';
 export { default as useVerifyEmail } from './useVerifyEmail';
+export { default as useMT5SVGEligibleToMigrate } from './useMT5SVGEligibleToMigrate';
 export { useIsAccountStatusPresent } from './useIsAccountStatusPresent';
 export { default as useP2PConfig } from './useP2PConfig';
 export { default as useIsClientHighRiskForMT5 } from './useIsClientHighRiskForMT5';

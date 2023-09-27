@@ -6,7 +6,6 @@ import {
     getDxCompanies,
     getMtCompanies,
     getDerivezCompanies,
-    getFormattedJurisdictionCode,
     TMtCompanies,
     TDxCompanies,
     TDerivezCompanies,
@@ -27,6 +26,7 @@ import {
     getAuthenticationStatusInfo,
     getCFDPlatformLabel,
     getErrorMessages,
+    getFormattedJurisdictionCode,
     getLegalEntityName,
     isDesktop,
     isMobile,
@@ -100,6 +100,7 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     form_error?: string;
     has_mt5_account: boolean;
     is_bvi: boolean;
+    is_mt5_migration_modal_enabled: boolean;
     is_dxtrade_allowed: boolean;
     is_real_financial_stp: boolean;
     jurisdiction_selected_shortcode: string;
@@ -417,12 +418,17 @@ const CFDPasswordForm = ({
     should_set_trading_password,
     show_eu_related_content,
     submitPassword,
+    is_mt5_migration_modal_enabled,
     validatePassword,
 }: TCFDPasswordFormProps) => {
     const button_label = React.useMemo(() => {
         if (error_type === 'PasswordReset') {
             return localize('Try later');
         }
+        if (is_mt5_migration_modal_enabled) {
+            return localize('Move account(s)');
+        }
+
         return localize('Add account');
     }, [error_type]);
 
@@ -467,6 +473,42 @@ const CFDPasswordForm = ({
             </React.Fragment>
         );
     }
+
+    const getPasswordModalTitle = () => {
+        if (is_mt5_migration_modal_enabled) {
+            return (
+                <Localize
+                    i18n_default_text='Enter your {{platform}} password to move your account(s).'
+                    values={{
+                        platform: getCFDPlatformLabel(platform),
+                    }}
+                />
+            );
+        } else if (account_type.category === 'real')
+            return (
+                <Localize
+                    i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} {{jurisdiction_shortcode}} account.'
+                    values={{
+                        platform: getCFDPlatformLabel(platform),
+                        platform_name: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
+                        account: !show_eu_related_content ? getAccountTitle(platform, account_type, account_title) : '',
+                        jurisdiction_shortcode: showJuristiction(),
+                    }}
+                />
+            );
+        else if (account_type.category === 'demo') {
+            return (
+                <Localize
+                    i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} account.'
+                    values={{
+                        platform: getCFDPlatformLabel(platform),
+                        platform_name: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
+                        account: getAccountTitle(platform, account_type, account_title),
+                    }}
+                />
+            );
+        }
+    };
 
     if (should_set_trading_password) {
         return (
@@ -525,27 +567,7 @@ const CFDPasswordForm = ({
                     <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
                         {!should_set_trading_password && (
                             <Text size='xs' className='dc-modal__container_cfd-password-modal__account-title'>
-                                {account_type.category === 'real' && (
-                                    <Localize
-                                        i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} {{jurisdiction_shortcode}} account.'
-                                        values={{
-                                            platform: getCFDPlatformLabel(platform),
-                                            platform_name: getCFDPlatformNames(platform),
-                                            account: !show_eu_related_content ? accountTitle() : '',
-                                            jurisdiction_shortcode: showJuristiction(),
-                                        }}
-                                    />
-                                )}
-                                {account_type.category === 'demo' && (
-                                    <Localize
-                                        i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} account.'
-                                        values={{
-                                            platform: getCFDPlatformLabel(platform),
-                                            platform_name: getCFDPlatformNames(platform),
-                                            account: accountTitle(),
-                                        }}
-                                    />
-                                )}
+                                {getPasswordModalTitle()}
                             </Text>
                         )}
                         <div className='input-element'>
@@ -607,7 +629,7 @@ const CFDPasswordForm = ({
 };
 
 const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalProps) => {
-    const { client, traders_hub } = useStore();
+    const { client, traders_hub, ui } = useStore();
 
     const {
         email,
@@ -619,6 +641,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         updateAccountStatus,
     } = client;
     const { show_eu_related_content } = traders_hub;
+    const { is_mt5_migration_modal_enabled, setMT5MigrationModalEnabled } = ui;
 
     const {
         account_title,
@@ -711,6 +734,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const closeDialogs = () => {
         setCFDSuccessDialog(false);
+        if (is_mt5_migration_modal_enabled) setMT5MigrationModalEnabled(false);
         setError(false);
     };
 
@@ -919,6 +943,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             is_dxtrade_allowed={is_dxtrade_allowed}
             onCancel={closeModal}
             show_eu_related_content={show_eu_related_content}
+            is_mt5_migration_modal_enabled={is_mt5_migration_modal_enabled}
         />
     );
 

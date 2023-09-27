@@ -4,12 +4,14 @@ import './MT5AccountTypeCard.scss';
 type TProps = {
     description: string;
     icon: JSX.Element;
+    isSelected: boolean;
+    onClick: () => void;
     title: string;
 };
 
-const MT5AccountTypeCard: React.FC<TProps> = ({ description, icon, title }) => {
+const MT5AccountTypeCard: React.FC<TProps> = ({ description, icon, isSelected, onClick, title }) => {
     return (
-        <div className='wallets-mt5-account-type-card'>
+        <div className={`wallets-mt5-account-type-card${isSelected ? '-selected' : ''}`} onClick={onClick}>
             <div className='wallets-mt5-account-type-card-list'>
                 <div className='wallets-mt5-account-type-card-list-content'>
                     <div className='wallets-mt5-account-type-card-list-content-details'>

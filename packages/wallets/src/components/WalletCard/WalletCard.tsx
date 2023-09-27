@@ -15,8 +15,8 @@ const WalletCard: React.FC<TProps> = ({ account }) => {
             <WalletGradientBackground
                 currency={account?.currency_config?.display_code || 'USD'}
                 device='mobile'
-                has_shine
-                is_demo={account?.is_virtual}
+                hasShine
+                isDemo={account?.is_virtual}
                 type='card'
             >
                 <div className='wallets-card__details'>
@@ -25,7 +25,7 @@ const WalletCard: React.FC<TProps> = ({ account }) => {
                         <div className='wallets-card__details-landing_company'>
                             {account?.landing_company_name && (
                                 <WalletListCardBadge
-                                    is_demo={account?.is_virtual}
+                                    isDemo={account?.is_virtual}
                                     label={account?.landing_company_name}
                                 />
                             )}

@@ -31,7 +31,7 @@ const WalletCashierHeader = () => {
                                 {data?.currency} Wallet
                             </h1>
                             {data?.landing_company_name && (
-                                <WalletListCardBadge is_demo={data?.is_virtual} label={data?.landing_company_name} />
+                                <WalletListCardBadge isDemo={data?.is_virtual} label={data?.landing_company_name} />
                             )}
                         </div>
                         <p className='wallets-cashier-header__info__top-left__balance'>{data?.display_balance}</p>

@@ -6,7 +6,11 @@ import WalletAddMoreCurrencyIcon from '../WalletAddMoreCurrencyIcon';
 
 type TWalletsAddMoreCardBannerProps = NonNullable<ReturnType<typeof useAvailableWallets>['data']>[0];
 
-const WalletsAddMoreCardBanner = ({ currency, isAdded, landingCompanyName }: TWalletsAddMoreCardBannerProps) => {
+const WalletsAddMoreCardBanner = ({
+    currency,
+    is_added: isAdded,
+    landing_company_name: landingCompanyName,
+}: TWalletsAddMoreCardBannerProps) => {
     return (
         <div className='wallets-add-more__banner'>
             <div className='wallets-add-more__banner-header'>

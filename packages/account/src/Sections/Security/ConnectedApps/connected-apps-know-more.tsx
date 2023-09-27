@@ -10,7 +10,7 @@ const openAPIManagingWebsite = () => {
     );
 };
 
-const ConnectedAppsArticle = () => (
+const ConnectedAppsKnowMore = () => (
     <AccountArticle
         className='connected-apps__article'
         title={localize('Want to know more about APIs?')}
@@ -24,4 +24,4 @@ const ConnectedAppsArticle = () => (
     />
 );
 
-export default ConnectedAppsArticle;
+export default ConnectedAppsKnowMore;

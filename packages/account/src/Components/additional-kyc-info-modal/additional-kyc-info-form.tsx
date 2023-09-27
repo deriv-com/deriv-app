@@ -41,18 +41,25 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
     const { fields, initialValues, validate } = getFormConfig({
         account_settings,
         residence_list,
-        required_fields: ['place_of_birth', 'tax_residence', 'tax_identification_number', 'account_opening_reason'],
+        required_fields: ['place_of_birth', 'account_opening_reason'],
     });
 
     const onSubmit = (values: typeof initialValues) => {
-        const tax_residence = residence_list.find(item => item.text === values.tax_residence)?.value;
-        const place_of_birth = residence_list.find(item => item.text === values.place_of_birth)?.value;
+        const place_of_birth = residence_list?.find(item => item.text === values.place_of_birth)?.value;
+
         const payload: Record<string, string | undefined> = {
-            tax_residence,
             place_of_birth,
-            tax_identification_number: values.tax_identification_number,
             account_opening_reason: values.account_opening_reason,
         };
+
+        if (values.tax_identification_number) {
+            payload.tax_identification_number = values.tax_identification_number;
+        }
+
+        if (values.tax_residence) {
+            const tax_residence = residence_list?.find(item => item.text === values.tax_residence)?.value;
+            payload.tax_residence = tax_residence;
+        }
 
         update(payload);
     };
@@ -81,7 +88,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
             onSubmit={onSubmit}
             validate={validate}
         >
-            {({ isValid, dirty, setFieldValue }) => (
+            {({ isValid, setFieldValue }) => (
                 <Form className='additional-kyc-info-modal__form-layout'>
                     {isLoading ? (
                         <Loading is_fullscreen={false} />
@@ -136,7 +143,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                         </section>
                     )}
                     <Modal.Footer has_separator className='additional-kyc-info-modal__form-action'>
-                        <Button large primary type='submit' disabled={!dirty || !isValid || isLoading}>
+                        <Button large primary type='submit' disabled={!isValid || isLoading}>
                             <Localize i18n_default_text='Submit' />
                         </Button>
                     </Modal.Footer>

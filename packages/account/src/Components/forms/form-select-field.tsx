@@ -62,7 +62,6 @@ const FormSelectField: React.FC<TFormSelectField> = ({
                             required={required}
                             data-lpignore='true'
                             autoComplete='off' // prevent chrome autocomplete
-                            // @ts-expect-error This needs to fixed in AutoComplete component
                             error={touched ? error : undefined}
                             // @ts-expect-error This needs to fixed in AutoComplete component
                             onItemSelection={onItemSelection ?? onSelect(field.name, setFieldValue)}

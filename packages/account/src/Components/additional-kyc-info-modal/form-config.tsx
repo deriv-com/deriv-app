@@ -83,7 +83,7 @@ export const getFormFieldsConfig = (
     const isFieldDisabled = (field: string) => account_settings?.immutable_fields?.includes(field);
 
     /**
-     * Check if the field is required based on the required_fields from passed
+     * Check if the field is required based on the required_fields array passed
      */
     const isFieldRequired = (field: TFields) => required_fields.includes(field);
 
@@ -120,13 +120,13 @@ export const getFormFieldsConfig = (
             disabled: isFieldDisabled('tax_residence'),
             required: isFieldRequired('tax_residence'),
             list_items: residence_list as TListItem[],
-            rules: [['req', <Localize key='tax_residence' i18n_default_text='Tax residence is required.' />]],
+            rules: [],
         },
         tax_identification_number: {
             label: (
                 <Localize
                     i18n_default_text='Tax Identification number{{required}}'
-                    values={{ required: isFieldRequired('place_of_birth') ? '*' : '' }}
+                    values={{ required: isFieldRequired('tax_identification_number') ? '*' : '' }}
                 />
             ),
             type: 'text',
@@ -134,7 +134,6 @@ export const getFormFieldsConfig = (
             disabled: isFieldDisabled('tax_identification_number'),
             required: isFieldRequired('tax_identification_number'),
             rules: [
-                ['req', <Localize key='TIN' i18n_default_text='Tax Identification Number is required.' />],
                 [
                     'length',
                     <Localize
@@ -144,18 +143,15 @@ export const getFormFieldsConfig = (
                     { min: 0, max: 25 },
                 ],
                 [
-                    'regular',
-                    <Localize
-                        key='TIN'
-                        i18n_default_text='Letters, numbers, spaces, periods, hyphens and forward slashes only.'
-                    />,
-                    {
-                        regex: /^(?!^$|\s+)[A-Za-z0-9./\s-]{0,25}$/,
-                    },
+                    // check if the TIN value is available, then perform the regex test
+                    // else return true (to pass the test)
+                    // this is to allow empty string to pass the test in case of optioal TIN field
+                    (value: string) => (value ? RegExp(/^(?!^$|\s+)[A-Za-z0-9./\s-]{0,25}$/).test(value) : true),
+                    localize('Letters, numbers, spaces, periods, hyphens and forward slashes only.'),
                 ],
                 [
                     (value, options, { tax_residence }) => {
-                        return !!tax_residence;
+                        return value ? !!tax_residence : true;
                     },
                     <Localize key='TIN' i18n_default_text='Please fill in tax residence.' />,
                 ],
@@ -164,7 +160,9 @@ export const getFormFieldsConfig = (
                         const tin_format = residence_list.find(
                             res => res.text === tax_residence && res.tin_format
                         )?.tin_format;
-                        return tin_format ? tin_format.some(tax_regex => new RegExp(tax_regex).test(value)) : true;
+                        return value && tin_format
+                            ? tin_format.some(tax_regex => new RegExp(tax_regex).test(value))
+                            : true;
                     },
                     <Localize key='TIN' i18n_default_text='Tax Identification Number is invalid.' />,
                 ],

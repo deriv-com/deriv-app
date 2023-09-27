@@ -66,11 +66,31 @@ describe('AdditionalKycInfoForm', () => {
         );
 
         const submit_btn = screen.getByRole('button', { name: 'Submit' });
-        expect(submit_btn).toBeDisabled();
 
         userEvent.type(screen.getByTestId('dt_place_of_birth'), 'Ghana');
         userEvent.type(screen.getByTestId('dt_tax_residence'), 'Ghana');
         userEvent.type(screen.getByTestId('dt_tax_identification_number'), 'GHA-000000000-0');
+        userEvent.type(screen.getByTestId('dt_account_opening_reason'), 'Speculative');
+
+        await waitFor(() => {
+            expect(submit_btn).toBeEnabled();
+        });
+        userEvent.click(screen.getByRole('button', { name: 'Submit' }));
+
+        expect(mockedUseSettings).toHaveBeenCalled();
+    });
+
+    it('should be able to submit the form without filling optional fields', async () => {
+        mockedUseSettings.mockReturnValue(mock_settings);
+        render(
+            <StoreProvider store={mock_store}>
+                <AdditionalKycInfoForm setError={setError} />
+            </StoreProvider>
+        );
+
+        const submit_btn = screen.getByRole('button', { name: 'Submit' });
+
+        userEvent.type(screen.getByTestId('dt_place_of_birth'), 'Ghana');
         userEvent.type(screen.getByTestId('dt_account_opening_reason'), 'Speculative');
 
         await waitFor(() => {
@@ -100,7 +120,6 @@ describe('AdditionalKycInfoForm', () => {
         );
 
         const submit_btn = screen.getByRole('button', { name: 'Submit' });
-        expect(submit_btn).toBeDisabled();
 
         userEvent.type(screen.getByTestId('dt_place_of_birth'), 'Ghana');
         userEvent.type(screen.getByTestId('dt_tax_residence'), 'Ghana');

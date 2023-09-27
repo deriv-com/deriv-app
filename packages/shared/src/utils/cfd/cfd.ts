@@ -7,7 +7,7 @@ let CFD_text_translated: { [key: string]: () => void };
 export const CFD_text: { [key: string]: string } = {
     dxtrade: 'Deriv X',
     mt5: 'MT5',
-    mt5_cfds: 'MT5 CFDs',
+    mt5_cfds: 'CFDs real',
     cfd: 'CFDs',
     ctrader: 'cTrader',
     derivez: 'DerivEz',
@@ -39,7 +39,7 @@ export const getMT5Title = (account_type: string) => {
 
 type TPlatform = 'dxtrade' | 'mt5' | 'derivez' | 'ctrader';
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
-type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu';
+type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'maltainvest';
 type TGetAccount = {
     market_type: TMarketType;
     sub_account_type?: TAccount['sub_account_type'];
@@ -105,6 +105,8 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
                     return 'financial_fx';
                 case 'vanuatu':
                     return 'financial_v';
+                case 'maltainvest':
+                    return 'financial';
                 default:
                     return 'financial_demo';
             }

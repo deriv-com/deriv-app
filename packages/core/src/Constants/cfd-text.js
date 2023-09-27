@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 export const CFD_TEXT = {
     dxtrade: () => localize('Deriv X'),
     mt5: () => localize('MT5'),
-    mt5_cfds: () => localize('MT5 CFDs'),
+    mt5_cfds: () => localize('CFDs real'),
     ctrader: () => localize('cTrader'),
     cfd: () => localize('CFDs'),
     synthetic: () => localize('Derived'),

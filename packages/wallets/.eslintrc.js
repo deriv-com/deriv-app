@@ -53,6 +53,7 @@ module.exports = {
         'typescript-sort-keys/interface': 'warn',
         'typescript-sort-keys/string-enum': 'warn',
         camelcase: 'error',
+        'import/no-extraneous-dependencies': ['off', { devDependencies: ['**/*.spec.*', '**/*.test.*', '**/*.d.ts*'] }],
     },
     overrides: [
         {

@@ -184,3 +184,8 @@ export type TServerError = {
     details?: { [key: string]: string };
     fields?: string[];
 };
+
+export type TAutoComplete = {
+    value: boolean;
+    text: string;
+};

@@ -1,15 +1,15 @@
 import React from 'react';
 import { Autocomplete, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { FormikProps, FormikValues } from 'formik';
+import { FormikErrors, FormikProps, FormikValues } from 'formik';
 import { ResidenceList } from '@deriv/api-types';
 
 type TTaxResidenceSelect = {
     field: { [key: string]: string };
     setFieldValue: FormikProps<FormikValues>['setFieldValue'];
-    errors: { [key: string]: string };
+    errors: FormikErrors<{ [key: string]: string }>;
     values: { [key: string]: string };
-    is_changeable: boolean;
+    is_changeable?: boolean;
     residence_list: ResidenceList;
 };
 
@@ -29,7 +29,7 @@ const TaxResidenceSelect = ({
                 autoComplete='new-password' // prevent chrome autocomplete
                 type='text'
                 label={<Localize i18n_default_text='Tax residence*' />}
-                error={errors.tax_residence}
+                error={errors.tax_residence!}
                 disabled={!is_changeable}
                 id='tax_residence'
                 list_items={residence_list}

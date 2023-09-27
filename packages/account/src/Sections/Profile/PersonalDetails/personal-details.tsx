@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Field, Formik, Form } from 'formik';
+import { Field, Formik, Form, FormikValues, FormikHelpers } from 'formik';
 import React from 'react';
 import { withRouter } from 'react-router';
 import {
@@ -51,6 +51,15 @@ import { validateName, validate } from 'Helpers/utils';
 import { salutation_list } from './constants';
 import TaxResidenceSelect from './tax-residence-select';
 import InputGroup from './input-group';
+import { TAutoComplete, TInputFieldValues } from 'Types';
+
+type TRestState = {
+    show_form: boolean;
+    errors?: boolean;
+    api_error?: string;
+    changeable_fields?: string[];
+    form_initial_values?: TInputFieldValues;
+};
 
 export const PersonalDetailsForm = observer(({ history }) => {
     const [is_loading, setIsLoading] = React.useState(true);
@@ -91,15 +100,16 @@ export const PersonalDetailsForm = observer(({ history }) => {
     const { is_language_changing } = common;
     const is_mf = landing_company_shortcode === 'maltainvest';
     const has_poa_address_mismatch = account_status.status?.includes('poa_address_mismatch');
-    const [rest_state, setRestState] = React.useState({
+    const [rest_state, setRestState] = React.useState<TRestState>({
         show_form: true,
         errors: false,
+        api_error: '',
         form_initial_values: {},
     });
 
     const [start_on_submit_timeout, setStartOnSubmitTimeout] = React.useState({
         is_timeout_started: false,
-        timeout_callback: null,
+        timeout_callback: () => null,
     });
 
     const { is_appstore } = React.useContext(PlatformContext);
@@ -129,7 +139,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
     }, [account_settings, is_eu, is_mf, is_social_signup]);
 
     React.useEffect(() => {
-        let timeout_id;
+        let timeout_id: NodeJS.Timeout;
         if (start_on_submit_timeout.is_timeout_started) {
             timeout_id = setTimeout(() => {
                 setIsSubmitSuccess(false, start_on_submit_timeout.timeout_callback);
@@ -141,14 +151,14 @@ export const PersonalDetailsForm = observer(({ history }) => {
         };
     }, [start_on_submit_timeout.is_timeout_started]);
 
-    const makeSettingsRequest = settings => {
+    const makeSettingsRequest = (settings: { [key: string]: string }) => {
         if (is_virtual) return { email_consent: +settings.email_consent };
-        const request = filterObjProperties(settings, [...rest_state.changeable_fields]);
+        const request = filterObjProperties(settings, [...rest_state.changeable_fields!]);
 
         request.email_consent = +request.email_consent; // checkbox is boolean but api expects number (1 or 0)
         if (
             !!request.request_professional_status &&
-            !!rest_state.form_initial_values.request_professional_status === false
+            !!rest_state?.form_initial_values?.request_professional_status === false
         ) {
             // We can just send the value of request_professional_status once. Also backend just accepts true value for this field!
             request.request_professional_status = +request.request_professional_status; // checkbox is boolean but api expects number (1 or 0)
@@ -197,7 +207,10 @@ export const PersonalDetailsForm = observer(({ history }) => {
         return request;
     };
 
-    const onSubmit = async (values, { setStatus, setSubmitting }) => {
+    const onSubmit = async (
+        values: TInputFieldValues,
+        { setStatus, setSubmitting }: FormikHelpers<TInputFieldValues>
+    ) => {
         setStatus({ msg: '' });
         const request = makeSettingsRequest(values);
         setIsBtnLoading(true);
@@ -232,9 +245,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
             setIsSubmitSuccess(true);
             setStartOnSubmitTimeout({
                 is_timeout_started: true,
-                timeout_callback: () => {
-                    setSubmitting(false);
-                },
+                timeout_callback: () => setSubmitting(false),
             });
             // redirection back based on 'from' param in query string
             const url_query_string = window.location.search;
@@ -246,9 +257,9 @@ export const PersonalDetailsForm = observer(({ history }) => {
     };
 
     // TODO: standardize validations and refactor this
-    const validateFields = values => {
+    const validateFields = (values: TInputFieldValues) => {
         setIsSubmitSuccess(false);
-        const errors: { [key: string]: string | JSX.Element } = {};
+        const errors: Record<string, string | undefined> = {};
         const validateValues = validate(errors, values);
 
         if (is_virtual) return errors;
@@ -264,8 +275,8 @@ export const PersonalDetailsForm = observer(({ history }) => {
 
         if (is_eu) {
             const residence_fields = ['citizen'];
-            const validateResidence = val => getLocation(residence_list, val, 'value');
-            validateValues(validateResidence, residence_fields, true);
+            const validateResidence = (val: string) => getLocation(residence_list, val, 'value')!;
+            validateValues(validateResidence, residence_fields, '');
         }
 
         const min_tax_identification_number = 0;
@@ -363,16 +374,19 @@ export const PersonalDetailsForm = observer(({ history }) => {
         return removeEmptyPropertiesFromObject(errors);
     };
 
-    const getWarningMessages = values => {
-        const warnings = {};
+    const getWarningMessages = (values: TInputFieldValues) => {
+        const warnings: TInputFieldValues = {};
         const active_errors = rest_state.errors;
 
         const filter_tin_regex = residence_list.filter(residence => {
             return residence.text === values.tax_residence && residence.tin_format;
         });
 
-        const tin_regex = filter_tin_regex[0]?.tin_format?.[0];
-        const test_tin = new RegExp(tin_regex).test(values.tax_identification_number);
+        const tin_regex: string | undefined = filter_tin_regex[0]?.tin_format?.[0];
+        let test_tin;
+        if (tin_regex) {
+            test_tin = new RegExp(tin_regex).test(values.tax_identification_number);
+        }
         const valid_country_tin = tin_regex ? test_tin : true;
 
         if (!active_errors) {
@@ -389,27 +403,26 @@ export const PersonalDetailsForm = observer(({ history }) => {
 
     const showForm = (show_form: boolean) => setRestState({ show_form });
 
-    const isChangeableField = name => {
-        return rest_state.changeable_fields?.some(field => field === name);
+    const isChangeableField = (name: string) => {
+        return rest_state.changeable_fields?.some((field: string) => field === name);
     };
 
     const initializeFormValues = () => {
         WS.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
             // Convert to boolean
-            account_settings.email_consent = !!account_settings.email_consent;
             const hidden_settings = [
                 'account_opening_reason',
                 'allow_copiers',
-                !is_mf && 'tax_residence',
-                !is_mf && 'tax_identification_number',
-                !is_mf && 'employment_status',
+                !is_mf ? 'tax_residence' : '',
+                !is_mf ? 'tax_identification_number' : '',
+                !is_mf ? 'employment_status' : '',
                 'client_tnc_status',
                 'country_code',
                 'has_secret_answer',
                 'is_authenticated_payment_agent',
                 'user_hash',
                 'country',
-                (!is_appstore || !is_eu) && 'salutation',
+                !is_appstore || !is_eu ? 'salutation' : '',
                 'immutable_fields',
             ];
             const form_initial_values = removeObjProperties(hidden_settings, account_settings);
@@ -465,7 +478,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
             } else {
                 // otherwise show all tax residences in a disabled input field
                 const tax_residences = [];
-                form_initial_values.tax_residence.split(',').forEach(residence => {
+                form_initial_values.tax_residence.split(',').forEach((residence: string) => {
                     tax_residences.push(getLocation(residence_list, residence, 'text'));
                 });
                 form_initial_values.tax_residence = tax_residences;
@@ -542,7 +555,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                                     label={localize('Title*')}
                                                                     error={errors.salutation}
                                                                     list_items={salutation_list}
-                                                                    onItemSelection={({ value, text }) =>
+                                                                    onItemSelection={({ value, text }: TAutoComplete) =>
                                                                         setFieldValue(
                                                                             'salutation',
                                                                             value ? text : '',
@@ -657,7 +670,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                                 required={!is_svg}
                                                                 disabled={!isChangeableField('place_of_birth')}
                                                                 list_items={residence_list}
-                                                                onItemSelection={({ value, text }) =>
+                                                                onItemSelection={({ value, text }: TAutoComplete) =>
                                                                     setFieldValue(
                                                                         'place_of_birth',
                                                                         value ? text : '',
@@ -727,7 +740,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                                 error={errors.citizen}
                                                                 disabled={!isChangeableField('citizen')}
                                                                 list_items={residence_list}
-                                                                onItemSelection={({ value, text }) =>
+                                                                onItemSelection={({ value, text }: TAutoComplete) =>
                                                                     setFieldValue('citizen', value ? text : '', true)
                                                                 }
                                                                 id={'password'}
@@ -1001,7 +1014,10 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                                                 id={'state_province'}
                                                                                 error={errors.address_state}
                                                                                 list_items={states_list}
-                                                                                onItemSelection={({ value, text }) =>
+                                                                                onItemSelection={({
+                                                                                    value,
+                                                                                    text,
+                                                                                }: TAutoComplete) =>
                                                                                     setFieldValue(
                                                                                         'address_state',
                                                                                         value ? text : '',

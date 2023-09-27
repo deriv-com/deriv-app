@@ -15,9 +15,15 @@ export const ANIMATION_CORRECTION_TIME = 200;
 export const DELAY_TIME_1S_SYMBOL = 500;
 // generation_interval will be provided via API later to help us distinguish between 1-second and 2-second symbols
 export const symbols_2s = ['R_10', 'R_25', 'R_50', 'R_75', 'R_100'];
+
 export const TURBOS = {
     LONG: 'turboslong',
     SHORT: 'turbosshort',
+} as const;
+
+export const VANILLALONG = {
+    CALL: 'vanillalongcall',
+    PUT: 'vanillalongput',
 } as const;
 
 export const getContractStatus = ({ contract_type, exit_tick_time, profit, status }: TContractInfo) => {
@@ -71,7 +77,9 @@ export const isTurbosContract = (contract_type = '') => /TURBOS/i.test(contract_
 
 export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contract_type);
 
-export const isSmartTraderContract = (contract_type = '') => /RUN|EXPIRY|RANGE|UPORDOWN/i.test(contract_type);
+export const isSmartTraderContract = (contract_type = '') => /RUN|EXPIRY|RANGE|UPORDOWN|ASIAN/i.test(contract_type);
+
+export const isAsiansContract = (contract_type = '') => /ASIAN/i.test(contract_type);
 
 export const isCryptoContract = (underlying = '') => underlying.startsWith('cry');
 
@@ -103,7 +111,10 @@ export const getAccuBarriersForContractDetails = (contract_info: TContractInfo) 
 
 export const getCurrentTick = (contract_info: TContractInfo) => {
     const tick_stream = unique(contract_info.tick_stream || [], 'epoch');
-    const current_tick = isDigitContract(contract_info.contract_type) ? tick_stream.length : tick_stream.length - 1;
+    const current_tick =
+        isDigitContract(contract_info.contract_type) || isAsiansContract(contract_info.contract_type)
+            ? tick_stream.length
+            : tick_stream.length - 1;
     return !current_tick || current_tick < 0 ? 0 : current_tick;
 };
 

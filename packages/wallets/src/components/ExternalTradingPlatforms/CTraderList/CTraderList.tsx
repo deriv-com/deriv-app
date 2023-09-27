@@ -4,11 +4,11 @@ import { SecondaryActionButton } from '../../SecondaryActionButton';
 import { TradingAccountCard } from '../../TradingAccountCard';
 import './CTraderList.scss';
 
-const ctrader_mapper = [
+const ctraderMapper = [
     {
-        title: 'Deriv cTrader',
         description: 'This account offers CFDs on a feature-rich trading platform.',
         icon: <CTrader />,
+        title: 'Deriv cTrader',
     },
 ];
 
@@ -19,16 +19,16 @@ const CTraderList: React.FC = () => {
                 <h1>Deriv cTrader</h1>
             </div>
             <div className='wallets-ctrader__content'>
-                {ctrader_mapper.map(account => (
+                {ctraderMapper.map(account => (
                     <TradingAccountCard
                         {...account}
                         key={`ctrader--${account.title}`}
+                        leading={() => <div className='wallets-ctrader__content__icon'>{account.icon}</div>}
                         trailing={() => (
                             <SecondaryActionButton>
                                 <p className='wallets-ctrader__text'>Get</p>
                             </SecondaryActionButton>
                         )}
-                        leading={() => <div className='wallets-ctrader__content__icon'>{account.icon}</div>}
                     >
                         <div className='wallets-ctrader__content__details'>
                             <p className='wallets-ctrader__content__details-title'>{account.title}</p>

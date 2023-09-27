@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MT5AccountType } from '../ExternalTradingPlatforms/MT5AccountType';
 import { PrimaryActionButton } from '../PrimaryActionButton';
 import { WalletModal } from '../WalletModal';

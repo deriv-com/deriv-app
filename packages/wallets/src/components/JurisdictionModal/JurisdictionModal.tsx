@@ -7,7 +7,7 @@ import JurisdictionCard from './JurisdictionCard';
 import './JurisdictionModal.scss';
 
 const JurisdictionModal = () => {
-    const [selectedJurisdiction, setSelectedJurisdiction] = React.useState('');
+    const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
 
     const jurisdictions = ['St. Vincent & Grenadines', 'British Virgin Islands', 'Vanuatu'];
 
@@ -29,11 +29,11 @@ const JurisdictionModal = () => {
             >
                 <div className='wallets-jurisdiction-modal'>
                     <div className='wallets-jurisdiction-modal__cards'>
-                        {jurisdictions.map((jurisdiction, i) => (
+                        {jurisdictions.map(jurisdiction => (
                             <JurisdictionCard
                                 isSelected={selectedJurisdiction === jurisdiction}
                                 jurisdiction={jurisdiction}
-                                key={i}
+                                key={jurisdiction}
                                 onSelect={clickedJurisdiction => {
                                     setSelectedJurisdiction(clickedJurisdiction);
                                 }}

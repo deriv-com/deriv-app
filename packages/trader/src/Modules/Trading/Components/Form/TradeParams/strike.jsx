@@ -14,9 +14,10 @@ const Strike = observer(() => {
     const {
         barrier_1,
         contract_type,
+        barrier_choices: strike_price_choices,
+        duration_unit,
         onChange,
         validation_errors,
-        barrier_choices: strike_price_choices,
         expiry_type,
         expiry_date,
     } = useTraderStore();
@@ -42,6 +43,8 @@ const Strike = observer(() => {
         text: strike_price,
         value: strike_price,
     }));
+
+    const should_show_spot = duration_unit !== 'd';
 
     return (
         <React.Fragment>
@@ -119,7 +122,9 @@ const Strike = observer(() => {
             <MobileWrapper>
                 <div className='mobile-widget__wrapper'>
                     <div className='strike-widget' onClick={toggleWidget}>
-                        <div className='mobile-widget__spot'>{<Text size='xs'>{localize('Spot')}</Text>}</div>
+                        {should_show_spot && (
+                            <div className='mobile-widget__spot'>{<Text size='xs'>{localize('Spot')}</Text>}</div>
+                        )}
                         <div className='mobile-widget__amount'>{barrier_1}</div>
                         <div className='mobile-widget__type'>{localize('Strike price')}</div>
                     </div>

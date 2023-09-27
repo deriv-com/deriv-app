@@ -4,7 +4,7 @@ import './JurisdictionCardTag.scss';
 type TJurisdictionCardTagProps = {
     tag: string;
 };
-const JurisdictionCardTag = ({ tag }: TJurisdictionCardTagProps) => {
+const JurisdictionCardTag: React.FC<TJurisdictionCardTagProps> = ({ tag }) => {
     return (
         <div className='wallets-jurisdiction-card-tag'>
             <div className='wallets-jurisdiction-card-tag__label'>{tag}</div>

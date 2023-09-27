@@ -11,7 +11,7 @@ type TJurisdictionCardProps = {
     tag?: string;
 };
 
-const JurisdictionCard = ({ isSelected, jurisdiction, onSelect, tag }: TJurisdictionCardProps) => {
+const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisdiction, onSelect, tag }) => {
     const [shouldFlip, setShouldFlip] = React.useState(false);
 
     return (

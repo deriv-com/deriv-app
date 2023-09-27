@@ -7,7 +7,7 @@ type TJurisdictionCardRowProps = {
     title: string;
 };
 
-const JurisdictionCardRow = ({ description, renderTag, title }: TJurisdictionCardRowProps) => {
+const JurisdictionCardRow: React.FC<TJurisdictionCardRowProps> = ({ description, renderTag, title }) => {
     return (
         <div className='wallets-jurisdiction-card-row'>
             <div className='wallets-jurisdiction-card-row__header'>

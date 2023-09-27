@@ -9,7 +9,7 @@ import './JurisdictionModal.scss';
 const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = React.useState('');
 
-    const jurisdictions = ['St. Vincent & Grenadines', 'British Virgin Islands', 'Vanuatu', 'Deez'];
+    const jurisdictions = ['St. Vincent & Grenadines', 'British Virgin Islands', 'Vanuatu'];
 
     return (
         <WalletModal>

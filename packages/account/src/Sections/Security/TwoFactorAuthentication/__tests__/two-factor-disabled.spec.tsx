@@ -36,7 +36,7 @@ describe('<TwoFactorDisabled />', () => {
     });
 
     const renderComponent = ({ store_config = store, mock = mock_props }) => {
-        return render(
+        render(
             <APIProvider>
                 <StoreProvider store={store_config}>
                     <TwoFactorDisabled {...mock} />

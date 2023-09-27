@@ -58,7 +58,7 @@ describe('<TwoFactorAuthentication/>', () => {
     });
 
     const renderComponent = ({ store_config = store }) => {
-        return render(
+        render(
             <APIProvider>
                 <StoreProvider store={store_config}>
                     <TwoFactorAuthentication />

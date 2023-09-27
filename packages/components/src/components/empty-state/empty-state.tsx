@@ -1,4 +1,5 @@
 import React from 'react';
+import { isMobile } from '@deriv/shared';
 import Button from '../button';
 import Icon from '../icon';
 import Text from '../text';
@@ -21,18 +22,19 @@ const EmptyState: React.FC<TProps> = ({ icon, title, description, action }) => (
     <div className='empty-state'>
         {icon && <Icon icon={icon} size={128} />}
         {title && (
-            <Text weight='bold' align='center' data-testid='dt_empty_state_title'>
+            <Text size={isMobile() ? 'xs' : 's'} weight='bold' align='center' data-testid='dt_empty_state_title'>
                 {title}
             </Text>
         )}
         {description && (
-            <Text align='center' data-testid='dt_empty_state_description'>
+            <Text size={isMobile() ? 'xxs' : 's'} align='center' data-testid='dt_empty_state_description'>
                 {description}
             </Text>
         )}
         {action && (
             <Button
-                large
+                large={!isMobile()}
+                medium={isMobile()}
                 has_effect
                 text={action.label}
                 onClick={action.onClick}

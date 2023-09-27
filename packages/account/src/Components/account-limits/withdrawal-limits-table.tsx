@@ -72,18 +72,7 @@ const WithdrawalLimitsTable = observer(
                         </tr>
                     </thead>
                     <tbody>
-                        {is_fully_authenticated ? (
-                            <tr>
-                                <AccountLimitsTableCell>
-                                    <Text size='xxs' color='prominent'>
-                                        {localize(
-                                            'Your account is fully authenticated and your withdrawal limits have been lifted.'
-                                        )}
-                                    </Text>
-                                </AccountLimitsTableCell>
-                                <AccountLimitsTableCell />
-                            </tr>
-                        ) : (
+                        {!is_fully_authenticated && (
                             <React.Fragment>
                                 <tr>
                                     <AccountLimitsTableCell>
@@ -113,16 +102,18 @@ const WithdrawalLimitsTable = observer(
                         )}
                     </tbody>
                 </table>
-                {(!is_appstore || isMobile()) && (
-                    <div className='da-account-limits__text-container'>
-                        <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
-                            {is_fully_authenticated ? (
-                                <Localize i18n_default_text='Your account is fully authenticated and your withdrawal limits have been lifted.' />
-                            ) : (
-                                <Localize i18n_default_text='Stated limits are subject to change without prior notice.' />
-                            )}
-                        </Text>
-                    </div>
+                {!is_appstore && (
+                    <tr>
+                        <div className='da-account-limits__text-container'>
+                            <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
+                                {is_fully_authenticated ? (
+                                    <Localize i18n_default_text='Your account is fully authenticated and your withdrawal limits have been lifted.' />
+                                ) : (
+                                    <Localize i18n_default_text='Stated limits are subject to change without prior notice.' />
+                                )}
+                            </Text>
+                        </div>
+                    </tr>
                 )}
             </React.Fragment>
         );

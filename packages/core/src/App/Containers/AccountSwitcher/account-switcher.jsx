@@ -13,6 +13,7 @@ import {
     ThemedScrollbars,
     Text,
     useOnClickOutside,
+    Loading,
 } from '@deriv/components';
 import { routes, formatMoney, ContentFlag, getStaticUrl } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -190,7 +191,7 @@ const AccountSwitcher = ({
 
     const canResetBalance = account => {
         const account_init_balance = 10000;
-        return account.is_virtual && account.balance !== account_init_balance;
+        return account?.is_virtual && account?.balance !== account_init_balance;
     };
 
     const checkMultipleSvgAcc = () => {
@@ -460,89 +461,102 @@ const AccountSwitcher = ({
     };
 
     return (
-        <div className='acc-switcher__list' ref={wrapper_ref}>
-            <Tabs
-                active_index={active_tab_index}
-                className='acc-switcher__list-tabs'
-                onTabItemClick={index => setActiveTabIndex(index)}
-                top
-            >
-                {/* TODO: De-couple and refactor demo and real accounts groups
-                        into a single reusable AccountListItem component */}
-                <div label={localize('Real')} id='real_account_tab'>
-                    <DesktopWrapper>
-                        <ThemedScrollbars height='354px'>{real_accounts}</ThemedScrollbars>
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <Div100vhContainer className='acc-switcher__list-container' max_autoheight_offset='234px'>
-                            {real_accounts}
-                        </Div100vhContainer>
-                    </MobileWrapper>
-                </div>
-                <div label={localize('Demo')} id='dt_core_account-switcher_demo-tab'>
-                    <DesktopWrapper>
-                        <ThemedScrollbars height='354px'>{demo_account}</ThemedScrollbars>
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <Div100vhContainer className='acc-switcher__list-container' max_autoheight_offset='234px'>
-                            {demo_account}
-                        </Div100vhContainer>
-                    </MobileWrapper>
-                </div>
-            </Tabs>
-            <div
-                className={classNames('acc-switcher__separator', {
-                    'acc-switcher__separator--auto-margin': is_mobile,
-                })}
-            />
-            <div className='acc-switcher__total'>
-                <Text line_height='s' size='xs' weight='bold' color='prominent'>
-                    <Localize i18n_default_text='Total assets' />
-                </Text>
-                <Text size='xs' color='prominent' className='acc-switcher__balance'>
-                    <Money
-                        currency={isRealAccountTab ? account_total_balance_currency : vrtc_currency}
-                        amount={formatMoney(
-                            isRealAccountTab ? account_total_balance_currency : vrtc_currency,
-                            isRealAccountTab ? getTotalRealAssets() : getTotalDemoAssets(),
-                            true
-                        )}
-                        show_currency
-                        should_format={false}
-                    />
-                </Text>
-            </div>
-            <Text color='less-prominent' line_height='xs' size='xxxs' className='acc-switcher__total-subtitle'>
-                {localize('Total assets in your Deriv accounts.')}
-            </Text>
-            <div className='acc-switcher__separator' />
-
-            <TradersHubRedirect />
-
-            <div className='acc-switcher__footer'>
-                {isRealAccountTab && has_active_real_account && !is_virtual && (
-                    <Button
-                        className='acc-switcher__btn--traders_hub'
-                        secondary
-                        onClick={() => {
-                            if (is_in_progress) {
-                                closeAccountsDialog();
-                                setWalletsMigrationInProgressPopup(true);
-                            } else if (has_any_real_account && !hasSetCurrency) setAccountCurrency();
-                            else openRealAccountSignup('manage');
-                        }}
-                        as_disabled={is_in_progress}
+        <div className='acc-switcher__list' ref={wrapper_ref} data-testid='acc-switcher'>
+            {is_landing_company_loaded ? (
+                <React.Fragment>
+                    <Tabs
+                        active_index={active_tab_index}
+                        className='acc-switcher__list-tabs'
+                        onTabItemClick={index => setActiveTabIndex(index)}
+                        top
                     >
-                        {localize('Manage accounts')}
-                    </Button>
-                )}
-                <div id='dt_logout_button' className='acc-switcher__logout' onClick={handleLogout}>
-                    <Text color='prominent' size='xs' align='left' className='acc-switcher__logout-text'>
-                        {localize('Log out')}
+                        {/* TODO: De-couple and refactor demo and real accounts groups
+                        into a single reusable AccountListItem component */}
+                        <div label={localize('Real')} id='real_account_tab'>
+                            <DesktopWrapper>
+                                <ThemedScrollbars height='354px'>{real_accounts}</ThemedScrollbars>
+                            </DesktopWrapper>
+                            <MobileWrapper>
+                                <Div100vhContainer
+                                    className='acc-switcher__list-container'
+                                    max_autoheight_offset='234px'
+                                >
+                                    {real_accounts}
+                                </Div100vhContainer>
+                            </MobileWrapper>
+                        </div>
+                        <div label={localize('Demo')} id='dt_core_account-switcher_demo-tab'>
+                            <DesktopWrapper>
+                                <ThemedScrollbars height='354px'>{demo_account}</ThemedScrollbars>
+                            </DesktopWrapper>
+                            <MobileWrapper>
+                                <Div100vhContainer
+                                    className='acc-switcher__list-container'
+                                    max_autoheight_offset='234px'
+                                >
+                                    {demo_account}
+                                </Div100vhContainer>
+                            </MobileWrapper>
+                        </div>
+                    </Tabs>
+                    <div
+                        className={classNames('acc-switcher__separator', {
+                            'acc-switcher__separator--auto-margin': is_mobile,
+                        })}
+                    />
+                    <div className='acc-switcher__total'>
+                        <Text line_height='s' size='xs' weight='bold' color='prominent'>
+                            <Localize i18n_default_text='Total assets' />
+                        </Text>
+                        <Text size='xs' color='prominent' className='acc-switcher__balance'>
+                            <Money
+                                currency={isRealAccountTab ? account_total_balance_currency : vrtc_currency}
+                                amount={formatMoney(
+                                    isRealAccountTab ? account_total_balance_currency : vrtc_currency,
+                                    isRealAccountTab ? getTotalRealAssets() : getTotalDemoAssets(),
+                                    true
+                                )}
+                                show_currency
+                                should_format={false}
+                            />
+                        </Text>
+                    </div>
+                    <Text color='less-prominent' line_height='xs' size='xxxs' className='acc-switcher__total-subtitle'>
+                        {localize('Total assets in your Deriv accounts.')}
                     </Text>
-                    <Icon icon='IcLogout' className='acc-switcher__logout-icon drawer__icon' onClick={handleLogout} />
-                </div>
-            </div>
+                    <div className='acc-switcher__separator' />
+
+                    <TradersHubRedirect />
+
+                    <div className='acc-switcher__footer'>
+                        {isRealAccountTab && has_active_real_account && !is_virtual && (
+                            <Button
+                                className='acc-switcher__btn--traders_hub'
+                                secondary
+                                onClick={
+                                    has_any_real_account && !hasSetCurrency
+                                        ? setAccountCurrency
+                                        : () => openRealAccountSignup('manage')
+                                }
+                            >
+                                {localize('Manage accounts')}
+                            </Button>
+                        )}
+                        <div id='dt_logout_button' className='acc-switcher__logout' onClick={handleLogout}>
+                            <Text color='prominent' size='xs' align='left' className='acc-switcher__logout-text'>
+                                {localize('Log out')}
+                            </Text>
+                            <Icon
+                                icon='IcLogout'
+                                className='acc-switcher__logout-icon drawer__icon'
+                                onClick={handleLogout}
+                            />
+                        </div>
+                    </div>
+                </React.Fragment>
+            ) : (
+                <Loading is_fullscreen={false} />
+            )}
         </div>
     );
 };

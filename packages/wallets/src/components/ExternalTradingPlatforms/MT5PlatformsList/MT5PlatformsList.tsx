@@ -6,14 +6,14 @@ import { GetMoreMT5Accounts } from '../GetMoreMT5Accounts';
 import './MT5PlatformsList.scss';
 
 const MT5PlatformsList: React.FC = () => {
-    const { data } = useSortedMT5Accounts();
+    const { data, isFetchedAfterMount } = useSortedMT5Accounts();
     const { data: activeWallet } = useActiveWalletAccount();
 
     const hasMT5Account = useMemo(() => {
         return data?.some(account => account.is_added);
     }, [data]);
 
-    if (!data) return <span className='wallets-mt5-loader' />;
+    if (!isFetchedAfterMount) return <span className='wallets-mt5-loader' />;
 
     return (
         <React.Fragment>

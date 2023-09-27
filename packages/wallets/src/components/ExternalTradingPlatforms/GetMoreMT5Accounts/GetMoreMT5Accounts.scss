@@ -47,4 +47,15 @@
             }
         }
     }
+
+    &-text {
+        color: var(--system-dark-1-prominent-text, #fff);
+        text-align: center;
+
+        /* desktop/paragraph/P2 - bold */
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 20px; /* 142.857% */
+    }
 }

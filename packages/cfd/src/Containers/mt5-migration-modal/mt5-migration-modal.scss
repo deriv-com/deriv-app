@@ -8,6 +8,9 @@
             gap: 0.8rem;
             padding: 0.8rem;
         }
+        @include mobile {
+            margin: 1.6rem;
+        }
     }
     &__mobile-header {
         margin: 1.6rem;

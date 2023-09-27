@@ -21,7 +21,7 @@ describe('RadioGroupWithInfoMobile', () => {
         render(<RadioGroupWithInfoMobile {...props} />);
 
         const radio_options_arr_1 = screen.getAllByRole<HTMLInputElement>('radio');
-        expect(radio_options_arr_1.length).toBe(3);
+        expect(radio_options_arr_1).toHaveLength(3);
         expect(radio_options_arr_1[0].value).toBe('1');
         expect(radio_options_arr_1[1].value).toBe('2');
         expect(radio_options_arr_1[2].value).toBe('3');

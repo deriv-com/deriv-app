@@ -133,7 +133,19 @@ const Statement = observer(({ component_icon }: TStatement) => {
     const { client } = useStore();
     const { statement } = useReportsStore();
     const { currency, standpoint, is_switching, is_virtual } = client;
-    const { action_type, data, date_from, date_to, error, handleScroll, has_selected_date, is_empty, is_loading, onMount, onUnmount } = statement;
+    const {
+        action_type,
+        data,
+        date_from,
+        date_to,
+        error,
+        handleScroll,
+        has_selected_date,
+        is_empty,
+        is_loading,
+        onMount,
+        onUnmount,
+    } = statement;
     const is_mx_mlt = standpoint.iom || standpoint.malta;
     const prev_action_type = usePrevious(action_type);
     const prev_date_from = usePrevious(date_from);

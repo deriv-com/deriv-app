@@ -71,10 +71,14 @@ const WalletOptionsAndMultipliersListing = observer(() => {
     const { available_platforms, is_eu_user, no_MF_account, no_CR_account, is_demo, setWalletCreateNewAccountModal } =
         traders_hub;
 
-    const { mutate: createNewRealAccount } = useCreateNewRealAccount();
+    const { mutate: createNewRealAccount, isSuccess } = useCreateNewRealAccount();
     const wallet_account = useActiveWallet();
     const { data: user_settings } = useSettings();
     const { date_of_birth, country_code, first_name, last_name } = user_settings;
+
+    React.useEffect(() => {
+        if (isSuccess) setWalletCreateNewAccountModal(true);
+    });
 
     if (!wallet_account || is_switching || is_logging_in || !is_landing_company_loaded) {
         return (
@@ -97,7 +101,6 @@ const WalletOptionsAndMultipliersListing = observer(() => {
                 residence: country_code || undefined,
             },
         });
-        setWalletCreateNewAccountModal(true);
     };
 
     const derivAccount = () => {

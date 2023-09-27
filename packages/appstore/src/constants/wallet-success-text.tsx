@@ -2,10 +2,7 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 
 type TWalletSuccessContent = {
-    title: JSX.Element;
-    description: JSX.Element;
-    text_submit: JSX.Element;
-    text_cancel?: JSX.Element;
+    [key: string]: JSX.Element;
 };
 
 type TWalletSuccessContentMapperType = {

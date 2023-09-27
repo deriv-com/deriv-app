@@ -13,7 +13,15 @@ jest.mock('../default-header.jsx', () => () => <div data-testid='dt_default_head
 // eslint-disable-next-line react/display-name
 jest.mock('../dtrader-header.jsx', () => () => <div data-testid='dt_dtrader_header'>MockedDTraderHeader</div>);
 // eslint-disable-next-line react/display-name
+jest.mock('../dtrader-header-wallets', () => () => (
+    <div data-testid='dt_dtrader_header_wallts'>MockedDTraderHeaderWallets</div>
+));
+// eslint-disable-next-line react/display-name
 jest.mock('../traders-hub-header', () => () => <div data-testid='dt_traders_hub_header'>MockedTradersHubHeader</div>);
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useFeatureFlags: jest.fn(() => ({ is_wallet_enabled: false })),
+}));
 
 describe('Header', () => {
     const store = mockStore({

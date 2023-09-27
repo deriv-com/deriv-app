@@ -8,7 +8,7 @@ import ToolbarButton from './toolbar-button';
 import WorkspaceGroup from './workspace-group';
 
 const Toolbar = observer(() => {
-    const { run_panel, save_modal, load_modal, toolbar, quick_strategy } = useDBotStore();
+    const { run_panel, save_modal, load_modal, toolbar, quick_strategy_store_1 } = useDBotStore();
     const {
         has_redo_stack,
         has_undo_stack,
@@ -22,12 +22,13 @@ const Toolbar = observer(() => {
     } = toolbar;
     const { toggleSaveModal } = save_modal;
     const { toggleLoadModal } = load_modal;
-    const { loadDataStrategy } = quick_strategy;
     const { is_running } = run_panel;
-
+    const { setFormVisibility } = quick_strategy_store_1;
     const confirm_button_text = is_running ? localize('Yes') : localize('OK');
     const cancel_button_text = is_running ? localize('No') : localize('Cancel');
-
+    const handleQuickStrategyOpen = () => {
+        setFormVisibility(true);
+    };
     return (
         <React.Fragment>
             <div className='toolbar dashboard__toolbar' data-testid='dashboard__toolbar'>
@@ -37,7 +38,7 @@ const Toolbar = observer(() => {
                             popover_message={localize('Click here to start building your Deriv Bot.')}
                             button_id='db-toolbar__get-started-button'
                             button_classname='toolbar__btn toolbar__btn--icon toolbar__btn--start'
-                            buttonOnClick={loadDataStrategy}
+                            buttonOnClick={handleQuickStrategyOpen}
                             button_text={localize('Quick strategy')}
                         />
                     )}

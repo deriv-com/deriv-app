@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { APIProvider, useFetch } from '@deriv/api';
+import { APIProvider } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useHasP2PSupportedCurrencies from '../useHasP2PSupportedCurrencies';

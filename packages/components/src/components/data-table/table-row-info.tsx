@@ -31,7 +31,7 @@ const TableRowInfo = ({ replace, is_footer, cells, className, is_dynamic_height,
                 onClick={is_footer || !replace ? undefined : toggleDetails}
                 className={classNames(className, { 'statement__row--detail': show_details })}
             >
-                {show_details ? <div>{replace?.component}</div> : cells}
+                {show_details && typeof replace === 'object' ? <div>{replace?.component}</div> : cells}
             </div>
         );
     }
@@ -40,7 +40,7 @@ const TableRowInfo = ({ replace, is_footer, cells, className, is_dynamic_height,
             onClick={is_footer || !replace ? undefined : toggleDetails}
             className={classNames(className, { 'statement__row--detail': show_details })}
         >
-            {show_details ? (
+            {show_details && typeof replace === 'object' ? (
                 <ThemedScrollbars height='80px'>
                     <div>{replace?.component}</div>
                 </ThemedScrollbars>

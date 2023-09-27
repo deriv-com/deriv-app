@@ -3,7 +3,6 @@ import { EmptyState } from '@deriv/components';
 import { useVerifyEmail } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import EmailVerificationResendEmptyState from './email-verification-resend-empty-state';
-import './email-verification-empty-state.scss';
 
 type TEmailVerificationEmptyStateProps = {
     type: Parameters<typeof useVerifyEmail>[0];
@@ -19,7 +18,7 @@ const EmailVerificationEmptyState = ({ type }: TEmailVerificationEmptyStateProps
     };
 
     return (
-        <div className='email-verification-empty-state'>
+        <React.Fragment>
             <EmptyState
                 icon='IcWithdrawRequestVerificationSent'
                 title={localize("We've sent you an email.")}
@@ -33,7 +32,7 @@ const EmailVerificationEmptyState = ({ type }: TEmailVerificationEmptyStateProps
                     resend={() => verify.send()}
                 />
             )}
-        </div>
+        </React.Fragment>
     );
 };
 

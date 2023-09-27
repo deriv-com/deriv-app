@@ -24,12 +24,12 @@ describe('<SearchInput />', () => {
     });
     it('should not display trailing clear icon when input is empty', () => {
         render(<SearchInput {...mocked_props} />);
-        expect(screen.getAllByTestId('mockedIcon').length).toBe(1);
+        expect(screen.getByTestId('mockedIcon')).toBeInTheDocument();
     });
     it('should display trailing clear icon when input is not empty', () => {
         mocked_props.value = 'test';
         render(<SearchInput {...mocked_props} />);
-        expect(screen.getAllByTestId('mockedIcon').length).toBe(2);
+        expect(screen.getAllByTestId('mockedIcon')).toHaveLength(2);
     });
     it('should render correct text when value is changed', () => {
         mocked_props.value = 'test';

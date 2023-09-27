@@ -25,7 +25,7 @@ const WalletModalHeader = ({
     const is_crypto = currency_config?.is_crypto;
     const display_currency_code = currency_config?.display_code;
 
-    const header_class_name = 'modal-header';
+    const header_class_name = 'wallet-modal--header';
 
     const getCloseIcon = React.useCallback(() => {
         if (is_demo && is_dark) return 'IcAppstoreCloseLight';
@@ -58,7 +58,7 @@ const WalletModalHeader = ({
     };
 
     return (
-        <div className={`header-background ${gradient_header_class}`}>
+        <div className={`wallet-modal--header-background ${gradient_header_class}`}>
             <div
                 className={classNames(header_class_name, {
                     [`${header_class_name}--hidden-title`]: is_mobile && !is_wallet_name_visible,

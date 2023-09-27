@@ -487,6 +487,7 @@ const FinancialAssessment = observer(() => {
                                                         onChange={handleChange}
                                                         handleBlur={handleBlur}
                                                         error={touched.employment_status && errors.employment_status}
+                                                        test_id='employment_status'
                                                     />
                                                 </DesktopWrapper>
                                                 <MobileWrapper>
@@ -505,6 +506,7 @@ const FinancialAssessment = observer(() => {
                                                             setFieldTouched('employment_status', true);
                                                             handleChange(e);
                                                         }}
+                                                        data_testid='employment_status'
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -553,6 +555,7 @@ const FinancialAssessment = observer(() => {
                                                     onChange={handleChange}
                                                     handleBlur={handleBlur}
                                                     error={touched.occupation && errors.occupation}
+                                                    test_id='occupation'
                                                 />
                                             </DesktopWrapper>
                                             <MobileWrapper>
@@ -567,6 +570,7 @@ const FinancialAssessment = observer(() => {
                                                         setFieldTouched('occupation', true);
                                                         handleChange(e);
                                                     }}
+                                                    data_testid='occupation'
                                                 />
                                             </MobileWrapper>
                                         </fieldset>

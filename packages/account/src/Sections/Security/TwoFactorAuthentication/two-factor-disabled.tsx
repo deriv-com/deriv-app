@@ -1,8 +1,8 @@
 import React from 'react';
 import QRCode from 'qrcode.react';
 import { MobileWrapper, ThemedScrollbars, Text, Timeline, Loading, Clipboard, DesktopWrapper } from '@deriv/components';
+import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
 import DigitForm from './digit-form';
 import TwoFactorAuthenticationArticle from './two-factor-authentication-article';
 
@@ -13,14 +13,11 @@ type TTwoFactorDisabled = {
 };
 
 const TwoFactorDisabled = ({ secret_key, qr_secret_key, is_loading_secret }: TTwoFactorDisabled) => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     return (
         <React.Fragment>
-            <ThemedScrollbars
-                is_bypassed={isMobile()}
-                autoHide
-                className='two-factor__scrollbars'
-                hideHorizontal={true}
-            >
+            <ThemedScrollbars is_bypassed={is_mobile} autoHide className='two-factor__scrollbars' hideHorizontal={true}>
                 <MobileWrapper>
                     <TwoFactorAuthenticationArticle />
                 </MobileWrapper>

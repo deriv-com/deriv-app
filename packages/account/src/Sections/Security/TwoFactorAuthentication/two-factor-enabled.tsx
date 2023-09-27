@@ -1,12 +1,14 @@
 import React from 'react';
 import { Icon, ThemedScrollbars, Text } from '@deriv/components';
 import DigitForm from './digit-form';
-import { isMobile } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 
 const TwoFactorEnabled = () => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     return (
-        <ThemedScrollbars is_bypassed={isMobile()} className='two-factor__scrollbars'>
+        <ThemedScrollbars is_bypassed={is_mobile} className='two-factor__scrollbars'>
             <div className='two-factor__wrapper--enabled'>
                 <Icon icon='IcQrPhone' className='two-factor__icon' />
                 <Text as='h3' align='center' weight='bold' color='prominent' className='two-factor__qr--title'>

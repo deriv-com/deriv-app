@@ -16,12 +16,6 @@ jest.mock('@deriv/components', () => {
 
 jest.mock('qrcode.react', () => jest.fn(() => <div>QRCode</div>));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isDesktop: jest.fn(() => true),
-    isMobile: jest.fn(() => false),
-}));
-
 describe('<TwoFactorDisabled />', () => {
     const mock_props: React.ComponentProps<typeof TwoFactorDisabled> = {
         secret_key: 'hello123',
@@ -32,6 +26,9 @@ describe('<TwoFactorDisabled />', () => {
     const store = mockStore({
         client: {
             has_enabled_two_fa: false,
+        },
+        ui: {
+            is_mobile: true,
         },
     });
 
@@ -103,19 +100,21 @@ describe('<TwoFactorDisabled />', () => {
     });
 
     it('should render 2FA article component for mobile', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        (isDesktop as jest.Mock).mockReturnValue(false);
+        const new_store = {
+            ...store,
+            ui: {
+                ...store.ui,
+                is_mobile: true,
+            },
+        };
 
-        renderComponent({ store_config: store });
+        renderComponent({ store_config: new_store });
 
         const article_component = screen.getByText('Two-factor authentication (2FA)');
         expect(article_component).toBeInTheDocument();
     });
 
     it('should render 2FA article component for desktop', () => {
-        (isMobile as jest.Mock).mockReturnValue(false);
-        (isDesktop as jest.Mock).mockReturnValue(true);
-
         renderComponent({ store_config: store });
 
         const article_component = screen.getByText('Two-factor authentication (2FA)');

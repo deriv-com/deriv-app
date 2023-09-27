@@ -9,7 +9,6 @@ describe('<MinMaxStakeInfo/>', () => {
     const mock_props = {
         className: 'trade-container__stake-field',
         currency: 'USD',
-        contract_type: 'turboslong',
         min_stake: 0,
         max_stake: 100,
     };

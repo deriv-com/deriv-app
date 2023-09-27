@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { RudderStack } from '@deriv/analytics';
 import ContractType from './contract-type';
 import { getContractTypeCategoryIcons, findContractCategory } from '../../../Helpers/contract-type';
 import { TContractCategory, TContractType, TList } from './types';
@@ -18,16 +19,16 @@ const ContractTypeWidget = observer(({ name, value, list, onChange, languageChan
         ui: { is_mobile },
     } = useStore();
     const wrapper_ref = React.useRef<HTMLDivElement | null>(null);
-    const [is_dialog_open, setDialogVisibility] = React.useState(false);
+    const [is_dialog_open, setDialogVisibility] = React.useState<boolean | null>();
     const [is_info_dialog_open, setInfoDialogVisibility] = React.useState(false);
-    const [selected_category, setSelectedCategory] = React.useState<TList['key'] | null>(null);
+    const [selected_category, setSelectedCategory] = React.useState<TList['key']>('All');
     const [search_query, setSearchQuery] = React.useState('');
     const [item, setItem] = React.useState<TContractType | null>(null);
 
     const handleClickOutside = React.useCallback(
         (event: MouseEvent) => {
             if (is_mobile) return;
-            if (wrapper_ref && !wrapper_ref.current?.contains(event.target as Node)) {
+            if (wrapper_ref && !wrapper_ref.current?.contains(event.target as Node) && is_dialog_open) {
                 setDialogVisibility(false);
                 setInfoDialogVisibility(false);
                 setItem({ ...item, value });
@@ -43,6 +44,16 @@ const ContractTypeWidget = observer(({ name, value, list, onChange, languageChan
         };
     }, [handleClickOutside]);
 
+    React.useEffect(() => {
+        if (typeof is_dialog_open === 'boolean') {
+            RudderStack.track('ce_trade_types_form', {
+                action: is_dialog_open ? 'open' : 'close',
+                form_source: 'contract_set_up_form',
+                form_name: 'default',
+            });
+        }
+    }, [is_dialog_open]);
+
     const handleCategoryClick: React.ComponentProps<typeof ContractType.Dialog>['onCategoryClick'] = ({ key }) => {
         if (key) setSelectedCategory(key);
     };
@@ -54,22 +65,57 @@ const ContractTypeWidget = observer(({ name, value, list, onChange, languageChan
         const categories = list_with_category();
         const { key } = findContractCategory(categories, clicked_item);
         if ('id' in e.target && e.target.id !== 'info-icon' && clicked_item) {
+            const is_from_info_dialog = /_btn$/.test(e.target.id as string);
+            const subform_name = is_from_info_dialog ? 'info_new' : 'trade_type';
+
             setDialogVisibility(false);
             setInfoDialogVisibility(false);
             setItem(clicked_item);
             setSelectedCategory(key);
+
             onChange({ target: { name, value: clicked_item.value } });
+
+            if (subform_name === 'trade_type') {
+                RudderStack.track('ce_trade_types_form', {
+                    action: 'choose_trade_type',
+                    subform_name,
+                    tab_name: selected_category,
+                    trade_type_name: clicked_item?.text,
+                    form_name: 'default',
+                });
+            } else {
+                RudderStack.track('ce_trade_types_form', {
+                    action: 'choose_trade_type',
+                    subform_name,
+                    trade_type_name: clicked_item?.text,
+                    form_name: 'default',
+                });
+            }
         }
     };
 
     const handleInfoClick = (clicked_item: TContractType) => {
         setInfoDialogVisibility(!is_info_dialog_open);
-
         setItem(clicked_item);
+
+        RudderStack.track('ce_trade_types_form', {
+            action: 'info_open',
+            tab_name: selected_category,
+            trade_type_name: clicked_item?.text,
+        });
     };
 
     const handleVisibility = () => {
         setDialogVisibility(!is_dialog_open);
+    };
+
+    const onSearchBlur = () => {
+        if (search_query) {
+            RudderStack.track('ce_trade_types_form', {
+                action: 'search',
+                search_string: search_query,
+            });
+        }
     };
 
     const onWidgetClick = () => {
@@ -205,11 +251,12 @@ const ContractTypeWidget = observer(({ name, value, list, onChange, languageChan
             />
             <ContractType.Dialog
                 is_info_dialog_open={is_info_dialog_open}
-                is_open={is_dialog_open}
+                is_open={!!is_dialog_open}
                 item={item || { value }}
                 categories={list_with_category()}
                 selected={selected_category || list_with_category()[0]?.key}
                 onBackButtonClick={onBackButtonClick}
+                onSearchBlur={onSearchBlur}
                 onClose={handleVisibility}
                 onChangeInput={onChangeInput}
                 onCategoryClick={handleCategoryClick}

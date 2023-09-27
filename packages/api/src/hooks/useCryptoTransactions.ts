@@ -27,16 +27,12 @@ const useCryptoTransactions = () => {
 
     useEffect(() => {
         setTransactions(old_transactions => {
-            // Get the list of the crypto transactions.
             const new_transactions = data?.cashier_payments?.crypto as TModifiedTransaction[] | undefined;
 
-            // If there are no new transactions, return the old transactions.
             if (!new_transactions) return old_transactions;
 
-            // If there are no old transactions, return the new transactions.
             if (!old_transactions) return new_transactions;
 
-            // Make a copy of the old transactions.
             const updated_transactions = [...old_transactions];
 
             // For each new transaction, check if it exists in the old transactions.
@@ -54,7 +50,6 @@ const useCryptoTransactions = () => {
                 }
             });
 
-            // Return the updated transactions.
             return updated_transactions;
         });
     }, [data?.cashier_payments?.crypto]);
@@ -88,10 +83,6 @@ const useCryptoTransactions = () => {
         () => modified_transactions?.sort((a, b) => b.submit_date - a.submit_date),
         [modified_transactions]
     );
-
-    // Determine if the user has any transactions or not.
-    const has_transactions = modified_transactions && modified_transactions.length > 0;
-
     // Get the last transaction if exists.
     const last_transaction = modified_transactions?.[0];
 
@@ -100,8 +91,6 @@ const useCryptoTransactions = () => {
         data: sorted_transactions,
         /** Returns the last transaction if exists. */
         last_transaction,
-        /** Determine is the user has any transactions or not. */
-        has_transactions,
         subscribe,
         ...rest,
     };

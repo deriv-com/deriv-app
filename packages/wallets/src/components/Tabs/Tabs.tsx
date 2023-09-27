@@ -1,7 +1,7 @@
 import React from 'react';
 
 type TTabContext = {
-    active_tab_index: number;
+    activeTabIndex: number;
     setActiveTabIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
@@ -22,10 +22,10 @@ type TTabsProps = {
 };
 
 export const Tabs = ({ children, className }: React.PropsWithChildren<TTabsProps>) => {
-    const [active_tab_index, setActiveTabIndex] = React.useState(0);
+    const [activeTabIndex, setActiveTabIndex] = React.useState(0);
 
     return (
-        <TabsContext.Provider value={{ active_tab_index, setActiveTabIndex }}>
+        <TabsContext.Provider value={{ activeTabIndex, setActiveTabIndex }}>
             <div className={className}>{children}</div>
         </TabsContext.Provider>
     );

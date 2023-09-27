@@ -29,7 +29,7 @@ import { localize } from '@deriv/translations';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
-import { SmartChart } from 'Modules/SmartChart';
+import SmartChartSwitcherfrom from '../../Trading/Containers/smart-chart-switcher.jsx';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
 import ChartMarker from 'Modules/SmartChart/Components/Markers/marker.jsx';
 import DelayedAccuBarriersMarker from 'Modules/SmartChart/Components/Markers/delayed-accu-barriers-marker';
@@ -251,7 +251,8 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const prev_start_epoch = usePrevious(start_epoch);
 
     return (
-        <SmartChart
+        <SmartChartSwitcherfrom
+            is_alpha={false}
             barriers={barriers_array}
             bottomWidgets={isBottomWidgetVisible() ? ChartBottomWidgets : null}
             chartControlsWidgets={null}
@@ -309,7 +310,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                     {...accumulators_barriers_marker}
                 />
             )}
-        </SmartChart>
+        </SmartChartSwitcherfrom>
     );
 });
 

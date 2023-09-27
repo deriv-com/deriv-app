@@ -243,9 +243,11 @@ export default Trade;
 // CHART (ChartTrade)--------------------------------------------------------
 
 /* eslint-disable */
-import { SmartChart } from 'Modules/SmartChart';
+import SmartChartSwitcher from './smart-chart-switcher.jsx';
 
-const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChart innerRef={ref} {...props} />);
+const SmartChartWithRef = React.forwardRef((props, ref) => (
+    <SmartChartSwitcher is_alpha={false} innerRef={ref} {...props} />
+));
 
 // ChartMarkers --------------------------
 const ChartMarkers = observer(config => {

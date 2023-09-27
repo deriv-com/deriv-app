@@ -1,15 +1,18 @@
 import React from 'react';
-import { DesktopWalletsList } from './components';
-// import WalletsCarousel from './components/WalletCarousel';
+import { useAuthorize, useCurrencyConfig } from '@deriv/api';
+import { Loader } from './components';
+import { Router } from './routes';
 import './AppContent.scss';
 
 const AppContent: React.FC = () => {
+    const { isLoading: isAuthorizeLoading } = useAuthorize();
+    const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
+
+    if (isAuthorizeLoading || isCurrencyConfigLoading) return <Loader />;
+
     return (
         <div className='wallets-app'>
-            <div className='wallets-app__content'>
-                <DesktopWalletsList />
-            </div>
-            {/* <WalletsCarousel /> */}
+            <Router />
         </div>
     );
 };

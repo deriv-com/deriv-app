@@ -2,6 +2,7 @@ import throttle from 'lodash.throttle';
 import { action, computed, observable, reaction, makeObservable, override } from 'mobx';
 import { createTransformer } from 'mobx-utils';
 import {
+    isAccumulatorContract,
     isEmptyObject,
     isEnded,
     isUserSold,
@@ -34,6 +35,9 @@ export default class PortfolioStore extends BaseStore {
     is_loading = false;
     error = '';
 
+    //accumulators
+    open_accu_contract = null;
+
     // barriers
     barriers = [];
     main_barrier = null;
@@ -64,6 +68,7 @@ export default class PortfolioStore extends BaseStore {
             onBuyResponse: action.bound,
             transactionHandler: action.bound,
             proposalOpenContractHandler: action.bound,
+            open_accu_contract: observable,
             onClickCancel: action.bound,
             onClickSell: action.bound,
             handleSell: action.bound,
@@ -519,6 +524,7 @@ export default class PortfolioStore extends BaseStore {
     setActivePositions() {
         this.active_positions = this.positions.filter(portfolio_pos => !getEndTime(portfolio_pos.contract_info));
         this.all_positions = [...this.positions];
+        this.open_accu_contract = this.active_positions.find(({ type }) => isAccumulatorContract(type));
     }
 
     updatePositions = () => {

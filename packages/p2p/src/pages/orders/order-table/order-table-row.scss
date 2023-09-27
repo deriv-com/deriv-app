@@ -1,0 +1,26 @@
+.order-table-row {
+    padding: 2.4rem;
+    cursor: pointer;
+
+    &-time {
+        display: flex;
+        justify-content: center;
+        border: solid 1px var(--border-normal);
+        border-radius: 16px;
+        width: 78px;
+        height: 24px;
+        padding: 2px;
+        letter-spacing: 1px;
+    }
+
+    &--attention {
+        background: var(--button-tertiary-hover);
+    }
+    &:not(.order-table-row--header) {
+        cursor: pointer;
+
+        &:hover {
+            background: var(--general-hover);
+        }
+    }
+}

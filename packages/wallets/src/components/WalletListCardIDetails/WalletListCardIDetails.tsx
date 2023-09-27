@@ -1,26 +1,25 @@
 import React from 'react';
-import { useWalletAccountsList } from '@deriv/api';
+import WalletListCardActions from '../WalletListCardActions/WalletListCardActions';
 import WalletListCardBadge from '../WalletListCardBadge/WalletListCardBadge';
-import WalletListCardIActions from '../WalletListCardIActions/WalletListCardIActions';
 import WalletListCardTitle from '../WalletListCardTitle/WalletListCardTitle';
 import './WalletListCardIDetails.scss';
 
 type TProps = {
-    account: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
+    badge?: string;
+    currency: string;
+    isActive: boolean;
+    isDemo: boolean;
+    loginid: string;
 };
 
-const WalletListCardIDetails: React.FC<TProps> = ({ account }) => {
-    const { currency_config, landing_company_name } = account;
-
-    return (
-        <div className='wallets-list-details__action-container'>
-            <div className='wallets-list-details__elements'>
-                {currency_config?.display_code && <WalletListCardTitle currency={currency_config?.display_code} />}
-                {landing_company_name && <WalletListCardBadge label={landing_company_name} />}
-            </div>
-            <WalletListCardIActions account={account} />
+const WalletListCardIDetails: React.FC<TProps> = ({ badge, currency, isActive, isDemo, loginid }) => (
+    <div className='wallets-list-details__action-container'>
+        <div className='wallets-list-details__elements'>
+            <WalletListCardTitle currency={currency} />
+            {!isDemo && badge && <WalletListCardBadge label={badge.toUpperCase()} />}
         </div>
-    );
-};
+        <WalletListCardActions isActive={isActive} isDemo={isDemo} loginid={loginid} />
+    </div>
+);
 
 export default WalletListCardIDetails;

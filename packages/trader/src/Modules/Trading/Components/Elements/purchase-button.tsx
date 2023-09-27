@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes, Text } from '@deriv/components';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info';
-import { getContractTypeDisplay, getGrowthRatePercentage } from '@deriv/shared';
+import { getContractTypeDisplay } from '@deriv/shared';
 import { TProposalTypeInfo } from 'Types';
 
 type TPurchaseButton = {
@@ -80,8 +80,6 @@ const PurchaseButton = ({
     };
     const { has_increased } = info;
     const is_button_disabled = (is_disabled && !is_loading) || is_proposal_empty;
-    const non_multiplier_info_right =
-        is_accumulator && info.growth_rate ? `${getGrowthRatePercentage(info.growth_rate)}%` : info.returns;
 
     let button_value;
 
@@ -91,10 +89,10 @@ const PurchaseButton = ({
                 <Money amount={info.stake} currency={currency} show_currency />
             </Text>
         );
-    } else if (!is_vanilla && !is_turbos) {
+    } else if (!is_vanilla && !is_turbos && !is_accumulator) {
         button_value = (
             <Text size='xs' weight='bold' color='colored-background'>
-                {!(is_loading || is_disabled) ? non_multiplier_info_right : ''}
+                {!(is_loading || is_disabled) ? info.returns : ''}
             </Text>
         );
     }
@@ -155,7 +153,7 @@ const PurchaseButton = ({
                         is_high_low={is_high_low}
                     />
                 </div>
-                {!is_turbos && !is_vanilla && (
+                {!is_turbos && !is_vanilla && !is_accumulator && (
                     <div className='btn-purchase__bottom'>
                         <ContractInfo
                             basis={basis}

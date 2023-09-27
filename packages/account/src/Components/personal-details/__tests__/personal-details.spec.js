@@ -5,6 +5,7 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 import { isDesktop, isMobile } from '@deriv/shared';
 import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
 import PersonalDetails from '../personal-details';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
 
@@ -40,9 +41,6 @@ const mock_errors = {
     tax_identification_number: 'Tax Identification Number is required.',
     tax_identification_confirm: 'Please confirm your tax information.',
 };
-
-const fake_alert_messaget =
-    /we need this for verification\. if the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw\./i;
 
 const tax_residence_pop_over_text =
     /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i;
@@ -262,12 +260,6 @@ describe('<PersonalDetails/>', () => {
     it('should render PersonalDetails component', () => {
         renderwithRouter(<PersonalDetails {...props} />);
         expect(screen.getByTestId('personal_details_form')).toBeInTheDocument();
-    });
-
-    it('should show fake-alert message', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
-
-        expect(screen.getByText(fake_alert_messaget)).toBeInTheDocument();
     });
 
     it('should show proper salutation message when is_virtual is true', () => {
@@ -709,5 +701,34 @@ describe('<PersonalDetails/>', () => {
         };
         renderwithRouter(<PersonalDetails {...new_props} />);
         expect(screen.getByTestId('tax_residence')).toBeDisabled();
+    });
+
+    it('submit button should be enabled if TIN or tax_residence is optional in case of CR accounts', () => {
+        const new_props = {
+            ...props,
+            is_mf: false,
+            is_svg: true,
+            value: {
+                first_name: '',
+                last_name: '',
+                date_of_birth: '',
+                place_of_birth: '',
+                phone: '+34',
+                tax_residence: '',
+                tax_identification_number: '',
+            },
+        };
+        renderwithRouter(<PersonalDetails {...new_props} />);
+
+        const first_name = screen.getByTestId('first_name');
+        const last_name = screen.getByTestId('last_name');
+        const date_of_birth = screen.getByTestId('date_of_birth');
+        const phone = screen.getByTestId('phone');
+
+        userEvent.type(first_name, 'test firstname');
+        userEvent.type(last_name, 'test lastname');
+        userEvent.type(date_of_birth, '2000-12-12');
+        userEvent.type(phone, '+49123456789012');
+        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
     });
 });

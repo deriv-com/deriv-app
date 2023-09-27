@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, ThemedScrollbars, ButtonToggle } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { RudderStack } from '@deriv/analytics';
 import TradeCategories from 'Assets/Trading/Categories/trade-categories';
 import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif';
 import { getContractTypes } from '../../../../Helpers/contract-type';
@@ -35,6 +36,24 @@ const Info = ({ handleSelect, item, list }: TInfo) => {
     const width = isMobile() ? '328' : '528';
     const scroll_bar_height = has_toggle_buttons ? '464px' : '560px';
     const onClickGlossary = () => setSelectedTab(TABS.GLOSSARY);
+
+    React.useEffect(() => {
+        return () => {
+            RudderStack.track('ce_trade_types_form', {
+                action: 'info_close',
+            });
+        };
+    }, []);
+
+    React.useEffect(() => {
+        if (has_toggle_buttons) {
+            RudderStack.track('ce_trade_types_form', {
+                action: 'info_switcher',
+                info_switcher_mode: selected_tab,
+                trade_type_name: item?.text,
+            });
+        }
+    }, [selected_tab]);
 
     const cards = contract_types?.map((type: TContractType) => {
         if (type.value !== item.value) return null;

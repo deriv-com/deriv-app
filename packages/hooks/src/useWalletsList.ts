@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
-import { useBalance } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 import useAuthorize from './useAuthorize';
 import useCurrencyConfig from './useCurrencyConfig';
+import useBalance from './useBalance';
 
 const currency_to_icon_mapper: Record<string, Record<'light' | 'dark', string>> = {
     Demo: {

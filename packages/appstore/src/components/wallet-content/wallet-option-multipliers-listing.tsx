@@ -78,7 +78,7 @@ const WalletOptionsAndMultipliersListing = observer(() => {
 
     React.useEffect(() => {
         if (isSuccess) setWalletCreateNewAccountModal(true);
-    });
+    }, [isSuccess, setWalletCreateNewAccountModal]);
 
     if (!wallet_account || is_switching || is_logging_in || !is_landing_company_loaded) {
         return (

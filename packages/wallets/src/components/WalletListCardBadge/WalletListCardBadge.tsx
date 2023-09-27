@@ -2,15 +2,15 @@ import React from 'react';
 import './WalletListCardBadge.scss';
 
 type TProps = {
-    is_demo?: boolean;
+    isDemo?: boolean;
     label?: string;
 };
 
-const WalletListCardBadge: React.FC<TProps> = ({ is_demo, label }) => {
-    const className = is_demo ? 'wallets-list-card__badge--demo' : 'wallets-list-card__badge';
+const WalletListCardBadge: React.FC<TProps> = ({ isDemo, label }) => {
+    const className = isDemo ? 'wallets-list-card__badge--demo' : 'wallets-list-card__badge';
 
     const labelStyle: React.CSSProperties = {
-        color: is_demo ? 'white' : 'black',
+        color: isDemo ? 'white' : 'black',
     };
 
     const formattedLabel = label === 'virtual' ? 'Demo' : label?.toUpperCase() || 'SVG';

@@ -16,7 +16,7 @@ import Strike from 'Modules/Trading/Components/Form/TradeParams/strike.jsx';
 import TradeTypeTabs from 'Modules/Trading/Components/Form/TradeParams/trade-type-tabs';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 
 const TradeParams = observer(({ is_minimized }) => {
     const { form_components } = useTraderStore();

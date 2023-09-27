@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import useSubscription from '../useSubscription';
-import { getTruncatedHashString } from '@deriv/utils';
+import { getTruncatedString } from '@deriv/utils';
 
 type TTransaction = NonNullable<
     NonNullable<ReturnType<typeof useSubscription<'cashier_payments'>>['data']>['cashier_payments']
@@ -67,10 +67,12 @@ const useCryptoTransactions = () => {
             ...transaction,
             /** Formatted transaction hash */
             formatted_transaction_hash: transaction.transaction_hash
-                ? getTruncatedHashString(transaction.transaction_hash)
+                ? getTruncatedString(transaction.transaction_hash, { type: 'middle' })
                 : 'NA',
             /** Formatted address hash */
-            formatted_address_hash: transaction.address_hash ? getTruncatedHashString(transaction.address_hash) : 'NA',
+            formatted_address_hash: transaction.address_hash
+                ? getTruncatedString(transaction.address_hash, { type: 'middle' })
+                : 'NA',
             /** Formatted confirmations status */
             formatted_confirmations:
                 transaction.status_code === 'CONFIRMED' ? 'Confirmed' : transaction.confirmations || 'Pending',

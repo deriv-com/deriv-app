@@ -31,7 +31,7 @@ const WalletTransactionsCrypto: React.FC<TProps> = ({ filter }) => {
             <WalletTransactionsTable
                 columns={[
                     {
-                        accessorFn: row => moment(row.submit_date).format('D MMM YYYY'),
+                        accessorFn: row => moment(row.submit_date).format('DD MMM YYYY'),
                         accessorKey: 'date',
                         header: 'Date',
                     },
@@ -40,7 +40,7 @@ const WalletTransactionsCrypto: React.FC<TProps> = ({ filter }) => {
                 groupBy={['date']}
                 rowGroupRender={transaction => (
                     <p className='wallets-transactions-crypto__group-title'>
-                        {moment(transaction.submit_date).format('D MMM YYYY')}
+                        {moment(transaction.submit_date).format('DD MMM YYYY')}
                     </p>
                 )}
                 rowRender={transaction => <WalletTransactionsCryptoRow transaction={transaction} />}

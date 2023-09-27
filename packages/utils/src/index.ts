@@ -1,5 +1,5 @@
 export { default as getAccountsFromLocalStorage } from './getAccountsFromLocalStorage';
 export { default as getActiveAuthTokenIDFromLocalStorage } from './getActiveAuthTokenIDFromLocalStorage';
 export { default as getActiveLoginIDFromLocalStorage } from './getActiveLoginIDFromLocalStorage';
-export { default as getTruncatedHashString } from './getTruncatedHashString';
+export { default as getTruncatedString } from './getTruncatedString';
 export { default as unFormatLocaleString } from './unFormatLocaleString';

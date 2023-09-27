@@ -5,8 +5,8 @@ import AccumulatorsChartElements from '../accumulators-chart-elements';
 jest.mock('App/Components/Elements/PositionsDrawer/helpers/positions-helper', () => ({
     filterByContractType: jest.fn(() => true),
 }));
-jest.mock('../accumulators-profit-loss-tooltip', () => <div>AccumulatorsProfitLossTooltip</div>);
-jest.mock('../marker', () => <div>Spot-emphasizing ChartMarker</div>);
+jest.mock('../accumulators-profit-loss-tooltip', () => jest.fn(() => <div>AccumulatorsProfitLossTooltip</div>));
+jest.mock('../marker', () => jest.fn(() => <div>Spot-emphasizing ChartMarker</div>));
 
 describe('AccumulatorsChartElements', () => {
     const mock_props = {

@@ -52,7 +52,7 @@ module.exports = {
         'sort-keys': 'warn',
         'typescript-sort-keys/interface': 'warn',
         'typescript-sort-keys/string-enum': 'warn',
-        camelcase: 'warn',
+        camelcase: 'error',
     },
     overrides: [
         {

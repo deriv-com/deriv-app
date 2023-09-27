@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import useAuthorize from './useAuthorize';
-import useBalance from './useBalance';
+import { useBalance } from '@deriv/api';
 import useCurrencyConfig from './useCurrencyConfig';
 
 /** A custom hook that gets the list of all accounts for the current user. */

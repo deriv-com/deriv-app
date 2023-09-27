@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useFetch } from '@deriv/api';
+import { useBalance } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 import useAuthorize from './useAuthorize';
 import useCurrencyConfig from './useCurrencyConfig';
@@ -68,7 +68,7 @@ const useWalletsList = () => {
     const { getConfig } = useCurrencyConfig();
 
     const { data: authorize_data, ...rest } = useAuthorize();
-    const { data: balance_data } = useFetch('balance', { payload: { account: 'all' } });
+    const { data: balance_data } = useBalance();
 
     // Filter out non-wallet accounts.
     const wallets = useMemo(
@@ -82,9 +82,9 @@ const useWalletsList = () => {
             wallets?.map(wallet => ({
                 ...wallet,
                 /** Wallet balance */
-                balance: balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance || 0,
+                balance: balance_data?.accounts?.[wallet.loginid || '']?.balance || 0,
             })),
-        [balance_data?.balance?.accounts, wallets]
+        [balance_data?.accounts, wallets]
     );
 
     // Add additional information to each wallet.

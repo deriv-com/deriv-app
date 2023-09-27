@@ -175,15 +175,25 @@ export const ContractType = (() => {
             symbol,
             short_barriers,
             long_barriers,
+            strike_price_choices,
         } = store;
 
         if (!contract_type) return {};
 
-        let stored_barriers_data: TTradeStore['short_barriers' | 'long_barriers'] = {};
-        if (getContractSubtype(contract_type) === 'Short') {
-            stored_barriers_data = short_barriers;
-        } else if (getContractSubtype(contract_type) === 'Long') {
-            stored_barriers_data = long_barriers;
+        let stored_barriers_data: TTradeStore['short_barriers' | 'long_barriers' | 'strike_price_choices'];
+        switch (getContractSubtype(contract_type)) {
+            case 'Short':
+                stored_barriers_data = short_barriers;
+                break;
+            case 'Long':
+                stored_barriers_data = long_barriers;
+                break;
+            case 'Call':
+            case 'Put':
+                stored_barriers_data = strike_price_choices;
+                break;
+            default:
+                stored_barriers_data = {};
         }
 
         const form_components = getComponents(contract_type);
@@ -234,19 +244,14 @@ export const ContractType = (() => {
     };
 
     const getComponents = (c_type: string) => {
-        let check = [];
-        if (contract_types[c_type]?.config?.should_override) {
-            check = [...contract_types[c_type].components];
-        } else {
-            check = ['duration', 'amount', ...contract_types[c_type].components].filter(
-                component =>
-                    !(
-                        component === 'duration' &&
-                        contract_types[c_type].config &&
-                        (contract_types[c_type].config as TConfig).hide_duration
-                    )
-            );
-        }
+        const check = ['duration', 'amount', ...contract_types[c_type].components].filter(
+            component =>
+                !(
+                    component === 'duration' &&
+                    contract_types[c_type].config &&
+                    contract_types[c_type].config?.hide_duration
+                )
+        );
         return (
             contract_types && {
                 form_components: check,

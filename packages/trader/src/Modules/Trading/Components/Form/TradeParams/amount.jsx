@@ -1,4 +1,4 @@
-import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces, isVanillaContract } from '@deriv/shared';
+import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces } from '@deriv/shared';
 import { ButtonToggle, Dropdown, InputField } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 
@@ -75,13 +75,9 @@ const Amount = observer(({ is_minimized, is_nativepicker }) => {
         stake_boundary,
         onChange,
         validation_errors,
-        vanilla_trade_type,
     } = useTraderStore();
 
-    const { min_stake, max_stake } =
-        (isVanillaContract(contract_type)
-            ? stake_boundary[vanilla_trade_type]
-            : stake_boundary[contract_type.toUpperCase()]) || {};
+    const { min_stake, max_stake } = stake_boundary[contract_type.toUpperCase()] || {};
 
     if (is_minimized) {
         return (
@@ -119,7 +115,7 @@ const Amount = observer(({ is_minimized, is_nativepicker }) => {
         <Fieldset
             className='trade-container__fieldset center-text'
             header={
-                is_multiplier || ['high_low', 'vanilla'].includes(contract_type) || is_accumulator || is_turbos
+                contract_type === 'high_low' || is_multiplier || is_accumulator || is_vanilla || is_turbos
                     ? localize('Stake')
                     : undefined
             }

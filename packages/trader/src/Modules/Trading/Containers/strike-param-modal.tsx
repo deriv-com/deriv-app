@@ -1,26 +1,27 @@
 import React from 'react';
 import { Localize, localize } from '@deriv/translations';
 import { Div100vhContainer, Modal, Popover, RadioGroup } from '@deriv/components';
+import { VANILLALONG } from '@deriv/shared';
 import classNames from 'classnames';
 
 type TStrikeParamModalProps = {
+    contract_type: string;
     is_open: boolean;
     name: string;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     strike: string;
     strike_price_list: { text: string; value: string }[];
     toggleModal: () => void;
-    vanilla_trade_type: string;
 };
 
 const StrikeParamModal = ({
+    contract_type,
     is_open,
-    name,
-    onChange,
-    strike,
-    strike_price_list,
     toggleModal,
-    vanilla_trade_type,
+    strike,
+    onChange,
+    name,
+    strike_price_list,
 }: TStrikeParamModalProps) => {
     const [is_popover_open, setIsPopoverOpen] = React.useState(false);
 
@@ -54,12 +55,9 @@ const StrikeParamModal = ({
                                 i18n_default_text='If you buy a "<0>{{trade_type}}</0>" option, you receive a payout at expiry if the final price is {{payout_status}} the strike price. Otherwise, your “<0>{{trade_type}}</0>” option will expire worthless.'
                                 components={[<strong key={0} />]}
                                 values={{
-                                    trade_type:
-                                        vanilla_trade_type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
+                                    trade_type: contract_type === VANILLALONG.CALL ? localize('Call') : localize('Put'),
                                     payout_status:
-                                        vanilla_trade_type === 'VANILLALONGCALL'
-                                            ? localize('above')
-                                            : localize('below'),
+                                        contract_type === VANILLALONG.CALL ? localize('above') : localize('below'),
                                 }}
                             />
                         }

@@ -39,6 +39,7 @@ jest.mock('@deriv/components', () => {
 
 describe('<StrikeParamModal />', () => {
     const props = {
+        contract_type: 'vanillalongcall',
         is_open: true,
         name: 'barrier_1',
         onChange: jest.fn(),
@@ -49,7 +50,6 @@ describe('<StrikeParamModal />', () => {
             { text: '1', value: '1' },
         ],
         toggleModal: jest.fn(),
-        vanilla_trade_type: 'VANILLALONGCALL',
     };
     beforeAll(() => {
         ReactDOM.createPortal = jest.fn(component => {

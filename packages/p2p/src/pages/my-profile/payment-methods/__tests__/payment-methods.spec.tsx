@@ -2,6 +2,8 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { useStores } from 'Stores/index';
 import PaymentMethods from '../payment-methods';
+import { APIProvider } from '@deriv/api';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 let mock_store: DeepPartial<ReturnType<typeof useStores>>;
 
@@ -10,16 +12,14 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(() => mock_store),
 }));
 
-jest.mock('Components/my-profile/payment-methods/add-payment-method', () => jest.fn(() => <div>AddPaymentMethod</div>));
-jest.mock('Components/my-profile/payment-methods/payment-methods-list/edit-payment-method-form', () =>
+jest.mock('Pages/my-profile/payment-methods/add-payment-method', () => jest.fn(() => <div>AddPaymentMethod</div>));
+jest.mock('Pages/my-profile/payment-methods/payment-methods-list/edit-payment-method-form', () =>
     jest.fn(() => <div>EditPaymentMethodForm</div>)
 );
-jest.mock('Components/my-profile/payment-methods/payment-methods-empty', () =>
+jest.mock('Pages/my-profile/payment-methods/payment-methods-empty', () =>
     jest.fn(() => <div>PaymentMethodsEmpty</div>)
 );
-jest.mock('Components/my-profile/payment-methods/payment-methods-list', () =>
-    jest.fn(() => <div>PaymentMethodsList</div>)
-);
+jest.mock('Pages/my-profile/payment-methods/payment-methods-list', () => jest.fn(() => <div>PaymentMethodsList</div>));
 
 describe('<PaymentMethods />', () => {
     beforeEach(() => {
@@ -44,7 +44,13 @@ describe('<PaymentMethods />', () => {
     });
 
     it('should call getPaymentMethodsList when component mounted', () => {
-        render(<PaymentMethods />);
+        render(
+            <APIProvider>
+                <StoreProvider store={mockStore({})}>
+                    <PaymentMethods />
+                </StoreProvider>
+            </APIProvider>
+        );
         expect(mock_store.my_profile_store.getPaymentMethodsList).toHaveBeenCalled();
     });
 });

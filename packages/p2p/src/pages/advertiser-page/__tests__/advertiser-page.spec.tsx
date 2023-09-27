@@ -58,14 +58,15 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     buy_sell_store: {
         show_advertiser_page: true,
         hideAdvertiserPage: jest.fn(),
+        setShowAdvertiserPage: jest.fn(),
     },
     my_profile_store: {
         setActiveTab: jest.fn(),
     },
 };
 
-jest.mock('Components/advertiser-page/advertiser-page-adverts', () => jest.fn(() => <div>adverts</div>));
-jest.mock('Components/advertiser-page/advertiser-page-stats', () => jest.fn(() => <div>stats</div>));
+jest.mock('Pages/advertiser-page/advertiser-page-adverts', () => jest.fn(() => <div>adverts</div>));
+jest.mock('Pages/advertiser-page/advertiser-page-stats', () => jest.fn(() => <div>stats</div>));
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Loading: jest.fn(() => <div> loading...</div>),
@@ -87,6 +88,18 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('<Advertiserpage />', () => {
+    it('should render advertiser page', () => {
+        render(<AdvertiserPage />);
+        expect(mock_store.advertiser_page_store.onMount).toHaveBeenCalledTimes(1);
+        expect(mock_store.buy_sell_store.setShowAdvertiserPage).toHaveBeenCalledWith(true);
+    });
+    it('should handle unmount of advertiser page', () => {
+        const { unmount } = render(<AdvertiserPage />);
+        unmount();
+        expect(mock_store.advertiser_page_store.onUnmount).toHaveBeenCalled();
+        expect(mock_store.buy_sell_store.setShowAdvertiserPage).toHaveBeenCalledWith(false);
+    });
+
     it('should call setCounterpartyAdvertiserId when component mounted', () => {
         render(<AdvertiserPage />);
         expect(mock_store.general_store.setCounterpartyAdvertiserId).toHaveBeenCalled();

@@ -244,7 +244,6 @@ import './common/ic-account-missing-details.svg';
 import './common/ic-account-tick.svg';
 import './common/ic-account-transfer-colored.svg';
 import './common/ic-account-transfer.svg';
-import './common/ic-account-trash-can-dashboard.svg';
 import './common/ic-account-trash-can.svg';
 import './common/ic-account-website.svg';
 import './common/ic-add-account.svg';

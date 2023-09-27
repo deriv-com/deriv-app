@@ -4,12 +4,13 @@ import classNames from 'classnames';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
+import { ChartTitle as ChartTitleAlpha, SmartChart as SmartChartAlpha } from '@deriv/deriv-charts-alpha';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import ToolbarWidgets from './toolbar-widgets';
 
-const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) => {
+const Chart = observer(({ is_alpha, show_digits_stats }: { is_alpha: boolean; show_digits_stats: boolean }) => {
     const barriers: [] = [];
     const { common, ui } = useStore();
     const { chart_store, run_panel } = useDBotStore();
@@ -45,30 +46,59 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 'dashboard__chart-wrapper--expanded': is_drawer_open && !isMobile(),
             })}
         >
-            <SmartChart
-                id='dbot'
-                barriers={barriers}
-                showLastDigitStats={show_digits_stats}
-                chartControlsWidgets={null}
-                enabledChartFooter={false}
-                chartStatusListener={v => setChartStatus(!v)}
-                toolbarWidget={() => (
-                    <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
-                )}
-                chartType={chart_type}
-                isMobile={isMobile()}
-                enabledNavigationWidget={isDesktop()}
-                granularity={granularity}
-                requestAPI={wsSendRequest}
-                requestForget={wsForget}
-                requestForgetStream={wsForgetStream}
-                requestSubscribe={wsSubscribe}
-                settings={settings}
-                symbol={symbol}
-                topWidgets={() => <ChartTitle onChange={onSymbolChange} />}
-                isConnectionOpened={is_socket_opened}
-                getMarketsOrder={getMarketsOrder}
-            />
+            {is_alpha && (
+                <SmartChartAlpha
+                    id='dbot'
+                    barriers={barriers}
+                    showLastDigitStats={show_digits_stats}
+                    chartControlsWidgets={null}
+                    enabledChartFooter={false}
+                    chartStatusListener={v => setChartStatus(!v)}
+                    toolbarWidget={() => (
+                        <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
+                    )}
+                    chartType={chart_type}
+                    isMobile={isMobile()}
+                    enabledNavigationWidget={isDesktop()}
+                    granularity={granularity}
+                    requestAPI={wsSendRequest}
+                    requestForget={wsForget}
+                    requestForgetStream={wsForgetStream}
+                    requestSubscribe={wsSubscribe}
+                    settings={settings}
+                    symbol={symbol}
+                    topWidgets={() => <ChartTitleAlpha onChange={onSymbolChange} />}
+                    isConnectionOpened={is_socket_opened}
+                    getMarketsOrder={getMarketsOrder}
+                    isLive={true}
+                />
+            )}
+            {!is_alpha && (
+                <SmartChart
+                    id='dbot'
+                    barriers={barriers}
+                    showLastDigitStats={show_digits_stats}
+                    chartControlsWidgets={null}
+                    enabledChartFooter={false}
+                    chartStatusListener={v => setChartStatus(!v)}
+                    toolbarWidget={() => (
+                        <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
+                    )}
+                    chartType={chart_type}
+                    isMobile={isMobile()}
+                    enabledNavigationWidget={isDesktop()}
+                    granularity={granularity}
+                    requestAPI={wsSendRequest}
+                    requestForget={wsForget}
+                    requestForgetStream={wsForgetStream}
+                    requestSubscribe={wsSubscribe}
+                    settings={settings}
+                    symbol={symbol}
+                    topWidgets={() => <ChartTitle onChange={onSymbolChange} />}
+                    isConnectionOpened={is_socket_opened}
+                    getMarketsOrder={getMarketsOrder}
+                />
+            )}
         </div>
     );
 });

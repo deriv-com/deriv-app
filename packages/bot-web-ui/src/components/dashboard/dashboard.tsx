@@ -261,7 +261,7 @@ const Dashboard = observer(() => {
                         </div>
                         <div icon='IcBotBuilderTabIcon' label={localize('Bot Builder')} id='id-bot-builder' />
                         <div icon='IcChartsTabDbot' label={localize('Charts')} id='id-charts'>
-                            <Chart />
+                            <Chart is_alpha={false} />
                         </div>
                         <div icon='IcTutorialsTabs' label={localize('Tutorials')} id='id-tutorials'>
                             <div className='tutorials-wrapper'>

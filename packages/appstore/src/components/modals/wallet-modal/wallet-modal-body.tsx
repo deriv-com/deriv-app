@@ -58,7 +58,7 @@ const WalletModalBody = observer(
             <Tabs
                 active_icon_color={is_dark ? 'var(--badge-white)' : ''}
                 active_index={tabs[active_modal_tab || 'Deposit']}
-                className={classNames('modal-body__tabs', {
+                className={classNames('wallet-modal', {
                     is_scrolled: is_mobile && !is_wallet_name_visible,
                 })}
                 has_active_line={false}
@@ -79,12 +79,12 @@ const WalletModalBody = observer(
                     return (
                         <div key={option.label} icon={option.icon} label={option.label}>
                             <ThemedScrollbars
-                                className='dc-tabs--modal-body__tabs__themed-scrollbar'
+                                className='dc-tabs--wallet-modal-themed-scrollbar'
                                 is_scrollbar_hidden={is_mobile}
                                 onScroll={contentScrollHandler}
                             >
                                 <Div100vhContainer height_offset={getHeightOffset()}>
-                                    <div className='dc-tabs--modal-body__tabs__content-wrapper'>
+                                    <div className='dc-tabs--wallet-modal-content-wrapper'>
                                         {option.content({
                                             is_wallet_name_visible,
                                             contentScrollHandler,

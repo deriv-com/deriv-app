@@ -10,7 +10,6 @@ const Redirect = ({
     currency,
     setVerificationCode,
     verification_code,
-    hasAnyRealAccount,
     openRealAccountSignup,
     setResetTradingPasswordModalOpen,
     toggleAccountSignupModal,
@@ -25,7 +24,12 @@ const Redirect = ({
     const action_param = url_params.get('action');
     const loginid = url_params.get('loginid');
     const code_param = url_params.get('code') || verification_code[action_param];
+    const ext_platform_url = url_params.get('ext_platform_url');
 
+    const redirectToExternalPlatform = url => {
+        history.push(`${routes.root}?ext_platform_url=${url}`);
+        redirected_to_route = true;
+    };
     setVerificationCode(code_param, action_param);
     setNewEmail(url_params.get('email'), action_param);
 
@@ -129,14 +133,9 @@ const Redirect = ({
         case 'add_account': {
             WS.wait('get_account_status').then(() => {
                 if (!currency) return openRealAccountSignup('set_currency');
-                if (hasAnyRealAccount()) return openRealAccountSignup('manage');
                 return openRealAccountSignup('svg');
             });
-            const ext_platform_url = url_params.get('ext_platform_url');
-            if (ext_platform_url) {
-                history.push(`${routes.root}?ext_platform_url=${ext_platform_url}`);
-                redirected_to_route = true;
-            }
+            if (ext_platform_url) redirectToExternalPlatform(ext_platform_url);
             break;
         }
         case 'add_account_multiplier': {
@@ -144,11 +143,14 @@ const Redirect = ({
                 if (!currency) return openRealAccountSignup('set_currency');
                 return openRealAccountSignup('maltainvest');
             });
-            const ext_platform_url = url_params.get('ext_platform_url');
-            if (ext_platform_url) {
-                history.push(`${routes.root}?ext_platform_url=${ext_platform_url}`);
-                redirected_to_route = true;
-            }
+            if (ext_platform_url) redirectToExternalPlatform(ext_platform_url);
+            break;
+        }
+        case 'manage_account': {
+            WS.wait('get_account_status').then(() => {
+                return openRealAccountSignup('manage');
+            });
+            if (ext_platform_url) redirectToExternalPlatform(ext_platform_url);
             break;
         }
         case 'verification': {
@@ -194,7 +196,6 @@ Redirect.propTypes = {
     currency: PropTypes.string,
     loginid: PropTypes.string,
     getServerTime: PropTypes.object,
-    hasAnyRealAccount: PropTypes.bool,
     history: PropTypes.object,
     openRealAccountSignup: PropTypes.func,
     setResetTradingPasswordModalOpen: PropTypes.func,
@@ -214,7 +215,6 @@ export default withRouter(
         setVerificationCode: client.setVerificationCode,
         verification_code: client.verification_code,
         fetchResidenceList: client.fetchResidenceList,
-        hasAnyRealAccount: client.hasAnyRealAccount,
         openRealAccountSignup: ui.openRealAccountSignup,
         setResetTradingPasswordModalOpen: ui.setResetTradingPasswordModalOpen,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,

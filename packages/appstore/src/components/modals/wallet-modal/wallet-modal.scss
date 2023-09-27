@@ -14,23 +14,115 @@
     @include mobile {
         margin: 0;
     }
-}
 
-.header-background {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
+    // styles for mobile and desktop modal body (tabs with content)
+    .dc-tabs {
+        &--wallet-modal {
+            width: 100%;
+            margin-top: -4.8rem;
+            z-index: 9999;
 
-    @include mobile {
-        position: fixed;
-        z-index: 3;
+            @include mobile {
+                top: 8.2rem;
+                margin-top: 0;
+                transition: top 0.2s ease;
+
+                &.is_scrolled {
+                    top: 4.2rem;
+                }
+            }
+
+            &-themed-scrollbar {
+                width: 100%;
+            }
+
+            &-content-wrapper {
+                max-width: 128rem;
+                margin: 0 auto;
+                padding: 2.4rem 4rem;
+
+                @include mobile {
+                    padding: 1.6rem;
+                }
+            }
+        }
+        &__list {
+            padding: 0 4rem;
+
+            @include mobile {
+                padding: 0 1.6rem;
+            }
+
+            &--wallet-modal {
+                max-width: 128rem;
+                width: 100%;
+                margin: 0 auto;
+
+                @include mobile {
+                    width: 100%;
+                    z-index: 3;
+                    overflow-x: scroll;
+
+                    /* IE and Edge */
+                    -ms-overflow-style: none;
+                    /* Firefox */
+                    scrollbar-width: none;
+
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+
+                    &::-webkit-scrollbar-thumb {
+                        display: none;
+                    }
+
+                    &.is_scrolled {
+                        top: 4.4rem;
+                    }
+                }
+            }
+        }
+
+        &__item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 3.2rem;
+            height: 4.8rem;
+
+            @include mobile {
+                padding: 0 1.6rem;
+                height: 4rem;
+                font-size: var(--text-size-xxs);
+            }
+
+            &__icon {
+                padding: 0;
+                margin-right: 0.8rem;
+            }
+        }
+
+        &__active {
+            background-color: var(--general-main-1);
+            border-radius: 1.6rem 1.6rem 0 0;
+        }
+
+        &__content {
+            width: 100%;
+            font-size: var(--text-size-l);
+            color: var(--text-prominent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            @include mobile {
+                font-size: var(--text-size-xs);
+            }
+        }
     }
 }
 
-// styles for mobile and desktop modal header
-.modal-header {
+.wallet-modal--header {
     max-width: 128rem;
     width: 100%;
     display: flex;
@@ -110,104 +202,17 @@
             cursor: pointer;
         }
     }
-}
 
-// styles for mobile and desktop modal body (tabs with content)
-.dc-tabs {
-    &--modal-body__tabs {
-        width: 100%;
-        margin-top: -4.8rem;
-        z-index: 9999;
-
-        @include mobile {
-            top: 8.2rem;
-            margin-top: 0;
-            transition: top 0.2s ease;
-
-            &.is_scrolled {
-                top: 4.2rem;
-            }
-        }
-
-        &__themed-scrollbar {
-            width: 100%;
-        }
-
-        &__content-wrapper {
-            max-width: 128rem;
-            margin: 0 auto;
-            padding: 2.4rem 4rem;
-
-            @include mobile {
-                padding: 1.6rem;
-            }
-        }
-    }
-    &__list {
-        padding: 0 4rem;
-
-        @include mobile {
-            padding: 0 1.6rem;
-        }
-
-        &--header--modal-body__tabs {
-            max-width: 128rem;
-            width: 100%;
-            margin: 0 auto;
-
-            @include mobile {
-                width: 100%;
-                z-index: 3;
-                overflow-x: scroll;
-
-                /* IE and Edge */
-                -ms-overflow-style: none;
-                /* Firefox */
-                scrollbar-width: none;
-
-                &::-webkit-scrollbar {
-                    display: none;
-                }
-
-                &::-webkit-scrollbar-thumb {
-                    display: none;
-                }
-
-                &.is_scrolled {
-                    top: 4.4rem;
-                }
-            }
-        }
-    }
-
-    &__item {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0 3.2rem;
-        height: 4.8rem;
-
-        @include mobile {
-            padding: 0 1.6rem;
-            height: 4rem;
-            font-size: var(--text-size-xxs);
-        }
-
-        &__icon {
-            padding: 0;
-            margin-right: 0.8rem;
-        }
-    }
-
-    &__active {
-        background-color: var(--general-main-1);
-        border-radius: 1.6rem 1.6rem 0 0;
-    }
-
-    &__content {
+    &-background {
         width: 100%;
         display: flex;
-        align-items: center;
         justify-content: center;
+        position: relative;
+        overflow: hidden;
+
+        @include mobile {
+            position: fixed;
+            z-index: 3;
+        }
     }
 }

@@ -14,7 +14,7 @@ import './chat-messages.scss';
 
 const AdminMessage = () => (
     <div className='chat-messages-item chat-messages-item--admin'>
-        <ChatMessageText color={'general'} type={'admin'}>
+        <ChatMessageText color='general' type='admin'>
             <Localize i18n_default_text={admin_message} />
         </ChatMessageText>
     </div>
@@ -81,7 +81,7 @@ const ChatMessages = observer(() => {
                 refSetter={scroll_ref}
                 onScroll={event => sendbird_store.onMessagesScroll(event)}
             >
-                <>
+                <React.Fragment>
                     <AdminMessage />
                     {sendbird_store.chat_messages.map(chat_message => {
                         const is_my_message = chat_message.sender_user_id === sendbird_store.chat_info.user_id;
@@ -128,7 +128,7 @@ const ChatMessages = observer(() => {
                             </React.Fragment>
                         );
                     })}
-                </>
+                </React.Fragment>
             </ThemedScrollbars>
         );
     }

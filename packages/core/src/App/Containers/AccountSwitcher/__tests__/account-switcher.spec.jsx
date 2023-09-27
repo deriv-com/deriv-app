@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { screen, render } from '@testing-library/react';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import { AccountSwitcher } from '../account-switcher.jsx';
 
 jest.mock('Stores/connect', () => ({
@@ -147,7 +148,12 @@ const mock_connect_props = {
 
 describe('AccountSwitcher', () => {
     const renderWithRouter = children => {
-        render(<BrowserRouter>{children}</BrowserRouter>);
+        const store = mockStore({});
+        render(
+            <StoreProvider store={store}>
+                <BrowserRouter>{children}</BrowserRouter>
+            </StoreProvider>
+        );
     };
 
     it('should render account switcher', () => {

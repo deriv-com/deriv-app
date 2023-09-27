@@ -1,4 +1,4 @@
-import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces } from '@deriv/shared';
+import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces, isVanillaContract } from '@deriv/shared';
 import { ButtonToggle, Dropdown, InputField } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 
@@ -72,9 +72,16 @@ const Amount = observer(({ is_minimized, is_nativepicker }) => {
         is_vanilla,
         has_equals_only,
         has_open_accu_contract,
+        stake_boundary,
         onChange,
         validation_errors,
+        vanilla_trade_type,
     } = useTraderStore();
+
+    const { min_stake, max_stake } =
+        (isVanillaContract(contract_type)
+            ? stake_boundary[vanilla_trade_type]
+            : stake_boundary[contract_type.toUpperCase()]) || {};
 
     if (is_minimized) {
         return (
@@ -187,7 +194,9 @@ const Amount = observer(({ is_minimized, is_nativepicker }) => {
                     />
                 </React.Fragment>
             )}
-            {(is_turbos || is_vanilla) && <MinMaxStakeInfo />}
+            {(is_turbos || is_vanilla) && (
+                <MinMaxStakeInfo currency={currency} max_stake={max_stake} min_stake={min_stake} />
+            )}
         </Fieldset>
     );
 });

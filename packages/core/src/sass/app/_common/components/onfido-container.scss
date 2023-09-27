@@ -4,6 +4,10 @@
     align-items: center;
     gap: 1.6rem;
 
+    &__hidden {
+        display: none;
+    }
+
     &-view_wrapper {
         position: relative;
         min-width: 32.8rem;
@@ -22,8 +26,15 @@
     @include mobile() {
         padding: 1.6rem;
 
-        .onfido-sdk-ui-PageTitle-titleSpan {
-            font-size: 2rem;
+        & .onfido-sdk-ui-PageTitle {
+            &-titleWrapper {
+                margin: 2.4rem 0 0;
+            }
+
+            &-title {
+                font-size: 2rem;
+                text-align: center;
+            }
         }
     }
 
@@ -46,6 +57,10 @@
         z-index: 1;
         @include mobile {
             margin-top: 1.6rem;
+        }
+
+        .dc-hint-box {
+            margin-inline: 0.8rem;
         }
     }
 

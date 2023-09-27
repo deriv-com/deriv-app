@@ -3,7 +3,7 @@ import { MobileFullPageModal } from '@deriv/components';
 import { useStores } from 'Stores';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
-import CurrencySelector from 'Components/buy-sell/currency-selector/currency-selector';
+import CurrencySelector from 'Pages/buy-sell/currency-selector/currency-selector';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const CurrencySelectorModal = () => {

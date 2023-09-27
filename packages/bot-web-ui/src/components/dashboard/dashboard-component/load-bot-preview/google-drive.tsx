@@ -2,25 +2,16 @@ import React from 'react';
 import classnames from 'classnames';
 import { Button, Icon, StaticUrl } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/root-store';
+import { useDBotStore } from 'Stores/useDBotStore';
 
-type TGoogleDriveProps = {
-    is_authorised: boolean;
-    is_open_button_loading: boolean;
-    onDriveConnect: () => void;
-    onDriveOpen: () => void;
-    setOpenSettings: (toast_message: string, show_toast?: boolean) => void;
-};
+const GoogleDrive = observer(() => {
+    const { google_drive, load_modal, dashboard } = useDBotStore();
+    const { is_authorised } = google_drive;
+    const { is_open_button_loading, onDriveConnect, onDriveOpen } = load_modal;
+    const { setOpenSettings } = dashboard;
 
-const GoogleDrive = ({
-    is_authorised,
-    is_open_button_loading,
-    onDriveConnect,
-    onDriveOpen,
-    setOpenSettings,
-}: TGoogleDriveProps) => {
     return (
         <div className='load-strategy__container'>
             <div className='load-strategy__google-drive'>
@@ -79,12 +70,6 @@ const GoogleDrive = ({
             </div>
         </div>
     );
-};
+});
 
-export default connect(({ load_modal, google_drive, dashboard }: RootStore) => ({
-    is_authorised: google_drive.is_authorised,
-    is_open_button_loading: load_modal.is_open_button_loading,
-    onDriveConnect: load_modal.onDriveConnect,
-    onDriveOpen: load_modal.onDriveOpen,
-    setOpenSettings: dashboard.setOpenSettings,
-}))(GoogleDrive);
+export default GoogleDrive;

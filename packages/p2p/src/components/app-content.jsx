@@ -1,17 +1,17 @@
-import React from 'react';
-import { isAction, reaction } from 'mobx';
-import { useHistory } from 'react-router-dom';
-import { useStores } from 'Stores';
-import { isMobile } from '@deriv/shared';
-import { Loading, Tabs } from '@deriv/components';
-import { useStore, observer } from '@deriv/stores';
 import classNames from 'classnames';
-import { localize } from './i18next';
-import NicknameForm from './nickname-form';
-import TemporarilyBarredHint from './temporarily-barred-hint';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { isAction, reaction } from 'mobx';
+import { observer } from 'mobx-react-lite';
+import { Loading, Tabs } from '@deriv/components';
 import { useP2PNotificationCount } from '@deriv/hooks';
+import { isMobile } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
+import TemporarilyBarredHint from 'Components/temporarily-barred-hint';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { buy_sell } from 'Constants/buy-sell';
+import { useStores } from 'Stores';
+import { localize } from './i18next';
 
 const AppContent = ({ order_id }) => {
     const { buy_sell_store, general_store } = useStores();
@@ -49,10 +49,6 @@ const AppContent = ({ order_id }) => {
         return <Loading is_fullscreen={false} />;
     }
 
-    if (general_store.should_show_popup) {
-        return <NicknameForm />;
-    }
-
     // return empty or else the tabs will be shown above when displaying the advertiser page
     if (
         (buy_sell_store?.show_advertiser_page && !buy_sell_store.should_show_verification) ||
@@ -64,7 +60,7 @@ const AppContent = ({ order_id }) => {
     return (
         <Tabs
             active_index={general_store.active_index}
-            className={classNames({ 'p2p-cashier__tabs': general_store.active_index === 0 && isMobile() })}
+            className={classNames({ p2p__tabs: general_store.active_index === 0 && isMobile() })}
             header_fit_content={!isMobile()}
             is_100vw={isMobile()}
             is_scrollable

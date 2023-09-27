@@ -5,10 +5,12 @@ import {
     isAccumulatorContract,
     isAccumulatorContractOpen,
     isCallPut,
+    isHighLow,
     isDesktop,
     isEnded,
     isMobile,
     isMultiplierContract,
+    isTurbosContract,
     LocalStore,
     switch_to_tick_chart,
 } from '@deriv/shared';
@@ -177,7 +179,6 @@ export default class ContractTradeStore extends BaseStore {
             getAccuBarriersDTraderTimeout({
                 barriers_update_timestamp: Date.now(),
                 has_default_timeout: this.accumulator_barriers_data.current_spot_time !== current_spot_time,
-                should_update_contract_barriers,
                 tick_update_timestamp,
                 underlying,
             })
@@ -207,7 +208,8 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     applicable_contracts = () => {
-        const { symbol: underlying, contract_type: trade_type } = JSON.parse(localStorage.getItem('trade_store')) || {};
+        const { contract_type: trade_type, symbol: underlying } =
+            JSON.parse(sessionStorage.getItem('trade_store')) || {};
 
         if (!trade_type || !underlying) {
             return [];
@@ -217,7 +219,11 @@ export default class ContractTradeStore extends BaseStore {
         if (is_call_put) {
             // treat CALLE/PUTE and CALL/PUT the same
             trade_types = ['CALLE', 'PUTE', 'CALL', 'PUT'];
+        } else if (isTurbosContract(trade_type)) {
+            //to show both Long and Short recent contracts on DTrader chart
+            trade_types = ['TURBOSLONG', 'TURBOSSHORT'];
         }
+
         return this.contracts
             .filter(c => c.contract_info.underlying === underlying)
             .filter(c => {
@@ -233,8 +239,8 @@ export default class ContractTradeStore extends BaseStore {
                 const trade_type_is_supported = trade_types.indexOf(info.contract_type) !== -1;
                 // both high_low & rise_fall have the same contract_types in POC response
                 // entry_spot=barrier means it is rise_fall contract (blame the api)
-                if (trade_type_is_supported && info.barrier && info.entry_tick && is_call_put) {
-                    if (`${+info.entry_tick}` === `${+info.barrier}`) {
+                if (trade_type_is_supported && is_call_put && ((info.barrier && info.entry_tick) || info.shortcode)) {
+                    if (`${+info.entry_tick}` === `${+info.barrier}` && !isHighLow(info)) {
                         return trade_type === 'rise_fall' || trade_type === 'rise_fall_equal';
                     }
                     return trade_type === 'high_low';
@@ -244,7 +250,7 @@ export default class ContractTradeStore extends BaseStore {
     };
 
     get has_crossed_accu_barriers() {
-        const { symbol } = JSON.parse(localStorage.getItem('trade_store')) || {};
+        const { symbol } = JSON.parse(sessionStorage.getItem('trade_store')) || {};
         const {
             current_spot: contract_current_spot,
             entry_spot,
@@ -269,7 +275,7 @@ export default class ContractTradeStore extends BaseStore {
 
     get markers_array() {
         let markers = [];
-        const { contract_type: trade_type, symbol } = JSON.parse(localStorage.getItem('trade_store')) || {};
+        const { contract_type: trade_type, symbol } = JSON.parse(sessionStorage.getItem('trade_store')) || {};
         markers = this.applicable_contracts()
             .map(c => c.marker)
             .filter(m => m)

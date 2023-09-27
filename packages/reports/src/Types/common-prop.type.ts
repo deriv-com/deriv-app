@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { TRootStore } from 'Stores/index';
+import { TCoreStores } from '@deriv/stores/types';
 import {
     getMultiplierOpenPositionsColumnsTemplate,
     getOpenPositionsColumnsTemplate,
@@ -11,7 +11,7 @@ import {
 import { getSupportedContracts, getUnsupportedContracts } from '@deriv/shared';
 
 export type TPassthrough = {
-    root_store: TRootStore;
+    root_store: TCoreStores;
     WS: Record<string, any>;
 };
 
@@ -34,11 +34,11 @@ export type TRoute = {
 };
 
 export type TErrorComponent = {
-    header: string;
+    header: string | JSX.Element;
     is_dialog: boolean;
     message: React.ReactElement | string;
     redirect_label: string;
-    redirectOnClick: () => void;
+    redirectOnClick: (() => void) | null;
     should_show_refresh: boolean;
     type: string;
 };
@@ -76,6 +76,7 @@ export type TCellContentProps = {
     passthrough: any;
     row_obj: any;
     is_footer: boolean;
+    is_turbos: boolean;
     is_vanilla: boolean;
 };
 

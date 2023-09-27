@@ -8,8 +8,6 @@ const useDevice = () => {
     const isDesktop = width >= 1024;
 
     return {
-        /** @deprecated Use `isMobile` instead. */
-        is_mobile: isMobile,
         isDesktop,
         isMobile,
         isTablet,

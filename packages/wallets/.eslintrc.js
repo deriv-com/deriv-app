@@ -1,11 +1,9 @@
 module.exports = {
     root: true,
     extends: ['../../.eslintrc.js', 'eslint:recommended', 'plugin:react/recommended'],
-    parserOptions: {
-        sourceType: 'module',
-    },
+    parserOptions: { sourceType: 'module' },
     env: { es6: true },
-    plugins: ['simple-import-sort', 'typescript-sort-keys', 'sort-destructure-keys'],
+    plugins: ['eslint-plugin-local-rules', 'simple-import-sort', 'sort-destructure-keys', 'typescript-sort-keys'],
     rules: {
         'simple-import-sort/imports': [
             'error',
@@ -42,6 +40,7 @@ module.exports = {
         'import/newline-after-import': 'error',
         'import/no-duplicates': 'error',
         'lines-around-comment': ['error', { allowObjectStart: true }],
+        'local-rules/no-react-namespace': 'error',
         'no-unneeded-ternary': 'error',
         'object-shorthand': 'error',
         'prefer-const': 'error',
@@ -53,6 +52,7 @@ module.exports = {
         'typescript-sort-keys/interface': 'warn',
         'typescript-sort-keys/string-enum': 'warn',
         camelcase: 'error',
+        'import/no-extraneous-dependencies': ['off', { devDependencies: ['**/*.spec.*', '**/*.test.*', '**/*.d.ts*'] }],
     },
     overrides: [
         {

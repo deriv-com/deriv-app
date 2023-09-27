@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import useFetch from '../useFetch';
+import useQuery from '../useQuery';
 
 const market_type_to_leverage_mapper: Record<string, number> = {
     gaming: 500,
@@ -9,7 +9,7 @@ const market_type_to_leverage_mapper: Record<string, number> = {
 
 /** A custom hook to get the list of available MT5 accounts. */
 const useAvailableMT5Accounts = () => {
-    const { data: mt5_available_accounts, ...rest } = useFetch('trading_platform_available_accounts', {
+    const { data: mt5_available_accounts, ...rest } = useQuery('trading_platform_available_accounts', {
         payload: { platform: 'mt5' },
     });
 

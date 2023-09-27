@@ -26,7 +26,7 @@ const EmptyState: React.FC<TProps> = ({ icon, title, description, action }) => (
             </Text>
         )}
         {description && (
-            <Text align='center' data-testid='dt_empty_state_description'>
+            <Text size='xs' align='center' data-testid='dt_empty_state_description'>
                 {description}
             </Text>
         )}

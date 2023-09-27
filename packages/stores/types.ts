@@ -2,6 +2,7 @@ import type {
     AccountLimitsResponse,
     Authorize,
     ContractUpdate,
+    ContractUpdateHistory,
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
@@ -177,6 +178,7 @@ type TMenuItem = {
 type TAddToastProps = {
     key: string;
     content: string | React.ReactNode;
+    is_bottom?: boolean;
     timeout?: number;
     type: string;
 };
@@ -296,8 +298,8 @@ type TClientStore = {
     is_logging_in: boolean;
     is_low_risk: boolean;
     is_pending_proof_of_ownership: boolean;
-    is_switching: boolean;
     is_single_currency: boolean;
+    is_switching: boolean;
     is_tnc_needed: boolean;
     is_trading_experience_incomplete: boolean;
     is_virtual: boolean;
@@ -453,11 +455,11 @@ type TUiStore = {
     enableApp: () => void;
     has_only_forward_starting_contracts: boolean;
     has_real_account_signup_ended: boolean;
+    header_extension: JSX.Element | null;
     is_account_settings_visible: boolean;
     is_loading: boolean;
     is_cashier_visible: boolean;
     is_closing_create_real_account_modal: boolean;
-    header_extension: JSX.Element | null;
     is_dark_mode_on: boolean;
     is_reports_visible: boolean;
     is_route_modal_on: boolean;
@@ -497,7 +499,7 @@ type TUiStore = {
     is_ready_to_deposit_modal_visible: boolean;
     reports_route_tab_index: number;
     should_show_cancellation_warning: boolean;
-    toggleCancellationWarning: (state_change: boolean) => void;
+    toggleCancellationWarning: (state_change?: boolean) => void;
     toggleUnsupportedContractModal: (state_change: boolean) => void;
     toggleReports: (is_visible: boolean) => void;
     is_real_acc_signup_on: boolean;
@@ -575,13 +577,30 @@ type TPortfolioStore = {
     removePositionById: (id: number) => void;
 };
 
-type TContractStore = {
-    getContractById: (id: number) => ProposalOpenContract;
+type TContractTradeStore = {
     contract_info: TPortfolioPosition['contract_info'];
     contract_update_stop_loss: string;
     contract_update_take_profit: string;
+    getContractById: (id: number) => TContractStore;
     has_contract_update_stop_loss: boolean;
     has_contract_update_take_profit: boolean;
+};
+
+type TContractStore = {
+    clearContractUpdateConfigValues: () => void;
+    contract_info: TPortfolioPosition['contract_info'];
+    contract_update_history: ContractUpdateHistory;
+    contract_update_take_profit: number | string;
+    contract_update_stop_loss: number | string;
+    digits_info: { [key: number]: { digit: number; spot: string } };
+    display_status: string;
+    has_contract_update_take_profit: boolean;
+    has_contract_update_stop_loss: boolean;
+    is_digit_contract: boolean;
+    is_ended: boolean;
+    onChange: (param: { name: string; value: string | number | boolean }) => void;
+    updateLimitOrder: () => void;
+    validation_errors: { contract_update_stop_loss: string[]; contract_update_take_profit: string[] };
 };
 
 type TMenuStore = {
@@ -709,7 +728,7 @@ export type TCoreStores = {
     menu: TMenuStore;
     ui: TUiStore;
     portfolio: TPortfolioStore;
-    contract_trade: TContractStore;
+    contract_trade: TContractTradeStore;
     // This should be `any` as this property will be handled in each package.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     modules: Record<string, any>;

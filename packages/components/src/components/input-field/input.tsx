@@ -13,7 +13,7 @@ type TInputProps = {
     className?: string;
     classNameDynamicSuffix?: string;
     classNameInlinePrefix?: string;
-    current_focus: string | null;
+    current_focus?: string | null;
     data_testid?: string;
     data_tip?: string;
     data_value?: number | string;

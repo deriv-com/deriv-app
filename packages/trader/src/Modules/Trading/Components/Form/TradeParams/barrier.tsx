@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, Icon, InputField, MobileWrapper, Modal, Text, usePrevious } from '@deriv/components';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import { ValueMovement } from '../Purchase/contract-info';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';

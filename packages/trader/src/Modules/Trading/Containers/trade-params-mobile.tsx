@@ -13,8 +13,8 @@ import { localize } from '@deriv/translations';
 
 type TTradeParamsModal = {
     is_open: boolean;
-    toggleModal: () => void;
     tab_index: number;
+    toggleModal: () => void;
 };
 
 type TTradeParamsMobile = {

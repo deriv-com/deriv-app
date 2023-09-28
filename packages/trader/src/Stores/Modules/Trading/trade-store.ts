@@ -27,7 +27,6 @@ import {
     unsupported_contract_types_list,
     BARRIER_COLORS,
     BARRIER_LINE_STYLES,
-    TContractInfo,
 } from '@deriv/shared';
 import { RudderStack } from '@deriv/analytics';
 import type { TEvents } from '@deriv/analytics';
@@ -170,19 +169,7 @@ type TToastBoxObject = {
     contract_type?: string;
     list?: Array<TToastBoxListItem | undefined>;
 };
-type TTurbosBarriersData = Record<string, never> | { barrier: string; barrier_choices: string[] };
-export type TValidationErrors = { [key: string]: string[] };
-export type TValidationRules = Omit<Partial<ReturnType<typeof getValidationRules>>, 'duration'> & {
-    duration: {
-        rules: [
-            string,
-            {
-                min: number | null;
-                max: number | null;
-            }
-        ][];
-    };
-};
+type TBarriersData = Record<string, never> | { barrier: string; barrier_choices: string[] };
 
 const store_name = 'trade_store';
 const g_subscribers_map: Partial<Record<string, ReturnType<typeof WS.subscribeTicksHistory>>> = {}; // blame amin.m
@@ -292,8 +279,8 @@ export default class TradeStore extends BaseStore {
     cancellation_range_list: Array<TTextValueStrings> = [];
 
     // Turbos trade params
-    long_barriers: TTurbosBarriersData = {};
-    short_barriers: TTurbosBarriersData = {};
+    long_barriers: TBarriersData = {};
+    short_barriers: TBarriersData = {};
 
     // Vanilla trade params
     vanilla_trade_type = 'VANILLALONGCALL';
@@ -525,10 +512,10 @@ export default class TradeStore extends BaseStore {
             () => [this.has_stop_loss, this.has_take_profit],
             () => {
                 if (!this.has_stop_loss) {
-                    (this.validation_errors as TValidationErrors).stop_loss = [];
+                    this.validation_errors.stop_loss = [];
                 }
                 if (!this.has_take_profit) {
-                    (this.validation_errors as TValidationErrors).take_profit = [];
+                    this.validation_errors.take_profit = [];
                 }
             }
         );
@@ -542,8 +529,8 @@ export default class TradeStore extends BaseStore {
                 } else {
                     // we need to remove these two validation rules on contract_type change
                     // to be able to remove any existing Stop loss / Take profit validation errors
-                    delete (this.validation_rules as TValidationRules).stop_loss;
-                    delete (this.validation_rules as TValidationRules).take_profit;
+                    delete this.validation_rules.stop_loss;
+                    delete this.validation_rules.take_profit;
                 }
                 this.resetAccumulatorData();
             }
@@ -575,8 +562,7 @@ export default class TradeStore extends BaseStore {
             this.is_accumulator &&
             !!this.root_store.portfolio.open_accu_contract &&
             !!this.root_store.portfolio.active_positions.find(
-                ({ contract_info, type }: { contract_info: TContractInfo; type: string }) =>
-                    isAccumulatorContract(type) && contract_info.underlying === this.symbol
+                ({ contract_info, type }) => isAccumulatorContract(type) && contract_info.underlying === this.symbol
             )
         );
     }
@@ -762,7 +748,7 @@ export default class TradeStore extends BaseStore {
         } else if (name === 'currency') {
             // Only allow the currency dropdown change if client is not logged in
             if (!this.root_store.client.is_logged_in) {
-                this.root_store.client.selectCurrency(value);
+                this.root_store.client.selectCurrency(value as string);
             }
         } else if (name === 'expiry_date') {
             this.expiry_time = null;
@@ -1006,7 +992,7 @@ export default class TradeStore extends BaseStore {
                     new_state.start_date = parseInt(new_state.start_date);
                 }
 
-                this[key as keyof this] = new_state[key as keyof TradeStore];
+                this[key as 'currency'] = new_state[key as keyof TradeStore] as TradeStore['currency'];
 
                 // validation is done in mobx intercept (base_store.js)
                 // when barrier_1 is set, it is compared with store.barrier_2 (which is not updated yet)
@@ -1120,7 +1106,6 @@ export default class TradeStore extends BaseStore {
 
             // TODO: handle barrier updates on proposal api
             // const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
-            // @ts-expect-error TODO: check if TS error is gone after TOverrideTradeStore is removed
             await processTradeParams(this, new_state);
 
             this.updateStore({
@@ -1192,7 +1177,6 @@ export default class TradeStore extends BaseStore {
     }
 
     requestProposal() {
-        // @ts-expect-error TODO: check that TS error is gone after TOverrideTradeStore is removed
         const requests = createProposalRequests(this);
         if (Object.values(this.validation_errors).some(e => e.length)) {
             this.proposal_info = {};
@@ -1236,7 +1220,6 @@ export default class TradeStore extends BaseStore {
 
         this.proposal_info = {
             ...this.proposal_info,
-            // @ts-expect-error TODO: check that TS error is gone after TOverrideTradeStore is removed
             [contract_type]: getProposalInfo(this, response, obj_prev_contract_basis),
         };
 
@@ -1379,15 +1362,13 @@ export default class TradeStore extends BaseStore {
 
     changeDurationValidationRules() {
         if (this.expiry_type === 'endtime') {
-            (this.validation_errors as TValidationErrors).duration = [];
+            this.validation_errors.duration = [];
             return;
         }
 
-        if (!(this.validation_rules as TValidationRules).duration) return;
+        if (!this.validation_rules.duration) return;
 
-        const index = (this.validation_rules as TValidationRules).duration.rules.findIndex(
-            item => item[0] === 'number'
-        );
+        const index = this.validation_rules.duration.rules?.findIndex(item => item[0] === 'number');
         const limits = this.duration_min_max[this.contract_expiry_type] || false;
 
         if (limits) {
@@ -1396,12 +1377,11 @@ export default class TradeStore extends BaseStore {
                 max: convertDurationLimit(+limits.max, this.duration_unit),
             };
 
-            if (Number(index) > -1) {
-                (this.validation_rules as TValidationRules).duration.rules[Number(index)][1] = duration_options;
+            if (Number(index) > -1 && this.validation_rules.duration.rules) {
+                this.validation_rules.duration.rules[Number(index)][1] = duration_options;
             } else {
-                (this.validation_rules as TValidationRules).duration.rules.push(['number', duration_options]);
+                this.validation_rules.duration.rules?.push(['number', duration_options]);
             }
-            //@ts-expect-error: TODO: check if TS error is gone after base-store.ts from shared package is used here instead of base-store.js
             this.validateProperty('duration', this.duration);
         }
     }

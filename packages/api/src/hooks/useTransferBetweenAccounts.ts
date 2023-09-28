@@ -1,13 +1,13 @@
 import { useCallback } from 'react';
-import useRequest from '../useRequest';
+import useMutation from '../useMutation';
 
 type TPayload = NonNullable<
-    NonNullable<Parameters<ReturnType<typeof useRequest<'transfer_between_accounts'>>['mutate']>[0]>['payload']
+    NonNullable<Parameters<ReturnType<typeof useMutation<'transfer_between_accounts'>>['mutate']>[0]>['payload']
 >;
 
 /** A custom hook used to transfer money between client accounts */
 const useTransferBetweenAccounts = () => {
-    const { mutate: _mutate, ...rest } = useRequest('transfer_between_accounts');
+    const { mutate: _mutate, ...rest } = useMutation('transfer_between_accounts');
 
     const mutate = useCallback((payload: TPayload) => _mutate({ payload }), [_mutate]);
 

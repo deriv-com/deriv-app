@@ -123,7 +123,7 @@ class DBot {
                 this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
                 this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
                 this.workspace.addChangeListener(event => {
-                    if (event.type === 'endDrag') validateErrorOnBlockDelete();
+                    if (event.type === 'endDrag' && !is_mobile) validateErrorOnBlockDelete();
                 });
 
                 Blockly.derivWorkspace = this.workspace;

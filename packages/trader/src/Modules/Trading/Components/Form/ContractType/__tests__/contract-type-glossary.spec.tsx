@@ -11,7 +11,7 @@ describe('<ContractTypeGlossary />', () => {
         ).toBeInTheDocument();
     });
     it('Ensure vanilla glossary is rendered properly', () => {
-        render(<ContractTypeGlossary category='vanilla' />);
+        render(<ContractTypeGlossary category='vanillalongcall' />);
 
         expect(
             screen.getByText(/Contracts will expire at exactly 23:59:59 GMT on your selected expiry date./i)

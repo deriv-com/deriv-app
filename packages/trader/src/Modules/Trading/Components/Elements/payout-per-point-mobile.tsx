@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Money, Text, Popover } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import { observer } from '@deriv/stores';
 import { getContractSubtype, isVanillaContract } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -24,8 +24,8 @@ type TProposalInfo = {
 };
 
 const PayoutPerPointMobile = observer(() => {
-    const { currency, proposal_info, contract_type, vanilla_trade_type } = useTraderStore();
-    const contract_key = isVanillaContract(contract_type) ? vanilla_trade_type : contract_type?.toUpperCase();
+    const { currency, proposal_info, contract_type } = useTraderStore();
+    const contract_key = contract_type?.toUpperCase();
     // remove assertion and local TProposalInfo type after TS migration for trade package is complete
     const { has_error, has_increased, id, message, obj_contract_basis } =
         (proposal_info as TProposalInfo)?.[contract_key] || {};

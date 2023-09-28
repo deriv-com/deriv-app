@@ -49,7 +49,6 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean })
         purchase_info,
         symbol,
         validation_errors = {},
-        vanilla_trade_type,
         trade_types,
         is_trade_enabled,
         has_open_accu_contract,
@@ -128,7 +127,7 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean })
                     components.push(purchase_fieldset);
                     break;
             }
-        } else if (vanilla_trade_type === type) {
+        } else if (contract_type.toUpperCase() === type) {
             components.push(purchase_fieldset);
         } else if (is_accumulator && has_open_accu_contract) {
             components.push(

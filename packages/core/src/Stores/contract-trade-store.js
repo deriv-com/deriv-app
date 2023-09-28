@@ -11,6 +11,7 @@ import {
     isMobile,
     isMultiplierContract,
     isTurbosContract,
+    isVanillaContract,
     LocalStore,
     switch_to_tick_chart,
 } from '@deriv/shared';
@@ -222,6 +223,9 @@ export default class ContractTradeStore extends BaseStore {
         } else if (isTurbosContract(trade_type)) {
             //to show both Long and Short recent contracts on DTrader chart
             trade_types = ['TURBOSLONG', 'TURBOSSHORT'];
+        } else if (isVanillaContract(trade_type)) {
+            //to show both Call and Put recent contracts on DTrader chart
+            trade_types = ['VANILLALONGCALL', 'VANILLALONGPUT'];
         }
 
         return this.contracts

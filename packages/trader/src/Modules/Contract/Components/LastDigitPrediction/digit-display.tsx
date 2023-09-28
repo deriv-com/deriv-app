@@ -1,14 +1,37 @@
 import classNames from 'classnames';
 import { observer } from 'mobx-react';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Bounce } from 'App/Components/Animations';
-import Digit from './digit.jsx';
-import DigitSpot from './digit-spot.jsx';
-import LastDigitStat from './last-digit-stat.jsx';
+import Digit from './digit';
+import DigitSpot from './digit-spot';
+import LastDigitStat from './last-digit-stat';
+import { ProposalOpenContract } from '@deriv/api-types';
 
+type TDigitDisplay = Pick<React.ComponentProps<typeof DigitSpot>, 'is_lost' | 'is_won'> &
+    Pick<React.ComponentProps<typeof Digit>, 'is_lost' | 'is_won'> &
+    Pick<React.ComponentProps<typeof LastDigitStat>, 'is_max' | 'is_min'> & {
+        barrier: number | null;
+        is_digit_contract?: boolean;
+        has_entry_spot: boolean;
+        onSelect: ((digit_value: number) => void) | null;
+        latest_digit: {
+            digit: number | null;
+            spot: string | null;
+        };
+        selected_digit?: number;
+        status: ProposalOpenContract['status'];
+        stats?: number | null;
+        value: number;
+        onLastDigitSpot?: (value: {
+            spot: TDigitDisplay['latest_digit']['spot'];
+            is_lost: TDigitDisplay['is_lost'];
+            is_selected_winning: boolean;
+            is_latest: boolean;
+            is_won: TDigitDisplay['is_won'];
+        }) => void;
+    };
 const DigitDisplay = ({
     barrier,
     is_digit_contract,
@@ -24,7 +47,7 @@ const DigitDisplay = ({
     stats,
     value,
     onLastDigitSpot,
-}) => {
+}: TDigitDisplay) => {
     const { digit, spot } = latest_digit;
     const is_latest = value === digit;
     const is_selected = value === barrier;
@@ -64,7 +87,6 @@ const DigitDisplay = ({
                         current_spot={spot}
                         is_lost={is_lost}
                         is_selected_winning={is_selected_winning}
-                        is_visible={!!(is_latest && spot)}
                         is_won={is_won}
                     />
                 </Bounce>
@@ -79,23 +101,6 @@ const DigitDisplay = ({
             />
         </div>
     );
-};
-
-DigitDisplay.propTypes = {
-    barrier: PropTypes.number,
-    has_entry_spot: PropTypes.bool,
-    is_digit_contract: PropTypes.bool,
-    is_lost: PropTypes.bool,
-    is_max: PropTypes.bool,
-    is_min: PropTypes.bool,
-    is_won: PropTypes.bool,
-    latest_digit: PropTypes.object,
-    onLastDigitSpot: PropTypes.func,
-    onSelect: PropTypes.func,
-    selected_digit: PropTypes.number,
-    stats: PropTypes.number,
-    status: PropTypes.string,
-    value: PropTypes.number,
 };
 
 export default observer(DigitDisplay);

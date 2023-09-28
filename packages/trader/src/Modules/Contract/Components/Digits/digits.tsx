@@ -19,15 +19,16 @@ import { useTraderStore } from 'Stores/useTraderStores';
 type TTraderStore = ReturnType<typeof useTraderStore>;
 type TOnChangeStatus = { status: string | null | undefined; current_tick: number | null };
 type TOnLastDigitSpot = {
-    spot: string;
-    is_lost: boolean;
+    spot: string | null;
+    is_lost?: boolean;
     is_selected_winning: boolean;
     is_latest: boolean;
-    is_won: boolean;
+    is_won?: boolean;
 };
+
 type TDigitsWrapper = TDigits & {
     onChangeStatus?: (params: TOnChangeStatus) => void;
-    onLastDigitSpot?: (params: TOnLastDigitSpot) => void;
+    onLastDigitSpot?: (paams: TOnLastDigitSpot) => void;
 };
 type TDigits = Pick<TContractStore, 'contract_info' | 'digits_info'> & {
     digits_array?: number[];
@@ -105,14 +106,14 @@ const DigitsWrapper = ({
             dimension={isMobile() ? 64 : 52}
             has_entry_spot={!!contract_info.entry_tick}
             barrier={!is_contract_elapsed && is_tick_ready ? Number(contract_info.barrier) : null}
-            contract_type={!is_contract_elapsed && is_tick_ready ? contract_info.contract_type : null}
+            contract_type={!is_contract_elapsed && is_tick_ready ? contract_info.contract_type : ''}
             digits={digits_array}
             digits_info={!is_contract_elapsed && is_tick_ready ? digits_info : {}}
             is_digit_contract={is_digit_contract}
             is_ended={is_ended}
             is_trade_page={is_trade_page}
-            status={status}
-            tick={tick}
+            status={status as React.ComponentProps<typeof LastDigitPrediction>['status']}
+            tick={tick as React.ComponentProps<typeof LastDigitPrediction>['tick']}
             trade_type={trade_type}
             onDigitChange={onDigitChange}
             selected_digit={selected_digit}
@@ -124,7 +125,7 @@ const DigitsWrapper = ({
 const Digits = React.memo((props: TDigits) => {
     const [status, setStatus] = React.useState<string | null>();
     const [current_tick, setCurrentTick] = React.useState<number | null>();
-    const [spot, setSpot] = React.useState<string>();
+    const [spot, setSpot] = React.useState<string | null>();
     const [is_selected_winning, setIsSelectedWinning] = React.useState<boolean>();
     const [is_won, setIsWon] = React.useState<boolean>();
     const [is_lost, setIsLost] = React.useState<boolean>();

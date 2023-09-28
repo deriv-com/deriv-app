@@ -28,7 +28,7 @@ type TOnLastDigitSpot = {
 
 type TDigitsWrapper = TDigits & {
     onChangeStatus?: (params: TOnChangeStatus) => void;
-    onLastDigitSpot?: (paams: TOnLastDigitSpot) => void;
+    onLastDigitSpot?: (params: TOnLastDigitSpot) => void;
 };
 type TDigits = Pick<TContractStore, 'contract_info' | 'digits_info'> & {
     digits_array?: number[];

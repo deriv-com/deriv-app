@@ -108,8 +108,6 @@ const CollapsibleTradeParams = ({
                     <Strike />
                 </div>
             )}
-            {/* 
-            // @ts-expect-error Observer wrapped component needs to be ts migrated before props can be detected */}
             {!is_accumulator && <MobileWidget is_collapsed={is_collapsed} toggleDigitsWidget={toggleDigitsWidget} />}
             {has_allow_equals && (
                 <div data-collapsible='true'>
@@ -129,7 +127,6 @@ const CollapsibleTradeParams = ({
                     className={classNames('take-profit', 'mobile-widget')}
                 >
                     <TakeProfit
-                        //@ts-expect-error Observer wrapped component needs to be ts migrated before props can be detected
                         take_profit={take_profit}
                         has_take_profit={has_take_profit}
                         onChange={onChange}

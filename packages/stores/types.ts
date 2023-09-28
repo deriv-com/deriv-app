@@ -430,11 +430,6 @@ type TCommonStoreServicesError = {
     message?: string;
     type?: string;
 };
-type TCommonStoreServicesError = {
-    code?: string;
-    message?: string;
-    type?: string;
-};
 
 type TCommonStore = {
     isCurrentLanguage(language_code: string): boolean;

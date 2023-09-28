@@ -7,6 +7,16 @@ import { Money, Numpad, Tabs } from '@deriv/components';
 import { getDecimalPlaces, isEmptyObject } from '@deriv/shared';
 import MinMaxStakeInfo from './min-max-stake-info';
 
+type TAmountMobile = Pick<
+    React.ComponentProps<typeof Basis>,
+    'toggleModal' | 'duration_value' | 'duration_unit' | 'has_duration_error' | 'setAmountError' | 'setSelectedAmount'
+> & {
+    amount_tab_idx?: number;
+    setAmountTabIdx?: React.ComponentProps<typeof Tabs>['onTabItemClick'];
+    stake_value: string | number;
+    payout_value?: string | number;
+};
+
 type TBasis = {
     basis: string;
     duration_unit?: string;
@@ -140,16 +150,6 @@ const Basis = observer(
         );
     }
 );
-
-type TAmountMobile = Pick<
-    React.ComponentProps<typeof Basis>,
-    'toggleModal' | 'duration_value' | 'duration_unit' | 'has_duration_error' | 'setAmountError' | 'setSelectedAmount'
-> & {
-    amount_tab_idx?: number;
-    setAmountTabIdx?: React.ComponentProps<typeof Tabs>['onTabItemClick'];
-    stake_value: string | number;
-    payout_value?: string | number;
-};
 
 const Amount = observer(
     ({

@@ -284,7 +284,7 @@ export default class TradeStore extends BaseStore {
     short_barriers: TBarriersData = {};
 
     // Vanilla trade params
-    strike_price_choices = {};
+    strike_price_choices: TBarriersData = {};
 
     // Mobile
     is_trade_params_expanded = true;

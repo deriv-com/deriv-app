@@ -303,6 +303,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_advanced_duration: false,
             is_loading: false,
             is_cashier_visible: false,
+            is_chart_layout_default: false,
             is_closing_create_real_account_modal: false,
             is_dark_mode_on: false,
             is_language_settings_modal_on: false,
